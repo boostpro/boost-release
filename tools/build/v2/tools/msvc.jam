@@ -35,7 +35,7 @@ import property ;
 import rc ;
 import toolset ;
 import type ;
-
+import regex ;
 
 type.register MANIFEST : manifest ;
 feature.feature embed-manifest : on off : incidental propagated ;
@@ -757,9 +757,8 @@ local rule configure-really ( version ? : options * )
             cpu = i386 ;
         }
 
-        local setup-amd64 ;
-        local setup-i386 ;
-        local setup-ia64 ;
+        local setup-$(cpu) ;
+        local runpath-$(cpu) ;
 
         if $(command)
         {
@@ -898,6 +897,14 @@ local rule configure-really ( version ? : options * )
                     
                     # Then invoke the SDK's SetEnv to prepare the rest
                     setup-$(c) = $(setup-$(c))$(setup-prefix)\"$(sdk)/Bin/SetEnv\"" "$(setup-options:J=" ")$(setup-suffix) ;
+                    
+                    # Extract the Lib variable that gets set up by the
+                    # SDK so we can make sure it's in the RUN_PATH,
+                    # where the DLLs can be found during testing.
+                    local cmd = "call \"$(sdk)/Bin/SetEnv\" "$(setup-options:J=" ")">nul && echo !Lib!" ;
+                    
+                    # Also strip the trailing newline
+                    runpath-$(c) = [ regex.match (.*). : [ SHELL "cmd /Q/V:ON/C \"$(cmd)\"" ] ] ;
                 }
                 else
                 {
@@ -975,6 +982,7 @@ local rule configure-really ( version ? : options * )
                 # Enable delayed expansion that's required
                 # by the SDK's SetEnv.Cmd script, via /V:ON.
                 toolset.flags msvc JAMSHELL $(cpu-conditions) : cmd /Q/V:ON/C ;
+                toolset.flags msvc RUN_PATH $(cpu-conditions) : $(runpath-$(c)) ;
             }
             
         }
