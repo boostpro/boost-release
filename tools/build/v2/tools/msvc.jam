@@ -118,6 +118,10 @@ rule init (
     #       Command through which to pipe the output of running the compiler.
     #     For example to pass the output to STLfilt.
     #
+    #   <sdk>
+    #       Path to a Windows [Platform] SDK supplying additional tools (e.g. 64-bit compilers). 
+    #     For example, for VS 2005, c:/Program Files/Microsoft SDKs/Windows/v6.0
+    #
     #   <setup>
     #       Global setup command to invoke before running any of the msvc tools.
     #     It will be passed additional option parameters depending on the actual
@@ -680,6 +684,8 @@ local rule configure-really ( version ? : options * )
     }
     else
     {
+        local sdk = [ feature.get-values <sdk> : $(options) ] ;
+        
         # Register a new configuration.
         $(.versions).register $(version) ;
 
@@ -816,6 +822,7 @@ local rule configure-really ( version ? : options * )
             local default-global-setup-options-i386  = x86 ;
             local default-global-setup-options-ia64  = x86_ia64 ;
 
+            
             # When using 64-bit Windows, and targeting 64-bit, it is possible to
             # use a native 64-bit compiler, selected by the "amd64" & "ia64"
             # parameters to vcvarsall.bat. There are two variables we can use --
@@ -835,6 +842,15 @@ local rule configure-really ( version ? : options * )
             else if $(somehow-detect-the-itanium-platform)
             {
                 default-global-setup-options-ia64 = ia64 ;
+            }
+            
+            if $(sdk)
+            {
+                # if we're using an SDK, these options get spelled
+                # (and passed) differently
+                default-global-setup-options-amd64 = /x64 ;
+                default-global-setup-options-i386  = /x86 ;
+                default-global-setup-options-ia64  = /ia64 ;
             }
 
             local setup-prefix = "call " ;
@@ -875,8 +891,20 @@ local rule configure-really ( version ? : options * )
 
                 # Append setup options to the setup name and add the final setup
                 # prefix & suffix.
-                setup-options ?= "" ;
-                setup-$(c) = $(setup-prefix)$(setup-$(c):J=" ")" "$(setup-options:J=" ")$(setup-suffix) ;
+                if $(sdk)
+                {
+                    # Start by getting the toolset basics in the path (e.g. manifest tool)
+                    setup-$(c) = $(setup-prefix)$(setup-$(c):J=" ")$(setup-suffix) ;
+                    
+                    # Then invoke the SDK's SetEnv to prepare the rest
+                    setup-$(c) = $(setup-$(c))$(setup-prefix)\"$(sdk)/Bin/SetEnv\"" "$(setup-options:J=" ")$(setup-suffix) ;
+                }
+                else
+                {
+                    setup-options ?= "" ;
+                    setup-$(c) = $(setup-prefix)$(setup-$(c):J=" ")" "$(setup-options:J=" ")$(setup-suffix) ;
+                }
+                
             }
         }
 
@@ -941,6 +969,14 @@ local rule configure-really ( version ? : options * )
             {
                 toolset.flags msvc .CC.FILTER $(cpu-conditions) : "|" $(cc-filter) ;
             }
+            
+            if $(sdk)
+            {
+                # Enable delayed expansion that's required
+                # by the SDK's SetEnv.Cmd script, via /V:ON.
+                toolset.flags msvc JAMSHELL $(cpu-conditions) : cmd /Q/V:ON/C ;
+            }
+            
         }
 
         # Set version-specific flags.
