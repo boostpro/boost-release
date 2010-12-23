@@ -28,7 +28,8 @@
 // no namespace issues from this.
 //
 #include <limits.h>
-# if !defined(BOOST_MSVC) && !defined(__BORLANDC__) \
+# if !defined(BOOST_HAS_LONG_LONG)                                              \
+   && !(defined(BOOST_MSVC) && BOOST_MSVC <=1300) && !defined(__BORLANDC__)     \
    && (defined(ULLONG_MAX) || defined(ULONG_LONG_MAX) || defined(ULONGLONG_MAX))
 #  define BOOST_HAS_LONG_LONG
 #endif
@@ -66,7 +67,25 @@
 #  if defined(BOOST_NO_LIMITS) \
       && !defined(BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS)
 #     define BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+#     define BOOST_NO_MS_INT64_NUMERIC_LIMITS
+#     define BOOST_NO_LONG_LONG_NUMERIC_LIMITS
 #  endif
+
+//
+// if there is no long long then there is no specialisation
+// for numeric_limits<long long> either:
+//
+#if !defined(BOOST_HAS_LONG_LONG) && !defined(BOOST_NO_LONG_LONG_NUMERIC_LIMITS)
+#  define BOOST_NO_LONG_LONG_NUMERIC_LIMITS
+#endif
+
+//
+// if there is no __int64 then there is no specialisation
+// for numeric_limits<__int64> either:
+//
+#if !defined(BOOST_HAS_MS_INT64) && !defined(BOOST_NO_MS_INT64_NUMERIC_LIMITS)
+#  define BOOST_NO_MS_INT64_NUMERIC_LIMITS
+#endif
 
 //
 // if member templates are supported then so is the
@@ -75,6 +94,14 @@
 #  if !defined(BOOST_NO_MEMBER_TEMPLATES) \
        && !defined(BOOST_MSVC6_MEMBER_TEMPLATES)
 #     define BOOST_MSVC6_MEMBER_TEMPLATES
+#  endif
+
+//
+// Without partial specialization, can't test for partial specialisation bugs:
+//
+#  if defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) \
+      && !defined(BOOST_BCB_PARTIAL_SPECIALIZATION_BUG)
+#     define BOOST_BCB_PARTIAL_SPECIALIZATION_BUG
 #  endif
 
 //
@@ -106,6 +133,13 @@
 #  endif
 
 //
+// If we have a standard allocator, then we have a partial one as well:
+//
+#if !defined(BOOST_NO_STD_ALLOCATOR)
+#  define BOOST_HAS_PARTIAL_STD_ALLOCATOR
+#endif
+
+//
 // We can't have a working std::use_facet if there is no std::locale:
 //
 #  if defined(BOOST_NO_STD_LOCALE) && !defined(BOOST_NO_STD_USE_FACET)
@@ -117,6 +151,13 @@
 //
 #  if defined(BOOST_NO_STD_LOCALE) && !defined(BOOST_NO_STD_MESSAGES)
 #     define BOOST_NO_STD_MESSAGES
+#  endif
+
+//
+// We can't have a working std::wstreambuf if there is no std::locale:
+//
+#  if defined(BOOST_NO_STD_LOCALE) && !defined(BOOST_NO_STD_WSTREAMBUF)
+#     define BOOST_NO_STD_WSTREAMBUF
 #  endif
 
 //
@@ -217,27 +258,6 @@ namespace std {
   inline const _Tp& max(const _Tp& __a, const _Tp& __b) {
     return  __a < __b ? __b : __a;
   }
-#     ifdef BOOST_MSVC
-  // Apparently, something in the Microsoft libraries requires the "long"
-  // overload, because it calls the min/max functions with arguments of
-  // slightly different type.  (If this proves to be incorrect, this
-  // whole "BOOST_MSVC" section can be removed.)
-  inline long min(long __a, long __b) {
-    return __b < __a ? __b : __a;
-  }
-  inline long max(long __a, long __b) {
-    return  __a < __b ? __b : __a;
-  }
-  // The "long double" overload is required, otherwise user code calling
-  // min/max for floating-point numbers will use the "long" overload.
-  // (SourceForge bug #495495)
-  inline long double min(long double __a, long double __b) {
-    return __b < __a ? __b : __a;
-  }
-  inline long double max(long double __a, long double __b) {
-    return  __a < __b ? __b : __a;
-  }
-#     endif
 }
 
 #  endif
@@ -335,4 +355,5 @@ namespace std {
 #  endif
 
 #endif
+
 

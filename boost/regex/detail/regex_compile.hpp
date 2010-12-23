@@ -26,7 +26,7 @@
 
 namespace boost{
 #ifdef __BORLANDC__
-   #pragma option push -a4 -b -Ve -pc
+   #pragma option push -a8 -b -Vx -Ve -pc  -w-8004
 #endif
    namespace re_detail{
 
@@ -416,6 +416,17 @@ void BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::compile_maps()
          record->can_be_null = 0;
          compile_map(record->next.p, static_cast<re_detail::re_jump*>(record)->_map, &(record->can_be_null), re_detail::mask_take, static_cast<re_detail::re_jump*>(record)->alt.p);
          compile_map(static_cast<re_detail::re_jump*>(record)->alt.p, static_cast<re_detail::re_jump*>(record)->_map, &(record->can_be_null), re_detail::mask_skip);
+         if(record->type == re_detail::syntax_element_rep)
+         {
+            re_detail::re_repeat* rep = static_cast<re_detail::re_repeat*>(record);
+            // set whether this is a singleton repeat or not:
+            if(rep->next.p->next.p->next.p == rep->alt.p)
+            {
+               rep->singleton = true;
+            }
+            else
+               rep->singleton = false;
+         }
       }
       else
       {
@@ -607,6 +618,10 @@ void BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::compile_map(
 template <class charT, class traits, class Allocator>
 void BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::move_offsets(re_detail::re_syntax_base* j, unsigned size)
 {
+# ifdef BOOST_MSVC
+#  pragma warning(push)
+#  pragma warning(disable: 4127)
+#endif
    // move all offsets starting with j->link forward by size
    // called after an insert:
    j = reinterpret_cast<re_detail::re_syntax_base*>(reinterpret_cast<char*>(data.data()) + j->next.i);
@@ -631,11 +646,15 @@ void BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::move_offsets(re_
          break;
       j = reinterpret_cast<re_detail::re_syntax_base*>(reinterpret_cast<char*>(data.data()) + j->next.i);
    }
+# ifdef BOOST_MSVC
+#  pragma warning(pop)
+#endif
 }
 
 template <class charT, class traits, class Allocator>
 re_detail::re_syntax_base* BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::compile_set_simple(re_detail::re_syntax_base* dat, unsigned long cls, bool isnot)
 {
+   typedef typename re_detail::is_byte<charT>::width_type width_type;
    re_detail::jstack<traits_string_type, Allocator> singles(64, data.allocator());
    re_detail::jstack<traits_string_type, Allocator> ranges(64, data.allocator());
    re_detail::jstack<boost::uint_fast32_t, Allocator> classes(64, data.allocator());
@@ -646,7 +665,7 @@ re_detail::re_syntax_base* BOOST_REGEX_CALL reg_expression<charT, traits, Alloca
       data.align();
       dat->next.i = data.size();
    }
-   return compile_set_aux(singles, ranges, classes, equivalents, isnot, re_detail::is_byte<charT>::width_type());
+   return compile_set_aux(singles, ranges, classes, equivalents, isnot, width_type());
 }
 
 template <class charT, class traits, class Allocator>
@@ -953,11 +972,13 @@ re_detail::re_syntax_base* BOOST_REGEX_CALL reg_expression<charT, traits, Alloca
    if(!done)
       return 0;
 
+   typedef typename re_detail::is_byte<charT>::width_type width_type;
+   
    re_detail::re_syntax_base* result;
    if(has_digraphs)
       result = compile_set_aux(singles, ranges, classes, equivalents, isnot, re_detail::_wide_type());
    else
-      result = compile_set_aux(singles, ranges, classes, equivalents, isnot, re_detail::is_byte<charT>::width_type());
+      result = compile_set_aux(singles, ranges, classes, equivalents, isnot, width_type());
    #ifdef __BORLANDC__
    // delayed throw:
    if((result == 0) && (_flags & regbase::use_except))
@@ -1242,6 +1263,11 @@ void BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::fixup_apply(re_d
 template <class charT, class traits, class Allocator>
 unsigned int BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::set_expression(const charT* p, const charT* end, flag_type f)
 {
+# ifdef BOOST_MSVC
+#  pragma warning(push)
+#  pragma warning(disable: 4127)
+#endif
+
    if(p == expression())
    {
       traits_string_type s(p, end);
@@ -1909,6 +1935,11 @@ unsigned int BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::set_expr
 
    } // sentry
    return REG_EMPTY;
+
+# ifdef BOOST_MSVC
+#  pragma warning(pop)
+#endif
+
 }
 
 template <class charT, class traits, class Allocator>

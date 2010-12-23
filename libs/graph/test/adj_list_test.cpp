@@ -3,7 +3,7 @@
 #include <string>
 #include <cstdlib>
 
-// This is meant to be executed from the boost/status/ directory
+// This is meant to be executed from the current directory
 
 std::string container_types [] = { "vecS", "listS", "setS" };
 const int N = sizeof(container_types)/sizeof(std::string);
@@ -19,7 +19,7 @@ main()
     for (j = 0; j < N; ++j)
       for (k = 0; k < D; ++k, ++t) {
 
-        std::string file_name = "../libs/graph/test/graph_type.hpp";
+        std::string file_name = "graph_type.hpp";
         system("rm -f graph_type.hpp");
         std::ofstream header(file_name.c_str());
         if (!header) {
@@ -41,7 +41,8 @@ main()
         system("rm -f graph.exe graph.o graph.obj");
         // the following system call should be replaced by a
         // portable "compile" command.
-        const char* compile = "g++ -I.. -O2 -Wall -Wno-long-long -ftemplate-depth-30 ../libs/graph/test/graph.cpp -o graph.exe";
+        //const char* compile = "g++ -I.. -O2 -Wall -Wno-long-long -ftemplate-depth-30 ../libs/graph/test/graph.cpp -o graph.exe";
+	const char* compile = "g++ -I/u/jsiek/boost graph.cpp -o graph.exe";
         std::cout << compile << std::endl;
         rc = system(compile);
         if (rc != 0) {

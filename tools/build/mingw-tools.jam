@@ -8,6 +8,13 @@
 set-as-singleton MINGW_ROOT_DIRECTORY MINGW_BIN_DIRECTORY MINGW_INCLUDE_DIRECTORY MINGW_STDLIB_DIRECTORY ;
 
 # compute directories for invoking MINGW
+
+# Get these variable set on the targets so that we can re-use the
+# build actions for other toolsets using this one as a base.
+flags mingw MINGW_BIN_DIRECTORY ;
+flags mingw MINGW_INCLUDE_DIRECTORY ;
+flags mingw MINGW_STDLIB_DIRECTORY ;
+
 MINGW_BIN_DIRECTORY ?= $(MINGW_ROOT_DIRECTORY)$(SLASH)bin$(SLASH) ;
 MINGW_BIN_DIRECTORY ?= "" ; # Don't clobber tool names if MINGW_ROOT_DIRECTORY not set
 MINGW_INCLUDE_DIRECTORY ?= $(MINGW_ROOT_DIRECTORY)$(SLASH)include ;
@@ -31,6 +38,11 @@ rule Link-action
     # proved to be neccessary with some versions of Cygwin.
     IMPLIB_COMMAND on $(<) = "-Wl,--exclude-symbols,_bss_end__:_bss_start__:_data_end__:_data_start__ -Wl,--out-implib," ;
     mingw-Link-action $(<) : $(>) ;
+    # Workaround GCC's lack of command-files and NT's line-length limitation.
+    if $(NT) {
+        JAMSHELL on $(<) = % ;
+    }
+    return ;
 }
 
 # for mingw, we repeat all libraries so that dependencies are always resolved
@@ -43,23 +55,25 @@ actions mingw-Link-action bind NEEDLIBS
 
 rule Cc-action
 {
+    SPACE on $(<) = " " ;
     mingw-Cc-action $(<) : $(>) ;
 }
 
 actions mingw-Cc-action
 {
-    $(MINGW_BIN_DIRECTORY)mingw -c -Wall -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(MINGW_BIN_DIRECTORY)gcc -c -Wall -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -isystem$(SPACE)"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
 rule C++-action
 {
+    SPACE on $(<) = " " ;
     mingw-C++-action $(<) : $(>) ;
 }
 
 actions mingw-C++-action
 {
-    $(MINGW_BIN_DIRECTORY)g++ -c -Wall -ftemplate-depth-100 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(MINGW_BIN_DIRECTORY)g++ -c -Wall -ftemplate-depth-100 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -isystem$(SPACE)"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### Archive ####
@@ -71,6 +85,6 @@ rule Archive-action
 
 actions updated together piecemeal mingw-Archive-action
 {
-    ar ru$(ARFLAGS) "$(<:T)" "$(>:T)"
+    $(MINGW_BIN_DIRECTORY)ar ru$(ARFLAGS) "$(<:T)" "$(>:T)"
 }
 

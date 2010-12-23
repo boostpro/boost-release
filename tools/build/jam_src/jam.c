@@ -221,6 +221,7 @@ int  main( int argc, char **argv, char **arg_environ )
         printf( "-jx     Run up to x shell commands concurrently.\n" );
         printf( "-n      Don't actually execute the updating actions.\n" );
         printf( "-ox     Write the updating actions to file x.\n" );
+		printf( "-q      Quit quickly as soon as a target fails.\n" );
         printf( "-sx=y   Set variable x=y, overriding environment.\n" );
         printf( "-tx     Rebuild x, even if it is up-to-date.\n" );
         printf( "-v      Print the version of jam and exit.\n" );
@@ -236,7 +237,7 @@ int  main( int argc, char **argv, char **arg_environ )
     if( ( s = getoptval( optv, 'v', 0 ) ) )
     {
         printf( "Boost.Jam  " );
-        printf( "Version %s. %s. ", VERSION, OSMINOR );
+        printf( "Version %s. %s.\n", VERSION, OSMINOR );
 	   printf( "   Copyright 1993-2002 Christopher Seiwald and Perforce Software, Inc.  \n" );
         printf( "   Copyright 2001 David Turner.\n" );
         printf( "   Copyright 2001-2002 David Abrahams.\n" );
@@ -249,6 +250,8 @@ int  main( int argc, char **argv, char **arg_environ )
     if( ( s = getoptval( optv, 'n', 0 ) ) )
         globs.noexec++, globs.debug[2] = 1;
 
+	if( ( s = getoptval( optv, 'q', 0 ) ) )
+ 	    globs.quitquick = 1;
     if( ( s = getoptval( optv, 'a', 0 ) ) )
         anyhow++;
 
@@ -312,7 +315,8 @@ int  main( int argc, char **argv, char **arg_environ )
     }
 
     var_set( "JAM_VERSION",
-             list_new( list_new( L0, newstr( "03" ) ), newstr( "01" ) ),
+             list_new( list_new( list_new( L0, newstr( "03" ) ), newstr( "01" ) ), 
+                       newstr( "02" ) ),
              VAR_SET );
 
     /* And JAMUNAME */
@@ -401,10 +405,24 @@ int  main( int argc, char **argv, char **arg_environ )
 
     /* Now make target */
 
-    if( !argc )
-        status |= make( 1, &all, anyhow );
-    else
-        status |= make( argc, argv, anyhow );
+    {
+        LIST* targets = targets_to_update();
+        if ( !targets )
+            make( 1, &all, anyhow );
+        else 
+        {
+            int targets_count = list_length(targets);
+            char **targets2 = (char **)malloc(targets_count * sizeof(char *));
+            int n = 0;
+            for ( ; targets; targets = list_next(targets) )
+            {
+                targets2[n++] = targets->string;
+            }
+            status |= make( targets_count, targets2, anyhow );       
+            free(targets);
+        }
+    }
+
 
     if ( DEBUG_PROFILE )
         profile_dump();

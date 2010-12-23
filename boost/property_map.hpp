@@ -118,7 +118,7 @@ namespace boost {
   };
 #endif
 
-#ifndef BOOST_MSVC
+#if !defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
   // MSVC doesn't have Koenig lookup, so the user has to
   // do boost::get() anyways, and the using clause
   // doesn't really work for MSVC.
@@ -135,7 +135,7 @@ namespace boost {
   template <class T>
   inline const T& get(const T* pa, std::ptrdiff_t k) { return pa[k]; }
 
-#ifndef BOOST_MSVC
+#if !defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
 namespace boost {
   using ::put;
   using ::get;
@@ -233,10 +233,10 @@ namespace boost {
     void constraints() {
       function_requires< ReadablePropertyMapConcept<PMap, Key> >();
       function_requires< ConvertibleConcept<Category, LvalueTag> >();
-      
+
+      typedef typename property_traits<PMap>::value_type value_type;
       typedef typename require_same<
-        const typename property_traits<PMap>::value_type&,
-        reference>::type req;
+        const value_type&, reference>::type req;
 
       reference ref = pmap[k];
       ignore_unused_variable_warning(ref);
@@ -266,8 +266,10 @@ namespace boost {
     void constraints() { 
       boost::function_requires< ReadWritePropertyMapConcept<PMap, Key> >();
       boost::function_requires<ConvertibleConcept<Category, LvalueTag> >();
+      
+      typedef typename property_traits<PMap>::value_type value_type;
       typedef typename require_same<
-        typename property_traits<PMap>::value_type&,
+        value_type&,
         reference>::type req;
 
       reference ref = pmap[k];
@@ -474,10 +476,10 @@ namespace boost {
     const_associative_property_map() : m_c(0) { }
     const_associative_property_map(const C& c) : m_c(&c) { }
     reference operator[](const key_type& k) const {
-      return (*m_c)[k];
+      return m_c->find(k)->second;
     }
   private:
-    C* m_c;
+    C const* m_c;
   };
   
   template <class UniquePairAssociativeContainer>

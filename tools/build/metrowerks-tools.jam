@@ -17,7 +17,7 @@
 
 # The following #// line will be used by the regression test table generation
 # program as the column heading for HTML tables. Must not include version number.
-#//<a href="http://www.metrowerks.com/products/windows/">Metro-<br>werks<br>Code-<br>Warrior</a>
+#//<a href="http://www.metrowerks.com/MW/Develop/Desktop/default.htm">Metro-<br>werks<br>Code-<br>Warrior</a>
 
 # singleton variables...
 set-as-singleton METROWERKS_ROOT CWFOLDER ;
@@ -52,6 +52,14 @@ flags metrowerks CFLAGS <inlining>on : -inline on ;
 flags metrowerks CFLAGS <inlining>full : -inline auto -inline level=8 ;
 flags metrowerks CFLAGS <user-interface>console/<runtime-link>dynamic : -prefix UseDLLPrefix.h ;
 
+flags metrowerks LINKFLAGS <user-interface>console : "-subsystem console" ;
+flags metrowerks LINKFLAGS <user-interface>gui : "-subsystem windows" ;
+flags metrowerks LINKFLAGS <user-interface>wince : "-subsystem wince" ;
+flags metrowerks LINKFLAGS <user-interface>native : "-subsystem native" ;
+flags metrowerks LINKFLAGS <user-interface>auto : "-subsystem auto" ;
+
+flags metrowerks CFLAGS <eh-model>msvc : -exc ms ;
+
 if ! $(BOOST_CODEWARRIOR_6)
 {
     flags metrowerks STDLIBS <runtime-link>static/<runtime-build>release : MSL_C_x86.lib;MSL_Runtime_x86.lib;msl_c++_x86.lib;gdi32.lib;user32.lib;kernel32.lib ;
@@ -75,13 +83,6 @@ flags metrowerks FINDLIBS <find-library> ;
 METROWERKS_INCLUDE_ROOT = $(METROWERKS_ROOT) ;
 METROWERKS_INCLUDE_ROOT ?= $(CWFOLDER) ;
 
-# This is the list of subdirectories below METROWERKS_INCLUDE_ROOT to search.
-# Might need customization for platforms other than Win32
-gMETROWERKS_STD_INCLUDES = MSL "Win32-X86 Support" MSL$(SLASH)MSL_C$(SLASH)MSL_Common$(SLASH)Include "Win32-X86 Support"$(SLASH)Headers$(SLASH)"Win32 SDK" ;
-
-# Multiply these out to get the STDHDRS settings for metrowerks
-flags metrowerks STDHDRS : $(METROWERKS_INCLUDE_ROOT)$(SLASH)$(gMETROWERKS_STD_INCLUDES) ;
-
 #### Link ####
 
 rule Link-action
@@ -91,7 +92,7 @@ rule Link-action
     
     IMPLIB_COMMAND on $(<) = "-implib " ; # will be "multiplied away" if not
                                         # needed.
-    with-command-file metrowerks-Link-action $(<) : $(>) $(NEEDLIBS) # $(NEEDLIBS)
+    with-command-file metrowerks-Link-action $(<) : $(>) $(NEEDLIBS)
       ;
 }
 
@@ -103,7 +104,7 @@ actions metrowerks-Link-action
 {
     $(METROWERKS_SETUP)
     $(METROWERKS_LINK_SETUP)$(STDLIBS)
-    mwld -search -maxerrors 20 -maxwarnings 20 -export dllexport -nowraplines $(LINKFLAGS) -L$(LIBPATH) -L$(STDLIBPATH) $(IMPLIB_COMMAND)"$(<[2])" -o "$(<[1])" @"$(>)" $(FINDLIBS)$(SUFLIB)
+    mwld -search -maxerrors 5 -maxwarnings 20 -export dllexport -nowraplines $(LINKFLAGS) -L$(LIBPATH) -L$(STDLIBPATH) $(IMPLIB_COMMAND)"$(<[2])" -o "$(<[1])" @"$(>)" $(FINDLIBS)$(SUFLIB)
 }
 
 #### Cc #####
@@ -116,7 +117,7 @@ rule Cc-action
 actions metrowerks-Cc-action
 {
     $(METROWERKS_SETUP)
-    mwcc -maxerrors 20 -maxwarnings 20 -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -nowraplines $(CFLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    mwcc -maxerrors 5 -maxwarnings 20 -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -nowraplines $(CFLAGS)  -I"$(HDRS)" -I- -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -128,7 +129,7 @@ rule C++-action
 actions metrowerks-C++-action
 {
     $(METROWERKS_SETUP)
-    mwcc  -maxerrors 20 -maxwarnings 20 -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -DNOMINMAX -nowraplines -lang c++ $(CFLAGS) $(C++FLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    mwcc  -maxerrors 5 -maxwarnings 20 -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -DNOMINMAX -nowraplines -lang c++ $(CFLAGS) $(C++FLAGS)  -I"$(HDRS)" -I- -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### Archive ####

@@ -128,6 +128,8 @@
        <a href="generator_iterator.htm">Generator Iterator Adaptor</a>
       <li>Header <tt><a href="../../boost/permutation_iterator.hpp">boost/permutation_iterator.hpp</a></tt><br>
        <a href="permutation_iterator.htm">Permutation Iterator Adaptor</a>
+      <li>Header <tt><a href="../../boost/shared_container_iterator.hpp">boost/shared_container_iterator.hpp</a></tt><br>
+       <a href="shared_container_iterator.html">Shared_Container Iterator Adaptor</a>
     </ul>
 
     <p><b><a href="../../people/dave_abrahams.htm">Dave
@@ -156,6 +158,9 @@
     adaptor.<br>
     Toon Knapen contributed the <a href="permutation_iterator.htm">permutation
     iterator</a> adaptor.<br>
+    <b><a href="../../people/ronald_garcia.htm">Ronald Garcia</a></b>
+    contributed the <a href="shared_container_iterator.html">shared container iterator</a>
+    adaptor.<br>
 
     <h2><a name="iterator_adaptor">Class template</a>
     <tt>iterator_adaptor</tt></h2>
@@ -184,7 +189,7 @@ struct iterator_adaptor;
 
     <p>Although <tt>iterator_adaptor</tt> takes seven template parameters,
     defaults have been carefully chosen to minimize the number of parameters
-    you must supply in most cases, especially if <tt>BaseType</tt> is an
+    you must supply in most cases, especially if <tt>Base</tt> is an
     iterator.
 
     <table border="1" summary="iterator_adaptor template parameters">
@@ -193,17 +198,26 @@ struct iterator_adaptor;
 
         <th>Description
 
-      <tr>
-        <td><tt>BaseType</tt> 
+        <th>Requirements
 
-        <td>The type being wrapped.
+      <tr>
+        <td><tt>Base</tt> 
+
+        <td>The data type on which the resulting iterator is based. Do
+        not be misled by the name &quot;Base&quot;: this is not a base
+        class.
+
+        <td>
+        <a href="http://www.sgi.com/tech/stl/Assignable.html">Assignable</a>,
+        <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html">Default&nbsp;Constructible</a>
 
       <tr>
         <td><tt>Policies</tt> 
 
         <td>A <a href="../../more/generic_programming.html#policy">policy
-        class</a> that supplies core functionality to the resulting iterator. A
-        detailed description can be found <a href="#policies">below</a>.
+        class</a> that supplies core functionality to the resulting iterator. 
+
+        <td>See table <a href="#policies">below</a>.
 
       <tr>
         <td><tt>Value</tt> 
@@ -214,7 +228,7 @@ struct iterator_adaptor;
         "#1">[1]</a>. If the <tt>value_type</tt> you wish to use is an abstract
         base class see note <a href="#5">[5]</a>.<br>
          <b>Default:</b>
-        <tt>std::iterator_traits&lt;BaseType&gt;::value_type</tt> <a href=
+        <tt>std::iterator_traits&lt;Base&gt;::value_type</tt> <a href=
         "#2">[2]</a>
 
       <tr>
@@ -224,29 +238,52 @@ struct iterator_adaptor;
         particular, the result type of <tt>operator*()</tt>.<br>
          <b>Default:</b> If <tt>Value</tt> is supplied, <tt>Value&amp;</tt> is
         used. Otherwise
-        <tt>std::iterator_traits&lt;BaseType&gt;::reference</tt> is used. <a href="#7">[7]</a>
+        <tt>std::iterator_traits&lt;Base&gt;::reference</tt> is used. <a href="#7">[7]</a>
+        
+        <td><a
+        href="http://www.sgi.com/tech/stl/ForwardIterator.html">ForwardIterators</a>,
+        <a
+        href="http://www.sgi.com/tech/stl/BidirectionalIterator.html">BidirectionalIterators</a>,
+        and <a
+        href="http://www.sgi.com/tech/stl/RandomAccessIterator.html">RandomAccessIterators</a>
+        require that Reference is a true reference type (e.g. not a proxy).
 
       <tr>
         <td><tt>Pointer</tt> 
 
         <td>The <tt>pointer</tt> type of the resulting iterator, and in
         particular, the result type of <tt>operator-&gt;()</tt>.<br>
-         <b>Default:</b> If <tt>Value</tt> was supplied, then <tt>Value*</tt>,
-        otherwise <tt>std::iterator_traits&lt;BaseType&gt;::pointer</tt>. <a href="#7">[7]</a>
+         <b>Default:</b> If <tt>Value</tt> was not supplied, <tt>std::iterator_traits&lt;Base&gt;::pointer</tt>. <a
+        href="#7">[7]</a> Otherwise, if <code>iterator_category</code> is
+        <code>input_iterator</code>, then a class yielding
+        <tt>Value*</tt> when <code>operator-&gt;()</code> is applied.
+        Otherwise, <tt>Value*</tt>.
+
+        <td><code>value_type*</code> or a
+        class which yields <code>value_type*</code> when
+        <code>operator-&gt;()</code> is applied.
 
       <tr>
         <td><tt>Category</tt> 
 
         <td>The <tt>iterator_category</tt> type for the resulting iterator.<br>
          <b>Default:</b>
-        <tt>std::iterator_traits&lt;BaseType&gt;::iterator_category</tt> 
+        <tt>std::iterator_traits&lt;Base&gt;::iterator_category</tt> 
+
+        <td>One of
+        <code>std::input_iterator_tag</code>,
+        <code>std::output_iterator_tag</code>,
+        <code>std::forward_iterator_tag</code>,
+        <code>std::bidirectional_iterator_tag</code>, or
+        <code>std::random_access_iterator_tag</code>.
 
       <tr>
         <td><tt>Distance</tt> 
 
         <td>The <tt>difference_type</tt> for the resulting iterator.<br>
          <b>Default:</b>
-        <tt>std::iterator_traits&lt;BaseType&gt;::difference_type</tt> 
+        <tt>std::iterator_traits&lt;Base&gt;::difference_type</tt> 
+        <td>A signed integral type
 
       <tr>
          <td><tt>NamedParam</tt>
@@ -498,6 +535,15 @@ struct <a name="default_iterator_policies">default_iterator_policies</a>
          Return a reference to the base object. This is to give the policies object
          access to the base object. See <a href="#policies">above</a> for policies
          iterator_adaptor interaction.<a href="#8">[8]</a>
+
+      <tr>
+        <td><tt>const Policies& policies() const;</tt>
+           <br><br>
+         Return a const reference to the policies object.
+
+      <tr>        <td><tt>Policies& policies();</tt>
+         <br><br>
+         Return a reference to the policies object.
     </table>
 
     <h3><a name="example">Example</a></h3>
@@ -515,7 +561,7 @@ struct <a name="default_iterator_policies">default_iterator_policies</a>
     argument and that we'll need to be able to deduce the <tt>result_type</tt>
     of the function so we can use it for the adapted iterator's
     <tt>value_type</tt>. <a href=
-    "http://www.sgi.com/Technology/STL/AdaptableUnaryFunction.html">AdaptableUnaryFunction</a>
+    "http://www.sgi.com/tech/stl/AdaptableUnaryFunction.html">AdaptableUnaryFunction</a>
     is the <a href="../../more/generic_programming.html#concept">Concept</a>
     that fulfills those requirements.
 

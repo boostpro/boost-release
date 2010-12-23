@@ -30,7 +30,7 @@
 namespace boost{
 
 #ifdef __BORLANDC__
-   #pragma option push -a4 -b -Ve -pc
+   #pragma option push -a8 -b -Vx -Ve -pc
 #endif
 
 template <class charT>
@@ -47,8 +47,6 @@ struct mss
 BOOST_REGEX_DECL bool BOOST_REGEX_CALL re_lookup_def_collate_name(std::string& buf, const char* name);
 BOOST_REGEX_DECL std::size_t BOOST_REGEX_CALL re_get_default_message(char* buf, std::size_t len, std::size_t id);
 extern BOOST_REGEX_DECL const char *re_default_error_messages[];
-BOOST_REGEX_DECL bool BOOST_REGEX_CALL re_lookup_def_collate_name(std::string& buf, const char* name);
-//extern BOOST_REGEX_DECL const wchar_t combining_ranges[];
 
 #ifndef BOOST_NO_WREGEX
 extern BOOST_REGEX_DECL wchar_t wide_lower_case_map[];
@@ -123,6 +121,10 @@ struct BOOST_REGEX_DECL regex_traits_base
 
       syntax_max = 54
    };
+#ifdef __BORLANDC__
+private:
+   char dummy_member;
+#endif
 };
 
 struct BOOST_REGEX_DECL c_traits_base : public regex_traits_base
@@ -532,7 +534,7 @@ private:
 #endif // Wide strings
 #endif // Win32
 
-#ifndef BOOST_NO_STD_LOCALE
+#if !defined(BOOST_NO_STD_LOCALE) && !defined(BOOST_NO_STD_WSTREAMBUF)
 
 } // namspace boost
 

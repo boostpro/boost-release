@@ -59,6 +59,11 @@ template<class F> struct result_traits<unspecified, F>
     typedef typename F::result_type type;
 };
 
+template<class F> struct result_traits< unspecified, reference_wrapper<F> >
+{
+    typedef typename F::result_type type;
+};
+
 #endif
 
 // bind_t forward declaration for listN
@@ -84,6 +89,23 @@ private:
 // type
 
 template<class T> class type {};
+
+// unwrap
+
+template<class F> inline F & unwrap(F & f, long)
+{
+    return f;
+}
+
+template<class F> inline F & unwrap(reference_wrapper<F> & f, int)
+{
+    return f;
+}
+
+template<class F> inline F & unwrap(reference_wrapper<F> const & f, int)
+{
+    return f;
+}
 
 // listN
 
@@ -120,7 +142,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A &) const
     {
-        return f();
+        return unwrap(f, 0)();
     }
 
     template<class V> void accept(V &) const
@@ -144,9 +166,9 @@ public:
 
     explicit list1(A1 a1): a1_(a1) {}
 
-    A1 operator[] (arg<1>) const { return a1_; }
+    A1 operator[] (boost::arg<1>) const { return a1_; }
 
-    A1 operator[] (arg<1> (*) ()) const { return a1_; }
+    A1 operator[] (boost::arg<1> (*) ()) const { return a1_; }
 
     template<class T> T & operator[] (value<T> & v) const { return v.get(); }
 
@@ -160,7 +182,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
-        return f(a[a1_]);
+        return unwrap(f, 0)(a[a1_]);
     }
 
     template<class V> void accept(V & v) const
@@ -190,11 +212,11 @@ public:
 
     list2(A1 a1, A2 a2): a1_(a1), a2_(a2) {}
 
-    A1 operator[] (arg<1>) const { return a1_; }
-    A2 operator[] (arg<2>) const { return a2_; }
+    A1 operator[] (boost::arg<1>) const { return a1_; }
+    A2 operator[] (boost::arg<2>) const { return a2_; }
 
-    A1 operator[] (arg<1> (*) ()) const { return a1_; }
-    A2 operator[] (arg<2> (*) ()) const { return a2_; }
+    A1 operator[] (boost::arg<1> (*) ()) const { return a1_; }
+    A2 operator[] (boost::arg<2> (*) ()) const { return a2_; }
 
     template<class T> T & operator[] (value<T> & v) const { return v.get(); }
 
@@ -208,7 +230,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
-        return f(a[a1_], a[a2_]);
+        return unwrap(f, 0)(a[a1_], a[a2_]);
     }
 
     template<class V> void accept(V & v) const
@@ -240,13 +262,13 @@ public:
 
     list3(A1 a1, A2 a2, A3 a3): a1_(a1), a2_(a2), a3_(a3) {}
 
-    A1 operator[] (arg<1>) const { return a1_; }
-    A2 operator[] (arg<2>) const { return a2_; }
-    A3 operator[] (arg<3>) const { return a3_; }
+    A1 operator[] (boost::arg<1>) const { return a1_; }
+    A2 operator[] (boost::arg<2>) const { return a2_; }
+    A3 operator[] (boost::arg<3>) const { return a3_; }
 
-    A1 operator[] (arg<1> (*) ()) const { return a1_; }
-    A2 operator[] (arg<2> (*) ()) const { return a2_; }
-    A3 operator[] (arg<3> (*) ()) const { return a3_; }
+    A1 operator[] (boost::arg<1> (*) ()) const { return a1_; }
+    A2 operator[] (boost::arg<2> (*) ()) const { return a2_; }
+    A3 operator[] (boost::arg<3> (*) ()) const { return a3_; }
 
     template<class T> T & operator[] (value<T> & v) const { return v.get(); }
 
@@ -260,7 +282,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
-        return f(a[a1_], a[a2_], a[a3_]);
+        return unwrap(f, 0)(a[a1_], a[a2_], a[a3_]);
     }
 
     template<class V> void accept(V & v) const
@@ -294,15 +316,15 @@ public:
 
     list4(A1 a1, A2 a2, A3 a3, A4 a4): a1_(a1), a2_(a2), a3_(a3), a4_(a4) {}
 
-    A1 operator[] (arg<1>) const { return a1_; }
-    A2 operator[] (arg<2>) const { return a2_; }
-    A3 operator[] (arg<3>) const { return a3_; }
-    A4 operator[] (arg<4>) const { return a4_; }
+    A1 operator[] (boost::arg<1>) const { return a1_; }
+    A2 operator[] (boost::arg<2>) const { return a2_; }
+    A3 operator[] (boost::arg<3>) const { return a3_; }
+    A4 operator[] (boost::arg<4>) const { return a4_; }
 
-    A1 operator[] (arg<1> (*) ()) const { return a1_; }
-    A2 operator[] (arg<2> (*) ()) const { return a2_; }
-    A3 operator[] (arg<3> (*) ()) const { return a3_; }
-    A4 operator[] (arg<4> (*) ()) const { return a4_; }
+    A1 operator[] (boost::arg<1> (*) ()) const { return a1_; }
+    A2 operator[] (boost::arg<2> (*) ()) const { return a2_; }
+    A3 operator[] (boost::arg<3> (*) ()) const { return a3_; }
+    A4 operator[] (boost::arg<4> (*) ()) const { return a4_; }
 
     template<class T> T & operator[] (value<T> & v) const { return v.get(); }
 
@@ -316,7 +338,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
-        return f(a[a1_], a[a2_], a[a3_], a[a4_]);
+        return unwrap(f, 0)(a[a1_], a[a2_], a[a3_], a[a4_]);
     }
 
     template<class V> void accept(V & v) const
@@ -352,17 +374,17 @@ public:
 
     list5(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5): a1_(a1), a2_(a2), a3_(a3), a4_(a4), a5_(a5) {}
 
-    A1 operator[] (arg<1>) const { return a1_; }
-    A2 operator[] (arg<2>) const { return a2_; }
-    A3 operator[] (arg<3>) const { return a3_; }
-    A4 operator[] (arg<4>) const { return a4_; }
-    A5 operator[] (arg<5>) const { return a5_; }
+    A1 operator[] (boost::arg<1>) const { return a1_; }
+    A2 operator[] (boost::arg<2>) const { return a2_; }
+    A3 operator[] (boost::arg<3>) const { return a3_; }
+    A4 operator[] (boost::arg<4>) const { return a4_; }
+    A5 operator[] (boost::arg<5>) const { return a5_; }
 
-    A1 operator[] (arg<1> (*) ()) const { return a1_; }
-    A2 operator[] (arg<2> (*) ()) const { return a2_; }
-    A3 operator[] (arg<3> (*) ()) const { return a3_; }
-    A4 operator[] (arg<4> (*) ()) const { return a4_; }
-    A5 operator[] (arg<5> (*) ()) const { return a5_; }
+    A1 operator[] (boost::arg<1> (*) ()) const { return a1_; }
+    A2 operator[] (boost::arg<2> (*) ()) const { return a2_; }
+    A3 operator[] (boost::arg<3> (*) ()) const { return a3_; }
+    A4 operator[] (boost::arg<4> (*) ()) const { return a4_; }
+    A5 operator[] (boost::arg<5> (*) ()) const { return a5_; }
 
     template<class T> T & operator[] (value<T> & v) const { return v.get(); }
 
@@ -376,7 +398,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
-        return f(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_]);
+        return unwrap(f, 0)(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_]);
     }
 
     template<class V> void accept(V & v) const
@@ -414,19 +436,19 @@ public:
 
     list6(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6): a1_(a1), a2_(a2), a3_(a3), a4_(a4), a5_(a5), a6_(a6) {}
 
-    A1 operator[] (arg<1>) const { return a1_; }
-    A2 operator[] (arg<2>) const { return a2_; }
-    A3 operator[] (arg<3>) const { return a3_; }
-    A4 operator[] (arg<4>) const { return a4_; }
-    A5 operator[] (arg<5>) const { return a5_; }
-    A6 operator[] (arg<6>) const { return a6_; }
+    A1 operator[] (boost::arg<1>) const { return a1_; }
+    A2 operator[] (boost::arg<2>) const { return a2_; }
+    A3 operator[] (boost::arg<3>) const { return a3_; }
+    A4 operator[] (boost::arg<4>) const { return a4_; }
+    A5 operator[] (boost::arg<5>) const { return a5_; }
+    A6 operator[] (boost::arg<6>) const { return a6_; }
 
-    A1 operator[] (arg<1> (*) ()) const { return a1_; }
-    A2 operator[] (arg<2> (*) ()) const { return a2_; }
-    A3 operator[] (arg<3> (*) ()) const { return a3_; }
-    A4 operator[] (arg<4> (*) ()) const { return a4_; }
-    A5 operator[] (arg<5> (*) ()) const { return a5_; }
-    A6 operator[] (arg<6> (*) ()) const { return a6_; }
+    A1 operator[] (boost::arg<1> (*) ()) const { return a1_; }
+    A2 operator[] (boost::arg<2> (*) ()) const { return a2_; }
+    A3 operator[] (boost::arg<3> (*) ()) const { return a3_; }
+    A4 operator[] (boost::arg<4> (*) ()) const { return a4_; }
+    A5 operator[] (boost::arg<5> (*) ()) const { return a5_; }
+    A6 operator[] (boost::arg<6> (*) ()) const { return a6_; }
 
     template<class T> T & operator[] (value<T> & v) const { return v.get(); }
 
@@ -440,7 +462,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
-        return f(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_], a[a6_]);
+        return unwrap(f, 0)(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_], a[a6_]);
     }
 
     template<class V> void accept(V & v) const
@@ -480,21 +502,21 @@ public:
 
     list7(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7): a1_(a1), a2_(a2), a3_(a3), a4_(a4), a5_(a5), a6_(a6), a7_(a7) {}
 
-    A1 operator[] (arg<1>) const { return a1_; }
-    A2 operator[] (arg<2>) const { return a2_; }
-    A3 operator[] (arg<3>) const { return a3_; }
-    A4 operator[] (arg<4>) const { return a4_; }
-    A5 operator[] (arg<5>) const { return a5_; }
-    A6 operator[] (arg<6>) const { return a6_; }
-    A7 operator[] (arg<7>) const { return a7_; }
+    A1 operator[] (boost::arg<1>) const { return a1_; }
+    A2 operator[] (boost::arg<2>) const { return a2_; }
+    A3 operator[] (boost::arg<3>) const { return a3_; }
+    A4 operator[] (boost::arg<4>) const { return a4_; }
+    A5 operator[] (boost::arg<5>) const { return a5_; }
+    A6 operator[] (boost::arg<6>) const { return a6_; }
+    A7 operator[] (boost::arg<7>) const { return a7_; }
 
-    A1 operator[] (arg<1> (*) ()) const { return a1_; }
-    A2 operator[] (arg<2> (*) ()) const { return a2_; }
-    A3 operator[] (arg<3> (*) ()) const { return a3_; }
-    A4 operator[] (arg<4> (*) ()) const { return a4_; }
-    A5 operator[] (arg<5> (*) ()) const { return a5_; }
-    A6 operator[] (arg<6> (*) ()) const { return a6_; }
-    A7 operator[] (arg<7> (*) ()) const { return a7_; }
+    A1 operator[] (boost::arg<1> (*) ()) const { return a1_; }
+    A2 operator[] (boost::arg<2> (*) ()) const { return a2_; }
+    A3 operator[] (boost::arg<3> (*) ()) const { return a3_; }
+    A4 operator[] (boost::arg<4> (*) ()) const { return a4_; }
+    A5 operator[] (boost::arg<5> (*) ()) const { return a5_; }
+    A6 operator[] (boost::arg<6> (*) ()) const { return a6_; }
+    A7 operator[] (boost::arg<7> (*) ()) const { return a7_; }
 
     template<class T> T & operator[] (value<T> & v) const { return v.get(); }
 
@@ -508,7 +530,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
-        return f(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_], a[a6_], a[a7_]);
+        return unwrap(f, 0)(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_], a[a6_], a[a7_]);
     }
 
     template<class V> void accept(V & v) const
@@ -550,23 +572,23 @@ public:
 
     list8(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8): a1_(a1), a2_(a2), a3_(a3), a4_(a4), a5_(a5), a6_(a6), a7_(a7), a8_(a8) {}
 
-    A1 operator[] (arg<1>) const { return a1_; }
-    A2 operator[] (arg<2>) const { return a2_; }
-    A3 operator[] (arg<3>) const { return a3_; }
-    A4 operator[] (arg<4>) const { return a4_; }
-    A5 operator[] (arg<5>) const { return a5_; }
-    A6 operator[] (arg<6>) const { return a6_; }
-    A7 operator[] (arg<7>) const { return a7_; }
-    A8 operator[] (arg<8>) const { return a8_; }
+    A1 operator[] (boost::arg<1>) const { return a1_; }
+    A2 operator[] (boost::arg<2>) const { return a2_; }
+    A3 operator[] (boost::arg<3>) const { return a3_; }
+    A4 operator[] (boost::arg<4>) const { return a4_; }
+    A5 operator[] (boost::arg<5>) const { return a5_; }
+    A6 operator[] (boost::arg<6>) const { return a6_; }
+    A7 operator[] (boost::arg<7>) const { return a7_; }
+    A8 operator[] (boost::arg<8>) const { return a8_; }
 
-    A1 operator[] (arg<1> (*) ()) const { return a1_; }
-    A2 operator[] (arg<2> (*) ()) const { return a2_; }
-    A3 operator[] (arg<3> (*) ()) const { return a3_; }
-    A4 operator[] (arg<4> (*) ()) const { return a4_; }
-    A5 operator[] (arg<5> (*) ()) const { return a5_; }
-    A6 operator[] (arg<6> (*) ()) const { return a6_; }
-    A7 operator[] (arg<7> (*) ()) const { return a7_; }
-    A8 operator[] (arg<8> (*) ()) const { return a8_; }
+    A1 operator[] (boost::arg<1> (*) ()) const { return a1_; }
+    A2 operator[] (boost::arg<2> (*) ()) const { return a2_; }
+    A3 operator[] (boost::arg<3> (*) ()) const { return a3_; }
+    A4 operator[] (boost::arg<4> (*) ()) const { return a4_; }
+    A5 operator[] (boost::arg<5> (*) ()) const { return a5_; }
+    A6 operator[] (boost::arg<6> (*) ()) const { return a6_; }
+    A7 operator[] (boost::arg<7> (*) ()) const { return a7_; }
+    A8 operator[] (boost::arg<8> (*) ()) const { return a8_; }
 
     template<class T> T & operator[] (value<T> & v) const { return v.get(); }
 
@@ -580,7 +602,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
-        return f(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_], a[a6_], a[a7_], a[a8_]);
+        return unwrap(f, 0)(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_], a[a6_], a[a7_], a[a8_]);
     }
 
     template<class V> void accept(V & v) const
@@ -624,25 +646,25 @@ public:
 
     list9(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9): a1_(a1), a2_(a2), a3_(a3), a4_(a4), a5_(a5), a6_(a6), a7_(a7), a8_(a8), a9_(a9) {}
 
-    A1 operator[] (arg<1>) const { return a1_; }
-    A2 operator[] (arg<2>) const { return a2_; }
-    A3 operator[] (arg<3>) const { return a3_; }
-    A4 operator[] (arg<4>) const { return a4_; }
-    A5 operator[] (arg<5>) const { return a5_; }
-    A6 operator[] (arg<6>) const { return a6_; }
-    A7 operator[] (arg<7>) const { return a7_; }
-    A8 operator[] (arg<8>) const { return a8_; }
-    A9 operator[] (arg<9>) const { return a9_; }
+    A1 operator[] (boost::arg<1>) const { return a1_; }
+    A2 operator[] (boost::arg<2>) const { return a2_; }
+    A3 operator[] (boost::arg<3>) const { return a3_; }
+    A4 operator[] (boost::arg<4>) const { return a4_; }
+    A5 operator[] (boost::arg<5>) const { return a5_; }
+    A6 operator[] (boost::arg<6>) const { return a6_; }
+    A7 operator[] (boost::arg<7>) const { return a7_; }
+    A8 operator[] (boost::arg<8>) const { return a8_; }
+    A9 operator[] (boost::arg<9>) const { return a9_; }
 
-    A1 operator[] (arg<1> (*) ()) const { return a1_; }
-    A2 operator[] (arg<2> (*) ()) const { return a2_; }
-    A3 operator[] (arg<3> (*) ()) const { return a3_; }
-    A4 operator[] (arg<4> (*) ()) const { return a4_; }
-    A5 operator[] (arg<5> (*) ()) const { return a5_; }
-    A6 operator[] (arg<6> (*) ()) const { return a6_; }
-    A7 operator[] (arg<7> (*) ()) const { return a7_; }
-    A8 operator[] (arg<8> (*) ()) const { return a8_; }
-    A9 operator[] (arg<9> (*) ()) const { return a9_; }
+    A1 operator[] (boost::arg<1> (*) ()) const { return a1_; }
+    A2 operator[] (boost::arg<2> (*) ()) const { return a2_; }
+    A3 operator[] (boost::arg<3> (*) ()) const { return a3_; }
+    A4 operator[] (boost::arg<4> (*) ()) const { return a4_; }
+    A5 operator[] (boost::arg<5> (*) ()) const { return a5_; }
+    A6 operator[] (boost::arg<6> (*) ()) const { return a6_; }
+    A7 operator[] (boost::arg<7> (*) ()) const { return a7_; }
+    A8 operator[] (boost::arg<8> (*) ()) const { return a8_; }
+    A9 operator[] (boost::arg<9> (*) ()) const { return a9_; }
 
     template<class T> T & operator[] (value<T> & v) const { return v.get(); }
 
@@ -656,7 +678,7 @@ public:
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
-        return f(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_], a[a6_], a[a7_], a[a8_], a[a9_]);
+        return unwrap(f, 0)(a[a1_], a[a2_], a[a3_], a[a4_], a[a5_], a[a6_], a[a7_], a[a8_], a[a9_]);
     }
 
     template<class V> void accept(V & v) const
@@ -703,7 +725,7 @@ template <class R> struct evaluator0
     template<class L, class F, class A>
     static R eval(L const&, F f, A &)
     {
-        return f();
+        return unwrap(f, 0)();
     }
 };
 
@@ -712,7 +734,7 @@ template <> struct evaluator0<void>
     template<class L, class F, class A>
     static void eval(L const&, F f, A &)
     {
-        f();
+        unwrap(f, 0)();
     }
 };
 
@@ -721,7 +743,7 @@ template <class R> struct evaluator1
     template<class L, class F, class A>
     static R eval(L const& l, F f, A & a)
     {
-        return f(a[l.a1_]);
+        return unwrap(f, 0)(a[l.a1_]);
     }
 };
 
@@ -730,7 +752,7 @@ template <> struct evaluator1<void>
     template<class L, class F, class A>
     static void eval(L const& l, F f, A & a)
     {
-        f(a[l.a1_]);
+        unwrap(f, 0)(a[l.a1_]);
     }
 };
 
@@ -739,7 +761,7 @@ template <class R> struct evaluator2
     template<class L, class F, class A>
     static R eval(L const& l, F f, A & a)
     {
-        return f(a[l.a1_], a[l.a2_]);
+        return unwrap(f, 0)(a[l.a1_], a[l.a2_]);
     }
 };
 
@@ -748,7 +770,7 @@ template <> struct evaluator2<void>
     template<class L, class F, class A>
     static void eval(L const& l, F f, A & a)
     {
-        f(a[l.a1_], a[l.a2_]);
+        unwrap(f, 0)(a[l.a1_], a[l.a2_]);
     }
 };
 
@@ -757,7 +779,7 @@ template <class R> struct evaluator3
     template<class L, class F, class A>
     static R eval(L const& l, F f, A & a)
     {
-        return f(a[l.a1_], a[l.a2_], a[l.a3_]);
+        return unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_]);
     }
 };
 
@@ -766,7 +788,7 @@ template <> struct evaluator3<void>
     template<class L, class F, class A>
     static void eval(L const& l, F f, A & a)
     {
-        f(a[l.a1_], a[l.a2_], a[l.a3_]);
+        unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_]);
     }
 };
 
@@ -775,7 +797,7 @@ template <class R> struct evaluator4
     template<class L, class F, class A>
     static R eval(L const& l, F f, A & a)
     {
-        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_]);
+        return unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_]);
     }
 };
 
@@ -784,7 +806,7 @@ template <> struct evaluator4<void>
     template<class L, class F, class A>
     static void eval(L const& l, F f, A & a)
     {
-        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_]);
+        unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_]);
     }
 };
 
@@ -793,7 +815,7 @@ template <class R> struct evaluator5
     template<class L, class F, class A>
     static R eval(L const& l, F f, A & a)
     {
-        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_]);
+        return unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_]);
     }
 };
 
@@ -802,7 +824,7 @@ template <> struct evaluator5<void>
     template<class L, class F, class A>
     static void eval(L const& l, F f, A & a)
     {
-        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_]);
+        unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_]);
     }
 };
 
@@ -811,7 +833,7 @@ template <class R> struct evaluator6
     template<class L, class F, class A>
     static R eval(L const& l, F f, A & a)
     {
-        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_]);
+        return unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_]);
     }
 };
 
@@ -820,7 +842,7 @@ template <> struct evaluator6<void>
     template<class L, class F, class A>
     static void eval(L const& l, F f, A & a)
     {
-        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_]);
+        unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_]);
     }
 };
 
@@ -829,7 +851,7 @@ template <class R> struct evaluator7
     template<class L, class F, class A>
     static R eval(L const& l, F f, A & a)
     {
-        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_]);
+        return unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_]);
     }
 };
 
@@ -838,7 +860,7 @@ template <> struct evaluator7<void>
     template<class L, class F, class A>
     static void eval(L const& l, F f, A & a)
     {
-        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_]);
+        unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_]);
     }
 };
 
@@ -847,7 +869,7 @@ template <class R> struct evaluator8
     template<class L, class F, class A>
     static R eval(L const& l, F f, A & a)
     {
-        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_]);
+        return unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_]);
     }
 };
 
@@ -856,7 +878,7 @@ template <> struct evaluator8<void>
     template<class L, class F, class A>
     static void eval(L const& l, F f, A & a)
     {
-        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_]);
+        unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_]);
     }
 };
 
@@ -865,7 +887,7 @@ template <class R> struct evaluator9
     template<class L, class F, class A>
     static R eval(L const& l, F f, A & a)
     {
-        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_], a[l.a9_]);
+        return unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_], a[l.a9_]);
     }
 };
 
@@ -874,7 +896,7 @@ template <> struct evaluator9<void>
     template<class L, class F, class A>
     static void eval(L const& l, F f, A & a)
     {
-        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_], a[l.a9_]);
+        unwrap(f, 0)(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_], a[l.a9_]);
     }
 };
 
@@ -967,12 +989,12 @@ template<class T> struct add_value< reference_wrapper<T> >
 
 template<int I> struct add_value< arg<I> >
 {
-    typedef arg<I> type;
+    typedef boost::arg<I> type;
 };
 
 template<int I> struct add_value< arg<I> (*) () >
 {
-    typedef arg<I> (*type) ();
+    typedef boost::arg<I> (*type) ();
 };
 
 template<class R, class F, class L> struct add_value< bind_t<R, F, L> >
@@ -1321,6 +1343,18 @@ template<class F, class A1, class A2, class A3, class A4, class A5, class A6, cl
 
 #endif
 
+#ifdef BOOST_BIND_ENABLE_FASTCALL
+
+#define BOOST_BIND_CC __fastcall
+#define BOOST_BIND_ST
+
+#include <boost/bind/bind_cc.hpp>
+
+#undef BOOST_BIND_CC
+#undef BOOST_BIND_ST
+
+#endif
+
 #ifdef BOOST_BIND_ENABLE_PASCAL
 
 #define BOOST_BIND_ST pascal
@@ -1355,15 +1389,27 @@ template<class F, class A1, class A2, class A3, class A4, class A5, class A6, cl
 
 #endif
 
+#ifdef BOOST_MEM_FN_ENABLE_FASTCALL
+
+#define BOOST_BIND_MF_NAME(X) X##_fastcall
+#define BOOST_BIND_MF_CC __fastcall
+
+#include <boost/bind/bind_mf_cc.hpp>
+
+#undef BOOST_BIND_MF_NAME
+#undef BOOST_BIND_MF_CC
+
+#endif
+
 // data member pointers
 
 template<class R, class T, class A1>
-    _bi::bind_t< R, _mfi::dm<R, T>, typename _bi::list_av_1<A1>::type >
+    _bi::bind_t< R const &, _mfi::dm<R, T>, typename _bi::list_av_1<A1>::type >
     BOOST_BIND(R T::*f, A1 a1)
 {
     typedef _mfi::dm<R, T> F;
     typedef typename _bi::list_av_1<A1>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1));
+    return _bi::bind_t<R const &, F, list_type>(F(f), list_type(a1));
 }
 
 } // namespace boost

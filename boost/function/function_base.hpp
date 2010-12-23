@@ -1,6 +1,6 @@
 // Boost.Function library
 
-// Copyright (C) 2001 Doug Gregor (gregod@cs.rpi.edu)
+// Copyright (C) 2001, 2002 Doug Gregor (gregod@cs.rpi.edu)
 //
 // Permission to copy, use, sell and distribute this software is granted
 // provided this copyright notice appears in all copies.
@@ -24,6 +24,7 @@
 #include <boost/config.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/ref.hpp>
+#include <boost/pending/ct_if.hpp>
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300 || defined(__ICL) && __ICL <= 600 || defined(__MWERKS__) && __MWERKS__ < 0x2406
 #  define BOOST_FUNCTION_TARGET_FIX(x) x
@@ -31,54 +32,22 @@
 #  define BOOST_FUNCTION_TARGET_FIX(x)
 #endif // not MSVC
 
+#ifdef BOOST_FUNCTION_SILENT_DEPRECATED
+#  define BOOST_FUNCTION_DEPRECATED_PRE
+#  define BOOST_FUNCTION_DEPRECATED_INNER
+#else
+#  if defined (BOOST_MSVC) && (BOOST_MSVC >= 1300)
+#    define BOOST_FUNCTION_DEPRECATED_PRE __declspec(deprecated)
+#    define BOOST_FUNCTION_DEPRECATED_INNER
+#  else
+#    define BOOST_FUNCTION_DEPRECATED_PRE
+#    define BOOST_FUNCTION_DEPRECATED_INNER int deprecated;
+#  endif
+#endif
+
 namespace boost {
   namespace detail {
     namespace function {
-      template<bool> struct truth {};
-
-      /*
-       * The ct_if implementation is temporary code. When a Boost metaprogramming
-       * library is introduced, Boost.Function will use it instead. 
-       */
-      namespace intimate {
-        struct SelectThen 
-        {       
-          template<typename Then, typename Else>
-          struct Result
-          {       
-            typedef Then type;
-          };
-        };
- 
-        struct SelectElse
-        {
-          template<typename Then, typename Else>
-          struct Result
-          { 
-            typedef Else type;
-          };
-        };
- 
-        template<bool Condition>
-        struct Selector
-        {
-          typedef SelectThen type;
-        };
- 
-        template<>
-        struct Selector<false>
-        {
-          typedef SelectElse type;
-        };
-      } // end namespace intimate 
- 
-      template<bool Condition, typename Then, typename Else>
-      struct ct_if
-      {
-        typedef typename intimate::Selector<Condition>::type select;
-        typedef typename select::template Result<Then,Else>::type type;
-      };
-
       /**
        * A union of a function pointer and a void pointer. This is necessary
        * because 5.2.10/6 allows reinterpret_cast<> to safely cast between 
@@ -158,7 +127,7 @@ namespace boost {
       // The trivial manager does nothing but return the same pointer (if we
       // are cloning) or return the null pointer (if we are deleting).
       inline any_pointer trivial_manager(any_pointer f, 
-					 functor_manager_operation_type op)
+                                         functor_manager_operation_type op)
       {
         if (op == clone_functor_tag)
           return f;
@@ -179,7 +148,7 @@ namespace boost {
         // For function pointers, the manager is trivial
         static inline any_pointer
         manager(any_pointer function_ptr, 
-		functor_manager_operation_type op,
+                functor_manager_operation_type op,
                 function_ptr_tag)
         {
           if (op == clone_functor_tag)
@@ -309,25 +278,6 @@ namespace boost {
                            detail::function::any_pointer, 
                            detail::function::functor_manager_operation_type);
     detail::function::any_pointer functor;
-
-#if (defined __SUNPRO_CC) && (__SUNPRO_CC <= 0x530) && !(defined BOOST_NO_COMPILER_CONFIG)
-    // Sun C++ 5.3 can't handle the safe_bool idiom, so don't use it
-    operator bool () const { return !this->empty(); }
-#else
-  private:
-    struct dummy {
-      void nonnull() {};
-    };
-
-    typedef void (dummy::*safe_bool)();
-
-  public:
-    operator safe_bool () const 
-      { return (this->empty())? 0 : &dummy::nonnull; }
-
-    safe_bool operator!() const
-      { return (this->empty())? &dummy::nonnull : 0; }
-#endif
   };
 
   /* Poison comparison between Boost.Function objects (because it is 

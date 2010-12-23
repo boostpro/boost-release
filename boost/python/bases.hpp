@@ -6,14 +6,18 @@
 #ifndef BASES_DWA2002321_HPP
 # define BASES_DWA2002321_HPP
 # include <boost/type_traits/object_traits.hpp>
-# include <boost/mpl/type_list.hpp>
-# include <boost/mpl/select_type.hpp>
-# include <boost/mpl/identity/identity.hpp>
+# include <boost/python/detail/type_list.hpp>
+# include <boost/mpl/if.hpp>
+# include <boost/preprocessor/enum_params_with_a_default.hpp>
+# include <boost/preprocessor/enum_params.hpp>
 
 namespace boost { namespace python { 
+
+# define BOOST_PYTHON_BASE_PARAMS BOOST_PP_ENUM_PARAMS_Z(1, BOOST_PYTHON_MAX_BASES, B)
+
   // A type list for specifying bases
-  template < BOOST_MPL_LIST_DEFAULT_PARAMETERS(typename B, ::boost::mpl::null_argument) >
-  struct bases : ::boost::mpl::type_list< BOOST_MPL_LIST_PARAMETERS(B) >::type
+  template < BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(BOOST_PYTHON_MAX_BASES, typename B, mpl::void_) >
+  struct bases : detail::type_list< BOOST_PYTHON_BASE_PARAMS >::type
   {};
 
   namespace detail
@@ -23,14 +27,14 @@ namespace boost { namespace python {
     {
         BOOST_STATIC_CONSTANT(bool, value = false);
     };
-    template < BOOST_MPL_LIST_PARAMETERS(class B) >
-    struct specifies_bases< bases< BOOST_MPL_LIST_PARAMETERS(B) > >
+    template < BOOST_PP_ENUM_PARAMS_Z(1, BOOST_PYTHON_MAX_BASES, class B) >
+    struct specifies_bases< bases< BOOST_PYTHON_BASE_PARAMS > >
     {
         BOOST_STATIC_CONSTANT(bool, value = true);
     };
 # else
-    template < BOOST_MPL_LIST_PARAMETERS(class B) >
-    static char is_bases_helper(bases< BOOST_MPL_LIST_PARAMETERS(B) > const&);
+    template < BOOST_PP_ENUM_PARAMS(BOOST_PYTHON_MAX_BASES, class B) >
+    static char is_bases_helper(bases< BOOST_PYTHON_BASE_PARAMS > const&);
     
     static char (& is_bases_helper(...) )[256];
 
@@ -45,7 +49,7 @@ namespace boost { namespace python {
 # endif
     template <class T, class Prev = bases<> >
     struct select_bases
-        : mpl::select_type<
+        : mpl::if_c<
                 specifies_bases<T>::value
                 , T
                 , Prev
@@ -53,6 +57,7 @@ namespace boost { namespace python {
     {
     };
   }
+# undef BOOST_PYTHON_BASE_PARAMS
 }} // namespace boost::python
 
 #endif // BASES_DWA2002321_HPP

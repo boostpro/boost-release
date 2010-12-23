@@ -27,6 +27,8 @@
 
 #include <boost/regex/config.hpp>
 
+#ifndef BOOST_REGEX_NO_FILEITER
+
 #if (defined(__CYGWIN__) || defined(__CYGWIN32__)) && !defined(BOOST_REGEX_NO_W32)
 #error "Sorry, can't mix <windows.h> with STL code and gcc compiler: if you ran configure, try again with configure --disable-ms-windows"
 #define BOOST_REGEX_FI_WIN32_MAP
@@ -79,7 +81,7 @@ namespace boost{
    namespace re_detail{
 
 #ifdef __BORLANDC__
-    #pragma option push -a4 -b -Ve -pc
+   #pragma option push -a8 -b -Vx -Ve -pc
 #endif
 
 struct _fi_find_data
@@ -431,7 +433,8 @@ using boost::re_detail::file_iterator;
 using boost::re_detail::mapfile;
 } // namespace boost
 
-#endif     // _FILEITER_H
+#endif     // BOOST_REGEX_NO_FILEITER
+#endif     // BOOST_RE_FILEITER_HPP
 
 
 

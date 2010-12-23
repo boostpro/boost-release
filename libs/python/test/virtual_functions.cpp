@@ -5,6 +5,7 @@
 // to its suitability for any purpose.
 #include <boost/python/class.hpp>
 #include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
 #include <boost/python/call_method.hpp>
 #include <boost/ref.hpp>
 #include <boost/utility.hpp>
@@ -86,32 +87,26 @@ struct concrete_callback : concrete
 
 int X::counter;
 
-BOOST_PYTHON_MODULE_INIT(virtual_functions_ext)
+BOOST_PYTHON_MODULE(virtual_functions_ext)
 {
-    module("virtual_functions_ext")
-        .add(
-            class_<concrete, concrete_callback>("concrete")
-            .def_init(args<int>())
-            .def("value", &concrete::value)
-            .def("set", &concrete::set)
-            .def("call_f", &concrete::call_f)
-            .def("f", &concrete_callback::f_impl))
+    class_<concrete, concrete_callback>("concrete", init<int>())
+        .def("value", &concrete::value)
+        .def("set", &concrete::set)
+        .def("call_f", &concrete::call_f)
+        .def("f", &concrete_callback::f_impl)
+        ;
         
-        .add(
-            class_<abstract, boost::noncopyable, boost::shared_ptr<abstract_callback>
-            >("abstract")
+    class_<abstract, boost::noncopyable, boost::shared_ptr<abstract_callback>
+        >("abstract", init<int>())
             
-            .def_init(args<int>())
-            .def("value", &abstract::value)
-            .def("call_f", &abstract::call_f)
-            .def("set", &abstract::set))
+        .def("value", &abstract::value)
+        .def("call_f", &abstract::call_f)
+        .def("set", &abstract::set)
+        ;
         
-        .add(
-            class_<Y>("Y")
-            .def_init(args<int>())
-            .def("value", &Y::value)
-            .def("set", &Y::set)
-            )
+    class_<Y>("Y", init<int>())
+        .def("value", &Y::value)
+        .def("set", &Y::set)
         ;
 }
 

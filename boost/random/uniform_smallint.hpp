@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_smallint.hpp,v 1.6 2002/03/11 20:31:05 jmaurer Exp $
+ * $Id: uniform_smallint.hpp,v 1.7 2002/05/09 18:17:31 david_abrahams Exp $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -25,6 +25,7 @@
 #include <cassert>
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
+#include <boost/static_assert.hpp>
 
 namespace boost {
 

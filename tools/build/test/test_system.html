@@ -17,6 +17,7 @@
         img.banner { border: 0; float: left }
         h1 { text-align: right }
         br.clear { clear: left }
+        div.attention { color: red }
 </style>
   </head>
 
@@ -38,6 +39,8 @@
 
           <dt><a href="#sec-intro-examining">Examining the working directory
           and changing it</a></dt>
+
+          <dt><a href="#sec-intro-results">Test result</a></dt>
         </dl>
       </dd>
 
@@ -60,11 +63,17 @@
 
           <dt><a href="#method-read">Method <tt>read</tt></a></dt>
 
+          <dt><a href="#method-read_and_strip">Method
+          <tt>read_and_strip</tt></a></dt>
+
           <dt><a href="#methods-expectations">Methods for declaring
           expectations</a></dt>
 
           <dt><a href="#methods-ignoring">Methods for ignoring
           changes</a></dt>
+
+          <dt><a href="#methods-result">Methods for explicitly specifying
+          results</a></dt>
 
           <dt><a href="#class-list">Helper class <tt>List</tt></a></dt>
         </dl>
@@ -193,6 +202,23 @@ FAILED test of D:\MyDocu~1\Work\build\boost-build\boost-build -d0
     yet accounted for. It is possible to assure that this list is empty by
     calling <tt>expect_nothing_more</tt> member function.</p>
 
+    <h3><a name="sec-intro-results">Test result</a></h3>
+
+    <p>Any of the <tt>expect*</tt> methods below will fail the test if the
+    expectation is not met. It is also possible to perform manually arbitrary
+    test and explicitly cause the test to either pass or fail. Ordinary
+    filesystem functions can be used to work with the directory tree. Methods
+    <tt>pass_test</tt> and <tt>fail_test</tt> are used to explicitly give the
+    test outcome.</p>
+
+    <p>Typically, after test termination, the working directory is erased. If
+    is possible to prevent it by setting environmental variables
+    <tt>PRESERVE</tt>, <tt>PRESERVE_PASS</tt> and <tt>PRESERVE_FAIL</tt>.
+    Non-zero value of the first makes the working directory preserved in all
+    cases, while the other variables apply only to specific outcomes. When a
+    directory is preserved, its name will be printed to the standard
+    output.</p>
+
     <h2><a name="sec-reference">Reference documentation</a></h2>
 
     <p>The test system is composed of class <tt>Tester</tt>, derived form
@@ -204,8 +230,8 @@ FAILED test of D:\MyDocu~1\Work\build\boost-build\boost-build -d0
     This is true on all platforms. In some contexts, a list of files is
     allowed. In that case any object with sequence interface is allowed.</p>
 
-    <h3><a name="method-__init__">Method <tt>__init__(self,
-    arguments='', executable='bjam')</tt></a></h3>
+    <h3><a name="method-__init__">Method <tt>__init__(self, arguments='',
+    executable='bjam')</tt></a></h3>
 
     <p><b>Effects:</b></p>
 
@@ -214,12 +240,11 @@ FAILED test of D:\MyDocu~1\Work\build\boost-build\boost-build -d0
       <tt>original_workdir</tt>.</li>
 
       <li>Determines the location of executable (<code>bjam</code> by
-      default) and build system files, assuming that the current
-      directory is <tt>tools/build/test</tt>. Formulates jam
-      invocation command, which will include explicit setting for
-      <tt>BOOST_BUILD_PATH</tt> variable and arguments passed to this
-      methods, if any. This command will be used by subsequent
-      invocation of <a href=
+      default) and build system files, assuming that the current directory is
+      <tt>tools/build/test</tt>. Formulates jam invocation command, which
+      will include explicit setting for <tt>BOOST_BUILD_PATH</tt> variable
+      and arguments passed to this methods, if any. This command will be used
+      by subsequent invocation of <a href=
       "#method-run_build_system"><tt>run_build_system</tt></a>. Finally,
       initializes the base class.</li>
 
@@ -261,9 +286,8 @@ FAILED test of D:\MyDocu~1\Work\build\boost-build\boost-build -d0
     to the current time. All the elements in <tt>names</tt> should be
     relative paths.</p>
 
-    <h3><a name="method-run_build_system">Method
-    <tt>run_build_system(self, subdir='', extra_args='', stdout=None,
-    stderr='', status=0,
+    <h3><a name="method-run_build_system">Method <tt>run_build_system(self,
+    subdir='', extra_args='', stdout=None, stderr='', status=0,
     **kw)</tt></a></h3>
 
     <p><b>Effects:</b></p>
@@ -305,6 +329,21 @@ FAILED test of D:\MyDocu~1\Work\build\boost-build\boost-build -d0
     <p>Read the specified file and returns it content. Raises an exception is
     the file is absent.</p>
 
+    <h3><a name="method-read_and_strip">Method <tt>read_and_strip(self,
+    name)</tt></a></h3>
+
+    <p><b>Effects:</b></p>
+
+    <p>Read the specified file and returns it content, after removing
+    trailing whitespace from every line. Raises an exception is the file is
+    absent.</p>
+
+    <p><b>Rationale:</b></p>
+
+    <p>Althought this method is questionable, there are a lot of cases when
+    jam or shells it uses insert spaces. It seems that introducing this
+    method is much simpler than dealing with all those cases.</p>
+
     <h3><a name="methods-expectations">Methods for declaring
     expectations</a></h3>
 
@@ -340,6 +379,22 @@ FAILED test of D:\MyDocu~1\Work\build\boost-build\boost-build -d0
     all the changes are either expected or ignored, in other words that
     <tt>unexpected_difference</tt> is empty by now.</p>
 
+    <p>Lastly, there's a method to compare file content with expected
+    content:</p>
+    <tt>expect_content(self, name, content, exact=0)</tt> 
+
+    <p>The method fails the test if the content of file identified by 'name'
+    is different from 'content'. If 'exact' is true, the file content is used
+    as-is, otherwise, two transformations are applied:</p>
+
+    <ul>
+      <li>The <tt>read_and_strip</tt> method is used to read the file, which
+      removes trailing whitespace</li>
+
+      <li>Each backslash in the file content is converted to forward
+      slash.</li>
+    </ul>
+
     <h3><a name="methods-ignoring">Methods for ignoring changes</a></h3>
 
     <p>There are five methods which ignore changes made to the working tree.
@@ -361,6 +416,20 @@ FAILED test of D:\MyDocu~1\Work\build\boost-build\boost-build -d0
 
     <p>The method <tt>ignore(self, wildcard)</tt> ignores all the changes
     made to files that match a wildcard.</p>
+
+    <h3><a name="methods-result">Methods for explicitly specifying
+    results</a></h3>
+
+    <h4>Method <tt>pass_test(self, condition=1)</tt></h4>
+
+    <div class="attention">
+      At this moment, the method should not be used.
+    </div>
+
+    <h4>Method <tt>fail_test(self, condition=1)</tt></h4>
+
+    <p><b>Effects:</b> Cause the test to fail if <tt>condition</tt> is
+    true.</p>
 
     <h3><a name="class-list">Helper class <tt>List</tt></a></h3>
     The class has sequence interface and two additional methods. 

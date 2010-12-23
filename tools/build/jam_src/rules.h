@@ -219,10 +219,15 @@ TARGET  *bindtarget( char *targetname );
 void 	touchtarget( char *t );
 TARGETS *targetlist( TARGETS *chain, LIST  *targets );
 TARGETS *targetentry( TARGETS *chain, TARGET *target );
+void freetargets( TARGETS *chain );
 ACTIONS *actionlist( ACTIONS *chain, ACTION *action );
+void freeactions( ACTIONS *chain );
 SETTINGS *addsettings( SETTINGS *head, int append, char *symbol, LIST *value );
 void 	pushsettings( SETTINGS *v );
 void 	popsettings( SETTINGS *v );
+#ifdef OPT_FIX_TARGET_VARIABLES_EXT
+SETTINGS *copysettings( SETTINGS *v );
+#endif
 void 	freesettings( SETTINGS *v );
 void	donerules();
 

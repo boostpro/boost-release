@@ -8,9 +8,12 @@
 
 # include <boost/type_traits/object_traits.hpp>
 # include <boost/python/object/pointer_holder.hpp>
-# include <boost/python/object/class_object.hpp>
+# include <boost/python/object/instance.hpp>
+# include <boost/python/converter/registered.hpp>
 # include <boost/python/detail/unwind_type.hpp>
+# include <boost/python/detail/none.hpp>
 # include <boost/shared_ptr.hpp>
+# include <boost/python/object/make_instance.hpp>
 # include <memory>
 
 namespace boost { namespace python {
@@ -31,7 +34,7 @@ namespace detail
 {
   struct make_owning_holder
   {
-      typedef objects::instance_holder* result_type;
+      typedef PyObject* result_type;
       template <class T>
       static result_type execute(T* p)
       {
@@ -40,20 +43,22 @@ namespace detail
           typedef boost::shared_ptr<T> smart_pointer;
 # else 
           typedef std::auto_ptr<T> smart_pointer;
-# endif 
-          
-          return new objects::pointer_holder<smart_pointer, T>(
-              smart_pointer(p));
+# endif
+          typedef objects::pointer_holder<smart_pointer, T> holder_t;
+
+          smart_pointer ptr(p);
+          return objects::make_instance<T, holder_t>::execute(ptr);
       }
   };
 
   struct make_reference_holder
   {
-      typedef objects::instance_holder* result_type;
+      typedef PyObject* result_type;
       template <class T>
       static result_type execute(T* p)
       {
-          return new objects::pointer_holder<T*, T>(p);
+          typedef objects::pointer_holder<T*, T> holder_t;
+          return objects::make_instance<T, holder_t>::execute(p);
       }
   };
 
@@ -64,7 +69,7 @@ namespace detail
       static result_type execute(T* p)
       {
           BOOST_STATIC_ASSERT(is_class<T>::value);
-          return python::objects::class_object<T>::reference;
+          return converter::registered<T>::converters.class_object;
       }
   };
 
@@ -98,26 +103,8 @@ inline PyObject* to_python_indirect<T,MakeHolder>::operator()(T x) const
     PyObject* const null_result = detail::null_pointer_to_none(x, 1L);
     if (null_result != 0)
         return null_result;
-    
-    PyObject* raw_result = type()->tp_alloc(type(), 0);
 
-    if (raw_result == 0)
-        return 0;
-
-    // Everything's OK; Bypass NULL checks but guard against
-    // exceptions.
-    ref result(raw_result, ref::allow_null());
-
-    // Build a value_holder to contain the object using the copy
-    // constructor
-    objects::instance_holder* p =
-        detail::unwind_type<MakeHolder>(x);
-
-    // Install it in the instance
-    p->install(raw_result);
-
-    // Return the new result
-    return result.release();
+    return detail::unwind_type<MakeHolder>(x);
 }
 
 template <class T, class MakeHolder>

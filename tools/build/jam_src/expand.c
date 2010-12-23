@@ -425,7 +425,6 @@ var_expand(
                 string_append( buf, rem->string );
 			l = list_new( l, newstr( buf->value ) );
 		    }
-            string_free( &variable );
 		}
         string_new( &out1 );
 
@@ -433,6 +432,8 @@ var_expand(
 
 		if( evalue )
 		    list_free( evalue );
+
+          string_free( &variable );
 	    }
 
 	    /* variables & remainder were gifts from var_expand */
@@ -670,6 +671,8 @@ void var_expand_unit_test()
     for ( l2 = l, e2 = expected; l2 && e2; l2 = list_next(l2), e2 = list_next(e2) )
         assert( !strcmp( e2->string, l2->string ) );
     list_free(l);
+
+    list_free(expected);
     
     lol_free(lol);
 }

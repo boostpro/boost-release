@@ -15,11 +15,15 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
-#include <boost/graph/iteration_macros.hpp>
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/utility.hpp>
 #include <boost/detail/algorithm.hpp>
 #include <boost/pending/indirect_cmp.hpp> // for make_indirect_pmap
+
+#ifndef BOOST_GRAPH_ITERATION_MACROS_HPP
+#define BOOST_ISO_INCLUDED_ITER_MACROS // local macro, see bottom of file
+#include <boost/graph/iteration_macros.hpp>
+#endif
 
 namespace boost {
 
@@ -47,12 +51,12 @@ namespace boost {
       IndexMap2 index_map2;
     
       std::vector<vertex1_t> dfs_vertices;
-      typedef std::vector<vertex1_t>::iterator vertex_iter;
+      typedef typename std::vector<vertex1_t>::iterator vertex_iter;
       std::vector<int> dfs_num_vec;
       typedef safe_iterator_property_map<typename std::vector<int>::iterator, IndexMap1> DFSNumMap;
       DFSNumMap dfs_num;
       std::vector<edge1_t> ordered_edges;
-      typedef std::vector<edge1_t>::iterator edge_iter;
+      typedef typename std::vector<edge1_t>::iterator edge_iter;
     
       std::vector<char> in_S_vec;
       typedef safe_iterator_property_map<typename std::vector<char>::iterator,
@@ -419,6 +423,9 @@ namespace boost {
 
 } // namespace boost
 
+#ifdef BOOST_ISO_INCLUDED_ITER_MACROS
+#undef BOOST_ISO_INCLUDED_ITER_MACROS
 #include <boost/graph/iteration_macros_undef.hpp>
+#endif
 
 #endif // BOOST_GRAPH_ISOMORPHISM_HPP

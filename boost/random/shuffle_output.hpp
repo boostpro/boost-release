@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: shuffle_output.hpp,v 1.3 2002/01/03 22:20:56 jmaurer Exp $
+ * $Id: shuffle_output.hpp,v 1.4 2002/08/23 12:30:43 pdimov Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -23,6 +23,7 @@
 
 #include <iostream>
 #include <algorithm>     // std::copy
+#include <iterator>      // std::ostream_iterator<>
 #include <cassert>
 #include <boost/config.hpp>
 #include <boost/limits.hpp>

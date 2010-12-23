@@ -33,7 +33,9 @@
  *    targetentry() - add a TARGET to a chain of TARGETS
  *    actionlist() - append to an ACTION chain
  *    addsettings() - add a deferred "set" command to a target
+#ifndef OPT_FIX_TARGET_VARIABLES_EXT
  *    usesettings() - set all target specific variables
+#endif
  *    pushsettings() - set all target specific variables
  *    popsettings() - reset target specific variables to their pre-push values
  *    freesettings() - delete a settings list
@@ -273,6 +275,49 @@ popsettings( SETTINGS *v )
 	pushsettings( v );	/* just swap again */
 }
 
+#ifdef OPT_FIX_TARGET_VARIABLES_EXT
+/*
+ * copysettings() - duplicate a settings list, returning the new copy
+ */
+SETTINGS*
+copysettings( SETTINGS *head )
+{
+    SETTINGS *copy = 0, *v;
+
+    for (v = head; v; v = v->next)
+	copy = addsettings(copy, 0, v->symbol, list_copy(0, v->value));
+
+    return copy;
+}
+#endif
+
+/*
+ *    freetargets() - delete a targets list
+ */
+void freetargets( TARGETS *chain )
+{
+    while( chain )
+    {
+        TARGETS* n = chain->next;
+        free( chain );
+        chain = n;
+    }
+}
+
+/*
+ *    freeactions() - delete an action list
+ */
+void freeactions( ACTIONS *chain )
+{
+    while( chain )
+    {
+        ACTIONS* n = chain->next;
+        free( chain );
+        chain = n;
+    }
+}
+
+
 /*
  *    freesettings() - delete a settings list
  */
@@ -293,6 +338,19 @@ freesettings( SETTINGS *v )
 	}
 }
 
+static void freetarget( void *xt, void *data )
+{
+    TARGET* t = (TARGET *)xt;
+    if ( t->settings )
+        freesettings( t->settings );
+    if ( t->deps[0] )
+        freetargets( t->deps[0] );
+    if ( t->deps[1] )
+        freetargets( t->deps[1] );
+    if ( t->actions )
+        freeactions( t->actions );
+}
+
 /*
  * donerules() - free TARGET tables
  */
@@ -300,6 +358,7 @@ freesettings( SETTINGS *v )
 void
 donerules()
 {
+    hashenumerate( targethash, freetarget, 0 );
 	hashdone( targethash );
     while ( settings_freelist )
     {

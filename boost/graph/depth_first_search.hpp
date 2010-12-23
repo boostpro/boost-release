@@ -165,38 +165,39 @@ namespace boost {
   template <class Visitors = null_visitor>
   class dfs_visitor {
   public:
-    dfs_visitor(Visitors vis = Visitors()) : m_vis(vis) { }
+    dfs_visitor() { }
+    dfs_visitor(Visitors vis) : m_vis(vis) { }
 
     template <class Vertex, class Graph>
-    void initialize_vertex(Vertex u, Graph& g) {
+    void initialize_vertex(Vertex u, const Graph& g) {
       invoke_visitors(m_vis, u, g, on_initialize_vertex());      
     }
     template <class Vertex, class Graph>
-    void start_vertex(Vertex u, Graph& g) {
+    void start_vertex(Vertex u, const Graph& g) {
       invoke_visitors(m_vis, u, g, on_start_vertex());      
     }
     template <class Vertex, class Graph>
-    void discover_vertex(Vertex u, Graph& g) {
+    void discover_vertex(Vertex u, const Graph& g) {
       invoke_visitors(m_vis, u, g, on_discover_vertex());      
     }
     template <class Edge, class Graph>
-    void examine_edge(Edge u, Graph& g) {
+    void examine_edge(Edge u, const Graph& g) {
       invoke_visitors(m_vis, u, g, on_examine_edge());
     }
     template <class Edge, class Graph>
-    void tree_edge(Edge u, Graph& g) {
+    void tree_edge(Edge u, const Graph& g) {
       invoke_visitors(m_vis, u, g, on_tree_edge());      
     }
     template <class Edge, class Graph>
-    void back_edge(Edge u, Graph& g) {
+    void back_edge(Edge u, const Graph& g) {
       invoke_visitors(m_vis, u, g, on_back_edge());
     }
     template <class Edge, class Graph>
-    void forward_or_cross_edge(Edge u, Graph& g) {
+    void forward_or_cross_edge(Edge u, const Graph& g) {
       invoke_visitors(m_vis, u, g, on_forward_or_cross_edge());
     }
     template <class Vertex, class Graph>
-    void finish_vertex(Vertex u, Graph& g) {
+    void finish_vertex(Vertex u, const Graph& g) {
       invoke_visitors(m_vis, u, g, on_finish_vertex());      
     }
   protected:

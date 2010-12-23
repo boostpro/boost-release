@@ -6,21 +6,15 @@
 #ifndef CLASS_FWD_DWA200222_HPP
 # define CLASS_FWD_DWA200222_HPP
 # include <boost/python/detail/not_specified.hpp>
-# include <boost/python/args.hpp>
-# include <boost/python/bases.hpp>
 
 namespace boost { namespace python { 
 
-namespace detail
-{
-  struct empty_list;
-}
-
 template <
     class T // class being wrapped
-    , class X1 = detail::not_specified
-    , class X2 = detail::not_specified
-    , class X3 = detail::not_specified
+    // arbitrarily-ordered optional arguments. Full qualification needed for MSVC6
+    , class X1 = ::boost::python::detail::not_specified
+    , class X2 = ::boost::python::detail::not_specified
+    , class X3 = ::boost::python::detail::not_specified
     >
 class class_;
 

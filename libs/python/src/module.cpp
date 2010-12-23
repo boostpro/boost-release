@@ -6,45 +6,47 @@
 //  The author gratefully acknowleges the support of Dragon Systems, Inc., in
 //  producing this work.
 
-#include <boost/python/detail/module_base.hpp>
-#include <boost/python/object/function.hpp>
+#include <boost/python/scope.hpp>
+#include <boost/python/object/add_to_namespace.hpp>
 
 namespace boost { namespace python { namespace detail {
 
-module_base::module_base(const char* name)
-    : m_module(
-        Py_InitModule(const_cast<char*>(name), initial_methods)
-        , ref::increment_count)
-{
-}
-
-module_base::~module_base()
-{
-}
-
-void module_base::setattr(const char* name, PyObject* x)
-{
-    setattr(name, ref(x));
-}
-
-void module_base::setattr(char const* name, ref const& x)
+BOOST_PYTHON_DECL void scope_setattr_doc(char const* name, object const& x, char const* doc)
 {
     // Use function::add_to_namespace to achieve overloading if
     // appropriate.
-    objects::function::add_to_namespace(m_module, name, x);
+    scope current;
+    objects::add_to_namespace(current, name, x, doc);
 }
 
-void module_base::add(PyTypeObject* x)
+namespace
 {
-    this->setattr(x->tp_name, (PyObject*)x);
+  PyMethodDef initial_methods[] = { { 0, 0, 0, 0 } };
 }
 
-void module_base::add_type(ref x)
+BOOST_PYTHON_DECL void init_module(char const* name, void(*init_function)())
 {
-    assert(PyObject_TypeCheck(x.get(), &PyType_Type));
-    add((PyTypeObject*)x.release());
-}
+    
+    PyObject* m
+        = Py_InitModule(const_cast<char*>(name), initial_methods);
 
-PyMethodDef module_base::initial_methods[] = { { 0, 0, 0, 0 } };
+    if (m != 0)
+    {
+        // Create the current module scope
+        scope current_module(
+            (object(
+                ((borrowed_reference_t*)m)
+                ))
+            );
+        
+        handle_exception(init_function);
+    }
+}
 
 }}} // namespace boost::python::detail
+
+namespace boost { namespace python {
+
+BOOST_PYTHON_DECL PyObject* scope::current_scope = 0;
+
+}}

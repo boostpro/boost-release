@@ -23,13 +23,31 @@
 #endif
 
 #include <boost/checked_delete.hpp>
+#include <boost/throw_exception.hpp>
 #include <boost/detail/lightweight_mutex.hpp>
 
 #include <functional>       // for std::less
 #include <exception>        // for std::exception
+#include <new>              // for std::bad_alloc
+
+#ifdef __BORLANDC__
+# pragma warn -8026     // Functions with excep. spec. are not expanded inline
+# pragma warn -8027     // Functions containing try are not expanded inline
+#endif
 
 namespace boost
 {
+
+// The standard library that comes with Borland C++ 5.5.1
+// defines std::exception and its members as having C calling
+// convention (-pc). When the definition of use_count_is_zero
+// is compiled with -ps, the compiler issues an error.
+// Hence, the temporary #pragma option -pc below. The version
+// check is deliberately conservative.
+
+#if defined(__BORLANDC__) && __BORLANDC__ == 0x551
+# pragma option push -pc
+#endif
 
 class use_count_is_zero: public std::exception
 {
@@ -37,9 +55,13 @@ public:
 
     virtual char const * what() const throw()
     {
-        return "use_count_is_zero";
+        return "boost::use_count_is_zero";
     }
 };
+
+#if defined(__BORLANDC__) && __BORLANDC__ == 0x551
+# pragma option pop
+#endif
 
 class counted_base
 {
@@ -50,14 +72,14 @@ private:
 public:
 
     counted_base():
-        use_count_(0), weak_count_(0), self_deleter_(&self_delete)
+        use_count_(0), weak_count_(0)
     {
     }
 
     // pre: initial_use_count <= initial_weak_count
 
     explicit counted_base(long initial_use_count, long initial_weak_count):
-        use_count_(initial_use_count), weak_count_(initial_weak_count), self_deleter_(&self_delete)
+        use_count_(initial_use_count), weak_count_(initial_weak_count)
     {
     }
 
@@ -78,12 +100,19 @@ public:
     {
     }
 
+    // destruct() is called when weak_count_ drops to zero.
+
+    virtual void destruct() // nothrow
+    {
+        delete this;
+    }
+
     void add_ref()
     {
 #ifdef BOOST_HAS_THREADS
         mutex_type::scoped_lock lock(mtx_);
 #endif
-        if(use_count_ == 0 && weak_count_ != 0) throw use_count_is_zero();
+        if(use_count_ == 0 && weak_count_ != 0) boost::throw_exception(boost::use_count_is_zero());
         ++use_count_;
         ++weak_count_;
     }
@@ -108,9 +137,7 @@ public:
 
         if(new_weak_count == 0)
         {
-            // not a direct 'delete this', because the inlined
-            // release() may use a different heap manager
-            self_deleter_(this);
+            destruct();
         }
     }
 
@@ -135,7 +162,7 @@ public:
 
         if(new_weak_count == 0)
         {
-            self_deleter_(this);
+            destruct();
         }
     }
 
@@ -152,19 +179,14 @@ private:
     counted_base(counted_base const &);
     counted_base & operator= (counted_base const &);
 
-    static void self_delete(counted_base * p)
-    {
-        delete p;
-    }
-
     // inv: use_count_ <= weak_count_
 
     long use_count_;
     long weak_count_;
+
 #ifdef BOOST_HAS_THREADS
     mutable mutex_type mtx_;
 #endif
-    void (*self_deleter_) (counted_base *);
 };
 
 inline void intrusive_ptr_add_ref(counted_base * p)
@@ -179,6 +201,13 @@ inline void intrusive_ptr_release(counted_base * p)
 
 namespace detail
 {
+
+//
+// Borland's Codeguard trips up over the -Vx- option here:
+//
+#ifdef __CODEGUARD__
+#pragma option push -Vx-
+#endif
 
 template<class P, class D> class counted_base_impl: public counted_base
 {
@@ -230,6 +259,8 @@ public:
 
     template<class P, class D> shared_count(P p, D d, void const * = 0): pi_(0)
     {
+#ifndef BOOST_NO_EXCEPTIONS
+
         try
         {
             pi_ = new counted_base_impl<P, D>(p, d, 1, 1);
@@ -239,6 +270,18 @@ public:
             d(p); // delete p
             throw;
         }
+
+#else
+
+        pi_ = new counted_base_impl<P, D>(p, d, 1, 1);
+
+        if(pi_ == 0)
+        {
+            d(p); // delete p
+            boost::throw_exception(std::bad_alloc());
+        }
+
+#endif
     }
 
     template<class P, class D> shared_count(P, D, counted_base * pi): pi_(pi)
@@ -307,6 +350,11 @@ public:
         return std::less<counted_base *>()(a.pi_, b.pi_);
     }
 };
+
+#ifdef __CODEGUARD__
+#pragma option pop
+#endif
+
 
 class weak_count
 {
@@ -388,5 +436,10 @@ inline shared_count::shared_count(weak_count const & r): pi_(r.pi_)
 } // namespace detail
 
 } // namespace boost
+
+#ifdef __BORLANDC__
+# pragma warn .8027     // Functions containing try are not expanded inline
+# pragma warn .8026     // Functions with excep. spec. are not expanded inline
+#endif
 
 #endif  // #ifndef BOOST_DETAIL_SHARED_COUNT_HPP_INCLUDED

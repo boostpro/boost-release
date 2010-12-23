@@ -93,11 +93,11 @@
     which can be similarly used to prevent copying of referents.
 
     <p><code>ptr(p)</code> returns an instance of <code><a
-    href="#pointer_wrapper">pointer_wrapper&lt;&gt;</a></code>, which
+    href="#pointer_wrapper-spec">pointer_wrapper&lt;&gt;</a></code>, which
     can be detected using the <code><a
-    href="#pointer_wrapper">is_pointer_wrapper&lt;&gt;</a></code>
+    href="#is_pointer_wrapper-spec">is_pointer_wrapper&lt;&gt;</a></code>
     metafunction; <code><a
-    href="#pointer_wrapper">unwrap_pointer&lt;&gt;</a></code> is a
+    href="#unwrap_pointer-spec">unwrap_pointer&lt;&gt;</a></code> is a
     metafunction which extracts the original pointer type from a
     <code>pointer_wrapper&lt;&gt;</code>. These classes can be thought
     of as implementation details.
@@ -174,6 +174,8 @@ Ptr get() const;
       to be a stand-in for the actual pointer type, but sometimes it's
       better to have an explicit way to retrieve the pointer.
     </dl>
+
+    <h2><a name="metafunctions"></a>Metafunctions</h2>
 
     <h3><a name="is_pointer_wrapper-spec"></a>Class template <code>is_pointer_wrapper</code></h3>
 
@@ -252,7 +254,7 @@ void pass_as_arg(expensive_to_copy* x, PyObject* f)
 
     <p>Revised 
     <!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->
-     07 May, 2002 
+     29 May, 2002 
     <!--webbot bot="Timestamp" endspan i-checksum="39359" -->
 
 

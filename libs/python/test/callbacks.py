@@ -11,6 +11,13 @@
 >>> def identity(x):
 ...     return x
 
+Once we have array conversion support, this test will fail. Er,
+succeed<wink>:
+
+>>> try: apply_to_string_literal(identity)
+... except: pass # expected
+... else: print 'expected an exception!'
+
 >>> x = apply_X_X(identity, X(42))
 >>> x.value()
 42
@@ -67,27 +74,27 @@
 >>> last_x.value()
 43
 
->>> y = apply_X_ref_pyobject(identity, x)
+>>> y = apply_X_ref_handle(identity, x)
 >>> assert y.value() == x.value()
 >>> increment(x)
 >>> assert y.value() == x.value()
 
->>> y = apply_X_ptr_pyobject(identity, x)
+>>> y = apply_X_ptr_handle_cref(identity, x)
 >>> assert y.value() == x.value()
 >>> increment(x)
 >>> assert y.value() == x.value()
 
->>> y = apply_X_ptr_pyobject(identity, None)
+>>> y = apply_X_ptr_handle_cref(identity, None)
 >>> y
 
 >>> def new_x(ignored):
 ...     return X(666)
 ...
->>> try: apply_X_ref_pyobject(new_x, 1)
+>>> try: apply_X_ref_handle(new_x, 1)
 ... except ReferenceError: pass
 ... else: print 'no error'
 
->>> try: apply_X_ptr_pyobject(new_x, 1)
+>>> try: apply_X_ptr_handle_cref(new_x, 1)
 ... except ReferenceError: pass
 ... else: print 'no error'
 
@@ -106,6 +113,10 @@
 
 >>> apply_char_char(identity, 'x')
 'x'
+
+>>> assert apply_to_own_type(identity) is type(identity)
+
+>>> assert apply_object_object(identity, identity) is identity
 '''
 
 def run(args = None):

@@ -6,6 +6,7 @@
 #include <boost/python/class.hpp>
 #include <boost/python/implicit.hpp>
 #include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
 #include "test_class.hpp"
 
 using namespace boost::python;
@@ -19,19 +20,18 @@ int x_value(X const& x)
 
 X make_x(int n) { return X(n); }
 
-BOOST_PYTHON_MODULE_INIT(implicit_ext)
+BOOST_PYTHON_MODULE(implicit_ext)
 {
     implicitly_convertible<int,X>();
-    module("implicit_ext")
-        .def("x_value", x_value)
-        .def("make_x", make_x)
-        .add(
-            class_<X>("X")
-            .def_init(args<int>())
-            .def("value", &X::value)
-            .def("set", &X::set)
-            )
+    
+    def("x_value", x_value);
+    def("make_x", make_x);
+
+    class_<X>("X", init<int>())
+        .def("value", &X::value)
+        .def("set", &X::set)
         ;
+    
     implicitly_convertible<X,int>();
 }
 

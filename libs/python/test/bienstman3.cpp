@@ -1,4 +1,5 @@
 #include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
 #include <boost/python/class.hpp>
 
 struct V 
@@ -11,20 +12,11 @@ struct B
     B(const V&) {}    
 };
 
-BOOST_PYTHON_MODULE_INIT(bienstman3_ext)
+BOOST_PYTHON_MODULE(bienstman3_ext)
 {
   using namespace boost::python;
 
-  module m("bienstman3_ext");
-  
-  m
-    .add(
-      class_<V, boost::noncopyable>("V")
-      )
+  class_<V, boost::noncopyable>("V", no_init);
+  class_<B>("B", init<const V&>());
 
-    .add(
-      class_<B>("B")
-      .def_init(args<const V&>())
-      )
-    ;
 }

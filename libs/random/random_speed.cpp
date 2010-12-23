@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_speed.cpp,v 1.7 2001/11/19 22:13:04 jmaurer Exp $
+ * $Id: random_speed.cpp,v 1.7.10.1 2002/10/06 11:44:02 johnmaddock Exp $
  */
 
 #include <iostream>
@@ -184,7 +184,7 @@ int main(int argc, char*argv[])
 #endif
     atoi(argv[1]);
 
-#if !defined(BOOST_NO_INT64_T) && \
+#if !defined(BOOST_NO_INT64_T) && !defined(BOOST_NO_INTEGRAL_INT64_T) && \
     !defined(BOOST_NO_INCLASS_MEMBER_INITIALIZATION)
   run(iter, "rand48", boost::rand48());
   linear_congruential<boost::uint64_t>

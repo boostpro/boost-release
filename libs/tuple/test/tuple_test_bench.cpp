@@ -297,7 +297,7 @@ make_tuple_test()
 
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
-    A a; B b;
+    A a = A(); B b;
     const A ca = a;
     make_tuple(cref(a), b);
     make_tuple(ref(a), b);
@@ -395,6 +395,7 @@ equality_test()
   tuple<int, char> t4(2, 'a');
   BOOST_TEST(t1 != t3);
   BOOST_TEST(t1 != t4);
+  BOOST_TEST(!(t1 != t2));
 }
 
 

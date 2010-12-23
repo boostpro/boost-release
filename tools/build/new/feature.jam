@@ -3,23 +3,6 @@
 #  all copies. This software is provided "as is" without express or implied
 #  warranty, and with no claim as to its suitability for any purpose.
 
-# Glossary
-#
-# feature      -  a normalized aspect of a build configuration
-#
-# value        -  a specific available setting for a feature
-#
-# property     -  a feature-value pair, expressed ase <feature>value
-#
-# subfeature   -  a feature which only exists in the presence of its
-#                 parent, and whose identity can be derived (in the
-#                 context of its parent) from the name of its value
-#
-# value-string - a string of the form value-subvalue1-subvalue2...
-#                -subvalueN, where value is a feature value and
-#                subvalue1...subvalueN are values of related
-#                subfeatures.
-
 import class : * ;
 
 # A feature-space is a class to facilitate testing. We want to be able
@@ -31,71 +14,25 @@ import errors : error lol->list ;
 import sequence ;
 import regex ;
 import set ;
+import utility ;
 
-all-attributes =
+.all-attributes =
 
-    implicit    # features whose values alone identify the
-                # feature. For example, a user is not required to
-                # write "<toolset>gcc", but can simply write
-                # "gcc". Implicit feature names also don't appear in
-                # variant paths, although the values do. Thus:
-                # bin/gcc/... as opposed to bin/toolset-gcc/.... There
-                # should typically be only a few such features, to
-                # avoid possible name clashes.
-
-    executed    # the feature corresponds to the name of a module
-                # containing an execute rule, used to actually prepare
-                # the build. For example, the toolset feature would be
-                # executed.
-
-
-    composite   # features which actually correspond to groups of
-                # properties. For example, a build variant is a
-                # composite feature. When generating targets from a
-                # set of build properties, composite features are
-                # recursively expanded and /added/ to the build
-                # property set, so rules can find them if
-                # neccessary. Non-composite non-free features override
-                # components of composite features in a build property
-                # set.
-
-
-    optional    # An optional feature is allowed to have no value at
-                # all in a particular build. Normal non-free features
-                # are always given the first of their values if no
-                # value is otherwise specified.
-
-
-    symmetric   # A symmetric feature has no default value, and is
-        # therefore not automatically included in all
-        # variants. A symmetric feature, when relevant to the
-        # toolset, always generates a corresponding subvariant
-        # directory.
-
-    free        # as described in previous documentation
-
-    path        # the (free) feature's value describes a path which
-        # might be given relative to the directory of the
-        # Jamfile.
-
-    dependency  # the value of the (free) feature specifies a
-        # dependency of the target.
-
-    propagated  # when used in a build request, the (free) feature is
-        # propagated to top-level targets which are
-        # dependencies of the requested build. Propagated
-        # features would be most useful for settings such as
-        # warning levels, output message style, etc., which
-        # don't affect the built products at all.
-
-
-    link-incompatible # targets with different values of this feature
-                      # cannot be linked together under any circumstances.
-
+    implicit 
+    executed 
+    composite
+    optional 
+    symmetric
+    free      
+    incidental  
+    path  
+    dependency  
+    propagated 
+    link-incompatible
   ;
 
-all-features = ;
-all-implicit-values = ;
+.all-features = ;
+.all-implicit-values = ;
 
 # Transform features by bracketing any elements which aren't already
 # bracketed by "<>"
@@ -108,19 +45,23 @@ local rule grist ( features * )
 empty = "" ;
 
 # declare a new feature with the given name, values, and attributes.
-rule feature ( name : values * : attributes * )
+rule feature ( 
+    name         # feature name
+  : values *     # the allowable values - may be extended later with feature.extend
+  : attributes * # The feature's attributes (e.g. implicit, free, propagated...)
+)
 {
     name = [ grist $(name) ] ;
 
     local error ;
 
     # if there are any unknown attributes...
-    if ! ( $(attributes) in $(all-attributes) )
+    if ! ( $(attributes) in $(.all-attributes) )
     {
         error = unknown attributes:
-          [ set.difference $(attributes) : $(all-attributes) ] ;
+          [ set.difference $(attributes) : $(.all-attributes) ] ;
     }
-    else if $(name) in $(all-features)
+    else if $(name) in $(.all-features)
     {
         error = feature already defined: ;
     }
@@ -144,7 +85,7 @@ rule feature ( name : values * : attributes * )
     $(name).subfeatures ?= ;
     $(attributes).features += $(name) ;
 
-    all-features += $(name) ;
+    .all-features += $(name) ;
     extend $(name) : $(values) ;
 }
 
@@ -154,12 +95,9 @@ rule defaults ( features * )
     local result ;
     for local f in [ grist $(features) ]
     {
-        if free in $($(f).attributes)
+        local a = $($(f).attributes) ;
+        if ( free in $(a) ) || ( optional in $(a) )
         {
-        }
-        else if optional in $($(f).attributes)
-        {
-            result += $(f) ;
         }
         else
         {
@@ -172,7 +110,7 @@ rule defaults ( features * )
 # returns true iff all elements of names are valid features.
 rule valid ( names + )
 {
-    if [ grist $(names) ] in $(all-features)
+    if [ grist $(names) ] in $(.all-features)
     {
         return true ;
     }
@@ -196,6 +134,15 @@ rule values ( feature )
     return $($(feature).values) ;
 }
 
+# returns true iff 'value' is a value of an implicit feature
+rule is-implicit-value ( value )
+{
+    if $(value) in $(.all-implicit-values) 
+    {
+        return true ;
+    }
+}
+
 # return the implicit feature associated with the given implicit value.
 rule implied-feature ( implicit-value )
 {
@@ -209,22 +156,25 @@ rule implied-feature ( implicit-value )
 
 local rule find-implied-subfeature ( feature subvalue : value-string ? )
 {
+    # feature should be of the form <feature-name>
     if $(feature) != $(feature:G)
     {
         error invalid feature $(feature) ;
     }
 
-    local v
-      = subfeature($(feature),$(subvalue))
-        subfeature($(feature),$(value-string),$(subvalue)) ;
+    value-string ?= "" ;
 
-    local subfeature = $($(v)) ;
-    return $(subfeature[1]) ;
+    return $($(feature)$(value-string)<>$(subvalue).subfeature) ;
 }
 
-# Given a feature name and a subfeature value, find the associated
-# subfeature.
-rule implied-subfeature ( feature subvalue : value-string ? )
+# Given a feature and a value of one of its subfeatures, find the name
+# of the subfeature. If value-string is supplied, looks for implied
+# subfeatures that are specific to that value of feature
+rule implied-subfeature ( 
+  feature               # The main feature name
+    subvalue            # The value of one of its subfeatures
+    : value-string ?    # The value of the main feature
+)
 {
     feature = [ grist $(feature) ] ;
     local subfeature = [ find-implied-subfeature $(feature) $(subvalue)
@@ -242,18 +192,25 @@ rule implied-subfeature ( feature subvalue : value-string ? )
 # generate an error if the feature is unknown
 local rule validate-feature ( feature )
 {
-    if ! [ grist $(feature) ] in $(all-features)
+    if ! [ grist $(feature) ] in $(.all-features)
     {
         error unknown feature \"$(feature)\" ;
     }
 }
 
-# expand-subfeatures <toolset>gcc-2.95.2-linux-x86
+# Given a feature and value, or just a value corresponding to an
+# implicit feature, returns a property set consisting of all component
+# subfeatures and their values. For example:
+#
+#   expand-subfeatures <toolset>gcc-2.95.2-linux-x86
 #       -> <toolset>gcc <toolset-version>2.95.2 <toolset-os>linux <toolset-cpu>x86
 #
-# equivalent to:
+#   equivalent to:
 #       expand-subfeatures gcc-2.95.2-linux-x86
-local rule expand-subfeatures-aux ( feature ? : value )
+local rule expand-subfeatures-aux ( 
+    feature ? # The name of the feature, or empty if value corresponds to an implicit property
+  : value     # The value of the feature.
+)
 {
     if $(feature)
     {
@@ -266,7 +223,7 @@ local rule expand-subfeatures-aux ( feature ? : value )
     {
         feature = [ implied-feature $(components[1]) ] ;
     }
-    else if ! $(feature) in $(all-features)
+    else if ! $(feature) in $(.all-features)
     {
         error unknown feature $(feature) ;
     }
@@ -285,7 +242,21 @@ local rule expand-subfeatures-aux ( feature ? : value )
     return $(result) ;
 }
 
-rule expand-subfeatures ( properties * )
+# Make all elements of properties corresponding to implicit features
+# explicit, and express all subfeature values as separate properties
+# in their own right. For example, the property
+#
+#    gcc-2.95.2-linux-x86
+#
+# might expand to
+#
+#   <toolset>gcc <toolset-version>2.95.2 <toolset-os>linux <toolset-cpu>x86
+#
+rule expand-subfeatures ( 
+  properties * # property set with elements of the form
+           # <feature>value-string or just value-string in the
+           # case of implicit features.
+)
 {
     local result ;
     for local p in $(properties)
@@ -295,7 +266,7 @@ rule expand-subfeatures ( properties * )
     return $(result) ;
 }
 
-# Helper for extend, below. Handles the case feature case.
+# Helper for extend, below. Handles the feature case.
 local rule extend-feature ( feature : values * )
 {
     validate-feature $(feature) ;
@@ -310,12 +281,12 @@ local rule extend-feature ( feature : values * )
             $(v).implicit-feature = $(feature) ;
         }
 
-        all-implicit-values += $(values) ;
+        .all-implicit-values += $(values) ;
     }
     $(feature).values += $(values) ;
 }
 
-# Checks that value-string is a valide value-string for the given feature.
+# Checks that value-string is a valid value-string for the given feature.
 local rule validate-value-string ( feature value-string )
 {
     local values = $(value-string) ;
@@ -354,12 +325,12 @@ rule extend-subfeature ( feature value-string ? : subfeature : subvalues * )
         validate-value-string $(feature) $(value-string) ;
     }
 
+    # provide a way to get from the given feature or property and
+    # subfeature value to the subfeature name.
+    value-string ?= "" ;
     for local subvalue in $(subvalues)
     {
-        local v
-          = subfeature($(feature),$(value-string),$(subvalue))
-            subfeature($(feature),$(subvalue)) ;
-        $(v[1]) = $(subfeature) ;
+        $(feature)$(value-string)<>$(subvalue).subfeature = $(subfeature) ;
     }
 }
 
@@ -417,11 +388,17 @@ rule extend ( feature-or-property subfeature ? : values * )
     }
 }
 
-# subfeature
-#
-# subfeature toolset gcc-2.95.2 target-platform : aix linux mac cygwin
-#
-rule subfeature ( feature value-string ? : subfeature : subvalues * )
+# Declares a subfeature
+rule subfeature ( 
+  feature        # Root feature that is not a subfeature
+  value-string ? # A value-string specifying which feature or
+                 # subfeature values this subfeature is specific to,
+                 # if any
+    
+  : subfeature   # The name of the subfeature being declared
+  : subvalues *  # The allowed values of this subfeature
+  : attributes * # The attributes of the subfeature
+)
 {
     feature = [ grist $(feature) ] ;
     validate-feature $(feature) ;
@@ -431,6 +408,8 @@ rule subfeature ( feature value-string ? : subfeature : subvalues * )
     }
     $(feature).subfeatures += $(subfeature) ;
     extend-subfeature $(feature) $(value-string) : $(subfeature) : $(subvalues) ;
+    local f = [ utility.ungrist $(feature) ] ;
+    feature $(f)-$(subfeature) : $(subvalues) : $(attributes) ;
 }
 
 # Set the components of the given composite property
@@ -449,6 +428,10 @@ rule compose ( composite-property : component-properties * )
                 $($(composite-property).components) ;
     }
 
+    if $(composite-property) in $(components)
+    {
+        errror composite property "$(composite-property)" cannot have itself as a component ;
+    }
     $(composite-property).components = $(component-properties) ;
 }
 
@@ -486,6 +469,8 @@ rule free-features ( )
     return $(free.features) ;
 }
 
+# Expand all composite properties in the set so that all components
+# are explicitly expressed.
 rule expand-composites ( properties * )
 {
     local explicit-features = $(properties:G) ;
@@ -538,6 +523,92 @@ rule expand ( properties * )
     return [ expand-composites $(expanded) ] ;
 }
 
+
+# Helper rule for minimize, below - return true iff property's feature
+# is present in the contents of the variable named by feature-set-var.
+local rule in-features ( feature-set-var property )
+{
+    if $(property:G) in $($(feature-set-var))
+    {
+        return true ;
+    }
+}
+
+# Given an expanded property set, eliminate all redundancy: properties
+# which are elements of other (composite) properties in the set will
+# be eliminated, implicit properties will be expressed without feature
+# grist, and sub-property values will be expressed as elements joined
+# to the corresponding main property.
+rule minimize ( properties * )
+{
+    # remove properties implied by composite features
+    local x = $(properties) ;
+    for local p in $(properties)
+    {
+        if ! $(p:G)
+        {
+            error minimize requires an expanded property set, but \"$(p)\"
+              appears to be the value of an un-expanded implicit feature ;
+        }
+        x = [ set.difference $(x) : $($(p).components) ] ;
+    }
+    
+    # handle subfeatures and implicit features
+    local result ;
+    while $(x)
+    {
+        local p = $(x[1]) ;
+        local f = $(p:G) ;
+        
+        # eliminate features in implicit properties.
+        if implicit in [ attributes $(f) ]
+        {
+            p = $(p:G="") ;
+        }
+        
+        # locate all subproperties of f in the property set
+        local subproperties ;
+        local subfeatures = $($(f).subfeatures) ;
+        if $(subfeatures)
+        {
+            local f_ = [ utility.ungrist $(f) ] ;
+            subfeatures = [ grist $(f_)-$(subfeatures) ] ;
+            subproperties = [ sequence.filter in-features subfeatures : $(x) ] ;
+        }
+        
+        if $(subproperties)
+        {
+            # reconstitute the joined property name
+            local sorted = [ sequence.insertion-sort $(subproperties) ] ;
+            result += $(p)-$(sorted:G="":J=-) ;
+              
+            x = [ set.difference $(x[2-]) : $(subproperties) ] ;
+        }
+        else
+        {
+            result += $(p) ;
+            x = $(x[2-]) ;
+        }
+    }
+    return $(result) ;
+}
+
+# Given a set of properties, add default values for features not
+# represented in the set.
+rule add-defaults ( properties * )
+{
+    for local v in $(properties:G=)
+    {
+        if $(v) in $(properties)
+        {
+            error add-defaults requires explicitly specified features,
+                but \"$(v)\" appears to be the value of an un-expanded implicit feature ;
+        }
+    }
+    local missing = [ set.difference $(.all-features) : $(properties:G) ] ;
+    return $(properties) [ defaults $(missing) ] ;
+}
+
 # Given a property-set of the form
 #       v1/v2/...vN-1/<fN>vN/<fN+1>vN+1/...<fM>vM
 #
@@ -567,6 +638,54 @@ rule split ( property-set )
     return $(result) ;
 }
 
+# Appends a rule to the list of rules assigned to the given feature or property.
+# That rules will be in extending property sets by the 'run-actions' rule. 
+# The rule should accept single argument -- a property, and return a set of additional 
+# properties to be added. Property should be specified in the usual way:
+# <feature>value, and feature should be specified as <feature>.
+rule action ( property-or-feature : rule-name )
+{
+    # Is the name in global scope
+    if ! $(rule-name) in [ RULENAMES ]
+    {
+        # No, should be in caller's scope
+        local caller = [ CALLER_MODULE ] ;
+        if ! $(rule-name) in [ RULENAMES $(caller) ]
+        {
+            error "invalid rule name" ;
+        }        
+        rule-name = $(caller).$(rule-name) ;
+    }
+    
+    .rules.$(property-or-feature) += $(rule-name) ;
+}
+
+# Returns 'properties' augmented with results of calling rule associated with properties.
+# If both a property and its feature have rules, only rules for the property are executed.
+rule run-actions ( properties * )
+{
+    local added = ;
+    for local e in $(properties)
+    {
+        local rules ;
+        if $(.rules.$(e)) 
+        {
+            rules = $(.rules.$(e)) ;
+        }
+        else if $(.rules.$(e:G)) 
+        {
+            rules = $(.rules.$(e:G)) ;
+        }
+        for local r in $(rules)
+        {
+            added += [ $(r) $(e) ] ;
+        }
+    }
+    return $(properties) $(added) ;            
+}
+
+
+
 }
 class feature-space ;
 
@@ -590,14 +709,43 @@ local rule __test__ ( )
         feature runtime-link : dynamic static : symmetric ;
         feature optimization : on off ;
         feature variant : debug release : implicit composite ;
+        feature stdlib : native stlport ;
+        feature magic : : free ;
 
         compose <variant>debug : <define>_DEBUG <optimization>off ;
         compose <variant>release : <define>NDEBUG <optimization>on ;
 
         extend-feature toolset : msvc metrowerks ;
         subfeature toolset gcc : version : 2.95.2 2.95.3 2.95.4
-          3.0 3.0.1 3.0.2 ;
+          3.0 3.0.1 3.0.2 : optional ;
+        
+        rule handle-stlport ( property )
+        {
+            return <include>/path/to/stlport ;
+        }
+        
+        rule handle-magic ( property )
+        {
+            return <define>MAGIC=$(property:G=) ;
+        }
+        
+        rule handle-magic2 ( property )
+        {
+            return <define>MAGIC=BIG_MAGIC ;
+        }
+        
+        rule handle-magic3 ( property )
+        {
+            return <define>MAGIC=VERY_BIG_MAGIC ;
+        }
 
+        
+                
+        action <stdlib>stlport : handle-stlport ;
+        action <magic> : handle-magic ;
+        action <magic>17 : handle-magic2 ;
+        action <magic>17 : handle-magic3 ;
+        
         assert.result <toolset>gcc <toolset-version>3.0.1
           : expand-subfeatures <toolset>gcc-3.0.1 ;
 
@@ -605,7 +753,7 @@ local rule __test__ ( )
           : expand-subfeatures gcc-3.0.1 ;
 
         feature dummy : dummy1 dummy2 ;
-        subfeature dummy : subdummy : x y z ;
+        subfeature dummy : subdummy : x y z : optional ;
 
         assert.result a c e
           : get-values x : <x>a <y>b <x>c <y>d <x>e ;
@@ -618,7 +766,37 @@ local rule __test__ ( )
         assert.result <variant>debug <define>_DEBUG <optimization>on
           : expand debug <optimization>on
           ;
+        
+        assert.result <runtime-link>dynamic <optimization>on
+          : defaults <runtime-link> <define> <optimization>
+          ;
 
+        assert.result <runtime-link>static <define>foobar <optimization>on <toolset>gcc <variant>debug 
+                      <stdlib>native <dummy>dummy1
+          : add-defaults <runtime-link>static <define>foobar <optimization>on
+          ;
+        
+        assert.result  <toolset>gcc <define>foo <stdlib>stlport <magic>3 <include>/path/to/stlport <define>MAGIC=3
+          : run-actions <toolset>gcc <define>foo <stdlib>stlport <magic>3
+          ;
+        
+        assert.result <magic>17 <define>MAGIC=BIG_MAGIC <define>MAGIC=VERY_BIG_MAGIC
+          : run-actions <magic>17 
+          ;
+        
+
+        assert.result gcc-3.0.1 debug <optimization>on
+          : minimize [ expand gcc-3.0.1 debug <optimization>on ]
+          ;
+        
+        assert.result gcc-3.0.1 debug
+          : minimize [ expand gcc-3.0.1 debug <optimization>off ]
+          ;
+        
+        assert.result debug <optimization>on
+          : minimize [ expand debug <optimization>on ]
+          ;
+        
         assert.result <x>y/z <a>b/c <d>e/f
           : split <x>y/z/<a>b/c/<d>e/f
           ;

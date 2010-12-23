@@ -484,6 +484,12 @@ the standard.</p>
         </td>
     </tr>
     <tr>
+        <td>BOOST_BCB_PARTIAL_SPECIALIZATION_BUG</td>
+        <td>Compiler</td>
+        <td>The compiler exibits certain partial specialisation
+        bug - probably Borland C++ Builder specific.</td>
+    </tr>
+    <tr>
         <td valign="top" width="51%">BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP</td>
         <td valign="top" width="16%">Compiler</td>
         <td valign="top" width="33%">Compiler does not implement
@@ -549,6 +555,12 @@ class X { ... };</pre>
         </td>
     </tr>
     <tr>
+        <td valign="top">BOOST_NO_EXCEPTION_STD_NAMESPACE</td>
+        <td valign="top">Standard Library</td>
+        <td>The standard library does not put some or all of the
+        contents of &lt;exception&gt; in namespace std.</td>
+    </tr>
+    <tr>
         <td valign="top">BOOST_NO_EXCEPTIONS</td>
         <td valign="top">Compiler</td>
         <td>The compiler does not support exception handling (this
@@ -610,6 +622,21 @@ f(&amp;bar); // should choose #2.</pre>
         use at compile-time.</td>
     </tr>
     <tr>
+        <td>BOOST_NO_LONG_LONG_NUMERIC_LIMITS</td>
+        <td>Standard library</td>
+        <td>There is no specialization for numeric_limits&lt;long
+        long&gt; and numeric_limits&lt;unsigned long long&gt;.
+        &lt;boost/limits.hpp&gt; will then add these
+        specializations as a standard library &quot;fix&quot;
+        only if the compiler supports the long long datatype.</td>
+    </tr>
+    <tr>
+        <td>BOOST_NO_MEMBER_FUNCTION_SPECIALIZATIONS</td>
+        <td>Compiler</td>
+        <td>The compiler does not support the specialization of
+        individual member functions of template classes.</td>
+    </tr>
+    <tr>
         <td valign="top" width="51%">BOOST_NO_MEMBER_TEMPLATE_KEYWORD</td>
         <td valign="top" width="16%">Compiler</td>
         <td valign="top" width="33%">If the compiler supports
@@ -628,6 +655,16 @@ f(&amp;bar); // should choose #2.</pre>
         <td valign="top" width="16%">Compiler</td>
         <td valign="top" width="33%">Member template functions
         not fully supported.</td>
+    </tr>
+    <tr>
+        <td>BOOST_NO_MS_INT64_NUMERIC_LIMITS</td>
+        <td>Standard library</td>
+        <td>There is no specialization for
+        numeric_limits&lt;__int64&gt; and
+        numeric_limits&lt;unsigned __int64&gt;. &lt;boost/limits.hpp&gt;
+        will then add these specializations as a standard library
+        &quot;fix&quot;, only if the compiler supports the __int64
+        datatype.</td>
     </tr>
     <tr>
         <td valign="top" width="51%">BOOST_NO_OPERATORS_IN_NAMESPACE</td>
@@ -712,6 +749,12 @@ f(&amp;bar); // should choose #2.</pre>
         conforming std::use_facet.</td>
     </tr>
     <tr>
+        <td>BOOST_NO_STD_WSTREAM</td>
+        <td>Standard library</td>
+        <td>The standard library's implementation of std::basic_streambuf&lt;wchar_t&gt;
+        is either missing, incomplete, or buggy.</td>
+    </tr>
+    <tr>
         <td valign="top" width="51%">BOOST_NO_STD_WSTRING</td>
         <td valign="top" width="16%">Standard library</td>
         <td valign="top" width="33%">The standard library lacks
@@ -752,6 +795,12 @@ f(&amp;bar); // should choose #2.</pre>
         <td valign="top" width="33%">The standard library does
         not provide templated iterator constructors for its
         containers.</td>
+    </tr>
+    <tr>
+        <td>BOOST_NO_TEMPLATE_TEMPLATES</td>
+        <td>Compiler</td>
+        <td>The compiler does not support template template
+        parameters.</td>
     </tr>
     <tr>
         <td valign="top" width="51%">BOOST_NO_USING_TEMPLATE</td>
@@ -801,6 +850,11 @@ present.</p>
         <td>The platform has the POSIX API clock_gettime.</td>
     </tr>
     <tr>
+        <td>BOOST_HAS_DIRENT_H</td>
+        <td>Platform</td>
+        <td>The platform has the POSIX header &lt;dirent.h&gt;.</td>
+    </tr>
+    <tr>
         <td>BOOST_HAS_FTIME</td>
         <td>Platform</td>
         <td>The platform has the Win32 API
@@ -845,6 +899,12 @@ present.</p>
         <td valign="top" width="15%">Platform</td>
         <td valign="top" width="37%">The platform has an
         &lt;nl_types.h&gt;.</td>
+    </tr>
+    <tr>
+        <td valign="top">BOOST_HAS_PARTIAL_STD_ALLOCATOR</td>
+        <td>Standard Library</td>
+        <td>The standard library has a partially conforming std::allocator
+        class, but without any of the member templates.</td>
     </tr>
     <tr>
         <td>BOOST_HAS_PTHREAD_DELAY_NP</td>
@@ -930,8 +990,7 @@ present.</p>
         <td valign="top" width="15%">Standard library</td>
         <td valign="top" width="37%">Microsoft's broken version
         of std::iterator is being used. This implies that std::iterator
-        takes no more than two template parameters, and that std::reverse_iterator
-        takes at least two template parameters.</td>
+        takes no more than two template parameters.</td>
     </tr>
     <tr>
         <td valign="top" width="48%">BOOST_MSVC6_MEMBER_TEMPLATES</td>

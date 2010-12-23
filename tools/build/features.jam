@@ -20,7 +20,7 @@ feature optimization : off speed space ;
 feature inlining : off on full ;
 feature debug-symbols : on off : ;
 free-feature debug-store : object database ;
-free-feature user-interface : console gui ;
+free-feature user-interface : console gui ; # windows only, practically
 
 feature wide-character-support : on off ;
 feature exception-handling : on off ;
@@ -42,22 +42,51 @@ free-feature dllversion ; # <dllversion>1.27.0 (for use with soname-ing)
 # Can the target participate in a shared library?
 feature shared-linkable : false true ;
 
+# The addressing model to generate code for.
+# Currently a limited set only specifying the bit size of pointers.
+feature address-model : default 16 32 64 ;
+
 # Type of CPU architecture to compile for.
 feature architecture :
     # The default is the machine we are on, i.e. nothing
     native
     # x86 and compatible
-    i386 i486 i586 i686 k6
+    x86
+    # Sparc
+    sparc
+    # RS/6000 & PowerPC
+    power
+    # MIPS/SGI
+    mips1 mips2 mips3 mips4
+    ;
+
+# The specific instruction set in an architecture to compile.
+feature instruction-set :
+    # Default should probably always be the lowest common denominator.
+    default
+    # x86 and compatible
+    i386 i486 i586 i686 pentium pentium-mmx pentiumpro pentium2 pentium3 pentium4
+    k6 k6-2 k6-3 athlon athlon-tbird athlon-4 athlon-xp athlon-mp
     # Sparc
     v7 cypress v8 supersparc sparclite hypersparc sparclite86x
     f930 f934 sparclet tsc701 v9 ultrasparc
     # RS/6000 & PowerPC
     rios rios1 rsc rios2 rs64a
     601 602 603 603e 604 604e 620 630 740 750
-    power power2 powerpc
+    power power2 powerpc power64
     403 505 801 821 823 860
     power-common
+    # MIPS
+    r2000 r3000 r3900 r4000 r4100 r4300 r4400 r4600 r4650 r5000 r6000 r8000 orion
     ;
+
+# Custom features to support indication of what variant of the
+# MS platform to build against.
+if $(NT)
+{
+    feature ms-platform : default 2000 xp32 xp64 pre32 pre64 ;
+    feature ms-build : default debug retail ;
+}
 
 gLINK_COMPATIBLE = <shared-linkable>true <target-type> <inlining> ;
 
@@ -72,11 +101,9 @@ COMMON_PROPERTIES ?=
     <struct-alignment>auto
     <eh-model>default
     <threading>single
-    <user-interface>console
     <wide-character-support>on
     <exception-handling>on
     <rtti>on
-    <user-interface>console
     <shared-linkable>false
     
     # Borland link lines will need work to find the right libraries for unicode
@@ -84,8 +111,18 @@ COMMON_PROPERTIES ?=
     <borland><wide-character-support>off
     "<cwpro8><cxxflags>-iso_templates on"
     
+    <address-model>default
     <architecture>native
+    <instruction-set>default
     ;
+
+if $(NT)
+{
+    COMMON_PROPERTIES +=
+        <ms-platform>default
+        <ms-build>default
+        ;
+}
     
 variant common :
     $(COMMON_PROPERTIES)
@@ -127,5 +164,6 @@ variant release : common :
 # Profiling variant by Toon Knapen <toon@si-lab.com>
 variant profile : release :
     <profiling>on
+    <debug-symbols>on
     ;
 

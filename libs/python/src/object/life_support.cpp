@@ -5,6 +5,7 @@
 // to its suitability for any purpose.
 #include <boost/python/object/life_support.hpp>
 #include <boost/python/detail/none.hpp>
+#include <boost/python/refcount.hpp>
 
 namespace boost { namespace python { namespace objects { 
 
@@ -36,7 +37,7 @@ extern "C"
 }
 
 PyTypeObject life_support_type = {
-    PyObject_HEAD_INIT(&PyType_Type)
+    PyObject_HEAD_INIT(0)//(&PyType_Type)
     0,
     "Boost.Python.life_support",
     sizeof(life_support),
@@ -80,9 +81,20 @@ PyTypeObject life_support_type = {
 
 PyObject* make_nurse_and_patient(PyObject* nurse, PyObject* patient)
 {
+    if (nurse == Py_None)
+        return incref(nurse);
+    
+    if (life_support_type.ob_type == 0)
+    {
+        life_support_type.ob_type = &PyType_Type;
+        PyType_Ready(&life_support_type);
+    }
+    
     life_support* system = PyObject_New(life_support, &life_support_type);
     if (!system)
         return 0;
+
+    system->patient = 0;
     
     // We're going to leak this reference, but don't worry; the
     // life_support system decrements it when the nurse dies.

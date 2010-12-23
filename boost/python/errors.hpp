@@ -11,7 +11,7 @@
 
 # include <boost/python/detail/config.hpp>
 # include <boost/python/detail/wrap_python.hpp>
-# include <boost/function.hpp>
+# include <boost/function/function0.hpp>
 
 namespace boost { namespace python {
 
@@ -35,16 +35,20 @@ inline void handle_exception()
     handle_exception(detail::rethrow);
 }
 
-BOOST_PYTHON_DECL PyObject* expect_non_null_impl(PyObject* x);
+BOOST_PYTHON_DECL void throw_argument_error();
+BOOST_PYTHON_DECL void throw_error_already_set();
 
 template <class T>
 inline T* expect_non_null(T* x)
 {
-    return (T*)expect_non_null_impl((PyObject*)x);
+    if (x == 0)
+        throw_error_already_set();
+    return x;
 }
 
-BOOST_PYTHON_DECL void throw_argument_error();
-BOOST_PYTHON_DECL void throw_error_already_set();
+// Return source if it is an instance of pytype; throw an appropriate
+// exception otherwise.
+BOOST_PYTHON_DECL PyObject* pytype_check(PyTypeObject* pytype, PyObject* source);
 
 }} // namespace boost::python
 

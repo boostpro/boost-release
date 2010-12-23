@@ -86,4 +86,4 @@ public:
 
 } // namespace boost
 
-#endif // #ifndef BOOST_DETAIL_LWM_WIN32_HPP_INCLUDED
+#endif // #ifndef BOOST_DETAIL_LWM_LINUX_HPP_INCLUDED

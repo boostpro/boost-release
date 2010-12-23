@@ -42,6 +42,7 @@ class Tester(TestCmd.TestCmd):
                  TestCmd.match_exact, boost_build_path = None):
 
         self.original_workdir = os.getcwd()
+        self.last_build_time = 0
 
         jam_build_dir = ""
         if os.name == 'nt':
@@ -53,7 +54,7 @@ class Tester(TestCmd.TestCmd):
 
         if boost_build_path is None:
             boost_build_path = os.path.join(self.original_workdir, "..", "new")
-            
+
         TestCmd.TestCmd.__init__(
             self
             , program=os.path.join(
@@ -66,6 +67,15 @@ class Tester(TestCmd.TestCmd):
 
         os.chdir(self.workdir)
 
+    def cleanup(self):
+        try:
+            TestCmd.TestCmd.cleanup(self)
+            os.chdir(self.original_workdir)
+        except AttributeError:
+            # Whe this is called during by TestCmd.TestCmd.__del__ we can have both
+            # 'TestCmd' and 'os' unavailable in our scope. Do nothing in this case.
+            pass
+            
     #
     # Methods that change working directory's content
     #
@@ -91,6 +101,7 @@ class Tester(TestCmd.TestCmd):
 
 
     def write(self, file, content):
+        self.wait_for_time_change()
         try:
             os.makedirs(os.path.dirname(file))
         except:
@@ -98,9 +109,11 @@ class Tester(TestCmd.TestCmd):
         open(self.native_file_name(file), "wb").write(content)
 
     def copy(self, src, dst):
+        self.wait_for_time_change()
         self.write(dst, self.read(src))
 
     def touch(self, names):
+        self.wait_for_time_change()
         if not type(names) == types.ListType:
                 names = [names]
         for name in names:
@@ -113,7 +126,7 @@ class Tester(TestCmd.TestCmd):
     def run_build_system(
         self, extra_args='', subdir='', stdout = None, stderr = '',
         status = 0, match = None, **kw):
-        
+
         self.previous_tree = build_tree(self.workdir)
 
         if match is None:
@@ -143,7 +156,7 @@ class Tester(TestCmd.TestCmd):
             print "STDERR ============"
             print self.stderr()
             self.fail_test(1)
-            
+
         if not stdout is None and not match(self.stdout(), stdout):
             print "Expected STDOUT =========="
             print stdout
@@ -154,7 +167,7 @@ class Tester(TestCmd.TestCmd):
                 print "STDERR ==================="
                 print stderr
             self.fail_test(1)
-            
+
         if not stderr is None and not match(self.stderr(), stderr):
             print "STDOUT ==================="
             print self.stdout()
@@ -167,13 +180,20 @@ class Tester(TestCmd.TestCmd):
         self.tree = build_tree(self.workdir)
         self.difference = trees_difference(self.previous_tree, self.tree)
         self.unexpected_difference = copy.deepcopy(self.difference)
-        # We want to assure that modifications to the working dir will be
-        # detected by jam, so we wait till current time becomes more that
-        # the time when the last target was built.
-        time.sleep(1.1)
+
+        self.last_build_time = time.time()
 
     def read(self, name):
-        return open(self.native_file_name(name), "rb").read()
+        return open(self.native_file_name(name), "r").read()
+
+    def read_and_strip(self, name):
+        lines = open(self.native_file_name(name), "r").readlines()
+        result = string.join(map(string.rstrip, lines), "\n")
+        if lines and lines[-1][-1] == '\n':
+            return result + '\n'
+        else:
+            return result
+    
 
     # A number of methods below check expectations with actual difference
     # between directory trees before and after build.
@@ -262,6 +282,18 @@ class Tester(TestCmd.TestCmd):
         if not self.unexpected_difference.empty():
                 self.fail_test(1)
 
+    def expect_content(self, name, content, exact=0):
+        if exact:
+            actual = self.read(name)
+        else:
+            actual = string.replace(self.read_and_strip(name), "\\", "/")
+
+        if actual != content:
+            print "Expected:\n"
+            print content
+            print "Got:\n"
+            print actual
+            self.fail_test(1)
 
     # Helpers
     def mul(self, *arguments):
@@ -293,6 +325,13 @@ class Tester(TestCmd.TestCmd):
     def native_file_name(self, name):
         elements = string.split(name, "/")
         return apply(os.path.join, [self.workdir]+elements)
+
+    # Wait while time is no longer equal to the time last "run_build_system"
+    # call finished.
+    def wait_for_time_change(self):
+        while int(time.time()) == int(self.last_build_time):
+            time.sleep(0.1)
+
 
 class List:
 

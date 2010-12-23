@@ -5,25 +5,20 @@
 // to its suitability for any purpose.
 
 #include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
 #include <boost/python/class.hpp>
-#include <boost/mpl/type_list.hpp>
+#include <boost/mpl/list.hpp>
 
 #include <complex>
 
 struct M {M(const std::complex<double>&) {} };
 
-BOOST_PYTHON_MODULE_INIT(bienstman5_ext)
+BOOST_PYTHON_MODULE(bienstman5_ext)
 {
   using namespace boost::python;
-  using boost::mpl::type_list;
 
-  module m("bienstman5_ext");
-  
-  m
-    .add(class_<M>("M")
-         .def_init(args<std::complex<double> const&>()))
-    ;
-  
+  class_<M>("M", init<std::complex<double> const&>())
+      ;
 }
 
 

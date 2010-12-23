@@ -6,37 +6,26 @@
 #include <boost/python/converter/registry.hpp>
 #include <boost/python/converter/registrations.hpp>
 #include <boost/python/converter/builtin_converters.hpp>
-#include <map>
+#include <set>
 #include <stdexcept>
+
+#ifdef BOOST_PYTHON_TRACE_REGISTRY
+# include <iostream>
+#endif
 
 namespace boost { namespace python { namespace converter { 
 
 namespace // <unnamed>
 {
-  // These are the elements stored in the registry
-  struct entry
-  {
-      entry();
-      
-      // The unique to_python converter for the associated C++ type.
-      to_python_function_t m_to_python_converter;
-      
-      // The collection of from_python converters for the associated
-      // C++ type.
-      lvalue_from_python_registration* m_lvalue_from_python;
-      rvalue_from_python_registration* m_rvalue_from_python;
-
-      // The class object associated with this type
-      PyTypeObject* m_class_object;
-  };
+  typedef registration entry;
   
-  typedef std::map<undecorated_type_id_t, entry> registry_t;
+  typedef std::set<entry> registry_t;
   
   registry_t& entries()
   {
       static registry_t registry;
-      
-#ifdef BOOST_PYTHON_DYNAMIC_LIB // this conditional should go away eventually.
+
+# ifndef BOOST_PYTHON_SUPPRESS_REGISTRY_INITIALIZATION
       static bool builtin_converters_initialized = false;
       if (!builtin_converters_initialized)
       {
@@ -46,35 +35,42 @@ namespace // <unnamed>
           
           initialize_builtin_converters();
       }
-#endif 
+#  ifdef BOOST_PYTHON_TRACE_REGISTRY
+      std::cout << "registry: ";
+      for (registry_t::iterator p = registry.begin(); p != registry.end(); ++p)
+      {
+          std::cout << p->target_type << "; ";
+      }
+      std::cout << '\n';
+#  endif 
+# endif 
       return registry;
   }
 
-  entry* find(undecorated_type_id_t type)
+  entry* get(type_info type)
   {
-      return &entries()[type];
-  }
-
-  entry::entry()
-      : m_to_python_converter(0)
-        , m_lvalue_from_python(0)
-        , m_rvalue_from_python(0)
-        , m_class_object(0)
-  {
+#  ifdef BOOST_PYTHON_TRACE_REGISTRY
+      registry_t::iterator p = entries().find(entry(type));
+      
+      std::cout << "looking up " << type
+                << (p == entries().end() || p->target_type != type
+                    ? "...NOT found\n" : "...found\n");
+#  endif 
+      return const_cast<entry*>(
+          &*entries().insert(entry(type)).first
+          );
   }
 } // namespace <unnamed>
 
 namespace registry
 {
-  to_python_function_t const& get_to_python_function(
-      undecorated_type_id_t key)
+  void insert(to_python_function_t f, type_info source_t)
   {
-      return find(key)->m_to_python_converter;
-  }
-  
-  void insert(to_python_function_t f, undecorated_type_id_t source_t)
-  {
-      to_python_function_t& slot = find(source_t)->m_to_python_converter;
+#  ifdef BOOST_PYTHON_TRACE_REGISTRY
+      std::cout << "inserting to_python " << source_t << "\n";
+#  endif 
+      to_python_function_t& slot = get(source_t)->to_python;
+      
       assert(slot == 0); // we have a problem otherwise
       if (slot != 0)
       {
@@ -85,13 +81,16 @@ namespace registry
   }
 
   // Insert an lvalue from_python converter
-  void insert(void* (*convert)(PyObject*), undecorated_type_id_t key)
+  void insert(convertible_function convert, type_info key)
   {
-      entry* found = find(key);
-      lvalue_from_python_registration *registration = new lvalue_from_python_registration;
+#  ifdef BOOST_PYTHON_TRACE_REGISTRY
+      std::cout << "inserting lvalue from_python " << key << "\n";
+#  endif 
+      entry* found = get(key);
+      lvalue_from_python_chain *registration = new lvalue_from_python_chain;
       registration->convert = convert;
-      registration->next = found->m_lvalue_from_python;
-      found->m_lvalue_from_python = registration;
+      registration->next = found->lvalue_chain;
+      found->lvalue_chain = registration;
       
       insert(convert, 0, key);
   }
@@ -99,47 +98,53 @@ namespace registry
   // Insert an rvalue from_python converter
   void insert(void* (*convertible)(PyObject*)
               , constructor_function construct
-              , undecorated_type_id_t key)
+              , type_info key)
   {
-      entry* found = find(key);
-      rvalue_from_python_registration *registration = new rvalue_from_python_registration;
+#  ifdef BOOST_PYTHON_TRACE_REGISTRY
+      std::cout << "inserting rvalue from_python " << key << "\n";
+#  endif 
+      entry* found = get(key);
+      rvalue_from_python_chain *registration = new rvalue_from_python_chain;
       registration->convertible = convertible;
       registration->construct = construct;
-      registration->next = found->m_rvalue_from_python;
-      found->m_rvalue_from_python = registration;
+      registration->next = found->rvalue_chain;
+      found->rvalue_chain = registration;
   }
 
   // Insert an rvalue from_python converter
   void push_back(void* (*convertible)(PyObject*)
               , constructor_function construct
-              , undecorated_type_id_t key)
+              , type_info key)
   {
-      rvalue_from_python_registration** found = &find(key)->m_rvalue_from_python;
+#  ifdef BOOST_PYTHON_TRACE_REGISTRY
+      std::cout << "push_back rvalue from_python " << key << "\n";
+#  endif 
+      rvalue_from_python_chain** found = &get(key)->rvalue_chain;
       while (*found != 0)
           found = &(*found)->next;
       
-      rvalue_from_python_registration *registration = new rvalue_from_python_registration;
+      rvalue_from_python_chain *registration = new rvalue_from_python_chain;
       registration->convertible = convertible;
       registration->construct = construct;
       registration->next = 0;
       *found = registration;
   }
 
-  PyTypeObject*& class_object(undecorated_type_id_t key)
+  registration const& lookup(type_info key)
   {
-      return find(key)->m_class_object;
+      return *get(key);
   }
 
-  lvalue_from_python_registration*& lvalue_converters(undecorated_type_id_t key)
+  registration const* query(type_info type)
   {
-      return find(key)->m_lvalue_from_python;
+      registry_t::iterator p = entries().find(entry(type));
+#  ifdef BOOST_PYTHON_TRACE_REGISTRY
+      std::cout << "querying " << type
+                << (p == entries().end() || p->target_type != type
+                    ? "...NOT found\n" : "...found\n");
+#  endif 
+      return (p == entries().end() || p->target_type != type) ? 0 : &*p;
   }
-  
-  rvalue_from_python_registration*& rvalue_converters(undecorated_type_id_t key)
-  {
-      return find(key)->m_rvalue_from_python;
-  }
-  
 } // namespace registry
 
 }}} // namespace boost::python::converter

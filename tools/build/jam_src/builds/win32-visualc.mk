@@ -15,6 +15,6 @@ LINKLIBS = kernel32.lib
 
 all: jam0
 	attrib -r jambase.c
-	jam0 $(JAM0_ARGS) -sJAMBASE= -sBOOST_ROOT= -sBOOST_BUILD_PATH=
+	jam0 $(JAM0_ARGS)
 
 !include common.mk

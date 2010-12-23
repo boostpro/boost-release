@@ -25,11 +25,17 @@
 
 <PRE>
 <i>// named parameter version</i>
-template &lt;class Graph, class DistanceMatrix, class P, class T, class R&gt;
+template &lt;typename Graph, typename DistanceMatrix, typename P, typename T, typename R&gt;
 bool johnson_all_pairs_shortest_paths(Graph&amp; g, DistanceMatrix&amp; D,
   const bgl_named_params&lt;P, T, R&gt;&amp; params = <i>all defaults</i>)
 
-<i>// there is not a non-named parameter version of this function</i>
+<i>// non-named parameter version</i>
+template &lt;typename Graph, typename DistanceMatrix,
+          typename VertexIndex, typename WeightMap, typename DT&gt;
+bool
+johnson_all_pairs_shortest_paths(VertexAndEdgeListGraph&amp; g1, 
+  DistanceMatrix&amp; D,
+  VertexIndex id1, Weight w1, DT zero)
 </PRE>
 
 <P>
@@ -83,14 +89,7 @@ IN: <tt>weight_map(WeightMap w_map)</tt>
 
 UTIL: <tt>weight_map2(WeightMap2 w2_map)</tt>   
 <blockquote>
-  The algorithm requires storage for modified edge weights.  The type
-  <tt>WeightMap2</tt> must be a model of <a
-  href="../../property_map/ReadWritePropertyMap.html"> Read/Write
-  Property Map</a>. The edge descriptor type of the graph needs to be
-  usable as the key type for the weight map. The value type for the
-  map must be <i>Addable</i> with the value type of the distance
-  map.<br>
-  <b>Default:</b>  <tt>get(edge_weight2, g)</tt>
+  This parameter is no longer needed, and will be ignored.
 </blockquote>
 
 IN: <tt>vertex_index_map(VertexIndexMap i_map)</tt> 
@@ -106,22 +105,9 @@ IN: <tt>vertex_index_map(VertexIndexMap i_map)</tt>
 </blockquote>
 
 
-UTIL/OUT: <tt>distance_map(DistanceMap d_map)</tt> 
+UTIL: <tt>distance_map(DistanceMap d_map)</tt> 
 <blockquote>
-  The shortest path weight from the source vertex <tt>s</tt> to each
-  vertex in the graph <tt>g</tt> is recorded in this property map. The
-  shortest path weight is the sum of the edge weights along the
-  shortest path.  The type <tt>DistanceMap</tt> must be a model of
-  \concept{ReadWritePropertyMap}. The vertex descriptor type of the
-  graph needs to be usable as the key type of the distance map. The
-  value type of the distance map must be <a
-  href="http://www.sgi.com/tech/stl/LessThanComparable.html">Less Than
-  Comparable</a>.<br> 
-  <b>Default:</b> <a href="../../property_map/iterator_property_map.html">
-  <tt>iterator_property_map</tt></a> created from a
-  <tt>std::vector</tt> of the <tt>WeightMap</tt>'s value type of size
-  <tt>num_vertices(g)</tt> and using the <tt>i_map</tt> for the index
-  map.
+  This parameter is no longer needed, and will be ignored.
 </blockquote>
 
 IN: <tt>distance_compare(CompareFunction cmp)</tt> 
@@ -130,9 +116,9 @@ IN: <tt>distance_compare(CompareFunction cmp)</tt>
   which vertex is closer to the source vertex.
   The <tt>CompareFunction</tt> type must be a model of
   \stlconcept{BinaryPredicate} and have argument types that
-  match the value type of the <tt>DistanceMap</tt> property map.<br>
-  <b>Default:</b> <tt>std::less&lt;D&gt;</tt> with
-  <tt>D=typename&nbsp;property_traits&lt;DistanceMap&gt;::value_type</tt>
+  match the value type of the <tt>WeightMap</tt> property map.<br>
+  <b>Default:</b> <tt>std::less&lt;DT&gt;</tt> with
+  <tt>DT=typename&nbsp;property_traits&lt;WeightMap&gt;::value_type</tt>
 </blockquote>
 
 IN: <tt>distance_combine(CombineFunction cmb)</tt> 
@@ -145,33 +131,24 @@ IN: <tt>distance_combine(CombineFunction cmb)</tt>
   the second argument type must match the value type of the
   <tt>WeightMap</tt> property map.  The result type must be the same
   type as the distance value type.<br>
-  <b>Default:</b> <tt>std::plus&lt;D&gt;</tt> with
-   <tt>D=typename&nbsp;property_traits&lt;DistanceMap&gt;::value_type</tt>
+  <b>Default:</b> <tt>std::plus&lt;DT&gt;</tt> with
+   <tt>DT=typename&nbsp;property_traits&lt;WeightMap&gt;::value_type</tt>
 </blockquote>
 
-IN: <tt>distance_inf(InfinityGenerator inf)</tt> 
+IN: <tt>distance_inf(DT inf)</tt> 
 <blockquote>
-  This function is used to initialize the distance for each
+  This value is used to initialize the distance for each
   vertex before the start of the algorithm. 
-  The <tt>InfinityGenerator</tt>
-  type must model the <a href="http://www.sgi.com/tech/stl/Generator.html">Generator</a> concept. The
-  result type of the generator must be convertible to the
-  value type of the <tt>DistanceMap</tt>. The
-  default infinity generator uses <tt>std::numeric_limits::max()</tt>.<br>
-  <b>Default:</b> <tt>detail::generate_infinity&lt;D&gt;</tt>
-  with <tt>D=typename&nbsp;property_traits&lt;DistanceMap&gt;::value_type</tt>
+  The type <tt>DT</tt> must be the value type of the <tt>WeigthMap</tt>.<br>
+  <b>Default:</b> <tt>std::numeric_limits::max()</tt>
 </blockquote>
 
-IN: <tt>distance_zero(ZeroGenerator zero)</tt> 
+IN: <tt>distance_zero(DT zero)</tt> 
 <blockquote>
-  This function is used to initialize the distance for the source
-  vertex before the start of the algorithm.  The
-  <tt>ZeroGenerator</tt> type must model the <a
-  href="http://www.sgi.com/tech/stl/Generator.html">Generator</a>concept. The
-  result type of the generator must be convertible to the value type
-  of the <tt>DistanceMap</tt>.<br>
-  <b>Default:</b> <tt>detail::generate_zero&lt;D&gt;</tt>
-   with <tt>D=typename&nbsp;property_traits&lt;DistanceMap&gt;::value_type</tt>
+  This value is used to initialize the distance for the source
+  vertex before the start of the algorithm.  The type <tt>DT</tt>
+  must be the value type of the <tt>WeigthMap</tt>.<br>
+  <b>Default:</b> <tt>0</tt>
 </blockquote>
 
 UTIL/OUT: <tt>color_map(ColorMap c_map)</tt> 

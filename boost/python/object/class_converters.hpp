@@ -8,10 +8,12 @@
 
 # include <boost/python/object/class_wrapper.hpp>
 # include <boost/mpl/for_each.hpp>
-# include <boost/python/reference.hpp>
+# include <boost/python/handle.hpp>
 # include <boost/python/converter/registry.hpp>
 # include <boost/python/object/find_instance.hpp>
 # include <boost/python/object/inheritance.hpp>
+# include <boost/python/detail/force_instantiate.hpp>
+# include <boost/type_traits/add_pointer.hpp>
 
 namespace boost { namespace python { namespace objects { 
 
@@ -44,48 +46,37 @@ struct do_nothing
 template <class Derived>
 struct register_base_of
 {
-    // Ignored is needed because mpl::for_each is still actually
-    // accumulate. We're not using any state so it just sits there.
-    template <class Ignored, class Base>
-    struct apply
+    // Here's the runtime part:
+    template <class Base>
+    void operator()(Base*) const
     {
-        typedef void type; // 'type' needs to be defined for the same reasons
+        // Register the Base class
+        register_dynamic_id<Base>();
+        // Register the up-cast
+        register_conversion<Derived,Base>(false);
 
-        // Here's the runtime part:
-        static void execute()
-        {
-            // Register the Base class
-            register_dynamic_id<Base>();
-            // Register the up-cast
-            register_conversion<Derived,Base>(false);
-
-            // Register the down-cast, if appropriate.
-            mpl::select_type<
-                is_polymorphic<Base>::value
-                , register_downcast<Base,Derived>
-                , do_nothing
-                >::type::execute();
-        }
-    };
+        // Register the down-cast, if appropriate.
+        mpl::if_c<
+            is_polymorphic<Base>::value
+            , register_downcast<Base,Derived>
+            , do_nothing
+            >::type::execute();
+    }
 };
-
 
 // Brings into existence all converters associated with a class Bases
 // is expected to be an mpl sequence of base types.
 template <class Derived, class Bases>
 inline void register_class_from_python(Derived* = 0, Bases* = 0)
 {
-    // cause the static registration to be instantiated. Can't just
-    // cast it to void on all compilers; some will skip its
-    // initialization.
-    void const* ignored = &instance_finder<Derived>::registration;
-    (void)ignored;
+    // cause the static registration to be instantiated.
+    python::detail::force_instantiate(instance_finder<Derived>::registration);
     
     // register all up/downcasts here
     register_dynamic_id<Derived>();
 
     // register each base in the sequence
-    mpl::for_each<Bases, void, register_base_of<Derived> >::execute();
+    mpl::for_each(register_base_of<Derived>(), (Bases*)0, (add_pointer<mpl::_>*)0);
 }
 
 }}} // namespace boost::python::object

@@ -10,7 +10,7 @@
 //
 // This is included from within the individual compiler mini-configs.
 
-#ifndef __EDG_VERSION__
+#ifndef  __EDG_VERSION__
 #  error This file requires that __EDG_VERSION__ be defined.
 #endif
 
@@ -26,9 +26,23 @@
 #   define BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
 #endif
 
+#if (__EDG_VERSION__ <= 245) && !defined(BOOST_NO_TEMPLATE_TEMPLATES)
+#   define BOOST_NO_TEMPLATE_TEMPLATES
+#endif 
+
+// See also kai.hpp which checks a Kai-specific symbol for EH
+# if !defined(__KCC) && !defined(__EXCEPTIONS)
+#     define BOOST_NO_EXCEPTIONS
+# endif
+
+# if !defined(__NO_LONG_LONG)
+#     define BOOST_HAS_LONG_LONG
+# endif
+
 #ifdef c_plusplus
 // EDG has "long long" in non-strict mode
 // However, some libraries have insufficient "long long" support
 // #define BOOST_HAS_LONG_LONG
 #endif
+
 

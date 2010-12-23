@@ -26,23 +26,23 @@
 <P>
 <PRE>
 <i>// named parameter version</i>
-template &lt;class <a href="./VertexListGraph.html">VertexListGraph</a>, class class P, class T, class R&gt;
-void depth_first_search(VertexListGraph&amp; G,
+template &lt;class Graph, class class P, class T, class R&gt;
+void depth_first_search(Graph&amp; G,
   const bgl_named_params&lt;P, T, R&gt;&amp; params);
 
 <i>// non-named parameter version</i>
-template &lt;class <a href="./VertexListGraph.html">VertexListGraph</a>, class <a href="DFSVisitor.html">DFSVisitor</a>, class ColorMap&gt;
-void depth_first_search(const VertexListGraph&amp; g, DFSVisitor vis, ColorMap color)
+template &lt;class Graph, class <a href="DFSVisitor.html">DFSVisitor</a>, class ColorMap&gt;
+void depth_first_search(const Graph&amp; g, DFSVisitor vis, ColorMap color)
 
-template &lt;class <a href="./VertexListGraph.html">VertexListGraph</a>, class <a href="DFSVisitor.html">DFSVisitor</a>, class ColorMap&gt;
-void depth_first_search(const VertexListGraph&amp; g, DFSVisitor vis, ColorMap color, 
-                        typename graph_traits&lt;VertexListGraph&gt;::vertex_descriptor start)
+template &lt;class Graph, class <a href="DFSVisitor.html">DFSVisitor</a>, class ColorMap&gt;
+void depth_first_search(const Graph&amp; g, DFSVisitor vis, ColorMap color, 
+                        typename graph_traits&lt;Graph&gt;::vertex_descriptor start)
 
 </PRE>
 
 <p>
 The <tt>depth_first_search()</tt> function performs a depth-first
-traversal of the vertices in a directed or undirected graph.  When
+traversal of the vertices in a directed graph.  When
 possible, a depth-first traversal chooses a vertex adjacent to the
 current vertex to visit next. If all adjacent vertices have already
 been discovered, or there are no adjacent vertices, then the algorithm
@@ -99,8 +99,7 @@ DFS(<i>G</i>)
     <b>if</b> <i>color[u] =</i> WHITE
       <b>call</b> DFS-VISIT(<i>G</i>, <i>u</i>)
   <b>end for</b>
-  return (<i>p</i>,<i>d_time</i>,<i>f_time</i>) 
- 
+  return (<i>p</i>,<i>d_time</i>,<i>f_time</i>) <br>
 DFS-VISIT(<i>G</i>, <i>u</i>) 
   <i>color[u] :=</i> GRAY
   <i>d_time[u] := time := time + 1</i> 
@@ -119,33 +118,34 @@ DFS-VISIT(<i>G</i>, <i>u</i>)
 </td>
 <td valign="top">
 <pre>
-
+-
+-
 initialize vertex <i>u</i>
-
-
-
-
+-
+-
+-
+-
 start vertex <i>s</i>
-
-
-start vertex <i>u</i> 
-
-
-
-
-
-discover vertex <i>u</i> 
-
+-
+-
+start vertex <i>u</i>
+-
+-
+-
+-
+discover vertex <i>u</i>
+-
 examine edge <i>(u,v)</i>
+-
 <i>(u,v)</i> is a tree edge
-
-
-
-<i>(u,v)</i> is a back edge 
-
-<i>(u,v)</i> is a cross or forward edge 
-
+-
+-
+<i>(u,v)</i> is a back edge
+-
+<i>(u,v)</i> is a cross or forward edge
+-
 finish vertex <i>u</i>
+-
 </pre>
 </td>
 </tr>
@@ -160,10 +160,11 @@ finish vertex <i>u</i>
 
 <h3>Parameters</h3>
 
-IN: <tt>VertexListGraph&amp; g</tt>
+IN: <tt>Graph&amp; g</tt>
 <blockquote>
-  A directed or undirected graph. The graph type must
-  be a model of <a href="./VertexListGraph.html">Vertex List Graph</a>.
+  A directed graph. The graph type must
+  be a model of <a href="./IncidenceGraph.html">Incidence Graph</a>
+  and <a href="./VertexListGraph.html">Vertex List Graph</a>.
 </blockquote>
 
 
@@ -249,14 +250,7 @@ The time complexity is <i>O(E + V)</i>.
   wish to record predecessors, do so at this event point.
   
 <li><b><tt>vis.back_edge(e, g)</tt></b> is invoked on the back edges in
-  the graph. For an undirected graph there is some ambiguity
-  between tree edges and back edges since the edge <i>(u,v)</i>
-  and <i>(v,u)</i> are the same edge, but both the <tt>tree_edge()</tt>
-  and <tt>back_edge()</tt> functions will be invoked. One way to
-  resolve this ambiguity is to record the tree edges, and then
-  disregard the back-edges that are already marked as tree edges.
-  An easy way to record tree edges is to record predecessors at the
-  <tt>tree_edge</tt> event point.
+  the graph.
   
 <li><b><tt>vis.forward_or_cross_edge(e, g)</tt></b> is invoked on
   forward or cross edges in the graph. In an undirected graph this
@@ -280,6 +274,7 @@ The example in <a href="../example/dfs-example.cpp">
 <h3>See Also</h3>
 
 <a href="./depth_first_visit.html"><tt>depth_first_visit</tt></a>
+<a href="./undirected_dfs.html"><tt>undirected_dfs</tt></a>
 
 <h3>Notes</h3>
 

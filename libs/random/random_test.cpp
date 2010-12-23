@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_test.cpp,v 1.23 2002/03/11 20:31:04 jmaurer Exp $
+ * $Id: random_test.cpp,v 1.25 2002/07/18 19:01:59 beman_dawes Exp $
  */
 
 #include <iostream>
@@ -89,7 +89,7 @@ void instantiate_urng(const std::string & s, const URNG &, const ResultType &)
   ResultType x2 = x1;
   (void) &x2;           // avoid "unused" warning
 
-#ifndef BOOST_MSVC   // MSVC brokenness
+#if !defined(BOOST_MSVC) || BOOST_MSVC > 1300 // MSVC brokenness
   URNG urng2 = urng;           // copy constructor
   BOOST_TEST(urng == urng2);   // operator==
   urng();
@@ -110,7 +110,7 @@ void instantiate_urng(const std::string & s, const URNG &, const ResultType &)
     std::ifstream file("rng.tmp");
     file >> urng;
   }
-#ifndef BOOST_MSVC    // MSVC brokenness
+#if !defined(BOOST_MSVC) || BOOST_MSVC > 1300 // MSVC brokenness
   BOOST_TEST(urng == urng2);
 #endif // BOOST_MSVC
 #endif // BOOST_NO_OPERATORS_IN_NAMESPACE

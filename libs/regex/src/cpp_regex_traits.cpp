@@ -25,7 +25,11 @@
 
 #include <boost/regex/config.hpp>
 
-#ifndef BOOST_NO_STD_LOCALE
+#if !defined(BOOST_NO_STD_LOCALE) && !defined(BOOST_NO_STD_WSTREAMBUF)
+
+# ifdef BOOST_MSVC
+#  pragma warning(disable:4786 4702 4127 4244)
+#  endif
 
 #include <clocale>
 #include <locale>
@@ -39,9 +43,8 @@
 #include <boost/scoped_array.hpp>
 #include "primary_transform.hpp"
 
-
 # ifdef BOOST_MSVC
-#  pragma warning(disable:4786)
+#  pragma warning(disable:4786 4702 4127 4244)
 #  endif
 
 namespace{
@@ -129,11 +132,13 @@ parser_buf<charT, traits>::seekoff(off_type off, ::std::ios_base::seekdir way, :
          return pos_type(off_type(-1));
       else
          this->setg(g, g + off, g + size);
+      break;
    case ::std::ios_base::end:
       if((off < 0) || (off > size))
          return pos_type(off_type(-1));
       else
          this->setg(g, g + size - off, g + size);
+      break;
    case ::std::ios_base::cur:
    {
       std::ptrdiff_t newpos = pos + off;
@@ -141,7 +146,9 @@ parser_buf<charT, traits>::seekoff(off_type off, ::std::ios_base::seekdir way, :
          return pos_type(off_type(-1));
       else
          this->setg(g, g + newpos, g + size);
+      break;
    }
+   default: ;
    }
    return static_cast<pos_type>(this->gptr() - this->eback());
 }
@@ -193,7 +200,11 @@ message_data<char>::message_data(const std::locale& l, const std::string& regex_
 #ifndef BOOST_NO_STD_MESSAGES
 
    const std::messages<char>* pm = 0;
-   std::messages<char>::catalog cat = -1;
+#ifndef __IBMCPP__
+   std::messages<char>::catalog cat = static_cast<std::messages<wchar_t>::catalog>(-1);
+#else
+   std::messages<char>::catalog cat = reinterpret_cast<std::messages<wchar_t>::catalog>(-1);
+#endif
    if(regex_message_catalogue.size())
    {
       pm = &BOOST_USE_FACET(std::messages<char>, l);
@@ -239,9 +250,11 @@ message_data<char>::message_data(const std::locale& l, const std::string& regex_
    //
    // for some reason Borland C++ Builder 6 won't let us use
    // std::isspace(char, std::locale) unless we call it
-   // unqualifed - weird.
+   // unqualifed - weird.  This seems to be affecting other
+   // STLport users as well (gcc3.1+STLport5), so enable the
+   // workaround for all STLport users...
    //
-#if defined(__BORLANDC__) && (__BORLANDC__ == 0x560)
+#if defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION)
    using namespace std;
 #  define BOOST_REGEX_STD
 #else
@@ -583,7 +596,11 @@ message_data<wchar_t>::message_data(const std::locale& l, const std::string& reg
    const cvt_type& cvt = BOOST_USE_FACET(cvt_type, l);
 #ifndef BOOST_NO_STD_MESSAGES
    const std::messages<wchar_t>& msgs = BOOST_USE_FACET(std::messages<wchar_t>, l);
-   std::messages<wchar_t>::catalog cat = -1;
+#ifndef __IBMCPP__
+   std::messages<wchar_t>::catalog cat = static_cast<std::messages<wchar_t>::catalog>(-1);
+#else
+   std::messages<wchar_t>::catalog cat = reinterpret_cast<std::messages<wchar_t>::catalog>(-1);
+#endif
    if(regex_message_catalogue.size())
    {
       cat = msgs.open(regex_message_catalogue, l);
@@ -859,4 +876,5 @@ std::size_t BOOST_REGEX_CALL cpp_regex_traits<wchar_t>::strwiden(wchar_t *s1, st
 } // namespace boost
 
 #endif
+
 

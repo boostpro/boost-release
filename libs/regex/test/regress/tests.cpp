@@ -22,9 +22,13 @@
   *
   */
 
-
+#include <cassert>
 #include <boost/regex.hpp>
 #include "regress.h"
+
+# ifdef BOOST_MSVC
+#  pragma warning(disable: 4244 4267)
+#endif
 
 using namespace boost;
 
@@ -257,11 +261,14 @@ void cpp_tests(const reg_expression<C, T, A>& e, bool recurse = true)
 #if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
       if(!recurse)
       {
-         std::basic_string<char_t> s(search_text.begin(), search_text.end());
+         unsigned len = search_text.size();
+         const std::basic_string<char_t>& s = search_text;
          grep_test_predicate<std::basic_string<char_t>::const_iterator, allocator_type> oi2(s.begin(), s.end());
          regex_grep(oi2, s, e, flags[3]);
          grep_test_predicate<const char_t*, allocator_type> oi3(s.c_str(), s.c_str()+s.size());
          regex_grep(oi3, s.c_str(), e, flags[3]);
+         assert(s.size() == len);
+         assert(s.end() - s.begin() == len);
       }
 #endif
    }
@@ -590,20 +597,31 @@ void cpp_hl_tests(RegEx& e, bool recurse = true)
          }
       }
 
-      if((matches[0] == 0) && (e.Match(search_text.c_str(), flags[3])))
+      //
+      // test RegEx::Match only if we expect to match all of the input:
+      //
+      if((matches[0] == 0) && (matches[1] == search_text.size()))
       {
-         unsigned int i = 0;
-         unsigned int j = 0;
-         while(matches[j] != -2)
+         if(e.Match(search_text.c_str(), flags[3]))
          {
-            if( (matches[j] != (int)e.Position(i))
-               || ((matches[j] != -1) && ((matches[j+1] - matches[j] != (int)e.Length(i)))) )
+            unsigned int i = 0;
+            unsigned int j = 0;
+            while(matches[j] != -2)
             {
-               begin_error();
-               cout << "RegEx::Match error in subexpression " << i << ": found [" << e.Position(i) << "," << (e.Position(i) + e.Length(i)) << "] expected [" << matches[j] << "," << matches[j+1] << "]" << endl;
+               if( (matches[j] != (int)e.Position(i))
+                  || ((matches[j] != -1) && ((matches[j+1] - matches[j] != (int)e.Length(i)))) )
+               {
+                  begin_error();
+                  cout << "RegEx::Match error in subexpression " << i << ": found [" << e.Position(i) << "," << (e.Position(i) + e.Length(i)) << "] expected [" << matches[j] << "," << matches[j+1] << "]" << endl;
+               }
+               ++i;
+               j += 2;
             }
-            ++i;
-            j += 2;
+         }
+         else
+         {
+            begin_error();
+            cout << "Match expected but not found with RegEx::Match" << endl;
          }
       }
    }

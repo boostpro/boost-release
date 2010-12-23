@@ -93,7 +93,14 @@ namespace boost {
       z.clear();
       std::set_difference(x.begin(), x.end(),
                           y.begin(), y.end(),
-                          std::inserter(z));
+                          std::inserter(z, z.begin()));
+    }
+
+    template <class K, class C, class A>
+    bool set_subset(const std::set<K,C,A>& x,
+                    const std::set<K,C,A>& y)
+    {
+      return std::includes(x.begin(), x.end(), y.begin(), y.end());
     }
 
     // Shit, can't implement this without knowing the size of the

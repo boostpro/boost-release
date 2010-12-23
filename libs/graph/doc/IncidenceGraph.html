@@ -60,6 +60,13 @@ efficient access to the out-edges of each vertex in the graph.
 
 <Table border>
 
+<tr>
+<td><tt>boost::graph_traits&lt;G&gt;::traversal_category</tt><br><br>
+ This tag type must be convertible to <tt>incidence_graph_tag</tt>.
+</td>
+</tr>
+
+
 <TR>
 <TD>
 <pre>boost::graph_traits&lt;G&gt;::out_edge_iterator</pre>
@@ -103,10 +110,10 @@ Return type: <TT>vertex_descriptor</TT>
 <TD>Returns an iterator-range providing access to the out-edges (for
 directed graphs) or incident edges (for undirected graphs) of vertex
 <TT>u</TT> in graph <TT>g</TT>.  The source vertex of an edge obtained
-via and out edge iterator is guaranteed (for both directed and
+via an out edge iterator is guaranteed (for both directed and
 undirected graphs) to be the vertex <tt>u</tt> used in the call to
 <tt>out_edges(u, g)</tt> and the target vertex must the a vertex
-adjacent to <tt>u</tt>.<a href="">[1]</a>
+adjacent to <tt>u</tt>.<a href="#1">[1]</a>
 <br>
 Return type: <TT>std::pair&lt;out_edge_iterator, out_edge_iterator&gt;</TT>
 </TD>

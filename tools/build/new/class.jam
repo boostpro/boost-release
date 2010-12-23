@@ -81,7 +81,7 @@ local rule __init__ (
 )
 {
     # pull the name of the class being initialized from the backtrace
-    local bt = [ BACKTRACE ] ;
+    local bt = [ BACKTRACE 1 ] ;
     local class = [ MATCH ^(.*)[.]__init__$ : $(bt[4]) ] ;
     assert.nonempty-variable class ;
     
@@ -144,10 +144,6 @@ rule class (
     
     module class@$(name)
     {
-        # always bring in the rules defined from this module, so that
-        # users can easily call "inherit", for example.
-        import class : * ;
-        
         # The constructor will be called through the __init__ rule
         # above. We import both rules into the class' module here,
         # then export them. Although rules are actually only called in
@@ -189,6 +185,10 @@ rule instance ( name : class args * : * )
     # Enter the namespace of the new object
     module $(name)
     {
+        # always bring in the rules defined from this module, so that
+        # users can easily call "inherit", for example.
+        import class : * ;        
+        
         # import all of the rules from the class into the instance,
         # using the optional localize parameter so that they execute
         # in the instance's namespace.
@@ -266,6 +266,26 @@ rule is-derived ( class : bases + )
         }
     }
     return $(found) ;
+}
+
+# Returns true if the 'value' is a class instance.
+rule is-instance ( value # The value to check 
+     )
+{
+    return [ MATCH "(object@).*" : $(value) ] ;        
+}
+
+# Check if the given value is of the given type.
+#
+rule is-a (
+    instance # The value to check.
+    : type # The type to test for.
+    )
+{
+    if [ MATCH "(object@).*" : $(instance) ]
+    {
+        return [ class.is-derived [ modules.peek $(instance) : __class__ ] : $(type) ] ;
+    }
 }
 
 rule __test__ ( )
@@ -441,5 +461,13 @@ rule __test__ ( )
         assert.true is-derived derived3 : myclass ;
         
         assert.false is-derived myclass : derived1 ;
+ 
+        assert.true is-instance $(a) ;
+        assert.false is-instance bar ;
+       
+        assert.true is-a $(a) : myclass ;
+        assert.true is-a $(c) : derived2 ;
+        assert.true is-a $(d) : myclass ;
+        assert.false is-a literal : myclass ;
     }
 }

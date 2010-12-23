@@ -8,11 +8,13 @@
 
 # include <boost/python/detail/config.hpp>
 # include <boost/python/detail/wrap_python.hpp>
-# include <boost/python/object/function.hpp>
 # include <boost/type_traits/transform_traits.hpp>
 # include <boost/type_traits/cv_traits.hpp>
 # include <boost/python/return_value_policy.hpp>
 # include <boost/python/copy_non_const_reference.hpp>
+# include <boost/python/object/function_object.hpp>
+# include <boost/python/arg_from_python.hpp>
+# include <boost/bind.hpp>
 
 namespace boost { namespace python { 
 
@@ -23,7 +25,7 @@ namespace detail
   {
       static PyObject* get(Data Class::*pm, PyObject* args_, PyObject*, Policies const& policies)
       {
-          from_python<Class*> c0(PyTuple_GET_ITEM(args_, 0));
+          arg_from_python<Class*> c0(PyTuple_GET_ITEM(args_, 0));
           if (!c0.convertible()) return 0;
 
           // find the result converter
@@ -42,12 +44,12 @@ namespace detail
       static PyObject* set(Data Class::*pm, PyObject* args_, PyObject*, Policies const& policies)
       {
           // check that each of the arguments is convertible
-          from_python<Class*> c0(PyTuple_GET_ITEM(args_, 0));
+          arg_from_python<Class*> c0(PyTuple_GET_ITEM(args_, 0));
           if (!c0.convertible()) return 0;
 
           typedef typename add_const<Data>::type target1;
           typedef typename add_reference<target1>::type target;
-          from_python<target> c1(PyTuple_GET_ITEM(args_, 1));
+          arg_from_python<target> c1(PyTuple_GET_ITEM(args_, 1));
       
           if (!c1.convertible()) return 0;
 
@@ -61,47 +63,45 @@ namespace detail
 }
 
 template <class C, class D>
-objects::function* make_getter(D C::*pm)
+object make_getter(D C::*pm)
 {
     typedef return_value_policy<copy_non_const_reference> default_policy;
-    return new objects::function(
-        objects::py_function(
-            ::boost::bind(
-                &detail::member<D,C,default_policy>::get, pm, _1, _2
-                , default_policy()))
+    
+    return objects::function_object(
+        ::boost::bind(
+            &detail::member<D,C,default_policy>::get, pm, _1, _2
+            , default_policy())
         , 1);
+        
 }
 
 template <class C, class D, class Policies>
-objects::function* make_getter(D C::*pm, Policies const& policies)
+object make_getter(D C::*pm, Policies const& policies)
 {
-    return new objects::function(
-        objects::py_function(
+    return objects::function_object(
             ::boost::bind(
                 &detail::member<D,C,Policies>::get, pm, _1, _2
-                , policies))
+                , policies)
         , 1);
 }
 
 template <class C, class D>
-objects::function* make_setter(D C::*pm)
+object make_setter(D C::*pm)
 {
-    return new objects::function(
-        objects::py_function(
-            ::boost::bind(
-                &detail::member<D,C,default_call_policies>::set, pm, _1, _2
-                , default_call_policies()))
+    return objects::function_object(
+        ::boost::bind(
+            &detail::member<D,C,default_call_policies>::set, pm, _1, _2
+            , default_call_policies())
         , 2);
 }
 
 template <class C, class D, class Policies>
-objects::function* make_setter(D C::*pm, Policies const& policies)
+object make_setter(D C::*pm, Policies const& policies)
 {
-    return new objects::function(
-        objects::py_function(
-            ::boost::bind(
-                &detail::member<D,C,Policies>::set, pm, _1, _2
-                , policies))
+    return objects::function_object(
+        ::boost::bind(
+            &detail::member<D,C,Policies>::set, pm, _1, _2
+            , policies)
         , 2);
 }
 

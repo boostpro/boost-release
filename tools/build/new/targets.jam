@@ -4,52 +4,56 @@
 #  warranty, and with no claim as to its suitability for any purpose.
 
 
-#   There are three kinds of targets: "abstract", which correspond to
-#   targets explicitly defined in Jamfile; "virtual", which correspond
-#   to possible build product with defined properties and "actual", which
-#   are targets in Jam sense. The "virtual" targets are generated during
-#   search for the best transformation sequence, and some of them can be
-#   later 'actualized'.
+#   Supports 'abstact' targets, which are targets explicitly defined in Jamfile.
 #
-#   Actual targets are all derived from 'abstract-target' class. First
-#   abstract target is 'project-target', which is created for each
-#   Jamfile, and can be obtained by rule 'target' in Jamfile's module.
-#   (see project.jam). Project targets keep a list of 'main-target' instances.
-#   Main target is what is explicitly defined in Jamfile. It is possible
-#   to have several definition for a main target, for example to have
-#   different list of sources on different platforms. So, main targets
-#   keep a list of variants -- i.e. instances of 'abstract-target' class.
-#   Precise type of variant can be anything  -- each rule that declares
-#   main targets can do anything.
+#   Abstract targets are represented by classes derived from 'abstract-target' class. 
+#   The first abstract target is 'project-target', which is created for each
+#   Jamfile, and can be obtained by the 'target' rule in the Jamfile's module.
+#   (see project.jam). 
 #
-#   However, we'll use only targets derived from 'basic-target' class,
-#   which will provide some default behaviour. Now, there's only one
-#   class, 'make-target', which will be create by 'make' rule.
+#   Project targets keep a list of 'main-target' instances.
+#   A main target is what the user explicitly defines in a Jamfile. It is
+#   possible to have several definitions for a main target, for example to have
+#   different lists of sources for different platforms. So, main targets
+#   keep a list of alternatives.
+#
+#   Each alternative is an instance of 'abstract-target'. When a main target
+#   subvariant is defined by some rule, that rule will decide what class to
+#   use, create an instance of that class and add it to the list of alternatives
+#   for the main target.
+#
+#   Rules supplied by the build system will use only targets derived
+#   from 'basic-target' class, which will provide some default behaviour.
+#   There will be two classes derived from it, 'make-target', created by the
+#   'make' rule, and 'typed-target', created by rules such as 'exe' and 'dll'.
 
 
 import sequence ;
-import class : class ;
+import class : class new ;
 import regex ;
 import property ;
+import errors ;
+import common ;
+
 
 # Base class for all abstract targets.
-# local-name: name of the target in Jamfile
-# project: the project module where the target is declared
-#
-# Note: it might seem that we don't need either name or project at all.
-# However, there are places where we really need it. One example is error
-# messages which should name problematic targets. Another is setting correct
-# paths for sources and generated files.
-rule abstract-target ( local-name : project )
+rule abstract-target ( name      # name of the target in Jamfile
+                       : project # the project module where the target is declared
+                     )
 {
-    self.local-name = $(local-name) ;
+    # Note: it might seem that we don't need either name or project at all.
+    # However, there are places where we really need it. One example is error
+    # messages which should name problematic targets. Another is setting correct
+    # paths for sources and generated files.
+
+    self.name = $(name) ;
     self.project = $(project) ;
 
     # Returns a user-readable name for this target.
-    rule name ( )
+    rule full-name ( )
     {
-        local location = [ $(self.project).location ] ;
-        return $(location)/$(self.local-name) ;
+        local location = [ project.attribute $(self.project) location ] ;
+        return $(location)/$(self.name) ;
     }
 
     # Takes properties in split form ("<feature1>foo <feature2>bar").
@@ -61,15 +65,15 @@ rule abstract-target ( local-name : project )
     # this method of error reporting? 'is-error'?)
     rule generate ( properties * )
     {
-        # Yes, it is empty.
+        errors.error "method should be defined in derived classes" ;
     }
 }
 class abstract-target ;
 
 #  Project target class (derived from 'abstract-target')
-rule project-target ( local-name : project : requirements * : default-build * )
+rule project-target ( name : project : requirements * : default-build * )
 {
-    abstract-target.__init__ $(local-name) : $(project) ;
+    abstract-target.__init__ $(name) : $(project) ;
 
     self.requirements = $(requirements) ;
     self.default-build = $(default-build) ;
@@ -83,10 +87,10 @@ rule project-target ( local-name : project : requirements * : default-build * )
             local t = [ main-target $(name) ] ;
             result += [ $(t).generate $(properties) ] ;
         }
-        for local pn in [ $(self.project).subprojects ]
+        for local pn in [ project.attribute $(self.project) projects-to-build ]
         {
             local p = [ project.module-name $(pn) ] ;
-            local t = [ $(p).target ] ;
+            local t = [ project.target [ project.attribute $(p) location ] ] ;
             result += [ $(t).generate $(properties) ] ;
         }
         return $(result) ;
@@ -96,17 +100,23 @@ rule project-target ( local-name : project : requirements * : default-build * )
     # Creates the instance if needed.
     rule main-target ( name )
     {
-        # FIXME
-        import class : new ;
-        if ! $(self.main-target<$(name)>)
+        if ! $(self.main-target.$(name))
         {
             self.main-targets += $(name) ;
-            self.main-target<$(name)> =
-                [ new main-target $(self.local-name) : $(self.project) ] ;
+            self.main-target.$(name) =
+                [ new main-target $(name) : $(self.project) ] ;
         }
-        return $(self.main-target<$(name)>) ;
+        return $(self.main-target.$(name)) ;
     }
 
+    # Tells if a main target with the specified name exists.
+    rule has-main-target ( name )
+    {
+        if $(self.main-target.$(name)) 
+        {
+            return true ;
+        } 
+    }
 }
 class project-target : abstract-target ;
 
@@ -114,42 +124,113 @@ class project-target : abstract-target ;
 rule main-target ( name : project )
 {
     import errors : error ;
+    import numbers : range ;
 
     abstract-target.__init__ $(name) : $(project) ;
 
-    # Add a new build variant for this target
-    rule add-variant ( target )
+    # Add a new alternative for this target
+    rule add-alternative ( target )
     {
-        self.variants += $(target) ;
+        self.alternatives += $(target) ;
     }
 
-    # Select a variant return virtual targets that it generates
+    # Select an alternative for this main target, by finding all alternatives
+    # which requirements are satisfied by 'properties' and picking the one with
+    # longest requirements set.
+    # Returns the result of calling 'generate' on that alternative.
     rule generate ( properties * )
     {
-        # At this stage we just try to generate each variant and if
-        # more than one succeeds, consider it as an error.
-        local alternatives ;
+        # Try to generate all the alternatives.
+        local alternatives = [ new vector ] ;
 
-        for local v in $(self.variants)
+        for local v in $(self.alternatives)
         {
             local vtargets = [ $(v).generate $(properties) ] ;
             if $(vtargets) && $(vtargets[1]) != "@error"
             {
-                alternatives += $(v) $(vtargets) "@" ;
+                $(alternatives).push-back [ new vector $(v) $(vtargets) ] ;
             }
         }
-        if ! $(alternatives)
+        if [ $(alternatives).empty ]
         {
-            # TODO: Should print a name
-            error "No viable variant found for main target" [ name ] ;
+            # TODO: probably, should explain, for each alternative, why it can't
+            # be build.
+            print.wrapped-text
+                "Cannot satisfy request to build" [ full-name ]
+                 "with properties " $(properties) ;
+            print.wrapped-text
+                 "No viable alternative found." ;
+            EXIT ;
         }
-        # We have "@" at the end. Another one means two or more alts.
-        if "@" in $(alternatives[1--2])
+        local result ;
+        if [ $(alternatives).size ] = 1 
+        {  
+            result = [ $(alternatives).get-at 1 ] ;
+            result = $(result[2-]) ;
+        }
+        else
         {
-            error "Ambiguous variants for main target" [ name ]  ;
-        }
+            # Find the alternative with the longest set of non-free and 
+            # non-indicental requirements
+            local r = [ $(alternatives).indices ] ;
+
+            # First compute the length of requirements sets
+            local req-length ;
+            for local p in $(r) 
+            {
+                local target = [ $(alternatives).at $(p) : 1 ] ;
+                assert.equal [ is-a $(target) : basic-target ] : true ;
+                local props = [ $(target).requirements ] ;
+                req-length += [ sequence.length [ property.remove free :
+                                [ $(target).requirements ] ] ] ;
+            }
+
+            # Then find if there's single requirements set with maximum length
+            local req-length2 = [ sequence.insertion-sort $(req-length) ] ;
+            if $(req-length2[-1]) != $(req-length2[-2]) 
+            {
+                # Have signle maximum value
+                local max-length = $(req-length2[-1]) ;
+                local best ;
+                while $(r) && ! $(best) 
+                {                
+                    if $(req-length[$(r[1])]) = $(max-length) 
+                    {
+                        best = [ $(alternatives).get-at $(r[1]) ] ;      
+                    }
+                    r = $(r[2-]) ;
+                }
+                result = $(best[2-]) ;
+            } 
+            else
+            {
+                error "Ambiguous alternatives for main target" [ full-name ]  ;
+            }                    
+        } 
+
+        # Add additional subvariant element for the targets which free,
+        # non-incidental properties are not equal to project's.
+
+        local pr = [ property.take free : [ property.remove incidental : 
+                       [ project.attribute $(self.project) requirements ] ] ] ;
+
+        for local v in $(result)
+        {
+            local action = [ $(v).action ] ;
+            if $(action) 
+            {
+                local properties = [ property.take free : [ property.remove incidental : 
+                                        [ $(action).properties  ] ] ] ;
+        
+                if $(properties) != $(pr)
+                {
+                    $(v).extra-path [ sequence.join main-target- $(self.name) ] ;
+                }
+            }
+        }                
+
         # Now return virtual targets for the only alternative
-        return $(alternatives[2--2]) ;
+        return $(result) ;
     }
 }
 
@@ -165,9 +246,11 @@ class main-target : abstract-target ;
 rule basic-target ( name : project
                     : sources * : requirements * : default-build * )
 {
+    import build-request ;
+    import virtual-target ;
+
     abstract-target.__init__ $(name) : $(project) ;
 
-    self.name = $(name) ;
     self.sources = $(sources) ;
     self.requirements = $(requirements) ;
     self.default-build = $(default-build) ;
@@ -187,66 +270,87 @@ rule basic-target ( name : project
         {
             # CONSIDER: I'm really not sure if this is correct...
             properties = [ build-request.expand $(self.default-build) ] ;
+            local result = ;
             for local p in $(properties)
             {
-                generate [ feature.split $(p) ] ;
+                result += [ generate [ feature.split $(p) ] ] ;
             }
-        }
+            return $(result) ;
+        } else {
 
-        local rproperties =
-            [ property.refine $(properties) : $(self.requirements) ] ;
-        if $(rproperties[1]) = "@error"
-        {
-            print.wrapped-text
-                "Cannot satisfy request to build" [ name ]
-                "with properties " $(properties) ;
-            print.wrapped-text
-                "Explanation:" $(rproperties[2-]) ;
-            EXIT ;
-        }
-        # TODO: issue a warning when requirements change properties, but
-        # link-compatibility is still not broken.
+            property-path = [ property.as-path $(properties) ] ;
+            if ! $(property-path) 
+            {
+                property-path = X ;
+            }
+            if ! $(self.generated.$(property-path)) 
+            {
+                local rproperties =
+                    [ property.refine $(properties) : $(self.requirements) ] ;
 
-        local source-targets ;
-        for local s in $(self.sources)
-        {
-            # This assumes property list never contain "@".
-            if [ MATCH .*@.* $(s) ]
-            {
-                # Reference to other main target
-                source-targets += [ recurse $(s) $(properties) ] ;
-            }
-            else
-            {
-                # Just a source file
-                source-targets +=
-                    [ new virtual-target $(self.name) : $(self.project) ] ;
-            }
+                if $(rproperties[1]) != "@error"                    
+                {
+                    # TODO: issue a warning when requirements change properties, but
+                    # link-compatibility is still not broken.
+
+                    local source-targets ;
+                    for local s in $(self.sources)
+                    {
+                        # Try treating this source as reference to main target
+                        local more-targets = [ generate-source $(s) : $(properties) ] ;
+                        if $(more-targets)
+                        {
+                            source-targets += $(more-targets) ;
+                        }
+                        else 
+                        {
+                            # Just a source file
+                            source-targets += [ virtual-target.from-file $(s) : $(self.project) ] ;                            
+                        }
+                    }
+                    self.generated.$(property-path) = 
+                        [ construct $(source-targets) : $(rproperties) ] ;                             
+                } 
+                else
+                {
+                    self.generated.$(property-path) = $(rproperties) ;
+                }       
+            }                
+            return $(self.generated.$(property-path)) ;
         }
-        return [ construct $(source-targets) : $(properties) ] ;
     }
 
     # Given a source specification, generates virtual targets for that source.
-    rule recurse ( source : properties * )
+    # If the source does not correspond to any main target, returns nothing.
+    rule generate-source ( source : properties * )
     {
         # Separate target name from properties override
-        local split = [ feature.split $(source) ] ;
+        local split = [ MATCH "^([^<]*)(/(<.*))?$" : $(source) ] ;
         local id = $(split[1]) ;
-        local sproperties = $(split[2-]) ;
-
-        # Apply source-specific properties
-        local rproperties = [ property.refine $(properties) : $(sproperties) ] ;
-        if $(rproperties[1]) = "@error"
+        local sproperties = ;
+        if $(split[3])
         {
-            error
-                "When building" [ name ] " with properties " $(properties)
-                "Invalid properties specified for " $(source) ":"
-                $(rproperties[2-]) ;
+            sproperties = [ property.make [ feature.split $(split[3]) ] ] ;
         }
 
-        # Try to generate source
-        local target = [ project.find-target $(id) ] ;
-        return [ $(target).generate $(rproperties) ] ;
+        # Check if such target exists
+        local main-target = 
+            [ project.find-target $(id) : [ project.attribute $(self.project) location ] ] ;
+        
+        if $(main-target) {
+            # Take properties which should be propagated and refine them
+            # with source-specific requirements.
+            local propagated = [ property.take propagated : $(properties) ] ;
+            local rproperties = [ property.refine $(propagated) : $(sproperties) ] ;
+            if $(rproperties[1]) = "@error"
+            {
+                error
+                    "When building" [ full-name ] " with properties " $(properties)
+                    "Invalid properties specified for " $(source) ":"
+                    $(rproperties[2-]) ;
+            }
+            return [ $(main-target).generate $(rproperties) ] ;        
+        }
     }
 
     # Constructs the virtual targets for this abstract targets and
@@ -254,168 +358,83 @@ rule basic-target ( name : project
     # Should be overrided in derived classes.
     rule construct ( source-targets * : properties * )
     {
+        errors.error "method should be defined in derived classes" ;
+    }
+
+    # Returns the requirements for this target
+    rule requirements ( )
+    {
+        return $(self.requirements) ;
     }
 
 }
 
 class basic-target : abstract-target ;
 
+.args = 4 5 6 7 8 9 ;
 
-# Class which represents a virtual target
-rule virtual-target ( name : project : subvariant * )
+# Creates a main target alternative of type 'class-name'. The ctor will be
+# passed 'target-name', 'project' and all trailing arguments.
+# If 'requirements-pos' and 'default-build-pos' are specified, the corresponding
+# trailing arguments will be specially processed.
+rule main-target-alternative ( target-name project class-name 
+        : requirements-pos ? : default-build-pos ?
+        : * )
 {
-    self.name = $(name) ;
-    self.subvariant = $(subvariant) ;
-    self.project = $(project) ;
-
-    self.includes  = ;
-    self.dependencies = ;
-    self.action = ;
-
-    self.actual-name = ;
-
-
-    # Name of the target
-    rule name ( ) { return $(self.name) ; }
-
-    # Property set that distinguished different variants of a target.
-    # May be a subset of the property set that is used for building.
-    # Determines the location of target, in an unspecified way.
-    rule subvariant ( ) { return $(self.subvariant) ; }
-
-    # Project where this target was declared
-    rule project ( ) { return $(self.project) ; }
-
-    rule includes ( ) { return $(self.includes) ; }
-    rule add_includes ( i + )
+    for local i in $(.args) 
     {
-        self.includes = [ sequence.merge $(self.includes)
-                            : [ sequence.insertion-sort $(i) ] ] ;
+        a$(i) = $($(i)) ;
     }
-
-    rule dependencies ( ) { return $(self.dependencies) ; }
-    rule depends ( d + )
+       
+    if $(requirements-pos)
     {
-        self.dependencies = [ sequence.merge $(self.dependencies)
-                               : [ sequence.insertion-sort $(d) ] ] ;
-    }
-
-    # If 'a' is supplied, sets action to 'a'.
-    # Returns the action currently set.
-    rule action ( a ? )
-    {
-        if $(a) {
-            self.action = $(a) ;
-        }
-        return $(self.action) ;
-    }
-
-    # Generates all the actual targets and build instructions needed to build
-    # this target. Returns the actual target name. Can be called several times.
-    # Does no processing for other targets that 'action' will generate.
-    # Rationale: we might need only one file from the set created by an
-    # action, and there's no need to run the action if the file is up-to-date,
-    # only because some other file in set is out-of-date.
-    rule actualize ( )
-    {
-        ECHO "Actualizing target $(self.name)" ;
-        if ! $(self.actual-name) {
-
-            self.actual-name = [ actual-name ] ;
-            for local i in $(dependencies) {
-                DEPENDS $(name) : [ $(i).actualize ] ;
-            }
-            for local i in $(includes) {
-                Includes $(name) : [ $(i).actualize ] ;
-            }
-            local a = [ action ] ;
-            if $(a) {
-                $(a).actualize ;
-                local path = [ os.path.join [ $(self.project).location ] "bin" ] ;
-                path = [ os.path.native $(path) ] ;
-                MakeLocate $(self.actual-name) : $(path) ;
-
-            } else {
-                SEARCH on $(self.actual-name) =
-                    [ os.path.native [ $(self.project).source-location ] ] ;
-            }
-        }
-        return $(self.actual-name) ;
-    }
-
-# private:
-    rule actual-name ( )
-    {
-        if ! $(self.actual-name)
+        local real-pos = $(.args[$(requirements-pos)]) ;
+        local project-requirements = [ project.attribute $(project) requirements ] ;
+        
+        local requirements = [ property.refine $(project-requirements) : $($(real-pos)) ] ;
+        if $(requirements[1]) = "@error" 
         {
-            local project-location = [ $(self.project).location ] ;
-            local location-grist =
-                [ sequence.join [ regex.split $(project-location) "/" ] : "!" ] ;
-            local property-grist =
-                [ property.as-path $(self.subvariant) ] ;
-            local grist = $(location-grist)/$(property-grist) ;
-            self.actual-name = <$(grist)>$(self.name) ;
+            error "Conflicting requirements for target:" $(requirements) ;
         }
-        ECHO "Actual name will be " $(self.actual-name) ;
-        return $(self.actual-name) ;
+        else
+        {
+            a$(real-pos) = $(requirements) ;
+        }                        
     }
-}
-class virtual-target ;
+    
+    if $(default-build-pos)
+    {
+        local real-pos = $(.args[$(default-build-pos)]) ;
+        if ! $(a$(real-pos))
+        {
+            a$(real-pos) = [ project.attribute $(project) default-build ] ;
+        }        
+    }
+               
+    local location = [ project.attribute $(project) location ] ;
+    local ptarget = [ project.target $(location) ] ;
+    local target = [ $(ptarget).main-target $(target-name) ] ;
 
-# Class which represents an action.
-# Both 'targets' and 'sources' should list instances of 'virtual-target'.
-# Action name should name a rule with this prototype
-#     rule action_name ( targets + : sources * : properties * )
-# Targets and sources are passed as actual jam targets. The rule may
-# not establish dependency relationship, but should do everything else.
-rule action ( targets + : sources * : action_name : properties * )
+    $(target).add-alternative
+        [ new $(class-name) $(target-name) : $(project) 
+          : $(a4) : $(a5) : $(a6) : $(a7) : $(a8) : $(a9) ] ;
+}
+
+
+rule typed-target ( name : project : type 
+    : sources * : requirements * : default-build * )
 {
-    self.targets = $(targets) ;
-    self.sources = $(sources) ;
-    self.action_name = $(action_name) ;
-    self.properties = $(properties) ;
-
-    rule targets ( )
+    basic-target.__init__ $(name) : $(project) 
+      : $(sources) : $(requirements) : $(defailt-build) ;
+    
+    self.type = $(type) ;
+    
+    rule construct ( source-targets * : properties * )
     {
-        return $(self.targets) ;
-    }
-
-    rule sources ( )
-    {
-        return $(self.sources) ;
-    }
-
-    rule action_name ( )
-    {
-        return $(self.action_name) ;
-    }
-
-    rule properties ( )
-    {
-        return $(self.properties) ;
-    }
-
-    # Generates actual build instructions.
-    rule actualize ( )
-    {
-        local actual_targets ;
-        for local i in [ targets ]
-        {
-            actual_targets += [ $(i).actualize ] ;
-        }
-
-        local actual_sources ;
-        for local i in [ sources ]
-        {
-            actual_sources += [ $(i).actualize ] ;
-        }
-
-        DEPENDS $(actual_targets) : $(actual_sources) ;
-
-        $(self.action_name)
-            $(actual_targets) : $(actual_sources) : [ properties ] ;
-    }
+        local r = [ generators.construct-dbg $(self.project) $(self.name) : $(self.type) 
+          : $(properties) <main-target-type>$(self.type) : $(source-targets) ] ;
+        return [ $(r).get-at 1 ] [ $(r).get-at 2 ] ;
+    }            
 }
-class action ;
-
-
+                    
+class typed-target : basic-target ;

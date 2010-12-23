@@ -8,15 +8,17 @@
 
 #include <boost/type.hpp>
 #include <typeinfo>
-#include <boost/type_traits/array_traits.hpp>
-#include <boost/type_traits/reference_traits.hpp>
+#include <boost/type_traits/is_array.hpp>
+#include <boost/type_traits/is_reference.hpp>
+#include <boost/type_traits/is_const.hpp>
+#include <boost/type_traits/is_volatile.hpp>
 //
 // Fix for MSVC's broken typeid() implementation which doesn't strip
 // decoration. This fix doesn't handle cv-qualified array types. It
 // could probably be done, but I haven't figured it out yet.
 //
 
-# if defined(BOOST_MSVC) && BOOST_MSVC <= 1300 || defined(BOOST_INTEL_CXX_VERSION) && BOOST_INTEL_CXX_VERSION <= 600
+# if defined(BOOST_MSVC) && BOOST_MSVC <= 1300 || defined(BOOST_INTEL_CXX_VERSION) && BOOST_INTEL_CXX_VERSION <= 700
 
 namespace boost { namespace python { namespace detail { 
 
@@ -57,8 +59,8 @@ template <bool> struct bool_t{};
 template <class T>
 inline typeinfo typeid_nonref(boost::type<T>* = 0)
 {
-    BOOST_STATIC_CONSTANT(bool, c = is_const<T>::value);
-    BOOST_STATIC_CONSTANT(bool, v = is_volatile<T>::value);
+    bool const c = is_const<T>::value;
+    bool const v = is_volatile<T>::value;
     return value_id_accessor<(2 * v + c)>::get((T*)0);
 }
 

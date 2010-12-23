@@ -1,3 +1,4 @@
+#error obsolete
 // Copyright David Abrahams 2002. Permission to copy, use,
 // modify, sell and distribute this software is granted provided this
 // copyright notice appears in all copies. This software is provided
@@ -6,7 +7,8 @@
 #ifndef MODULE_BASE_DWA2002227_HPP
 # define MODULE_BASE_DWA2002227_HPP
 # include <boost/python/detail/wrap_python.hpp>
-# include <boost/python/reference.hpp>
+# include <boost/python/handle.hpp>
+# include <boost/python/object_fwd.hpp>
 
 namespace boost { namespace python { namespace detail { 
 
@@ -14,27 +16,27 @@ class BOOST_PYTHON_DECL module_base
 {
  public:
     // Create a module. REQUIRES: only one module is created per module.
-    module_base(const char* name);
+    module_base(char const* name, char const* doc = 0);
     ~module_base();
 
     // Add elements to the module
-    void setattr(const char* name, PyObject*);
-    void setattr(const char* name, ref const&);
-    void add(PyTypeObject* x); // just use the type's name
-    void add_type(ref);
+    void add(type_handle const&); // just use the type's name
     
     // Return a reference to the Python module object being built
-    inline ref object() const;
+    inline handle<> object() const;
+
+ protected:
+    void setattr_doc(const char* name, python::object const&, char const* doc);
 
  private:
-    ref m_module;
+    handle<> m_module;
     static PyMethodDef initial_methods[1];
 };
 
 //
 // inline implementations
 //
-inline ref module_base::object() const
+inline handle<> module_base::object() const
 {
     return m_module;
 }

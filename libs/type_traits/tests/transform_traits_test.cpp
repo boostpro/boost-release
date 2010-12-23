@@ -7,7 +7,7 @@
 #include <boost/type_traits/transform_traits.hpp>
 #include <boost/type_traits/cv_traits.hpp>
 #include <boost/utility.hpp>
-#include <boost/test/cpp_main.cpp>
+#include <boost/test/execution_monitor.hpp>
 
 #ifdef __BORLANDC__
 #pragma hrdstop
@@ -20,7 +20,7 @@
 // template test code.  To prevent "Internal Compiler Error"
 // type messages, we have to split these up into lots of
 // separate functions:
-#if defined(BOOST_MSVC) || (defined(__BORLANDC__) && (__BORLANDC__ < 0x550))
+#if defined(BOOST_MSVC) && BOOST_MSVC <= 1300 || (defined(__BORLANDC__) && (__BORLANDC__ < 0x550))
 #define SHORT_TRANSFORM_TEST
 #endif
 #include "boost/type_traits/type_traits_test.hpp"
@@ -461,7 +461,7 @@ unsigned int expected_failures = 97; // cv-qualifiers
 # else
 unsigned int expected_failures = 474; // cv-qualifiers
 # endif
-#elif defined(BOOST_MSVC)
+#elif defined(BOOST_MSVC) && _MSC_VER <= 1300
 unsigned int expected_failures = 84; // partial specialisation (fails for UDT's)
 #elif defined(__SUNPRO_CC)
 unsigned int expected_failures = 1; // cv-qualified references

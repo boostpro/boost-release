@@ -598,7 +598,6 @@ namespace boost {
           typename Config::OutEdgeList::iterator out_i = out_el.begin();
           for (; out_i != out_el.end(); ++out_i)
             if (&(*out_i).get_property() == &p) {
-              g.m_edges.erase((*out_i).get_iter());
               out_el.erase(out_i);
               break;
             }
@@ -606,6 +605,7 @@ namespace boost {
           typename Config::OutEdgeList::iterator in_i = in_el.begin();
           for (; in_i != in_el.end(); ++in_i)
             if (&(*in_i).get_property() == &p) {
+              g.m_edges.erase((*in_i).get_iter());
               in_el.erase(in_i);
               return;
             }
@@ -623,19 +623,19 @@ namespace boost {
         {
           typedef typename Config::graph_type graph_type;
           graph_type& g = static_cast<graph_type&>(g_);
-          
+          no_property* p = (no_property*)e.get_property();
           typename Config::OutEdgeList& out_el = g.out_edge_list(source(e, g));
           typename Config::OutEdgeList::iterator out_i = out_el.begin();
           for (; out_i != out_el.end(); ++out_i)
-          if (&(*out_i).get_property() == (no_property*)e.get_property()) {
-            g.m_edges.erase((*out_i).get_iter());
-            out_el.erase(out_i);
-            break;
-          }
+            if (&(*out_i).get_property() == p) {
+              out_el.erase(out_i);
+              break;
+            }
           typename Config::OutEdgeList& in_el = g.out_edge_list(target(e, g));
           typename Config::OutEdgeList::iterator in_i = in_el.begin();
           for (; in_i != in_el.end(); ++in_i)
-            if (&(*in_i).get_property() == (no_property*)e.get_property()) {
+            if (&(*in_i).get_property() == p) {
+              g.m_edges.erase((*in_i).get_iter());
               in_el.erase(in_i);
               return;
             }
@@ -840,8 +840,6 @@ namespace boost {
       typedef typename Config::graph_type graph_type;
       graph_type& g = static_cast<graph_type&>(g_);
 
-      assert( u != v ); // don't allow self-loops 
-
       bool inserted;
       typename Config::EdgeContainer::value_type e(u, v, p);
       g.m_edges.push_back(e);
@@ -980,7 +978,6 @@ namespace boost {
         typename Config::OutEdgeList::iterator out_i = out_el.begin();
         for (; out_i != out_el.end(); ++out_i)
           if (&(*out_i).get_property() == (PType*)e.get_property()) {
-            g.m_edges.erase((*out_i).get_iter());
             out_el.erase(out_i);
             break;
           }
@@ -988,6 +985,7 @@ namespace boost {
         typename Config::InEdgeList::iterator in_i = in_el.begin();
         for (; in_i != in_el.end(); ++in_i)
           if (&(*in_i).get_property() == (PType*)e.get_property()) {
+            g.m_edges.erase((*in_i).get_iter());
             in_el.erase(in_i);
             break;
           }
@@ -2508,14 +2506,43 @@ namespace boost {
 #if !defined(BOOST_NO_HASH) && !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 namespace BOOST_STD_EXTENSION_NAMESPACE {
 
-  template <typename V, typename P>
-  struct hash< boost::detail::stored_edge_property <V,P> > 
+  template <>
+  struct hash< void* > // Need this when vertex_descriptor=void*
   {
-    std::size_t operator()(const boost::detail::stored_edge_property<V,P>& e) const
+    std::size_t
+    operator()(void* v) const { return (std::size_t)v; }
+  };
+
+  template <typename V>
+  struct hash< boost::detail::stored_edge<V> > 
+  {
+    std::size_t
+    operator()(const boost::detail::stored_edge<V>& e) const
     {
       return hash<V>()(e.m_target);
     }
   };
+
+  template <typename V, typename P>
+  struct hash< boost::detail::stored_edge_property <V,P> > 
+  {
+    std::size_t
+    operator()(const boost::detail::stored_edge_property<V,P>& e) const
+    {
+      return hash<V>()(e.m_target);
+    }
+  };
+
+  template <typename V, typename I, typename P>
+  struct hash< boost::detail::stored_edge_iter<V,I, P> > 
+  {
+    std::size_t
+    operator()(const boost::detail::stored_edge_iter<V,I,P>& e) const
+    {
+      return hash<V>()(e.m_target);
+    }
+  };
+
 }
 #endif
 

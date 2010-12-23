@@ -5,7 +5,9 @@
 // to its suitability for any purpose.
 #include <boost/python/class.hpp>
 #include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
 #include <boost/python/has_back_reference.hpp>
+#include <boost/python/back_reference.hpp>
 #include <boost/ref.hpp>
 #include <boost/utility.hpp>
 #include <memory>
@@ -73,27 +75,37 @@ namespace boost { namespace python
   };
 }}
 
-
-BOOST_PYTHON_MODULE_INIT(back_reference_ext)
+// prove that back_references get initialized with the right PyObject*
+object y_identity(back_reference<Y const&> y)
 {
-    module("back_reference_ext")
-        .def("copy_Y", copy_Y, return_value_policy<copy_const_reference>())
-        .def("copy_Z", copy_Z, return_value_policy<copy_const_reference>())
-        .def("x_instances", &X::count)
-        .add(
-            class_<Y>("Y")
-            .def_init(args<int>())
-            .def("value", &Y::value)
-            .def("set", &Y::set)
-            )
-        
-        .add(
-            class_<Z,std::auto_ptr<Z> >("Z")
-            .def_init(args<int>())
-            .def("value", &Z::value)
-            .def("set", &Z::set)
-            )
+    return y.source();
+}
+
+// prove that back_references contain the right value
+bool y_equality(back_reference<Y const&> y1, Y const& y2)
+{
+    return &y1.get() == &y2;
+}
+
+BOOST_PYTHON_MODULE(back_reference_ext)
+{
+    def("copy_Y", copy_Y, return_value_policy<copy_const_reference>());
+    def("copy_Z", copy_Z, return_value_policy<copy_const_reference>());
+    def("x_instances", &X::count);
+    
+    class_<Y>("Y", init<int>())
+        .def("value", &Y::value)
+        .def("set", &Y::set)
         ;
+
+    class_<Z,std::auto_ptr<Z> >("Z", init<int>())
+        .def("value", &Z::value)
+        .def("set", &Z::set)
+        ;
+
+    def("y_identity", y_identity);
+    def("y_equality", y_equality);
+
 }
 
 #include "module_tail.cpp"

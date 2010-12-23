@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: statistic_tests.hpp,v 1.7 2002/04/08 21:20:39 jmaurer Exp $
+ * $Id: statistic_tests.hpp,v 1.8 2002/07/13 12:26:19 david_abrahams Exp $
  *
  */
 
@@ -28,7 +28,7 @@
 #include <boost/config.hpp>
 
 
-#ifdef BOOST_MSVC
+#if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
 namespace std
 {
   inline double pow(double a, double b) { return ::pow(a,b); }

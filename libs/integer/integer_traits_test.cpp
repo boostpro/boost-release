@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: integer_traits_test.cpp,v 1.8 2002/05/05 11:00:28 johnmaddock Exp $
+ * $Id: integer_traits_test.cpp,v 1.10.4.1 2002/09/24 11:40:08 johnmaddock Exp $
  *
  * Revision history
  *  2000-02-22  Small improvements by Beman Dawes
@@ -35,7 +35,7 @@
  * Therefore, avoid explicit function template instantiations.
  */
 
-#if defined(BOOST_MSVC) && (BOOST_MSVC <= 1200)
+#if defined(BOOST_MSVC) && (BOOST_MSVC <= 1300)
 template<typename T> inline T make_char_numeric_for_streaming(T x) { return x; }
 namespace fix{
 inline int make_char_numeric_for_streaming(char c) { return c; }
@@ -83,10 +83,11 @@ int test_main(int, char*[])
   runtest("long", long());
   typedef unsigned long unsigned_long;
   runtest("unsigned long", unsigned_long());
-#if !defined(BOOST_NO_INT64_T) && !defined(BOOST_MSVC) && !defined(__BORLANDC__) && !defined(__BEOS__)
+#if !defined(BOOST_NO_INTEGRAL_INT64_T) && !defined(BOOST_NO_INT64_T)
   //
-  // MS/Borland compilers can't support 64-bit member constants
-  // BeOS doesn't have specialisations for long long in SGI's <limits> header.
+  // Only test for compilers that have 64-bit int's that 
+  // can be used in integral constant expressions:
+  //
   runtest("int64_t (possibly long long)", boost::int64_t());
   runtest("uint64_t (possibly unsigned long long)", boost::uint64_t());
 #else

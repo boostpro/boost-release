@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: mersenne_twister.hpp,v 1.6 2002/01/03 22:20:56 jmaurer Exp $
+ * $Id: mersenne_twister.hpp,v 1.6.10.1 2002/09/20 11:56:18 bjorn_karlsson Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -23,6 +23,7 @@
 
 #include <iostream>
 #include <algorithm>     // std::copy
+#include <iterator>      // std::ostream_iterator
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
 #include <boost/static_assert.hpp>

@@ -6,7 +6,7 @@
 
 #include <boost/type_traits/cv_traits.hpp>
 #include <boost/utility.hpp>
-#include <boost/test/cpp_main.cpp>
+#include <boost/test/execution_monitor.hpp>
 
 #ifdef __BORLANDC__
 #pragma hrdstop
@@ -55,7 +55,7 @@ int cpp_main(int argc, char* argv[])
 
 //
 // define the number of failures expected for given compilers:
-#ifdef BOOST_MSVC
+#if defined(BOOST_MSVC) && _MSC_VER <= 1300
 unsigned int expected_failures = 2;
 #elif defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x530)
 unsigned int expected_failures = 1;

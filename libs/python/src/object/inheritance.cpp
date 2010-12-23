@@ -4,8 +4,11 @@
 // "as is" without express or implied warranty, and with no claim as
 // to its suitability for any purpose.
 #include <boost/python/object/inheritance.hpp>
-#include <boost/python/converter/type_id.hpp>
+#include <boost/python/type_id.hpp>
 #include <boost/graph/breadth_first_search.hpp>
+#if _MSC_FULL_VER >= 13102171 && _MSC_FULL_VER <= 13102179
+# include <boost/graph/reverse_graph.hpp>
+#endif 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/reverse_graph.hpp>
 #include <boost/property_map.hpp>
@@ -45,7 +48,7 @@ namespace
   // Here we put together the low-level data structures of the
   // casting graph representation.
   //
-  typedef python::converter::undecorated_type_id_t class_id;
+  typedef python::type_info class_id;
 
   // represents a graph of available casts
   
@@ -187,7 +190,7 @@ namespace
       
       return std::lower_bound(
           type_index().begin(), type_index().end()
-          , make_tuple(type, vertex_t(), dynamic_id_function(0))
+          , boost::make_tuple(type, vertex_t(), dynamic_id_function(0))
           , boost::bind<bool>(std::less<class_id>()
                , boost::bind<class_id>(select1st<entry>(), _1)
                , boost::bind<class_id>(select1st<entry>(), _2)));
@@ -213,7 +216,7 @@ namespace
       vertex_t v = add_vertex(full_graph().topology());
       vertex_t v2 = add_vertex(up_graph().topology());
       assert(v == v2);
-      return type_index().insert(p, make_tuple(type, v, dynamic_id_function(0)));
+      return type_index().insert(p, boost::make_tuple(type, v, dynamic_id_function(0)));
   }
 
   // Map a two types to a vertex in the graph, inserting if neccessary
@@ -405,7 +408,7 @@ namespace
       // Look in the cache first for a quickie address translation
       std::ptrdiff_t offset = (char*)p - (char*)dynamic_id.first;
 
-      cache_element seek(make_tuple(src_t, dst_t, offset, dynamic_id.second));
+      cache_element seek(boost::make_tuple(src_t, dst_t, offset, dynamic_id.second));
       cache_t& c = cache();
       cache_t::iterator const cache_pos
           = std::lower_bound(c.begin(), c.end(), seek);

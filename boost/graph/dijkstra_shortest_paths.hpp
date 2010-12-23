@@ -39,6 +39,7 @@
 #include <boost/pending/mutable_queue.hpp>
 #include <boost/graph/relax.hpp>
 #include <boost/pending/indirect_cmp.hpp>
+#include <boost/graph/exception.hpp>
 
 namespace boost {
 
@@ -62,16 +63,17 @@ namespace boost {
   template <class Visitors = null_visitor>
   class dijkstra_visitor : public bfs_visitor<Visitors> {
   public:
-    dijkstra_visitor(Visitors vis = Visitors())
+    dijkstra_visitor() { }
+    dijkstra_visitor(Visitors vis)
       : bfs_visitor<Visitors>(vis) { }
 
     template <class Edge, class Graph>
     void edge_relaxed(Edge e, Graph& g) {
-      invoke_visitors(m_vis, e, g, on_edge_relaxed());      
+      invoke_visitors(this->m_vis, e, g, on_edge_relaxed());      
     }
     template <class Edge, class Graph>
     void edge_not_relaxed(Edge e, Graph& g) {
-      invoke_visitors(m_vis, e, g, on_edge_not_relaxed());      
+      invoke_visitors(this->m_vis, e, g, on_edge_not_relaxed());      
     }
   private:
     template <class Edge, class Graph>
@@ -91,11 +93,14 @@ namespace boost {
       class BinaryFunction, class BinaryPredicate>
     struct dijkstra_bfs_visitor
     {
+      typedef typename property_traits<DistanceMap>::value_type D;
+
       dijkstra_bfs_visitor(UniformCostVisitor vis, UpdatableQueue& Q,
                            WeightMap w, PredecessorMap p, DistanceMap d, 
-                           BinaryFunction combine, BinaryPredicate compare)
+                           BinaryFunction combine, BinaryPredicate compare,
+			   D zero)
         : m_vis(vis), m_Q(Q), m_weight(w), m_predecessor(p), m_distance(d), 
-          m_combine(combine), m_compare(compare)  { }
+          m_combine(combine), m_compare(compare), m_zero(zero)  { }
 
       template <class Edge, class Graph>
       void tree_edge(Edge e, Graph& g) {
@@ -127,7 +132,11 @@ namespace boost {
       template <class Vertex, class Graph>
       void examine_vertex(Vertex u, Graph& g) { m_vis.examine_vertex(u, g); }
       template <class Edge, class Graph>
-      void examine_edge(Edge e, Graph& g) { m_vis.examine_edge(e, g); }
+      void examine_edge(Edge e, Graph& g) { 
+        if (m_compare(get(m_weight, e), m_zero))
+          throw negative_edge();
+        m_vis.examine_edge(e, g);
+      }
       template <class Edge, class Graph>
       void black_target(Edge, Graph&) { }
       template <class Vertex, class Graph>
@@ -141,6 +150,7 @@ namespace boost {
       BinaryFunction m_combine;
       BinaryPredicate m_compare;
       bool m_decreased;
+      D m_zero;
     };
 
   } // namespace detail
@@ -170,7 +180,7 @@ namespace boost {
 
     detail::dijkstra_bfs_visitor<DijkstraVisitor, MutableQueue, WeightMap,
       PredecessorMap, DistanceMap, Combine, Compare>
-        bfs_vis(vis, Q, weight, predecessor, distance, combine, compare);
+        bfs_vis(vis, Q, weight, predecessor, distance, combine, compare, zero);
 
     std::vector<default_color_type> color(num_vertices(g));
     default_color_type c = white_color;

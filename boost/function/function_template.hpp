@@ -229,11 +229,16 @@ namespace boost {
   template<
     typename R BOOST_FUNCTION_COMMA
     BOOST_FUNCTION_TEMPLATE_PARMS,
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
     typename Policy    = empty_function_policy,
     typename Mixin     = empty_function_mixin,
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
     typename Allocator = BOOST_FUNCTION_DEFAULT_ALLOCATOR
   >
-  class BOOST_FUNCTION_FUNCTION : public function_base, public Mixin
+  class BOOST_FUNCTION_FUNCTION : public function_base
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
+                                , public Mixin
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
   {
     typedef typename detail::function::function_return_type<R>::type 
       internal_result_type;
@@ -248,41 +253,66 @@ namespace boost {
     typedef T1 second_argument_type;
 #endif
 
+    BOOST_STATIC_CONSTANT(int, arity = BOOST_FUNCTION_NUM_ARGS);
+    BOOST_FUNCTION_ARG_TYPES
+
 #ifndef BOOST_NO_VOID_RETURNS
     typedef R         result_type;
 #else
     typedef internal_result_type result_type;
 #endif // BOOST_NO_VOID_RETURNS
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
     typedef Policy    policy_type;
     typedef Mixin     mixin_type;
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
     typedef Allocator allocator_type;
     typedef BOOST_FUNCTION_FUNCTION self_type;
 
-    BOOST_FUNCTION_FUNCTION() : function_base(), Mixin(), invoker(0) {}
+    BOOST_FUNCTION_FUNCTION() : function_base()
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
+                              , Mixin()
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
+                              , invoker(0) {}
 
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
     explicit BOOST_FUNCTION_FUNCTION(const Mixin& m) : 
-      function_base(), Mixin(m), invoker(0) 
+      function_base(), 
+      Mixin(m), 
+      invoker(0) 
     {
     }
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
 
     // MSVC chokes if the following two constructors are collapsed into
     // one with a default parameter.
     template<typename Functor>
     BOOST_FUNCTION_FUNCTION(Functor BOOST_FUNCTION_TARGET_FIX(const &) f) :
-      function_base(), Mixin(), invoker(0)
+      function_base(), 
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
+      Mixin(), 
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
+      invoker(0)
     {
       this->assign_to(f);
     }
 
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
     template<typename Functor>
     BOOST_FUNCTION_FUNCTION(Functor f, const Mixin& m) :
-      function_base(), Mixin(m), invoker(0)
+      function_base(), 
+      Mixin(m), 
+      invoker(0)
     {
       this->assign_to(f);
     }
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
 
     BOOST_FUNCTION_FUNCTION(const BOOST_FUNCTION_FUNCTION& f) :
-      function_base(), Mixin(static_cast<const Mixin&>(f)), invoker(0)
+      function_base(),
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
+      Mixin(static_cast<const Mixin&>(f)), 
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
+      invoker(0)
     {
       this->assign_to_own(f);
     }
@@ -293,14 +323,19 @@ namespace boost {
     {
       assert(!this->empty());
 
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
       policy_type policy;
       policy.precall(this);
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
 
       internal_result_type result = invoker(function_base::functor 
                                             BOOST_FUNCTION_COMMA
                                             BOOST_FUNCTION_ARGS);
 
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
       policy.postcall(this);
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
+
 #ifndef BOOST_NO_VOID_RETURNS
       return static_cast<result_type>(result);
 #else
@@ -317,15 +352,23 @@ namespace boost {
     BOOST_FUNCTION_FUNCTION& 
     operator=(Functor BOOST_FUNCTION_TARGET_FIX(const &) f)
     {
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
       self_type(f, static_cast<const Mixin&>(*this)).swap(*this);
+#else
+      self_type(f).swap(*this);
+#endif // BOOST_FUNCTION_NO_DEPRECATED
       return *this;
     }
 
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
     template<typename Functor>
+    BOOST_FUNCTION_DEPRECATED_PRE
     void set(Functor BOOST_FUNCTION_TARGET_FIX(const &) f)
     {
+      BOOST_FUNCTION_DEPRECATED_INNER
       self_type(f, static_cast<const Mixin&>(*this)).swap(*this);
     }
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
 
     // Assignment from another BOOST_FUNCTION_FUNCTION
     BOOST_FUNCTION_FUNCTION& operator=(const BOOST_FUNCTION_FUNCTION& f)
@@ -337,14 +380,18 @@ namespace boost {
       return *this;
     }
 
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
     // Assignment from another BOOST_FUNCTION_FUNCTION
+    BOOST_FUNCTION_DEPRECATED_PRE
     void set(const BOOST_FUNCTION_FUNCTION& f)
     {
+      BOOST_FUNCTION_DEPRECATED_INNER
       if (&f == this)
         return;
 
       self_type(f).swap(*this);
     }
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
 
     void swap(BOOST_FUNCTION_FUNCTION& other)
     {
@@ -354,7 +401,9 @@ namespace boost {
       std::swap(function_base::manager, other.manager);
       std::swap(function_base::functor, other.functor);
       std::swap(invoker, other.invoker);
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
       std::swap(static_cast<Mixin&>(*this), static_cast<Mixin&>(other));
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
     }
 
     // Clear out a target, if there is one
@@ -362,13 +411,32 @@ namespace boost {
     {
       if (function_base::manager) {
         function_base::functor = 
-	  function_base::manager(function_base::functor, 
-				 detail::function::destroy_functor_tag);
+          function_base::manager(function_base::functor, 
+                                 detail::function::destroy_functor_tag);
       }
 
       function_base::manager = 0;
       invoker = 0;
     }
+
+#if (defined __SUNPRO_CC) && (__SUNPRO_CC <= 0x530) && !(defined BOOST_NO_COMPILER_CONFIG)
+    // Sun C++ 5.3 can't handle the safe_bool idiom, so don't use it
+    operator bool () const { return !this->empty(); }
+#else
+  private:
+    struct dummy {
+      void nonnull() {};
+    };
+
+    typedef void (dummy::*safe_bool)();
+
+  public:
+    operator safe_bool () const 
+      { return (this->empty())? 0 : &dummy::nonnull; }
+
+    bool operator!() const
+      { return this->empty(); }
+#endif
 
   private:
     void assign_to_own(const BOOST_FUNCTION_FUNCTION& f)
@@ -377,7 +445,7 @@ namespace boost {
         invoker = f.invoker;
         function_base::manager = f.manager;
         function_base::functor = 
-	  f.manager(f.functor, detail::function::clone_functor_tag);
+          f.manager(f.functor, detail::function::clone_functor_tag);
       }          
     }
 
@@ -403,9 +471,9 @@ namespace boost {
     
         invoker = &invoker_type::invoke;
         function_base::manager = 
-	  &detail::function::functor_manager<FunctionPtr, Allocator>::manage;
+          &detail::function::functor_manager<FunctionPtr, Allocator>::manage;
         function_base::functor = 
-	  function_base::manager(detail::function::any_pointer(
+          function_base::manager(detail::function::any_pointer(
                             // should be a reinterpret cast, but some compilers
                             // insist on giving cv-qualifiers to free functions
                             (void (*)())(f)
@@ -436,22 +504,22 @@ namespace boost {
     
         invoker = &invoker_type::invoke;
         function_base::manager = &detail::function::functor_manager<
-	                            FunctionObj, Allocator>::manage;
+                                    FunctionObj, Allocator>::manage;
 #ifndef BOOST_NO_STD_ALLOCATOR
         typedef typename Allocator::template rebind<FunctionObj>::other 
           allocator_type;
         typedef typename allocator_type::pointer pointer_type;
-	allocator_type allocator;
-	pointer_type copy = allocator.allocate(1);
-	allocator.construct(copy, f);
+        allocator_type allocator;
+        pointer_type copy = allocator.allocate(1);
+        allocator.construct(copy, f);
 
-	// Get back to the original pointer type
-	FunctionObj* new_f = static_cast<FunctionObj*>(copy);
+        // Get back to the original pointer type
+        FunctionObj* new_f = static_cast<FunctionObj*>(copy);
 #else
-	FunctionObj* new_f = new FunctionObj(f);
+        FunctionObj* new_f = new FunctionObj(f);
 #endif // BOOST_NO_STD_ALLOCATOR
         function_base::functor = 
-	  detail::function::any_pointer(static_cast<void*>(new_f));
+          detail::function::any_pointer(static_cast<void*>(new_f));
       }
     }
     
@@ -474,7 +542,7 @@ namespace boost {
           function_base::manager(
             detail::function::any_pointer(
               const_cast<FunctionObj*>(f.get_pointer())),
-	    detail::function::clone_functor_tag);
+            detail::function::clone_functor_tag);
       }
     }
     
@@ -502,19 +570,26 @@ namespace boost {
   };
 
   template<typename R BOOST_FUNCTION_COMMA BOOST_FUNCTION_TEMPLATE_PARMS ,
-           typename Policy, typename Mixin, typename Allocator>
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
+           typename Policy, typename Mixin, 
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
+           typename Allocator>
   inline void swap(BOOST_FUNCTION_FUNCTION<
                      R BOOST_FUNCTION_COMMA
                      BOOST_FUNCTION_TEMPLATE_ARGS ,
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
                      Policy,
                      Mixin,
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
                      Allocator
                    >& f1,
                    BOOST_FUNCTION_FUNCTION<
                      R BOOST_FUNCTION_COMMA 
                      BOOST_FUNCTION_TEMPLATE_ARGS,
+#ifndef BOOST_FUNCTION_NO_DEPRECATED
                      Policy,
                      Mixin,
+#endif // ndef BOOST_FUNCTION_NO_DEPRECATED
                      Allocator
                    >& f2)
   {

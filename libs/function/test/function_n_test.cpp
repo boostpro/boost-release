@@ -93,7 +93,7 @@ test_zero_args()
 
   // Invocation and self-assignment
   global_int = 0;
-  v1.set(v1);
+  v1 = (v1);
   v1();
   BOOST_TEST(global_int == 5);
 
@@ -140,7 +140,7 @@ test_zero_args()
   // Construction from another function (that is empty)
   v1.clear();
   func_void_type v2(v1);
-  BOOST_TEST(!v2);
+  BOOST_TEST(!v2? true : false);
 
   // Assignment to an empty function
   v2 = three;
@@ -152,7 +152,7 @@ test_zero_args()
   BOOST_TEST(global_int == 3);
 
   // Assignment to a non-empty function
-  v2.set(five);
+  v2 = (five);
 
   // Invocation
   global_int = 0;
@@ -163,8 +163,8 @@ test_zero_args()
   BOOST_TEST(v2.empty());
 
   // Assignment to an empty function from a free function
-  v2.set(&write_five);
-  BOOST_TEST(v2);
+  v2 = (&write_five);
+  BOOST_TEST(v2? true : false);
 
   // Invocation
   global_int = 0;
@@ -248,7 +248,7 @@ test_zero_args()
   
   // clear() method
   v3.clear();
-  BOOST_TEST(!v3);
+  BOOST_TEST(!v3? true : false);
 
   // Assignment to an empty function
   v3 = three;
@@ -505,9 +505,9 @@ test_zero_args()
   BOOST_TEST(i0() == 5);
   i0 = &generate_three;
   BOOST_TEST(i0() == 3);
-  BOOST_TEST(i0);
+  BOOST_TEST(i0? true : false);
   i0.clear();
-  BOOST_TEST(!i0);
+  BOOST_TEST(!i0? true : false);
 
   // Test return values with compatible types
   typedef function0<long> func_long_type;
@@ -520,9 +520,9 @@ test_zero_args()
   BOOST_TEST(i1() == 5);
   i1 = &generate_three;
   BOOST_TEST(i1() == 3);
-  BOOST_TEST(i1);
+  BOOST_TEST(i1? true : false);
   i1.clear();
-  BOOST_TEST(!i1);
+  BOOST_TEST(!i1? true : false);
 }
 
 static void

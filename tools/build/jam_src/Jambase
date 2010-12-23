@@ -101,9 +101,12 @@ if [ MATCH .*(bjam).* : $(ARGV[1]:BL) ]
     # boost-build.jam is expected to invoke the "boost-build" rule to
     # load the Boost.Build files.
     
+    local search-path = $(BOOST_BUILD_PATH) $(BOOST_ROOT) ;
+    
     local boost-build-files =
         [ find-to-root [ PWD ] : boost-build.jam ]
-          ;
+        # Another temporary measure so Jam works with Boost.Build v1
+        [ GLOB $(search-path) : boost-build.jam ] ;
     
     .boost-build-file = $(boost-build-files[1]) ;
     
@@ -111,62 +114,60 @@ if [ MATCH .*(bjam).* : $(ARGV[1]:BL) ]
     #
     if ! $(.boost-build-file)
     {
-        # A temporary measure so Jam works with Boost.Build v1 and
-        # earlier Boost releases: try to just include boost-build.jam from tools/build.
-        BOOST_BUILD_PATH += $(BOOST_ROOT)/tools/build ;
-        boost-build-files = [ GLOB $(BOOST_BUILD_PATH) : boost-build.jam ] ;
-        .boost-build-file = $(boost-build-files) ;
-        if $(.boost-build-file)
-        {
-            include $(.boost-build-file) ;
-        }
-        else
-        {
-            ECHO "Unable to load Boost.Build: could not find \"boost-build.jam\"" ;
-            ECHO --------------------------------------------------------------- ;
-            
-            if ! [ MATCH .*(bjam).* : $(ARGV[1]:BL) ]
-            {
-                ECHO "BOOST_ROOT must be set, either in the environment, or " ;
-                ECHO "on the command-line with -sBOOST_ROOT=..., to the root" ;
-                ECHO "of the boost installation." ;
-                ECHO ;
-            }
-
-            ECHO "Attempted search from" [ PWD ] "up to the root" ;
-            ECHO "and in these directories from BOOST_BUILD_PATH and BOOST_ROOT: "$(search-path:J=", ")"." ;
-            EXIT "Please consult the documentation at 'http://www.boost.org'." ;
-        }
-    }
-    else
-    {
-        # Now load the boost-build.jam to get the build system loaded. This
-        # incidentaly loads the users jamfile and attempts to build targets.
-        #
-        # We also set it up so we can tell wether we are loading the new V2
-        # system or the the old V1 system.
-        #
-        include $(.boost-build-file) ;
+        ECHO "Unable to load Boost.Build: could not find \"boost-build.jam\"" ;
+        ECHO --------------------------------------------------------------- ;
         
-        # Check that, at minimum, the bootstrap file was found.
-        #
-        if ! $(.bootstrap-file)
+        if ! [ MATCH .*(bjam).* : $(ARGV[1]:BL) ]
         {
-            ECHO "Unable to load Boost.Build" ;
-            ECHO -------------------------- ;
-            ECHO "\"$(.boost-build-file)\" was found by searching from" [ PWD ] "up to the root" ;
-            ECHO "and in these directories from BOOST_BUILD_PATH and BOOST_ROOT: "$(search-path:J=", ")"." ;
+            ECHO "BOOST_ROOT must be set, either in the environment, or " ;
+            ECHO "on the command-line with -sBOOST_ROOT=..., to the root" ;
+            ECHO "of the boost installation." ;
             ECHO ;
-            ECHO "However, it failed to call the \"boost-build\" rule to indicate" ;
-            ECHO "the location of the build system." ;
-            ECHO ;
-            EXIT "Please consult the documentation at 'http://www.boost.org'." ;
         }
+
+        ECHO "Attempted search from" [ PWD ] "up to the root" ;
+        ECHO "and in these directories from BOOST_BUILD_PATH and BOOST_ROOT: "$(search-path:J=", ")"." ;
+        EXIT "Please consult the documentation at 'http://www.boost.org'." ;
     }
     
+    # Now load the boost-build.jam to get the build system loaded. This
+    # incidentaly loads the users jamfile and attempts to build targets.
+    #
+    # We also set it up so we can tell wether we are loading the new V2
+    # system or the the old V1 system.
+    #
+    include $(.boost-build-file) ;
+    
+    # Check that, at minimum, the bootstrap file was found.
+    #
+    if ! $(.bootstrap-file)
+    {
+        ECHO "Unable to load Boost.Build" ;
+        ECHO -------------------------- ;
+        ECHO "\"$(.boost-build-file)\" was found by searching from" [ PWD ] "up to the root" ;
+        ECHO "and in these directories from BOOST_BUILD_PATH and BOOST_ROOT: "$(search-path:J=", ")"." ;
+        ECHO ;
+        ECHO "However, it failed to call the \"boost-build\" rule to indicate" ;
+        ECHO "the location of the build system." ;
+        ECHO ;
+        EXIT "Please consult the documentation at 'http://www.boost.org'." ;
+    }
 }
 else
 {
+#
+# First, cause the targets specified in the command line to be updated, as
+# Perforce Jam does.
+#
+for local e in $(ARGV[2-]) 
+{
+    if ! [ MATCH "^(-).*" : $(e) ] 
+    {
+        # This is not an option, so it is a target name.
+        UPDATE $(e) ;
+    }
+}
+
 
 #
 # JAMBASE - jam 2.3 ruleset providing make(1)-like functionality
@@ -322,7 +323,7 @@ if $(NT)
 {
     # the list of supported toolsets on Windows NT and Windows 95/98
     #
-    local SUPPORTED_TOOLSETS = "BORLANDC" "VISUALC" "VISUALC16" "INTELC" "WATCOM"
+    local SUPPORTED_TOOLSETS = "BORLANDC" "VC7" "VISUALC" "VISUALC16" "INTELC" "WATCOM"
                                "MINGW" "LCC" ;
   
     # this variable holds the current toolset
@@ -447,12 +448,8 @@ if $(NT)
     LINK        ?= $(CC) ;
     LINKFLAGS   ?= $(CCFLAGS) ;
     LINKLIBS    ?= 
-                #$(VISUALC16)\\lib\\advapi32.lib
-                #$(VISUALC16)\\lib\\libcmt.lib
-                $(VISUALC16)\\lib\\mlibce.lib
-                #$(VISUALC16)\\lib\\slibce.lib
-                $(VISUALC16)\\lib\\oldnames.lib
-                #$(VISUALC16)\\lib\\kernel32.lib 
+                \"$(VISUALC16)\\lib\\mlibce.lib\"
+                \"$(VISUALC16)\\lib\\oldnames.lib\"
                 ;
     LINKLIBS    ?= ;
     NOARSCAN    ?= true ;
@@ -472,14 +469,37 @@ if $(NT)
     C++FLAGS    ?= $(CCFLAGS) ;
     LINK        ?= link /nologo ;
     LINKFLAGS   ?= "" ;
-    LINKLIBS    ?= $(VISUALC)\\lib\\advapi32.lib
+    LINKLIBS    ?= \"$(VISUALC)\\lib\\advapi32.lib\"
                    # $(VISUALC)\\lib\\libc.lib
                    # $(VISUALC)\\lib\\oldnames.lib
-                   $(VISUALC)\\lib\\gdi32.lib
-                   $(VISUALC)\\lib\\user32.lib
-                   $(VISUALC)\\lib\\kernel32.lib ;
+                   \"$(VISUALC)\\lib\\gdi32.lib\"
+                   \"$(VISUALC)\\lib\\user32.lib\"
+                   \"$(VISUALC)\\lib\\kernel32.lib\" ;
     OPTIM       ?= "" ;
     STDHDRS     ?= $(VISUALC)\\include ;
+    UNDEFFLAG   ?= "/u _" ;
+    }
+    else if $(TOOLSET) = VC7
+    {
+    ECHO "Compiler is Microsoft Visual C++ .NET" ;
+
+    AR          ?= lib ;
+    AS          ?= masm386 ;
+    CC          ?= cl /nologo ;
+    CCFLAGS     ?= "" ;
+    C++         ?= $(CC) ;
+    C++FLAGS    ?= $(CCFLAGS) ;
+    LINK        ?= link /nologo ;
+    LINKFLAGS   ?= "" ;
+    LINKLIBS    ?= \"$(VISUALC)\\PlatformSDK\\lib\\advapi32.lib\"
+                   # $(VISUALC)\\lib\\libc.lib
+                   # $(VISUALC)\\lib\\oldnames.lib
+                   \"$(VISUALC)\\PlatformSDK\\lib\\gdi32.lib\"
+                   \"$(VISUALC)\\PlatformSDK\\lib\\user32.lib\"
+                   \"$(VISUALC)\\PlatformSDK\\lib\\kernel32.lib\" ;
+    OPTIM       ?= "" ;
+    STDHDRS     ?= \"$(VISUALC)\\include\"
+									 \"$(VISUALC)\\PlatformSDK\\include\" ;
     UNDEFFLAG   ?= "/u _" ;
     }
     else if $(TOOLSET) = INTELC
@@ -912,6 +932,8 @@ else if $(UNIX)
     CCFLAGS     ?= ;
     C++FLAGS    ?= $(CCFLAGS) ;
     CHMOD       ?= chmod ;
+    CHGRP       ?= chgrp ;
+    CHOWN       ?= chown ;
     LEX         ?= lex ;
     LINKFLAGS   ?= $(CCFLAGS) ;
     LINKLIBS    ?= ;
@@ -944,6 +966,7 @@ else if $(UNIX)
     FORTRAN     ?= f77 ;
     FORTRANFLAGS ?= ;
     HDRS        ?= ;
+    INSTALLGRIST ?= installed ;
     JAMFILE     ?= Jamfile ;
     JAMRULES    ?= Jamrules ;
     LEX         ?= ;
@@ -1164,30 +1187,44 @@ rule HdrRule
 
 rule InstallInto
 {
+    # InstallInto dir : sources ;
+
     local i t ;
 
-    t = $(>:G=installed) ;
+    t = $(>:G=$(INSTALLGRIST)) ;
 
-    DEPENDS install : $(t) ;
-    DEPENDS $(t) : $(>) ;
+    # Arrange for jam install
+    # Arrange for jam uninstall
+    # sources are in SEARCH_SOURCE
+    # targets are in dir
+
+    Depends install : $(t) ;
+    Clean uninstall : $(t) ;
     SEARCH on $(>) = $(SEARCH_SOURCE) ;
     MakeLocate $(t) : $(<) ;
 
-    # Arrange for jam uninstall
-
-    Clean uninstall : $(t) ;
+    # For each source, make gristed target name
+    # and Install, Chmod, Chown, and Chgrp
 
     for i in $(>)
     {
-        Install $(i:G=installed) : $(i) ;
-    }
+        local tt = $(i:G=$(INSTALLGRIST)) ;
 
-    Chmod $(t) ;
+        Depends $(tt) : $(i) ;
+        Install $(tt) : $(i) ;
+        Chmod $(tt) ;
 
-    if $(UNIX)
-    {
-        if $(OWNER) { Chown $(t) ; OWNER on $(t) = $(OWNER) ; }
-        if $(GROUP) { Chgrp $(t) ; GROUP on $(t) = $(GROUP) ; }
+        if $(OWNER) && $(CHOWN) 
+        { 
+        Chown $(tt) ;
+        OWNER on $(tt) = $(OWNER) ;
+        }
+
+        if $(GROUP) && $(CHGRP) 
+        { 
+        Chgrp $(tt) ;
+        GROUP on $(tt) = $(GROUP) ;
+        }
     }
 }
 
@@ -1965,7 +2002,7 @@ actions Cc
 
 actions Chgrp
 {
-    chgrp $(GROUP) $(<)
+    $(CHGRP) $(GROUP) $(<)
 }
 
 actions Chmod1
@@ -1975,7 +2012,7 @@ actions Chmod1
 
 actions Chown
 {
-    chown $(OWNER) $(<)
+    $(CHOWN) $(OWNER) $(<)
 }
 
 actions piecemeal together existing Clean
@@ -2099,7 +2136,7 @@ if $(NOARUPDATE)
 
 if $(NT)
 {
-  if $(TOOLSET) = VISUALC || $(TOOLSET) = INTELC
+  if $(TOOLSET) = VISUALC || $(TOOLSET) = VC7 || $(TOOLSET) = INTELC
   {
     actions updated together piecemeal Archive
     {

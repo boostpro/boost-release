@@ -17,13 +17,13 @@
 
 #include <boost/config.hpp>   // for broken compiler workarounds
 
-#ifndef BOOST_MSVC6_MEMBER_TEMPLATES
+#if defined(BOOST_NO_MEMBER_TEMPLATES) && !defined(BOOST_MSVC6_MEMBER_TEMPLATES)
 #include <boost/detail/shared_ptr_nmt.hpp>
 #else
 
 #include <boost/assert.hpp>
 #include <boost/checked_delete.hpp>
-
+#include <boost/throw_exception.hpp>
 #include <boost/detail/shared_count.hpp>
 
 #include <memory>             // for std::auto_ptr
@@ -56,6 +56,15 @@ template<> struct shared_ptr_traits<void>
     typedef void reference;
 };
 
+#if !defined(BOOST_NO_CV_VOID_SPECIALIZATIONS)
+
+template<> struct shared_ptr_traits<void const>
+{
+    typedef void reference;
+};
+
+#endif
+
 } // namespace detail
 
 
@@ -81,6 +90,7 @@ private:
 public:
 
     typedef T element_type;
+    typedef T value_type;
 
     shared_ptr(): px(0), pn()
     {
@@ -137,7 +147,7 @@ public:
     {
         if (px == 0)
         {
-            throw std::bad_cast();
+            boost::throw_exception(std::bad_cast());
         }
     }
 
@@ -206,6 +216,20 @@ public:
         return px;
     }
 
+    // implicit conversion to "bool"
+
+    typedef T * (this_type::*unspecified_bool_type)() const;
+
+    operator unspecified_bool_type() const // never throws
+    {
+        return px == 0? 0: &this_type::get;
+    }
+
+    bool operator! () const // never throws
+    {
+        return px == 0;
+    }
+
     bool unique() const // never throws
     {
         return pn.unique();
@@ -214,20 +238,6 @@ public:
     long use_count() const // never throws
     {
         return pn.use_count();
-    }
-
-    // implicit conversion to "bool"
-
-    typedef long (this_type::*bool_type)() const;
-
-    operator bool_type() const // never throws
-    {
-        return px == 0? 0: &this_type::use_count;
-    }
-
-    bool operator! () const // never throws
-    {
-        return px == 0;
     }
 
     void swap(shared_ptr<T> & other) // never throws
@@ -313,12 +323,34 @@ template<typename T> inline T * get_pointer(shared_ptr<T> const & p)
     return p.get();
 }
 
+// shared_from_this() creates a shared_ptr from a raw pointer (usually 'this')
+
+namespace detail
+{
+
+inline void sp_assert_counted_base(boost::counted_base const *)
+{
+}
+
+template<class T> inline T * sp_remove_const(T const * p)
+{
+    return const_cast<T *>(p);
+}
+
+} // namespace detail
+
+template<class T> shared_ptr<T> shared_from_this(T * p)
+{
+    detail::sp_assert_counted_base(p);
+    return shared_ptr<T>(detail::sp_remove_const(p));
+}
+
 } // namespace boost
 
 #ifdef BOOST_MSVC
 # pragma warning(pop)
 #endif    
 
-#endif  // #ifndef BOOST_MSVC6_MEMBER_TEMPLATES
+#endif  // #if defined(BOOST_NO_MEMBER_TEMPLATES) && !defined(BOOST_MSVC6_MEMBER_TEMPLATES)
 
 #endif  // #ifndef BOOST_SHARED_PTR_HPP_INCLUDED

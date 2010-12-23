@@ -47,9 +47,11 @@
 #include <cwchar> // for WCHAR_MIN and WCHAR_MAX
 #endif
 
-#if defined(__sparc) || defined(__sparc__) || defined(__powerpc__) || defined(__ppc__) || defined(__hppa) || defined(_MIPSEB)
+// The macros are not named appropriately.  We don't care about integer
+// bit layout, but about floating-point NaN (etc.) bit patterns.
+#if defined(__sparc) || defined(__sparc__) || defined(__powerpc__) || defined(__ppc__) || defined(__hppa) || defined(_MIPSEB) || defined(_POWER)
 #define BOOST_BIG_ENDIAN
-#elif defined(__i386__)
+#elif defined(__i386__) || defined(__alpha__)
 #define BOOST_LITTLE_ENDIAN
 #else
 #error The file boost/detail/limits.hpp needs to be set up for your CPU type.
@@ -356,15 +358,10 @@ class numeric_limits<unsigned long>
 # define LONGLONG_MIN (-LONGLONG_MAX - 1)
 #endif 
 
-template<>
-class numeric_limits<long long>
-  : public _Integer_limits<long long, LONGLONG_MIN, LONGLONG_MAX>
-{};
 
-template<>
-class numeric_limits<unsigned long long>
-  : public _Integer_limits<unsigned long long, 0, ULONGLONG_MAX>
-{};
+#if !defined(ULONGLONG_MIN)
+# define ULONGLONG_MIN 0
+#endif 
 
 #endif /* __GNUC__ */
 

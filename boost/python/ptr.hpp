@@ -1,5 +1,5 @@
-#ifndef BOOST_PTR_HPP_INCLUDED
-# define BOOST_PTR_HPP_INCLUDED
+#ifndef PTR_DWA20020601_HPP
+# define PTR_DWA20020601_HPP
 // Copyright David Abrahams 2002. Permission to copy, use,
 // modify, sell and distribute this software is granted provided this
 // copyright notice appears in all copies. This software is provided
@@ -80,7 +80,7 @@ namespace detail
   no_pointer_wrapper_t is_pointer_wrapper_test(...);
 
   template<typename T>
-  yes_pointer_wrapper_t is_pointer_wrapper_test(type< pointer_wrapper<T> >);
+  yes_pointer_wrapper_t is_pointer_wrapper_test(boost::type< pointer_wrapper<T> >);
 
   template<bool wrapped>
   struct pointer_unwrapper
@@ -109,7 +109,7 @@ class is_pointer_wrapper
  public:
     BOOST_STATIC_CONSTANT(
         bool, value = (
-            sizeof(detail::is_pointer_wrapper_test(type<T>()))
+            sizeof(detail::is_pointer_wrapper_test(boost::type<T>()))
             == sizeof(detail::yes_pointer_wrapper_t)));
 };
 
@@ -124,4 +124,4 @@ class unwrap_pointer
 
 }} // namespace boost::python
 
-#endif // #ifndef BOOST_PTR_HPP_INCLUDED
+#endif // #ifndef PTR_DWA20020601_HPP

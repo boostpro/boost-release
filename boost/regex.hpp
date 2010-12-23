@@ -54,7 +54,7 @@
 namespace boost{
 
 #ifdef __BORLANDC__
-   #pragma option push -a4 -b -Ve -pc
+   #pragma option push -a8 -b -Vx -Ve -pc -w-8027
 #endif
 
 namespace re_detail{
@@ -268,6 +268,7 @@ struct re_repeat : public re_jump
    int id;
    bool leading;
    bool greedy;
+   bool singleton;
 };
 
 
@@ -437,7 +438,7 @@ struct def_alloc_param_traits<const wchar_t*>
 }
 
 template <class iterator, class Allocator =
-#ifndef BOOST_MSVC
+#if !(defined(BOOST_MSVC) && (BOOST_MSVC <= 1300))
 BOOST_DEFAULT_ALLOCATOR(typename re_detail::def_alloc_param_traits<iterator>::type) >
 #else
 BOOST_DEFAULT_ALLOCATOR(re_detail::def_alloc_param_traits<iterator>::type) >
@@ -449,6 +450,11 @@ class match_results;
 // represents the compiled
 // regular expression:
 //
+
+#ifdef BOOST_MSVC
+#pragma warning(push)
+#pragma warning(disable : 4251 4231 4660)
+#endif
 
 #ifdef BOOST_REGEX_NO_FWD
 template <class charT, class traits = regex_traits<charT>, class Allocator = BOOST_DEFAULT_ALLOCATOR(charT) >
@@ -518,7 +524,7 @@ public:
       set_expression(first, last, f | regbase::use_except);
       return *this;
    }
-#ifndef BOOST_NO_MEMBER_TEMPLATES
+#if !defined(BOOST_NO_MEMBER_TEMPLATES) && !(defined(__IBMCPP__) && (__IBMCPP__ <= 502))
 
    template <class ST, class SA>
    unsigned int BOOST_REGEX_CALL set_expression(const std::basic_string<charT, ST, SA>& p, flag_type f = regbase::normal)
@@ -702,6 +708,10 @@ protected:
    static bool BOOST_REGEX_CALL can_start(charT c, const unsigned char* _map, unsigned char mask, const re_detail::_narrow_type&);
 };
 
+#ifdef BOOST_MSVC
+#pragma warning (pop)
+#endif
+
 template <class charT, class traits, class Allocator>
 inline void BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::swap(reg_expression& that)throw()
 {
@@ -874,7 +884,8 @@ protected:
       sub_match<iterator> head, tail, null;
       unsigned int lines;
       iterator line_pos, base;
-      c_reference(const Allocator& a) : c_alloc(a) {  }
+      c_reference(const Allocator& a)
+         : c_alloc(a), cmatches(0), count(0), lines(0) {  }
 
       bool operator==(const c_reference& that)const
       {

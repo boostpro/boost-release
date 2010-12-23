@@ -3,71 +3,110 @@
 // copyright notice appears in all copies. This software is provided
 // "as is" without express or implied warranty, and with no claim as
 // to its suitability for any purpose.
-#ifndef ARGS_DWA2002323_HPP
-# define ARGS_DWA2002323_HPP
+#ifndef KEYWORDS_DWA2002323_HPP
+# define KEYWORDS_DWA2002323_HPP
+
+# include <boost/python/args_fwd.hpp>
 # include <boost/config.hpp>
-# include <boost/mpl/type_list.hpp>
 # include <boost/python/detail/preprocessor.hpp>
+# include <boost/python/detail/type_list.hpp>
+
+# include <boost/type_traits/is_reference.hpp>
+# include <boost/type_traits/remove_reference.hpp>
+# include <boost/type_traits/remove_cv.hpp>
+
 # include <boost/preprocessor/enum_params.hpp>
-# include <boost/preprocessor/enum_params_with_a_default.hpp>
-# include <boost/preprocessor/comma_if.hpp>
+# include <boost/preprocessor/repeat.hpp>
+# include <boost/preprocessor/facilities/intercept.hpp>
+# include <boost/preprocessor/iteration/local.hpp>
 
-# if !defined(__EDG_VERSION__) || __EDG_VERSION__ > 245
-namespace boost { namespace python { 
+# include <boost/mpl/aux_/lambda_support.hpp>
+# include <boost/mpl/bool_c.hpp>
+
+# include <boost/type.hpp>
+# include <cstddef>
 
 
-// A type list for specifying arguments
-template < BOOST_MPL_LIST_DEFAULT_PARAMETERS(typename A, boost::mpl::null_argument) >
-struct args : boost::mpl::type_list< BOOST_MPL_LIST_PARAMETERS(A) >::type
-{};
+namespace boost { namespace python {
 
-}} // namespace boost::python
+namespace detail
+{
+  template <std::size_t nkeywords>
+  struct keywords
+  {
+      BOOST_STATIC_CONSTANT(std::size_t, size = nkeywords);
+      
+      keyword_range range() const
+      {
+          return keyword_range(elements, elements + nkeywords);
+      }
+      
+      keyword elements[nkeywords];
+  };
 
-# else // slow template instantiators need this other version with
-       // explicit specializations of mpl::size<> and
-       // mpl::at<>. Eventually, however, inheritance from mpl::list
-       // *should* be eliminated and the two versions unified, just in
-       // order to get true arity independence
+# ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+  template<typename T>
+  struct is_keywords
+  {
+      BOOST_STATIC_CONSTANT(bool, value = false); 
+  };
 
-namespace boost { namespace python { 
+  template<std::size_t nkeywords>
+  struct is_keywords<keywords<nkeywords> >
+  {
+      BOOST_STATIC_CONSTANT(bool, value = true);
+  };
+  template <class T>
+  struct is_reference_to_keywords
+  {
+      BOOST_STATIC_CONSTANT(bool, is_ref = is_reference<T>::value);
+      typedef typename remove_reference<T>::type deref;
+      typedef typename remove_cv<deref>::type key_t;
+      BOOST_STATIC_CONSTANT(bool, is_key = is_keywords<key_t>::value);
+      BOOST_STATIC_CONSTANT(bool, value = (is_ref & is_key));
+      
+      typedef mpl::bool_c<value> type;
+      BOOST_MPL_AUX_LAMBDA_SUPPORT(1,is_reference_to_keywords,(T))
+  };
+# else 
+  typedef char (&yes_keywords_t)[1];
+  typedef char (&no_keywords_t)[2];
+      
+  no_keywords_t is_keywords_test(...);
 
-template < BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(BOOST_PYTHON_MAX_ARITY, class A, boost::mpl::null_argument) >
-struct args
-{};
+  template<std::size_t nkeywords>
+  yes_keywords_t is_keywords_test(void (*)(keywords<nkeywords>&));
 
-}} // namespace boost::python
+  template<std::size_t nkeywords>
+  yes_keywords_t is_keywords_test(void (*)(keywords<nkeywords> const&));
 
-namespace boost { namespace mpl {
+  template<typename T>
+  class is_reference_to_keywords
+  {
+   public:
+      BOOST_STATIC_CONSTANT(
+          bool, value = (
+              sizeof(detail::is_keywords_test( (void (*)(T))0 ))
+              == sizeof(detail::yes_keywords_t)));
 
-template <class T> struct size;
-template <long N, class Seq> struct at;
-
-#  ifndef BOOST_PYTHON_GENERATE_CODE
-#   include <boost/python/preprocessed/args.hpp>
-#  endif
-
-#  define BOOST_PYTHON_ARGS_SIZE(index,ignored)                       \
-template <BOOST_PP_ENUM_PARAMS(index, class A)>                                 \
-struct size<boost::python::args<BOOST_PP_ENUM_PARAMS(index, A)> >               \
-{                                                                               \
-    BOOST_STATIC_CONSTANT(long, value = index);                                 \
-};                                                                              \
-
-BOOST_PYTHON_REPEAT_ARITY_2ND(BOOST_PYTHON_ARGS_SIZE, nil)
-    
-#  define BOOST_PYTHON_ARGS_AT(index,ignored)                       \
-template <                                                                      \
-    BOOST_PP_ENUM_PARAMS(BOOST_PP_DEC(BOOST_PYTHON_ARITY_FINISH), class A)>     \
-struct at<index, boost::python::args<                                           \
-    BOOST_PP_ENUM_PARAMS(BOOST_PP_DEC(BOOST_PYTHON_ARITY_FINISH), A)> >         \
-{                                                                               \
-    typedef BOOST_PP_CAT(A,index) type;                                         \
-};                                                                              \
-
-BOOST_PP_REPEAT_FROM_TO_2ND( 
-    BOOST_PP_DEC(BOOST_PYTHON_ARITY_START), BOOST_PP_DEC(BOOST_PYTHON_ARITY_FINISH) 
-    , BOOST_PYTHON_ARGS_AT, data)
-    
-}}
+      typedef mpl::bool_c<value> type;
+      BOOST_MPL_AUX_LAMBDA_SUPPORT(1,is_reference_to_keywords,(T))
+  };
 # endif 
-#endif // ARGS_DWA2002323_HPP
+}
+
+#  define BOOST_PYTHON_ASSIGN_NAME(z, n, _) result.elements[n].name = name##n;
+#  define BOOST_PP_LOCAL_MACRO(n)                                               \
+inline detail::keywords<n> args(BOOST_PP_ENUM_PARAMS_Z(1, n, char const* name)) \
+{                                                                               \
+    detail::keywords<n> result;                                                 \
+    BOOST_PP_REPEAT_1(n, BOOST_PYTHON_ASSIGN_NAME, _)                           \
+    return result;                                                              \
+}
+#  define BOOST_PP_LOCAL_LIMITS (1, BOOST_PYTHON_MAX_ARITY)
+#  include BOOST_PP_LOCAL_ITERATE()
+
+}} // namespace boost::python
+
+
+# endif // KEYWORDS_DWA2002323_HPP

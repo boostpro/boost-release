@@ -178,7 +178,8 @@ if $(NT)
     SUFOBJ          ?= .obj ;
     SUFEXE          ?= .exe ;
     SUFDLL          ?= .dll .lib ;
-    gLINKABLE_PRODUCT_INDEX(DLL) = 2 ; # (the .lib is the ones to link)
+    gLINK_VARIABLE(.dll) = ;             # dlls are NOT linked to directly
+    gLINK_VARIABLE(.lib) = NEEDLIBS ;    # instead, users link to import libs
     PREDLL          ?= "" ;
     NOARSCAN        ?= true ;
     SHELL_EXPORT    ?= ;
@@ -191,8 +192,6 @@ if $(NT)
     YACCFILES       ?= y.tab ;
     YACC_OUTPUT     ?= --output= ;
     LEX_OUTPUT      ?= -o ;
-    
-    DLL_AS_LIB ?= true ;
 }
 else if $(OS2)
 {
@@ -315,10 +314,12 @@ else if $(UNIX)
     switch $(OS)
     {
     case AIX :
-        DLL_AS_LIB      ?= true ;
+        IMPLIB_FLAGS    ?= -bI: ;
         SUFDLL          ?= .so .imp ;
-        gLINKABLE_PRODUCT_INDEX(DLL) = 1 ; # (the .so is the one to link)
-
+        gLINK_VARIABLE(.so) = NEEDLIBS ;  # shared libs should be added to the list of libs needed
+        gLINK_VARIABLE(.imp) = NEEDIMPS ; # import libs are handled separately.
+        gSHELL_LIBPATH = LIBPATH ;
+        
     case AMIGA :
         YACC            ?= bison -y ;
 
@@ -355,9 +356,10 @@ else if $(UNIX)
         RANLIB          ?= "" ;
 
     case MACOSX :
-        AR              ?= libtool -o ;
         MANDIR          ?= /usr/local/share/man ;
         RANLIB          ?= "" ;
+        SUFDLL          ?= .dylib ;
+        gSHELL_LIBPATH  ?= DYLD_LIBRARY_PATH ;
 
     case NCR :
         RANLIB          ?= "" ;
@@ -390,7 +392,7 @@ else if $(UNIX)
         RELOCATE        ?= true ;
 
     case OSF :
-        DLL_AS_LIB      ?= true ;
+        gLINK_VARIABLE(.so) = NEEDLIBS ; # shared objects should be added to the list of libs needed
     }
 
     # UNIX defaults
@@ -403,6 +405,7 @@ else if $(UNIX)
     YACCFLAGS       ?= -d ;
     SHELL_EXPORT    ?= "export " ;
     SHELL_SET       ?= "" ;
+    gSHELL_LIBPATH  ?= LD_LIBRARY_PATH ;
 }
     
 #
@@ -414,6 +417,8 @@ AS              ?= as ;
 ASFLAGS         ?= ;
 AWK             ?= awk ;
 BINDIR          ?= /usr/local/bin ;
+CLONE           ?= $(CP) ;
+CLONE           ?= cp -fp ;
 CP              ?= cp -f ;
 CRELIB          ?= ;
 DOT             ?= . ;
@@ -454,7 +459,6 @@ UNDEFFLAG       ?= "-u _" ;
 YACC            ?= ;
 YACCFILES       ?= ;
 YACCFLAGS       ?= ;
-DLL_AS_LIB      ?= ;
 
 HDRPATTERN = 
         "^[     ]*#[    ]*include[      ]*([<\"][^\">]*[\">]).*$" ;
@@ -630,6 +634,13 @@ rule File
     SEARCH on $(>) = $(SEARCH_SOURCE) ;
     MODE on $(<) = $(FILEMODE) ;
     Chmod $(<) ;
+}
+
+rule FileClone
+{
+    type-DEPENDS files : $(<) ;
+    DEPENDS $(<) : $(>) ;
+    SEARCH on $(>) = $(SEARCH_SOURCE) ;
 }
 
 rule Fortran
@@ -951,15 +962,14 @@ rule MkDir
     if $(NT)
     {
         # make sure slashes all go the right way
-        dir = [ FDirName [ split-path $(dir) ] ] ;
+        dir = [ split-path $(dir) ] ;
+        dir = $(dir:J=$(SLASH)) ;
     }
     
-    NOUPDATE $(dir) ;
-
-    if $(dir) != $(DOT) && ! $($(dir)-mkdir) 
+    local result = $(dir) ;
+    
+    while $(dir) && ( $(dir) != $(DOT) ) && ! $($(dir)-mkdir) 
     {
-        local s ;
-
         # Cheesy gate to prevent multiple invocations on same dir
         # MkDir1 has the actions 
         # Arrange for jam dirs
@@ -967,11 +977,13 @@ rule MkDir
         $(dir)-mkdir = true ;
         MkDir1 $(dir) ;
         Depends dirs : $(dir) ;
+        NOUPDATE $(dir) ;
+
 
         # Recursively make parent directories.
         # $(dir:P) = $(dir)'s parent, & we recurse until root
 
-        s = $(dir:P) ;
+        local s = $(dir:P) ;
 
         if $(NT)
         {
@@ -985,15 +997,15 @@ rule MkDir
         if $(s) && $(s) != $(dir)
         {
             Depends $(dir) : $(s) ;
-            MkDir $(s) ;
+            dir = $(s) ;
         }
-        else if $(s)
+        else 
         {
-            NOTFILE $(s) ;
+            dir = ; # stop iterating
+            if $(s) { NOTFILE $(s) ; }
         }
-
     }
-    return $(dir) ;
+    return $(result) ;
 }
 
 # dwa 6/4/01 - modified for boost
@@ -1022,7 +1034,7 @@ rule Object
     # different from $(SEARCH_SOURCE).
 
     # Use unique to clean up confusing duplicates a bit
-    HDRS on $(<) = [ unique $(LOCATE_SOURCE) $(SEARCH_SOURCE) $(HDRS) ] ;
+    HDRS on $(<) = [ unique $(LOCATE_SOURCE) $(HDRS) ] ;
 
     # Set STDHDRS on the object so that multi-compiler builds will search for
     # headers in the right places. 
@@ -1056,16 +1068,22 @@ rule Object
 
     # if source is not .c, generate .c with specific rule
 
-    switch $(>:S)
+    # make sure we don't generate the same object twice.
+    if ! $(gGENERATED_TARGET($(<)))
     {
-        case .asm : As $(<) : $(>) ;
-        case .c :   Cc $(<) : $(>) ;
-        case .C :   C++ $(<) : $(>) ;
-        case .cc :  C++ $(<) : $(>) ;
-        case .cpp : C++ $(<) : $(>) ;
-        case .f :   Fortran $(<) : $(>) ;
-        case .s :   As $(<) : $(>) ;
-        case * :    UserObject $(<) : $(>) ;
+        switch $(>:S)
+        {
+            case .asm : As $(<) : $(>) ;
+            case .c :   Cc $(<) : $(>) ;
+            case .C :   C++ $(<) : $(>) ;
+            case .cc :  C++ $(<) : $(>) ;
+            case .cpp : C++ $(<) : $(>) ;
+            case .cxx : C++ $(<) : $(>) ;
+            case .f :   Fortran $(<) : $(>) ;
+            case .s :   As $(<) : $(>) ;
+            case * :    UserObject $(<) : $(>) ;
+        }
+        gGENERATED_TARGET($(<)) = true ;
     }
 }
     
@@ -1090,10 +1108,15 @@ rule gen-source # source => object-file-names
     }
     
     local immediate-target = $(<:D=:S=$(suffix):G=$(SOURCE_GRIST)) ;
-    switch $(<:S)
+    # make sure we don't regenerate sources twice.
+    if ! $(gGENERATED_TARGET($(immediate-target)))
     {
-     case .l* : Lex $(immediate-target) : $(<) ; SEARCH on $(<) = $(SEARCH_SOURCE) ;
-     case .y* : Yacc $(immediate-target) : $(<) ; SEARCH on $(<) = $(SEARCH_SOURCE) ;
+        switch $(<:S)
+        {
+         case .l* : Lex $(immediate-target) : $(<) ; SEARCH on $(<) = $(SEARCH_SOURCE) ;
+         case .y* : Yacc $(immediate-target) : $(<) ; SEARCH on $(<) = $(SEARCH_SOURCE) ;
+        }
+        gGENERATED_TARGET($(immediate-target)) = true ;
     }
     return [ Objects $(immediate-target) ] ;
 }
@@ -1274,6 +1297,7 @@ rule SubDir
     normalized_ALL_LOCATE_TARGET ?= [ join-path $($(gTOP)) $(ALL_LOCATE_TARGET) ] ;
     LOCATE_SOURCE = [ FDirName $(normalized_ALL_LOCATE_TARGET) $(nodot_subdir) ] ;
     LOCATE_TARGET = $(LOCATE_SOURCE) ;
+    HCACHEFILE ?= $(LOCATE_TARGET)/.jamdeps ;
     
     SOURCE_GRIST = [ FGrist $(<[2-]) ] ;
 
@@ -1387,39 +1411,44 @@ rule strip-grist
 # split-path <foo>bar/<bee>baz/mumble  => <foo>bar <bee>baz mumble 
 rule split-path
 {
-    local result ;
-    local parent = $(<:P) ;
-    if $(NT)
-    {
-        switch $(<:G=)
-        {
-        # It turns out that to match a backslash, you need a /quadruple/ slash
-        # in the case clause!
-        case *\\\\*:* : # continue splitting
-        case *:\\\\*\\\\* :  # continue splitting
-        case *:/*\\\\* :  # continue splitting
-        case *:\\\\*/* :  # continue splitting
-        case *:/*/* :  # continue splitting
-        case *:/* : result = $(<) ;
-        case *:\\\\* : result = $(<) ;
-        case *: : result = $(<) ;
-        }
-    }
+    local result = $(gSPLIT-PATH.$(<)) ;
 
-    if ( ! $(<:B) ) && ( $(<) != $(DOT) ) # handle the case where $(<) is all grist.
+    if ! $(result)
     {
-        result ?= $(<:G) ;
-    }
-    else if ( ! $(parent:G=) )
-    {
-        result ?= $(<) ;
-    }
-    else
-    {
-        local p = [ split-path $(parent) ] ;
-        local b = [ strip-grist $(<) ] ;
-        p += $(b:D=) ; # can't use :B here because it destroys . and ..
-        result ?= $(p) ;
+        local parent = $(<:P) ;
+        if $(NT)
+        {
+            switch $(<:G=)
+            {
+                # It turns out that to match a backslash, you need a /quadruple/ slash
+                # in the case clause!
+                case *\\\\*:* : # continue splitting
+                  case *:\\\\*\\\\* :  # continue splitting
+                  case *:/*\\\\* :  # continue splitting
+                  case *:\\\\*/* :  # continue splitting
+                  case *:/*/* :  # continue splitting
+                  case *:/* : result = $(<) ;
+                case *:\\\\* : result = $(<) ;
+                case *: : result = $(<) ;
+            }
+        }
+
+        if ( ! $(<:B) ) && ( $(<) != $(DOT) ) # handle the case where $(<) is all grist.
+        {
+            result ?= $(<:G) ;
+        }
+        else if ( ! $(parent:G=) )
+        {
+            result ?= $(<) ;
+        }
+        else
+        {
+            local p = [ split-path $(parent) ] ;
+            local b = [ strip-grist $(<) ] ;
+            p += $(b:D=) ; # can't use :B here because it destroys . and ..
+            result ?= $(p) ;
+        }
+        gSPLIT-PATH.$(<) = $(result) ;
     }
     return $(result) ;
 }
@@ -1431,7 +1460,7 @@ rule split ( string separator )
     
     while $(s)
     {
-        local match = [ SUBST $(s) ^(.*)$(separator)(.*) $1 $2 ] ;
+        local match = [ MATCH ^(.*)$(separator)(.*) : $(s) ] ;
         
         local tail = $(match[2]) ;
         tail ?= $(s) ;
@@ -1447,7 +1476,7 @@ rule split-path ( path )
     if ! $(gSPLIT_PATH_CACHE($(path)))
     {
         gSPLIT_PATH_CACHE($(path)) =
-          [ SUBST $(path) "^([/$(SLASH)]+).*" $1 ] # rooting slash(es), if any
+          [ MATCH  "^([/$(SLASH)]+).*" : $(path) ] # rooting slash(es), if any
             [ split $(path) "[/$(SLASH)]" ]        # the rest.
               ;
     }
@@ -1669,7 +1698,7 @@ rule remember-binding ( target : bound-path ) {
 rule subst-list ( list + : pattern ) {
     local result ;
     for local i in $(list) {
-        result += [ SUBST $(i) $(pattern) "$1" ] ;
+        result += [ MATCH "($(pattern))" : $(i) ] ;
     }
     return $(result) ;
 }
@@ -1741,25 +1770,10 @@ rule FGristSourceFiles
 # join values... : [separator]
 #
 # Pastes values together into a single list element, separated by an optional separator.
-rule join
+rule join ( values * : sep ? )
 {
-    # Puts the variables together, removing spaces.
-
-    local _t _r ;
-
-    _r = $(<[1]) ;
-
-    local sep = $(>) ;
-    if ! $(sep)
-    {
-        sep = "" ;
-    }
-    for _t in $(<[2-])
-    {
-        _r = $(_r)$(sep)$(_t) ;
-    }
-
-    return $(_r) ;
+    sep ?= "" ;
+    return $(values:J=$(sep)) ;
 }
 
 # Given $(<), the tokens comprising a relative path from D1 to a subdirectory
@@ -1974,6 +1988,11 @@ actions piecemeal together existing Clean
 actions File
 {
     $(CP) $(>) $(<)
+}
+
+actions FileClone
+{
+    $(CLONE) $(>) $(<)
 }
 
 actions GenFile1

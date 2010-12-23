@@ -3,11 +3,12 @@
 
 #include <vector>
 #include <boost/test/test_tools.hpp>
-#include <boost/graph/iteration_macros.hpp>
 #include <boost/graph/filtered_graph.hpp>
+#include <boost/graph/iteration_macros.hpp>
 #include <boost/graph/isomorphism.hpp>
 #include <boost/graph/copy.hpp>
 #include <boost/graph/graph_utility.hpp> // for connects
+
 
 // UNDER CONSTRUCTION 
 
@@ -48,6 +49,9 @@ namespace boost {
       }
       vertex_t s; vertex_t t; const Graph& g;
     };
+
+    //=========================================================================
+    // Traversal Operations
 
     void test_incidence_graph
        (const std::vector<vertex_t>& vertex_set,
@@ -139,8 +143,7 @@ namespace boost {
       typedef typename graph_traits<Graph>::vertex_iterator v_iter;
       std::pair<v_iter, v_iter> p = vertices(g);
       BOOST_TEST(num_vertices(g) == vertex_set.size());
-      v_size_t n = 0;
-      std::distance(p.first, p.second, n);
+      v_size_t n = std::distance(p.first, p.second);
       BOOST_TEST(n == num_vertices(g));
       for (; p.first != p.second; ++p.first) {
         vertex_t v = *p.first;
@@ -156,8 +159,7 @@ namespace boost {
       typedef typename graph_traits<Graph>::edge_iterator e_iter;
       std::pair<e_iter, e_iter> p = edges(g);
       BOOST_TEST(num_edges(g) == edge_set.size());
-      e_size_t m = 0;
-      std::distance(p.first, p.second, m);
+      e_size_t m = std::distance(p.first, p.second);
       BOOST_TEST(m == num_edges(g));
       for (; p.first != p.second; ++p.first) {
         edge_t e = *p.first;
@@ -190,7 +192,10 @@ namespace boost {
               connects(source(p.first, g), target(p.first, g), g)) == true);
         }
     }
-    
+
+    //=========================================================================
+    // Mutating Operations
+
     void test_add_vertex(Graph& g)
     {
       Graph cpy;
@@ -305,9 +310,64 @@ namespace boost {
                    iso_map)));
     }
 
+    //=========================================================================
+    // Property Map
+
+    template <typename PropVal, typename PropertyTag>
+    void test_readable_vertex_property_graph
+      (const std::vector<PropVal>& vertex_prop, PropertyTag, Graph& g)
+    {
+      typedef typename property_map<Graph, PropertyTag>::const_type const_Map;
+      const_Map pmap = get(PropertyTag(), g);
+      typename std::vector<PropVal>::const_iterator i = vertex_prop.begin();
+
+  for (typename boost::graph_traits<Graph>::vertex_iterator 
+           bgl_first_9 = vertices(g).first, bgl_last_9 = vertices(g).second;
+       bgl_first_9 != bgl_last_9; bgl_first_9 = bgl_last_9)
+    for (typename boost::graph_traits<Graph>::vertex_descriptor v;
+         bgl_first_9 != bgl_last ? (v = *bgl_first_9, true) : false;
+         ++bgl_first_9) {
+      //BGL_FORALL_VERTICES_T(v, g, Graph) {
+        typename property_traits<const_Map>::value_type 
+          pval1 = get(pmap, x), pval2 = get(Property(), g, x);
+        BOOST_TEST(pval1 == pval2);
+        BOOST_TEST(pval1 == *i++);
+      }
+    }
+
+    template <typename PropVal, typename PropertyTag>
+    void test_vertex_property_graph
+      (const std::vector<PropVal>& vertex_prop, PropertyTag tag, Graph& g)
+    {
+      typedef typename property_map<Graph, PropertyTag>::type PMap;
+      PMap pmap = get(PropertyTag(), g);
+      typename std::vector<PropVal>::const_iterator i = vertex_prop.begin();
+  for (typename boost::graph_traits<Graph>::vertex_iterator 
+           bgl_first_9 = vertices(g).first, bgl_last_9 = vertices(g).second;
+       bgl_first_9 != bgl_last_9; bgl_first_9 = bgl_last_9)
+    for (typename boost::graph_traits<Graph>::vertex_descriptor v;
+         bgl_first_9 != bgl_last ? (v = *bgl_first_9, true) : false;
+         ++bgl_first_9)
+      //      BGL_FORALL_VERTICES_T(v, g, Graph)
+        put(pmap, x, *i++);
+
+      test_readable_vertex_property_graph(vertex_prop, tag, g);
+
+      BGL_FORALL_VERTICES_T(v, g, Graph)
+        put(pmap, x, vertex_prop[0]);
+      
+      typename std::vector<PropVal>::const_iterator j = vertex_prop.begin();
+      BGL_FORALL_VERTICES_T(v, g, Graph)
+        put(Property(), g, x, *j++);
+      
+      test_readable_vertex_property_graph(vertex_prop, tag, g);      
+    }
+    
+    
   };
-  
-}// namespace boost
+
+
+} // namespace boost
 
 #include <boost/graph/iteration_macros_undef.hpp>
 

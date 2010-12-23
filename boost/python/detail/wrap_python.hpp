@@ -20,7 +20,24 @@
 // 04 Mar 01  Rolled in some changes from the Dragon fork (Dave Abrahams)
 // 01 Mar 01  define PyObject_INIT() for Python 1.x (Dave Abrahams)
 
+//
+// Python's LongObject.h helpfully #defines ULONGLONG_MAX for us,
+// which confuses Boost's config
+//
+#include <limits.h>
+#ifndef ULONG_MAX
+# define BOOST_PYTHON_ULONG_MAX_UNDEFINED
+#endif
+#ifndef LONGLONG_MAX
+# define BOOST_PYTHON_LONGLONG_MAX_UNDEFINED
+#endif
+#ifndef ULONGLONG_MAX
+# define BOOST_PYTHON_ULONGLONG_MAX_UNDEFINED
+#endif
 
+//
+// Get ahold of Python's version number
+//
 #include <patchlevel.h>
 
 #ifdef _DEBUG
@@ -94,15 +111,30 @@ typedef int pid_t;
 #  endif
 #  undef HAVE_HYPOT
 #  define HAVE_HYPOT 1
-# elif defined(_MSC_VER)
-#  ifdef __cplusplus
-#   include <limits> // prevents Python.h from defining LONGLONG_MAX, LONGLONG_MIN, and ULONGLONG_MAX
-#  endif 
 # endif
 
 #endif // _WIN32
 
-#include <Python.h>
+#if PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION == 2 && PY_MICRO_VERSION < 2
+# include <boost/python/detail/python22_fixed.h>
+#else
+# include <Python.h>
+#endif
+
+#ifdef BOOST_PYTHON_ULONG_MAX_UNDEFINED
+# undef ULONG_MAX
+# undef BOOST_PYTHON_ULONG_MAX_UNDEFINED
+#endif
+
+#ifdef BOOST_PYTHON_LONGLONG_MAX_UNDEFINED
+# undef LONGLONG_MAX
+# undef BOOST_PYTHON_LONGLONG_MAX_UNDEFINED
+#endif
+
+#ifdef BOOST_PYTHON_ULONGLONG_MAX_UNDEFINED
+# undef ULONGLONG_MAX
+# undef BOOST_PYTHON_ULONGLONG_MAX_UNDEFINED
+#endif
 
 #ifdef PY_MSC_VER_DEFINED_FROM_WRAP_PYTHON_H
 # undef _MSC_VER

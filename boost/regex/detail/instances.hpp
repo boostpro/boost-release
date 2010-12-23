@@ -40,6 +40,8 @@ namespace boost{
 
 #ifdef __BORLANDC__
 
+#pragma option push -a8 -b -Vx -Ve -pc
+
 #  ifndef BOOST_REGEX_INSTANTIATE
 #     pragma option push -Jgx
 #  endif
@@ -55,6 +57,8 @@ template class BOOST_REGEX_DECL match_results<std::basic_string<BOOST_REGEX_CHAR
 #     pragma option pop
 #  endif
 
+#pragma option pop
+
 #elif defined(BOOST_MSVC)
 
 #  ifndef BOOST_REGEX_INSTANTIATE
@@ -64,14 +68,7 @@ template class BOOST_REGEX_DECL match_results<std::basic_string<BOOST_REGEX_CHAR
 #pragma warning(push)
 #pragma warning(disable : 4251 4231 4660)
 
-//
-// these next two lines are deliberate: raw_storage is used only internally
-// by reg_expression it is not exported from the dll:
-//
-template class re_detail::raw_storage< BOOST_DEFAULT_ALLOCATOR(BOOST_REGEX_CHAR_T) >;
-template class BOOST_REGEX_DECL re_detail::raw_storage< BOOST_DEFAULT_ALLOCATOR(BOOST_REGEX_CHAR_T) >;
-
-template class BOOST_REGEX_DECL regex_traits< BOOST_REGEX_CHAR_T >;
+//template class BOOST_REGEX_DECL regex_traits< BOOST_REGEX_CHAR_T >;
 template class BOOST_REGEX_DECL reg_expression< BOOST_REGEX_CHAR_T >;
 template class BOOST_REGEX_DECL re_detail::match_results_base<BOOST_REGEX_CHAR_T const*, BOOST_DEFAULT_ALLOCATOR(re_detail::def_alloc_param_traits<BOOST_REGEX_CHAR_T const*>::type)>;
 template class BOOST_REGEX_DECL re_detail::match_results_base<std::basic_string<BOOST_REGEX_CHAR_T>::const_iterator, BOOST_DEFAULT_ALLOCATOR(re_detail::def_alloc_param_traits<std::basic_string<BOOST_REGEX_CHAR_T>::const_iterator>::type)>;
@@ -101,11 +98,11 @@ template class BOOST_REGEX_DECL match_results<std::basic_string<BOOST_REGEX_CHAR
 #     define template template<>
 #  endif
 
-template reg_expression<BOOST_REGEX_CHAR_T>::reg_expression<BOOST_REGEX_CHAR_T>(const BOOST_DEFAULT_ALLOCATOR(BOOST_REGEX_CHAR_T)&);
-template reg_expression<BOOST_REGEX_CHAR_T>::reg_expression<BOOST_REGEX_CHAR_T>(const BOOST_REGEX_CHAR_T* p, reg_expression<BOOST_REGEX_CHAR_T>::flag_type f, const BOOST_DEFAULT_ALLOCATOR(BOOST_REGEX_CHAR_T)& a);
-template reg_expression<BOOST_REGEX_CHAR_T>::reg_expression<BOOST_REGEX_CHAR_T>(const BOOST_REGEX_CHAR_T* p, size_type len, reg_expression<BOOST_REGEX_CHAR_T>::flag_type f, const BOOST_DEFAULT_ALLOCATOR(BOOST_REGEX_CHAR_T)&);
-template reg_expression<BOOST_REGEX_CHAR_T>::reg_expression<BOOST_REGEX_CHAR_T>(const reg_expression<BOOST_REGEX_CHAR_T>&);
-template reg_expression<BOOST_REGEX_CHAR_T>::~reg_expression<BOOST_REGEX_CHAR_T>();
+template reg_expression<BOOST_REGEX_CHAR_T>::reg_expression(const BOOST_DEFAULT_ALLOCATOR(BOOST_REGEX_CHAR_T)&);
+template reg_expression<BOOST_REGEX_CHAR_T>::reg_expression(const BOOST_REGEX_CHAR_T* p, reg_expression<BOOST_REGEX_CHAR_T>::flag_type f, const BOOST_DEFAULT_ALLOCATOR(BOOST_REGEX_CHAR_T)& a);
+template reg_expression<BOOST_REGEX_CHAR_T>::reg_expression(const BOOST_REGEX_CHAR_T* p, size_type len, reg_expression<BOOST_REGEX_CHAR_T>::flag_type f, const BOOST_DEFAULT_ALLOCATOR(BOOST_REGEX_CHAR_T)&);
+template reg_expression<BOOST_REGEX_CHAR_T>::reg_expression(const reg_expression<BOOST_REGEX_CHAR_T>&);
+template reg_expression<BOOST_REGEX_CHAR_T>::~reg_expression();
 template reg_expression<BOOST_REGEX_CHAR_T>& BOOST_REGEX_CALL reg_expression<BOOST_REGEX_CHAR_T>::operator=(const reg_expression&);
 template BOOST_DEFAULT_ALLOCATOR(BOOST_REGEX_CHAR_T) BOOST_REGEX_CALL reg_expression<BOOST_REGEX_CHAR_T>::get_allocator()const;
 template bool BOOST_REGEX_CALL reg_expression<BOOST_REGEX_CHAR_T>::operator==(const reg_expression<BOOST_REGEX_CHAR_T>&)const;
@@ -164,3 +161,4 @@ template void BOOST_REGEX_CALL match_results_base<iterator, Allocator>::cow();
 
 #endif // BOOST_REGEX_NO_EXTERNAL_TEMPLATES
  
+

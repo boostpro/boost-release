@@ -7,9 +7,10 @@
 
 #include "simple_type.hpp"
 #include "complicated.hpp"
+#include <boost/python/def.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/class.hpp>
-#include <boost/python/type_from_python.hpp>
+#include <boost/python/lvalue_from_pytype.hpp>
 #include <boost/python/copy_const_reference.hpp>
 #include <boost/python/return_value_policy.hpp>
 #include <boost/python/to_python_converter.hpp>
@@ -111,7 +112,7 @@ struct simple_to_python
     }
 };
 
-struct int_from_noddy_extractor
+struct int_from_noddy
 {
     static int& execute(NoddyObject& p)
     {
@@ -170,6 +171,9 @@ struct B : A
     int x;
 };
 
+#if BOOST_MSVC == 1200
+# define C C_
+#endif
 
 struct C : A
 {
@@ -187,96 +191,80 @@ struct D : B, C
 };
 
 A take_a(A const& a) { return a; }
-B take_b(B const& b) { return b; }
-C take_c(C const& c) { return c; }
-D take_d(D const& d) { return d; }
-    
-BOOST_PYTHON_MODULE_INIT(m1)
+B take_b(B& b) { return b; }
+C take_c(C* c) { return *c; }
+D take_d(D* const& d) { return *d; }
+
+D take_d_shared_ptr(boost::shared_ptr<D> d) { return *d; }
+
+boost::shared_ptr<A> d_factory() { return boost::shared_ptr<B>(new D); }
+
+BOOST_PYTHON_MODULE(m1)
 {
     using namespace boost::python;
     using boost::shared_ptr;
     
     simple_to_python();
 
-    type_from_python<&NoddyType,int_from_noddy_extractor>();
+    lvalue_from_pytype<int_from_noddy,&NoddyType>();
 
-    boost::python::type_from_python<
-        &SimpleType
-#if !defined(BOOST_MSVC) || BOOST_MSVC > 1300
-        , member_extractor<SimpleObject, simple, &SimpleObject::x>
+    lvalue_from_pytype<
+#if !defined(BOOST_MSVC) || BOOST_MSVC > 1300 // doesn't support non-type member pointer parameters
+        extract_member<SimpleObject, simple, &SimpleObject::x>
 #else 
-        , extract_simple_object
+        extract_simple_object
 #endif 
+        , &SimpleType
         >();
 
-    type_from_python<&SimpleType, identity_extractor<SimpleObject> >();
+    lvalue_from_pytype<extract_identity<SimpleObject>,&SimpleType>();
     
-    module m1("m1");
-
-    m1
-      // Insert the metaclass for all extension classes
-      .setattr("xclass", boost::python::objects::class_metatype())
-    
-      // Insert the base class for all extension classes
-      .setattr("xinst", boost::python::objects::class_type())
-
-      .def("new_noddy", new_noddy)
-      .def("new_simple", new_simple)
+    def("new_noddy", new_noddy);
+    def("new_simple", new_simple);
 
       // Expose f() in all its variations
-      .def("f", f)
-      .def("f_mutable_ref", f_mutable_ref)
-      .def("f_mutable_ptr", f_mutable_ptr)
-      .def("f_const_ptr", f_const_ptr)
+    def("f", f);
+    def("f_mutable_ref", f_mutable_ref);
+    def("f_mutable_ptr", f_mutable_ptr);
+    def("f_const_ptr", f_const_ptr);
 
-      .def("f2", f2)
+    def("f2", f2);
         
       // Expose g()
-      .def("g", g , return_value_policy<copy_const_reference>()
-          )
+    def("g", g , return_value_policy<copy_const_reference>()
+        );
 
-      .def("take_a", take_a)
-      .def("take_b", take_b)
-      .def("take_c", take_c)
-      .def("take_d", take_d)
+    def("take_a", take_a);
+    def("take_b", take_b);
+    def("take_c", take_c);
+    def("take_d", take_d);
 
-      .add(
-          class_<A, shared_ptr<A> >("A")
-          .def_init()
-          .def("name", &A::name)
-          )
-        
+
+    def("take_d_shared_ptr", take_d_shared_ptr);
+    def("d_factory", d_factory);
+
+    class_<A, shared_ptr<A> >("A")
+        .def("name", &A::name)
         ;
 
     // sequence points don't ensure that "A" is constructed before "B"
     // or "C" below if we make them part of the same chain
-    m1
-        .add(
-            class_<B,bases<A>, shared_ptr<B> >("B")
-            .def_init()
-            .def("name", &B::name)
-            )
+    class_<B,bases<A>, shared_ptr<B> >("B")
+        .def("name", &B::name)
+        ;
         
-        .add(
-            class_<C,bases<A>, shared_ptr<C> >("C")
-            .def_init()
-            .def("name", &C::name)
-            )
+    class_<C,bases<A>, shared_ptr<C> >("C")
+        .def("name", &C::name)
         ;
 
-    m1
-        .add(
-            class_<D,shared_ptr<D>, bases<B,C> >("D")
-            .def_init()
-            .def("name", &D::name)
-            )
+    class_<D,shared_ptr<D>, bases<B,C> >("D")
+        .def("name", &D::name)
+        ;
 
-        .add(
-            class_<complicated>("complicated")
-            .def_init(args<simple const&,int>())
-            .def_init(args<simple const&>())
-            .def("get_n", &complicated::get_n)
-            )
+    class_<complicated>("complicated",
+                        init<simple const&,int>())
+        .def(init<simple const&>())
+        .def("get_n", &complicated::get_n)
         ;
 }
 

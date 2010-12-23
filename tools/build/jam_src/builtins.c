@@ -136,6 +136,11 @@ load_builtins()
                     builtin_flags, T_FLAG_FAIL_EXPECTED, 0 );
 
       bind_builtin( "RMOLD" , builtin_flags, T_FLAG_RMOLD, 0 );
+      
+      {
+          char * args[] = { "targets", "*", 0 };
+          bind_builtin( "UPDATE", builtin_update, 0, args );
+      }
 
       {
           char * args[] = { "string", "pattern", "replacements", "+", 0 };
@@ -173,7 +178,7 @@ load_builtins()
       }
 
       {
-          char * args[] = { 0 };
+          char * args[] = { "levels", "?", 0 };
           bind_builtin( "BACKTRACE" ,
                         builtin_backtrace, 0, args );
       }
@@ -595,8 +600,11 @@ void backtrace( FRAME *frame )
  */
 LIST *builtin_backtrace( PARSE *parse, FRAME *frame )
 {
+    LIST* levels_arg = lol_get( frame->args, 0 );
+    int levels = levels_arg ? atoi( levels_arg->string ) : ((unsigned int)(-1) >> 1) ;
+
     LIST* result = L0;
-    while ( frame = frame->prev )
+    for(; (frame = frame->prev) && levels ; --levels )
     {
         char* file;
         int line;
@@ -660,6 +668,18 @@ LIST*
 builtin_pwd( PARSE *parse, FRAME *frame )
 {
     return pwd();
+}
+
+/*
+ * Adds targets to the list of target that jam will attempt to update.
+ */
+LIST* 
+builtin_update( PARSE *parse, FRAME *frame)
+{
+    LIST* arg1 = lol_get( frame->args, 0 );
+    for ( ; arg1; arg1 = list_next( arg1 ) )
+        mark_target_for_updating( newstr(arg1->string) );
+    return L0;
 }
 
 static void lol_build( LOL* lol, char** elements )

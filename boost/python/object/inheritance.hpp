@@ -6,13 +6,15 @@
 #ifndef INHERITANCE_DWA200216_HPP
 # define INHERITANCE_DWA200216_HPP
 
-# include <boost/python/converter/type_id.hpp>
+# include <boost/python/type_id.hpp>
 # include <boost/shared_ptr.hpp>
+# include <boost/mpl/if.hpp>
+# include <boost/type_traits/object_traits.hpp>
 
 namespace boost { namespace python { namespace objects {
 
-typedef converter::undecorated_type_id_t class_id;
-using converter::undecorated_type_id;
+typedef type_info class_id;
+using python::type_id;
 
 // Types used to get address and id of most derived type
 typedef std::pair<void*,class_id> dynamic_id_t;
@@ -70,7 +72,7 @@ struct non_polymorphic_id_generator
 {
     static dynamic_id_t execute(void* p_)
     {
-        return std::make_pair(p_, converter::undecorated_type_id<T>());
+        return std::make_pair(p_, python::type_id<T>());
     }
 };
 
@@ -78,7 +80,7 @@ struct non_polymorphic_id_generator
 template <class T>
 struct dynamic_id_generator
 {
-    typedef typename mpl::select_type<
+    typedef typename mpl::if_c<
         is_polymorphic<T>::value
         , polymorphic_id_generator<T>
         , non_polymorphic_id_generator<T> >::type type;
@@ -91,7 +93,7 @@ void register_dynamic_id(T* = 0)
 {
     typedef typename dynamic_id_generator<T>::type generator;
     register_dynamic_id_aux(
-        converter::undecorated_type_id<T>(), &generator::execute);
+        python::type_id<T>(), &generator::execute);
 }
 
 //
@@ -131,7 +133,7 @@ struct cast_generator
             is_base_and_derived<Target,Source>::value
             ));
 
-    typedef typename mpl::select_type<
+    typedef typename mpl::if_c<
         is_upcast
 # if defined(__MWERKS__) && __MWERKS__ <= 0x2406
         // grab a few more implicit_cast cases for CodeWarrior
@@ -154,8 +156,8 @@ inline void register_conversion(
 {
     typedef typename cast_generator<Source,Target>::type generator;
     
-    add_cast(converter::undecorated_type_id<Source>()
-             , converter::undecorated_type_id<Target>()
+    add_cast(python::type_id<Source>()
+             , python::type_id<Target>()
              , &generator::execute
              , is_downcast);
 }

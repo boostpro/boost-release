@@ -47,9 +47,12 @@ rule section (
     {
         lines $(name): ;
         lines ;
-        if $(description)
+        while $(description)
         {
-            lines [ split-at-words " " $(description) ] : "  " ;
+            local paragraph = ;
+            while $(description) && $(description[1]) = "" { description = $(description[2-]) ; }
+            while $(description) && $(description[1]) != "" { paragraph += $(description[1]) ; description = $(description[2-]) ; }
+            lines [ split-at-words " " $(paragraph) ] : "  " ;
             lines ;
         }
     }
@@ -207,7 +210,7 @@ rule text (
     }
 }
 
-# Outputs the text to the current targets, after word-wrapping it
+# Outputs the text to the current targets, after word-wrapping it.
 rule wrapped-text ( text + )
 {
     local lines = [ split-at-words $(text) ] ;
