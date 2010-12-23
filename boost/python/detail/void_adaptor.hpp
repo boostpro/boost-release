@@ -8,7 +8,7 @@
 
 namespace boost { namespace python { namespace detail {
 
-  extern PyObject arbitrary_object;
+  extern BOOST_PYTHON_DECL PyObject arbitrary_object;
 
   template <class T>
   struct void_adaptor

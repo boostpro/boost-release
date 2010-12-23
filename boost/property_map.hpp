@@ -329,7 +329,7 @@ namespace boost {
         T, R> >
   {
   public:
-    typedef void key_type; 
+    typedef typename property_traits<IndexMap>::key_type key_type;
     typedef T value_type;
     typedef R reference;
     typedef boost::lvalue_property_map_tag category;
@@ -338,8 +338,7 @@ namespace boost {
       RandomAccessIterator cc = RandomAccessIterator(), 
       const IndexMap& _id = IndexMap() ) 
       : iter(cc), index(_id) { }
-    template <class Key>
-    inline R operator[](Key v) const { return *(iter + get(index, v)) ; }
+    inline R operator[](key_type v) const { return *(iter + get(index, v)) ; }
   protected:
     RandomAccessIterator iter;
     IndexMap index;
@@ -366,6 +365,65 @@ namespace boost {
     function_requires< RandomAccessIteratorConcept<RAIter> >();
     typedef iterator_property_map<RAIter, ID, Value, Value&> PMap;
     return PMap(iter, id);
+  }
+
+  template <class RandomAccessIterator, 
+    class IndexMap
+#ifdef BOOST_NO_STD_ITERATOR_TRAITS
+    , class T, class R
+#else
+    , class T = typename std::iterator_traits<RandomAccessIterator>::value_type
+    , class R = typename std::iterator_traits<RandomAccessIterator>::reference
+#endif
+     >
+  class safe_iterator_property_map
+    : public boost::put_get_helper< R, 
+        safe_iterator_property_map<RandomAccessIterator, IndexMap,
+        T, R> >
+  {
+  public:
+    typedef typename property_traits<IndexMap>::key_type key_type; 
+    typedef T value_type;
+    typedef R reference;
+    typedef boost::lvalue_property_map_tag category;
+
+    inline safe_iterator_property_map(
+      RandomAccessIterator first = RandomAccessIterator(), 
+      std::size_t n = 0, 
+      const IndexMap& _id = IndexMap() ) 
+      : iter(first), n(n), index(_id) { }
+    inline R operator[](key_type v) const {
+      assert(get(index, v) < n);
+      return *(iter + get(index, v)) ;
+    }
+    typename property_traits<IndexMap>::value_type size() const { return n; }
+  protected:
+    RandomAccessIterator iter;
+    typename property_traits<IndexMap>::value_type n;
+    IndexMap index;
+  };
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+  template <class RAIter, class ID>
+  inline safe_iterator_property_map<
+    RAIter, ID,
+    typename std::iterator_traits<RAIter>::value_type,
+    typename std::iterator_traits<RAIter>::reference>
+  make_safe_iterator_property_map(RAIter iter, std::size_t n, ID id) {
+    function_requires< RandomAccessIteratorConcept<RAIter> >();
+    typedef safe_iterator_property_map<
+      RAIter, ID,
+      typename std::iterator_traits<RAIter>::value_type,
+      typename std::iterator_traits<RAIter>::reference> PA;
+    return PA(iter, n, id);
+  }
+#endif
+  template <class RAIter, class Value, class ID>
+  inline safe_iterator_property_map<RAIter, ID, Value, Value&>
+  make_safe_iterator_property_map(RAIter iter, std::size_t n, ID id, Value) {
+    function_requires< RandomAccessIteratorConcept<RAIter> >();
+    typedef safe_iterator_property_map<RAIter, ID, Value, Value&> PMap;
+    return PMap(iter, n, id);
   }
 
   //=========================================================================
@@ -429,18 +487,17 @@ namespace boost {
   }
 
   //=========================================================================
-  // A property map that applies the identity function
+  // A property map that applies the identity function to integers
   struct identity_property_map
     : public boost::put_get_helper<std::size_t, 
         identity_property_map>
   {
-    typedef void key_type;
-    typedef std::size_t value_type; // ? -JGS
+    typedef std::size_t key_type;
+    typedef std::size_t value_type;
     typedef std::size_t reference;
     typedef boost::readable_property_map_tag category;
 
-    template <class Vertex>
-    inline Vertex operator[](const Vertex& v) const { return v; }
+    inline value_type operator[](const key_type& v) const { return v; }
   };
 
   //=========================================================================

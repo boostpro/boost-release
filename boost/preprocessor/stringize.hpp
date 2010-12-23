@@ -1,52 +1,37 @@
 #ifndef BOOST_PREPROCESSOR_STRINGIZE_HPP
 #define BOOST_PREPROCESSOR_STRINGIZE_HPP
 
-//  Copyright (C) 2001
-//  Housemarque, Inc.
-//  http://www.housemarque.com
-//  
-//  Permission to copy, use, modify, sell and distribute this software is
-//  granted provided this copyright notice appears in all copies. This
-//  software is provided "as is" without express or implied warranty, and
-//  with no claim as to its suitability for any purpose.
+/* Copyright (C) 2001
+ * Housemarque Oy
+ * http://www.housemarque.com
+ *
+ * Permission to copy, use, modify, sell and distribute this software is
+ * granted provided this copyright notice appears in all copies. This
+ * software is provided "as is" without express or implied warranty, and
+ * with no claim as to its suitability for any purpose.
+ *
+ * See http://www.boost.org for most recent version.
+ */
 
-//  See http://www.boost.org for most recent version.
+/** <p>Stringizes <code>X</code> after it is macro expanded.</p>
 
-/*! \file
+<h3>Example</h3>
+<ul>
+  <li><a href="../../example/note.c">note.c</a></li>
+</ul>
 
-<a href="../../../../boost/preprocessor/stringize.hpp">Click here to see the header.</a>
+<h3>Test</h3>
+<ul>
+  <li><a href="../../test/preprocessor_test.cpp">preprocessor_test.cpp</a></li>
+</ul>
 */
-
-//! Delays the stringization of E.
-/*!
-Example:
-
-<PRE>\verbatim
-#define NOTE(STR)\
-  message(__FILE__ "(" BOOST_PREPROCESSOR_STRINGIZE(__LINE__) ") : " STR)
-
-// ...
-
-#pragma NOTE("TBD!")
-\endverbatim</PRE>
-
-The above expands to:
-
-<PRE>\verbatim
-  #pragma message("examples.cpp" "(" "20" ") : " "TBD!")
-\endverbatim</PRE>
-
-The use of BOOST_PREPROCESSOR_STRINGIZE() above lets the preprocessor expand
-the __LINE__ before stringizing it. If # would be used directly, the code
-would expand to:
-
-<PRE>\verbatim
-  #pragma message("examples.cpp" "(" "__LINE__" ") : " "TBD!")
-\endverbatim</PRE>
-*/
-#define BOOST_PREPROCESSOR_STRINGIZE(E) BOOST_PREPROCESSOR_STRINGIZE_DELAY(E)
+#define BOOST_PP_STRINGIZE(X) BOOST_PP_STRINGIZE_DELAY(X)
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#define BOOST_PREPROCESSOR_STRINGIZE_DELAY(E) #E
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#define BOOST_PP_STRINGIZE_DELAY(X) BOOST_PP_DO_STRINGIZE(X)
+#define BOOST_PP_DO_STRINGIZE(X) #X
+#endif
+
+/** <p>Obsolete. Use BOOST_PP_STRINGIZE().</p> */
+#define BOOST_PREPROCESSOR_STRINGIZE(E) BOOST_PP_STRINGIZE(E)
 #endif

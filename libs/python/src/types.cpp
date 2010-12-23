@@ -6,6 +6,9 @@
 //  The author gratefully acknowleges the support of Dragon Systems, Inc., in
 //  producing this work.
 
+#define BOOST_PYTHON_SOURCE
+
+#include <boost/python/detail/call_object.hpp>
 #include <boost/python/detail/types.hpp>
 #include <boost/python/reference.hpp> // for handle_exception()
 #include <boost/python/conversions.hpp>
@@ -16,23 +19,23 @@
 #include <vector>
 #include <cstddef>
 #include <stdexcept>
-#include <boost/smart_ptr.hpp>
 #include <boost/python/objects.hpp>
 #include <boost/type_traits/alignment_traits.hpp>
 #include <boost/bind.hpp>
 
 namespace boost { namespace python {
 
-namespace {
-
+namespace
+{
   using detail::type_object_base;
+  using detail::call_object;
+
 
   // Define a family of forwarding functions that can be called from a
   // PyTypeObject's slots. These functions dispatch through a (virtual) member
   // function pointer in the type_object_base, and handle exceptions in a
   // uniform way, preventing us from having to rewrite the dispatching code over
   // and over.
-
 
   // Given a function object f with signature
   //
@@ -41,88 +44,24 @@ namespace {
   // calls f inside of handle_exception, and returns the result. If an exception
   // is thrown by f, returns 0.
   template <class F>
-  PyObject* obj_call(PyObject* obj, F const& f)
+  PyObject* obj_call(PyObject* obj, F f)
   {
-      return handle_exception(
-          boost::bind<PyObject*>(f, static_cast<type_object_base*>(obj->ob_type), obj));
+      PyObject* result;
+      return call_object(result, obj, f) ? 0 : result;
   }
 
-
-  // int_converter<T>/value_holder<T>
-  //
-  // A simple function object which converts its argument to a PyObject*. We
-  // need this because handle_exception needs to return a PyObject*, even if the
-  // function being called is supposed to return int. It has two parts...
-
-  // holds the value actually returned by the underlying function
-  template <class T>
-  struct value_holder : PyObject
-  {
-      value_holder() : is_set(false), value(-1) {}
-
-      // Tricky constructor allows us to grab the result even if rhs == 0.
-      explicit value_holder(value_holder const* rhs)
-          : is_set(rhs ? rhs->is_set : false), value(rhs ? rhs->value : -1) {}
-
-      // true if the function object was ever called (false if an exception occurred)
-      bool is_set;
-
-      // The returned value
-      T value;
-  };
-
-  // The function object
-  template <class R>
-  struct int_converter
-  {
-      typedef PyObject* result_type;
-      
-      PyObject* operator()(R const& x)
-      {
-          m_holder.is_set = true;
-          m_holder.value = x;
-          return &m_holder; // returns
-      }
-
-      value_holder<R> m_holder;
-  };
-
-  // Call the given int-returning function object inside of handle_exception,
-  // returning a value_holder. F is a function object with "signature"
+  // Call the given integer-returning function object inside of
+  // handle_exception, returning a value_holder. F is a function
+  // object with "signature"
   //
   //     R F(PyTypeObject*, PyObject*)
   //
   // where R is an integer type.
   template <class R, class F>
-  value_holder<R> int_call_holder(PyObject* obj, F f)
+  R int_call(PyObject* obj, F f, R* = 0)
   {
-      return value_holder<R>(
-          
-          // The int_converter object containing the value_holder is valid
-          // through the life of the full-expression, so we can construct from
-          // the pointer
-          static_cast<value_holder<R>*>(
-              handle_exception(
-
-                  boost::bind<PyObject*>(
-                      // Add an int_converter back-end to f
-                      int_converter<R>()
-                      // Bind the object's type and the object itself into f
-                      , boost::bind<R>(f, static_cast<type_object_base*>(obj->ob_type), obj)
-                      )
-                  
-                  )
-              )
-          );
-  }
-
-  // Just like int_call_holder (above), but returns the integer directly. If F
-  // throws an exception, returns -1
-  template <class R, class F>
-  R int_call(PyObject* obj, F f)
-  {
-      value_holder<R> const v(int_call_holder<R>(obj, f));
-      return v.value;
+      R result;
+      return call_object(result, obj, f) ? -1 : result;
   }
 
   // Implemented in terms of obj_call, above
@@ -169,26 +108,17 @@ namespace {
 
   int call_length_function(PyObject* obj, int (type_object_base::*f)(PyObject*) const)
   {
-      value_holder<int> const r(int_call_holder<int>(obj, bind(f, _1, _2)));
-      
-      if (!r.is_set)
-      {
+      int result;
+      if (call_object(result, obj, bind(f, _1, _2)))
           return -1;
-      }
       
-      const int outcome = r.value;
-      if (outcome >= 0)
-          return outcome;
+      if (result >= 0)
+          return result;
 
       PyErr_SetString(PyExc_ValueError, "__len__() should return >= 0");
       return -1;
   }
 }  // anonymous namespace
-
-namespace detail {
-  // needed by void_adaptor (see void_adaptor.hpp)
-  PyObject arbitrary_object;
-}
 
 extern "C" {
 
@@ -245,14 +175,11 @@ static PyObject* do_instance_call(PyObject* obj, PyObject* args, PyObject* keywo
 
 static void do_instance_dealloc(PyObject* obj)
 {
-    PyObject* success = handle_exception(
-        // translate the void return value of instance_dealloc into a PyObject*
-        // that can indicate no error.
-        detail::make_void_adaptor(
+    if (handle_exception(
             bind(&type_object_base::instance_dealloc
-                       , static_cast<type_object_base*>(obj->ob_type)
-                       , obj)));
-    if (!success)
+                 , static_cast<type_object_base*>(obj->ob_type)
+                 , obj))
+        )
     {
         assert(!"exception during destruction!");
     }
@@ -298,11 +225,9 @@ static PyObject* do_instance_sq_item(PyObject* obj, int index)
         return 0;
     }
 
-    return handle_exception(
-        bind(&type_object_base::instance_sequence_item
-             , static_cast<type_object_base*>(obj->ob_type)
-             , obj
-             , index));
+    return obj_call(
+        obj
+        , bind(&type_object_base::instance_sequence_item, _1, _2, index));
 }
 
 static int do_instance_mp_ass_subscript(PyObject* obj, PyObject* index, PyObject* value)
@@ -455,6 +380,61 @@ static PyObject* do_instance_nb_hex(PyObject* obj)
     return call(obj, &type_object_base::instance_number_hex);
 }
 
+static PyObject* do_instance_nb_inplace_add(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_add, other);
+}
+
+static PyObject* do_instance_nb_inplace_subtract(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_subtract, other);
+}
+
+static PyObject* do_instance_nb_inplace_multiply(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_multiply, other);
+}
+
+static PyObject* do_instance_nb_inplace_divide(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_divide, other);
+}
+
+static PyObject* do_instance_nb_inplace_remainder(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_remainder, other);
+}
+
+static PyObject* do_instance_nb_inplace_power(PyObject* obj, PyObject* exponent, PyObject* modulus)
+{
+    return call(obj, &type_object_base::instance_number_inplace_power, exponent, modulus);
+}
+
+static PyObject* do_instance_nb_inplace_lshift(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_lshift, other);
+}
+
+static PyObject* do_instance_nb_inplace_rshift(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_rshift, other);
+}
+
+static PyObject* do_instance_nb_inplace_and(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_and, other);
+}
+
+static PyObject* do_instance_nb_inplace_or(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_or, other);
+}
+
+static PyObject* do_instance_nb_inplace_xor(PyObject* obj, PyObject* other)
+{
+    return call(obj, &type_object_base::instance_number_inplace_xor, other);
+}
+
 } // extern "C"
 
 namespace
@@ -509,6 +489,37 @@ bool add_capability_richcompare(type_object_base::capability capability, PyTypeO
     }
     
     return false;
+}
+
+#define ENABLE_INPLACE_CAPABILITY(field) \
+    case type_object_base::number_##field: \
+        create_method_table_if_null(dest->tp_as_number); \
+        dest->tp_as_number->nb_##field = &do_instance_nb_##field; \
+        detail::shared_pod_manager::replace_if_equal(dest->tp_as_number); \
+        dest->tp_flags |= Py_TPFLAGS_HAVE_INPLACEOPS; \
+        return true
+
+bool add_capability_inplace(type_object_base::capability capability, PyTypeObject* dest)
+{
+    assert(dest != 0);
+    switch (capability)
+    {
+#if PYTHON_API_VERSION >= 1010
+        ENABLE_INPLACE_CAPABILITY (inplace_add);
+        ENABLE_INPLACE_CAPABILITY (inplace_subtract);
+        ENABLE_INPLACE_CAPABILITY (inplace_multiply);
+        ENABLE_INPLACE_CAPABILITY (inplace_divide);
+        ENABLE_INPLACE_CAPABILITY (inplace_remainder);
+        ENABLE_INPLACE_CAPABILITY (inplace_power);
+        ENABLE_INPLACE_CAPABILITY (inplace_lshift);
+        ENABLE_INPLACE_CAPABILITY (inplace_rshift);
+        ENABLE_INPLACE_CAPABILITY (inplace_and);
+        ENABLE_INPLACE_CAPABILITY (inplace_or);
+        ENABLE_INPLACE_CAPABILITY (inplace_xor);
+#endif
+        default:
+            return false;
+    }
 }
 
 #define ENABLE_MAPPING_CAPABILITY(field) \
@@ -625,6 +636,8 @@ namespace detail  {
     if(add_capability_general(capability, dest_))
         return;
     if(add_capability_richcompare(capability, dest_))
+        return;
+    if(add_capability_inplace(capability, dest_))
         return;
     if(add_capability_mapping(capability, dest_->tp_as_mapping))
         return;
@@ -970,7 +983,7 @@ PyObject* type_object_base::instance_number_divmod(PyObject*, PyObject*) const
 
 PyObject* type_object_base::instance_number_power(PyObject*, PyObject*, PyObject*) const
 {
-    return unimplemented("instance_number_divmod");
+    return unimplemented("instance_number_power");
 }
 
 PyObject* type_object_base::instance_number_negative(PyObject*) const
@@ -1051,6 +1064,61 @@ PyObject* type_object_base::instance_number_oct(PyObject*) const
 PyObject* type_object_base::instance_number_hex(PyObject*) const
 {
     return unimplemented("instance_number_hex");
+}
+
+PyObject* type_object_base::instance_number_inplace_add(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_add");
+}
+
+PyObject* type_object_base::instance_number_inplace_subtract(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_subtract");
+}
+
+PyObject* type_object_base::instance_number_inplace_multiply(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_multiply");
+}
+
+PyObject* type_object_base::instance_number_inplace_divide(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_divide");
+}
+
+PyObject* type_object_base::instance_number_inplace_remainder(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_remainder");
+}
+
+PyObject* type_object_base::instance_number_inplace_power(PyObject*, PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_power");
+}
+
+PyObject* type_object_base::instance_number_inplace_lshift(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_lshift");
+}
+
+PyObject* type_object_base::instance_number_inplace_rshift(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_rshift");
+}
+
+PyObject* type_object_base::instance_number_inplace_and(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_and");
+}
+
+PyObject* type_object_base::instance_number_inplace_or(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_or");
+}
+
+PyObject* type_object_base::instance_number_inplace_xor(PyObject*, PyObject*) const
+{
+    return unimplemented("instance_number_inplace_xor");
 }
 
 PyObject* type_object_base::instance_lt(PyObject*, PyObject*) const

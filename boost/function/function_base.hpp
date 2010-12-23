@@ -23,6 +23,13 @@
 #include <typeinfo>
 #include <boost/config.hpp>
 #include <boost/type_traits.hpp>
+#include <boost/ref.hpp>
+
+#if defined(BOOST_MSVC) && BOOST_MSVC <= 1300 || defined(__ICL) && __ICL <= 600 || defined(__MWERKS__) && __MWERKS__ < 0x2406
+#  define BOOST_FUNCTION_TARGET_FIX(x) x
+#else
+#  define BOOST_FUNCTION_TARGET_FIX(x)
+#endif // not MSVC
 
 namespace boost {
   namespace detail {
@@ -122,19 +129,40 @@ namespace boost {
       struct function_ptr_tag {};
       struct function_obj_tag {};
       struct member_ptr_tag {};
+      struct function_obj_ref_tag {};
+      struct stateless_function_obj_tag {};
 
       template<typename F>
       class get_function_tag
       {
-	typedef typename IF<(is_pointer<F>::value),
+        typedef typename IF<(is_pointer<F>::value),
                             function_ptr_tag,
                             function_obj_tag>::type ptr_or_obj_tag;
 
+        typedef typename IF<(is_member_pointer<F>::value),
+                            member_ptr_tag,
+                            ptr_or_obj_tag>::type ptr_or_obj_or_mem_tag;
+
+        typedef typename IF<(is_reference_wrapper<F>::value),
+                             function_obj_ref_tag,
+                             ptr_or_obj_or_mem_tag>::type or_ref_tag;
+
       public:
-	typedef typename IF<(is_member_pointer<F>::value),
-			    member_ptr_tag,
-			    ptr_or_obj_tag>::type type;
+        typedef typename IF<(is_stateless<F>::value),
+                            stateless_function_obj_tag,
+                            or_ref_tag>::type type;
       };
+
+      // The trivial manager does nothing but return the same pointer (if we
+      // are cloning) or return the null pointer (if we are deleting).
+      inline any_pointer trivial_manager(any_pointer f, 
+                                  functor_manager_operation_type op)
+      {
+        if (op == clone_functor_tag)
+          return f;
+        else
+          return any_pointer(reinterpret_cast<void*>(0));
+      }
 
       /**
        * The functor_manager class contains a static function "manage" which
@@ -273,7 +301,7 @@ namespace boost {
     // Is this function empty?
     bool empty() const { return !manager; }
     
-  protected:
+  public: // should be protected, but GCC 2.95.3 will fail to allow access
     detail::function::any_pointer (*manager)(
                            detail::function::any_pointer, 
                            detail::function::functor_manager_operation_type);

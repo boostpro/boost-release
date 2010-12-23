@@ -1,4 +1,4 @@
-//  (C) Copyright David Abrahams 2000. Permission to copy, use, modify, sell and
+//  (C) Copyright David Abrahams 2001. Permission to copy, use, modify, sell and
 //  distribute this software is granted provided this copyright notice appears
 //  in all copies. This software is provided "as is" without express or implied
 //  warranty, and with no claim as to its suitability for any purpose.
@@ -26,7 +26,7 @@
 # include <memory>
 # include <boost/python/detail/init_function.hpp>
 # include <typeinfo>
-# include <boost/smart_ptr.hpp>
+# include <boost/shared_ptr.hpp>
 # include <boost/type_traits.hpp>
 
 namespace boost { namespace python {
@@ -38,26 +38,51 @@ template <class T> struct right_operand;
 
 enum without_downcast_t { without_downcast };
 
-namespace detail {
+namespace detail
+{
 
 // forward declarations
-class extension_instance;
-class extension_class_base;
-template <class T> class instance_holder;
-template <class T, class U> class instance_value_holder;
-template <class ref, class T> class instance_ptr_holder;
-template <class Specified> struct operand_select;
+  class extension_instance;
+  class extension_class_base;
+  template <class T> class instance_holder;
+  template <class T, class U> class instance_value_holder;
+  template <class ref, class T> class instance_ptr_holder;
+  template <class Specified> struct operand_select;
   template <long> struct choose_op;
   template <long> struct choose_rop;
   template <long> struct choose_unary_op;
   template <long> struct define_operator;
 
-meta_class<extension_instance>* extension_meta_class();
-extension_instance* get_extension_instance(PyObject* p);
-void report_missing_instance_data(extension_instance*, class_t<extension_instance>*, const std::type_info&);
-void report_missing_ptr_data(extension_instance*, class_t<extension_instance>*, const std::type_info&);
-void report_missing_class_object(const std::type_info&);
-void report_released_smart_pointer(const std::type_info&);
+  class BOOST_PYTHON_DECL extension_instance : public instance
+  {
+   public:
+      extension_instance(PyTypeObject* class_);
+      ~extension_instance();
+    
+      void add_implementation(std::auto_ptr<instance_holder_base> holder);
+
+      typedef std::vector<instance_holder_base*> held_objects;
+      const held_objects& wrapped_objects() const
+      { return m_wrapped_objects; }
+   private:
+      held_objects m_wrapped_objects;
+  };
+
+} // namespace detail
+
+# ifndef BOOST_PYTHON_NO_TEMPLATE_EXPORT
+BOOST_PYTHON_EXPORT_TEMPLATE_CLASS class_t<detail::extension_instance>;
+BOOST_PYTHON_EXPORT_TEMPLATE_CLASS meta_class<detail::extension_instance>;
+# endif 
+
+namespace detail {
+
+BOOST_PYTHON_DECL meta_class<extension_instance>* extension_meta_class();
+BOOST_PYTHON_DECL extension_instance* get_extension_instance(PyObject* p);
+BOOST_PYTHON_DECL void report_missing_instance_data(extension_instance*, class_t<extension_instance>*, const std::type_info&);
+BOOST_PYTHON_DECL void report_missing_ptr_data(extension_instance*, class_t<extension_instance>*, const std::type_info&);
+BOOST_PYTHON_DECL void report_missing_class_object(const std::type_info&);
+BOOST_PYTHON_DECL void report_released_smart_pointer(const std::type_info&);
     
 template <class T>
 T* check_non_null(T* p)
@@ -71,7 +96,7 @@ template <class Held> class held_instance;
 
 typedef void* (*conversion_function_ptr)(void*);
 
-struct base_class_info
+struct BOOST_PYTHON_DECL base_class_info
 {
     base_class_info(extension_class_base* t, conversion_function_ptr f)
         :class_object(t), convert(f)
@@ -85,7 +110,7 @@ typedef base_class_info derived_class_info;
 
 struct add_operator_base;
 
-class extension_class_base : public class_t<extension_instance>
+class BOOST_PYTHON_DECL extension_class_base : public class_t<extension_instance>
 {
  public:
     extension_class_base(const char* name);
@@ -378,7 +403,7 @@ namespace detail {
 
 template <class T> class instance_holder;
 
-class read_only_setattr_function : public function
+class BOOST_PYTHON_DECL read_only_setattr_function : public function
 {
  public:
     read_only_setattr_function(const char* name);
@@ -702,30 +727,85 @@ class held_instance : public Held
 public:
     held_instance(PyObject*) : Held() {}
     template <class A1>
-    held_instance(PyObject*, A1 a1) : Held(a1) {}
+    held_instance(PyObject*, A1 a1) : Held(
+        typename unwrap_parameter<A1>::type(a1)) {}
     template <class A1, class A2>
-    held_instance(PyObject*, A1 a1, A2 a2) : Held(a1, a2) {}
+    held_instance(PyObject*, A1 a1, A2 a2) : Held(
+        typename unwrap_parameter<A1>::type(a1)
+        , typename unwrap_parameter<A2>::type(a2)) {}
     template <class A1, class A2, class A3>
-    held_instance(PyObject*, A1 a1, A2 a2, A3 a3) : Held(a1, a2, a3) {}
+    held_instance(PyObject*, A1 a1, A2 a2, A3 a3) : Held(
+        typename unwrap_parameter<A1>::type(a1)
+        , typename unwrap_parameter<A2>::type(a2)
+        , typename unwrap_parameter<A3>::type(a3)) {}
     template <class A1, class A2, class A3, class A4>
-    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4) : Held(a1, a2, a3, a4) {}
+    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4) : Held(
+        typename unwrap_parameter<A1>::type(a1)
+        , typename unwrap_parameter<A2>::type(a2)
+        , typename unwrap_parameter<A3>::type(a3)
+        , typename unwrap_parameter<A4>::type(a4)) {}
     template <class A1, class A2, class A3, class A4, class A5>
-    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5) : Held(a1, a2, a3, a4, a5) {}
+    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5) : Held(
+        typename unwrap_parameter<A1>::type(a1)
+        , typename unwrap_parameter<A2>::type(a2)
+        , typename unwrap_parameter<A3>::type(a3)
+        , typename unwrap_parameter<A4>::type(a4)
+        , typename unwrap_parameter<A5>::type(a5)) {}
     template <class A1, class A2, class A3, class A4, class A5, class A6>
-    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6) : Held(a1, a2, a3, a4, a5, a6) {}
+    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6) : Held(
+        typename unwrap_parameter<A1>::type(a1)
+        , typename unwrap_parameter<A2>::type(a2)
+        , typename unwrap_parameter<A3>::type(a3)
+        , typename unwrap_parameter<A4>::type(a4)
+        , typename unwrap_parameter<A5>::type(a5)
+        , typename unwrap_parameter<A6>::type(a6)) {}
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7>
-    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7) : Held(a1, a2, a3, a4, a5, a6, a7) {}
+    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7) : Held(
+        typename unwrap_parameter<A1>::type(a1)
+        , typename unwrap_parameter<A2>::type(a2)
+        , typename unwrap_parameter<A3>::type(a3)
+        , typename unwrap_parameter<A4>::type(a4)
+        , typename unwrap_parameter<A5>::type(a5)
+        , typename unwrap_parameter<A6>::type(a6)
+        , typename unwrap_parameter<A7>::type(a7)) {}
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
-    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8) : Held(a1, a2, a3, a4, a5, a6, a7, a8) {}
+    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8) : Held(
+        typename unwrap_parameter<A1>::type(a1)
+        , typename unwrap_parameter<A2>::type(a2)
+        , typename unwrap_parameter<A3>::type(a3)
+        , typename unwrap_parameter<A4>::type(a4)
+        , typename unwrap_parameter<A5>::type(a5)
+        , typename unwrap_parameter<A6>::type(a6)
+        , typename unwrap_parameter<A7>::type(a7)
+        , typename unwrap_parameter<A8>::type(a8)) {}
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
-    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9) : Held(a1, a2, a3, a4, a5, a6, a7, a8, a9) {}
+    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9) : Held(
+        typename unwrap_parameter<A1>::type(a1)
+        , typename unwrap_parameter<A2>::type(a2)
+        , typename unwrap_parameter<A3>::type(a3)
+        , typename unwrap_parameter<A4>::type(a4)
+        , typename unwrap_parameter<A5>::type(a5)
+        , typename unwrap_parameter<A6>::type(a6)
+        , typename unwrap_parameter<A7>::type(a7)
+        , typename unwrap_parameter<A8>::type(a8)
+        , typename unwrap_parameter<A9>::type(a9)) {}
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
-    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9, A10 a10) : Held(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {}
+    held_instance(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9, A10 a10) : Held(
+        typename unwrap_parameter<A1>::type(a1)
+        , typename unwrap_parameter<A2>::type(a2)
+        , typename unwrap_parameter<A3>::type(a3)
+        , typename unwrap_parameter<A4>::type(a4)
+        , typename unwrap_parameter<A5>::type(a5)
+        , typename unwrap_parameter<A6>::type(a6)
+        , typename unwrap_parameter<A7>::type(a7)
+        , typename unwrap_parameter<A8>::type(a8)
+        , typename unwrap_parameter<A9>::type(a9)
+        , typename unwrap_parameter<A10>::type(a10)) {}
 };
 
 // Abstract base class for all obj holders. Base for template class
 // instance_holder<>, below.
-class instance_holder_base
+class BOOST_PYTHON_DECL instance_holder_base
 {
 public:
     virtual ~instance_holder_base() {}
@@ -811,21 +891,6 @@ class instance_ptr_holder : public instance_holder<HeldType>
     bool held_by_value() { return false; }
  private:
     PtrType m_ptr;
-};
-
-class extension_instance : public instance
-{
- public:
-    extension_instance(PyTypeObject* class_);
-    ~extension_instance();
-    
-    void add_implementation(std::auto_ptr<instance_holder_base> holder);
-
-    typedef std::vector<instance_holder_base*> held_objects;
-    const held_objects& wrapped_objects() const
-        { return m_wrapped_objects; }
- private:
-    held_objects m_wrapped_objects;
 };
 
 //

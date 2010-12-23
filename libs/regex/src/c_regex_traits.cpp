@@ -31,6 +31,7 @@
 #include <boost/regex/regex_traits.hpp>
 #include <boost/regex/detail/regex_synch.hpp>
 #include <boost/regex/detail/regex_cstring.hpp>
+#include <boost/scoped_array.hpp>
 
 #include "primary_transform.hpp"
 
@@ -178,7 +179,7 @@ unsigned int BOOST_REGEX_CALL _re_get_message(char* buf, unsigned int len, unsig
 template <class charT>
 unsigned int BOOST_REGEX_CALL re_get_message(charT* buf, unsigned int len, unsigned int id)
 {
-   unsigned int size = _re_get_message((char*)0, 0, id);
+   unsigned int size = _re_get_message(static_cast<char*>(0), 0, id);
    if(len < size)
       return size;
    boost::scoped_array<char> cb(new char[size]);
@@ -342,7 +343,14 @@ void BOOST_REGEX_CALL re_message_update()
          message_cat = (nl_catd)-1;
       }
       if(*boost::re_detail::c_traits_base::get_catalogue())
+      {
          message_cat = catopen(boost::re_detail::c_traits_base::get_catalogue(), 0);
+         if(message_cat == (nl_catd)-1)
+         {
+            std::string m("Unable to open message catalog: ");
+            throw std::runtime_error(m + boost::re_detail::c_traits_base::get_catalogue());
+         }
+      }
 #endif
       for(int i = 0; i < boost::REG_E_UNKNOWN; ++i)
       {
@@ -444,7 +452,7 @@ void BOOST_REGEX_CALL c_traits_base::do_update_ctype()
    for(i = 1; i < syntax_max; ++i)
    {
       char* ptr = buf;
-      re_get_message((char*)buf, map_size, i+100);
+      re_get_message(static_cast<char*>(buf), map_size, i+100);
       for(; *ptr; ++ptr)
       {
          syntax_map[(unsigned char)*ptr] = (unsigned char)i;
@@ -549,7 +557,7 @@ bool BOOST_REGEX_CALL c_regex_traits<wchar_t>::lookup_collatename(std::basic_str
 {
    BOOST_RE_GUARD_STACK
    std::basic_string<wchar_t> s(first, last);
-   unsigned int len = strnarrow((char*)0, 0, s.c_str());
+   unsigned int len = strnarrow(static_cast<char*>(0), 0, s.c_str());
    scoped_array<char> buf(new char[len]);
    strnarrow(buf.get(), len, s.c_str());
    std::string t_out;
@@ -559,7 +567,7 @@ bool BOOST_REGEX_CALL c_regex_traits<wchar_t>::lookup_collatename(std::basic_str
    {
       if(t_out[0])
       {
-         len = strwiden((wchar_t*)0, 0, t_out.c_str());
+         len = strwiden(static_cast<wchar_t*>(0), 0, t_out.c_str());
          scoped_array<wchar_t> wb(new wchar_t[len]);
          strwiden(wb.get(), len, t_out.c_str());
          out = wb.get();
@@ -771,14 +779,14 @@ bool BOOST_REGEX_CALL c_regex_traits<wchar_t>::do_lookup_collate(std::basic_stri
 {
    BOOST_RE_GUARD_STACK
    std::basic_string<wchar_t> s(first, last);
-   unsigned int len = strnarrow((char*)0, 0, s.c_str());
+   unsigned int len = strnarrow(static_cast<char*>(0), 0, s.c_str());
    scoped_array<char> buf(new char[len]);
    strnarrow(buf.get(), len, s.c_str());
    std::string t_out;
    bool result = base_type::do_lookup_collate(t_out, buf.get());
    if(result)
    {
-      len = strwiden((wchar_t*)0, 0, t_out.c_str());
+      len = strwiden(static_cast<wchar_t*>(0), 0, t_out.c_str());
       scoped_array<wchar_t> wb(new wchar_t[len]);
       strwiden(wb.get(), len, t_out.c_str());
       out = wb.get();
@@ -826,7 +834,7 @@ void BOOST_REGEX_CALL c_regex_traits<wchar_t>::update()
       for(i = 1; i < syntax_max; ++i)
       {
          wchar_t* ptr = buf;
-         re_get_message((wchar_t*)buf, 256, i+100);
+         re_get_message(static_cast<wchar_t*>(buf), 256, i+100);
          for(; *ptr; ++ptr)
          {
             sm.c = *ptr;
@@ -981,7 +989,7 @@ int BOOST_REGEX_CALL c_regex_traits<wchar_t>::toi(const wchar_t*& first, const w
 boost::uint_fast32_t BOOST_REGEX_CALL c_regex_traits<wchar_t>::lookup_classname(const wchar_t* first, const wchar_t* last)
 {
    std::basic_string<wchar_t> s(first, last);
-   unsigned int len = strnarrow((char*)0, 0, s.c_str());
+   unsigned int len = strnarrow(static_cast<char*>(0), 0, s.c_str());
    scoped_array<char> buf(new char[len]);
    strnarrow(buf.get(), len, s.c_str());
    len =  do_lookup_class(buf.get());

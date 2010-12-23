@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_real.hpp,v 1.3 2001/11/14 21:53:38 jmaurer Exp $
+ * $Id: uniform_real.hpp,v 1.4 2002/01/03 22:20:56 jmaurer Exp $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -66,6 +66,12 @@ private:
   uniform_01<base_type, result_type> _rng;
   RealType _min, _max;
 };
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+template<class UniformRandomNumberGenerator, class RealType>
+const bool uniform_real<UniformRandomNumberGenerator, RealType>::has_fixed_range;
+#endif
 
 } // namespace boost
 

@@ -391,10 +391,10 @@ namespace boost {
 
     template <class W, class S, class D>
     inline int compare_3way(const bitset_base<W,S,D>& x,
-			    const bitset_base<W,S,D>& y) {
+                            const bitset_base<W,S,D>& y) {
       return std::lexicographical_compare_3way
-	(x.data(), x.data() + x.num_words(), 
-	 y.data(), y.data() + y.num_words());
+        (x.data(), x.data() + x.num_words(), 
+         y.data(), y.data() + y.num_words());
     }
 
 
@@ -573,13 +573,13 @@ namespace boost {
     //=========================================================================
     struct select_static_bitset {
       template <std::size_t N, typename WordT, typename SizeT, typename Alloc>
-      struct bind {
+      struct bind_ {
         typedef bitset<N, WordT, SizeT> type;
       };
     };
     struct select_dyn_size_bitset {
       template <std::size_t N, typename WordT, typename SizeT, typename Alloc>
-      struct bind {
+      struct bind_ {
         typedef dyn_size_bitset<WordT, SizeT, Alloc> type;
       };
     };
@@ -594,7 +594,7 @@ namespace boost {
         select_static_bitset>::type selector;
     public:
       typedef typename selector
-        ::template bind<N, WordType, SizeType, Allocator>::type type;
+        ::template bind_<N, WordType, SizeType, Allocator>::type type;
     };
 
 

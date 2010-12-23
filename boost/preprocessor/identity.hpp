@@ -1,44 +1,44 @@
 #ifndef BOOST_PREPROCESSOR_IDENTITY_HPP
 #define BOOST_PREPROCESSOR_IDENTITY_HPP
 
-//  Copyright (C) 2001
-//  Housemarque, Inc.
-//  http://www.housemarque.com
-//  
-//  Permission to copy, use, modify, sell and distribute this software is
-//  granted provided this copyright notice appears in all copies. This
-//  software is provided "as is" without express or implied warranty, and
-//  with no claim as to its suitability for any purpose.
+/* Copyright (C) 2001
+ * Housemarque Oy
+ * http://www.housemarque.com
+ *
+ * Permission to copy, use, modify, sell and distribute this software is
+ * granted provided this copyright notice appears in all copies. This
+ * software is provided "as is" without express or implied warranty, and
+ * with no claim as to its suitability for any purpose.
+ *
+ * See http://www.boost.org for most recent version.
+ */
 
-//  See http://www.boost.org for most recent version.
+#include <boost/preprocessor/empty.hpp>
 
-/*! \file
+/** <p>Expands to <code>X</code> once invoked.</p>
 
-<a href="../../../../boost/preprocessor/identity.hpp">Click here to see the header.</a>
-*/
+<p>Designed to be used with BOOST_PP_IF(), when one of the clauses need to be
+invoked.</p>
 
-#ifndef BOOST_PREPROCESSOR_EMPTY_HPP
-#  include <boost/preprocessor/empty.hpp>
-#endif
+<p>For example,</p>
 
-//! Expands to X once invoked.
-/*!
-Designed to be used with BOOST_PREPROCESSOR_IF(), when one of the clauses need to be invoked.
+<pre>
+  BOOST_PP_IF(1,BOOST_PP_IDENTITY(X),BOOST_PP_EMPTY)<b>()</b>
+</pre>
 
-Example:
+<p>expands to:</p>
 
-<PRE>\verbatim
-  BOOST_PREPROCESSOR_IDENTITY(X)()
-  //                            ^^ NOTE!
-\endverbatim</PRE>
-
-The above expands to:
-
-<PRE>\verbatim
+<pre>
   X
-\endverbatim</PRE>
+</pre>
 
-NOTE: If BOOST_PREPROCESSOR_IDENTITY() is not invoked, the expansion will not be usable.
+<h3>Test</h3>
+<ul>
+  <li><a href="../../test/preprocessor_test.cpp">preprocessor_test.cpp</a></li>
+</ul>
 */
-#define BOOST_PREPROCESSOR_IDENTITY(X) X BOOST_PREPROCESSOR_EMPTY
+#define BOOST_PP_IDENTITY(X) X BOOST_PP_EMPTY
+
+/** <p>Obsolete. Use BOOST_PP_IDENTITY().</p> */
+#define BOOST_PREPROCESSOR_IDENTITY(X) BOOST_PP_IDENTITY(X)
 #endif

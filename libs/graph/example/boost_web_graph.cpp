@@ -64,7 +64,7 @@ public:
   template <class Graph>
   void 
   discover_vertex(typename boost::graph_traits<Graph>::vertex_descriptor v,
-	    Graph&)
+            Graph&)
   {
     typedef typename boost::property_traits<DistanceMap>::value_type Dist;
     // indentation based on depth
@@ -99,7 +99,7 @@ main()
   //===========================================================================
   // Declare the graph type and object, and some property maps.
 
-  typedef adjacency_list<vecS, vecS, undirectedS, 
+  typedef adjacency_list<vecS, vecS, directedS, 
     property<vertex_name_t, std::string, 
       property<vertex_color_t, default_color_type> >,
     property<edge_name_t, std::string, property<edge_weight_t, int> >
@@ -203,7 +203,7 @@ main()
   breadth_first_search
     (g, src, 
      boost::visitor(make_bfs_visitor(record_predecessors(&parent[0],
-							 on_tree_edge()))));
+                                                         on_tree_edge()))));
 
   // Add all the search tree edges into a new graph
   Graph search_tree(num_vertices(g));
@@ -224,5 +224,5 @@ main()
     get(vertex_color, g)[*vi] = white_color;
   depth_first_visit(search_tree, src, tree_printer, get(vertex_color, g));
   
-  return 0;
+  return EXIT_SUCCESS;
 }

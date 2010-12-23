@@ -121,7 +121,7 @@ namespace boost
 
 //  numeric_cast  ------------------------------------------------------------//
 
-#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+#if !defined(BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS) || defined(BOOST_SGI_CPP_LIMITS)
   
     namespace detail
     {
@@ -133,7 +133,7 @@ namespace boost
          template <class T>
          struct limits : std::numeric_limits<T>
          {
-    	   static inline T min()
+         static inline T min()
 # ifndef __GNUC__ // bug workaround courtesy Jens Maurer
              {
                  return std::numeric_limits<T>::min() >= 0
@@ -144,7 +144,7 @@ namespace boost
 # else
                  ;
 # endif
-	       };
+         };
        };
 
 # ifdef __GNUC__ // bug workaround courtesy Jens Maurer
@@ -295,7 +295,7 @@ namespace boost
         typedef std::numeric_limits<Source> arg_traits;
         typedef detail::fixed_numeric_limits<Target> result_traits;
         
-#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+#if !defined(BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS) || defined(BOOST_SGI_CPP_LIMITS)
         // typedefs that act as compile time assertions
         // (to be replaced by boost compile time assertions
         // as and when they become available and are stable)

@@ -20,7 +20,7 @@
 namespace boost { namespace python {
 
 // A simple type which acts something like a built-in Python class obj.
-class instance
+class BOOST_PYTHON_DECL instance
     : public boost::python::detail::python_object
 {
  public:
@@ -78,6 +78,19 @@ class instance
     PyObject* gt(PyObject* other);
     PyObject* ge(PyObject* other);
 
+    // Inplace operations.
+    PyObject* inplace_add(PyObject* other);
+    PyObject* inplace_subtract(PyObject* other);
+    PyObject* inplace_multiply(PyObject* other);
+    PyObject* inplace_divide(PyObject* other);
+    PyObject* inplace_remainder(PyObject* other);
+    PyObject* inplace_power(PyObject* exponent, PyObject* modulus);
+    PyObject* inplace_lshift(PyObject* other);
+    PyObject* inplace_rshift(PyObject* other);
+    PyObject* inplace_and(PyObject* other);
+    PyObject* inplace_or(PyObject* other);
+    PyObject* inplace_xor(PyObject* other);
+
  private: // noncopyable, without the size bloat
     instance(const instance&);
     void operator=(const instance&);
@@ -92,7 +105,7 @@ class instance
 template <class T> class meta_class;
 
 namespace detail {
-  class class_base : public type_object_base
+  class BOOST_PYTHON_DECL class_base : public type_object_base
   {
    public:
       class_base(PyTypeObject* meta_class_obj, string name, tuple bases, const dictionary& name_space);
@@ -115,6 +128,10 @@ namespace detail {
 
    private: // boost::python::type_object_base required interface implementation
       void instance_dealloc(PyObject*) const; // subclasses should not override this
+    
+   private: // noncopyable, without the size bloat
+      class_base(const class_base&);
+      void operator=(const class_base&);
       
    private:
       string m_name;
@@ -128,11 +145,12 @@ namespace detail {
 // A type which acts a lot like a built-in Python class. T is the obj type,
 // so class_t<instance> is a very simple "class-alike".
 template <class T>
-class class_t
+class BOOST_PYTHON_DECL_TEMPLATE class_t
     : public boost::python::detail::class_base
 {
  public:
     class_t(meta_class<T>* meta_class_obj, string name, tuple bases, const dictionary& name_space);
+    ~class_t();
     
     // Standard Python functions.
     PyObject* call(PyObject* args, PyObject* keywords);
@@ -178,6 +196,18 @@ class class_t
     PyObject* instance_number_oct(PyObject*) const;
     PyObject* instance_number_hex(PyObject*) const;
 
+    PyObject* instance_number_inplace_add(PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_subtract(PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_multiply(PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_divide(PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_remainder(PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_power(PyObject*, PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_lshift(PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_rshift(PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_and(PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_or(PyObject*, PyObject*) const;
+    PyObject* instance_number_inplace_xor(PyObject*, PyObject*) const;
+
  private: // Implement rich comparisons
     PyObject* instance_lt(PyObject*, PyObject*) const;
     PyObject* instance_le(PyObject*, PyObject*) const;
@@ -193,15 +223,11 @@ class class_t
 
  private: // Implementation of boost::python::detail::class_base required interface
     void delete_instance(PyObject*) const;
-    
- private: // noncopyable, without the size bloat
-    class_t(const class_t<T>&);
-    void operator=(const class_t&);
 };
 
 // The type of a class_t<T> object.
 template <class T>
-class meta_class
+class BOOST_PYTHON_DECL_TEMPLATE meta_class
     : public boost::python::detail::reprable<
                 boost::python::detail::callable<
                    boost::python::detail::getattrable<
@@ -236,6 +262,11 @@ meta_class<T>::meta_class()
 template <class T>
 class_t<T>::class_t(meta_class<T>* meta_class_obj, string name, tuple bases, const dictionary& name_space)
     : boost::python::detail::class_base(meta_class_obj, name, bases, name_space)
+{
+}
+
+template <class T>
+class_t<T>::~class_t()
 {
 }
 
@@ -319,7 +350,7 @@ int class_t<T>::instance_mapping_ass_subscript(PyObject* obj, PyObject* key, PyO
     return 0;
 }
 
-void adjust_slice_indices(PyObject* obj, int& start, int& finish);
+void BOOST_PYTHON_DECL adjust_slice_indices(PyObject* obj, int& start, int& finish);
 
 template <class T>
 PyObject* class_t<T>::instance_sequence_slice(PyObject* obj, int start, int finish) const
@@ -491,6 +522,72 @@ template <class T>
 PyObject* class_t<T>::instance_number_hex(PyObject* obj) const
 {
     return downcast<T>(obj)->hex();
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_add(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_add(other);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_subtract(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_subtract(other);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_multiply(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_multiply(other);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_divide(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_divide(other);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_remainder(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_remainder(other);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_power(PyObject* obj, PyObject* exponent, PyObject* modulus) const
+{
+    return downcast<T>(obj)->inplace_power(exponent, modulus);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_lshift(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_lshift(other);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_rshift(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_rshift(other);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_and(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_and(other);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_or(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_or(other);
+}
+
+template <class T>
+PyObject* class_t<T>::instance_number_inplace_xor(PyObject* obj, PyObject* other) const
+{
+    return downcast<T>(obj)->inplace_xor(other);
 }
 
 template <class T>

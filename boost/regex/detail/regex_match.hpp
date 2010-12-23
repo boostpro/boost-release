@@ -46,11 +46,11 @@ namespace boost{
 # define STR_COMP(s,p) s.compare(p)
 #else
 template <class C, class T, class A>
-int string_compare(const std::basic_string<C,T,A>& s, const C* p)
+inline int string_compare(const std::basic_string<C,T,A>& s, const C* p)
 { return s.compare(p); }
-int string_compare(const std::string& s, const char* p)
+inline int string_compare(const std::string& s, const char* p)
 { return std::strcmp(s.c_str(), p); }
-int string_compare(const std::wstring& s, const wchar_t* p)
+inline int string_compare(const std::wstring& s, const wchar_t* p)
 { return std::wcscmp(s.c_str(), p); }
 # define STR_COMP(s,p) string_compare(s,p)
 #endif
@@ -58,10 +58,10 @@ int string_compare(const std::wstring& s, const wchar_t* p)
 template <class iterator, class charT, class traits_type, class Allocator>
 iterator BOOST_REGEX_CALL re_is_set_member(iterator next, 
                           iterator last, 
-                          re_set_long* set_, 
+                          const re_set_long* set_, 
                           const reg_expression<charT, traits_type, Allocator>& e)
 {   
-   const charT* p = (const charT*)(set_+1);
+   const charT* p = reinterpret_cast<const charT*>(set_+1);
    iterator ptr;
    unsigned int i;
    bool icase = e.flags() & regbase::icase;
@@ -302,6 +302,7 @@ bool query_match_aux(iterator first,
    const re_syntax_base* ptr = access::first(e);
    bool match_found = false;
    bool have_partial_match = false;
+   bool unwind_stack = false;
    bool need_push_match = (e.mark_count() > 1);
    int cur_acc = -1;    // no active accumulator
    pd.set_accumulator_size(access::repeat_count(e));
@@ -357,19 +358,52 @@ bool query_match_aux(iterator first,
          }
          goto failure;
       case syntax_element_startmark:
-         if(((re_brace*)ptr)->index > 0)
-            temp_match.set_first(first, ((re_brace*)ptr)->index);
+         start_mark_jump:
+         if(static_cast<const re_brace*>(ptr)->index > 0)
+         {
+            temp_match.set_first(first, static_cast<const re_brace*>(ptr)->index);
+         }
+         else if(
+            (static_cast<const re_brace*>(ptr)->index == -1)
+            || (static_cast<const re_brace*>(ptr)->index == -2)
+         )
+         {
+           matches.push(temp_match);
+            for(k = 0; k <= cur_acc; ++k)
+               prev_pos.push(start_loop[k]);
+            prev_pos.push(first);
+            prev_record.push(ptr);
+            for(k = 0; k <= cur_acc; ++k)
+               prev_acc.push(accumulators[k]);
+            prev_acc.push(cur_acc);
+            prev_acc.push(match_found);
+            match_found = false;
+            // skip next jump and fall through:
+            ptr = ptr->next.p;
+         }
          ptr = ptr->next.p;
          break;
       case syntax_element_endmark:
-         if(((re_brace*)ptr)->index > 0)
-            temp_match.set_second(first, ((re_brace*)ptr)->index);
+         end_mark_jump:
+         if(static_cast<const re_brace*>(ptr)->index > 0)
+         {
+            temp_match.set_second(first, static_cast<const re_brace*>(ptr)->index);
+         }
+         else if(
+            (static_cast<const re_brace*>(ptr)->index == -1)
+            || (static_cast<const re_brace*>(ptr)->index == -2)
+         )
+         {
+            match_found = true;
+            unwind_stack = true;
+            goto failure;
+         }
          ptr = ptr->next.p;
          break;
       case syntax_element_literal:
       {
-         unsigned int len = ((re_literal*)ptr)->length;
-         charT* what = (charT*)(((re_literal*)ptr) + 1);
+         unsigned int len = static_cast<const re_literal*>(ptr)->length;
+         const charT* what = reinterpret_cast<const charT*>(static_cast<const re_literal*>(ptr) + 1);
          //
          // compare string with what we stored in
          // our records:
@@ -548,8 +582,8 @@ bool query_match_aux(iterator first,
       case syntax_element_backref:
       {
          // compare with what we previously matched:
-         iterator i = temp_match[((re_brace*)ptr)->index].first;
-         iterator j = temp_match[((re_brace*)ptr)->index].second;
+         iterator i = temp_match[static_cast<const re_brace*>(ptr)->index].first;
+         iterator j = temp_match[static_cast<const re_brace*>(ptr)->index].second;
          while(i != j)
          {
             if((first == last) || (traits_inst.translate(*first, icase) != traits_inst.translate(*i, icase)))
@@ -563,7 +597,7 @@ bool query_match_aux(iterator first,
       case syntax_element_long_set:
       {
          // let the traits class do the work:
-         iterator t = re_is_set_member(first, last, (re_set_long*)ptr, e);
+         iterator t = re_is_set_member(first, last, static_cast<const re_set_long*>(ptr), e);
          if(t != first)
          {
             ptr = ptr->next.p;
@@ -574,7 +608,7 @@ bool query_match_aux(iterator first,
       }
       case syntax_element_set:
          // lookup character in table:
-         if(((re_set*)ptr)->_map[(traits_uchar_type)traits_inst.translate(*first, icase)])
+         if(static_cast<const re_set*>(ptr)->_map[(traits_uchar_type)traits_inst.translate(*first, icase)])
          {
             ptr = ptr->next.p;
             ++first;
@@ -582,16 +616,16 @@ bool query_match_aux(iterator first,
          }
          goto failure;
       case syntax_element_jump:
-         ptr = ((re_jump*)ptr)->alt.p;
+         ptr = static_cast<const re_jump*>(ptr)->alt.p;
          continue;
       case syntax_element_alt:
       {
          // alt_jump:
-         if(access::can_start(*first, ((re_jump*)ptr)->_map, (unsigned char)mask_take))
+         if(access::can_start(*first, static_cast<const re_jump*>(ptr)->_map, (unsigned char)mask_take))
          {
             // we can take the first alternative,
             // see if we need to push next alternative:
-            if(access::can_start(*first, ((re_jump*)ptr)->_map, mask_skip))
+            if(access::can_start(*first, static_cast<const re_jump*>(ptr)->_map, mask_skip))
             {
                if(need_push_match)
                   matches.push(temp_match);
@@ -606,9 +640,9 @@ bool query_match_aux(iterator first,
             ptr = ptr->next.p;
             continue;
          }
-         if(access::can_start(*first, ((re_jump*)ptr)->_map, mask_skip))
+         if(access::can_start(*first, static_cast<const re_jump*>(ptr)->_map, mask_skip))
          {
-            ptr = ((re_jump*)ptr)->alt.p;
+            ptr = static_cast<const re_jump*>(ptr)->alt.p;
             continue;
          }
          goto failure;  // neither option is possible
@@ -618,16 +652,16 @@ bool query_match_aux(iterator first,
          // repeater_jump:
          // if we're moving to a higher id (nested repeats etc)
          // zero out our accumualtors:
-         if(cur_acc < ((re_repeat*)ptr)->id)
+         if(cur_acc < static_cast<const re_repeat*>(ptr)->id)
          {
-            cur_acc = ((re_repeat*)ptr)->id;
+            cur_acc = static_cast<const re_repeat*>(ptr)->id;
             accumulators[cur_acc] = 0;
             start_loop[cur_acc] = first;
          }
 
-         cur_acc = ((re_repeat*)ptr)->id;
+         cur_acc = static_cast<const re_repeat*>(ptr)->id;
 
-         if(((re_repeat*)ptr)->leading)
+         if(static_cast<const re_repeat*>(ptr)->leading)
             *restart = first;
 
          //charT c = traits_inst.translate(*first);
@@ -636,17 +670,17 @@ bool query_match_aux(iterator first,
          // if that is the case then repeat as many times as possible,
          // as long as the repeat is greedy:
 
-         if((((re_repeat*)ptr)->alt.p->type == syntax_element_match) 
-            && (((re_repeat*)ptr)->greedy == true))
+         if((static_cast<const re_repeat*>(ptr)->alt.p->type == syntax_element_match)
+            && (static_cast<const re_repeat*>(ptr)->greedy == true))
          {
             // see if we can take the repeat:
-            if(((unsigned int)accumulators[cur_acc] < ((re_repeat*)ptr)->max)
-                  && access::can_start(*first, ((re_repeat*)ptr)->_map, mask_take))
+            if(((unsigned int)accumulators[cur_acc] < static_cast<const re_repeat*>(ptr)->max)
+                  && access::can_start(*first, static_cast<const re_repeat*>(ptr)->_map, mask_take))
             {
                // push terminating match as fallback:
-               if((unsigned int)accumulators[cur_acc] >= ((re_repeat*)ptr)->min)
+               if((unsigned int)accumulators[cur_acc] >= static_cast<const re_repeat*>(ptr)->min)
                {
-                  if((prev_record.empty() == false) && (prev_record.peek() == ((re_repeat*)ptr)->alt.p))
+                  if((prev_record.empty() == false) && (prev_record.peek() == static_cast<const re_repeat*>(ptr)->alt.p))
                   {
                      // we already have the required fallback
                      // don't add any more, just update this one:
@@ -659,7 +693,7 @@ bool query_match_aux(iterator first,
                      if(need_push_match)
                         matches.push(temp_match);
                      prev_pos.push(first);
-                     prev_record.push(((re_repeat*)ptr)->alt.p);
+                     prev_record.push(static_cast<const re_repeat*>(ptr)->alt.p);
                   }
                }
                // move to next item in list:
@@ -673,10 +707,10 @@ bool query_match_aux(iterator first,
                goto failure;
             }
             // see if we can skip the repeat:
-            if(((unsigned int)accumulators[cur_acc] >= ((re_repeat*)ptr)->min)
-               && access::can_start(*first, ((re_repeat*)ptr)->_map, mask_skip))
+            if(((unsigned int)accumulators[cur_acc] >= static_cast<const re_repeat*>(ptr)->min)
+               && access::can_start(*first, static_cast<const re_repeat*>(ptr)->_map, mask_skip))
             {
-               ptr = ((re_repeat*)ptr)->alt.p;
+               ptr = static_cast<const re_repeat*>(ptr)->alt.p;
                continue;
             }
             // otherwise fail:
@@ -685,16 +719,16 @@ bool query_match_aux(iterator first,
 
          // OK if we get to here then the repeat is either non-terminal or non-greedy,
          // see if we can skip the repeat:
-         if(((unsigned int)accumulators[cur_acc] >= ((re_repeat*)ptr)->min)
-            && access::can_start(*first, ((re_repeat*)ptr)->_map, mask_skip))
+         if(((unsigned int)accumulators[cur_acc] >= static_cast<const re_repeat*>(ptr)->min)
+            && access::can_start(*first, static_cast<const re_repeat*>(ptr)->_map, mask_skip))
          {
             // see if we can push failure info:
-            if(((unsigned int)accumulators[cur_acc] < ((re_repeat*)ptr)->max)
-               && access::can_start(*first, ((re_repeat*)ptr)->_map, mask_take))
+            if(((unsigned int)accumulators[cur_acc] < static_cast<const re_repeat*>(ptr)->max)
+               && access::can_start(*first, static_cast<const re_repeat*>(ptr)->_map, mask_take))
             {
                // check to see if the last loop matched a NULL string
                // if so then we really don't want to loop again:
-               if(((unsigned int)accumulators[cur_acc] == ((re_repeat*)ptr)->min)
+               if(((unsigned int)accumulators[cur_acc] == static_cast<const re_repeat*>(ptr)->min)
                   || (first != start_loop[cur_acc]))
                {
                   if(need_push_match)
@@ -704,20 +738,20 @@ bool query_match_aux(iterator first,
                   for(k = 0; k <= cur_acc; ++k)
                      prev_acc.push(accumulators[k]);
                   // for non-greedy repeats save whether we have a match already:
-                  if(((re_repeat*)ptr)->greedy == false)
+                  if(static_cast<const re_repeat*>(ptr)->greedy == false)
                   {
                      prev_acc.push(match_found);
                      match_found = false;
                   }
                }
             }
-            ptr = ((re_repeat*)ptr)->alt.p;
+            ptr = static_cast<const re_repeat*>(ptr)->alt.p;
             continue;
          }
 
          // otherwise see if we can take the repeat:
-         if(((unsigned int)accumulators[cur_acc] < ((re_repeat*)ptr)->max)
-               && access::can_start(*first, ((re_repeat*)ptr)->_map, mask_take) &&
+         if(((unsigned int)accumulators[cur_acc] < static_cast<const re_repeat*>(ptr)->max)
+               && access::can_start(*first, static_cast<const re_repeat*>(ptr)->_map, mask_take) &&
                ((first != start_loop[cur_acc]) || !accumulators[cur_acc]))
          {
             // move to next item in list:
@@ -773,13 +807,9 @@ bool query_match_aux(iterator first,
       case syntax_element_match:
          goto match_jump;
       case syntax_element_startmark:
-         temp_match.set_first(first, ((re_brace*)ptr)->index);
-         ptr = ptr->next.p;
-         break;
+         goto start_mark_jump;
       case syntax_element_endmark:
-         temp_match.set_second(first, ((re_brace*)ptr)->index);
-         ptr = ptr->next.p;
-         break;
+         goto end_mark_jump;
       case syntax_element_start_line:
          goto outer_line_check;
       case syntax_element_end_line:
@@ -811,7 +841,7 @@ bool query_match_aux(iterator first,
          ptr = ptr->next.p;
          break;
       case syntax_element_jump:
-         ptr = ((re_jump*)ptr)->alt.p;
+         ptr = static_cast<const re_jump*>(ptr)->alt.p;
          continue;
       case syntax_element_alt:
          if(ptr->can_be_null & mask_take)
@@ -835,33 +865,33 @@ bool query_match_aux(iterator first,
          }
          if(ptr->can_be_null & mask_skip)
          {
-            ptr = ((re_jump*)ptr)->alt.p;
+            ptr = static_cast<const re_jump*>(ptr)->alt.p;
             continue;
          }
          goto failure;  // neither option is possible
       case syntax_element_rep:
          // if we're moving to a higher id (nested repeats etc)
          // zero out our accumualtors:
-         if(cur_acc < ((re_repeat*)ptr)->id)
+         if(cur_acc < static_cast<const re_repeat*>(ptr)->id)
          {
-            cur_acc = ((re_repeat*)ptr)->id;
+            cur_acc = static_cast<const re_repeat*>(ptr)->id;
             accumulators[cur_acc] = 0;
             start_loop[cur_acc] = first;
          }
 
-         cur_acc = ((re_repeat*)ptr)->id;
+         cur_acc = static_cast<const re_repeat*>(ptr)->id;
 
          // see if we can skip the repeat:
-         if(((unsigned int)accumulators[cur_acc] >= ((re_repeat*)ptr)->min)
+         if(((unsigned int)accumulators[cur_acc] >= static_cast<const re_repeat*>(ptr)->min)
             && ((ptr->can_be_null & mask_skip) || (flags & match_partial)))
          {
             // don't push failure info, there's no point:
-            ptr = ((re_repeat*)ptr)->alt.p;
+            ptr = static_cast<const re_repeat*>(ptr)->alt.p;
             continue;
          }
 
          // otherwise see if we can take the repeat:
-         if(((unsigned int)accumulators[cur_acc] < ((re_repeat*)ptr)->max)
+         if(((unsigned int)accumulators[cur_acc] < static_cast<const re_repeat*>(ptr)->max)
                && (((ptr->can_be_null & (mask_take | mask_skip)) == (mask_take | mask_skip))) || (flags & match_partial))
          {
             // move to next item in list:
@@ -905,7 +935,7 @@ bool query_match_aux(iterator first,
       {
       case syntax_element_alt:
          // get next alternative:
-         ptr = ((re_jump*)ptr)->alt.p;
+         ptr = static_cast<const re_jump*>(ptr)->alt.p;
          if(need_push_match)
             matches.pop(temp_match);
          prev_acc.pop(cur_acc);
@@ -915,6 +945,7 @@ bool query_match_aux(iterator first,
          for(k = cur_acc; k >= 0; --k)
             prev_pos.pop(start_loop[k]);
          prev_record.pop();
+         if(unwind_stack) goto failure; // unwinding forward assert
          goto retry;
       case syntax_element_rep:
       {
@@ -924,8 +955,8 @@ bool query_match_aux(iterator first,
          if(need_push_match)
             matches.pop(temp_match);
          prev_pos.pop(first);
-         cur_acc = ((re_repeat*)ptr)->id;
-         if(((re_repeat*)ptr)->greedy == false)
+         cur_acc = static_cast<const re_repeat*>(ptr)->id;
+         if(static_cast<const re_repeat*>(ptr)->greedy == false)
          {
             saved_matched = prev_acc.peek();
             prev_acc.pop();
@@ -933,11 +964,12 @@ bool query_match_aux(iterator first,
          for(k = cur_acc; k >= 0; --k)
             prev_acc.pop(accumulators[k]);
          prev_record.pop();
-         if((unsigned int)++accumulators[cur_acc] > ((re_repeat*)ptr)->max)
+         if(unwind_stack) goto failure; // unwinding forward assert
+         if((unsigned int)++accumulators[cur_acc] > static_cast<const re_repeat*>(ptr)->max)
             goto failure;  // repetions exhausted.
          //
          // if the repeat is non-greedy, and we found a match then fail again:
-         if((((re_repeat*)ptr)->greedy == false) && (match_found == true))
+         if((static_cast<const re_repeat*>(ptr)->greedy == false) && (match_found == true))
          {
             goto failure;
          }
@@ -947,11 +979,42 @@ bool query_match_aux(iterator first,
          start_loop[cur_acc] = first;
          goto retry;
       }
+      case syntax_element_startmark:
+      {
+         bool saved_matched = match_found;
+         matches.pop(temp_match);
+         match_found = prev_acc.peek();
+         prev_acc.pop();
+         prev_acc.pop(cur_acc);
+         for(k = cur_acc; k >= 0; --k)
+            prev_acc.pop(accumulators[k]);
+         prev_pos.pop(first);
+         for(k = cur_acc; k >= 0; --k)
+            prev_pos.pop(start_loop[k]);
+         prev_record.pop();
+         unwind_stack = false;
+         if(static_cast<const re_brace*>(ptr)->index == -1)
+         {
+            if (saved_matched == false)
+               goto failure;
+            ptr = static_cast<const re_jump*>(ptr->next.p)->alt.p->next.p;
+            goto retry;
+         }
+         if(static_cast<const re_brace*>(ptr)->index == -2)
+         {
+            if (saved_matched == true)
+               goto failure;
+            ptr = static_cast<const re_jump*>(ptr->next.p)->alt.p->next.p;
+            goto retry;
+         }
+         else goto failure;
+      }
       case syntax_element_match:
          if(need_push_match)
             matches.pop(temp_match);
          prev_pos.pop(first);
          prev_record.pop();
+         if(unwind_stack) goto failure; // unwinding forward assert
          goto retry;
      default:
          jm_assert(0);

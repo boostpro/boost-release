@@ -79,6 +79,16 @@
 #  define BOOST_HAS_TRIVIAL_DESTRUCTOR(T) false
 #endif
 
+//
+// whenever we have a conversion function with elipses
+// it needs to be declared _cdecl to suppress compiler
+// warnings from MS and Borland compilers:
+#if defined(BOOST_MSVC) || defined(__BORLANDC__)
+#define BOOST_TT_DECL _cdecl
+#else
+#define BOOST_TT_DECL
+#endif
+
 
 namespace boost{
 //
@@ -113,6 +123,12 @@ template <class T>
 struct remove_volatile;
 template <class T>
 struct remove_cv;
+template <class T>
+struct add_const;
+template <class T>
+struct add_volatile;
+template <class T>
+struct add_cv;
 
 // composite_traits.hpp:
 template <class T>
@@ -123,6 +139,8 @@ template <class T>
 struct is_reference;
 template <class T>
 struct is_member_pointer;
+template <class T>
+struct is_member_function_pointer;
 template <class T>
 struct is_enum;
 template <class T>
@@ -148,7 +166,15 @@ struct has_trivial_assign;
 template <class T>
 struct has_trivial_destructor;
 template <class T>
+struct has_nothrow_constructor;
+template <class T>
+struct has_nothrow_copy;
+template <class T>
+struct has_nothrow_assign;
+template <class T>
 struct is_empty;
+template <class Base, class Derived>
+struct is_base_and_derived;
 
 // transform_traits.hpp:
 template <class T>

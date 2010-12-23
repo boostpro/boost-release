@@ -90,7 +90,8 @@ static int evaluate_if( PARSE *parse, FRAME *frame );
 
 static void backtrace_line( FRAME* frame );
 static void backtrace( FRAME* frame );
-static void frame_info( FRAME* frame, char** file, int* line );
+static void get_source_line( PARSE*, char** file, int* line );
+static void print_source_line( PARSE* );
 
 static LIST *builtin_depends( PARSE *parse, FRAME *frame );
 static LIST *builtin_echo( PARSE *parse, FRAME *frame );
@@ -164,7 +165,7 @@ static RULE* bind_builtin( char* name, LIST*(*f)(PARSE*, FRAME*), int flags, cha
     }
 
     return new_rule_body( root_module(), name, arg_list,
-                          parse_make( f, P0, P0, P0, C0, C0, flags ), 0 );
+                          parse_make( f, P0, P0, P0, C0, C0, flags ), 1 );
 }
 
 static RULE* duplicate_rule( char* name, RULE* other )
@@ -216,7 +217,8 @@ compile_builtins()
             "source_module", "?"
             , ":", "source_rules", "*"
             , ":", "target_module", "?"
-            , ":", "target_rules", "*", 0
+            , ":", "target_rules", "*"
+            , ":", "localize", "?", 0
         };
         
         bind_builtin( "IMPORT", builtin_import, 0, args );
@@ -660,6 +662,8 @@ static void argument_error( char* message, RULE* rule, FRAME* frame, LIST* arg )
     printf( ")\n* called with: ( " );
     lol_print( actual );
     printf( ")\n* %s %s\n", message, arg ? arg->string : "" );
+    print_source_line( rule->procedure );
+    printf( "see definition of rule '%s' being called\n", rule->name );
     backtrace( frame->prev );
     exit(1);
 }
@@ -839,11 +843,12 @@ evaluate_rule(
     module    *prev_module = frame->module;
     
     LIST*  l = var_expand( L0, rulename, rulename+strlen(rulename), frame->args, 0 );
-    LIST*  more_args = L0;
 
     if ( !l )
     {
+        backtrace_line( frame->prev );
         printf( "warning: rulename %s expands to empty string\n", rulename );
+        backtrace( frame->prev );
         return result;
     }
 
@@ -856,14 +861,14 @@ evaluate_rule(
     rulename = l->string;
     rule = bindrule( l->string, frame->module );
 
-    if ( rule->procedure && rule->procedure->module != prev_module )
+    if ( rule->procedure && rule->module != prev_module )
     {
         /* propagate current module to nested rule invocations */
-        frame->module = rule->procedure->module;
+        frame->module = rule->module;
         
         /* swap variables */
         exit_module( prev_module );
-        enter_module( rule->procedure->module );
+        enter_module( rule->module );
     }
 
     /* drop the rule name */
@@ -1081,7 +1086,7 @@ compile_setcomp(
             lol_add( arg_list->data, parse_evaluate( p->right, frame ) );
     }
     
-    new_rule_body( frame->module, parse->string, arg_list, parse->left, parse->num );
+    new_rule_body( frame->module, parse->string, arg_list, parse->left, !parse->num );
     return L0;
 }
 
@@ -1326,7 +1331,7 @@ static void add_rule_name( void* r_, void* result_ )
     RULE* r = r_;
     LIST** result = result_;
 
-    if ( !r->local_only )
+    if ( r->exported )
         *result = list_new( *result, copystr( r->name ) );
 }
 
@@ -1353,7 +1358,7 @@ static void unknown_rule( FRAME *frame, char* key, char *module_name, char *rule
 }
 
 /*
- * builtin_import() - IMPORT ( SOURCE_MODULE ? : SOURCE_RULES * : TARGET_MODULE ? : TARGET_RULES * )
+ * builtin_import() - IMPORT ( SOURCE_MODULE ? : SOURCE_RULES * : TARGET_MODULE ? : TARGET_RULES * : LOCALIZE ? )
  *
  * The IMPORT rule imports rules from the SOURCE_MODULE into the
  * TARGET_MODULE as local rules. If either SOURCE_MODULE or
@@ -1363,7 +1368,9 @@ static void unknown_rule( FRAME *frame, char* key, char *module_name, char *rule
  * TARGET_MODULE. If SOURCE_RULES contains a name which doesn't
  * correspond to a rule in SOURCE_MODULE, or if it contains a
  * different number of items than TARGET_RULES, an error is issued.
- * 
+ * if LOCALIZE is specified, the rules will be executed in
+ * TARGET_MODULE, with corresponding access to its module local
+ * variables.
  */
 static LIST *
 builtin_import(
@@ -1374,6 +1381,7 @@ builtin_import(
     LIST *source_rules = lol_get( frame->args, 1 );
     LIST *target_module_list = lol_get( frame->args, 2 );
     LIST *target_rules = lol_get( frame->args, 3 );
+    LIST *localize = lol_get( frame->args, 4 );
 
     module* target_module = bindmodule( target_module_list ? target_module_list->string : 0 );
     module* source_module = bindmodule( source_module_list ? source_module_list->string : 0 );
@@ -1392,7 +1400,9 @@ builtin_import(
             unknown_rule( frame, "IMPORT", source_module->name, r_.name );
         
         imported = import_rule( r, target_module, target_name->string );
-        imported->local_only = 1;
+        if ( localize )
+            imported->module = target_module;
+        imported->exported = 0; /* this rule is really part of some other module; just refer to it here, but don't let it out */
     }
     
     if ( source_name || target_name )
@@ -1433,20 +1443,20 @@ builtin_export(
         if ( !hashcheck( m->rules, (HASHDATA**)&r ) )
             unknown_rule( frame, "EXPORT", m->name, r_.name );
         
-        r->local_only = 0;
+        r->exported = 1;
     }
     return L0;
 }
 
 /*  Retrieve the file and line number that should be indicated for a
- *  given frame in debug output or an error backtrace
+ *  given procedure in debug output or an error backtrace
  */
-static void frame_info( FRAME* frame, char** file, int* line )
+static void get_source_line( PARSE* procedure, char** file, int* line )
 {
-    if ( frame->procedure )
+    if ( procedure )
     {
-        char* f = frame->procedure->file;
-        int l = frame->procedure->line;
+        char* f = procedure->file;
+        int l = procedure->line;
         if ( !strcmp( f, "+" ) )
         {
             f = "jambase.c";
@@ -1462,17 +1472,23 @@ static void frame_info( FRAME* frame, char** file, int* line )
     }
 }
 
-/* Print a single line of error backtrace for the given frame */
-static void backtrace_line( FRAME *frame )
+static void print_source_line( PARSE* p )
 {
     char* file;
     int line;
 
-    frame_info( frame, &file, &line );
+    get_source_line( p, &file, &line );
     if ( line < 0 )
-        printf( "(builtin): in %s\n", frame->rulename );
+        printf( "(builtin):" );
     else
-        printf( "%s:%d: in %s\n", file, line, frame->rulename );
+        printf( "%s:%d:", file, line);
+}
+
+/* Print a single line of error backtrace for the given frame */
+static void backtrace_line( FRAME *frame )
+{
+    print_source_line( frame->procedure );
+    printf( " in %s\n", frame->rulename );
 }
 
 /*  Print the entire backtrace from the given frame to the Jambase
@@ -1499,7 +1515,7 @@ static LIST *builtin_backtrace( PARSE *parse, FRAME *frame )
         char* file;
         int line;
         char buf[32];
-        frame_info( frame, &file, &line );
+        get_source_line( frame->procedure, &file, &line );
         sprintf( buf, "%d", line );
         result = list_new( result, newstr( file ) );
         result = list_new( result, newstr( buf ) );
@@ -1559,9 +1575,6 @@ debug_compile( int which, char *s, FRAME* frame )
     static int level = 0;
     static char indent[36] = ">>>>|>>>>|>>>>|>>>>|>>>>|>>>>|>>>>|";
 
-    char* file;
-    int line;
-    
     if ( which >= 0 )
     {
       int i;
@@ -1573,11 +1586,8 @@ debug_compile( int which, char *s, FRAME* frame )
         i -= 35;
       }
 
-      frame_info( frame, &file, &line );
-      if ( line >= 0 )
-          printf( "%s:%d:%*.*s ", file, line, i, i, indent );
-      else
-          printf( "(builtin)%*.*s ", i, i, indent );
+      print_source_line( frame->procedure );
+      printf( "%*.*s ", i, i, indent );
     }
 
     if( s )

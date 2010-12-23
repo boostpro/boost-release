@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: limits_test.cpp,v 1.3 2001/09/28 17:38:10 darinadler Exp $
+ * $Id: limits_test.cpp,v 1.4 2002/01/17 12:46:26 johnmaddock Exp $
  */
 
 #include <boost/limits.hpp>
@@ -78,11 +78,11 @@ void test_float_limits(const T &, const char * msg)
   const T snan = lim::signaling_NaN();
 
   std::cout << "IEEE-compatible: " << lim::is_iec559
-	    << ", traps: " << lim::traps
-	    << ", bounded: " << lim::is_bounded
-	    << ", exact: " << lim::is_exact << '\n'
-	    << "min: " << lim::min() << ", max: " << lim::max() << '\n'
-	    << "infinity: " << infinity << ", QNaN: " << qnan << '\n';
+       << ", traps: " << lim::traps
+       << ", bounded: " << lim::is_bounded
+       << ", exact: " << lim::is_exact << '\n'
+       << "min: " << lim::min() << ", max: " << lim::max() << '\n'
+       << "infinity: " << infinity << ", QNaN: " << qnan << '\n';
   print_hex_val(lim::max(), "max");
   print_hex_val(infinity, "infinity");
   print_hex_val(qnan, "qnan");

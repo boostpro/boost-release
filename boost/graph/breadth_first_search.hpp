@@ -60,6 +60,63 @@ namespace boost {
     typename graph_traits<Graph>::edge_descriptor e;
   };
 
+
+  template <class IncidenceGraph, class Buffer, class BFSVisitor, 
+            class ColorMap>
+  void breadth_first_visit
+    (const IncidenceGraph& g, 
+     typename graph_traits<IncidenceGraph>::vertex_descriptor s, 
+     Buffer& Q, BFSVisitor vis, ColorMap color)
+  {
+    function_requires< IncidenceGraphConcept<IncidenceGraph> >();
+    typedef graph_traits<IncidenceGraph> GTraits;
+    typedef typename GTraits::vertex_descriptor Vertex;
+    typedef typename GTraits::edge_descriptor Edge;
+    function_requires< BFSVisitorConcept<BFSVisitor, IncidenceGraph> >();
+    function_requires< ReadWritePropertyMapConcept<ColorMap, Vertex> >();
+    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef color_traits<ColorValue> Color;
+    typename GTraits::out_edge_iterator ei, ei_end;
+
+    put(color, s, Color::gray());             vis.discover_vertex(s, g);
+    Q.push(s);
+    while (! Q.empty()) {
+      Vertex u = Q.top(); Q.pop();            vis.examine_vertex(u, g);
+      for (tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
+        Vertex v = target(*ei, g);            vis.examine_edge(*ei, g);
+        ColorValue v_color = get(color, v);
+        if (v_color == Color::white()) {      vis.tree_edge(*ei, g);
+          put(color, v, Color::gray());       vis.discover_vertex(v, g);
+          Q.push(v);
+        } else {                              vis.non_tree_edge(*ei, g);
+          if (v_color == Color::gray())       vis.gray_target(*ei, g);
+          else                                vis.black_target(*ei, g);
+        }
+      } // end for
+      put(color, u, Color::black());          vis.finish_vertex(u, g);
+    } // end while
+  } // breadth_first_visit
+
+    
+  template <class VertexListGraph, class Buffer, class BFSVisitor, 
+            class ColorMap>
+  void breadth_first_search
+    (const VertexListGraph& g, 
+     typename graph_traits<VertexListGraph>::vertex_descriptor s, 
+     Buffer& Q, BFSVisitor vis, ColorMap color)
+  {
+    // Initialization
+    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef color_traits<ColorValue> Color;
+    typename boost::graph_traits<VertexListGraph>::vertex_iterator i, i_end;
+    for (tie(i, i_end) = vertices(g); i != i_end; ++i) {
+      put(color, *i, Color::white());
+      vis.initialize_vertex(*i, g);
+    }
+    breadth_first_visit(g, s, Q, vis, color);
+  }
+
+
   template <class Visitors = null_visitor>
   class bfs_visitor {
   public:
@@ -111,71 +168,6 @@ namespace boost {
   }
   typedef bfs_visitor<> default_bfs_visitor;
 
-  template <class IncidenceGraph, class Buffer, class BFSVisitor, 
-            class ColorMap>
-  void breadth_first_visit
-    (const IncidenceGraph& g, 
-     typename graph_traits<IncidenceGraph>::vertex_descriptor s, 
-     Buffer& Q, BFSVisitor vis, ColorMap color)
-  {
-    function_requires< IncidenceGraphConcept<IncidenceGraph> >();
-    typedef graph_traits<IncidenceGraph> GTraits;
-    typedef typename GTraits::vertex_descriptor Vertex;
-    typedef typename GTraits::edge_descriptor Edge;
-    function_requires< BFSVisitorConcept<BFSVisitor, IncidenceGraph> >();
-    function_requires< ReadWritePropertyMapConcept<ColorMap, Vertex> >();
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
-    typedef color_traits<ColorValue> Color;
-
-    put(color, s, Color::gray());
-    vis.discover_vertex(s, g);
-    Q.push(s);
-    while (! Q.empty()) {
-      Vertex u = Q.top();
-      Q.pop(); // pop before push to avoid problem if Q is priority_queue.
-      vis.examine_vertex(u, g);
-      typename GTraits::out_edge_iterator ei, ei_end;
-      for (tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
-        Edge e = *ei;
-        vis.examine_edge(e, g);
-        Vertex v = target(e, g);
-        ColorValue v_color = get(color, v);
-        if (v_color == Color::white()) {
-          vis.tree_edge(e, g);
-          put(color, v, Color::gray());
-          vis.discover_vertex(v, g);
-          Q.push(v);
-        } else {
-          vis.non_tree_edge(e, g);
-
-          if (v_color == Color::gray())
-            vis.gray_target(e, g);
-          else
-            vis.black_target(e, g);
-        }
-      } // for
-      put(color, u, Color::black());
-      vis.finish_vertex(u, g);
-    } // while
-  }
-    
-  template <class VertexListGraph, class Buffer, class BFSVisitor, 
-            class ColorMap>
-  void breadth_first_search
-    (const VertexListGraph& g, 
-     typename graph_traits<VertexListGraph>::vertex_descriptor s, 
-     Buffer& Q, BFSVisitor vis, ColorMap color)
-  {
-    // Initialization
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
-    typedef color_traits<ColorValue> Color;
-    typename boost::graph_traits<VertexListGraph>::vertex_iterator i, i_end;
-    for (tie(i, i_end) = vertices(g); i != i_end; ++i) {
-      put(color, *i, Color::white());
-      vis.initialize_vertex(*i, g);
-    }
-    breadth_first_visit(g, s, Q, vis, color);
-  }
 
   namespace detail {
 
@@ -232,7 +224,7 @@ namespace boost {
        detail::error_property_not_found)
       {
         std::vector<default_color_type> color_vec(num_vertices(g));
-	default_color_type c = white_color;
+        default_color_type c = white_color;
         null_visitor null_vis;
         
         bfs_helper
@@ -279,7 +271,8 @@ namespace boost {
   {
     typedef graph_traits<IncidenceGraph> Traits;
     // Buffer default
-    typedef boost::queue<typename Traits::vertex_descriptor> queue_t;
+    typedef typename Traits::vertex_descriptor vertex_descriptor;
+    typedef boost::queue<vertex_descriptor> queue_t;
     queue_t Q;
     detail::wrap_ref<queue_t> Qref(Q);
 

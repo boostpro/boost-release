@@ -219,6 +219,42 @@ struct has_trivial_destructor
 
 /**********************************************
  *
+ * has_nothrow_constructor
+ *
+ **********************************************/
+template <typename T>
+struct has_nothrow_constructor
+{
+   BOOST_STATIC_CONSTANT(bool, value =
+      (::boost::has_trivial_constructor<T>::value));
+};
+
+/**********************************************
+ *
+ * has_nothrow_copy
+ *
+ **********************************************/
+template <typename T>
+struct has_nothrow_copy
+{
+   BOOST_STATIC_CONSTANT(bool, value =
+      (::boost::has_trivial_copy<T>::value));
+};
+
+/**********************************************
+ *
+ * has_nothrow_assign
+ *
+ **********************************************/
+template <typename T>
+struct has_nothrow_assign
+{
+   BOOST_STATIC_CONSTANT(bool, value =
+      (::boost::has_trivial_assign<T>::value));
+};
+
+/**********************************************
+ *
  * is_empty
  *
  **********************************************/
@@ -264,13 +300,14 @@ public:
 };
 
 #else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-#if defined(BOOST_MSVC6_MEMBER_TEMPLATES) || !defined(BOOST_NO_MEMBER_TEMPLATES)
+#ifdef BOOST_MSVC6_MEMBER_TEMPLATES
 
 namespace detail{
 
 template <typename T>
 struct empty_helper_t1 : public T
 {
+   empty_helper_t1();
    int i[256];
 };
 struct empty_helper_t2 { int i[256]; };
@@ -340,9 +377,57 @@ public:
 #else
 template <typename T> struct is_empty
 { enum{ value = BOOST_IS_EMPTY(T) }; };
-#endif  // defined(BOOST_MSVC6_MEMBER_TEMPLATES) || !defined(BOOST_NO_MEMBER_TEMPLATES)
+#endif  // BOOST_MSVC6_MEMBER_TEMPLATES
 
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+/**********************************************
+ *
+ * is_stateless
+ *
+ **********************************************/
+template <typename T>
+struct is_stateless
+{
+  BOOST_STATIC_CONSTANT(bool, value = 
+    (::boost::type_traits::ice_and<
+       ::boost::has_trivial_constructor<T>::value,
+       ::boost::has_trivial_copy<T>::value,
+       ::boost::has_trivial_destructor<T>::value,
+       ::boost::is_class<T>::value,
+       ::boost::is_empty<T>::value
+     >::value));
+};
+
+template <class Base, class Derived>
+struct is_base_and_derived
+{
+   BOOST_STATIC_CONSTANT(bool, value =
+      (::boost::type_traits::ice_and<
+         ::boost::is_convertible<Derived*,Base*>::value,
+         ::boost::is_class<Derived>::value,
+         ::boost::is_class<Base>::value
+      >::value)
+   );
+};
+
+#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+template <class Base, class Derived>
+struct is_base_and_derived<Base&, Derived>
+{
+   BOOST_STATIC_CONSTANT(bool, value = false);
+};
+template <class Base, class Derived>
+struct is_base_and_derived<Base, Derived&>
+{
+   BOOST_STATIC_CONSTANT(bool, value = false);
+};
+template <class Base, class Derived>
+struct is_base_and_derived<Base&, Derived&>
+{
+   BOOST_STATIC_CONSTANT(bool, value = false);
+};
+#endif
 
 } // namespace boost
 

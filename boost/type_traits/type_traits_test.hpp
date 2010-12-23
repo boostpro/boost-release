@@ -34,9 +34,9 @@ int check_result(int argc, char** argv)
       << failures << " failures found, "
       << expected_failures << " failures expected from this compiler." << std::endl;
    if((argc == 2) 
-   	&& (argv[1][0] == '-')
-   	&& (argv[1][1] == 'a')
-   	&& (argv[1][2] == 0))
+      && (argv[1][0] == '-')
+      && (argv[1][1] == 'a')
+      && (argv[1][2] == 0))
    {
       std::cout << "Press any key to continue...";
       std::cin.get();
@@ -310,7 +310,7 @@ union empty_POD_union_UDT{};
 
 class Base { };
 
-class Deriverd : public Base { };
+class Derived : public Base { };
 
 class NonDerived { };
 

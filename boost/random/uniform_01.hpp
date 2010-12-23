@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_01.hpp,v 1.3 2001/11/14 21:53:38 jmaurer Exp $
+ * $Id: uniform_01.hpp,v 1.4 2002/01/03 22:20:56 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -66,6 +66,12 @@ private:
   typedef typename base_type::result_type base_result;
   base_type & _rng;
 };
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+template<class UniformRandomNumberGenerator, class RealType>
+const bool uniform_01<UniformRandomNumberGenerator, RealType>::has_fixed_range;
+#endif
 
 } // namespace boost
 

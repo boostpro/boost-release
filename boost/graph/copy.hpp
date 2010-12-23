@@ -222,15 +222,15 @@ namespace boost {
       typedef typename Graph::directed_category Dr;
       enum { algo = 
              (is_convertible<Trv, vertex_list_graph_tag>::value
-	      && is_convertible<Trv, edge_list_graph_tag>::value)
-	     ? 0 : is_convertible<Dr, directed_tag>::value ? 1 : 2 };
+              && is_convertible<Trv, edge_list_graph_tag>::value)
+             ? 0 : is_convertible<Dr, directed_tag>::value ? 1 : 2 };
       typedef copy_graph_impl<algo> type;
     };
 
     //-------------------------------------------------------------------------
     struct choose_copier_parameter {
       template <class P, class G1, class G2>
-      struct bind {
+      struct bind_ {
         typedef const P& result_type;
         static result_type apply(const P& p, const G1&, G2&)
         { return p; }
@@ -238,9 +238,9 @@ namespace boost {
     };
     struct choose_default_edge_copier {
       template <class P, class G1, class G2>
-      struct bind {
+      struct bind_ {
         typedef edge_copier<G1, G2> result_type;
-        static result_type apply(const P& p, const G1& g1, G2& g2) { 
+        static result_type apply(const P&, const G1& g1, G2& g2) { 
           return result_type(g1, g2);
         }
       };
@@ -256,7 +256,7 @@ namespace boost {
     template <class Param, class G1, class G2>
     struct choose_edge_copier_helper {
       typedef typename choose_edge_copy<Param>::type Selector;
-      typedef typename Selector:: template bind<Param, G1, G2> Bind;
+      typedef typename Selector:: template bind_<Param, G1, G2> Bind;
       typedef Bind type;
       typedef typename Bind::result_type result_type;
     };
@@ -266,15 +266,15 @@ namespace boost {
     {
       typedef typename 
         detail::choose_edge_copier_helper<Param,G1,G2>::type Choice;
-      return Choice::apply(p, g1, g2);
+      return Choice::apply(params, g_in, g_out);
     }
 
 
     struct choose_default_vertex_copier {
       template <class P, class G1, class G2>
-      struct bind {
+      struct bind_ {
         typedef vertex_copier<G1, G2> result_type;
-        static result_type apply(const P& p, const G1& g1, G2& g2) { 
+        static result_type apply(const P&, const G1& g1, G2& g2) { 
           return result_type(g1, g2);
         }
       };
@@ -290,7 +290,7 @@ namespace boost {
     template <class Param, class G1, class G2>
     struct choose_vertex_copier_helper {
       typedef typename choose_vertex_copy<Param>::type Selector;
-      typedef typename Selector:: template bind<Param, G1, G2> Bind;
+      typedef typename Selector:: template bind_<Param, G1, G2> Bind;
       typedef Bind type;
       typedef typename Bind::result_type result_type;
     };
@@ -300,7 +300,7 @@ namespace boost {
     {
       typedef typename 
         detail::choose_vertex_copier_helper<Param,G1,G2>::type Choice;
-      return Choice::apply(p, g1, g2);
+      return Choice::apply(params, g_in, g_out);
     }
 
   } // namespace detail
@@ -346,8 +346,8 @@ namespace boost {
                     make_iterator_property_map
                     (orig2copy.begin(), 
                      choose_pmap(get_param(params, vertex_index), 
-                                 g, vertex_index), orig2copy[0])),
-       choose_pmap(get_param(params, vertex_index), g, vertex_index)
+                                 g_in, vertex_index), orig2copy[0])),
+       choose_pmap(get_param(params, vertex_index), g_in, vertex_index)
        );
   }
 

@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: shuffle_output.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: shuffle_output.hpp,v 1.3 2002/01/03 22:20:56 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -121,6 +121,29 @@ private:
   result_type v[k];
   result_type y;
 };
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+template<class UniformRandomNumberGenerator, int k, 
+  class IntType,
+#ifndef BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS
+  typename UniformRandomNumberGenerator::result_type 
+#else
+  uint32_t
+#endif
+  val>
+const bool shuffle_output<UniformRandomNumberGenerator, k, IntType, val>::has_fixed_range;
+
+template<class UniformRandomNumberGenerator, int k, 
+  class IntType,
+#ifndef BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS
+  typename UniformRandomNumberGenerator::result_type 
+#else
+  uint32_t
+#endif
+  val>
+const int shuffle_output<UniformRandomNumberGenerator, k, IntType, val>::buffer_size;
+#endif
 
 } // namespace random
 

@@ -12,8 +12,12 @@ if ! $(IA32ROOT)
     # Compiler version
     INTEL_LINUX_VERSION ?= "50" ;
 }
+# Root directory
+INTEL_LINUX_ROOT = "/opt/intel/compiler"$(INTEL_LINUX_VERSION) ;
 # Setup script
-INTEL_LINUX_SETUP = ". /opt/intel/compiler"$(INTEL_LINUX_VERSION)"/ia32/bin/iccvars.sh" ;
+INTEL_LINUX_SETUP = ". "$(INTEL_LINUX_ROOT)"/ia32/bin/iccvars.sh" ;
+# Additional DLL directory
+INTEL_LINUX_RUN_LD_LIBRARY_PATH = $(INTEL_LINUX_ROOT)"/ia32/lib" ;
 
 #### compiler and linker switches ####
 
@@ -43,7 +47,7 @@ flags intel-linux CFLAGS <shared-linkable>true : -KPIC ;
 flags intel-linux LINKFLAGS <shared-linkable>true : -KPIC ;
 
 # dynamic link library
-flags intel-linux LINKFLAGS <target-type>DLL : -shared ;
+flags intel-linux LINKFLAGS <target-type>$(SHARED_TYPES) : -shared ;
 
 # library linking
 flags intel-linux LINKFLAGS <runtime-link>static : -static ;
@@ -60,6 +64,16 @@ flags intel-linux LIBPATH <library-path> ;
 
 flags intel-linux NEEDLIBS <library-file> ;
 flags intel-linux FINDLIBS <find-library> ;
+
+flags intel-linux STDHDRS <sysinclude> ;
+flags intel-linux LINKFLAGS <linkflags> ;
+
+flags intel-linux ARFLAGS <arflags> ;
+
+if ! $(ARFLAGS)
+{
+    flags intel-linux ARFLAGS : "" ;
+}
 
 #### Cc ####
 
@@ -96,13 +110,14 @@ rule Archive-action
 
 actions updated together piecemeal intel-linux-Archive-action
 {
-    ar ru "$(<)" "$(>)"
+    ar ru$(ARFLAGS) "$(<)" "$(>)"
 }
 
 #### Link ####
 
 rule Link-action
 {
+    gRUN_LD_LIBRARY_PATH($(<)) += $(INTEL_LINUX_RUN_LD_LIBRARY_PATH) ;
     intel-linux-Link-action $(<) : $(>) ;
 }
 

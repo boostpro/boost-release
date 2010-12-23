@@ -47,6 +47,7 @@
 #include <boost/regex/pattern_except.hpp>
 #include <boost/regex/regex_traits.hpp>
 #include <boost/type_traits/cv_traits.hpp>
+#include <boost/scoped_array.hpp>
 
 
 namespace boost{
@@ -216,7 +217,7 @@ struct re_syntax_base
 // marks start or end of (...)
 struct re_brace : public re_syntax_base
 {
-   unsigned int index;
+   int index;
 };
 
 //
@@ -1462,7 +1463,7 @@ namespace re_detail{
 template <class iterator, class charT, class traits_type, class Allocator>
 iterator BOOST_REGEX_CALL re_is_set_member(iterator next, 
                           iterator last, 
-                          re_set_long* set_, 
+                          const re_set_long* set_, 
                           const reg_expression<charT, traits_type, Allocator>& e);
 } // namepsace re_detail
 

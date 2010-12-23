@@ -204,7 +204,7 @@ int main(int argc, char *argv[ ])
    c2(i);
    int* pi = &i;
    int a[2] = {1,2};
-#if (defined(BOOST_MSVC6_MEMBER_TEMPLATES) || !defined(BOOST_NO_MEMBER_TEMPLATES)) && !defined(__ICL)
+#if defined(BOOST_MSVC6_MEMBER_TEMPLATES) && !defined(__ICL)
    call_traits_checker<int*> c3;
    c3(pi);
    call_traits_checker<int&> c4;
@@ -240,7 +240,7 @@ int main(int argc, char *argv[ ])
    type_test(int*&, boost::call_traits<int*>::reference)
    type_test(int*const&, boost::call_traits<int*>::const_reference)
    type_test(int*const, boost::call_traits<int*>::param_type)
-#if defined(BOOST_MSVC6_MEMBER_TEMPLATES) || !defined(BOOST_NO_MEMBER_TEMPLATES)
+#if defined(BOOST_MSVC6_MEMBER_TEMPLATES)
    type_test(int&, boost::call_traits<int&>::value_type)
    type_test(int&, boost::call_traits<int&>::reference)
    type_test(const int&, boost::call_traits<int&>::const_reference)
@@ -388,7 +388,7 @@ void call_traits_test<T, true>::assert_construct(typename boost::call_traits<T>:
 template struct call_traits_test<int>;
 template struct call_traits_test<const int>;
 template struct call_traits_test<int*>;
-#if defined(BOOST_MSVC6_MEMBER_TEMPLATES) || !defined(BOOST_NO_MEMBER_TEMPLATES)
+#if defined(BOOST_MSVC6_MEMBER_TEMPLATES)
 template struct call_traits_test<int&>;
 template struct call_traits_test<const int&>;
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(__SUNPRO_CC)
@@ -410,6 +410,8 @@ unsigned int expected_failures = 6;
 unsigned int expected_failures = 2;
 #elif defined(__GNUC__)
 unsigned int expected_failures = 4;
+#elif defined(__HP_aCC)
+unsigned int expected_failures = 20;
 #else
 unsigned int expected_failures = 0;
 #endif

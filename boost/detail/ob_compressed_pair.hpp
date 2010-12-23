@@ -10,8 +10,8 @@
 /* Release notes:
    20 Jan 2001:
         Fixed obvious bugs (David Abrahams)
-	07 Oct 2000:
-		Added better single argument constructor support.
+   07 Oct 2000:
+      Added better single argument constructor support.
    03 Oct 2000:
       Added VC6 support (JM).
    23rd July 2000:
@@ -38,7 +38,7 @@
 
 namespace boost
 {
-#if defined(BOOST_MSVC6_MEMBER_TEMPLATES) || !defined(BOOST_NO_MEMBER_TEMPLATES)
+#ifdef BOOST_MSVC6_MEMBER_TEMPLATES
 //
 // use member templates to emulate
 // partial specialisation.  Note that due to

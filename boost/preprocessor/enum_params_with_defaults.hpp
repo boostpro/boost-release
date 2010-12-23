@@ -1,48 +1,52 @@
 #ifndef BOOST_PREPROCESSOR_ENUM_PARAMS_WITH_DEFAULTS_HPP
 #define BOOST_PREPROCESSOR_ENUM_PARAMS_WITH_DEFAULTS_HPP
 
-//  Copyright (C) 2001
-//  Housemarque, Inc.
-//  http://www.housemarque.com
-//  
-//  Permission to copy, use, modify, sell and distribute this software is
-//  granted provided this copyright notice appears in all copies. This
-//  software is provided "as is" without express or implied warranty, and
-//  with no claim as to its suitability for any purpose.
+/* Copyright (C) 2001
+ * Housemarque Oy
+ * http://www.housemarque.com
+ *
+ * Permission to copy, use, modify, sell and distribute this software is
+ * granted provided this copyright notice appears in all copies. This
+ * software is provided "as is" without express or implied warranty, and
+ * with no claim as to its suitability for any purpose.
+ *
+ * See http://www.boost.org for most recent version.
+ */
 
-//  See http://www.boost.org for most recent version.
+#include <boost/preprocessor/cat.hpp>
+#include <boost/preprocessor/enum.hpp>
 
-/*! \file
+/** <p>Generates a comma separated list of parameters with defaults.</p>
 
-<a href="../../../../boost/preprocessor/enum_params_with_defaults.hpp">Click here to see the header.</a>
+<p>In other words, expands to the sequence:</p>
+
+<pre>
+  BOOST_PP_CAT(P,0) = BOOST_PP_CAT(D,0),
+  BOOST_PP_CAT(P,1) = BOOST_PP_CAT(D,1),
+  ...,
+  BOOST_PP_CAT(P,BOOST_PP_DEC(N)) = BOOST_PP_CAT(D,BOOST_PP_DEC(N))
+</pre>
+
+<h3>Uses</h3>
+<ul>
+  <li>BOOST_PP_REPEAT()</li>
+</ul>
+
+<h3>Test</h3>
+<ul>
+  <li><a href="../../test/repeat_test.cpp">repeat_test.cpp</a></li>
+</ul>
 */
-
-#ifndef BOOST_PREPROCESSOR_CAT_HPP
-#  include <boost/preprocessor/cat.hpp>
-#endif
-#ifndef BOOST_PREPROCESSOR_COMMA_IF_HPP
-#  include <boost/preprocessor/comma_if.hpp>
-#endif
-#ifndef BOOST_PREPROCESSOR_REPEAT_HPP
-#  include <boost/preprocessor/repeat.hpp>
-#endif
-#ifndef BOOST_PREPROCESSOR_TUPLE_HPP
-#  include <boost/preprocessor/tuple.hpp>
-#endif
-
-//! Generates a comma separated list of parameters with defaults.
-/*!
-In other words, expands to the sequence:
-
-<PRE>\verbatim
-  P##0 = D##0, P##1 = D##1, ..., P##N-1 = D##N-1
-\endverbatim</PRE>
-
-NOTE: The implementation uses BOOST_PREPROCESSOR_REPEAT().
-*/
-#define BOOST_PREPROCESSOR_ENUM_PARAMS_WITH_DEFAULTS(N,P,D) BOOST_PREPROCESSOR_REPEAT(N,BOOST_PREPROCESSOR_PARAM_WITH_DEFAULT,(P,D))
+#define BOOST_PP_ENUM_PARAMS_WITH_DEFAULTS(N,P,D) BOOST_PP_ENUM(N,BOOST_PP_ENUM_PARAMS_WITH_DEFAULTS_F,(P,D))
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#define BOOST_PREPROCESSOR_PARAM_WITH_DEFAULT(I,PD) BOOST_PREPROCESSOR_COMMA_IF(I) BOOST_PREPROCESSOR_CAT(BOOST_PREPROCESSOR_TUPLE_ELEM(2,0,PD),I)=BOOST_PREPROCESSOR_CAT(BOOST_PREPROCESSOR_TUPLE_ELEM(2,1,PD),I)
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) && __MWERKS__ <= 0x2406
+#  define BOOST_PP_ENUM_PARAMS_WITH_DEFAULTS_F(I,PD) BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(2,0,PD),I)=BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(2,1,PD),I)
+#else
+#  define BOOST_PP_ENUM_PARAMS_WITH_DEFAULTS_F(I,PD) BOOST_PP_CAT(BOOST_PP_TUPLE2_ELEM0 PD,I)=BOOST_PP_CAT(BOOST_PP_TUPLE2_ELEM1 PD,I)
+#endif
+#endif
+
+/** <p>Obsolete. Use BOOST_PP_ENUM_PARAMS_WITH_DEFAULTS().</p> */
+#define BOOST_PREPROCESSOR_ENUM_PARAMS_WITH_DEFAULTS(N,P,D) BOOST_PP_ENUM_PARAMS_WITH_DEFAULTS(N,P,D)
 #endif

@@ -5,6 +5,7 @@
 # to its suitability for any purpose.
 
 # compute directories for invoking GCC
+SPACE ?= " " ;
 GCC_BIN_DIRECTORY ?= $(GCC_ROOT_DIRECTORY)$(SLASH)bin$(SLASH) ;
 GCC_BIN_DIRECTORY ?= "" ; # Don't clobber tool names if GCC_ROOT_DIRECTORY not set
 GCC_INCLUDE_DIRECTORY ?= $(GCC_ROOT_DIRECTORY)$(SLASH)include ;
@@ -34,14 +35,24 @@ if $(UNIX)
 flags gcc CFLAGS <profiling>on : -pg ;
 flags gcc LINKFLAGS <profiling>on : -pg ;
 
+flags gcc C++FLAGS <rtti>off : -fno-rtti ;
+
 flags gcc CFLAGS <cflags> ;
 flags gcc C++FLAGS <cxxflags> ;
 flags gcc DEFINES <define> ;
 flags gcc UNDEFS <undef> ;
 flags gcc HDRS <include> ;
+flags gcc STDHDRS <sysinclude> ;
+flags gcc LINKFLAGS <linkflags> ;
+flags gcc ARFLAGS <arflags> ;
 
 flags gcc STDHDRS : $(GCC_INCLUDE_DIRECTORY) ;
 flags gcc STDLIBPATH : $(GCC_STDLIB_DIRECTORY) ;
+
+if ! $(ARFLAGS)
+{
+    flags gcc ARFLAGS : "" ;
+}
 
 if ! $(NT) # The compiler complains about -fPIC on NT
 {
@@ -52,11 +63,11 @@ if ! $(NT) # The compiler complains about -fPIC on NT
 
 if $(BETOOLS)
 {
-    flags gcc LINKFLAGS <target-type>DLL : -nostart ;
+    flags gcc LINKFLAGS <target-type>$(SHARED_TYPES) : -nostart ;
 }
 else
 {
-    flags gcc LINKFLAGS <target-type>DLL : -shared ;
+    flags gcc LINKFLAGS <target-type>$(SHARED_TYPES) : -shared ;
 }
 
 flags gcc LIBPATH <library-path> ;
@@ -70,14 +81,28 @@ rule Link-action
     # This will appear before the import library name when building a DLL, but
     # will be "multiplied away" otherwise. The --exclude-symbols directive
     # proved to be neccessary with some versions of Cygwin.
-    IMPLIB_COMMAND on $(<) = "-Wl,--exclude-symbols,_bss_end__:_bss_start__:_data_end__:_data_start__ -Wl,--out-implib," ;
-    gcc-Link-action $(<) : $(>) ;
+    IMPLIB_COMMAND on $(<) = "-Wl,--export-all-symbols -Wl,--exclude-symbols,_bss_end__:_bss_start__:_data_end__:_data_start__ -Wl,--out-implib," ;
+    DEPENDS $(<) : $(NEEDLIBS) ;
+    gRUN_LD_LIBRARY_PATH($(<)) += $(GCC_STDLIB_DIRECTORY) ;
+    if $(<[2]) && $(NT) && ( -mno-cygwin in $(gBUILD_PROPERTIES:G=) )
+    {
+        gcc-dllwrap $(<) : $(>) ;
+    }
+    else
+    {
+        gcc-Link-action $(<) : $(>) ;
+    }
 }
 
 # for gcc, we repeat all libraries so that dependencies are always resolved
 actions gcc-Link-action bind NEEDLIBS
 {
-    $(GCC_BIN_DIRECTORY)g++ $(IMPLIB_COMMAND)$(<[2]) $(LINKFLAGS) -o "$(<[1])" -L$(LIBPATH) -L$(STDLIBPATH) "$(>)" "$(NEEDLIBS)" "$(NEEDLIBS)" -l$(FINDLIBS) -Wl,-rpath-link,.
+    $(GCC_BIN_DIRECTORY)g++ $(IMPLIB_COMMAND)$(<[2]) $(LINKFLAGS) -o "$(<[1])" -L$(LIBPATH:T) -L$(STDLIBPATH:T) "$(>)" "$(NEEDLIBS)" "$(NEEDLIBS)" -l$(FINDLIBS) -Wl,-rpath-link,.
+}
+
+actions gcc-dllwrap bind NEEDLIBS
+{
+    dllwrap --dllname $(<[1]) -o foo.pyd $(>) -s --entry _DllMain@12 --target=i386-mingw32 -L$(LIBPATH:T) -L$(STDLIBPATH:T) "$(>)" "$(NEEDLIBS)" "$(NEEDLIBS)" -l$(FINDLIBS) -Wl,-rpath-link,. $(LINKFLAGS)     
 }
 
 #### Cc #####
@@ -89,7 +114,7 @@ rule Cc-action
 
 actions gcc-Cc-action
 {
-    $(GCC_BIN_DIRECTORY)gcc -c -Wall -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(GCC_BIN_DIRECTORY)gcc -c -Wall -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -isystem$(SPACE)"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -100,7 +125,7 @@ rule C++-action
 
 actions gcc-C++-action
 {
-    $(GCC_BIN_DIRECTORY)g++ -c -Wall -ftemplate-depth-100 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(GCC_BIN_DIRECTORY)g++ -c -Wall -ftemplate-depth-100 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -isystem$(SPACE)"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### Archive ####
@@ -112,6 +137,6 @@ rule Archive-action
 
 actions updated together piecemeal gcc-Archive-action
 {
-    ar ru "$(<:T)" "$(>:T)"
+    ar ru$(ARFLAGS) "$(<:T)" "$(>:T)"
 }
 

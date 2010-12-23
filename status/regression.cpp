@@ -25,6 +25,18 @@
 #include <utility>
 #include <ctime>
 
+#ifdef __unix
+#include <cstring>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/wait.h>
+#include <sys/resource.h>
+#else
+#include <boost/progress.hpp>
+#endif
+
 // It is OK to use boost headers which contain entirely inline code.
 #include <boost/config.hpp>
 #ifdef BOOST_NO_STDC_NAMESPACE
@@ -253,7 +265,7 @@ previous_results_type read_previous_results(std::istream & is)
   std::string line, current_test;
   while(std::getline(is, line)) {
     if(status == prefix) {
-      if(line.substr(0, 6) == "<table")
+      if(line.substr(0, 17) == "<table border=\"1\"")
         status = testname;
     } else if(status == testname) {
       if(line.substr(0, 6) == "<td><a") {
@@ -292,7 +304,39 @@ previous_results_type read_previous_results(std::istream & is)
 bool execute(const std::string & command)
 {
   std::cout << command << std::endl; // fix: endl ensures cout ordering
-  int ret = std::system(command.c_str());
+#ifdef __unix
+  int ret = 0;
+  pid_t pid = fork();
+  if(pid == -1) {
+    ret = 1;
+    std::cout << "ERROR: cannot fork: " << std::strerror(errno) << std::endl;
+  } else if(pid == 0) {
+    // child context
+    execl("/bin/sh", "sh", "-c", command.c_str(), 0);
+    std::cout << "ERROR: cannot execl: " << std::strerror(errno) << std::endl;
+    std::exit(1);
+  } else {
+    int status;
+    struct rusage usage;
+    int result = wait3(&status, 0, &usage);
+    if(WIFEXITED(status))
+      ret = WEXITSTATUS(status);
+    else if(WIFSIGNALED(status))
+      ret = 1000+WTERMSIG(status);
+    std::cout << "CPU time: "
+              << usage.ru_utime.tv_sec + usage.ru_utime.tv_usec/1e6
+              << " s user, "
+              << usage.ru_stime.tv_sec + usage.ru_stime.tv_usec/1e6
+              << " s system"
+              << std::endl;
+  }
+#else
+  int ret;
+  {
+    boost::progress_timer pt;
+    ret = std::system(command.c_str());
+  }
+#endif
   if(ret != 0)
     std::cout << "Return code: " << ret << std::endl;
   return ret == 0;
@@ -475,12 +519,15 @@ int main(int argc, char * argv[])
 
   out << "<html>\n<head>\n<title>\nCompiler Status: " + host + "\n</title>\n</head>\n"
       << "<body bgcolor=\"#ffffff\" text=\"#000000\">\n"
-      << "<img border border=\"0\" src=\"../c++boost.gif\" width=\"277\" height=\"86\" align=\"left\">\n"
+      << "<table border=\"0\">\n<tr>\n"
+      << "<td><img border=\"0\" src=\"../c++boost.gif\" width=\"277\" height=\"86\"></td>\n"
+      << "<td>\n"
       << "<h1>Compiler Status: " + host + "</h1>\n"
       << "\n"
       << "<p><b>System Configuration:</b> " << get_system_configuration() << "<br>\n"
       << "<b>Run Date:</b> " << run_date << "</p>\n"
-      << "<p>\n" 
+      << "</td>\n</tr>\n</table>\n"
+      << "<p>\n\n" 
       << "<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n";
     
   do_tests(out, compilers.begin(), compilers.end(), config.test_config_file, config.boostpath,
@@ -488,9 +535,7 @@ int main(int argc, char * argv[])
 
   out << "</table></p>\n<p>\n";
   if(host == "linux")
-    out << "Notes: A hand-crafted &lt;limits&gt; Standard header has been\n"
-        << "applied to all configurations.\n"
-        << "The tests were run on a GNU libc 2.2.2 system which has improved\n"
+    out << "Notes: The tests were run on a GNU libc 2.2.4 system which has improved\n"
         << "wide character support compared to 2.1.x and earlier versions.";
   else if(host == "irix" || host == "tru64")
     out << "Note: For the 'clib' configuration, the missing new-style C\n"

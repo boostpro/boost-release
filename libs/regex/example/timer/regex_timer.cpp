@@ -15,19 +15,24 @@
 
 #ifdef BOOST_RE_OLD_IOSTREAM
 #include <iostream.h>
+#include <fstream.h>
 #else
 #include <iostream>
+#include <fstream>
 using std::cout;
 using std::cin;
 using std::cerr;
 using std::istream;
 using std::ostream;
 using std::endl;
+using std::ifstream;
+using std::streambuf;
 #endif
 
 #include <algorithm>
 #include <string>
 #include <deque>
+#include <iterator>
 #include <boost/config.hpp>
 #include <boost/regex.hpp>
 #include <boost/timer.hpp> 
@@ -54,8 +59,19 @@ ostream& operator << (ostream& os, const std::wstring& s)
 #endif
 
 template <class S>
-class string_out_iterator
+class string_out_iterator 
+#ifndef BOOST_NO_STD_ITERATOR
+  : public std::iterator<std::output_iterator_tag, void, void, void, void>
+#endif // ndef BOOST_NO_STD_ITERATOR
 {
+#ifdef BOOST_NO_STD_ITERATOR
+   typedef std::output_iterator_tag iterator_category;
+   typedef void value_type;
+   typedef void difference_type;
+   typedef void pointer;
+   typedef void reference;
+#endif // BOOST_NO_STD_ITERATOR
+
    S* out;
 public:
    string_out_iterator(S& s) : out(&s) {}
@@ -87,8 +103,21 @@ istream& getline(istream& is, std::string& s)
 #endif
 
 
-int main()
+int main(int argc, char**argv)
 {
+   ifstream ifs;
+   streambuf* pbuf = 0;
+   if(argc == 2)
+   {
+      ifs.open(argv[1]);
+      if(ifs.bad())
+      {
+         cout << "Bad filename: " << argv[1] << endl;
+         return -1;
+      }
+      pbuf = cin.rdbuf(ifs.rdbuf());
+   }
+   
    boost::regex ex;
    boost::match_results<std::string::const_iterator> sm;
 #ifndef BOOST_NO_WREGEX
@@ -106,11 +135,14 @@ int main()
    double tim;
    bool result;
    int iters = 100;
+   double wait_time = std::min(t.elapsed_min() * 1000, 1.0);
 
    while(true)
    {
       cout << "Enter expression (or \"quit\" to exit): ";
       getline(cin, s1);
+      if(argc == 2)
+         cout << endl << s1 << endl;
       if(s1 == "quit")
          break;
 #ifndef BOOST_NO_WREGEX
@@ -143,6 +175,8 @@ int main()
       {
          cout << "Enter string to search (or \"quit\" to exit): ";
          getline(cin, s2);
+         if(argc == 2)
+            cout << endl << s2 << endl;
          if(s2 == "quit")
             break;
 
@@ -175,7 +209,7 @@ int main()
                result = regex_search(s2, sm, ex);
             }
             tim = t.elapsed();
-         }while((tim < t.elapsed_min() * 1000) || (tim < 1));
+         }while(tim < wait_time);
 
          cout << "regex time: " << (tim * 1000000 / iters) << "us" << endl;
          if(result)
@@ -209,7 +243,7 @@ int main()
                result = regex_search(ws2, wsm, wex);
             }
             tim = t.elapsed();
-         }while((tim < t.elapsed_min() * 1000) || (tim < 1));
+         }while(tim < wait_time);
          cout << "wregex time: " << (tim * 1000000 / iters) << "us" << endl;
          if(result)
          {
@@ -247,7 +281,7 @@ int main()
                result = regex_search(ds.begin(), ds.end(), dm, ex);
             }
             tim = t.elapsed();
-         }while((tim < t.elapsed_min() * 1000) || (tim < 1));
+         }while(tim < wait_time);
          cout << "regex time (search over std::deque<char>): " << (tim * 1000000 / iters) << "us" << endl;
 
          if(result)
@@ -284,7 +318,7 @@ int main()
                result = regexec(&r, s2.c_str(), nsubs, matches.get(), 0);
             }
             tim = t.elapsed();
-         }while((tim < t.elapsed_min() * 1000) || (tim < 1));
+         }while(tim < wait_time);
          cout << "POSIX regexec time: " << (tim * 1000000 / iters) << "us" << endl;
 
          if(result == 0)
@@ -313,6 +347,10 @@ int main()
       }
       regfree(&r);
    }
+
+   if(pbuf)
+      cin.rdbuf(pbuf);
+
    return 0;
 }
 

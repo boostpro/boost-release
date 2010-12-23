@@ -14,6 +14,9 @@ namespace {
     const unsigned NANOSECONDS_PER_SECOND = 1000000000;
     const unsigned NANOSECONDS_PER_MILLISECOND = 1000000;
 
+    const unsigned MICROSECONDS_PER_SECOND = 1000000;
+    const unsigned NANOSECONDS_PER_MICROSECOND = 1000;
+
     inline void to_time(unsigned milliseconds, boost::xtime& xt)
     {
         int res = 0;
@@ -35,7 +38,7 @@ namespace {
     {
         ts.tv_sec = static_cast<int>(xt.sec);
         ts.tv_nsec = static_cast<int>(xt.nsec);
-        if(ts.tv_nsec > NANOSECONDS_PER_SECOND)
+        if(ts.tv_nsec > static_cast<const int>(NANOSECONDS_PER_SECOND))
         {
             ts.tv_sec += ts.tv_nsec / NANOSECONDS_PER_SECOND;
             ts.tv_nsec %= NANOSECONDS_PER_SECOND;
@@ -71,7 +74,7 @@ namespace {
                 ts.tv_sec -= 1;
                 ts.tv_nsec += NANOSECONDS_PER_SECOND;
             }
-           if(ts.tv_nsec > NANOSECONDS_PER_SECOND)
+           if(ts.tv_nsec > static_cast<const int>(NANOSECONDS_PER_SECOND))
            {
                ts.tv_sec += ts.tv_nsec / NANOSECONDS_PER_SECOND;
                ts.tv_nsec %= NANOSECONDS_PER_SECOND;
@@ -94,6 +97,23 @@ namespace {
             milliseconds = static_cast<unsigned>(((xt.sec - cur.sec) * MILLISECONDS_PER_SECOND) +
                 (((xt.nsec - cur.nsec) + (NANOSECONDS_PER_MILLISECOND/2)) /
                 NANOSECONDS_PER_MILLISECOND));
+        }
+    }
+
+    inline void to_microduration(const boost::xtime& xt, unsigned& microseconds)
+    {
+        boost::xtime cur;
+        int res = 0;
+        res = boost::xtime_get(&cur, boost::TIME_UTC);
+        assert(res == boost::TIME_UTC);
+
+        if (xt.sec < cur.sec || (xt.sec == cur.sec && xt.nsec < cur.nsec))
+            microseconds = 0;
+        else
+        {
+            microseconds = static_cast<unsigned long>(((xt.sec - cur.sec) * MICROSECONDS_PER_SECOND) +
+                (((xt.nsec - cur.nsec) + (NANOSECONDS_PER_MICROSECOND/2)) /
+                NANOSECONDS_PER_MICROSECOND));
         }
     }
 }

@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: mersenne_twister.hpp,v 1.5 2001/10/23 15:38:53 jmaurer Exp $
+ * $Id: mersenne_twister.hpp,v 1.6 2002/01/03 22:20:56 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -135,6 +135,49 @@ private:
   int i;
   data_type x[n];
 };
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const bool mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::has_fixed_range;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const typename mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::result_type mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::min_value;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const typename mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::result_type mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::max_value;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::state_size;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::shift_size;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::mask_bits;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const DataType mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::parameter_a;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_u;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_s;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const DataType mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_b;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_t;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const DataType mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_c;
+template<class DataType, int n, int m, int r, DataType a, int u,
+  int s, DataType b, int t, DataType c, int l, DataType val>
+const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_l;
+#endif
 
 template<class DataType, int n, int m, int r, DataType a, int u,
   int s, DataType b, int t, DataType c, int l, DataType val>

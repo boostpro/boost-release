@@ -39,7 +39,7 @@ int main() {
 
   cout << "\ndetermine " << time << " second iteration count" << endl;
   for ( loops = 0; loops < LONG_MAX
-	    && loop_timer.elapsed() < time; ++loops ) {}
+     && loop_timer.elapsed() < time; ++loops ) {}
   cout << loops << " iterations"<< endl;
     
   long i;
@@ -65,7 +65,10 @@ int main() {
   for ( i = loops; i--; )
     { time_waster = loop_timer.elapsed() < time; ++pd; }
 
-  cout << "t1 elapsed: " << t1.elapsed() << '\n';
+  progress_display pd2( 50, cout, "\nLead string 1 ", "Lead string 2 ", "Lead string 3 " );
+  for ( ; pd2.count() < 50; ++pd2 ) {}
+
+  cout << "\nt1 elapsed: " << t1.elapsed() << '\n';
   cout << "t2 elapsed: " << t2.elapsed() << '\n';
   cout << "t3 elapsed: " << t3.elapsed() << '\n';
   cout << "t4 elapsed: " << t4.elapsed() << '\n';

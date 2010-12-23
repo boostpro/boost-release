@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_test.cpp,v 1.20 2001/11/28 21:42:05 jmaurer Exp $
+ * $Id: random_test.cpp,v 1.22 2001/12/20 21:23:10 jmaurer Exp $
  */
 
 #include <iostream>
@@ -290,7 +290,9 @@ int test_main(int, char*[])
   r2();
   r2();
 
-  // Some compilers don't pay attention to std:3.6.1/5 and issue a
-  // warning here if "return 0;" is omitted.
+  // bug report from Fernando Cacciola
+  boost::minstd_rand rnd;
+  boost::uniform_int<boost::minstd_rand> x(rnd,0,8361);  // --> This CTOR loops forever.
+
   return 0;
 }

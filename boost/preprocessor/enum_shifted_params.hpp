@@ -1,57 +1,51 @@
 #ifndef BOOST_PREPROCESSOR_ENUM_SHIFTED_PARAMS_HPP
 #define BOOST_PREPROCESSOR_ENUM_SHIFTED_PARAMS_HPP
 
-//  Copyright (C) 2001
-//  Housemarque, Inc.
-//  http://www.housemarque.com
-//  
-//  Permission to copy, use, modify, sell and distribute this software is
-//  granted provided this copyright notice appears in all copies. This
-//  software is provided "as is" without express or implied warranty, and
-//  with no claim as to its suitability for any purpose.
+/* Copyright (C) 2001
+ * Housemarque Oy
+ * http://www.housemarque.com
+ *
+ * Permission to copy, use, modify, sell and distribute this software is
+ * granted provided this copyright notice appears in all copies. This
+ * software is provided "as is" without express or implied warranty, and
+ * with no claim as to its suitability for any purpose.
+ *
+ * See http://www.boost.org for most recent version.
+ */
 
-//  See http://www.boost.org for most recent version.
+#include <boost/preprocessor/cat.hpp>
+#include <boost/preprocessor/enum_shifted.hpp>
 
-/*! \file
+/** <p>Generates a comma separated list of shifted actual parameters.</p>
 
-<a href="../../../../boost/preprocessor/enum_shifted_params.hpp">Click here to see the header.</a>
+<p>In other words, expands to the sequence:</p>
+
+<pre>
+  BOOST_PP_CAT(P,1), BOOST_PP_CAT(P,2), ..., BOOST_PP_CAT(P,BOOST_PP_DEC(N))
+</pre>
+
+<h3>Uses</h3>
+<ul>
+  <li>BOOST_PP_REPEAT()</li>
+</ul>
+
+<h3>Rationale</h3>
+<ul>
+  <li>This macro facilitates a typical usage of the library. Shifted parameter
+      lists are common in template metaprograms.</li>
+</ul>
+
+<h3>Test</h3>
+<ul>
+  <li><a href="../../test/repeat_2nd_test.cpp">repeat_2nd_test.cpp</a></li>
+</ul>
 */
-
-#ifndef BOOST_PREPROCESSOR_CAT_HPP
-#  include <boost/preprocessor/cat.hpp>
-#endif
-#ifndef BOOST_PREPROCESSOR_COMMA_IF_HPP
-#  include <boost/preprocessor/comma_if.hpp>
-#endif
-#ifndef BOOST_PREPROCESSOR_DEC_HPP
-#  include <boost/preprocessor/dec.hpp>
-#endif
-#ifndef BOOST_PREPROCESSOR_INC_HPP
-#  include <boost/preprocessor/inc.hpp>
-#endif
-#ifndef BOOST_PREPROCESSOR_REPEAT_HPP
-#  include <boost/preprocessor/repeat.hpp>
-#endif
-
-//! Generates a comma separated list of shifted actual parameters.
-/*!
-In other words, expands to the sequence:
-
-<PRE>\verbatim
-  P##1, P##2, ..., P##N-1
-\endverbatim</PRE>
-
-NOTE: The implementation uses BOOST_PREPROCESSOR_REPEAT().
-
-RATIONALE:
-- This macro facilitates a typical usage of the library. Shifted parameter
-lists are common in template metaprograms. 
-- ENUM_SHIFTED_PARAMS must be tested so that the shifted range is shown to be
-correct.
-*/
-#define BOOST_PREPROCESSOR_ENUM_SHIFTED_PARAMS(N,P) BOOST_PREPROCESSOR_REPEAT(BOOST_PREPROCESSOR_DEC(N),BOOST_PREPROCESSOR_SHIFTED_PARAM,P)
+#define BOOST_PP_ENUM_SHIFTED_PARAMS(N,P) BOOST_PP_ENUM_SHIFTED(N,BOOST_PP_ENUM_SHIFTED_PARAMS_F,P)
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#define BOOST_PREPROCESSOR_SHIFTED_PARAM(I,P) BOOST_PREPROCESSOR_COMMA_IF(I) BOOST_PREPROCESSOR_CAT(P,BOOST_PREPROCESSOR_INC(I))
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#define BOOST_PP_ENUM_SHIFTED_PARAMS_F(I,P) BOOST_PP_CAT(P,I)
+#endif
+
+/** <p>Obsolete. Use BOOST_PP_ENUM_SHIFTED_PARAMS().</p> */
+#define BOOST_PREPROCESSOR_ENUM_SHIFTED_PARAMS(N,P) BOOST_PP_ENUM_SHIFTED_PARAMS(N,P)
 #endif

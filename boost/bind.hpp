@@ -8,7 +8,7 @@
 //
 //  bind.hpp - binds function objects to arguments
 //
-//  Copyright (c) 2001 Peter Dimov and Multi Media Ltd.
+//  Copyright (c) 2001, 2002 Peter Dimov and Multi Media Ltd.
 //  Copyright (c) 2001 David Abrahams
 //
 //  Permission to copy, use, modify, sell and distribute this software
@@ -22,6 +22,7 @@
 #include <boost/config.hpp>
 #include <boost/ref.hpp>
 #include <boost/mem_fn.hpp>
+#include <boost/bind/arg.hpp>
 
 // Borland-specific bug, visit_each() silently fails to produce code
 
@@ -29,6 +30,11 @@
 #  define BOOST_BIND_VISIT_EACH boost::visit_each
 #else
 #  define BOOST_BIND_VISIT_EACH visit_each
+#endif
+
+#ifdef BOOST_MSVC
+# pragma warning(push)
+# pragma warning(disable: 4512) // assignment operator could not be generated
 #endif
 
 namespace boost
@@ -73,12 +79,7 @@ public:
 private:
 
     T t_;
-    value & operator= (value const &);
 };
-
-// arg
-
-template<int I> class arg {};
 
 // type
 
@@ -135,9 +136,6 @@ public:
 
 #endif
 
-private:
-
-    list0 & operator= (list0 const &);
 };
 
 template<class A1> class list1
@@ -182,10 +180,6 @@ private:
 #endif
 
     A1 a1_;
-
-private:
-
-    list1 & operator= (list1 const &);
 };
 
 template<class A1, class A2> class list2
@@ -233,10 +227,6 @@ private:
 
     A1 a1_;
     A2 a2_;
-
-private:
-
-    list2 & operator= (list2 const &);
 };
 
 template<class A1, class A2, class A3> class list3
@@ -287,10 +277,6 @@ private:
     A1 a1_;
     A2 a2_;
     A3 a3_;
-
-private:
-
-    list3 & operator= (list3 const &);
 };
 
 template<class A1, class A2, class A3, class A4> class list4
@@ -344,10 +330,6 @@ private:
     A2 a2_;
     A3 a3_;
     A4 a4_;
-
-private:
-
-    list4 & operator= (list4 const &);
 };
 
 template<class A1, class A2, class A3, class A4, class A5> class list5
@@ -404,10 +386,6 @@ private:
     A3 a3_;
     A4 a4_;
     A5 a5_;
-
-private:
-
-    list5 & operator= (list5 const &);
 };
 
 template<class A1, class A2, class A3, class A4, class A5, class A6> class list6
@@ -467,10 +445,6 @@ private:
     A4 a4_;
     A5 a5_;
     A6 a6_;
-
-private:
-
-    list6 & operator= (list6 const &);
 };
 
 template<class A1, class A2, class A3, class A4, class A5, class A6, class A7> class list7
@@ -533,10 +507,6 @@ private:
     A5 a5_;
     A6 a6_;
     A7 a7_;
-
-private:
-
-    list7 & operator= (list7 const &);
 };
 
 template<class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8> class list8
@@ -602,10 +572,6 @@ private:
     A6 a6_;
     A7 a7_;
     A8 a8_;
-
-private:
-
-    list8 & operator= (list8 const &);
 };
 
 template<class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9> class list9
@@ -674,10 +640,6 @@ private:
     A7 a7_;
     A8 a8_;
     A9 a9_;
-
-private:
-
-    list9 & operator= (list9 const &);
 };
 
 #ifdef BOOST_NO_VOID_RETURNS
@@ -878,14 +840,11 @@ public:
 #include <boost/bind/bind_template.hpp>
 #undef BOOST_BIND_EVALUATE
 
-private:
-
-    bind_t & operator= (bind_t const &);
 };
 
 #else
 
-template <class R> struct bind_t_generator
+template<class R> struct bind_t_generator
 {
 
 template<class F, class L> class implementation
@@ -898,9 +857,6 @@ public:
 #include <boost/bind/bind_template.hpp>
 #undef BOOST_BIND_EVALUATE
 
-private:
-
-    implementation & operator= (implementation const &);
 };
 
 };
@@ -922,36 +878,17 @@ public:
 #include <boost/bind/bind_template.hpp>
 #undef BOOST_BIND_EVALUATE
 
-private:
-
-    implementation & operator= (implementation const &);
 };
 
 };
 
-#if defined(BOOST_MSVC) && (BOOST_MSVC < 1300)
-#pragma warning(push)
-#pragma warning(disable: 4097) // typedef name 'base' used as a synonym for class
-#endif
-
-template<class R, class F, class L> class bind_t: public bind_t_generator<R>::BOOST_NESTED_TEMPLATE implementation<F, L>
+template<class R2, class F, class L> class bind_t: public bind_t_generator<R2>::BOOST_NESTED_TEMPLATE implementation<F, L>
 {
-private:
-
-    typedef typename bind_t_generator<R>::template implementation<F, L> base;
-
 public:
 
-    bind_t(F f, L const & l): base(f, l) {}
+    bind_t(F f, L const & l): bind_t_generator<R2>::BOOST_NESTED_TEMPLATE implementation<F, L>(f, l) {}
 
-private:
-
-    bind_t & operator= (bind_t const &);
 };
-
-#if defined(BOOST_MSVC) && (BOOST_MSVC < 1300)
-#pragma warning(pop)
-#endif
 
 #endif
 
@@ -1360,17 +1297,15 @@ template<class F, class A1, class A2, class A3, class A4, class A5, class A6, cl
 
 } // namespace boost
 
-namespace
-{
-    boost::_bi::arg<1> _1;
-    boost::_bi::arg<2> _2;
-    boost::_bi::arg<3> _3;
-    boost::_bi::arg<4> _4;
-    boost::_bi::arg<5> _5;
-    boost::_bi::arg<6> _6;
-    boost::_bi::arg<7> _7;
-    boost::_bi::arg<8> _8;
-    boost::_bi::arg<9> _9;
-}
+#ifndef BOOST_BIND_NO_PLACEHOLDERS
+
+# include <boost/bind/placeholders.hpp>
+
+#endif
+
+#ifdef BOOST_MSVC
+# pragma warning(default: 4512) // assignment operator could not be generated
+# pragma warning(pop)
+#endif
 
 #endif // #ifndef BOOST_BIND_HPP_INCLUDED

@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_smallint.hpp,v 1.4 2001/11/16 19:12:58 jmaurer Exp $
+ * $Id: uniform_smallint.hpp,v 1.5 2002/01/03 22:20:56 jmaurer Exp $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -60,6 +60,12 @@ private:
   base_result _range;
   int _factor;
 };
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+template<class UniformRandomNumberGenerator, class IntType>
+const bool uniform_smallint<UniformRandomNumberGenerator, IntType>::has_fixed_range;
+#endif
 
 template<class UniformRandomNumberGenerator, class IntType>
 uniform_smallint<UniformRandomNumberGenerator, IntType>::

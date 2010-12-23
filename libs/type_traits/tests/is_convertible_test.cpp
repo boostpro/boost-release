@@ -9,31 +9,55 @@
 #include <boost/test/cpp_main.cpp>
 #include "boost/type_traits/type_traits_test.hpp"
 
+template <class T>
+struct convertible_from
+{
+    convertible_from(T);
+};
 
 int cpp_main(int argc, char* argv[])
 {
-   value_test(true, (boost::is_convertible<Deriverd,Base>::value));
-   value_test(true, (boost::is_convertible<Deriverd,Deriverd>::value));
+   value_test(true, (boost::is_convertible<Derived,Base>::value));
+   value_test(true, (boost::is_convertible<Derived,Derived>::value));
    value_test(true, (boost::is_convertible<Base,Base>::value));
-   value_test(false, (boost::is_convertible<Base,Deriverd>::value));
-   value_test(true, (boost::is_convertible<Deriverd,Deriverd>::value));
+   value_test(false, (boost::is_convertible<Base,Derived>::value));
+   value_test(true, (boost::is_convertible<Derived,Derived>::value));
    value_test(false, (boost::is_convertible<NonDerived,Base>::value));
    value_test(false, (boost::is_convertible<boost::noncopyable, int>::value));
    value_test(true, (boost::is_convertible<float,int>::value));
-#if defined(BOOST_MSVC6_MEMBER_TEMPLATES) || !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+   
+   value_test(true, (boost::is_convertible<float,convertible_from<float> >::value));
+   value_test(true, (boost::is_convertible<float,convertible_from<float const&> >::value));
+   value_test(true, (boost::is_convertible<float,convertible_from<float&> >::value));
+
+   value_test(true, (boost::is_convertible<float,convertible_from<char> >::value));
+   value_test(true, (boost::is_convertible<float,convertible_from<char const&> >::value));
+   value_test(false, (boost::is_convertible<float,convertible_from<char&> >::value));
+
+   value_test(true, (boost::is_convertible<char,convertible_from<char> >::value));
+   value_test(true, (boost::is_convertible<char,convertible_from<char const&> >::value));
+   value_test(true, (boost::is_convertible<char,convertible_from<char&> >::value));
+
+   value_test(true, (boost::is_convertible<float&,convertible_from<float> >::value));
+   value_test(true, (boost::is_convertible<float const&,convertible_from<float> >::value));
+   value_test(true, (boost::is_convertible<float&,convertible_from<float&> >::value));
+   value_test(true, (boost::is_convertible<float const&,convertible_from<float const&> >::value));
+   value_test(true, (boost::is_convertible<float&,convertible_from<float const&> >::value));
+
+#ifdef BOOST_MSVC6_MEMBER_TEMPLATES
    value_test(false, (boost::is_convertible<float,void>::value));
    value_test(false, (boost::is_convertible<void,float>::value));
    value_test(true, (boost::is_convertible<void,void>::value));
 #endif
    value_test(true, (boost::is_convertible<enum1, int>::value));
-   value_test(true, (boost::is_convertible<Deriverd*, Base*>::value));
-   value_test(false, (boost::is_convertible<Base*, Deriverd*>::value));
-   value_test(true, (boost::is_convertible<Deriverd&, Base&>::value));
-   value_test(false, (boost::is_convertible<Base&, Deriverd&>::value));
-   value_test(true, (boost::is_convertible<const Deriverd*, const Base*>::value));
-   value_test(false, (boost::is_convertible<const Base*, const Deriverd*>::value));
-   value_test(true, (boost::is_convertible<const Deriverd&, const Base&>::value));
-   value_test(false, (boost::is_convertible<const Base&, const Deriverd&>::value));
+   value_test(true, (boost::is_convertible<Derived*, Base*>::value));
+   value_test(false, (boost::is_convertible<Base*, Derived*>::value));
+   value_test(true, (boost::is_convertible<Derived&, Base&>::value));
+   value_test(false, (boost::is_convertible<Base&, Derived&>::value));
+   value_test(true, (boost::is_convertible<const Derived*, const Base*>::value));
+   value_test(false, (boost::is_convertible<const Base*, const Derived*>::value));
+   value_test(true, (boost::is_convertible<const Derived&, const Base&>::value));
+   value_test(false, (boost::is_convertible<const Base&, const Derived&>::value));
 
    value_test(false, (boost::is_convertible<const int *, int*>::value));
    value_test(false, (boost::is_convertible<const int&, int&>::value));
@@ -52,8 +76,12 @@ int cpp_main(int argc, char* argv[])
    value_test(false, (boost::is_convertible<non_pointer, int*>::value));
    value_test(true, (boost::is_convertible<non_int_pointer, int*>::value));
    value_test(true, (boost::is_convertible<non_int_pointer, void*>::value));
+   #ifndef __BORLANDC__
    value_test(true, (boost::is_convertible<int, int_constructible>::value));
+   #endif
    value_test(false, (boost::is_convertible<test_abc1&, test_abc2&>::value));
+   value_test(false, (boost::is_convertible<test_abc1&, int_constructible>::value));
+   value_test(false, (boost::is_convertible<int_constructible, test_abc1&>::value));
 
    return check_result(argc, argv);
 }

@@ -31,20 +31,12 @@ template<class T> T * get_pointer(T * p)
     return p;
 }
 
-// implementation of get_pointer for boost::shared_ptr
-// this will probably migrate to boost/shared_ptr.hpp
+// get_pointer(shared_ptr<T> const & p) has been moved to shared_ptr.hpp
 
-template<class T> class shared_ptr;
+#if defined(BOOST_NO_VOID_RETURNS)
 
-template<class T> T * get_pointer(shared_ptr<T> const & p)
-{
-    return p.get();
-}
-
-// Void return workaround temporarily disabled on MSVC 6
-// causes internal compiler errors with debug info enabled
-
-#if defined(BOOST_NO_VOID_RETURNS) && !defined(BOOST_MSVC)
+#define BOOST_MEM_FN_CLASS_F , class F
+#define BOOST_MEM_FN_TYPEDEF(X)
 
 namespace _mfi // mem_fun_impl
 {
@@ -107,6 +99,9 @@ template<> struct mf<void>
 
 }; // struct mf<void>
 
+#undef BOOST_MEM_FN_CLASS_F
+#undef BOOST_MEM_FN_TYPEDEF_F
+
 #define BOOST_MEM_FN_NAME(X) X
 #define BOOST_MEM_FN_NAME2(X) inner_##X
 #define BOOST_MEM_FN_CC
@@ -134,6 +129,9 @@ template<> struct mf<void>
 } // namespace _mfi
 
 #else // #ifdef BOOST_NO_VOID_RETURNS
+
+#define BOOST_MEM_FN_CLASS_F
+#define BOOST_MEM_FN_TYPEDEF(X) typedef X;
 
 namespace _mfi
 {
@@ -163,6 +161,9 @@ namespace _mfi
 #undef BOOST_MEM_FN_RETURN
 
 } // namespace _mfi
+
+#undef BOOST_MEM_FN_CLASS_F
+#undef BOOST_MEM_FN_TYPEDEF
 
 #endif // #ifdef BOOST_NO_VOID_RETURNS
 

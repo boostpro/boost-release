@@ -138,7 +138,7 @@ namespace boost {
       inline typename Iter::value_type
       dereference(const Iter& i) const 
       {
-	typedef typename Iter::value_type EdgeDescriptor;
+        typedef typename Iter::value_type EdgeDescriptor;
         return EdgeDescriptor(get_edge_exists(*i.base()), m_src, m_targ, 
                               &get_property(*i.base()));
       }
@@ -174,7 +174,7 @@ namespace boost {
       inline typename Iter::value_type
       dereference(const Iter& i) const 
       {
-	typedef typename Iter::value_type EdgeDescriptor;
+        typedef typename Iter::value_type EdgeDescriptor;
         return EdgeDescriptor(get_edge_exists(*i.base()), m_src, m_targ,
                               &get_property(*i.base()));
       }
@@ -226,7 +226,7 @@ namespace boost {
       inline typename Iter::value_type
       dereference(const Iter& i) const 
       {
-	typedef typename Iter::value_type EdgeDescriptor;
+        typedef typename Iter::value_type EdgeDescriptor;
         return EdgeDescriptor(get_edge_exists(*i.base()), m_src, m_targ,
                               &get_property(*i.base()));
       }
@@ -712,7 +712,7 @@ namespace boost {
 
     struct adj_matrix_any_vertex_pa {
       template <class Tag, class Graph, class Property>
-      struct bind {
+      struct bind_ {
         typedef typename property_value<Property,Tag>::type Value;
         typedef typename boost::graph_traits<Graph>::vertex_descriptor Vertex;
         
@@ -724,7 +724,7 @@ namespace boost {
     };
     struct adj_matrix_id_vertex_pa {
       template <class Tag, class Graph, class Property>
-      struct bind {
+      struct bind_ {
         typedef typename Graph::vertex_descriptor Vertex;
         typedef adj_matrix_vertex_id_map<Property, Vertex> type;
         typedef adj_matrix_vertex_id_map<Property, Vertex> const_type;
@@ -743,14 +743,14 @@ namespace boost {
     template <class Tag, class Graph, class Property>
     struct adj_matrix_choose_vertex_pa {
       typedef typename adj_matrix_choose_vertex_pa_helper<Tag>::type Helper;
-      typedef typename Helper::template bind<Tag,Graph,Property> Bind;
+      typedef typename Helper::template bind_<Tag,Graph,Property> Bind;
       typedef typename Bind::type type;
       typedef typename Bind::const_type const_type;
     };
 
     struct adj_matrix_vertex_property_selector {
       template <class Graph, class Property, class Tag>
-      struct bind {
+      struct bind_ {
         typedef adj_matrix_choose_vertex_pa<Tag,Graph,Property> Choice;
         typedef typename Choice::type type;
         typedef typename Choice::const_type const_type;
@@ -786,7 +786,7 @@ namespace boost {
   };
   struct adj_matrix_edge_property_selector {
     template <class Graph, class Property, class Tag>
-    struct bind {
+    struct bind_ {
       typedef typename property_value<Property,Tag>::type T;
       typedef typename Graph::vertex_descriptor Vertex;
       typedef adj_matrix_edge_property_map<typename Graph::directed_category,

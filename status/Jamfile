@@ -36,6 +36,7 @@ rule boost-test
         ] ;
     }
     Clean clean : $(result) ;
+    type-DEPENDS $(<:B:S=) : $(result) ;
     type-DEPENDS test : $(result) ;
     return $(result) ;
 }
@@ -129,6 +130,13 @@ rule run-test # target : sources : requirements
     executable-file $(executable) : $(>) : $(3) ;
     set-target-variables $(executable) ;
     
+    # Ugly hack to get the pathes transferred. See the link rule in boost-base.jam.
+    RUN_PATH on $(<) = [ join $(gRUN_PATH($(executable))) $(RUN_PATH) : $(SPLITPATH) ] ;
+    if $(UNIX) 
+    {
+    	RUN_LD_LIBRARY_PATH on $(<) = [ join $(gRUN_LD_LIBRARY_PATH($(executable))) $(RUN_LD_LIBRARY_PATH) : $(SPLITPATH) ] ;
+    }
+
     # The .test file goes with the other subvariant targets
     # normalization is a hack to get the slashes going the right way on Windoze
     local LOCATE_TARGET = [ FDirName [ split-path $(LOCATE_TARGET) ] ] ;
@@ -147,11 +155,29 @@ rule run-test # target : sources : requirements
 
 # The rule is just used for argument checking
 rule capture-run-output ( target : executable + ) { }
-actions capture-run-output bind INPUT_FILES
+if $(UNIX)  
 {
-    $(>) $(ARGS) $(INPUT_FILES) > $(<:S=.error)
-    $(CP) $(<:S=.error) $(<)
-    $(RM) $(<:S=.error)
+    actions capture-run-output bind INPUT_FILES
+    {
+        $(SHELL_SET)PATH=$(RUN_PATH) 
+    	$(SHELL_EXPORT)PATH
+    	$(SHELL_SET)LD_LIBRARY_PATH=$(RUN_LD_LIBRARY_PATH)
+    	$(SHELL_EXPORT)LD_LIBRARY_PATH
+        $(>) $(ARGS) $(INPUT_FILES) > $(<:S=.error)
+        $(CP) $(<:S=.error) $(<)
+        $(RM) $(<:S=.error)
+    }
+}
+else
+{
+    actions capture-run-output bind INPUT_FILES
+    {
+        $(SHELL_SET)PATH=$(RUN_PATH) 
+        $(SHELL_EXPORT)PATH
+        $(>) $(ARGS) $(INPUT_FILES) > $(<:S=.error)
+        $(CP) $(<:S=.error) $(<)
+        $(RM) $(<:S=.error)
+    }
 }
 
 rule run # sources : args : input-files : requirements
@@ -191,7 +217,9 @@ rule test-suite # pseudotarget-name : test-targets...
 
 test-suite "bind"
     : [ run libs/bind/bind_test.cpp ]
+      [ run libs/bind/bind_test.cpp ]
       [ run libs/bind/mem_fn_test.cpp ]
+      [ run libs/bind/mem_fn_void_test.cpp ]
     ;
 
 test-suite config
@@ -223,6 +251,7 @@ run libs/functional/function_test.cpp ;
 
 run libs/graph/test/graph.cpp ;
 
+
 test-suite integer
     : [ run libs/integer/cstdint_test.cpp ]
       [ run libs/integer/integer_test.cpp ]
@@ -230,7 +259,8 @@ test-suite integer
     ;
 
 test-suite math
-    : [ run libs/math/octonion/octonion_test.cpp ]
+    : [ run libs/math/test/common_factor_test.cpp ]
+      [ run libs/math/octonion/octonion_test.cpp ]
       [ run libs/math/quaternion/quaternion_test.cpp ]
       [ run libs/math/special_functions/special_functions_test.cpp ]
     ;
@@ -246,6 +276,8 @@ test-suite random
     : [ run libs/random/random_test.cpp ]
       [ run libs/random/random_demo.cpp ]
     ;
+
+run libs/utility/ref_test.cpp ;
 
 test-suite regex
     : [ run libs/regex/test/regress/regex_test.cpp : :
@@ -302,7 +334,15 @@ compile-fail libs/utility/checked_delete_test.cpp ;
 run libs/utility/compressed_pair_test.cpp : -u ;
 
 test-suite iterator_adaptors
-    : [ run libs/utility/counting_iterator_test.cpp ]
+    : [ run libs/utility/counting_iterator_test.cpp : # args
+        : # input files
+        : # requirements
+        
+        # borland warns incorrectly in this case, so often that
+        # successful compilation is prevented.
+        <borland><*><cxxflags>"-w-8091 -w-8092"
+      ]
+        
       [ run libs/utility/iterator_adaptor_test.cpp ] 
       [ compile-fail libs/utility/iter_adaptor_fail_expected1.cpp ] 
       [ compile-fail libs/utility/iter_adaptor_fail_expected2.cpp ]
@@ -333,3 +373,4 @@ run libs/utility/operators_test.cpp ;
 
 run libs/utility/tie_example.cpp ;
 
+run libs/utility/binary_search_test.cpp ;

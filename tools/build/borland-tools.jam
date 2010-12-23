@@ -26,24 +26,26 @@ flags borland CFLAGS <inlining>off : -vi- ;
 flags borland CFLAGS <inlining>on : -vi -w-inl ;
 flags borland CFLAGS <inlining>full : -vi -w-inl ;
 
-# build the link options
-local USER-INTERFACE TARGET-TYPE THREADING RUNTIME-LINK ;
+# build the options common to the link and C/C++ command-lines
+{
+    local bcc-common-flags ;
 
-flags borland USER-INTERFACE <user-interface>console : C ;
-flags borland TARGET-TYPE <target-type>DLL : D ;
-flags borland THREADING <threading>multi : M ;
-flags borland RUNTIME-LINK <runtime-link>dynamic : R ;
-
-USER-INTERFACE ?= "" ;
-TARGET-TYPE ?= "" ;
-THREADING ?= "" ;
-RUNTIME-LINK ?= "" ;
-
-flags borland LINKFLAGS :
-    -t$(USER-INTERFACE)$(TARGET-TYPE)$(THREADING)$(RUNTIME-LINK) ;
+    flags borland bcc-common-flags <runtime-link>dynamic : -tWR ;
     
-flags borland CFLAGS :
-    -t$(USER-INTERFACE)$(TARGET-TYPE)$(THREADING)$(RUNTIME-LINK) ;
+    local target-type = [ get-values <target-type> : $(gBUILD_PROPERTIES) ] ;
+    if ! $(target-type) || ! ( $(target-type) in $(SHARED_TYPES) )
+    {
+        flags borland bcc-common-flags <user-interface>console : -tWC ;
+    }
+    
+    flags borland bcc-common-flags <target-type>$(SHARED_TYPES) : -tWD ;
+    flags borland bcc-common-flags : -WM- ;
+    flags borland bcc-common-flags <threading>multi : -tWM ;
+
+    flags borland LINKFLAGS : $(bcc-common-flags) ;
+    flags borland CFLAGS : $(bcc-common-flags) ;
+}
+
     
 flags borland LINKFLAGS <wide-character-support>on : -WU ;
 flags borland CFLAGS <wide-character-support>on : -WU ;
@@ -53,9 +55,16 @@ flags borland C++FLAGS <cxxflags> ;
 flags borland DEFINES <define> ;
 flags borland UNDEFS <undef> ;
 flags borland HDRS <include> ;
+flags borland STDHDRS <sysinclude> ;
+flags borland LINKFLAGS <linkflags> ;
+flags borland ARFLAGS <arflags> ;
 
 flags borland STDHDRS : $(BCCROOT)$(SLASH)include ;
 flags borland STDLIBPATH : $(BCCROOT)$(SLASH)lib ;
+
+flags borland LIBPATH <library-path> ;
+flags borland NEEDLIBS <library-file> ;
+flags borland FINDLIBS <find-library> ;
 
 # For detailed information about borland tools and their command-line switches,
 # see http://www.objectcentral.com/vide/help/videdoc/bcc32.html
@@ -64,8 +73,12 @@ flags borland STDLIBPATH : $(BCCROOT)$(SLASH)lib ;
 
 rule Link-action
 {
-    borland-Link-action $(<) : $(>) ;
-    if $(3) = DLL
+    # Make sure that the borland runtime dlls are in the runtime path
+    gRUN_PATH($(<)) += $(BCC_TOOL_PATH) ; 
+    
+    with-command-file borland-Link-action $(<) : $(>) $(NEEDLIBS) ;
+    
+    if $(3) in $(SHARED_TYPES)
     {
         borland-IMPLIB-action $(<) : $(>) ;
     }
@@ -77,7 +90,7 @@ rule Link-action
 actions borland-Link-action bind NEEDLIBS
 {
     set PATH=$(BCC_TOOL_PATH);%PATH%
-    $(BCC_TOOL_PATH)bcc32 -q $(LINKFLAGS) -L"$(BCCROOT)$(SLASH)lib" -e"$(<[1])" "$(>)" "$(NEEDLIBS)" 
+    $(BCC_TOOL_PATH)bcc32 -v -q $(LINKFLAGS) -L"$(LIBPATH)" -L"$(STDLIBPATH)" -e"$(<[1])" @"$(>)" $(FINDLIBS)
 }
 
 actions borland-IMPLIB-action bind IMPLIB
@@ -94,7 +107,7 @@ rule Cc-action
 
 actions borland-Cc-action
 {
-    $(BCC_TOOL_PATH)bcc32 -q -c -w -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(BCCROOT)$(SLASH)include" -o"$(<)" "$(>)"
+    $(BCC_TOOL_PATH)bcc32 -q -c -w -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -105,7 +118,7 @@ rule C++-action
 
 actions borland-C++-action
 {
-    $(BCC_TOOL_PATH)bcc32 -q -c -P -w -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(BCCROOT)$(SLASH)include" -o"$(<)" "$(>)"
+    $(BCC_TOOL_PATH)bcc32 -q -c -P -w -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)"  -I"$(STDHDRS)" -o"$(<)" "$(>)"
 }
 
 #### Archive ####
@@ -116,5 +129,8 @@ rule Archive-action
 
 actions updated together piecemeal borland-Archive-action
 {
-    $(BCC_TOOL_PATH)tlib /P32 /u /a /C "$(<)" +-"$(>)"
+    $(BCC_TOOL_PATH)tlib /P64 /u /a /C /$(ARFLAGS) "$(<)" +-"$(>)"
 }
+
+
+

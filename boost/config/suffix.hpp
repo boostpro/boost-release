@@ -33,6 +33,14 @@
 #  define BOOST_HAS_LONG_LONG
 #endif
 
+// GCC 3.x will clean up all of those nasty macro definitions that
+// BOOST_NO_CTYPE_FUNCTIONS is intended to help work around, so undefine
+// it under GCC 3.x.
+#if defined(__GNUC__) && (__GNUC__ >= 3) && defined(BOOST_NO_CTYPE_FUNCTIONS)
+#  undef BOOST_NO_CTYPE_FUNCTIONS
+#endif
+
+
 //
 // Assume any extensions are in namespace std:: unless stated otherwise:
 //
@@ -144,7 +152,8 @@
 // Turn threading support off if we don't recognise the threading API:
 //
 #if defined(BOOST_HAS_THREADS) && !defined(BOOST_HAS_PTHREADS)\
-      && !defined(BOOST_HAS_WINTHREADS) && !defined(BOOST_HAS_BETHREADS)
+      && !defined(BOOST_HAS_WINTHREADS) && !defined(BOOST_HAS_BETHREADS)\
+      && !defined(BOOST_HAS_MPTASKS)
 #  undef BOOST_HAS_THREADS
 #endif
 

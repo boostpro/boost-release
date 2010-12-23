@@ -10,12 +10,21 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_device.cpp,v 1.3 2001/11/19 22:13:04 jmaurer Exp $
+ * $Id: random_device.cpp,v 1.4 2002/01/03 22:21:34 jmaurer Exp $
  *
  */
 
 #include <boost/nondet_random.hpp>
 #include <string>
+#include <cassert>
+
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+const bool boost::random_device::has_fixed_range;
+const boost::random_device::result_type boost::random_device::min_value;
+const boost::random_device::result_type boost::random_device::max_value;
+#endif
 
 
 #ifdef __linux__

@@ -34,35 +34,38 @@
 // Some things we need in order to get Python.h to work with compilers other
 // than MSVC on Win32
 //
-#if defined(_WIN32)
-# ifdef __GNUC__
-
+#if defined(_WIN32) || defined(__CYGWIN__)
+# if defined(__GNUC__) && defined(__CYGWIN__)
+#  if PY_MAJOR_VERSION < 2 || PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION <= 2
 typedef int pid_t;
-#  define WORD_BIT 32
-#  define hypot _hypot
-#  include <stdio.h>
-#  if !defined(PY_MAJOR_VERSION) || PY_MAJOR_VERSION < 2
-#   define HAVE_CLOCK
-#   define HAVE_STRFTIME
-#   define HAVE_STRERROR
-#  endif
-#  define NT_THREADS
-#  define WITH_THREAD
-#  ifndef NETSCAPE_PI
-#   define USE_SOCKET
-#  endif
+#   define WORD_BIT 32
+#   define hypot _hypot
+#   include <stdio.h>
+#   if PY_MAJOR_VERSION < 2
+#    define HAVE_CLOCK
+#    define HAVE_STRFTIME
+#    define HAVE_STRERROR
+#   endif
+#   define NT_THREADS
+#   if __GNUC__ < 3 || __GNUC__ == 3 && __GNUC_MINOR__ == 0 && __GNUC_PATCHLEVEL__ < 3
+#    define WITH_THREAD
+#   endif 
+#   ifndef NETSCAPE_PI
+#    define USE_SOCKET
+#   endif
 
-#  ifdef USE_DL_IMPORT
-#   define DL_IMPORT(RTYPE) __declspec(dllimport) RTYPE
-#  endif
+#   ifdef USE_DL_IMPORT
+#    define DL_IMPORT(RTYPE) __declspec(dllimport) RTYPE
+#   endif
 
-#  ifdef USE_DL_EXPORT
-#   define DL_IMPORT(RTYPE) __declspec(dllexport) RTYPE
-#   define DL_EXPORT(RTYPE) __declspec(dllexport) RTYPE
-#  endif
+#   ifdef USE_DL_EXPORT
+#    define DL_IMPORT(RTYPE) __declspec(dllexport) RTYPE
+#    define DL_EXPORT(RTYPE) __declspec(dllexport) RTYPE
+#   endif
 
-#  define HAVE_LONG_LONG 1
-#  define LONG_LONG long long
+#   define HAVE_LONG_LONG 1
+#   define LONG_LONG long long
+#  endif 
 
 # elif defined(__MWERKS__)
 
@@ -71,8 +74,25 @@ typedef int pid_t;
 #   define _MSC_VER 900
 #  endif
 
+#  if PY_MAJOR_VERSION < 2 || PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION < 2
+#   include <config.h>
+#  else
+#   include <pyconfig.h>
+#  endif
+#  undef hypot // undo the evil #define left by Python.
+
+# elif defined(__BORLANDC__)
+#  if PY_MAJOR_VERSION < 2 || PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION < 2
+#   include <config.h>
+#  else
+#   include <pyconfig.h>
+#  endif
+#  undef HAVE_HYPOT
+#  define HAVE_HYPOT 1
 # elif defined(_MSC_VER)
-#  include <limits> // prevents Python.h from defining LONGLONG_MAX, LONGLONG_MIN, and ULONGLONG_MAX
+#  ifdef __cplusplus
+#   include <limits> // prevents Python.h from defining LONGLONG_MAX, LONGLONG_MIN, and ULONGLONG_MAX
+#  endif 
 # endif
 
 #endif // _WIN32
@@ -95,4 +115,6 @@ typedef int pid_t;
 
 #ifdef __MWERKS__
 # pragma warn_possunwant off
+#elif _MSC_VER
+# pragma warning(disable:4786)
 #endif

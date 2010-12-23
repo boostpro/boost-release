@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: inversive_congruential.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: inversive_congruential.hpp,v 1.3 2002/01/03 22:20:56 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -81,6 +81,22 @@ public:
 private:
   IntType value;
 };
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+template<class IntType, IntType a, IntType b, IntType p, IntType val>
+const bool inversive_congruential<IntType, a, b, p, val>::has_fixed_range;
+template<class IntType, IntType a, IntType b, IntType p, IntType val>
+const typename inversive_congruential<IntType, a, b, p, val>::result_type inversive_congruential<IntType, a, b, p, val>::min_value;
+template<class IntType, IntType a, IntType b, IntType p, IntType val>
+const typename inversive_congruential<IntType, a, b, p, val>::result_type inversive_congruential<IntType, a, b, p, val>::max_value;
+template<class IntType, IntType a, IntType b, IntType p, IntType val>
+const typename inversive_congruential<IntType, a, b, p, val>::result_type inversive_congruential<IntType, a, b, p, val>::multiplier;
+template<class IntType, IntType a, IntType b, IntType p, IntType val>
+const typename inversive_congruential<IntType, a, b, p, val>::result_type inversive_congruential<IntType, a, b, p, val>::increment;
+template<class IntType, IntType a, IntType b, IntType p, IntType val>
+const typename inversive_congruential<IntType, a, b, p, val>::result_type inversive_congruential<IntType, a, b, p, val>::modulus;
+#endif
 
 } // namespace random
 

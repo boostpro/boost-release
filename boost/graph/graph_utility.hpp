@@ -42,6 +42,8 @@
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int.hpp>
+// iota moved to detail/algorithm.hpp
+#include <boost/detail/algorithm.hpp>
 
 namespace boost {
 
@@ -244,13 +246,6 @@ namespace boost {
     std::cout << std::endl;
   }
 
-  template <class _ForwardIter, class _Tp>
-  void iota(_ForwardIter __first, _ForwardIter __last, _Tp __value)
-  {
-    while (__first != __last)
-      *__first++ = __value++;
-  }
-
   // grab a random vertex from the graph's vertex set
   template <class Graph, class RandomNumGen>
   typename graph_traits<Graph>::vertex_descriptor
@@ -260,7 +255,7 @@ namespace boost {
       uniform_int<RandomNumGen> rand_gen(gen, 0, num_vertices(g)-1);
       std::size_t n = rand_gen();
       typename graph_traits<Graph>::vertex_iterator
-	i = vertices(g).first;
+        i = vertices(g).first;
       while (n-- > 0) ++i; // std::advance not VC++ portable
       return *i;
     } else
@@ -273,9 +268,9 @@ namespace boost {
     if (num_edges(g) > 1) {
       uniform_int<RandomNumGen> rand_gen(gen, 0, num_edges(g)-1);
       typename graph_traits<Graph>::edges_size_type 
-	n = rand_gen();
+        n = rand_gen();
       typename graph_traits<Graph>::edge_iterator
-	i = edges(g).first;
+        i = edges(g).first;
       while (n-- > 0) ++i; // std::advance not VC++ portable
       return *i;
     } else
@@ -304,6 +299,38 @@ namespace boost {
         b = random_vertex(g, gen);
       } while (self_edges == false && a == b);
       add_edge(a, b, g);
+    }
+  }
+
+  template <typename MutableGraph, typename RandNumGen,
+            typename VertexOutputIterator, typename EdgeOutputIterator>
+  void generate_random_graph
+    (MutableGraph& g, 
+     typename graph_traits<MutableGraph>::vertices_size_type V,
+     typename graph_traits<MutableGraph>::vertices_size_type E,
+     RandNumGen& gen,
+     VertexOutputIterator vertex_out,
+     EdgeOutputIterator edge_out,
+     bool self_edges = false)
+  {
+    typedef graph_traits<MutableGraph> Traits;
+    typedef typename Traits::vertices_size_type v_size_t;
+    typedef typename Traits::edges_size_type e_size_t;
+    typedef typename Traits::vertex_descriptor vertex_t;
+    typedef typename Traits::edge_descriptor edge_t;
+
+    for (v_size_t i = 0; i < V; ++i)
+      *vertex_out++ = add_vertex(g);
+
+    for (e_size_t j = 0; j < E; ++j) {
+      vertex_t a = random_vertex(g, gen), b;
+      do {
+        b = random_vertex(g, gen);
+      } while (self_edges == false && a == b);
+      edge_t e; bool inserted;
+      tie(e, inserted) = add_edge(a, b, g);
+      if (inserted)
+        *edge_out++ = std::make_pair(source(e, g), target(e, g));
     }
   }
 

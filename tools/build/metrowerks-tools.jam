@@ -24,11 +24,14 @@ flags metrowerks C++FLAGS <cxxflags> ;
 flags metrowerks DEFINES <define> ;
 flags metrowerks UNDEFS <undef> ;
 flags metrowerks HDRS <include> ;
+flags metrowerks STDHDRS <sysinclude> ;
+flags metrowerks LINKFLAGS <linkflags> ;
+flags metrowerks ARFLAGS <arflags> ;
 
 flags metrowerks CFLAGS <debug-symbols>on : -g ;
 flags metrowerks LINKFLAGS <debug-symbols>on : -g ;
 
-flags metrowerks LINKFLAGS <target-type>DLL : -shared ;
+flags metrowerks LINKFLAGS <target-type>$(SHARED_TYPES) : -shared ;
 flags metrowerks CFLAGS <optimization>off : -O0 ;
 flags metrowerks CFLAGS <optimization>speed : -opt full ;
 flags metrowerks CFLAGS <optimization>space : -O4,s intrinsics ;
@@ -72,9 +75,11 @@ flags metrowerks STDHDRS : $(METROWERKS_INCLUDE_ROOT)$(SLASH)$(gMETROWERKS_STD_I
 
 rule Link-action
 {
+    gRUN_PATH($(<)) += $(METROWERKS_ROOT)"\\Win32-X86 Support\\Libraries\\Runtime" ;
     IMPLIB_COMMAND on $(<) = "-implib " ; # will be "multiplied away" if not
                                         # needed.
-    with-command-file metrowerks-Link-action $(<) : $(>) $(NEEDLIBS) ;
+    with-command-file metrowerks-Link-action $(<) : $(>) $(NEEDLIBS) # $(NEEDLIBS)
+      ;
 }
 
 # Here we set the environment variable MWWinx86LibraryFiles (customize for other
@@ -116,12 +121,12 @@ actions metrowerks-C++-action
 #### Archive ####
 rule Archive-action
 {
-    metrowerks-Archive-action $(<) : $(>) ;
+    with-command-file metrowerks-Archive-action $(<) : $(>) ;
 }
 
-    actions together metrowerks-Archive-action
+actions together metrowerks-Archive-action
 {
     $(METROWERKS_SETUP)
-    mwld -library -o "$(<)" "$(>)"
+    mwld -library $(ARFLAGS) -o "$(<)" @"$(>)"
 }
 

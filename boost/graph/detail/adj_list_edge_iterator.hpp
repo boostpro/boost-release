@@ -54,13 +54,13 @@ namespace boost {
       inline adj_list_edge_iterator(VertexIterator b, 
                                     VertexIterator c,
                                     VertexIterator e,
-                                    G& g) 
+                                    const G& g) 
         : vBegin(b), vCurr(c), vEnd(e), m_g(&g) {
         if ( vCurr != vEnd ) {
           while ( vCurr != vEnd && out_degree(*vCurr, *m_g) == 0 )
             ++vCurr;
-	  if ( vCurr != vEnd )
-	    tie(eCurr, eEnd) = out_edges(*vCurr, *m_g);
+          if ( vCurr != vEnd )
+            tie(eCurr, eEnd) = out_edges(*vCurr, *m_g);
         }
       }
 
@@ -75,7 +75,7 @@ namespace boost {
           while ( vCurr != vEnd && out_degree(*vCurr, *m_g) == 0 )
             ++vCurr;
           if ( vCurr != vEnd )
-	    tie(eCurr, eEnd) = out_edges(*vCurr, *m_g);
+            tie(eCurr, eEnd) = out_edges(*vCurr, *m_g);
         }
         return *this;
       }
@@ -97,7 +97,7 @@ namespace boost {
       VertexIterator vEnd;
       OutEdgeIterator eCurr;
       OutEdgeIterator eEnd;
-      Graph* m_g;
+      const Graph* m_g;
     };
 
   } // namespace detail

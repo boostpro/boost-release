@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_int.hpp,v 1.5 2001/11/29 04:03:52 dgregor Exp $
+ * $Id: uniform_int.hpp,v 1.8 2002/01/03 22:20:56 jmaurer Exp $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -48,6 +48,12 @@ public:
     BOOST_STATIC_ASSERT(std::numeric_limits<IntType>::is_integer);
 #endif
     assert(min < max);
+    if(random::equal_signed_unsigned(_brange, _range))
+      _range_comparison = 0;
+    else if(random::lessthan_signed_unsigned(_brange, _range))
+      _range_comparison = -1;
+    else
+      _range_comparison = 1;
   }
   result_type operator()();
   result_type min() const { return _min; }
@@ -65,24 +71,31 @@ private:
   base_type & _rng;
   result_type _min, _max, _range;
   base_result _bmin, _brange;
+  int _range_comparison;
 };
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+template<class UniformRandomNumberGenerator, class IntType>
+const bool uniform_int<UniformRandomNumberGenerator, IntType>::has_fixed_range;
+#endif
 
 template<class UniformRandomNumberGenerator, class IntType>
 inline IntType uniform_int<UniformRandomNumberGenerator, IntType>::operator()()
 {
-  if(random::equal_signed_unsigned(_range, _brange)) {
+  if(_range_comparison == 0) {
     // this will probably never happen in real life
     // basically nothing to do; just take care we don't overflow / underflow
     return static_cast<result_type>(_rng() - _bmin) + _min;
-  } else if(random::lessthan_signed_unsigned(_brange, _range)) {
+  } else if(_range_comparison < 0) {
     // use rejection method to handle things like 0..3 --> 0..4
     for(;;) {
       // concatenate several invocations of the base RNG
       // take extra care to avoid overflows
-      int limit;
+      result_type limit;
       if(_range == std::numeric_limits<result_type>::max()) {
         limit = _range/(static_cast<result_type>(_brange)+1);
-        if(_range % static_cast<result_type>(_brange)+1 == _brange)
+        if(_range % static_cast<result_type>(_brange)+1 == static_cast<result_type>(_brange))
           ++limit;
       } else {
         limit = (_range+1)/(static_cast<result_type>(_brange)+1);

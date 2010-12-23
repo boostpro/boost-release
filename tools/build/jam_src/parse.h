@@ -35,7 +35,7 @@ struct _PARSE {
     char    *string1;
     int      num;
     int      refs;
-    module*  module;
+/*    module*  module; */
     char*    rulename;
     char*    file;
     int      line;
@@ -58,3 +58,4 @@ void    parse_free( PARSE *p );
 LIST*   parse_evaluate( PARSE *p, FRAME* frame );
 
 #endif // PARSE_DWA20011020_H
+

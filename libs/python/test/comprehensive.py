@@ -230,6 +230,14 @@ Polymorphism also works:
     >>> baz.get_foo_value(polymorphic_foo)
     1000
 
+Simple nested class test:
+    >>> foo_a = Foo.Foo_A()
+    >>> foo_a.mumble()
+    'mumble a'
+    >>> foo_b = Foo.Foo_B()
+    >>> foo_b.mumble()
+    'mumble b'
+
 Pickling tests:
 
     >>> world.__module__
@@ -318,26 +326,38 @@ Special member attributes. Tests courtesy of Barry Scott <barry@scottb.demon.co.
     ...         'Docs for DerivedFromBase.fred'
     ...         pass
 
-    >>> df = DerivedFromFoo()
-    >>> dir(df)
-    []
     >>> dir(DerivedFromFoo)
     ['__del__', '__doc__', '__init__', '__module__', 'fred']
+    
+    >>> df = DerivedFromFoo()
     >>> df.__dict__
     {}
-
     >>> df.fred.__doc__
     'Docs for DerivedFromFoo.fred'
+    
     >>> db = DerivedFromBase()
-    >>> dir(db)
-    []
-    >>> dir(DerivedFromBase)
-    ['__doc__', '__module__', 'fred', 'i_am_derived_from_base']
     >>> db.__dict__
     {}
     >>> db.fred.__doc__
     'Docs for DerivedFromBase.fred'
 
+    >>> import sys
+    >>> if not sys.__dict__.has_key('version_info') or \
+    ...    sys.version_info[0] < 2 or ( sys.version_info[0] == 2 and
+    ...                                 sys.version_info[1] < 2 ):
+    ...     assert dir(df) == []
+    ...     assert dir(db) == []
+    ...     assert dir(DerivedFromBase) == [
+    ...             '__doc__', '__module__', 'fred', 'i_am_derived_from_base']
+    ... else:
+    ...     assert dir(df) == [
+    ...         'Foo_A', 'Foo_B', '__del__', '__doc__', '__init__', '__module__', 'add_len',
+    ...         'call_add_len', 'call_pure', 'fred', 'mumble', 'set']
+    ...     assert dir(db) == ['__doc__', '__module__', 'fred'
+    ...                       , 'i_am_base', 'i_am_derived_from_base']
+    ...     assert dir(DerivedFromBase) == [
+    ...          '__doc__', '__module__', 'fred', 'i_am_base', 'i_am_derived_from_base']
+    
 Special member functions in action
     >>> del df
     Deleting DerivedFromFoo
@@ -1177,6 +1197,50 @@ test methodologies for wrapping functions that return a pointer
 
 '''
 #'
+
+__test__ = {}
+import sys
+
+# Inplace ops only exist in python 2.1 or later.
+if sys.hexversion >= 0x02010000:
+    __test__['inplacetests'] = r'''
+    >>> ii = Int(1)
+    >>> ii += Int(2)
+    >>> ii.i()
+    3
+    >>> ii -= Int(1)
+    >>> ii.i()
+    2
+    >>> ii *= Int(3)
+    >>> ii.i()
+    6
+    >>> ii /= Int(2)
+    >>> ii.i()
+    3
+    >>> ii <<= Int(2)
+    >>> ii.i()
+    12
+    >>> ii >>= Int(1)
+    >>> ii.i()
+    6
+    >>> ii &= Int(5)
+    >>> ii.i()
+    4
+    >>> ii |= Int(9)
+    >>> ii.i()
+    13
+    >>> ii ^= Int(7)
+    >>> ii.i()
+    10
+    >>> ii %= Int(4)
+    >>> ii.i()
+    2
+    >>> ii **= Int(3)
+    >>> ii.i()
+    8
+    >>> ii.j()
+    11
+'''
 
 from boost_python_test import *
 

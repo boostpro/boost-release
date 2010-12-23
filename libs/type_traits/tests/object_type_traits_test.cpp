@@ -21,9 +21,9 @@ NESTED_DECL(is_POD)
 
 struct non_default_constructable_UDT
 {
-	non_default_constructable_UDT(const non_default_constructable_UDT&){}
+   non_default_constructable_UDT(const non_default_constructable_UDT&){}
 private:
-	non_default_constructable_UDT(){}
+   non_default_constructable_UDT(){}
 };
 
 int cpp_main(int argc, char* argv[])
@@ -183,11 +183,67 @@ int cpp_main(int argc, char* argv[])
    value_test(false, boost::has_trivial_destructor<test_abc1>::value)
 #endif
 
+   value_test(true, boost::has_nothrow_constructor<int>::value)
+   value_test(true, boost::has_nothrow_constructor<int*>::value)
+   value_test(true, boost::has_nothrow_constructor<int*const>::value)
+   value_test(true, boost::has_nothrow_constructor<const int>::value)
+   value_test(true, boost::has_nothrow_constructor<volatile int>::value)
+   value_test(true, boost::has_nothrow_constructor<int[2]>::value)
+   value_test(true, boost::has_nothrow_constructor<int[3][2]>::value)
+   value_test(true, boost::has_nothrow_constructor<int[2][4][5][6][3]>::value)
+   value_test(true, boost::has_nothrow_constructor<f1>::value)
+   value_test(true, boost::has_nothrow_constructor<mf2>::value)
+   value_test(false, boost::has_nothrow_constructor<UDT>::value)
+   soft_value_test(true, boost::has_nothrow_constructor<empty_UDT>::value)
+   value_test(true, boost::has_nothrow_constructor<enum_UDT>::value)
+   value_test(true, boost::has_nothrow_constructor<void>::value)
+#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+   value_test(false, boost::has_nothrow_constructor<test_abc1>::value)
+#endif
+
+   value_test(true, boost::has_nothrow_copy<int>::value)
+   value_test(true, boost::has_nothrow_copy<int*>::value)
+   value_test(true, boost::has_nothrow_copy<int*const>::value)
+   value_test(true, boost::has_nothrow_copy<const int>::value)
+   // Steve: was 'false' -- should be 'true' via 3.9p3, 3.9p10
+   value_test(false, boost::has_nothrow_copy<volatile int>::value)
+   value_test(true, boost::has_nothrow_copy<int[2]>::value)
+   value_test(true, boost::has_nothrow_copy<int[3][2]>::value)
+   value_test(true, boost::has_nothrow_copy<int[2][4][5][6][3]>::value)
+   value_test(true, boost::has_nothrow_copy<f1>::value)
+   value_test(true, boost::has_nothrow_copy<mf2>::value)
+   value_test(false, boost::has_nothrow_copy<UDT>::value)
+   soft_value_test(true, boost::has_nothrow_copy<empty_UDT>::value)
+   value_test(true, boost::has_nothrow_copy<enum_UDT>::value)
+   value_test(true, boost::has_nothrow_copy<void>::value)
+#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+   value_test(false, boost::has_nothrow_copy<test_abc1>::value)
+#endif
+
+   value_test(true, boost::has_nothrow_assign<int>::value)
+   value_test(true, boost::has_nothrow_assign<int*>::value)
+   value_test(false, boost::has_nothrow_assign<int*const>::value)
+   value_test(false, boost::has_nothrow_assign<const int>::value)
+   // Steve: was 'false' -- should be 'true' via 3.9p3, 3.9p10
+   value_test(false, boost::has_nothrow_assign<volatile int>::value)
+   value_test(true, boost::has_nothrow_assign<int[2]>::value)
+   value_test(true, boost::has_nothrow_assign<int[3][2]>::value)
+   value_test(true, boost::has_nothrow_assign<int[2][4][5][6][3]>::value)
+   value_test(true, boost::has_nothrow_assign<f1>::value)
+   value_test(true, boost::has_nothrow_assign<mf2>::value)
+   value_test(false, boost::has_nothrow_assign<UDT>::value)
+   soft_value_test(true, boost::has_nothrow_assign<empty_UDT>::value)
+   value_test(true, boost::has_nothrow_assign<enum_UDT>::value)
+   value_test(true, boost::has_nothrow_assign<void>::value)
+#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+   value_test(false, boost::has_nothrow_assign<test_abc1>::value)
+#endif
+
    soft_value_test(false, boost::is_empty<int>::value)
    soft_value_test(false, boost::is_empty<int*>::value)
    soft_value_test(false, boost::is_empty<int&>::value)
    soft_value_test(false, boost::is_empty<void>::value)
-#if defined(__MWERKS__)
+#if defined(__MWERKS__) || defined(__HP_aCC)
    // apparent compiler bug causes this to fail to compile:
    value_fail(false, boost::is_empty<int[2]>::value)
 #else
@@ -202,7 +258,7 @@ int cpp_main(int argc, char* argv[])
    // because we can't tell the difference between
    // unions and classes:
    value_fail(true, boost::is_empty<empty_union_UDT>::value)
-#if defined(__MWERKS__)
+#if defined(__MWERKS__) || defined(__HP_aCC)
    // apparent compiler bug causes this to fail to compile:
    value_fail(false, boost::is_empty<enum_UDT>::value)
 #else
@@ -213,6 +269,24 @@ int cpp_main(int argc, char* argv[])
    soft_value_test(false, boost::is_empty<const non_empty&>::value)
    soft_value_test(true, boost::is_empty<non_default_constructable_UDT>::value)
 
+   value_test(false, (boost::is_base_and_derived<Derived,Base>::value));
+   value_test(true, (boost::is_base_and_derived<Derived,Derived>::value));
+   value_test(true, (boost::is_base_and_derived<Base,Base>::value));
+   value_test(true, (boost::is_base_and_derived<Base,Derived>::value));
+   value_test(false, (boost::is_base_and_derived<NonDerived,Base>::value));
+   value_test(false, (boost::is_base_and_derived<Base,void>::value));
+   value_test(false, (boost::is_base_and_derived<Base,const void>::value));
+   value_test(false, (boost::is_base_and_derived<void,Derived>::value));
+   value_test(false, (boost::is_base_and_derived<const void,Derived>::value));
+   value_test(false, (boost::is_base_and_derived<int, int>::value));
+   value_test(false, (boost::is_base_and_derived<const int, int>::value));
+#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+   value_test(false, (boost::is_base_and_derived<Base&,Derived>::value));
+   value_test(false, (boost::is_base_and_derived<Base&,Derived&>::value));
+   value_test(false, (boost::is_base_and_derived<Base,Derived&>::value));
+   value_test(false, (boost::is_base_and_derived<Base,void>::value));
+#endif
+
    return check_result(argc, argv);
 }
 
@@ -220,18 +294,22 @@ int cpp_main(int argc, char* argv[])
 // define the number of failures expected for given compilers:
 #ifdef __BORLANDC__
 // can't handle enum's or classes that are POD's
-unsigned int expected_failures = 6;
+unsigned int expected_failures = 9;
 #elif defined(__SUNPRO_CC)
 #if (__SUNPRO_CC <= 0x520)
 unsigned int expected_failures = 55;
 #else // (__SUNPRO_CC <= 0x530)
-unsigned int expected_failures = 20;
+unsigned int expected_failures = 25;
 #endif
 #elif defined(__MWERKS__)
 unsigned int expected_failures = 10;
 #elif defined(BOOST_MSVC)
 // can't handle classes that are POD's or arrays that are POD's
-unsigned int expected_failures = 15;
+unsigned int expected_failures = 24;
+#elif defined(__HP_aCC)
+unsigned int expected_failures = 2;
+#elif defined(__EDG_VERSION__)
+unsigned int expected_failures = 3;
 #else
 unsigned int expected_failures = 0;
 #endif

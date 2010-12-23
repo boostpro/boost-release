@@ -16,6 +16,7 @@
 # include "lists.h"
 # include "execcmd.h"
 # include <errno.h>
+# include <assert.h>
 
 # ifdef USE_EXECNT
 
@@ -96,6 +97,16 @@ set_is_win95( void )
     is_nt_351 = os_info.dwMajorVersion == 3;
 }
 
+int maxline()
+{
+    if (!is_win95_defined)
+        set_is_win95();
+    
+    /* Set the maximum command line length according to the OS */
+    return is_nt_351 ? 996
+        : is_win95 ? 1023
+        : 2047;
+}
 
 static char**
 string_to_args( const char*  string, int*  pcount )
@@ -216,13 +227,16 @@ process_del( char*  command )
       return 0;
       
     /* ignore toggles/flags */
-    if (*p == '/')
+    while (*p == '/')
     {
       p++;
       while ( *p && isalnum(*p) )
-        p++;
+          p++;
+      while (*p && isspace(*p) )
+          ++p;
     }
-    else
+
+    
     {
       int  in_quote = 0;
       int  wildcard = 0;
@@ -302,6 +316,97 @@ onintr( int disp )
 }
 
 /*
+ * use_bat_file() - return true iff the command demands the use of a
+ * .bat file to run it
+ */
+int use_bat_file(char* command)
+{
+    char *p = command;
+    
+    char inquote = 0;
+    
+    /* Look for newlines and unquoted i/o redirection */
+    do
+    {
+        p += strcspn( p, "'\n\"<>|" );
+
+        switch (*p)
+        {
+        case '\n':
+            /* skip over any following spaces */
+            while( isspace( *p ) )
+                ++p;
+            /* return true iff there is anything significant following
+             * the newline
+             */
+            if (*p)
+                return 1;
+            break;
+            
+        case '"':
+        case '\'':
+            if (p > command && p[-1] != '\\')
+            {
+                if (inquote == *p)
+                    inquote = 0;
+                else if (inquote == 0)
+                    inquote = *p;
+            }
+                
+            ++p;
+            break;
+            
+        case '<':
+        case '>':
+        case '|':
+            if (!inquote)
+                return 1;
+            ++p;
+            break;
+        }
+    }
+    while (*p);
+    
+    return p - command >= MAXLINE;
+}
+
+void execnt_unit_test()
+{
+#ifndef NDEBUG
+    /* vc6 preprocessor is broken, so assert with these strings gets
+     * confused. Use a table instead.
+     */
+    typedef struct test { char* command; int result; } test;
+    test tests[] = {
+        { "x", 0 },
+        { "x\n ", 0 },
+        { "x\ny", 1 },
+        { "x\n\n y", 1 },
+        { "echo x > foo.bar", 1 },
+        { "echo x < foo.bar", 1 },
+        { "echo x \">\" foo.bar", 0 },
+        { "echo x \"<\" foo.bar", 0 },
+        { "echo x \\\">\\\" foo.bar", 1 },
+        { "echo x \\\"<\\\" foo.bar", 1 }
+    };
+    int i;
+    for ( i = 0; i < sizeof(tests)/sizeof(*tests); ++i)
+    {
+        assert( use_bat_file( tests[i].command ) == tests[i].result );
+    }
+
+    {
+        char* long_command = malloc(MAXLINE + 10);
+        assert( long_command != 0 );
+        memset( long_command, 'x', MAXLINE + 9 );
+        long_command[MAXLINE + 9] = 0;
+        assert( use_bat_file( long_command ) );
+        free( long_command );
+    }
+#endif 
+}
+
+/*
  * execcmd() - launch an async command execution
  */
 
@@ -312,173 +417,163 @@ execcmd(
 	void *closure,
 	LIST *shell )
 {
-	int pid;
-	int slot;
-	int max_line;
-        int raw_cmd = 0 ;
-	char *argv_static[ MAXARGC + 1 ];	/* +1 for NULL */
-        char **argv = argv_static;
-	char *p;
+    int pid;
+    int slot;
+    int raw_cmd = 0 ;
+    char *argv_static[ MAXARGC + 1 ];	/* +1 for NULL */
+    char **argv = argv_static;
+    char *p;
 
-        /* Check to see if we need to hack around the line-length limitation. */
-        /* Look for a JAMSHELL setting of "%", indicating that the command
-         * should be invoked directly */
-        if ( shell && !strcmp(shell->string,"%") && !list_next(shell) )
-        {
-            raw_cmd = 1;
-            shell = 0;
-        }
+    /* Check to see if we need to hack around the line-length limitation. */
+    /* Look for a JAMSHELL setting of "%", indicating that the command
+     * should be invoked directly */
+    if ( shell && !strcmp(shell->string,"%") && !list_next(shell) )
+    {
+        raw_cmd = 1;
+        shell = 0;
+    }
 
-      if ( !is_win95_defined )
-          set_is_win95();
+    if ( !is_win95_defined )
+        set_is_win95();
           
-	/* Find a slot in the running commands table for this one. */
-        if ( is_win95 )
+    /* Find a slot in the running commands table for this one. */
+    if ( is_win95 )
+    {
+        /* only synchronous spans are supported on Windows 95/98 */
+        slot = 0;
+    }
+    else
+    {
+        for( slot = 0; slot < MAXJOBS; slot++ )
+            if( !cmdtab[ slot ].pid )
+                break;
+    }
+    if( slot == MAXJOBS )
+    {
+        printf( "no slots for child!\n" );
+        exit( EXITBAD );
+    }
+  
+    if( !cmdtab[ slot ].tempfile )
+    {
+        char *tempdir;
+  
+        if( !( tempdir = getenv( "TEMP" ) ) &&
+            !( tempdir = getenv( "TMP" ) ) )
+            tempdir = "\\temp";
+  
+        cmdtab[ slot ].tempfile = malloc( strlen( tempdir ) + 14 );
+  
+        sprintf( cmdtab[ slot ].tempfile, "%s\\jamtmp%02d.bat", 
+                 tempdir, slot );
+    }
+
+    /* Trim leading, ending white space */
+
+    while( isspace( *string ) )
+        ++string;
+
+    /* If multi line, or too long, or JAMSHELL is set, write to bat file. */
+    /* Otherwise, exec directly. */
+    /* Frankly, if it is a single long line I don't think the */
+    /* command interpreter will do any better -- it will fail. */
+
+    if( shell || !raw_cmd && use_bat_file( string ) )
+    {
+        FILE *f;
+
+        /* Write command to bat file. */
+
+        f = fopen( cmdtab[ slot ].tempfile, "w" );
+        fputs( string, f );
+        fclose( f );
+
+        string = cmdtab[ slot ].tempfile;
+    }
+
+    /* Forumulate argv */
+    /* If shell was defined, be prepared for % and ! subs. */
+    /* Otherwise, use stock /bin/sh (on unix) or cmd.exe (on NT). */
+
+    if( shell )
+    {
+        int i;
+        char jobno[4];
+        int gotpercent = 0;
+
+        sprintf( jobno, "%d", slot + 1 );
+
+        for( i = 0; shell && i < MAXARGC; i++, shell = list_next( shell ) )
         {
-          /* only synchronous spans are supported on Windows 95/98 */
-          slot = 0;
-        }
-        else
-        {
-	  for( slot = 0; slot < MAXJOBS; slot++ )
-	      if( !cmdtab[ slot ].pid )
-		  break;
-	}
-	if( slot == MAXJOBS )
-	{
-	    printf( "no slots for child!\n" );
-	    exit( EXITBAD );
-	}
-  
-	if( !cmdtab[ slot ].tempfile )
-	{
-	      char *tempdir;
-  
-	      if( !( tempdir = getenv( "TEMP" ) ) &&
-		  !( tempdir = getenv( "TMP" ) ) )
-		      tempdir = "\\temp";
-  
-	      cmdtab[ slot ].tempfile = malloc( strlen( tempdir ) + 14 );
-  
-	      sprintf( cmdtab[ slot ].tempfile, "%s\\jamtmp%02d.bat", 
-				  tempdir, slot );
+            switch( shell->string[0] )
+            {
+            case '%':	argv[i] = string; gotpercent++; break;
+            case '!':	argv[i] = jobno; break;
+            default:	argv[i] = shell->string;
+            }
+            if( DEBUG_EXECCMD )
+                printf( "argv[%d] = '%s'\n", i, argv[i] );
         }
 
-	/* Trim leading, ending white space */
+        if( !gotpercent )
+            argv[i++] = string;
 
-	while( isspace( *string ) )
-		++string;
-
-	p = strchr( string, '\n' );
-
-	while( p && isspace( *p ) )
-		++p;
-
-        /* on Windows NT 3.51, the maximul line length is 996 bytes !! */
-        /* while it's much bigger NT 4 and 2k                          */
-        max_line = is_nt_351 ? 996 : MAXLINE;
-
-	/* If multi line, or too long, or JAMSHELL is set, write to bat file. */
-	/* Otherwise, exec directly. */
-	/* Frankly, if it is a single long line I don't think the */
-	/* command interpreter will do any better -- it will fail. */
-
-	if( p && *p || !raw_cmd && strlen( string ) > max_line || shell )
-	{
-	    FILE *f;
-
-	    /* Write command to bat file. */
-
-	    f = fopen( cmdtab[ slot ].tempfile, "w" );
-	    fputs( string, f );
-	    fclose( f );
-
-	    string = cmdtab[ slot ].tempfile;
-	}
-
-	/* Forumulate argv */
-	/* If shell was defined, be prepared for % and ! subs. */
-	/* Otherwise, use stock /bin/sh (on unix) or cmd.exe (on NT). */
-
-	if( shell )
-	{
-	    int i;
-	    char jobno[4];
-	    int gotpercent = 0;
-
-	    sprintf( jobno, "%d", slot + 1 );
-
-	    for( i = 0; shell && i < MAXARGC; i++, shell = list_next( shell ) )
-	    {
-		switch( shell->string[0] )
-		{
-		case '%':	argv[i] = string; gotpercent++; break;
-		case '!':	argv[i] = jobno; break;
-		default:	argv[i] = shell->string;
-		}
-		if( DEBUG_EXECCMD )
-		    printf( "argv[%d] = '%s'\n", i, argv[i] );
-	    }
-
-	    if( !gotpercent )
-		argv[i++] = string;
-
-	    argv[i] = 0;
-	}
-	else if (raw_cmd)
+        argv[i] = 0;
+    }
+    else if (raw_cmd)
     {
         int ignored;
         argv = string_to_args(string, &ignored);
     }
     else
-	{
+    {
         /* don't worry, this is ignored on Win95/98, see later.. */
-	    argv[0] = "cmd.exe";
-	    argv[1] = "/Q/C";		/* anything more is non-portable */
-	    argv[2] = string;
-	    argv[3] = 0;
-	}
+        argv[0] = "cmd.exe";
+        argv[1] = "/Q/C";		/* anything more is non-portable */
+        argv[2] = string;
+        argv[3] = 0;
+    }
 
-	/* Catch interrupts whenever commands are running. */
+    /* Catch interrupts whenever commands are running. */
 
-	if( !cmdsrunning++ )
-	    istat = signal( SIGINT, onintr );
+    if( !cmdsrunning++ )
+        istat = signal( SIGINT, onintr );
 
-	/* Start the command */
+    /* Start the command */
 
-        /* on Win95, we only do a synchronous call */
-        if ( is_win95 )
+    /* on Win95, we only do a synchronous call */
+    if ( is_win95 )
+    {
+        static const char* hard_coded[] =
+            {
+                "del", "erase", "copy", "mkdir", "rmdir", "cls", "dir",
+                "ren", "rename", "move", 0
+            };
+          
+        const char**  keyword;
+        int           len, spawn = 1;
+        int           result;
+          
+        for ( keyword = hard_coded; keyword[0]; keyword++ )
         {
-          static const char* hard_coded[] =
-          {
-            "del", "erase", "copy", "mkdir", "rmdir", "cls", "dir",
-            "ren", "rename", "move", 0
-          };
-          
-          const char**  keyword;
-          int           len, spawn = 1;
-          int           result;
-          
-          for ( keyword = hard_coded; keyword[0]; keyword++ )
-          {
             len = strlen( keyword[0] );
             if ( strnicmp( string, keyword[0], len ) == 0 &&
                  !isalnum(string[len]) )
             {
-              /* this is one of the hard coded symbols, use 'system' to run */
-              /* them.. except for "del"/"erase"                            */
-              if ( keyword - hard_coded < 2 )
-                result = process_del( string );
-              else
-                result = system( string );
+                /* this is one of the hard coded symbols, use 'system' to run */
+                /* them.. except for "del"/"erase"                            */
+                if ( keyword - hard_coded < 2 )
+                    result = process_del( string );
+                else
+                    result = system( string );
 
-              spawn  = 0;
-              break;
+                spawn  = 0;
+                break;
             }
-          }
+        }
           
-          if (spawn)
-          {
+        if (spawn)
+        {
             char**  args;
             int     num_args;
             
@@ -488,44 +583,44 @@ execcmd(
             if ( args )
             {
 #if 0
-              char** arg;
-              fprintf( stderr, "%s: ", args[0] );
-              arg = args+1;
-              while ( arg[0] )
-              {
-                fprintf( stderr, " {%s}", arg[0] );
-                arg++;
-              }
-              fprintf( stderr, "\n" );
+                char** arg;
+                fprintf( stderr, "%s: ", args[0] );
+                arg = args+1;
+                while ( arg[0] )
+                {
+                    fprintf( stderr, " {%s}", arg[0] );
+                    arg++;
+                }
+                fprintf( stderr, "\n" );
 #endif              
-              result = spawnvp( P_WAIT, args[0], args );
-              free_args( args );
+                result = spawnvp( P_WAIT, args[0], args );
+                free_args( args );
             }
             else
-              result = 1;
-          }
-          func( closure, result ? EXEC_CMD_FAIL : EXEC_CMD_OK );
-          return;
+                result = 1;
         }
+        func( closure, result ? EXEC_CMD_FAIL : EXEC_CMD_OK );
+        return;
+    }
 
     /* the rest is for Windows NT only */
-	if( ( pid = spawnvp( P_NOWAIT, argv[0], argv ) ) == -1 )
-	{
-	    perror( "spawn" );
-	    exit( EXITBAD );
-	}
-	/* Save the operation for execwait() to find. */
+    if( ( pid = spawnvp( P_NOWAIT, argv[0], argv ) ) == -1 )
+    {
+        perror( "spawn" );
+        exit( EXITBAD );
+    }
+    /* Save the operation for execwait() to find. */
 
-	cmdtab[ slot ].pid = pid;
-	cmdtab[ slot ].func = func;
-	cmdtab[ slot ].closure = closure;
+    cmdtab[ slot ].pid = pid;
+    cmdtab[ slot ].func = func;
+    cmdtab[ slot ].closure = closure;
 
-	/* Wait until we're under the limit of concurrent commands. */
-	/* Don't trust globs.jobs alone.                            */
+    /* Wait until we're under the limit of concurrent commands. */
+    /* Don't trust globs.jobs alone.                            */
 
-	while( cmdsrunning >= MAXJOBS || cmdsrunning >= globs.jobs )
-	    if( !execwait() )
-		break;
+    while( cmdsrunning >= MAXJOBS || cmdsrunning >= globs.jobs )
+        if( !execwait() )
+            break;
     
     if (argv != argv_static)
     {

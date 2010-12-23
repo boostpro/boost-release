@@ -176,6 +176,10 @@ extern int yydebug;
 #ifndef NDEBUG
 static void run_unit_tests()
 {
+# if defined( USE_EXECNT )
+    extern void execnt_unit_test();
+    execnt_unit_test();
+# endif 
     string_unit_test();
     var_expand_unit_test();
 }
@@ -219,10 +223,12 @@ int  main( int argc, char **argv, char **arg_environ )
 
     if( ( s = getoptval( optv, 'v', 0 ) ) )
     {
-        printf( "Jam/MR  " );
+        printf( "Boost.Jam  " );
         printf( "Version %s.  ", VERSION );
-        printf( "Copyright 1993, 2000 Christopher Seiwald.  " );
         printf( "%s.\n", OSMINOR );
+        printf( "    Copyright 1993, 2000 Christopher Seiwald.\n" );
+        printf( "    Copyright 2001 David Turner.\n" );
+        printf( "    Copyright 2001 David Abrahams.\n" );
 
         return EXITOK;
     }

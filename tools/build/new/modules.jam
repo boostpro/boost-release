@@ -22,8 +22,9 @@ rule binding ( module )
 }
 
 # load the indicated module if it is not already loaded.
-rule load ( module-name )
+rule load ( module-name : filename ? : search * )
 {
+    filename ?= $(module-name).jam ;
     if ! ( $(module-name) in $(loaded-modules) )
     {
         loaded-modules += $(module-name) ;
@@ -39,12 +40,12 @@ rule load ( module-name )
             IMPORT modules : no_test_defined : $(module-name) : __test__ ;
 
             # Add some grist so that the module will have a unique target name
-            local module-target = $(module-name:G=module@:S=.jam) ;
+            local module-target = $(filename:G=module@) ;
             
-            SEARCH on $(module-target) = $(BOOST_BUILD_PATH) ;
+            search ?= $(BOOST_BUILD_PATH) ;
+            SEARCH on $(module-target) = $(search) ;
             BINDRULE on $(module-target) = modules.record-binding ;
-            include $(module-name:G=module@:S=.jam) ;
-
+            include $(module-target) ;
         }
         loading-modules = $(loading-modules[1--2]) ;
         
@@ -53,10 +54,13 @@ rule load ( module-name )
             # run any pending tests
             for local m in $(untested)
             {
-                ECHO testing module $(m)... ;
-                module $(m)
+                if ( $(BOOST_BUILD_TEST) = 1 ) || ( $(m) in $(BOOST_BUILD_TEST) )
                 {
-                    __test__ ;
+                    ECHO testing module $(m)... ;
+                    module $(m)
+                    {
+                        __test__ ;
+                    }
                 }
             }
             untested = ;
@@ -92,7 +96,7 @@ rule import ( module-name : rules-opt * : rename-opt * )
     local source-names = $(rules-opt) ;
     if $(rules-opt) = *
     {
-        source-names = [ RULENAMES module-name ] ;
+        source-names = [ RULENAMES $(module-name) ] ;
     }
     
     local target-names = $(rename-opt) ;
@@ -100,22 +104,3 @@ rule import ( module-name : rules-opt * : rename-opt * )
     IMPORT $(module-name) : $(source-names) : [ CALLER_MODULE ] : $(target-names) ;
 }
 
-# Returns the module-local value of a variable.
-rule peek ( module-name variable )
-{
-    module $(module-name)
-    {
-        return $($(variable)) ;
-    }
-}
-
-local rule __test__ ( )
-{
-    import assert ;
-
-    module modules.__test__
-    {
-        module local foo = bar ;
-    }
-    assert.result bar :  peek modules.__test__ foo ;
-}

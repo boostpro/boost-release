@@ -1,29 +1,42 @@
 #ifndef BOOST_PREPROCESSOR_MAX_HPP
 #define BOOST_PREPROCESSOR_MAX_HPP
 
-//  Copyright (C) 2001
-//  Housemarque, Inc.
-//  http://www.housemarque.com
-//  
-//  Permission to copy, use, modify, sell and distribute this software is
-//  granted provided this copyright notice appears in all copies. This
-//  software is provided "as is" without express or implied warranty, and
-//  with no claim as to its suitability for any purpose.
+/* Copyright (C) 2001
+ * Housemarque Oy
+ * http://www.housemarque.com
+ *
+ * Permission to copy, use, modify, sell and distribute this software is
+ * granted provided this copyright notice appears in all copies. This
+ * software is provided "as is" without express or implied warranty, and
+ * with no claim as to its suitability for any purpose.
+ *
+ * See http://www.boost.org for most recent version.
+ */
 
-//  See http://www.boost.org for most recent version.
+#include <boost/preprocessor/comparison/less_equal.hpp>
+#include <boost/preprocessor/if.hpp>
 
-/*! \file
+/** <p>Expands to the maximum of <code>X</code> and <code>Y</code>.</p>
 
-<a href="../../../../boost/preprocessor/max.hpp">Click here to see the header.</a>
+<p>For example, <code>BOOST_PP_MAX(5,7)</code> expands to <code>7</code> (a
+single token).</p>
+
+<h3>Uses</h3>
+<ul>
+  <li>BOOST_PP_WHILE()</li>
+</ul>
+
+<h3>Test</h3>
+<ul>
+  <li><a href="../../test/arithmetic_test.cpp">arithmetic_test.cpp</a></li>
+</ul>
 */
+#define BOOST_PP_MAX(X,Y) BOOST_PP_MAX_D(0,X,Y)
 
-#ifndef BOOST_PREPROCESSOR_COMPARISON_LESS_HPP
-#  include <boost/preprocessor/comparison/less.hpp>
-#endif
-#ifndef BOOST_PREPROCESSOR_IF_HPP
-#  include <boost/preprocessor/if.hpp>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#define BOOST_PP_MAX_D(D,X,Y) BOOST_PP_IF(BOOST_PP_LESS_EQUAL_D(D,X,Y),Y,X)
 #endif
 
-//! Expands to the maximum of X and Y.
-#define BOOST_PREPROCESSOR_MAX(X,Y) BOOST_PREPROCESSOR_IF(BOOST_PREPROCESSOR_LESS(X,Y),Y,X)
+/** <p>Obsolete. Use BOOST_PP_MAX().</p> */
+#define BOOST_PREPROCESSOR_MAX(X,Y) BOOST_PP_MAX(X,Y)
 #endif

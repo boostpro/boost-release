@@ -31,6 +31,7 @@
 #include <boost/regex/regex_traits.hpp>
 #include <boost/regex/detail/regex_synch.hpp>
 #include <boost/regex/detail/regex_cstring.hpp>
+#include <boost/scoped_array.hpp>
 
 #if defined(_WIN32) && !defined(BOOST_REGEX_NO_W32)
 
@@ -165,7 +166,7 @@ unsigned int BOOST_REGEX_CALL _re_get_message(char* buf, unsigned int len, unsig
 template <class charT>
 unsigned int BOOST_REGEX_CALL get_message(charT* buf, unsigned int len, unsigned int id)
 {
-   unsigned int size = _re_get_message((char*)0, 0, id);
+   unsigned int size = _re_get_message(static_cast<char*>(0), 0, id);
    if(len < size)
       return size;
    boost::scoped_array<char> cb(new char[size]);
@@ -230,10 +231,17 @@ void BOOST_REGEX_CALL w32_traits_base::do_init()
    if(is_init == 0)
    {
       //
-      // upadte the messages first:
+      // update the messages first:
       is_init = true;
       if(*regex_message_catalogue)
+      {
          hresmod = LoadLibraryA(regex_message_catalogue);
+         if(hresmod == NULL)
+         {
+            std::string s("Unable to open dll: ");
+            throw std::runtime_error(s + regex_message_catalogue);
+         }
+      }
       unsigned int i;
       for(i = 0; i < REG_E_UNKNOWN; ++i)
       {
@@ -570,7 +578,7 @@ bool BOOST_REGEX_CALL w32_regex_traits<wchar_t>::lookup_collatename(std::basic_s
 {
    BOOST_RE_GUARD_STACK
    std::basic_string<wchar_t> s(first, last);
-   unsigned int len = strnarrow((char*)0, 0, s.c_str());
+   unsigned int len = strnarrow(static_cast<char*>(0), 0, s.c_str());
    scoped_array<char> buf(new char[len]);
    strnarrow(buf.get(), len, s.c_str());
    std::string t_out;
@@ -580,7 +588,7 @@ bool BOOST_REGEX_CALL w32_regex_traits<wchar_t>::lookup_collatename(std::basic_s
    {
       if(t_out[0])
       {
-         len = strwiden((wchar_t*)0, 0, t_out.c_str());
+         len = strwiden(static_cast<wchar_t*>(0), 0, t_out.c_str());
          scoped_array<wchar_t> wb(new wchar_t[len]);
          strwiden(wb.get(), len, t_out.c_str());
          out = wb.get();
@@ -599,7 +607,7 @@ unsigned int BOOST_REGEX_CALL w32_regex_traits<wchar_t>::syntax_type(size_type c
    last = syntax->end();
    while(first != last)
    {
-      if((uchar_type)(*first).c == c)
+      if((size_type)(uchar_type)((*first).c) == c)
          return (*first).type;
       ++first;
    }
@@ -610,14 +618,14 @@ bool BOOST_REGEX_CALL w32_regex_traits<wchar_t>::do_lookup_collate(std::basic_st
 {
    BOOST_RE_GUARD_STACK
    std::basic_string<wchar_t> s(first, last);
-   unsigned int len = strnarrow((char*)0, 0, s.c_str());
+   unsigned int len = strnarrow(static_cast<char*>(0), 0, s.c_str());
    scoped_array<char> buf(new char[len]);
    strnarrow(buf.get(), len, s.c_str());
    std::string t_out;
    bool result =  base_type::do_lookup_collate(t_out, buf.get());
    if(result)
    {
-      len = strwiden((wchar_t*)0, 0, t_out.c_str());
+      len = strwiden(static_cast<wchar_t*>(0), 0, t_out.c_str());
       scoped_array<wchar_t> wb(new wchar_t[len]);
       strwiden(wb.get(), len, t_out.c_str());
       out = wb.get();
@@ -683,7 +691,7 @@ void BOOST_REGEX_CALL w32_regex_traits<wchar_t>::transform(std::basic_string<wch
       n = LCMapStringW(GetUserDefaultLCID(), LCMAP_SORTKEY, in.c_str(), -1, 0, 0);
    else
    {
-      n = strnarrow((char*)0, 0, in.c_str());
+      n = strnarrow(static_cast<char*>(0), 0, in.c_str());
       alt.reset(new char[n+1]);
       strnarrow(alt.get(), n+1, in.c_str());
       n = LCMapStringA(GetUserDefaultLCID(), LCMAP_SORTKEY, alt.get(), -1, 0, 0);
@@ -700,7 +708,7 @@ void BOOST_REGEX_CALL w32_regex_traits<wchar_t>::transform(std::basic_string<wch
    // the sort order remains unchanged when we compare.
    scoped_array<char> t(new char[n+1]);
    if(isPlatformNT)
-      n = LCMapStringW(GetUserDefaultLCID(), LCMAP_SORTKEY, in.c_str(), -1, (wchar_t*)t.get(), n);
+      n = LCMapStringW(GetUserDefaultLCID(), LCMAP_SORTKEY, in.c_str(), -1, reinterpret_cast<wchar_t*>(t.get()), n);
    else
       n = LCMapStringA(GetUserDefaultLCID(), LCMAP_SORTKEY, alt.get(), -1, t.get(), n);
    int i = -1;
@@ -773,7 +781,7 @@ int BOOST_REGEX_CALL w32_regex_traits<wchar_t>::toi(const wchar_t*& first, const
 boost::uint_fast32_t BOOST_REGEX_CALL w32_regex_traits<wchar_t>::lookup_classname(const wchar_t* first, const wchar_t* last)
 {
    std::basic_string<wchar_t> s(first, last);
-   unsigned int len = strnarrow((char*)0, 0, s.c_str());
+   unsigned int len = strnarrow(static_cast<char*>(0), 0, s.c_str());
    scoped_array<char> buf(new char[len]);
    strnarrow(buf.get(), len, s.c_str());
    len =  do_lookup_class(buf.get());
@@ -784,7 +792,7 @@ wchar_t BOOST_REGEX_CALL w32_regex_traits<wchar_t>::wtolower(wchar_t c)
 {
    BOOST_RE_GUARD_STACK
    if(isPlatformNT)
-      return LOWORD(CharLowerW((wchar_t*)(MAKELONG(c, 0))));
+      return LOWORD(CharLowerW(reinterpret_cast<wchar_t*>(static_cast<unsigned short>(c))));
    return c;
 }
 

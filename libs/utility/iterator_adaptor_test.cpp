@@ -309,8 +309,8 @@ main()
     // Borland is choking on accessing the policies_type explicitly
     // from the filter_iter. 
     boost::forward_iterator_test(make_filter_iterator(array, array+N, 
-						      one_or_four()),
-				 dummyT(1), dummyT(4));
+                                                      one_or_four()),
+                                 dummyT(1), dummyT(4));
 #else
     filter_iter i(array, filter_iter::policies_type(one_or_four(), array + N));
     boost::forward_iterator_test(i, dummyT(1), dummyT(4));
@@ -409,17 +409,31 @@ main()
 
   {
     // check permutation_iterator
-    typedef std::vector< int > element_range_type;
+    typedef std::deque< int > element_range_type;
     typedef std::list< int > index_type;
     
     static const int element_range_size = 10;
     static const int index_size = 4;
     
     element_range_type elements( element_range_size );
-    std::iota( elements.begin(), elements.end(), 0 );
+    
+    for(element_range_type::iterator el_it = elements.begin();
+        el_it != elements.end();
+        ++el_it)
+    {
+        *el_it = std::distance( elements.begin(), el_it );
+    }
     
     index_type indices( index_size );
-    std::iota( indices.begin(), indices.end(), element_range_size - index_size );
+    
+    for(index_type::iterator i_it = indices.begin();
+        i_it != indices.end();
+        ++i_it)
+    {
+        *i_it = element_range_size - index_size
+            + std::distance(indices.begin(), i_it );
+    }
+    
     std::reverse( indices.begin(), indices.end() );
     
     typedef boost::permutation_iterator_generator< element_range_type::iterator, index_type::iterator >::type permutation_type;

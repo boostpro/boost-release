@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: linear_congruential.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: linear_congruential.hpp,v 1.3 2002/01/03 22:20:56 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -82,6 +82,16 @@ public:
 private:
   IntType _x;
 };
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+template<class IntType, IntType a, IntType c, IntType m, IntType val>
+const bool linear_congruential<IntType, a, c, m, val>::has_fixed_range;
+template<class IntType, IntType a, IntType c, IntType m, IntType val>
+const typename linear_congruential<IntType, a, c, m, val>::result_type linear_congruential<IntType, a, c, m, val>::min_value;
+template<class IntType, IntType a, IntType c, IntType m, IntType val>
+const typename linear_congruential<IntType, a, c, m, val>::result_type linear_congruential<IntType, a, c, m, val>::max_value;
+#endif
 
 } // namespace random
 
