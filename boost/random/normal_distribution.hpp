@@ -2,7 +2,7 @@
  *
  * Copyright Jens Maurer 2000-2001
  * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without free provided that the above copyright notice
+ * is hereby granted without fee provided that the above copyright notice
  * appears in all copies and that both that copyright notice and this
  * permission notice appear in supporting documentation,
  *
@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: normal_distribution.hpp,v 1.1 2001/04/14 13:28:42 jmaurer Exp $
+ * $Id: normal_distribution.hpp,v 1.3 2001/06/28 18:40:22 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -41,7 +41,7 @@ public:
                                const result_type& sigma = 1)
     : _rng(rng), _mean(mean), _sigma(sigma), _valid(false)
   {
-    assert(sigma > 0);
+    assert(sigma >= 0);
     this->iterator_init();
   }
   // compiler-generated copy constructor is fine

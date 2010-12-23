@@ -2,7 +2,7 @@
  *
  * Copyright Jens Maurer 2000
  * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without free provided that the above copyright notice
+ * is hereby granted without fee provided that the above copyright notice
  * appears in all copies and that both that copyright notice and this
  * permission notice appear in supporting documentation,
  *
@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: integer_traits_test.cpp,v 1.5 2001/04/30 13:38:23 jmaurer Exp $
+ * $Id: integer_traits_test.cpp,v 1.6 2001/05/31 17:19:40 jmaurer Exp $
  *
  * Revision history
  *  2000-02-22  Small improvements by Beman Dawes

@@ -16,7 +16,7 @@
  /*
   *   LOCATION:    see http://www.boost.org for most recent version.
   *   FILE         regex_config.hpp
-  *   VERSION      3.11
+  *   VERSION      3.12
   *   DESCRIPTION: auto-configure options for regular expression code.
   */
 
@@ -76,9 +76,13 @@ full list of macros and their usage.
    #define BOOST_RE_PLATFORM_W32
 #endif
 
-#ifdef __MWERKS__
-// no std::maessages facet
+#if (defined(__MSL_CPP__) && __MSL_CPP__ < 0x6209) || defined(__DECCXX)
+// no std::messages facet
 #define BOOST_RE_NO_MESSAGES
+#endif
+
+#if defined(__MSL__) || defined(__DECCXX)
+#define BOOST_RE_NO_CAT
 #endif
 
 #ifdef __BORLANDC__
@@ -158,6 +162,46 @@ full list of macros and their usage.
 
 #include <cwchar>
 #include <cwctype>
+
+#endif
+
+// Intel C++
+#ifdef __ICL
+   #ifndef BOOST_RE_CALL
+      #ifdef _DEBUG
+         #define BOOST_RE_CALL __cdecl
+      #else
+         #define BOOST_RE_CALL __fastcall
+      #endif
+   #endif
+   #ifndef BOOST_RE_CCALL
+      #define BOOST_RE_CCALL __stdcall
+   #endif
+
+   #if !defined(_CPPUNWIND) && defined(__cplusplus)
+      #error exception handling support required
+   #endif
+
+   #define BOOST_RE_NO_CAT
+   #define BOOST_RE_NO_SWPRINTF
+
+   #ifdef _MT
+      #define BOOST_RE_THREADS
+   #endif
+
+   //
+   // import export options:
+   #if defined(_DLL) && !defined(BOOST_RE_STATIC_LIB) && !defined(BOOST_RE_NO_LIB)
+      #ifdef BOOST_RE_BUILD_DLL
+         #define BOOST_RE_IX_DECL __declspec( dllexport )
+      #elif !defined(BOOST_REGEX_LIBRARY_INCLUDE_HPP) && !defined(BOOST_RE_NO_LIB)
+         #define BOOST_RE_IX_DECL __declspec( dllimport ) 
+      #endif
+   #endif
+   //
+   // disable automatic library selection for now
+   // anyone know if this works?
+   //#include <boost/regex/detail/regex_library_include.hpp>
 
 #endif
 
@@ -254,10 +298,6 @@ full list of macros and their usage.
    	#define BOOST_RE_NO_WCSTRING
    #endif
 
-#endif
-
-#ifdef __MWERKS__
-   #define BOOST_RE_NO_CAT
 #endif
 
 #ifdef __SUNPRO_CC

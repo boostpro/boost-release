@@ -2,7 +2,7 @@
  *
  * Copyright Jens Maurer 2000-2001
  * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without free provided that the above copyright notice
+ * is hereby granted without fee provided that the above copyright notice
  * appears in all copies and that both that copyright notice and this
  * permission notice appear in supporting documentation,
  *
@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: triangle_distribution.hpp,v 1.1 2001/04/14 13:28:42 jmaurer Exp $
+ * $Id: triangle_distribution.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files

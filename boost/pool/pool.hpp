@@ -23,7 +23,7 @@
 // std::invalid_argument
 #include <exception>
 
-#include <boost/pool/pool_fwd.hpp>
+#include <boost/pool/poolfwd.hpp>
 
 // boost::details::pool::ct_lcm
 #include <boost/pool/detail/ct_gcd_lcm.hpp>
@@ -31,6 +31,17 @@
 #include <boost/pool/detail/gcd_lcm.hpp>
 // boost::simple_segregated_storage
 #include <boost/pool/simple_segregated_storage.hpp>
+
+#ifdef BOOST_NO_STDC_NAMESPACE
+ namespace std { using ::malloc; using ::free; }
+#endif
+
+// There are a few places in this file where the expression "this->m" is used.
+// This expression is used to force instantiation-time name lookup, which I am
+//   informed is required for strict Standard compliance.  It's only necessary
+//   if "m" is a member of a base class that is dependent on a template
+//   parameter.
+// Thanks to Jens Maurer for pointing this out!
 
 namespace boost {
 
@@ -126,8 +137,8 @@ class pool: protected simple_segregated_storage<
     typedef typename UserAllocator::difference_type difference_type;
 
   private:
-    static const unsigned min_alloc_size =
-        details::pool::ct_lcm<sizeof(void *), sizeof(size_type)>::value;
+    BOOST_STATIC_CONSTANT(unsigned, min_alloc_size =
+        (::boost::details::pool::ct_lcm<sizeof(void *), sizeof(size_type)>::value) );
 
     // Returns 0 if out-of-memory
     // Called if malloc/ordered_malloc needs to resize the free list
@@ -170,6 +181,10 @@ class pool: protected simple_segregated_storage<
       const unsigned min_size = min_alloc_size;
       return details::pool::lcm<size_type>(requested_size, min_size);
     }
+
+    // for the sake of code readability :)
+    static void * & nextof(void * const ptr)
+    { return *(static_cast<void **>(ptr)); }
 
   public:
     // The second parameter here is an extension!
@@ -274,7 +289,7 @@ bool pool<UserAllocator>::release_memory()
   //  Note that "prev_free" in this case does NOT point to the previous memory
   //  chunk in the free list, but rather the last free memory chunk before the
   //  current block.
-  void * free = first;
+  void * free = this->first;
   void * prev_free = 0;
 
   const size_type partition_size = alloc_size();
@@ -353,7 +368,7 @@ bool pool<UserAllocator>::release_memory()
       if (prev_free != 0)
         nextof(prev_free) = free;
       else
-        first = free;
+        this->first = free;
 
       // And release memory
       UserAllocator::free(ptr.begin());
@@ -388,7 +403,7 @@ bool pool<UserAllocator>::purge_memory()
   } while (iter.valid());
 
   list.invalidate();
-  first = 0;
+  this->first = 0;
 
   return true;
 }
@@ -467,7 +482,7 @@ void * pool<UserAllocator>::ordered_malloc_need_resize()
 }
 
 template <typename UserAllocator>
-void * pool<UserAllocator>::ordered_malloc(const pool::size_type n)
+void * pool<UserAllocator>::ordered_malloc(const size_type n)
 {
   const size_type partition_size = alloc_size();
   const size_type total_req_size = n * requested_size;

@@ -16,7 +16,7 @@
  /*
   *
   *   FILE     regress.cpp
-  *   VERSION  3.11
+  *   VERSION  3.12
   *
   * main() and associated code for regress.
   *
@@ -152,6 +152,10 @@ istream& get_line(istream& is, nstring_type& s, char delim)
    return is;
 }
 
+#ifdef BOOST_NO_STDC_NAMESPACE
+namespace std{ using ::mbtowc; }
+#endif
+
 istream& get_line(istream& is, string_type& s, char delim)
 {
    nstring_type t;
@@ -164,7 +168,7 @@ istream& get_line(istream& is, string_type& s, char delim)
    int cchars;
    while(i != j)
    {
-      cchars = mbtowc(buf, i, j - i);
+      cchars = std::mbtowc(buf, i, j - i);
       if(cchars == -1)
          break;
       if(cchars == 0)

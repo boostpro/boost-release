@@ -2,7 +2,7 @@
  *
  * Copyright Jens Maurer 2000
  * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without free provided that the above copyright notice
+ * is hereby granted without fee provided that the above copyright notice
  * appears in all copies and that both that copyright notice and this
  * permission notice appear in supporting documentation,
  *
@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: limits_test.cpp,v 1.6 2001/05/22 21:26:45 jmaurer Exp $
+ * $Id: limits_test.cpp,v 1.7 2001/05/31 17:22:20 jmaurer Exp $
  */
 
 #include <boost/limits.hpp>

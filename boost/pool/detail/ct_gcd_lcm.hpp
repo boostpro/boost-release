@@ -10,7 +10,8 @@
 #ifndef BOOST_POOL_CT_GCD_LCM_HPP
 #define BOOST_POOL_CT_GCD_LCM_HPP
 
-#include <boost/pool/detail/postulate.hpp>
+#include <boost/static_assert.hpp>
+#include <boost/type_traits/ice.hpp>
 
 namespace boost {
 
@@ -31,21 +32,24 @@ struct ct_gcd_helper;
 template <unsigned A, unsigned B>
 struct ct_gcd_helper<A, B, false>
 {
-//WAS:  static const unsigned value = ct_gcd_helper<B, (A % B), (A % B) == 0>::value;
-  static const unsigned value = ct_gcd_helper<B, (A % B), ((A % B) == 0)>::value;
+  BOOST_STATIC_CONSTANT(unsigned, A_mod_B_ = A % B);
+  BOOST_STATIC_CONSTANT(unsigned, value =
+      (::boost::details::pool::details::ct_gcd_helper<B, A_mod_B_,
+          ::boost::type_traits::ice_eq<A_mod_B_, 0>::value>::value) );
 };
 template <unsigned A, unsigned B>
 struct ct_gcd_helper<A, B, true>
 {
-  static const unsigned value = A;
+  BOOST_STATIC_CONSTANT(unsigned, value = A);
 };
 } // namespace details
 
 template <unsigned A, unsigned B>
 struct ct_gcd
 {
-  BOOST_POOL_POSTULATE(A != 0 && B != 0);
-  static const unsigned value = details::ct_gcd_helper<A, B, false>::value;
+  BOOST_STATIC_ASSERT(A != 0 && B != 0);
+  BOOST_STATIC_CONSTANT(unsigned, value =
+      (::boost::details::pool::details::ct_gcd_helper<A, B, false>::value) );
 };
 
 //
@@ -57,7 +61,8 @@ struct ct_gcd
 template <unsigned A, unsigned B>
 struct ct_lcm
 {
-  static const unsigned value = A / ct_gcd<A, B>::value * B;
+  BOOST_STATIC_CONSTANT(unsigned, value =
+      (A / ::boost::details::pool::ct_gcd<A, B>::value * B) );
 };
 
 } // namespace pool

@@ -16,7 +16,7 @@
  /*
   *   LOCATION:    see http://www.boost.org for most recent version.
   *   FILE         c_regex_traits.cpp
-  *   VERSION      3.11
+  *   VERSION      3.12
   *   DESCRIPTION: Implements the c_regex_traits<charT> traits class
   */
 
@@ -136,7 +136,7 @@ BOOST_RE_IX_DECL char* re_custom_error_messages[] = {
    0,
 };
 
-#if !defined(LC_MESSAGES) && defined(BOOST_RE_NO_CAT)
+#if !defined(LC_MESSAGES)
 #define LC_MESSAGES LC_CTYPE
 #endif
 

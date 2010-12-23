@@ -2,7 +2,7 @@
  *
  * Copyright Jens Maurer 2000
  * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without free provided that the above copyright notice
+ * is hereby granted without fee provided that the above copyright notice
  * appears in all copies and that both that copyright notice and this
  * permission notice appear in supporting documentation,
  *
@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_demo.cpp,v 1.4 2001/04/16 12:50:08 jmaurer Exp $
+ * $Id: random_demo.cpp,v 1.5 2001/05/31 17:19:14 jmaurer Exp $
  *
  * A short demo program how to use the random number library.
  */

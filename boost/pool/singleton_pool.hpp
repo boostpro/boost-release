@@ -10,7 +10,7 @@
 #ifndef BOOST_SINGLETON_POOL_HPP
 #define BOOST_SINGLETON_POOL_HPP
 
-#include <boost/pool/singleton_pool_fwd.hpp>
+#include <boost/pool/poolfwd.hpp>
 
 // boost::pool
 #include <boost/pool/pool.hpp>
@@ -38,8 +38,8 @@ struct singleton_pool
     typedef typename pool<UserAllocator>::size_type size_type;
     typedef typename pool<UserAllocator>::difference_type difference_type;
 
-    static const unsigned requested_size = RequestedSize;
-    static const unsigned next_size = NextSize;
+    BOOST_STATIC_CONSTANT(unsigned, requested_size = RequestedSize);
+    BOOST_STATIC_CONSTANT(unsigned, next_size = NextSize);
 
   private:
     struct pool_type: Mutex
@@ -89,7 +89,7 @@ struct singleton_pool
       details::pool::guard<Mutex> g(p);
       p.p.ordered_free(ptr);
     }
-    static void free(void * const ptr, const std::size_t n)
+    static void free(void * const ptr, const size_type n)
     {
       pool_type & p = singleton::instance();
       details::pool::guard<Mutex> g(p);

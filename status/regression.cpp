@@ -2,7 +2,7 @@
  *
  * Copyright Jens Maurer 2000
  * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without free provided that the above copyright notice
+ * is hereby granted without fee provided that the above copyright notice
  * appears in all copies and that both that copyright notice and this
  * permission notice appear in supporting documentation,
  *
@@ -30,7 +30,7 @@
 #ifdef BOOST_NO_STDC_NAMESPACE
     namespace std {
       using ::exit; using ::system; using ::strftime; using ::gmtime;
-      using ::time; using ::time_t;
+      using ::time; using ::time_t; using ::getenv;
     }
 #endif
 
@@ -180,7 +180,7 @@ void replace_environment(std::string & s)
     if(pos == std::string::npos)
       break;
     end = s.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", pos+1);
-    const char * env = getenv(s.substr(pos+1, end-pos-1).c_str());
+    const char * env = std::getenv(s.substr(pos+1, end-pos-1).c_str());
     if(env)
       replace(s, s.substr(pos, end-pos), env);
     else

@@ -15,7 +15,7 @@
 // new, std::bad_alloc
 #include <new>
 
-#include <boost/pool/pool_alloc_fwd.hpp>
+#include <boost/pool/poolfwd.hpp>
 
 // boost::singleton_pool
 #include <boost/pool/singleton_pool.hpp>
@@ -44,7 +44,7 @@ class pool_allocator
     typedef T value_type;
     typedef UserAllocator user_allocator;
     typedef Mutex mutex;
-    static const unsigned next_size = NextSize;
+    BOOST_STATIC_CONSTANT(unsigned, next_size = NextSize);
 
     typedef value_type * pointer;
     typedef const value_type * const_pointer;
@@ -123,7 +123,7 @@ class fast_pool_allocator
     typedef T value_type;
     typedef UserAllocator user_allocator;
     typedef Mutex mutex;
-    static const unsigned next_size = NextSize;
+    BOOST_STATIC_CONSTANT(unsigned, next_size = NextSize);
 
     typedef value_type * pointer;
     typedef const value_type * const_pointer;

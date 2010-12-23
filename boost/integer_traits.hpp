@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: integer_traits.hpp,v 1.11 2001/05/08 18:15:32 jmaurer Exp $
+ * $Id: integer_traits.hpp,v 1.12 2001/06/20 11:42:44 johnmaddock Exp $
  *
  * Idea by Beman Dawes, Ed Brey, Steve Cleary, and Nathan Myers
  */
@@ -159,7 +159,7 @@ class integer_traits<unsigned long long>
   : public std::numeric_limits<unsigned long long>,
     public detail::integer_traits_base<unsigned long long, 0, ULONG_LONG_MAX>
 { };
-#elif defined(ULONGLONG_MAX)
+#elif defined(ULONGLONG_MAX) && !defined(BOOST_MSVC) && !defined(__BORLANDC__)
 template<>
 class integer_traits<long long>
   : public std::numeric_limits<long long>,

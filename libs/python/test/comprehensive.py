@@ -19,10 +19,13 @@ Load up the extension module
 Automatic checking of the number and type of arguments. Foo's constructor takes
 a single long parameter. 
 
-    >>> ext = Foo()
-    Traceback (innermost last):
-      File "<stdin>", line 1, in ?
-    TypeError: function requires exactly 1 argument; 0 given
+    >>> try:
+    ...     ext = Foo()
+    ... except TypeError, err:
+    ...     assert re.match(r'function .* exactly 1 argument;? \(?0 given\)?',
+    ...                     str(err))
+    ... else:
+    ...     print 'no exception'
 
     >>> try: ext = Foo('foo')
     ... except TypeError, err:
@@ -1014,9 +1017,12 @@ test inheritB2
     -2
     >>> str(i)
     '2'
-    >>> j = i/i
-    Traceback (innermost last):
-    TypeError: bad operand type(s) for /
+    >>> try: j = i/i
+    ... except TypeError, err:
+    ...     assert re.match(r'(bad|unsupported) operand type\(s\) for /',
+    ...                     str(err))
+    ... else: print 'no exception'
+    
     >>> j = abs(i)
     Traceback (innermost last):
     TypeError: bad operand type for abs()
@@ -1188,7 +1194,7 @@ def run(args = None):
     if args is not None:
         sys.argv = args
     import doctest, comprehensive
-    doctest.testmod(comprehensive)
+    return doctest.testmod(comprehensive)
     
 if __name__ == '__main__':
-    run()
+    sys.exit(run()[0])
