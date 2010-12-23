@@ -23,19 +23,36 @@
 #endif
 
 #include <boost/checked_delete.hpp>
-#include <boost/detail/atomic_count.hpp>
+#include <boost/detail/lightweight_mutex.hpp>
+
+#include <functional>       // for std::less
+#include <exception>        // for std::exception
 
 namespace boost
 {
 
-namespace detail
-{
-
-class counted_base
+class use_count_is_zero: public std::exception
 {
 public:
 
-    typedef atomic_count count_type;
+    virtual char const * what() const throw()
+    {
+        return "use_count_is_zero";
+    }
+};
+
+class counted_base
+{
+private:
+
+    typedef detail::lightweight_mutex mutex_type;
+
+public:
+
+    counted_base():
+        use_count_(0), weak_count_(0), self_deleter_(&self_delete)
+    {
+    }
 
     // pre: initial_use_count <= initial_weak_count
 
@@ -61,20 +78,35 @@ public:
     {
     }
 
-    void add_ref() // nothrow
+    void add_ref()
     {
+#ifdef BOOST_HAS_THREADS
+        mutex_type::scoped_lock lock(mtx_);
+#endif
+        if(use_count_ == 0 && weak_count_ != 0) throw use_count_is_zero();
         ++use_count_;
         ++weak_count_;
     }
 
     void release() // nothrow
     {
-        if(--use_count_ == 0)
+        long new_use_count;
+        long new_weak_count;
+
+        {
+#ifdef BOOST_HAS_THREADS
+            mutex_type::scoped_lock lock(mtx_);
+#endif
+            new_use_count = --use_count_;
+            new_weak_count = --weak_count_;
+        }
+
+        if(new_use_count == 0)
         {
             dispose();
         }
 
-        if(--weak_count_ == 0)
+        if(new_weak_count == 0)
         {
             // not a direct 'delete this', because the inlined
             // release() may use a different heap manager
@@ -84,12 +116,24 @@ public:
 
     void weak_add_ref() // nothrow
     {
+#ifdef BOOST_HAS_THREADS
+        mutex_type::scoped_lock lock(mtx_);
+#endif
         ++weak_count_;
     }
 
     void weak_release() // nothrow
     {
-        if(--weak_count_ == 0)
+        long new_weak_count;
+
+        {
+#ifdef BOOST_HAS_THREADS
+            mutex_type::scoped_lock lock(mtx_);
+#endif
+            new_weak_count = --weak_count_;
+        }
+
+        if(new_weak_count == 0)
         {
             self_deleter_(this);
         }
@@ -97,6 +141,9 @@ public:
 
     long use_count() const // nothrow
     {
+#ifdef BOOST_HAS_THREADS
+        mutex_type::scoped_lock lock(mtx_);
+#endif
         return use_count_;
     }
 
@@ -112,11 +159,26 @@ private:
 
     // inv: use_count_ <= weak_count_
 
-    count_type use_count_;
-    count_type weak_count_;
-
+    long use_count_;
+    long weak_count_;
+#ifdef BOOST_HAS_THREADS
+    mutable mutex_type mtx_;
+#endif
     void (*self_deleter_) (counted_base *);
 };
+
+inline void intrusive_ptr_add_ref(counted_base * p)
+{
+    p->add_ref();
+}
+
+inline void intrusive_ptr_release(counted_base * p)
+{
+    p->release();
+}
+
+namespace detail
+{
 
 template<class P, class D> class counted_base_impl: public counted_base
 {
@@ -143,6 +205,7 @@ public:
     }
 };
 
+class weak_count;
 
 class shared_count
 {
@@ -152,9 +215,20 @@ private:
 
     friend class weak_count;
 
+    template<class P, class D> shared_count(P, D, counted_base const *);
+
 public:
 
-    template<class P, class D> shared_count(P p, D d): pi_(0)
+    shared_count(): pi_(new counted_base(1, 1))
+    {
+    }
+
+    explicit shared_count(counted_base * pi): pi_(pi) // never throws
+    {
+        pi_->add_ref();
+    }
+
+    template<class P, class D> shared_count(P p, D d, void const * = 0): pi_(0)
     {
         try
         {
@@ -165,6 +239,11 @@ public:
             d(p); // delete p
             throw;
         }
+    }
+
+    template<class P, class D> shared_count(P, D, counted_base * pi): pi_(pi)
+    {
+        pi_->add_ref();
     }
 
 #ifndef BOOST_NO_AUTO_PTR
@@ -188,6 +267,8 @@ public:
     {
         pi_->add_ref();
     }
+
+    explicit shared_count(weak_count const & r); // throws use_count_is_zero when r.use_count() == 0
 
     shared_count & operator= (shared_count const & r) // nothrow
     {
@@ -215,6 +296,16 @@ public:
     {
         return pi_->use_count() == 1;
     }
+
+    friend inline bool operator==(shared_count const & a, shared_count const & b)
+    {
+        return a.pi_ == b.pi_;
+    }
+
+    friend inline bool operator<(shared_count const & a, shared_count const & b)
+    {
+        return std::less<counted_base *>()(a.pi_, b.pi_);
+    }
 };
 
 class weak_count
@@ -222,6 +313,8 @@ class weak_count
 private:
 
     counted_base * pi_;
+
+    friend class shared_count;
 
 public:
 
@@ -275,7 +368,22 @@ public:
     {
         return pi_->use_count();
     }
+
+    friend inline bool operator==(weak_count const & a, weak_count const & b)
+    {
+        return a.pi_ == b.pi_;
+    }
+
+    friend inline bool operator<(weak_count const & a, weak_count const & b)
+    {
+        return std::less<counted_base *>()(a.pi_, b.pi_);
+    }
 };
+
+inline shared_count::shared_count(weak_count const & r): pi_(r.pi_)
+{
+    pi_->add_ref();
+}
 
 } // namespace detail
 

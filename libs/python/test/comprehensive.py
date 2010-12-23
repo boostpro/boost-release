@@ -1273,6 +1273,7 @@ import sys
 def run(args = None):
     if args is not None:
         sys.argv = args
+
     import doctest, comprehensive
     return doctest.testmod(comprehensive)
     

@@ -19,25 +19,38 @@
 
 <hr>
 
-<a href="list_first_n.htm">Prev</a> <a href="list_fold_right.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
+<a href="list_first_n.htm">Prev</a> <a href="list_fold_left_2nd.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
 <hr>
 
 <h1>#include &lt;<a href="../../../../boost/preprocessor/list/fold_left.hpp">boost/preprocessor/list/fold_left.hpp</a>&gt;</h1>
 
 <hr>
 
-<h2><a name="BOOST_PP_LIST_FOLD_LEFT">#define BOOST_PP_LIST_FOLD_LEFT</a>(F,P,L)</h2>
- <p>Iterates <code>F(D,P,X)</code> for each element <code>X</code> of the
-list <code>L</code> (from the left or the start of the list).</p>
+<h2><a name="BOOST_PP_LIST_FOLD_LEFT">#define BOOST_PP_LIST_FOLD_LEFT</a>(OP,STATE,LIST)</h2>
+ <p>Iterates <code>OP(D,STATE,X)</code> for each element <code>X</code> of the
+list <code>LIST</code> (from the left or the start of the list).</p>
 
 <p>In other words, expands to:</p>
 
 <pre>
-  F
+  OP
   ( D
-  , ... F(D, F(D,P,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(L,0)), <a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(L,1)) ...
-  , <a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(L,<a href="dec.htm#BOOST_PP_DEC">BOOST_PP_DEC</a>(<a href="list_size.htm#BOOST_PP_LIST_SIZE">BOOST_PP_LIST_SIZE</a>(L))
+  , ... OP(D, OP(D,STATE,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(LIST,0)), <a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(LIST,1)) ...
+  , <a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(LIST,<a href="dec.htm#BOOST_PP_DEC">BOOST_PP_DEC</a>(<a href="list_size.htm#BOOST_PP_LIST_SIZE">BOOST_PP_LIST_SIZE</a>(LIST))
   )
+</pre>
+
+<p>For example,</p>
+
+<pre>
+  #define TEST(D,STATE,X) <a href="cat.htm#BOOST_PP_CAT">BOOST_PP_CAT</a>(STATE,X)
+  <a href="list_fold_left.htm#BOOST_PP_LIST_FOLD_LEFT">BOOST_PP_LIST_FOLD_LEFT</a>(TEST,_,<a href="tuple_to_list.htm#BOOST_PP_TUPLE_TO_LIST">BOOST_PP_TUPLE_TO_LIST</a>(3,(A,B,C)))
+</pre>
+
+<p>expands to:</p>
+
+<pre>
+  _ABC
 </pre>
 
 <h3>Note</h3>
@@ -53,7 +66,7 @@ list <code>L</code> (from the left or the start of the list).</p>
 
 <h3>Uses</h3>
 <ul>
-  <li><a href="while.htm#BOOST_PP_WHILE">BOOST_PP_WHILE</a>()</li>
+  <li><a href="while.htm#BOOST_PP_WHILE">BOOST_PP_WHILE</a>() (see for explanation of the D parameter)</li>
 </ul>
 
 <h3>Test</h3>
@@ -63,7 +76,11 @@ list <code>L</code> (from the left or the start of the list).</p>
 
 <hr>
 
-<a href="list_first_n.htm">Prev</a> <a href="list_fold_right.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
+<h2><a name="BOOST_PP_LIST_FOLD_LEFT_D">#define BOOST_PP_LIST_FOLD_LEFT_D</a>(D,OP,STATE,LIST)</h2>
+ <p>Can be used inside <a href="while.htm#BOOST_PP_WHILE">BOOST_PP_WHILE</a>().</p> 
+<hr>
+
+<a href="list_first_n.htm">Prev</a> <a href="list_fold_left_2nd.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
 <hr>
 
 <p>Revised <!--webbot bot="Timestamp" s-type="EDITED" s-format="%d %b %Y" startspan --><!--webbot bot="Timestamp" endspan i-checksum="15246" --></p>

@@ -11,6 +11,7 @@
 
 namespace boost { namespace python { namespace objects { 
 
+extern PyTypeObject function_type;
 
 function::function(py_function implementation, unsigned min_args, unsigned max_args)
     : m_fn(implementation)
@@ -94,7 +95,7 @@ void function::add_to_namespace(
             dict = PyObject_GetAttrString(ns, "__dict__");
 
         if (dict == 0)
-            throw error_already_set();
+            throw_error_already_set();
         
         ref existing(PyObject_GetItem(dict, name.get()), ref::null_ok);
         
@@ -109,7 +110,31 @@ void function::add_to_namespace(
     // The PyObject_GetAttrString() call above left an active error
     PyErr_Clear();
     if (PyObject_SetAttr(ns, name.get(), attribute.get()) < 0)
-        throw error_already_set();
+        throw_error_already_set();
+}
+
+namespace
+{
+  struct bind_return
+  {
+      bind_return(PyObject*& result, function const* f, PyObject* args, PyObject* keywords)
+          : m_result(result)
+            , m_f(f)
+            , m_args(args)
+            , m_keywords(keywords)
+      {}
+
+      void operator()() const
+      {
+          m_result = m_f->call(m_args, m_keywords);
+      }
+      
+   private:
+      PyObject*& m_result;
+      function const* m_f;
+      PyObject* m_args;
+      PyObject* m_keywords;
+  };
 }
 
 extern "C"
@@ -130,9 +155,11 @@ extern "C"
     }
 
     static PyObject *
-    function_call(PyObject *func, PyObject *arg, PyObject *kw)
+    function_call(PyObject *func, PyObject *args, PyObject *kw)
     {
-        return static_cast<function*>(func)->call(arg, kw);
+        PyObject* result = 0;
+        handle_exception(bind_return(result, static_cast<function*>(func), args, kw));
+        return result;
     }
 }
 

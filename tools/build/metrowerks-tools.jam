@@ -15,6 +15,18 @@
 # from the command-line is sufficiently complex to make using the borland
 # approach impractical.
 
+# The following #// line will be used by the regression test table generation
+# program as the column heading for HTML tables. Must not include version number.
+#//<a href="http://www.metrowerks.com/products/windows/">Metro-<br>werks<br>Code-<br>Warrior</a>
+
+# singleton variables...
+set-as-singleton METROWERKS_ROOT CWFOLDER ;
+
+# Get these variable set on the targets so that we can re-use the
+# build actions for other toolsets using this one as a base.
+flags metrowerks METROWERKS_SETUP ;
+flags metrowerks METROWERKS_LINK_SETUP ;
+
 # if METROWERKS_ROOT is unset, this will "multiply away" to nothing.
 METROWERKS_SETUP = "call "\"$(METROWERKS_ROOT)$(SLASH)"Other Metrowerks Tools"$(SLASH)"Command Line Tools"$(SLASH)cwenv.bat\"" -quiet" ;
 METROWERKS_LINK_SETUP = "set MWWinx86LibraryFiles=" ;
@@ -34,17 +46,17 @@ flags metrowerks LINKFLAGS <debug-symbols>on : -g ;
 flags metrowerks LINKFLAGS <target-type>$(SHARED_TYPES) : -shared ;
 flags metrowerks CFLAGS <optimization>off : -O0 ;
 flags metrowerks CFLAGS <optimization>speed : -opt full ;
-flags metrowerks CFLAGS <optimization>space : -O4,s intrinsics ;
+flags metrowerks CFLAGS <optimization>space : -O4,s "-opt intrinsics" ;
 flags metrowerks CFLAGS <inlining>off : -inline off ;
 flags metrowerks CFLAGS <inlining>on : -inline on ;
 flags metrowerks CFLAGS <inlining>full : -inline auto -inline level=8 ;
 flags metrowerks CFLAGS <user-interface>console/<runtime-link>dynamic : -prefix UseDLLPrefix.h ;
 
-if $(BOOST_CODEWARRIOR_7)
+if ! $(BOOST_CODEWARRIOR_6)
 {
-  flags metrowerks STDLIBS <runtime-link>static/<runtime-build>release : MSL_C_x86.lib;MSL_Runtime_x86.lib;msl_c++_x86.lib;gdi32.lib;user32.lib;kernel32.lib ;
+    flags metrowerks STDLIBS <runtime-link>static/<runtime-build>release : MSL_C_x86.lib;MSL_Runtime_x86.lib;msl_c++_x86.lib;gdi32.lib;user32.lib;kernel32.lib ;
   flags metrowerks STDLIBS <runtime-link>dynamic/<runtime-build>release : MSL_All-DLL_x86.lib;gdi32.lib;user32.lib;kernel32.lib ;
-  flags metrowerks STDLIBS <runtime-link>static/<runtime-build>debug : MSL_C_x86_D.lib;MSL_Runtime_x86_D.lib;msl_c++_x86_D.lib;gdi32.lib;user32.lib;kernel32.lib ;
+    flags metrowerks STDLIBS <runtime-link>static/<runtime-build>debug : MSL_C_x86_D.lib;MSL_Runtime_x86_D.lib;msl_c++_x86_D.lib;gdi32.lib;user32.lib;kernel32.lib ;
   flags metrowerks STDLIBS <runtime-link>dynamic/<runtime-build>debug : MSL_All-DLL_x86_D.lib;gdi32.lib;user32.lib;kernel32.lib ;
 }
 else
@@ -58,10 +70,9 @@ flags metrowerks NEEDLIBS <library-file> ;
 flags metrowerks FINDLIBS <find-library> ;
 
 # How will we find metrowerks standard headers?
-# If the user specified METROWERKS_INCLUDE_ROOT, use that
-# Otherwise, if he specified METROWERKS_ROOT, use that
+# If the user specified METROWERKS_ROOT, use that
 # Otherwise, look at the "standard" environment variable CWFOLDER
-METROWERKS_INCLUDE_ROOT ?= $(METROWERKS_ROOT) ;
+METROWERKS_INCLUDE_ROOT = $(METROWERKS_ROOT) ;
 METROWERKS_INCLUDE_ROOT ?= $(CWFOLDER) ;
 
 # This is the list of subdirectories below METROWERKS_INCLUDE_ROOT to search.
@@ -75,7 +86,9 @@ flags metrowerks STDHDRS : $(METROWERKS_INCLUDE_ROOT)$(SLASH)$(gMETROWERKS_STD_I
 
 rule Link-action
 {
-    gRUN_PATH($(<)) += $(METROWERKS_ROOT)"\\Win32-X86 Support\\Libraries\\Runtime" ;
+    gRUN_PATH($(<)) += $(METROWERKS_INCLUDE_ROOT)"\\Win32-X86 Support\\Libraries\\Runtime" 
+      $(METROWERKS_INCLUDE_ROOT)"\\Win32-X86 Support\\Libraries\\Runtime\\Libs\\MSL_ALL-DLLs" ;
+    
     IMPLIB_COMMAND on $(<) = "-implib " ; # will be "multiplied away" if not
                                         # needed.
     with-command-file metrowerks-Link-action $(<) : $(>) $(NEEDLIBS) # $(NEEDLIBS)
@@ -90,7 +103,7 @@ actions metrowerks-Link-action
 {
     $(METROWERKS_SETUP)
     $(METROWERKS_LINK_SETUP)$(STDLIBS)
-    mwld  -maxerrors 20 -maxwarnings 20 -export dllexport -nowraplines $(LINKFLAGS) -L$(LIBPATH) -L$(STDLIBPATH) $(IMPLIB_COMMAND)"$(<[2])" -o "$(<[1])" @"$(>)" -l$(FINDLIBS)
+    mwld -search -maxerrors 20 -maxwarnings 20 -export dllexport -nowraplines $(LINKFLAGS) -L$(LIBPATH) -L$(STDLIBPATH) $(IMPLIB_COMMAND)"$(<[2])" -o "$(<[1])" @"$(>)" $(FINDLIBS)$(SUFLIB)
 }
 
 #### Cc #####

@@ -5,7 +5,7 @@
  */
 
 /*  This file is ALSO:
- *  (C) Copyright David Abrahams 2001. Permission to copy, use,
+ *  (C) Copyright David Abrahams 2001-2002. Permission to copy, use,
  *  modify, sell and distribute this software is granted provided this
  *  copyright notice appears in all copies. This software is provided
  *  "as is" without express or implied warranty, and with no claim as
@@ -113,6 +113,34 @@ int unlink( char *f ); 	/* In filevms.c */
 # endif
 
 /*
+ * Windows MingW32
+ */
+
+# ifdef MINGW
+
+# include <fcntl.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <ctype.h>
+# include <malloc.h>
+# include <memory.h>
+# include <signal.h>
+# include <string.h>
+# include <time.h>
+
+# define OSMAJOR "MINGW=true"
+# define OSMINOR "OS=MINGW"
+# define OS_NT
+# define SPLITPATH ';'
+# define MAXLINE 996	/* longest 'together' actions */
+# define USE_EXECUNIX
+# define USE_PATHUNIX
+# define PATH_DELIM '\\'
+# define DOWNSHIFT_PATHS
+
+# endif
+
+/*
  * OS2
  */
 
@@ -198,7 +226,7 @@ int unlink( char *f ); 	/* In filevms.c */
 # define OS_COHERENT
 # define NO_VFORK
 # endif
-# ifdef __cygwin__
+# if defined(__cygwin__) || defined(__CYGWIN__)
 # define OSMINOR "OS=CYGWIN"
 # define OS_CYGWIN
 # endif
@@ -458,6 +486,8 @@ int unlink( char *f ); 	/* In filevms.c */
 struct globs {
 	int	noexec;
 	int	jobs;
+	int	quitquick;
+	int	newestfirst;		/* build newest sources first */
 	char	debug[DEBUG_MAX];
 	FILE	*cmdout;		/* print cmds, not run them */
 } ;
@@ -489,4 +519,5 @@ extern struct globs globs;
 # define DEBUG_PROFILE	( globs.debug[ 10 ] )	/* dump rule execution times */
 # define DEBUG_PARSE	( globs.debug[ 11 ] )	/* debug parsing */
 # define DEBUG_GRAPH	( globs.debug[ 12 ] )	/* debug dependencies */
+
 

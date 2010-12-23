@@ -19,6 +19,11 @@
 /** <p>Expands to <code>1</code> if <code>X &lt;= Y</code> and <code>0</code>
 otherwise.</p>
 
+<p>Both <code>X</code> and <code>Y</code> must expand to integer literals
+in the range [0, BOOST_PP_LIMIT_MAG].</p>
+
+<p>For example, <code>BOOST_PP_LESS_EQUAL(7,5)</code> expands to <code>0</code>.</p>
+
 <h3>Uses</h3>
 <ul>
   <li>BOOST_PP_WHILE()</li>
@@ -31,10 +36,9 @@ otherwise.</p>
 */
 #define BOOST_PP_LESS_EQUAL(X,Y) BOOST_PP_LESS_EQUAL_D(0,X,Y)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+/** <p>Can be used inside BOOST_PP_WHILE().</p> */
 #define BOOST_PP_LESS_EQUAL_D(D,X,Y) BOOST_PP_NOT(BOOST_PP_SUB_D(D,X,Y))
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_LESS_EQUAL().</p> */
+/* <p>Obsolete. Use BOOST_PP_LESS_EQUAL().</p> */
 #define BOOST_PREPROCESSOR_LESS_EQUAL(X,Y) BOOST_PP_LESS_EQUAL(X,Y)
 #endif

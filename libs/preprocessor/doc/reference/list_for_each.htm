@@ -19,24 +19,37 @@
 
 <hr>
 
-<a href="list_fold_right.htm">Prev</a> <a href="list_for_each_product.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
+<a href="list_fold_right_2nd.htm">Prev</a> <a href="list_for_each_i.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
 <hr>
 
 <h1>#include &lt;<a href="../../../../boost/preprocessor/list/for_each.hpp">boost/preprocessor/list/for_each.hpp</a>&gt;</h1>
 
 <hr>
 
-<h2><a name="BOOST_PP_LIST_FOR_EACH">#define BOOST_PP_LIST_FOR_EACH</a>(F,P,L)</h2>
- <p>Repeats <code>F(R,P,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(L,I))</code> for each I = [0,
-<a href="list_size.htm#BOOST_PP_LIST_SIZE">BOOST_PP_LIST_SIZE</a>(L)[.</p>
+<h2><a name="BOOST_PP_LIST_FOR_EACH">#define BOOST_PP_LIST_FOR_EACH</a>(MACRO,DATA,LIST)</h2>
+ <p>Repeats <code>MACRO(R,DATA,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(LIST,INDEX))</code> for each INDEX = [0,
+<a href="list_size.htm#BOOST_PP_LIST_SIZE">BOOST_PP_LIST_SIZE</a>(LIST)).</p>
 
 <p>In other words, expands to the sequence:</p>
 
 <pre>
-  F(R,P,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(L,0))
-  F(R,P,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(L,1))
+  MACRO(R,DATA,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(LIST,0))
+  MACRO(R,DATA,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(LIST,1))
   ...
-  F(R,P,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(L,<a href="dec.htm#BOOST_PP_DEC">BOOST_PP_DEC</a>(<a href="list_size.htm#BOOST_PP_LIST_SIZE">BOOST_PP_LIST_SIZE</a>(L))))
+  MACRO(R,DATA,<a href="list_at.htm#BOOST_PP_LIST_AT">BOOST_PP_LIST_AT</a>(LIST,<a href="dec.htm#BOOST_PP_DEC">BOOST_PP_DEC</a>(<a href="list_size.htm#BOOST_PP_LIST_SIZE">BOOST_PP_LIST_SIZE</a>(LIST))))
+</pre>
+
+<p>For example,</p>
+
+<pre>
+  #define TEST(R,DATA,X) <a href="cat.htm#BOOST_PP_CAT">BOOST_PP_CAT</a>(DATA,X)();
+  <a href="list_for_each.htm#BOOST_PP_LIST_FOR_EACH">BOOST_PP_LIST_FOR_EACH</a>(TEST,prefix_,<a href="tuple_to_list.htm#BOOST_PP_TUPLE_TO_LIST">BOOST_PP_TUPLE_TO_LIST</a>(3,(A,B,C)))
+</pre>
+
+<p>expands to:</p>
+
+<pre>
+  prefix_A(); prefix_B(); prefix_C();
 </pre>
 
 <h3>Example</h3>
@@ -46,7 +59,8 @@
 
 <h3>Uses</h3>
 <ul>
-  <li><a href="for.htm#BOOST_PP_FOR">BOOST_PP_FOR</a>()</li>
+  <li><a href="for.htm#BOOST_PP_FOR">BOOST_PP_FOR</a>() (see for explanation of the R parameter)</li>
+  <li><a href="list_for_each_i.htm#BOOST_PP_LIST_FOR_EACH_I">BOOST_PP_LIST_FOR_EACH_I</a>() </li>
 </ul>
 
 <h3>Test</h3>
@@ -56,7 +70,11 @@
 
 <hr>
 
-<a href="list_fold_right.htm">Prev</a> <a href="list_for_each_product.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
+<h2><a name="BOOST_PP_LIST_FOR_EACH_R">#define BOOST_PP_LIST_FOR_EACH_R</a>(R,MACRO,DATA,LIST)</h2>
+ <p>Can be used inside <a href="for.htm#BOOST_PP_FOR">BOOST_PP_FOR</a>().</p> 
+<hr>
+
+<a href="list_fold_right_2nd.htm">Prev</a> <a href="list_for_each_i.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
 <hr>
 
 <p>Revised <!--webbot bot="Timestamp" s-type="EDITED" s-format="%d %b %Y" startspan --><!--webbot bot="Timestamp" endspan i-checksum="15246" --></p>

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -179,6 +179,7 @@ raw_storage<Allocator>::raw_storage(const Allocator& a)
   : alloc_inst(a)
 {
   start = end = alloc_inst.allocate(1024);
+  BOOST_REGEX_NOEH_ASSERT(start)
   alloc_inst.last = start + 1024;
 }
 
@@ -187,6 +188,7 @@ raw_storage<Allocator>::raw_storage(size_type n, const Allocator& a)
   : alloc_inst(a)
 {
   start = end = alloc_inst.allocate(n);
+  BOOST_REGEX_NOEH_ASSERT(start)
   alloc_inst.last = start + n;
 }
 
@@ -208,6 +210,7 @@ void BOOST_REGEX_CALL raw_storage<Allocator>::resize(size_type n)
 
    // allocate and copy data:
    register unsigned char* ptr = alloc_inst.allocate(newsize);
+   BOOST_REGEX_NOEH_ASSERT(ptr)
    std::memcpy(ptr, start, datasize);
 
    // get rid of old buffer:
@@ -239,6 +242,7 @@ void* BOOST_REGEX_CALL raw_storage<Allocator>::insert(size_type pos, size_type n
 } // namespace boost
 
 #endif
+
 
 
 

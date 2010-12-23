@@ -26,13 +26,26 @@
 
 <hr>
 
-<h2><a name="BOOST_PP_REPEAT">#define BOOST_PP_REPEAT</a>(N,M,P)</h2>
- <p>Repeats the macro <code>M(I,P)</code> for I = [0,N-1[.</p>
+<h2><a name="BOOST_PP_REPEAT">#define BOOST_PP_REPEAT</a>(COUNT,MACRO,DATA)</h2>
+ <p>Repeats the macro <code>MACRO(INDEX,DATA)</code> for <code>INDEX = [0,COUNT)</code>.</p>
 
 <p>In other words, expands to the sequence:</p>
 
 <pre>
-  M(0,P) M(1,P) ... M(<a href="dec.htm#BOOST_PP_DEC">BOOST_PP_DEC</a>(N),P)
+  MACRO(0,DATA) MACRO(1,DATA) ... MACRO(<a href="dec.htm#BOOST_PP_DEC">BOOST_PP_DEC</a>(COUNT),DATA)
+</pre>
+
+<p>For example,</p>
+
+<pre>
+  #define TEST(INDEX,DATA) DATA(INDEX);
+  <a href="repeat.htm#BOOST_PP_REPEAT">BOOST_PP_REPEAT</a>(3,TEST,X)
+</pre>
+
+<p>expands to:</p>
+
+<pre>
+  X(0); X(1); X(2);
 </pre>
 
 <h3>2D and 3D repetition</h3>
@@ -42,6 +55,7 @@
 
 <h3>Example</h3>
 <ul>
+  <li><a href="../../example/duffs_device.c">duffs_device.c</a></li>
   <li><a href="../../example/repeat_2d.c">repeat_2d.c</a></li>
 </ul>
 
@@ -51,10 +65,6 @@
   <li><a href="limits.htm#BOOST_PP_LIMIT_MAG">BOOST_PP_LIMIT_MAG</a></li>
 </ul>
 
-<hr>
-
-<h2><a name="BOOST_PREPROCESSOR_REPEAT">#define BOOST_PREPROCESSOR_REPEAT</a>(N,M,P)</h2>
- <p>Obsolete. Use <a href="repeat.htm#BOOST_PP_REPEAT">BOOST_PP_REPEAT</a>().</p> 
 <hr>
 
 <a href="min.htm">Prev</a> <a href="repeat_2nd.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>

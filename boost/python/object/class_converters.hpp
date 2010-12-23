@@ -6,31 +6,14 @@
 #ifndef CLASS_CONVERTERS_DWA2002119_HPP
 # define CLASS_CONVERTERS_DWA2002119_HPP
 
-# include <boost/python/converter/class.hpp>
 # include <boost/python/object/class_wrapper.hpp>
 # include <boost/mpl/for_each.hpp>
 # include <boost/python/reference.hpp>
+# include <boost/python/converter/registry.hpp>
+# include <boost/python/object/find_instance.hpp>
+# include <boost/python/object/inheritance.hpp>
 
 namespace boost { namespace python { namespace objects { 
-
-// Instantiating this class brings into existence all converters
-// associated with a class Bases is expected to be an mpl sequence of
-// base types.
-template <class Derived, class Bases>
-struct class_converters
-{
- public: // member functions
-    // Constructor takes the python class object associated with T
-    class_converters(ref const& python_class);
-
- private: // data members
-    converter::class_from_python_converter<Derived> m_unwrapper;
-    class_wrapper<Derived> m_wrapper;
-};
-
-//
-// Implementation details
-//
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -86,10 +69,18 @@ struct register_base_of
     };
 };
 
+
+// Brings into existence all converters associated with a class Bases
+// is expected to be an mpl sequence of base types.
 template <class Derived, class Bases>
-class_converters<Derived,Bases>::class_converters(ref const& type_object)
-    : m_wrapper(type_object)
+inline void register_class_from_python(Derived* = 0, Bases* = 0)
 {
+    // cause the static registration to be instantiated. Can't just
+    // cast it to void on all compilers; some will skip its
+    // initialization.
+    void const* ignored = &instance_finder<Derived>::registration;
+    (void)ignored;
+    
     // register all up/downcasts here
     register_dynamic_id<Derived>();
 

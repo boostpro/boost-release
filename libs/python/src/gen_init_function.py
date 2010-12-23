@@ -169,7 +169,7 @@ struct init_function
     template <%(class A%n%:, %)>
 %}    static init* create(signature%x%{<%(A%n%:, %)>%}) {
         return new init%x<T%(,
-                       detail::parameter_traits<A%n>::const_reference%)>;
+                       typename detail::parameter_traits<A%n>::const_reference%)>;
     }
 """, args)+"""};
 
@@ -189,7 +189,7 @@ struct init%x : init
     {
         %(PyObject* a%n;
         %)if (!PyArg_ParseTuple(args, const_cast<char*>("%(O%)")%(, &a%n%)))
-            throw argument_error();
+            throw_argument_error();
         return new T(self%(,
             boost::python::detail::reference_parameter<A%n>(from_python(a%n, type<A%n>()))%)
             );

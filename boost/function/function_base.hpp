@@ -34,8 +34,10 @@
 namespace boost {
   namespace detail {
     namespace function {
+      template<bool> struct truth {};
+
       /*
-       * The IF implementation is temporary code. When a Boost metaprogramming
+       * The ct_if implementation is temporary code. When a Boost metaprogramming
        * library is introduced, Boost.Function will use it instead. 
        */
       namespace intimate {
@@ -71,7 +73,7 @@ namespace boost {
       } // end namespace intimate 
  
       template<bool Condition, typename Then, typename Else>
-      struct IF
+      struct ct_if
       {
         typedef typename intimate::Selector<Condition>::type select;
         typedef typename select::template Result<Then,Else>::type type;
@@ -135,20 +137,20 @@ namespace boost {
       template<typename F>
       class get_function_tag
       {
-        typedef typename IF<(is_pointer<F>::value),
+        typedef typename ct_if<(is_pointer<F>::value),
                             function_ptr_tag,
                             function_obj_tag>::type ptr_or_obj_tag;
 
-        typedef typename IF<(is_member_pointer<F>::value),
+        typedef typename ct_if<(is_member_pointer<F>::value),
                             member_ptr_tag,
                             ptr_or_obj_tag>::type ptr_or_obj_or_mem_tag;
 
-        typedef typename IF<(is_reference_wrapper<F>::value),
+        typedef typename ct_if<(is_reference_wrapper<F>::value),
                              function_obj_ref_tag,
                              ptr_or_obj_or_mem_tag>::type or_ref_tag;
 
       public:
-        typedef typename IF<(is_stateless<F>::value),
+        typedef typename ct_if<(is_stateless<F>::value),
                             stateless_function_obj_tag,
                             or_ref_tag>::type type;
       };
@@ -156,7 +158,7 @@ namespace boost {
       // The trivial manager does nothing but return the same pointer (if we
       // are cloning) or return the null pointer (if we are deleting).
       inline any_pointer trivial_manager(any_pointer f, 
-                                  functor_manager_operation_type op)
+					 functor_manager_operation_type op)
       {
         if (op == clone_functor_tag)
           return f;
@@ -176,7 +178,8 @@ namespace boost {
 
         // For function pointers, the manager is trivial
         static inline any_pointer
-        manager(any_pointer function_ptr, functor_manager_operation_type op,
+        manager(any_pointer function_ptr, 
+		functor_manager_operation_type op,
                 function_ptr_tag)
         {
           if (op == clone_functor_tag)
@@ -307,6 +310,10 @@ namespace boost {
                            detail::function::functor_manager_operation_type);
     detail::function::any_pointer functor;
 
+#if (defined __SUNPRO_CC) && (__SUNPRO_CC <= 0x530) && !(defined BOOST_NO_COMPILER_CONFIG)
+    // Sun C++ 5.3 can't handle the safe_bool idiom, so don't use it
+    operator bool () const { return !this->empty(); }
+#else
   private:
     struct dummy {
       void nonnull() {};
@@ -320,6 +327,7 @@ namespace boost {
 
     safe_bool operator!() const
       { return (this->empty())? &dummy::nonnull : 0; }
+#endif
   };
 
   /* Poison comparison between Boost.Function objects (because it is 
@@ -333,92 +341,14 @@ namespace boost {
 
   namespace detail {
     namespace function {
-      /**
-       * Determine if the given target is empty.
-       */
-
-      // Fallback - assume target is not empty
-      inline bool has_empty_target(...) 
-      { 
-        return false; 
-      }
-    
-      // If the target is a 'function', query the empty() method
-      inline bool has_empty_target(const function_base* af) 
-      { 
-        return af->empty();
+      inline bool has_empty_target(const function_base* f)
+      {
+        return f->empty();
       }
 
-      // If the target is a 'function', query the empty() method
-      inline bool has_empty_target(const function_base& af) 
-      { 
-        return af.empty();
-      }
-    
-      // A function pointer is empty if it is null
-      template<typename R>
-      inline bool has_empty_target(R (*f)())
+      inline bool has_empty_target(...)
       {
-        return f == 0;
-      }
-    
-      template<typename R, typename T1>
-      inline bool has_empty_target(R (*f)(T1))
-      {
-        return f == 0;
-      }
-    
-      template<typename R, typename T1, typename T2>
-      inline bool has_empty_target(R (*f)(T1, T2))
-      {
-        return f == 0;
-      }
-    
-      template<typename R, typename T1, typename T2, typename T3>
-      inline bool has_empty_target(R (*f)(T1, T2, T3))
-      {
-        return f == 0;
-      }
-
-      template<typename R, typename T1, typename T2, typename T3, typename T4>
-      inline bool has_empty_target(R (*f)(T1, T2, T3, T4))
-      {
-        return f == 0;
-      }
-
-      template<typename R, typename T1, typename T2, typename T3, typename T4, 
-               typename T5>
-      inline bool has_empty_target(R (*f)(T1, T2, T3, T4, T5))
-      {
-        return f == 0;
-      }
-
-      template<typename R, typename T1, typename T2, typename T3, typename T4, 
-               typename T5, typename T6>
-      inline bool has_empty_target(R (*f)(T1, T2, T3, T4, T5, T6))
-      {
-        return f == 0;
-      }
-
-      template<typename R, typename T1, typename T2, typename T3, typename T4, 
-               typename T5, typename T6, typename T7>
-      inline bool has_empty_target(R (*f)(T1, T2, T3, T4, T5, T6, T7))
-      {
-        return f == 0;
-      }
-
-      template<typename R, typename T1, typename T2, typename T3, typename T4, 
-               typename T5, typename T6, typename T7, typename T8>
-      inline bool has_empty_target(R (*f)(T1, T2, T3, T4, T5, T6, T7, T8))
-      {
-        return f == 0;
-      }
-
-      template<typename R, typename T1, typename T2, typename T3, typename T4, 
-               typename T5, typename T6, typename T7, typename T8, typename T9>
-      inline bool has_empty_target(R (*f)(T1, T2, T3, T4, T5, T6, T7, T8, T9))
-      {
-        return f == 0;
+        return false;
       }
     } // end namespace function
   } // end namespace detail
@@ -430,14 +360,18 @@ namespace boost {
     inline void postcall(const function_base*) {}
   };
 
-  // The default function mixin does nothing. The assignment and copy-construction operators
-  // are all defined because MSVC defines broken versions.
-  struct empty_function_mixin {
-    empty_function_mixin() {};
-    empty_function_mixin(const empty_function_mixin&) {};
+  // The default function mixin does nothing. The assignment and
+  // copy-construction operators are all defined because MSVC defines broken
+  // versions.
+  struct empty_function_mixin 
+  {
+    empty_function_mixin() {}
+    empty_function_mixin(const empty_function_mixin&) {}
 
     empty_function_mixin& operator=(const empty_function_mixin&) 
-    {return *this; }
+    {
+      return *this; 
+    }
   };
 }
 

@@ -13,7 +13,7 @@
 
 // Author: Dietmar Kuehl dietmar.kuehl@claas-solutions.de 
 // Title:  Implementation of the directory iterator
-// Version: $Name:  $ $Id: directory.cpp,v 1.1.1.1 2000/07/07 16:04:17 beman Exp $
+// Version: $Name: Version_1_28_0 $ $Id: directory.cpp,v 1.1.1.1 2000/07/07 16:04:17 beman Exp $
 
 // -------------------------------------------------------------------------- 
 

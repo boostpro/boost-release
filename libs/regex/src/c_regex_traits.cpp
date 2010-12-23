@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -38,6 +38,12 @@
 
 #if defined(BOOST_HAS_NL_TYPES_H)
 #include <nl_types.h>
+#endif
+
+// Fixes a very strange bug in Comeau 4.2.45.2 that would otherwise result in
+// an instantiation loop
+#if defined(__COMO__) && __COMO_VERSION__ <= 4245
+void c_regex_adopted_no_longer_needed_loop_shutter_upper() { }
 #endif
 
 namespace{
@@ -91,7 +97,6 @@ struct collate_name_t
 {
    std::string name;
    std::string value;
-   collate_name_t(){}
    collate_name_t(const char* p1, const char* p2, const char* p3, const char* p4)
       : name(p1, p2), value(p3, p4) {}
 };
@@ -174,12 +179,12 @@ std::list<syntax_map_t>* syntax;
 #endif
 
 
-unsigned int BOOST_REGEX_CALL _re_get_message(char* buf, unsigned int len, unsigned int id);
+std::size_t BOOST_REGEX_CALL _re_get_message(char* buf, std::size_t len, std::size_t id);
 
 template <class charT>
-unsigned int BOOST_REGEX_CALL re_get_message(charT* buf, unsigned int len, unsigned int id)
+std::size_t BOOST_REGEX_CALL re_get_message(charT* buf, std::size_t len, std::size_t id)
 {
-   unsigned int size = _re_get_message(static_cast<char*>(0), 0, id);
+   std::size_t size = _re_get_message(static_cast<char*>(0), 0, id);
    if(len < size)
       return size;
    boost::scoped_array<char> cb(new char[size]);
@@ -188,7 +193,7 @@ unsigned int BOOST_REGEX_CALL re_get_message(charT* buf, unsigned int len, unsig
    return size;
 }
 
-inline unsigned int BOOST_REGEX_CALL re_get_message(char* buf, unsigned int len, unsigned int id)
+inline std::size_t BOOST_REGEX_CALL re_get_message(char* buf, std::size_t len, std::size_t id)
 {
    return _re_get_message(buf, len, id);
 }
@@ -199,14 +204,19 @@ void BOOST_REGEX_CALL re_init_classes()
    if(classes_count == 0)
    {
       re_cls_name = new std::string("xxxxxxxx");
+#ifndef BOOST_NO_EXCEPTIONS
       try{
+#endif
          pclasses = new std::string[re_classes_max];
+         BOOST_REGEX_NOEH_ASSERT(pclasses)
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(...)
       {
          delete re_cls_name;
          throw;
       }
+#endif
    }
    ++classes_count;
 }
@@ -243,14 +253,19 @@ void BOOST_REGEX_CALL re_init_collate()
    if(collate_count == 0)
    {
       re_coll_name = new std::string("xxxxxxxx");
+#ifndef BOOST_NO_EXCEPTIONS
       try{
+#endif
          pcoll_names = new std::list<collate_name_t>();
+         BOOST_REGEX_NOEH_ASSERT(pcoll_names)
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(...)
       {
          delete re_coll_name;
          throw;
       }
+#endif
    }
    ++collate_count;
 }
@@ -292,7 +307,7 @@ void BOOST_REGEX_CALL re_update_collate()
    }
 }
 
-unsigned int BOOST_REGEX_CALL _re_get_message(char* buf, unsigned int len, unsigned int id)
+std::size_t BOOST_REGEX_CALL _re_get_message(char* buf, std::size_t len, std::size_t id)
 {
    BOOST_RE_GUARD_STACK
    // get the customised message if any:
@@ -302,7 +317,7 @@ unsigned int BOOST_REGEX_CALL _re_get_message(char* buf, unsigned int len, unsig
       const char* m = catgets(message_cat, 0, id, 0);
       if(m)
       {
-         unsigned int size = std::strlen(m) + 1;
+         std::size_t size = std::strlen(m) + 1;
          if(size > len)
             return size;
          std::strcpy(buf, m);
@@ -345,11 +360,15 @@ void BOOST_REGEX_CALL re_message_update()
       if(*boost::re_detail::c_traits_base::get_catalogue())
       {
          message_cat = catopen(boost::re_detail::c_traits_base::get_catalogue(), 0);
+#ifndef BOOST_NO_EXCEPTIONS
          if(message_cat == (nl_catd)-1)
          {
             std::string m("Unable to open message catalog: ");
             throw std::runtime_error(m + boost::re_detail::c_traits_base::get_catalogue());
          }
+#else
+         BOOST_REGEX_NOEH_ASSERT(message_cat != (nl_catd)-1);
+#endif
       }
 #endif
       for(int i = 0; i < boost::REG_E_UNKNOWN; ++i)
@@ -411,7 +430,7 @@ const char* BOOST_REGEX_CALL re_get_error_str(unsigned int id)
 namespace boost{
 namespace re_detail{
 
-char c_traits_base::regex_message_catalogue[200] = {0};
+char c_traits_base::regex_message_catalogue[BOOST_REGEX_MAX_PATH] = {0};
 
 std::string BOOST_REGEX_CALL c_traits_base::error_string(unsigned id)
 {
@@ -557,7 +576,7 @@ bool BOOST_REGEX_CALL c_regex_traits<wchar_t>::lookup_collatename(std::basic_str
 {
    BOOST_RE_GUARD_STACK
    std::basic_string<wchar_t> s(first, last);
-   unsigned int len = strnarrow(static_cast<char*>(0), 0, s.c_str());
+   std::size_t len = strnarrow(static_cast<char*>(0), 0, s.c_str());
    scoped_array<char> buf(new char[len]);
    strnarrow(buf.get(), len, s.c_str());
    std::string t_out;
@@ -592,14 +611,19 @@ void BOOST_REGEX_CALL c_regex_traits<char>::init()
    if(entry_count == 0)
    {
       ctype_name = new std::string("xxxxxxxxxxxxxxxx");
+#ifndef BOOST_NO_EXCEPTIONS
       try{
+#endif
          collate_name = new std::string("xxxxxxxxxxxxxxxx");
+         BOOST_REGEX_NOEH_ASSERT(collate_name)
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(...)
       {
          delete ctype_name;
          throw;
       }
+#endif
    }
    re_message_init();
    re_init_classes();
@@ -763,14 +787,19 @@ void BOOST_REGEX_CALL c_regex_traits<wchar_t>::init()
    if(nlsw_count == 0)
    {
       wlocale_name = new std::string("xxxxxxxxxxxxxxxx");
+#ifndef BOOST_NO_EXCEPTIONS
       try{
+#endif
          syntax = new std::list<syntax_map_t>();
+         BOOST_REGEX_NOEH_ASSERT(syntax)
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(...)
       {
          delete wlocale_name;
          throw;
       }
+#endif
    }
    ++nlsw_count;
 }
@@ -779,7 +808,7 @@ bool BOOST_REGEX_CALL c_regex_traits<wchar_t>::do_lookup_collate(std::basic_stri
 {
    BOOST_RE_GUARD_STACK
    std::basic_string<wchar_t> s(first, last);
-   unsigned int len = strnarrow(static_cast<char*>(0), 0, s.c_str());
+   std::size_t len = strnarrow(static_cast<char*>(0), 0, s.c_str());
    scoped_array<char> buf(new char[len]);
    strnarrow(buf.get(), len, s.c_str());
    std::string t_out;
@@ -989,28 +1018,28 @@ int BOOST_REGEX_CALL c_regex_traits<wchar_t>::toi(const wchar_t*& first, const w
 boost::uint_fast32_t BOOST_REGEX_CALL c_regex_traits<wchar_t>::lookup_classname(const wchar_t* first, const wchar_t* last)
 {
    std::basic_string<wchar_t> s(first, last);
-   unsigned int len = strnarrow(static_cast<char*>(0), 0, s.c_str());
+   std::size_t len = strnarrow(static_cast<char*>(0), 0, s.c_str());
    scoped_array<char> buf(new char[len]);
    strnarrow(buf.get(), len, s.c_str());
-   len =  do_lookup_class(buf.get());
-   return len;
+   boost::uint_fast32_t result =  do_lookup_class(buf.get());
+   return result;
 }
 
 c_regex_traits<wchar_t> c_regex_traits<wchar_t>::init_;
 
-unsigned int BOOST_REGEX_CALL c_regex_traits<wchar_t>::strnarrow(char *s1, unsigned int len, const wchar_t *s2)
+std::size_t BOOST_REGEX_CALL c_regex_traits<wchar_t>::strnarrow(char *s1, std::size_t len, const wchar_t *s2)
 {
    BOOST_RE_GUARD_STACK
-   unsigned int size = std::wcslen(s2) + 1;
+   std::size_t size = std::wcslen(s2) + 1;
    if(size > len)
       return size;
    return std::wcstombs(s1, s2, len);
 }
 
-unsigned int BOOST_REGEX_CALL c_regex_traits<wchar_t>::strwiden(wchar_t *s1, unsigned int len, const char *s2)
+std::size_t BOOST_REGEX_CALL c_regex_traits<wchar_t>::strwiden(wchar_t *s1, std::size_t len, const char *s2)
 {
    BOOST_RE_GUARD_STACK
-   unsigned int size = std::strlen(s2) + 1;
+   std::size_t size = std::strlen(s2) + 1;
    if(size > len)
       return size;
    size = std::mbstowcs(s1, s2, len);
@@ -1020,5 +1049,6 @@ unsigned int BOOST_REGEX_CALL c_regex_traits<wchar_t>::strwiden(wchar_t *s1, uns
 
 #endif // BOOST_NO_WREGEX
 
-
 } // namespace boost
+
+

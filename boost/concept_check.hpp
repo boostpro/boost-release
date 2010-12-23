@@ -19,6 +19,8 @@
 #include <utility>
 #include <boost/type_traits/conversion_traits.hpp>
 #include <boost/static_assert.hpp>
+#include <boost/type.hpp>
+
 
 #if defined(BOOST_MSVC) || defined(__BORLANDC__)
 #define BOOST_FPTR
@@ -36,8 +38,9 @@ namespace boost {
 
 template <class T> inline void ignore_unused_variable_warning(const T&) { }
 
+// the unused, defaulted parameter is a workaround for MSVC and Compaq C++
 template <class Concept>
-inline void function_requires()
+inline void function_requires(type<Concept>* = 0)
 {
 #if !defined(NDEBUG)
   void (Concept::*x)() = BOOST_FPTR Concept::constraints;
@@ -350,6 +353,9 @@ struct require_same { typedef T type; };
   template <class Func, class Return, class Arg>
   struct UnaryFunctionConcept
   {
+    // required in case any of our template args are const-qualified:
+    UnaryFunctionConcept();
+    
     void constraints() {
       r = f(arg); // require operator()
     }

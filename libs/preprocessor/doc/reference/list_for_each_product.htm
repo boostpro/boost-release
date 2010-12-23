@@ -19,19 +19,38 @@
 
 <hr>
 
-<a href="list_for_each.htm">Prev</a> <a href="list_rest_n.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
+<a href="list_for_each_i.htm">Prev</a> <a href="list_rest_n.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
 <hr>
 
 <h1>#include &lt;<a href="../../../../boost/preprocessor/list/for_each_product.hpp">boost/preprocessor/list/for_each_product.hpp</a>&gt;</h1>
 
 <hr>
 
-<h2><a name="BOOST_PP_LIST_FOR_EACH_PRODUCT">#define BOOST_PP_LIST_FOR_EACH_PRODUCT</a>(F,N,T_OF_L)</h2>
- <p>Repeats <code>F(R,X)</code> for each element <code>X</code> of the
-cartesian product of the lists of the <code>N</code>-tuple <code>T_OF_L</code>.</p>
+<h2><a name="BOOST_PP_LIST_FOR_EACH_PRODUCT">#define BOOST_PP_LIST_FOR_EACH_PRODUCT</a>(MACRO,SIZE_OF_TUPLE,TUPLE_OF_LISTS)</h2>
+ <p>Repeats <code>MACRO(R,X)</code> for each element <code>X</code> of the
+cartesian product of the lists of the <code>SIZE_OF_TUPLE</code>-tuple <code>TUPLE_OF_LISTS</code>.</p>
 
 <p>This macro is useful for generating code to avoid combinatorial
 explosion.</p>
+
+<p>For example,</p>
+
+<pre>
+  #define TEST(R,X) X
+  <a href="list_for_each_product.htm#BOOST_PP_LIST_FOR_EACH_PRODUCT">BOOST_PP_LIST_FOR_EACH_PRODUCT</a>
+  ( TEST
+  , 2
+  , ( <a href="tuple_to_list.htm#BOOST_PP_TUPLE_TO_LIST">BOOST_PP_TUPLE_TO_LIST</a>(3,(A,B,C))
+    , <a href="tuple_to_list.htm#BOOST_PP_TUPLE_TO_LIST">BOOST_PP_TUPLE_TO_LIST</a>(2,(1,2))
+    )
+  )
+</pre>
+
+<p>expands to:</p>
+
+<pre>
+  (A,1) (A,2) (B,1) (B,2) (C,1) (C,2) 
+</pre>
 
 <h3>Example</h3>
 <ul>
@@ -41,7 +60,7 @@ explosion.</p>
 
 <h3>Uses</h3>
 <ul>
-  <li><a href="for.htm#BOOST_PP_FOR">BOOST_PP_FOR</a>()</li>
+  <li><a href="for.htm#BOOST_PP_FOR">BOOST_PP_FOR</a>() (see for explanation of the R parameter)</li>
 </ul>
 
 <h3>Test</h3>
@@ -51,7 +70,11 @@ explosion.</p>
 
 <hr>
 
-<a href="list_for_each.htm">Prev</a> <a href="list_rest_n.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
+<h2><a name="BOOST_PP_LIST_FOR_EACH_PRODUCT_R">#define BOOST_PP_LIST_FOR_EACH_PRODUCT_R</a>(R,MACRO,SIZE_OF_TUPLE,TUPLE_OF_LISTS)</h2>
+ <p>Can be used inside <a href="for.htm#BOOST_PP_FOR">BOOST_PP_FOR</a>().</p> 
+<hr>
+
+<a href="list_for_each_i.htm">Prev</a> <a href="list_rest_n.htm">Next</a> <a href="index.htm#Macros">Macros</a> <a href="index.htm#Headers">Headers</a>
 <hr>
 
 <p>Revised <!--webbot bot="Timestamp" s-type="EDITED" s-format="%d %b %Y" startspan --><!--webbot bot="Timestamp" endspan i-checksum="15246" --></p>

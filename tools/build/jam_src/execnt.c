@@ -315,6 +315,8 @@ onintr( int disp )
 	printf( "...interrupted\n" );
 }
 
+#if 0 // the shell is too different from direct invocation; let's
+      // always use the shell unless forced.
 /*
  * use_bat_file() - return true iff the command demands the use of a
  * .bat file to run it
@@ -324,7 +326,17 @@ int use_bat_file(char* command)
     char *p = command;
     
     char inquote = 0;
-    
+
+    p += strspn( p, " \t" );
+
+    /* spawnvp can't handle any paths with spaces or quoted filenames with no directory prefix */
+    if ( *p == '"' )
+    {
+        char* q = p + 1 + strcspn( p + 1, "\" /\\" );
+        if ( *q == '"' || *q == ' ' )
+            return 1;
+    }
+        
     /* Look for newlines and unquoted i/o redirection */
     do
     {
@@ -369,10 +381,11 @@ int use_bat_file(char* command)
     
     return p - command >= MAXLINE;
 }
+#endif
 
 void execnt_unit_test()
 {
-#ifndef NDEBUG
+#if 0 && !defined(NDEBUG)
     /* vc6 preprocessor is broken, so assert with these strings gets
      * confused. Use a table instead.
      */
@@ -382,6 +395,10 @@ void execnt_unit_test()
         { "x\n ", 0 },
         { "x\ny", 1 },
         { "x\n\n y", 1 },
+        { "\"x\"", 1 },
+        { "\"x y\"", 1 },
+        { "\"x/y\"", 0 },
+        { "\"x\\y\"", 0 },
         { "echo x > foo.bar", 1 },
         { "echo x < foo.bar", 1 },
         { "echo x \">\" foo.bar", 0 },
@@ -478,7 +495,8 @@ execcmd(
     /* Frankly, if it is a single long line I don't think the */
     /* command interpreter will do any better -- it will fail. */
 
-    if( shell || !raw_cmd && use_bat_file( string ) )
+    if( shell || !raw_cmd // && use_bat_file( string )
+        )
     {
         FILE *f;
 
@@ -489,6 +507,18 @@ execcmd(
         fclose( f );
 
         string = cmdtab[ slot ].tempfile;
+        
+        if( DEBUG_EXECCMD )
+        {
+            if (shell)
+                printf("using user-specified shell: %s", shell->string);
+            else
+                printf("Executing through .bat file\n");
+        }
+    }
+    else if( DEBUG_EXECCMD )
+    {
+        printf("Executing raw command directly\n");
     }
 
     /* Forumulate argv */

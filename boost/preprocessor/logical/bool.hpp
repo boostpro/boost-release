@@ -14,10 +14,13 @@
  */
 
 /** <p>Expands to <code>0</code> if <code>X == 0</code> and <code>1</code> if <code>X != 0</code>.</p>
+
+<p><code>X</code> must be an integer literal in the range [0, BOOST_PP_LIMIT_MAG].</p>
+
+<p>For example, <code>BOOST_PP_BOOL(3)</code> expands to <code>1</code>.</p>
 */
 #define BOOST_PP_BOOL(X) BOOST_PP_BOOL_DELAY(X)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 /* BOOL can be implemented in O(1) tokens using saturated ADD & SUB.
  * Unfortunately, it would result in significantly slower preprocessing.
  */
@@ -151,8 +154,7 @@
 #define BOOST_PP_BOOL126 1
 #define BOOST_PP_BOOL127 1
 #define BOOST_PP_BOOL128 1
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_BOOL().</p> */
+/* <p>Obsolete. Use BOOST_PP_BOOL().</p> */
 #define BOOST_PREPROCESSOR_BOOL(X) BOOST_PP_BOOL(X)
 #endif

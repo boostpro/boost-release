@@ -14,7 +14,7 @@
 
 namespace boost {
 
-lock_error::lock_error() : std::runtime_error("thread lock error")
+lock_error::lock_error() : std::logic_error("thread lock error")
 {
 }
 

@@ -17,6 +17,11 @@ NESTED_DECL(is_array)
 NESTED_DECL(is_pointer)
 NESTED_DECL(is_reference)
 
+struct convertible_to_pointer
+{
+    operator char*() const;
+};
+
 int cpp_main(int argc, char* argv[])
 {
    NESTED_TEST(is_array, int)
@@ -45,9 +50,8 @@ int cpp_main(int argc, char* argv[])
    value_test(false, boost::is_array<int(&)[2]>::value)
    value_test(false, boost::is_array<f1>::value)
    value_test(false, boost::is_array<void>::value)
-#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
    value_test(false, boost::is_array<test_abc1>::value)
-#endif
+   value_test(false, boost::is_array<convertible_to_pointer>::value)
 
    value_test(false, boost::is_pointer<int>::value)
    value_test(false, boost::is_pointer<int&>::value)
@@ -75,9 +79,7 @@ int cpp_main(int argc, char* argv[])
    value_test(false, boost::is_pointer<mf2>::value)
    value_test(false, boost::is_pointer<mf3>::value)
    value_test(false, boost::is_pointer<mf4>::value)
-#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
    value_test(false, boost::is_pointer<test_abc1>::value)
-#endif
 
    value_test(false, boost::is_reference<bool>::value)
    value_test(true, boost::is_reference<int&>::value)
@@ -88,9 +90,7 @@ int cpp_main(int argc, char* argv[])
    value_test(true, boost::is_reference<cr_type>::value)
    value_test(true, boost::is_reference<const UDT&>::value)
    value_test(false, boost::is_reference<void>::value)
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_MSVC)
    value_test(false, boost::is_reference<test_abc1>::value)
-#endif
 
    value_test(false, boost::is_member_pointer<f1>::value)
    value_test(false, boost::is_member_pointer<f2>::value)
@@ -103,9 +103,7 @@ int cpp_main(int argc, char* argv[])
    value_test(true, boost::is_member_pointer<cmf>::value)
    value_test(true, boost::is_member_pointer<mp>::value)
    value_test(false, boost::is_member_pointer<void>::value)
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
    value_test(false, boost::is_member_pointer<test_abc1>::value)
-#endif
 
    value_test(false, boost::is_member_function_pointer<f1>::value)
    value_test(false, boost::is_member_function_pointer<f2>::value)
@@ -118,26 +116,25 @@ int cpp_main(int argc, char* argv[])
    value_test(true, boost::is_member_function_pointer<cmf>::value)
    value_test(false, boost::is_member_function_pointer<mp>::value)
    value_test(false, boost::is_member_function_pointer<void>::value)
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(__BORLANDC__)
    value_test(false, boost::is_member_function_pointer<test_abc1>::value)
-#endif
 
    value_test(false, boost::is_enum<int>::value)
    value_test(true, boost::is_enum<enum_UDT>::value)
    value_test(false, boost::is_enum<int_convertible>::value)
-   //value_test(false, boost::is_enum<int&>::value)
+   value_test(false, boost::is_enum<int&>::value)
+   value_test(false, boost::is_enum<boost::noncopyable>::value)
    value_test(false, boost::is_enum<void>::value)
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_MSVC)
    value_test(false, boost::is_enum<test_abc1>::value)
-#endif
 
    return check_result(argc, argv);
 }
 
 //
 // define the number of failures expected for given compilers:
-#ifdef __BORLANDC__
+#if defined(__BORLANDC__) && (__BORLANDC__ <= 0x551)
 unsigned int expected_failures = 2;
+#elif defined(__BORLANDC__)
+unsigned int expected_failures = 1;
 #elif defined(__SUNPRO_CC)
 #if (__SUNPRO_CC <= 0x520)
 unsigned int expected_failures = 11;
@@ -145,15 +142,17 @@ unsigned int expected_failures = 11;
 unsigned int expected_failures = 1;
 #endif
 #elif defined(__GNUC__)
+#if (__GNUC__ > 3) || ( __GNUC__ == 3 && __GNUC_MINOR__ >= 1) 
+unsigned int expected_failures = 0;
+# else
 unsigned int expected_failures = 1; // can't handle cv-qualified references
+# endif
 #elif defined(BOOST_MSVC)
-unsigned int expected_failures = 1;
-#elif defined(__MWERKS__) || defined(__HP_aCC)
+unsigned int expected_failures = 0;
+#elif defined(__MWERKS__) && __MWERKS__ < 0x3000 || defined(__HP_aCC)
 unsigned int expected_failures = 1; // is_enum doesn't work
 #else
 unsigned int expected_failures = 0;
 #endif
-
-
 
 

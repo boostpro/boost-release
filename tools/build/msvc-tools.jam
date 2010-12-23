@@ -6,22 +6,64 @@
 # "as is" without express or implied warranty, and with no claim as
 # to its suitability for any purpose.
 
+# The following #// line will be used by the regression test table generation
+# program as the column heading for HTML tables. Must not include version number.
+#//<a href="http://msdn.microsoft.com/vstudio/default.asp">Micro-<br>soft<br>VC++</a>
+
+# singleton variables...
+set-as-singleton MSVCDir VISUALC MSVC_ROOT VC_TOOL_PATH VC_SETUP ;
+
+# Get these variable set on the targets so that we can re-use the
+# build actions for other toolsets using this one as a base.
+flags msvc VC_TOOL_PATH ;
+flags msvc VC_SETUP ;
+flags msvc VC_COMPILER ;
+flags msvc VC_LINKER ;
+flags msvc VC_PDB_NAME ;
+  
 # compute MSVC tool path
 # You can either put the msvc bin directory in your PATH, or you can set
 # MSVCDir to point at the msvc installation directory
+
+# Some installations set MSVCDIR instead of MSVCDir; who knows why?
+MSVCDir ?= $(MSVCDIR) ;
+
+# If MSVCDir is not set the user hasn't run VCVARS32.BAT
 if ! $(MSVCDir)
 {
+    # In case someone set VISUALC in order to build Jam, we can just use that.
     MSVC_ROOT ?= $(VISUALC) ;
+    # Otherwise, guess a standard installation directory
     MSVC_ROOT ?= "C:\\Program Files\\Microsoft Visual C++\\VC98" ;
-    MSVC_TOOL_PATH ?= "$(MSVC_ROOT)"$(SLASH)bin$(SLASH) ;
-    MSVC_SETUP ?= "CALL \"$(MSVC_TOOL_PATH)VCVARS32.BAT\" >nul" ;
+    
+    # Reconstitutes paths containing spaces
+    MSVC_ROOT = $(MSVC_ROOT:J=" ") ;
+    
+    # The tools are provisionallly located in the msvc6 bin
+    # directory. This may be overridden by toolsets which extend this
+    # one.
+    VC_TOOL_PATH = "$(MSVC_ROOT)"$(SLASH)bin$(SLASH) ;
+    
+    # Always call VCVARS32.BAT before invoking the tools
+    VC_SETUP = "CALL \"$(VC_TOOL_PATH)VCVARS32.BAT\" >nul" ;
 }
 else
 {
-    MSVC_TOOL_PATH ?= "" ; # Don't clobber adjoining text if MSVCDir is already set
+    # Reconstitutes paths containing spaces
+    MSVCDir = $(MSVCDir:J=" ") ;
+    
+    # Don't clobber adjoining text or use explicit paths if MSVCDir is already set
+    VC_TOOL_PATH = "" ; 
 }
 
-flags msvc CFLAGS <debug-symbols>on : /Zi ;
+VC_COMPILER = cl ;
+VC_LINKER = link ;
+VC_PDB_NAME = vc60 ;
+VC_STDLIB_PATH = ;
+
+flags msvc CFLAGS <debug-symbols>on/<debug-store>object : /Z7 ;
+flags msvc CFLAGS <debug-symbols>on/<debug-store>database : /Zi ;
+flags msvc PDB_CFLAG <debug-symbols>on/<debug-store>database : /Fd ;
 flags msvc LINKFLAGS <debug-symbols>on : /DEBUG ;
 
 flags msvc CFLAGS <optimization>off : /Od ;
@@ -62,12 +104,23 @@ flags msvc NEEDLIBS <library-file> ;
 flags msvc FINDLIBS <find-library> ;
 flags msvc LINKFLAGS <target-type>$(SHARED_TYPES) : /DLL ;
 
+
+rule vc-set-pdb-file ( targets + : name )
+{
+    local pdb = $(targets[1]:B=$(name):S=.pdb) ;
+    VC_PDB_FILE on $(targets) = $(pdb:G=:R=$(LOCATE_TARGET)) ;
+    LOCATE on $(pdb) = $(LOCATE_TARGET) ;
+    Clean clean : $(pdb) ;
+}
+
 #### Link ####
 
-rule Link-action
+rule Link-action ( target implib ? : sources + : target-type ? )
 {
-    with-command-file msvc-Link-action $(<) : $(>) $(NEEDLIBS) ;
-    if $(<[2])
+    with-command-file vc-Link $(<) : $(sources) $(NEEDLIBS) ;
+
+    gRUN_PATH($(<)) += $(VC_STDLIB_PATH) ;
+    if $(implib)
     {
         # incremental linking a DLL causes no end of problems: if the
         # actual exports don't change, the import .lib file is never
@@ -77,49 +130,53 @@ rule Link-action
         # don't want it.
         NOINCREMENTAL on $(<) = /INCREMENTAL:NO ;
     }
+    vc-set-pdb-file $(<) : $(target:B) ;
 }
 
-actions together msvc-Link-action bind NEEDLIBS
+actions together vc-Link bind NEEDLIBS
 {
-    $(MSVC_SETUP)
-    $(MSVC_TOOL_PATH)link /nologo $(NOINCREMENTAL) $(LINKFLAGS) /PDB:"$(<[1]:S=.pdb)" /out:"$(<[1])" /IMPLIB:$(<[2]) /LIBPATH:$(LIBPATH) /LIBPATH:$(STDLIBPATH) "$(FINDLIBS)" @"$(>)"
+    $(VC_SETUP)
+    "$(VC_TOOL_PATH)$(VC_LINKER)" /nologo $(NOINCREMENTAL) $(LINKFLAGS) $(PDB_LINKFLAG)"$(VC_PDB_FILE)" /out:"$(<[1])" /IMPLIB:"$(<[2])" /LIBPATH:"$(LIBPATH)" /LIBPATH:"$(STDLIBPATH)" "$(FINDLIBS:S=.lib)" @"$(>)"
 }
 
 #### Cc #####
 
 rule Cc-action
 {
-    msvc-Cc-action $(<) : $(>) ;
+    vc-set-pdb-file $(<) : $(VC_PDB_NAME) ;
+    vc-Cc $(<) : $(>) ;
 }
 
-actions msvc-Cc-action
+actions vc-Cc
 {
-    $(MSVC_SETUP)
-    $(MSVC_TOOL_PATH)cl /Zm400 -nologo -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -Fo"$(<)" "$(>)"
+    $(VC_SETUP)
+    "$(VC_TOOL_PATH)$(VC_COMPILER)" /Zm400 -nologo -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" $(PDB_CFLAG)"$(VC_PDB_FILE)" -Fo"$(<)" "$(>)"
 }
 
 #### C++ ####
 rule C++-action
 {
-    msvc-C++-action $(<) : $(>) ;
+    vc-set-pdb-file $(<) : $(VC_PDB_NAME) ;
+    vc-C++ $(<) : $(>) ;
 }
 
-actions msvc-C++-action
+actions vc-C++
 {
-    $(MSVC_SETUP)
-    $(MSVC_TOOL_PATH)cl /Zm400 -nologo -GX -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -Fo"$(<)" -Tp"$(>)"
+    $(VC_SETUP)
+    "$(VC_TOOL_PATH)$(VC_COMPILER)" /Zm400 -nologo -GX -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" $(PDB_CFLAG)"$(VC_PDB_FILE)" -Fo"$(<)" -Tp"$(>)"
 }
 
 #### Archive ####
 rule Archive-action
 {
-    with-command-file msvc-Archive-action $(<) : $(>) ;
+    vc-set-pdb-file $(<) : $(<:B) ;
+    with-command-file vc-Archive $(<) : $(>) ;
 }
 
-actions updated together piecemeal msvc-Archive-action
+actions updated together piecemeal vc-Archive
 {
-    $(MSVC_SETUP)
+    $(VC_SETUP)
     if exist "$(<)" set _$(<:B)_="$(<)"
-    $(MSVC_TOOL_PATH)link /lib $(ARFLAGS) /out:"$(<)" %_$(<:B)_% @"$(>)"
+    "$(VC_TOOL_PATH)$(VC_LINKER)" /lib $(ARFLAGS) $(PDB_LINKFLAG)"$(VC_PDB_FILE)" /out:"$(<)" %_$(<:B)_% @"$(>)"
 }
 

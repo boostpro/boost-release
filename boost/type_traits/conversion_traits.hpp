@@ -95,7 +95,7 @@ public:
 // UDT conversions:
 //
 template <class From, class To>
-struct is_convertible_helper
+struct is_convertible
 {
 private:
 #pragma option push -w-8074
@@ -113,17 +113,6 @@ public:
 
    void foo(); // avoid warning about all members being private
 #pragma option pop
-};
-
-template <class From, class To>
-struct is_convertible
-{
-private:
-   typedef is_convertible_helper<From, To> c_type;
-   enum{ v = c_type::value };
-   char force_it[v ? 1 : 2];
-public:
-   static const bool value = is_convertible_helper<From, To>::value;
 };
 
 #elif defined(__GNUC__)
@@ -176,6 +165,15 @@ public:
 BOOST_FLOAT_IS_CONVERTIBLE(float)
 BOOST_FLOAT_IS_CONVERTIBLE(double)
 BOOST_FLOAT_IS_CONVERTIBLE(long double)
+BOOST_FLOAT_IS_CONVERTIBLE(float const)
+BOOST_FLOAT_IS_CONVERTIBLE(double const)
+BOOST_FLOAT_IS_CONVERTIBLE(long double const)
+BOOST_FLOAT_IS_CONVERTIBLE(float volatile)
+BOOST_FLOAT_IS_CONVERTIBLE(double volatile)
+BOOST_FLOAT_IS_CONVERTIBLE(long double volatile)
+BOOST_FLOAT_IS_CONVERTIBLE(float const volatile)
+BOOST_FLOAT_IS_CONVERTIBLE(double const volatile)
+BOOST_FLOAT_IS_CONVERTIBLE(long double const volatile)
 # undef BOOST_FLOAT_IS_CONVERTIBLE
 # undef BOOST_IS_CONVERTIBLE2
 # undef BOOST_IS_CONVERTIBLE

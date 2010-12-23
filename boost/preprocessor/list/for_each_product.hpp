@@ -19,11 +19,30 @@
 #include <boost/preprocessor/tuple/reverse.hpp>
 #include <boost/preprocessor/for.hpp>
 
-/** <p>Repeats <code>F(R,X)</code> for each element <code>X</code> of the
-cartesian product of the lists of the <code>N</code>-tuple <code>T_OF_L</code>.</p>
+/** <p>Repeats <code>MACRO(R,X)</code> for each element <code>X</code> of the
+cartesian product of the lists of the <code>SIZE_OF_TUPLE</code>-tuple <code>TUPLE_OF_LISTS</code>.</p>
 
 <p>This macro is useful for generating code to avoid combinatorial
 explosion.</p>
+
+<p>For example,</p>
+
+<pre>
+  #define TEST(R,X) X
+  BOOST_PP_LIST_FOR_EACH_PRODUCT
+  ( TEST
+  , 2
+  , ( BOOST_PP_TUPLE_TO_LIST(3,(A,B,C))
+    , BOOST_PP_TUPLE_TO_LIST(2,(1,2))
+    )
+  )
+</pre>
+
+<p>expands to:</p>
+
+<pre>
+  (A,1) (A,2) (B,1) (B,2) (C,1) (C,2) 
+</pre>
 
 <h3>Example</h3>
 <ul>
@@ -33,7 +52,7 @@ explosion.</p>
 
 <h3>Uses</h3>
 <ul>
-  <li>BOOST_PP_FOR()</li>
+  <li>BOOST_PP_FOR() (see for explanation of the R parameter)</li>
 </ul>
 
 <h3>Test</h3>
@@ -41,11 +60,11 @@ explosion.</p>
   <li><a href="../../test/list_test.cpp">list_test.cpp</a></li>
 </ul>
 */
-#define BOOST_PP_LIST_FOR_EACH_PRODUCT(F,N,T_OF_L) BOOST_PP_LIST_FOR_EACH_PRODUCT_R(0,F,N,T_OF_L)
+#define BOOST_PP_LIST_FOR_EACH_PRODUCT(MACRO,SIZE_OF_TUPLE,TUPLE_OF_LISTS) BOOST_PP_LIST_FOR_EACH_PRODUCT_R(0,MACRO,SIZE_OF_TUPLE,TUPLE_OF_LISTS)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-#define BOOST_PP_LIST_FOR_EACH_PRODUCT_R(R,F,N,T_OF_L) BOOST_PP_LIST_FOR_EACH_PRODUCT_R2(0,F,BOOST_PP_TUPLE_TO_LIST(N,BOOST_PP_TUPLE_REVERSE(N,T_OF_L)))
-#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) && __MWERKS__ <= 0x2406 ||\
+/** <p>Can be used inside BOOST_PP_FOR().</p> */
+#define BOOST_PP_LIST_FOR_EACH_PRODUCT_R(R,MACRO,SIZE_OF_TUPLE,TUPLE_OF_LISTS) BOOST_PP_LIST_FOR_EACH_PRODUCT_R2(0,MACRO,BOOST_PP_TUPLE_TO_LIST(SIZE_OF_TUPLE,BOOST_PP_TUPLE_REVERSE(SIZE_OF_TUPLE,TUPLE_OF_LISTS)))
+#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) ||\
   !defined(BOOST_NO_COMPILER_CONFIG) && defined(_MSC_VER)
 #  define BOOST_PP_LIST_FOR_EACH_PRODUCT_R2(R,F,LL) BOOST_PP_FOR##R((BOOST_PP_TUPLE_ELEM(3,0,LL),BOOST_PP_TUPLE_ELEM(3,1,LL),(_,_,0),F),BOOST_PP_LIST_FOR_EACH_PRODUCT_C,BOOST_PP_LIST_FOR_EACH_PRODUCT_F,BOOST_PP_LIST_FOR_EACH_PRODUCT_I0)
 #  define BOOST_PP_LIST_FOR_EACH_PRODUCT_C(R,P) BOOST_PP_TUPLE_ELEM(3,2,BOOST_PP_TUPLE_ELEM(4,0,P))
@@ -95,5 +114,4 @@ explosion.</p>
 #define BOOST_PP_LIST_FOR_EACH_PRODUCT_I14(R,P) BOOST_PP_LIST_FOR_EACH_PRODUCT_I_C(P,14)(R,P)
 #define BOOST_PP_LIST_FOR_EACH_PRODUCT_I15_C(R,P) BOOST_PP_FOR##R(BOOST_PP_LIST_FOR_EACH_PRODUCT_I_H(P),BOOST_PP_LIST_FOR_EACH_PRODUCT_C,BOOST_PP_LIST_FOR_EACH_PRODUCT_F,BOOST_PP_LIST_FOR_EACH_PRODUCT_I16)
 #define BOOST_PP_LIST_FOR_EACH_PRODUCT_I15(R,P) BOOST_PP_LIST_FOR_EACH_PRODUCT_I_C(P,15)(R,P)
-#endif
 #endif

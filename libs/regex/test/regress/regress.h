@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -44,6 +44,10 @@ using std::endl;
 #include <boost/regex.hpp>
 
 #if defined(TEST_UNICODE)
+
+#ifdef BOOST_NO_WREGEX
+#error "Wide character support is not enabled in regex lib - can't build wide character test program"
+#endif
 
 #ifdef __GNUC__
 #define char_t wchar_t
@@ -410,6 +414,10 @@ __iterator_category(const debug_iterator<T>&) {
 }
 #endif
 
+#if defined(_WIN32) && !defined(BOOST_RE_TEST_LOCALE_CPP) && !defined(BOOST_RE_TEST_LOCALE_C) && !defined(BOOST_RE_TEST_LOCALE_W32)
+#define BOOST_RE_TEST_LOCALE_W32
+#endif
+
 
 #ifdef BOOST_RE_TEST_LOCALE_W32
 typedef boost::reg_expression<char_t, boost::w32_regex_traits<char_t>, jm_debug_alloc> re_type;
@@ -426,6 +434,7 @@ typedef boost::reg_expression<char_t, boost::c_regex_traits<char_t>, jm_debug_al
 #define REG_MERGE_COPY 16
 
 #endif
+
 
 
 

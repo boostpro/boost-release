@@ -32,6 +32,9 @@
    && (defined(ULLONG_MAX) || defined(ULONG_LONG_MAX) || defined(ULONGLONG_MAX))
 #  define BOOST_HAS_LONG_LONG
 #endif
+#if !defined(BOOST_HAS_LONG_LONG) && !defined(BOOST_NO_INTEGRAL_INT64_T)
+#  define BOOST_NO_INTEGRAL_INT64_T
+#endif
 
 // GCC 3.x will clean up all of those nasty macro definitions that
 // BOOST_NO_CTYPE_FUNCTIONS is intended to help work around, so undefine
@@ -131,6 +134,16 @@
 #  endif
 
 //
+// If Win32 support is turned off, then we must turn off
+// threading support also, unless there is some other
+// thread API enabled:
+//
+#if defined(BOOST_DISABLE_WIN32) && defined(_WIN32) \
+   && !defined(BOOST_DISABLE_THREADS) && !defined(BOOST_HAS_PTHREADS)
+#  define BOOST_DISABLE_THREADS
+#endif
+
+//
 // Turn on threading support if the compiler thinks that it's in
 // multithreaded mode.  We put this here because there are only a
 // limited number of macros that identify this (if there's any missing
@@ -205,10 +218,23 @@ namespace std {
     return  __a < __b ? __b : __a;
   }
 #     ifdef BOOST_MSVC
+  // Apparently, something in the Microsoft libraries requires the "long"
+  // overload, because it calls the min/max functions with arguments of
+  // slightly different type.  (If this proves to be incorrect, this
+  // whole "BOOST_MSVC" section can be removed.)
   inline long min(long __a, long __b) {
     return __b < __a ? __b : __a;
   }
   inline long max(long __a, long __b) {
+    return  __a < __b ? __b : __a;
+  }
+  // The "long double" overload is required, otherwise user code calling
+  // min/max for floating-point numbers will use the "long" overload.
+  // (SourceForge bug #495495)
+  inline long double min(long double __a, long double __b) {
+    return __b < __a ? __b : __a;
+  }
+  inline long double max(long double __a, long double __b) {
     return  __a < __b ? __b : __a;
   }
 #     endif

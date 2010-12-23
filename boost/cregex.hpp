@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -16,7 +16,7 @@
  /*
   *   LOCATION:    see http://www.boost.org for most recent version.
   *   FILE         cregex.cpp
-  *   VERSION      3.12
+  *   VERSION      see <boost/version.hpp>
   *   DESCRIPTION: Declares POSIX API functions
   *                + boost::RegEx high level wrapper.
   */
@@ -36,7 +36,13 @@ namespace boost{
 extern "C" {
 #endif
 
-typedef int regoff_t;
+#if defined(__cplusplus) && !defined(BOOST_NO_STDC_NAMESPACE)
+typedef std::ptrdiff_t regoff_t;
+typedef std::size_t regsize_t;
+#else
+typedef ptrdiff_t regoff_t;
+typedef size_t regsize_t;
+#endif
 
 typedef struct
 {
@@ -97,14 +103,14 @@ typedef enum{
 } reg_exec_flags;
 
 BOOST_REGEX_DECL int BOOST_REGEX_CCALL regcompA(regex_tA*, const char*, int);
-BOOST_REGEX_DECL unsigned int BOOST_REGEX_CCALL regerrorA(int, const regex_tA*, char*, unsigned int);
-BOOST_REGEX_DECL int BOOST_REGEX_CCALL regexecA(const regex_tA*, const char*, unsigned int, regmatch_t*, int);
+BOOST_REGEX_DECL regsize_t BOOST_REGEX_CCALL regerrorA(int, const regex_tA*, char*, regsize_t);
+BOOST_REGEX_DECL int BOOST_REGEX_CCALL regexecA(const regex_tA*, const char*, regsize_t, regmatch_t*, int);
 BOOST_REGEX_DECL void BOOST_REGEX_CCALL regfreeA(regex_tA*);
 
 #ifndef BOOST_NO_WREGEX
 BOOST_REGEX_DECL int BOOST_REGEX_CCALL regcompW(regex_tW*, const wchar_t*, int);
-BOOST_REGEX_DECL unsigned int BOOST_REGEX_CCALL regerrorW(int, const regex_tW*, wchar_t*, unsigned int);
-BOOST_REGEX_DECL int BOOST_REGEX_CCALL regexecW(const regex_tW*, const wchar_t*, unsigned int, regmatch_t*, int);
+BOOST_REGEX_DECL regsize_t BOOST_REGEX_CCALL regerrorW(int, const regex_tW*, wchar_t*, regsize_t);
+BOOST_REGEX_DECL int BOOST_REGEX_CCALL regexecW(const regex_tW*, const wchar_t*, regsize_t, regmatch_t*, int);
 BOOST_REGEX_DECL void BOOST_REGEX_CCALL regfreeW(regex_tW*);
 #endif
 
@@ -242,6 +248,7 @@ public:
    unsigned int SetExpression(const char* p, bool icase = false);
    unsigned int SetExpression(const std::string& s, bool icase = false){ return SetExpression(s.c_str(), icase); }
    std::string Expression()const;
+   unsigned int error_code()const;
    //
    // now matching operators:
    //
@@ -253,8 +260,8 @@ public:
    unsigned int Grep(GrepCallback cb, const std::string& s, unsigned int flags = match_default) { return Grep(cb, s.c_str(), flags); }
    unsigned int Grep(std::vector<std::string>& v, const char* p, unsigned int flags = match_default);
    unsigned int Grep(std::vector<std::string>& v, const std::string& s, unsigned int flags = match_default) { return Grep(v, s.c_str(), flags); }
-   unsigned int Grep(std::vector<unsigned int>& v, const char* p, unsigned int flags = match_default);
-   unsigned int Grep(std::vector<unsigned int>& v, const std::string& s, unsigned int flags = match_default) { return Grep(v, s.c_str(), flags); }
+   unsigned int Grep(std::vector<std::size_t>& v, const char* p, unsigned int flags = match_default);
+   unsigned int Grep(std::vector<std::size_t>& v, const std::string& s, unsigned int flags = match_default) { return Grep(v, s.c_str(), flags); }
    unsigned int GrepFiles(GrepFileCallback cb, const char* files, bool recurse = false, unsigned int flags = match_default);
    unsigned int GrepFiles(GrepFileCallback cb, const std::string& files, bool recurse = false, unsigned int flags = match_default) { return GrepFiles(cb, files.c_str(), recurse, flags); }
    unsigned int FindFiles(FindFilesCallback cb, const char* files, bool recurse = false, unsigned int flags = match_default);
@@ -265,12 +272,12 @@ public:
    std::string Merge(const char* in, const char* fmt,
                        bool copy = true, unsigned int flags = match_default);
 
-   unsigned int Split(std::vector<std::string>& v, std::string& s, unsigned flags = match_default, unsigned max_count = ~0);
+   std::size_t Split(std::vector<std::string>& v, std::string& s, unsigned flags = match_default, unsigned max_count = ~0);
    //
    // now operators for returning what matched in more detail:
    //
-   unsigned int Position(int i = 0)const;
-   unsigned int Length(int i = 0)const;
+   std::size_t Position(int i = 0)const;
+   std::size_t Length(int i = 0)const;
    bool Matched(int i = 0)const;
    unsigned int Line()const;
    unsigned int Marks()const;
@@ -294,6 +301,7 @@ public:
 #endif
 
 #endif // include guard
+
 
 
 

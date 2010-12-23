@@ -37,10 +37,16 @@
   <li>BOOST_PP_LIMIT_TUPLE</li>
 </ul>
 */
-#define BOOST_PP_TUPLE_TO_LIST(N,T) BOOST_PP_TUPLE_TO_LIST_DELAY(N,T)
+#define BOOST_PP_TUPLE_TO_LIST(SIZE_OF_TUPLE,TUPLE) BOOST_PP_TUPLE_TO_LIST_DELAY(SIZE_OF_TUPLE,TUPLE)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-#define BOOST_PP_TUPLE_TO_LIST_DELAY(N,T) BOOST_PP_TUPLE##N##_TO_LIST T
+#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__)
+/* This is a workaround for a CodeWarrior PP bug. Strictly speaking
+ * this workaround invokes undefined behavior, but it works as desired.
+ */
+#  define BOOST_PP_TUPLE_TO_LIST_DELAY(N,T) BOOST_PP_TUPLE##N##_TO_LIST##T
+#else
+#  define BOOST_PP_TUPLE_TO_LIST_DELAY(N,T) BOOST_PP_TUPLE##N##_TO_LIST T
+#endif
 #define BOOST_PP_TUPLE0_TO_LIST() (_,_,0)
 #define BOOST_PP_TUPLE1_TO_LIST(A) (A,(_,_,0),1)
 #define BOOST_PP_TUPLE2_TO_LIST(A,B) (A,(B,(_,_,0),1),1)
@@ -58,5 +64,4 @@
 #define BOOST_PP_TUPLE14_TO_LIST(A,B,C,D,E,F,G,H,I,J,K,L,M,N) (A,(B,(C,(D,(E,(F,(G,(H,(I,(J,(K,(L,(M,(N,(_,_,0),1),1),1),1),1),1),1),1),1),1),1),1),1),1)
 #define BOOST_PP_TUPLE15_TO_LIST(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O) (A,(B,(C,(D,(E,(F,(G,(H,(I,(J,(K,(L,(M,(N,(O,(_,_,0),1),1),1),1),1),1),1),1),1),1),1),1),1),1),1)
 #define BOOST_PP_TUPLE16_TO_LIST(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P) (A,(B,(C,(D,(E,(F,(G,(H,(I,(J,(K,(L,(M,(N,(O,(P,(_,_,0),1),1),1),1),1),1),1),1),1),1),1),1),1),1),1),1)
-#endif
 #endif

@@ -31,6 +31,7 @@ first. </p>
 <a href="#properties">Type Properties</a>
 <a href="#relationships">Relationships Between Types</a>
 <a href="#transformations">Transformations Between Types</a>
+<a href="#synthesized">Synthesizing Types</a>
 <a href="#compiler">Compiler Support Information</a>
 <a href="#headers">Type traits headers</a>
 <a href="#example">Example Code</a></pre>
@@ -452,7 +453,9 @@ has.</p>
     <tr>
         <td valign="top" width="5%">&nbsp;</td>
         <td valign="top" width="23%" bgcolor="#C0C0C0"><code>::boost::is_stateless&lt;T&gt;::value</code></td>
-        <td valign="top" width="28%" bgcolor="#C0C0C0">True if T is stateless, meaning that T has no storage and its constructors and destructors are trivial.</td>
+        <td valign="top" width="28%" bgcolor="#C0C0C0">True if T
+        is stateless, meaning that T has no storage and its
+        constructors and destructors are trivial.</td>
         <td valign="top" width="13%" bgcolor="#C0C0C0">&nbsp;</td>
         <td valign="top" width="25%" bgcolor="#C0C0C0"><p
         align="center">PC</p>
@@ -680,8 +683,8 @@ transformation to the template argument T:</p>
         <td valign="top" width="28%" bgcolor="#C0C0C0">If &quot;t&quot;
         is an instance of T, then add_pointer&lt;T&gt;::type is
         the type returned by &quot;&amp;t&quot;. For example
-        &quot;int&quot;, &quot;int&amp;&quot;, &quot;int[2]&quot;
-        and &quot;int (&amp;)[2]&quot; all become &quot;int*&quot;.</td>
+        &quot;int&quot; and &quot;int&amp;&quot; both become
+        &quot;int*&quot;.</td>
         <td valign="top" width="13%" bgcolor="#C0C0C0">8.3.1</td>
         <td width="25%" bgcolor="#C0C0C0"><p align="center">P</p>
         </td>
@@ -703,6 +706,15 @@ transformation to the template argument T:</p>
         volatile&quot; for all T.</td>
         <td valign="top" bgcolor="#C0C0C0">3.9.3</td>
         <td valign="top" bgcolor="#C0C0C0">&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td valign="top" bgcolor="#C0C0C0"><code>::boost::add_cv&lt;T&gt;::type</code></td>
+        <td valign="top" bgcolor="#C0C0C0">The same as &quot;T
+        const volatile&quot; for all T.</td>
+        <td valign="top" bgcolor="#C0C0C0">3.9.3</td>
+        <td bgcolor="#C0C0C0">&nbsp;</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -765,6 +777,40 @@ built-in type, but for they own types too:</p>
 <p>Note that the macro
 BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION evaluates to
 nothing on those compilers that do support partial specialization.</p>
+
+<h2><a name="synthesized"></a>Synthesizing Types</h2>
+
+<p>The following template synthesizes a type with the desired
+properties. </p>
+
+<table border="0" cellpadding="7" cellspacing="1" width="100%">
+    <tr>
+        <td valign="top" width="5%">&nbsp;</td>
+        <td valign="top" width="23%" bgcolor="#008080"><p
+        align="center">Expression</p>
+        </td>
+        <td valign="top" width="28%" bgcolor="#008080"><p
+        align="center">Description</p>
+        </td>
+        <td valign="top" width="13%" bgcolor="#008080"><p
+        align="center">Reference</p>
+        </td>
+        <td valign="top" width="25%" bgcolor="#008080"><p
+        align="center">Compiler requirements</p>
+        </td>
+        <td valign="top" width="5%">&nbsp;</td>
+    </tr>
+    <tr>
+        <td valign="top" width="5%">&nbsp;</td>
+        <td valign="top" width="23%" bgcolor="#C0C0C0"><code>::boost::type_with_alignment&lt;Align&gt;::type</code></td>
+        <td valign="top" width="28%" bgcolor="#C0C0C0">Attempts
+        to find a built-in or POD type with an alignment that is
+        a multiple of Align. </td>
+        <td valign="top" width="13%" bgcolor="#C0C0C0">&nbsp;</td>
+        <td width="25%" bgcolor="#C0C0C0">&nbsp;</td>
+        <td valign="top" width="5%">&nbsp;</td>
+    </tr>
+</table>
 
 <h2><a name="compiler"></a>Compiler Support Information</h2>
 
@@ -985,6 +1031,12 @@ template.</p>
         <td valign="top" width="9%">&nbsp;</td>
     </tr>
     <tr>
+        <td>&nbsp;</td>
+        <td valign="top" bgcolor="#C0C0C0"><code>is_member_function_pointer</code></td>
+        <td valign="top" bgcolor="#C0C0C0"><code>&lt;boost/type_traits/composite_traits.hpp&gt;</code></td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
         <td valign="top" width="7%">&nbsp;</td>
         <td valign="top" width="43%" bgcolor="#C0C0C0"><code>is_object
         </code></td>
@@ -1080,7 +1132,7 @@ template.</p>
 
 <p>&nbsp;</p>
 
-<h2>Example code</h2>
+<h2><a name="example"></a>Example code</h2>
 
 <p>Type-traits comes with four example programs that illustrate
 some of the ways in which the type traits templates may be used:</p>

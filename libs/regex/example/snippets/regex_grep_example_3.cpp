@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -122,12 +122,12 @@ int main(int argc, const char** argv)
       cout << "Processing file " << argv[i] << endl;
       std::ifstream fs(argv[i]);
       load_file(text, fs);
-      class_index i;
-      i.IndexClasses(text);
-      cout << i.get_map().size() << " matches found" << endl;
+      class_index idx;
+      idx.IndexClasses(text);
+      cout << idx.get_map().size() << " matches found" << endl;
       map_type::iterator c, d;
-      c = i.get_map().begin();
-      d = i.get_map().end();
+      c = idx.get_map().begin();
+      d = idx.get_map().end();
       while(c != d)
       {
          cout << "class \"" << (*c).first << "\" found at index: " << (*c).second << endl;
@@ -136,6 +136,7 @@ int main(int argc, const char** argv)
    }
    return 0;
 }
+
 
 
 

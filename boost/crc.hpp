@@ -23,7 +23,7 @@
 // on the CRC's bit count.  This macro expresses that type in a compact
 // form, but also allows an alternate type for compilers that don't support
 // dependent types (in template value-parameters).
-#ifndef BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS
+#if !(defined(BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS) || (defined(BOOST_MSVC) && (BOOST_MSVC <= 1300)))
 #define BOOST_CRC_PARM_TYPE  typename ::boost::uint_t<Bits>::fast
 #else
 #define BOOST_CRC_PARM_TYPE  unsigned long
@@ -448,7 +448,13 @@ namespace detail
 
         typedef mask_uint_t<Bits>            masking_type;
         typedef typename masking_type::fast  value_type;
+#if defined(__BORLANDC__) && defined(_M_IX86) && (__BORLANDC__ == 0x560)
+        // for some reason Borland's command line compiler (version 0x560)
+        // chokes over this unless we do the calculation for it: 
+        typedef value_type                   table_type[ 0x100 ];
+#else
         typedef value_type                   table_type[ byte_combos ];
+#endif
 
         static  void  init_table();
 
@@ -1059,3 +1065,4 @@ augmented_crc
 
 
 #endif  // BOOST_CRC_HPP
+

@@ -4,11 +4,18 @@
 # "as is" without express or implied warranty, and with no claim as
 # to its suitability for any purpose.
 
+# The following #// line will be used by the regression test table generation
+# program as the column heading for HTML tables. Must not include version number.
+#//<a href="http://www.borland.com/bcppbuilder/freecompiler/">Borland</a>
+
 # Borland tool definitions.
 #
 # Please note that wide-character support is currently disabled for Borland in
 # features.jam, pending someone taking the time to figure out how to get the
 # appropriate libraries into the link command line.
+
+# BCCROOT is the install location of the borland tools.
+set-as-singleton BCCROOT ;
 
 # compute Borland tool path
 # You can either put the borland bin directory in your PATH, or you can set
@@ -87,10 +94,21 @@ rule Link-action
 # bcc32 needs to have ilink32 in the path in order to invoke it, so explicitly
 # specifying $(BCC_TOOL_PATH)bcc32 doesn't help. You need to add
 # $(BCC_TOOL_PATH) to the path
+if $(NT)
+{
 actions borland-Link-action bind NEEDLIBS
 {
     set PATH=$(BCC_TOOL_PATH);%PATH%
-    $(BCC_TOOL_PATH)bcc32 -v -q $(LINKFLAGS) -L"$(LIBPATH)" -L"$(STDLIBPATH)" -e"$(<[1])" @"$(>)" $(FINDLIBS)
+    "$(BCC_TOOL_PATH)bcc32" -v -q $(LINKFLAGS) -L"$(LIBPATH)" -L"$(STDLIBPATH)" -e"$(<[1])" @"$(>)" $(FINDLIBS:S=.lib)
+}
+}
+else
+{
+actions borland-Link-action bind NEEDLIBS
+{
+    export PATH=$(BCC_TOOL_PATH):$PATH
+    "$(BCC_TOOL_PATH)bcc32" -v -q $(LINKFLAGS) -L"$(LIBPATH)" -L"$(STDLIBPATH)" -e"$(<[1])" @"$(>)" $(FINDLIBS:S=.lib)
+}
 }
 
 actions borland-IMPLIB-action bind IMPLIB
@@ -107,7 +125,7 @@ rule Cc-action
 
 actions borland-Cc-action
 {
-    $(BCC_TOOL_PATH)bcc32 -q -c -w -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
+    "$(BCC_TOOL_PATH)bcc32" -q -c -w -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -118,7 +136,7 @@ rule C++-action
 
 actions borland-C++-action
 {
-    $(BCC_TOOL_PATH)bcc32 -q -c -P -w -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)"  -I"$(STDHDRS)" -o"$(<)" "$(>)"
+    "$(BCC_TOOL_PATH)bcc32" -q -c -P -w -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)"  -I"$(STDHDRS)" -o"$(<)" "$(>)"
 }
 
 #### Archive ####
@@ -129,8 +147,9 @@ rule Archive-action
 
 actions updated together piecemeal borland-Archive-action
 {
-    $(BCC_TOOL_PATH)tlib /P64 /u /a /C /$(ARFLAGS) "$(<)" +-"$(>)"
+    "$(BCC_TOOL_PATH)tlib" /P64 /u /a /C /$(ARFLAGS) "$(<)" +-"$(>)"
 }
+
 
 
 

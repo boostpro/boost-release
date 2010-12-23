@@ -280,6 +280,18 @@ using boost::abs;
     CHECK(( r0 == rat(16,15) ));
     r0 /= 4;
     CHECK(( r0 == rat(4,15) ));
+    CHECK(( rat(-1)/rat(-3) == rat(1,3) ));
+
+    /* tests for operations on self */
+    r0 = rat(4,3);
+    r0 += r0;
+    CHECK(( r0 == rat(8,3) ));
+    r0 *= r0;
+    CHECK(( r0 == rat(64,9) ));
+    r0 /= r0;
+    CHECK(( r0 == rat(1,1) ));
+    r0 -= r0;
+    CHECK(( r0 == rat(0,1) ));
 
     /* operator<< and operator>> tests */
 #ifndef BOOST_NO_STRINGSTREAM

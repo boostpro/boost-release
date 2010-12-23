@@ -3,8 +3,7 @@
 // copyright notice appears in all copies. This software is provided
 // "as is" without express or implied warranty, and with no claim as
 // to its suitability for any purpose.
-#include <boost/python/detail/config.hpp>
-#include <boost/python/detail/wrap_python.hpp>
+#include <boost/python/converter/registry.hpp>
 #include <boost/python/object/class.hpp>
 #include <boost/python/objects.hpp>
 #include <boost/python/detail/map_entry.hpp>
@@ -22,6 +21,18 @@ instance_holder::instance_holder()
 
 instance_holder::~instance_holder()
 {
+}
+
+// This is copied from typeobject.c in the Python sources. Even though
+// class_metatype_object doesn't set Py_TPFLAGS_HAVE_GC, that bit gets
+// filled in by the base class initialization process in
+// PyType_Ready(). However, tp_is_gc is *not* copied from the base
+// type, making it assume that classes are GC-able even if (like
+// class_type_object) they're statically allocated.
+static int
+type_is_gc(PyTypeObject *python_type)
+{
+    return python_type->tp_flags & Py_TPFLAGS_HEAPTYPE;
 }
 
 PyTypeObject class_metatype_object = {
@@ -45,8 +56,8 @@ PyTypeObject class_metatype_object = {
         0,                                      /* tp_getattro */
         0,                                      /* tp_setattro */
         0,                                      /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-		Py_TPFLAGS_BASETYPE,		/* tp_flags */
+    Py_TPFLAGS_DEFAULT // | Py_TPFLAGS_HAVE_GC
+                | Py_TPFLAGS_BASETYPE,          /* tp_flags */
         0,                                      /* tp_doc */
         0,                                      /* tp_traverse */
         0,                                      /* tp_clear */
@@ -64,8 +75,9 @@ PyTypeObject class_metatype_object = {
         0,                                      /* tp_dictoffset */
         0,                                      /* tp_init */
         0,                                      /* tp_alloc */
-        0,
-        // PyType_GenericNew                       /* tp_new */
+        0, // filled in with type_new           /* tp_new */
+        0, // filled in with __PyObject_GC_Del  /* tp_free */
+        (inquiry)type_is_gc,                    /* tp_is_gc */
 };
 
 // Get the metatype object for all extension classes.
@@ -119,8 +131,8 @@ PyTypeObject class_type_object = {
         0,                                      /* tp_getattro */
         0,                                      /* tp_setattro */
         0,                                      /* tp_as_buffer */
-	Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-		Py_TPFLAGS_BASETYPE,		/* tp_flags */
+    Py_TPFLAGS_DEFAULT // | Py_TPFLAGS_HAVE_GC
+                | Py_TPFLAGS_BASETYPE,          /* tp_flags */
         0,                                      /* tp_doc */
         0,                                      /* tp_traverse */
         0,                                      /* tp_clear */
@@ -163,16 +175,16 @@ void instance_holder::install(PyObject* self) throw()
 }
 
 BOOST_PYTHON_DECL void*
-find_instance_impl(PyObject* inst, converter::type_id_t type)
+find_instance_impl(PyObject* inst, converter::undecorated_type_id_t type)
 {
     if (inst->ob_type->ob_type != &class_metatype_object)
         return 0;
     
     instance* self = reinterpret_cast<instance*>(inst);
 
-    for (instance_holder::iterator match(self->objects), end(0); match != end; ++match)
+    for (instance_holder* match = self->objects; match != 0; match = match->next())
     {
-        void* const found = (*match).holds(type);
+        void* const found = match->holds(type);
         if (found)
             return found;
     }
@@ -205,12 +217,12 @@ namespace
       std::vector<entry>::const_iterator p
           = boost::detail::lower_bound(start, finish, id);
 
-      if (p == finish && p->key != id)
+      if (p == finish || p->key != id)
       {
           string report("extension class wrapper for base class ");
           (report += id.name()) += " has not been created yet";
           PyErr_SetObject(PyExc_RuntimeError, report.get());
-          throw error_already_set();
+          throw_error_already_set();
       }
       return p->value;
   }
@@ -249,6 +261,26 @@ class_base::class_base(
     
     m_object = ref(PyObject_CallObject(class_metatype().get(), args.get()));
     r.set(types[0], m_object);
+}
+
+extern "C"
+{
+    // This declaration needed due to broken Python 2.2 headers
+    extern DL_IMPORT(PyTypeObject) PyProperty_Type;
+}
+
+void class_base::add_property(char const* name, ref const& fget)
+{
+    ref property(PyObject_CallFunction((PyObject*)&PyProperty_Type, "O", fget.get()));
+    if (PyObject_SetAttrString(object().get(), const_cast<char*>(name), property.get()) < 0)
+        throw_error_already_set();
+}
+
+void class_base::add_property(char const* name, ref const& fget, ref const& fset)
+{
+    ref property(PyObject_CallFunction((PyObject*)&PyProperty_Type, "OO", fget.get(), fset.get()));
+    if (PyObject_SetAttrString(object().get(), const_cast<char*>(name), property.get()) < 0)
+        throw_error_already_set();
 }
 
 }}} // namespace boost::python::objects

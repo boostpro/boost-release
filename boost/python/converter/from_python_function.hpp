@@ -10,13 +10,8 @@
 
 namespace boost { namespace python { namespace converter { 
 
-struct from_python_data;
-
-template <class T>
-struct from_python_function
-{
-    typedef T (*type)(PyObject*, from_python_data&);
-};
+struct rvalue_stage1_data;
+typedef void (*constructor_function)(PyObject* source, rvalue_stage1_data*);
 
 }}} // namespace boost::python::converter
 

@@ -21,7 +21,18 @@
 <p>In other words, expands to the sequence:</p>
 
 <pre>
-  BOOST_PP_CAT(P,1), BOOST_PP_CAT(P,2), ..., BOOST_PP_CAT(P,BOOST_PP_DEC(N))
+  BOOST_PP_CAT(PARAM,1), BOOST_PP_CAT(PARAM,2), ..., BOOST_PP_CAT(PARAM,BOOST_PP_DEC(COUNT))
+</pre>
+<p>For example,</p>
+
+<pre>
+  BOOST_PP_ENUM_SHIFTED_PARAMS(3,x)
+</pre>
+
+<p>expands to:</p>
+
+<pre>
+  x1, x2
 </pre>
 
 <h3>Uses</h3>
@@ -40,12 +51,10 @@
   <li><a href="../../test/repeat_2nd_test.cpp">repeat_2nd_test.cpp</a></li>
 </ul>
 */
-#define BOOST_PP_ENUM_SHIFTED_PARAMS(N,P) BOOST_PP_ENUM_SHIFTED(N,BOOST_PP_ENUM_SHIFTED_PARAMS_F,P)
+#define BOOST_PP_ENUM_SHIFTED_PARAMS(COUNT,PARAM) BOOST_PP_ENUM_SHIFTED(COUNT,BOOST_PP_ENUM_SHIFTED_PARAMS_F,PARAM)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 #define BOOST_PP_ENUM_SHIFTED_PARAMS_F(I,P) BOOST_PP_CAT(P,I)
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_ENUM_SHIFTED_PARAMS().</p> */
+/* <p>Obsolete. Use BOOST_PP_ENUM_SHIFTED_PARAMS().</p> */
 #define BOOST_PREPROCESSOR_ENUM_SHIFTED_PARAMS(N,P) BOOST_PP_ENUM_SHIFTED_PARAMS(N,P)
 #endif

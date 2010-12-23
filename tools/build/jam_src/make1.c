@@ -1,5 +1,5 @@
 /*
- * Copyright 1993, 1995 Christopher Seiwald.
+ * Copyright 1993-2002 Christopher Seiwald and Perforce Software, Inc.
  *
  * This file is part of Jam - see jam.c for Copyright information.
  */
@@ -206,7 +206,13 @@ make1b( TARGET *t )
     if( t->status == EXEC_CMD_FAIL && t->actions )
     {
         ++counts->skipped;
-        printf( "...skipped %s for lack of %s...\n", t->name, failed );
+        if ( ( t->flags & ( T_FLAG_RMOLD | T_FLAG_NOTFILE ) ) == T_FLAG_RMOLD )
+        {
+            if( !unlink( t->boundname ) )
+                printf( "...removing outdated %s\n", t->boundname );
+        }
+        else
+            printf( "...skipped %s for lack of %s...\n", t->name, failed );
     }
 
     if( t->status == EXEC_CMD_OK )
@@ -527,8 +533,17 @@ make1cmds( ACTIONS *a0 )
 		{
 		    /* Too long and not splittable. */
 
-		    printf( "%s actions too long (max %d)!\n", 
+		    printf( "%s actions too long (max %d):\n", 
 			rule->name, MAXLINE );
+
+                    /* Tell the user what didn't fit */
+                    cmd = cmd_new(
+                        rule, list_copy( L0, nt ), 
+			list_sublist( ns, start, chunk ),
+			list_new( L0, newstr( "%" ) ) );
+
+                    printf( cmd->buf );
+                
 		    exit( EXITBAD );
 		}
 	    }

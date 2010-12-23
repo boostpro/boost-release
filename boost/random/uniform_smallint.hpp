@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_smallint.hpp,v 1.5 2002/01/03 22:20:56 jmaurer Exp $
+ * $Id: uniform_smallint.hpp,v 1.6 2002/03/11 20:31:05 jmaurer Exp $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -92,8 +92,8 @@ uniform_smallint(base_type & rng, IntType min, IntType max)
     // No quantization effects, good
     _factor = r_base / _range;
   } else {
-    const base_result r = 32*_range*_range;
-    for(; r_base >= r; _factor *= 2)
+    // carefully avoid overflow; pessimizing heree
+    for( ; r_base/_range/32 >= _range; _factor *= 2)
       r_base /= 2;
   }
 }

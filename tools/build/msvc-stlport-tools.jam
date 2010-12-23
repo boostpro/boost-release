@@ -26,6 +26,10 @@
 # automatically; there's no need to specify them manually.
 #
 
+# The following #// line will be used by the regression test table generation
+# program as the column heading for HTML tables. Must not include version number.
+#//<a href="http://msdn.microsoft.com/vstudio/default.asp">Micro-<br>soft<br>VC++</a><br><a href="http://www.stlport.org/">STLport</a>
+
 # this is simply an extension to the msvc toolset. 
 extends-toolset msvc ;
 
@@ -38,8 +42,12 @@ STDLIBPATH = ;
 # STLport iostreams or native iostreams
 feature stlport-iostream : off on ;
 
+STLPORT_VERSION = 4.5.3 ;
+STLPORT_VERSIONS = 4.5 4.0 ;
 # major versions of STLport
-feature stlport-version : 4.0 4.5 ;
+feature stlport-version : $(STLPORT_VERSION) $(STLPORT_VERSIONS) ;
+
+feature stlport-cstd-namespace : std global ;
 
 #############################################################################
 
@@ -56,6 +64,30 @@ rule get-stlport-root
     local path ;
     path ?= $(STLPORT_$(version)_PATH) ;
     path ?= $(STLPORT_PATH)$(SLASH)STLport-$(version) ;
+    
+    if $(version) && ! $(path)
+    {
+        local dollar = "$" ;
+        ECHO **** No STLPORT_PATH configured. *** ;
+        ECHO To configure STLPort for use with the msvc-stlport toolset, the following variables can be set: ;
+        ECHO ;
+        ECHO STLPORT_PATH - A directory containing at least one subdirectory of the form /STLPort-<version> ;
+        ECHO "        where STLPort installations can be found." ;
+        ECHO ;
+        ECHO STLPORT_<version>_PATH - The directory where the specific STLPort <version> installation can be ;
+        ECHO "        found, in case there is no central location appropriate for STLPORT_PATH, above, or a" ;
+        ECHO  "        particular version's installation is not located in the usual place." ;
+        ECHO ;
+        ECHO STLPORT_VERSION - The version of STLPort in use by default. Defaults to \"4.5.3\". Other ;
+        ECHO "       values can be selected in parallel setting the build property <stlport-version> to" ;
+        ECHO "       values from the list of $(dollar)(STLPORT_VERSIONS)" ;
+        ECHO ;
+        ECHO STLPORT_VERSIONS - Alternate versions of STLport available on this machine. Defaults to \"4.5 4.0\". ;
+        ECHO ;
+        ECHO "Note that STLPort iostreams are /not/ in use by default. To enable them, you must place" ;
+        ECHO "        <stlport-iostream>on in your BUILD variable or in target requirements." ;
+        EXIT ;
+    }
 
     return $(path) ;
 }
@@ -65,21 +97,24 @@ rule get-stlport-root
 # flags which work for any STLport version
 
 flags msvc-stlport STDHDRS : [ join [ get-stlport-root ] $(SLASH)stlport ] ;
+flags msvc-stlport VC_STDLIB_PATH <stlport-iostream>on : [ join [ get-stlport-root ] $(SLASH)lib ] ;
 flags msvc-stlport STDLIBPATH <stlport-iostream>on : [ join [ get-stlport-root ] $(SLASH)lib ] ;
 
+
+flags msvc-stlport STLPORT_VERSION <stlport-version> ;
+
 # special flags for STLport 4.0
+{
+    local stl = _STLP ;
+    if <stlport-version>4.0 in $(gBUILD_PROPERTIES)
+    {
+        stl = __STL ;
+    }
 
-flags msvc-stlport DEFINES <stlport-version>4.0/<stlport-iostream>off : __STL_NO_SGI_IOSTREAMS=1 ;
-flags msvc-stlport UNDEFS <stlport-version>4.0/<stlport-iostream>on : __STL_NO_SGI_IOSTREAMS ;
-
-flags msvc-stlport DEFINES <stlport-version>4.0/<runtime-build>debug : __STL_DEBUG=1 __STL_DEBUG_UNINITIALIZED=1 ;
-
-# special flags for STLport 4.5
-
-flags msvc-stlport DEFINES <stlport-version>4.5/<stlport-iostream>off : _STLP_NO_OWN_IOSTREAMS=1 ;
-flags msvc-stlport UNDEFS <stlport-version>4.5/<stlport-iostream>on : _STLP_NO_OWN_IOSTREAMS ;
-
-flags msvc-stlport DEFINES <stlport-version>4.5/<runtime-build>debug : _STLP_DEBUG=1 _STLP_DEBUG_UNINITIALIZED=1 ;
+    flags msvc-stlport DEFINES <stlport-iostream>off : $(stl)_NO_SGI_IOSTREAMS=1 ;
+    flags msvc-stlport DEFINES <stlport-cstd-namespace>std : $(stl)_DO_IMPORT_CSTD_FUNCTIONS=1 ;
+    flags msvc-stlport DEFINES <runtime-build>debug : $(stl)_DEBUG=1 $(stl)_DEBUG_UNINITIALIZED=1 ;
+}
 
 # Append the old values for STDHDRS and STDLIBPATH
 

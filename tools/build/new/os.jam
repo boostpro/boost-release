@@ -3,9 +3,10 @@
 #  all copies. This software is provided "as is" without express or implied
 #  warranty, and with no claim as to its suitability for any purpose.
 
-module local name = $(OS) ;
-module local platform = $(OSPLAT) ;
-module local version = $(OSVER) ;
+import modules ;
+name = [ modules.peek : OS ] ;
+platform = [ modules.peek : OSPLAT ] ;
+version = [ modules.peek : OSVER ] ;
 
 rule name { return $(name) ; }
 rule platform { return $(platform) ; }
@@ -17,7 +18,10 @@ rule __test__
 {
     rule identity ( args * ) { return $(args) ; }
 
-    ECHO os: name= [ name ] ;
-    ECHO os: version= [ version ] ;
+    if ! ( --quiet in [ modules.peek : ARGV ] )
+    {
+        ECHO os: name= [ name ] ;
+        ECHO os: version= [ version ] ;
+    }
     assert.true name ;
 }

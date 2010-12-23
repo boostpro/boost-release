@@ -21,7 +21,22 @@
 <p>In other words, expands to the sequence:</p>
 
 <pre>
-  BOOST_PP_CAT(P,0) = D, BOOST_PP_CAT(P,1) = D, ..., BOOST_PP_CAT(P,BOOST_PP_DEC(N)) = D
+  BOOST_PP_CAT(PARAM,0) = DEFAULT,
+  BOOST_PP_CAT(PARAM,1) = DEFAULT,
+  ...,
+  BOOST_PP_CAT(PARAM,BOOST_PP_DEC(COUNT)) = DEFAULT
+</pre>
+
+<p>For example,</p>
+
+<pre>
+  BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(3,x,y)
+</pre>
+
+<p>expands to:</p>
+
+<pre>
+  x0 = y, x1 = y, x2 = y
 </pre>
 
 <h3>Uses</h3>
@@ -34,16 +49,14 @@
   <li><a href="../../test/repeat_test.cpp">repeat_test.cpp</a></li>
 </ul>
 */
-#define BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(N,P,D) BOOST_PP_ENUM(N,BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT_F,(P,D))
+#define BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(COUNT,PARAM,DEFAULT) BOOST_PP_ENUM(COUNT,BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT_F,(PARAM,DEFAULT))
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) && __MWERKS__ <= 0x2406
+#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__)
 #  define BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT_F(I,PD) BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(2,0,PD),I)=BOOST_PP_TUPLE_ELEM(2,1,PD)
 #else
 #  define BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT_F(I,PD) BOOST_PP_CAT(BOOST_PP_TUPLE2_ELEM0 PD,I)=BOOST_PP_TUPLE2_ELEM1 PD
 #endif
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT().</p> */
+/* <p>Obsolete. Use BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT().</p> */
 #define BOOST_PREPROCESSOR_ENUM_PARAMS_WITH_A_DEFAULT(N,P,D) BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(N,P,D)
 #endif

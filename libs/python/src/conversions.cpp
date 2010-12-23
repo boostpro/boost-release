@@ -19,9 +19,7 @@
 #include <boost/function.hpp>
 #include <typeinfo>
 #include <exception>
-#ifndef BOOST_NO_LIMITS
-# include <boost/cast.hpp>
-#endif
+#include <boost/cast.hpp>
 
 BOOST_PYTHON_BEGIN_CONVERSION_NAMESPACE
 
@@ -32,7 +30,7 @@ BOOST_PYTHON_DECL long from_python(PyObject* p, boost::python::type<long>)
     {
         result = PyInt_AsLong(p);
         if (PyErr_Occurred())
-            throw boost::python::argument_error();
+            boost::python::throw_argument_error();
     }
     return result;
 }
@@ -43,7 +41,7 @@ BOOST_PYTHON_DECL double from_python(PyObject* p, boost::python::type<double>)
     {
         result = PyFloat_AsDouble(p);
         if (PyErr_Occurred())
-            throw boost::python::argument_error();
+            boost::python::throw_argument_error();
     }
     return result;
 }
@@ -53,29 +51,19 @@ T integer_from_python(PyObject* p, boost::python::type<T>)
 {
     const long long_result = from_python(p, boost::python::type<long>());
 
-#ifndef BOOST_NO_LIMITS
     try
     {
         return boost::numeric_cast<T>(long_result);
     }
     catch(const boost::bad_numeric_cast&)
-#else
-    if (static_cast<T>(long_result) == long_result)
-    {
-        return static_cast<T>(long_result);
-    }
-    else
-#endif
     {
         char buffer[256];
         const char message[] = "%ld out of range for %s";
         sprintf(buffer, message, long_result, typeid(T).name());
         PyErr_SetString(PyExc_ValueError, buffer);
-        throw boost::python::argument_error();
+        boost::python::throw_argument_error();
     }
-#if defined(__MWERKS__) && __MWERKS__ <= 0x2406
     return 0; // Not smart enough to know that the catch clause always rethrows
-#endif
 }
 
 template <class T>
@@ -83,20 +71,15 @@ PyObject* integer_to_python(T value)
 {
     long value_as_long;
 
-#ifndef BOOST_NO_LIMITS
     try
     {
         value_as_long = boost::numeric_cast<long>(value);
     }
     catch(const boost::bad_numeric_cast&)
-#else
-    value_as_long = static_cast<long>(value);
-    if (value_as_long != value)
-#endif
     {
         const char message[] = "value out of range for Python int";
         PyErr_SetString(PyExc_ValueError, message);
-        throw boost::python::error_already_set();
+        boost::python::throw_error_already_set();
     }
     
     return to_python(value_as_long);
@@ -149,7 +132,7 @@ BOOST_PYTHON_DECL char from_python(PyObject* p, boost::python::type<char>)
     if (PyString_Check(p)) l = PyString_Size(p);
     if (l < 0 || l > 1) {
         PyErr_SetString(PyExc_TypeError, "expected string of length 0 or 1");
-        throw boost::python::argument_error();
+        boost::python::throw_argument_error();
     }
     if (l == 0) return '\0';
     return PyString_AsString(p)[0];
@@ -189,7 +172,7 @@ BOOST_PYTHON_DECL void from_python(PyObject* p, boost::python::type<void>)
 {
     if (p != Py_None) {
         PyErr_SetString(PyExc_TypeError, "expected argument of type None");
-        throw boost::python::argument_error();
+        boost::python::throw_argument_error();
     }
 }
 
@@ -197,7 +180,7 @@ BOOST_PYTHON_DECL const char* from_python(PyObject* p, boost::python::type<const
 {
     const char* s = PyString_AsString(p);
     if (!s)
-        throw boost::python::argument_error();
+        boost::python::throw_argument_error();
     return s;
 }
 
@@ -210,7 +193,7 @@ BOOST_PYTHON_DECL std::string from_python(PyObject* p, boost::python::type<std::
 {
     if (! PyString_Check(p)) {
         PyErr_SetString(PyExc_TypeError, "expected a string");
-        throw boost::python::argument_error();
+        boost::python::throw_argument_error();
     }
     return std::string(PyString_AsString(p), PyString_Size(p));
 }
@@ -223,7 +206,7 @@ BOOST_PYTHON_DECL bool from_python(PyObject* p, boost::python::type<bool>)
     return true;
 }
 
-#ifdef BOOST_MSVC6_OR_EARLIER
+#if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
 // An optimizer bug prevents these from being inlined.
 BOOST_PYTHON_DECL PyObject* to_python(double d)
 {
@@ -234,7 +217,7 @@ BOOST_PYTHON_DECL PyObject* to_python(float f)
 {
     return PyFloat_FromDouble(f);
 }
-#endif // BOOST_MSVC6_OR_EARLIER
+#endif
 
 BOOST_PYTHON_END_CONVERSION_NAMESPACE
 

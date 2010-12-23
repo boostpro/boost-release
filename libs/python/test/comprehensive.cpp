@@ -103,7 +103,11 @@ StringMapPythonClass::StringMapPythonClass(boost::python::module_builder& m)
     : boost::python::class_builder<StringMap >(m, "StringMap")
 {
     def(boost::python::constructor<>());
-    def(&StringMap::size, "__len__");
+    // Some compilers make the target of this function
+    // pointer the same type as the class in which it is defined (some
+    // standard library class), instead of StringMap.
+    def((std::size_t (StringMap::*)()const)&StringMap::size, "__len__");
+    
     def(&get_item, "__getitem__");
     def(&set_item, "__setitem__");
     def(&del_item, "__delitem__");
@@ -122,7 +126,7 @@ void set_first(IntPair& p, int value)
 void del_first(const IntPair&)
 {
     PyErr_SetString(PyExc_AttributeError, "first can't be deleted!");
-    throw boost::python::error_already_set();
+    boost::python::throw_error_already_set();
 }
 
 IntPairPythonClass::IntPairPythonClass(boost::python::module_builder& m)
@@ -146,14 +150,14 @@ void IntPairPythonClass::setattr(IntPair& x, const std::string& name, int value)
     else
     {
         PyErr_SetString(PyExc_AttributeError, name.c_str());
-        throw boost::python::error_already_set();
+        boost::python::throw_error_already_set();
     }
 }
 
 void IntPairPythonClass::delattr(IntPair&, const char*)
 {
     PyErr_SetString(PyExc_AttributeError, "Attributes can't be deleted!");
-    throw boost::python::error_already_set();
+    boost::python::throw_error_already_set();
 }
 
 int IntPairPythonClass::getattr(const IntPair& p, const std::string& s)
@@ -165,11 +169,9 @@ int IntPairPythonClass::getattr(const IntPair& p, const std::string& s)
     else
     {
         PyErr_SetString(PyExc_AttributeError, s.c_str());
-        throw boost::python::error_already_set();
+        boost::python::throw_error_already_set();
     }
-#if defined(__MWERKS__) && __MWERKS__ <= 0x2406
     return 0;
-#endif
 }
 
 namespace { namespace file_local {
@@ -177,8 +179,8 @@ void throw_key_error_if_end(const StringMap& m, StringMap::const_iterator p, std
 {
     if (p == m.end())
     {
-		PyErr_SetObject(PyExc_KeyError, BOOST_PYTHON_CONVERSION::to_python(key));
-        throw boost::python::error_already_set();
+        PyErr_SetObject(PyExc_KeyError, BOOST_PYTHON_CONVERSION::to_python(key));
+        boost::python::throw_error_already_set();
     }
 }
 }} // namespace <anonymous>::file_local
@@ -871,7 +873,7 @@ namespace bpl_test {
       if (state.size() != 1) {
           PyErr_SetString(PyExc_ValueError,
                           "Unexpected argument in call to __setstate__.");
-          throw boost::python::error_already_set();
+          boost::python::throw_error_already_set();
       }
     
       const int number = BOOST_PYTHON_CONVERSION::from_python(state[0].get(), boost::python::type<int>());
@@ -886,7 +888,7 @@ namespace bpl_test {
   // This doesn't test anything but the compiler, since it has the same signature as the above.
   // Since MSVC is broken and gets the signature wrong, we'll skip it.
   std::string use_const_plain_char(
-#ifndef BOOST_MSVC6_OR_EARLIER
+#if !defined(BOOST_MSVC) || BOOST_MSVC > 1300
       const 
 #endif
       char c) { return std::string(5, c); }
@@ -975,8 +977,8 @@ void init_module(boost::python::module_builder& m)
     boost::python::class_builder<Range> range(m, "Range");
     range.def(boost::python::constructor<int>());
     range.def(boost::python::constructor<int, int>());
-    range.def((void (Range::*)(std::size_t))&Range::length, "__len__");
     range.def((std::size_t (Range::*)() const)&Range::length, "__len__");
+    range.def((void (Range::*)(std::size_t))&Range::length, "__len__");
     range.def(&Range::operator[], "__getitem__");
     range.def(&Range::slice, "__getslice__");
     range.def(&range_str, "__str__");
@@ -1182,7 +1184,7 @@ PyObject* raw(const boost::python::tuple& args, const boost::python::dictionary&
     if(args.size() != 2 || keywords.size() != 2)
     {
         PyErr_SetString(PyExc_TypeError, "wrong number of arguments");
-        throw boost::python::argument_error();
+        boost::python::throw_argument_error();
     }
     
     RawTest* first = BOOST_PYTHON_CONVERSION::from_python(args[0].get(), boost::python::type<RawTest*>());
@@ -1225,6 +1227,9 @@ extern "C" BOOL WINAPI DllMain ( HINSTANCE hInst, DWORD wDataSeg, LPVOID lpvRese
 
 # ifdef BOOST_MSVC
 extern "C" void structured_exception_translator(unsigned int, EXCEPTION_POINTERS*)
+#  if BOOST_MSVC > 1200
+    throw(...)
+#  endif 
 {
     throw;
 }

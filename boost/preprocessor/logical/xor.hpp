@@ -17,6 +17,9 @@
 
 /** <p>Expands to the logical EXCLUSIVE OR of the operands.</p>
 
+<p>Both <code>X</code> and <code>Y</code> must expand to integer literals
+in the range [0, BOOST_PP_LIMIT_MAG].</p>
+
 <p>For example, <code>BOOST_PP_XOR(1,2)</code> expands to <code>0</code> (a single token).</p>
 
 <h3>Test</h3>
@@ -26,6 +29,6 @@
 */
 #define BOOST_PP_XOR(X,Y) BOOST_PP_NOR(BOOST_PP_NOR(X,Y),BOOST_PP_AND(X,Y))
 
-/** <p>Obsolete. Use BOOST_PP_XOR().</p> */
+/* <p>Obsolete. Use BOOST_PP_XOR().</p> */
 #define BOOST_PREPROCESSOR_XOR(X,Y) BOOST_PP_XOR(X,Y)
 #endif

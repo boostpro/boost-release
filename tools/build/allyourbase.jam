@@ -179,6 +179,7 @@ if $(NT)
     SUFEXE          ?= .exe ;
     SUFDLL          ?= .dll .lib ;
     gLINKABLE_PRODUCT_INDEX(DLL) = 2 ; # (the .lib is the ones to link)
+    PREDLL          ?= "" ;
     NOARSCAN        ?= true ;
     SHELL_EXPORT    ?= ;
     SHELL_SET       ?= "set " ;
@@ -186,11 +187,12 @@ if $(NT)
     # dwa 6/4/01 - removed compiler determination for boost
     # added some yacc/lex stuff, assuming cygwin for now.
     LEX             ?= flex ;
-    YACC            ?= bison -t -d -l -v ;
+    YACC            ?= bison -y ;
     YACCFILES       ?= y.tab ;
     YACC_OUTPUT     ?= --output= ;
     LEX_OUTPUT      ?= -o ;
-    # YACC_FIX_LINES = sed '/simple/d ; # fix up #line directives for metrowerks
+    
+    DLL_AS_LIB ?= true ;
 }
 else if $(OS2)
 {
@@ -313,16 +315,18 @@ else if $(UNIX)
     switch $(OS)
     {
     case AIX :
+        DLL_AS_LIB      ?= true ;
+        SUFDLL          ?= .so .imp ;
+        gLINKABLE_PRODUCT_INDEX(DLL) = 1 ; # (the .so is the one to link)
 
     case AMIGA :
-        YACC            ?= bison ;
+        YACC            ?= bison -y ;
 
     case CYGWIN :       
         LEX             ?= flex ;
-        JAMSHELL        ?= sh -c ;
         RANLIB          ?= "" ;
         SUFEXE          ?= .exe ;
-        YACC            ?= bison ;
+        YACC            ?= bison -y ;
 
     case DGUX :
         RANLIB          ?= "" ;
@@ -332,7 +336,6 @@ else if $(UNIX)
         RANLIB          ?= "" ;
 
     case INTERIX :
-        JAMSHELL        ?= sh -c ;
         RANLIB          ?= "" ;
 
     case IRIX :
@@ -385,6 +388,9 @@ else if $(UNIX)
     case UNIXWARE :
         RANLIB          ?= "" ;
         RELOCATE        ?= true ;
+
+    case OSF :
+        DLL_AS_LIB      ?= true ;
     }
 
     # UNIX defaults
@@ -442,10 +448,13 @@ SUFEXE          ?= "" ;
 SUFDLL          ?= .so ;
 SUFLIB          ?= .a ;
 SUFOBJ          ?= .o ;
+PREDLL          ?= lib ;
+PRELIB          ?= lib ;
 UNDEFFLAG       ?= "-u _" ;
 YACC            ?= ;
 YACCFILES       ?= ;
 YACCFLAGS       ?= ;
+DLL_AS_LIB      ?= ;
 
 HDRPATTERN = 
         "^[     ]*#[    ]*include[      ]*([<\"][^\">]*[\">]).*$" ;
@@ -453,6 +462,34 @@ HDRPATTERN =
 #" My Jam mode gets its syntax highlighting confused without this comment
 
 OSFULL = $(OS)$(OSVER)$(OSPLAT) $(OS)$(OSPLAT) $(OS)$(OSVER) $(OS) ;
+
+#
+# Rule to automate patching of singleton variables from the user so that
+# they are correctly interpreted as a single entry instead of as a list if
+# they happen to contain spaces.
+#
+rule set-as-singleton ( variables + )
+{
+    for local variable in $(variables)
+    {
+        $(variable) = $($(variable):J=" ") ;
+    }
+}
+
+#
+# "Fix" the known possibly directory variables.
+#
+set-as-singleton
+    BINDIR
+    CW
+    JAMFILE
+    JAMRULES
+    JAMSHELL
+    LIBDIR
+    MANDIR
+    WATCOM
+    ;
+
 #
 # Base dependencies - first for "bootstrap" kinds of rules
 #
@@ -1214,12 +1251,6 @@ rule SubDir
         # Include it.
 
         include $(_r) ;
-
-        # determine where toolset specifications and boost-base can be found. 
-        BOOST_BUILD_INSTALLATION ?= $($(gTOP)) ;
-
-        # and include boost-base
-        include [ join-path $(BOOST_BUILD_INSTALLATION) boost-base.jam ] ;
     }
 
     # Get path to current directory from root using SubDir.
@@ -1290,7 +1321,7 @@ rule root-paths # paths... : root
         local rooted = $(path:R=$(>)) ;
         if $(rooted) != $(path)
         {
-            path = [ tokens-to-simple-path [ split-path $(rooted) ] ] ;
+            path = [ tokens-to-simple-path [ split-path $(rooted:G=) ] ] ;
             path = $(path:G=$(rooted:G)) ;
         }
         result += $(path) ;
@@ -1543,7 +1574,46 @@ rule SubInclude
     # protect variables from being permanently set by SubDir invocations
     # in included files.
     local [ protect-subdir ] ;
-    include $(JAMFILE:D=$(_s):R=$($(<[1]))) ;
+    local jamfile-path
+        = [ tokens-to-simple-path
+            [ split-path $(JAMFILE:D=$(_s):R=$($(<[1]))) ] ] ;
+    load-jamfiles $(jamfile-path) ;
+}
+
+# Load a user's Jamfile(s).
+#
+rule load-jamfiles ( jamfiles * )
+{
+    # First we load the Jamfiles without generation of main targets so that
+    # dependencies are preloaded. Then we reload the files with target
+    # generation enabled.
+    
+    local jamfile ;
+    local as-dependant = $(gIN_LIB_INCLUDE) ;
+    local gIN_LIB_INCLUDE ;
+    
+    gIN_LIB_INCLUDE = TRUE ;
+    for jamfile-path in $(jamfiles)
+    {
+        if ! $(gINCLUDED_AS_DEPENDANT($(jamfile-path)))
+        {
+            gINCLUDED_AS_DEPENDANT($(jamfile-path)) = TRUE ;
+            include $(jamfile-path) ;
+        }
+    }
+    
+    if ! $(as-dependant)
+    {
+        gIN_LIB_INCLUDE = ;
+        for jamfile-path in $(jamfiles)
+        {
+            if ! $(gINCLUDED($(jamfile-path)))
+            {
+                gINCLUDED(#(jamfile-path)) = TRUE ;
+                include $(jamfile-path) ;
+            }
+        }
+    }
 }
 
 rule Undefines
@@ -1841,7 +1911,7 @@ rule FAppendSuffix
         {
             if $(_i:S)
             {
-                _o += $(_i) $(_i:S=$(>[2-)) ;
+                _o += $(_i) $(_i:S=$(>[2-])) ;
             }
             else
             {
@@ -1982,11 +2052,4 @@ actions together YaccMv
 actions together Yacc-fix-line-directives
 {
     $(YACC_FIX_LINES) $(<) > $(<)
-}
-#
-# Now include the user's Jamfile.
-#
-
-{
-     if $(JAMFILE) { include $(JAMFILE) ; }
 }

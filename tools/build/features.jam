@@ -9,6 +9,7 @@ feature profiling : off on ;
 
 feature struct-alignment : auto 1 2 4 8 16 ;
 feature eh-model : default fast msvc ; # metrowerks only
+feature vtable-thunks : default on off ; # gcc only
 
 feature threading : single multi ;
 
@@ -18,6 +19,7 @@ feature runtime-build : debug release ;
 feature optimization : off speed space ;
 feature inlining : off on full ;
 feature debug-symbols : on off : ;
+free-feature debug-store : object database ;
 free-feature user-interface : console gui ;
 
 feature wide-character-support : on off ;
@@ -35,11 +37,30 @@ dependency-feature library-file ;
 free-feature find-library ;
 path-feature sysinclude ; # <sysinclude>/fu/man/chu
 free-feature arflags ;
+free-feature dllversion ; # <dllversion>1.27.0 (for use with soname-ing)
 
 # Can the target participate in a shared library?
 feature shared-linkable : false true ;
 
-gLINK_COMPATIBLE = <shared-linkable>true <target-type> ;
+# Type of CPU architecture to compile for.
+feature architecture :
+    # The default is the machine we are on, i.e. nothing
+    native
+    # x86 and compatible
+    i386 i486 i586 i686 k6
+    # Sparc
+    v7 cypress v8 supersparc sparclite hypersparc sparclite86x
+    f930 f934 sparclet tsc701 v9 ultrasparc
+    # RS/6000 & PowerPC
+    rios rios1 rsc rios2 rs64a
+    601 602 603 603e 604 604e 620 630 740 750
+    power power2 powerpc
+    403 505 801 821 823 860
+    power-common
+    ;
+
+gLINK_COMPATIBLE = <shared-linkable>true <target-type> <inlining> ;
+
 gALWAYS_RELEVANT = <target-type> ;
 
 ##### Requirements by target type #####
@@ -47,6 +68,7 @@ gTARGET_TYPE_REQUIREMENTS(DLL) = <shared-linkable>true ;
 
 ##### Variant definitions ####
 COMMON_PROPERTIES ?= 
+    <vtable-thunks>default
     <struct-alignment>auto
     <eh-model>default
     <threading>single
@@ -60,6 +82,9 @@ COMMON_PROPERTIES ?=
     # Borland link lines will need work to find the right libraries for unicode
     # support - see borland-tools.jam 
     <borland><wide-character-support>off
+    "<cwpro8><cxxflags>-iso_templates on"
+    
+    <architecture>native
     ;
     
 variant common :

@@ -13,6 +13,7 @@
 #include <boost/preprocessor/empty.hpp>
 #include <boost/preprocessor/identity.hpp>
 #include <boost/preprocessor/if.hpp>
+#include <boost/preprocessor/expr_if.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/stringize.hpp>
 
@@ -40,13 +41,17 @@ TEST_B BOOST_PP_IF(BOOST_PP_IF(1,1,1),true,false) &&
 
 /* *** */
 
-#if !(!defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) && __MWERKS__ <= 0x2406)
+TEST_B BOOST_PP_EXPR_IF(1,1) TEST_E
+
+/* *** */
+
+#if !(!defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__))
 TEST_B BOOST_PP_CAT(BOOST_PP_IF(1,tru,fals), MACRO MACRO_ARGS(e)) TEST_E
 #endif
 
 /* *** */
 
-#if !(!defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) && __MWERKS__ <= 0x2406)
+#if !(!defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__))
 char stringize_test[2] = BOOST_PP_STRINGIZE(MACRO MACRO_ARGS(X));
 #endif
 

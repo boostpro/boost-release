@@ -18,6 +18,9 @@
 
 /** <p>Expands to the minimum of <code>X</code> and <code>Y</code>.</p>
 
+<p>Both <code>X</code> and <code>Y</code> must expand to integer literals
+in the range [0, BOOST_PP_LIMIT_MAG].</p>
+
 <p>For example, <code>BOOST_PP_MIN(5,7)</code> expands to <code>5</code> (a
 single token).</p>
 
@@ -33,10 +36,9 @@ single token).</p>
 */
 #define BOOST_PP_MIN(X,Y) BOOST_PP_MIN_D(0,X,Y)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+/** <p>Can be used inside BOOST_PP_WHILE().</p> */
 #define BOOST_PP_MIN_D(D,X,Y) BOOST_PP_IF(BOOST_PP_LESS_EQUAL_D(D,Y,X),Y,X)
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_MIN().</p> */
+/* <p>Obsolete. Use BOOST_PP_MIN().</p> */
 #define BOOST_PREPROCESSOR_MIN(X,Y) BOOST_PP_MIN(X,Y)
 #endif

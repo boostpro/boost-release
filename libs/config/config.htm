@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 
 <head>
@@ -12,8 +11,8 @@ content="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
 
 <body bgcolor="#FFFFFF" link="#0000FF" vlink="#800080">
 
-<p align="left"><img src="../../c++boost.gif" width="277"
-height="86" alt="Boost"></p>
+<p align="left"><img src="../../c++boost.gif" alt="Boost"
+width="277" height="86"></p>
 
 <h1 align="center">Boost Configuration Reference</h1>
 
@@ -270,6 +269,15 @@ they are listed in the following table:&nbsp;</p>
         <td valign="top" width="52%">When defined, disables
         threading support, even if the compiler in its current
         translation mode supports multiple threads.</td>
+    </tr>
+    <tr>
+        <td valign="top">BOOST_DISABLE_WIN32</td>
+        <td>When defined, disables the use of Win32 specific
+        API's, even when these are available. Also has the effect
+        of setting BOOST_DISABLE_THREADS unless
+        BOOST_HAS_PTHREADS is set. This option may be set
+        automatically by the config system when it detects that
+        the compiler is in &quot;strict mode&quot;.</td>
     </tr>
 </table>
 
@@ -541,6 +549,17 @@ class X { ... };</pre>
         </td>
     </tr>
     <tr>
+        <td valign="top">BOOST_NO_EXCEPTIONS</td>
+        <td valign="top">Compiler</td>
+        <td>The compiler does not support exception handling (this
+        setting is typically required by many C++ compilers for
+        embedded platforms). Note that there is no requirement
+        for boost libraries to honor this configuration setting -
+        indeed doing so may be impossible in some cases. Those
+        libraries that do honor this will typically abort if a
+        critical error occurs - you have been warned!</td>
+    </tr>
+    <tr>
         <td valign="top" width="51%">BOOST_NO_EXPLICIT_FUNCTION_TEMPLATE_ARGUMENTS</td>
         <td valign="top" width="16%">Compiler</td>
         <td valign="top" width="33%">Can only use deduced
@@ -579,7 +598,9 @@ f(&amp;bar); // should choose #2.</pre>
         <td valign="top" width="51%">BOOST_NO_LIMITS</td>
         <td valign="top" width="16%">Standard library</td>
         <td valign="top" width="33%">The C++ implementation does
-        not provide the &lt;limits&gt; header.</td>
+        not provide the &lt;limits&gt; header. Never check for
+        this symbol in library code; always include &lt;boost/limits.hpp&gt;,
+        which guarantees to provide <code>std::numeric_limits</code>.</td>
     </tr>
     <tr>
         <td valign="top" width="51%">BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS</td>
@@ -736,9 +757,11 @@ f(&amp;bar); // should choose #2.</pre>
         <td valign="top" width="51%">BOOST_NO_USING_TEMPLATE</td>
         <td valign="top" width="16%">Compiler</td>
         <td valign="top" width="33%">The compiler will not accept
-        a using declaration that imports a template from the
-        global namespace into a named namespace. Probably Borland
-        specific.</td>
+        a using declaration that imports a template class or
+        function from another namespace. Originally a Borland
+        specific problem with imports to/from the global
+        namespace, extended to MSVC6 which has a specific issue
+        with importing template classes (but not functions).</td>
     </tr>
     <tr>
         <td valign="top" width="51%">BOOST_NO_VOID_RETURNS</td>
@@ -773,10 +796,31 @@ present.</p>
         style threads.</td>
     </tr>
     <tr>
+        <td>BOOST_HAS_CLOCK_GETTIME</td>
+        <td>Platform</td>
+        <td>The platform has the POSIX API clock_gettime.</td>
+    </tr>
+    <tr>
+        <td>BOOST_HAS_FTIME</td>
+        <td>Platform</td>
+        <td>The platform has the Win32 API
+        GetSystemTimeAsFileTime.</td>
+    </tr>
+    <tr>
+        <td>BOOST_HAS_GETTIMEOFDAY</td>
+        <td>Platform</td>
+        <td>The platform has the POSIX API gettimeofday.</td>
+    </tr>
+    <tr>
         <td valign="top" width="48%">BOOST_HAS_HASH</td>
         <td valign="top" width="15%">Standard library</td>
         <td valign="top" width="37%">The C++ implementation
         provides the (SGI) hash_set or hash_map classes.</td>
+    </tr>
+    <tr>
+        <td>BOOST_HAS_LONG_LONG</td>
+        <td>Compiler</td>
+        <td>The compiler supports the long long data type.</td>
     </tr>
     <tr>
         <td valign="top" width="48%">BOOST_HAS_MACRO_USE_FACET</td>
@@ -787,16 +831,58 @@ present.</p>
         std lib.</td>
     </tr>
     <tr>
+        <td>BOOST_HAS_MS_INT64</td>
+        <td>Compiler</td>
+        <td>The compiler supports the __int64 data type.</td>
+    </tr>
+    <tr>
+        <td>BOOST_HAS_NANOSLEEP</td>
+        <td>Platform</td>
+        <td>The platform has the POSIX API nanosleep.</td>
+    </tr>
+    <tr>
         <td valign="top" width="48%">BOOST_HAS_NL_TYPES_H</td>
         <td valign="top" width="15%">Platform</td>
         <td valign="top" width="37%">The platform has an
         &lt;nl_types.h&gt;.</td>
     </tr>
     <tr>
+        <td>BOOST_HAS_PTHREAD_DELAY_NP</td>
+        <td>Platform</td>
+        <td>The platform has the POSIX API pthread_delay_np.</td>
+    </tr>
+    <tr>
+        <td>BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE</td>
+        <td>Platform</td>
+        <td>The platform has the POSIX API
+        pthread_mutexattr_settype.</td>
+    </tr>
+    <tr>
+        <td>BOOST_HAS_PTHREAD_YIELD</td>
+        <td>Platform</td>
+        <td>The platform has the POSIX API pthread_yield.</td>
+    </tr>
+    <tr>
         <td valign="top" width="48%">BOOST_HAS_PTHREADS</td>
         <td valign="top" width="15%">Platform</td>
         <td valign="top" width="37%">The platform support POSIX
         style threads.</td>
+    </tr>
+    <tr>
+        <td>BOOST_HAS_SCHED_YIELD</td>
+        <td>Platform</td>
+        <td>The platform has the POSIX API sched_yield.</td>
+    </tr>
+    <tr>
+        <td>BOOST_HAS_SGI_TYPE_TRAITS</td>
+        <td>Compiler/standard library</td>
+        <td>The compiler has native support for SGI style type
+        traits.</td>
+    </tr>
+    <tr>
+        <td>BOOST_HAS_STDINT_H</td>
+        <td>Platform</td>
+        <td>The platform has a &lt;stdint.h&gt;</td>
     </tr>
     <tr>
         <td valign="top" width="48%">BOOST_HAS_SLIST</td>

@@ -6,6 +6,8 @@
  //  warranty, and with no claim as to its suitability for any purpose.   
 
 // standalone test program for <boost/call_traits.hpp>
+// 18 Mar 2002:
+//    Changed some names to prevent conflicts with some new type_traits additions.
 // 03 Oct 2000:
 //    Enabled extra tests for VC6.
 
@@ -78,7 +80,7 @@ struct contained<T[N]>
 #endif
 
 template <class T>
-contained<typename boost::call_traits<T>::value_type> wrap(const T& t)
+contained<typename boost::call_traits<T>::value_type> test_wrap_type(const T& t)
 {
    typedef typename boost::call_traits<T>::value_type ct;
    return contained<ct>(t);
@@ -217,9 +219,9 @@ int main(int argc, char *argv[ ])
 #endif
 #endif
 
-   check_wrap(wrap(2), 2);
+   check_wrap(test_wrap_type(2), 2);
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(__SUNPRO_CC)
-   check_wrap(wrap(a), a);
+   check_wrap(test_wrap_type(a), a);
    check_make_pair(test::make_pair(a, a), a, a);
 #endif
 
@@ -245,7 +247,7 @@ int main(int argc, char *argv[ ])
    type_test(int&, boost::call_traits<int&>::reference)
    type_test(const int&, boost::call_traits<int&>::const_reference)
    type_test(int&, boost::call_traits<int&>::param_type)
-#if !(defined(__GNUC__) && (__GNUC__ < 4))
+#if !(defined(__GNUC__) && ((__GNUC__ < 3) || (__GNUC__ == 3) && (__GNUC_MINOR__ < 1)))
    type_test(int&, boost::call_traits<cr_type>::value_type)
    type_test(int&, boost::call_traits<cr_type>::reference)
    type_test(const int&, boost::call_traits<cr_type>::const_reference)
@@ -268,16 +270,26 @@ int main(int argc, char *argv[ ])
    type_test(const int(&)[3], boost::call_traits<const int[3]>::reference)
    type_test(const int(&)[3], boost::call_traits<const int[3]>::const_reference)
    type_test(const int*const, boost::call_traits<const int[3]>::param_type)
+   // test with abstract base class:
+   type_test(test_abc1, boost::call_traits<test_abc1>::value_type)
+   type_test(test_abc1&, boost::call_traits<test_abc1>::reference)
+   type_test(const test_abc1&, boost::call_traits<test_abc1>::const_reference)
+   type_test(const test_abc1&, boost::call_traits<test_abc1>::param_type)
 #else
-   std::cout << "You're compiler does not support partial template instantiation, skipping 8 tests (8 errors)" << std::endl;
-   failures += 8;
-   test_count += 8;
+   std::cout << "You're compiler does not support partial template specialiation, skipping 8 tests (8 errors)" << std::endl;
+   failures += 12;
+   test_count += 12;
 #endif
 #else
-   std::cout << "You're compiler does not support partial template instantiation, skipping 20 tests (20 errors)" << std::endl;
-   failures += 20;
-   test_count += 20;
+   std::cout << "You're compiler does not support partial template specialiation, skipping 20 tests (20 errors)" << std::endl;
+   failures += 24;
+   test_count += 24;
 #endif
+   // test with an incomplete type:
+   type_test(incomplete_type, boost::call_traits<incomplete_type>::value_type)
+   type_test(incomplete_type&, boost::call_traits<incomplete_type>::reference)
+   type_test(const incomplete_type&, boost::call_traits<incomplete_type>::const_reference)
+   type_test(const incomplete_type&, boost::call_traits<incomplete_type>::param_type)
 
    return check_result(argc, argv);
 }
@@ -397,26 +409,22 @@ template struct call_traits_test<int[2], true>;
 #endif
 
 #ifdef BOOST_MSVC
-unsigned int expected_failures = 10;
+unsigned int expected_failures = 14;
 #elif defined(__SUNPRO_CC)
 #if(__SUNPRO_CC <= 0x520)
-unsigned int expected_failures = 14;
-#elif(__SUNPRO_CC <= 0x530)
-unsigned int expected_failures = 13;
+unsigned int expected_failures = 18;
+#elif(__SUNPRO_CC < 0x530)
+unsigned int expected_failures = 17;
 #else
 unsigned int expected_failures = 6;
 #endif
 #elif defined(__BORLANDC__)
 unsigned int expected_failures = 2;
-#elif defined(__GNUC__)
+#elif (defined(__GNUC__) && ((__GNUC__ < 3) || (__GNUC__ == 3) && (__GNUC_MINOR__ < 1)))
 unsigned int expected_failures = 4;
 #elif defined(__HP_aCC)
-unsigned int expected_failures = 20;
+unsigned int expected_failures = 24;
 #else
 unsigned int expected_failures = 0;
 #endif
-
-
-
-
 

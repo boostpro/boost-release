@@ -10,8 +10,7 @@ struct module
 {
     char* name;
     struct hash* rules;
-    struct hash* local_names;
-    struct _settings* locals;
+    struct hash* variables;
 };
 
 typedef struct module module; /* MSVC debugger gets confused unless this is provided */
@@ -22,5 +21,5 @@ void bind_module_var( module*, char* name );
 void enter_module( module* );
 void exit_module( module* );
 
-#endif // MODULES_DWA10182001_H
+#endif
 

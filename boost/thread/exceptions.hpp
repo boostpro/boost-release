@@ -22,7 +22,7 @@
 
 namespace boost {
 
-class lock_error : public std::runtime_error
+class lock_error : public std::logic_error
 {
 public:
     lock_error();

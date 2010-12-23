@@ -14,6 +14,7 @@
 # flags cxx LINKFLAGS <runtime-link>static : -bstatic ;
 flags cxx CFLAGS <debug-symbols>on : -g ;
 flags tru64cxx65 LINKFLAGS <debug-symbols>on : -g ;
+flags tru64cxx65 LINKFLAGS <debug-symbols>off : -s ;
 flags tru64cxx65 LINKFLAGS <target-type>$(SHARED_TYPES) : -shared -expect_unresolved 'Py*' -expect_unresolved '_Py*' ;
 flags tru64cxx65 CFLAGS <optimization>off : -O0 ;
 flags tru64cxx65 CFLAGS <optimization>speed/<inlining>on : -O2 ;
@@ -81,6 +82,8 @@ rule C++-action
    tru64cxx65-C++-action $(<) : $(>) ;
 }
 
+# Note: DON'T disable warning 1133 -- the compiler is buggy and you
+# really can't ignore this one!
 actions tru64cxx65-C++-action
 {
    cxx -c -std strict_ansi -msg_display_number -msg_disable 186,450,1115 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS)  -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"

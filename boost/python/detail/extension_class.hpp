@@ -70,10 +70,8 @@ namespace detail
 
 } // namespace detail
 
-# ifndef BOOST_PYTHON_NO_TEMPLATE_EXPORT
-BOOST_PYTHON_EXPORT_TEMPLATE_CLASS class_t<detail::extension_instance>;
-BOOST_PYTHON_EXPORT_TEMPLATE_CLASS meta_class<detail::extension_instance>;
-# endif 
+BOOST_PYTHON_EXPORT_CLASS_TEMPLATE(class_t<detail::extension_instance>);
+BOOST_PYTHON_EXPORT_CLASS_TEMPLATE(meta_class<detail::extension_instance>);
 
 namespace detail {
 
@@ -257,10 +255,8 @@ class python_extension_class_converters
                 return static_cast<T*>(target);
         }
         boost::python::detail::report_missing_instance_data(self, boost::python::detail::class_registry<T>::class_object(), typeid(T));
-        throw boost::python::argument_error();
-#if defined(__MWERKS__) && __MWERKS__ <= 0x2406
+        boost::python::throw_argument_error();
         return 0;
-#endif
     }
 
     // Convert to T*
@@ -288,10 +284,9 @@ class python_extension_class_converters
                 return held->ptr();
         }
         boost::python::detail::report_missing_ptr_data(self, boost::python::detail::class_registry<T>::class_object(), typeid(T));
-        throw boost::python::argument_error();
-#if defined(__MWERKS__) && __MWERKS__ <= 0x2406
-        return *(PtrType*)0;
-#endif
+        boost::python::throw_argument_error();
+
+        return *(PtrType*)obj;
     }
 
     // Extract from obj a reference to the PtrType object which is holding a

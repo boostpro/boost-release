@@ -27,16 +27,14 @@ int cpp_main(int argc, char* argv[])
 
    value_test(false, boost::is_const<void>::value)
    value_test(true, boost::is_const<const void>::value)
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_MSVC)
    value_test(false, boost::is_const<test_abc1>::value)
    value_test(true, boost::is_const<const test_abc1>::value)
-#endif
    value_test(false, boost::is_const<int>::value)
    value_test(true, boost::is_const<const int>::value)
    value_test(true, boost::is_const<const UDT>::value)
    value_test(true, boost::is_const<const volatile UDT>::value)
    value_test(false, boost::is_const<const int&>::value)
-#ifndef __GNUC__
+#if !defined(__GNUC__) || ( __GNUC__ > 3 ) || ( __GNUC__ ==3 && __GNUC_MINOR__ >=1)
    value_test(false, boost::is_const<cr_type>::value)
 #else
    value_fail(false, boost::is_const<cr_type>::value)
@@ -45,10 +43,8 @@ int cpp_main(int argc, char* argv[])
 
    value_test(false, boost::is_volatile<void>::value)
    value_test(true, boost::is_volatile<volatile void>::value)
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_MSVC)
    value_test(false, boost::is_volatile<test_abc1>::value)
    value_test(true, boost::is_volatile<volatile test_abc1>::value)
-#endif
    value_test(false, boost::is_volatile<int>::value)
    value_test(true, boost::is_volatile<volatile int>::value)
    value_test(true, boost::is_volatile<volatile UDT>::value)
@@ -60,14 +56,10 @@ int cpp_main(int argc, char* argv[])
 //
 // define the number of failures expected for given compilers:
 #ifdef BOOST_MSVC
-unsigned int expected_failures = 3;
-#elif defined(__SUNPRO_CC) && (__SUNPRO_CC <= 0x530)
+unsigned int expected_failures = 2;
+#elif defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x530)
 unsigned int expected_failures = 1;
-#elif defined(__GNUC__)
-unsigned int expected_failures = 1; // cr_type doesn't compile
 #else
 unsigned int expected_failures = 0;
 #endif
-
-
 

@@ -41,9 +41,8 @@
   <li><a href="../../test/list_test.cpp">list_test.cpp</a></li>
 </ul>
 */
-#define BOOST_PP_LIST_TO_TUPLE(L) BOOST_PP_LIST_TO_TUPLE_R(0,L)
+#define BOOST_PP_LIST_TO_TUPLE(LIST) BOOST_PP_LIST_TO_TUPLE_R(0,LIST)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-#define BOOST_PP_LIST_TO_TUPLE_R(D,L) (BOOST_PP_LIST_ENUM_R(D,L))
-#endif
+/** <p>Can be used inside BOOST_PP_FOR().</p> */
+#define BOOST_PP_LIST_TO_TUPLE_R(R,LIST) (BOOST_PP_LIST_ENUM_R(R,LIST))
 #endif

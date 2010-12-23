@@ -7,15 +7,14 @@
 # define FROM_PYTHON_DWA2002128_HPP
 
 # include <boost/python/converter/from_python.hpp>
-# include <boost/python/converter/target.hpp>
 
 namespace boost { namespace python { 
 
 template <class T>
 struct from_python
-    : converter::from_python_lookup<typename converter::target<T>::type>
+    : converter::select_from_python<T>::type
 {
-    typedef converter::from_python_lookup<typename converter::target<T>::type> base;
+    typedef typename converter::select_from_python<T>::type base;
     from_python(PyObject*);
 };
 
@@ -28,11 +27,19 @@ struct from_python<PyObject*>
     PyObject* operator()(PyObject* source) const { return source; }
 };
 
+template <>
+struct from_python<PyObject* const&>
+{
+    from_python(PyObject*) {}
+    bool convertible() const { return true; }
+    PyObject*const& operator()(PyObject*const& source) const { return source; }
+};
+
 //
 // implementations
 //
 template <class T>
-from_python<T>::from_python(PyObject* source)
+inline from_python<T>::from_python(PyObject* source)
     : base(source)
 {
 }

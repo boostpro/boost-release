@@ -10,11 +10,12 @@
 # include <boost/python/object/pointer_holder.hpp>
 # include <boost/python/object/class_object.hpp>
 # include <boost/python/detail/unwind_type.hpp>
+# include <boost/shared_ptr.hpp>
 # include <memory>
 
 namespace boost { namespace python {
 
-template <class T, class HolderGenerator>
+template <class T, class MakeHolder>
 struct to_python_indirect
 {
     static bool convertible();
@@ -34,8 +35,15 @@ namespace detail
       template <class T>
       static result_type execute(T* p)
       {
-          return new objects::pointer_holder<std::auto_ptr<T>, T>(
-              std::auto_ptr<T>(p));
+          // can't use auto_ptr with Intel 5 for some reason
+# if defined(__ICL) && __ICL < 600 
+          typedef boost::shared_ptr<T> smart_pointer;
+# else 
+          typedef std::auto_ptr<T> smart_pointer;
+# endif 
+          
+          return new objects::pointer_holder<smart_pointer, T>(
+              smart_pointer(p));
       }
   };
 
@@ -59,17 +67,38 @@ namespace detail
           return python::objects::class_object<T>::reference;
       }
   };
+
+  // null_pointer_to_none -- return none() for null pointers and 0 for all other types/values
+  // 
+  // Uses simulated partial ordering
+  template <class T>
+  inline PyObject* null_pointer_to_none(T&, int)
+  {
+      return 0;
+  }
+
+  // overload for pointers
+  template <class T>
+  inline PyObject* null_pointer_to_none(T* x, long)
+  {
+      return x == 0 ? python::detail::none() : 0;
+  }
 }
 
-template <class T, class HolderGenerator>
-inline bool to_python_indirect<T,HolderGenerator>::convertible()
+template <class T, class MakeHolder>
+inline bool to_python_indirect<T,MakeHolder>::convertible()
 {
+    BOOST_STATIC_ASSERT(is_pointer<T>::value || is_reference<T>::value);
     return type() != 0;
 }
 
-template <class T, class HolderGenerator>
-inline PyObject* to_python_indirect<T,HolderGenerator>::operator()(T x) const
+template <class T, class MakeHolder>
+inline PyObject* to_python_indirect<T,MakeHolder>::operator()(T x) const
 {
+    PyObject* const null_result = detail::null_pointer_to_none(x, 1L);
+    if (null_result != 0)
+        return null_result;
+    
     PyObject* raw_result = type()->tp_alloc(type(), 0);
 
     if (raw_result == 0)
@@ -82,7 +111,7 @@ inline PyObject* to_python_indirect<T,HolderGenerator>::operator()(T x) const
     // Build a value_holder to contain the object using the copy
     // constructor
     objects::instance_holder* p =
-        detail::unwind_type<HolderGenerator>(x);
+        detail::unwind_type<MakeHolder>(x);
 
     // Install it in the instance
     p->install(raw_result);
@@ -91,8 +120,8 @@ inline PyObject* to_python_indirect<T,HolderGenerator>::operator()(T x) const
     return result.release();
 }
 
-template <class T, class HolderGenerator>
-inline PyTypeObject* to_python_indirect<T,HolderGenerator>::type()
+template <class T, class MakeHolder>
+inline PyTypeObject* to_python_indirect<T,MakeHolder>::type()
 {
     return detail::unwind_type<detail::get_pointer_class,T>();
 }

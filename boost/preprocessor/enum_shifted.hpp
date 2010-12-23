@@ -22,7 +22,21 @@
 <p>In other words, expands to the sequence:</p>
 
 <pre>
-  F(1,P), F(2,P), ..., F(BOOST_PP_DEC(N),P)
+  MACRO(1,DATA), MACRO(2,DATA), ..., MACRO(BOOST_PP_DEC(COUNT),DATA)
+</pre>
+
+<p>For example,</p>
+
+<pre>
+  #define TYPED_PARAM(INDEX,DATA)\
+    BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(2,0,DATA),INDEX) BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(2,1,DATA),INDEX)
+  BOOST_PP_ENUM_SHIFTED(3,TYPED_PARAM,(X,x))
+</pre>
+
+<p>expands to:</p>
+
+<pre>
+  X1 x1, X2 x2
 </pre>
 
 <h3>Uses</h3>
@@ -30,13 +44,11 @@
   <li>BOOST_PP_REPEAT()</li>
 </ul>
 */
-#define BOOST_PP_ENUM_SHIFTED(N,F,P) BOOST_PP_ENUM(BOOST_PP_DEC(N),BOOST_PP_ENUM_SHIFTED_F,(F,P))
+#define BOOST_PP_ENUM_SHIFTED(COUNT,MACRO,DATA) BOOST_PP_ENUM(BOOST_PP_DEC(COUNT),BOOST_PP_ENUM_SHIFTED_F,(MACRO,DATA))
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) && __MWERKS__ <= 0x2406
+#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__)
 #  define BOOST_PP_ENUM_SHIFTED_F(I,FP) BOOST_PP_TUPLE_ELEM(2,0,FP)(BOOST_PP_INC(I),BOOST_PP_TUPLE_ELEM(2,1,FP))
 #else
 #  define BOOST_PP_ENUM_SHIFTED_F(I,FP) BOOST_PP_TUPLE2_ELEM0 FP(BOOST_PP_INC(I),BOOST_PP_TUPLE2_ELEM1 FP)
-#endif
 #endif
 #endif

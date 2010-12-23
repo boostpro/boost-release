@@ -9,9 +9,14 @@
 # include <boost/python/object/class.hpp>
 # include <boost/python/converter/type_id.hpp>
 # include <boost/python/object/inheritance.hpp>
-# include <boost/python/detail/eval.hpp>
-# include <boost/ref.hpp>
+# include <boost/python/object/find_instance.hpp>
+# include <boost/python/object/forward.hpp>
 # include <boost/type.hpp>
+# include <boost/mpl/select_type.hpp>
+# include <boost/mpl/apply.hpp>
+# include <boost/python/detail/pointee.hpp>
+# include <boost/python/detail/preprocessor.hpp>
+# include <boost/preprocessor/enum_params.hpp>
 
 namespace boost { namespace python { namespace objects { 
 
@@ -19,164 +24,70 @@ template <class Pointer, class Value>
 struct pointer_holder : instance_holder
 {
     pointer_holder(Pointer);
-    
+
     // Forward construction to the held object
-    pointer_holder(PyObject*)
-        : m_p(new Value) {}
+# ifndef BOOST_PYTHON_GENERATE_CODE
+#  include <boost/python/preprocessed/pointer_holder.hpp>
+# endif 
 
-    
-    template <class A1>
-    pointer_holder(PyObject*, A1 a1)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-                  ))
-    {}
-    
-    template <class A1, class A2>
-    pointer_holder(PyObject*, A1 a1, A2 a2)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-            , (typename unwrap_reference<A2>::type&)(a2)
-            ))
-    {}
-    
-    template <class A1, class A2, class A3>
-    pointer_holder(PyObject*, A1 a1, A2 a2, A3 a3)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-            , (typename unwrap_reference<A2>::type&)(a2)
-            , (typename unwrap_reference<A3>::type&)(a3)
-            ))
-    {}
-    
-    template <class A1, class A2, class A3, class A4>
-    pointer_holder(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-            , (typename unwrap_reference<A2>::type&)(a2)
-            , (typename unwrap_reference<A3>::type&)(a3)
-            , (typename unwrap_reference<A4>::type&)(a4)
-            ))
-    {}
-    
-    template <class A1, class A2, class A3, class A4, class A5>
-    pointer_holder(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-            , (typename unwrap_reference<A2>::type&)(a2)
-            , (typename unwrap_reference<A3>::type&)(a3)
-            , (typename unwrap_reference<A4>::type&)(a4)
-            , (typename unwrap_reference<A5>::type&)(a5)
-            )) {}
-    
-    template <class A1, class A2, class A3, class A4, class A5, class A6>
-    pointer_holder(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-            , (typename unwrap_reference<A2>::type&)(a2)
-            , (typename unwrap_reference<A3>::type&)(a3)
-            , (typename unwrap_reference<A4>::type&)(a4)
-            , (typename unwrap_reference<A5>::type&)(a5)
-            , (typename unwrap_reference<A6>::type&)(a6)
-            )) {}
-    
-    template <class A1, class A2, class A3, class A4, class A5, class A6, class A7>
-    pointer_holder(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-            , (typename unwrap_reference<A2>::type&)(a2)
-            , (typename unwrap_reference<A3>::type&)(a3)
-            , (typename unwrap_reference<A4>::type&)(a4)
-            , (typename unwrap_reference<A5>::type&)(a5)
-            , (typename unwrap_reference<A6>::type&)(a6)
-            , (typename unwrap_reference<A7>::type&)(a7)
-            ))
-    {}
-    
-    template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
-    pointer_holder(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-            , (typename unwrap_reference<A2>::type&)(a2)
-            , (typename unwrap_reference<A3>::type&)(a3)
-            , (typename unwrap_reference<A4>::type&)(a4)
-            , (typename unwrap_reference<A5>::type&)(a5)
-            , (typename unwrap_reference<A6>::type&)(a6)
-            , (typename unwrap_reference<A7>::type&)(a7)
-            , (typename unwrap_reference<A8>::type&)(a8)
-            ))
-    {}
-    
-    template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
-    pointer_holder(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-            , (typename unwrap_reference<A2>::type&)(a2)
-            , (typename unwrap_reference<A3>::type&)(a3)
-            , (typename unwrap_reference<A4>::type&)(a4)
-            , (typename unwrap_reference<A5>::type&)(a5)
-            , (typename unwrap_reference<A6>::type&)(a6)
-            , (typename unwrap_reference<A7>::type&)(a7)
-            , (typename unwrap_reference<A8>::type&)(a8)
-            , (typename unwrap_reference<A9>::type&)(a9)
-            ))
-    {}
-    
-    template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
-    pointer_holder(PyObject*, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9, A10 a10)
-        : m_p(new Value(
-            (typename unwrap_reference<A1>::type&)(a1)
-            , (typename unwrap_reference<A2>::type&)(a2)
-            , (typename unwrap_reference<A3>::type&)(a3)
-            , (typename unwrap_reference<A4>::type&)(a4)
-            , (typename unwrap_reference<A5>::type&)(a5)
-            , (typename unwrap_reference<A6>::type&)(a6)
-            , (typename unwrap_reference<A7>::type&)(a7)
-            , (typename unwrap_reference<A8>::type&)(a8)
-            , (typename unwrap_reference<A9>::type&)(a9)
-            , (typename unwrap_reference<A10>::type&)(a10)
-            ))
+
+# define BOOST_PYTHON_CONSTRUCT_POINTER_HOLDER(nargs, ignored)          \
+    BOOST_PP_EXPR_IF(nargs, template <)                                 \
+        BOOST_PP_ENUM_PARAMS(nargs, class A)                            \
+    BOOST_PP_EXPR_IF(nargs, >)                                          \
+    pointer_holder(PyObject*                                            \
+                   BOOST_PP_COMMA_IF(nargs)                             \
+                   BOOST_PYTHON_ENUM_PARAMS2(nargs, (A,a)))             \
+        : m_p(new Value(                                                \
+                  BOOST_PP_ENUM(nargs, BOOST_PYTHON_UNFORWARD, nil)     \
+            ))                                                          \
     {}
 
+    BOOST_PYTHON_REPEAT_ARITY_2ND(BOOST_PYTHON_CONSTRUCT_POINTER_HOLDER,nil)
+        
  private: // required holder implementation
-    void* holds(converter::type_id_t);
+    void* holds(converter::undecorated_type_id_t);
 
  private: // data members
     Pointer m_p;
 };
 
-}}}
-
-// back to namespace boost for this forward declaration
-namespace boost
+template <class Pointer, class Value>
+struct pointer_holder_back_reference : instance_holder
 {
-  template <class T> class shared_ptr;
-}
+ private:
+    typedef typename python::detail::pointee<Pointer>::type held_type;
+ public:
+    
+    pointer_holder_back_reference(Pointer);
+    
+    // Forward construction to the held object
+# ifndef BOOST_PYTHON_GENERATE_CODE
+#  include <boost/python/preprocessed/ptr_holder_back_reference.hpp>
+# endif
+    
+# define BOOST_PYTHON_CONSTRUCT_POINTER_HOLDER_BACK_REFERENCE(nargs, ignored)   \
+    BOOST_PP_EXPR_IF(nargs, template <)                                         \
+        BOOST_PP_ENUM_PARAMS(nargs, class A)                                    \
+    BOOST_PP_EXPR_IF(nargs, >)                                                  \
+    pointer_holder_back_reference(PyObject* p                                   \
+                   BOOST_PP_COMMA_IF(nargs)                                     \
+                   BOOST_PYTHON_ENUM_PARAMS2(nargs, (A,a)))                     \
+        : m_p(new held_type(                                                    \
+                    p BOOST_PP_COMMA_IF(nargs)                                  \
+                    BOOST_PP_ENUM(nargs, BOOST_PYTHON_UNFORWARD, nil)           \
+            ))                                                                  \
+    {                                                                           \
+        void const* x = &instance_finder<held_type>::registration; (void)x;     \
+    }
 
-namespace boost { namespace python { namespace objects {
+    BOOST_PYTHON_REPEAT_ARITY_2ND(BOOST_PYTHON_CONSTRUCT_POINTER_HOLDER_BACK_REFERENCE,nil)
 
-struct shared_ptr_generator
-{
-    template <class T>
-    struct apply
-    {
-        typedef boost::shared_ptr<T> type;
-    };
-};
+ private: // required holder implementation
+    void* holds(converter::undecorated_type_id_t);
 
-// A generator metafunction which can be passed to make_holder
-// PointerGenerator should be another generator metafunction which
-// makes the appropriate (smart) pointer type to hold the argument to
-// pointer_holder_generator.
-template <class PointerGenerator>
-struct pointer_holder_generator
-{
-    template <class Held>
-    struct apply
-    {
-        typedef typename detail::eval<PointerGenerator,Held>::type pointer;
-        typedef pointer_holder<pointer, Held> type;
-    };
+ private: // data members
+    Pointer m_p;
 };
 
 template <class Pointer, class Value>
@@ -186,14 +97,34 @@ pointer_holder<Pointer,Value>::pointer_holder(Pointer p)
 }
 
 template <class Pointer, class Value>
-void* pointer_holder<Pointer, Value>::holds(converter::type_id_t dst_t)
+pointer_holder_back_reference<Pointer,Value>::pointer_holder_back_reference(Pointer p)
+    : m_p(p)
 {
-    if (dst_t == converter::type_id<Pointer>())
+}
+
+template <class Pointer, class Value>
+void* pointer_holder<Pointer, Value>::holds(converter::undecorated_type_id_t dst_t)
+{
+    if (dst_t == converter::undecorated_type_id<Pointer>())
         return &this->m_p;
 
-    converter::type_id_t src_t = converter::type_id<Value>();
+    converter::type_id_t src_t = converter::undecorated_type_id<Value>();
     return src_t == dst_t ? &*this->m_p
         : find_dynamic_type(&*this->m_p, src_t, dst_t);
+}
+
+template <class Pointer, class Value>
+void* pointer_holder_back_reference<Pointer, Value>::holds(converter::undecorated_type_id_t dst_t)
+{
+    if (dst_t == converter::undecorated_type_id<Pointer>())
+        return &this->m_p;
+
+    if (dst_t == converter::undecorated_type_id<held_type>())
+        return &*this->m_p;
+
+    converter::type_id_t src_t = converter::undecorated_type_id<Value>();
+    Value* p = &*this->m_p;
+    return src_t == dst_t ? p : find_dynamic_type(p, src_t, dst_t);
 }
 
 }}} // namespace boost::python::objects

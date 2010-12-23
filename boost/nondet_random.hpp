@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: nondet_random.hpp,v 1.4 2002/01/03 22:20:30 jmaurer Exp $
+ * $Id: nondet_random.hpp,v 1.5 2002/02/08 20:08:15 darinadler Exp $
  *
  * Revision history
  *  2000-02-18  Portability fixes (thanks to Beman Dawes)
@@ -29,7 +29,7 @@
 namespace boost {
 
 // use some OS service to generate non-deterministic random numbers
-class random_device : noncopyable
+class random_device : private noncopyable
 {
 public:
   typedef unsigned int result_type;

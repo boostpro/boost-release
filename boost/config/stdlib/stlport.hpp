@@ -49,10 +49,10 @@
 // If the streams are not native, and we have a "using ::x" compiler bug
 // then the io stream facets are not available in namespace std::
 //
-#if !defined(_STLP_OWN_IOSTREAMS) && defined(_STLP_USE_NAMESPACES) && defined(BOOST_NO_USING_TEMPLATE)
+#if !defined(_STLP_OWN_IOSTREAMS) && defined(_STLP_USE_NAMESPACES) && defined(BOOST_NO_USING_TEMPLATE) && !defined(__BORLANDC__)
 #  define BOOST_NO_STD_LOCALE
 #endif
-#if !defined(__SGI_STL_OWN_IOSTREAMS) && defined(__STL_USE_NAMESPACES) && defined(BOOST_NO_USING_TEMPLATE)
+#if !defined(__SGI_STL_OWN_IOSTREAMS) && defined(__STL_USE_NAMESPACES) && defined(BOOST_NO_USING_TEMPLATE) && !defined(__BORLANDC__)
 #  define BOOST_NO_STD_LOCALE
 #endif
 
@@ -80,10 +80,17 @@
 // but doesn't always get them all, define BOOST_NO_STDC_NAMESPACE, since our
 // workaround does not conflict with STLports:
 //
-#if defined(__STL_IMPORT_VENDOR_CSTD) || defined(__STL_USE_OWN_NAMESPACE) || defined(_STLP_IMPORT_VENDOR_CSTD) || defined(_STLP_USE_OWN_NAMESPACE)
-#  define BOOST_NO_STDC_NAMESPACE
+//
+// Harold Howe says:
+// Borland switched to STLport in BCB6. Defining BOOST_NO_STDC_NAMESPACE with
+// BCB6 does cause problems. If we detect BCB6, then don't define 
+// BOOST_NO_STDC_NAMESPACE
+//
+#if !defined(__BORLANDC__) || (__BORLANDC__ < 0x560)
+#  if defined(__STL_IMPORT_VENDOR_CSTD) || defined(__STL_USE_OWN_NAMESPACE) || defined(_STLP_IMPORT_VENDOR_CSTD) || defined(_STLP_USE_OWN_NAMESPACE)
+#     define BOOST_NO_STDC_NAMESPACE
+#  endif
 #endif
-
 //
 // std::reverse_iterate behaves like VC6's under some circumstances:
 //
@@ -112,8 +119,17 @@
 #  define BOOST_NO_CWTYPE
 #endif
 
+//
+// Borland ships a version of STLport with C++ Builder 6 that lacks
+// hashtables and the like:
+//
+#if defined(__BORLANDC__) && (__BORLANDC__ == 0x560)
+#  undef BOOST_HAS_HASH
+#endif
+
 
 #define BOOST_STDLIB "STLPort standard library version " BOOST_STRINGIZE(__SGI_STL_PORT)
+
 
 
 

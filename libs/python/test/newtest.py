@@ -57,6 +57,18 @@ try: wrap_int_ref(n)
 >>> f(g(s))
 12
 
+>>> f_mutable_ref(g(s))
+12
+
+>>> f_const_ptr(g(s))
+12
+
+>>> f_mutable_ptr(g(s))
+12
+
+>>> f2(g(s))
+12
+
 Create an extension class which wraps "complicated" (init1 and get_n)
 are a complicated constructor and member function, respectively.
 
@@ -140,20 +152,12 @@ are a complicated constructor and member function, respectively.
 
 def run(args = None):
 
-    ### Strange bug somewhere: with Metrowerks: it will crash in
-    ### garbage-collection code unless traceback and sre have been
-    ### loaded before m1.
-    
-#     import traceback
-#     import sre
-#     import m2
-#     import m1
     import sys
     import doctest
 
     if args is not None:
         sys.argv = args
-    # import sys
+
     return doctest.testmod(sys.modules.get(__name__))
     
 if __name__ == '__main__':

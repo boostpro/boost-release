@@ -20,6 +20,11 @@
 /** <p>Expands to <code>1</code> if <code>X != Y</code> and <code>0</code>
 otherwise.</p>
 
+<p>Both <code>X</code> and <code>Y</code> must expand to integer literals
+in the range [0, BOOST_PP_LIMIT_MAG].</p>
+
+<p>For example, <code>BOOST_PP_NOT_EQUAL(4,4)</code> expands to <code>0</code>.</p>
+
 <h3>Uses</h3>
 <ul>
   <li>BOOST_PP_WHILE()</li>
@@ -32,10 +37,9 @@ otherwise.</p>
 */
 #define BOOST_PP_NOT_EQUAL(X,Y) BOOST_PP_NOT_EQUAL_D(0,X,Y)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+/** <p>Can be used inside BOOST_PP_WHILE().</p> */
 #define BOOST_PP_NOT_EQUAL_D(D,X,Y) BOOST_PP_BOOL(BOOST_PP_ADD_D(D,BOOST_PP_SUB_D(D,X,Y),BOOST_PP_SUB_D(D,Y,X)))
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_NOT_EQUAL().</p> */
+/* <p>Obsolete. Use BOOST_PP_NOT_EQUAL().</p> */
 #define BOOST_PREPROCESSOR_NOT_EQUAL(X,Y) BOOST_PP_NOT_EQUAL(X,Y)
 #endif

@@ -7,6 +7,7 @@
 #ifndef BOOST_PROPERTY_MAP_HPP
 #define BOOST_PROPERTY_MAP_HPP
 
+#include <cassert>
 #include <iterator>
 #include <boost/config.hpp>
 #include <boost/pending/cstddef.hpp>
@@ -344,7 +345,7 @@ namespace boost {
     IndexMap index;
   };
 
-#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#if !defined BOOST_NO_STD_ITERATOR_TRAITS
   template <class RAIter, class ID>
   inline iterator_property_map<
     RAIter, ID,

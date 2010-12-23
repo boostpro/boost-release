@@ -1,8 +1,9 @@
-//  (C) Copyright Steve Cleary, Beman Dawes, Howard Hinnant & John Maddock 2000.
-//  Permission to copy, use, modify, sell and
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright Dave Abrahams, Steve Cleary, Beman Dawes, Howard
+//  Hinnant & John Maddock 2000.  Permission to copy, use, modify,
+//  sell and distribute this software is granted provided this
+//  copyright notice appears in all copies. This software is provided
+//  "as is" without express or implied warranty, and with no claim as
+//  to its suitability for any purpose.
 //
 //  See http://www.boost.org for most recent version including documentation.
 //
@@ -27,47 +28,37 @@
 #define BOOST_COMPOSITE_TYPE_TRAITS_HPP
 
 #ifndef BOOST_ICE_TYPE_TRAITS_HPP
-#include <boost/type_traits/ice.hpp>
+# include <boost/type_traits/ice.hpp>
 #endif
 #ifndef BOOST_FWD_TYPE_TRAITS_HPP
-#include <boost/type_traits/fwd.hpp>
+# include <boost/type_traits/fwd.hpp>
 #endif
 #ifndef BOOST_CONVERSION_TYPE_TRAITS_HPP
-#include <boost/type_traits/conversion_traits.hpp>
+# include <boost/type_traits/conversion_traits.hpp>
 #endif
 #ifndef BOOST_CV_TYPE_TRAITS_HPP
-#include <boost/type_traits/cv_traits.hpp>
+# include <boost/type_traits/cv_traits.hpp>
 #endif
 #ifndef BOOST_ARITHMETIC_TYPE_TRAITS_HPP
-#include <boost/type_traits/arithmetic_traits.hpp>
+# include <boost/type_traits/arithmetic_traits.hpp>
 #endif
 #ifndef BOOST_TRANSFORM_TRAITS_HPP
-#include <boost/type_traits/transform_traits.hpp>
+# include <boost/type_traits/transform_traits.hpp>
 #endif
+#ifndef BOOST_TT_REFERENCE_TRAITS_HPP
+# include <boost/type_traits/reference_traits.hpp>
+#endif
+#ifndef BOOST_TT_ARRAY_TRAITS_HPP
+# include <boost/type_traits/array_traits.hpp>
+#endif 
+#ifndef BOOST_TYPE_TRAITS_IS_CLASS_HPP
+# include <boost/type_traits/is_class.hpp>
+#endif 
 
 namespace boost{
 
-/**********************************************
- *
- * is_array
- *
- **********************************************/
-#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-template <typename T> struct is_array
-{ BOOST_STATIC_CONSTANT(bool, value = false); };
-template <typename T, std::size_t N> struct is_array<T[N]>
-{ BOOST_STATIC_CONSTANT(bool, value = true); };
-template <typename T, std::size_t N> struct is_array<const T[N]>
-{ BOOST_STATIC_CONSTANT(bool, value = true); };
-template <typename T, std::size_t N> struct is_array<volatile T[N]>
-{ BOOST_STATIC_CONSTANT(bool, value = true); };
-template <typename T, std::size_t N> struct is_array<const volatile T[N]>
-{ BOOST_STATIC_CONSTANT(bool, value = true); };
-#else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#ifdef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 namespace detail{
-
-   template <typename T>
-   struct is_reference_or_const_volatile;
 
    struct pointer_helper
    {
@@ -139,52 +130,21 @@ template <class R, class A0, class A1, class A2, class A3, class A4, class A5, c
 ::boost::type_traits::yes_type is_function_tester(R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26, A27, A28));
 template <class R, class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13, class A14, class A15, class A16, class A17, class A18, class A19, class A20, class A21, class A22, class A23, class A24, class A25, class A26, class A27, class A28, class A29>
 ::boost::type_traits::yes_type is_function_tester(R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26, A27, A28, A29));
-
-
-   yes_type is_array_helper(const volatile void*, const volatile void*);
-   template <class T>
-   no_type is_array_helper(T*const volatile*, const volatile void*);
-   no_type BOOST_TT_DECL is_array_helper(...);
 } // namespace detail
-template <typename T> 
-struct is_array
-{ 
-private:
-   static T t;
-public:
-   BOOST_STATIC_CONSTANT(bool, value = 
-      (::boost::type_traits::ice_and<
-         (1 == sizeof(detail::is_array_helper(&t, t))),
-         ::boost::type_traits::ice_not<
-            ::boost::detail::is_reference_or_const_volatile<T>::value>::value,
-         ::boost::type_traits::ice_not<
-            (1 == sizeof(detail::is_function_tester(t)))>::value
-      >::value));
-};
-template <> 
-struct is_array<void>
-{ 
-   BOOST_STATIC_CONSTANT(bool, value = false);
-};
-#ifndef BOOST_NO_CV_VOID_SPECIALIZATIONS
-template <> 
-struct is_array<const void>
-{ 
-   BOOST_STATIC_CONSTANT(bool, value = false);
-};
-template <> 
-struct is_array<volatile void>
-{ 
-   BOOST_STATIC_CONSTANT(bool, value = false);
-};
-template <> 
-struct is_array<const volatile void>
-{ 
-   BOOST_STATIC_CONSTANT(bool, value = false);
-};
-#endif
-
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+namespace detail
+{
+  // Utility metafunction which returns true if its argument is not an
+  // array and not a reference.
+  template <class T>
+  struct neither_array_nor_reference : ::boost::type_traits::ice_not<
+      ::boost::type_traits::ice_or<
+          ::boost::is_reference<T>::value
+        , ::boost::is_array<T>::value
+      >::value>
+  {};
+}
 
 /**********************************************
  *
@@ -207,26 +167,37 @@ template <typename T> struct is_pointer_helper<T*const volatile>
 template <typename T> struct is_pointer
 { BOOST_STATIC_CONSTANT(bool, value = (::boost::type_traits::ice_and< ::boost::detail::is_pointer_helper<T>::value, ::boost::type_traits::ice_not< ::boost::is_member_pointer<T>::value >::value >::value)); };
 #else
-template <typename T>
-struct is_pointer 
-{ 
-private:
-   static T t;
-public:
-   BOOST_STATIC_CONSTANT(bool, value =
-                (::boost::type_traits::ice_and<
-                  ::boost::type_traits::ice_not<
-                     ::boost::is_reference<T>::value
-                  >::value,
-                  ::boost::type_traits::ice_not<
-                     ::boost::is_array<T>::value
-                  >::value,
+
+namespace detail
+{
+  // is_pointer implementation
+  template <bool maybe = false>
+  struct is_pointer_select : ::boost::type_traits::false_unary_metafunction
+  {
+  };
+
+  template <>
+  struct is_pointer_select<true>
+  {
+      template <class T>
+      struct apply
+      {
+          static T& make_t();
+          BOOST_STATIC_CONSTANT(bool, value =
                   (::boost::type_traits::ice_or<
-                       (1 == sizeof(detail::is_pointer_helper(t))),
-                       (1 == sizeof(detail::is_function_tester(t)))
-                  >::value)
-                >::value ) );
-};
+                       (1 == sizeof(is_pointer_helper(make_t()))),
+                       (1 == sizeof(is_function_tester(make_t())))
+                   >::value));
+      };
+  };
+}
+
+template <typename T>
+struct is_pointer : ::boost::detail::is_pointer_select<
+    ::boost::detail::neither_array_nor_reference<T>::value
+>::template apply<T>
+{};
+
 template <>
 struct is_pointer <void>
 { 
@@ -253,108 +224,6 @@ struct is_pointer <const volatile void>
 
 /**********************************************
  *
- * is_reference
- *
- **********************************************/
-#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-template <typename T> struct is_reference 
-{ BOOST_STATIC_CONSTANT(bool, value = false); };
-template <typename T> struct is_reference<T&> 
-{ BOOST_STATIC_CONSTANT(bool, value = true); };
-#if defined(__BORLANDC__)
-// these are illegal specialisations; cv-qualifies applied to
-// references have no effect according to [8.3.2p1],
-// C++ Builder requires them though as it treats cv-qualified
-// references as distinct types...
-template <typename T> struct is_reference<T&const> 
-{ BOOST_STATIC_CONSTANT(bool, value = true); };
-template <typename T> struct is_reference<T&volatile> 
-{ BOOST_STATIC_CONSTANT(bool, value = true); };
-template <typename T> struct is_reference<T&const volatile> 
-{ BOOST_STATIC_CONSTANT(bool, value = true); };
-#endif
-#else
-# ifdef BOOST_MSVC
-#  pragma warning(push)
-#  pragma warning(disable: 4181)
-#endif // BOOST_MSVC
-
-
-namespace detail
-{
-  template <typename T> struct is_reference_or_const_volatile
-  { 
-   private:
-      typedef T const volatile cv_t;
-   public:
-      BOOST_STATIC_CONSTANT(bool, value = 
-                            (::boost::type_traits::ice_or<
-                             ::boost::type_traits::ice_not<
-                             ::boost::is_const<cv_t>::value
-                             >::value, 
-                             ::boost::type_traits::ice_not<
-                             ::boost::is_volatile<cv_t>::value>::value
-                             >::value));
-  };
-  
-  no_type non_array_is_reference_helper(...);
-  template <typename T>
-  yes_type non_array_is_reference_helper(T&(*)());
-
-  template <bool isarray_>
-  struct is_reference_helper
-  {
-      template <class T>
-      struct apply
-      {
-          typedef T (*pf_t)();
-          static pf_t pf;
-    
-          BOOST_STATIC_CONSTANT(
-              bool, value = (1 == sizeof(::boost::detail::non_array_is_reference_helper(pf))));
-      };
-  };
-
-  template <>
-  struct is_reference_helper<true>
-  {
-      template <class T>
-      struct apply
-      {
-          BOOST_STATIC_CONSTANT(bool, value = false);
-      };
-  };
-}
-
-template <typename T>
-struct is_reference
-{
-    BOOST_STATIC_CONSTANT(
-        bool, value = ::boost::detail::is_reference_helper<
-            is_array<T>::value
-        >::template apply<T>::value);
-};
-    
-template <> struct is_reference<void>
-{
-   BOOST_STATIC_CONSTANT(bool, value = false);
-};
-#ifndef BOOST_NO_CV_VOID_SPECIALIZATIONS
-template <> struct is_reference<const void>
-{ BOOST_STATIC_CONSTANT(bool, value = false); };
-template <> struct is_reference<volatile void>
-{ BOOST_STATIC_CONSTANT(bool, value = false); };
-template <> struct is_reference<const volatile void>
-{ BOOST_STATIC_CONSTANT(bool, value = false); };
-#endif
-
-# ifdef BOOST_MSVC
-#  pragma warning(pop)
-# endif // BOOST_MSVC
-#endif
-
-/**********************************************
- *
  * is_union
  *
  **********************************************/
@@ -371,24 +240,69 @@ public:
  * is_enum
  *
  **********************************************/
-namespace detail{
-struct int_convertible
+namespace detail
 {
-   int_convertible(int);
-};
+  struct int_convertible
+  {
+      int_convertible(int);
+  };
+
+  // Don't evaluate convertibility to int_convertible unless the type
+  // is non-arithmetic. This suppresses warnings with GCC.
+  template <bool is_class_arithmetic_or_reference = true>
+  struct is_enum_helper
+  {
+      template <class T>
+      struct type
+      {
+          BOOST_STATIC_CONSTANT(bool, value = false);
+      };
+  };
+
+  template <>
+  struct is_enum_helper<false>
+  {
+      template <class T> 
+      struct type
+          : ::boost::is_convertible<T,::boost::detail::int_convertible>
+      {
+      };
+  };
 } // namespace detail
-#ifndef __BORLANDC__
+#if !(defined(__BORLANDC__) && (__BORLANDC__ <= 0x551))
 template <typename T> struct is_enum
 {
 private:
-   typedef typename ::boost::add_reference<T>::type r_type;
-public:
-   BOOST_STATIC_CONSTANT(bool, value =
-      (::boost::type_traits::ice_and<
-         ::boost::type_traits::ice_not< ::boost::is_arithmetic<T>::value>::value,
-         ::boost::type_traits::ice_not< ::boost::is_reference<T>::value>::value,
-         ::boost::is_convertible<r_type, detail::int_convertible>::value
+   typedef ::boost::add_reference<T> ar_t;
+   typedef typename ar_t::type r_type;
+       
+# if (defined(__MWERKS__) && __MWERKS__ >= 0x3000) || BOOST_MSVC > 1301 || defined(BOOST_NO_COMPILER_CONFIG)
+   BOOST_STATIC_CONSTANT(bool, selector =
+      (::boost::type_traits::ice_or<
+           ::boost::is_arithmetic<T>::value
+         , ::boost::is_reference<T>::value
+       // We MUST do this on conforming compilers in order to
+       // correctly deduce that noncopyable types are not enums (dwa
+       // 2002/04/15)...
+         , ::boost::is_class<T>::value
       >::value));
+# else 
+   BOOST_STATIC_CONSTANT(bool, selector =
+      (::boost::type_traits::ice_or<
+           ::boost::is_arithmetic<T>::value
+         , ::boost::is_reference<T>::value
+       // However, not doing this on non-conforming compilers prevents
+       // a dependency recursion.
+      >::value));
+# endif
+#ifdef __BORLANDC__
+    typedef ::boost::detail::is_enum_helper< ::boost::is_enum<T>::selector> se_t;
+#else
+    typedef ::boost::detail::is_enum_helper<selector> se_t;
+#endif
+    typedef typename se_t::template type<r_type> helper;
+public:
+    BOOST_STATIC_CONSTANT(bool, value = helper::value);
 };
 
 // Specializations suppress some nasty warnings with GCC
@@ -502,7 +416,7 @@ template <class R, class T, class A0, class A1, class A2, class A3, class A4, cl
 struct is_member_function_pointer<R (T::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26, A27, A28)>{ BOOST_STATIC_CONSTANT(bool, value = true); };
 
 // Metrowerks thinks this creates ambiguities
-# if !defined(__MWERKS__) || __MWERKS__ > 0x2406
+# if !defined(__MWERKS__) || __MWERKS__ >= 0x3000
 
 template <class R, class T>
 struct is_member_function_pointer<R (T::*)(void)const>{ BOOST_STATIC_CONSTANT(bool, value = true); };
@@ -687,7 +601,7 @@ struct is_member_function_pointer<R (T::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A
 template <class R, class T, class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13, class A14, class A15, class A16, class A17, class A18, class A19, class A20, class A21, class A22, class A23, class A24, class A25, class A26, class A27, class A28>
 struct is_member_function_pointer<R (T::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26, A27, A28)const volatile>{ BOOST_STATIC_CONSTANT(bool, value = true); };
 
-# endif // __MWERKS__ < 0x2406 
+# endif // __MWERKS__ < 0x3000
 #else
 
 namespace detail{
@@ -949,14 +863,35 @@ template <class R, class T>
 ::boost::type_traits::no_type BOOST_TT_DECL is_member_pointer_helper(...);
 
 }
-template <typename T>
-struct is_member_function_pointer
+
+namespace detail
 {
-private:
-   static T t;
-public:
-   BOOST_STATIC_CONSTANT(bool, value = (1 == sizeof(detail::is_member_function_pointer_helper(t))) );
-};
+  template <bool maybe = false>
+  struct is_member_function_pointer_select
+      : ::boost::type_traits::false_unary_metafunction
+  {
+  };
+
+  template <>
+  struct is_member_function_pointer_select<true>
+  {
+      template <class T>
+      struct apply
+      {
+          static T& make_t();
+
+          BOOST_STATIC_CONSTANT(
+              bool, value = (1 == sizeof(detail::is_member_function_pointer_helper(make_t()))) );
+      };
+  };
+}
+
+template <typename T>
+struct is_member_function_pointer : ::boost::detail::is_member_function_pointer_select<
+    ::boost::detail::neither_array_nor_reference<T>::value
+>::template apply<T>
+{};
+
 template <>
 struct is_member_function_pointer<void>
 {
@@ -985,16 +920,39 @@ template <typename T> struct is_member_pointer
 template <typename T, typename U> struct is_member_pointer<U T::*>
 { BOOST_STATIC_CONSTANT(bool, value = true); };
 #else
-template <typename T>
-struct is_member_pointer
+
+namespace detail
 {
-private:
-   static T t;
-public:
-   BOOST_STATIC_CONSTANT(bool, value =
-      (1 == sizeof(detail::is_member_function_pointer_helper(t)))
-      || (1 == sizeof(detail::is_member_pointer_helper(t))) );
-};
+  template <bool maybe = false>
+  struct is_member_pointer_select
+      : ::boost::type_traits::false_unary_metafunction
+  {
+  };
+
+  template <>
+  struct is_member_pointer_select<true>
+  {
+      template <class T>
+      struct apply
+      {
+          static T& make_t();
+
+          BOOST_STATIC_CONSTANT(
+             bool, value = 
+               (::boost::type_traits::ice_or<
+                  (1 == sizeof(detail::is_member_function_pointer_helper(make_t()))),
+                  (1 == sizeof(detail::is_member_pointer_helper(make_t())))
+                >::value) );
+      };
+  };
+}
+
+template <typename T>
+struct is_member_pointer : ::boost::detail::is_member_pointer_select<
+    ::boost::detail::neither_array_nor_reference<T>::value
+>::template apply<T>
+{};
+
 template <>
 struct is_member_pointer<void>
 {

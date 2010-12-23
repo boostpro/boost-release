@@ -13,7 +13,7 @@
  * See http://www.boost.org for most recent version.
  */
 
-/** <p>Expands to the <code>I</code>:th element of an <code>N</code>-tuple.</p>
+/** <p>Expands to the <code>INDEX</code>:th element of an <code>SIZE_OF_TUPLE</code>-tuple.</p>
 
 <p>For example,</p>
 
@@ -23,25 +23,13 @@
 
 <p>expands to <code>B</code>.</p>
 
-<p>Tuples can be used for representing structured data.</p>
-
-<p>Examples of tuples:</p>
-
-<pre>
-  2-tuple: (A, B)
-  3-tuple: (1, 2, 3)
-  4-tuple: (A B C, D, EF, 34)
-</pre>
-
 <h3>See</h3>
 <ul>
   <li>BOOST_PP_LIMIT_TUPLE</li>
 </ul>
 */
-#define BOOST_PP_TUPLE_ELEM(N,I,T) BOOST_PP_TUPLE_ELEM_DELAY(N,I,T)
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) && __MWERKS__ <= 0x2406
+#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__)
+#  define BOOST_PP_TUPLE_ELEM(SIZE_OF_TUPLE,INDEX,TUPLE) BOOST_PP_TUPLE_ELEM_DELAY(SIZE_OF_TUPLE,INDEX,TUPLE)
 /* This is a workaround for a CodeWarrior PP bug. Strictly speaking
  * this workaround invokes undefined behavior, but it works as desired.
  */
@@ -51,9 +39,11 @@
 /* This is a workaround for a MSVC++ PP bug. It should not be necessary
  * to use BOOST_PP_EXPAND(). Works on standard conforming compilers, too.
  */
-#  define BOOST_PP_TUPLE_ELEM_DELAY(N,I,T) BOOST_PP_EXPAND(BOOST_PP_TUPLE##N##_ELEM##I T)
+#  define BOOST_PP_TUPLE_ELEM(SIZE_OF_TUPLE,INDEX,TUPLE) BOOST_PP_EXPAND(BOOST_PP_TUPLE_ELEM_DELAY(SIZE_OF_TUPLE,INDEX)TUPLE)
+#  define BOOST_PP_TUPLE_ELEM_DELAY(N,I) BOOST_PP_TUPLE##N##_ELEM##I
 #else
-#  define BOOST_PP_TUPLE_ELEM_DELAY(N,I,T) BOOST_PP_TUPLE##N##_ELEM##I T
+#  define BOOST_PP_TUPLE_ELEM(SIZE_OF_TUPLE,INDEX,TUPLE) BOOST_PP_TUPLE_ELEM_DELAY(SIZE_OF_TUPLE,INDEX)TUPLE
+#  define BOOST_PP_TUPLE_ELEM_DELAY(N,I) BOOST_PP_TUPLE##N##_ELEM##I
 #endif
 
 /* TUPLE_ELEM can be implemented in O(N*N) space and O(N) time instead
@@ -210,8 +200,7 @@
 #define BOOST_PP_TUPLE16_ELEM13(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P) N
 #define BOOST_PP_TUPLE16_ELEM14(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P) O
 #define BOOST_PP_TUPLE16_ELEM15(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P) P
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_TUPLE_ELEM().</p> */
+/* <p>Obsolete. Use BOOST_PP_TUPLE_ELEM().</p> */
 #define BOOST_PREPROCESSOR_TUPLE_ELEM(N,I,T) BOOST_PP_TUPLE_ELEM(N,I,T)
 #endif

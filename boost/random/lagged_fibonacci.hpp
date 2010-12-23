@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: lagged_fibonacci.hpp,v 1.5 2002/01/03 22:20:56 jmaurer Exp $
+ * $Id: lagged_fibonacci.hpp,v 1.6 2002/03/03 09:13:57 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -35,7 +35,6 @@ namespace random {
 // lagged Fibonacci generator for the range [0..1)
 // contributed by Matthias Troyer
 // for p=55, q=24 originally by G. J. Mitchell and D. P. Moore 1958
-// (at the end of the file, because it uses uniform_01 for seeding)
 
 template<class T, unsigned int p, unsigned int q>
 struct fibonacci_validation

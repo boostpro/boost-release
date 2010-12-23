@@ -15,6 +15,8 @@
 
 /** <p>Stringizes <code>X</code> after it is macro expanded.</p>
 
+<p>For example, <code>BOOST_PP_STRINGIZE(BOOST_PP_CAT(a,b))</code> expands to <code>"ab"</code>.</p>
+
 <h3>Example</h3>
 <ul>
   <li><a href="../../example/note.c">note.c</a></li>
@@ -27,11 +29,9 @@
 */
 #define BOOST_PP_STRINGIZE(X) BOOST_PP_STRINGIZE_DELAY(X)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 #define BOOST_PP_STRINGIZE_DELAY(X) BOOST_PP_DO_STRINGIZE(X)
 #define BOOST_PP_DO_STRINGIZE(X) #X
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_STRINGIZE().</p> */
+/* <p>Obsolete. Use BOOST_PP_STRINGIZE().</p> */
 #define BOOST_PREPROCESSOR_STRINGIZE(E) BOOST_PP_STRINGIZE(E)
 #endif

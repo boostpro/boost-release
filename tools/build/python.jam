@@ -22,11 +22,17 @@ PYTHON_VERSION_NODOT
 
 local RUN_PATH = $(RUN_PATH) ;
 
+gcc-compilers = gcc gcc-stlport ;
+
 if $(NT)
 {
     PYTHON_ROOT ?= c:/tools/python ;
     
+    # Reconstitute any paths split due to embedded spaces.
+    PYTHON_ROOT = $(PYTHON_ROOT:J=" ") ;
+    
     PYTHON_LIB_PATH ?= $(PYTHON_ROOT)/libs $(PYTHON_ROOT)/PCBuild ;
+    PYTHON_STDLIB_PATH ?= $(PYTHON_ROOT)/Lib ;
 
     # Locate Python libraries. In the case of MSVC the libraries are
     # found implicitly, and GCC/MINGW will use -lpython<version> to
@@ -43,9 +49,8 @@ if $(NT)
       select-python-includes
       <runtime-link>dynamic
       <include>$(BOOST_ROOT)
-      <gcc><*><define>SIZEOF_LONG=4
-      <gcc><*><define>USE_DL_IMPORT
-      <gcc><*><find-library>python$(PYTHON_VERSION).dll 
+      <$(gcc-compilers)><*><define>USE_DL_IMPORT
+      <$(gcc-compilers)><*><find-library>python$(PYTHON_VERSION).dll 
       ;
     
     GCC_PYTHON_ROOT ?= $(CYGWIN_ROOT)/usr/local ;
@@ -58,13 +63,20 @@ else if $(UNIX)
 {
     PYTHON_VERSION ?= 1.5 ;
     PYTHON_ROOT ?= /usr/local ;
+    PYTHON_ROOT = $(PYTHON_ROOT:J=" ") ;
     PYTHON_INCLUDES ?= $(PYTHON_ROOT)/include/python$(PYTHON_VERSION) ;
     PYTHON_LIB_PATH ?= $(PYTHON_ROOT)/lib/python$(PYTHON_VERSION)/config ;
+    PYTHON_STDLIB_PATH ?= $(PYTHON_ROOT)/lib/python$(PYTHON_VERSION) ;
+
     PYTHON_PROPERTIES ?=
       <include>$(PYTHON_INCLUDES)
         <library-path>$(PYTHON_LIB_PATH)
-            <cxx><*><cflags>"-expect_unresolved 'Py*' -expect_unresolved '_Py*'"
       ;
+    
+    if $(OS) = OSF
+    {
+        PYTHON_PROPERTIES += <*><*><linkflags>"-expect_unresolved 'Py*' -expect_unresolved '_Py*'" ;
+    }
 }
 
 # Locate the python executable
@@ -94,7 +106,7 @@ rule select-python-library ( toolset variant : properties * )
             }
             properties += <find-library>$(lib) ;
         }
-        else if $(toolset) = gcc
+        else if $(toolset) in $(gcc-compilers)
         {
             local python-root = $(GCC_PYTHON_ROOT) ;
             if <define>BOOST_DEBUG_PYTHON in $(properties)
@@ -118,7 +130,7 @@ rule select-python-library ( toolset variant : properties * )
 
 rule select-python-includes ( toolset variant : properties * )
 {
-    if $(toolset) = gcc
+    if $(toolset) in $(gcc-compilers)
     {
         local python-root = $(GCC_PYTHON_ROOT) ;
         if <define>BOOST_DEBUG_PYTHON in $(properties)
@@ -138,17 +150,39 @@ rule select-python-includes ( toolset variant : properties * )
     return $(properties) ;
 }
 
-PYTHON_PROPERTIES
-  += 
-  <gcc><*><find-library>util
+PYTHON_PROPERTIES += 
+        <$(gcc-compilers)><*><find-library>util
         <include>$(BOOST_ROOT)
-          select-python-library
-          # These two compilers pick up implicit directions from #pragmas
-          # to look for those libraries.
-          <mingw><*><library-path>$(PYTHON_LIB_PATH)
-            <msvc><*><library-path>$(PYTHON_LIB_PATH)
-              <intel-win32><*><library-path>$(PYTHON_LIB_PATH)
-              ;
+          <stlport-iostream>on
+            select-python-library
+            ;
+
+if $(NT)
+{
+    # Most Windows compilers pick up implicit directions from #pragmas
+    # to look for those libraries.
+    PYTHON_PROPERTIES += <library-path>$(PYTHON_LIB_PATH) ;
+}
+
+# Set gcc-specific release build properties
+{
+    local gcc-release-properties
+      = <optimization>speed <cxxflags>-fomit-frame-pointer
+      <inlining>on
+      # GCC 2.95.4, which ships with Debian, chokes on this.
+      # <cxxflags>-foptimize-sibling-calls 
+      ;
+    
+    PYTHON_PROPERTIES += <$(gcc-compilers)><release>$(gcc-release-properties) ;
+}
+
+BOOST_PYTHON_V2_PROPERTIES 
+  = $(PYTHON_PROPERTIES)
+    <metrowerks><*><cxxflags>"-inline deferred" 
+    <cxx><*><include>$(BOOST_ROOT)/boost/compatibility/cpp_c_headers
+      <define>BOOST_PYTHON_DYNAMIC_LIB
+      <define>BOOST_PYTHON_V2
+      ;
 
 # Extends the RUN_PATH assignment for targets built under Cygwin so
 # that the Python DLL can be found.
@@ -176,7 +210,7 @@ rule python-files ( module implib ? : sources * )
 {
     dll-files $(module) $(implib) : $(sources) : PYD ;
 
-    if ( $(gCURRENT_TOOLSET) = gcc )
+    if $(gCURRENT_TOOLSET) in $(gcc-compilers)
     {
         if $(NT)
         {
@@ -199,7 +233,7 @@ if $(NT)
     {
         # Cygwin python is only happy if compiled modules have a .dll
         # extension
-        if $(toolset) = gcc
+        if $(toolset) in $(gcc-compilers)
         {
             pyd = $(pyd:S=.dll) ;
         }
@@ -213,15 +247,10 @@ if $(NT)
 
 rule Link-PYD
 {
-    if $(<[2])
-    {
-        MODE on $(<[2]) = $(IMPMODE) ;
-        Chmod $(<[2]) ;
-    }
-    
     gRUN_PATH($(<)) += $(gLOCATE($(<[1]))) ;
     if $(UNIX) 
     {
+        RUN_LD_LIBRARY_PATH on $(<) = [ join $(gRUN_LD_LIBRARY_PATH($(<))) : $(SPLITPATH) ] ;
         gRUN_LD_LIBRARY_PATH($(<)) += $(gLOCATE($(<[1]))) ;
     }
     Link-action $(<) : $(>) : PYD ;
@@ -239,6 +268,9 @@ else
 }
 PYDMODE = $(DLLMODE) ;
 SHARED_TYPES += PYD ;
+
+gTARGET_TYPE_ID(pyd) = PYD ;
+gIS_DEPENDENCY(PYD) = TRUE ;
 
 # Declare a python extension.
 rule extension ( name : sources + : requirements * : default-BUILD * )
@@ -264,16 +296,13 @@ rule boost-python-runtest (
     local gPYTHON_TEST_ARGS = $(args) $(PYTHON_TEST_ARGS) ;
 
     # declare the two subsidiary tests.
-    declare-local-target $(<:S=.test) : $(>) : $(PYTHON_PROPERTIES) : $(4) : PYTHON_TEST ;
-    declare-local-target $(<:S=.run) : $(>) : $(PYTHON_PROPERTIES) : $(4) : PYTHON_RUNTEST ;
+    declare-local-target $(<) : $(>) : $(PYTHON_PROPERTIES) : $(4) : PYTHON_TEST ;
+    declare-local-target $(<) : $(>) : $(PYTHON_PROPERTIES) : $(4) <suppress>true : PYTHON_RUNTEST ;
 }
 
 rule boost-python-test ( name : sources + : requirements * : default-BUILD * )
 {
-    type-DEPENDS test : $(name) ;
-    
-    local gSUPPRESS_FAKE_TARGETS = true ;
-    extension $(name) : $(sources) : $(requirements) : $(4) ;
+    extension $(name) : $(sources) : $(requirements) <suppress>true : $(4) ;
 }
 
 # special rules for two new target types: PYTHON_TEST and PYTHON_RUNTEST.
@@ -289,11 +318,17 @@ rule python-test-target ( test-target : sources + )
     MakeLocate $(test-target) : $(LOCATE_TARGET) ;
     MakeLocate $(test-target) : $(LOCATE_TARGET) ;
 }
+
+if $(UNIX)
+{
+    gAPPEND_LD_LIBRARY_PATH = ":$LD_LIBRARY_PATH" ;
+}
+
 actions python-test-target bind PYTHON
 {
     $(SHELL_SET)PATH=$(PATH)
     $(SHELL_EXPORT)PATH
-    $(SHELL_SET)LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
+    $(SHELL_SET)LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)$(gAPPEND_LD_LIBRARY_PATH)
     $(SHELL_EXPORT)LD_LIBRARY_PATH
     $(SHELL_SET)PYTHONPATH=$(PYTHONPATH)
     $(SHELL_EXPORT)PYTHONPATH
@@ -313,7 +348,7 @@ actions python-runtest-target bind PYTHON
 {
     $(SHELL_SET)PATH=$(PATH)
     $(SHELL_EXPORT)PATH
-    $(SHELL_SET)LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
+    $(SHELL_SET)LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)$(gAPPEND_LD_LIBRARY_PATH)
     $(SHELL_EXPORT)LD_LIBRARY_PATH
     $(SHELL_SET)PYTHONPATH=$(PYTHONPATH)
     $(SHELL_EXPORT)PYTHONPATH
@@ -351,7 +386,7 @@ rule python-runtest-aux ( target : sources + )
           $(PYTHONPATH)                           # base PYTHONPATH from environment
           ;
     
-    if $(NT) && ( $(gCURRENT_TOOLSET) = gcc )
+    if $(NT) && ( $(gCURRENT_TOOLSET) in $(gcc-compilers) )
     {
         python = python$(PYTHON_VERSION)$(SUFEXE) ;
         local python-root = $(GCC_PYTHON_ROOT) ;
@@ -380,7 +415,9 @@ rule python-runtest-aux ( target : sources + )
         python = $(PYTHON_D) ;
     }
     
-    PYTHONPATH on $(target) = [ join $(pythonpath) : $(splitpath) ] ;
+    # adding the dummy at the end fixes a problem which causes a
+    # trailing space to be added to the last path.
+    PYTHONPATH on $(target) = [ join $(pythonpath) "" : $(splitpath) ] ;
     
     # set the path so that DLLs linked into extension modules will be
     # found

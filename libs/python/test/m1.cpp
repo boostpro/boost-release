@@ -9,17 +9,11 @@
 #include "complicated.hpp"
 #include <boost/python/module.hpp>
 #include <boost/python/class.hpp>
-#include <boost/python/object/value_holder.hpp>
-#include <boost/python/object/pointer_holder.hpp>
-#include <boost/python/object/class.hpp>
+#include <boost/python/type_from_python.hpp>
 #include <boost/python/copy_const_reference.hpp>
 #include <boost/python/return_value_policy.hpp>
-#include <boost/python/converter/class.hpp>
-#include <boost/python/reference_from_python.hpp>
 #include <boost/python/to_python_converter.hpp>
-#include <boost/python/value_from_python.hpp>
 #include <boost/python/errors.hpp>
-#include <boost/mpl/type_list.hpp>
 #include <string.h>
 
 // Declare some straightforward extension types
@@ -101,11 +95,8 @@ PyObject* new_simple()
 
 //
 // Declare some wrappers/unwrappers to test the low-level conversion
-// mechanism. See boost/python/converter/source.hpp,target.hpp for a
-// description of how the type parameters to wrapper<> and unwrapper<>
-// are selected.
+// mechanism. 
 //
-using boost::python::converter::from_python_data;
 using boost::python::to_python_converter;
 
 // Wrap a simple by copying it into a Simple
@@ -120,16 +111,13 @@ struct simple_to_python
     }
 };
 
-int noddy_to_int(PyObject* p, from_python_data&)
+struct int_from_noddy_extractor
 {
-    return static_cast<NoddyObject*>(p)->x;
-}
-
-// Extract a mutable reference to an int from a Noddy.
-int& noddy_to_int_ref(PyObject* p, from_python_data&) 
-{
-    return static_cast<NoddyObject*>(p)->x;
-}
+    static int& execute(NoddyObject& p)
+    {
+        return p.x;
+    }
+};
 
 //
 // Some C++ functions to expose to Python
@@ -139,6 +127,26 @@ int& noddy_to_int_ref(PyObject* p, from_python_data&)
 int f(simple const& s)
 {
     return strlen(s.s);
+}
+
+int f_mutable_ref(simple& s)
+{
+    return strlen(s.s);
+}
+
+int f_mutable_ptr(simple* s)
+{
+    return strlen(s->s);
+}
+
+int f_const_ptr(simple const* s)
+{
+    return strlen(s->s);
+}
+
+int f2(SimpleObject const& s)
+{
+    return strlen(s.x.s);
 }
 
 // A trivial passthru function for simple objects
@@ -158,7 +166,7 @@ struct A
 struct B : A
 {
     B() : x(1) {}
-    char const* name() { return "B"; }
+    static char const* name(B*) { return "B"; }
     int x;
 };
 
@@ -185,39 +193,25 @@ D take_d(D const& d) { return d; }
     
 BOOST_PYTHON_MODULE_INIT(m1)
 {
-    using boost::python::module;
-    using boost::python::class_;
-    using boost::python::converter::from_python_converter;
-    using boost::python::reference_from_python;
-    using boost::python::value_from_python;
-    using boost::python::type_from_python;
-    using boost::python::get_member;
-    using boost::python::copy_const_reference;
-    using boost::python::return_value_policy;
-    using boost::mpl::type_list;
+    using namespace boost::python;
+    using boost::shared_ptr;
     
-    // Create the converters; they are self-registering/unregistering.
-    static simple_to_python c1;
+    simple_to_python();
 
-    static from_python_converter<int> c2(
-        &(boost::python::type_from_python<&NoddyType>::convertible), noddy_to_int);
-    
-    static from_python_converter<int&> c3(
-        &(boost::python::type_from_python<&NoddyType>::convertible), noddy_to_int_ref);
+    type_from_python<&NoddyType,int_from_noddy_extractor>();
 
-    static boost::python::reference_from_python<
+    boost::python::type_from_python<
         &SimpleType
-        , simple
-        , SimpleObject
+#if !defined(BOOST_MSVC) || BOOST_MSVC > 1300
+        , member_extractor<SimpleObject, simple, &SimpleObject::x>
+#else 
         , extract_simple_object
-        >
-        unwrap_simple;
+#endif 
+        >();
 
+    type_from_python<&SimpleType, identity_extractor<SimpleObject> >();
+    
     module m1("m1");
-
-    typedef boost::python::objects::pointer_holder_generator<
-        boost::python::objects::shared_ptr_generator
-    > use_shared_ptr;
 
     m1
       // Insert the metaclass for all extension classes
@@ -229,9 +223,14 @@ BOOST_PYTHON_MODULE_INIT(m1)
       .def("new_noddy", new_noddy)
       .def("new_simple", new_simple)
 
-      // Expose f()
+      // Expose f() in all its variations
       .def("f", f)
+      .def("f_mutable_ref", f_mutable_ref)
+      .def("f_mutable_ptr", f_mutable_ptr)
+      .def("f_const_ptr", f_const_ptr)
 
+      .def("f2", f2)
+        
       // Expose g()
       .def("g", g , return_value_policy<copy_const_reference>()
           )
@@ -242,7 +241,7 @@ BOOST_PYTHON_MODULE_INIT(m1)
       .def("take_d", take_d)
 
       .add(
-          class_<A, bases<>, use_shared_ptr>("A")
+          class_<A, shared_ptr<A> >("A")
           .def_init()
           .def("name", &A::name)
           )
@@ -253,13 +252,13 @@ BOOST_PYTHON_MODULE_INIT(m1)
     // or "C" below if we make them part of the same chain
     m1
         .add(
-            class_<B,bases<A>, use_shared_ptr>("B")
+            class_<B,bases<A>, shared_ptr<B> >("B")
             .def_init()
             .def("name", &B::name)
             )
         
         .add(
-            class_<C,bases<A>, use_shared_ptr>("C")
+            class_<C,bases<A>, shared_ptr<C> >("C")
             .def_init()
             .def("name", &C::name)
             )
@@ -267,15 +266,15 @@ BOOST_PYTHON_MODULE_INIT(m1)
 
     m1
         .add(
-            class_<D,bases<B,C>, use_shared_ptr>("D")
+            class_<D,shared_ptr<D>, bases<B,C> >("D")
             .def_init()
             .def("name", &D::name)
             )
 
         .add(
             class_<complicated>("complicated")
-            .def_init(type_list<simple const&,int>())
-            .def_init(type_list<simple const&>())
+            .def_init(args<simple const&,int>())
+            .def_init(args<simple const&>())
             .def("get_n", &complicated::get_n)
             )
         ;

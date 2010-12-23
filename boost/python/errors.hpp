@@ -15,8 +15,8 @@
 
 namespace boost { namespace python {
 
-struct error_already_set {};
-struct argument_error : error_already_set {};
+struct BOOST_PYTHON_DECL error_already_set {};
+struct BOOST_PYTHON_DECL argument_error : error_already_set {};
 
 // Handles exceptions caught just before returning to Python code.
 // Returns true iff an exception was caught.
@@ -28,13 +28,23 @@ bool handle_exception(T f)
     return handle_exception_impl(function0<void>(boost::ref(f)));
 }
 
-BOOST_PYTHON_DECL PyObject* expect_non_null(PyObject* x);
+namespace detail { inline void rethrow() { throw; } }
+
+inline void handle_exception()
+{
+    handle_exception(detail::rethrow);
+}
+
+BOOST_PYTHON_DECL PyObject* expect_non_null_impl(PyObject* x);
 
 template <class T>
-T* expect_non_null(T* x)
+inline T* expect_non_null(T* x)
 {
-    return (T*)expect_non_null((PyObject*)x);
+    return (T*)expect_non_null_impl((PyObject*)x);
 }
+
+BOOST_PYTHON_DECL void throw_argument_error();
+BOOST_PYTHON_DECL void throw_error_already_set();
 
 }} // namespace boost::python
 

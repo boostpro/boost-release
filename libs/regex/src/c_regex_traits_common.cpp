@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -199,7 +199,7 @@ const mss default_messages[] = {
                             { 0, "", },
                          };
 
-BOOST_REGEX_DECL unsigned int BOOST_REGEX_CALL re_get_default_message(char* buf, unsigned int len, unsigned int id)
+BOOST_REGEX_DECL std::size_t BOOST_REGEX_CALL re_get_default_message(char* buf, std::size_t len, std::size_t id)
 {
    BOOST_RE_GUARD_STACK
    const mss* pm = default_messages;
@@ -207,7 +207,7 @@ BOOST_REGEX_DECL unsigned int BOOST_REGEX_CALL re_get_default_message(char* buf,
    {
       if(pm->id == id)
       {
-         unsigned int size = re_strlen(pm->what) + 1;
+         std::size_t size = re_strlen(pm->what) + 1;
          if(size > len)
             return size;
          re_strcpy(buf, pm->what);
@@ -220,6 +220,7 @@ BOOST_REGEX_DECL unsigned int BOOST_REGEX_CALL re_get_default_message(char* buf,
    return 1;
 }
 
+#ifndef BOOST_NO_WREGEX
 const wchar_t combining_ranges[] = { 0x0300, 0x0361, 
                            0x0483, 0x0486, 
                            0x0903, 0x0903, 
@@ -548,7 +549,8 @@ BOOST_REGEX_DECL wchar_t wide_lower_case_map[] = {
    0xe0, 0xe1, 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xeb, 0xec, 0xed, 0xee, 0xef, 
    0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff, 
 };
-
+#endif // BOOST_NO_WREGEX
 
    } // namespace re_detail
 } // namespace boost
+

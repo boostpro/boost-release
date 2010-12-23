@@ -20,6 +20,9 @@
 
 /** <p>Expands to the sum of <code>X</code> and <code>Y</code>.</p>
 
+<p>Both <code>X</code> and <code>Y</code> must expand to integer literals
+in the range [0, BOOST_PP_LIMIT_MAG].</p>
+
 <p>For example, <code>BOOST_PP_ADD(4,3)</code> expands to <code>7</code> (a
 single token).</p>
 
@@ -35,17 +38,16 @@ single token).</p>
 */
 #define BOOST_PP_ADD(X,Y) BOOST_PP_ADD_D(0,X,Y)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+/** <p>Can be used inside BOOST_PP_WHILE().</p> */
 #define BOOST_PP_ADD_D(D,X,Y) BOOST_PP_TUPLE_ELEM(2,0,BOOST_PP_WHILE##D(BOOST_PP_ADD_C,BOOST_PP_ADD_F,(X,Y)))
-#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) && __MWERKS__ <= 0x2406
+#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__)
 #  define BOOST_PP_ADD_C(D,P) BOOST_PP_TUPLE_ELEM(2,1,P)
 #  define BOOST_PP_ADD_F(D,P) (BOOST_PP_INC(BOOST_PP_TUPLE_ELEM(2,0,P)),BOOST_PP_DEC(BOOST_PP_TUPLE_ELEM(2,1,P)))
 #else
 #  define BOOST_PP_ADD_C(D,P) BOOST_PP_TUPLE2_ELEM1 P
 #  define BOOST_PP_ADD_F(D,P) (BOOST_PP_INC(BOOST_PP_TUPLE2_ELEM0 P),BOOST_PP_DEC(BOOST_PP_TUPLE2_ELEM1 P))
 #endif
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_ADD().</p> */
+/* <p>Obsolete. Use BOOST_PP_ADD().</p> */
 #define BOOST_PREPROCESSOR_ADD(X,Y) BOOST_PP_ADD(X,Y)
 #endif

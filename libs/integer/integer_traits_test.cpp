@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: integer_traits_test.cpp,v 1.7 2001/09/28 17:38:10 darinadler Exp $
+ * $Id: integer_traits_test.cpp,v 1.8 2002/05/05 11:00:28 johnmaddock Exp $
  *
  * Revision history
  *  2000-02-22  Small improvements by Beman Dawes
@@ -35,10 +35,20 @@
  * Therefore, avoid explicit function template instantiations.
  */
 
+#if defined(BOOST_MSVC) && (BOOST_MSVC <= 1200)
+template<typename T> inline T make_char_numeric_for_streaming(T x) { return x; }
+namespace fix{
+inline int make_char_numeric_for_streaming(char c) { return c; }
+inline int make_char_numeric_for_streaming(signed char c) { return c; }
+inline int make_char_numeric_for_streaming(unsigned char c) { return c; }
+}
+using namespace fix;
+#else
 template<typename T> inline T make_char_numeric_for_streaming(T x) { return x; }
 inline int make_char_numeric_for_streaming(char c) { return c; }
 inline int make_char_numeric_for_streaming(signed char c) { return c; }
 inline int make_char_numeric_for_streaming(unsigned char c) { return c; }
+#endif
 
 template<class T>
 void runtest(const char * type, T)

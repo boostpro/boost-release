@@ -18,6 +18,9 @@
 
 /** <p>Expands to the quotient of <code>X</code> and <code>Y</code>.</p>
 
+<p>Both <code>X</code> and <code>Y</code> must expand to integer literals
+in the range [0, BOOST_PP_LIMIT_MAG].</p>
+
 <p>For example, <code>BOOST_PP_DIV(4,3)</code> expands to <code>1</code> (a
 single token).</p>
 
@@ -33,17 +36,16 @@ single token).</p>
 */
 #define BOOST_PP_DIV(X,Y) BOOST_PP_DIV_D(0,X,Y)
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+/** <p>Can be used inside BOOST_PP_WHILE().</p> */
 #define BOOST_PP_DIV_D(D,X,Y) BOOST_PP_TUPLE_ELEM(3,0,BOOST_PP_WHILE##D(BOOST_PP_DIV_C,BOOST_PP_DIV_F,(0,X,Y)))
-#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__) && __MWERKS__ <= 0x2406
+#if !defined(BOOST_NO_COMPILER_CONFIG) && defined(__MWERKS__)
 #  define BOOST_PP_DIV_C(D,P) BOOST_PP_LESS_EQUAL_D(D,BOOST_PP_TUPLE_ELEM(3,2,P),BOOST_PP_TUPLE_ELEM(3,1,P))
 #  define BOOST_PP_DIV_F(D,P) (BOOST_PP_INC(BOOST_PP_TUPLE_ELEM(3,0,P)),BOOST_PP_SUB_D(D,BOOST_PP_TUPLE_ELEM(3,1,P),BOOST_PP_TUPLE_ELEM(3,2,P)),BOOST_PP_TUPLE_ELEM(3,2,P))
 #else
 #  define BOOST_PP_DIV_C(D,P) BOOST_PP_LESS_EQUAL_D(D,BOOST_PP_TUPLE3_ELEM2 P,BOOST_PP_TUPLE3_ELEM1 P)
 #  define BOOST_PP_DIV_F(D,P) (BOOST_PP_INC(BOOST_PP_TUPLE3_ELEM0 P),BOOST_PP_SUB_D(D,BOOST_PP_TUPLE3_ELEM1 P,BOOST_PP_TUPLE3_ELEM2 P),BOOST_PP_TUPLE3_ELEM2 P)
 #endif
-#endif
 
-/** <p>Obsolete. Use BOOST_PP_DIV().</p> */
+/* <p>Obsolete. Use BOOST_PP_DIV().</p> */
 #define BOOST_PREPROCESSOR_DIV(X,Y) BOOST_PP_DIV(X,Y)
 #endif

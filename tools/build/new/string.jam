@@ -1,25 +1,36 @@
-#  (C) Copyright David Abrahams 2001. Permission to copy, use, modify, sell and
+#  (C) Copyright David Abrahams 2002. Permission to copy, use, modify, sell and
 #  distribute this software is granted provided this copyright notice appears in
 #  all copies. This software is provided "as is" without express or implied
 #  warranty, and with no claim as to its suitability for any purpose.
 
+import regex ;
 rule chars ( string )
 {
     local result ;
     while $(string)
     {
-        local s = [ SUBST $(string) (.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.*)
-                        $9 $1 $2 $3 $4 $5 $6 $7 $8 ] ;
-        string = $(s[1]) ;
-        result += $(s[2-]) ;
+        local s = [ MATCH (.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.*) : $(string) ] ;
+        string = $(s[9]) ;
+        result += $(s[1-8]) ;
     }
     
     # trim off empty strings
-    while $(result[1]) && ! $(result[-2])
+    while $(result[1]) && ! $(result[-1])
     {
         result = $(result[1--2]) ;
     }
     
+    return $(result) ;
+}
+
+rule join ( strings * : separator ? )
+{
+    separator ?= "" ;
+    local result = $(strings[1]) ;
+    for local x in $(strings[2-])
+    {
+        result = $(result)$(separator)$(x) ;
+    }
     return $(result) ;
 }
 
@@ -35,4 +46,7 @@ rule __test__ ( )
     assert.result a b c d e f g h i : chars abcdefghi ;
     assert.result a b c d e f g h i j : chars abcdefghij ;
     assert.result a b c d e f g h i j k : chars abcdefghijk ;
+    
+    assert.result a//b/c/d : join a "" b c d : / ;
+    assert.result abcd : join  a "" b c d ;
 }

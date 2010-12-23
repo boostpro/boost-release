@@ -13,7 +13,7 @@
 
 // Author: Dietmar Kuehl dietmar.kuehl@claas-solutions.de 
 // Title:  An input iterator used to list the entries in a directory 
-// Version: $Name:  $ $Id: directory.h,v 1.1.1.1 2000/07/07 16:04:18 beman Exp $
+// Version: $Name: Version_1_28_0 $ $Id: directory.h,v 1.1.1.1 2000/07/07 16:04:18 beman Exp $
 
 // -------------------------------------------------------------------------- 
 

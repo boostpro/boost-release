@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -40,10 +40,10 @@ namespace boost{
 template <class charT>
 struct kmp_info
 {
-   unsigned int size;
-   unsigned int len;
+   std::size_t size;
+   std::size_t len;
    const charT* pstr;
-   int kmp_next[1];
+   std::ptrdiff_t kmp_next[1];
 };
 
 template <class charT, class Allocator>
@@ -57,16 +57,17 @@ template <class iterator, class charT, class Trans, class Allocator>
 kmp_info<charT>* kmp_compile(iterator first, iterator last, charT, Trans translate, const Allocator& a) 
 {    
    typedef typename boost::detail::rebind_allocator<char, Allocator>::type atype;
-   int i, j, m;
+   std::ptrdiff_t i, j, m;
    i = 0;
    m = boost::re_detail::distance(first, last);
    ++m;
-   unsigned int size = sizeof(kmp_info<charT>) + sizeof(int)*m + sizeof(charT)*m;
+   std::size_t size = sizeof(kmp_info<charT>) + sizeof(int)*m + sizeof(charT)*m;
    --m;
    //
    // allocate struct and fill it in:
    //
    kmp_info<charT>* pinfo = reinterpret_cast<kmp_info<charT>*>(atype(a).allocate(size));
+   BOOST_REGEX_NOEH_ASSERT(pinfo)
    pinfo->size = size;
    pinfo->len = m;
    charT* p = reinterpret_cast<charT*>(reinterpret_cast<char*>(pinfo) + sizeof(kmp_info<charT>) + sizeof(int)*(m+1));
@@ -105,6 +106,7 @@ kmp_info<charT>* kmp_compile(iterator first, iterator last, charT, Trans transla
 } // namespace boost
 
 #endif   // BOOST_REGEX_KMP_HPP
+
 
 
 

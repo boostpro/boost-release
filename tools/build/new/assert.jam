@@ -4,6 +4,7 @@
 #  warranty, and with no claim as to its suitability for any purpose.
 
 import errors : error-skip-frames lol->list ;
+import modules ;
 
 # assert the equality of A and B 
 rule equal ( a * : b * )
@@ -18,28 +19,29 @@ rule equal ( a * : b * )
 # given arguments
 rule result ( expected * : rule-name args * : * )
 {
-    local result__ ;
+    local result ;
     module [ CALLER_MODULE ]
     {
-        result__ = [ 
-          $(rule-name) $(args) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ] ;
+        modules.poke assert : result
+            : [ $(2) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ] ;
     }
 
-    if $(result__) != $(expected)
+    if $(result) != $(expected)
     {
         error-skip-frames 3 assertion failure: "[" $(rule-name) 
           [ lol->list $(args) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ]
             "]"
           : expected: \"$(expected)\"
-          : got: \"$(result__)\" ;
+          : got: \"$(result)\" ;
     }
 }
 
 # assert that the given variable is nonempty.
 rule nonempty-variable ( name )
 {
-    local empty ;
-    if $($(variable)) = $(empty) 
+    local value = [ modules.peek [ CALLER_MODULE ] : $(name) ] ;
+
+    if ! $(value)-is-nonempty
     {
         error-skip-frames 3 assertion failure: expecting non-empty variable $(variable) ;
     }
@@ -50,15 +52,15 @@ rule nonempty-variable ( name )
 # strings).
 rule true ( rule-name args * : * )
 {
-    local result__ ;
+    local result ;
     module [ CALLER_MODULE ]
     {
-        result__ = [ 
-          $(rule-name) $(args) : $(2) $(3) : $(4)
+        modules.poke assert : result
+          : [ $(1) : $(2) $(3) : $(4)
             : $(5) : $(6) : $(7) : $(8) : $(9) ] ;
     }
 
-    if ! $(result__)
+    if ! $(result)
     {
         error-skip-frames 3 assertion failure: expecting true result from
           "[" $(rule-name) 
@@ -72,20 +74,20 @@ rule true ( rule-name args * : * )
 # strings).
 rule false ( rule-name args * : * )
 {
-    local result__ ;
+    local result ;
     module [ CALLER_MODULE ]
     {
-        result__ = [ 
-          $(rule-name) $(args) : $(2) $(3) : $(4)
+        modules.poke assert : result
+          : [ $(1) : $(2) $(3) : $(4)
             : $(5) : $(6) : $(7) : $(8) : $(9) ] ;
     }
 
-    if $(result__)
+    if $(result)
     {
         error-skip-frames 3 assertion failure: expecting false result from
           "[" $(rule-name) 
           [ lol->list $(args) : $(2) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ]
-            "]" : got [ lol->list $(result__) ] instead  ;
+            "]" : got [ lol->list $(result) ] instead  ;
     }
 }
 

@@ -41,7 +41,6 @@
 
 // Class names used in this version of the code
 #define BOOST_FUNCTION_FUNCTION BOOST_JOIN(function,BOOST_FUNCTION_NUM_ARGS)
-#define BOOST_FUNCTION_BASE BOOST_JOIN(function_base,BOOST_FUNCTION_NUM_ARGS)
 #define BOOST_FUNCTION_FUNCTION_INVOKER \
   BOOST_JOIN(function_invoker,BOOST_FUNCTION_NUM_ARGS)
 #define BOOST_FUNCTION_VOID_FUNCTION_INVOKER \
@@ -168,7 +167,7 @@ namespace boost {
       >
       struct BOOST_FUNCTION_GET_FUNCTION_INVOKER
       {
-        typedef typename IF<(is_void<R>::value),
+        typedef typename ct_if<(is_void<R>::value),
                             BOOST_FUNCTION_VOID_FUNCTION_INVOKER<
                             FunctionPtr,
                             R BOOST_FUNCTION_COMMA
@@ -189,7 +188,7 @@ namespace boost {
        >
       struct BOOST_FUNCTION_GET_FUNCTION_OBJ_INVOKER
       {
-        typedef typename IF<(is_void<R>::value),
+        typedef typename ct_if<(is_void<R>::value),
                             BOOST_FUNCTION_VOID_FUNCTION_OBJ_INVOKER<
                             FunctionObj,
                             R BOOST_FUNCTION_COMMA
@@ -210,7 +209,7 @@ namespace boost {
        >
       struct BOOST_FUNCTION_GET_STATELESS_FUNCTION_OBJ_INVOKER
       {
-        typedef typename IF<(is_void<R>::value),
+        typedef typename ct_if<(is_void<R>::value),
                             BOOST_FUNCTION_STATELESS_VOID_FUNCTION_OBJ_INVOKER<
                             FunctionObj,
                             R BOOST_FUNCTION_COMMA
@@ -361,9 +360,12 @@ namespace boost {
     // Clear out a target, if there is one
     void clear()
     {
-      if (function_base::manager)
-        function_base::functor = function_base::manager(function_base::functor, detail::function::destroy_functor_tag);
-    
+      if (function_base::manager) {
+        function_base::functor = 
+	  function_base::manager(function_base::functor, 
+				 detail::function::destroy_functor_tag);
+      }
+
       function_base::manager = 0;
       invoker = 0;
     }
@@ -374,7 +376,8 @@ namespace boost {
       if (!f.empty()) {
         invoker = f.invoker;
         function_base::manager = f.manager;
-        function_base::functor = f.manager(f.functor, detail::function::clone_functor_tag);
+        function_base::functor = 
+	  f.manager(f.functor, detail::function::clone_functor_tag);
       }          
     }
 
@@ -399,9 +402,10 @@ namespace boost {
           invoker_type;
     
         invoker = &invoker_type::invoke;
-        function_base::manager = &detail::function::functor_manager<FunctionPtr, 
-                                                     Allocator>::manage;
-        function_base::functor = function_base::manager(detail::function::any_pointer(
+        function_base::manager = 
+	  &detail::function::functor_manager<FunctionPtr, Allocator>::manage;
+        function_base::functor = 
+	  function_base::manager(detail::function::any_pointer(
                             // should be a reinterpret cast, but some compilers
                             // insist on giving cv-qualifiers to free functions
                             (void (*)())(f)
@@ -421,7 +425,7 @@ namespace boost {
     template<typename FunctionObj>
     void assign_to(FunctionObj f, detail::function::function_obj_tag)
     {
-      if (!detail::function::has_empty_target(&f)) {
+      if (!detail::function::has_empty_target(addressof(f))) {
         typedef 
           typename detail::function::BOOST_FUNCTION_GET_FUNCTION_OBJ_INVOKER<
                                        FunctionObj,
@@ -431,11 +435,23 @@ namespace boost {
           invoker_type;
     
         invoker = &invoker_type::invoke;
-        function_base::manager = &detail::function::functor_manager<FunctionObj, 
-                                                     Allocator>::manage;
+        function_base::manager = &detail::function::functor_manager<
+	                            FunctionObj, Allocator>::manage;
+#ifndef BOOST_NO_STD_ALLOCATOR
+        typedef typename Allocator::template rebind<FunctionObj>::other 
+          allocator_type;
+        typedef typename allocator_type::pointer pointer_type;
+	allocator_type allocator;
+	pointer_type copy = allocator.allocate(1);
+	allocator.construct(copy, f);
+
+	// Get back to the original pointer type
+	FunctionObj* new_f = static_cast<FunctionObj*>(copy);
+#else
+	FunctionObj* new_f = new FunctionObj(f);
+#endif // BOOST_NO_STD_ALLOCATOR
         function_base::functor = 
-          function_base::manager(detail::function::any_pointer(const_cast<FunctionObj*>(&f)),
-                  detail::function::clone_functor_tag);
+	  detail::function::any_pointer(static_cast<void*>(new_f));
       }
     }
     
@@ -443,7 +459,7 @@ namespace boost {
     void assign_to(const reference_wrapper<FunctionObj>& f, 
                    detail::function::function_obj_ref_tag)
     {
-      if (!detail::function::has_empty_target(&f.get())) {
+      if (!detail::function::has_empty_target(f.get_pointer())) {
         typedef 
           typename detail::function::BOOST_FUNCTION_GET_FUNCTION_OBJ_INVOKER<
                                        FunctionObj,
@@ -455,9 +471,10 @@ namespace boost {
         invoker = &invoker_type::invoke;
         function_base::manager = &detail::function::trivial_manager;
         function_base::functor = 
-          function_base::manager(detail::function::any_pointer(
-                    const_cast<FunctionObj*>(&f.get())),
-                  detail::function::clone_functor_tag);
+          function_base::manager(
+            detail::function::any_pointer(
+              const_cast<FunctionObj*>(f.get_pointer())),
+	    detail::function::clone_functor_tag);
       }
     }
     
@@ -509,8 +526,6 @@ namespace boost {
 #undef BOOST_FUNCTION_DEFAULT_ALLOCATOR
 #undef BOOST_FUNCTION_COMMA
 #undef BOOST_FUNCTION_FUNCTION
-#undef BOOST_FUNCTION_BASE
-#undef BOOST_FUNCTION_INVOKER_BASE
 #undef BOOST_FUNCTION_FUNCTION_INVOKER
 #undef BOOST_FUNCTION_VOID_FUNCTION_INVOKER
 #undef BOOST_FUNCTION_FUNCTION_OBJ_INVOKER
@@ -521,4 +536,3 @@ namespace boost {
 #undef BOOST_FUNCTION_GET_FUNCTION_OBJ_INVOKER
 #undef BOOST_FUNCTION_GET_STATELESS_FUNCTION_OBJ_INVOKER
 #undef BOOST_FUNCTION_GET_MEM_FUNCTION_INVOKER
-

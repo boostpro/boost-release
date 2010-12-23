@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -22,6 +22,45 @@
 
 #ifndef BOOST_REGEX_CONFIG_HPP
 #define BOOST_REGEX_CONFIG_HPP
+//
+// Borland C++ Fix/error check
+// this has to go *before* we include any std lib headers:
+//
+#if defined(__BORLANDC__)
+#  if (__BORLANDC__ == 0x550) || (__BORLANDC__ == 0x551)
+      // problems with std::basic_string and dll RTL:
+#     if defined(_RTLDLL) && defined(_RWSTD_COMPILE_INSTANTIATE)
+#        ifdef BOOST_REGEX_BUILD_DLL
+#           error _RWSTD_COMPILE_INSTANTIATE must not be defined when building regex++ as a DLL
+#        else
+#           pragma message("Defining _RWSTD_COMPILE_INSTANTIATE when linking to the DLL version of the RTL may produce memory corruption problems in std::basic_string, as a result of separate versions of basic_string's static data in the RTL and you're exe/dll: be warned!!")
+#        endif
+#     endif
+#     ifndef _RTLDLL
+         // this is harmless for a staic link:
+#        define _RWSTD_COMPILE_INSTANTIATE
+#     endif
+#  endif
+#  if (__BORLANDC__ <= 0x540) && !defined(BOOST_REGEX_NO_LIB) && !defined(_NO_VCL)
+      // C++ Builder 4 and earlier, we can't tell whether we should be using
+      // the VCL runtime or not, do a static link instead:
+#     define BOOST_REGEX_STATIC_LINK
+#  endif
+   //
+   // VCL support:
+   // if we're building a console app then there can't be any VCL (can there?)
+#  if !defined(__CONSOLE__) && !defined(_NO_VCL)
+#     define BOOST_REGEX_USE_VCL
+#  endif
+#endif
+
+#ifdef __MWERKS__
+#  define BOOST_REGEX_NO_EXTERNAL_TEMPLATES
+#endif
+#ifdef __IBMCPP__
+#  define BOOST_REGEX_NO_EXTERNAL_TEMPLATES
+#endif
+
 
 /*****************************************************************************
  *
@@ -57,6 +96,7 @@
    // do C++ specific things in future...
    //
 #  include <stdlib.h>
+#  include <stddef.h>
 #  ifdef _MSC_VER
 #     define BOOST_MSVC _MSC_VER
 #  endif
@@ -80,7 +120,7 @@
 // If there isn't good enough wide character support then there will
 // be no wide character regular expressions:
 //
-#if defined(BOOST_NO_CWCHAR) || defined(BOOST_NO_CWCTYPE) || defined(BOOST_NO_STD_WSTRING)
+#if (defined(BOOST_NO_CWCHAR) || defined(BOOST_NO_CWCTYPE) || defined(BOOST_NO_STD_WSTRING)) && !defined(BOOST_NO_WREGEX)
 #  define BOOST_NO_WREGEX
 #else
 #  if defined(__sgi) && defined(__SGI_STL_PORT)
@@ -97,6 +137,14 @@
 #  include <cwctype>
 #endif
 
+#endif
+
+//
+// If Win32 support has been disabled for boost in general, then
+// it is for regex in particular:
+//
+#ifdef BOOST_DISABLE_WIN32
+#  define BOOST_REGEX_NO_W32
 #endif
 
 // some versions of gcc can't merge template instances:
@@ -189,33 +237,9 @@ using std::distance;
 #ifndef BOOST_REGEX_DECL
 #  define BOOST_REGEX_DECL
 #endif
-
+ 
 #if (defined(BOOST_MSVC) || defined(__BORLANDC__)) && !defined(BOOST_REGEX_NO_LIB) && !defined(BOOST_REGEX_SOURCE)
 #  include <boost/regex/detail/regex_library_include.hpp>
-#endif
-
-// Borland C++ Fix/error check:
-#if defined(__BORLANDC__)
-#  if (__BORLANDC__ == 0x550) || (__BORLANDC__ == 0x551)
-      // problems with std::basic_string and dll RTL:
-#     if defined(_RTLDLL) && defined(_RWSTD_COMPILE_INSTANTIATE)
-#        ifdef BOOST_REGEX_BUILD_DLL
-#           error _RWSTD_COMPILE_INSTANTIATE must not be defined when building regex++ as a DLL
-#        else
-#           pragma warn defining _RWSTD_COMPILE_INSTANTIATE when linking to the DLL version of the RTL may produce memory corruption problems in std::basic_string, as a result of separate versions of basic_string's static data in the RTL and you're exe/dll: be warned!!
-#        endif
-#     endif
-#     ifndef _RTLDLL
-         // this is harmless for a staic link:
-#        define _RWSTD_COMPILE_INSTANTIATE
-#     endif
-#  endif
-   //
-   // VCL support:
-   // if we're building a console app then there can't be any VCL (can there?)
-#  if !defined(__CONSOLE__) && !defined(_NO_VCL)
-#     define BOOST_REGEX_USE_VCL
-#  endif
 #endif
 
 /*****************************************************************************
@@ -271,6 +295,47 @@ using std::distance;
 
 #if defined(_WIN32) && !defined(BOOST_REGEX_NO_W32)
 #  include <windows.h>
+#endif
+
+#ifdef MAXPATH
+#  define BOOST_REGEX_MAX_PATH MAXPATH
+#elif defined(MAX_PATH)
+#  define BOOST_REGEX_MAX_PATH MAX_PATH
+#elif defined(FILENAME_MAX)
+#  define BOOST_REGEX_MAX_PATH FILENAME_MAX
+#else
+#  define BOOST_REGEX_MAX_PATH 200
+#endif
+
+
+
+/*****************************************************************************
+ *
+ *  Error Handling for exception free compilers:
+ *
+ ****************************************************************************/
+
+#ifdef BOOST_NO_EXCEPTIONS
+//
+// If there are no exceptions then we must report critical-errors
+// the only way we know how; by terminating.
+//
+#ifdef __BORLANDC__
+// <cstdio> seems not to make stderr usable with Borland:
+#include <stdio.h>
+#endif
+#  define BOOST_REGEX_NOEH_ASSERT(x)\
+if(0 == (x))\
+{\
+   std::fprintf(stderr, "Error: critical regex++ failure in \"%s\"", #x);\
+   std::abort();\
+}
+#else
+//
+// With exceptions then error handling is taken care of and
+// there is no need for these checks:
+//
+#  define BOOST_REGEX_NOEH_ASSERT(x)
 #endif
 
 /*****************************************************************************
@@ -516,6 +581,10 @@ namespace std{
    using ::fopen;
    using ::fclose;
    using ::FILE;
+#ifdef BOOST_NO_EXCEPTIONS
+   using ::fprintf;
+   using ::abort;
+#endif
 }
 
 #endif
@@ -531,7 +600,7 @@ namespace boost{ namespace re_detail{
 
 template <class T>
 inline void pointer_destroy(T* p)
-{ p->~T(); }
+{ p->~T(); (void)p; }
 
 template <class T>
 inline void pointer_construct(T* p, const T& t)
@@ -541,3 +610,6 @@ inline void pointer_construct(T* p, const T& t)
 #endif
 
 #endif
+
+
+

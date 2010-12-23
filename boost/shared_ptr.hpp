@@ -29,6 +29,7 @@
 #include <memory>             // for std::auto_ptr
 #include <algorithm>          // for std::swap
 #include <functional>         // for std::less
+#include <typeinfo>           // for std::bad_cast
 
 #ifdef BOOST_MSVC  // moved here to work around VC++ compiler crash
 # pragma warning(push)
@@ -43,6 +44,7 @@ namespace detail
 
 struct static_cast_tag {};
 struct dynamic_cast_tag {};
+struct polymorphic_cast_tag {};
 
 template<typename T> struct shared_ptr_traits
 {
@@ -66,20 +68,26 @@ template<> struct shared_ptr_traits<void>
 //
 
 template<typename T> class weak_ptr;
+template<typename T> class intrusive_ptr;
 
 template<typename T> class shared_ptr
 {
 private:
 
     // Borland 5.5.1 specific workarounds
-    typedef checked_deleter<T> deleter;
+//  typedef checked_deleter<T> deleter;
     typedef shared_ptr<T> this_type;
 
 public:
 
     typedef T element_type;
 
-    explicit shared_ptr(T * p = 0): px(p), pn(p, deleter())
+    shared_ptr(): px(0), pn()
+    {
+    }
+
+    template<typename Y>
+    explicit shared_ptr(Y * p): px(p), pn(p, checked_deleter<Y>(), p) // Y must be complete
     {
     }
 
@@ -89,14 +97,24 @@ public:
     // shared_ptr will release p by calling d(p)
     //
 
-    template<typename D> shared_ptr(T * p, D d): px(p), pn(p, d)
+    template<typename Y, typename D> shared_ptr(Y * p, D d): px(p), pn(p, d)
     {
     }
 
 //  generated copy constructor, assignment, destructor are fine
 
     template<typename Y>
+    explicit shared_ptr(weak_ptr<Y> const & r): px(r.px), pn(r.pn) // may throw
+    {
+    }
+
+    template<typename Y>
     shared_ptr(shared_ptr<Y> const & r): px(r.px), pn(r.pn) // never throws
+    {
+    }
+
+    template<typename Y>
+    shared_ptr(intrusive_ptr<Y> const & r): px(r.get()), pn(r.get()) // never throws
     {
     }
 
@@ -110,7 +128,16 @@ public:
     {
         if (px == 0) // need to allocate new counter -- the cast failed
         {
-            pn = detail::shared_count(static_cast<element_type *>(0), deleter());
+            pn = detail::shared_count();
+        }
+    }
+
+    template<typename Y>
+    shared_ptr(shared_ptr<Y> const & r, detail::polymorphic_cast_tag): px(dynamic_cast<element_type *>(r.px)), pn(r.pn)
+    {
+        if (px == 0)
+        {
+            throw std::bad_cast();
         }
     }
 
@@ -121,7 +148,9 @@ public:
     {
     }
 
-#endif 
+#endif
+
+#if !defined(BOOST_MSVC) || (BOOST_MSVC > 1200)
 
     template<typename Y>
     shared_ptr & operator=(shared_ptr<Y> const & r) // never throws
@@ -130,6 +159,8 @@ public:
         pn = r.pn; // shared_count::op= doesn't throw
         return *this;
     }
+
+#endif
 
 #ifndef BOOST_NO_AUTO_PTR
 
@@ -142,13 +173,18 @@ public:
 
 #endif
 
-    void reset(T * p = 0)
+    void reset()
     {
-        BOOST_ASSERT(p == 0 || p != px);
+        this_type().swap(*this);
+    }
+
+    template<typename Y> void reset(Y * p) // Y must be complete
+    {
+        BOOST_ASSERT(p == 0 || p != px); // catch self-reset errors
         this_type(p).swap(*this);
     }
 
-    template<typename D> void reset(T * p, D d)
+    template<typename Y, typename D> void reset(Y * p, D d)
     {
         this_type(p, d).swap(*this);
     }
@@ -178,6 +214,20 @@ public:
     long use_count() const // never throws
     {
         return pn.use_count();
+    }
+
+    // implicit conversion to "bool"
+
+    typedef long (this_type::*bool_type)() const;
+
+    operator bool_type() const // never throws
+    {
+        return px == 0? 0: &this_type::use_count;
+    }
+
+    bool operator! () const // never throws
+    {
+        return px == 0;
     }
 
     void swap(shared_ptr<T> & other) // never throws
@@ -214,12 +264,23 @@ template<typename T, typename U> inline bool operator!=(shared_ptr<T> const & a,
     return a.get() != b.get();
 }
 
+#if __GNUC__ == 2 && __GNUC_MINOR__ <= 96
+
+// Resolve the ambiguity between our op!= and the one in rel_ops
+
+template<typename T> inline bool operator!=(shared_ptr<T> const & a, shared_ptr<T> const & b)
+{
+    return a.get() != b.get();
+}
+
+#endif
+
 template<typename T> inline bool operator<(shared_ptr<T> const & a, shared_ptr<T> const & b)
 {
     return std::less<T*>()(a.get(), b.get());
 }
 
-template<typename T> void swap(shared_ptr<T> & a, shared_ptr<T> & b)
+template<typename T> inline void swap(shared_ptr<T> & a, shared_ptr<T> & b)
 {
     a.swap(b);
 }
@@ -232,6 +293,17 @@ template<typename T, typename U> shared_ptr<T> shared_static_cast(shared_ptr<U> 
 template<typename T, typename U> shared_ptr<T> shared_dynamic_cast(shared_ptr<U> const & r)
 {
     return shared_ptr<T>(r, detail::dynamic_cast_tag());
+}
+
+template<typename T, typename U> shared_ptr<T> shared_polymorphic_cast(shared_ptr<U> const & r)
+{
+    return shared_ptr<T>(r, detail::polymorphic_cast_tag());
+}
+
+template<typename T, typename U> shared_ptr<T> shared_polymorphic_downcast(shared_ptr<U> const & r)
+{
+    BOOST_ASSERT(dynamic_cast<T *>(r.get()) == r.get());
+    return shared_static_cast<T>(r);
 }
 
 // get_pointer() enables boost::mem_fn to recognize shared_ptr

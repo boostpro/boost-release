@@ -1,9 +1,8 @@
-Development code for new build system. To test, execute:
+Development code for new build system. To run unit tests for jam code, execute:
 
-  jam -sBOOST_BUILD_PATH=.:$BOOST_ROOT -sBOOST_BUILD_TEST=1 -sJAMFILE=test.jam
+  bjam --debug --build-system=test
 
-on unix, or 
+Comprehensive tests require Python. See ../test/readme.txt
 
-  jam -sBOOST_BUILD_PATH=.;%BOOST_ROOT% -sBOOST_BUILD_TEST=1 -sJAMFILE=test.jam
 
-on windows
+

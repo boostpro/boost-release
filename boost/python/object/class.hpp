@@ -6,13 +6,11 @@
 #ifndef CLASS_DWA20011214_HPP
 # define CLASS_DWA20011214_HPP
 
-# include <boost/python/module.hpp>
 # include <boost/python/detail/wrap_python.hpp>
 # include <boost/python/detail/config.hpp>
 # include <boost/utility.hpp>
 # include <boost/python/converter/type_id.hpp>
 # include <boost/python/reference.hpp>
-# include <boost/iterator_adaptors.hpp>
 # include <cstddef>
 
 namespace boost { namespace python {
@@ -26,7 +24,7 @@ template <class T> struct holder;
 // To identify a class, we don't need cv/reference decorations
 typedef converter::undecorated_type_id_t class_id;
 
-struct BOOST_PYTHON_DECL class_base : noncopyable
+struct BOOST_PYTHON_DECL class_base : private noncopyable
 {
     // constructor
     class_base(
@@ -39,12 +37,14 @@ struct BOOST_PYTHON_DECL class_base : noncopyable
 
     // Retrieve the underlying object
     ref object() const { return m_object; }
+    void add_property(char const* name, ref const& fget);
+    void add_property(char const* name, ref const& fget, ref const& fset);
  private:
     ref m_object;
 };
 
 // Base class for all holders
-struct BOOST_PYTHON_DECL instance_holder : noncopyable
+struct BOOST_PYTHON_DECL instance_holder : private noncopyable
 {
  public:
     instance_holder();
@@ -53,30 +53,14 @@ struct BOOST_PYTHON_DECL instance_holder : noncopyable
     // return the next holder in a chain
     instance_holder* next() const;
 
-    virtual void* holds(converter::type_id_t) = 0;
+    virtual void* holds(converter::undecorated_type_id_t) = 0;
 
     void install(PyObject* inst) throw();
-    
-    struct iterator_policies : default_iterator_policies
-    {
-        template <class Iterator>
-        void increment(Iterator& p)
-        {
-            p.base() = p.base()->next();
-        }
-    };
-    
-    typedef iterator_adaptor<
-        instance_holder*
-        , iterator_policies
-        , value_type_is<noncopyable>
-        , reference_is<instance_holder&>
-        , pointer_is<instance_holder*>
-        , iterator_category_is<std::input_iterator_tag> > iterator;
-    
  private:
     instance_holder* m_next;
 };
+// This macro is needed for implementation of derived holders
+# define BOOST_PYTHON_UNFORWARD(N,ignored) (typename unforward<A##N>::type)(a##N)
 
 // Each extension instance will be one of these
 struct instance
@@ -84,16 +68,6 @@ struct instance
     PyObject_HEAD
     instance_holder* objects;
 };
-
-// Given a type_id, find the instance data which corresponds to it, or
-// return 0 in case no such type is held.
-BOOST_PYTHON_DECL void* find_instance_impl(PyObject*, converter::type_id_t);
-
-template <class T>
-T* find_instance(PyObject* p, T* = 0)
-{
-    return static_cast<T*>(find_instance_impl(p, converter::type_id<T>()));
-}
 
 BOOST_PYTHON_DECL ref class_metatype();
 BOOST_PYTHON_DECL ref class_type();

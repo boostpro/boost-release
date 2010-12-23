@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -45,15 +45,15 @@ struct mss
 };
 
 BOOST_REGEX_DECL bool BOOST_REGEX_CALL re_lookup_def_collate_name(std::string& buf, const char* name);
-BOOST_REGEX_DECL unsigned int BOOST_REGEX_CALL re_get_default_message(char* buf, unsigned int len, unsigned int id);
+BOOST_REGEX_DECL std::size_t BOOST_REGEX_CALL re_get_default_message(char* buf, std::size_t len, std::size_t id);
 extern BOOST_REGEX_DECL const char *re_default_error_messages[];
 BOOST_REGEX_DECL bool BOOST_REGEX_CALL re_lookup_def_collate_name(std::string& buf, const char* name);
-BOOST_REGEX_DECL bool BOOST_REGEX_CALL is_combining(wchar_t c);
 //extern BOOST_REGEX_DECL const wchar_t combining_ranges[];
 
 #ifndef BOOST_NO_WREGEX
 extern BOOST_REGEX_DECL wchar_t wide_lower_case_map[];
 extern BOOST_REGEX_DECL unsigned short wide_unicode_classes[];
+BOOST_REGEX_DECL bool BOOST_REGEX_CALL is_combining(wchar_t c);
 #endif
 
 
@@ -154,7 +154,7 @@ protected:
    friend class c_regex_traits<wchar_t>;
 #endif 
 
-   static char regex_message_catalogue[200];
+   static char regex_message_catalogue[BOOST_REGEX_MAX_PATH];
    enum syntax_map_size
    {
       map_size = UCHAR_MAX + 1
@@ -318,8 +318,8 @@ public:
       operator void*() { return this; }
    };
    static void BOOST_REGEX_CALL update();
-   static unsigned int BOOST_REGEX_CALL strnarrow(char *s1, unsigned int len, const wchar_t *s2);
-   static unsigned int BOOST_REGEX_CALL strwiden(wchar_t *s1, unsigned int len, const char *s2);
+   static std::size_t BOOST_REGEX_CALL strnarrow(char *s1, std::size_t len, const wchar_t *s2);
+   static std::size_t BOOST_REGEX_CALL strwiden(wchar_t *s1, std::size_t len, const char *s2);
 private:
    static bool BOOST_REGEX_CALL do_iswclass(wchar_t c, boost::uint_fast32_t f);
    static void BOOST_REGEX_CALL m_free();
@@ -362,7 +362,7 @@ struct BOOST_REGEX_DECL w32_traits_base : public regex_traits_base
 public:
    static std::string BOOST_REGEX_CALL set_message_catalogue(const std::string& s);
 protected:
-   static char regex_message_catalogue[200];
+   static char regex_message_catalogue[BOOST_REGEX_MAX_PATH];
    enum syntax_map_size
    {
       map_size = UCHAR_MAX + 1
@@ -519,8 +519,8 @@ public:
    static void BOOST_REGEX_CALL update();
    w32_regex_traits();
    ~w32_regex_traits();
-   static unsigned int BOOST_REGEX_CALL strnarrow(char *s1, unsigned int len, const wchar_t *s2);
-   static unsigned int BOOST_REGEX_CALL strwiden(wchar_t *s1, unsigned int len, const char *s2);
+   static std::size_t BOOST_REGEX_CALL strnarrow(char *s1, std::size_t len, const wchar_t *s2);
+   static std::size_t BOOST_REGEX_CALL strwiden(wchar_t *s1, std::size_t len, const char *s2);
 
 private:
    static bool BOOST_REGEX_CALL do_iswclass(wchar_t c, boost::uint_fast32_t f);
@@ -536,7 +536,13 @@ private:
 
 } // namspace boost
 
+#ifdef __BORLANDC__
+  #pragma option pop
+#endif
 #include <locale>
+#ifdef __BORLANDC__
+   #pragma option push -a4 -b -Ve -pc
+#endif
 
 namespace boost{
 
@@ -580,7 +586,7 @@ struct BOOST_REGEX_DECL cpp_regex_traits_base : public regex_traits_base
 
    static std::string BOOST_REGEX_CALL set_message_catalogue(const std::string& s);
 protected:
-   static char regex_message_cat[200];
+   static char regex_message_cat[BOOST_REGEX_MAX_PATH];
 };
 
 } // namespace re_detail
@@ -752,7 +758,7 @@ public:
    ~cpp_regex_traits();
    locale_type BOOST_REGEX_CALL imbue(locale_type l);
    locale_type BOOST_REGEX_CALL getloc()const{ return locale_inst; }
-   unsigned int BOOST_REGEX_CALL strwiden(wchar_t *s1, unsigned int len, const char *s2)const;
+   std::size_t BOOST_REGEX_CALL strwiden(wchar_t *s1, std::size_t len, const char *s2)const;
 
    struct sentry
    {
@@ -796,5 +802,6 @@ class regex_traits : public cpp_regex_traits<charT>
 } // namespace boost
 
 #endif // include
+
 
 

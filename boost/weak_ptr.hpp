@@ -16,18 +16,10 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <boost/config.hpp>   // for broken compiler workarounds
-#include <boost/assert.hpp>
-
-#include <boost/detail/shared_count.hpp>
-
-#include <algorithm>          // for std::swap
-#include <functional>         // for std::less
-
 #ifdef BOOST_MSVC  // moved here to work around VC++ compiler crash
 # pragma warning(push)
 # pragma warning(disable:4284) // odd return type for operator->
-#endif    
+#endif
 
 namespace boost
 {
@@ -59,19 +51,7 @@ public:
     {
     }
 
-    template<typename Y>
-    weak_ptr(weak_ptr<Y> const & r, detail::static_cast_tag): px(static_cast<element_type *>(r.px)), pn(r.pn)
-    {
-    }
-
-    template<typename Y>
-    weak_ptr(weak_ptr<Y> const & r, detail::dynamic_cast_tag): px(dynamic_cast<element_type *>(r.px)), pn(r.pn)
-    {
-        if (px == 0) // need to allocate new counter -- the cast failed
-        {
-            pn = detail::weak_count();
-        }
-    }
+#if !defined(BOOST_MSVC) || (BOOST_MSVC > 1200)
 
     template<typename Y>
     weak_ptr & operator=(weak_ptr<Y> const & r) // never throws
@@ -89,39 +69,37 @@ public:
         return *this;
     }
 
+#endif
+
     void reset()
     {
         this_type().swap(*this);
     }
 
-    T * get() const // never throws
+    T * get() const // never throws; unsafe in multithreaded programs!
     {
-        return use_count() == 0? 0: px;
+        return pn.use_count() == 0? 0: px;
     }
 
-    typename detail::shared_ptr_traits<T>::reference operator* () const // never throws
-    {
-        T * p = get();
-        BOOST_ASSERT(p != 0);
-        return *p;
-    }
-
-    T * operator-> () const // never throws
-    {
-        T * p = get();
-        BOOST_ASSERT(p != 0);
-        return p;
-    }
-    
     long use_count() const // never throws
     {
         return pn.use_count();
     }
 
-    void swap(weak_ptr<T> & other) // never throws
+    bool expired() const // never throws
+    {
+        return pn.use_count() == 0;
+    }
+
+    void swap(this_type & other) // never throws
     {
         std::swap(px, other.px);
         pn.swap(other.pn);
+    }
+
+    bool less(this_type const & rhs) const // implementation detail, never throws
+    {
+        return pn < rhs.pn;
     }
 
 // Tasteless as this may seem, making all members public allows member templates
@@ -132,6 +110,7 @@ public:
 private:
 
     template<typename Y> friend class weak_ptr;
+    template<typename Y> friend class shared_ptr;
 
 #endif
 
@@ -150,9 +129,20 @@ template<class T, class U> inline bool operator!=(weak_ptr<T> const & a, weak_pt
     return a.get() != b.get();
 }
 
+#if __GNUC__ == 2 && __GNUC_MINOR__ <= 96
+
+// Resolve the ambiguity between our op!= and the one in rel_ops
+
+template<typename T> inline bool operator!=(weak_ptr<T> const & a, weak_ptr<T> const & b)
+{
+    return a.get() != b.get();
+}
+
+#endif
+
 template<class T> inline bool operator<(weak_ptr<T> const & a, weak_ptr<T> const & b)
 {
-    return std::less<T*>()(a.get(), b.get());
+    return a.less(b);
 }
 
 template<class T> void swap(weak_ptr<T> & a, weak_ptr<T> & b)
@@ -160,21 +150,22 @@ template<class T> void swap(weak_ptr<T> & a, weak_ptr<T> & b)
     a.swap(b);
 }
 
-template<class T, class U> weak_ptr<T> shared_static_cast(weak_ptr<U> const & r)
+template<class T> shared_ptr<T> make_shared(weak_ptr<T> const & r) // never throws
 {
-    return weak_ptr<T>(r, detail::static_cast_tag());
-}
+    // optimization: avoid throw overhead
+    if(r.use_count() == 0)
+    {
+        return shared_ptr<T>();
+    }
 
-template<class T, class U> weak_ptr<T> shared_dynamic_cast(weak_ptr<U> const & r)
-{
-    return weak_ptr<T>(r, detail::dynamic_cast_tag());
-}
-
-// get_pointer() enables boost::mem_fn to recognize weak_ptr
-
-template<class T> inline T * get_pointer(weak_ptr<T> const & p)
-{
-    return p.get();
+    try
+    {
+        return shared_ptr<T>(r);
+    }
+    catch(use_count_is_zero const &)
+    {
+        return shared_ptr<T>();
+    }
 }
 
 } // namespace boost

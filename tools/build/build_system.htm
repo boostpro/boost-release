@@ -16,7 +16,7 @@
     <h2><a name="synopsis">Synopsis</a></h2>
 
     <p>Boost.Build is a system for large project software construction built on
-        Boost Jam, a descendant of &quot;<a
+        Boost.Jam, a descendant of &quot;<a
         href="http://www.perforce.com/jam/jam.html">Perforce Jam</a>&quot;, an
         open-source make replacement<a href="#1">[1]</a>. Key features are:
 
@@ -41,6 +41,19 @@
       <li>Automatic building of subproject dependencies
     </ul>
 
+    <h2><a name="status">Status</a></h2>
+
+    Boost.Build v1 is a useful, mature system. However, its design and
+    structure are not easily adapted to support some of the features
+    we'd like to see in the future. To this end, the Boost.Build
+    developers have begun work on v2 of Boost.Build, which will be
+    based around this
+    <a href="architecture.html">design document</a>. If you are
+    interested in contributing to this effort or you wish to discuss
+    the design of Boost.Build, please post inquiries to the <a
+    href="http://groups.yahoo.com/group/jamboost/">jamboost</a>
+    mailing list at yahoogroups.
+
     <p><a href="#design_criteria">Here</a> are some of the design criteria that
     led to these features.
 
@@ -49,11 +62,13 @@
     <ul>
       <li><a href="#synopsis">Synopsis</a>
 
+      <li><a href="#status">Status</a>
+
       <li>
         <a href="#getting_started">Getting Started</a> 
 
         <ul>
-          <li><a href="#installing_jam">Installing Jam</a>
+          <li><a href="#installing_jam">Installing Boost.Jam</a>
 
           <li><a href="#initiating">Initiating a Build</a>
 
@@ -97,13 +112,13 @@
           <li>
             <a href="#subproject_jamfiles">Subproject Jamfiles</a> 
 
-            <ul>
-              <li><a href="#subproject_rule">The <tt>subproject</tt> Rule</a>
-
-              <li><a href="#main_targets">Describing Main Targets</a>
-
-              <li><a href="#jamfile_example">Example</a>
-            </ul>
+                <ul>
+                    <li><a href="#subproject_rule">The <tt>subproject</tt> Rule</a> 
+                    <li><a href="#main_targets">Describing Main Targets</a>
+                    <li><a href="#template_targets">Describing Template Targets</a>
+                    <li><a href="#stage_targets">Describing Stage Targets</a>
+                    <li><a href="#jamfile_example">Example</a> 
+                </ul>
 
           <li><a href="#feature_description">Feature Descriptions</a>
 
@@ -128,7 +143,7 @@
 
             <ul>
               <li><a href="#variable_quoting">Command-line and Environment Variable Quoting</a>
-              <li><a href="#jambase_replacement">Jambase Replacement</a>
+              <li><a href="#jambase_replacement">Startup Behavior</a>
               <li><a href="#rule_indirection">Rule Indirection</a>
               <li><a href="#argument_lists">Argument Lists</a>
 
@@ -137,7 +152,7 @@
 
                 <ul>
                   <li><a href="#module_declaration">Declaration</a>
-                  <li><a href="#module_locals">Local Variables</a>
+                  <li><a href="#module_locals">Variable Scope</a>
                   <li><a href="#local_rules">Local Rules</a>
                   <li><a href="#RULENAMES_rule">The <tt>RULENAMES</tt> rule</a>
                   <li><a href="#IMPORT_rule">The <tt>IMPORT</tt> rule</a>
@@ -146,11 +161,11 @@
                 </ul>
 
               <li><a href="#local_foreach">Local for Loop Variables</a>
-              <li><a href="#while_loops">While Loops</a>
               <li><a href="#negative_indexing">Negative Indexing</a>
               <li><a href="#BINDRULE">Target Binding Detection</a>
               <li><a href="#FAIL_EXPECTED">Return Code Inversion</a>
               <li><a href="#NOCARE">Ignoring Return Codes</a>
+              <li><a href="#RMOLD">Removing outdated targets</a>
               <li><a href="#SUBST_rule">The <tt>SUBST</tt> Rule</a>
               <li><a href="#JAM_VERSION">The <tt>JAM_VERSION</tt> global variable</a>
               <li>
@@ -183,40 +198,26 @@
 
     <h2><a name="getting_started">Getting Started</a></h2>
 
-    <h3><a name="installing_jam">Installing Boost Jam</a></h3>
-
-    <ul>
-      <li>The Boost Jam sources are located in the <tt>tools/build/jam_src</tt>
-      subdirectory of the Boost installation.
-
-      <li>The <a href="http://public.perforce.com/public/jam/src/README">Jam
-      README</a> contains basic installation instructions.
-
-      <li>If you are installing on Windows, the make process may prompt you to
-      set some environment variables, and stop. Don't be alarmed; just follow
-      the instructions and start over. Please keep in mind that thses variable
-      settings are case-sensitive. The variable settings necessary for
-      bootstrapping Jam are not needed once it has been built.
-
-      <li>Note that the supplied Makefile may require editing for your
-      platform; see the <a href=
-      "http://public.perforce.com/public/jam/src/README">Jam README</a> for
-      details. The Makefile is used for bootstrapping Jam; it builds Jam into a
-      subdirectory called <tt>bin.</tt><i>platform</i>.
-    </ul>
+    <h3><a name="installing_jam">Installing Boost.Jam</a></h3>
+    
+    Follow these <a href="index.html#Jam">instructions</a> to acquire
+    a bjam executable for your platform. Install it somewhere in your
+    path.
 
     <h3><a name="initiating">Initiating a Build</a></h3>
 
-    <p>The easiest way to get going is to set the <tt>BOOST_ROOT</tt>
-    environment variable to point at the Boost installation directory, though
-    you can also set <tt>BOOST_ROOT</tt> on the command-line, using
-    <tt>-s...</tt>. You can use the <tt>TOOLS</tt> variable to indicate which
-    toolset(s) to build with, and the <tt>BUILD</tt> variable to describe how
-    you want things built. In most cases it should be sufficient to invoke Jam
-    with no variable settings. The following examples all assume that
-    <tt>BOOST_ROOT</tt> has been set in the environment.
+    <p>Boost.Build responds to several global variable settins. The
+    easiest way to get going is usually to use environment variables,
+    though you can also set them on the command-line, using
+    <tt>-s</tt><i>VARIABLE_NAME</i><tt>=</tt><i>value</i>.  In
+    addition to the <a href="index.html#Configuring">toolset
+    configuration variables</a>, you can use the <tt>TOOLS</tt>
+    variable to indicate which toolset(s) to build with, and the
+    <tt>BUILD</tt> variable to describe how you want things built. In
+    many cases it should be sufficient to invoke <code>bjam</code>
+    with no variable settings.
 
-    <p>Here are some sample Boost Jam invocations:
+    <p>Some example Boost.Jam invocations:
 
     <table border="1" summary="Sample Jam Invocations=">
       <tr>
@@ -227,14 +228,15 @@
       <tr>
         <td>
 <pre>
-jam -sTOOLS=gcc my_target
+bjam -sTOOLS=gcc my_target
 </pre>
 
         <td>default (debug) <tt><a href="#build">BUILD</a></tt> of
         <tt>my_target</tt>with GCC
 
       <tr>
-        <td><pre>jam -f<i>allyourbase-path</i> -sTOOLS=&quot;msvc gcc&quot;</pre> 
+        <td>
+            <pre>bjam -sTOOLS=&quot;msvc gcc&quot;</pre> 
 
         <td>default-build <tt>all</tt> with msvc and gcc
 
@@ -242,7 +244,7 @@ jam -sTOOLS=gcc my_target
         <td>
 <pre>
 set TOOLS=msvc
-jam
+bjam
 </pre>
 
         <td>Set an NT environment variable to always build with MSVC<br>
@@ -251,15 +253,16 @@ jam
       <tr>
         <td>
 <pre>
-jam -sBUILD=release
+bjam &quot;-sBUILD=release &lt;debug-symbols&gt;on&quot;
 </pre>
 
-        <td>release build <tt>all</tt> with default <tt><a href=
-        "#tools">TOOLS</a></tt>:<br>
+        <td>release build with debug symbols of <tt>all</tt> using
+        default <tt><a href=
+        "#tools">TOOLS</a></tt>
          
 
       <tr>
-        <td><pre>jam -sBUILD=&quot;debug release&quot;</pre> 
+        <td><pre>bjam -sBUILD=&quot;debug release&quot;</pre> 
 
         <td>debug and release build <tt>all</tt>.
     </table>
@@ -276,7 +279,7 @@ jam -sBUILD=release
 <blockquote><pre>
 &gt; <a href="#build">BUILD</a>=&quot;debug release&quot;  <i># assuming Unix</i>
 &gt; export <a href="#build">BUILD</a>
-&gt; jam ...
+&gt; bjam ...
 </pre></blockquote>
         This approach can be OK for quick-and-dirty tests, but environment variable
       settings tend to be unstable and non-uniform across users and machines, so
@@ -327,14 +330,14 @@ subinclude foo/bar/baz <font color="#7f7f7f">foo/bar/...</font> ;
 
     <h3><a name="support_files">Support Files</a></h3>
 
-    <p>To use the build system, the following must be located in your project's
-    root directory, or in a directory specified in the
-    <tt>BOOST_BUILD_INSTALLATION</tt> variable. It is usually convenient to
-    specify the <tt>BOOST_BUILD_INSTALLATION</tt> in your project's <a href=
-    "#jamrules">Jamrules</a> file. The <a href="../../Jamrules">Boost
-    Jamrules</a> file shows an example.
-
-    <table border="1" summary="Support Files">
+    
+<p>To use the build system, the following must be located in your project's root 
+    directory, or in a directory specified in the <tt>BOOST_BUILD_PATH</tt> variable. 
+    It is usually convenient to specify the <tt>BOOST_BUILD_PATH</tt> in your 
+    project's <a href=
+    "#jamrules">Jamrules</a> file. The <a href="../../Jamrules">Boost Jamrules</a> 
+    file shows an example. 
+<table border="1" summary="Support Files">
       <tr>
         <th>Filename(s)
 
@@ -364,12 +367,12 @@ subinclude foo/bar/baz <font color="#7f7f7f">foo/bar/...</font> ;
     compiled into our Jam executable. 
 
     <h2><a name="design">Basic Design and Terminology</a></h2>
-    This section gives an overview of the way that the system works, outlining
-    the system's capabilities and overall design. It also introduces the
-    terminology and concepts neccessary to understand the sections on writing
-    Jamfiles and command-line invocations. 
+    This section gives an overview of the way that the system works, outlining 
+the system's capabilities and overall design. It also introduces the terminology 
+and concepts necessary to understand the sections on writing Jamfiles and command-line 
+invocations. 
 
-    <h3><a name="project_subproject">Projects and Subprojects</a></h3>
+<h3><a name="project_subproject">Projects and Subprojects</a></h3>
 
     <p>A <b>project</b> is a source directory tree containing at least one
     <tt>Jamfile</tt>. The root directory of the project is known as the
@@ -381,14 +384,14 @@ subinclude foo/bar/baz <font color="#7f7f7f">foo/bar/...</font> ;
     <p>Subdirectories containing <tt>Jamfile</tt>s are called <b>subproject
     directories</b>. Each such <tt>Jamfile</tt> describes a <b>subproject</b>.
 
-    <p>The <b>build system installation directory</b> is a directory containing
-    Jam files describing compilers and build variants. The installation
-    directory can be specified explicitly by setting the variable
-    <tt>BOOST_BUILD_INSTALLATION</tt>. If the installation directory is not
-    specified, it is the same as the project root, and
-    <tt>BOOST_BUILD_INSTALLATION</tt> is set to refer to that directory.
-
-    <h3><a name="targets">Targets</a></h3>
+    
+<p>The <b>build system installation directory</b> is a directory containing Jam 
+    files describing compilers and build variants. The installation directory 
+    can be specified implicitly by setting the variable <tt>BOOST_BUILD_PATH</tt>. 
+    This lists a set of directories to search for the files comprising the build 
+    system. If the installation directory is not specified, it is the same as 
+    the project root, and <tt>BOOST_BUILD_PATH</tt> is set to include that directory. 
+<h3><a name="targets">Targets</a></h3>
 
     <p>Each <tt>Jamfile</tt> describes one or more <b>main targets</b>.
 
@@ -423,7 +426,7 @@ subinclude foo/bar/baz <font color="#7f7f7f">foo/bar/...</font> ;
     <p>A <b>feature</b> is a normalized (toolset-independent) description of an
     individual build parameter, such as whether inlining is enabled. Each
     feature usually corresponds to a command-line option of one or more build
-    tools. Features come in three varieties:
+    tools. Features come in four varieties:
 
     <ol>
       <li><b>Simple features</b> can take on any of several predetermined
@@ -561,7 +564,7 @@ subinclude foo/bar/baz <font color="#7f7f7f">foo/bar/...</font> ;
     for a DLL:
 
     <blockquote>
-<pre>
+    <pre>
  bin
  +-foo  <font color="#7f7f7f">&lt;--- foo's build root</font>
  | +-msvc
@@ -571,7 +574,7 @@ subinclude foo/bar/baz <font color="#7f7f7f">foo/bar/...</font> ;
  | | | | `-<b>user-interface-gui</b>
  . . . `-runtime-link-static
  . . .   +-<b>user-interface-console</b>
- . . .   `-<b>user-interface-gui</b>
+ . . .   `user-interface-gui<b></b>
 </pre>
     </blockquote>
 
@@ -624,16 +627,16 @@ exe my_target : my_source1.cpp my_source2.c ;
     and you invoke Jam with <tt>-sBUILD="debug release" my_target</tt>, you
     will build both the debug and release versions of <tt>my_target</tt>. 
 
-    <p>These simple, ungristed names are called <b>user targets</b>, and are
-    only available for the subproject where Jam is invoked. That way, builds
-    from the top level (which may include many Jamfiles through the subinclude
-    rule) and builds of library dependencies (which may live in other
-    subprojects), don't collide. If it is neccessary to refer more explicitly
-    to a particular target from the command-line, you will have to add
-    ``grist''. Please see <a href="#target_names">this section</a> for a more
-    complete description of how to name particular targets in a build.
-
-    <h4><a name="user_globals">Global Variables</a></h4>
+    
+<p>These simple, ungristed names are called <b>user targets</b>, and are only 
+    available for the subproject where Jam is invoked. That way, builds from the 
+    top level (which may include many Jamfiles through the subinclude rule) and 
+    builds of library dependencies (which may live in other subprojects), don't 
+    collide. If it is necessary to refer more explicitly to a particular target 
+    from the command-line, you will have to add ``grist''. Please see <a href="#target_names">this 
+    section</a> for a more complete description of how to name particular targets 
+    in a build. 
+<h4><a name="user_globals">Global Variables</a></h4>
 
     <p>This is a partial list of global variables that can be set on the
     command-line. Of course you are free to write your own Jam rules which
@@ -658,13 +661,11 @@ exe my_target : my_source1.cpp my_source2.c ;
 
         <td rowspan="2">Platform-dependent
 
-        <td><tt>-sTOOLS="gcc msvc"</tt> 
-
+        <td><tt>&quot;-sTOOLS=gcc msvc&quot;</tt> 
         <td>build with gcc and msvc
 
       <tr>
         <td><tt>-sTOOLS=gcc</tt> 
-
         <td>build with gcc
 
       <tr>
@@ -680,18 +681,18 @@ exe my_target : my_source1.cpp my_source2.c ;
         <td>build the <tt>release</tt> variant
 
       <tr>
-        <td><tt>-sBUILD="debug release"</tt> 
+        <td><tt>&quot;-sBUILD=debug release&quot;</tt> 
 
         <td>build both <tt>debug</tt> and <tt>release</tt> variants
 
       <tr>
-        <td><tt>-sBUILD="&lt;optimization&gt;speed"</tt> 
+        <td><tt>&quot;-sBUILD=&lt;optimization&gt;speed&quot;</tt> 
 
         <td>build a subvariant of the default variant (<tt>debug</tt>) with
         optimization for speed.
 
       <tr>
-        <td><tt>-sBUILD="debug release &lt;runtime-link&gt;static/dynamic"</tt>
+        <td><tt>&quot;-sBUILD=debug release &lt;runtime-link&gt;static/dynamic&quot;</tt>
         
 
         <td>build subvariants of the debug and release variants that link to
@@ -707,8 +708,8 @@ exe my_target : my_source1.cpp my_source2.c ;
 
         <td><tt>-sALL_LOCATE_TARGET=~/build</tt> 
 
-        <td>Generate all build results in the <tt>build</tt> subdirectory of
-        the user's home directory (Unix).
+        <td>Generate all build results in the <tt>build</tt> subdirectory of the 
+            user's home directory (UNIX). 
     </table>
 
     <h3><a name="#subproject_jamfiles">SubProject Jamfiles</a></h3>
@@ -749,101 +750,165 @@ project-root ;
 </pre>
     </blockquote>
 
-    <ul>
-      <li><i>target-type</i> may be one of <tt>exe</tt>, <tt>lib</tt>, or
-      <tt>dll</tt>. These are actually names of Jam rules. Additional main
-      target rules are possible; see <tt><a href=
+    
+<ul>
+    <li><i>target-type</i> may be one of <tt>exe</tt>, <tt>lib</tt>, <tt>dll</tt>, 
+        <tt>stage</tt> or <tt>template</tt>. These are actually names of Jam rules.
+        Additional main target rules are possible; see <tt><a href=
       "../../status/Jamfile">status/Jamfile</a></tt> or <tt><a href=
-      "../../libs/python/build/Jamfile">libs/python/build/Jamfile</a></tt> for
-      examples.<br>
-      <br>
-
-
-      <li><i>name</i> specifies the name of the main target<br>
-      <br>
-
-
-      <li><i>sources</i> is a list of paths to source files and dependency
-      targets. A dependency target path is preceded by <tt>&lt;lib&gt;</tt>,
-      and the final path component specifies the name of a main target in a
-      Jamfile located in the directory given by the inital path components.
-      Paths may be absolute or relative.<br>
-      <br>
-
-
-      <li>
-        <i><a name="target_requirements">requirements</a></i> specifies the
-        build properties intrinsic to the target. Requirements are given as
-        sets of optionally-<b>qualified build properties</b>: 
-
-        <blockquote>
+      "../../libs/python/build/Jamfile">libs/python/build/Jamfile</a></tt> for 
+        examples.<br>
+        <br>
+    <li><i>name</i> specifies the name of the main target, multiple targets with 
+        the same name are allowed but only if they are of different types. Normally 
+        this is not the name of the final target file generated. The target file 
+        name depends on the type of target which controls how the base target 
+        name is renamed to conform to platform conventions. For <tt>exe</tt>s 
+        the name might be the same or <tt>*.exe</tt>. For <tt>lib</tt>s the name 
+        might be <tt>*.lib</tt> or <tt>lib*.a</tt>. And for <tt>dll</tt>s the 
+        name might be <tt>*.dll</tt> or <tt>lib*.so</tt>. For platform specific 
+        naming consult the <tt><a href="allyourbase.jam">allyourbase.jam</a></tt> 
+        file in the build system.<br>
+        <br>
+    <li><i>sources</i> is a list of paths to source files and dependency targets. 
+        A dependency target path is preceded by <tt>&lt;template&gt;</tt>,
+        <tt>&lt;lib&gt;</tt>, <tt>&lt;dll&gt;</tt>, or <tt>&lt;exe&gt;</tt>,
+        and the final path component specifies the name of a main target in a Jamfile located
+        in the directory given by the initial path components. Paths may be absolute or
+        relative. The type of dependency is also used to decide how to link to it when needed. 
+        Specifying a <tt>&lt;lib&gt;</tt> indicates the use of static linking, 
+        as opposed to specifying a <tt>&lt;dll&gt;</tt> which uses dynamic linking. 
+        For example in Unix static linking will be done directly, and dynamic 
+        linking with the common &quot;<tt>-l</tt>&quot; liker flag and use of 
+        <tt>LD_LIBRARY_PATH</tt>.<br>
+        <br>
+        <b>NOTE:</b> It is important to match up the type of source dependency 
+        with the same type the dependency is built as. Trying to specify a source 
+        dependency of <tt>&lt;lib&gt;</tt> when the target is defined as a <tt>&lt;dll&gt;</tt> 
+        will cause an error.<br>
+        <br>
+    <li> <i><a name="target_requirements">requirements</a></i> specifies the build 
+        properties intrinsic to the target. Requirements are given as sets of 
+        optionally-<b>qualified build properties</b>: 
+        <blockquote> 
 <pre>
 [[&lt;<i>compiler</i>&gt;]&lt;<i>variant</i>&gt;]&lt;<i>feature</i>&gt;<i>value</i>
 </pre>
         </blockquote>
-        <tt>&lt;<i>compiler</i>&gt;</tt> and <tt>&lt;<i>variant</i>&gt;</tt>,
-        if supplied, can be used to restrict the applicability of the
-        requirement. Either one may be replaced by <tt>&lt;*&gt;</tt>, which is
-        the same as ommitting it. 
-
-        <p>The system checks that simple feature requirements are not violated
-        by explicit subvariant build requests, and will issue a warning
-        otherwise. Free features specified as requirements are simply added to
-        each corresponding build configuration.<br>
-        <br>
-
-
-      <li>
-        <i><a name="default_build">default-BUILD</a></i> specifies the
-        configurations that should be built if the <tt><a href=
-        "#build">BUILD</a></tt> variable is not otherwise specified. Any
-        elements not beginning with ``<tt>&lt;</tt>...<tt>&gt;</tt>'' refer to
-        build variants. Other elements use the same syntax as the <a href=
-        "#target_requirements">requirements</a> described above, except that
-        multiple values may be specified for a simple feature by separating
-        them with a slash, forming (qualified) <b>multi-valued properties</b>: 
-
-        <blockquote>
+        <tt>&lt;<i>compiler</i>&gt;</tt> and <tt>&lt;<i>variant</i>&gt;</tt>, 
+        if supplied, can be used to restrict the applicability of the requirement. 
+        Either one may be replaced by <tt>&lt;*&gt;</tt>, which is the same as 
+        omitting it. 
+        <p>The system checks that simple feature requirements are not violated 
+            by explicit subvariant build requests, and will issue a warning otherwise. 
+            Free features specified as requirements are simply added to each corresponding 
+            build configuration.<br>
+            <br>
+    <li> <i><a name="default_build">default-BUILD</a></i> specifies the configurations 
+        that should be built if the <tt><a href=
+        "#build">BUILD</a></tt> variable is not otherwise specified. Any elements 
+        not beginning with ``<tt>&lt;</tt>...<tt>&gt;</tt>'' refer to build variants. 
+        Other elements use the same syntax as the <a href=
+        "#target_requirements">requirements</a> described above, except that multiple 
+        values may be specified for a simple feature by separating them with a 
+        slash, forming (qualified) <b>multi-valued properties</b>: 
+        <blockquote> 
 <pre>
 [[&lt;<i>compiler</i>&gt;]&lt;<i>variant</i>&gt;]&lt;<i>feature</i>&gt;<i>value1</i>[/<i>value2</i>...]
 </pre>
         </blockquote>
-        When multiple values are specified, it causes <i>all</i> the implied
-        configurations to be built by default. It is also possible to prevent
-        any default builds from occuring on this target by using <code>&lt;suppress&gt;true</code>
-        . This suppresses any local targets, either implicit or explicit, from building.
-        But, this does not prevent implied targets as required by a dependency by
-        another target to this one from being built. This is usefull, for example,
-        for defining a set of libraries generically and having them built only when
-        another target like an exe is built. Such use might look like:
-        <blockquote>
+        When multiple values are specified, it causes <i>all</i> the implied configurations 
+        to be built by default. It is also possible to prevent any default builds 
+        from occurring on this target by using <code>&lt;suppress&gt;true</code> 
+        . This suppresses any local targets, either implicit or explicit, from 
+        building. But, this does not prevent implied targets as required by a 
+        dependency by another target to this one from being built. This is useful, 
+        for example, for defining a set of libraries generically and having them 
+        built only when another target like an exe is built. Such use might look 
+        like: 
+        <blockquote> 
 <pre>
 lib basic : basic.cpp : : &lt;suppress&gt;true ;<br><br>exe test : test.cpp &lt;lib&gt;basic ;<br>
 </pre>
         </blockquote>
-        With that the <tt>basic</tt> library will only be built when the <tt>test</tt>
-        executable is built, and only the variations required by the executable
+        With that the <tt>basic</tt> library will only be built when the <tt>test</tt> 
+        executable is built, and only the variations required by the executable 
         will be built.<br>
-      </li>
-    </ul>
+    </li>
+</ul>
 
     <p><b>NOTE:</b> for simple features in both <i><a href=
     "#target_requirements">requirements</a></i> and <i><a href=
     "#default_build">default-BUILD</a></i>, more-specific qualification
     overrides less-specific.
 
+    <h4><a name="template_targets">Describing Template Targets</a></h4>
+
+    <p>Template targets provide a way to handle commonalities between projects targets.
+    They have the same form as <a href="#main_targets">main targets</a> but do not
+    initiate build requests. A target that lists a template as a dependency inherits
+    all the settings from the template, i.e. the templates sources, requirements and
+    default build settings will be added to the targets settings. Paths mentioned in a
+    template definition are always relative to the subdirectory of the Jamfile
+    containing the templates definition, regardless of the subdirectory of the dependent
+    main target. Typically a project will have at least one template target that handles
+    defines, include paths and additional compiler flags common to all targets in the project.
+
+    <h4><a name="stage_targets">Describing Stage Targets</a></h4>
+
+    <p>Stage targets are a special kind of target that don't build a single file but 
+    to a collection of files. The goal is to create a directory which is composed 
+    of the various files that other targets generate, or individual files. When 
+    built a stage target creates a directory with the same name as the target, 
+    and copies the dependent files to it. The form of the target is the same as 
+    that of <a href="#main_targets">main targets</a> with some differences...
+
+<ul>
+    <li><i>target-type</i> is <tt>stage</tt>. See <tt><a href=
+      "../../libs/regex/build/Jamfile">libs/regex/build/Jamfile</a></tt> for an 
+        example.<br>
+        <br>
+    <li><i>Name</i> specifies the name of the stage and is the name of the directory 
+        created. <br>
+        <br>
+    <li><i>sources</i> is the same as main targets and one can list both generated 
+        targets like <tt>&lt;exe&gt;test_exe</tt> and individual files, but not
+        template targets.<br>
+        <br>
+    <li><i>Requirements</i> the build properties specified are used as with main 
+        targets. But one additional type of requirement is possible: <tt>&lt;tag&gt;</tt>... 
+        A tag specifies how to &quot;augment&quot; the names of the copied files. 
+        This is needed to distinguish the various files if your collecting different 
+        builds of the same targets. The syntax is: 
+        <blockquote> 
+<pre>
+&lt;tag&gt;&lt;<i>feature|variant</i>&gt;<i>value</i>
+</pre>
+        </blockquote>
+        <br>
+        If the <tt><i>feature</i></tt> or <tt><i>variant</i></tt> is present for 
+        the a target the file for that target is renamed to include the given 
+        <tt><i>value</i></tt> between the basename and the suffix. Two special 
+        <tt>tag</tt>s, <tt>&lt;tag&gt;&lt;prefix&gt;</tt> and <tt>&lt;tag&gt;&lt;postfix&gt;</tt>, 
+        let one prepend and append a value to the &quot;augmentation&quot; respectively.<br>
+        <br>
+    <li> <i>default-BUILD</i> acts in the same manner as a main target.<br>
+    </li>
+</ul>
+
     <h4><a name="jamfile_example">Example</a></h4>
 
-    <p>This artificially complex example shows how an executable called "foo"
-    might be described in a Jamfile. The executable is composed of the sources
+    <p>This artificially complex example shows how two executables called "foo"
+    and "fop" might be described in a Jamfile. All common settings are factored out
+    in the templates "base" and "executable". Foo is composed of the sources
     <tt>./foo.cpp</tt> and <tt>./src/bar.cpp</tt> (specified relative to the
-    directory in which the Jamfile resides), and the built target which results
-    from building the target <tt>baz</tt> as described in
-    <tt>../bazlib/Jamfile</tt>.
+    directory in which the Jamfile resides). Fop only has one sourcefile <tt>./fop.cpp</tt>.
+    Both executables link against the built target which results from building the target 
+    <tt>baz</tt> as described in <tt>../bazlib/Jamfile</tt>.
 
     <blockquote>
 <pre>
-exe foo : foo.cpp src/bar.cpp &lt;lib&gt;../bazlib/baz
+template base : 
     ## <a href="#target_requirements">Requirements</a> ##
     : &lt;include&gt;../bazlib/include 
       &lt;define&gt;BUILDING_FOO=1
@@ -859,6 +924,12 @@ exe foo : foo.cpp src/bar.cpp &lt;lib&gt;../bazlib/baz
     : debug release
       &lt;debug&gt;&lt;runtime-link&gt;static/dynamic
     ;
+
+template executable : &lt;template&gt;base &lt;lib&gt;../bazlib/baz ;
+
+exe foo : &lt;template&gt;executable foo.cpp src/bar.cpp ;
+
+exe fop : &lt;template&gt;executable fop.cpp ;
 </pre>
     </blockquote>
 
@@ -921,12 +992,12 @@ variant <i>name</i> : [&lt;<i>toolset-name</i>&gt;]&lt;<i>feature</i>&gt;value..
     can be used to great effect for describing global properties that are shared
     amongst various variants, and therefore targets. For example:
     <blockquote>
-<pre>
-variant my-globals : &lt;rtti&gt;off ;
+    <pre>
+variant my-globals : &lt;rtti&gt;off ;
 
 variant my-debug : my-globals debug ;
 
-variant mym-release : my-globals releaase ;
+variant my-release : my-globals release ;
 </pre>
     </blockquote>
     More examples can be found in <a href="features.jam">features.jam</a>. 
@@ -972,17 +1043,17 @@ actions msvc-C++-action
 
 </pre>
         </blockquote>
-        Note that <tt>Link-action</tt> may require special care: on platforms
-        where the global variable <tt>gEXPORT_SUFFIX(DLL)</tt> is defined (e.g.
-        Windows), the first argument may have two elements when linking a
-        shared library. The first is the shared library target, and the second
-        is the import library target, with suffix given by
-        <tt>$(gEXPORT_SUFFIX(DLL))</tt>. It will always have a third argument
-        which is either ``<tt>EXE</tt>'' or ``<tt>DLL</tt>''. This can be used
-        to dispatch to different actions for linking DLLs and EXEs if
-        neccessary, but usually it will be easier to take advantage of the
-        special <tt>&lt;target-type&gt;</tt> feature, which will have the same
-        value using the <tt>flags</tt> rule described below. 
+        Note that <tt>Link-action</tt> may require special care: on platforms 
+        where the global variable <tt>gEXPORT_SUFFIX(DLL)</tt> is defined (e.g. 
+        Windows), the first argument may have two elements when linking a shared 
+        library. The first is the shared library target, and the second is the 
+        import library target, with suffix given by <tt>$(gEXPORT_SUFFIX(DLL))</tt>. 
+        It will always have a third argument which is either ``<tt>EXE</tt>'' 
+        or ``<tt>DLL</tt>''. This can be used to dispatch to different actions 
+        for linking DLLs and EXEs if necessary, but usually it will be easier 
+        to take advantage of the special <tt>&lt;target-type&gt;</tt> feature, 
+        which will have the same value using the <tt>flags</tt> rule described 
+        below. 
 
         <p>
 
@@ -1030,10 +1101,10 @@ flags <i>toolset variable condition</i> [: <i>value</i>...]
           properties, the <i>values</i> specified in <tt>$(3)</tt> will be
           appended once to <i>variable</i>.
 
-          <li>The value of each specified feature that participates in the
-          target's build properaties is appended to <i>variable</i>. In either
-          case, the variable will be set "on" the target so it may be used in
-          the build actions.
+            <li>The value of each specified feature that participates in the target's 
+                build properties is appended to <i>variable</i>. In either case, 
+                the variable will be set "on" the target so it may be used in 
+                the build actions. 
         </ol>
     </ol>
 
@@ -1048,11 +1119,10 @@ flags <i>toolset variable condition</i> [: <i>value</i>...]
 flags msvc CFLAGS &lt;optimization&gt;off : /Od ;
 </pre>
     </blockquote>
-    It says that the string <tt>/Od</tt> should be added to the global
-    <tt>CFLAGS</tt> variable whenever a build configuration includes the
-    property <tt>&lt;optimization&gt;off</tt>. 
+    It says that the string <tt>/Od</tt> should be added to the global <tt>CFLAGS</tt> 
+variable whenever a build configuration includes the property <tt>&lt;optimization&gt;off</tt>. 
 
-    <p>Similarly, in the following example,
+<p>Similarly, in the following example,
 
     <blockquote>
 <pre>
@@ -1210,28 +1280,26 @@ flags msvc HDRS &lt;include&gt; ;
           built target, regardless of target file location (as allowed by
           setting <tt>ALL_LOCATE_TARGET</tt>.
         </ol>
-        When grist is extracted from a name with
-        <tt>$(</tt><i>var</i><tt>:G)</tt>, the result includes the leading and
-        trailing angle brackets. When grist is added to a name with
-        <tt>$(</tt><i>var</i><tt>:G=</tt><i>expr</i><tt>)</tt>, existing grist
-        is first stripped. Then, if <i>expr</i> is non-empty, leading
-        <tt>&lt;</tt>s and trailing <tt>&gt;</tt>s are added if neccessary to
-        form an expression of the form <tt>&lt;</tt><i>expr2</i><tt>&gt;</tt>;
-        <tt>&lt;</tt><i>expr2</i><tt>&gt;</tt> is then prepended.
+        When grist is extracted from a name with <tt>$(</tt><i>var</i><tt>:G)</tt>, 
+        the result includes the leading and trailing angle brackets. When grist 
+        is added to a name with <tt>$(</tt><i>var</i><tt>:G=</tt><i>expr</i><tt>)</tt>, 
+        existing grist is first stripped. Then, if <i>expr</i> is non-empty, leading 
+        <tt>&lt;</tt>s and trailing <tt>&gt;</tt>s are added if necessary to form 
+        an expression of the form <tt>&lt;</tt><i>expr2</i><tt>&gt;</tt>; <tt>&lt;</tt><i>expr2</i><tt>&gt;</tt> 
+        is then prepended. 
 
         <p>
 
-      <li>
-        <a name="variable_splitting">When Jam</a> is invoked it imports all
-        environment variable settings into corresponding Jam variables, followed
-        by all command-line (<tt>-s...</tt>) variable settings. Variables whose
-        name ends in <tt>PATH</tt>, <tt>Path</tt>, or <tt>path</tt> are split
-        into string lists on OS-specific path-list separator boundaries
-        (e.g. &quot;<tt>:</tt>&quot; for Unix and &quot;<tt>;</tt>&quot; for
-        Windows). All other variables are split on space
-        (&quot;<tt>&nbsp;</tt>&quot;) boundaries. Boost Jam modifies that
+      
+    <li> <a name="variable_splitting">When Jam</a> is invoked it imports all environment 
+        variable settings into corresponding Jam variables, followed by all command-line 
+        (<tt>-s...</tt>) variable settings. Variables whose name ends in <tt>PATH</tt>, 
+        <tt>Path</tt>, or <tt>path</tt> are split into string lists on OS-specific 
+        path-list separator boundaries (e.g. &quot;<tt>:</tt>&quot; for UNIX and 
+        &quot;<tt>;</tt>&quot; for Windows). All other variables are split on 
+        space (&quot;<tt>&nbsp;</tt>&quot;) boundaries. Boost Jam modifies that 
         behavior by allowing variables to be <a
-        href="#variable_quoting">quoted</a>.
+        href="#variable_quoting">quoted</a>. 
 
         <p>
 
@@ -1270,7 +1338,7 @@ if $(MESSAGE) { ECHO The message is: $(MESSAGE) ; }
 
     <blockquote>
 
-      <h4><a name="variable_quoting">Command-line and Environment Variable Quoting</h4>
+      <h4><a name="variable_quoting"></a>Command-line and Environment Variable Quoting</h4>
 
       <p>Classic Jam had an <a href="#variable_splitting">odd behavior</a> with
       respect to command-line variable ( <tt>-s...</tt>) and environment
@@ -1295,60 +1363,38 @@ jam -sMSVCNT=&quot;\&quot;\&quot;C:\Program Files\Microsoft Visual C++\VC98\&quo
 set MSVCNT=&quot;&quot;C:\Program Files\Microsoft Visual C++\VC98\&quot;&quot;
 </pre></blockquote>
 
-      <h4><a name="jambase_replacement">Jambase Replacement</a></h4>
+      <h4><a name="jambase_replacement">Startup Behavior</a></h4>
 
-      <p>New logic has been added to allow the built-in Jambase to be replaced
-      without recompiling Jam or adding command-line arguments. The user can
-      control the location of the build system by setting any of the <tt>JAMBASE</tt>,
-      <tt>BOOST_ROOT</tt>, or <tt>BOOST_BUILD_PATH</tt> environment variables (the settings of
-      these variables can also be overridden on the command-line using the
-      <tt>-s<i>VARIABLE</i>=</tt>... option). 
+      <p>The Boost.Build v2 initialization behavior has been
+      implemented. This behavior only applies when the executable
+      being invoked is called &quot;<code>bjam</code>&quot; or, for
+      backward-compatibility, when the <code>BOOST_ROOT</code>
+      variable is set.
 
-      <p>The process is controlled by variables (in decreasing
-precedence):
-      <ul>
-
-      <li>If <tt>JAMBASE</tt> is set, it specifies the path to the Jambase
-      replacement. Non-rooted paths are computed relative to the directory of
-      Jam's invocation.
-
-      <li>Otherwise, if <tt>BOOST_BUILD_PATH</tt> or <tt>BOOST_ROOT</tt> is set,
-      the build system filename is <tt><b>boost-build.jam</b></tt>.
-
-      <li>If the build system filename does not contain a path specification,
-      the build system file is searched for on <tt>$(BOOST_BUILD_PATH)</tt>,
-      then at <tt>$(BOOST_ROOT)/tools/build</tt>.
-
-      <li>If <tt>BOOST_BUILD_PATH</tt> was not set, it will be set to
-      <tt>$(BOOST_ROOT)/tools/build</tt>.
-
-      <li>If neither <tt>JAMBASE</tt>, <tt>BOOST_ROOT</tt>, nor
-      <tt>BOOST_BUILD_PATH</tt> is set, we use the built-in Jambase (nearly
-      identical to the <a
-      href="http://freetype.sourceforge.net/jam/index.html">FTJam</a> Jambase)
-      and load the user's Jamfile. Perforce Jam has this behavior, and it is
-      used for building Jam itself. <b>Thus, when you rebuild Jam, these
-      variables should be unset</b>.
-
-      </ul>
-
-      <p>The rationale for this behavior is as follows:
-      <ul>
-
-      <li> The Jam executable should allow the Jambase to be overridden to
-           implement other build systems without the user having any knowledge
-           of Boost, thus the <tt>JAMBASE</tt> variable.
-
-      <li> <tt>BOOST_BUILD_PATH</tt> is designed to be used to find all <a
-      href="#module_support">modules</a> used by the build system, so that users
-      and system administrators may non-intrusively add modules to the system.
-
-      <li> Many Boost users already have <tt>BOOST_ROOT</tt> set. If a user
-      doesn't want to explicitly set up <tt>BOOST_BUILD_PATH</tt>,
-      <tt>BOOST_ROOT</tt> will supply reasonable behavior.
-
-      </ul>
-
+   <ol>
+   <li> We attempt to load "boost-build.jam" by searching from the
+        current invocation directory up to the root of the
+        file-system. This file is expected to invoke the
+        <tt>boost-build</tt> rule to indicate where the Boost.Build
+        system files are, and to load them.
+   <li> If boost-build.jam is not found we error and exit, giving
+        brief instructions on possible errors. 
+<blockquote>
+As a backward-compatibility measure for older versions of Boost.Build,
+when the <code>BOOST_ROOT</code> variable is set, we first search for
+<code>boost-build.jam</code> in <code>$(BOOST_ROOT)/tools/build</code>
+and <code>$(BOOST_BUILD_PATH)</code>. If found, it is loaded and
+initialization is complete.
+</blockquote>
+   <li> The <code>boost-build</code> rule adds its (optional) argument
+        to the front of <code>BOOST_BUILD_PATH</code>, and attempts to
+        load <code>bootstrap.jam</code> from those directories. If a
+        relative path is specified as an argument, it is treated as
+        though it was relative to the <code>boost-build.jam</code>
+        file.
+   <li> If the bootstrap.jam file was not found, we print a likely
+           error message and exit.
+</ol>
 
       <h4><a name="rule_indirection">Rule Indirection</a></h4>
 
@@ -1507,66 +1553,61 @@ module your_module
 
         <p>
 
-        <h5><a name="module_locals">Local Variables</a></h5>
-        <tt>module local </tt> <i>expression</i><tt> ;</tt><br>
-         <i>- or -</i><br>
-         <tt>module local </tt> <i>expression</i><tt> = </tt>
-        <i>expression2</i><tt> ;</tt> 
+        <h5><a name="module_locals">Variable Scope</a></h5>
 
-        <p>The variables named by <i>expression</i> are given a distinct value
-        in the module, and can be manipulated by code executing in the module
-        without affecting variable bindings seen by other modules. If the
-        assignment form is used, <i>expression2</i> is assigned to the
-        variables when the declaration is executed. For example:
-
-        <blockquote>
+        <p>Each module has its own set of dynamically nested variable
+        scopes. When execution passes from module A to module B, all
+        the variable bindings from A become unavailable, and are
+        replaced by the bindings that belong to B. This applies
+        equally to local and global variables:
 <pre>
-module M {
-  <b>module local</b> x = a b c ;
-
-  rule f ( )
-  {
+<blockquote>
+module A
+{
+    x = 1 ;
+    rule f ( )
     {
-      local x = 1 2 3 ; # temp override for M's x
-      N.g ;             # call into module N, below
+        local y = 999 ; # becomes visible again when B.f calls A.g
+        B.f ;
     }
-    ECHO $(x) ;         # prints "a b c"
-  }
+    rule g ( )
+    {
+        ECHO $(y) ;     # prints &quot;999&quot;
+    }
 }
 
-module N {
-  rule g ( )
-  {
-    x = foo bar baz ; # sets global x
-    M.h ;             # call back into M, below
-  }
+module B
+{
+    y = 2 ;
+    rule f ( )
+    {
+        ECHO $(y) ; # always prints &quot;2&quot;
+        A.g ;
+    }
 }
-
-module M {
-  rule h ( )
-  {
-    ECHO $(x) ;      # prints "1 2 3"
-  }
-}
-
-M.f ; 
-ECHO $(x) ;          # prints "foo bar baz"
+</blockquote>
 </pre>
-        </blockquote>
-        The only way to access another module's local variables is through a
-        rule defined in that module: 
+
+        The only way to access another module's variables is by
+        entering that module:
 
         <blockquote>
 <pre>
-module M {
-  rule get ( names * )
-  {
-    return $($(names)) ;
-  }
+rule peek ( module-name ? : variables + )
+{
+    module $(module-name)
+    {
+        return $($(&gt;)) ;
+    }
 }
-ECHO [ <b>M.get</b> x ] ;  # prints "a b c"
 </pre>
         </blockquote>
+
+        Note that because existing variable bindings change whenever a
+        new module scope is entered, argument bindings become
+        unavailable. That explains the use of
+        &quot;<code>$(&gt;)</code>&quot; in the <code>peek</code> rule
+        above.
 
         <h5><a name="local_rules">Local Rules</a></h5>
 
@@ -1588,10 +1629,9 @@ ECHO [ <b>M.get</b> x ] ;  # prints "a b c"
 rule RULENAMES ( module ? )
 </pre>
         </blockquote>
-        Returns a list of the names of all non-local rules in the
-        given module. If <tt>module</tt> is ommitted, the names of all
-        non-local rules in the global module are returned.
-
+        Returns a list of the names of all non-local rules in the given module. 
+        If <tt>module</tt> is omitted, the names of all non-local rules in the 
+        global module are returned. 
         <h5><a name="IMPORT_rule">The <tt>IMPORT</tt> Rule</a></h5>
         
         <tt>IMPORT</tt> allows rule name aliasing across modules:
@@ -1694,36 +1734,6 @@ for <b>local</b> y in $(x)
 ECHO $(y) ;     # prints &quot;4 5 6&quot;
 </pre></blockquote>
 
-      <h4><a name="while_loops">While Loops</a></h4>
-
-      In classic Jam, some constructs are only possible using recursion:
-<blockquote><pre>
-# returns the part of $(list) following the first occurrence of $(symbol)
-rule after-symbol ( symbol : list * )
-{
-    if ! $(list) || ( $(symbol) = $(list[1]) )
-    {
-        return $(list[2-]) ;
-    }
-    else
-    {
-        return [ after-symbol $(symbol) : $(list[2-]) ] ;
-    }
-}
-</pre></blockquote>
-The addition of <tt>while</tt> loops allows a simpler formulation for this and
-many other rules:
-<blockquote><pre>
-rule after-symbol ( symbol : list * )
-{
-    while $(list) &amp;&amp; $(list[1]) != $(symbol)
-    {
-        list = $(list[2-]) ;
-    }
-    return $(list) ;
-}
-</pre></blockquote>
-
       <h4><a name="negative_indexing">Negative Indexing</a></h4>
       
       Classic Jam supplies 1-based list indexing, and slicing on a closed
@@ -1781,13 +1791,32 @@ rule bind-rule ( target : path )
 
       <h4><a name="NOCARE">Ignoring Return Codes</a></h4>
 
-      <p>Perforce Jam suppplied a <tt>NOCARE</tt> rule which is typically used
-      for header files to indicate that if they are not found, the dependent
-      targets should be built anyway. Boost Jam extends <tt>NOCARE</tt> to apply
-      to targets with build actions: if their build actions exit with a nonzero
-      return code, dependent targets will still be built.
+      
+    <p>Perforce Jam supplied a <tt>NOCARE</tt> rule which is typically used for 
+        header files to indicate that if they are not found, the dependent targets 
+        should be built anyway. Boost Jam extends <tt>NOCARE</tt> to apply to 
+        targets with build actions: if their build actions exit with a nonzero 
+        return code, dependent targets will still be built. 
 
-      <h4><a name="SUBST_rule">The <tt>SUBST</tt> Rule</a></h4>
+      <h4><a name="RMOLD">Removing Outdated Targets</a></h4>
+<blockquote>
+<pre>
+rule RMOLD ( targets * )
+</pre>
+</blockquote>
+
+      <p>Perforce Jam removes any target files that may exist on disk
+      when the rule used to build those targets fails. However,
+      targets whose dependencies fail to build are not removed by
+      default. The <code>RMOLD</code> rule causes its arguments to be
+      removed if any of their dependencies fail to build.
+
+      
+    <h4><a name="SUBST_rule">The <tt>SUBST</tt> Rule</a></h4>
+
+    <p><b>Note:</b> the <code>SUBST</code> rule is deprecated in favor
+    of Perforce Jam's built-in <cdoe>MATCH</cdoe> rule, which has been
+    rolled into Boost.Jam.
 
       <p>The behavior of the <tt>SUBST</tt> rule for regular-expression matching
       and replacement (originally added in <a href=
@@ -1884,16 +1913,17 @@ rule BACKTRACE ( )
       the subproject at <tt>foo/bar/baz</tt> the target <tt>my_target</tt> is
       identified by <tt>&lt;bar!baz&gt;my_target</tt>.
 
-      <li>A <b>subvariant target</b> has additional grist identifying its main
-      target and subvariant. This grist is joined to <tt>$(SOURCE_GRIST)</tt>
-      with the platform's directory separator. Thus, on Unix, a subvariant
-      target of <tt>my_target</tt> above might be identified as
-      <tt>&lt;bar!baz/my_target/optimization-space/runtime-link-static&gt;my_source.o</tt>.
-      Note that the part of the grist following the first slash, known as the
-      <b>subvariant id</b>, also corresponds to a fragment of the subvariant
-      directory path where the corresponding target is generated. Most built
-      targets will be identified this way.
-    </ul>
+      
+    <li>A <b>subvariant target</b> has additional grist identifying its main target 
+        and subvariant. This grist is joined to <tt>$(SOURCE_GRIST)</tt> with 
+        the platform's directory separator. Thus, on UNIX, a subvariant target 
+        of <tt>my_target</tt> above might be identified as
+        <tt>&lt;bar!baz/my_target/optimization-space/runtime-link-static&gt;my_source.o</tt>. 
+        Note that the part of the grist following the first slash, known as the 
+        <b>subvariant id</b>, also corresponds to a fragment of the subvariant 
+        directory path where the corresponding target is generated. Most built 
+        targets will be identified this way. 
+</ul>
 
     <h3><a name="internal_globals">Global Variables</a></h3>
 
@@ -1929,6 +1959,9 @@ rule BACKTRACE ( )
     &quot;Flow of Control&quot; section below the link target) to temporarily
     &quot;change&quot; a global variable by declaring a <tt>local</tt> of the
     same name.
+
+    <p>Many of the variables that are used to configure how Boost.Build works
+    internally are listed <a href="variables.html">here</a> with brief descriptions.
 
     <h3>Variables Associated with SubProject Identity</h3>
 
@@ -2010,15 +2043,14 @@ rule BACKTRACE ( )
       the source directories (they may be read-only)
     </ul>
 
-    <h2><a name="footnotes">Footnotes</a></h2> <a name="1">[1]</a> Boost Jam is
-    actually descended directly from <a
-    href="http://freetype.sourceforge.net/jam/index.html">FTJam</a>, which was
-    itself a variant of <a href=
-    "http://www.perforce.com/jam/jam.html">Jam/MR</a>. It is hoped that crucial
-    features we rely on will eventually be incorportated back into the Jam/MR
-    release.
+    <h2><a name="footnotes">Footnotes</a></h2> 
+<a name="1">[1]</a> Boost Jam is actually descended directly from <a
+    href="http://freetype.sourceforge.net/jam/index.html">FTJam</a>, which was 
+itself a variant of <a href=
+    "http://www.perforce.com/jam/jam.html">Jam/MR</a>. It is hoped that crucial 
+features we rely on will eventually be incorporated back into the Jam/MR release. 
 
-    <p><a name="2">[2]</a> Note: right now, a dependency feature of a main
+<p><a name="2">[2]</a> Note: right now, a dependency feature of a main
     target makes <b>all</b> resulting built targets dependent, including
     intermediate targets. That means that if an executable is dependent on an
     external library, and that library changes, all the sources comprising the

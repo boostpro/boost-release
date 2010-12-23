@@ -145,8 +145,7 @@ namespace detail {
 // A type which acts a lot like a built-in Python class. T is the obj type,
 // so class_t<instance> is a very simple "class-alike".
 template <class T>
-class BOOST_PYTHON_DECL_TEMPLATE class_t
-    : public boost::python::detail::class_base
+class class_t : public boost::python::detail::class_base
 {
  public:
     class_t(meta_class<T>* meta_class_obj, string name, tuple bases, const dictionary& name_space);
@@ -227,13 +226,13 @@ class BOOST_PYTHON_DECL_TEMPLATE class_t
 
 // The type of a class_t<T> object.
 template <class T>
-class BOOST_PYTHON_DECL_TEMPLATE meta_class
+class meta_class
     : public boost::python::detail::reprable<
                 boost::python::detail::callable<
                    boost::python::detail::getattrable<
                       boost::python::detail::setattrable<
                          boost::python::detail::type_object<class_t<T> > > > > >,
-      boost::noncopyable
+      private boost::noncopyable
 {
  public:
     meta_class();
@@ -350,19 +349,21 @@ int class_t<T>::instance_mapping_ass_subscript(PyObject* obj, PyObject* key, PyO
     return 0;
 }
 
-void BOOST_PYTHON_DECL adjust_slice_indices(PyObject* obj, int& start, int& finish);
+bool BOOST_PYTHON_DECL adjust_slice_indices(PyObject* obj, int& start, int& finish);
 
 template <class T>
 PyObject* class_t<T>::instance_sequence_slice(PyObject* obj, int start, int finish) const
 {
-    adjust_slice_indices(obj, start, finish);    
+    if (!adjust_slice_indices(obj, start, finish))
+        return 0;
     return downcast<T>(obj)->get_slice(start, finish);
 }
 
 template <class T>
 int class_t<T>::instance_sequence_ass_slice(PyObject* obj, int start, int finish, PyObject* value) const
 {
-    adjust_slice_indices(obj, start, finish);
+    if (!adjust_slice_indices(obj, start, finish))
+        return -1;
     downcast<T>(obj)->set_slice(start, finish, value);
     return 0;
 }

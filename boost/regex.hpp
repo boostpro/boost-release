@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -16,7 +16,7 @@
  /*
   *   LOCATION:    see http://www.boost.org for most recent version.
   *   FILE         regex.cpp
-  *   VERSION      3.12
+  *   VERSION      see <boost/version.hpp>
   *   DESCRIPTION: Declares boost::reg_expression<> and associated
   *                functions and classes. This header is the main
   *                entry point for the template regex code.
@@ -41,6 +41,7 @@
 #include <new>
 #include <boost/regex/config.hpp>
 #include <cstring>
+#include <boost/regex_fwd.hpp>
 #include <boost/regex/detail/regex_stack.hpp>
 #include <boost/regex/detail/regex_raw_buffer.hpp>
 #include <boost/regex/detail/regex_kmp.hpp>
@@ -199,7 +200,7 @@ std::ostream& operator<<(std::ostream&, syntax_element_type);
 union offset_type
 {
    re_syntax_base* p;
-   unsigned i;
+   std::size_t i;
 };
 
 //
@@ -449,22 +450,17 @@ class match_results;
 // regular expression:
 //
 
-#if defined(BOOST_REGEX_NO_TEMPLATE_SWITCH_MERGE)
-//
-// Ugly ugly hack, 
-// template don't merge if they contain switch statements so declare these
-// templates in unnamed namespace (ie with internal linkage), each translation
-// unit then gets its own local copy, it works seemlessly but bloats the app.
-namespace{
-#endif
-
+#ifdef BOOST_REGEX_NO_FWD
 template <class charT, class traits = regex_traits<charT>, class Allocator = BOOST_DEFAULT_ALLOCATOR(charT) >
+#else
+template <class charT, class traits, class Allocator >
+#endif
 class reg_expression : public regbase
 {
+public:
    typedef typename traits::size_type traits_size_type;
    typedef typename traits::uchar_type traits_uchar_type;
    typedef typename traits::string_type traits_string_type;
-public:
    // typedefs:
    typedef charT char_type;
    typedef traits traits_type;
@@ -660,10 +656,10 @@ private:
    unsigned marks;
    int repeats;
    unsigned char* startmap;
-   unsigned _expression_len;
-   unsigned int _leading_len;
+   std::size_t _expression_len;
+   std::size_t _leading_len;
    const charT* _leading_string;
-   unsigned int _leading_string_len;
+   std::size_t _leading_string_len;
    re_detail::kmp_info<charT>* pkmp;
    unsigned error_code_;
    charT* _expression;
@@ -698,7 +694,7 @@ protected:
    { return (const re_detail::re_syntax_base*)e.data.data(); }
    static const unsigned char* BOOST_REGEX_CALL get_map(const reg_expression& e)
    { return e.startmap; }
-   static unsigned int BOOST_REGEX_CALL leading_length(const reg_expression& e)
+   static std::size_t BOOST_REGEX_CALL leading_length(const reg_expression& e)
    { return e._leading_len; }
    static const re_detail::kmp_info<charT>* get_kmp(const reg_expression& e)
    { return e.pkmp; }
@@ -707,7 +703,7 @@ protected:
 };
 
 template <class charT, class traits, class Allocator>
-void BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::swap(reg_expression& that)throw()
+inline void BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::swap(reg_expression& that)throw()
 {
    // this is not as efficient as it should be,
    // however swapping traits classes is problematic
@@ -717,10 +713,6 @@ void BOOST_REGEX_CALL reg_expression<charT, traits, Allocator>::swap(reg_express
    *this = e;
 }
 
-
-#if defined(BOOST_REGEX_NO_TEMPLATE_SWITCH_MERGE)
-} // namespace
-#endif
 
 //
 // class match_results and match_results_base
@@ -744,7 +736,7 @@ struct sub_match
    operator std::basic_string<value_type> ()const
    {
       std::basic_string<value_type> result;
-      unsigned len = boost::re_detail::distance((iterator)first, (iterator)second);
+      std::size_t len = boost::re_detail::distance((iterator)first, (iterator)second);
       result.reserve(len);
       iterator i = first;
       while(i != second)
@@ -794,7 +786,10 @@ int do_toi(iterator i, iterator j, char c, int radix)
    std::string s(i, j);
    char* p;
    int result = std::strtol(s.c_str(), &p, radix);
+#ifndef BOOST_NO_EXCEPTIONS
    if(*p)throw bad_pattern("Bad sub-expression");
+#endif
+   BOOST_REGEX_NOEH_ASSERT(0 == *p)
    return result;
 }
 
@@ -819,7 +814,10 @@ sub_match<iterator>::operator int()const
 {
    iterator i = first;
    iterator j = second;
+#ifndef BOOST_NO_EXCEPTIONS
    if(i == j)throw bad_pattern("Bad sub-expression");
+#endif
+   BOOST_REGEX_NOEH_ASSERT(i != j)
    int neg = 1;
    if((i != j) && (*i == '-'))
    {
@@ -827,7 +825,10 @@ sub_match<iterator>::operator int()const
       ++i;
    }
    neg *= re_detail::do_toi(i, j, *i);
+#ifndef BOOST_NO_EXCEPTIONS
    if(i != j)throw bad_pattern("Bad sub-expression");
+#endif
+   BOOST_REGEX_NOEH_ASSERT(i == j)
    return neg;
 }
 template <class iterator>
@@ -835,8 +836,11 @@ sub_match<iterator>::operator unsigned int()const
 {
    iterator i = first;
    iterator j = second;
+#ifndef BOOST_NO_EXCEPTIONS
    if(i == j)
       throw bad_pattern("Bad sub-expression");
+#endif
+   BOOST_REGEX_NOEH_ASSERT(i != j)
    return re_detail::do_toi(i, j, *first);
 }
 #endif
@@ -865,7 +869,7 @@ protected:
    
    struct c_reference : public c_alloc
    {
-      unsigned int cmatches;
+      std::size_t cmatches;
       unsigned count;
       sub_match<iterator> head, tail, null;
       unsigned int lines;
@@ -1063,27 +1067,34 @@ template <class iterator, class Allocator>
 match_results_base<iterator, Allocator>::match_results_base(const Allocator& a)
 {
    ref = (c_reference*)c_alloc(a).allocate(sizeof(sub_match<iterator>) + sizeof(c_reference));
+   BOOST_REGEX_NOEH_ASSERT(ref)
+#ifndef BOOST_NO_EXCEPTIONS
    try
    {
+#endif
       new (ref) c_reference(a);
       ref->cmatches = 1;
       ref->count = 1;
       // construct the sub_match<iterator>:
+#ifndef BOOST_NO_EXCEPTIONS
       try
       {
+#endif
          new ((sub_match<iterator>*)(ref+1)) sub_match<iterator>();
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(...)
-      { 
-         ::boost::re_detail::pointer_destroy(ref); 
-         throw; 
+      {
+         ::boost::re_detail::pointer_destroy(ref);
+         throw;
       }
    }
    catch(...)
-   { 
-      c_alloc(a).deallocate((char*)(void*)ref, sizeof(sub_match<iterator>) + sizeof(c_reference)); 
-      throw; 
+   {
+      c_alloc(a).deallocate((char*)(void*)ref, sizeof(sub_match<iterator>) + sizeof(c_reference));
+      throw;
    }
+#endif
 }
 
 template <class iterator, class Allocator>
@@ -1148,25 +1159,31 @@ void BOOST_REGEX_CALL match_results_base<iterator, Allocator>::set_size(size_typ
    if(ref->cmatches != n)
    {
       c_reference* newref = (c_reference*)ref->allocate(sizeof(sub_match<iterator>) * n + sizeof(c_reference));
+      BOOST_REGEX_NOEH_ASSERT(newref)
+#ifndef BOOST_NO_EXCEPTIONS
       try
       {
+#endif
          new (newref) c_reference(*ref);
          newref->count = 1;
          newref->cmatches = n;
          sub_match<iterator>* p1, *p2;
          p1 = (sub_match<iterator>*)(newref+1);
          p2 = p1 + newref->cmatches;
+#ifndef BOOST_NO_EXCEPTIONS
          try
          {
+#endif
             while(p1 != p2)
             {
                new (p1) sub_match<iterator>();
                ++p1;
             }
             m_free();
+#ifndef BOOST_NO_EXCEPTIONS
          }
          catch(...)
-         { 
+         {
             p2 = (sub_match<iterator>*)(newref+1);
             while(p2 != p1)
             {
@@ -1174,15 +1191,18 @@ void BOOST_REGEX_CALL match_results_base<iterator, Allocator>::set_size(size_typ
                ++p2;
             }
             ::boost::re_detail::pointer_destroy(ref);
-            throw; 
+            throw;
          }
+#endif
          ref = newref;
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(...)
-      { 
-         ref->deallocate((char*)(void*)newref, sizeof(sub_match<iterator>) * n + sizeof(c_reference)); 
-         throw; 
+      {
+         ref->deallocate((char*)(void*)newref, sizeof(sub_match<iterator>) * n + sizeof(c_reference));
+         throw;
       }
+#endif
    }
 }
 
@@ -1191,21 +1211,27 @@ void BOOST_REGEX_CALL match_results_base<iterator, Allocator>::set_size(size_typ
 {
    if(ref->cmatches != n)
    {
-      c_reference* newref = (c_reference*)ref->allocate(sizeof(sub_match<iterator>) * n + sizeof(c_reference));;
+      c_reference* newref = (c_reference*)ref->allocate(sizeof(sub_match<iterator>) * n + sizeof(c_reference));
+      BOOST_REGEX_NOEH_ASSERT(newref)
+#ifndef BOOST_NO_EXCEPTIONS
       try{
+#endif
          new (newref) c_reference(*ref);
          newref->count = 1;
          newref->cmatches = n;
          sub_match<iterator>* p1 = (sub_match<iterator>*)(newref+1);
          sub_match<iterator>* p2 = p1 + newref->cmatches;
+#ifndef BOOST_NO_EXCEPTIONS
          try
          {
+#endif
             while(p1 != p2)
             {
                new (p1) sub_match<iterator>(j);
                ++p1;
             }
             m_free();
+#ifndef BOOST_NO_EXCEPTIONS
          }
          catch(...)
          { 
@@ -1218,13 +1244,16 @@ void BOOST_REGEX_CALL match_results_base<iterator, Allocator>::set_size(size_typ
             ::boost::re_detail::pointer_destroy(ref);
             throw; 
          }
+#endif
          ref = newref;
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(...)
       { 
          ref->deallocate((char*)(void*)newref, sizeof(sub_match<iterator>) * n + sizeof(c_reference)); 
          throw; 
       }
+#endif
    }
    else
    {
@@ -1261,11 +1290,11 @@ void BOOST_REGEX_CALL match_results_base<iterator, Allocator>::maybe_assign(cons
    p1 = (sub_match<iterator>*)(ref+1);
    p2 = (sub_match<iterator>*)(m.ref+1);
    iterator base = (*this)[-1].first;
-   unsigned int len1 = 0;
-   unsigned int len2 = 0;
-   unsigned int base1 = 0;
-   unsigned int base2 = 0;
-   unsigned int i;
+   std::size_t len1 = 0;
+   std::size_t len2 = 0;
+   std::size_t base1 = 0;
+   std::size_t base2 = 0;
+   std::size_t i;
    for(i = 0; i < ref->cmatches; ++i)
    {
       //
@@ -1298,19 +1327,25 @@ void BOOST_REGEX_CALL match_results_base<iterator, Allocator>::cow()
    if(ref->count > 1)
    {
       c_reference* newref = (c_reference*)ref->allocate(sizeof(sub_match<iterator>) * ref->cmatches + sizeof(c_reference));
+      BOOST_REGEX_NOEH_ASSERT(newref)
+#ifndef BOOST_NO_EXCEPTIONS
       try{
+#endif
          new (newref) c_reference(*ref);
          newref->count = 1;
          sub_match<iterator>* p1 = (sub_match<iterator>*)(newref+1);
          sub_match<iterator>* p2 = p1 + newref->cmatches;
          sub_match<iterator>* p3 = (sub_match<iterator>*)(ref+1);
+#ifndef BOOST_NO_EXCEPTIONS
          try{
+#endif
             while(p1 != p2)
             {
                new (p1) sub_match<iterator>(*p3);
                ++p1;
                ++p3;
             }
+#ifndef BOOST_NO_EXCEPTIONS
          }
          catch(...)
          { 
@@ -1323,14 +1358,17 @@ void BOOST_REGEX_CALL match_results_base<iterator, Allocator>::cow()
             ::boost::re_detail::pointer_destroy(ref);
             throw; 
          }
+#endif
       --(ref->count);
       ref = newref;
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(...)
       { 
          ref->deallocate((char*)(void*)newref, sizeof(sub_match<iterator>) * ref->cmatches + sizeof(c_reference)); 
          throw; 
       }
+#endif
    }
 }
 
@@ -1418,19 +1456,25 @@ match_results<iterator, Allocator>::match_results(const match_results<iterator, 
       reinterpret_cast<typename re_detail::match_results_base<iterator, Allocator>::c_reference *>
          (m.ref->allocate(sizeof(sub_match<iterator>) * m.ref->cmatches +
                           sizeof(typename re_detail::match_results_base<iterator, Allocator>::c_reference)));
+   BOOST_REGEX_NOEH_ASSERT(this->ref)                       
+#ifndef BOOST_NO_EXCEPTIONS
    try{
+#endif
       new (this->ref) typename re_detail::match_results_base<iterator, Allocator>::c_reference(*m.ref);
       this->ref->count = 1;
       sub_match<iterator>* p1 = (sub_match<iterator>*)(this->ref+1);
       sub_match<iterator>* p2 = p1 + this->ref->cmatches;
       sub_match<iterator>* p3 = (sub_match<iterator>*)(m.ref+1);
+#ifndef BOOST_NO_EXCEPTIONS
       try{
+#endif
          while(p1 != p2)
          {
             new (p1) sub_match<iterator>(*p3);
             ++p1;
             ++p3;
          }
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(...)
       { 
@@ -1449,6 +1493,7 @@ match_results<iterator, Allocator>::match_results(const match_results<iterator, 
       m.ref->deallocate((char*)(void*)this->ref, sizeof(sub_match<iterator>) * m.ref->cmatches + sizeof(typename re_detail::match_results_base<iterator, Allocator>::c_reference));
       throw; 
    }
+#endif
 }
 
 template <class iterator, class Allocator>
@@ -1475,11 +1520,38 @@ iterator BOOST_REGEX_CALL re_is_set_member(iterator next,
 
 #include <boost/regex/detail/regex_compile.hpp>
 
-namespace boost{
+//
+// template instances:
+//
+#define BOOST_REGEX_CHAR_T char
+#ifdef BOOST_REGEX_NARROW_INSTANTIATE
+#  define BOOST_REGEX_INSTANTIATE
+#endif
+#include <boost/regex/detail/instances.hpp>
+#undef BOOST_REGEX_CHAR_T
+#ifdef BOOST_REGEX_INSTANTIATE
+#  undef BOOST_REGEX_INSTANTIATE
+#endif
 
+#ifndef BOOST_NO_WREGEX
+#define BOOST_REGEX_CHAR_T wchar_t
+#ifdef BOOST_REGEX_WIDE_INSTANTIATE
+#  define BOOST_REGEX_INSTANTIATE
+#endif
+#include <boost/regex/detail/instances.hpp>
+#undef BOOST_REGEX_CHAR_T
+#ifdef BOOST_REGEX_INSTANTIATE
+#  undef BOOST_REGEX_INSTANTIATE
+#endif
+#endif
+
+
+namespace boost{
+#ifdef BOOST_REGEX_NO_FWD
 typedef reg_expression<char, regex_traits<char>, BOOST_DEFAULT_ALLOCATOR(char)> regex;
 #ifndef BOOST_NO_WREGEX
 typedef reg_expression<wchar_t, regex_traits<wchar_t>, BOOST_DEFAULT_ALLOCATOR(wchar_t)> wregex;
+#endif
 #endif
 
 typedef match_results<const char*> cmatch;
@@ -1490,7 +1562,6 @@ typedef match_results<std::wstring::const_iterator> wsmatch;
 #endif
 
 } // namespace boost
-
 #include <boost/regex/detail/regex_match.hpp>
 #include <boost/regex/detail/regex_format.hpp>
 #include <boost/regex/detail/regex_split.hpp>
@@ -1499,6 +1570,7 @@ typedef match_results<std::wstring::const_iterator> wsmatch;
 #endif  // __cplusplus
 
 #endif  // include
+
 
 
 

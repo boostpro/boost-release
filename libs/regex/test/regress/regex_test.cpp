@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1998-2000
+ * Copyright (c) 1998-2002
  * Dr John Maddock
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -26,6 +26,7 @@
 // disable automatic selection of support library:
 #define BOOST_REGEX_NO_LIB
 #define BOOST_REGEX_STATIC_LINK
+#define BOOST_REGEX_NO_EXTERNAL_TEMPLATES
 
 #include <boost/regex.hpp>
 #include <boost/regex/src.cpp>
@@ -191,5 +192,6 @@ template test_string_type regex_merge(const test_string_type&,
 #if defined(__COMO__) && defined(_MSC_VER)
 #error "Comeau in VC6 mode goes into an infinite loop trying to link this program!!!"
 #endif
+
 
 

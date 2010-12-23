@@ -46,11 +46,12 @@ Metaprogramming</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#Preprocessor">Preprocessor Metaprogramming</a><a href="#Generic"><br>
 </a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Concurrent">Concurrent Programming</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#Math">Math and numerics<br>
-</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Inter-language">Inter-language support</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Correctness">Correctness and testing<br>
+</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Correctness">Correctness and testing<br>
 </a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Data">Data structures<br>
-</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Memory">Memory<br>
-</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Miscellaneous">Miscellaneous</a><br>
+</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#IO">Input/Output</a><a href="#Memory"><br>
+</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Inter-language">Inter-language support</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Memory">Memory</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Miscellaneous">Miscellaneous</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#workarounds">Broken compiler workarounds</a><br>
 <a href="#Obsolete">Obsolete Libraries</a><br>
 <a href="#Beta">Beta Libraries</a></p>
@@ -106,10 +107,15 @@ out how to build object libraries, when needed.</p>
         and a University of Notre Dame team.</li>
     <li><a href="integer/index.htm">integer</a> - Headers to ease
         dealing with integral types.</li>
+    <li><a href="io/doc/ios_state.html">io state savers</a> - Save I/O state to 
+    prevent jumbled data, from Daryle Walker.</li>
     <li><a href="utility/iterator_adaptors.htm">iterator adaptors</a>
         - Adapt a base type into a standard conforming iterator,
         and more, from Dave Abrahams, Jeremy Siek, and John
         Potter.</li>
+    <li><a href="lambda/doc/index.html">lambda</a> - Define small unnamed 
+    function objects at the actual call site, and more, from Jaakko Järvi and 
+    Gary Powell.</li>
     <li><a href="math/doc/index.html">math</a> - Several contributions in the 
     domain of mathematics, from various authors.</li>
     <li><a href="math/doc/common_factor.html">math/common_factor</a> - Greatest 
@@ -146,8 +152,9 @@ out how to build object libraries, when needed.</p>
 
     <li><a href="regex/index.htm">regex</a> - Regular expression
         library, from John Maddock.</li>
-    <li><a href="smart_ptr/index.htm">smart_ptr</a> - Four smart
-        pointer classes, from Greg Colvin and Beman Dawes.</li>
+    <li><a href="smart_ptr/index.htm">smart_ptr</a> - Five smart
+        pointer class templates, from Greg Colvin, Beman Dawes,
+        Peter Dimov, and Darin Adler.</li>
     <li><a href="static_assert/static_assert.htm">static_assert</a>
         - Static assertions (compile time assertions), from John
         Maddock.</li>
@@ -238,6 +245,9 @@ out how to build object libraries, when needed.</p>
       for deferred calls or callbacks, from Doug Gregor.</li>
     <li><a href="functional/index.html">functional</a> - Enhanced
         function object adaptors, from Mark Rodgers.</li>
+    <li><a href="lambda/doc/index.html">lambda</a> - Define small unnamed 
+    function objects at the actual call site, and more, from Jaakko Järvi and 
+    Gary Powell.</li>
 
     <li><a href="bind/ref.html">ref</a> - A utility library for
     passing references to generic functions, from Jaako J&auml;rvi,
@@ -343,6 +353,12 @@ out how to build object libraries, when needed.</p>
     from Jaakko Järvi.</li>
 </ul>
 
+<h3><a name="IO">Input/Output</a></h3>
+<ul>
+  <li><a href="io/doc/ios_state.html">io state savers</a> - Save I/O state to 
+  prevent jumbled data, from Daryle Walker.</li>
+</ul>
+
 <h3><a name="Inter-language">Inter-language</a> support</h3>
 
 <ul>
@@ -357,10 +373,13 @@ out how to build object libraries, when needed.</p>
 <ul>
     <li><a href="pool/doc/index.html">pool</a> - Memory pool management, from
       Steve Cleary.</li>
-    <li><a href="smart_ptr/index.htm">smart_ptr</a> - Four smart
-        pointer classes, from Greg Colvin and Beman Dawes.</li>
-  <li><a href="utility/utility.htm">utility</a>  - <tt>checked_delete</tt> and <tt>checked_array_delete</tt>
-    function templates, from Beman Dawes and others.</li>
+    <li><a href="smart_ptr/index.htm">smart_ptr</a> - Five smart
+        pointer class templates, from Greg Colvin, Beman Dawes,
+        Peter Dimov, and Darin Adler.</li>
+    <li><a href="utility/utility.htm">utility</a> - Class <b>noncopyable</b>
+        plus <b>checked_delete()</b>, <b>checked_array_delete()</b>, <b>next(),</b>&nbsp;
+      <b>prior()</b>
+        function templates, plus <b>base-from-member idiom</b>, from Dave Abrahams and others. </li>
 </ul>
 
 <h3><a name="Miscellaneous">Miscellaneous</a></h3>
@@ -382,7 +401,7 @@ out how to build object libraries, when needed.</p>
     <li><a href="utility/utility.htm">utility</a> - Class <b>noncopyable</b>
         plus <b>checked_delete()</b>, <b>checked_array_delete()</b>, <b>next(),</b>&nbsp;
       <b>prior()</b>
-        function templates, from Dave Abrahams and others. </li>
+        function templates, plus <b>base-from-member idiom</b>, from Dave Abrahams and others. </li>
 </ul>
 
 <h3>Broken compiler <a name="workarounds">workarounds</a></h3>
@@ -428,6 +447,6 @@ libraries will soon be either submitted for formal review or removed.</p>
 <hr>
 
 <p>Revised <!--webbot bot="Timestamp" s-type="EDITED"
-s-format="%d %b %Y" startspan -->30 Nov 2001<!--webbot bot="Timestamp" i-checksum="15239" endspan --></p>
+s-format="%d %b %Y" startspan -->09 May 2002<!--webbot bot="Timestamp" i-checksum="15122" endspan --></p>
 </body>
 </html>

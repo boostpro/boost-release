@@ -6,12 +6,14 @@
 # endif
 
 # include <boost/config.hpp>
+# include <boost/utility/addressof.hpp>
 
 //
 //  ref.hpp - ref/cref, useful helper functions
 //
 //  Copyright (C) 1999, 2000 Jaakko Järvi (jaakko.jarvi@cs.utu.fi)
-//  Copyright (C) 2001 Peter Dimov
+//  Copyright (C) 2001, 2002 Peter Dimov
+//  Copyright (C) 2002 David Abrahams
 //
 //  Permission to copy, use, modify, sell and distribute this software
 //  is granted provided this copyright notice appears in all copies.
@@ -29,18 +31,28 @@ template<class T> class reference_wrapper
 public:
     typedef T type;
 
+#if defined(BOOST_MSVC) && (BOOST_MSVC < 1300)
+
     explicit reference_wrapper(T& t): t_(&t) {}
+
+#else
+
+    explicit reference_wrapper(T& t): t_(addressof(t)) {}
+
+#endif
 
     operator T& () const { return *t_; }
 
     T& get() const { return *t_; }
+
+    T* get_pointer() const { return t_; }
 
 private:
 
     T* t_;
 };
 
-# if defined(__BORLANDC__) && (__BORLANDC__ <= 0x551)
+# if defined(__BORLANDC__) && (__BORLANDC__ <= 0x560)
 #  define BOOST_REF_CONST
 # else
 #  define BOOST_REF_CONST const
