@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: test_tools_test.cpp,v $
 //
-//  Version     : $Revision: 1.28 $
+//  Version     : $Revision: 1.34 $
 //
 //  Description : tests all Test Tools but output_test_stream
 // ***************************************************************************
@@ -15,7 +15,7 @@
 // Boost.Test
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_result.hpp>
-using namespace boost::unit_test_framework;
+using namespace boost::unit_test;
 using boost::test_toolbox::extended_predicate_value;
 
 // BOOST
@@ -55,7 +55,7 @@ using boost::test_toolbox::extended_predicate_value;
         }                                                                   \
         unit_test_log::instance().set_log_stream( std::cout );              \
         BOOST_CHECK( nothrow_check );                                       \
-    } catch( boost::test_toolbox::detail::test_tool_failed const&) {        \
+    } catch( boost::test_toolbox::tt_detail::test_tool_failed const&) {     \
         unit_test_log::instance().set_log_stream( std::cout );              \
         BOOST_CHECK( throw_check );                                         \
     }                                                                       \
@@ -81,7 +81,7 @@ normalize_file_name( char const* f )
     return buffer;
 }
 
-#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570)) || BOOST_WORKAROUND(__IBMCPP__, BOOST_TESTED_AT(600))
+#ifdef BOOST_TEST_SHIFTED_LINE
 
 #define CHECK_PATTERN( msg, shift ) \
     (boost::wrap_stringstream().ref() << normalize_file_name( __FILE__ ) << "(" << (__LINE__-shift) << "): " << msg).str()
@@ -216,17 +216,10 @@ test_BOOST_MESSAGE()
         output.is_equal( "struct A\n" )
     );
 
-#ifndef BOOST_NO_STD_LOCALE
+#if !defined(BOOST_NO_STD_LOCALE) && BOOST_WORKAROUND(BOOST_MSVC, >= 1310)
 
     CHECK_TOOL_USAGE(
         BOOST_MESSAGE( std::hex << std::showbase << 20 ),
-        output.is_equal( "0x14\n" )
-    );
-
-#else
-
-    CHECK_TOOL_USAGE(
-        BOOST_MESSAGE( std::hex << "0x" << 20 ),
         output.is_equal( "0x14\n" )
     );
 
@@ -281,7 +274,7 @@ test_BOOST_CHECKPOINT()
         output.is_equal(
             (boost::wrap_stringstream().ref()
                 << "Exception in " TEST_CASE_NAME ": C string: some error\n"
-                << normalize_file_name( __FILE__ ) << "(" << 277 << "): "
+                << normalize_file_name( __FILE__ ) << "(" << 270 << "): "
                 << "last checkpoint: Going to do a silly things\n").str()
         )
     );
@@ -718,6 +711,26 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] )
 //  Revision History :
 //  
 //  $Log: test_tools_test.cpp,v $
+//  Revision 1.34  2004/10/05 01:46:33  rogeeff
+//  borland fix
+//
+//  Revision 1.33  2004/10/01 10:55:43  rogeeff
+//  some test errors workarrounds
+//
+//  Revision 1.32  2004/06/07 07:34:23  rogeeff
+//  detail namespace renamed
+//
+//  Revision 1.31  2004/05/27 06:30:48  rogeeff
+//  no message
+//
+//  Revision 1.30  2004/05/21 06:26:11  rogeeff
+//  licence update
+//
+//  Revision 1.29  2004/05/11 11:05:06  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.28  2003/12/23 13:23:35  johnmaddock
 //  Added patch for gcc2.95.3 (and no new iostreams).
 //

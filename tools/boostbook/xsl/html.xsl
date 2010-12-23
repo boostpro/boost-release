@@ -4,56 +4,50 @@
                 version="1.0">
 
   <!-- Import the HTML chunking stylesheet -->
-  <xsl:import 
+  <xsl:import
     href="http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl"/>
 
-  <xsl:param name="html.stylesheet" select="'reference.css'"/>
+  <xsl:import href="chunk-common.xsl"/>
+  <xsl:import href="docbook-layout.xsl"/>
+  <xsl:import href="navbar.xsl"/>
+  <xsl:import href="admon.xsl"/>
+  <xsl:import href="xref.xsl"/>
+  <xsl:import href="relative-href.xsl"/>
+
+  <xsl:param name="html.stylesheet" select="'boostbook.css'"/>
   <xsl:param name="navig.graphics" select="1"/>
   <xsl:param name="navig.graphics.extension" select="'.png'"/>
-  <xsl:param name="chapter.autolabel" select="0"/>
+  <xsl:param name="chapter.autolabel" select="1"/>
   <xsl:param name="use.id.as.filename" select="1"/>
   <xsl:param name="refentry.generate.name" select="0"/>
   <xsl:param name="refentry.generate.title" select="1"/>
-  <xsl:param name="html.extra.head.links" select="1"/>
   <xsl:param name="make.year.ranges" select="1"/>
   <xsl:param name="generate.manifest" select="1"/>
   <xsl:param name="generate.section.toc.level" select="3"/>
+  <xsl:param name="doc.standalone">false</xsl:param>
+  <xsl:param name="chunker.output.indent">yes</xsl:param>
+  <xsl:param name="toc.max.depth">2</xsl:param>
 
-  <xsl:template name="header.navigation">
-    <table border="1" cellpadding="2" bgcolor="#007F7F">
-      <tr>
-        <td bgcolor="#FFFFFF">
-          <img src="../../c++boost.gif"
-            alt="c++boost.gif (8819 bytes)" width="277" height="86"/>
-        </td>
-        <td>
-          <a href="../../index.htm">
-            <font color="#FFFFFF" size="4" face="Arial">Home</font>
-          </a>
-        </td>
-        <td>
-          <a href="libraries.html">
-            <font color="#FFFFFF" size="4" face="Arial">Libraries</font>
-          </a>
-        </td>
-        <td>
-          <a href="../../people/people.htm">
-            <font color="#FFFFFF" size="4" face="Arial">People</font>
-          </a>
-        </td>
-        <td>
-          <a href="../../more/faq.htm">
-            <font color="#FFFFFF" size="4" face="Arial">FAQ</font>
-          </a>
-        </td>
-        <td>
-          <a href="../../more/index.htm">
-            <font color="#FFFFFF" size="4" face="Arial">More</font>
-          </a>
-        </td>
-      </tr>
-    </table>
-  </xsl:template>
+  <xsl:param name="generate.toc">
+appendix  toc,title
+article/appendix  nop
+article   toc,title
+book      toc,title
+chapter   toc,title
+part      toc,title
+preface   toc,title
+qandadiv  toc
+qandaset  toc
+reference toc,title
+sect1     toc
+sect2     toc
+sect3     toc
+sect4     toc
+sect5     toc
+section   toc
+set       toc,title
+  </xsl:param>
+
 
   <xsl:template name="format.cvs.revision">
     <xsl:param name="text"/>
@@ -127,20 +121,27 @@
     <table width="100%">
       <tr>
         <td align="left">
-          <small>
-            <xsl:variable name="revision-nodes" 
-              select="ancestor-or-self::*
-                        [not (attribute::rev:last-revision='')]"/>
-            <xsl:if test="count($revision-nodes)">
-              <xsl:variable name="revision-node"
-                select="$revision-nodes[last()]"/>
-              <xsl:text>Last revised: </xsl:text>
-              <xsl:call-template name="format.cvs.revision">
-                <xsl:with-param name="text"
-                  select="string($revision-node/attribute::rev:last-revision)"/>
-              </xsl:call-template>
+          <xsl:variable name="revision-nodes" 
+            select="ancestor-or-self::*
+                    [not (attribute::rev:last-revision='')]"/>
+          <xsl:if test="count($revision-nodes) &gt; 0">
+            <xsl:variable name="revision-node"
+              select="$revision-nodes[last()]"/>
+            <xsl:variable name="revision-text">
+              <xsl:value-of 
+                select="normalize-space($revision-node/attribute::rev:last-revision)"/>
+            </xsl:variable>
+            <xsl:if test="string-length($revision-text) &gt; 0">
+              <small>
+                <p>
+                  <xsl:text>Last revised: </xsl:text>
+                  <xsl:call-template name="format.cvs.revision">
+                    <xsl:with-param name="text" select="$revision-text"/>
+                  </xsl:call-template>
+                </p>
+              </small>
             </xsl:if>
-          </small>
+          </xsl:if>
         </td>
         <td align="right">
           <small>
@@ -185,4 +186,59 @@
   <!-- We don't want refentry's to show up in the TOC because they
        will merely be redundant with the synopsis. -->
   <xsl:template match="refentry" mode="toc"/>
- </xsl:stylesheet>
+
+  <!-- override the behaviour of some DocBook elements for better
+       rendering facilities -->
+
+  <xsl:template match = "programlisting[ancestor::informaltable]">
+     <pre class = "table-{name(.)}"><xsl:apply-templates/></pre>
+  </xsl:template>
+
+  <xsl:template match = "refsynopsisdiv">
+     <h2 class = "{name(.)}-title">Synopsis</h2>
+     <div class = "{name(.)}">
+        <xsl:apply-templates/>
+     </div>
+  </xsl:template>
+
+<!-- ============================================================ -->
+
+<xsl:template name="output.html.stylesheets">
+    <xsl:param name="stylesheets" select="''"/>
+
+    <xsl:choose>
+        <xsl:when test="contains($stylesheets, ' ')">
+            <link rel="stylesheet">
+                <xsl:attribute name="href">
+                    <xsl:call-template name="href.target.relative">
+                        <xsl:with-param name="target" select="substring-before($stylesheets, ' ')"/>
+                    </xsl:call-template>
+                </xsl:attribute>
+                <xsl:if test="$html.stylesheet.type != ''">
+                    <xsl:attribute name="type">
+                        <xsl:value-of select="$html.stylesheet.type"/>
+                    </xsl:attribute>
+                </xsl:if>
+            </link>
+            <xsl:call-template name="output.html.stylesheets">
+                <xsl:with-param name="stylesheets" select="substring-after($stylesheets, ' ')"/>
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$stylesheets != ''">
+            <link rel="stylesheet">
+                <xsl:attribute name="href">
+                    <xsl:call-template name="href.target.relative">
+                        <xsl:with-param name="target" select="$stylesheets"/>
+                    </xsl:call-template>
+                </xsl:attribute>
+                <xsl:if test="$html.stylesheet.type != ''">
+                    <xsl:attribute name="type">
+                        <xsl:value-of select="$html.stylesheet.type"/>
+                    </xsl:attribute>
+                </xsl:if>
+            </link>
+        </xsl:when>
+    </xsl:choose>
+</xsl:template>
+
+</xsl:stylesheet>

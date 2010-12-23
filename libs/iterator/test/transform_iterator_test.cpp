@@ -1,8 +1,7 @@
-//  (C) Copyright Jeremy Siek 2002. Permission to copy, use, modify,
-//  sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided
-//  "as is" without express or implied warranty, and with no claim as
-//  to its suitability for any purpose.
+//  (C) Copyright Jeremy Siek 2002.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 //  Revision History
 //  22 Nov 2002 Thomas Witt
@@ -14,7 +13,6 @@
 //       to be in iterator_adaptor_test.cpp.
 
 #include <boost/config.hpp>
-#include <iostream>
 #include <algorithm>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/iterator/iterator_concepts.hpp>
@@ -22,7 +20,6 @@
 #include <boost/pending/iterator_tests.hpp>
 #include <boost/bind.hpp>
 #include <boost/concept_check.hpp>
-
 
 #ifdef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 namespace boost { namespace detail
@@ -104,6 +101,7 @@ int mult_2(int arg)
 {
   return arg*2;
 }
+
 
 int
 main()
@@ -246,6 +244,5 @@ main()
     );
   }
 
-  std::cout << "test successful " << std::endl;
   return 0;
 }

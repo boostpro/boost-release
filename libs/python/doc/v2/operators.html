@@ -16,7 +16,7 @@
       <tr>
         <td valign="top" width="300">
           <h3><a href="../../../../index.htm"><img height="86" width="277"
-          alt="C++ Boost" src="../../../../c++boost.gif" border="0"></a></h3>
+          alt="C++ Boost" src="../../../../boost.png" border="0"></a></h3>
         </td>
 
         <td valign="top">
@@ -828,19 +828,28 @@ struct number
    : boost::<a href=
 "../../../utility/operators.htm#grpd_oprs">integer_arithmetic</a>&lt;number&gt;
 {
-   number(long x_) : x(x_) {}
-   operator long() const { return x; }
+    explicit number(long x_) : x(x_) {}
+    operator long() const { return x; }
 
-   number&amp; operator+=(number const&amp; rhs)
-      { x += rhs }
-   number&amp; operator-=(number const&amp; rhs);
-      { x -= rhs }
-   number&amp; operator*=(number const&amp; rhs)
-      { x *= rhs }
-   number&amp; operator/=(number const&amp; rhs);
-      { x /= rhs }
-   number&amp; operator%=(number const&amp; rhs);
-      { x %= rhs }
+    template &lt;class T&gt;
+    number&amp; operator+=(T const&amp; rhs)
+    { x += rhs; return *this; }
+
+    template &lt;class T&gt;
+    number&amp; operator-=(T const&amp; rhs)
+    { x -= rhs; return *this; }
+    
+    template &lt;class T&gt;
+    number&amp; operator*=(T const&amp; rhs)
+    { x *= rhs; return *this; }
+    
+    template &lt;class T&gt;
+    number&amp; operator/=(T const&amp; rhs)
+    { x /= rhs; return *this; }
+    
+    template &lt;class T&gt;
+    number&amp; operator%=(T const&amp; rhs)
+    { x %= rhs; return *this; }
 
    long x;
 };
@@ -848,7 +857,7 @@ struct number
 using namespace boost::python;
 BOOST_PYTHON_MODULE(demo)
 {
-   class_&lt;number&gt;("number")
+   class_&lt;number&gt;("number", init&lt;long&gt;())
       // interoperate with self
       .def(self += self)
       .def(self + self)
@@ -886,13 +895,12 @@ BOOST_PYTHON_MODULE(demo)
 
     <p>Revised 
     <!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->
-  3 October, 2003
+  5 October, 2004
   <!--webbot bot="Timestamp" endspan i-checksum="39359" -->
     </p>
 
     <p><i>&copy; Copyright <a href=
-    "../../../../people/dave_abrahams.htm">Dave Abrahams</a> 2002. All Rights
-    Reserved.</i></p>
+    "../../../../people/dave_abrahams.htm">Dave Abrahams</a> 2002.</i></p>
   </body>
 </html>
 

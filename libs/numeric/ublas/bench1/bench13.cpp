@@ -14,18 +14,9 @@
 //  GeNeSys mbH & Co. KG in producing this work.
 //
 
-#ifdef BOOST_MSVC
-
-#pragma warning (disable: 4355)
-#pragma warning (disable: 4503)
-#pragma warning (disable: 4786)
-
-#endif
-
 #include <iostream>
 #include <string>
 
-#include <boost/numeric/ublas/config.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 

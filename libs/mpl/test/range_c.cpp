@@ -1,51 +1,60 @@
-//-----------------------------------------------------------------------------
-// boost mpl/test/range_c.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
+
+// Copyright Aleksey Gurtovoy 2000-2004
 //
-// Copyright (c) 2000-02
-// Aleksey Gurtovoy
+// Distributed under the Boost Software License,Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
+// See http://www.boost.org/libs/mpl for documentation.
 
-#include "boost/mpl/range_c.hpp"
-#include "boost/mpl/empty.hpp"
-#include "boost/mpl/size.hpp"
-#include "boost/mpl/front.hpp"
-#include "boost/mpl/back.hpp"
-#include "boost/mpl/assert_is_same.hpp"
-#include "boost/static_assert.hpp"
+// $Source: /cvsroot/boost/boost/libs/mpl/test/range_c.cpp,v $
+// $Date: 2004/11/10 23:51:34 $
+// $Revision: 1.4.2.1 $
 
-namespace mpl = boost::mpl;
+#include <boost/mpl/range_c.hpp>
+#include <boost/mpl/advance.hpp>
+#include <boost/mpl/distance.hpp>
+#include <boost/mpl/empty.hpp>
+#include <boost/mpl/size.hpp>
+#include <boost/mpl/front.hpp>
+#include <boost/mpl/back.hpp>
+#include <boost/mpl/aux_/test.hpp>
 
-int main()
+MPL_TEST_CASE()
 {
-    typedef mpl::range_c<int,0,0> range0;
-    typedef mpl::range_c<int,0,1> range1;
-    typedef mpl::range_c<int,0,10> range10;
+    typedef range_c<int,0,0> range0;
+    typedef range_c<int,0,1> range1;
+    typedef range_c<int,0,10> range10;
 
-    BOOST_STATIC_ASSERT(mpl::size<range0>::type::value == 0);
-    BOOST_STATIC_ASSERT(mpl::size<range1>::type::value == 1);
-    BOOST_STATIC_ASSERT(mpl::size<range10>::type::value == 10);
+    MPL_ASSERT_RELATION( size<range0>::value, ==, 0 );
+    MPL_ASSERT_RELATION( size<range1>::value, ==, 1 );
+    MPL_ASSERT_RELATION( size<range10>::value, ==, 10 );
 
-    BOOST_STATIC_ASSERT(mpl::empty<range0>::type::value);
-    BOOST_STATIC_ASSERT(!mpl::empty<range1>::type::value);
-    BOOST_STATIC_ASSERT(!mpl::empty<range10>::type::value);
+    MPL_ASSERT(( empty<range0> ));
+    MPL_ASSERT_NOT(( empty<range1> ));
+    MPL_ASSERT_NOT(( empty<range10> ));
 
-    BOOST_MPL_ASSERT_IS_SAME(mpl::begin<range0>::type, mpl::end<range0>::type);
-    BOOST_MPL_ASSERT_NOT_SAME(mpl::begin<range1>::type, mpl::end<range1>::type);
-    BOOST_MPL_ASSERT_NOT_SAME(mpl::begin<range10>::type, mpl::end<range10>::type);
+    MPL_ASSERT(( is_same< begin<range0>::type, end<range0>::type > ));
+    MPL_ASSERT_NOT(( is_same<begin<range1>::type, end<range1>::type > ));
+    MPL_ASSERT_NOT(( is_same<begin<range10>::type, end<range10>::type > ));
 
-    BOOST_STATIC_ASSERT(mpl::front<range1>::type::value == 0);
-    BOOST_STATIC_ASSERT(mpl::back<range1>::type::value == 0);
-    BOOST_STATIC_ASSERT(mpl::front<range10>::type::value == 0);
-    BOOST_STATIC_ASSERT(mpl::back<range10>::type::value == 9);
+    MPL_ASSERT_RELATION( front<range1>::type::value, ==, 0 );
+    MPL_ASSERT_RELATION( back<range1>::type::value, ==, 0 );
+    MPL_ASSERT_RELATION( front<range10>::type::value, ==, 0 );
+    MPL_ASSERT_RELATION( back<range10>::type::value, ==, 9 );
+}
 
-    return 0;
+MPL_TEST_CASE()
+{
+    typedef range_c<unsigned char,0,10> r;
+    typedef begin<r>::type first;
+    typedef end<r>::type last;
+
+    MPL_ASSERT(( is_same< advance_c<first,10>::type, last > ));
+    MPL_ASSERT(( is_same< advance_c<last,-10>::type, first > ));
+
+    MPL_ASSERT_RELATION( ( mpl::distance<first,last>::value ), ==, 10 );
+
+    typedef advance_c<first,5>::type iter;
+    MPL_ASSERT_RELATION( deref<iter>::type::value, ==, 5 );
 }

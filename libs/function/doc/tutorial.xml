@@ -2,7 +2,7 @@
 <!DOCTYPE library PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
   "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd">
 <section xmlns:xi="http://www.w3.org/2001/XInclude" id="function.tutorial"
-         last-revision="$Date: 2003/12/19 03:33:25 $">
+         last-revision="$Date: 2004/01/25 01:17:35 $">
 <title>Tutorial</title>
 
 <using-namespace name="boost"/>
@@ -248,17 +248,17 @@ f(&amp;x, 5);</programlisting>
         <row>
           <entry>
 <programlisting name="function.tutorial.std_bind.cxx98">  <classname>boost::function</classname>&lt;int (int)&gt; f;
-  X x;
-  f = std::bind1st(
-        std::mem_fun(&amp;X::foo), &amp;x);
-  f(5); // Call x.foo(5)</programlisting>
+X x;
+f = std::bind1st(
+      std::mem_fun(&amp;X::foo), &amp;x);
+f(5); // Call x.foo(5)</programlisting>
 </entry>
 <entry>
 <programlisting name="function.tutorial.std_bind.portable">  <classname alt="functionN">boost::function1</classname>&lt;int, int&gt; f;
-  X x;
-  f = std::bind1st(
-        std::mem_fun(&amp;X::foo), &amp;x);
-  f(5); // Call x.foo(5)</programlisting>
+X x;
+f = std::bind1st(
+      std::mem_fun(&amp;X::foo), &amp;x);
+f(5); // Call x.foo(5)</programlisting>
 </entry>
           </row>
         </tbody>
@@ -274,7 +274,7 @@ f(&amp;x, 5);</programlisting>
 </section>
 
 <section>
-  <title>References to Functions</title> <para> In some cases it is
+  <title>References to Function Objects</title> <para> In some cases it is
   expensive (or semantically incorrect) to have Boost.Function clone a
   function object. In such cases, it is possible to request that
   Boost.Function keep only a reference to the actual function
@@ -293,18 +293,18 @@ f(&amp;x, 5);</programlisting>
       <tbody>
         <row>
           <entry>
-<programlisting name="function.tutorial.ref.cxx98">  stateful_type a_function_object;
-  <classname>boost::function</classname>&lt;int (int)&gt; f;
-  f = <functionname>boost::ref</functionname>(a_function_object);
+<programlisting name="function.tutorial.ref.cxx98">stateful_type a_function_object;
+<classname>boost::function</classname>&lt;int (int)&gt; f;
+f = <functionname>boost::ref</functionname>(a_function_object);
 
-  <classname>boost::function</classname>&lt;int (int)&gt; f2(f);</programlisting>
+<classname>boost::function</classname>&lt;int (int)&gt; f2(f);</programlisting>
 </entry>
 <entry>
-<programlisting name="function.tutorial.ref.portable">  stateful_type a_function_object;
-  <classname alt="functionN">boost::function1</classname>&lt;int, int&gt; f;
-  f = <functionname>boost::ref</functionname>(a_function_object);
+<programlisting name="function.tutorial.ref.portable">stateful_type a_function_object;
+<classname alt="functionN">boost::function1</classname>&lt;int, int&gt; f;
+f = <functionname>boost::ref</functionname>(a_function_object);
 
-  <classname alt="functionN">boost::function1</classname>&lt;int, int&gt; f2(f);</programlisting>
+<classname alt="functionN">boost::function1</classname>&lt;int, int&gt; f2(f);</programlisting>
 </entry>
           </row>
         </tbody>
@@ -321,5 +321,37 @@ using references to function objects, Boost.Function will not throw
 exceptions during assignment or construction.
 </para>
 </section>
+
+<section>
+  <title>Comparing Boost.Function function objects</title>
+
+  <para>Function object wrappers can be compared via <code>==</code>
+  or <code>!=</code> against any function object that can be stored
+  within the wrapper. If the function object wrapper contains a
+  function object of that type, it will be compared against the given
+  function object (which must be
+  <conceptname>EqualityComparable</conceptname>). For instance:</para>
+  
+  <programlisting name="function.tutorial.compare">int compute_with_X(X*, int);
+
+f = &amp;X::foo;
+assert(f == &amp;X::foo);
+assert(&amp;compute_with_X != f);</programlisting>
+
+   <para>When comparing against an instance of
+   <code><classname>reference_wrapper</classname></code>, the address
+   of the object in the
+   <code><classname>reference_wrapper</classname></code> is compared
+   against the address of the object stored by the function object
+   wrapper:</para>
+
+  <programlisting name="function.tutorial.compare-ref">a_stateful_object so1, so2;
+f = <functionname>boost::ref</functionname>(so1);
+assert(f == <functionname>boost::ref</functionname>(so1));
+assert(f == so1); <emphasis>// Only if a_stateful_object is <conceptname>EqualityComparable</conceptname></emphasis>
+assert(f != <functionname>boost::ref</functionname>(so2));</programlisting>
+
+</section>
+
 </section>
 

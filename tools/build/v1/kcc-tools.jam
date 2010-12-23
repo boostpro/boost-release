@@ -1,8 +1,6 @@
-# (C) Copyright Jeremy Siek 2001. Permission to copy, use, modify, sell
-# and distribute this software is granted provided this copyright notice
-# appears in all copies. This software is provided "as is" without
-# express or implied warranty, and with no claim as to its suitability
-# for any purpose.
+# (C) Copyright Jeremy Siek 2001.
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 
 flags kcc CFLAGS <debug-symbols>on : -g ;
@@ -21,7 +19,7 @@ flags kcc C++FLAGS <cxxflags> ;
 flags kcc DEFINES <define> ;
 flags kcc UNDEFS <undef> ;
 flags kcc HDRS <include> ;
-flags kcc STDHDRS <sysinclude> ;
+flags kcc SYSHDRS <sysinclude> ;
 flags kcc LINKFLAGS <linkflags> ;
 flags kcc ARFLAGS <arflags> ;
 
@@ -55,7 +53,7 @@ rule Cc-action
 
 actions kcc-Cc-action
 {
-    $(kcc.bin-directory)KCC -c $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(kcc.bin-directory)KCC -c $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -66,7 +64,7 @@ rule C++-action
 
 actions kcc-C++-action
 {
-    $(kcc.bin-directory)KCC -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(kcc.bin-directory)KCC -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" -o "$(<)" "$(>)"
 }
 
 

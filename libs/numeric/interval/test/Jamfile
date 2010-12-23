@@ -1,16 +1,10 @@
 # Boost Interval Library test Jamfile
 #
-# Copyright Guillaume Melquiond 2003
-# Permission to use, copy, modify, sell, and distribute this software
-# is hereby granted without fee provided that the above copyright notice
-# appears in all copies and that both that copyright notice and this
-# permission notice appear in supporting documentation.
+# Copyright 2003 Guillaume Melquiond
 #
-# None of the above authors make any representation about the
-# suitability of this software for any purpose. It is provided "as
-# is" without express or implied warranty.
-#
-# $Id: Jamfile,v 1.5 2003/09/08 17:38:47 david_abrahams Exp $
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or
+# copy at http://www.boost.org/LICENSE_1_0.txt)
 
 subproject libs/numeric/interval/test ;
 
@@ -24,7 +18,7 @@ DEPENDS all : test ;
   # look in BOOST_ROOT for sources first, just in this Jamfile
   local SEARCH_SOURCE = $(BOOST_ROOT) $(SEARCH_SOURCE) ;
 
-  test-suite "interval" :
+  test-suite numeric/interval :
     [ compile libs/numeric/interval/test/integer.cpp ]
 
     [ run libs/numeric/interval/test/add.cpp      ]
@@ -37,9 +31,15 @@ DEPENDS all : test ;
 
     [ run libs/numeric/interval/test/cmp.cpp
         <lib>../../../test/build/boost_test_exec_monitor ]
+    [ run libs/numeric/interval/test/cmp_exn.cpp
+        <lib>../../../test/build/boost_test_exec_monitor ]
     [ run libs/numeric/interval/test/cmp_exp.cpp
         <lib>../../../test/build/boost_test_exec_monitor ]
     [ run libs/numeric/interval/test/cmp_lex.cpp
+        <lib>../../../test/build/boost_test_exec_monitor ]
+    [ run libs/numeric/interval/test/cmp_set.cpp
+        <lib>../../../test/build/boost_test_exec_monitor ]
+    [ run libs/numeric/interval/test/cmp_tribool.cpp
         <lib>../../../test/build/boost_test_exec_monitor ]
     [ run libs/numeric/interval/test/test_float.cpp
         <lib>../../../test/build/boost_test_exec_monitor ]

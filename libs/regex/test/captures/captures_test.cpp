@@ -1,3 +1,20 @@
+/*
+ *
+ * Copyright (c) 2004
+ * Dr John Maddock
+ *
+ * Use, modification and distribution are subject to the
+ * Boost Software License, Version 1.0. (See accompanying file
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ */
+
+ /*
+  *   LOCATION:    see http://www.boost.org for most recent version.
+  *   FILE         captures_test.cpp
+  *   VERSION      see <boost/version.hpp>
+  *   DESCRIPTION: Basic tests for additional captures information.
+  */
 
 #include <boost/regex.hpp>
 #include <boost/test/test_tools.hpp>
@@ -5,15 +22,23 @@
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
 
+#ifdef __sgi
+template <class T>
+void test_captures(const std::string& regx, const std::string& text, const T& expected)
+#else
 template <class T>
 void test_captures(const std::string& regx, const std::string& text, T& expected)
+#endif
 {
    boost::regex e(regx);
    boost::smatch what;
    if(boost::regex_match(text, what, e, boost::match_extra))
    {
       unsigned i, j;
+#ifndef __sgi
+      // strange type deduction causes this test to fail on SGI:
       BOOST_TEST(what.size() == ARRAY_SIZE(expected));
+#endif
       for(i = 0; i < what.size(); ++i)
       {
          BOOST_TEST(what.captures(i).size() <= ARRAY_SIZE(expected[i]));

@@ -3,10 +3,9 @@
 //
 //  Copyright (c) 2002 Peter Dimov and Multi Media Ltd.
 //
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 //
 
 #include <boost/detail/lightweight_test.hpp>
@@ -52,13 +51,18 @@ void test_disabled()
 
 #define BOOST_ENABLE_ASSERT_HANDLER
 #include <boost/assert.hpp>
+#include <boost/config.hpp>
 #include <cstdio>
 
 int handler_invoked = 0;
 
 void boost::assertion_failed(char const * expr, char const * function, char const * file, long line)
 {
-    std::printf("Expression: %s\nFunction: %s\nFile: %s\nLine: %ld\n\n", expr, function, file, line);
+#if !defined(BOOST_NO_STDC_NAMESPACE)
+    using std::printf;
+#endif
+
+    printf("Expression: %s\nFunction: %s\nFile: %s\nLine: %ld\n\n", expr, function, file, line);
     ++handler_invoked;
 }
 

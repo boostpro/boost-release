@@ -2,7 +2,7 @@
  The Boost.Iterator Library |(logo)|__
 +++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. |(logo)| image:: ../../../c++boost.gif
+.. |(logo)| image:: ../../../boost.png
    :alt: Boost
 
 __ ../../../index.htm
@@ -15,9 +15,9 @@ __ ../../../index.htm
 :Contact:       dave@boost-consulting.com, jsiek@osl.iu.edu, witt@styleadvisor.com
 :organizations: `Boost Consulting`_, Indiana University `Open Systems
                 Lab`_, `Zephyr Associates, Inc.`_
-:date:          $Date: 2004/02/01 04:06:49 $
+:date:          $Date: 2004/11/02 14:39:02 $
 
-:copyright:     Copyright David Abrahams, Jeremy Siek, Thomas Witt 2003. All rights reserved
+:copyright:     Copyright David Abrahams, Jeremy Siek, Thomas Witt 2003.
 
 .. _`Boost Consulting`: http://www.boost-consulting.com
 .. _`Open Systems Lab`: http://www.osl.iu.edu
@@ -29,7 +29,7 @@ __ ../../../index.htm
            components for building iterators based on these
            extended concepts and includes several useful iterator
            adaptors. The extended iterator concepts have been
-           carefully designed so that so that old-style iterators
+           carefully designed so that old-style iterators
            can fit in the new concepts and so that new-style
            iterators will be compatible with old-style algorithms,
            though algorithms may need to be updated if they want to
@@ -212,8 +212,8 @@ Traits
   retrieve an iterator's traits.  Also corrects for the deficiencies
   of broken implementations of ``std::iterator_traits``.
 
-* |interoperable|_ (PDF__): Provides an MPL_\ -compatible metafunction for
-  testing iterator interoperability
+.. * |interoperable|_ (PDF__): Provides an MPL_\ -compatible metafunction for
+     testing iterator interoperability
 
 .. |pointee| replace:: ``pointee.hpp``
 .. _pointee: pointee.html
@@ -225,7 +225,7 @@ __ iterator_traits.pdf
 
 .. |interoperable| replace:: ``interoperable.hpp``
 .. _interoperable: interoperable.html
-__ interoperable.pdf
+.. comment! __ interoperable.pdf
 
 .. _MPL: ../../mpl/doc/index.html
 

@@ -1,7 +1,8 @@
 //  process jam regression test output into XML  -----------------------------//
 
-//  Copyright Beman Dawes 2002.
-//  See accompanying license for terms and conditions of use.
+//  Copyright Beman Dawes 2002.  Distributed under the Boost
+//  Software License, Version 1.0. (See accompanying file
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/tools/regression for documentation.
 
@@ -48,6 +49,9 @@ namespace
       || src.find( "cc1plus.exe: warning: changing search order for system directory" ) != string::npos
       || src.find( "cc1plus.exe: warning:   as it has already been specified as a non-system directory" ) != string::npos
       ) return;
+
+    // on some platforms (e.g. tru64cxx) the following line is a real performance boost
+    target.reserve(src.size() * 2 + target.size());
 
     for ( string::size_type pos = 0; pos < src.size(); ++pos )
     {
@@ -99,24 +103,55 @@ namespace
     return temp;
   }
 
+  string::size_type target_name_end( const string & s )
+  {
+    string::size_type pos = s.find( ".test/" );
+    if ( pos == string::npos ) pos = s.find( ".dll/" );
+    if ( pos == string::npos ) pos = s.find( ".so/" );
+    if ( pos == string::npos ) pos = s.find( ".lib/" );
+    if ( pos == string::npos ) pos = s.find( ".pyd/" );
+    return pos;
+  }
+
   string toolset( const string & s )
   {
-    string t( s );
-    string::size_type pos = t.find( ".test/" );
-    if ( pos != string::npos ) pos += 6;
-    else return "";
-    return t.substr( pos, t.find( "/", pos ) - pos );
+    string::size_type pos = target_name_end( s );
+    if ( pos == string::npos ) return "";
+    pos = s.find( "/", pos ) + 1;
+    return s.substr( pos, s.find( "/", pos ) - pos );
   }
 
   string test_name( const string & s )
   {
-    string t( s );
-    string::size_type pos = t.find( ".test/" );
+    string::size_type pos = target_name_end( s );
     if ( pos == string::npos ) return "";
-    string::size_type pos_start = t.rfind( '/', pos ) + 1;
-    return t.substr( pos_start, pos - pos_start );
+    string::size_type pos_start = s.rfind( '/', pos ) + 1;
+    return s.substr( pos_start,
+      (s.find( ".test/" ) != string::npos
+        ? pos : s.find( "/", pos )) - pos_start );
   }
 
+  string test_path_to_library_name( string const& path )
+  {
+    std::string result;
+    string::size_type start_pos( path.find( "libs/" ) );
+    if ( start_pos != string::npos )
+    {
+      start_pos += 5;
+      string::size_type end_pos( path.find( '/', start_pos ) );
+      result = path.substr( start_pos, end_pos - start_pos );
+
+      // if a "sublibs" file exists, the library name includes the
+      // next level down directory name.
+      if ( fs::exists( ( boost_root / "libs" ) / result / "sublibs" ) )
+      {
+        result += path.substr( end_pos, path.find( '/', end_pos+1 ) - end_pos );
+      }
+    }
+
+    return result;
+  }
+  
   // the format of paths is really kinky, so convert to normal form
   //   first path is missing the leading "..\".
   //   first path is missing "\bin" after "status".
@@ -179,45 +214,51 @@ namespace
   public:
     test_log( const string & target_directory,
               const string & test_name,
-              const string & toolset )
+              const string & toolset,
+              bool force_new_file )
       : m_target_directory( target_directory )
     {
-      fs::path pth( locate_root / target_directory / "test_log.xml" );
-      fs::ifstream file( pth  );
-      if ( file )   // existing file
+      if ( !force_new_file )
       {
-        try
+        fs::path pth( locate_root / target_directory / "test_log.xml" );
+        fs::ifstream file( pth  );
+        if ( file )   // existing file
         {
-          m_root = xml::parse( file, pth.string() );
-          return;
-        }
-        catch(...)
-        {
-          // unable to parse existing XML file, fall through
-        }
-      }
-
-      test_info info;
-      string library_name;
-      test2info_map::iterator itr( test2info.find( test_name ) );
-      if ( itr != test2info.end() )
-      {
-        info = itr->second;
-        string::size_type start_pos( info.file_path.find( "libs/" ) );
-        if ( start_pos != string::npos )
-        {
-          start_pos += 5;
-          string::size_type end_pos( info.file_path.find( '/', start_pos ) );
-          library_name = info.file_path.substr( start_pos,
-            end_pos - start_pos );
-
-          if ( fs::exists( boost_root / "libs" / library_name / "sublibs" ) )
+          try
           {
-            library_name += info.file_path.substr( end_pos,
-              info.file_path.find( '/', end_pos+1 ) - end_pos );
+            m_root = xml::parse( file, pth.string() );
+            return;
+          }
+          catch(...)
+          {
+            // unable to parse existing XML file, fall through
           }
         }
       }
+
+      string library_name( test_path_to_library_name( target_directory ) );
+
+      test_info info;
+      test2info_map::iterator itr( test2info.find( library_name + "/" + test_name ) );
+      if ( itr != test2info.end() )
+        info = itr->second;
+      
+      if ( !info.file_path.empty() )
+        library_name = test_path_to_library_name( info.file_path );
+      
+      if ( info.type.empty() )
+      {
+        if ( target_directory.find( ".lib/" ) != string::npos
+          || target_directory.find( ".dll/" ) != string::npos 
+          || target_directory.find( ".so/" ) != string::npos 
+          )
+        {
+          info.type = "lib";
+        }
+        else if ( target_directory.find( ".pyd/" ) != string::npos )
+          info.type = "pyd";
+      }
+  
       m_root.reset( new xml::element( "test-log" ) );
       m_root->attributes.push_back(
         xml::attribute( "library", library_name ) );
@@ -241,9 +282,11 @@ namespace
       fs::path pth( locate_root / m_target_directory / "test_log.xml" );
       fs::ofstream file( pth );
       if ( !file )
-        throw fs::filesystem_error( "process_jam_long.cpp",
-          pth, "can't open output file" );
-      xml::write( *m_root, file );
+      {
+        std::cout << "*****Warning - can't open output file: "
+          << pth.string() << "\n";
+      }
+      else xml::write( *m_root, file );
     }
 
     const string & target_directory() const { return m_target_directory; }
@@ -346,7 +389,8 @@ namespace
         if ( action_name == "compile"
           && result == "fail" ) m_compile_failed = true;
 
-        test_log tl( target_directory, m_test_name, m_toolset );
+        test_log tl( target_directory,
+          m_test_name, m_toolset, action_name == "compile" );
         tl.remove_action( "lib" ); // always clear out lib residue
 
         // dependency removal
@@ -409,9 +453,15 @@ int cpp_main( int argc, char ** argv )
     --argc; ++argv;
   }
 
-  locate_root = argc > 1 
-    ? fs::path( argv[1], fs::native )
-    : boost_root;
+  if (argc > 1)
+  {
+      locate_root = fs::path( argv[1], fs::native );
+      --argc; ++argv;
+  } 
+  else
+  {
+      locate_root = boost_root;
+  }
 
   std::cout << "boost_root: " << boost_root.string() << '\n'
             << "locate_root: " << locate_root.string() << '\n';
@@ -422,13 +472,23 @@ int cpp_main( int argc, char ** argv )
   string content;
   bool capture_lines = false;
 
+  std::istream* input;
+  if (argc > 1)
+  {
+      input = new std::ifstream(argv[1]);
+  }
+  else
+  {
+      input = &std::cin;
+  }
+
   // This loop looks at lines for certain signatures, and accordingly:
   //   * Calls start_message() to start capturing lines. (start_message() will
   //     automatically call stop_message() if needed.)
   //   * Calls stop_message() to stop capturing lines.
   //   * Capture lines if line capture on.
 
-  while ( std::getline( std::cin, line ) )
+  while ( std::getline( *input, line ) )
   {
     if ( echo ) std::cout << line << "\n";
 
@@ -451,8 +511,15 @@ int cpp_main( int argc, char ** argv )
           line.find( "\"", pos+3 )-pos-3 );
         convert_path_separators( info.file_path );
         if ( info.file_path.find( "libs/libs/" ) == 0 ) info.file_path.erase( 0, 5 );
+        if ( test_name.find( "/" ) == string::npos )
+            test_name = "/" + test_name;
         test2info.insert( std::make_pair( test_name, info ) );
   //      std::cout << test_name << ", " << info.type << ", " << info.file_path << "\n";
+      }
+      else
+      {
+        std::cout << "*****Warning - missing test path: " << line << "\n"
+          << "  (Usually occurs when bjam doesn't know how to make a target)\n";
       }
       continue;
     }
@@ -467,7 +534,10 @@ int cpp_main( int argc, char ** argv )
       || line.find( "Link-action " ) != string::npos
       || line.find( "vc-Link " ) != string::npos 
       || line.find( ".compile.") != string::npos
-      || line.find( ".link") != string::npos
+      || ( line.find( ".link") != string::npos &&
+           // .linkonce is present in gcc linker messages about
+           // unresolved symbols. We don't have to parse those
+           line.find( ".linkonce" ) == string::npos )
     )
     {
       string action( ( line.find( "Link-action " ) != string::npos
@@ -531,7 +601,7 @@ int cpp_main( int argc, char ** argv )
     }
 
     // bjam indicates some prior dependency failed by a "...skipped" message
-    else if ( line.find( "...skipped <" ) != string::npos )
+    else if ( line.find( "...skipped <" ) != string::npos && line.find( "<directory-grist>" ) == string::npos)
     {
       mgr.stop_message( content );
       content.clear();
@@ -576,5 +646,7 @@ int cpp_main( int argc, char ** argv )
   }
 
   mgr.stop_message( content );
+  if (input != &std::cin)
+      delete input;
   return 0;
 }

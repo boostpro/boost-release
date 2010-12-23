@@ -1,26 +1,22 @@
-//-----------------------------------------------------------------------------
-// boost fsm/state.hpp header file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
-//
-// Copyright (c) 2002
-// Aleksey Gurtovoy
-//
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
 
 #ifndef BOOST_FSM_STATE_INCLUDED
 #define BOOST_FSM_STATE_INCLUDED
 
-#include "boost/mpl/integral_c.hpp"
+// Copyright Aleksey Gurtovoy 2002-2004
+//
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
+//
+// See http://www.boost.org/libs/mpl for documentation.
 
-namespace fsm {
-namespace aux {
+// $Source: /cvsroot/boost/boost/libs/mpl/example/fsm/aux_/state.hpp,v $
+// $Date: 2004/09/02 15:41:30 $
+// $Revision: 1.3 $
+
+#include <boost/mpl/integral_c.hpp>
+
+namespace fsm { namespace aux {
 
 namespace mpl = boost::mpl;
 
@@ -41,7 +37,6 @@ struct state
     }
 };
 
-} // namespace aux
-} // namespace fsm
+}}
 
 #endif // BOOST_FSM_STATE_INCLUDED

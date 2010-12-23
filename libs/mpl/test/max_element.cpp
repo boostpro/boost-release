@@ -1,33 +1,26 @@
-//-----------------------------------------------------------------------------
-// libs mpl/test/max_element.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
+
+// Copyright Eric Friedman 2002-2003
 //
-// Copyright (c) 2002-2003
-// Eric Friedman
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
+// See http://www.boost.org/libs/mpl for documentation.
 
-#include "boost/mpl/max_element.hpp"
+// $Source: /cvsroot/boost/boost/libs/mpl/test/max_element.cpp,v $
+// $Date: 2004/09/02 15:41:35 $
+// $Revision: 1.3 $
 
-#include "boost/static_assert.hpp"
-#include "boost/mpl/list_c.hpp"
+#include <boost/mpl/max_element.hpp>
 
-namespace mpl = boost::mpl;
+#include <boost/mpl/list_c.hpp>
+#include <boost/mpl/aux_/test.hpp>
 
-int main()
+MPL_TEST_CASE()
 {
-    typedef mpl::list_c<int, 3, 4, 2, 0, -5, 8, -1, 7>::type numbers;
-
-    typedef mpl::max_element< numbers >::type max_it;
-    typedef max_it::type max_value;
-    BOOST_STATIC_ASSERT((max_value::value == 8));
-
-    return 0;
+    typedef list_c<int,3,4,2,0,-5,8,-1,7>::type numbers;
+    typedef max_element< numbers >::type iter;
+    typedef deref<iter>::type max_value;
+    
+    MPL_ASSERT_RELATION( max_value::value, ==, 8 );
 }

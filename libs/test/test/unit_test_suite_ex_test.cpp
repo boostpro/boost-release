@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_suite_ex_test.cpp,v $
 //
-//  Version     : $Revision: 1.13 $
+//  Version     : $Revision: 1.15 $
 //
 //  Description : tests an extentions to Unit Test Framework
 // ***************************************************************************
@@ -16,7 +16,7 @@
 #include <boost/test/unit_test_suite_ex.hpp>
 #include <boost/test/test_tools.hpp>
 
-using boost::unit_test_framework::test_suite;
+using boost::unit_test::test_suite;
 
 #if !defined(BOOST_MSVC) && !defined(__SUNPRO_CC)
 // BOOST
@@ -109,6 +109,14 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
 //  Revision History :
 //  
 //  $Log: unit_test_suite_ex_test.cpp,v $
+//  Revision 1.15  2004/05/21 06:26:11  rogeeff
+//  licence update
+//
+//  Revision 1.14  2004/05/11 11:05:06  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.13  2003/12/01 00:42:38  rogeeff
 //  prerelease cleaning
 //

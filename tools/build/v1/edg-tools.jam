@@ -1,8 +1,6 @@
-# (C) Copyright Jens Maurer 2003. Permission to copy, use,
-# modify, sell and distribute this software is granted provided this
-# copyright notice appears in all copies. This software is provided
-# "as is" without express or implied warranty, and with no claim as
-# to its suitability for any purpose.
+# (C) Copyright Jens Maurer 2003. 
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 # The following #// line will be used by the regression test table generation
 # program as the column heading for HTML tables. Must not include version number.
@@ -35,7 +33,7 @@ flags edg C++FLAGS <cxxflags> ;
 flags edg DEFINES <define> ;
 flags edg UNDEFS <undef> ;
 flags edg HDRS <include> ;
-flags edg STDHDRS <sysinclude> ;
+flags edg SYSHDRS <sysinclude> ;
 flags edg LINKFLAGS <linkflags> ;
 flags edg ARFLAGS <arflags> ;
 
@@ -65,7 +63,7 @@ rule Cc-action
 
 actions edg-Cc-action
 {
-    $(ECCP) -c --c99 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(ECCP) -c --c99 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -76,7 +74,7 @@ rule C++-action
 
 actions edg-C++-action
 {
-    $(ECCP) -tused -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)"  -o "$(<)" "$(>)"
+    $(ECCP) -tused -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)"  -o "$(<)" "$(>)"
 }
 
 #### Archive ####

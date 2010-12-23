@@ -10,18 +10,29 @@
 import feature : feature ;
 import toolset : flags ;
 import type ;
+import common ;
 
 toolset.register darwin ;
-toolset.inherit darwin : gcc ;
+import gcc ;
+toolset.inherit-generators darwin : gcc ;
+toolset.inherit-rules darwin : gcc ;
+toolset.inherit-flags darwin : gcc ;
 
 # No additional initialization should be necessary
-rule init ( )
+rule init ( version ? : command * : options * )
 {
-
+    local condition = [ common.check-init-parameters darwin : version $(version) ] ;    
+    local command = [ common.get-invocation-command darwin : g++ : $(command) ] ;
+    
+    common.handle-options darwin : $(condition) : $(command) : $(options) ;
+    
+    gcc.init-link-flags darwin darwin $(condition) ;
 }
 
 # Darwin has a different shared library suffix
 type.set-generated-target-suffix SHARED_LIB : <toolset>darwin : dylib ;
+# we need to be able to tell the type of .dylib files
+type.register-suffixes dylib : SHARED_LIB ;
 
 feature framework : : free ;
 
@@ -37,7 +48,7 @@ flags darwin.link FRAMEWORK <framework> ;
 
 actions link bind LIBRARIES
 {
-    $(NAME:E=g++) $(OPTIONS) -L"$(LINKPATH)" -o "$(<)" "$(>)" "$(LIBRARIES)" -l$(FINDLIBS-SA) -l$(FINDLIBS-ST) -framework$(_)$(FRAMEWORK)    
+    $(CONFIG_COMMAND) $(ST_OPTIONS) -L"$(LINKPATH)" -o "$(<)" "$(>)" "$(LIBRARIES)" -l$(FINDLIBS-SA) -l$(FINDLIBS-ST) -framework$(_)$(FRAMEWORK) $(OPTIONS)   
 }
 
 rule link.dll
@@ -47,11 +58,11 @@ rule link.dll
 
 actions link.dll bind LIBRARIES
 {
-    $(NAME:E=g++) -dynamiclib $(OPTIONS) -o "$(<)" "$(>)" "$(LIBRARIES)" -l$(FINDLIBS-SA) -l$(FINDLIBS-ST) -framework$(_)$(FRAMEWORK)    
+    $(CONFIG_COMMAND) -dynamiclib -L"$(LINKPATH)" -o "$(<)" "$(>)" "$(LIBRARIES)" -l$(FINDLIBS-SA) -l$(FINDLIBS-ST) -framework$(_)$(FRAMEWORK) $(OPTIONS) 
 }
 
 actions piecemeal archive
 {
-    ar -r -s $(ARFLAGS) "$(<:T)" "$(>:T)"
+    ar -c -r -s $(ARFLAGS) "$(<:T)" "$(>:T)"
 }
 

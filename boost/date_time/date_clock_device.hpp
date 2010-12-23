@@ -6,7 +6,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland 
- * $Date: 2003/11/23 03:28:06 $
+ * $Date: 2004/07/21 14:22:53 $
  */
 
 #include "boost/date_time/c_time.hpp"
@@ -16,7 +16,7 @@ namespace boost {
 namespace date_time {
 
   //! A clock providing day level services based on C time_t capabilities
-  /*! This clock uses Posix interfaces as its implemenation and hence
+  /*! This clock uses Posix interfaces as its implementation and hence
    *  uses the timezone settings of the operating system.  Incorrect
    *  user settings will result in incorrect results for the calls
    *  to local_day.

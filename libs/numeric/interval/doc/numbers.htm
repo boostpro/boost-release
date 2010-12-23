@@ -23,8 +23,8 @@ itself by the operators <code>&lt; &lt;= =&gt; &gt; == !=</code>. It must be
 a total order (reflexivity, antisymmetry, transitivity, and each pair of
 numbers is ordered). So <code>complex&lt;T&gt;</code> will not be a good
 candidate for the base type; if you need the inclusion property of interval
-property, you should use <code>complex&lt;interval&lt;T&gt; &gt;</code> in
-place of <code>interval&lt;complex&lt;T&gt; &gt;</code> (but unfortunately,
+property, you should use <code>complex&lt; interval&lt;T&gt; &gt;</code> in
+place of <code>interval&lt; complex&lt;T&gt; &gt;</code> (but unfortunately,
 <code>complex</code> only provides specialization).</p>
 
 <p>Please note that invalid numbers are not concerned by the order; it can
@@ -35,13 +35,25 @@ contains invalid numbers, then this property is needed: <code>nan!=nan</code>
 (here <code>nan</code> is an invalid number). If this property is not
 present, then you should not use <code>checking_base</code> directly.</p>
 
+<p>Interval arithmetic involves a lot of comparison to zero. By default, they
+are done by comparing the numbers to <code>static_cast&lt;T&gt;(0)</code>.
+However, if the format of the numbers allows some faster comparisons when
+dealing with zero, the template functions in the
+<code>interval_lib::user</code> namespace can be specialized:</p>
+<pre>namespace user {
+template&lt;class T&gt; inline bool is_zero(T const &amp;v) { return v == static_cast&lt;T&gt;(0); }
+template&lt;class T&gt; inline bool is_neg (T const &amp;v) { return v &lt;  static_cast&lt;T&gt;(0); }
+template&lt;class T&gt; inline bool is_pos (T const &amp;v) { return v &gt;  static_cast&lt;T&gt;(0); }
+}</pre>
+
 <h3>Numeric limits</h3>
 
 <p>Another remark about the checking policy. It normally is powerful enough
 to handle the exceptional behavior that the basic type could induce; in
-particular infinite and invalid numbers (thanks to the three functions
-<code>inf</code>, <code>nan</code> and <code>is_nan</code>). However, if you
-use <code>interval_lib::checking_base</code> (and the default checking policy
+particular infinite and invalid numbers (thanks to the four functions
+<code>pos_inf</code>, <code>neg_inf</code>, <code>nan</code> and
+<code>is_nan</code>). However, if you use
+<code>interval_lib::checking_base</code> (and the default checking policy
 uses it), your base type should have a correctly specialized
 <code>std::numeric_limits&lt;T&gt;</code>. In particular, the values
 <code>has_infinity</code> and <code>has_quiet_NaN</code>, and the functions
@@ -90,7 +102,7 @@ you are still reading, it is probably because you want to know the basic
 properties the rounding policy should validate.</p>
 
 <p>Whichever operation or function you consider, the following property
-should be present: <code>f_down(x,y) &lt;= f(x,y) &lt;= f_up(x,y)</code>.
+should be respected: <code>f_down(x,y) &lt;= f(x,y) &lt;= f_up(x,y)</code>.
 Here, <code>f</code> denotes the infinitely precise function computed and
 <code>f_down</code> and <code>f_up</code> are functions which return possibly
 inexact values but of the correct type (the base type). If possible, they
@@ -117,13 +129,18 @@ there is an exception: the unary minus need to be defined. Moreover, this
 operator should only provide exact results; it is the reason why the rounding
 policy does not provide some negation functions.</p>
 
-<p>The conversion from <code>int</code> to the base type need to be defined.
-The conversion the other way around is provided by the rounding policy; and
-no other conversion is needed.</p>
+<p>The conversion from <code>int</code> to the base type needs to be defined
+(only a few values need to be available: -1, 0, 1, 2). The conversion the
+other way around is provided by the rounding policy (<code>int_down</code>
+and <code>int_up</code> members); and no other conversion is strictly needed.
+However, it may be valuable to provide as much conversions as possible in the
+rounding policy (<code>conv_down</code> and <code>conv_up</code> members) in
+order to benefit from interval conversions.</p>
 <hr>
 
-<p>Revised: 2003-01-21<br>
-Copyright (c) Guillaume Melquiond, Sylvain Pion, Hervé Brönnimann, 2002.<br>
-Polytechnic University.</p>
+<p>Revised: 2004-02-17<br>
+Copyright (c) Guillaume Melquiond, Sylvain Pion, Hervé Brönnimann, 2002.
+Polytechnic University.<br>
+Copyright (c) Guillaume Melquiond, 2004.</p>
 </body>
 </html>

@@ -11,8 +11,8 @@
    PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
    SYSTEM "http://cryp.to/boost-sandbox/libs/documentation/dtd/boostbook.dtd"
 
-   $Revision: 1.8 $
-   $Date: 2003/10/03 03:41:12 $
+   $Revision: 1.11 $
+   $Date: 2004/09/27 05:13:05 $
 -->
 
 <!--========== Define XInclude features. ==========-->
@@ -31,8 +31,7 @@
     xmlns:xi   CDATA   #FIXED   "http://www.w3.org/2001/XInclude">
  -->
 
-<!ENTITY % local.common.attrib "xml:base      CDATA  #IMPLIED
-                                last-revision CDATA  #IMPLIED">
+<!ENTITY % local.common.attrib "last-revision CDATA  #IMPLIED">
 
 <!--========== Define the BoostBook extensions ==========-->
 <!ENTITY % boost.common.attrib "%local.common.attrib;
@@ -83,7 +82,7 @@
 <!ELEMENT libraryinfo (author+, copyright*, legalnotice*, librarypurpose, librarycategory*)>
 <!ATTLIST libraryinfo %boost.common.attrib;>
 
-<!ELEMENT librarypurpose (#PCDATA|code|ulink|functionname|methodname|classname|macroname|headername)*>
+<!ELEMENT librarypurpose (#PCDATA|code|ulink|functionname|methodname|classname|macroname|headername|enumname)*>
 <!ATTLIST librarypurpose %boost.common.attrib;>
 
 <!ELEMENT librarycategory (#PCDATA)>
@@ -287,7 +286,14 @@
 <!ATTLIST rationale %boost.common.attrib;>
 
 <!ELEMENT functionname (#PCDATA)>
-<!ATTLIST functionname %boost.common.attrib;>
+<!ATTLIST functionname 
+    alt          CDATA  #IMPLIED
+    %boost.common.attrib;>
+
+<!ELEMENT enumname (#PCDATA)>
+<!ATTLIST enumname 
+    alt          CDATA  #IMPLIED
+    %boost.common.attrib;>
 
 <!ELEMENT macroname (#PCDATA)>
 <!ATTLIST macroname %boost.common.attrib;>
@@ -386,7 +392,7 @@
      name        CDATA #IMPLIED>
 
 <!--========== Customize the DocBook DTD ==========-->
-<!ENTITY % local.tech.char.class "|functionname|libraryname|code">
+<!ENTITY % local.tech.char.class "|functionname|libraryname|enumname|code">
 <!ENTITY % local.para.class 
         "|using-namespace|using-class|librarylist|librarycategorylist">
 <!ENTITY % local.descobj.class "|libraryinfo">

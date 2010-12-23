@@ -11,7 +11,7 @@
 <body bgcolor="#FFFFFF">
 
 <h1>
-<img border="0" src="../../../c++boost.gif" align="center" width="277" height="86"><a href="../../../boost/filesystem/operations.hpp">boost/filesystem/operations.hpp</a></h1>
+<img border="0" src="../../../boost.png" align="center" width="277" height="86"><a href="../../../boost/filesystem/operations.hpp">boost/filesystem/operations.hpp</a></h1>
 
 <p><a href="#Introduction">Introduction</a><br>
 <a href="#Synopsis">Header synopsis</a><br>
@@ -24,6 +24,8 @@
 &nbsp;&nbsp;&nbsp; <a href="#symbolic_link_exists">symbolic_link_exists</a><br>
 &nbsp;&nbsp;&nbsp; <a href="#is_directory">is_directory</a><br>
 &nbsp;&nbsp;&nbsp; <a href="#is_empty">is_empty</a><br>
+&nbsp;&nbsp;&nbsp; <a href="#equivalent">equivalent</a><br>
+&nbsp;&nbsp;&nbsp; <a href="#file_size">file_size</a><br>
 &nbsp;&nbsp;&nbsp; <a href="#last_write_time">last_write_time</a><br>
 &nbsp;&nbsp;&nbsp; <a href="#create_directory">create_directory</a><br>
 &nbsp;&nbsp;&nbsp; <a href="#remove">remove</a><br>
@@ -77,10 +79,14 @@ header. </p>
     bool <a href="#symbolic_link_exists">symbolic_link_exists</a>( const path &amp; ph );
     bool <a href="#is_directory">is_directory</a>( const path &amp; ph );
     bool <a href="#is_empty">is_empty</a>( const path &amp; ph );
+    bool <a href="#equivalent">equivalent</a>( const path &amp; ph1, const path &amp; ph2 );
+
+    boost::intmax_t <a href="#file_size">file_size</a>( const path &amp; ph );
+
     std::time_t <a href="#last_write_time">last_write_time</a>( const path &amp; ph );
     void <a href="#last_write_time">last_write_time</a>( const path &amp; ph, std::time_t new_time );
 
-    void <a href="#create_directory">create_directory</a>( const path &amp; directory_ph );
+    bool <a href="#create_directory">create_directory</a>( const path &amp; directory_ph );
     bool <a href="#remove">remove</a>( const path &amp; ph );
     unsigned long <a href="#remove_all">remove_all</a>( const path &amp; ph );
     void <a href="#rename">rename</a>( const path &amp; from_path,
@@ -275,8 +281,54 @@ exists(ph) &amp;&amp; is_directory(ph)</code> can always be added later.</p>
 <p><b>Throws:</b> if <code>!exists(ph)</code></p>
   <p>This function determines if the file or directory identified by the 
   contents of <i>ph</i> is empty. To determine if a path string itself is empty, 
-  use the <i><a href="path.htm#empty">path::empty()</a></i> function.
-  </p>
+  use the <i><a href="path.htm#empty">path::empty()</a></i> function.</p>
+</blockquote>
+  <h3><a name="equivalent">equivalent</a></h3>
+<blockquote>
+  <pre>bool equivalent( const path &amp; ph1, const path &amp; ph2 );</pre>
+  <p><b>Returns:</b> <code>false</code> if <code>!exists(ph1) || !exists(ph2)</code>. 
+  Otherwise, returns <code>true</code> if ph1 and ph2 resolve to the same file 
+  or directory, else <code>false</code>. The criteria used to determine sameness 
+  are implementation defined:</p>
+  <blockquote>
+    <ul>
+      <li>POSIX: stat() reports identical st_dev, st_ino, st_size, and st_mtime 
+      values. The POSIX implementation does not protect against
+      <a href="index.htm#Race-condition">race conditions</a>.<br>
+&nbsp;</li>
+      <li>Windows: stat() reports identical st_dev values and 
+      GetFileInformationByHandle() reports identical dwVolumeSerialNumber, 
+      nFileIndexHigh, nFileIndexLow, nFileSizeHigh, and nFileSizeLow values. 
+      Note that for identical media (particularly bit-for-bit duplicate CD's, 
+      Floppies, or memory cards) on the same lettered drive of different network 
+      shared systems, equivalent() will return <code>true</code> even though the 
+      media are physically different. The Windows implementation does protect 
+      against <a href="index.htm#Race-condition">race conditions</a>.</li>
+    </ul>
+  </blockquote>
+  <p><b>Throws:</b> if <code>!exists(ph1) &amp;&amp; !exists(ph2)</code></p>
+  <p><b>Warning:</b> This function may be impossible to implement on some 
+  operating systems; users may wish to avoid use for code which may be ported to 
+  operating systems with limited filesystem support.</p>
+</blockquote>
+  <h3><a name="file_size">file_size</a></h3>
+<blockquote>
+  <p><code>boost::intmax_t file_size( const path &amp; ph );</code></p>
+  <p><b>Returns:</b> The size of the file in bytes as reported by the operating 
+  system.</p>
+  <p><b>Throws:</b> if <code>!exists(ph) || is_directory(ph)</code></p>
+<p><b>Warming:</b> If a compiler does not support <code>maxint_t</code> large 
+enough to represent the operating system's maximum file size, or if the 
+implementation does not know how to query the operating system for large file 
+sizes, the returned value could be incorrect. This is not a problem with modern 
+compilers on modern versions of Linux or Windows. Users on other platforms 
+should build and run the <a href="../example/file_size.cpp">file_size.cpp</a> 
+sample program against a large file to verify correct operation.</p>
+<p><b>Rationale:</b> Directories are excluded because the complexity of finding 
+the size of a file is typically constant, while finding the size of a directory 
+is typically linear. It was felt this would be surprising. The function is named 
+accordingly. Users needing the size of a directory can trivially provide a user 
+function which iterates over a directory returning a count.</p>
 </blockquote>
 <h3><a name="last_write_time">last_write_time</a></h3>
 <blockquote>
@@ -305,11 +357,13 @@ systems.</p>
 </blockquote>
 <h3><a name="create_directory">create_directory</a></h3>
 <blockquote>
-<p><code>void create_directory( const path &amp; directory_ph );</code></p>
+<p><code>bool create_directory( const path &amp; directory_ph );</code></p>
 <p><b>Precondition:</b> <code>!directory_ph.empty()</code></p>
+<p><b>Returns:</b> The value of <code>!exists( directory_ph )</code> prior to the 
+establishment of the postcondition.</p>
 <p><b>Postcondition:</b> <code>exists(directory_ph) &amp;&amp; 
-is_directory(directory_ph) &amp;&amp; is_empty(directory_ph)</code></p>
-<p><b>Throws: </b>if <code>directory_ph.empty() || exists(directory_ph)) || !exists(directory_ph/&quot;..&quot;))</code>. 
+is_directory(directory_ph)</code></p>
+<p><b>Throws: </b>if <code>directory_ph.empty() || (exists(directory_ph) &amp;&amp; !is_directory(directory_ph)) || !exists(directory_ph/&quot;..&quot;)</code>. 
 See <a href="#empty_rationale">empty path rationale</a>.</p>
 </blockquote>
 <h3><a name="remove">remove</a></h3>
@@ -366,48 +420,41 @@ to <i>target</i>. Specifically:</p>
     <td>!exists()</td>
     <td>&nbsp;</td>
     <td>Throw <a href="exception.htm">filesystem_error</a>. Note that !exists() 
-    covers the source.empty() case.</td>
+    covers the source.empty() case. [case 1] </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>target.empty()</td>
     <td>Throw <a href="exception.htm">filesystem_error</a>. See
-    <a href="#empty_rationale">create_directory() rationale</a>.</td>
+    <a href="#empty_rationale">create_directory() rationale</a>. [case 2] </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>exists() &amp;&amp; !is_directory()</td>
-    <td>Throw <a href="exception.htm">filesystem_error</a>.</td>
+    <td>exists()</td>
+    <td>Throw <a href="exception.htm">filesystem_error</a>. [case 3] </td>
   </tr>
   <tr>
     <td>!is_directory()</td>
-    <td>!exists()</td>
+    <td>&nbsp;</td>
     <td>If !exists( target / &quot;..&quot; ) throw <a href="exception.htm">
-    filesystem_error</a>. Otherwise, the source.leaf() name is changed to 
-    target.leaf(), and if source / &quot;..&quot; resolves to a different directory than 
-    target / &quot;..&quot;, the renamed source file is moved there.</td>
-  </tr>
-  <tr>
-    <td>!is_directory()</td>
-    <td>is_directory()</td>
-    <td>The source file is moved to the target directory.</td>
+    filesystem_error</a>. [case 4A] <br>
+    The source.leaf() name is changed to 
+    target.leaf(). [case 4B] <br>
+    If source / &quot;..&quot; resolves to a different directory than 
+    target / &quot;..&quot;, the renamed source file is moved there. [case 4C] </td>
   </tr>
   <tr>
     <td>is_directory()</td>
-    <td>!exists()</td>
+    <td>&nbsp;</td>
     <td>If !exists( target / &quot;..&quot; ) throw <a href="exception.htm">
-    filesystem_error</a>. Otherwise, the source.leaf() name is changed to 
-    target.leaf(), and if system_complete(source.banch_path()) resolves to a 
+    filesystem_error</a>. [case 5A]<br>
+    The source.leaf() name is changed to 
+    target.leaf(). [case 5B] <br>
+    If system_complete(source.banch_path()) resolves to a 
     different directory than system_complete(target.branch_path()),&nbsp; the 
-    renamed source directory is moved there.</td>
+    renamed source directory is moved there. [case 5C] </td>
   </tr>
-  <tr>
-    <td>is_directory()</td>
-    <td>is_directory()</td>
-    <td>The source directory is moved from source / &quot;..&quot; to target, becoming a 
-    sub-directory of target.</td>
-  </tr>
-</table>
+  </table>
 <p><b>Postconditions:</b> <code>!exists(source) &amp;&amp; exists(target)</code>, 
 and the <i>source</i> file or directory contents and attributes are otherwise unchanged.</p>
 <p><b>Throws:</b> See Effects table above. See <a href="#empty_rationale">empty 
@@ -584,7 +631,7 @@ by a prior program run by the command processor.</p>
 
 <hr>
 <p>Revised
-<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->13 December, 2003<!--webbot bot="Timestamp" endspan i-checksum="38510" --></p>
+<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->21 March, 2004<!--webbot bot="Timestamp" endspan i-checksum="28864" --></p>
 <p>© Copyright Beman Dawes, 2002</p>
 <p> Use, modification, and distribution are subject to the Boost Software 
 License, Version 1.0. (See accompanying file <a href="../../../LICENSE_1_0.txt">

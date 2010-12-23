@@ -1,16 +1,11 @@
 /* boost random_demo.cpp profane demo
  *
  * Copyright Jens Maurer 2000
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
- *
- * $Id: random_demo.cpp,v 1.15 2003/07/14 20:09:11 jmaurer Exp $
+ * $Id: random_demo.cpp,v 1.16 2004/07/27 03:43:34 dgregor Exp $
  *
  * A short demo program how to use the random number library.
  */

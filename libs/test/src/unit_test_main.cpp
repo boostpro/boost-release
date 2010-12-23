@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_main.cpp,v $
 //
-//  Version     : $Revision: 1.13 $
+//  Version     : $Revision: 1.16 $
 //
 //  Description : main function implementation for Unit Test Framework
 // ***************************************************************************
@@ -25,7 +25,7 @@
 #include <string>
 #include <iostream>                   // for cout, cerr
 
-extern boost::unit_test_framework::test_suite* init_unit_test_suite( int argc, char* argv[] );  // prototype for user's test suite init function
+extern boost::unit_test::test_suite* init_unit_test_suite( int argc, char* argv[] );  // prototype for user's test suite init function
 
 // ************************************************************************** //
 // **************                 unit test main               ************** //
@@ -34,8 +34,8 @@ extern boost::unit_test_framework::test_suite* init_unit_test_suite( int argc, c
 int
 main( int argc, char* argv[] )
 {
-    using namespace boost::unit_test_framework;
-    using namespace boost::unit_test_framework::detail;
+    using namespace boost::unit_test;
+    using namespace boost::unit_test::ut_detail;
 
     bool    no_result_code;
     bool    print_build_info;
@@ -44,7 +44,7 @@ main( int argc, char* argv[] )
     unit_test_log::instance().set_log_threshold_level_by_name( retrieve_framework_parameter( LOG_LEVEL, &argc, argv ) );
 
     // set the log/report format
-    std::string output_format = retrieve_framework_parameter( OUTPUT_FORMAT, &argc, argv );
+    const_string output_format = retrieve_framework_parameter( OUTPUT_FORMAT, &argc, argv );
     
     if( output_format.empty() ) {
         unit_test_log::instance().set_log_format( retrieve_framework_parameter( LOG_FORMAT, &argc, argv ) );
@@ -63,7 +63,7 @@ main( int argc, char* argv[] )
     unit_test_monitor::catch_system_errors( retrieve_framework_parameter( CATCH_SYS_ERRORS, &argc, argv ) != "no" );
 
     // save report level for future reporting
-    std::string report_level = retrieve_framework_parameter( REPORT_LEVEL, &argc, argv );
+    const_string report_level = retrieve_framework_parameter( REPORT_LEVEL, &argc, argv );
 
     // init master unit test suite
     boost::scoped_ptr<test_suite> test( init_unit_test_suite( argc, argv ) );
@@ -89,6 +89,17 @@ main( int argc, char* argv[] )
 //  Revision History :
 //  
 //  $Log: unit_test_main.cpp,v $
+//  Revision 1.16  2004/06/07 07:34:23  rogeeff
+//  detail namespace renamed
+//
+//  Revision 1.15  2004/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.14  2004/05/11 11:05:04  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.13  2003/12/01 00:42:37  rogeeff
 //  prerelease cleaning
 //

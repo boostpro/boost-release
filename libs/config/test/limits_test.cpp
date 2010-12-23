@@ -1,16 +1,11 @@
 /* boost limits_test.cpp   test your <limits> file for important
  *
  * Copyright Jens Maurer 2000
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
- *
- * $Id: limits_test.cpp,v 1.7 2003/12/01 12:00:26 johnmaddock Exp $
+ * $Id: limits_test.cpp,v 1.10 2004/09/04 10:34:48 johnmaddock Exp $
  */
 
 #include <boost/limits.hpp>
@@ -65,14 +60,14 @@ void test_integral_limits(const T &, const char * msg)
   typedef std::numeric_limits<T> lim;
   std::cout << "Testing " << msg
             << " (size " << sizeof(T) << ")"
-            << " min: " << make_char_numeric_for_streaming(lim::min())
-            << ", max: " << make_char_numeric_for_streaming(lim::max())
+            << " min: " << make_char_numeric_for_streaming((lim::min)())
+            << ", max: " << make_char_numeric_for_streaming((lim::max)())
             << std::endl;
 
   BOOST_TEST(lim::is_specialized);
   BOOST_TEST(lim::is_integer);
   // BOOST_TEST(lim::is_modulo);
-  BOOST_TEST(lim::min() < lim::max());
+  BOOST_TEST((lim::min)() < (lim::max)());
 }
 
 template <class T>
@@ -107,16 +102,16 @@ void test_float_limits(const T &, const char * msg)
        << ", traps: " << lim::traps
        << ", bounded: " << lim::is_bounded
        << ", exact: " << lim::is_exact << '\n'
-       << "min: " << lim::min() << ", max: " << lim::max() << '\n'
+       << "min: " << (lim::min)() << ", max: " << (lim::max)() << '\n'
        << "infinity: " << infinity << ", QNaN: " << qnan << '\n';
-  print_hex_val(lim::max(), "max");
+  print_hex_val((lim::max)(), "max");
   print_hex_val(infinity, "infinity");
   print_hex_val(qnan, "qnan");
   print_hex_val(snan, "snan");
 
-  BOOST_TEST(lim::max() > 1000);
-  BOOST_TEST(lim::min() > 0);
-  BOOST_TEST(lim::min() < 0.001);
+  BOOST_TEST((lim::max)() > 1000);
+  BOOST_TEST((lim::min)() > 0);
+  BOOST_TEST((lim::min)() < 0.001);
   BOOST_TEST(lim::epsilon() > 0);
 
   if(lim::is_iec559) {
@@ -130,8 +125,8 @@ void test_float_limits(const T &, const char * msg)
   if(lim::has_infinity) {
     // Make sure those values are not 0 or similar nonsense.
     // Infinity must compare as if larger than the maximum representable value.
-    BOOST_TEST(infinity > lim::max());
-    BOOST_TEST(-infinity < -lim::max());
+    BOOST_TEST(infinity > (lim::max)());
+    BOOST_TEST(-infinity < -(lim::max)());
   } else {
     std::cout << "Does not have infinity" << std::endl;
   }
@@ -175,10 +170,8 @@ int test_main(int, char*[])
   typedef unsigned long unsigned_long;
   test_integral_limits(unsigned_long(), "unsigned long");
 #if defined(BOOST_HAS_LONG_LONG)
-  typedef long long long_long;
-  test_integral_limits(long_long(), "long long");
-  typedef unsigned long long unsigned_long_long;
-  test_integral_limits(unsigned_long_long(), "unsigned long long");
+  test_integral_limits(::boost::long_long_type(), "long long");
+  test_integral_limits(::boost::ulong_long_type(), "unsigned long long");
 #endif
 #ifdef BOOST_HAS_MS_INT64
   typedef __int64 long_long2;

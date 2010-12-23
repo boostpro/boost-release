@@ -9,7 +9,7 @@
 :Contact: dave@boost-consulting.com, jsiek@osl.iu.edu, witt@styleadvisor.com
 :organization: `Boost Consulting`_, Indiana University `Open Systems
                Lab`_, `Zephyr Associates, Inc.`_
-:date: $Date: 2004/01/27 04:50:51 $
+:date: $Date: 2004/11/02 14:39:04 $
 
 :Number: This is a revised version of n1550_\ =03-0133, which was
          accepted for Technical Report 1 by the C++ standard
@@ -17,7 +17,7 @@
          revision of paper n1297_, n1477_, and n1531_.
 
 :copyright: Copyright David Abrahams, Jeremy Siek, and Thomas Witt
-         2003. All rights reserved
+         2003. 
 
 .. _`Boost Consulting`: http://www.boost-consulting.com
 .. _`Open Systems Lab`: http://www.osl.iu.edu
@@ -163,10 +163,9 @@ to express their type requirements. The result is algorithms that are
 usable in more situations and have fewer type requirements.
 
 For the next working paper (but not for TR1), the committee should
-consider the following changes to the type requirements of
-algorithms.  These changes are phrased as phrased as textual
-substitutions, listing the algorithms to which each textual
-substitution applies.
+consider the following changes to the type requirements of algorithms.
+These changes are phrased as textual substitutions, listing the
+algorithms to which each textual substitution applies.
 
 Forward Iterator -> Forward Traversal Iterator and Readable Iterator
 
@@ -413,8 +412,9 @@ expressions are valid and respect the stated semantics.
 |                         |             |exchanged                    |
 +-------------------------+-------------+-----------------------------+
 
-[*Note:* An iterator that is a model of the *Readable* and *Writable Iterator* concepts
-  is also a model of *Swappable Iterator*.  *--end note*]
+[*Note:* An iterator that is a model of the `Readable Iterator`_ and
+`Writable Iterator`_ concepts is also a model of *Swappable
+Iterator*.  *--end note*]
 
 
 Lvalue Iterators [lib.lvalue.iterators]
@@ -422,7 +422,7 @@ Lvalue Iterators [lib.lvalue.iterators]
 
 The *Lvalue Iterator* concept adds the requirement that the return
 type of ``operator*`` type be a reference to the value type of the
-iterator.
+iterator.  
 
 +-------------------------------------------------------------+
 | Lvalue Iterator Requirements                                |
@@ -432,13 +432,14 @@ iterator.
 |``*a``       | ``T&``    |``T`` is *cv*                      |
 |             |           |``iterator_traits<X>::value_type`` |
 |             |           |where *cv* is an optional          |
-|             |           |cv-qualification.                  |
-|             |           |pre: ``a`` is                      |
-|             |           |dereferenceable. If ``a            |
-|             |           |== b`` then ``*a`` is              |
-|             |           |equivalent to ``*b``.              |
+|             |           |cv-qualification.  pre: ``a`` is   |
+|             |           |dereferenceable.                   |
 +-------------+-----------+-----------------------------------+
 
+If ``X`` is a `Writable Iterator`_ then ``a == b`` if and only if
+``*a`` is the same object as ``*b``.  If ``X`` is a `Readable
+Iterator`_ then ``a == b`` implies ``*a`` is the same object as
+``*b``.
 
 
 Iterator Traversal Concepts [lib.iterator.traversal]
@@ -449,7 +450,6 @@ constant objects of type ``X``, ``r`` and ``s`` are mutable objects of
 type ``X``, ``T`` is ``std::iterator_traits<X>::value_type``, and
 ``v`` is a constant object of type ``T``.
 
-
 Incrementable Iterators [lib.incrementable.iterators]
 -----------------------------------------------------
 
@@ -458,26 +458,28 @@ concept if, in addition to ``X`` being Assignable and Copy
 Constructible, the following expressions are valid and respect the
 stated semantics.
 
++------------------------------------------------------------------------------------+
+|Incrementable Iterator Requirements (in addition to Assignable, Copy Constructible) |
+|                                                                                    |
++--------------------------------+-------------------------------+-------------------+
+|Expression                      |Return Type                    |Assertion          |
++================================+===============================+===================+
+|``++r``                         |``X&``                         |``&r == &++r``     |
++--------------------------------+-------------------------------+-------------------+
+|``r++``                         |                               |                   |
++--------------------------------+-------------------------------+-------------------+
+|``*r++``                        |                               |                   |
++--------------------------------+-------------------------------+-------------------+
+|``iterator_traversal<X>::type`` |Convertible to                 |                   |
+|                                |``incrementable_traversal_tag``|                   |
++--------------------------------+-------------------------------+-------------------+
 
-+-------------------------------------------------------------------------------------+
-|Incrementable Iterator Requirements (in addition to Assignable, Copy Constructible)  |
-|                                                                                     |
-+--------------------------------+-------------------------------+--------------------+
-|Expression                      |Return Type                    |Assertion/Semantics |
-+================================+===============================+====================+
-|``++r``                         |``X&``                         |``&r == &++r``      |
-+--------------------------------+-------------------------------+--------------------+
-|``r++``                         |``X``                          |::                  |
-|                                |                               |                    |
-|                                |                               | {                  |
-|                                |                               |    X tmp = r;      |
-|                                |                               |    ++r;            |
-|                                |                               |    return tmp;     |
-|                                |                               | }                  |
-+--------------------------------+-------------------------------+--------------------+
-|``iterator_traversal<X>::type`` |Convertible to                 |                    |
-|                                |``incrementable_traversal_tag``|                    |
-+--------------------------------+-------------------------------+--------------------+
+
+If ``X`` is a `Writable Iterator`_ then ``X a(r++);`` is equivalent
+to ``X a(r); ++r;`` and ``*r++ = o`` is equivalent
+to  ``*r = o; ++r``.
+If ``X`` is a `Readable Iterator`_ then ``T z(*r++);`` is equivalent
+to ``T z(*r); ++r;``. 
 
 .. TR1: incrementable_iterator_tag changed to
    incrementable_traversal_tag for consistency.
@@ -490,26 +492,26 @@ concept if the following expressions are valid and respect the stated
 semantics.
 
 
-+------------------------------------------------------------------------------------------+
-|Single Pass Iterator Requirements (in addition to Incrementable Iterator and Equality     |
-|Comparable)                                                                               |
-+--------------------------------+-----------------------------+---------------------------+
-|Expression                      |Return Type                  |Assertion/Semantics /      | 
-|                                |                             |Pre-/Post-condition        |
-+================================+=============================+===========================+
-|``++r``                         |``X&``                       |pre: ``r`` is              |
-|                                |                             |dereferenceable; post:     |
-|                                |                             |``r`` is dereferenceable or|
-|                                |                             |``r`` is past-the-end      |
-+--------------------------------+-----------------------------+---------------------------+
-|``a == b``                      |convertible to ``bool``      |``==`` is an equivalence   |
-|                                |                             |relation over its domain   |
-+--------------------------------+-----------------------------+---------------------------+
-|``a != b``                      |convertible to ``bool``      |``!(a == b)``              |
-+--------------------------------+-----------------------------+---------------------------+
-|``iterator_traversal<X>::type`` |Convertible to               |                           |
-|                                |``single_pass_traversal_tag``|                           |
-+--------------------------------+-----------------------------+---------------------------+
++--------------------------------------------------------------------------------------------------------+
+|Single Pass Iterator Requirements (in addition to Incrementable Iterator and Equality                   |
+|Comparable)                                                                                             |
++--------------------------------+-----------------------------+-------------+---------------------------+
+|Expression                      |Return Type                  | Operational |Assertion/                 | 
+|                                |                             | Semantics   |Pre-/Post-condition        |
++================================+=============================+=============+===========================+
+|``++r``                         |``X&``                       |             |pre: ``r`` is              |
+|                                |                             |             |dereferenceable; post:     |
+|                                |                             |             |``r`` is dereferenceable or|
+|                                |                             |             |``r`` is past-the-end      |
++--------------------------------+-----------------------------+-------------+---------------------------+
+|``a == b``                      |convertible to ``bool``      |             |``==`` is an equivalence   |
+|                                |                             |             |relation over its domain   |
++--------------------------------+-----------------------------+-------------+---------------------------+
+|``a != b``                      |convertible to ``bool``      |``!(a == b)``|                           |
++--------------------------------+-----------------------------+-------------+---------------------------+
+|``iterator_traversal<X>::type`` |Convertible to               |             |                           |
+|                                |``single_pass_traversal_tag``|             |                           |
++--------------------------------+-----------------------------+-------------+---------------------------+
 
 .. TR1: single_pass_iterator_tag changed to
    single_pass_traversal_tag for consistency
@@ -521,7 +523,7 @@ Forward Traversal Iterators [lib.forward.traversal.iterators]
 A class or built-in type ``X`` models the *Forward Traversal Iterator*
 concept if, in addition to ``X`` meeting the requirements of Default
 Constructible and Single Pass Iterator, the following expressions are
-valid and respect the stated semantics.
+valid and respect the stated semantics. 
 
 +--------------------------------------------------------------------------------------------------------+
 |Forward Traversal Iterator Requirements (in addition to Default Constructible and Single Pass Iterator) |
@@ -543,6 +545,8 @@ valid and respect the stated semantics.
 |                                       |``forward_traversal_tag``          |                            |
 +---------------------------------------+-----------------------------------+----------------------------+
 
+
+
 .. TR1: forward_traversal_iterator_tag changed to
    forward_traversal_tag for consistency
 
@@ -555,35 +559,36 @@ Iterator* concept if, in addition to ``X`` meeting the requirements of
 Forward Traversal Iterator, the following expressions are valid and
 respect the stated semantics.
 
-+--------------------------------------------------------------------------------------+
-|Bidirectional Traversal Iterator Requirements (in addition to Forward Traversal       |
-|Iterator)                                                                             |
-+--------------------------------+-------------------------------+---------------------+
-|Expression                      |Return Type                    |Assertion/Semantics /|
-|                                |                               |Pre-/Post-condition  |
-+================================+===============================+=====================+
-|``--r``                         |``X&``                         |pre: there exists    |
-|                                |                               |``s`` such that ``r  |
-|                                |                               |== ++s``.  post:     |
-|                                |                               |``s`` is             |
-|                                |                               |dereferenceable.     |
-|                                |                               |``--(++r) == r``.    |
-|                                |                               |``--r == --s``       |
-|                                |                               |implies ``r ==       |
-|                                |                               |s``. ``&r == &--r``. |
-+--------------------------------+-------------------------------+---------------------+
-|``r--``                         |convertible to ``const X&``    |::                   |
-|                                |                               |                     |
-|                                |                               | {                   |
-|                                |                               |   X tmp = r;        |
-|                                |                               |   --r;              |
-|                                |                               |   return tmp;       |
-|                                |                               | }                   |
-+--------------------------------+-------------------------------+---------------------+
-|``iterator_traversal<X>::type`` |Convertible to                 |                     |
-|                                |``bidirectional_traversal_tag``|                     |
-|                                |                               |                     |
-+--------------------------------+-------------------------------+---------------------+
++-----------------------------------------------------------------------------------------------------+
+|Bidirectional Traversal Iterator Requirements (in addition to Forward Traversal                      |
+|Iterator)                                                                                            |
++--------------------------------+-------------------------------+--------------+---------------------+
+|Expression                      |Return Type                    |  Operational |Assertion/           |
+|                                |                               |  Semantics   |Pre-/Post-condition  |
++================================+===============================+==============+=====================+
+|``--r``                         |``X&``                         |              |pre: there exists    |
+|                                |                               |              |``s`` such that ``r  |
+|                                |                               |              |== ++s``.  post:     |
+|                                |                               |              |``s`` is             |
+|                                |                               |              |dereferenceable.     |
+|                                |                               |              |                     |
+|                                |                               |              |``++(--r) == r``.    |
+|                                |                               |              |``--r == --s``       |
+|                                |                               |              |implies ``r ==       |
+|                                |                               |              |s``. ``&r == &--r``. |
++--------------------------------+-------------------------------+--------------+---------------------+
+|``r--``                         |convertible to ``const X&``    |::            |                     |
+|                                |                               |              |                     |
+|                                |                               | {            |                     |
+|                                |                               |   X tmp = r; |                     |
+|                                |                               |   --r;       |                     |
+|                                |                               |   return tmp;|                     |
+|                                |                               | }            |                     |
++--------------------------------+-------------------------------+--------------+---------------------+
+|``iterator_traversal<X>::type`` |Convertible to                 |              |                     |
+|                                |``bidirectional_traversal_tag``|              |                     |
+|                                |                               |              |                     |
++--------------------------------+-------------------------------+--------------+---------------------+
 
 .. TR1: bidirectional_traversal_iterator_tag changed to
    bidirectional_traversal_tag for consistency
@@ -632,11 +637,11 @@ constant object of type ``Distance``.
 |                               |                                 |                         |``a + n == b``.  ``b  |
 |                               |                                 |                         |== a + (b - a)``.     |
 +-------------------------------+---------------------------------+-------------------------+----------------------+
-|``a[n]``                       |convertible to T                 |``*(a + n)``             |pre: a is a `readable |
-|                               |                                 |                         |iterator`_            |
+|``a[n]``                       |convertible to T                 |``*(a + n)``             |pre: a is a `Readable |
+|                               |                                 |                         |Iterator`_            |
 +-------------------------------+---------------------------------+-------------------------+----------------------+
-|``a[n] = v``                   |convertible to T                 |``*(a + n) = v``         |pre: a is a `writable |
-|                               |                                 |                         |iterator`_            |
+|``a[n] = v``                   |convertible to T                 |``*(a + n) = v``         |pre: a is a `Writable |
+|                               |                                 |                         |Iterator`_            |
 +-------------------------------+---------------------------------+-------------------------+----------------------+
 |``a < b``                      |convertible to ``bool``          |``b - a > 0``            |``<`` is a total      |
 |                               |                                 |                         |ordering relation     |

@@ -1,14 +1,14 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  (C) Copyright Gennadiy Rozental 2001-2004.
 //  (C) Copyright Ullrich Koethe 2001.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_monitor.cpp,v $
 //
-//  Version     : $Revision: 1.12 $
+//  Version     : $Revision: 1.15 $
 //
 //  Description : implements specific subclass of Executon Monitor used by Unit
 //  Test Framework to monitor test cases run.
@@ -23,9 +23,9 @@
 
 namespace boost {
 
-namespace unit_test_framework {
+namespace unit_test {
 
-namespace detail {
+namespace ut_detail {
 
 // ************************************************************************** //
 // **************               unit_test_monitor              ************** //
@@ -76,7 +76,7 @@ unit_test_monitor::function()
     try {
         (m_test_case->*m_test_case_method)();
     }
-    catch( test_toolbox::detail::test_tool_failed const& /*e*/ ) { // e not used; error already reported
+    catch( test_tools::tt_detail::test_tool_failed const& /*e*/ ) { // e not used; error already reported
         // nothing to do
     }
 
@@ -85,9 +85,9 @@ unit_test_monitor::function()
 
 //____________________________________________________________________________//
 
-} // namespace detail
+} // namespace ut_detail
 
-} // namespace unit_test_framework
+} // namespace unit_test
 
 } // namespace boost
 
@@ -95,6 +95,17 @@ unit_test_monitor::function()
 //  Revision History :
 //  
 //  $Log: unit_test_monitor.cpp,v $
+//  Revision 1.15  2004/06/07 07:34:23  rogeeff
+//  detail namespace renamed
+//
+//  Revision 1.14  2004/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.13  2004/05/11 11:05:04  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.12  2003/12/01 00:42:37  rogeeff
 //  prerelease cleaning
 //

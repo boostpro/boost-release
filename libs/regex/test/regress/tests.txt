@@ -1018,6 +1018,7 @@ ab.{2,5}? ab__ 0 4
 ab.{2,5}? ab_______ 0 4
 ab.{2,5}?xy ab______xy -1 -1
 ab.{2,5}xy ab_xy -1 -1
+(.*?).somesite \n\n555.somesite 2 14 2 5
 
 ; now again for single character repeats:
 
@@ -1054,6 +1055,7 @@ ab_{2,5}? ab__ 0 4
 ab_{2,5}? ab_______ 0 4
 ab_{2,5}?xy ab______xy -1 -1
 ab_{2,5}xy ab_xy -1 -1
+(5*?).somesite //555.somesite 2 14 2 5
 
 ; and again for sets:
 ab[_,;]*xy abxy_ 0 4
@@ -1089,6 +1091,7 @@ ab[_,;]{2,5}? ab__ 0 4
 ab[_,;]{2,5}? ab_______ 0 4
 ab[_,;]{2,5}?xy ab______xy -1 -1
 ab[_,;]{2,5}xy ab_xy -1 -1
+(\d*?).somesite //555.somesite 2 14 2 5
 
 ; and again for tricky sets with digraphs:
 ab[_[.ae.]]*xy abxy_ 0 4
@@ -1124,6 +1127,7 @@ ab[_[.ae.]]{2,5}? ab__ 0 4
 ab[_[.ae.]]{2,5}? ab_______ 0 4
 ab[_[.ae.]]{2,5}?xy ab______xy -1 -1
 ab[_[.ae.]]{2,5}xy ab_xy -1 -1
+([5[.ae.]]*?).somesite //555.somesite 2 14 2 5
 
 ; new bugs detected in spring 2003:
 - normal match_continuous REG_NO_POSIX_TEST
@@ -1248,4 +1252,22 @@ a(bbb+|bb+|b)b abbb 0 4
 a(bbb+|bb+|b)bb abbb 0 4
 (.*).* abcdef 0 6
 (a*)* bc 0 0
+
+; new merge tests for case convertions:
+- match_default normal REG_PERL REG_STARTEND REG_MERGE
+abc "xyzabcCD" "\u$&" "xyzAbcCD"
+abc "xyzabcCD" "\U$&\E" "xyzABCCD"
+ABC "xyzABCCD" "\l$&" "xyzaBCCD"
+ABC "xyzABCCD" "\L$&\E" "xyzabcCD"
+
+- match_default normal REG_EXTENDED REG_STARTEND REG_MERGE format_sed
+abc "xyzabcCD" "\u\0" "xyzuabcCD"
+abc "xyzabcCD" "\U\0\E" "xyzUabcECD"
+ABC "xyzABCCD" "\l\0" "xyzlABCCD"
+ABC "xyzABCCD" "\L\0\E" "xyzLABCECD"
+
+; and a couple of new bugs:
+- match_default normal REG_ICASE REG_NO_POSIX_TEST
+\u+ abcABC 0 6
+\l+ abcABC 0 6
 

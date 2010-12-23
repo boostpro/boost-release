@@ -6,7 +6,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland 
- * $Date: 2003/11/23 03:31:27 $
+ * $Date: 2004/07/01 02:27:04 $
  */
 
 namespace boost {
@@ -15,7 +15,7 @@ namespace date_time {
     enum special_values {not_a_date_time, 
                          neg_infin, pos_infin, 
                          min_date_time,  max_date_time,
-                         not_special};
+                         not_special, NumSpecialValues};
 
 
 } } //namespace date_time

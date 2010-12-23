@@ -25,10 +25,11 @@
 #include <cassert>
 #include <iostream>
 
-#include <boost/numeric/ublas/config.hpp>
 #include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
 #include <boost/numeric/ublas/vector_sparse.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/numeric/ublas/banded.hpp>
 #include <boost/numeric/ublas/triangular.hpp>
 #include <boost/numeric/ublas/symmetric.hpp>
@@ -36,7 +37,7 @@
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
-#include <boost/numeric/ublas/concepts.hpp>
+#include <boost/numeric/ublas/detail/concepts.hpp>
 
 namespace ublas = boost::numeric::ublas;
 

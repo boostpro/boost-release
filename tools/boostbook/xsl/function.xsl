@@ -769,11 +769,14 @@
       <xsl:apply-templates select="purpose/*"/>
     </xsl:if>
 
+    <xsl:apply-templates select="description/*"/>
+
     <!-- Document parameters -->
-    <xsl:if test="parameter/description">
+    <xsl:if test="parameter/description|signature/parameter/description">
       <variablelist spacing="compact">
         <title>Parameters</title>
-        <xsl:for-each select="parameter">
+        <xsl:for-each select="parameter|signature/parameter">
+		  <xsl:sort select="attribute::name"/>
           <xsl:if test="description">
             <varlistentry>
               <term><xsl:value-of select="@name"/></term>
@@ -785,8 +788,6 @@
         </xsl:for-each>
       </variablelist>
     </xsl:if>
-
-    <xsl:apply-templates select="description/*"/>
 
     <xsl:if test="para">
       <xsl:message>
@@ -812,7 +813,6 @@
           <xsl:text>' for stylesheet parameter boost.generation.mode.</xsl:text>
         </xsl:otherwise>
       </xsl:choose>
-      
     </xsl:if>
   </xsl:template>
 
@@ -969,7 +969,7 @@
             <xsl:with-param name="node" select="."/>
           </xsl:call-template>
         </xsl:with-param>
-        <xsl:with-param name="purpose" select="purpose"/>
+        <xsl:with-param name="purpose" select="purpose/*|purpose/text()"/>
         <xsl:with-param name="anchor">
           <xsl:call-template name="generate.id"/>
         </xsl:with-param>
@@ -1050,7 +1050,7 @@
             <xsl:with-param name="node" select="."/>
           </xsl:call-template>
         </xsl:with-param>
-        <xsl:with-param name="purpose" select="purpose"/>
+        <xsl:with-param name="purpose" select="purpose/*|purpose/text()"/>
         <xsl:with-param name="anchor">
           <xsl:call-template name="generate.id"/>
         </xsl:with-param>

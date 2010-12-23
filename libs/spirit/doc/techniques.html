@@ -82,6 +82,15 @@
             </span><span class=identifier>rule</span><span class=special>&lt;</span><span class=identifier>ScannerT</span><span class=special>&gt; </span><span class=keyword>const</span><span class=special>&amp; </span><span class=identifier>start</span><span class=special>() </span><span class=keyword>const </span><span class=special>{ </span><span class=keyword>return </span><span class=identifier>rr</span><span class=special>; </span><span class=special>}
         </span><span class=special>};
     </span><span class=special>};</span></pre>
+<p>By default support for multiple scanners is disabled.  The macro
+  <tt>BOOST_SPIRIT_RULE_SCANNERTYPE_LIMIT</tt> must be defined to the
+  maximum number of scanners allowed in a scanner_list.  The value must
+  be greater than 1 to enable multiple scanners.  Given the
+  example above, to define a limit of three scanners for the list, the
+  following line must be inserted into the source file before the
+  inclusion of Spirit headers:
+</p>
+<pre><span class=special>    </span><span class=preprocessor>#define </span><span class=identifier>BOOST_SPIRIT_RULE_SCANNERTYPE_LIMIT</span> <span class=literal>3</span></pre>
 <h3><span class=special></span><b> <a name="no_rules" id="no_rules"></a> Look 
   Ma' No Rules</b></h3>
 <p>You use grammars and you use lots of 'em? Want a fly-weight, no-cholesterol, 
@@ -94,7 +103,7 @@
   business</a>, our no. 1 FAQ. Apart from that, the virtual functions in rules 
   slow down parsing, kill all meta-information, and kills inlining, hence bloating 
   the generated code, especially for very tiny rules such as:</p>
-<pre>    r <span class="special">=</span> ch_p<span class="special">&lt;&gt;(</span><span class="quotes">'x'</span><span class="special">) &gt;&gt;</span> uint_p<span class="special">;</span></pre>
+<pre>    r <span class="special">=</span> ch_p<span class="special">(</span><span class="quotes">'x'</span><span class="special">) &gt;&gt;</span> uint_p<span class="special">;</span></pre>
 <p> The rule's limitation is the main reason why the grammar is designed the way 
   it is now, with a nested template definition class. The rule's limitation is 
   also the reason why subrules exists. But do we really need rules? Of course! 
@@ -105,10 +114,10 @@
 <p> we are tied to the rule as RHS placeholders. However.... in some occasions 
   we can get by without rules! For instance, rather than writing:</p>
 <pre>
-    <code><span class=identifier>rule</span><span class=special>&lt;&gt; </span><span class=identifier>x </span><span class=special>= </span><span class=identifier>ch_p</span><span class=special>&lt;&gt;(</span><span class=literal>'x'</span><span class=special>);</span></code></pre>
+    <code><span class=identifier>rule</span><span class=special>&lt;&gt; </span><span class=identifier>x </span><span class=special>= </span><span class=identifier>ch_p</span><span class=special>(</span><span class=literal>'x'</span><span class=special>);</span></code></pre>
 <p> It's better to write:</p>
 <pre>
-    <code><span class=identifier>chlit</span><span class=special>&lt;&gt; </span><span class=identifier>x </span><span class=special>= </span><span class=identifier>ch_p</span><span class=special>&lt;&gt;(</span><span class=literal>'x'</span><span class=special>);</span></code></pre>
+    <code><span class=identifier>chlit</span><span class=special>&lt;&gt; </span><span class=identifier>x </span><span class=special>= </span><span class=identifier>ch_p</span><span class=special>(</span><span class=literal>'x'</span><span class=special>);</span></code></pre>
 <p> That's trivial. But what if the rule is rather complicated? Ok, let's proceed 
   stepwise... I'll investigate a simple skip_parser based on the C grammar from 
   Hartmut Kaiser. Basically, the grammar is written as (see <a href="../example/techniques/no_rules/no_rule1.cpp">no_rule1.cpp</a>):</p>
@@ -292,7 +301,7 @@
         </span><span class=special>)
     );</span></code></pre>
 <p>(see <a href="../example/techniques/typeof.cpp">typeof.cpp</a>)</p>
-<p>That's it! Now you can use skipper jas as you would any parser. Be reminded, 
+<p>That's it! Now you can use skipper just as you would any parser. Be reminded, 
     however, that <tt>skipper</tt> above will be embedded by value when<strong> 
   </strong>you compose more complex parsers using it (see <tt>sub_grammar</tt> rationale above). You can use the <tt>sub_grammar</tt> class to avoid this problem.</p>
 <h3><a name="nabialek_trick"></a> Nabialek trick</h3>

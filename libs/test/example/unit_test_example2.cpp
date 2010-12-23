@@ -1,14 +1,14 @@
-//  (C) Copyright Gennadiy Rozental 2002-2003.
+//  (C) Copyright Gennadiy Rozental 2002-2004.
 //  (C) Copyright Gennadiy Rozental & Ullrich Koethe 2001.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 
 // Boost.Test
 #include <boost/test/unit_test.hpp>
-using boost::unit_test_framework::test_suite;
+using boost::unit_test::test_suite;
 
 void force_division_by_zero()
 {

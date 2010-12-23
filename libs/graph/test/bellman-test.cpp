@@ -1,3 +1,8 @@
+//  (C) Copyright Jeremy Siek 2004 
+//  Distributed under the Boost Software License, Version 1.0. (See
+//  accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
+
 // From Louis Lavery <Louis@devilsChimney.co.uk>
 /*Expected Output:-
 A:   0 A
@@ -43,7 +48,7 @@ int main()
   for(i = 0; i < numVertex; ++i)
     parent[i] = i;
 
-  int inf = std::numeric_limits<int>::max();
+  int inf = (std::numeric_limits<int>::max)();
   std::vector<int> distance(numVertex, inf);
   distance[A] = 0; // Set source distance to zero
 

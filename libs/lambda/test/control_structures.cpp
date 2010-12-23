@@ -3,21 +3,15 @@
 // Copyright (C) 2000-2003 Jaakko Järvi (jaakko.jarvi@cs.utu.fi)
 // Copyright (C) 2000-2003 Gary Powell (powellg@amazon.com)
 //
-// Permission to copy, use, sell and distribute this software is granted
-// provided this copyright notice appears in all copies. 
-// Permission to modify the code and to distribute modified code is granted
-// provided this copyright notice appears in all copies, and a notice 
-// that the code was modified is included with the copyright notice.
-//
-// This software is provided "as is" without express or implied warranty, 
-// and with no claim as to its suitability for any purpose.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 //
 // For more information, see www.boost.org
 
 // -----------------------------------------------------------------------
 
-#define BOOST_INCLUDE_MAIN  // for testing, include rather than link
-#include <boost/test/test_tools.hpp>    // see "Header Implementation Option"
+#include <boost/test/minimal.hpp>    // see "Header Implementation Option"
 
 #include "boost/lambda/lambda.hpp"
 #include "boost/lambda/if.hpp"
@@ -28,7 +22,18 @@
 #include <vector>
 
 using namespace boost;
-using namespace boost::lambda;
+
+using boost::lambda::constant;
+using boost::lambda::_1;
+using boost::lambda::_2;
+using boost::lambda::_3;
+using boost::lambda::make_const;
+using boost::lambda::for_loop;
+using boost::lambda::while_loop;
+using boost::lambda::do_while_loop;
+using boost::lambda::if_then;
+using boost::lambda::if_then_else;
+using boost::lambda::if_then_else_return;
 
 // 2 container for_each
 template <class InputIter1, class InputIter2, class Function>
@@ -48,7 +53,7 @@ void simple_loops() {
   BOOST_TEST(arithmetic_series == 45);
 
   // no body case
-  for_loop(var(i) = 0, var(i) < 100, ++var(i))();
+  for_loop(boost::lambda::var(i) = 0, boost::lambda::var(i) < 100, ++boost::lambda::var(i))();
   BOOST_TEST(i == 100);
  
   // while loops -------------------------------------------------------
@@ -59,12 +64,12 @@ void simple_loops() {
 
   int count;
   count = 0; i = 0;
-  while_loop(_1++ < 10, ++var(count))(i);
+  while_loop(_1++ < 10, ++boost::lambda::var(count))(i);
   BOOST_TEST(count == 10);
 
   // note that the first parameter of do_while_loop is the condition
   count = 0; i = 0;
-  do_while_loop(_1++ < 10, ++var(count))(i);
+  do_while_loop(_1++ < 10, ++boost::lambda::var(count))(i);
   BOOST_TEST(count == 11);
 
   a = 0;
@@ -95,18 +100,18 @@ void simple_ifs () {
   BOOST_TEST(value == 42);
 
   int min;
-  if_then_else(_1 < _2, var(min) = _1, var(min) = _2)
+  if_then_else(_1 < _2, boost::lambda::var(min) = _1, boost::lambda::var(min) = _2)
      (make_const(1), make_const(2));
   BOOST_TEST(min == 1);
 
-  if_then_else(_1 < _2, var(min) = _1, var(min) = _2)
+  if_then_else(_1 < _2, boost::lambda::var(min) = _1, boost::lambda::var(min) = _2)
      (make_const(5), make_const(3));
   BOOST_TEST(min == 3);
 
   int x, y;
   x = -1; y = 1;
-  BOOST_TEST(if_then_else_return(_1 < _2, _2, _1)(x, y) == std::max(x ,y));
-  BOOST_TEST(if_then_else_return(_1 < _2, _2, _1)(y, x) == std::max(x ,y));
+  BOOST_TEST(if_then_else_return(_1 < _2, _2, _1)(x, y) == (std::max)(x ,y));
+  BOOST_TEST(if_then_else_return(_1 < _2, _2, _1)(y, x) == (std::max)(x ,y));
 }
 
 

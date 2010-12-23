@@ -1,18 +1,13 @@
 /* boost random/xor_combine.hpp header file
  *
  * Copyright Jens Maurer 2002
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
- *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: xor_combine.hpp,v 1.6 2003/04/02 23:21:59 jmaurer Exp $
+ * $Id: xor_combine.hpp,v 1.11 2004/09/30 19:15:32 mistevens Exp $
  *
  */
 
@@ -21,6 +16,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <algorithm> // for std::min and std::max
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
 #include <boost/static_assert.hpp>
@@ -75,8 +71,8 @@ public:
     return (_rng1() << s1) ^ (_rng2() << s2);
   }
 
-  result_type min() const { return std::min(_rng1.min(), _rng2.min()); }
-  result_type max() const { return std::max(_rng1.min(), _rng2.max()); }
+  result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return std::min BOOST_PREVENT_MACRO_SUBSTITUTION((_rng1.min)(), (_rng2.min)()); }
+  result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const { return std::max BOOST_PREVENT_MACRO_SUBSTITUTION((_rng1.min)(), (_rng2.max)()); }
   static bool validation(result_type x) { return val == x; }
 
 #ifndef BOOST_NO_OPERATORS_IN_NAMESPACE

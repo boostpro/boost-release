@@ -6,7 +6,7 @@
 :Contact: dave@boost-consulting.com, jsiek@osl.iu.edu, witt@styleadvisor.com
 :organization: `Boost Consulting`_, Indiana University `Open Systems
                Lab`_, `Zephyr Associates, Inc.`_
-:date: $Date: 2004/01/27 04:50:51 $
+:date: $Date: 2004/11/02 14:39:02 $
 
 :Number: This is a revised version of N1530_\ =03-0113, which was
          accepted for Technical Report 1 by the C++ standard
@@ -17,7 +17,7 @@
 
 .. _n1530: http://anubis.dkuug.dk/jtc1/sc22/wg21/docs/papers/2003/n1530.html
 
-:copyright: Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. All rights reserved
+:copyright: Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. 
 
 .. _`Boost Consulting`: http://www.boost-consulting.com
 .. _`Open Systems Lab`: http://www.osl.iu.edu
@@ -416,12 +416,12 @@ Class template ``counting_iterator``
 Function output iterator
 ------------------------
 
-.. include:: function_output_iterator_abstract.rst
+.. include:: func_output_iter_abstract.rst
 
 Class template ``function_output_iterator``
 ...........................................
 
-.. include:: function_output_iterator_ref.rst
+.. include:: func_output_iter_ref.rst
 
 
 

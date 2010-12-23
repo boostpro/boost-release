@@ -10,6 +10,7 @@ import types
 import time
 import tempfile
 import sys
+import re
 
 def get_toolset():
     toolset = None;
@@ -25,12 +26,17 @@ suffixes = {}
 def prepare_suffix_map(toolset):
     global windows, suffixes    
     suffixes = {'.exe': '', '.dll': '.so', '.lib': '.a', '.obj': '.o'}
-    if os.environ.get('OS','').lower().startswith('windows'):
+    if os.environ.get('OS','').lower().startswith('windows') or \
+       os.__dict__.has_key('uname') and \
+       os.uname()[0].lower().startswith('cygwin'):
         windows = 1
         suffixes = {}
         if toolset in ["gcc"]:
             suffixes['.lib'] = '.a' # static libs have '.a' suffix with mingw...
             suffixes['.obj'] = '.o'
+    if os.__dict__.has_key('uname') and os.uname()[0] == 'Darwin':
+        suffixes['.dll'] = '.dylib'
+
         
     
     
@@ -80,16 +86,26 @@ class Tester(TestCmd.TestCmd):
         jam_build_dir = ""
         if os.name == 'nt':
             jam_build_dir = "bin.ntx86"
-        elif os.name == 'posix':
+        elif os.name == 'posix' and os.__dict__.has_key('uname'):
             if os.uname()[0].lower().startswith('cygwin'):
                 jam_build_dir = "bin.cygwinx86"
                 if 'TMP' in os.environ and os.environ['TMP'].find('~') != -1:
                     print 'Setting $TMP to /tmp to get around problem with short path names'
                     os.environ['TMP'] = '/tmp'
-            else:
+            elif os.uname()[0] == 'Linux':
                 jam_build_dir = "bin.linuxx86"
+            elif os.uname()[0] == 'SunOS':
+                jam_build_dir = "bin.solaris"
+            elif os.uname()[0] == 'Darwin':
+                jam_build_dir = "bin.macosxppc"
+            elif os.uname()[0] == "AIX":
+                jam_build_dir = "bin.aix"
+            elif os.uname()[0] == "IRIX64":
+                jam_build_dir = "bin.irix"
+            else:
+                raise "Don't know directory where jam is build for this system: " + os.name + "/" + os.uname()[0]
         else:
-            raise "Don't know directory where jam is build for this system"
+            raise "Don't know directory where jam is build for this system: " + os.name
 
         if boost_build_path is None:
             boost_build_path = self.original_workdir
@@ -117,7 +133,7 @@ class Tester(TestCmd.TestCmd):
                 break
         else:
             print "Cannot find built Boost.Jam"
-            exit(1)                                    
+            os.exit(1)                                    
         
             
         program_list.append(os.path.join(jam_build_dir, executable))
@@ -284,14 +300,19 @@ class Tester(TestCmd.TestCmd):
             self.maybe_do_diff(self.stdout(), stdout)
             self.fail_test(1, dump_stdio = 0)
 
-        if not stderr is None and not match(self.stderr(), stderr):
+        # Intel tends to produce some message to stderr, which makes tests
+        # fail
+        intel_workaround = re.compile("^xi(link|lib): executing.*\n", re.M)
+        actual_stderr = re.sub(intel_workaround, "", self.stderr())
+
+        if not stderr is None and not match(actual_stderr, stderr):
             print "STDOUT ==================="
             print self.stdout()
             print "Expected STDERR =========="
             print stderr
             print "Actual STDERR ============"
-            print self.stderr()
-            self.maybe_do_diff(self.stderr(), stderr)
+            print actual_stderr
+            self.maybe_do_diff(actual_stderr, stderr)
             self.fail_test(1, dump_stdio = 0)
 
         self.tree = build_tree(self.workdir)
@@ -378,13 +399,12 @@ class Tester(TestCmd.TestCmd):
         d = self.unexpected_difference
         for name in self.adjust_names(names):
 
-            # We need to check in both touched and modified files if
-            # it's a Windows exe because they sometimes have slight
+            # We need to check in both touched and modified files.
+            # The reason is that:
+            # (1) for windows binaries often have slight
             # differences even with identical inputs
-            if windows:
-                filesets = [d.modified_files, d.touched_files]
-            else:
-                filesets = [d.touched_files]
+            # (2) Intel's compiler for Linux has the same behaviour        
+            filesets = [d.modified_files, d.touched_files]
 
             while filesets:
                 try:
@@ -444,10 +464,14 @@ class Tester(TestCmd.TestCmd):
 
     def expect_content(self, name, content, exact=0):
         name = self.adjust_names(name)[0]
-        if exact:
-            actual = self.read(name)
-        else:
-            actual = string.replace(self.read_and_strip(name), "\\", "/")
+        try:
+            if exact:
+                actual = self.read(name)
+            else:
+                actual = string.replace(self.read_and_strip(name), "\\", "/")
+        except IOError:
+            print "Note: could not open file", name
+            self.fail_test(1)
 
         content = string.replace(content, "$toolset", self.toolset)
 

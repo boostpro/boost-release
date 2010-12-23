@@ -29,6 +29,7 @@ local rule setup ( )
       propagated 
       link-incompatible
       subfeature
+      order-sensitive
       ;
 
     .all-features = ;
@@ -296,6 +297,7 @@ local rule validate-feature ( feature )
 local rule expand-subfeatures-aux ( 
     feature ? # The name of the feature, or empty if value corresponds to an implicit property
   : value     # The value of the feature.
+  : dont-validate ? # If set, no validation of value string will be done  
 )
 {
     if $(feature)
@@ -311,8 +313,11 @@ local rule expand-subfeatures-aux (
     {
         validate-feature $(feature) ;
     }
-    validate-value-string $(feature) $(value) ;
-
+    if ! $(dont-validate)
+    {        
+        validate-value-string $(feature) $(value) ;
+    }
+    
     local components = [ regex.split $(value) "-" ] ;
     
     # get the top-level feature's value
@@ -341,21 +346,6 @@ local rule expand-subfeatures-aux (
             result += $(subvalue:G=$(f)-$(subfeature)) ;
         }
     }
-
-    # Add all the default feature values for non-optional subfeatures.
-    local ungristed-feature = [ utility.ungrist $(feature) ] ;
-    for local s in $($(feature).subfeatures)
-    {
-        local full-name = <$(ungristed-feature)-$(s)> ;
-        if ! optional in $($(full-name).attributes)
-          && [ is-subfeature-of $(result[1]) $(full-name) ]
-        {
-            if ! $(full-name) in $(result:G)
-            {
-                result += $(full-name)$($(full-name).default) ;
-            }
-        }
-    }
     
     return $(result) ;
 }
@@ -374,6 +364,7 @@ rule expand-subfeatures (
   properties * # property set with elements of the form
            # <feature>value-string or just value-string in the
            # case of implicit features.
+  : dont-validate ?
 )
 {
     local result ;
@@ -382,7 +373,7 @@ rule expand-subfeatures (
         # Don't expand subfeatures in subfeatures
         if ! [ MATCH "(:)" : $(p:G) ]
         {            
-            result += [ expand-subfeatures-aux $(p:G) : $(p:G=) ] ;
+            result += [ expand-subfeatures-aux $(p:G) : $(p:G=) : $(dont-validate) ] ;
         }
         else
         {
@@ -440,11 +431,10 @@ rule validate-value-string ( feature value-string )
               : legal values: \"$($(feature).values)\" ;
         }
 
-        if $(values[2])
+        for local v in $(values[2-])
         {
             # this will validate any subfeature values in value-string
-        implied-subfeature $(feature) [ sequence.join $(values[2-]) : - ]
-              : $(values[1]) ;
+            implied-subfeature $(feature) $(v) : $(values[1]) ;
         }
     }
 }
@@ -1004,43 +994,6 @@ rule split ( property-set )
     return $(result) ;
 }
 
-# Appends a rule to the list of rules assigned to the given feature or property.
-# That rules will be used in extending property sets by the 'run-actions' rule. 
-# The rule should accept two arguments:
-# - the property which is registered
-# - the list of all properties 
-# and return a set of additional 
-# properties to be added. Property should be specified in the usual way:
-# <feature>value, and feature should be specified as <feature>.
-rule action ( property-or-feature : rule-name )
-{
-    .rules.$(property-or-feature) += [ indirect.make-qualified $(rule-name) ] ;
-}
-
-# Returns 'properties' augmented with results of calling rule associated with properties.
-# If both a property and its feature have rules, only rules for the property are executed.
-rule run-actions ( properties * )
-{
-    local added = ;
-    for local e in $(properties)
-    {
-        local rules ;
-        if $(.rules.$(e)) 
-        {
-            rules = $(.rules.$(e)) ;
-        }
-        else if $(.rules.$(e:G)) 
-        {
-            rules = $(.rules.$(e:G)) ;
-        }
-        for local r in $(rules)
-        {
-            added += [ indirect.call $(r) $(e) : $(properties) ] ;
-        }
-    }
-    return $(properties) $(added) ;            
-}
-
 # tests of module feature
 local rule __test__ ( )
 {
@@ -1067,33 +1020,10 @@ local rule __test__ ( )
 
     extend-feature toolset : msvc metrowerks ;
     subfeature toolset gcc : version : 2.95.2 2.95.3 2.95.4
-      3.0 3.0.1 3.0.2 : optional ;
-
-    local rule handle-stlport ( property : properties * )
-    {
-        return <include>/path/to/stlport ;
-    }
-
-    local rule handle-magic ( property : properties * )
-    {
-        return <define>MAGIC=$(property:G=) ;
-    }
-
-    local rule handle-magic2 ( property : properties * )
-    {
-        return <define>MAGIC=BIG_MAGIC ;
-    }
-
-    local rule handle-magic3 ( property : properties * )
-    {
-        return <define>MAGIC=VERY_BIG_MAGIC ;
-    }
-
-    action <stdlib>stlport : handle-stlport ;
-    action <magic> : handle-magic ;
-    action <magic>17 : handle-magic2 ;
-    action <magic>17 : handle-magic3 ;
-
+      3.0 3.0.1 3.0.2 ;
+    
+    subfeature toolset gcc : platform : linux cygwin : optional ;
+    
     assert.result <toolset-gcc:version>
       : select-subfeatures <toolset>gcc
          : <toolset-gcc:version>
@@ -1114,19 +1044,19 @@ local rule __test__ ( )
            
     assert.result <toolset>gcc <toolset-gcc:version>3.0.1
       : expand-subfeatures <toolset>gcc-3.0.1 ;
+    
+    assert.result <toolset>gcc <toolset-gcc:version>3.0.1 <toolset-gcc:platform>linux
+      : expand-subfeatures <toolset>gcc-3.0.1-linux ;
 
+    
+    assert.result <toolset>gcc <toolset-gcc:version>3.0.1
+      : expand <toolset>gcc <toolset-gcc:version>3.0.1  ;
+      
     assert.result <define>foo=x-y
       : expand-subfeatures <define>foo=x-y ;
 
     assert.result <toolset>gcc <toolset-gcc:version>3.0.1
       : expand-subfeatures gcc-3.0.1 ;
-
-    feature dummy : dummy1 dummy2 ;
-    subfeature dummy : subdummy : x y z : optional ;
-
-    feature fu : fu1 fu2 : optional ;
-    subfeature fu : subfu : x y z : optional ;
-    subfeature fu : subfu2 : q r s ;
     
     assert.result a c e
       : get-values <x> : <x>a <y>b <x>c <y>d <x>e ;
@@ -1134,10 +1064,6 @@ local rule __test__ ( )
     assert.result <toolset>gcc <toolset-gcc:version>3.0.1
       <variant>debug <define>_DEBUG <optimization>on
       : expand gcc-3.0.1 debug <optimization>on
-      ;
-
-    assert.result <fu>fu1 <fu-subfu2>q
-      : expand-subfeatures <fu>fu1
       ;
     
     assert.result <variant>debug <define>_DEBUG <optimization>on
@@ -1151,17 +1077,25 @@ local rule __test__ ( )
     assert.result <runtime-link>dynamic <optimization>on
       : defaults <runtime-link> <define> <optimization>
       ;
+    
+    feature dummy : dummy1 dummy2 ;
+    subfeature dummy : subdummy : x y z : optional ;
 
+    feature fu : fu1 fu2 : optional ;
+    subfeature fu : subfu : x y z : optional ;
+    subfeature fu : subfu2 : q r s ;
+    
     assert.result <runtime-link>static <define>foobar <optimization>on <toolset>gcc:<define>FOO
-      <toolset>gcc <variant>debug <stdlib>native <dummy>dummy1
+      <toolset>gcc <variant>debug <stdlib>native <dummy>dummy1 <toolset-gcc:version>2.95.2
 
       : add-defaults <runtime-link>static <define>foobar
         <optimization>on <toolset>gcc:<define>FOO 
       ;
     
     assert.result <runtime-link>static <define>foobar <optimization>on <toolset>gcc:<define>FOO
-      <fu>fu1 <toolset>gcc <variant>debug <stdlib>native <dummy>dummy1 <fu-subfu2>q
-
+      <fu>fu1 <toolset>gcc <variant>debug <stdlib>native <dummy>dummy1 <fu-subfu2>q      
+      <toolset-gcc:version>2.95.2
+      
       : add-defaults <runtime-link>static <define>foobar
         <optimization>on <toolset>gcc:<define>FOO <fu>fu1
       ;
@@ -1171,16 +1105,6 @@ local rule __test__ ( )
       : defaults <runtime-link>
       ;
       
-
-    assert.result  <toolset>gcc <define>foo <stdlib>stlport <magic>3 <include>/path/to/stlport <define>MAGIC=3
-      : run-actions <toolset>gcc <define>foo <stdlib>stlport <magic>3
-      ;
-
-    assert.result <magic>17 <define>MAGIC=BIG_MAGIC <define>MAGIC=VERY_BIG_MAGIC
-      : run-actions <magic>17 
-      ;
-
-
     assert.result gcc-3.0.1 debug <optimization>on
       : minimize [ expand gcc-3.0.1 debug <optimization>on <stdlib>native ]
       ;

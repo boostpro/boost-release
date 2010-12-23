@@ -12,59 +12,31 @@ import property ;
 import generators ;
 import os ;
 import toolset : flags ;
-import feature ;
+import feature : get-values ;
 import type ;
 import common ;
 
 toolset.register borland ;
 
-feature.subfeature toolset borland : version ;
-
-# Installation root to use for versionless toolset
-.root = "" ;
-STDHDRS = ;
-STDLIBPATH = ;
-
-
-rule init ( version ? : root ? )
+rule init ( version ? : command * : options * )
 {
-    # If version is not provided, change the global variable
-    # It would probably be better to introduce 'unspecified' version
-    # and set flags on <toolset>borland-unspecified, but, 
-    # default values are not applied to subfeatures.
-    if ! $(version) 
+    local condition = [ common.check-init-parameters borland :
+        version $(version) ] ;
+    
+    local command = [ common.get-invocation-command borland : bcc32.exe 
+        : $(command) ] ;
+     
+    common.handle-options borland : $(condition) : $(command) : $(options) ;    
+    
+    if $(command)
     {
-        if ! $(root)
-        {
-            # versionless and rootless, we assume the user has bcc in the path
-            # so we try and find it, and set up the paths accordingly
-            import regex ;
-            import modules ;
-            local bcc = [ GLOB [ modules.peek : Path ] [ modules.peek : PATH ] : bcc32.exe ] ;
-            root = $(bcc[1]:D) ; root = $(root:P) ;
-        }
-        if $(root)
-        {
-            toolset.flags borland.compile STDHDRS <toolset>borland : $(root)/include/ ;
-            toolset.flags borland.link STDLIBPATH <toolset>borland : $(root)/lib ;
-            toolset.flags borland .root <toolset>borland : $(root)/bin/ ;
-        }
-    }
-    else
-    {
-        feature.extend-subfeature toolset borland : version : $(version) ;
-        local condition = <toolset>borland-$(version) ;
-
-        toolset.flags borland.compile STDHDRS $(condition) : $(root)/include/ ;
-        toolset.flags borland.link STDLIBPATH $(condition) : $(root)/lib/ ;        
-
-        root = $(root)/bin/ ;
-        root ?= "" ;        
-        toolset.flags borland .root $(condition) : $(root) ;
-    }
-    # strange that this return is needed, because if absent the
-    # unversioned/unrooted case doesn't work at all
-    return ;
+        command = [ common.get-absolute-tool-path $(command[-1]) ] ;
+    }   
+    root = $(command:D) ;    
+    
+    flags borland.compile STDHDRS $(condition) : $(root)/include/ ;
+    flags borland.link STDLIBPATH $(condition) : $(root)/lib ;
+    flags borland .root $(condition) : $(root)/bin/ ;    
 }
 
 
@@ -140,13 +112,13 @@ flags borland NEED_IMPLIB <main-target-type>LIB/<link>shared : "" ;
 
 actions compile.c++
 {
-    "$(.root)bcc32" -j5 -g255 -q -c -P -w -Ve -Vx -a8 -b- $(OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
+    $(CONFIG_COMMAND) -j5 -g255 -q -c -P -w -Ve -Vx -a8 -b- $(OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
 }
 
 # For C, we don't pass -P flag
 actions compile.c
 {
-    "$(.root)bcc32" -j5 -g255 -q -c -w -Ve -Vx -a8 -b- $(OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
+    $(CONFIG_COMMAND) -j5 -g255 -q -c -w -Ve -Vx -a8 -b- $(OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
 }
 
 
@@ -221,7 +193,7 @@ rule link ( targets + : sources * : properties * )
 
 actions link bind LIBRARIES
 {
-    $(.set-path)$(.root:W)$(.old-path) "$(.root)bcc32" -v -q $(OPTIONS) -L"$(LIBRARY_PATH:W)" -L"$(STDLIBPATH:W)" -e"$(<[1]:W)" @"$(<[2]:W)"
+    $(.set-path)$(.root:W)$(.old-path) $(CONFIG_COMMAND) -v -q $(OPTIONS) -L"$(LIBRARY_PATH:W)" -L"$(STDLIBPATH:W)" -e"$(<[1]:W)" @"$(<[2]:W)"
 }
 
 rule link.dll ( targets + : sources * : properties * )
@@ -231,6 +203,6 @@ rule link.dll ( targets + : sources * : properties * )
 
 actions link.dll bind LIBRARIES
 {
-    $(.set-path)$(.root:W)$(.old-path) "$(.root)bcc32" -v -q $(OPTIONS) -L"$(LIBRARY_PATH:W)" -L"$(STDLIBPATH:W)" -e"$(<[1]:W)" @"$(<[3]:W)"
+    $(.set-path)$(.root:W)$(.old-path) $(CONFIG_COMMAND) -v -q $(OPTIONS) -L"$(LIBRARY_PATH:W)" -L"$(STDLIBPATH:W)" -e"$(<[1]:W)" @"$(<[3]:W)"
     "$(.root)implib" "$(<[2]:W)" "$(<[1]:W)"
 }

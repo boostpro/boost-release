@@ -9,7 +9,7 @@
    <body bgcolor="#ffffff" text="#000000">
       <table border="1" bgcolor="#007f7f" cellpadding="2">
          <tr>
-            <td bgcolor="#ffffff"><img src="../c++boost.gif" alt="c++boost.gif (8819 bytes)" width="277" height="86"></td>
+            <td bgcolor="#ffffff"><img src="../boost.png" alt="boost.png (6897 bytes)" width="277" height="86"></td>
             <td><a href="../index.htm"><font face="Arial" color="#ffffff"><big>Home</big></font></a></td>
             <td><a href="../libs/libraries.htm"><font face="Arial" color="#ffffff"><big>Libraries</big></font></a></td>
             <td><a href="../people/people.htm"><font face="Arial" color="#ffffff"><big>People</big></font></a></td>
@@ -294,13 +294,65 @@
             </ul>
          </li>
       </ul>
+      <ul>
+         <li>
+            Make sure your code compiles in the presence of the <code>min()</code> and <code>max()</code>
+            macros. Some platform headers define <code>min()</code> and <code>max()</code> macros which
+            cause some common C++ constructs to fail to compile. Some simple tricks can protect your code
+            from inappropriate macro substitution:<br>&nbsp;
+            <ul>
+               <li>
+                  If you want to call <code>std::min()</code> or <code>std::max()</code>:<br>&nbsp;
+                  <ul>
+                     <li>
+                        If you do not require argument-dependent look-up, use <code>(std::min)(a,b)</code>.
+                     </li>&nbsp;
+                     <li>
+                        If you do require argument-dependent look-up, you should:<br>&nbsp;
+                        <ul>
+                           <li><code>#include &lt;boost/config.hpp&gt;</code></li>&nbsp;
+                           <li>Use <code>BOOST_USING_STD_MIN();</code> to bring <code>std::min()</code> into
+                               the current scope.</li>&nbsp;
+                           <li>Use <code>min BOOST_PREVENT_MACRO_SUBSTITUTION (a,b);</code> to make an
+                               argument-dependent call to <code>min(a,b)</code>.</li>&nbsp;
+                        </ul>
+                     </li>
+                  </ul>&nbsp;
+               </li>
+               <li>
+                  If you want to call <code>std::numeric_limits&lt;int&gt;::max()</code>, use
+                  <code>(std::numeric_limits&lt;int&gt;::max)()</code> instead.<br>&nbsp;
+               </li>
+               <li>
+                  If you want to call a <code>min()</code> or <code>max()</code> member function,
+                  instead to doing <code>obj.min()</code>, use <code>(obj.min)()</code>.<br>&nbsp;
+               </li>
+               <li>
+                  If you want to declare or define a function or a member function named <code>min</code>
+                  or <code>max</code>, then you must use the <code>BOOST_PREVENT_MACRO_SUBSTITUTION</code>
+                  macro. Instead of writing <code>int min() { return 0; }</code> you should write
+                  <code>int min BOOST_PREVENT_MACRO_SUBSTITUTION () { return 0; }</code> This is true
+                  regardless if the function is a free (namespace scope) function, a member function or a
+                  static member function, and it applies for the function declaration as well as the
+                  function definition.<br>&nbsp;
+               </li>
+            </ul>
+         </li>
+      </ul>
       <h3><a name="Directory_structure">Directory Structure</a> and Filenames</h3>
       <ul>
          <li>
-         File and directory names must contain only lowercase ASCII letters , numbers, 
+         File and directory names must contain only <b>lowercase</b> ASCII letters , numbers, 
          underscores, and a period.&nbsp; Leading character must be alphabetic. Maximum 
          length 31. Only a single period is permitted.&nbsp; These requirements ensure 
          file and directory names are relatively portable.
+         <li>
+            Files intended to be processed by a C++ compiler as part
+            of a translation unit should have <b>a three-letter
+            extension ending in &quot;pp&quot;</b>.  Other files should
+            <i>not</i> use extensions ending in &quot;pp&quot;.  This
+            convention makes it easy to identify all of the C++ source
+            in Boost.</li>
          <li>
             All libraries have at their highest level a primary directory named for the 
             particular library. See <a href="#Naming&shy;_consistency">Naming consistency</a>. 
@@ -324,7 +376,7 @@
                <td>If any build files.</td>
             </tr>
             <tr>
-               <td>doc</td>
+               <td><code>doc</code></td>
                <td>Documentation (HTML) files.</td>
                <td>If several doc files.</td>
             </tr>
@@ -369,12 +421,12 @@ Automatic redirection failed, please go to
       <h3><a name="Naming&shy;_consistency">Naming consistency</a></h3>
       <p>As library developers and users have gained experience with Boost, the 
          following consistent naming approach has come to be viewed as very helpful, 
-         particularly for larger libraries which need their own header subdirectories 
+         particularly for larger libraries that need their own header subdirectories 
          and namespaces.</p>
-      <p>Here is how it works. The library is given a name which describes the contents 
-         of the library.&nbsp; Cryptic abbreviations are not acceptable. Following the 
+      <p>Here is how it works. The library is given a name that describes the contents 
+         of the library. Cryptic abbreviations are strongly discouraged. Following the 
          practice of the C++ Standard Library, names are usually singular rather than 
-         plural.&nbsp; For example, a library dealing with file systems might chose the 
+         plural. For example, a library dealing with file systems might chose the 
          name "filesystem", but not "filesystems", "fs" or "nicecode".</p>
       <ul>
          <li>
@@ -387,8 +439,23 @@ Automatic redirection failed, please go to
          &nbsp;
          <li>
             The library's primary namespace (in parent <i>::boost</i>) is given that same 
-            name. For example, <i>::boost::filesystem</i>.</li>
+            name, except when there's a component with that name (e.g., <i>boost::tuple</i>), in which case the namespace name is pluralized. For example, <i>::boost::filesystem</i>.</li>
       </ul>
+
+    <p>When documenting Boost libraries, follow these conventions (see also the following section of this document):
+    <ul>
+      <li>The library name is set in roman type.</li>
+      <li>The library name is capitalized.</li>
+      <li>A period between "Boost" and the library name (e.g., Boost.Bind) is used if and only if the library name is not followed by the word "library".</li>
+      <li>The word "library" is not part of the library name and is therefore lowercased.</li>
+    </ul>
+    <p>Here are a few examples of how to apply these conventions:
+    <ul>
+      <li>Boost.Bind was written by Peter Dimov.</li>
+      <li>The Boost Bind library was written by Peter Dimov.</li>
+      <li>I regularly use Bind, a Boost library written by Peter Dimov.</li>
+    </ul>
+
       <h3><a name="Documentation">Documentation</a></h3>
       <p>Even the simplest library needs some documentation; the amount should be 
          proportional to the need.&nbsp; The documentation should assume the readers 
@@ -538,9 +605,9 @@ Automatic redirection failed, please go to
          04 November, 2003<!--webbot bot="Timestamp" endspan i-checksum="39359" --></p>
       <p>
          © <a name="Copyright">Copyright</a> Beman Dawes 2003.</p>
-      <p>
-         Use, modification, and distribution are subject to the Boost Software License, 
-         Version 1.0. (See accompanying file <a href="../LICENSE_1_0.txt">LICENSE_1_0.txt</a>
-         or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">www.boost.org/LICENSE_1_0.txt</a>)</p>
+    <p> Distributed under the Boost Software License, Version 1.0. 
+    (See accompanying file <a href="../LICENSE_1_0.txt">LICENSE_1_0.txt</a> or 
+    copy at <a href="http://www.boost.org/LICENSE_1_0.txt">www.boost.org/LICENSE_1_0.txt</a>)
+    </p>
    </body>
 </html>

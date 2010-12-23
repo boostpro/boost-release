@@ -1,8 +1,7 @@
 .. Version 1.4 of this ReStructuredText document corresponds to
    n1530_, the paper accepted by the LWG for TR1.
 
-.. Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. All
-   rights reserved.
+.. Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. 
 
 .. parsed-literal::
   
@@ -23,6 +22,7 @@
       explicit iterator_adaptor(Base iter);
       Base const& base() const;
    protected:
+      typedef iterator_adaptor iterator_adaptor\_;
       Base const& base_reference() const;
       Base& base_reference();
    private: // Core iterator interface for iterator_facade.  

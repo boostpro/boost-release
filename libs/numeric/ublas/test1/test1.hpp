@@ -17,6 +17,14 @@
 #ifndef TEST1_H
 #define TEST1_H
 
+#include <iostream>
+
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
+#include <boost/numeric/ublas/io.hpp>
+
 namespace ublas = boost::numeric::ublas;
 
 template<class V>
@@ -36,28 +44,19 @@ void initialize_matrix (M &m) {
 }
 
 void test_vector ();
-
 void test_matrix_vector ();
-
 void test_matrix ();
 
-// #define USE_FLOAT
-#define USE_DOUBLE
-// #define USE_STD_COMPLEX
 
-// #define USE_RANGE
-// #define USE_SLICE
-
-// #define USE_BOUNDED_ARRAY
-#define USE_UNBOUNDED_ARRAY
-// #define USE_STD_VECTOR
-
-// #define USE_BOUNDED_VECTOR
-
-#define USE_MATRIX
-// #define USE_BOUNDED_MATRIX
-// #define USE_VECTOR_OF_VECTOR
-
+// Disable some tests for truly broken compilers
+    // MSVC Version 6.0 & 7.0 have problems compiling with std::complex
+#if defined(BOOST_MSVC) && (BOOST_MSVC <= 1300)
+#undef USE_STD_COMPLEX
 #endif
 
+    // Intel for Windows fails to link when a std::complex is returned!
+#if defined(BOOST_INTEL_CXX_VERSION) && (BOOST_INTEL_CXX_VERSION <= 800) && defined(__ICL)
+#undef USE_STD_COMPLEX
+#endif
 
+#endif

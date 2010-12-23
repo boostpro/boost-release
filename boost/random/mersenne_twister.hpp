@@ -1,18 +1,13 @@
 /* boost random/mersenne_twister.hpp header file
  *
  * Copyright Jens Maurer 2000-2001
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
- *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: mersenne_twister.hpp,v 1.14 2003/07/31 01:11:36 david_abrahams Exp $
+ * $Id: mersenne_twister.hpp,v 1.16 2004/07/27 03:43:32 dgregor Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -113,8 +108,8 @@ public:
       throw std::invalid_argument("mersenne_twister::seed");
   }
   
-  result_type min() const { return 0; }
-  result_type max() const
+  result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return 0; }
+  result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const
   {
     // avoid "left shift count >= with of type" warning
     result_type res = 0;

@@ -9,10 +9,17 @@
 // about the suitability of this software for any purpose.
 // It is provided "as is" without express or implied warranty.
 
+#include <boost/thread/detail/config.hpp>
+
+#if defined(BOOST_HAS_FTIME)
+#   define __STDC_CONSTANT_MACROS
+#endif
+
 #include <boost/thread/xtime.hpp>
 
 #if defined(BOOST_HAS_FTIME)
 #   include <windows.h>
+#   include <boost/cstdint.hpp>
 #elif defined(BOOST_HAS_GETTIMEOFDAY)
 #   include <sys/time.h>
 #elif defined(BOOST_HAS_MPTASKS)
@@ -77,14 +84,30 @@ int xtime_get(struct xtime* xtp, int clock_type)
     {
 #if defined(BOOST_HAS_FTIME)
         FILETIME ft;
+#   if defined(BOOST_NO_GETSYSTEMTIMEASFILETIME)
+        {
+            SYSTEMTIME st;
+            GetSystemTime(&st);
+            SystemTimeToFileTime(&st,&ft);
+        }
+#   else
         GetSystemTimeAsFileTime(&ft);
-        const boost::uint64_t TIMESPEC_TO_FILETIME_OFFSET =
-            ((boost::uint64_t)27111902UL << 32) +
-            (boost::uint64_t)3577643008UL;
-        xtp->sec = (int)((*(__int64*)&ft - TIMESPEC_TO_FILETIME_OFFSET) /
-            10000000);
-        xtp->nsec = (int)((*(__int64*)&ft - TIMESPEC_TO_FILETIME_OFFSET -
-                              ((__int64)xtp->sec * (__int64)10000000)) * 100);
+#   endif
+        static const boost::uint64_t TIMESPEC_TO_FILETIME_OFFSET =
+            UINT64_C(116444736000000000);
+        
+        const boost::uint64_t ft64 =
+            (static_cast<boost::uint64_t>(ft.dwHighDateTime) << 32)
+            + ft.dwLowDateTime;
+
+        xtp->sec = static_cast<xtime::xtime_sec_t>(
+            (ft64 - TIMESPEC_TO_FILETIME_OFFSET) / 10000000
+        );
+
+        xtp->nsec = static_cast<xtime::xtime_nsec_t>(
+            ((ft64 - TIMESPEC_TO_FILETIME_OFFSET) % 10000000) * 100
+        );
+
         return clock_type;
 #elif defined(BOOST_HAS_GETTIMEOFDAY)
         struct timeval tv;

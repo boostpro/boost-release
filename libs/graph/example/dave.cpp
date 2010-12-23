@@ -27,7 +27,9 @@
 #include <iterator>
 #include <vector>
 #include <list>
-#include <queue>
+// Use boost::queue instead of std::queue because std::queue doesn't
+// model Buffer; it has to top() function. -Jeremy
+#include <boost/pending/queue.hpp>
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/visitors.hpp>
@@ -179,7 +181,7 @@ main(int , char* [])
   boost::property_map<Graph, vertex_index_t>::type 
     vertex_id = get(vertex_index, G);
 
-  std::vector<weight_t> distance(N, numeric_limits<weight_t>::max());
+  std::vector<weight_t> distance(N, (numeric_limits<weight_t>::max)());
   typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
   std::vector<Vertex> parent(N);
 
@@ -212,7 +214,7 @@ main(int , char* [])
   std::ostream_iterator<int> cout_int(std::cout, " ");
   std::ostream_iterator<char> cout_char(std::cout, " ");
 
-  std::queue<Vertex> Q;
+  boost::queue<Vertex> Q;
   boost::breadth_first_search
     (G, vertex(a, G), Q,
      make_bfs_visitor(

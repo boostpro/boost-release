@@ -11,7 +11,7 @@
 <body bgcolor="#FFFFFF">
 
 <h1>
-<img border="0" src="../../../c++boost.gif" align="center" width="277" height="86"><a href="../../../boost/filesystem/exception.hpp">boost/filesystem/exception.hpp</a></h1>
+<img border="0" src="../../../boost.png" align="center" width="277" height="86"><a href="../../../boost/filesystem/exception.hpp">boost/filesystem/exception.hpp</a></h1>
 
 <p><a href="#Introduction">Introduction</a><br>
 <a href="#Synopsis">Synopsis</a><br>
@@ -58,17 +58,25 @@ Error and Exception Handling</a> guidelines.</p>
     {
     public:
 
-      <a href="#Constructors">filesystem_error</a>( const std::string &amp; who,
+      <a href="#Constructors">filesystem_error</a>(
+        const std::string &amp; who,
         const std::string &amp; message );
 
-      <a href="#Constructors">filesystem_error</a>( const std::string &amp; who,
-        const path &amp; path1, const std::string &amp; message );
+      <a href="#Constructors">filesystem_error</a>(
+        const std::string &amp; who,
+        const path &amp; path1,
+        const std::string &amp; message,
+        error_code ec = other_error );
 
-      <a href="#Constructors">filesystem_error</a>( const std::string &amp; who,
-        const path &amp; path1, <i>sys_err</i> sys_err_code );
+      <a href="#Constructors">filesystem_error</a>(
+        const std::string &amp; who,
+        const path &amp; path1,
+        <i>sys_err</i> sys_err_code );
 
-      <a href="#Constructors">filesystem_error</a>( const std::string &amp; who,
-        const path &amp; path1, const path &amp; path2,
+      <a href="#Constructors">filesystem_error</a>(
+        const std::string &amp; who,
+        const path &amp; path1,
+        const path &amp; path2,
         <i>sys_err</i> sys_err_code );
 
       ~filesystem_error() throw();
@@ -91,19 +99,28 @@ other operating systems, it is implementation defined.</p>
 <h2><a name="Members">Member functions</a></h2>
 
 <h3><a name="Constructors">Constructors</a></h3>
+<pre>      filesystem_error(
+        const std::string &amp; who,
+        const std::string &amp; message );
+
+      filesystem_error(
+        const std::string &amp; who,
+        const path &amp; path1,
+        const std::string &amp; message,
+        error_code ec = other_error );
+
+      filesystem_error(
+        const std::string &amp; who,
+        const path &amp; path1,
+        <i>sys_err</i> sys_err_code );
+
+      filesystem_error(
+        const std::string &amp; who,
+        const path &amp; path1,
+        const path &amp; path2,
+        <i>sys_err</i> sys_err_code );
+</pre>
 <blockquote>
-  <pre>filesystem_error( const std::string &amp; who,
-  const std::string &amp; message );
-
-filesystem_error( const std::string &amp; who,
-  const path &amp; path1, const std::string &amp; message );
-
-filesystem_error( const std::string &amp; who,
-  const path &amp; path1, int sys_err_code );
-
-filesystem_error( const std::string &amp; who,
-  const path &amp; path1, const path &amp; path2,
-  int sys_err_code );</pre>
   <p><b>Precondition:</b> The <code>who</code> argument is in the form, as 
   appropriate:</p>
   <ul>
@@ -115,7 +132,8 @@ filesystem_error( const std::string &amp; who,
   </ul>
   <p>These forms are explicitly specified to ensure portability of user programs 
   between library implementations. </p>
-  <p><b>Effects:</b> Constructs a <i>filesystem_error</i> object.</p>
+  <p><b>Effects:</b> Constructs a <i>filesystem_error</i> object, initialized 
+  from the appropriate arguments.</p>
 </blockquote>
 <h3><a name="what">what</a></h3>
 <blockquote>
@@ -171,11 +189,11 @@ processing.</p>
 
 <h2><a name="Acknowledgements">Acknowledgements</a></h2>
 
-<p>Peter Dimov patently identified requirements for portability and 
+<p>Peter Dimov patiently identified requirements for portability and 
 internationalization of error messages. </p>
 <hr>
 <p>Revised
-<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->02 October, 2003<!--webbot bot="Timestamp" endspan i-checksum="38549" --></p>
+<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->19 March, 2004<!--webbot bot="Timestamp" endspan i-checksum="28879" --></p>
 
 <p>© Copyright Beman Dawes, 2002</p>
 <p> Use, modification, and distribution are subject to the Boost Software 

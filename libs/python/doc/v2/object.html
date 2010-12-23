@@ -16,7 +16,7 @@
       <tr>
         <td valign="top" width="300">
           <h3><a href="../../../../index.htm"><img height="86" width="277"
-          alt="C++ Boost" src="../../../../c++boost.gif" border="0"></a></h3>
+          alt="C++ Boost" src="../../../../boost.png" border="0"></a></h3>
         </td>
 
         <td valign="top">
@@ -208,16 +208,19 @@
 
     <p><a name="slice_nil-spec"></a></p>
 <pre>
-enum slice_nil { _ };
+class slice_nil;
+static const _ = slice_nil();
 </pre>
     A type that can be used to get the effect of leaving out an index in a
     Python slice expression: 
 <pre>
 &gt;&gt;&gt; x[:-1]
+&gt;&gt;&gt; x[::-1]
 </pre>
     C++ equivalent: 
 <pre>
 x.slice(_,-1)
+x[slice(_,_,-1)]
 </pre>
 
     <h2><a name="classes"></a>Classes</h2>
@@ -924,8 +927,7 @@ object sum_items(object seq)
     </p>
 
     <p><i>&copy; Copyright <a href=
-    "../../../../people/dave_abrahams.htm">Dave Abrahams</a> 2002. All Rights
-    Reserved.</i></p>
+    "../../../../people/dave_abrahams.htm">Dave Abrahams</a> 2002.</i></p>
   </body>
 </html>
 

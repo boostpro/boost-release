@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_parameters.cpp,v $
 //
-//  Version     : $Revision: 1.11 $
+//  Version     : $Revision: 1.15 $
 //
 //  Description : simple implementation for Unit Test Framework parameter 
 //  handling routines. May be rewritten in future to use some kind of 
@@ -17,11 +17,12 @@
 
 // Boost.Test
 #include <boost/test/detail/unit_test_parameters.hpp>
+#include <boost/test/detail/basic_cstring/compare.hpp>
+#include <boost/test/detail/fixed_mapping.hpp>
 
 //BOOST
 #include <boost/config.hpp>           // for broken compiler workarounds
-// for strcmp etc:
-#include <cstring>
+#include <map>
 #include <cstdlib>
 
 # ifdef BOOST_NO_STDC_NAMESPACE
@@ -29,44 +30,37 @@ namespace std { using ::getenv; using ::strncmp; using ::strcmp; }
 # endif
 
 namespace boost {
-
-namespace unit_test_framework {
-
-const struct parameter_names {
-    c_string_literal env_name;
-    c_string_literal cla_name;
-} parameter_cla_names [] = {
-    { LOG_LEVEL         , "--log_level" },
-    { NO_RESULT_CODE    , "--result_code" },
-    { REPORT_LEVEL      , "--report_level" },
-    { TESTS_TO_RUN      , "--run_test" },
-    { SAVE_TEST_PATTERN , "--save_pattern" },
-    { BUILD_INFO        , "--build_info" },
-    { CATCH_SYS_ERRORS  , "--catch_system_errors" },
-    { REPORT_FORMAT     , "--report_format" },
-    { LOG_FORMAT        , "--log_format" },
-    { OUTPUT_FORMAT     , "--output_format" },
-    { c_string_literal(), c_string_literal() }
     
-} ;
+namespace unit_test {
 
-std::string
-retrieve_framework_parameter( c_string_literal parameter_name, int* argc, char** argv )
+const_string
+retrieve_framework_parameter( const_string parameter_name, int* argc, char** argv )
 {
+    static fixed_mapping<const_string,const_string> parameter_2_cla_name_map(
+        LOG_LEVEL         , "--log_level",
+        NO_RESULT_CODE    , "--result_code",
+        REPORT_LEVEL      , "--report_level",
+        TESTS_TO_RUN      , "--run_test",
+        SAVE_TEST_PATTERN , "--save_pattern",
+        BUILD_INFO        , "--build_info",
+        CATCH_SYS_ERRORS  , "--catch_system_errors",
+        REPORT_FORMAT     , "--report_format",
+        LOG_FORMAT        , "--log_format",
+        OUTPUT_FORMAT     , "--output_format",
+
+        ""
+    );
+
     // first try to find parameter among command line arguments if present
     if( argc ) {
         // locate corresponding cla name
-        parameter_names const* curr = parameter_cla_names;
-        while( curr->env_name && std::strcmp( curr->env_name, parameter_name ) != 0 )
-            curr++;
+        const_string cla_name = parameter_2_cla_name_map[parameter_name];
 
-        if( curr->env_name ) {
-            std::string parameter_cla_name = curr->cla_name;
-            parameter_cla_name += '=';
-            
+        if( !cla_name.is_empty() ) {
             for( int i = 1; i < *argc; ++i ) {
-                if( std::strncmp( parameter_cla_name.c_str(), argv[i], parameter_cla_name.length() ) == 0 ) {
-                    std::string result = argv[i] + parameter_cla_name.length();
+                if( cla_name == const_string( argv[i], cla_name.size() ) && 
+                    argv[i][cla_name.size()] == '=' ) {
+                    const_string result = argv[i] + cla_name.size() + 1;
                     
                     for( int j = i; j < *argc; ++j ) {
                         argv[j] = argv[j+1];
@@ -79,13 +73,12 @@ retrieve_framework_parameter( c_string_literal parameter_name, int* argc, char**
         }
     }
 
-    c_string_literal env_var_value = std::getenv( parameter_name );
-    return  env_var_value ? env_var_value : "";
+    return std::getenv( parameter_name.begin() );
 }
 
 //____________________________________________________________________________//
 
-} // namespace unit_test_framework
+} // namespace unit_test
 
 } // namespace boost
 
@@ -93,6 +86,20 @@ retrieve_framework_parameter( c_string_literal parameter_name, int* argc, char**
 //  Revision History :
 //  
 //  $Log: unit_test_parameters.cpp,v $
+//  Revision 1.15  2004/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.14  2004/05/18 13:34:15  dgregor
+//  Needed to include <cstdlib> to get std::getenv.
+//
+//  Revision 1.13  2004/05/13 09:04:43  rogeeff
+//  added fixed_mapping
+//
+//  Revision 1.12  2004/05/11 11:05:04  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.11  2003/12/01 00:42:37  rogeeff
 //  prerelease cleaning
 //

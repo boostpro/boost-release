@@ -7,8 +7,8 @@
 :organization: `Boost Consulting`_, Indiana University `Open Systems
                Lab`_, University of Hanover `Institute for Transport
                Railway Operation and Construction`_
-:date: $Date: 2004/01/27 04:50:51 $
-:copyright: Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. All rights reserved
+:date: $Date: 2004/11/02 14:39:02 $
+:copyright: Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. 
 
 .. _`Boost Consulting`: http://www.boost-consulting.com
 .. _`Open Systems Lab`: http://www.osl.iu.edu
@@ -16,9 +16,9 @@
 
 :abstract:
 
-  .. include:: function_output_iterator_abstract.rst
+  .. include:: func_output_iter_abstract.rst
 
 .. contents:: Table of Contents
 
-.. include:: function_output_iterator_ref.rst
+.. include:: func_output_iter_ref.rst
 .. include:: function_output_iterator_eg.rst

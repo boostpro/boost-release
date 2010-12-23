@@ -17,7 +17,7 @@
       <tr>
         <td valign="top" width="300">
           <h3><a href="../../../../index.htm"><img height="86" width="277"
-          alt="C++ Boost" src="../../../../c++boost.gif" border="0"></a></h3>
+          alt="C++ Boost" src="../../../../boost.png" border="0"></a></h3>
         </td>
 
         <td valign="top">
@@ -281,6 +281,7 @@ namespace boost { namespace python
     // pickle support
     template &lt;typename PickleSuite&gt;
     self&amp; def_pickle(PickleSuite const&amp;);
+    self&amp; enable_pickling();
   };
 }}
 </pre>
@@ -709,12 +710,27 @@ class_&amp; def_pickle(PickleSuite const&amp;);
       checks.</dt>
     </dl>
     <br>
+<pre>
+class_&amp; enable_pickling();
+</pre>
+
+    <dl class="function-semantics">
+      <dt><b>Effects:</b> Defines the <code>__reduce__</code> method and
+      the <code>__safe_for_unpickling__</code> attribute.
+
+      <dt><b>Returns:</b> <code>*this</code></dt>
+
+      <dt><b>Rationale:</b> Light-weight alternative to
+      <code>def_pickle()</code>. Enables implementation of
+      <a href="pickle.html">pickle support</a> from Python.</dt>
+    </dl>
+    <br>
      
 
     <h3><a name="bases-spec"></a>Class template
     <code>bases&lt;T1,&nbsp;T2,</code>...<code>TN&gt;</code></h3>
 
-    <p>An <a href="../../../mpl/doc/ref/Sequences.html">MPL sequence</a>
+    <p>An <a href="../../../mpl/doc/refmanual/forward-sequence.html">MPL sequence</a>
     which can be used in <code>class_&lt;</code>...<code>&gt;</code>
     instantiations indicate a list of base classes.</p>
 
@@ -778,8 +794,7 @@ class_&lt;Derived, bases&lt;Base&gt; &gt;("Derived");
      
 
     <p><i>&copy; Copyright <a href=
-    "../../../../people/dave_abrahams.htm">Dave Abrahams</a> 2002. All Rights
-    Reserved.</i></p>
+    "../../../../people/dave_abrahams.htm">Dave Abrahams</a> 2002.</i></p>
   </body>
 </html>
 

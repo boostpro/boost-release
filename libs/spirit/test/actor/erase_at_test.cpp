@@ -11,22 +11,19 @@
 // Test suite for push_front_actor, pop_front_actor
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <boost/spirit.hpp>
-#include <boost/test/unit_test.hpp>
-
+#include "action_tests.hpp"
+#include <boost/spirit/core.hpp>
 #include <boost/spirit/actor/erase_actor.hpp>
 #include <map>
 
-void erase_test()
+void erase_action_test()
 {
-    using namespace boost::unit_test_framework;
     using namespace boost::spirit;
 
     const char* cp = "one,two,three";
     const char* cp_first = cp;
-    const char* cp_last = cp + strlen(cp);
+    const char* cp_last = cp + string_length(cp);
     const char* cp_i[] = {"one","two","three"};
-    size_t i;
     typedef std::map<std::string, int> map_string_type;
     map_string_type c;
     map_string_type::const_iterator it_find;
@@ -44,7 +41,7 @@ void erase_test()
     BOOST_CHECK(hit);
     BOOST_CHECK_EQUAL(scan.first, scan.last);
     BOOST_CHECK_EQUAL( c.size(), static_cast<map_string_type::size_type>(1));
-    for (i=0;i<3;++i)
+    for (int i=0;i<3;++i)
     {
         it_find = c.find(cp_i[i]);
         BOOST_CHECK( it_find == c.end() );
@@ -53,9 +50,5 @@ void erase_test()
 
 }
 
-void erase_action_test(boost::unit_test_framework::test_suite* test)
-{
-    test->add( BOOST_TEST_CASE(&erase_test));
-}
 
 

@@ -1,14 +1,13 @@
 // Boost.Signals library
 
-// Copyright Doug Gregor 2001-2003. Use, modification and
+// Copyright Douglas Gregor 2001-2003. Use, modification and
 // distribution is subject to the Boost Software License, Version
 // 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 // For more information, see http://www.boost.org
 
-#define BOOST_INCLUDE_MAIN
-#include <boost/test/test_tools.hpp>
+#include <boost/test/minimal.hpp>
 #include <boost/signal.hpp>
 #include <iostream>
 #include <string>
@@ -33,6 +32,9 @@ struct remove_connection {
   int value;
   int idx;
 };
+
+bool operator==(const remove_connection& x, const remove_connection& y)
+{ return x.value == y.value && x.idx == y.idx; }
 
 static void
 test_remove_self()
@@ -208,11 +210,39 @@ test_bloodbath()
   BOOST_TEST(test_output == "3");
 }
 
+static void
+test_disconnect_equal()
+{
+  boost::signal0<void> s0;
+
+  connections[0] = s0.connect(remove_connection(0));
+  connections[1] = s0.connect(remove_connection(1));
+  connections[2] = s0.connect(remove_connection(2));
+  connections[3] = s0.connect(remove_connection(3));
+
+  std::cout << "Deleting 2" << std::endl;
+
+  test_output = "";
+  s0(); std::cout << std::endl;
+  BOOST_TEST(test_output == "0123");
+
+#if BOOST_WORKAROUND(BOOST_MSVC, <= 0x1700)
+  connections[2].disconnect();
+#else
+  s0.disconnect(remove_connection(2));
+#endif
+
+  test_output = "";
+  s0(); std::cout << std::endl;
+  BOOST_TEST(test_output == "013");
+}
+
 int test_main(int, char* [])
 {
   test_remove_self();
   test_remove_prior();
   test_remove_after();
   test_bloodbath();
+  test_disconnect_equal();
   return 0;
 }

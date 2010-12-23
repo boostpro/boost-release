@@ -1,8 +1,7 @@
-// Copyright David Abrahams 2002. Permission to copy, use,
-// modify, sell and distribute this software is granted provided this
-// copyright notice appears in all copies. This software is provided
-// "as is" without express or implied warranty, and with no claim as
-// to its suitability for any purpose.
+// Copyright David Abrahams 2002.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 #include <boost/python/object/life_support.hpp>
 #include <boost/python/detail/none.hpp>
 #include <boost/python/refcount.hpp>
@@ -81,7 +80,7 @@ PyTypeObject life_support_type = {
 
 PyObject* make_nurse_and_patient(PyObject* nurse, PyObject* patient)
 {
-    if (nurse == Py_None)
+    if (nurse == Py_None || nurse == patient)
         return nurse;
     
     if (life_support_type.ob_type == 0)

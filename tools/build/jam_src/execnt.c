@@ -5,11 +5,9 @@
  */
 
 /*  This file is ALSO:
- *  (C) Copyright David Abrahams 2001. Permission to copy, use,
- *  modify, sell and distribute this software is granted provided this
- *  copyright notice appears in all copies. This software is provided
- *  "as is" without express or implied warranty, and with no claim as
- *  to its suitability for any purpose.
+ *  Copyright 2001-2004 David Abrahams.
+ *  Distributed under the Boost Software License, Version 1.0.
+ *  (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  */
 
 # include "jam.h"
@@ -674,6 +672,13 @@ execcmd(
     }
 
     /* the rest is for Windows NT only */
+    /* spawn doesn't like quotes aroudn the command name */
+    if ( argv[0][0] == '"')
+    {
+        int l = strlen(argv[0]);
+        if (argv[0][l-1] == '"') argv[0][l-1] = '\0';
+        strcpy(argv[0],argv[0]+1);
+    }
     if( ( pid = spawnvp( P_NOWAIT, argv[0], argv ) ) == -1 )
     {
         perror( "spawn" );
@@ -740,6 +745,10 @@ execwait()
 	    printf( "waif child found!\n" );
 	    exit( EXITBAD );
 	}
+
+	/* Clear the temp file */
+    if ( cmdtab[i].tempfile )
+        unlink( cmdtab[ i ].tempfile );
 
 	/* Drive the completion */
 

@@ -1,15 +1,10 @@
 // Boost.Graph library isomorphism test
 
-// Copyright (C) 2001 Doug Gregor (gregod@cs.rpi.edu)
+// Copyright (C) 2001-20044 Douglas Gregor (dgregor at cs dot indiana dot edu)
 //
-// Permission to copy, use, sell and distribute this software is granted
-// provided this copyright notice appears in all copies.
-// Permission to modify the code and to distribute modified code is granted
-// provided this copyright notice appears in all copies, and a notice
-// that the code was modified is included with the copyright notice.
-//
-// This software is provided "as is" without express or implied warranty,
-// and with no claim as to its suitability for any purpose.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 // For more information, see http://www.boost.org
 //
@@ -64,7 +59,8 @@ void randomly_permute_graph(const Graph1& g1, Graph2& g2)
   random_functor<boost::mt19937> rand_fun(gen);
 
   // Decide new order
-  std::vector<vertex1> orig_vertices(vertices(g1).first, vertices(g1).second);
+  std::vector<vertex1> orig_vertices;
+  std::copy(vertices(g1).first, vertices(g1).second, std::back_inserter(orig_vertices));
   std::random_shuffle(orig_vertices.begin(), orig_vertices.end(), rand_fun);
   std::map<vertex1, vertex2> vertex_map;
 
@@ -159,8 +155,12 @@ int test_main(int argc, char* argv[])
     return 0;
   }
 
-  int n = std::atoi(argv[1]);
-  double edge_prob = std::atof(argv[2]);
+#ifndef BOOST_NO_STDC_NAMESPACE
+  using std::atoi;
+  using std::atof;
+#endif
+  int n = atoi(argv[1]);
+  double edge_prob = atof(argv[2]);
   test_isomorphism(n, edge_prob);
 
   return 0;

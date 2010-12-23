@@ -254,7 +254,7 @@ local rule load-jamfile (
         .jamfile-modules += $(jamfile-module) ;
         modules.load $(jamfile-module) :  [ path.native $(jamfile-to-load) ] : . ;
     }
-    
+    .current-project = $(.current-project[2-]) ;
 }
 
 # Initialize the module for a project. 
@@ -276,7 +276,15 @@ rule initialize (
     $(module-name).attributes = [ new project-attributes $(location) ] ;
     local attributes = $($(module-name).attributes) ;
     
-    $(attributes).set source-location : $(location) : exact ;    
+    if $(location)
+    {        
+        $(attributes).set source-location : [ path.make $(location) ] : exact ;    
+    }
+    else
+    {
+        $(attributes).set source-location : "" : exact ;    
+    }
+    
     $(attributes).set requirements : [ property-set.empty ] : exact ;
     $(attributes).set usage-requirements : [ property-set.empty ] : exact ;    
 
@@ -291,10 +299,10 @@ rule initialize (
         # Make sure we've loaded the project-root corresponding to this
         # Jamfile.
         #
-        local project-root-module = [ project-roots.load $(location) ] ;
-        local project-root = [ $(project-root-module).project-root get-location ] ;
+        local project-root-object = [ project-roots.load $(location) ] ;
+        local project-root = [ $(project-root-object).get-location ] ;
         
-        $(attributes).set project-root-module : $(project-root-module) : exact ;
+        $(attributes).set project-root : $(project-root-object) : exact ;
 
         local parent = [ find-jamfile $(location) $(project-root) ] ;
         local parent-module = ;
@@ -303,16 +311,18 @@ rule initialize (
             parent-module = [ load [ path.parent $(parent[1]) ] ] ;
         }
         
-        inherit-attributes $(module-name) : $(project-root-module) : $(parent-module) ;
+        inherit-attributes $(module-name) : $(project-root-object) : $(parent-module) ;
     }    
+    
+    .current-project = [ target $(module-name) ] $(.current-project) ;
 }
 
 # Make 'project-module' inherit attributes of project root and parent module.
-rule inherit-attributes ( project-module : project-root-module : parent-module ? )
+rule inherit-attributes ( project-module : project-root : parent-module ? )
 {
     # Register with the project root. This will inject project-root
     # constants and do some other initialization.
-    $(project-root-module).project-root register-project $(project-module) ;
+    $(project-root).register-project $(project-module) ;
 
     if $(parent-module)
     {
@@ -383,7 +393,9 @@ class project-attributes
         else if $(attribute) = "requirements" 
         {
             specification = [ property.translate-paths $(specification)
-                              : $(self.location) ] ;
+                              : $(self.location) ] ;            
+            specification = 
+              [ property.expand-subfeatures-in-conditions $(specification) ] ;                
             specification = [ property.make $(specification) ] ;            
             result = [ property-set.create $(specification) ] ;            
             
@@ -440,7 +452,8 @@ class project-attributes
         }        
         else if $(attribute) = "source-location"
         { 
-            self.source-location = [ path.root $(specification) $(self.location) ] ;
+            self.source-location = [ path.root 
+                [ path.make $(specification) ] $(self.location) ] ;
         }            
         else if $(attribute) = "build-dir"
         {
@@ -482,6 +495,12 @@ class project-attributes
     
 }
 
+# Returns the project which is currently being loaded
+rule current ( )
+{
+    return $(.current-project[1]) ;
+}
+
 # Returns the project-attribute instance for the specified jamfile module.
 rule attributes ( project )
 {
@@ -506,19 +525,10 @@ rule target ( project-module )
     return $(.target.$(project-module)) ;    
 }
 
-# If 'path' is absolute, returns it.
-# Oherwise, returns the location of 'project', joined
-# with 'path'
-rule path-relative-to-project-location ( path project )
-{
-    local project-location = [ attribute $(project) location ] ;
-    return [ path.root $(path) $(project-location) ] ;
-}
-
-
 # Use/load a project.
 rule use ( id : location )
 {
+    local saved-project = $(.current-project) ;
     local project-module = [ project.load $(location) ] ;
     local declared-id = [ project.attribute $(project-module) id ] ;
 
@@ -530,6 +540,7 @@ rule use ( id : location )
     {
         error project \"$(declared-id)\" at \"$(location)\" redeclared with id \"$(id)\". ;
     }
+    .current-project = $(saved-project) ;
 }
 
 # This module defines rules common to all projects
@@ -591,9 +602,34 @@ module project-rules
         import path ;
         import project ;
         
-        local location = [ project.attribute $(__name__) location ] ;
-        local all-paths = [ path.glob $(location) : $(wildcards) ] ;
-        return $(all-paths:D="") ;
+        local location = [ project.attribute $(__name__) source-location ] ;
+
+        local all-paths ;
+        if ! $(wildcards:D)
+        {
+            # No directory in any wildcard -- the simplest case.
+            all-paths = [ path.glob $(location) : $(wildcards) ] ;
+            all-paths = $(all-paths:D="") ;
+        } 
+        else
+        {
+            for local w in $(wildcards)
+            {
+                local l = [ path.join $(location) $(w:D) ] ;
+                local paths = [ path.glob $(l) : $(w:D="") ] ;                
+                # The paths we've found are relative to current directory,
+                # but the names specified in sources list are assumed to
+                # be relative to source directory of the corresponding
+                # prject. So, just make the name absolute.
+                for local p in $(paths)
+                {
+                    all-paths += [ path.root $(p) [ path.pwd ] ] ;
+                }                
+            }
+            
+        }
+
+        return $(all-paths) ;                
     }        
 }
 

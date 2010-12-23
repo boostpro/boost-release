@@ -8,8 +8,8 @@
 :Contact: dave@boost-consulting.com, jsiek@osl.iu.edu, witt@styleadvisor.com
 :organization: `Boost Consulting`_, Indiana University `Open Systems
                Lab`_, `Zephyr Associates, Inc.`_
-:date: $Date: 2004/01/27 17:03:46 $
-:copyright: Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2004. All rights reserved
+:date: $Date: 2004/11/02 14:39:03 $
+:copyright: Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2004. 
 
 .. _`Boost Consulting`: http://www.boost-consulting.com
 .. _`Open Systems Lab`: http://www.osl.iu.edu

@@ -1,3 +1,6 @@
+# Copyright Joel de Guzman 2004. Distributed under the Boost
+# Software License, Version 1.0. (See accompanying
+# file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 '''
 
 #####################################################################
@@ -5,6 +8,9 @@
 #####################################################################
 
 >>> from map_indexing_suite_ext import *
+>>> assert "map_indexing_suite_IntMap_entry" in dir()
+>>> assert "map_indexing_suite_TestMap_entry" in dir()
+>>> assert "map_indexing_suite_XMap_entry" in dir()
 >>> x = X('hi')
 >>> x
 hi

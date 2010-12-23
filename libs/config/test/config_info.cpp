@@ -17,6 +17,8 @@
 #include <iomanip>
 #include <string.h>
 #include <limits.h>
+#include <stdlib.h>
+#include <stddef.h>
 
 #ifdef BOOST_HAS_UNISTD_H
 #include <unistd.h>
@@ -68,7 +70,7 @@ template <class T>
 void print_byte_order(const char* what, T /* t */ )
 {
    T val = 0;
-   unsigned i;
+   T i;
    for(i = 1; i < sizeof(T); ++i)
    {
       val |= (CHAR_BIT * i) << (CHAR_BIT * i);
@@ -177,6 +179,8 @@ void print_compiler_macros()
   PRINT_MACRO(__sparc__);
   PRINT_MACRO(__powerpc__);
   PRINT_MACRO(__hppa);
+  PRINT_MACRO(__CYGWIN__);
+  PRINT_MACRO(__MINGW32__);
   // HP aCC:
   PRINT_MACRO(__HP_aCC);
   PRINT_MACRO(_HPACC_);
@@ -274,6 +278,7 @@ void print_compiler_macros()
   PRINT_MACRO(__STDC_HOSTED__);
   PRINT_MACRO(__COMO__);
   PRINT_MACRO(__COMO_VERSION__);
+  PRINT_MACRO(__DM__);
 }
 
 void print_stdlib_macros()
@@ -674,6 +679,20 @@ void print_stdlib_macros()
    PRINT_MACRO(__GLIBCPP__);
    PRINT_MACRO(_GLIBCPP_USE_WCHAR_T);
    PRINT_MACRO(_GLIBCPP_VERSION);
+   PRINT_MACRO(__GLIBCXX__);
+   PRINT_MACRO(_GLIBCXX_USE_WCHAR_T);
+   PRINT_MACRO(_GLIBCXX_VERSION);
+   PRINT_MACRO(_GLIBCXX_USE_LONG_LONG);
+   PRINT_MACRO(_GLIBCXX_USE_NLS);
+   PRINT_MACRO(_GLIBCXX_USE_C99_MATH);
+   PRINT_MACRO(_GLIBCXX_USE_C99);
+   PRINT_MACRO(_GLIBCXX_CONCEPT_CHECKS);
+   PRINT_MACRO(_GLIBCXX_USE_LFS);
+   PRINT_MACRO(_GLIBCXX_SYMVER);
+   PRINT_MACRO(_GLIBCXX_MEM_LIMITS);
+   PRINT_MACRO(_GLIBCXX_HOSTED);
+   PRINT_MACRO(_GLIBCXX_SJLJ_EXCEPTIONS);
+
    // Modena C++ standard library
    PRINT_MACRO(MSIPL_ANSI_HEADER);
    PRINT_MACRO(MSIPL_BOOL_BUILTIN);
@@ -709,6 +728,10 @@ void print_platform_macros()
    PRINT_EXPRESSION(sizeof(short));
    PRINT_EXPRESSION(sizeof(int));
    PRINT_EXPRESSION(sizeof(long));
+   PRINT_EXPRESSION(sizeof(size_t));
+   PRINT_EXPRESSION(sizeof(ptrdiff_t));
+   PRINT_EXPRESSION(sizeof(void*));
+   PRINT_EXPRESSION(sizeof(void(*)(void)));
    PRINT_EXPRESSION(sizeof(float));
    PRINT_EXPRESSION(sizeof(double));
    PRINT_EXPRESSION(sizeof(long double));

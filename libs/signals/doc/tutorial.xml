@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE section PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
   "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd">
-<section last-revision="$Date: 2003/12/19 03:32:09 $">
+<section last-revision="$Date: 2004/11/18 23:15:15 $" id="signals.tutorial">
   <title>Tutorial</title>
 
   <using-namespace name="boost"/>
@@ -217,24 +217,16 @@ sig();
           </tbody>
         </tgroup>
       </informaltable>
-<para>Now, if you compile and run this program, you might see
-something strange. It is possible that the output will look like
-this:</para>
+<para>By default, slots are called in first-in first-out (FIFO) order,
+so the output of this program will be as expected:</para>
 <programlisting>
-  , World!
-Hello
+Hello, World!
 </programlisting>
-<para>The underlying reason is that the ordering of signals isn't
-guaranteed. The signal is free to call either the
-<code>Hello</code> slot or the <code>World</code> slot first, but
-every slot will be called unless something bad (e.g., an exception)
-occurs. Read on to learn how to control the ordering so that
-"Hello, World!" always prints as expected.</para>
 </section>
 
 <section><title>Ordering slot call groups (Intermediate)</title>
 <para>Slots are free to have side effects, and that can mean that some
-slots will have to be called before others. The Boost.Signals
+slots will have to be called before others even if they are not connected in that order. The Boost.Signals
 library allows slots to be placed into groups that are ordered in
 some way. For our Hello, World program, we want "Hello" to be
 printed before ", World!", so we put "Hello" into a group that must
@@ -256,16 +248,16 @@ are, by default, <code>int</code>s, and are ordered by the integer
           <entry>
 <programlisting>
 <classname>boost::signal</classname>&lt;void ()&gt; sig;
-sig.<methodname>connect</methodname>(0, Hello());
 sig.<methodname>connect</methodname>(1, World());
+sig.<methodname>connect</methodname>(0, Hello());
 sig();
 </programlisting>
 </entry>
             <entry>
 <programlisting>
 <classname alt="boost::signalN">boost::signal0</classname>&lt;void&gt; sig;
-sig.<methodname>connect</methodname>(0, Hello());
 sig.<methodname>connect</methodname>(1, World());
+sig.<methodname>connect</methodname>(0, Hello());
 sig();
 </programlisting>
 </entry>
@@ -275,16 +267,20 @@ sig();
       </informaltable>
 
 <para>This program will correctly print "Hello, World!", because the
-<code>Hello</code> object is in group 0, which precedes group 1
-where the <code>World</code> object resides.</para>
-<para>The group parameter is, in fact, optional. We omitted it in the
-first Hello, World example because it was unnecessary when all of
-the slots are independent. So what happens if we mix calls to
-connect that use the group parameter and those that don't? The
-"unnamed" slots (i.e., those that have been connected without
-specifying a group name) go into a separate group that is special
-in that it follows all other groups. So if we add a new slot to our
-example like this:</para>
+<code>Hello</code> object is in group 0, which precedes group 1 where
+the <code>World</code> object resides. The group
+parameter is, in fact, optional. We omitted it in the first Hello,
+World example because it was unnecessary when all of the slots are
+independent. So what happens if we mix calls to connect that use the
+group parameter and those that don't? The "unnamed" slots (i.e., those
+that have been connected without specifying a group name) can be
+placed at the front or back of the slot list (by passing
+<code>boost::signals::at_front</code> or <code>boost::signals::at_back</code>
+as the last parameter to <code><methodname
+alt="boost::signalN::connect">connect</methodname></code>, respectively), and defaults to the end of the list. When
+a group is specified, the final parameter describes where the slot
+will be placed within the group ordering. If we add a new slot
+to our example like this:</para>
 <programlisting>
 struct GoodMorning
 {
@@ -301,14 +297,6 @@ sig.<methodname>connect</methodname>(GoodMorning());
 Hello, World!
 ... and good morning!
 </programlisting>
-<para>The last interesting point with groups of slots is the behavior
-when multiple slots are connected in the same group. Within groups,
-calls to slots are unordered: if we connect slots <code>A</code>
-and <code>B</code> to the same signal with the same group name,
-either <code>A</code> or <code>B</code> will be called first (but
-both will be called). This is the same behavior we saw before with
-the second version of Hello, World, where the slots could be called
-in the wrong order, mangling the output.</para>
 </section>
 </section>
 
@@ -383,8 +371,7 @@ sig(5, 3);
           </tgroup>
         </informaltable>
 
-<para>This program will print out something like the following,
-although the ordering of the lines may differ:</para>
+<para>This program will print out the following:</para>
 <programlisting>
 The sum is 8
 The difference is 2
@@ -404,7 +391,7 @@ connected to <code>sig</code> must therefore be able to take two
 <section><title>Signal Return Values (Advanced)</title>
 <para>Just as slots can receive arguments, they can also return
 values. These values can then be returned back to the caller of the
-signal through a <emphasis>combiner</emphasis>. The combiner is a mechanism
+signal through a <firstterm>combiner</firstterm>. The combiner is a mechanism
 that can take the results of calling slots (there many be no
 results or a hundred; we don't know until the program runs) and
 coalesces them into a single result to be returned to the caller.
@@ -428,34 +415,34 @@ return a value based on these results to be printed:</para>
         <row>
           <entry>
 <programlisting>
-float compute_product(float x, float y) { return x*y; }
-float compute_quotient(float x, float y) { return x/y; }
-float compute_sum(float x, float y) { return x+y; }
-float compute_difference(float x, float y) { return x-y; }
+float product(float x, float y) { return x*y; }
+float quotient(float x, float y) { return x/y; }
+float sum(float x, float y) { return x+y; }
+float difference(float x, float y) { return x-y; }
 
 <classname>boost::signal</classname>&lt;float (float x, float y)&gt; sig;
 
-sig.<methodname>connect</methodname>(&amp;compute_product);
-sig.<methodname>connect</methodname>(&amp;compute_quotient);
-sig.<methodname>connect</methodname>(&amp;compute_sum);
-sig.<methodname>connect</methodname>(&amp;compute_difference);
+sig.<methodname>connect</methodname>(&amp;product);
+sig.<methodname>connect</methodname>(&amp;quotient);
+sig.<methodname>connect</methodname>(&amp;sum);
+sig.<methodname>connect</methodname>(&amp;difference);
 
 std::cout &lt;&lt; sig(5, 3) &lt;&lt; std::endl;
 </programlisting>
 </entry>
 <entry>
 <programlisting>
-float compute_product(float x, float y) { return x*y; }
-float compute_quotient(float x, float y) { return x/y; }
-float compute_sum(float x, float y) { return x+y; }
-float compute_difference(float x, float y) { return x-y; }
+float product(float x, float y) { return x*y; }
+float quotient(float x, float y) { return x/y; }
+float sum(float x, float y) { return x+y; }
+float difference(float x, float y) { return x-y; }
 
 <classname alt="boost::signalN">boost::signal2</classname>&lt;float, float, float&gt; sig;
 
-sig.<methodname>connect</methodname>(&amp;compute_product);
-sig.<methodname>connect</methodname>(&amp;compute_quotient);
-sig.<methodname>connect</methodname>(&amp;compute_sum);
-sig.<methodname>connect</methodname>(&amp;compute_difference);
+sig.<methodname>connect</methodname>(&amp;product);
+sig.<methodname>connect</methodname>(&amp;quotient);
+sig.<methodname>connect</methodname>(&amp;sum);
+sig.<methodname>connect</methodname>(&amp;difference);
 
 std::cout &lt;&lt; sig(5, 3) &lt;&lt; std::endl;
 </programlisting>
@@ -465,16 +452,13 @@ std::cout &lt;&lt; sig(5, 3) &lt;&lt; std::endl;
         </tgroup>
       </informaltable>
 
-<para>This example program will output either <code>8</code>,
-<code>1.6667</code>, <code>15</code>, or <code>2</code>, depending
-on the order that the signals are called. This is because the
+<para>This example program will output <code>2</code>. This is because the
 default behavior of a signal that has a return type
 (<code>float</code>, the first template argument given to the
 <code><classname>boost::signal</classname></code> class template) is to call all slots and
 then return the result returned by the last slot called. This
 behavior is admittedly silly for this example, because slots have
-no side effects and the result is essentially randomly chosen from
-the slots.</para>
+no side effects and the result is the last slot connect.</para>
 <para>A more interesting signal result would be the maximum of the
 values returned by any slot. To do this, we create a custom
 combiner that looks like this:</para>
@@ -546,15 +530,15 @@ follows the signal's calling signature:</para>
 <para>Now we can connect slots that perform arithmetic functions and
 use the signal:</para>
 <programlisting>
-sig.<methodname>connect</methodname>(&amp;compute_quotient);
-sig.<methodname>connect</methodname>(&amp;compute_product);
-sig.<methodname>connect</methodname>(&amp;compute_sum);
-sig.<methodname>connect</methodname>(&amp;compute_difference);
+sig.<methodname>connect</methodname>(&amp;quotient);
+sig.<methodname>connect</methodname>(&amp;product);
+sig.<methodname>connect</methodname>(&amp;sum);
+sig.<methodname>connect</methodname>(&amp;difference);
 
 std::cout &lt;&lt; sig(5, 3) &lt;&lt; std::endl;
 </programlisting>
 <para>The output of this program will be <code>15</code>, because
-regardless of the order in which the slots are called, the product
+regardless of the order in which the slots are connected, the product
 of 5 and 3 will be larger than the quotient, sum, or
 difference.</para>
 <para>In other cases we might want to return all of the values
@@ -589,31 +573,31 @@ Again, we can create a signal with this new combiner:
           <entry>
 <programlisting>
 <classname>boost::signal</classname>&lt;float (float, float), 
-              aggregate_values&lt;std::vector&lt;float&gt; &gt; &gt; sig;
+    aggregate_values&lt;std::vector&lt;float&gt; &gt; &gt; sig;
 
-sig.<methodname>connect</methodname>(&amp;compute_quotient);
-sig.<methodname>connect</methodname>(&amp;compute_product);
-sig.<methodname>connect</methodname>(&amp;compute_sum);
-sig.<methodname>connect</methodname>(&amp;compute_difference);
+sig.<methodname>connect</methodname>(&amp;quotient);
+sig.<methodname>connect</methodname>(&amp;product);
+sig.<methodname>connect</methodname>(&amp;sum);
+sig.<methodname>connect</methodname>(&amp;difference);
 
 std::vector&lt;float&gt; results = sig(5, 3);
 std::copy(results.begin(), results.end(), 
-          std::ostream_iterator&lt;float&gt;(cout, " "));
+    std::ostream_iterator&lt;float&gt;(cout, " "));
 </programlisting>
 </entry>
 <entry>
 <programlisting>
 <classname alt="boost::signalN">boost::signal2</classname>&lt;float, float, float,
-               aggregate_values&lt;std::vector&lt;float&gt; &gt; &gt; sig;
+    aggregate_values&lt;std::vector&lt;float&gt; &gt; &gt; sig;
 
-sig.<methodname>connect</methodname>(&amp;compute_quotient);
-sig.<methodname>connect</methodname>(&amp;compute_product);
-sig.<methodname>connect</methodname>(&amp;compute_sum);
-sig.<methodname>connect</methodname>(&amp;compute_difference);
+sig.<methodname>connect</methodname>(&amp;quotient);
+sig.<methodname>connect</methodname>(&amp;product);
+sig.<methodname>connect</methodname>(&amp;sum);
+sig.<methodname>connect</methodname>(&amp;difference);
 
 std::vector&lt;float&gt; results = sig(5, 3);
 std::copy(results.begin(), results.end(), 
-          std::ostream_iterator&lt;float&gt;(cout, " "));
+    std::ostream_iterator&lt;float&gt;(cout, " "));
 </programlisting>
 </entry>
             </row>
@@ -621,8 +605,8 @@ std::copy(results.begin(), results.end(),
         </tgroup>
       </informaltable>
 
-<para>The output of this program will contain 15, 8, 1.6667, and 2
-(but not necessarily in that order). It is interesting here that
+<para>The output of this program will contain 15, 8, 1.6667, and 2. It
+is interesting here that
 the first template argument for the <code>signal</code> class,
 <code>float</code>, is not actually the return type of the signal.
 Instead, it is the return type used by the connected slots and will
@@ -680,13 +664,13 @@ returns a connection object, which can be used to determine if the
 connection still exists or to disconnect the signal and slot.</para>
 <programlisting>
 boost::signals::connection c = sig.<methodname>connect</methodname>(HelloWorld());
-if (c.<methodname>connect</methodname>ed()) {
+if (c.<methodname>connected</methodname>()) {
 <emphasis>// c is still connected to the signal</emphasis>
   sig(); <emphasis>// Prints "Hello, World!"</emphasis>
 }
 
 c.disconnect(); <emphasis>// Disconnect the HelloWorld object</emphasis>
-assert(!c.<methodname>connect</methodname>ed()); <emphasis>c isn't connected any more</emphasis>
+assert(!c.<methodname>connected</methodname>()); <emphasis>c isn't connected any more</emphasis>
 
 sig(); <emphasis>// Does nothing: there are no connected slots</emphasis>
 </programlisting>
@@ -705,6 +689,59 @@ e.g.,</para>
 }
 sig(); <emphasis>// ShortLived function object no longer connected to sig</emphasis>
 </programlisting>
+</section>
+
+<section><title>Disconnecting equivalent slots (Intermediate)</title>
+<para>One can disconnect slots that are equivalent to a given function
+object using a form of the
+<code><methodname>disconnect</methodname></code> method, so long as
+the type of the function object has an accessible <code>==</code>
+operator. For instance:
+
+</para>
+  <informaltable>
+    <tgroup cols="2" align="left">
+      <thead>
+        <row>
+          <entry>Preferred syntax</entry>
+          <entry>Portable syntax</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+<programlisting>
+void foo();
+void bar();
+
+signal&lt;void()&gt; sig;
+
+sig.connect(&amp;foo);
+sig.connect(&amp;bar);
+
+// disconnects foo, but not bar
+sig.disconnect(&amp;foo);
+</programlisting>
+</entry>
+<entry>
+<programlisting>
+void foo();
+void bar();
+
+signal0&lt;void&gt; sig;
+
+sig.connect(&amp;foo);
+sig.connect(&amp;bar);
+
+// disconnects foo, but not bar
+sig.disconnect(&amp;foo);
+</programlisting>
+</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+
 </section>
 
 <section><title>Automatic connection management (Intermediate)</title>
@@ -729,7 +766,7 @@ service may be constructed like this: </para>
 <programlisting>
 class NewsItem { /* ... */ };
 
-boost::signal&lt;void (const NewsItem&amp; latestNews)&gt; deliverNews;
+boost::signal&lt;void (const NewsItem&amp;)&gt; deliverNews;
 </programlisting>
 </entry>
 <entry>
@@ -853,7 +890,9 @@ private:
   OnClick onClick;
 };
 
-void Button::doOnClick(const OnClick::slot_type&amp; slot)
+void Button::doOnClick(
+      const OnClick::slot_type&amp; slot
+    )
 {
   onClick.<methodname>connect</methodname>(slot);
 }
@@ -873,7 +912,7 @@ void f(Button&amp; button)
 <programlisting>
 class Button 
 {
-  typedef <classname alt="boost::signalN">boost::signal2</classname>&lt;void, int x, int y&gt; OnClick;
+  typedef <classname alt="boost::signalN">boost::signal2</classname>&lt;void,int,int&gt; OnClick;
 
 public:
   void doOnClick(const OnClick::slot_type&amp; slot);
@@ -882,7 +921,9 @@ private:
   OnClick onClick;
 };
 
-void Button::doOnClick(const OnClick::slot_type&amp; slot)
+void Button::doOnClick(
+      const OnClick::slot_type&amp; slot
+    )
 {
   onClick.<methodname>connect</methodname>(slot);
 }

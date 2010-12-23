@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_result.cpp,v $
 //
-//  Version     : $Revision: 1.22 $
+//  Version     : $Revision: 1.31 $
 //
 //  Description : implements Unit Test Result reporting facility. Note that majority of 
 //  implementation is hidden in this file using pimple idiom.
@@ -17,6 +17,9 @@
 #include <boost/test/unit_test_result.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include <boost/test/detail/unit_test_parameters.hpp>
+#include <boost/test/detail/basic_cstring/compare.hpp>
+#include <boost/test/detail/fixed_mapping.hpp>
+#include <boost/test/detail/xml_printer.hpp>
 
 // BOOST
 #include <boost/config.hpp>
@@ -30,6 +33,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <map>
 
 # ifdef BOOST_NO_STDC_NAMESPACE
 namespace std { using ::log10; using ::strncmp; }
@@ -37,7 +41,7 @@ namespace std { using ::log10; using ::strncmp; }
 
 namespace boost {
 
-namespace unit_test_framework {
+namespace unit_test {
 
 typedef unit_test_result* unit_test_result_ptr;
 
@@ -54,14 +58,14 @@ public:
     virtual void    finish_result_report( std::ostream& where_to ) = 0;
 
     virtual void    start_test_case_report( std::ostream& where_to, std::size_t indent, 
-                                            std::string const& test_case_name, bool case_suite, bool failed ) = 0;
+                                            const_string test_case_name, bool case_suite, bool failed ) = 0;
 
     virtual void    start_confirmation_report( std::ostream& where_to,
-                                               std::string const& test_case_name, bool case_suite, bool failed,
+                                               const_string test_case_name, bool case_suite, bool failed,
                                                unit_test_counter num_failed, unit_test_counter num_expected ) = 0;
 
     virtual void    finish_test_case_report( std::ostream& where_to, std::size_t indent, 
-                                             std::string const& test_case_name, bool case_suite, bool aborted ) = 0;
+                                             const_string test_case_name, bool case_suite, bool aborted ) = 0;
 
     virtual void    report_sub_test_cases_stat( std::ostream& where_to, std::size_t indent,
                                                 unit_test_counter num_passed, unit_test_counter num_failed ) = 0;
@@ -80,12 +84,23 @@ public:
 // ************************************************************************** //
 
 class hrf_report_formatter : public report_formatter {
+    struct quote {
+        explicit quote( const_string str ) : m_str( str ) {}
+
+        friend std::ostream& operator<<( std::ostream& os, quote const& q )
+        {
+            return os << '"' << q.m_str << '"';
+        }
+
+    private:
+        const_string m_str;
+    };
 public:
     void    start_result_report( std::ostream& /* where_to */ ) {}
     void    finish_result_report( std::ostream& /* where_to */ ) {}
 
     void    start_test_case_report( std::ostream& where_to, std::size_t indent,
-                                    std::string const& test_case_name, bool case_suite, bool failed )
+                                    const_string test_case_name, bool case_suite, bool failed )
     {
         where_to << "\n" << std::setw( indent ) << "" << "Test " << cs_name( case_suite ) << " " << quote( test_case_name )
                  << (failed ? " failed with:\n" : " passed with:\n");
@@ -93,7 +108,7 @@ public:
     }
 
     void    start_confirmation_report( std::ostream& where_to,
-                                       std::string const& test_case_name, bool case_suite, bool failed,
+                                       const_string test_case_name, bool case_suite, bool failed,
                                        unit_test_counter num_failed, unit_test_counter num_expected )
     {
         if( failed ) {
@@ -116,7 +131,7 @@ public:
     }
 
     void    finish_test_case_report( std::ostream& where_to, std::size_t indent, 
-                                     std::string const& test_case_name, bool case_suite, bool aborted )
+                                     const_string test_case_name, bool case_suite, bool aborted )
     {
         if( aborted )
             where_to << std::setw( indent ) << "" << "Test " << cs_name( case_suite ) << " " << quote( test_case_name )
@@ -129,7 +144,7 @@ public:
                                         unit_test_counter num_passed, unit_test_counter num_failed )
     {
         unit_test_counter total_test_cases = num_passed + num_failed;
-        std::size_t       width = static_cast<std::size_t>( std::log10( (float)std::max( num_passed, num_failed ) ) ) + 1;
+        std::size_t       width = static_cast<std::size_t>( std::log10( (float)(std::max)( num_passed, num_failed ) ) ) + 1;
 
         where_to << std::setw( indent ) << "" << std::setw( width ) << num_passed
                  << " test " << ps_name( num_passed != 1, "case" ) << " out of " << total_test_cases << " passed\n"
@@ -143,7 +158,7 @@ public:
     {
         unit_test_counter total_assertions = num_passed + num_failed;
         std::size_t       width            = total_assertions > 0 
-                                               ? static_cast<std::size_t>( std::log10( (float)std::max( num_passed, num_failed ) ) ) + 1
+                                               ? static_cast<std::size_t>( std::log10( (float)(std::max)( num_passed, num_failed ) ) ) + 1
                                                : 1;
         
         where_to << std::setw( indent ) << "" << std::setw( width ) << num_passed 
@@ -165,17 +180,13 @@ private:
     { 
         return c_s ? "case" : "suite";
     }
-    static  std::string quote( std::string const& name )
-    {
-        return std::string( "\"" ).append( name ).append( "\"");
-    }
 };
 
 // ************************************************************************** //
 // **************             xml_report_formatter             ************** //
 // ************************************************************************** //
 
-class xml_report_formatter : public report_formatter {
+class xml_report_formatter : public report_formatter, private ut_detail::xml_printer {
 public:
     void    start_result_report( std::ostream& where_to )
     {
@@ -187,21 +198,22 @@ public:
     }
 
     void    start_test_case_report( std::ostream& where_to, std::size_t indent, 
-                                    std::string const& test_case_name, bool case_suite, bool failed )
+                                    const_string test_case_name, bool case_suite, bool failed )
     {
         where_to << std::setw( indent ) << ""
                  << "<" << ( case_suite ? "TestCase" : "TestSuite" ) 
-                 << " name=\"" << test_case_name << '\"'
-                 << " result=" << (failed ? "\"failed\"" : "\"passed\"" ) << ">\n";
+                 << " name";    print_attr_value( where_to, test_case_name )
+                 << " result";  print_attr_value( where_to, failed ? "failed" : "passed" ) << ">\n";
     }
 
     void    start_confirmation_report( std::ostream& where_to,
-                                               std::string const& test_case_name, bool case_suite, bool failed,
-                                               unit_test_counter num_failed, unit_test_counter num_expected )
+                                       const_string test_case_name, bool case_suite, bool failed,
+                                       unit_test_counter num_failed, unit_test_counter num_expected )
     {
         where_to << "<" << ( case_suite ? "TestCase" : "TestSuite" ) 
-                 << " name=\"" << test_case_name << '\"'
-                 << " result=" << (failed ? "\"failed\"" : "\"passed\"" );
+                 << " name";    print_attr_value( where_to, test_case_name )
+                 << " result";  print_attr_value( where_to, failed ? "failed" : "passed" );
+
         if( failed )
             where_to << " num_of_failures=" << num_failed
                      << " expected_failures=" << num_expected;
@@ -210,12 +222,12 @@ public:
     }
 
     void    finish_test_case_report( std::ostream& where_to, std::size_t indent, 
-                                     std::string const& /* test_case_name */, bool case_suite, bool aborted )
+                                     const_string /* test_case_name */, bool case_suite, bool aborted )
     {
         if( aborted ) {
             where_to << std::setw( indent+2 ) << ""
                      << "<" << "aborted" 
-                     << " reason=" << "\"due to uncaught exception, user assert or system error\""
+                     << " reason";  print_attr_value( where_to, "due to uncaught exception, user assert or system error" )
                      << "/>\n";
         }
 
@@ -228,8 +240,8 @@ public:
     {
         where_to << std::setw( indent+2 ) << ""
                  << "<SubTestCases"
-                 << " passed=\"" << num_passed << '\"'
-                 << " failed=\"" << num_failed << '\"'
+                 << " passed";  print_attr_value( where_to, num_passed )
+                 << " failed";  print_attr_value( where_to, num_failed )
                  << "/>\n";
     }
 
@@ -239,10 +251,10 @@ public:
                                     unit_test_counter num_expected )
     {
         where_to << std::setw( indent+2 ) << ""
-                 << "<Asssertions"
-                 << " passed=\"" << num_passed << '\"'
-                 << " failed=\"" << num_failed << '\"'
-                 << " expected_failures=\"" << num_expected << '\"'
+                 << "<Assertions"
+                 << " passed";              print_attr_value( where_to, num_passed )
+                 << " failed";              print_attr_value( where_to, num_failed )
+                 << " expected_failures";   print_attr_value( where_to, num_expected )
                  << "/>\n";
     }
 };
@@ -286,11 +298,11 @@ boost::scoped_ptr<report_formatter> unit_test_result::Impl::m_report_formatter( 
 
 //____________________________________________________________________________//
 
-unit_test_result::unit_test_result( unit_test_result_ptr parent, std::string const& test_case_name, unit_test_counter exp_fail )
+unit_test_result::unit_test_result( unit_test_result_ptr parent, const_string test_case_name, unit_test_counter exp_fail )
 : m_pimpl( new Impl )
 {
     m_pimpl->m_parent            = parent;
-    m_pimpl->m_test_case_name    = test_case_name;
+    test_case_name.assign_to( m_pimpl->m_test_case_name );
 
     m_pimpl->m_assertions_passed = 0;
     m_pimpl->m_assertions_failed = 0;
@@ -318,7 +330,7 @@ unit_test_result::~unit_test_result()
 unit_test_result&
 unit_test_result::instance()
 {
-    assert( Impl::m_head );
+    assert( !!Impl::m_head );
 
     return Impl::m_curr ? *Impl::m_curr : *Impl::m_head;
 }
@@ -326,7 +338,7 @@ unit_test_result::instance()
 //____________________________________________________________________________//
 
 void
-unit_test_result::test_case_start( std::string const& name, unit_test_counter expected_failures )
+unit_test_result::test_case_start( const_string name, unit_test_counter expected_failures )
 {
     unit_test_result_ptr new_test_case_result_inst = new unit_test_result( Impl::m_curr, name, expected_failures );
 
@@ -343,7 +355,7 @@ unit_test_result::test_case_start( std::string const& name, unit_test_counter ex
 void
 unit_test_result::test_case_end()
 {
-    assert( Impl::m_curr );
+    assert( !!Impl::m_curr );
 
     Impl*                curr_impl  = Impl::m_curr->m_pimpl.get();
     unit_test_result_ptr parent     = curr_impl->m_parent;
@@ -370,30 +382,23 @@ unit_test_result::test_case_end()
 
 //____________________________________________________________________________//
 
-void
-unit_test_result::set_report_format( std::string const& reportformat )
+struct report_format_name_map : std::map<const_string,output_format>
 {
-    struct my_pair {
-        c_string_literal    format_name;
-        output_format       format_value;
-    };
-
-    static const my_pair name_value_map[] = {
-        { "HRF" , HRF },
-        { "XML" , XML },
-    };
-
-    static int const map_size = sizeof(name_value_map)/sizeof(my_pair);
-
-    output_format of = HRF;
-    for( int i = 0; i < map_size; i++ ) {
-        if( reportformat == name_value_map[i].format_name ) {
-            of = name_value_map[i].format_value;
-            break;
-        }
+    report_format_name_map() {
     }
+};
 
-    if( of == HRF )
+void
+unit_test_result::set_report_format( const_string report_format_name )
+{
+    static fixed_mapping<const_string,output_format,case_ins_less<char const> > report_format(
+        "HRF", HRF,
+        "XML", XML,
+
+        HRF
+    );
+
+    if( report_format[report_format_name] == HRF )
         Impl::m_report_formatter.reset( new hrf_report_formatter );
     else
         Impl::m_report_formatter.reset( new xml_report_formatter );
@@ -439,7 +444,7 @@ unit_test_result::caught_exception()
 
 //____________________________________________________________________________//
 
-std::string const&
+const_string
 unit_test_result::test_case_name()
 {
     return m_pimpl->m_test_case_name;
@@ -453,7 +458,7 @@ unit_test_result::reset_current_result_set()
     static unit_test_result_ptr backup = unit_test_result_ptr();
     static boost::scoped_ptr<unit_test_result> temporary_substitute;
 
-    assert( Impl::m_curr );
+    assert( !!Impl::m_curr );
 
     if( backup ) {
         Impl::m_curr = backup;
@@ -479,9 +484,9 @@ unit_test_result::failures_details( unit_test_counter& num_of_failures, bool& ex
 //____________________________________________________________________________//
 
 void
-unit_test_result::report( std::string const& reportlevel, std::ostream& where_to_ )
+unit_test_result::report( const_string reportlevel, std::ostream& where_to_ )
 {
-    static int const map_size = sizeof(report_level_names)/sizeof(c_string_literal);
+    static int const map_size = sizeof(report_level_names)/sizeof(const_string);
 
     report_level rl = UNDEF_REPORT;
     if( reportlevel.empty() )
@@ -518,7 +523,7 @@ unit_test_result::report( std::string const& reportlevel, std::ostream& where_to
 void
 unit_test_result::confirmation_report( std::ostream& where_to )
 {
-    assert( this );
+    assert( !!this );
 
     m_pimpl->m_report_formatter->start_result_report( where_to );
 
@@ -539,7 +544,7 @@ unit_test_result::confirmation_report( std::ostream& where_to )
 void
 unit_test_result::report_result( std::ostream& where_to, std::size_t indent, bool detailed )
 {
-    assert( this );
+    assert( !!this );
 
     m_pimpl->m_report_formatter->start_test_case_report( where_to, indent, 
                                                          m_pimpl->m_test_case_name, m_pimpl->m_children.empty(),
@@ -587,7 +592,7 @@ unit_test_result::has_passed() const
 
 //____________________________________________________________________________//
 
-} // namespace unit_test_framework
+} // namespace unit_test
 
 } // namespace boost
 
@@ -595,6 +600,36 @@ unit_test_result::has_passed() const
 //  Revision History :
 //  
 //  $Log: unit_test_result.cpp,v $
+//  Revision 1.31  2004/09/17 12:34:13  rogeeff
+//  XML typo
+//
+//  Revision 1.30  2004/08/10 04:02:18  rogeeff
+//  first tru64cxx65 fix
+//
+//  Revision 1.29  2004/07/19 12:10:56  rogeeff
+//  added proper encoded of XML PCDATA
+//  min->max bug fix
+//
+//  Revision 1.28  2004/06/29 04:33:20  rogeeff
+//  use std::min
+//
+//  Revision 1.27  2004/06/23 04:49:48  eric_niebler
+//  remove std_min and std_max, update minmax coding guidelines
+//
+//  Revision 1.26  2004/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.25  2004/05/13 09:04:44  rogeeff
+//  added fixed_mapping
+//
+//  Revision 1.24  2004/05/11 11:05:04  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
+//  Revision 1.23  2004/02/26 18:27:02  eric_niebler
+//  remove minmax hack from win32.hpp and fix all places that could be affected by the minmax macros
+//
 //  Revision 1.22  2003/12/01 00:42:37  rogeeff
 //  prerelease cleaning
 //

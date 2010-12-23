@@ -6,10 +6,13 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst 
- * $Date: 2003/11/23 02:27:09 $
+ * $Date: 2004/06/30 00:01:20 $
  */
 
 #include "boost/date_time/date_duration.hpp"
+#if defined(BOOST_DATE_TIME_OPTIONAL_GREGORIAN_TYPES)
+#include "boost/date_time/date_duration_types.hpp"
+#endif
 #include "boost/date_time/int_adapter.hpp"
 
 

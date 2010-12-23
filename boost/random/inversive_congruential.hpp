@@ -1,18 +1,13 @@
 /* boost random/inversive_congruential.hpp header file
  *
  * Copyright Jens Maurer 2000-2001
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
- *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: inversive_congruential.hpp,v 1.6 2002/12/22 22:03:10 jmaurer Exp $
+ * $Id: inversive_congruential.hpp,v 1.9 2004/07/27 03:43:32 dgregor Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -23,6 +18,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <boost/config.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/random/detail/const_mod.hpp>
 
@@ -46,8 +42,8 @@ public:
   BOOST_STATIC_CONSTANT(result_type, increment = b);
   BOOST_STATIC_CONSTANT(result_type, modulus = p);
 
-  result_type min() const { return b == 0 ? 1 : 0; }
-  result_type max() const { return p-1; }
+  result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return b == 0 ? 1 : 0; }
+  result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const { return p-1; }
 
   explicit inversive_congruential(IntType y0 = 1) : value(y0)
   {
@@ -60,7 +56,7 @@ public:
   template<class It> inversive_congruential(It& first, It last)
   { seed(first, last); }
 
-  void seed(IntType y0) { value = y0; if(b == 0) assert(y0 > 0); }
+  void seed(IntType y0 = 1) { value = y0; if(b == 0) assert(y0 > 0); }
   template<class It> void seed(It& first, It last)
   {
     if(first == last)

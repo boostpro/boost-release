@@ -1,17 +1,11 @@
 /* Boost test/cmp_exp.cpp
  * test explicit comparison functions
  *
- * Copyright Guillaume Melquiond 2002-2003
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation.
+ * Copyright 2002-2003 Guillaume Melquiond
  *
- * None of the above authors nor Polytechnic University make any
- * representation about the suitability of this software for any
- * purpose. It is provided "as is" without express or implied warranty.
- *
- * $Id: cmp_exp.cpp,v 1.5 2003/06/04 09:18:46 gmelquio Exp $
+ * Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE_1_0.txt or
+ * copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
 #include "cmp_header.hpp"

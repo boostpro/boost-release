@@ -16,6 +16,10 @@ main()
   using namespace boost::gregorian;
 
   //various constructors
+#if !defined(DATE_TIME_NO_DEFAULT_CONSTRUCTOR)
+  date def;
+  check("Default constructor", def == date(not_a_date_time));
+#endif
   date d(2000,1,1);
   date d1(1900,1,1);
   date d2 = d;
@@ -57,9 +61,9 @@ main()
   
   //The max function will not compile with Borland 5.5
   //Complains about must specialize basic_data<limits> ??? 
-//   std::cout << "Max date is " << date::max() << std::endl;
-//   //std::cout << "Max date is " << basic_date< date_limits<unsigned int,1900> >::max() << std::endl;
-//   //std::cout << "Max date is " << date_limits<unsigned int, 1900>::max() << std::endl;
+//   std::cout << "Max date is " << (date::max)() << std::endl;
+//   //std::cout << "Max date is " << (basic_date< date_limits<unsigned int,1900> >::max)() << std::endl;
+//   //std::cout << "Max date is " << (date_limits<unsigned int, 1900>::max)() << std::endl;
 
   const date answers[] = {date(1900,Jan,1),date(1900,Jan,4),date(1900,Jan,7),
                           date(1900,Jan,10),date(1900,Jan,13)};
@@ -209,9 +213,12 @@ main()
   check("check infinity nad compare   ",      d12 != d11);
   date d13(max_date_time);
   check("check infinity - max compare   ",      d13 < d11);
+  check("max date_time value   ",       d13 == date(9999,Dec, 31));
+  std::cout << to_simple_string(d13) << std::endl;
   date d14(min_date_time);
   check("check infinity - min compare   ",      d14 > d10);
-  //  std::cout << to_simple_string(d14) << std::endl;
+  std::cout << to_simple_string(d14) << std::endl;
+  check("min date_time value   ",      d14 == date(1400,Jan, 1));
 
  
   date d15(1400,1,1);
@@ -264,6 +271,22 @@ main()
     check("check day of year number", false);
   }
 
+  //converts to date and back -- should get same result
+  check("tm conversion functions 2000-1-1", date_from_tm(to_tm(d)) == d);
+  check("tm conversion functions 1900-1-1", date_from_tm(to_tm(d1)) == d1);
+  check("tm conversion functions min date 1400-1-1 ", date_from_tm(to_tm(d14)) == d14);
+  check("tm conversion functions max date 9999-12-31", date_from_tm(to_tm(d13)) == d13);
+
+  try{
+    date d(neg_infin);
+    tm d_tm = to_tm(d);
+    check("Exception not thrown (special_value to_tm)", false);
+  }catch(std::out_of_range e){
+    check("Caught expected exception (special_value to_tm)", true);
+  }catch(...){
+    check("Caught un-expected exception (special_value to_tm)", false);
+  }
+  
   return printTestStats();
 
 }

@@ -1,8 +1,7 @@
-// Copyright David Abrahams 2003. Permission to copy, use,
-// modify, sell and distribute this software is granted provided this
-// copyright notice appears in all copies. This software is provided
-// "as is" without express or implied warranty, and with no claim as
-// to its suitability for any purpose.
+// Copyright David Abrahams 2003.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/python/module.hpp>
 #include <boost/python/class.hpp>
@@ -10,6 +9,7 @@
 #include <memory>
 #include <boost/shared_ptr.hpp>
 #include <boost/python/make_constructor.hpp>
+#include <boost/python/args.hpp>
 
 using namespace boost::python;
 
@@ -29,7 +29,11 @@ BOOST_PYTHON_MODULE(injected_ext)
     class_<X>("X", init<int>())
         .def("__init__", make_constructor(empty))
         .def("__init__", make_constructor(sum))
-        .def("__init__", make_constructor(product))
+        .def("__init__", make_constructor(product
+            , default_call_policies()
+            , ( arg_("a"), arg_("b"), arg_("c"))
+            ),
+            "this is product's docstring")
         .def("value", &X::value)
         ;
 }

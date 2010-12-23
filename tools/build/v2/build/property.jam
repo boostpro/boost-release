@@ -11,6 +11,7 @@ import regex ;
 import sequence ;
 import set ;
 import path ;
+import assert ;
 
 # Refines 'properties' by overriding any non-free properties 
 # for which a different value is specified in 'requirements'. 
@@ -106,7 +107,7 @@ rule evaluate-conditionals-in-context ( properties * : context * )
     for local p in $(conditionals)
     {
         # Separate condition and property
-        local s = [ MATCH ([^:]*):(.*) : $(p) ] ;
+        local s = [ MATCH (.*):(<.*) : $(p) ] ;
         # Split condition into individual properties
         local c = [ regex.split $(s[1]) "," ] ;
         # Evaluate condition
@@ -118,9 +119,52 @@ rule evaluate-conditionals-in-context ( properties * : context * )
     return $(result) ;    
 }
 
-rule evaluate-conditionals ( properties * )
+rule expand-subfeatures-in-conditions ( properties * )
 {
-    return [ evaluate-conditionals-in-context $(properties) : $(properties) ] ;
+    local result ;
+    for local p in $(properties)
+    {
+        local s = [ MATCH (.*):(<.*) : $(p) ] ;        
+        if ! $(s)
+        {
+            result += $(p) ;
+        }
+        else
+        {
+            local condition = $(s[1]) ;
+            # Condition might include several elements
+            condition = [ regex.split $(condition) "," ] ;
+            local value = $(s[2]) ;
+            local e ;
+            for local c in $(condition)
+            {           
+                if [ MATCH "^(<toolset>|<toolset->)" : $(c:G) ] ||
+                   [ MATCH "^(<os>)" : $(c:G) ]
+                {
+                    # It common that condition includes a toolset which
+                    # was never defined, or mentiones subfeatures which
+                    # were never defined. In that case, validation will
+                    # only produce an spirious error, so don't validate.
+                    e += [ feature.expand-subfeatures $(c) : true ] ;
+                }               
+                else
+                {
+                    e += [ feature.expand-subfeatures $(c) ] ;
+                }                
+            }
+            
+            if $(e) = $(condition)
+            {
+                result += $(p) ;
+            }
+            else
+            {
+                local individual-subfeatures = [ set.difference $(e) : $(condition) ] ;
+                result += $(individual-subfeatures:J=,):$(value) ;
+            }            
+        }        
+    }    
+    return $(result) ;
 }
 
 
@@ -312,7 +356,8 @@ rule select ( features * : properties * )
 
 # Returns a modified version of properties with all values of the
 # given feature replaced by the given value.
-rule change ( properties * : feature value )
+# If 'value' is empty the feature will be removed
+rule change ( properties * : feature value ? )
 {
     local result ; 
     for local p in $(properties)
@@ -366,7 +411,13 @@ rule translate-paths ( properties * : path )
         
         if path in [ feature.attributes $(p:G) ] 
         {
-            local t = [ path.root [ path.make $(p:TG=) ] $(path) ] ;
+            local values = [ regex.split $(p:TG=) "&&" ] ;
+            local t ;
+            for local v in $(values)
+            {
+                t += [ path.root [ path.make $(v) ] $(path) ] ;                
+            }
+            t = $(t:J="&&") ;            
             result += $(condition)$(t:TG=$(p:G)) ;
         }
         else
@@ -502,9 +553,11 @@ local rule __test__ ( )
         : $(test-space)
         ;
 
-    assert.result <toolset>gcc <variant>release <rtti>off <define>MY_RELEASE
-        : evaluate-conditionals <toolset>gcc <variant>release <rtti>off
-          <variant>release,<rtti>off:<define>MY_RELEASE       
+    assert.result <define>MY_RELEASE
+        : evaluate-conditionals-in-context 
+          <variant>release,<rtti>off:<define>MY_RELEASE
+          : <toolset>gcc <variant>release <rtti>off
+                 
         ;
 
     assert.result debug

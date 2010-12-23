@@ -11,23 +11,20 @@
 // Test suite for clear_actor
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <boost/spirit.hpp>
+#include "action_tests.hpp"
+#include <boost/spirit/core.hpp>
 #include <vector>
 #include <boost/spirit/actor/clear_actor.hpp>
 
-#include <boost/test/unit_test.hpp>
-
-
-void clear_test()
+void clear_action_test()
 {
-    using namespace boost::unit_test_framework;
     using namespace boost::spirit;
 
     BOOST_MESSAGE("clear_test");
 
     const char* cp = "63";
     const char* cp_first = cp;
-    const char* cp_last = cp + strlen(cp);
+    const char* cp_last = cp + string_length(cp);
     std::vector<int> c;
     c.push_back(1);
 
@@ -47,8 +44,4 @@ void clear_test()
     BOOST_CHECK( c.empty() );
 }
 
-void clear_action_test(boost::unit_test_framework::test_suite* test)
-{
-    test->add( BOOST_TEST_CASE(&clear_test) );
-}
 

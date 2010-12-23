@@ -56,13 +56,14 @@ import type ;
 import regex ;
 import generators ;
 import feature ;
+import project ;
 
 feature.feature <traverse-dependencies> : off on : incidental ;
 feature.feature <include-type> : : free incidental ;
 
 class stage-target-class : basic-target
 {
-    import feature project type errors generators ;    
+    import feature project type errors generators path ;    
     import "class" : new ;
     
     rule __init__ ( name-and-dir : project : sources * : requirements * : default-build * )
@@ -77,8 +78,7 @@ class stage-target-class : basic-target
         local loc = [ $(property-set).get <location> ] ;
         if ! $(loc)
         {
-            loc = [ project.path-relative-to-project-location $(self.name)
-              $(self.project) ] ;
+            loc = [ path.root $(self.name) [ $(self.project).get location ] ] ;
 
             property-set = [ $(property-set).add-raw $(loc:G=<location>) ] ;
         }
@@ -126,7 +126,7 @@ class stage-target-class : basic-target
     }
     
     rule construct ( source-targets * : property-set )
-    {
+    {        
         local name = [ $(property-set).get <name> ] ;
         if $(name) && $(source-targets[2])
         {
@@ -146,7 +146,13 @@ class stage-target-class : basic-target
         local result ;
         for local i in $(source-targets)
         {
-            if [ $(i).type ] != SEARCHED_LIB
+            # Intermediate targets are those with "unrequested" types.
+            # For example, given "exe a : a.cpp" we can end with RSP
+            # target on windows, and it will be marked as "intermediate".
+            # By default, we don't install such targets.
+            # If specific list of installable types is given, we don't
+            # care if target is intermediate or not.
+            if ! [ $(i).intermediate ] && [ $(i).type ] != SEARCHED_LIB
             {
                 local staged-targets ;
                 
@@ -170,7 +176,14 @@ class stage-target-class : basic-target
 
                 for t in [ select-included $(staged-targets) : $(include-types) ]
                 {
-                    $(t).set-path [ $(property-set).get <location> ] ;
+                    local a = [ $(t).action ] ;
+                    {
+                        for local s in [ $(a).targets ]
+                        {
+                            $(s).set-path [ $(property-set).get <location> ] ;
+                        }                        
+                    }
+                    
                     result += [ virtual-target.register $(t) ] ;          
                 }            
             }            
@@ -223,11 +236,6 @@ class stage-target-class : basic-target
         result = [ sequence.unique $(result) ] ;        
     }
         
-    # Don't do nothing.
-    rule check-for-unused-sources ( result * : sources * )
-    {        
-    }
-    
     rule check-for-link-compatibility ( * : * )
     {
     }
@@ -270,7 +278,16 @@ class stage-exe-generator : generator
                        
         # stage can affect the relinking details.
         local ps = [ $(action).properties ] ;
-        local new-ps = [ $(ps).add [ property-set.create [ $(property-set).free ] ] ] ;
+        local ps-raw = [ $(ps).raw ] ;
+        # Unless <hardcode-dll-paths>true is in properties, which can
+        # happen only if the user has explicitly requested it, nuke all
+        # <dll-path> properties.
+        if [ $(property-set).get <hardcode-dll-paths> ] != true
+        {
+            ps-raw = [ property.change $(ps-raw) : <dll-path> ] ;
+        }
+        ps-raw = $(ps-raw) [ $(property-set).free ] ;
+        local new-ps = [ property-set.create $(ps-raw) ] ;
         
         local cloned-action = [ virtual-target.clone-action $(action) : $(project) :
           "" : $(new-ps) ] ;
@@ -291,10 +308,19 @@ generators.register [ new stage-exe-generator ] ;
 # is declared.
 rule stage ( name : sources * : requirements * : default-build * )
 {
-    local project = [ CALLER_MODULE ] ;
+    local project = [ project.current ] ;
     
+    # Unless the user has explicitly asked us to hardcode dll paths, add
+    # <hardcode-dll-paths>false in requirements, to override default
+    # value.
+    if ! <hardcode-dll-paths>true in $(requirements)
+    {
+        requirements += <hardcode-dll-paths>false ;
+    }        
+   
     targets.main-target-alternative
-      [ new stage-target-class $(name) : $(project) : $(sources)
+      [ new stage-target-class $(name) : $(project) 
+        : [ targets.main-target-sources $(sources) : $(name) ]
         : [ targets.main-target-requirements $(requirements) : $(project) ] 
         : [ targets.main-target-default-build $(default-build) : $(project) ] 
       ] ;

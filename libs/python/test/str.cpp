@@ -1,3 +1,6 @@
+// Copyright David Abrahams 2004. Distributed under the Boost
+// Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #include <boost/python/module.hpp>
 #include <boost/python/def.hpp>
 #include <boost/python/class.hpp>
@@ -21,8 +24,10 @@ void work_with_string(object print)
     print(data.count("t"));
     print(data.encode("utf-8"));
     print(data.decode("utf-8"));
-    print(data.endswith("xx"));
-    print(data.startswith("test"));
+    
+    assert(!data.endswith("xx"));
+    assert(!data.startswith("test"));
+    
     print(data.splitlines());
     print(data.strip());
     print(data.swapcase());
@@ -48,8 +53,10 @@ void work_with_string(object print)
     print(data.replace("demo",std::string("blabla")));
     print(data.rfind("i",5));
     print(data.rindex("i",5));
-    print(data.startswith("asdf"));
-    print(data.endswith("asdf"));
+
+    assert(!data.startswith("asdf"));
+    assert(!data.endswith("asdf"));
+    
     print(data.translate(str('a')*256));
 
 

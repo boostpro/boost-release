@@ -1,16 +1,11 @@
 /* boost integer_traits.hpp tests
  *
  * Copyright Jens Maurer 2000
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
- *
- * $Id: integer_traits_test.cpp,v 1.10 2002/07/27 11:47:04 johnmaddock Exp $
+ * $Id: integer_traits_test.cpp,v 1.12 2004/07/27 03:43:33 dgregor Exp $
  *
  * Revision history
  *  2000-02-22  Small improvements by Beman Dawes
@@ -55,14 +50,14 @@ void runtest(const char * type, T)
 {
   typedef boost::integer_traits<T> traits;
   std::cout << "Checking " << type
-            << "; min is " << make_char_numeric_for_streaming(traits::min())
-            << ", max is " << make_char_numeric_for_streaming(traits::max())
+            << "; min is " << make_char_numeric_for_streaming((traits::min)())
+            << ", max is " << make_char_numeric_for_streaming((traits::max)())
             << std::endl;
   BOOST_TEST(traits::is_specialized);
   BOOST_TEST(traits::is_integer);
   BOOST_TEST(traits::is_integral);
-  BOOST_TEST(traits::const_min == traits::min());
-  BOOST_TEST(traits::const_max == traits::max());
+  BOOST_TEST(traits::const_min == (traits::min)());
+  BOOST_TEST(traits::const_max == (traits::max)());
 }
 
 int test_main(int, char*[])

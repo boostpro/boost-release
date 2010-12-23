@@ -1,18 +1,13 @@
 /* boost random.hpp header file
  *
  * Copyright Jens Maurer 2000-2001
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
- *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
  * See http://www.boost.org/libs/random for documentation.
  *
- * $Id: random.hpp,v 1.17 2002/12/27 16:51:53 beman_dawes Exp $
+ * $Id: random.hpp,v 1.18 2004/07/27 03:43:27 dgregor Exp $
  *
  * Revision history
  *  2000-02-18  portability fixes (thanks to Beman Dawes)

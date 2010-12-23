@@ -1,31 +1,29 @@
-// Copyright David Abrahams 2002. Permission to copy, use,
-// modify, sell and distribute this software is granted provided this
-// copyright notice appears in all copies. This software is provided
-// "as is" without express or implied warranty, and with no claim as
-// to its suitability for any purpose.
+// Copyright David Abrahams 2002.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 #include <boost/python/operators.hpp>
 #include <boost/python/class.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/def.hpp>
 #include "test_class.hpp"
+#include <boost/python/module.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/operators.hpp>
+#include <boost/operators.hpp>
+//#include <boost/python/str.hpp>
+// Just use math.h here; trying to use std::pow() causes too much
+// trouble for non-conforming compilers and libraries.
+#include <math.h>
+
 #if __GNUC__ != 2
 # include <ostream>
 #else
 # include <ostream.h>
 #endif
 
-// Just use math.h here; trying to use std::pow() causes too much
-// trouble for non-conforming compilers and libraries.
-#include <math.h>
+using namespace boost::python;
 
-#if BOOST_WORKAROUND(BOOST_MSVC, == 1310)
-// vc7.1 seems to require this (incorrectly) in order to use the "not" keyword
-#include <ciso646>
-#elif BOOST_WORKAROUND(BOOST_MSVC, <= 1300) \
-   || BOOST_WORKAROUND(__GNUC__, <= 2) \
-   || BOOST_WORKAROUND(__EDG_VERSION__, <= 238)
-#define not !
-#endif
 
 using namespace boost::python;
 
@@ -74,6 +72,35 @@ std::ostream& operator<<(std::ostream& s, X const& x)
     return s << x.value();
 }
 
+struct number
+  : boost::integer_arithmetic<number>
+{
+    explicit number(long x_) : x(x_) {}
+    operator long() const { return x; }
+
+    template <class T>
+    number& operator+=(T const& rhs)
+    { x += rhs; return *this; }
+
+    template <class T>
+    number& operator-=(T const& rhs)
+    { x -= rhs; return *this; }
+    
+    template <class T>
+    number& operator*=(T const& rhs)
+    { x *= rhs; return *this; }
+    
+    template <class T>
+    number& operator/=(T const& rhs)
+    { x /= rhs; return *this; }
+    
+    template <class T>
+    number& operator%=(T const& rhs)
+    { x %= rhs; return *this; }
+
+   long x;
+};
+
 BOOST_PYTHON_MODULE(operators_ext)
 {
     class_<X>("X", init<int>())
@@ -87,15 +114,57 @@ BOOST_PYTHON_MODULE(operators_ext)
         .def(self < self)
         .def(1 < self)
         .def(self -= self)
+
         .def(abs(self))
         .def(str(self))
             
         .def(pow(self,self))
         .def(pow(self,int()))
         .def(pow(int(),self))
-        .def(not self)
+        .def(
+            !self
+            // "not self" is legal here but causes friction on a few
+            // nonconforming compilers; it's cute because it looks
+            // like python, but doing it here doesn't prove much and
+            // just causes tests to fail or complicated workarounds to
+            // be enacted.
+        )
         ;
 
+    class_<number>("number", init<long>())
+      // interoperate with self
+      .def(self += self)
+      .def(self + self)
+      .def(self -= self)
+      .def(self - self)
+      .def(self *= self)
+      .def(self * self)
+      .def(self /= self)
+      .def(self / self)
+      .def(self %= self)
+      .def(self % self)
+
+      // Convert to Python int
+      .def(int_(self))
+
+      // interoperate with long
+      .def(self += long())
+      .def(self + long())
+      .def(long() + self)
+      .def(self -= long())
+      .def(self - long())
+      .def(long() - self)
+      .def(self *= long())
+      .def(self * long())
+      .def(long() * self)
+      .def(self /= long())
+      .def(self / long())
+      .def(long() / self)
+      .def(self %= long())
+      .def(self % long())
+      .def(long() % self)
+      ;
+   
     class_<test_class<1> >("Z", init<int>())
         .def(int_(self))
         .def(float_(self))

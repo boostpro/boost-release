@@ -11,21 +11,19 @@
 // Test suite for increment_actor
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <boost/spirit.hpp>
-#include <boost/test/unit_test.hpp>
-
+#include "action_tests.hpp"
+#include <boost/spirit/core.hpp>
 #include <boost/spirit/actor/decrement_actor.hpp>
 
-void decrement_test()
+void decrement_action_test()
 {
-    using namespace boost::unit_test_framework;
     using namespace boost::spirit;
 
     BOOST_MESSAGE("decrement_test");
 
     const char* cp = "63";
     const char* cp_first = cp;
-    const char* cp_last = cp + strlen(cp);
+    const char* cp_last = cp + string_length(cp);
     int h=127;
     int hm=h;
 
@@ -38,10 +36,5 @@ void decrement_test()
 
     --h;
     BOOST_CHECK_EQUAL( hm,h);
-}
-
-void decrement_action_test(boost::unit_test_framework::test_suite* test)
-{
-    test->add( BOOST_TEST_CASE(&decrement_test) );
 }
 

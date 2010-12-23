@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2002-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2002-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: parameterized_test_test.cpp,v $
 //
-//  Version     : $Revision: 1.12 $
+//  Version     : $Revision: 1.14 $
 //
 //  Description : tests parameterized tests
 // ***************************************************************************
@@ -23,7 +23,7 @@ typedef boost::onullstream onullstream_type;
 typedef boost::test_toolbox::output_test_stream onullstream_type;
 #endif
 
-namespace utf=boost::unit_test_framework;
+namespace utf=boost::unit_test;
 
 #include <list>
 #include <iostream>
@@ -51,7 +51,7 @@ void test1( int i )
 
 #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570))
 #define BOOST_PARAM_TEST_CASE__( arg1, arg2, arg3 ) \
-    boost::unit_test_framework::create_test_case<int*,int>( (arg1), std::string( "" ), (arg2), (arg3) )
+    boost::unit_test::create_test_case<int*,int>( (arg1), std::string( "" ), (arg2), (arg3) )
 #else
 #define BOOST_PARAM_TEST_CASE__( arg1, arg2, arg3 ) BOOST_PARAM_TEST_CASE( arg1, arg2, arg3 )
 #endif
@@ -194,6 +194,14 @@ int test_main( int, char* [] ) {
 //  Revision History :
 //  
 //  $Log: parameterized_test_test.cpp,v $
+//  Revision 1.14  2004/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.13  2004/05/11 11:05:06  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.12  2003/12/03 01:22:40  rogeeff
 //  *** empty log message ***
 //

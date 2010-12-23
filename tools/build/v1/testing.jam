@@ -1,7 +1,7 @@
-#  (C) Copyright David Abrahams 2002. Permission to copy, use, modify, sell and
-#  distribute this software is granted provided this copyright notice appears in
-#  all copies. This software is provided "as is" without express or implied
-#  warranty, and with no claim as to its suitability for any purpose.
+#  (C) Copyright David Abrahams 2002.
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+
 if ! $(.testing.jam-included)
 {
 .testing.jam-included = "}" ; # The brace makes emacs indentation happy
@@ -14,6 +14,25 @@ gcc-compilers = [ difference $(gcc-compilers) : $(mingw-compilers) ] ;
 local rule get-var-value ( name + )
 {
     return $($(name)) ;
+}
+
+local rule get-library-name ( path )
+{
+    local forward_slash_path = "" ;
+    for i in [ split-path $(path) ] { forward_slash_path = $(forward_slash_path)/$(i) ; }
+    path = $(forward_slash_path) ;
+
+    local match1 = [ MATCH /libs/(.*)/(test|example) : $(path) ] ;
+    local match2 = [ MATCH /libs/(.*)$ : $(path) ] ;
+    local match3 = [ MATCH (/status$) : $(path) ] ;
+
+    if $(match1) { return $(match1[0]) ; }
+    else if $(match2) { return $(match2[0]) ; }
+    else if $(match3) { return "" ; }
+    else if --dump-tests in $(ARGV)
+    { 
+        EXIT Cannot extract library name from path $(path) ; 
+    }
 }
 
 # Declares a test target. If name is not supplied, it is taken from the name of
@@ -31,6 +50,9 @@ rule boost-test ( sources + : target-type : requirements * : test-name ? : defau
             # manufacture a test name if none supplied explicitly
             test-name ?= $(sources[1]:D=:S=) ;
             
+            local library = "" ;
+            if $(RELATIVE_SUBDIR) { library = [ get-library-name $(RELATIVE_SUBDIR) ] ; }
+            
             # Make sure that targets don't become part of "all"
             local gSUPPRESS_FAKE_TARGETS = true ;
             
@@ -42,15 +64,15 @@ rule boost-test ( sources + : target-type : requirements * : test-name ? : defau
                       : $(target-type)
             ] ;
             
-            if $(result) in $(.all-boost-tests)
+            if $(result) && $(result) in $(.all-boost-tests)
             {
                 EXIT boost-test \"$(result)\" declared twice ;
                 .all-boost-tests += $(result) ;
             }
             
-            if ( --dump-tests in $(ARGV) ) 
+            if --dump-tests in $(ARGV)
             {
-                dump-test $(result) : $(requirements) ;
+                dump-test $(library) : $(result) : $(requirements) ;
             }
         }
         
@@ -75,7 +97,7 @@ rule boost-test ( sources + : target-type : requirements * : test-name ? : defau
 
 # Helper for boost-test above.  Uses dynamic scoping to access
 # boost-test's locals.
-local rule dump-test ( targets + : requirements * )
+local rule dump-test ( library ? : targets + : requirements * )
 {
     local srcs = [ on $(targets) get-var-value source-files ] ;
     
@@ -115,7 +137,18 @@ local rule dump-test ( targets + : requirements * )
     # Format them into a single string of quoted strings
     dump-test-info = \"$(dump-test-info:J=\"\ \")\" ;
     
-    ECHO boost-test($(target-type)) \"$(test-name)\" 
+    local test-id  ; # unique among all tests
+    
+    if $(library) 
+        {
+        test-id = $(library)/$(test-name) ;
+        }
+    else
+        {
+        test-id = $(test-name) ;
+        }
+
+    ECHO boost-test($(target-type)) \"$(test-id)\" 
       [$(dump-test-info)]
         ":" \"$(source-files)\"
           ;
@@ -301,6 +334,7 @@ rule run-test ( type-to-test run-target : sources * )
     DEPENDS $(run-target) : $(executable) $(targets-to-test) $(gRUN_TEST_INPUT_FILES) ;
     INPUT_FILES on $(run-target) = $(gRUN_TEST_INPUT_FILES) ;
     ARGS on $(run-target) = $(gRUN_TEST_ARGS) ;
+    ARGS2 on $(run-target) = $(gRUN_TEST_ARGS2) ;
     
     #
     # Prepare path setup
@@ -381,18 +415,30 @@ rule run-test ( type-to-test run-target : sources * )
         ENDIF on $(run-target) = "fi" ;
     }
     
-    capture-run-output $(run-target) : $(executable) ;
+    capture-run-output $(run-target) : $(executable) : $(debugger) ;
+
+    if ! ( --preserve-test-targets in $(ARGV) )
+    {
+        RmTemps $(run-target) : $(targets-to-test) ;
+    }
 }
 
 # The rule is just used for argument checking
-rule capture-run-output ( target : executable + )
+rule capture-run-output ( target : executable + : debugger ? )
 {
     gTEST_OUTPUT_FILE($(target)) = $(target:S=.output) ;
     INCLUDES $(target) : $(target:S=.output) ;
     MakeLocate $(test-file:S=.output) : $(LOCATE_TARGET) ;
     Clean clean : $(test-file:S=.output) ;
     output-file on $(target) = $(target:S=.output) ;
-    execute-test $(target) : $(executable) ;
+    if $(debugger)
+    {
+        debug-test $(target) : $(executable) ;
+    }
+    else
+    {
+        execute-test $(target) : $(executable) ;
+    }
 
     if --run-all-tests in $(ARGV)
     {
@@ -409,9 +455,14 @@ else
     CATENATE = cat ;
 }
 
+actions debug-test bind INPUT_FILES
+{
+    $(PATH_SETUP)$(>) $(ARGS) "$(INPUT_FILES)" $(ARGS2)
+}
+
 actions execute-test bind INPUT_FILES output-file
 {
-    $(PATH_SETUP)$(>) $(ARGS) "$(INPUT_FILES)" > $(output-file) 2>&1
+    $(PATH_SETUP)$(>) $(ARGS) "$(INPUT_FILES)" $(ARGS2) > $(output-file) 2>&1
     $(SET_STATUS)
     $(RUN_OUTPUT_NL) >> $(output-file)
     echo EXIT STATUS: $(STATUS) >> $(output-file)
@@ -433,9 +484,10 @@ actions execute-test bind INPUT_FILES output-file
 
 declare-build-fail-test RUN_FAIL : TEST_EXE ;
 declare-build-succeed-test RUN : TEST_EXE ;
-rule run ( sources + : args * : input-files * : requirements * : name ? : default-build * )
+rule run ( sources + : args * : input-files * : requirements * : name ? : default-build * : args2 * )
 {
     local gRUN_TEST_ARGS = $(args) ;
+    local gRUN_TEST_ARGS2 = $(args2) ;
     local gRUN_TEST_INPUT_FILES = $(input-files) ;
     SEARCH on $(input-files) = $(SEARCH_SOURCE) ;
     return [ boost-test $(sources) : RUN : $(requirements) : $(name) : $(default-build) ] ;

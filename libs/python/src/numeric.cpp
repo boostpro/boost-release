@@ -1,8 +1,7 @@
-// Copyright David Abrahams 2002. Permission to copy, use,
-// modify, sell and distribute this software is granted provided this
-// copyright notice appears in all copies. This software is provided
-// "as is" without express or implied warranty, and with no claim as
-// to its suitability for any purpose.
+// Copyright David Abrahams 2002.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/python/numeric.hpp>
 #include <boost/python/handle.hpp>
@@ -226,22 +225,22 @@ namespace aux
   
   bool array_base::isaligned() const
   {
-      return extract<bool>(attr("isaligned"));
+      return extract<bool>(attr("isaligned")());
   }
   
   bool array_base::iscontiguous() const
   {      
-      return extract<bool>(attr("isaligned"));
+      return extract<bool>(attr("iscontiguous")());
   }
   
   long array_base::itemsize() const
   {
-      return extract<long>(attr("itemsize"));
+      return extract<long>(attr("itemsize")());
   }
   
   long array_base::nelements() const
   {
-      return extract<long>(attr("nelements"));
+      return extract<long>(attr("nelements")());
   }
   
   object array_base::nonzero() const

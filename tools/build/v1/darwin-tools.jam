@@ -1,7 +1,6 @@
 # (C) Copyright Rene Rivera, 2002-2003.
-#
-# See accompanying license for terms and conditions of use.
-#
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 # The following #// line will be used by the regression test table generation
 # program as the column heading for HTML tables. Must not include version number.
@@ -79,7 +78,7 @@ flags darwin C++FLAGS <cxxflags> ;
 flags darwin DEFINES <define> ;
 flags darwin UNDEFS <undef> ;
 flags darwin HDRS <include> ;
-flags darwin STDHDRS <sysinclude> ;
+flags darwin SYSHDRS <sysinclude> ;
 flags darwin LIBPATH <library-path> ;
 flags darwin NEEDLIBS <library-file> ;
 flags darwin FINDLIBS <find-library> ;
@@ -200,7 +199,7 @@ rule Cc-action
 
 actions darwin-Cc-action
 {
-    $(.GCC_BIN_DIR)$(.GCC) -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -F$(FRAMEWORKS:D) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(.GCC_BIN_DIR)$(.GCC) -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -F$(FRAMEWORKS:D) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -212,7 +211,7 @@ rule C++-action
 
 actions darwin-C++-action
 {
-    $(.GCC_BIN_DIR)$(.GXX) -c -ftemplate-depth-120 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -F$(FRAMEWORKS:D) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(.GCC_BIN_DIR)$(.GXX) -c -ftemplate-depth-256 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -F$(FRAMEWORKS:D) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" -o "$(<)" "$(>)"
 }
 
 #### Archive ####

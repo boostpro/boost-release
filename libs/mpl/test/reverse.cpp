@@ -1,36 +1,32 @@
-//-----------------------------------------------------------------------------
-// boost mpl/test/reverse.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
+
+// Copyright Aleksey Gurtovoy 2000-2004
 //
-// Copyright (c) 2000-02
-// Aleksey Gurtovoy
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
+// See http://www.boost.org/libs/mpl for documentation.
 
-#include "boost/mpl/reverse.hpp"
-#include "boost/mpl/list_c.hpp"
-#include "boost/mpl/range_c.hpp"
-#include "boost/mpl/equal.hpp"
-#include "boost/mpl/equal_to.hpp"
-#include "boost/static_assert.hpp"
+// $Source: /cvsroot/boost/boost/libs/mpl/test/reverse.cpp,v $
+// $Date: 2004/09/02 15:41:35 $
+// $Revision: 1.5 $
 
-namespace mpl = boost::mpl;
+#include <boost/mpl/reverse.hpp>
 
-int main()
+#include <boost/mpl/list_c.hpp>
+#include <boost/mpl/range_c.hpp>
+#include <boost/mpl/equal.hpp>
+#include <boost/mpl/equal_to.hpp>
+#include <boost/mpl/at.hpp>
+
+#include <boost/mpl/aux_/test.hpp>
+
+MPL_TEST_CASE()
 {
-    using namespace mpl::placeholders;
-    typedef mpl::list_c<int,9,8,7,6,5,4,3,2,1,0>::type numbers;
-    typedef mpl::reverse< numbers >::type result;
+    typedef list_c<int,9,8,7,6,5,4,3,2,1,0> numbers;
+    typedef reverse< numbers >::type result;
 
-    typedef mpl::range_c<int,0,10> answer;
-    BOOST_STATIC_ASSERT((mpl::equal< result,answer,mpl::equal_to<_,_> >::type::value));
-
-    return 0;
+    typedef range_c<int,0,10> answer;
+    
+    MPL_ASSERT(( equal< result,answer,equal_to<_1,_2> > ));
 }

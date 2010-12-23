@@ -7,11 +7,10 @@
 #
 
 # This file is ALSO:
-# (C) Copyright David Abrahams 2001. Permission to copy, use,
-# modify, sell and distribute this software is granted provided this
-# copyright notice appears in all copies. This software is provided
-# "as is" without express or implied warranty, and with no claim as
-# to its suitability for any purpose.
+# Copyright 2001-2004 David Abrahams.
+# Copyright 2002-2004 Rene Rivera.
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 if $(NT)
 {
@@ -80,7 +79,7 @@ rule boost-build ( dir ? )
     local bootstrap-file =
         [ GLOB $(BOOST_BUILD_PATH) : bootstrap.jam ] ;
     .bootstrap-file = $(bootstrap-file[1]) ;
-    
+            
     # There is no boost-build.jam we can find, exit with an error
     #
     if ! $(.bootstrap-file)
@@ -96,6 +95,13 @@ rule boost-build ( dir ? )
         ECHO ;
         EXIT "Please consult the documentation at 'http://www.boost.org'." ;
     }
+    
+    if [ MATCH .*(--debug-configuration).* : $(ARGV) ]
+    {
+        ECHO "notice: loading Boost.Build from" 
+          [ NORMALIZE_PATH $(.bootstrap-file:D) ] ;
+    }
+    
     
     # Load the build system, now that we know where to start from.
     #
@@ -121,6 +127,12 @@ if [ MATCH .*(bjam).* : $(ARGV[1]:BL) ]
     
     .boost-build-file = $(boost-build-files[1]) ;
     
+    if [ MATCH .*(--debug-configuration).* : $(ARGV) ]
+    {
+        ECHO "notice: found boost-build.jam at" 
+          [ NORMALIZE_PATH $(.boost-build-file) ] ;
+    }
+        
     # There is no boost-build.jam we can find, exit with an error, and information.
     #
     if ! $(.boost-build-file)

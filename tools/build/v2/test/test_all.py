@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os, sys, string
+from BoostBuild import get_toolset
 
 # clear environment for testing
 #
@@ -26,21 +27,28 @@ def run_tests(critical_tests, other_tests):
 
     invocation_dir = os.getcwd()
 
+    failures_count = 0
     for i in all_tests:
         print ("%-25s : " %(i)),
         try:
             __import__(i)
-        except:
+        except SystemExit:
             print "FAILED"
-            f = open(os.path.join(invocation_dir, 'test_results.txt'), 'w')
-            f.write(i)
-            f.close()
-            raise
+            if failures_count == 0:
+                f = open(os.path.join(invocation_dir, 'test_results.txt'), 'w')
+                f.write(i)
+                f.close()
+            failures_count = failures_count + 1
+            # Restore the current directory, which might be changed by the
+            # test
+            os.chdir(invocation_dir)
+            continue
         print "PASSED"
         sys.stdout.flush()  # makes testing under emacs more entertaining.
         
     # Erase the file on success
-    open('test_results.txt', 'w')
+    if failures_count == 0:
+        open('test_results.txt', 'w')
         
 
 def last_failed_test():
@@ -85,7 +93,6 @@ tests = [ "project_test1",
           "make_rule",
           "alias",
           "alternatives",
-          "unused",
           "default_features",
           "print",
           "ndebug",
@@ -114,10 +121,21 @@ tests = [ "project_test1",
           "library_chain",
           "unit_test",
           "standalone",
+          "expansion",
+          "wrapper",
+          "duplicate",
+          "library_property",
+          #"ordered_properties",
           ]
 
 if os.name == 'posix':
     tests.append("symlink")
+    # On windows, library order is not important, so skip this test
+    # Besides, it fails ;-)    
+    tests.append("library_order")
+
+if string.find(get_toolset(), 'gcc') == 0:
+    tests.append("gcc_runtime")
 
 if os.environ.has_key('QTDIR'):
     tests.append("railsys")

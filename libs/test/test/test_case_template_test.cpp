@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2003-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: test_case_template_test.cpp,v $
 //
-//  Version     : $Revision: 1.5 $
+//  Version     : $Revision: 1.8 $
 //
 //  Description : tests function template test case
 // ***************************************************************************
@@ -30,7 +30,7 @@ typedef boost::test_toolbox::output_test_stream onullstream_type;
 #include <boost/mpl/list_c.hpp>
 #include <boost/scoped_ptr.hpp>
 
-namespace tf  = boost::unit_test_framework;
+namespace tf  = boost::unit_test;
 namespace mpl = boost::mpl;
 
 // STL
@@ -41,7 +41,7 @@ namespace mpl = boost::mpl;
 template<typename Number>
 void test0( Number* = 0 )
 {
-    BOOST_CHECK_EQUAL( 2, Number::value );
+    BOOST_CHECK_EQUAL( 2, (int const)Number::value );
 }
 
 BOOST_META_FUNC_TEST_CASE( test0 );
@@ -51,11 +51,11 @@ BOOST_META_FUNC_TEST_CASE( test0 );
 template<typename Number>
 void test1( Number* = 0 )
 {
-    BOOST_CHECK_EQUAL( 6, Number::value );
+    BOOST_CHECK_EQUAL( 6, (int const)Number::value );
 
-    BOOST_REQUIRE( 2 <= Number::value );
+    BOOST_REQUIRE( 2 <= (int const)Number::value );
 
-    BOOST_CHECK_EQUAL( 3, Number::value );
+    BOOST_CHECK_EQUAL( 3, (int const)Number::value );
 }
 
 BOOST_META_FUNC_TEST_CASE( test1 );
@@ -154,6 +154,17 @@ int test_main( int, char* [] )
 //  Revision History :
 //  
 //  $Log: test_case_template_test.cpp,v $
+//  Revision 1.8  2004/10/05 04:23:54  rogeeff
+//  borland fix
+//
+//  Revision 1.7  2004/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.6  2004/05/11 11:05:06  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.5  2003/12/01 00:42:38  rogeeff
 //  prerelease cleaning
 //

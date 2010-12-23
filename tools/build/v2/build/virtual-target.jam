@@ -9,7 +9,7 @@
 #  if particular target should be created at all.
 
 import "class" : new ;
-import path property-set utility sequence errors ;
+import path property-set utility sequence errors set ;
 
 #                       +--------------------------+
 #                       | virtual-target           |
@@ -258,6 +258,18 @@ class abstract-file-target : virtual-target
         }
         return $(self.root) ;
     }
+    
+    rule set-intermediate ( value ? )
+    {
+        self.intermediate = $(value) ;
+    }
+    
+    rule intermediate ( )      
+    {
+        return $(self.intermediate) ;
+    }
+    
+    
 
     # Gets or sets the subvariant which created this target. Subvariant
     # is set when target is brought into existance, and is never changed
@@ -375,7 +387,7 @@ class abstract-file-target : virtual-target
         {
             # File is either source, which will be searched for, or is not a file at
             # all. Use the location of project for distinguishing.
-            local project-location = [ project.attribute $(self.project) location ] ;
+            local project-location = [ $(self.project).get location ] ;
             local location-grist =
               [ sequence.join [ regex.split $(project-location) "/" ] : "!" ] ;
             
@@ -464,7 +476,7 @@ class file-target : abstract-file-target
         {
             # This is a source file.
             SEARCH on $(target) =
-              [ path.native [ project.attribute $(self.project) source-location ] ] ;
+              [ path.native [ $(self.project).get source-location ] ] ;
         }        
     }
     
@@ -475,11 +487,11 @@ class file-target : abstract-file-target
         {
             if $(self.action)
             {                
-                local build-dir = [ project.attribute $(self.project) build-dir ] ;
+                local build-dir = [ $(self.project).get build-dir ] ;
                 if ! $(build-dir)
                 {
                     build-dir = [ path.join 
-                        [ project.attribute $(self.project) location ]
+                        [ $(self.project).get location ]
                         bin
                     ] ;
                 }
@@ -704,10 +716,15 @@ class null-action : action
 rule from-file ( file : project )
 {
     import type ; # had to do this here to break a circular dependency
-    
-    if $(.files.$(file).$(project))
+
+    # Check if we've created a target corresponding to this file.
+    local source-location = [ $(project).get source-location ] ;
+    local path = [ path.root [ path.root [ path.make $(file) ] $(source-location) ] 
+      [ path.pwd ] ] ;
+                
+    if $(.files.$(path))
     {
-        return $(.files.$(file).$(project)) ;
+        return $(.files.$(path)) ;
     }
     else
     {
@@ -725,7 +742,7 @@ rule from-file ( file : project )
             $(v).suffix [ MATCH ^.(.*)$ : $(file:S) ] ;
             result = $(v) ;
         }
-        .files.$(file).$(project) = $(result) ;
+        .files.$(path) = $(result) ;
         return $(result) ;
     }
 }
@@ -737,7 +754,8 @@ rule from-file ( file : project )
 rule register ( target )
 {
     local signature = [ sequence.join
-        [ $(target).project ] [ $(target).name ] [ $(target).type ] : - ] ;
+        [ $(target).actual-name ] : - ] ;    
+            
     local result ;
     for local t in $(.cache.$(signature))
     {
@@ -767,9 +785,10 @@ rule register ( target )
             }                        
         }
     }
+    
     if ! $(result)
     {
-        .cache.$(signature) += $(target) ;
+        .cache.$(signature) += $(target) ;     
         result = $(target) ;
     }
 
@@ -780,9 +799,34 @@ rule register-actual-name ( actual-name : virtual-target )
 {
     if $(.actual.$(actual-name))
     {
+        local cs1 = [ $(.actual.$(actual-name)).creating-subvariant ] ;
+        local cs2 = [ $(virtual-target).creating-subvariant ] ;
+        local cmt1 = [ $(cs1).main-target ] ;
+        local cmt2 = [ $(cs2).main-target ] ;
+        
+        
+        local action1 = [ $(.actual.$(actual-name)).action ] ;
+        local action2 = [ $(virtual-target).action ] ;
+        local properties-added ;
+        local properties-removed ;
+        if $(action1) && $(action2)
+        {
+            local p1 = [ $(action1).properties ] ;
+            p1 = [ $(p1).raw ] ;
+            local p2 = [ $(action2).properties ] ;
+            p2 = [ $(p2).raw ] ;
+            properties-removed = [ set.difference $(p1) : $(p2) ] ;
+            properties-removed ?= "none" ;
+            properties-added = [ set.difference $(p2) : $(p1) ] ;
+            properties-added ?= "none" ;
+        }        
         errors.error "Duplicate name of actual target:" $(actual-name) 
           : "previous virtual target" [ $(.actual.$(actual-name)).str ] 
-          : "another virtual target" [ $(virtual-target).str ] ;
+          : "created from" [ $(cmt1).location ]
+          : "another virtual target" [ $(virtual-target).str ]
+          : "created from" [ $(cmt2).location ]                
+          : "added properties: " $(properties-added) 
+          : "removed properties: " $(properties-removed) ;
     }
     else
     {
@@ -887,7 +931,7 @@ rule clone-action ( action : new-project : new-action-name ? : new-properties ? 
 #
 # The 'new-project' parameter tells what project should be assigned
 # for newly created non-source targets.
-rule clone-template ( target dont-recurse ? : new-source : new-project )
+rule clone-template ( target dont-recurse ? : new-source : new-project : dont-register ? )
 {
     local name = [ $(new-source).name ] ;
     local old-name = [ $(target).name ] ;
@@ -913,6 +957,7 @@ rule clone-template ( target dont-recurse ? : new-source : new-project )
     {
         local cloned = [ new file-target $(new-name) : [ $(target).type ] :
           $(new-project) ] ;
+        $(cloned).set-intermediate [ $(target).intermediate ] ;
 
         if ! $(dont-recurse) && [ $(target).action ]
         {
@@ -925,7 +970,13 @@ rule clone-template ( target dont-recurse ? : new-source : new-project )
                 if $(t) != $(target)
                 {
                     cloned-targets +=
-                      [ clone-template $(t) dont-recurse : $(new-source) : $(new-project) ] ;
+                      [ clone-template $(t) dont-recurse : $(new-source) : $(new-project) 
+                        # We don't want to pass new targets vis 'register' util we've
+                        # finished building them -- i.e. until we assign the action.
+                        # It might seem registering this not-yet ready target is
+                        # harmless, but in fact the 'register' logic expects than
+                        # registered target is never changed later.
+                        : dont-register ] ;
                 }
             }
             local cloned-targets2 ;
@@ -936,12 +987,16 @@ rule clone-template ( target dont-recurse ? : new-source : new-project )
                 cloned-targets2 += [ register $(t) ] ;
 
             }
+            
             $(cloned-action).set-targets $(cloned-targets2) ;
             cloned = $(cloned-targets2[1]) ;
         }
         else
         {
-            cloned = [ register $(cloned) ] ;
+            if ! $(dont-register)
+            {                
+                cloned = [ register $(cloned) ] ;
+            }            
         }
         return $(cloned) ;
     }

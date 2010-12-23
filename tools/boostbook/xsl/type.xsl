@@ -13,12 +13,17 @@
   <xsl:param name="boost.compact.enum">1</xsl:param>
 
   <xsl:template match="class|struct|union" mode="generate.id">
-    <xsl:value-of select="local-name(.)"/>
-    <xsl:text>.</xsl:text>
-    <xsl:call-template name="fully-qualified-name">
-      <xsl:with-param name="node" select="."/>
-      <xsl:with-param name="separator" select="'.'"/>
-    </xsl:call-template>
+    <xsl:choose>
+      <xsl:when test="count(key('named-entities', @name))=1">
+        <xsl:value-of select="@name"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="fully-qualified-name">
+          <xsl:with-param name="node" select="."/>
+          <xsl:with-param name="separator" select="'.'"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="enum" mode="generate.id">
@@ -757,7 +762,7 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
         </xsl:call-template>
         <xsl:apply-templates select="specialization"/>
       </xsl:with-param>
-      <xsl:with-param name="purpose" select="./purpose"/>
+      <xsl:with-param name="purpose" select="purpose/*|purpose/text()"/>
       <xsl:with-param name="anchor">
         <xsl:call-template name="generate.id">
           <xsl:with-param name="node" select="."/>
@@ -962,7 +967,7 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
             <xsl:with-param name="node" select="."/>
           </xsl:call-template>
         </xsl:with-param>
-        <xsl:with-param name="purpose" select="purpose"/>
+        <xsl:with-param name="purpose" select="purpose/*|purpose/text()"/>
         <xsl:with-param name="anchor">
           <xsl:call-template name="generate.id">
             <xsl:with-param name="node" select="."/>
@@ -1075,13 +1080,13 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
               select="$value/default/*|$value/default/text()"/>
           </xsl:if>
 
-          <xsl:variable name="end" select="$indentation 
+          <xsl:variable name="end2" select="$indentation 
                                            + string-length($result) 
                                            - string-length($prefix)"/>
 
           <xsl:call-template name="type.enum.list.compact">
             <xsl:with-param name="indentation" select="$indentation"/>
-            <xsl:with-param name="column" select="$end"/>
+            <xsl:with-param name="column" select="$end2"/>
             <xsl:with-param name="values" select="$rest"/>
             <xsl:with-param name="prefix" select="', '"/>
           </xsl:call-template>

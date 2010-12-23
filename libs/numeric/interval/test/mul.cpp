@@ -1,17 +1,11 @@
 /* Boost test/mul.cpp
  * test multiplication, division, square and square root on some intervals
  *
- * Copyright Guillaume Melquiond 2002-2003
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation.
+ * Copyright 2002-2003 Guillaume Melquiond
  *
- * None of the above authors nor Polytechnic University make any
- * representation about the suitability of this software for any
- * purpose. It is provided "as is" without express or implied warranty.
- *
- * $Id: mul.cpp,v 1.7 2003/08/10 21:14:37 gmelquio Exp $
+ * Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE_1_0.txt or
+ * copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
 #include <boost/numeric/interval.hpp>
@@ -20,19 +14,19 @@
 
 typedef boost::numeric::interval<double> I;
 
-static double min(double a, double b, double c, double d) {
-  return std::min(std::min(a, b), std::min(c, d));
+static double min BOOST_PREVENT_MACRO_SUBSTITUTION (double a, double b, double c, double d) {
+  return (std::min)((std::min)(a, b), (std::min)(c, d));
 }
 
-static double max(double a, double b, double c, double d) {
-  return std::max(std::max(a, b), std::max(c, d));
+static double max BOOST_PREVENT_MACRO_SUBSTITUTION (double a, double b, double c, double d) {
+  return (std::max)((std::max)(a, b), (std::max)(c, d));
 }
 
 static bool test_mul(double al, double au, double bl, double bu) {
   I a(al, au), b(bl, bu);
   I c = a * b;
-  return c.lower() == min(al*bl, al*bu, au*bl, au*bu)
-      && c.upper() == max(al*bl, al*bu, au*bl, au*bu);
+  return c.lower() == (min)(al*bl, al*bu, au*bl, au*bu)
+      && c.upper() == (max)(al*bl, al*bu, au*bl, au*bu);
 }
 
 static bool test_mul1(double ac, double bl, double bu) {
@@ -46,8 +40,8 @@ static bool test_mul1(double ac, double bl, double bu) {
 static bool test_div(double al, double au, double bl, double bu) {
   I a(al, au), b(bl, bu);
   I c = a / b;
-  return c.lower() == min(al/bl, al/bu, au/bl, au/bu)
-      && c.upper() == max(al/bl, al/bu, au/bl, au/bu);
+  return c.lower() == (min)(al/bl, al/bu, au/bl, au/bu)
+      && c.upper() == (max)(al/bl, al/bu, au/bl, au/bu);
 }
 
 static bool test_div1(double al, double au, double bc) {

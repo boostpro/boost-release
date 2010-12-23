@@ -1,17 +1,11 @@
 /* Boost test/cmp.cpp
  * test standard comparison functions
  *
- * Copyright Guillaume Melquiond 2002-2003
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation.
+ * Copyright 2002-2003 Guillaume Melquiond
  *
- * None of the above authors nor Polytechnic University make any
- * representation about the suitability of this software for any
- * purpose. It is provided "as is" without express or implied warranty.
- *
- * $Id: cmp.cpp,v 1.5 2003/06/04 09:18:46 gmelquio Exp $
+ * Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE_1_0.txt or
+ * copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
 #include "cmp_header.hpp"
@@ -78,28 +72,6 @@ static void test_12_23() {
   BOOST_C_EXN(b <= a);
   BOOST_C_EXN(b > a);
   BOOST_CHECK(b >= a);
-
-  BOOST_C_EXN(a == b);
-  BOOST_C_EXN(a != b);
-
-# ifdef __BORLANDC__
-  ::detail::ignore_unused_variable_warning(a);
-  ::detail::ignore_unused_variable_warning(b);
-# endif
-}
-
-static void test_12_E() {
-  I a(1, 2), b(I::empty());
-  
-  BOOST_C_EXN(a < b);
-  BOOST_C_EXN(a <= b);
-  BOOST_C_EXN(a > b);
-  BOOST_C_EXN(a >= b);
-
-  BOOST_C_EXN(b < a);
-  BOOST_C_EXN(b <= a);
-  BOOST_C_EXN(b > a);
-  BOOST_C_EXN(b >= a);
 
   BOOST_C_EXN(a == b);
   BOOST_C_EXN(a != b);
@@ -190,6 +162,8 @@ static void test_12_3() {
 # endif
 }
 
+// comparisons between [1,2] and [1,2]
+
 static void test_12_12() {
   const I a(1,2), b(1,2);
   BOOST_C_EXN(a == b);
@@ -200,6 +174,8 @@ static void test_12_12() {
 # endif
 }
 
+// comparisons between [1,1] and [1,1]
+
 static void test_11_11() {
   const I a(1,1), b(1,1);
   BOOST_CHECK(a == b);
@@ -209,6 +185,8 @@ static void test_11_11() {
   ::detail::ignore_unused_variable_warning(b);
 # endif
 }
+
+// comparisons between [1,1] and 1
 
 static void test_11_1() {
   const I a(1,1);
@@ -225,7 +203,6 @@ int test_main(int, char *[]) {
   test_12_34();
   test_13_24();
   test_12_23();
-  test_12_E();
   test_12_0();
   test_12_1();
   test_12_2();

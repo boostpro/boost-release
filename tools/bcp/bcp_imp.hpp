@@ -32,7 +32,7 @@ struct path_less
    { return compare_paths(a, b) < 0; }
 };
 
-struct licence_data
+struct license_data
 {
    std::set<fs::path, path_less> files;
    std::set<std::string>         authors;
@@ -52,7 +52,9 @@ private:
    void enable_cvs_mode();
    void enable_unix_lines();
    void enable_scan_mode();
-   void enable_licence_mode();
+   void enable_license_mode();
+   void enable_bsl_convert_mode();
+   void enable_bsl_summary_mode();
    void set_boost_path(const char* p);
    void set_destination(const char* p);
    void add_module(const char* p);
@@ -71,23 +73,30 @@ private:
    bool is_binary_file(const fs::path& p);
    void add_dependent_lib(const std::string& libname, const fs::path& p);
    void create_path(const fs::path& p);
-   // licence code:
-   void scan_licence(const fs::path& p, const fileview& v);
-   void output_licence_info();
+   // license code:
+   void scan_license(const fs::path& p, const fileview& v);
+   void output_license_info();
 
    std::list<std::string> m_module_list; // the modules to process
    bool m_list_mode;                     // list files only
-   bool m_licence_mode;                  // generate licence information for files listed
+   bool m_license_mode;                  // generate license information for files listed
    bool m_cvs_mode;                      // check cvs for files
    bool m_unix_lines;                    // fix line endings
    bool m_scan_mode;                     // scan non-boost files.
+   bool m_bsl_convert_mode;              // try to convert to the BSL
+   bool m_bsl_summary_mode;              // summarise BSL issues only
    fs::path m_boost_path;                // the path to the boost root
    fs::path m_dest_path;                 // the path to copy to
    std::map<fs::path, bool, path_less> m_cvs_paths;    // valid files under cvs control
    std::set<fs::path, path_less> m_copy_paths;         // list of files to copy
-   std::map<int, licence_data>   m_licence_data;       // licences in use
-   std::set<fs::path, path_less> m_unknown_licences;   // files with no known licence
+   std::map<int, license_data>   m_license_data;       // licenses in use
+   std::set<fs::path, path_less> m_unknown_licenses;   // files with no known license
    std::set<fs::path, path_less> m_unknown_authors;    // files with no known copyright/author
+   std::set<fs::path, path_less> m_can_migrate_to_bsl; // files that can migrate to the BSL
+   std::set<fs::path, path_less> m_cannot_migrate_to_bsl; // files that cannot migrate to the BSL
+   std::set<std::string> m_bsl_authors;                // authors giving blanket permission to use the BSL
+   std::set<std::string> m_authors_for_bsl_migration;  // authors we need for BSL migration
+   std::map<fs::path, std::pair<std::string, std::string>, path_less> m_converted_to_bsl;
    std::map<std::string, std::set<fs::path, path_less> > m_author_data;  // all the authors
    std::map<fs::path, fs::path, path_less>               m_dependencies; // dependency information
 };

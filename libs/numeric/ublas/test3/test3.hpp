@@ -17,6 +17,19 @@
 #ifndef TEST3_H
 #define TEST3_H
 
+#include <iostream>
+
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
+#include <boost/numeric/ublas/vector_sparse.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
+#include <boost/numeric/ublas/matrix_sparse.hpp>
+#ifdef USE_GENERALIZED_VECTOR_OF_VECTOR
+#include <boost/numeric/ublas/vector_of_vector.hpp>
+#endif
+#include <boost/numeric/ublas/io.hpp>
+
 namespace ublas = boost::numeric::ublas;
 
 template<class V>
@@ -36,33 +49,18 @@ void initialize_matrix (M &m) {
 }
 
 void test_vector ();
-
 void test_matrix_vector ();
-
 void test_matrix ();
 
-// #define USE_FLOAT
-#define USE_DOUBLE
-// #define USE_STD_COMPLEX
-
-// #define USE_RANGE
-// #define USE_SLICE
-
-#define USE_MAP_ARRAY
-// #define USE_STD_MAP
-
-#define USE_SPARSE_VECTOR
-#define USE_COMPRESSED_VECTOR
-#define USE_COORDINATE_VECTOR
-
-#define USE_SPARSE_MATRIX
-// #define USE_SPARSE_VECTOR_OF_SPARSE_VECTOR
-// #define USE_GENERALIZED_VECTOR_OF_VECTOR
-#define USE_COMPRESSED_MATRIX
-#define USE_COORDINATE_MATRIX
-
+// Disable some tests for truly broken compilers
+    // MSVC Version 6.0 & 7.0 have problems compiling with std::complex
+#if defined(BOOST_MSVC) && (BOOST_MSVC <= 1300)
+#undef USE_STD_COMPLEX
 #endif
 
+    // Intel for Windows fails to link when a std::complex is returned!
+#if defined(BOOST_INTEL_CXX_VERSION) && (BOOST_INTEL_CXX_VERSION <= 800) && defined(__ICL)
+#undef USE_STD_COMPLEX
+#endif
 
-
-
+#endif

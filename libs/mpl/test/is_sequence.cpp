@@ -1,42 +1,37 @@
-//-----------------------------------------------------------------------------
-// boost mpl/test/is_sequence.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
+
+// Copyright Aleksey Gurtovoy 2002-2004
 //
-// Copyright (c) 2002-03
-// Aleksey Gurtovoy
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
+// See http://www.boost.org/libs/mpl for documentation.
 
-#include "boost/mpl/list.hpp"
-#include "boost/mpl/vector.hpp"
-#include "boost/mpl/range_c.hpp"
-#include "boost/mpl/is_sequence.hpp"
-#include "boost/static_assert.hpp"
-#include <vector>
+// $Source: /cvsroot/boost/boost/libs/mpl/test/is_sequence.cpp,v $
+// $Date: 2004/09/02 15:41:35 $
+// $Revision: 1.5 $
 
-using namespace boost::mpl;
+#include <boost/mpl/is_sequence.hpp>
+#include <boost/mpl/list.hpp>
+#include <boost/mpl/vector.hpp>
+#include <boost/mpl/range_c.hpp>
+#include <boost/mpl/aux_/test.hpp>
 
-struct UDT {};
-
-int main()
+template< typename T > struct std_vector
 {
-    BOOST_STATIC_ASSERT(!is_sequence< std::vector<int> >::value);
-    BOOST_STATIC_ASSERT(!is_sequence< int >::value);
-    BOOST_STATIC_ASSERT(!is_sequence< int& >::value);
-    BOOST_STATIC_ASSERT(!is_sequence< UDT >::value);
-    BOOST_STATIC_ASSERT(!is_sequence< UDT* >::value);
-    BOOST_STATIC_ASSERT((is_sequence< range_c<int,0,0> >::value));
-    BOOST_STATIC_ASSERT(is_sequence< list<> >::value);
-    BOOST_STATIC_ASSERT(is_sequence< list<int> >::value);
-    BOOST_STATIC_ASSERT(is_sequence< vector<> >::value);
-    BOOST_STATIC_ASSERT(is_sequence< vector<int> >::value);
+    T* begin();
+};
 
-    return 0;
+MPL_TEST_CASE()
+{
+    MPL_ASSERT_NOT(( is_sequence< std_vector<int> > ));
+    MPL_ASSERT_NOT(( is_sequence< int > ));
+    MPL_ASSERT_NOT(( is_sequence< int& > ));
+    MPL_ASSERT_NOT(( is_sequence< UDT > ));
+    MPL_ASSERT_NOT(( is_sequence< UDT* > ));
+    MPL_ASSERT(( is_sequence< range_c<int,0,0> > ));
+    MPL_ASSERT(( is_sequence< list<> > ));
+    MPL_ASSERT(( is_sequence< list<int> > ));
+    MPL_ASSERT(( is_sequence< vector<> > ));
+    MPL_ASSERT(( is_sequence< vector<int> > ));
 }

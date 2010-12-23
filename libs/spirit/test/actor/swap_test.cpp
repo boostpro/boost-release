@@ -11,19 +11,17 @@
 // Test suite for and_assign_actor
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <boost/spirit.hpp>
-#include <boost/test/unit_test.hpp>
-
+#include "action_tests.hpp"
+#include <boost/spirit/core.hpp>
 #include <boost/spirit/actor/swap_actor.hpp>
 
-void swap_test()
+void swap_action_test()
 {
-    using namespace boost::unit_test_framework;
     using namespace boost::spirit;
 
     const char* cp = "63";
     const char* cp_first = cp;
-    const char* cp_last = cp + strlen(cp);
+    const char* cp_last = cp + string_length(cp);
     std::vector<int> v1,v2;
 
     v1.push_back(0);
@@ -46,8 +44,4 @@ void swap_test()
     BOOST_CHECK_EQUAL(v1[1],3);
 }
 
-void swap_action_test(boost::unit_test_framework::test_suite* test)
-{
-    test->add( BOOST_TEST_CASE(&swap_test) );
-}
 

@@ -86,15 +86,14 @@ rule init ( path ? # Path where all tools are located. If not specified,
 # command line.
 rule update ( name : existing-translation sources + : requirements * )
 {
-    local project = [ CALLER_MODULE ] ;
+    local project = [ project.current ] ;
     
     targets.main-target-alternative
       [ new update-translations-class $(name) : $(project) : 
         $(existing-translation) $(sources)
         : [ targets.main-target-requirements $(requirements) : $(project) ]        
       ] ;
-    local project-target = [ project.target $(project) ] ;
-    $(project-target).mark-target-as-explicit $(name) ;
+    $(project).mark-target-as-explicit $(name) ;
 }
 
 
@@ -169,11 +168,7 @@ class update-translations-class : basic-target
             }            
         }
         return $(.constructed) ;                
-    }    
-    
-    rule check-for-unused-sources ( result * : sources * )
-    {        
-    }
+    }        
 }
 
 flags gettext.extract KEYWORD <gettext.keyword> ;

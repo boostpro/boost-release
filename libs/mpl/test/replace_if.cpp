@@ -1,37 +1,33 @@
-//-----------------------------------------------------------------------------
-// boost mpl/test/replace_if.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
+
+// Copyright Aleksey Gurtovoy 2000-2004
+// Copyright John R. Bandela 2000-2002
+// Copyright David Abrahams 2003-2004
 //
-// Copyright (c) 2000-02
-// Aleksey Gurtovoy and John R. Bandela
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
+// See http://www.boost.org/libs/mpl for documentation.
 
-#include "boost/mpl/replace_if.hpp"
-#include "boost/mpl/list_c.hpp"
-#include "boost/mpl/int.hpp"
-#include "boost/mpl/equal.hpp"
-#include "boost/mpl/greater.hpp"
-#include "boost/mpl/equal_to.hpp"
-#include "boost/static_assert.hpp"
+// $Source: /cvsroot/boost/boost/libs/mpl/test/replace_if.cpp,v $
+// $Date: 2004/09/02 15:41:35 $
+// $Revision: 1.5 $
 
-namespace mpl = boost::mpl;
+#include <boost/mpl/replace_if.hpp>
 
-int main()
+#include <boost/mpl/list/list10_c.hpp>
+#include <boost/mpl/int.hpp>
+#include <boost/mpl/equal.hpp>
+#include <boost/mpl/greater.hpp>
+#include <boost/mpl/equal_to.hpp>
+
+#include <boost/mpl/aux_/test.hpp>
+
+MPL_TEST_CASE()
 {
-    using namespace mpl::placeholders;
-    typedef mpl::list_c<int,1,4,5,2,7,5,3,5>::type numbers;
-    typedef mpl::replace_if< numbers, mpl::gt<4>, mpl::int_<0> >::type result;
+    typedef list8_c<int,1,4,5,2,7,5,3,5>::type numbers;
+    typedef replace_if< numbers, greater<_1,int_<4> >, int_<0> >::type result;
 
-    typedef mpl::list_c<int,1,4,0,2,0,0,3,0>::type answer;
-    BOOST_STATIC_ASSERT((mpl::equal< answer,result,mpl::equal_to<_,_> >::type::value));
-
-    return 0;
+    typedef list8_c<int,1,4,0,2,0,0,3,0>::type answer;
+    MPL_ASSERT(( equal< answer,result,equal_to<_1,_2> > ));
 }

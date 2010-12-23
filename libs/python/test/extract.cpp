@@ -1,8 +1,7 @@
-// Copyright David Abrahams 2002. Permission to copy, use,
-// modify, sell and distribute this software is granted provided this
-// copyright notice appears in all copies. This software is provided
-// "as is" without express or implied warranty, and with no claim as
-// to its suitability for any purpose.
+// Copyright David Abrahams 2002.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/python/extract.hpp>
 #include <boost/python/list.hpp>
@@ -51,14 +50,14 @@ std::string const& extract_string_cref(object x)
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
 # pragma warning(push)
 # pragma warning(disable:4172) // msvc lies about returning a reference to temporary
-#elif defined(_MSC_VER) && defined(__ICL) && __ICL <= 700
+#elif defined(_MSC_VER) && defined(__ICL) && __ICL <= 800
 # pragma warning(push)
 # pragma warning(disable:473) // intel/win32 does too
 #endif 
     
     return extract<std::string const&>(x);
     
-#if defined(BOOST_MSVC) && BOOST_MSVC <= 1300 || defined(_MSC_VER) && defined(__ICL) && __ICL <= 700
+#if defined(BOOST_MSVC) && BOOST_MSVC <= 1300 || defined(_MSC_VER) && defined(__ICL) && __ICL <= 800
 # pragma warning(pop)
 #endif 
 }

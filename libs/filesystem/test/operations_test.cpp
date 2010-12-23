@@ -83,14 +83,21 @@ int test_main( int argc, char * argv[] )
   if ( argc > 1 && *argv[1]=='-' && *(argv[1]+1)=='t' ) report_throws = true;
 
   std::string platform( BOOST_PLATFORM );
-  platform = ( platform == "Win32" || platform == "Win64" || platform == "Cygwin" )
-             ? "Windows"
-             : "POSIX";
 
-  std::cout << "BOOST_PLATFORM: "
-            << BOOST_PLATFORM << "\n";
-  std::cout << "Operating system family: "
-            << platform << "\n";
+  // The choice of platform is make at runtime rather than compile-time
+  // so that compile errors for all platforms will be detected even though
+  // only the current platform is runtime tested.
+# if defined( BOOST_POSIX )
+    platform = "POSIX";
+# elif defined( BOOST_WINDOWS )
+    platform = "Windows";
+# else
+    platform = ( platform == "Win32" || platform == "Win64" || platform == "Cygwin" )
+               ? "Windows"
+               : "POSIX";
+# endif
+  std::cout << "Platform is " << platform << '\n';
+
   std::cout << "initial_path().string() is\n  \""
             << fs::initial_path().string()
             << "\"\n";
@@ -167,20 +174,33 @@ int test_main( int argc, char * argv[] )
 
   // the bound functions should throw, so throws_fs_error() should return true
   BOOST_TEST( throws_fs_error( bind( fs::is_directory, ng ), fs::not_found_error ) );
+  BOOST_TEST( throws_fs_error( bind( fs::file_size, ng ), fs::not_found_error ) );
   BOOST_TEST( throws_fs_error( bind( fs::is_directory, dir ) ) );
   BOOST_TEST( throws_fs_error( bind( fs::_is_empty, dir ) ) );
 
-  fs::create_directory( dir );
+  // test path::exception members
+  try { fs::is_directory( ng ); } // will throw
+
+  catch ( const fs::filesystem_error & ex )
+  {
+    BOOST_TEST( ex.who() == "boost::filesystem::is_directory" );
+    BOOST_TEST( ex.path1().string() == " no-way, Jose" );
+  }
+
+  BOOST_TEST( fs::create_directory( dir ) );
 
   BOOST_TEST( fs::exists( dir ) );
   BOOST_TEST( fs::_is_empty( dir ) );
   BOOST_TEST( fs::is_directory( dir ) );
+  BOOST_TEST( throws_fs_error( bind( fs::file_size, dir ),
+    fs::is_directory_error ) );
+  BOOST_TEST( !fs::create_directory( dir ) );
 
   BOOST_TEST( !fs::symbolic_link_exists( dir ) );
   BOOST_TEST( !fs::symbolic_link_exists( "nosuchfileordirectory" ) );
 
   fs::path d1( dir / "d1" );
-  fs::create_directory( d1  );
+  BOOST_TEST( fs::create_directory( d1 ) );
   BOOST_TEST( fs::exists( d1 ) );
   BOOST_TEST( fs::is_directory( d1 ) );
   BOOST_TEST( fs::_is_empty( d1 ) );
@@ -216,16 +236,16 @@ int test_main( int argc, char * argv[] )
     BOOST_TEST( dir_itr->leaf() == "d1" || dir_itr->leaf() == "d2" );
     if ( dir_itr->leaf() == "d1" )
     {
-      // Note result for single_pass_traversal requirements is
-      // different than for input_iterator requirements
-      BOOST_TEST( (*dir_itr++).leaf() == "d2" );
+      BOOST_TEST( (*dir_itr++).leaf() == "d1" );
       BOOST_TEST( dir_itr->leaf() == "d2" );
     }
     else
     {
-      // Note result for single_pass_traversal requirements is
-      // different than for input_iterator requirements
+      // Check C++98 input iterator requirements
       BOOST_TEST( (*dir_itr++).leaf() == "d1" );
+      // input iterator requirements in the current WP would require this check:
+      // BOOST_TEST( implicit_cast<std::string const&>(*dir_itr++).leaf() == "d1" );
+
       BOOST_TEST( dir_itr->leaf() == "d1" );
     }
   }
@@ -236,10 +256,26 @@ int test_main( int argc, char * argv[] )
   BOOST_TEST( fs::exists( file_ph ) );
   BOOST_TEST( !fs::is_directory( file_ph ) );
   BOOST_TEST( fs::_is_empty( file_ph ) );
+  BOOST_TEST( fs::file_size( file_ph ) == 0 );
+  BOOST_TEST( throws_fs_error( bind( fs::create_directory, file_ph ),
+    fs::not_directory_error ) );
 
   // create a file named "f1"
   file_ph = dir / "f1";
   create_file( file_ph, "foobar1" );
+
+  // equivalence tests
+  fs::path ng2("does_not_exist2");
+  BOOST_TEST( throws_fs_error( bind( fs::equivalent, ng, ng2 ) ) );
+  BOOST_TEST( fs::equivalent( file_ph, dir / "f1" ) );
+  BOOST_TEST( fs::equivalent( dir, d1 / ".." ) );
+  BOOST_TEST( !fs::equivalent( file_ph, dir ) );
+  BOOST_TEST( !fs::equivalent( dir, file_ph ) );
+  BOOST_TEST( !fs::equivalent( d1, d2 ) );
+  BOOST_TEST( !fs::equivalent( dir, ng ) );
+  BOOST_TEST( !fs::equivalent( ng, dir ) );
+  BOOST_TEST( !fs::equivalent( file_ph, ng ) );
+  BOOST_TEST( !fs::equivalent( ng, file_ph ) );
 
   std::time_t ft = fs::last_write_time( file_ph );
   std::cout << "UTC should currently be about " << std::asctime(std::gmtime(&ft)) << "\n";
@@ -248,34 +284,32 @@ int test_main( int argc, char * argv[] )
   // hard to test time exactly, but except under the most unusual circumstances,
   // time since file creation should be no more than one minute, I'm hoping.
   double time_diff = std::difftime( std::time(0), fs::last_write_time( file_ph ) );
-  BOOST_TEST( time_diff >= 0.0 && time_diff < 60.0 );
+  BOOST_TEST( time_diff > -60.0 && time_diff < 60.0 );
 
   BOOST_TEST( fs::exists( file_ph ) );
   BOOST_TEST( !fs::is_directory( file_ph ) );
+  BOOST_TEST( fs::file_size( file_ph ) == 7 );
   verify_file( file_ph, "foobar1" );
 
-#if !BOOST_WORKAROUND(__BORLANDC__, <= 0x564)
   std::tm * tmp = std::localtime( &ft );
+  std::cout << "Year is " << tmp->tm_year << std::endl;
   --tmp->tm_year;
   std::cout << "Change year to " << tmp->tm_year << std::endl;
   fs::last_write_time( file_ph, std::mktime( tmp ) );
-  std::cout << "Now get time difference" << std::endl;
-  time_diff = std::difftime( std::time(0), fs::last_write_time( file_ph ) );
-  BOOST_TEST( time_diff >= 365*24*3600.0 && time_diff < (366*24*3600.0 + 60.0) );
+  std::cout << "Get new value" << std::endl;
   ft = fs::last_write_time( file_ph );
   std::cout << "Local time one year ago should currently be about " << std::asctime(std::localtime(&ft)) << "\n";
-  fs::last_write_time( file_ph, std::time_t() );
+  std::cout << "Now get time difference" << std::endl;
   time_diff = std::difftime( std::time(0), fs::last_write_time( file_ph ) );
-  BOOST_TEST( time_diff >= 0.0 && time_diff < 60.0 );
+  std::cout << "Time difference is : " << time_diff << std::endl;
+  BOOST_TEST( time_diff >= 365*24*3600.0 && time_diff < (366*24*3600.0 + 60.0) );
+  std::cout << "Reset to current time" << std::endl;
+  fs::last_write_time( file_ph, std::time(0) );
+  std::cout << "And check that" << std::endl;
+  time_diff = std::difftime( std::time(0), fs::last_write_time( file_ph ) );
+  BOOST_TEST( time_diff >= -60.0 && time_diff < 60.0 );
   ft = fs::last_write_time( file_ph );
   std::cout << "Local time should currently be about " << std::asctime(std::localtime(&ft)) << "\n";
-#else
-  std::cout <<
-    "<note>\n"
-    "Changing a file time via boost::filesystem::last_write_time() fails for this compiler\n"
-    "This will not affect other uses of the library.\n"
-    "</note>\n";
-#endif
 
   // there was an inital bug in directory_iterator that caused premature
   // close of an OS handle. This block will detect regression.
@@ -292,39 +326,89 @@ int test_main( int argc, char * argv[] )
   BOOST_TEST( !fs::is_directory( d1 / "f2" ) );
   verify_file( d1 / "f2", "foobar1" );
 
-  // rename() on file d1/f2 to d2/f3
+  // rename() test case numbers refer to operations.htm#rename table
+
+  // [case 1] make sure can't rename() a non-existent file
+  BOOST_TEST( !fs::exists( d1 / "f99" ) );
+  BOOST_TEST( !fs::exists( d1 / "f98" ) );
+  BOOST_TEST( throws_fs_error( bind( fs::rename, d1 / "f99", d1 / "f98" ),
+    fs::not_found_error ) );
+  BOOST_TEST( throws_fs_error( bind( fs::rename, fs::path(""), d1 / "f98" ),
+    fs::not_found_error ) );
+
+  // [case 2] rename() target.empty()
+  BOOST_TEST( throws_fs_error( bind( fs::rename, file_ph, "" ),
+    fs::not_found_error ) );
+
+  // [case 3] make sure can't rename() to an existent file or directory
+  BOOST_TEST( fs::exists( dir / "f1" ) );
+  BOOST_TEST( fs::exists( d1 / "f2" ) );
+  BOOST_TEST( throws_fs_error( bind( fs::rename, dir / "f1", d1 / "f2" ) ) );
+  // several POSIX implementations (cygwin, openBSD) report ENOENT instead of EEXIST,
+  // so we don't verify error type on the above test.
+  BOOST_TEST( throws_fs_error( bind( fs::rename, dir, d1 ) ) );
+
+  // [case 4A] can't rename() file to a nonexistent parent directory
+  BOOST_TEST( !fs::is_directory( dir / "f1" ) );
+  BOOST_TEST( !fs::exists( dir / "d3/f3" ) );
+  BOOST_TEST( throws_fs_error( bind( fs::rename, dir / "f1", dir / "d3/f3" ),
+    fs::not_found_error ) );
+
+  // [case 4B] rename() file in same directory
+  BOOST_TEST( fs::exists( d1 / "f2" ) );
+  BOOST_TEST( !fs::exists( d1 / "f50" ) );
+  fs::rename( d1 / "f2", d1 / "f50" );
+  BOOST_TEST( !fs::exists( d1 / "f2" ) );
+  BOOST_TEST( fs::exists( d1 / "f50" ) );
+  fs::rename( d1 / "f50", d1 / "f2" );
+  BOOST_TEST( fs::exists( d1 / "f2" ) );
+  BOOST_TEST( !fs::exists( d1 / "f50" ) );
+
+  // [case 4C] rename() file d1/f2 to d2/f3
   fs::rename( d1 / "f2", d2 / "f3" );
   BOOST_TEST( !fs::exists( d1 / "f2" ) );
   BOOST_TEST( !fs::exists( d2 / "f2" ) );
   BOOST_TEST( fs::exists( d2 / "f3" ) );
   BOOST_TEST( !fs::is_directory( d2 / "f3" ) );
   verify_file( d2 / "f3", "foobar1" );
+  fs::rename( d2 / "f3", d1 / "f2" );
+  BOOST_TEST( fs::exists( d1 / "f2" ) );
 
-  // make sure can't rename() a non-existent file
-  BOOST_TEST( !fs::exists( d1 / "f2" ) );
-  BOOST_TEST( throws_fs_error( bind( fs::rename, d1 / "f2", d2 / "f4" ),
+  // [case 5A] rename() directory to nonexistent parent directory
+  BOOST_TEST( fs::exists( d1 ) );
+  BOOST_TEST( !fs::exists( dir / "d3/d5" ) );
+  BOOST_TEST( !fs::exists( dir / "d3" ) );
+  BOOST_TEST( throws_fs_error( bind( fs::rename, d1, dir / "d3/d5" ),
     fs::not_found_error ) );
 
-  // make sure can't rename() to an existent file
-  BOOST_TEST( fs::exists( dir / "f1" ) );
-  BOOST_TEST( fs::exists( d2 / "f3" ) );
-  BOOST_TEST( throws_fs_error( bind( fs::rename, dir / "f1", d2 / "f3" ) ) );
-  // several POSIX implementations (cygwin, openBSD) report ENOENT instead of EEXIST,
-  // so we don't verify error type on the above test.
-
-  // make sure can't rename() to a nonexistent parent directory
-  BOOST_TEST( throws_fs_error( bind( fs::rename, dir / "f1", dir / "d3/f3" ),
-    fs::not_found_error ) );
-
-  // rename() on directory
+  // [case 5B] rename() on directory
   fs::path d3( dir / "d3" );
+  BOOST_TEST( fs::exists( d1 ) );
+  BOOST_TEST( fs::exists( d1 / "f2" ) );
   BOOST_TEST( !fs::exists( d3 ) );
-  fs::rename( d2, d3 );
-  BOOST_TEST( !fs::exists( d2 ) );
+  fs::rename( d1, d3 );
+  BOOST_TEST( !fs::exists( d1 ) );
   BOOST_TEST( fs::exists( d3 ) );
   BOOST_TEST( fs::is_directory( d3 ) );
-  BOOST_TEST( !fs::exists( d2 / "f3" ) );
-  BOOST_TEST( fs::exists( d3 / "f3" ) );
+  BOOST_TEST( !fs::exists( d1 / "f2" ) );
+  BOOST_TEST( fs::exists( d3 / "f2" ) );
+  fs::rename( d3, d1 );
+  BOOST_TEST( fs::exists( d1 ) );
+  BOOST_TEST( fs::exists( d1 / "f2" ) );
+  BOOST_TEST( !fs::exists( d3 ) );
+
+  // [case 5C] rename() rename and move d1 to d2 / "d20"
+  BOOST_TEST( fs::exists( d1 ) );
+  BOOST_TEST( !fs::exists( d2 / "d20" ) );
+  BOOST_TEST( fs::exists( d1 / "f2" ) );
+  fs::rename( d1, d2 / "d20" );
+  BOOST_TEST( !fs::exists( d1 ) );
+  BOOST_TEST( fs::exists( d2 / "d20" ) );
+  BOOST_TEST( fs::exists( d2 / "d20" / "f2" ) );
+  fs::rename( d2 / "d20", d1 );
+  BOOST_TEST( fs::exists( d1 ) );
+  BOOST_TEST( !fs::exists( d2 / "d20" ) );
+  BOOST_TEST( fs::exists( d1 / "f2" ) );
 
   // remove() tests on file
   file_ph = dir / "shortlife";
@@ -337,7 +421,7 @@ int test_main( int argc, char * argv[] )
   BOOST_TEST( !fs::remove( "no-such-file" ) );
   BOOST_TEST( !fs::remove( "no-such-directory/no-such-file" ) );
 
-  // remove test on directory
+  // remove() test on directory
   d1 = dir / "shortlife_dir";
   BOOST_TEST( !fs::exists( d1 ) );
   fs::create_directory( d1 );

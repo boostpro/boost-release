@@ -26,7 +26,6 @@ main()
   //bad lexical cast?
   try {
     boost::gregorian::date d(boost::gregorian::from_string(s));
-    std::cout << "here" << std::endl;
     check("check year",  d.year()  == 2001);
     check("check month", d.month() == 10);
     check("check day",   d.day()   == 5);
@@ -64,6 +63,43 @@ main()
     date d11 = from_us_string("feb 29 2000");
     check("american date with comma: feb 29 2000 ", d11 == d);
 
+#if defined(BOOST_DATE_TIME_NO_LOCALE) || defined(BOOST_NO_STD_ITERATOR_TRAITS)
+    check("input streaming for date not available", false); // force a failure
+#else
+    {
+      std::stringstream ss("2000-2-29");
+      ss >> d2;
+      check("2000-2-29 stream-in", d2 == d);
+    }
+    { 
+      std::stringstream ss("2000-FEB-29");
+      ss >> d2;
+      //std::cout << d2 << std::endl;
+      check("2000-FEB-29 stream-in (uppercase)", d2 == d);
+    }
+    {
+      std::stringstream ss("2000-february-29");
+      ss >> d2;
+      check("2000-february-29 stream-in (lowercase)", d2 == d);
+    }
+    // the removed (3) tests require a stream manipulator for date_order
+    // and date_separator (not yet implemented)
+    /*{
+      std::stringstream ss("Feb-29-2000");
+      ss >> d2;
+      check("date from month-day-year string stream-in", d2 == d);
+    }
+    {
+      std::stringstream ss("29-Feb-2000");
+      ss >> d2;
+      check("date from day-month-year string stream-in", d2 == d);
+    }
+    {
+      std::stringstream ss("Feb 29, 2000");
+      ss >> d2;
+      check("american date with comma: Feb 29, 2000 stream-in", d2 == d);
+    }*/
+#endif //BOOST_DATE_TIME_NO_LOCALE
 
 
 
@@ -78,7 +114,9 @@ main()
     d3 = from_string("2001-December-1");
     check("December", d == d2);
     check("December", d == d3);
-#if !defined(BOOST_NO_STD_ITERATOR_TRAITS)
+#if defined(BOOST_NO_STD_ITERATOR_TRAITS)
+    check("date from stream no available: no std iterator traits", false);
+#else
     // from stream
     d = date(2000, 10, 31);
     std::stringstream ss("");
@@ -107,7 +145,7 @@ main()
     std::wstring::iterator w1_end = w1_string.end();
     check("from stream - wstring", d == from_stream(w1_start, w1_end));
 #endif // BOOST_NO_STD_WSTRING 
-#endif // MSVC 6.0
+#endif // BOOST_NO_STD_ITERATOR_TRAITS
     /* date objects from strings & strings to date objects
      * with misspelled months */
     try {
@@ -200,7 +238,6 @@ main()
   date d11 = from_simple_string(d10s);
   check("to from string inversion", d10 == d11);
   
-
 
 //Calendar Week + Day Number
 // CCYYWwwDThhmmss

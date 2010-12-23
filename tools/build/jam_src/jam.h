@@ -5,11 +5,9 @@
  */
 
 /*  This file is ALSO:
- *  (C) Copyright David Abrahams 2001-2002. Permission to copy, use,
- *  modify, sell and distribute this software is granted provided this
- *  copyright notice appears in all copies. This software is provided
- *  "as is" without express or implied warranty, and with no claim as
- *  to its suitability for any purpose.
+ *  Copyright 2001-2004 David Abrahams.
+ *  Distributed under the Boost Software License, Version 1.0.
+ *  (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  */
 
 /*
@@ -233,9 +231,13 @@
 # define OSMINOR "OS=CYGWIN"
 # define OS_CYGWIN
 # endif
-# ifdef __FreeBSD__
+# if defined(__FreeBSD__) && !defined(__DragonFly__)
 # define OSMINOR "OS=FREEBSD"
 # define OS_FREEBSD
+# endif
+# ifdef __DragonFly__
+# define OSMINOR "OS=DRAGONFLYBSD"
+# define OS_DRAGONFLYBSD
 # endif
 # ifdef __DGUX__
 # define OSMINOR "OS=DGUX"
@@ -396,6 +398,7 @@
 
 # if !defined(OS_BSDI) && \
      !defined(OS_FREEBSD) && \
+     !defined(OS_DRAGONFLYBSD) && \
      !defined(OS_NEXT) && \
      !defined(OS_MACHTEN) && \
      !defined(OS_MACOSX) && \
@@ -428,6 +431,7 @@
      defined( __i386__ ) || \
      defined( _M_IX86 )
 # if !defined( OS_FREEBSD ) && \
+     !defined( OS_DRAGONFLYBSD ) && \
      !defined( OS_OS2 ) && \
      !defined( OS_AS400 )
 # define OSPLAT "OSPLAT=X86"

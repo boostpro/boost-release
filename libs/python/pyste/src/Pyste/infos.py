@@ -14,7 +14,7 @@ from VarExporter import VarExporter
 from CodeExporter import CodeExporter
 from exporterutils import FunctionWrapper
 from utils import makeid
-
+import warnings
 
 #==============================================================================
 # DeclarationInfo
@@ -52,7 +52,9 @@ class DeclarationInfo:
 
 
     def AddExporter(self, exporter):
-        if not exporters.importing:
+        # this was causing a much serious bug, as reported by Niall Douglas:
+        # another solution must be found!
+        #if not exporters.importing:
             if exporter not in exporters.exporters:
                 exporters.exporters.append(exporter)
             exporter.interface_file = exporters.current_interface 
@@ -149,6 +151,7 @@ class EnumInfo(DeclarationInfo):
 class HeaderInfo(DeclarationInfo):
 
     def __init__(self, include, exporter_class = HeaderExporter):
+        warnings.warn('AllFromHeader is not working in all cases in the current version.')
         DeclarationInfo.__init__(self)
         self._Attribute('include', include)
         exporter = exporter_class(InfoWrapper(self))
@@ -240,6 +243,14 @@ def add_method(info, name, rename=None):
     else:
         added.append((name, rename))
 
+
+def class_code(info, code):
+    added = info._Attribute('__code__')
+    if added is None:
+        info._Attribute('__code__', [code])
+    else:
+        added.append(code)
+ 
 def final(info):
     info._Attribute('no_override', True)
 

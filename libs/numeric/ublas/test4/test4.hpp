@@ -17,8 +17,16 @@
 #ifndef TEST4_H
 #define TEST4_H
 
-#define USE_BANDED
-// #define USE_DIAGONAL
+#include <iostream>
+
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
+#include <boost/numeric/ublas/banded.hpp>
+#include <boost/numeric/ublas/io.hpp>
+
+//#define USE_BANDED
+#define USE_DIAGONAL
 
 namespace ublas = boost::numeric::ublas;
 
@@ -43,24 +51,22 @@ void initialize_matrix (M &m) {
             m (i, j) = i * size1 + j + 1.f;
 }
 
-void test_vector ();
-
 void test_matrix_vector ();
-
 void test_matrix ();
 
-// #define USE_FLOAT
-#define USE_DOUBLE
-// #define USE_STD_COMPLEX
 
-// #define USE_RANGE
-// #define USE_SLICE
+// FIXME slice are failing in assignment to zero elements
+#undef USE_SLICE
 
-// #define USE_BOUNDED_ARRAY
-#define USE_UNBOUNDED_ARRAY
-// #define USE_STD_VECTOR
-
-// define USE_ADAPTOR
+// Disable some tests for truly broken compilers
+    // MSVC Version 6.0 & 7.0 have problems compiling with std::complex
+#if defined(BOOST_MSVC) && (BOOST_MSVC <= 1300)
+#undef USE_STD_COMPLEX
 #endif
 
+    // Intel for Windows fails to link when a std::complex is returned!
+#if defined(BOOST_INTEL_CXX_VERSION) && (BOOST_INTEL_CXX_VERSION <= 800) && defined(__ICL)
+#undef USE_STD_COMPLEX
+#endif
 
+#endif

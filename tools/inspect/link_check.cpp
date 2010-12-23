@@ -1,8 +1,8 @@
 //  link_check implementation  -----------------------------------------------//
 
 //  Copyright Beman Dawes 2002.
-//  Use, modification, and distribution is subject to the Boost Software
-//  License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 #include "link_check.hpp"
@@ -15,8 +15,7 @@ namespace fs = boost::filesystem;
 namespace
 {
   boost::regex url_regex(
-    "<\\s*"
-    "(?:A\\s+[^>]*HREF|FRAME\\s+SRC)" // A HREF or FRAME SRC
+    "<\\s*[^>]*\\s+(?:HREF|SRC)" // HREF or SRC
     "\\s*=\\s*\"([^\"]*)\"",
     boost::regbase::normal | boost::regbase::icase);
 
@@ -33,8 +32,6 @@ namespace boost
      : m_broken_errors(0), m_unlinked_errors(0), m_invalid_errors(0),
        m_bookmark_errors(0)
    {
-     register_signature( ".htm" );
-     register_signature( ".html" );
    }
      
 //  inspect (all)  -----------------------------------------------------------//
@@ -84,6 +81,7 @@ namespace boost
         || url.find( "https:" ) == 0
         || url.find( "ftp:" ) == 0
         || url.find( "news:" ) == 0
+        || url.find( "javascript:" ) == 0
         ) return;
 
       if ( url.find( "file:" ) == 0 )

@@ -1,14 +1,14 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  (C) Copyright Gennadiy Rozental 2001-2004.
 //  (C) Copyright Beman Dawes 1995-2001.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: cpp_main.cpp,v $
 //
-//  Version     : $Revision: 1.13 $
+//  Version     : $Revision: 1.15 $
 //
 //  Description : main function implementation for Program Executon Monitor
 // ***************************************************************************
@@ -58,8 +58,8 @@ int main( int argc, char* argv[] )
     
     int result;
 
-    boost::unit_test_framework::c_string_literal p( std::getenv( "BOOST_TEST_CATCH_SYSTEM_ERRORS" ) );
-    bool catch_system_errors = !p || (std::strcmp( p, "no" ) != 0);
+    boost::unit_test::const_string p( std::getenv( "BOOST_TEST_CATCH_SYSTEM_ERRORS" ) );
+    bool catch_system_errors = p != "no";
         
     try {
         result = caller.execute( catch_system_errors );
@@ -84,8 +84,8 @@ int main( int argc, char* argv[] )
         //  like the clutter.  Use an environment variable to avoid command
         //  line argument modifications; for use in production programs
         //  that's a no-no in some organizations.
-        boost::unit_test_framework::c_string_literal p( std::getenv( "BOOST_PRG_MON_CONFIRM" ) );
-        if( !p || std::strcmp( p, "no" ) != 0 ) { 
+        boost::unit_test::const_string p( std::getenv( "BOOST_PRG_MON_CONFIRM" ) );
+        if( p != "no" ) { 
             std::cerr << std::flush << "no errors detected" << std::endl; 
         }
     }
@@ -99,6 +99,14 @@ int main( int argc, char* argv[] )
 //  Revision History :
 //  
 //  $Log: cpp_main.cpp,v $
+//  Revision 1.15  2004/05/21 06:26:09  rogeeff
+//  licence update
+//
+//  Revision 1.14  2004/05/11 11:04:44  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.13  2003/12/01 00:42:37  rogeeff
 //  prerelease cleaning
 //

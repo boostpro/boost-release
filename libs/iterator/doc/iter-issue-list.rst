@@ -2,7 +2,7 @@
  Iterator concept and adapter issues 
 +++++++++++++++++++++++++++++++++++++
 
-:date: $Date: 2004/01/27 04:50:51 $
+:date: $Date: 2004/01/27 03:17:30 $
 
 .. contents:: Index
 

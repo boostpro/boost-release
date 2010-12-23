@@ -14,29 +14,11 @@
 //  GeNeSys mbH & Co. KG in producing this work.
 //
 
-#ifdef BOOST_MSVC
-
-#pragma warning (disable: 4355)
-#pragma warning (disable: 4503)
-#pragma warning (disable: 4786)
-
-#endif
-
-#include <iostream>
-
-#include <boost/numeric/ublas/config.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/triangular.hpp>
-#include <boost/numeric/ublas/io.hpp>
-
-#include <boost/numeric/ublas/blas.hpp>
-
 #include "test2.hpp"
 
 template<class M, int N>
 void test_blas_3<M, N>::operator () () {
-    try {
+    {
         M m1 (N, N), m2 (N, N), m3 (N, N);
 
         // _t_mm
@@ -208,12 +190,6 @@ void test_blas_3<M, N>::operator () () {
         ublas::blas_3::hr2k (m1, value_type (1), value_type (1), ublas::herm (m2), ublas::herm (m3));
         std::cout << "hr2k (m1, 1, 1, herm (m2), herm (m3)) = " << m1 << std::endl;
 #endif
-    }
-    catch (std::exception &e) {
-        std::cout << e.what () << std::endl;
-    }
-    catch (...) {
-        std::cout << "unknown exception" << std::endl;
     }
 }
 

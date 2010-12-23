@@ -14,21 +14,6 @@
 //  GeNeSys mbH & Co. KG in producing this work.
 //
 
-#ifdef BOOST_MSVC
-
-#pragma warning (disable: 4355)
-#pragma warning (disable: 4503)
-#pragma warning (disable: 4786)
-
-#endif
-
-#include <iostream>
-
-#include <boost/numeric/ublas/config.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
-
 #include "test1.hpp"
 
 // Test matrix expression templates
@@ -37,10 +22,15 @@ struct test_my_matrix {
     typedef typename M::value_type value_type;
 
     template<class MP>
-    void operator () (MP &m1, MP &m2, MP &m3) const {
-        try {
+    void test_with (MP &m1, MP &m2, MP &m3) const {
+        {
             value_type t;
 
+            // Default Construct
+            MP default_constuct;
+            initialize_matrix (default_constuct);
+            std::cout << "default construct = " << default_constuct << std::endl;
+            
             // Copy and swap
             initialize_matrix (m1);
             initialize_matrix (m2);
@@ -50,6 +40,17 @@ struct test_my_matrix {
             std::cout << "m1.assign_temporary (m2) = " << m1 << std::endl;
             m1.swap (m2);
             std::cout << "m1.swap (m2) = " << m1 << " " << m2 << std::endl;
+
+#ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
+            // Project range and slice
+            initialize_matrix (m1);
+            initialize_matrix (m2);
+            project (m1, ublas::range(0,1),ublas::range(0,1)) = project (m2, ublas::range(0,1),ublas::range(0,1));
+            project (m1, ublas::range(0,1),ublas::range(0,1)) = project (m2, ublas::slice(0,1,1),ublas::slice(0,1,1));
+            project (m1, ublas::slice(2,-1,2),ublas::slice(2,-1,2)) = project (m2, ublas::slice(0,1,2),ublas::slice(0,1,2));
+            project (m1, ublas::slice(2,-1,2),ublas::slice(2,-1,2)) = project (m2, ublas::range(0,2),ublas::range(0,2));
+            std::cout << "m1 = range/slice " << m1 << std::endl;
+#endif
 
             // Unary matrix operations resulting in a matrix
             initialize_matrix (m1);
@@ -84,17 +85,14 @@ struct test_my_matrix {
             // Some assignments
             initialize_matrix (m1);
             initialize_matrix (m2);
-#ifdef BOOST_UBLAS_USE_ET
             m2 += m1;
             std::cout << "m2 += m1 = " << m2 << std::endl;
             m2 -= m1;
             std::cout << "m2 -= m1 = " << m2 << std::endl;
-#else
             m2 = m2 + m1;
-            std::cout << "m2 += m1 = " << m2 << std::endl;
+            std::cout << "m2 = m2 + m1 = " << m2 << std::endl;
             m2 = m2 - m1;
-            std::cout << "m2 -= m1 = " << m2 << std::endl;
-#endif
+            std::cout << "m2 = m2 - m1 = " << m2 << std::endl;
             m1 *= value_type (1.);
             std::cout << "m1 *= 1. = " << m1 << std::endl;
             m1 *= t;
@@ -116,37 +114,25 @@ struct test_my_matrix {
             m3 = ublas::prod (m1, m2);
             std::cout << "prod (m1, m2) = " << m3 << std::endl;
         }
-        catch (std::exception &e) {
-            std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
-        }
     }
     void operator () () const {
-        try {
+        {
             M m1 (N, N), m2 (N, N), m3 (N, N);
-            (*this) (m1, m2, m3);
+            test_with (m1, m2, m3);
 
 #ifdef USE_RANGE
             ublas::matrix_range<M> mr1 (m1, ublas::range (0, N), ublas::range (0, N)),
                                    mr2 (m2, ublas::range (0, N), ublas::range (0, N)),
                                    mr3 (m3, ublas::range (0, N), ublas::range (0, N));
-            (*this) (mr1, mr2, mr3);
+            test_with (mr1, mr2, mr3);
 #endif
 
 #ifdef USE_SLICE
             ublas::matrix_slice<M> ms1 (m1, ublas::slice (0, 1, N), ublas::slice (0, 1, N)),
                                    ms2 (m2, ublas::slice (0, 1, N), ublas::slice (0, 1, N)),
                                    ms3 (m3, ublas::slice (0, 1, N), ublas::slice (0, 1, N));
-            (*this) (ms1, ms2, ms3);
+            test_with (ms1, ms2, ms3);
 #endif
-        }
-        catch (std::exception &e) {
-            std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
         }
     }
 };
@@ -231,23 +217,23 @@ void test_matrix () {
 
 #ifdef USE_BOUNDED_MATRIX
 #ifdef USE_FLOAT
-    std::cout << "float" << std::endl;
+    std::cout << "float, bounded" << std::endl;
     test_my_matrix<ublas::bounded_matrix<float, 3, 3>, 3> () ();
 #endif
 
 #ifdef USE_DOUBLE
-    std::cout << "double" << std::endl;
+    std::cout << "double, bounded" << std::endl;
     test_my_matrix<ublas::bounded_matrix<double, 3, 3>, 3> () ();
 #endif
 
 #ifdef USE_STD_COMPLEX
 #ifdef USE_FLOAT
-    std::cout << "std::complex<float>" << std::endl;
+    std::cout << "std::complex<float>, bounded" << std::endl;
     test_my_matrix<ublas::bounded_matrix<std::complex<float>, 3, 3>, 3> () ();
 #endif
 
 #ifdef USE_DOUBLE
-    std::cout << "std::complex<double>" << std::endl;
+    std::cout << "std::complex<double>, bounded" << std::endl;
     test_my_matrix<ublas::bounded_matrix<std::complex<double>, 3, 3>, 3> () ();
 #endif
 #endif
@@ -327,6 +313,3 @@ void test_matrix () {
 #endif
 #endif
 }
-
-
-

@@ -6,14 +6,22 @@
 :Contact: dave@boost-consulting.com, jsiek@osl.iu.edu, witt@styleadvisor.com
 :organization: `Boost Consulting`_, Indiana University `Open Systems
                Lab`_, `Zephyr Associates, Inc.`_
-:date: $Date: 2004/01/27 04:06:21 $
-:copyright: Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2004. All rights reserved
+:date: $Date: 2004/11/02 14:39:03 $
+:copyright: Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2004. 
 
 .. _`Boost Consulting`: http://www.boost-consulting.com
 .. _`Open Systems Lab`: http://www.osl.iu.edu
 .. _`Zephyr Associates, Inc.`: http://www.styleadvisor.com
 
-:abstract: iterator archetypes provide a means to check the compile time requirements of a generic component on its iterator arguments.
+:abstract: The ``iterator_archetype`` class constructs a minimal implementation of
+  one of the iterator access concepts and one of the iterator traversal concepts.
+  This is used for doing a compile-time check to see if a the type requirements
+  of a template are really enough to cover the implementation of the template.
+  For further information see the documentation for the |concepts|_ library.
+
+.. |concepts| replace:: ``boost::concept_check``
+.. _concepts: ../../concept_check/index.html
+
 
 .. contents:: Table of Contents
 

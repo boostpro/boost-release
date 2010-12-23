@@ -1,20 +1,17 @@
-// -*- C++ -*-
-//  Boost general library 'format'  ---------------------------
-//  See http://www.boost.org for updates, documentation, and revision history.
-
-//  (C) Samuel Krempp 2001
-//                  krempp@crans.ens-cachan.fr
-//  Permission to copy, use, modify, sell and
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
-
-// ------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // sample_formats.cpp :  example of basic usage of format
-// ------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+//  Copyright Samuel Krempp 2003. Use, modification, and distribution are
+//  subject to the Boost Software License, Version 1.0. (See accompanying
+//  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+//  See http://www.boost.org/libs/format for library home page
+// ----------------------------------------------------------------------------
 
 #include <iostream>
 #include <iomanip>
+#include <cassert>
 
 #include "boost/format.hpp"
 
@@ -25,7 +22,7 @@ namespace MyNS_ForOutput {
   using std::string;
   using std::endl; using std::flush;
 
-  using boost::format; 
+  using boost::format;
   using boost::io::group;
 }
 
@@ -34,17 +31,19 @@ namespace MyNS_Manips {
   using std::setw;
   using std::hex ;
   using std::dec ;
-    // gcc-2.95 doesnt define those :
-//   using std::showbase ;
-//   using std::left ;
-//   using std::right ;
-//   using std::internal ;
+// gcc-2.95 doesnt define the next ones
+//  using std::showbase ;
+//  using std::left ;
+//  using std::right ;
+//  using std::internal ;
 }
 
 int main(){
     using namespace MyNS_ForOutput;
     using namespace MyNS_Manips;
-    
+
+    std::cout << format("%|1$1| %|2$3|") % "Hello" % 3 << std::endl;
+
     // Reordering :
     cout << format("%1% %2% %3% %2% %1% \n") % "o" % "oo" % "O"; // 'simple' style.
     //          prints  "o oo O oo o \n"

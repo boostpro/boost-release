@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_suite.cpp,v $
 //
-//  Version     : $Revision: 1.12 $
+//  Version     : $Revision: 1.16 $
 //
 //  Description : privide core implementation for Unit Test Framework. 
 //  Extensions could be provided in separate files
@@ -27,13 +27,13 @@
 
 namespace boost {
 
-namespace unit_test_framework {
+namespace unit_test {
 
 // ************************************************************************** //
 // **************                   test_case                  ************** //
 // ************************************************************************** //
 
-detail::unit_test_monitor the_monitor;
+ut_detail::unit_test_monitor the_monitor;
 
 typedef unit_test_result const* unit_test_result_cptr;
 
@@ -65,9 +65,10 @@ test_case::Impl::check_dependencies()
 
 //____________________________________________________________________________//
 
-test_case::test_case( std::string const& name_, bool type, unit_test_counter stages_amount_, bool monitor_run_ )
+test_case::test_case( const_string name_, bool type, unit_test_counter stages_amount_, bool monitor_run_ )
 : p_timeout( 0 ), p_expected_failures( 0 ), p_type( type ),
-  p_name( name_ ), p_compound_stage( false ), p_stages_amount( stages_amount_ ),
+  p_name( std::string( name_.begin(), name_.end() ) ),
+  p_compound_stage( false ), p_stages_amount( stages_amount_ ),
   m_pimpl( new Impl( monitor_run_ ) )
 {
 }
@@ -101,7 +102,7 @@ test_case::has_passed() const
 void
 test_case::run()
 {
-    using detail::unit_test_monitor;
+    using ut_detail::unit_test_monitor;
 
     test_case_scope_tracker scope_tracker( *this );
     
@@ -112,7 +113,7 @@ test_case::run()
     m_pimpl->s_abort_testing = false;
 
     // 1. Init test results
-    unit_test_result_tracker result_tracker( p_name, p_expected_failures );
+    unit_test_result_tracker result_tracker( p_name.get(), p_expected_failures );
     m_pimpl->m_results_set = &unit_test_result::instance();
 
     // 2. Initialize test case
@@ -123,7 +124,7 @@ test_case::run()
         if( init_result != unit_test_monitor::test_ok ) {
             m_pimpl->s_abort_testing  = unit_test_monitor::is_critical_error( init_result );
 
-            BOOST_UT_LOG_BEGIN( __FILE__, __LINE__, log_fatal_errors )
+            BOOST_UT_LOG_BEGIN( BOOST_TEST_STRING_LITERAL( __FILE__ ), __LINE__, log_fatal_errors )
                 "Test case initialization has failed"
             BOOST_UT_LOG_END;
 
@@ -146,7 +147,7 @@ test_case::run()
             if( unit_test_monitor::is_critical_error( run_result ) ) {
                 m_pimpl->s_abort_testing = true;
 
-                BOOST_UT_LOG_BEGIN( __FILE__, __LINE__, log_fatal_errors )
+                BOOST_UT_LOG_BEGIN( BOOST_TEST_STRING_LITERAL( __FILE__ ), __LINE__, log_fatal_errors )
                     "Testing aborted"
                 BOOST_UT_LOG_END;
             }
@@ -158,7 +159,7 @@ test_case::run()
             do_run();
         }
 
-        if( p_stages_amount != 1 && !p_compound_stage.get() ) // compound test
+        if( p_stages_amount != 1 && !p_compound_stage ) // compound test
             unit_test_log::instance() << log_progress();
     }
 
@@ -188,7 +189,7 @@ struct test_suite::Impl {
 
 //____________________________________________________________________________//
 
-test_suite::test_suite( std::string const& name )
+test_suite::test_suite( const_string name )
 : test_case( name, false, 0, false ), m_pimpl( new Impl )
 {
     m_pimpl->m_cumulative_size = 0;
@@ -220,7 +221,7 @@ test_suite::add( test_case* tc, unit_test_counter exp_fail, int timeout )
     m_pimpl->m_test_cases.push_back( tc );
     m_pimpl->m_cumulative_size += tc->size();
 
-    p_stages_amount.set( p_stages_amount.get()+1 );
+    p_stages_amount.value = p_stages_amount + 1;
 }
 
 //____________________________________________________________________________//
@@ -256,7 +257,7 @@ test_suite::do_run()
 // **************               object generators              ************** //
 // ************************************************************************** //
 
-namespace detail {
+namespace ut_detail {
 
 std::string const&
 normalize_test_case_name( std::string& name_ )
@@ -267,9 +268,9 @@ normalize_test_case_name( std::string& name_ )
     return name_;
 }
 
-} // namespace detail
+} // namespace ut_detail
 
-} // namespace unit_test_framework
+} // namespace unit_test
 
 } // namespace boost
 
@@ -277,6 +278,20 @@ normalize_test_case_name( std::string& name_ )
 //  Revision History :
 //  
 //  $Log: unit_test_suite.cpp,v $
+//  Revision 1.16  2004/06/07 07:34:23  rogeeff
+//  detail namespace renamed
+//
+//  Revision 1.15  2004/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.14  2004/05/18 13:26:47  dgregor
+//  unit_test_suite.cpp: Try to work around an Intel 7.1 bug with conversions in a base class.
+//
+//  Revision 1.13  2004/05/11 11:05:04  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.12  2003/12/01 00:42:37  rogeeff
 //  prerelease cleaning
 //

@@ -1,8 +1,7 @@
-// Copyright David Abrahams 2002. Permission to copy, use,
-// modify, sell and distribute this software is granted provided this
-// copyright notice appears in all copies. This software is provided
-// "as is" without express or implied warranty, and with no claim as
-// to its suitability for any purpose.
+// Copyright David Abrahams 2002.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 #include <boost/python/object/inheritance.hpp>
 #include <boost/python/type_id.hpp>
 #include <boost/graph/breadth_first_search.hpp>
@@ -91,7 +90,7 @@ namespace
           if (m_distances.size() != n * n)
           {
               m_distances.clear();
-              m_distances.resize(n * n, std::numeric_limits<std::size_t>::max());
+              m_distances.resize(n * n, (std::numeric_limits<std::size_t>::max)());
               m_known_vertices = n;
           }
           
@@ -293,7 +292,7 @@ namespace
       
       smart_graph::node_distance_map d(g.distances_to(dst));
 
-      if (d[src] == std::numeric_limits<std::size_t>::max())
+      if (d[src] == (std::numeric_limits<std::size_t>::max)())
           return 0;
 
       typedef property_map<cast_graph,edge_cast_t>::const_type cast_map;

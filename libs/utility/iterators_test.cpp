@@ -1,10 +1,9 @@
 //  Demonstrate and test boost/operators.hpp on std::iterators  --------------//
 
-//  (C) Copyright Jeremy Siek 1999. Permission to copy, use, modify,
-//  sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided
-//  "as is" without express or implied warranty, and with no claim as
-//  to its suitability for any purpose.
+//  (C) Copyright Jeremy Siek 1999.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for most recent version including documentation.
 
@@ -24,7 +23,7 @@
 #include <cstring>    // for std::strcmp
 #include <iostream>   // for std::cout (std::endl, ends, and flush indirectly)
 #include <string>     // for std::string
-#include <strstream>  // for std::ostrstream
+#include <sstream>    // for std::stringstream
 
 # ifdef BOOST_NO_STDC_NAMESPACE
     namespace std { using ::strcmp; }
@@ -65,20 +64,16 @@ class test_opr_base
 protected:
     // Test data and types
     BOOST_STATIC_CONSTANT( std::size_t, fruit_length = 6u );
-    BOOST_STATIC_CONSTANT( std::size_t, scratch_length = 40u );
 
     typedef std::string  fruit_array_type[ fruit_length ];
-    typedef char         scratch_array_type[ scratch_length ];
 
     static  fruit_array_type    fruit;
-    static  scratch_array_type  scratch;
 
 };  // test_opr_base
 
 #ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
 //  A definition is required even for integral static constants
 const std::size_t test_opr_base::fruit_length;
-const std::size_t test_opr_base::scratch_length;
 #endif
 
 template <typename T, typename R = T&, typename P = T*>
@@ -119,9 +114,6 @@ private:
 // Class-static data definitions
 test_opr_base::fruit_array_type
  test_opr_base::fruit = { "apple", "orange", "pear", "peach", "grape", "plum" };
-
-test_opr_base::scratch_array_type
- test_opr_base::scratch = "";
 
 template <typename T, typename R, typename P>
   typename test_opr<T, R, P>::iter_type const
@@ -176,15 +168,13 @@ test_opr<T, R, P>::post_increment_test
 {
     std::cout << "\tDoing post-increment test." << std::endl;
 
-    std::ostrstream  oss( scratch, scratch_length );
+    std::stringstream oss;
     for ( iter_type i = fruit_begin ; i != fruit_end ; )
     {
         oss << *i++ << ' ';
     }
 
-    oss << std::ends;
-    BOOST_TEST( std::strcmp(oss.str(), "apple orange pear peach grape plum ")
-     == 0 );
+    BOOST_TEST( oss.str() == "apple orange pear peach grape plum ");
 }
 
 // Test post-decrement
@@ -196,16 +186,14 @@ test_opr<T, R, P>::post_decrement_test
 {
     std::cout << "\tDoing post-decrement test." << std::endl;
 
-    std::ostrstream  oss( scratch, scratch_length );
+    std::stringstream oss;
     for ( iter_type i = fruit_end ; i != fruit_begin ; )
     {
         i--;
         oss << *i << ' ';
     }
 
-    oss << std::ends;
-    BOOST_TEST( std::strcmp(oss.str(), "plum grape peach pear orange apple ")
-     == 0 );
+    BOOST_TEST( oss.str() == "plum grape peach pear orange apple ");
 }
 
 // Test indirect structure referral
@@ -217,14 +205,13 @@ test_opr<T, R, P>::indirect_referral_test
 {
     std::cout << "\tDoing indirect reference test." << std::endl;
 
-    std::ostrstream  oss( scratch, scratch_length );
+    std::stringstream oss;
     for ( iter_type i = fruit_begin ; i != fruit_end ; ++i )
     {
         oss << i->size() << ' ';
     }
 
-    oss << std::ends;
-    BOOST_TEST( std::strcmp(oss.str(), "5 6 4 5 5 4 ") == 0 );
+    BOOST_TEST( oss.str() == "5 6 4 5 5 4 ");
 }
 
 // Test offset addition
@@ -237,14 +224,13 @@ test_opr<T, R, P>::offset_addition_test
     std::cout << "\tDoing offset addition test." << std::endl;
 
     std::ptrdiff_t const  two = 2;
-    std::ostrstream       oss( scratch, scratch_length );
+    std::stringstream oss;
     for ( iter_type i = fruit_begin ; i != fruit_end ; i = i + two )
     {
         oss << *i << ' ';
     }
 
-    oss << std::ends;
-    BOOST_TEST( std::strcmp(oss.str(), "apple pear grape ") == 0 );
+    BOOST_TEST( oss.str() == "apple pear grape ");
 }
 
 // Test offset addition, in reverse order
@@ -257,14 +243,13 @@ test_opr<T, R, P>::reverse_offset_addition_test
     std::cout << "\tDoing reverse offset addition test." << std::endl;
 
     std::ptrdiff_t const  two = 2;
-    std::ostrstream       oss( scratch, scratch_length );
+    std::stringstream oss;
     for ( iter_type i = fruit_begin ; i != fruit_end ; i = two + i )
     {
         oss << *i << ' ';
     }
 
-    oss << std::ends;
-    BOOST_TEST( std::strcmp(oss.str(), "apple pear grape ") == 0 );
+    BOOST_TEST( oss.str() == "apple pear grape ");
 }
 
 // Test offset subtraction
@@ -277,7 +262,7 @@ test_opr<T, R, P>::offset_subtraction_test
     std::cout << "\tDoing offset subtraction test." << std::endl;
 
     std::ptrdiff_t const  two = 2;
-    std::ostrstream       oss( scratch, scratch_length );
+    std::stringstream oss;
     for ( iter_type i = fruit_end ; fruit_begin < i ; )
     {
         i = i - two;
@@ -287,8 +272,7 @@ test_opr<T, R, P>::offset_subtraction_test
         }
     }
 
-    oss << std::ends;
-    BOOST_TEST( std::strcmp(oss.str(), "grape pear apple ") == 0 );
+    BOOST_TEST( oss.str() == "grape pear apple ");
 }
 
 // Test comparisons
@@ -330,13 +314,11 @@ test_opr<T, R, P>::indexing_test
 {
     std::cout << "\tDoing indexing test." << std::endl;
 
-    std::ostrstream  oss( scratch, scratch_length );
+    std::stringstream oss;
     for ( std::size_t k = 0u ; k < fruit_length ; ++k )
     {
         oss << fruit_begin[ k ] << ' ';
     }
 
-    oss << std::ends;
-    BOOST_TEST( std::strcmp(oss.str(), "apple orange pear peach grape plum ")
-     == 0 );
+    BOOST_TEST( oss.str() == "apple orange pear peach grape plum ");
 }

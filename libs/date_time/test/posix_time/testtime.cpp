@@ -16,12 +16,50 @@ void special_values_tests()
   using namespace boost::gregorian;
 
   time_duration td_pi(pos_infin), td_ni(neg_infin), td_ndt(not_a_date_time);
-  date_duration dd_pi(pos_infin), /*dd_ni(neg_infin),*/ dd_ndt(not_a_date_time);
+  date_duration dd_pi(pos_infin), dd_ni(neg_infin), dd_ndt(not_a_date_time);
   date d_pi(pos_infin), d_ni(neg_infin), d_ndt(not_a_date_time);
   time_duration td(1,2,3,4);
   date_duration dd(1234);
   date d(2003,Oct,31);
 
+#if !defined(DATE_TIME_NO_DEFAULT_CONSTRUCTOR)
+  { // default constructor
+    ptime def;
+    check("Default constructor", def == ptime(not_a_date_time));
+  }
+#endif // DATE_TIME_NO_DEFAULT_CONSTRUCTOR
+
+  { // special values construction tests
+    ptime p_sv1(pos_infin);
+    std::string s("+infinity");
+    check("from special value +infinity", to_simple_string(p_sv1) == s);
+    ptime result = p_sv1 + dd;
+    check("Special value (pos infin) + date_duration = +infinity", to_iso_extended_string(result) == s);
+    check("is_special function - pos infin", result.is_special());
+    result = p_sv1 - dd;
+    check("Special value (pos infin) - date_duration = +infinity", to_iso_extended_string(result) == s);
+    result = p_sv1 - dd_ni;
+    check("Special value (pos infin) - date_duration (neg infin) = +infinity", to_iso_extended_string(result) == s);
+    ptime p_sv2(neg_infin);
+    s = "-infinity";
+    check("from special value -infinity", to_iso_string(p_sv2) == s);
+    result = p_sv2 - td_pi;
+    check("Special value (neg infin) - special time_duration (pos infin) = -infinity", to_iso_extended_string(result) == s);
+    ptime p_sv3(not_a_date_time);
+    check("is_special function - not_a_date_time", p_sv3.is_special());
+    s = "not-a-date-time";
+    check("from special value NADT", to_iso_extended_string(p_sv3) == s);
+    result = p_sv3 + td;
+    check("Special value (NADT) + time_duration = NADT", to_iso_extended_string(result) == s);
+    result = p_sv3 - td;
+    check("Special value (NADT) - time_duration = NADT", to_iso_extended_string(result) == s);
+    result = p_sv2 + td_pi;
+    check("Special value (neg infin) + special time_duration (pos infin) = NADT", to_iso_extended_string(result) == s);
+    result = p_sv1 + dd_ni;
+    check("Special value (pos infin) + date_duration (neg infin) = NADT", to_iso_extended_string(result) == s);
+    result = p_sv1 + dd_ndt;
+    check("Special value (pos infin) - date_duration (NADT) = NADT", to_iso_extended_string(result) == s);
+  }
   { // special values construction tests
     ptime p_sv1(d_pi, td);
     std::string s("+infinity");
@@ -233,8 +271,48 @@ main()
   t18 = from_time_t(tt3); //2032-2-15 18:47:14
   check("time_t conversion of 1960483634", 
         t18 == ptime(date(2032,2,15), time_duration(18,47,14)));
-  
+
   special_values_tests();
+
+  //min and max constructors
+  ptime min_ptime(min_date_time);
+  check("check min time constructor", min_ptime == ptime(date(1400,1,1), time_duration(0,0,0,0)));
+  //  std::cout << min_ptime << std::endl;
+  ptime max_ptime(max_date_time);
+  check("check max time constructor", max_ptime == ptime(date(9999,12,31), 
+                                                         hours(24)-time_duration::unit())); 
+  //  std::cout << max_ptime << std::endl;
+
+  //tm conversion checks
+  //converts to date and back -- should get same result -- note no fractional seconds in these times
+  check("tm conversion functions 2001-12-1 05:04:03", ptime_from_tm(to_tm(t1)) == t1);
+  check("tm conversion functions min date 1400-1-1 ", ptime_from_tm(to_tm(min_ptime)) == min_ptime);
+  //this conversion will drop fractional seconds
+  check("tm conversion functions max date 9999-12-31 23:59:59.9999 - truncated frac seconds", 
+        ptime_from_tm(to_tm(max_ptime)) == ptime(date(max_date_time), time_duration(23,59,59)));
+  
+  try{
+    ptime pt(pos_infin);
+    tm pt_tm = to_tm(pt);
+    check("Exception not thrown (special_value to_tm)", false);
+  }catch(std::out_of_range e){
+    check("Caught expected exception (special_value to_tm)", true);
+  }catch(...){
+    check("Caught un-expected exception (special_value to_tm)", false);
+  }
+  try{
+    // exception is only thrown from gregorian::to_tm. Needed to
+    // be sure it always gets thrown.
+    ptime pt(date(2002,Oct,31), hours(1));
+    pt += time_duration(pos_infin);
+    tm pt_tm = to_tm(pt);
+    check("Exception not thrown (special_value to_tm)", false);
+  }catch(std::out_of_range e){
+    check("Caught expected exception (special_value to_tm)", true);
+  }catch(...){
+    check("Caught un-expected exception (special_value to_tm)", false);
+  }
+
   
   return printTestStats();
   

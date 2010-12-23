@@ -1,20 +1,17 @@
-//Demonstrate conversions between a local time and utc
-/* Output:
-
-UTC <--> New York while DST is NOT active (5 hours)
-2001-Dec-31 19:00:00 in New York is 2002-Jan-01 00:00:00 UTC time 
-2002-Jan-01 00:00:00 UTC is 2001-Dec-31 19:00:00 New York time 
-
-UTC <--> New York while DST is active (4 hours)
-2002-May-31 20:00:00 in New York is 2002-Jun-01 00:00:00 UTC time 
-2002-Jun-01 00:00:00 UTC is 2002-May-31 20:00:00 New York time 
-
-UTC <--> Arizona (7 hours)
-2002-May-31 17:00:00 in Arizona is 2002-Jun-01 00:00:00 UTC time 
-
-*/
-
-
+/* Demonstrate conversions between a local time and utc
+ * Output:
+ * 
+ * UTC <--> New York while DST is NOT active (5 hours)
+ * 2001-Dec-31 19:00:00 in New York is 2002-Jan-01 00:00:00 UTC time 
+ * 2002-Jan-01 00:00:00 UTC is 2001-Dec-31 19:00:00 New York time 
+ * 
+ * UTC <--> New York while DST is active (4 hours)
+ * 2002-May-31 20:00:00 in New York is 2002-Jun-01 00:00:00 UTC time 
+ * 2002-Jun-01 00:00:00 UTC is 2002-May-31 20:00:00 New York time 
+ * 
+ * UTC <--> Arizona (7 hours)
+ * 2002-May-31 17:00:00 in Arizona is 2002-Jun-01 00:00:00 UTC time 
+ */
 
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/date_time/local_time_adjustor.hpp"
@@ -82,4 +79,12 @@ main()
 
   return 0;
 }
+
+
+/*  Copyright 2001-2004: CrystalClear Software, Inc
+ *  http://www.crystalclearsoftware.com
+ *
+ *  Subject to the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
+ */
 

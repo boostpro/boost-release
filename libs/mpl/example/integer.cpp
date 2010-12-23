@@ -1,31 +1,30 @@
-//-----------------------------------------------------------------------------
-// boost mpl/example/integer.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
-//
-// Copyright (c) 2001-02
-// Aleksey Gurtovoy
-//
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
 
-#include "boost/mpl/multiplies.hpp"
-#include "boost/mpl/list.hpp"
-#include "boost/mpl/lower_bound.hpp"
-#include "boost/mpl/transform_view.hpp"
-#include "boost/mpl/sizeof.hpp"
-#include "boost/mpl/int.hpp"
-#include "boost/mpl/identity.hpp"
-#include "boost/mpl/base.hpp"
-#include "boost/mpl/apply_if.hpp"
-#include "boost/mpl/apply.hpp"
-#include "boost/mpl/begin_end.hpp"
-#include "boost/mpl/assert_is_same.hpp"
+// Copyright Aleksey Gurtovoy 2001-2004
+//
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
+//
+// See http://www.boost.org/libs/mpl for documentation.
+
+// $Source: /cvsroot/boost/boost/libs/mpl/example/integer.cpp,v $
+// $Date: 2004/09/02 15:41:29 $
+// $Revision: 1.4 $
+
+#include <boost/mpl/multiplies.hpp>
+#include <boost/mpl/list.hpp>
+#include <boost/mpl/lower_bound.hpp>
+#include <boost/mpl/transform_view.hpp>
+#include <boost/mpl/sizeof.hpp>
+#include <boost/mpl/int.hpp>
+#include <boost/mpl/identity.hpp>
+#include <boost/mpl/base.hpp>
+#include <boost/mpl/eval_if.hpp>
+#include <boost/mpl/deref.hpp>
+#include <boost/mpl/begin_end.hpp>
+#include <boost/mpl/assert.hpp>
+
+#include <boost/type_traits/is_same.hpp>
 
 namespace mpl = boost::mpl;
 using namespace mpl::placeholders;
@@ -48,10 +47,10 @@ struct integer
         >::type >::type iter_;
 
     typedef typename mpl::end<builtins_>::type last_;
-    typedef typename mpl::apply_if<
+    typedef typename mpl::eval_if<
           boost::is_same<iter_,last_>
         , mpl::identity< big_int<bit_size> >
-        , mpl::apply0<iter_>
+        , mpl::deref<iter_>
         >::type type;
 };
 
@@ -61,8 +60,8 @@ typedef integer<15>::type int15;
 typedef integer<32>::type int32;
 typedef integer<100>::type int100;
 
-BOOST_MPL_ASSERT_IS_SAME(int1, char);
-BOOST_MPL_ASSERT_IS_SAME(int5, char);
-BOOST_MPL_ASSERT_IS_SAME(int15, short);
-BOOST_MPL_ASSERT_IS_SAME(int32, int);
-BOOST_MPL_ASSERT_IS_SAME(int100, big_int<100>);
+BOOST_MPL_ASSERT(( boost::is_same< int1, char > ));
+BOOST_MPL_ASSERT(( boost::is_same< int5, char > ));
+BOOST_MPL_ASSERT(( boost::is_same< int15, short > ));
+BOOST_MPL_ASSERT(( boost::is_same< int32, int > ));
+BOOST_MPL_ASSERT(( boost::is_same< int100, big_int<100> > ));

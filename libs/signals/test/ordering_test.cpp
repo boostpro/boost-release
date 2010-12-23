@@ -1,14 +1,13 @@
 // Boost.Signals library
 
-// Copyright Doug Gregor 2002-2003. Use, modification and
+// Copyright Douglas Gregor 2002-2004. Use, modification and
 // distribution is subject to the Boost Software License, Version
 // 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 // For more information, see http://www.boost.org
 
-#define BOOST_INCLUDE_MAIN
-#include <boost/test/test_tools.hpp>
+#include <boost/test/minimal.hpp>
 #include <boost/signal.hpp>
 #include <iostream>
 #include <vector>
@@ -26,7 +25,7 @@ struct emit_int {
 
   void operator()() const
   {
-    BOOST_TEST(!ungrouped1 && !ungrouped2 && !ungrouped3);
+    BOOST_TEST(value == 42 || (!ungrouped1 && !ungrouped2 && !ungrouped3));
     valuesOutput.push_back(value);
     std::cout << value << ' ';
   }
@@ -72,8 +71,11 @@ int test_main(int, char* [])
   boost::signal0<void> sig;
   sig.connect(write_ungrouped1());
   for (int i = 0; i < 100; ++i) {
-    using namespace std;
+#ifdef BOOST_NO_STDC_NAMESPACE
     int v = rand() % 100;
+#else
+    int v = std::rand() % 100;
+#endif
     sortedValues.push_back(v);
     sig.connect(v, emit_int(v));
 
@@ -84,6 +86,12 @@ int test_main(int, char* [])
   sig.connect(write_ungrouped3());
 
   std::sort(sortedValues.begin(), sortedValues.end());
+
+  // 17 at beginning, 42 at end
+  sortedValues.insert(sortedValues.begin(), 17);
+  sig.connect(emit_int(17), boost::BOOST_SIGNALS_NAMESPACE::at_front);
+  sortedValues.push_back(42);
+  sig.connect(emit_int(42));
 
   sig();
   std::cout << std::endl;

@@ -1,9 +1,9 @@
-/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+/* Copyright (c) 2002-2004 CrystalClear Software, Inc.
  * Use, modification and distribution is subject to the 
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2003/11/23 03:37:47 $
+ * $Date: 2004/07/18 18:35:16 $
  */
 
 
@@ -13,16 +13,11 @@
 #endif
 #include "boost/date_time/gregorian/greg_weekday.hpp"
 
+#include "greg_names.hpp"
+
 namespace boost {
 namespace gregorian {
-
-  const char* const short_weekday_names[]={"Sun", "Mon", "Tue", 
-                                           "Wed", "Thu", "Fri", "Sat"};
-  const char* const long_weekday_names[]= {"Sunday","Monday","Tuesday",
-                                           "Wednesday", "Thursday",
-                                           "Friday", "Saturday"};
-
-
+  
   //! Return a 3 digit english string of the day of week (eg: Sun)
   const char*
   greg_weekday::as_short_string() const 
@@ -35,6 +30,21 @@ namespace gregorian {
   {
     return long_weekday_names[value_];
   }
+  
+#ifndef BOOST_NO_STD_WSTRING
+  //! Return a 3 digit english wchar_t string of the day of week (eg: Sun)
+  const wchar_t*
+  greg_weekday::as_short_wstring() const 
+  {
+    return w_short_weekday_names[value_];
+  }
+  //! Return a point to a long english wchar_t string representing day of week
+  const wchar_t*
+  greg_weekday::as_long_wstring()  const 
+  {
+    return w_long_weekday_names[value_];
+  }
+#endif // BOOST_NO_STD_WSTRING
   
 } } //namespace gregorian
 

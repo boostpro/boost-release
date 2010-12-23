@@ -1,9 +1,7 @@
 // (C) Copyright Jeremy Siek 2000-2004.
-// Permission to copy, use, modify, sell and distribute this software
-// is granted provided this copyright notice appears in all
-// copies. This software is provided "as is" without express or
-// implied warranty, and with no claim as to its suitability for any
-// purpose.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 
 #include <boost/config.hpp>
@@ -21,6 +19,13 @@ int main(int, char*[])
   std::cout << "counting from 0 to 4:" << std::endl;
   boost::counting_iterator<int> first(0), last(4);
   std::copy(first, last, std::ostream_iterator<int>(std::cout, " "));
+  std::cout << std::endl;
+
+  // Example of using make_counting_iterator()
+  std::cout << "counting from -5 to 4:" << std::endl;
+  std::copy(boost::make_counting_iterator(-5),
+            boost::make_counting_iterator(5),
+            std::ostream_iterator<int>(std::cout, " "));
   std::cout << std::endl;
 
   // Example of using counting iterator to create an array of pointers.

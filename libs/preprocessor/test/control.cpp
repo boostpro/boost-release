@@ -1,10 +1,9 @@
 # /* **************************************************************************
 #  *                                                                          *
-#  *     (C) Copyright Paul Mensonides 2002.  Permission to copy, use,        *
-#  *     modify, sell, and distribute this software is granted provided       *
-#  *     this copyright notice appears in all copies.  This software is       *
-#  *     provided "as is" without express or implied warranty, and with       *
-#  *     no claim at to its suitability for any purpose.                      *
+#  *     (C) Copyright Paul Mensonides 2002.
+#  *     Distributed under the Boost Software License, Version 1.0. (See
+#  *     accompanying file LICENSE_1_0.txt or copy at
+#  *     http://www.boost.org/LICENSE_1_0.txt)
 #  *                                                                          *
 #  ************************************************************************** */
 #
@@ -37,5 +36,5 @@ BEGIN BOOST_PP_WHILE(PRED, OP_1, 50) == 0 END
 # define OP_2(d, state) BOOST_PP_DEC(BOOST_PP_ADD(BOOST_PP_WHILE(PRED, OP_1, state), state))
 # define OP_3(d, state) BOOST_PP_DEC(BOOST_PP_ADD_D(d, BOOST_PP_WHILE_ ## d(PRED, OP_1, state), state))
 
-BEGIN BOOST_PP_WHILE(PRED, OP_3, 10) == 0 END
+BEGIN BOOST_PP_WHILE(PRED, OP_2, 10) == 0 END
 BEGIN BOOST_PP_WHILE(PRED, OP_3, 10) == 0 END

@@ -1,3 +1,7 @@
+// Copyright Joel de Guzman 2004. Distributed under the Boost
+// Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/def.hpp>
@@ -23,7 +27,7 @@ std::string x_value(X const& x)
 }
 
 BOOST_PYTHON_MODULE(map_indexing_suite_ext)
-{    
+{
     class_<X>("X")
         .def(init<>())
         .def(init<X>())
@@ -39,10 +43,20 @@ BOOST_PYTHON_MODULE(map_indexing_suite_ext)
     class_<std::map<std::string, X> >("XMap")
         .def(map_indexing_suite<std::map<std::string, X> >())
     ;
-        
+
+    void int_map_indexing_suite(); // moved to int_map_indexing_suite.cpp to 
+    int_map_indexing_suite();      // avoid MSVC 6/7 internal structure overflow
+    
+#if 0
     // Compile check only...
     class_<std::map<int, int> >("IntMap")
         .def(map_indexing_suite<std::map<int, int> >())
+    ;
+#endif 
+
+    // Compile check only...
+    class_<std::map<std::string, boost::shared_ptr<X> > >("TestMap")
+        .def(map_indexing_suite<std::map<std::string, boost::shared_ptr<X> > >())
     ;
 }
 

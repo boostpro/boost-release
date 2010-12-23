@@ -12,6 +12,7 @@
 
 using namespace std;
 
+#include "impl/string_length.hpp"
 #include <boost/spirit/core.hpp>
 #include <boost/spirit/actor/assign_actor.hpp>
 using namespace boost::spirit;
@@ -26,7 +27,7 @@ directives_test1()
 {
     char const* cpx = "H e l l o";
     char const* cpx_first = cpx;
-    char const* cpx_last = cpx + strlen(cpx);
+    char const* cpx_last = cpx + string_length(cpx);
 
     match<> hit;
     typedef skipper_iteration_policy<iteration_policy> iter_policy;
@@ -38,73 +39,73 @@ directives_test1()
     scanx.first = cpx;
 
     hit = chseq_p("Hello").parse(scanx);
-    assert(hit);
+    assert(!!hit);
     scanx.first = cpx;
 
     char const* cp = "Hello \n\tWorld";
     char const* cp_first = cp;
-    char const* cp_last = cp + strlen(cp);
+    char const* cp_last = cp + string_length(cp);
 
     scanner<char const*, scanner_policies<iter_policy> >
         scan(cp_first, cp_last);
 
     hit = (+(alpha_p | punct_p)).parse(scan);
-    assert(hit);
+    assert(!!hit);
     assert(scan.first == scan.last);
     scan.first = cp;
 
     hit = (+(lexeme_d[+(alpha_p | '\'')])).parse(scan);
-    assert(hit);
+    assert(!!hit);
     assert(scan.first == scan.last);
     scan.first = cp;
 
     hit = (+(lexeme_d[lexeme_d[+anychar_p]])).parse(scan);
-    assert(hit);
+    assert(!!hit);
     assert(scan.first == scan.last);
     scan.first = cp;
 
     hit = (str_p("Hello") >> "World").parse(scan);
-    assert(hit);
+    assert(!!hit);
     assert(scan.first == scan.last);
     scan.first = cp;
 
     hit = as_lower_d[str_p("hello") >> "world"].parse(scan);
-    assert(hit);
+    assert(!!hit);
     assert(scan.first == scan.last);
     scan.first = cp;
 
     hit = (+(as_lower_d[as_lower_d[+lower_p | '\'']])).parse(scan);
-    assert(hit);
+    assert(!!hit);
     assert(scan.first == scan.last);
     scan.first = cp;
 
     char const* cpy = "123.456";
     char const* cpy_first = cpy;
-    char const* cpy_last = cpy + strlen(cpy);
+    char const* cpy_last = cpy + string_length(cpy);
 
     scanner<> scany(cpy_first, cpy_last);
     hit = longest_d[(+digit_p >> '.' >> +digit_p) | (+digit_p)].parse(scany);
-    assert(hit);
+    assert(!!hit);
     assert(scany.first == scany.last);
     scany.first = cpy;
 
     hit = shortest_d[(+digit_p >> '.' >> +digit_p) | (+digit_p)].parse(scany);
-    assert(hit);
+    assert(!!hit);
     assert(scany.first != scany.last);
     scany.first = cpy;
 
     char const* cpz = "razamanaz";
     char const* cpz_first = cpz;
-    char const* cpz_last = cpz + strlen(cpz);
+    char const* cpz_last = cpz + string_length(cpz);
 
     scanner<> scanz(cpz_first, cpz_last);
     hit = longest_d[str_p("raza") | "razaman" | "razamanaz"].parse(scanz);
-    assert(hit);
+    assert(!!hit);
     assert(scanz.first == scanz.last);
     scanz.first = cpz;
 
     hit = shortest_d[str_p("raza") | "razaman" | "razamanaz"].parse(scanz);
-    assert(hit);
+    assert(!!hit);
     assert(scanz.first == cpz+4);
     scanz.first = cpz;
 

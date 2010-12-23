@@ -37,7 +37,7 @@
     hand by a knowledgeable person. So the Program Execution Monitor wouldn't be worth using in that environment.</P>
   <P class="first-line-indented">Uniform error reporting could be also useful in test environments such as the boost regression 
     tests. Be aware though in such case it might be preferable to use the <A href="../test_exec_monitor/index.html">Test Execution Monitor</A> 
-    or the <A href="../unit_test_framework/index.html">Unit Test Framework</A>, cause they allows one to use <A href="../test_tools/index.html">Test 
+    or the <A href="../utf/index.html">Unit Test Framework</A>, cause they allows one to use <A href="../test_tools/index.html">Test 
     Tools</A> and generate more detailed errors information.</P>
   <H2><A name="Usage">Usage</A></H2>
   <P>Using the Program Execution Monitor, the traditional Hello World program becomes:</P>
@@ -50,9 +50,11 @@
     <SPAN class="reserv-word">return</SPAN> <SPAN class="literal">0</SPAN>;
 }
 </PRE>
-  <P class="first-line-indented">It really is that simple - just change the name of your initial function from main() to cpp_main(). 
-    Do make sure the argc and arcv parameters are specified (although you don't have to name them if you don't use them). 
-    Now you can compile it and link with the Program Execution Monitor library.</P>
+  <P class="first-line-indented">It really is that simple - just change the name
+    of your initial function from main() to cpp_main().  Do make sure the argc
+    and argv parameters are specified (although you don't have to name them if
+    you don't use them).  Now you can compile it and link with the Program Execution
+    Monitor library.</P>
   <P class="first-line-indented">When the above program executes, the output will be:</P>
   <P class="test-output"> Hello, world<BR>
     no errors detected </P>
@@ -73,11 +75,11 @@
   <P class="indented">BOOST_TEST_CATCH_SYSTEM_ERRORS - allows to customize behavior of the Execution Monitor in regards of 
     catching system errors. For more details about the meaning of this option see the Execution Monitor <A href="../execution_monitor/index.html#catch_system_errors">documentation</A>. 
     If you want to prevent the Program Execution Monitor from catching system exception, set the value of this variable to 
-    <U>&quot;no&quot;</U>. The default value is &quot;yes&quot;.</P>
+    <u>&quot;no&quot;</u>. The default value is &quot;yes&quot;.</P>
         <BR>
   <P class="indented">BOOST_PRG_MON_CONFIRM - allows to avoid success confirmation message. Some users prefer to see a confirmation 
     message in case if program successfully executed. While others don't like the clutter or any output is prohibited by organization 
-    standards. To avoid the message set the value of this variable to <U>&quot;no&quot;</U>. The default value is &quot;yes&quot;.</P>
+    standards. To avoid the message set the value of this variable to <u>&quot;no&quot;</u>. The default value is &quot;yes&quot;.</P>
   <H2><A name="Implementation">Implementation</A></H2>
   <P class="first-line-indented">To monitor execution of user supplied function cpp_main() the Program Execution Monitor relies 
     on the Boost Test's <A href="../execution_monitor/index.html">Execution Monitor</A> . Also the Program Execution Monitor 
@@ -108,11 +110,11 @@
 </DIV>
 <DIV class="footer"> 
   <DIV class="footer-body"> 
-    <P> &copy <A name="Copyright">Copyright</A> <A href='mailto:rogeeff@fusemail.com'>Gennadiy Rozental</A> 2001-2004. <BR>
-      Use, modification, and distribution are subject to the Boost Software License, Version 1.0. 
+    <P> &copy <A name="Copyright">Copyright</A> <A href='mailto:boost-test at emailaccount dot com (please unobscure)'>Gennadiy Rozental</A> 2001-2004. <BR>
+      Distributed under the Boost Software License, Version 1.0.
       (See accompanying file <A href="../../../../../LICENSE_1_0.txt">LICENSE_1_0.txt</A> or copy at 
       <A href="http://www.boost.org/LICENSE_1_0.txt">www.boost.org/LICENSE_1_0.txt</A>)</P>
-        <P>Revised:        <!-- #BeginDate format:Sw1 -->11 January, 2004<!-- #EndDate -->     </P>
+        <P>Revised:        <!-- #BeginDate format:Sw1 -->24 May, 2004<!-- #EndDate -->     </P>
   </DIV>
 </DIV>
 </BODY>

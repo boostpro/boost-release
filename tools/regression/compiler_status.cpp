@@ -1,7 +1,8 @@
 //  Generate Compiler Status HTML from jam regression test output  -----------//
 
-//  Copyright Beman Dawes 2002.
-//  See accompanying license for terms and conditions of use.
+//  Copyright Beman Dawes 2002.  Distributed under the Boost
+//  Software License, Version 1.0. (See accompanying file
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/tools/regression for documentation.
 
@@ -106,7 +107,7 @@ namespace
       string bookmark( line.substr( pos+1 ) );
 
 //      std::cout << "inserting \"" << key << "\",\"" << bookmark << "\"\n";
-      notes.insert( std::make_pair( key, bookmark ) );
+      notes.insert( notes_map::value_type( key, bookmark ) );
     }
   }
 
@@ -846,7 +847,7 @@ int cpp_main( int argc, char * argv[] ) // note name!
           "<body bgcolor=\"#ffffff\" text=\"#000000\">\n"
           "<table border=\"0\">\n"
           "<tr>\n"
-          "<td><img border=\"0\" src=\"../c++boost.gif\" width=\"277\" "
+          "<td><img border=\"0\" src=\"../boost.png\" width=\"277\" "
           "height=\"86\"></td>\n"
           "<td>\n"
           "<h1>Compiler Status: " + platform_desc() + "</h1>\n"
@@ -879,7 +880,7 @@ int cpp_main( int argc, char * argv[] ) // note name!
          "<body bgcolor=\"#ffffff\" text=\"#000000\">\n"
          "<table border=\"0\">\n"
          "<tr>\n"
-         "<td><img border=\"0\" src=\"../c++boost.gif\" width=\"277\" "
+         "<td><img border=\"0\" src=\"../boost.png\" width=\"277\" "
          "height=\"86\"></td>\n"
          "<td>\n"
          "<h1>Compiler Status: " + platform_desc() + "</h1>\n"

@@ -13,10 +13,9 @@
 //  Copyright (c) 2001, 2002 Peter Dimov and Multi Media Ltd.
 //  Copyright (c) 2001 David Abrahams
 //
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 //
 
 #include <boost/bind.hpp>
@@ -190,7 +189,7 @@ void function_object_test()
     BOOST_TEST( bind<int>(Y(), i, _1)(k) == 38 );
     BOOST_TEST( bind<long>(Y(), i, _1, 9)(k) == 938 );
 
-#if !defined(__MWERKS__) || (__MWERKS__ > 0x2406)     // Fails for this version of the compiler.
+#if !defined(__MWERKS__) || (__MWERKS__ > 0x2407)     // Fails for this version of the compiler.
 
     global_result = 0;
     bind<void>(Y(), i, _1, 9, 4)(k);

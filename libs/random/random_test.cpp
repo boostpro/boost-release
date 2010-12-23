@@ -1,16 +1,11 @@
 /* boost random_test.cpp various tests
  *
  * Copyright Jens Maurer 2000
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
- *
- * $Id: random_test.cpp,v 1.45.2.2 2004/01/25 21:58:01 jmaurer Exp $
+ * $Id: random_test.cpp,v 1.52 2004/08/16 09:09:35 mistevens Exp $
  */
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
@@ -219,6 +214,7 @@ void instantiate_urng(const std::string & s, const URNG &, const ResultType &)
 {
   std::cout << "Basic tests for " << s;
   URNG urng;
+  urng.seed();                                  // seed() member function
   int a[URNG::has_fixed_range ? 5 : 10];        // compile-time constant
   (void) a;   // avoid "unused" warning
   typename URNG::result_type x1 = urng();
@@ -252,9 +248,9 @@ void instantiate_urng(const std::string & s, const URNG &, const ResultType &)
   BOOST_TEST(have_exception);
 
   // check for min/max members
-  ResultType min = urng3.min();
+  ResultType min = (urng3.min)();
   (void) &min;
-  ResultType max = urng3.max();
+  ResultType max = (urng3.max)();
   (void) &max;
 
 #if !defined(BOOST_NO_OPERATORS_IN_NAMESPACE) && !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
@@ -390,16 +386,16 @@ void instantiate_all()
 template<class Generator>
 void check_uniform_int(Generator & gen, int iter)
 {
-  std::cout << "testing uniform_int(" << gen.min() << "," << gen.max() 
+  std::cout << "testing uniform_int(" << (gen.min)() << "," << (gen.max)() 
             << ")" << std::endl;
-  int range = gen.max()-gen.min()+1;
+  int range = (gen.max)()-(gen.min)()+1;
   std::vector<int> bucket(range);
   for(int j = 0; j < iter; j++) {
     int result = gen();
-    if(result < gen.min() || result > gen.max())
+    if(result < (gen.min)() || result > (gen.max)())
       std::cerr << "   ... delivers " << result << std::endl;
     else
-      bucket[result-gen.min()]++;
+      bucket[result-(gen.min)()]++;
   }
   int sum = 0;
   // use a different variable name "k", because MSVC has broken "for" scoping
@@ -426,8 +422,8 @@ void test_uniform_int(Generator & gen)
   typedef boost::variate_generator<Generator&, int_gen> level_one;
 
   level_one uint12(gen, int_gen(1,2));
-  BOOST_TEST(uint12.distribution().min() == 1);
-  BOOST_TEST(uint12.distribution().max() == 2);
+  BOOST_TEST((uint12.distribution().min)() == 1);
+  BOOST_TEST((uint12.distribution().max)() == 2);
   check_uniform_int(uint12, 100000);
   level_one uint16(gen, int_gen(1,6));
   check_uniform_int(uint16, 100000);
@@ -478,16 +474,15 @@ INSTANT(boost::mt11213b)
 #endif
 
 #if !defined(BOOST_NO_INT64_T) && !defined(BOOST_NO_INTEGRAL_INT64_T)
-// testcase by Mario Rütti
+// testcase by Mario Rï¿½tti
 class ruetti_gen
 {
 public:
   typedef boost::uint64_t result_type;
-  result_type min() const { return 0; }
-  result_type max() const { return std::numeric_limits<result_type>::max(); }
-  result_type operator()() { return max()-1; }
+  result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return 0; }
+  result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const { return std::numeric_limits<result_type>::max BOOST_PREVENT_MACRO_SUBSTITUTION (); }
+  result_type operator()() { return (max)()-1; }
 };
-
 
 void test_overflow_range()
 {
@@ -497,7 +492,6 @@ void test_overflow_range()
   for (int i=0;i<10;i++)
     (void) rng();
 }
-
 #else
 void test_overflow_range()
 { }

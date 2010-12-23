@@ -1,8 +1,7 @@
-//  Copyright David Abrahams 2001. Permission to copy, use,
-//  modify, sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided
-//  "as is" without express or implied warranty, and with no claim as
-//  to its suitability for any purpose.
+//  Copyright David Abrahams 2001.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 #include <boost/python/converter/registry.hpp>
 #include <boost/python/converter/registrations.hpp>
 #include <boost/python/converter/builtin_converters.hpp>
@@ -12,7 +11,7 @@
 #include <boost/lexical_cast.hpp>
 
 #if defined(__APPLE__) && defined(__MACH__) && defined(__GNUC__) \
- && __GNUC__ == 3 && __GNUC_MINOR__ == 3 && !defined(__APPLE_CC__)
+ && __GNUC__ == 3 && __GNUC_MINOR__ <= 4 && !defined(__APPLE_CC__)
 # define BOOST_PYTHON_CONVERTER_REGISTRY_APPLE_MACH_WORKAROUND
 #endif
 

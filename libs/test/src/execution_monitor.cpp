@@ -1,14 +1,14 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  (C) Copyright Gennadiy Rozental 2001-2004.
 //  (C) Copyright Beman Dawes and Ullrich Koethe 1995-2001.
 //  Use, modification, and distribution are subject to the
 //  Boost Software License, Version 1.0. (See accompanying file
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: execution_monitor.cpp,v $
 //
-//  Version     : $Revision: 1.30 $
+//  Version     : $Revision: 1.35 $
 //
 //  Description : provides execution monitor implementation for all supported
 //  configurations, including Microsoft structured exception based, unix signals
@@ -76,11 +76,13 @@ namespace std { using ::strlen; using ::strncat; }
 
 #endif
 
+#include <boost/test/detail/suppress_warnings.hpp>
+
 namespace boost {
 
 namespace detail {
 
-using unit_test_framework::c_string_literal;
+using unit_test::const_string;
 
 //  boost::execution_monitor::execute() calls boost::detail::catch_signals() to
 //    execute user function with signals control
@@ -91,11 +93,12 @@ const std::size_t REPORT_ERROR_BUFFER_SIZE = 512;
 
 static int  catch_signals( execution_monitor & exmon, bool catch_system_errors, int timeout ); //  timeout is in seconds. 0 implies none.
 
-static void report_error( execution_exception::error_code   ec,
-                          c_string_literal                  msg1,           // first part of the message
-                          c_string_literal                  msg2 = "" );    // second part of the message; sum length msg1 + msg2 should
-                                                                            // exceed REPORT_ERROR_BUFFER_SIZE; never concatenate messages
-                                                                            // manually, cause it should work even in case of memory lack
+static void report_error( 
+    execution_exception::error_code   ec,
+    const_string                      msg1,         // first part of the message
+    const_string                      msg2 = "" );  // second part of the message; sum length msg1 + msg2 should not
+                                                    // exceed REPORT_ERROR_BUFFER_SIZE; never concatenate messages
+                                                    // manually, cause it should work even in case of memory lack
 
 //____________________________________________________________________________//
 
@@ -132,21 +135,22 @@ static void report_ms_se_error( unsigned int id );
 #elif defined(BOOST_SIGACTION_BASED_SIGNAL_HANDLING)
 
 class unix_signal_exception {
+    typedef execution_exception::error_code error_code_type;
 public:
     // Constructor
-    unix_signal_exception( execution_exception::error_code ec, c_string_literal em )
+    unix_signal_exception( execution_exception::error_code ec, const_string em )
     : m_error_code( ec ), m_error_message( em )             {}
 
     // Destructor
     ~unix_signal_exception()                                {}
 
     // access methods
-    execution_exception::error_code error_code() const      { return m_error_code;    }
-    c_string_literal        error_message() const   { return m_error_message; }
+    error_code_type error_code() const      { return m_error_code;    }
+    const_string    error_message() const   { return m_error_message; }
 private:
     // Data members
-    execution_exception::error_code m_error_code;
-    c_string_literal        m_error_message;
+    error_code_type m_error_code;
+    const_string    m_error_message;
 };
 
 #endif
@@ -174,7 +178,7 @@ assert_reporting_function( int reportType, char* userMessage, int* retVal )
 
 #endif
 
-}  // namespace detail
+} // namespace detail
 
 // ************************************************************************** //
 // **************               execution_monitor              ************** //
@@ -191,7 +195,7 @@ execution_monitor::run_function()
 int
 execution_monitor::execute( bool catch_system_errors, int timeout )
 {
-    using unit_test_framework::c_string_literal;
+    using unit_test::const_string;
 
 #if defined(BOOST_MS_STRCTURED_EXCEPTION_HANDLING) && !defined(__BORLANDC__)
     if( catch_system_errors )
@@ -214,7 +218,7 @@ execution_monitor::execute( bool catch_system_errors, int timeout )
     //  required.  Programmers ask for const anyhow, so we supply it.  That's
     //  easier than answering questions about non-const usage.
 
-    catch( c_string_literal ex )
+    catch( char const* ex )
       { detail::report_error( execution_exception::cpp_exception_error, "C string: ", ex ); }
     catch( std::string const& ex )
     { detail::report_error( execution_exception::cpp_exception_error, "std::string: ", ex.c_str() ); }
@@ -296,7 +300,7 @@ public:
     // access methods
     static sigjmp_buf&      jump_buffer()
     {
-        assert( s_active_handler );
+        assert( !!s_active_handler );
 
         return s_active_handler->m_sigjmp_buf;
     }
@@ -397,7 +401,7 @@ int catch_signals( execution_monitor & exmon, bool catch_system_errors, int time
     signal_handler                  local_signal_handler( catch_system_errors, timeout );
     int                             result = 0;
     execution_exception::error_code ec     = execution_exception::no_error;
-    c_string_literal                em     = c_string_literal();
+    const_string                    em;
 
     volatile int sigtype = sigsetjmp( signal_handler::jump_buffer(), 1 );
     if( sigtype == 0 ) {
@@ -407,28 +411,28 @@ int catch_signals( execution_monitor & exmon, bool catch_system_errors, int time
         switch(sigtype) {
         case SIGALRM:
             ec = execution_exception::timeout_error;
-            em = "signal: SIGALRM (timeout while executing function)";
+            em = BOOST_TEST_L( "signal: SIGALRM (timeout while executing function)" );
             break;
         case SIGTRAP:
             ec = execution_exception::system_error;
-            em = "signal: SIGTRAP (perhaps integer divide by zero)";
+            em = BOOST_TEST_L( "signal: SIGTRAP (perhaps integer divide by zero)" );
             break;
         case SIGFPE:
             ec = execution_exception::system_error;
-            em = "signal: SIGFPE (arithmetic exception)";
+            em = BOOST_TEST_L( "signal: SIGFPE (arithmetic exception)" );
             break;
         case SIGABRT:
             ec = execution_exception::system_error;
-            em = "signal: SIGABRT (application abort requested)";
+            em = BOOST_TEST_L( "signal: SIGABRT (application abort requested)" );
             break;
         case SIGSEGV:
         case SIGBUS:
             ec = execution_exception::system_fatal_error;
-            em = "signal: memory access violation";
+            em = BOOST_TEST_L( "signal: memory access violation" );
             break;
         default:
             ec = execution_exception::system_error;
-            em = "signal: unrecognized signal";
+            em = BOOST_TEST_L( "signal: unrecognized signal" );
         }
     }
 
@@ -565,12 +569,15 @@ report_ms_se_error( unsigned int id )
 // **************                  report_error                ************** //
 // ************************************************************************** //
 
-static void report_error( execution_exception::error_code ec, c_string_literal msg1, c_string_literal msg2 )
+static void report_error( execution_exception::error_code ec, const_string msg1, const_string msg2 )
 {
     static char buf[REPORT_ERROR_BUFFER_SIZE];
+
     buf[0] = '\0';
-    std::strncat( buf, msg1, sizeof(buf)-1 );
-    std::strncat( buf, msg2, sizeof(buf)-1-std::strlen(buf) );
+
+    std::strncat( buf, msg1.begin(), sizeof(buf)-1 );
+    std::strncat( buf, msg2.begin(), sizeof(buf) - msg1.size() - 1 );
+
     throw execution_exception( ec, buf );
 }
 
@@ -584,6 +591,23 @@ static void report_error( execution_exception::error_code ec, c_string_literal m
 //  Revision History :
 //
 //  $Log: execution_monitor.cpp,v $
+//  Revision 1.35  2004/08/19 00:02:21  rogeeff
+//  another tru64cxx65 workaround
+//
+//  Revision 1.34  2004/07/19 12:08:12  rogeeff
+//  suppress warnings
+//
+//  Revision 1.33  2004/06/07 07:34:22  rogeeff
+//  detail namespace renamed
+//
+//  Revision 1.32  2004/05/21 06:26:09  rogeeff
+//  licence update
+//
+//  Revision 1.31  2004/05/11 11:04:44  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.30  2003/12/20 11:27:28  johnmaddock
 //  Added fixes for Borland C++ 6.0 compiler (With EDG frontend).
 //

@@ -10,9 +10,14 @@
 
 
 project boost
-    : requirements <include>.
-    : usage-requirements <include>.
+    : requirements <include>$(BOOST_ROOT)
+      # disable auto-linking for all targets here,
+      # primarily because it caused troubles with V2
+      <define>BOOST_ALL_NO_LIB=1
+    : usage-requirements <include>$(BOOST_ROOT)
+    : build-dir bin.v2	
     ;
+        
     
 build-project libs/test/build ;
 build-project libs/date_time/build ;
@@ -24,4 +29,4 @@ build-project libs/graph/build ;
 build-project libs/python/build ;
 build-project libs/thread/build ;
 build-project libs/filesystem/build ;
-
+build-project libs/program_options/build ;

@@ -1,17 +1,11 @@
 /* Boost test/pi.cpp
  * test if the pi constant is correctly defined
  *
- * Copyright Guillaume Melquiond, Sylvain Pion 2002-2003
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation.
+ * Copyright 2002-2003 Guillaume Melquiond, Sylvain Pion
  *
- * None of the above authors nor Polytechnic University make any
- * representation about the suitability of this software for any
- * purpose. It is provided "as is" without express or implied warranty.
- *
- * $Id: pi.cpp,v 1.4 2003/06/03 22:00:00 hervebronnimann Exp $
+ * Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE_1_0.txt or
+ * copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
 #include <boost/numeric/interval.hpp>
@@ -40,8 +34,8 @@ int test_main(int, char *[]) {
   BOOST_TEST(in((float) PI, pi_f));
   BOOST_TEST(in((double)PI, pi_d));
   BOOST_TEST(subset(pi_i, widen(I_i((int)   PI), 1)));
-  BOOST_TEST(subset(pi_f, widen(I_f((float) PI), std::numeric_limits<float> ::min())));
-  BOOST_TEST(subset(pi_d, widen(I_d((double)PI), std::numeric_limits<double>::min())));
+  BOOST_TEST(subset(pi_f, widen(I_f((float) PI), (std::numeric_limits<float> ::min)())));
+  BOOST_TEST(subset(pi_d, widen(I_d((double)PI), (std::numeric_limits<double>::min)())));
 
   // We can't test the following equalities for interval<int>.
   I_f pi_f_half = pi_half<I_f>();

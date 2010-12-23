@@ -1,9 +1,8 @@
 #!/bin/sh
 
-#~ Copyright (C) Rene Rivera, 2002-2003.
-#~ Use, modification and distribution is subject to the
-#~ Boost Software License, Version 1.0. (See accompanying file
-#~ LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+#~ Copyright 2002-2003 Rene Rivera.
+#~ Distributed under the Boost Software License, Version 1.0.
+#~ (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 # Reset the toolset.
 BOOST_JAM_TOOLSET=
@@ -63,6 +62,8 @@ test_uname ()
 Guess_Toolset ()
 {
     if test_uname Darwin ; then BOOST_JAM_TOOLSET=darwin
+    elif test_uname IRIX ; then BOOST_JAM_TOOLSET=mipspro
+    elif test_uname IRIX64 ; then BOOST_JAM_TOOLSET=mipspro
     elif test_path gcc ; then BOOST_JAM_TOOLSET=gcc
     elif test_path icc ; then BOOST_JAM_TOOLSET=intel-linux
     elif test -r /opt/intel/compiler70/ia32/bin/iccvars.sh ; then
@@ -133,7 +134,7 @@ case $BOOST_JAM_TOOLSET in
     ;;
     
     como)
-    BOOST_JAM_CC=como
+    BOOST_JAM_CC="como --c"
     ;;
     
     kcc)
@@ -193,7 +194,7 @@ BJAM_SOURCES="\
  rules.c scan.c search.c subst.c timestamp.c variable.c modules.c\
  strings.c filesys.c builtins.c pwd.c class.c native.c modules/set.c\
  modules/path.c modules/regex.c modules/property-set.c\
- modules/sequence.c"
+ modules/sequence.c modules/order.c"
 
 echo_run rm -rf bootstrap.$BOOST_JAM_TOOLSET
 echo_run mkdir bootstrap.$BOOST_JAM_TOOLSET

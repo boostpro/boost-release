@@ -14,29 +14,11 @@
 //  GeNeSys mbH & Co. KG in producing this work.
 //
 
-#ifdef BOOST_MSVC
-
-#pragma warning (disable: 4355)
-#pragma warning (disable: 4503)
-#pragma warning (disable: 4786)
-
-#endif
-
-#include <iostream>
-
-#include <boost/numeric/ublas/config.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/triangular.hpp>
-#include <boost/numeric/ublas/io.hpp>
-
-#include <boost/numeric/ublas/blas.hpp>
-
 #include "test2.hpp"
 
 template<class V, class M, int N>
 void test_blas_2<V, M, N>::operator () () {
-    try {
+    {
         V v1 (N), v2 (N);
         M m (N, N);
 
@@ -148,12 +130,6 @@ void test_blas_2<V, M, N>::operator () () {
         std::cout << "hr2 (m, 1, v1, v2) = " << m << std::endl;
 #endif
     }
-    catch (std::exception &e) {
-        std::cout << e.what () << std::endl;
-    }
-    catch (...) {
-        std::cout << "unknown exception" << std::endl;
-    }
 }
 
 #ifdef USE_FLOAT
@@ -173,4 +149,3 @@ template struct test_blas_2<ublas::vector<std::complex<float> >, ublas::matrix<s
 template struct test_blas_2<ublas::vector<std::complex<double> >, ublas::matrix<std::complex<double> >, 3>;
 #endif
 #endif
-

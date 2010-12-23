@@ -149,7 +149,7 @@ struct bfs_test
         vertex_descriptor start = boost::random_vertex(g, gen);
 
         // vertex properties
-        std::vector<int> distance(i, std::numeric_limits<int>::max());
+        std::vector<int> distance(i, (std::numeric_limits<int>::max)());
         distance[start] = 0;
         std::vector<vertex_descriptor> parent(i);
         for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui)
@@ -185,7 +185,7 @@ struct bfs_test
 int test_main(int argc, char* argv[])
 {
   using namespace boost;
-  int max_V = 15;
+  int max_V = 7;
   if (argc > 1)
     max_V = atoi(argv[1]);
 

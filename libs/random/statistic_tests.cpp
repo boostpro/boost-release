@@ -1,16 +1,11 @@
 /* statistic_tests.cpp file
  *
  * Copyright Jens Maurer 2000, 2002
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
- *
- * $Id: statistic_tests.cpp,v 1.9 2002/11/04 22:30:47 jmaurer Exp $
+ * $Id: statistic_tests.cpp,v 1.11 2004/07/27 03:43:34 dgregor Exp $
  *
  * Revision history
  */
@@ -332,7 +327,7 @@ public:
     // generator_reference_t<RNG> gen_ref(rng);
     RNG& gen_ref(rng);
     kolmogorov_experiment ks(n1);
-    uniform_distribution ud(rng.min(), rng.max());
+    uniform_distribution ud((rng.min)(), (rng.max)());
     check(run_experiment(test_distrib_chi_square,
                          ks_experiment_generator(ks, gen_ref, ud), n2));
     check(run_experiment(test_distrib_chi_square,

@@ -1,21 +1,17 @@
 /* boost random_speed.cpp performance measurements
  *
  * Copyright Jens Maurer 2000
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
- *
- * $Id: random_speed.cpp,v 1.11 2003/07/06 21:53:42 jmaurer Exp $
+ * $Id: random_speed.cpp,v 1.13 2004/07/27 03:43:34 dgregor Exp $
  */
 
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <boost/config.hpp>
 #include <boost/random.hpp>
 #include <boost/progress.hpp>
 #include <boost/shared_ptr.hpp>
@@ -64,8 +60,8 @@ public:
     { _x = x0; _a = a; _c = c; _m = m; }
   void seed(IntType x0) { _x = x0; }
   result_type operator()() { _x = (_a*_x+_c) % _m; return _x; }
-  result_type min() const { return _c == 0 ? 1 : 0; }
-  result_type max() const { return _m -1; }
+  result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return _c == 0 ? 1 : 0; }
+  result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const { return _m -1; }
 
 private:
   IntType _x, _a, _c, _m;
@@ -82,8 +78,8 @@ public:
 
   counting() : _x(0) { }
   result_type operator()() { return ++_x; }
-  result_type min() const { return 1; }
-  result_type max() const { return std::numeric_limits<result_type>::max(); }
+  result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return 1; }
+  result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const { return (std::numeric_limits<result_type>::max)(); }
 
 private:
   int _x;

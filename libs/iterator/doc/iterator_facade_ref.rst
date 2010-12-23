@@ -1,8 +1,7 @@
 .. Version 1.3 of this ReStructuredText document corresponds to
    n1530_, the paper accepted by the LWG for TR1.
 
-.. Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. All
-   rights reserved
+.. Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. 
 
 
 .. parsed-literal::
@@ -15,7 +14,7 @@
     , class Difference = ptrdiff_t
   >
   class iterator_facade {
-  public:
+   public:
       typedef remove_const<Value>::type value_type;
       typedef Reference reference;
       typedef Value\* pointer;
@@ -32,6 +31,8 @@
       Derived& operator+=(difference_type n);
       Derived& operator-=(difference_type n);
       Derived operator-(difference_type n) const;
+   protected:
+      typedef iterator_facade iterator_facade\_;
   };
 
   // Comparison operators

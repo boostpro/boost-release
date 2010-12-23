@@ -4,9 +4,29 @@
   <xsl:key name="classes" match="class|struct|union" use="@name"/>
   <xsl:key name="methods" match="method|overloaded-method" use="@name"/>
   <xsl:key name="functions" match="function|overloaded-function" use="@name"/>
+  <xsl:key name="enums" match="enum" use="@name"/>
   <xsl:key name="libraries" match="library" use="@name"/>
   <xsl:key name="macros" match="macro" use="@name"/>
   <xsl:key name="headers" match="header" use="@name"/>
+  <xsl:key name="named-entities" match="class|struct|union|function|overloaded-function|macro|library|*[attribute::id]" use="@name|@id"/>
+
+  <xsl:template match="function|overloaded-function" mode="generate.id">
+    <xsl:variable name="name" select="normalize-space(@name)"/>
+    <xsl:variable name="translated-name"
+                  select="translate($name, 
+                                    '~!%^&amp;*()[].,&lt;&gt;|/ +-=', 
+                                    'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')"/>
+                      
+    <xsl:choose>
+      <xsl:when test="count(key('named-entities', $name))=1
+                      and ($translated-name=$name)">
+        <xsl:value-of select="$name"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="generate-id(.)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
   <xsl:template match="classname" mode="annotation">
     <!-- Determine the (possibly qualified) class name we are looking for -->
@@ -133,6 +153,50 @@
       <xsl:with-param name="unqualified-name" select="$unqualified-name"/>
       <xsl:with-param name="nodes" 
         select="key('functions', $unqualified-name)"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="enumname" mode="annotation">
+    <!-- Determine the (possibly qualified) enum name we are
+         looking for -->
+    <xsl:variable name="fullname">
+      <xsl:choose>
+        <xsl:when test="@alt">
+          <xsl:value-of select="@alt"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="string(.)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!-- Strip off any call -->
+    <xsl:variable name="name">
+      <xsl:choose>
+        <xsl:when test="contains($fullname, '(')">
+          <xsl:value-of select="substring-before($fullname, '(')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$fullname"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!-- Determine the unqualified name -->
+    <xsl:variable name="unqualified-name">
+      <xsl:call-template name="strip-qualifiers">
+        <xsl:with-param name="name" select="$name"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:call-template name="cxx-link-name">
+      <xsl:with-param name="lookup" select="."/>
+      <xsl:with-param name="type" select="'enum'"/>
+      <xsl:with-param name="name" select="$name"/>
+      <xsl:with-param name="display-name" select="string(.)"/>
+      <xsl:with-param name="unqualified-name" select="$unqualified-name"/>
+      <xsl:with-param name="nodes" 
+        select="key('enums', $unqualified-name)"/>
     </xsl:call-template>
   </xsl:template>
 

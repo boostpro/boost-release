@@ -1,8 +1,7 @@
-// Copyright David Abrahams 2001. Permission to copy, use,
-// modify, sell and distribute this software is granted provided this
-// copyright notice appears in all copies. This software is provided
-// "as is" without express or implied warranty, and with no claim as
-// to its suitability for any purpose.
+// Copyright David Abrahams 2001.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/python/detail/prefix.hpp>
 #include <boost/mpl/lambda.hpp> // #including this first is an intel6 workaround
@@ -302,12 +301,11 @@ namespace objects
           PyObject* d = type_->tp_dict;
           PyObject* instance_size_obj = PyObject_GetAttrString(d, "__instance_size__");
 
-          long instance_size = 0;
-          if (instance_size != 0)
-              instance_size = PyInt_AsLong(instance_size_obj);
+          long instance_size = instance_size_obj ? PyInt_AsLong(instance_size_obj) : 0;
           
           if (instance_size < 0)
               instance_size = 0;
+          
           PyErr_Clear(); // Clear any errors that may have occurred.
 
           instance<>* result = (instance<>*)type_->tp_alloc(type_, instance_size);
@@ -481,7 +479,7 @@ namespace objects
       // Build a tuple of the base Python type objects. If no bases
       // were declared, we'll use our class_type() as the single base
       // class.
-      std::size_t const num_bases = std::max(num_types - 1, static_cast<std::size_t>(1));
+      std::size_t const num_bases = (std::max)(num_types - 1, static_cast<std::size_t>(1));
       handle<> bases(PyTuple_New(num_bases));
 
       for (std::size_t i = 1; i <= num_bases; ++i)
@@ -599,7 +597,7 @@ namespace objects
       this->setattr("__init__", object(f));
   }
 
-  void class_base::enable_pickling(bool getstate_manages_dict)
+  void class_base::enable_pickling_(bool getstate_manages_dict)
   {
       setattr("__reduce__", object(make_instance_reduce_function()));
       setattr("__safe_for_unpickling__", object(true));

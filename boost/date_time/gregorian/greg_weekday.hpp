@@ -6,7 +6,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2003/11/23 02:27:09 $
+ * $Date: 2004/07/18 18:36:18 $
  */
 
 #include "boost/date_time/constrained_value.hpp"
@@ -48,6 +48,10 @@ namespace gregorian {
     unsigned short as_number() const {return value_;}
     const char* as_short_string() const;
     const char* as_long_string()  const;
+#ifndef BOOST_NO_STD_WSTRING
+    const wchar_t* as_short_wstring() const;
+    const wchar_t* as_long_wstring()  const;
+#endif // BOOST_NO_STD_WSTRING
     weekday_enum as_enum() const {return static_cast<weekday_enum>(value_);}
 
 

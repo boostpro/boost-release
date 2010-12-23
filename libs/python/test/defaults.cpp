@@ -1,8 +1,7 @@
-// Copyright David Abrahams 2002. Permission to copy, use,
-// modify, sell and distribute this software is granted provided this
-// copyright notice appears in all copies. This software is provided
-// "as is" without express or implied warranty, and with no claim as
-// to its suitability for any purpose.
+// Copyright David Abrahams 2002.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/python/def.hpp>
 #include <boost/python/module.hpp>
@@ -92,7 +91,7 @@ struct X {
     {}
 
     X(std::string s, bool b)
-    : state("Got exactly two arguments from constructor: string(%s); bool(%s); " % make_tuple(s, b))
+    : state("Got exactly two arguments from constructor: string(%s); bool(%s); " % make_tuple(s, b*1))
     {}
 
     object
@@ -115,19 +114,19 @@ struct X {
     object
     foo(int a, bool b=false) const
     {
-        return "int(%s); bool(%s); " % make_tuple(a, b);
+        return "int(%s); bool(%s); " % make_tuple(a, b*1);
     }
 
     object
     foo(std::string a, bool b=false) const
     {
-        return "string(%s); bool(%s); " % make_tuple(a, b);
+        return "string(%s); bool(%s); " % make_tuple(a, b*1);
     }
 
     object
     foo(list a, list b, bool c=false) const
     {
-        return "list(%s); list(%s); bool(%s); " % make_tuple(a, b, c);
+        return "list(%s); list(%s); bool(%s); " % make_tuple(a, b, c*1);
     }
 
     object

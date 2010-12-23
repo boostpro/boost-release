@@ -1,8 +1,7 @@
 .. Version 1.2 of this ReStructuredText document corresponds to
    n1530_, the paper accepted by the LWG for TR1.
 
-.. Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. All
-   rights reserved
+.. Copyright David Abrahams, Jeremy Siek, and Thomas Witt 2003. 
 
 The ``iterator_adaptor`` class template adapts some ``Base`` [#base]_
 type to create a new iterator.  Instantiations of ``iterator_adaptor``
@@ -18,11 +17,12 @@ instance of the ``Base`` type, which it stores as a member.
 
 The user of ``iterator_adaptor`` creates a class derived from an
 instantiation of ``iterator_adaptor`` and then selectively
-redefines some of the core member functions described in the table
-above. The ``Base`` type need not meet the full requirements for an
-iterator. It need only support the operations used by the core
-interface functions of ``iterator_adaptor`` that have not been
-redefined in the user's derived class.
+redefines some of the core member functions described in the
+``iterator_facade`` core requirements table. The ``Base`` type need
+not meet the full requirements for an iterator; it need only
+support the operations used by the core interface functions of
+``iterator_adaptor`` that have not been redefined in the user's
+derived class.
 
 Several of the template parameters of ``iterator_adaptor`` default
 to ``use_default``. This allows the

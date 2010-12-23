@@ -1,35 +1,27 @@
-//-----------------------------------------------------------------------------
-// libs mpl/test/sort.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
+
+// Copyright Aleksey Gurtovoy 2004
+// Copyright Eric Friedman 2002-2003
 //
-// Copyright (c) 2002-2003
-// Eric Friedman
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
+// See http://www.boost.org/libs/mpl for documentation.
 
-#include "boost/mpl/sort.hpp"
+#include <boost/mpl/sort.hpp>
 
-#include "boost/static_assert.hpp"
-#include "boost/mpl/list_c.hpp"
-#include "boost/mpl/equal.hpp"
+#include <boost/mpl/list_c.hpp>
+#include <boost/mpl/equal.hpp>
+#include <boost/mpl/equal_to.hpp>
 
-namespace mpl = boost::mpl;
+#include <boost/mpl/aux_/test.hpp>
 
-int main()
+MPL_TEST_CASE()
 {
-    typedef mpl::list_c<int, 3, 4, 0, -5, 8, -1, 7>::type numbers;
-    typedef mpl::list_c<int, -5, -1, 0, 3, 4, 7, 8>::type manual_result;
+    typedef list_c<int, 3, 4, 0, -5, 8, -1, 7>::type numbers;
+    typedef list_c<int, -5, -1, 0, 3, 4, 7, 8>::type manual_result;
 
-    typedef mpl::sort< numbers >::type result;
+    typedef sort< numbers >::type result;
 
-    BOOST_STATIC_ASSERT((mpl::equal< result,manual_result >::type::value));
-
-    return 0;
+    MPL_ASSERT(( equal< result,manual_result,equal_to<_1,_2> > ));
 }

@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: output_test_stream_test.cpp,v $
 //
-//  Version     : $Revision: 1.14 $
+//  Version     : $Revision: 1.18 $
 //
 //  Description : tests output_test_stream test tool functionality
 // ***************************************************************************
@@ -15,7 +15,7 @@
 // Boost.Test
 #include <boost/test/unit_test.hpp>
 using boost::test_toolbox::output_test_stream;
-using boost::unit_test_framework::test_suite;
+using boost::unit_test::test_suite;
 
 // STL
 #include <iomanip>
@@ -123,7 +123,7 @@ test_is_equal()
     BOOST_CHECK( output.is_equal( "" ) );
 
     output << '\0';
-    BOOST_CHECK( output.is_equal( "", (std::size_t)1 ) );
+    BOOST_CHECK( output.is_equal( boost::unit_test::const_string( "", 1 ) ) );
 
     output << std::setw( 10 ) << "qwerty" << '\n';
     BOOST_CHECK( output.is_equal( "    qwerty\n" ) );
@@ -141,10 +141,10 @@ test_is_equal()
     std::string substr2( literal_string+5, 4 );
 
     output << substr1;
-    BOOST_CHECK( output.is_equal( literal_string, (std::size_t)5, false ) );
+    BOOST_CHECK( output.is_equal( boost::unit_test::const_string( literal_string, 5 ), false ) );
 
     output << substr2;
-    BOOST_CHECK( output.is_equal( literal_string, (std::size_t)9 ) );
+    BOOST_CHECK( output.is_equal( boost::unit_test::const_string( literal_string, 9 ) ) );
 }
 
 //____________________________________________________________________________//
@@ -215,6 +215,20 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
 //  Revision History :
 //  
 //  $Log: output_test_stream_test.cpp,v $
+//  Revision 1.18  2004/06/05 11:04:17  rogeeff
+//  no message
+//
+//  Revision 1.17  2004/05/27 06:30:48  rogeeff
+//  no message
+//
+//  Revision 1.16  2004/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.15  2004/05/11 11:05:06  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.14  2003/12/01 00:42:37  rogeeff
 //  prerelease cleaning
 //

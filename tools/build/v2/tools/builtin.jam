@@ -16,19 +16,19 @@ import generators ;
 import regex ;
 import virtual-target ;
 import os ;
-import prebuilt ;
 import symlink ;
 import alias ;
 import property ;
 import print ;
 import utility ;
+import project ;
 
 # This feature is used to determine which OS we're on.
 # In future, this may become <target-os> and <host-os>
 local os = [ modules.peek : OS ] ;
 feature os : $(os) : propagated link-incompatible ;
 
-feature toolset : : implicit propagated link-incompatible symmetric ;
+feature toolset : : implicit propagated symmetric ;
 
 feature stdlib : native : propagated link-incompatible composite ;
 
@@ -41,36 +41,61 @@ feature optimization : off speed space : propagated ;
 feature profiling : off on : propagated ;
 feature inlining : off on full : propagated ;
 
-feature threading : single multi : link-incompatible propagated ;
-feature rtti : on off : link-incompatible propagated ;
+feature threading : single multi : propagated ;
+feature rtti : on off : propagated ;
 feature exception-handling : on off : propagated ;
 feature debug-symbols : on off : propagated ;
 feature define : : free ;
-feature "include" : : free path ;
+feature "include" : : free path ; #order-sensitive ;
 feature cflags : : free ;
 feature cxxflags : : free ;
 feature linkflags : : free ;
 feature archiveflags : : free ;
 feature version : : free ;
 
-feature use : : free dependency ;
-feature implicit-dependency : : free dependency ;
-feature library : : free dependency ;
-feature find-shared-library : : free ;
-feature find-static-library : : free ;
-feature library-path : : free path ;
+feature.feature location-prefix : : free ;
+
+# The following features are incidental, since
+# in themself they have no effect on build products.
+# Not making them incidental will result in problems in corner
+# cases, for example:
+# 
+#    unit-test a : a.cpp : <use>b ;
+#    lib b : a.cpp b ;
+# 
+# Here, if <use> is not incidental, we'll decide we have two 
+# targets for a.obj with different properties, and will complain.
+#
+# Note that making feature incidental does not mean it's ignored. It may
+# be ignored when creating the virtual target, but the rest of build process
+# will use them.
+feature use : : free dependency incidental ;
+feature dependency : : free dependency incidental ;
+feature implicit-dependency : : free dependency incidental ;
+
+feature source : : free dependency incidental ;
+feature library : : free dependency incidental ;
+feature file : : free dependency incidental ;
+feature find-shared-library : : free ; #order-sensitive ;
+feature find-static-library : : free ; #order-sensitive ;
+feature library-path : : free path ; #order-sensitive ;
 # Internal feature.
 feature library-file : : free dependency ;
 
-feature uses : : free ;
-
 feature name : : free ;
 feature tag : : free ;
-feature search : : free path ;
+feature search : : free path ; #order-sensitive ;
 feature location : : free path ;
 
 feature dll-path : : free path ;
-feature hardcode-dll-paths : false true : incidental propagated ;
+feature hardcode-dll-paths : true false : incidental ;
+
+
+# This is internal feature which holds the paths of all dependency
+# dynamic libraries. On Windows, it's needed so that we can all
+# those paths to PATH, when running applications.
+# On Linux, it's needed to add proper -rpath-link command line options.
+feature xdll-path : : free path ;
 
 #provides means to specify def-file for windows dlls.
 feature def-file : : free dependency ;
@@ -80,8 +105,6 @@ feature def-file : : free dependency ;
 # is used. In that case, <allow>qt will be in usage requirement
 # of the library.
 feature allow : : free ;
-
-feature dependency : : free dependency ;
 
 # Windows-specific features
 
@@ -158,21 +181,9 @@ rule variant ( name           # Name of the variant
 IMPORT $(__name__) : variant : : variant ;
 
 variant debug : <optimization>off <debug-symbols>on <inlining>off <runtime-debugging>on ;
-variant release : <optimization>speed <debug-symbols>off <inlining>full <runtime-debugging>off ;
+variant release : <optimization>speed <debug-symbols>off <inlining>full 
+                  <runtime-debugging>off <define>NDEBUG ;
 variant profile : release : <profiling>on <debug-symbols>on ;
-
-# When <optimization>speed is specified, we need to add <define>NDEBUG
-# It is done via 'active' features, because it should be done for
-# all targets built with <optimization>speed. Since <define> is free, it is
-# not propagated, we can't just add it to 'release'. And we cannot make
-# <define> propagated, because (i) free features cannot be propagated and
-# (ii) this is dangerous.
-rule handle-ndebug ( property : properties * )
-{
-    return <define>NDEBUG ;
-}
-
-feature.action <optimization>speed : handle-ndebug ;
 
 class searched-lib-target : abstract-file-target
 {
@@ -280,7 +291,7 @@ class c-scanner : scanner
 
     rule pattern ( )
     {
-        return "#include[ ]*(<(.*)>|\"(.*)\")" ;
+        return "#[ \t]*include[ ]*(<(.*)>|\"(.*)\")" ;
     }
 
     rule process ( target : matches * : binding )
@@ -349,6 +360,11 @@ class lib-target-class : basic-target
         {
             actual-type = SEARCHED_LIB ;
         }
+        else if <file> in $(properties:G)
+        {
+            # The generator for 
+            actual-type = LIB ;
+        }        
         else if <link>shared in $(properties)
         {
             actual-type = SHARED_LIB ;
@@ -378,10 +394,9 @@ class lib-target-class : basic-target
               property-set.create $(search:G=<library-path>) ] ] ;            
         }
         
-        # If <hardcode-dll-paths> is true, add appropricate <dll-path> usage
-        # requirements.
+        # Add appropricate <xdll-path> usage requirements.
         local raw = [ $(rproperties).raw ] ;
-        if <link>shared in $(raw) && <hardcode-dll-paths>true in $(raw)
+        if <link>shared in $(raw)
         {
             local paths ;
             local pwd = [ path.pwd ] ;
@@ -395,17 +410,14 @@ class lib-target-class : basic-target
             if $(paths)
             {
                 result = [ $(result).add 
-                  [ property-set.create $(paths:G=<dll-path>) ] ] ;
+                  [ property-set.create $(paths:G=<xdll-path>) ] ] ;
             }                                    
         }
         
-        # Pass <dll-path> features that we've got from sources.
-        if <hardcode-dll-paths>true in $(raw)
-        {
-            local u = [ $(subvariant).sources-usage-requirements ] ;
-            local values = [ $(u).get <dll-path> ] ;
-            result = [ $(result).add-raw $(values:G=<dll-path>) ] ;
-        }
+        # Pass <xdll-path> features that we've got from sources.
+        local u = [ $(subvariant).sources-usage-requirements ] ;
+        local values = [ $(u).get <xdll-path> ] ;
+        result = [ $(result).add-raw $(values:G=<xdll-path>) ] ;
         
         # For libraries that we've failed to consume, we need to 
         # pass <library-path> usage requirements, if any.
@@ -421,30 +433,60 @@ class lib-target-class : basic-target
         }
                                         
         return $(result) ;
-    }
-    
+    }            
 }
 
-rule lib ( name : sources * : requirements * : default-build * 
+rule lib ( names + : sources * : requirements * : default-build * 
     : usage-requirements * )
 {
-    local project = [ CALLER_MODULE ] ;
-        
+    local project = [ project.current ] ;
+    
     # This is a circular module dependency, so it must be imported here
     import targets ;
-    targets.main-target-alternative
-      [ new lib-target-class $(name) : $(project) 
-        : [ targets.main-target-sources $(sources) : $(name) ] 
-        : [ targets.main-target-requirements $(requirements) : $(project) ] 
-        : [ targets.main-target-default-build $(default-build) : $(project) ]
-        : [ targets.main-target-usage-requirements $(usage-requirements) : $(project) ]
-      ] ;
+
+    local result ;
+    if ! $(sources) && ! $(requirements) 
+      && ! $(default-build) && ! $(usage-requirements)
+    {
+        for local name in $(names)
+        {    
+            result += [ 
+            targets.main-target-alternative
+              [ new lib-target-class $(name) : $(project) 
+                : 
+                : [ targets.main-target-requirements $(requirements) <name>$(name)  :
+                    $(project) ] 
+                : [ targets.main-target-default-build $(default-build) : $(project) ]
+                : [ targets.main-target-usage-requirements $(usage-requirements) : $(project) ]
+             ] ] ;        
+        }        
+    }
+    else
+    {
+        if $(names[2])
+        {
+            errors.user-error "When several names are given to the 'lib' rule" :
+              "it's not allows to specify sources or requirements. " ;
+        }
+                
+        local name = $(names[1]) ;
+        result = [ targets.main-target-alternative
+          [ new lib-target-class $(name) : $(project) 
+            : [ targets.main-target-sources $(sources) : $(name) ] 
+            : [ targets.main-target-requirements $(requirements) : $(project) ] 
+            : [ targets.main-target-default-build $(default-build) : $(project) ]
+            : [ targets.main-target-usage-requirements $(usage-requirements) : $(project) ]
+         ] ] ;
+    }    
+    return $(result) ;
 }
 IMPORT $(__name__) : lib : : lib ;
 
 
 class exe-target-class : typed-target
 {
+    import type ;
+    
     rule __init__ ( name : project
         : sources * : requirements * : default-build * : usage-requirements * )
     {    
@@ -456,24 +498,40 @@ class exe-target-class : typed-target
     {
         local result = [ typed-target.compute-usage-requirements $(subvariant) ] ;
         local p = [ $(subvariant).build-properties ] ;
-        if <hardcode-dll-paths>true in [ $(p).raw ]
+        
+        local xdll-paths = [ $(p).get <xdll-path> ] ;
+        if $(xdll-paths)
         {
-            local dll-paths = [ $(p).get <dll-path> ] ;
-            if $(dll-paths)
-            {
-                result = [  $(result).add-raw $(dll-paths:G=<dll-path>) ] ;
-            }                            
-        }
+            result = [  $(result).add-raw $(xdll-paths:G=<xdll-path>) ] ;
+        }                            
         
         return $(result) ;
     }
     
+    rule check-for-unused-sources ( result * : sources * )
+    {
+        # For exes, we typically don't consume ignore DLL on windows.
+        # We also handle searched libraries via special properties
+        # on actions, so should not check for search libraries.
+        # As the result, we don't check for unused LIB sources
+        # at all.
+                
+        local sources-to-check ;
+        for local s in $(sources)
+        {
+            if ! [ type.is-derived [ $(s).type ] LIB ]
+            {
+                sources-to-check += $(s) ;
+            }            
+        }
+        basic-target.check-for-unused-sources $(result) : $(sources-to-check) ;
+    }
 }
 
 rule exe ( name : sources * : requirements * : default-build * 
     : usage-requirements * )
 {
-    local project = [ CALLER_MODULE ] ;
+    local project = [ project.current ] ;
         
     # This is a circular module dependency, so it must be imported here
     import targets ;
@@ -522,12 +580,36 @@ class searched-lib-generator : generator
             # attach an action and properties to the target
             a = [ new null-action $(t) : $(property-set) ] ;
             $(t).action $(a) ;
-            return [ virtual-target.register $(t) ] ;
+            # We return sources for a simple reason. If there's
+            #    lib png : z : <name>png ; 
+            # the 'z' target should be returned, so that apps linking to
+            # 'png' will link to 'z', too.
+            return [ virtual-target.register $(t) ] $(sources) ;
         }
     }
 }
 
 generators.register [ new searched-lib-generator ] ;
+
+class prebuilt-lib-generator : generator
+{
+    rule __init__ ( * : * )
+    {
+        generator.__init__ $(1) : $(2) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ;
+    }
+
+    rule run ( project name ? : property-set : sources * : multiple ? )
+    {
+        local f = [ $(property-set).get <file> ] ;
+        return $(f) $(sources) ;
+    }    
+}
+
+generators.register 
+  [ new prebuilt-lib-generator builtin.prebuilt : : LIB : <file> ] ;
+
+    
+
 
 
 class compile-action : action 
@@ -553,10 +635,10 @@ class compile-action : action
 class C-compiling-generator : generator
 {
     rule __init__ ( id : source-types + : target-types + :
-        requirements * )
+        requirements * : optional-properties * )
     {
         generator.__init__ $(id) : $(source-types) : $(target-types) :
-          $(requirements) ;
+          $(requirements) : $(optional-properties) ;
     }
         
     rule action-class ( )
@@ -566,10 +648,10 @@ class C-compiling-generator : generator
 }
 
 rule register-c-compiler ( id : source-types + : target-types + :
-                            requirements * )
+                            requirements * : optional-properties * )
 {
     local g = [ new C-compiling-generator $(id) : $(source-types) 
-                : $(target-types) : $(requirements) ] ;
+                : $(target-types) : $(requirements) : $(optional-properties) ] ;
     generators.register $(g) ;
 }
 
@@ -577,41 +659,12 @@ rule register-c-compiler ( id : source-types + : target-types + :
 # register all generators as "generator.some-rule", not with "some-module.some-rule".)
 IMPORT $(__name__) : register-c-compiler : : generators.register-c-compiler ;
 
-class link-action : action
-{
-    import path ;
-    import sequence ;
-    
-    rule __init__ ( targets + : sources * : action-name : properties * )
-    {            
-        action.__init__ $(targets) : $(sources) : $(action-name) : $(properties) ;
-    }
-        
-    # Filters out all sources which are of LIB type and actualizes the remaining
-    # sources by calling base method.
-    rule actualize-sources ( sources * )
-    {
-        local real-sources ; 
-        for local s in $(sources) 
-        {
-            if ! [ type.is-derived [ $(s).type ] LIB ] 
-            {
-                real-sources += $(s) ;
-            }   
-            else
-            {
-                self.dependency-only-sources += [ $(s).actualize ] ;
-            }            
-        }
-        
-        action.actualize-sources $(real-sources) ;
-    }    
-} 
-
-
 class linking-generator : generator
 {
     import property-set ;
+    import type ;
+    import path ;
+    import project ;
     
     rule __init__ ( id 
         composing ? : # Specify if generator is composing. The generator will be
@@ -628,34 +681,39 @@ class linking-generator : generator
         
     rule run ( project name ? : property-set : sources + :  multiple ? )
     {   
-        local libs = [ $(property-set).get <library> ] ;
-        sources += $(libs:G=) ;
-                
+        sources += [ $(property-set).get <library>  ] ;        
+        
+        if [ $(property-set).get <hardcode-dll-paths> ] = true
+         && [ type.is-derived $(self.target-types[1]) EXE ] 
+        {
+            local xdll-path = [ $(property-set).get <xdll-path> ] ;
+            # It's possible that we have libraries in sources which did not came
+            # from 'lib' target. For example, libraries which are specified
+            # just as filenames as sources. We don't have xdll-path properties
+            # for such target, but still need to add proper dll-path properties.
+            for local s in $(sources)
+            {
+                if [ type.is-derived [ $(s).type ] SHARED_LIB ] && ! [ $(s).action ] 
+                {
+                    # Unfortunately, we don't have a good way to find the path
+                    # to a file, so use this nasty approach.
+                    local p = [ $(s).project ] ;
+                    local location = [ path.root [ $(s).name ]
+                      [ $(p).get source-location ] ] ;
+                    xdll-path += [ path.parent $(location) ] ;
+                }                
+            }
+                          
+            if $(xdll-path)
+            {
+                property-set = [ $(property-set).add-raw $(xdll-path:G=<dll-path>) ] ;
+            }            
+
+        }
+                        
         local result = [ generator.run $(project) $(name) : $(property-set)
           : $(sources) : $(multiple) ] ;
         
-        if $(result)
-        {
-            # Explicitly set dependency on all <library> features.
-
-            local libs = [ feature.get-values <library> : 
-                [ $(property-set).raw ] ] ;
-
-            if $(libs)
-            {
-                for local t in $(result)
-                {
-                    # The 'if' statement handles the case where
-                    # one of the targets created by <library> is not
-                    # consumed and is part of result. DLLs on windows
-                    # are an example.
-                    if $(libs:G=) != $(t)
-                    {                        
-                        $(t).depends $(libs:G=) ;
-                    }                    
-                }
-            }            
-        }
         return $(result) ;
     }
     
@@ -665,65 +723,39 @@ class linking-generator : generator
         local properties2 ;  # properties to pass to inherited rule
         local libraries ;    # sources which are libraries
         
-        # Separate 'sources' into 'libraries' and 'sources2'.
-        # It is needed because library sources need special treatment.
+        # Searched libraries are not passed as argument to linker
+        # but via some option. So, we pass them to the action
+        # via property. 
+        properties2 = [ $(property-set).raw ] ;
+        local fsa ;
+        local fst ;
         for local s in $(sources)
         {
-            if [ type.is-derived [ $(s).type ] LIB ] 
-            {
-                libraries += $(s) ;
-            }            
-            else
-            {
-                sources2 += $(s) ;
-            }            
-        }
-
-        # For all library source, add necessary property. Depending on
-        # target type, it's either <library-file>, <find-shared-library>
-        # or <find-static-library>.
-        properties2 = [ $(property-set).raw ] ;        
-        for local s in $(libraries)
-        {
-            if [ class.is-a $(s) : searched-lib-target ]
+            if [ type.is-derived [ $(s).type ] LIB ] &&
+               [ class.is-a $(s) : searched-lib-target ]
             {
                 local name = [ $(s).real-name ] ;
                 if [ $(s).shared ] 
                 {                    
-                    properties2 += <find-shared-library>$(name) ;
+                    fsa +=  $(name) ;
                 }
                 else
                 {
-                    properties2 += <find-static-library>$(name) ;
-                }         
-            } 
-            else 
-            {      
-                properties2 += <library-file>$(s) ;        
-            }            
-        }                
-        
-        # Sorry, still pass 'sources', which includes library targets.
-        # We need to set dependency on libraries, which is currently done
-        # by 'actualize-sources' above, via some secret hook. We need a better
-        # mechanism, but until it's implemented, need to pass all sources.
-        local spawn = [ generator.generated-targets $(sources)
+                    fst += $(name) ;
+                }                         
+            }
+            else
+            {
+                sources2 += $(s) ;
+            }
+        }
+        properties2 += <find-shared-library>$(fsa:J=&&) 
+                       <find-static-library>$(fst:J=&&) ;
+                
+        local spawn = [ generator.generated-targets $(sources2)
           : [ property-set.create $(properties2) ] : $(project) $(name) ] ;
         
-        # And we'll also get warning about unused sources :-(
-        #if $(libraries)
-        #{                
-        #    for local s in $(spawn)
-        #    {
-        #        $(s).depends $(libraries) ;
-        #    }        
-        #}        
         return $(spawn) ;
-    }
-        
-    rule action-class ( )
-    {
-        return link-action ;
     }
 }                             
 

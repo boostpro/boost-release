@@ -1,9 +1,8 @@
 @ECHO OFF
 
-REM ~ Copyright (C) Rene Rivera, 2002-2003.
-REM ~ Use, modification and distribution is subject to the
-REM ~ Boost Software License, Version 1.0. (See accompanying file
-REM ~ LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+REM ~ Copyright 2002-2003 Rene Rivera.
+REM ~ Distributed under the Boost Software License, Version 1.0.
+REM ~ (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 setlocal
 goto Start
@@ -214,7 +213,7 @@ if "_%BOOST_JAM_TOOLSET%_" == "_metrowerks_" (
 if "_%BOOST_JAM_TOOLSET%_" == "_metrowerks_" (
     if not "_%BOOST_JAM_TOOLSET_ROOT%_" == "__" (
         set PATH=%BOOST_JAM_TOOLSET_ROOT%Other Metrowerks Tools\Command Line Tools;%PATH%)
-    set BOOST_JAM_CC=mwcc -runtime staticsingle -DNT
+    set BOOST_JAM_CC=mwcc -runtime ss -cwd include -DNT -ladvapi32.lib
     set BOOST_JAM_OPT_JAM=-o bootstrap.%BOOST_JAM_TOOLSET%\jam0.exe
     set BOOST_JAM_OPT_MKJAMBASE=-o bootstrap.%BOOST_JAM_TOOLSET%\mkjambase0.exe
     set BOOST_JAM_OPT_YYACC=-o bootstrap.%BOOST_JAM_TOOLSET%\yyacc0.exe
@@ -320,7 +319,7 @@ set BJAM_SOURCES=%BJAM_SOURCES% newstr.c option.c parse.c pathunix.c pathvms.c r
 set BJAM_SOURCES=%BJAM_SOURCES% rules.c scan.c search.c subst.c timestamp.c variable.c modules.c
 set BJAM_SOURCES=%BJAM_SOURCES% strings.c filesys.c builtins.c pwd.c class.c w32_getreg.c native.c
 set BJAM_SOURCES=%BJAM_SOURCES% modules/set.c modules/path.c modules/regex.c 
-set BJAM_SOURCES=%BJAM_SOURCES% modules/property-set.c modules/sequence.c
+set BJAM_SOURCES=%BJAM_SOURCES% modules/property-set.c modules/sequence.c modules/order.c
 
 @echo ON
 rd /S /Q bootstrap.%BOOST_JAM_TOOLSET%

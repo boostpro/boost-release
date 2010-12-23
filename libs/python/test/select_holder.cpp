@@ -1,9 +1,8 @@
-// Copyright David Abrahams 2002. Permission to copy, use,
-// modify, sell and distribute this software is granted provided this
-// copyright notice appears in all copies. This software is provided
-// "as is" without express or implied warranty, and with no claim as
-// to its suitability for any purpose.
-#include <boost/python/object/select_holder.hpp>
+// Copyright David Abrahams 2002.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+#include <boost/python/object/class_metadata.hpp>
 #include <boost/python/has_back_reference.hpp>
 #include <boost/python/detail/not_specified.hpp>
 #include <boost/static_assert.hpp>
@@ -11,9 +10,6 @@
 #include <boost/function/function0.hpp>
 #include <boost/mpl/bool.hpp>
 #include <memory>
-
-#define BOOST_INCLUDE_MAIN
-#include <boost/test/test_tools.hpp>
 
 struct BR {};
 
@@ -33,7 +29,6 @@ namespace boost { namespace python
 template <class T, class U>
 void assert_same(U* = 0, T* = 0)
 {
-    BOOST_TEST((boost::is_same<T,U>::value));
     BOOST_STATIC_ASSERT((boost::is_same<T,U>::value));
     
 }
@@ -41,7 +36,13 @@ void assert_same(U* = 0, T* = 0)
 template <class T, class Held, class Holder>
 void assert_holder(T* = 0, Held* = 0, Holder* = 0)
 {
-    typedef typename boost::python::objects::select_holder<T,Held>::type h;
+    using namespace boost::python::detail;
+    using namespace boost::python::objects;
+    
+    typedef typename class_metadata<
+       T,Held,not_specified,not_specified
+           >::holder h;
+    
     assert_same<Holder>(
         (h*)0
     );
@@ -55,7 +56,7 @@ int test_main(int, char * [])
     assert_holder<Base,not_specified,value_holder<Base> >();
 
     assert_holder<BR,not_specified,value_holder_back_reference<BR,BR> >();
-    assert_holder<Base,Base,value_holder<Base> >();
+    assert_holder<Base,Base,value_holder_back_reference<Base,Base> >();
     assert_holder<BR,BR,value_holder_back_reference<BR,BR> >();
 
     assert_holder<Base,Derived
@@ -73,11 +74,3 @@ int test_main(int, char * [])
     return 0;
 }
 
-#if !defined(_WIN32) || defined(__GNUC__)
-// This definition is needed for MinGW 2.95.2 and KCC on OSF for some
-// reason, but will break other Win32 compilers.
-namespace boost { namespace python
-{
-  bool handle_exception_impl(boost::function0<void>) { return false; }
-}}
-#endif 

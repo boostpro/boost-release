@@ -1,3 +1,8 @@
+#~ Copyright 2002-2004 Rene Rivera.
+#~ Copyright 2001-2004 David Abrahams.
+#~ Distributed under the Boost Software License, Version 1.0.
+#~ (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+
 #  (C) Copyright David Abrahams and Carlos Pinto Coelho 2001. Permission to
 #  copy, use, modify, sell and distribute this software is granted provided this
 #  copyright notice appears in all copies. This software is provided "as is"
@@ -69,7 +74,7 @@
 
 if $(NT)
 {
-    TOOLS ?= vc7.1 ;
+    TOOLS ?= vc-7_1 ;
 }
 else
 {
@@ -1377,7 +1382,7 @@ rule declare-basic-target ( target-id : sources * : requirements * : default-bui
         # type, and the corresponding <target-type> property.
         #
         gTARGET_REQUIREMENTS($(target-id))
-            = $(requirements) $(gTARGET_TYPE_REQUIREMENTS($(target-type))) ;
+            = toolset::requirements $(requirements) $(gTARGET_TYPE_REQUIREMENTS($(target-type))) ;
         if ! $(gNO_TARGET_TYPE_REQUIREMENT($(target-type)))
         {
             gTARGET_REQUIREMENTS($(target-id)) += <target-type>$(target-type) ;
@@ -1557,6 +1562,7 @@ rule find-compatible-subvariant ( main-target : toolset variant : dependent-simp
         [ intersection $(sv-request) : $(build-requests) ] ;
         sv-build ?= "" ;
     local BUILD = $(variant) [ split-path $(sv-build) ] ;
+    local gTARGET_DEFAULT_BUILD($(main-target)) = ;
     # the full subvariant to build...
     local subvariant = [ expand-target-subvariants $(main-target) : $(variant) : $(toolset) ] ;
 
@@ -1564,6 +1570,9 @@ rule find-compatible-subvariant ( main-target : toolset variant : dependent-simp
     split-target-subvariant sv-target sv-properties sv-toolset sv-variant : $(subvariant) ;
     local sv-overrides =
         [ difference $(dependent-simple-properties) : [ select-gristed $(sv-properties) ] ] ;
+    sv-overrides +=
+        [ get-properties
+            [ difference $(dependent-simple-properties:G) : $(sv-overrides:G) ] : $(sv-properties) ] ;
 
     if ! $(gTARGET_TYPE($(main-target)))
     {
@@ -1578,7 +1587,8 @@ rule find-compatible-subvariant ( main-target : toolset variant : dependent-simp
     for local sv-override in $(override-conflicts)
     {
         local sv-required = [ get-values $(sv-override:G) : $(sv-properties) ] ;
-        if ! [ is-link-compatible $(sv-override:G) : $(sv-override:G=) : $(sv-required) ]
+        if $(sv-override:G=) != $(sv-required) &&
+            ! [ is-link-compatible $(sv-override:G) : $(sv-override:G=) : $(sv-required) ]
         {
             EXIT $(main-target): required property $(sv-override:G)$(sv-required)
                 incompatible with $(sv-override) ;
@@ -1612,25 +1622,26 @@ rule find-compatible-subvariant ( main-target : toolset variant : dependent-simp
 # dependent-properties, returning a list of all generated targets.
 rule link-libraries ( libs * : toolset variant : dependent-simple-properties * )
 {
-  local lib-path result ;
-  for lib-path in $(libs)
-  {
-    local lib-path = [ target-path-of $(lib-path) ] ;
-    local lib-target = [ target-id-of $(lib-path) ] ;
+    local lib-path result ;
+    
+    for lib-path in $(libs)
+    {
+        local lib-path = [ target-path-of $(lib-path) ] ;
+        local lib-target = [ target-id-of $(lib-path) ] ;
 
-    # Enter the dependee subproject
-    local [ protect-subproject ] ;
-    enter-subproject [ directory-of $(lib-path) ] ;
+        # Enter the dependee subproject
+        local [ protect-subproject ] ;
+        enter-subproject [ directory-of $(lib-path) ] ;
 
-    local lib-subvariant = [ 
-      find-compatible-subvariant $(lib-target)
-        : $(toolset) $(variant)
-          : $(dependent-simple-properties) ] ;
+        local lib-subvariant = [ 
+          find-compatible-subvariant $(lib-target)
+            : $(toolset) $(variant)
+              : $(dependent-simple-properties) ] ;
 
-    # Generate build instructions for the library target
-    result += [ subvariant-target $(lib-target) : $(lib-subvariant) : $(toolset) $(variant) ] ;
-  }
-  return $(result) ;
+        # Generate build instructions for the library target
+        result += [ subvariant-target $(lib-target) : $(lib-subvariant) : $(toolset) $(variant) ] ;
+    }
+    return $(result) ;
 }
 
 # Which configuration(s) to build if nothing is explicitly specified
@@ -1971,11 +1982,19 @@ rule expand-target-subvariants ( target : local-build * : tools + : )
                 {
                     properties = [ $(r) $(toolset) $(variant) : $(properties) ] ;
                 }
-                # the rules may have modified the build request, reconstruct it
-                properties = [ expand-build-request $(toolset) $(variant) $(target)
-                    : $(properties[2-]) : $(build-request) ] ;
                 
-                subvariants += $(target)|$(properties)|$(toolset)|$(variant) ;
+                if ! ( <build>no in $(properties) )
+                {
+                    # the rules may have modified the build request, reconstruct it
+                    properties = [ expand-build-request $(toolset) $(variant) $(target)
+                      : $(properties[2-]) : $(build-request) ] ;
+                    
+                    subvariants += $(target)|$(properties)|$(toolset)|$(variant) ;
+                }
+                else if --dump-unbuilt
+                {
+                    ECHO **** skipping build of $(target); toolset= $(toolset) variant= $(variant) **** ;
+                }
             }
         }
     }
@@ -2349,8 +2368,10 @@ rule stage ( name : sources + : requirements * : local-build * )
                     s-subdir = $(arch:J=-) ;
                 }
                 
+                local source-build-rule = [ MATCH "[`]([^`]+)[`]" : $(source-build[2]) ] ;
                 if  ( $(s-toolset) = $(source-build[1]) || $(source-build[1]) = * ) &&
-                    ( $(s-variant) = $(source-build[2]) || $(source-build[2]) = * )
+                        ( $(s-variant) = $(source-build[2]) || $(source-build[2]) = * ) ||
+                    $(source-build-rule) && [ $(source-build-rule) $(s-toolset) $(s-variant) ]
                 {
 
                     local target-subvariant = ;
@@ -2493,7 +2514,14 @@ rule stage ( name : sources + : requirements * : local-build * )
 #
 rule target-id-of ( target-ref )
 {
-    local path = [ directory-of $(target-ref:G=) ] ;
+    local grist = $(target-ref:G) ;
+    local target = $(target-ref:G=) ;
+    while $(target:G)
+    {
+        grist += $(target:G) ;
+        target = $(target:G=) ;
+    }
+    local path = [ directory-of $(target) ] ;
     if ! [ MATCH "^(@)" : $(path) ]
     {
         path = [ join @$(PROJECT) [ simplify-path-tokens [ top-relative-tokens $(path) ] ] : / ] ;
@@ -2506,7 +2534,7 @@ rule target-id-of ( target-ref )
     }
     project-name ?= $(PROJECT) ;
     local SOURCE_GRIST = [ FGrist @$(project-name) [ simplify-path-tokens $(tokens) ] ] ;
-    local target-id = [ FGristFiles $(target-ref:D=:G=) ] ;
+    local target-id = [ FGristFiles $(target:D=) ] ;
     return $(target-id) ;
 }
 
@@ -2514,14 +2542,24 @@ rule target-id-of ( target-ref )
 #
 rule target-path-of ( target-ref )
 {
-    local path = [ directory-of $(target-ref:G=) ] ;
+    local grist = $(target-ref:G) ;
+    local target = $(target-ref:G=) ;
+    while $(target:G)
+    {
+        grist += $(target:G) ;
+        target = $(target:G=) ;
+    }
+    local path = [ directory-of $(target) ] ;
     if ! [ MATCH "^(@)" : $(path) ]
     {
         path = [ join @$(PROJECT) [ simplify-path-tokens [ top-relative-tokens $(path) ] ] : / ] ;
     }
-    local grist = $(target-ref:G) ;
-    path = $(path)/$(target-ref:D=:G=) ;
-    return $(path:G=$(grist)) ;
+    path = $(path)/$(target:D=) ;
+    if $(grist)
+    {
+        path = $(grist:J="")$(path) ;
+    }
+    return $(path) ;
 }
 
 # Common rules for generating a single tag based on the
@@ -2560,66 +2598,58 @@ rule common-variant-tag ( toolset variant : properties * )
     if <runtime-build>debug in $(properties) { runtime-tag += g ; }
     if [ MATCH .*(debug-python).* : $(variant) ] { runtime-tag += y ; }
     else { if [ MATCH .*(debug).* : $(variant) ] { runtime-tag += d ; } }
-    if [ MATCH .*(stlport).* : $(toolset) ] ||
-        [ MATCH .*(stlport).* : $(properties:G) ]
+    if [ MATCH .*(stlp).* : $(toolset) ] ||
+        [ MATCH .*(stlp).* : $(properties:G) ]
     { runtime-tag += p ; }
     if <stlport-iostream>off in $(properties) { runtime-tag += n ; }
     
     local toolset-tag = ;
-    switch $(toolset)
+    if ! $(gUNVERSIONED_VARIANT_TAG)
     {
-        case *borland* : toolset-tag += bcb ;
-        case *como* : toolset-tag += como ;
-        case *cwpro8* :
+        switch $(toolset)
         {
-            toolset-tag += cw8 ;
-            if <runtime-link>dynamic in $(properties) { thread-tag = mt ; }
+            case borland* : toolset-tag += bcb ;
+            case como* : toolset-tag += como ;
+            case cwpro8* : toolset-tag += cw 8 ;
+            case cwpro9* : toolset-tag += cw 9 ;
+            case darwin* : toolset-tag += ;
+            case edg* : toolset-tag += edg ;
+            case gcc* : toolset-tag += gcc ;
+            case intel-linux* : toolset-tag += il ;
+            case intel-win32* : toolset-tag += iw ;
+            case kcc* : toolset-tag += kcc ;
+            case kylix* : toolset-tag += bck ;
+            case metrowerks* : toolset-tag += cw ;
+            case mingw* : toolset-tag += mgw ;
+            case mipspro* : toolset-tag += mp ;
+            case msvc* : toolset-tag += vc 6 ;
+            case sunpro* : toolset-tag += sw ;
+            case tru64cxx* : toolset-tag += tru ;
+            case vacpp* : toolset-tag += xlc ;
+            case vc[678][_]* :
+            {
+                toolset-tag += vc ;
+                toolset-tag += [ MATCH "vc([678])[_]([0123456789]*)" : $(toolset) ] ;
+            }
+            case vc[678]* :
+            {
+                toolset-tag += vc ;
+                toolset-tag += [ MATCH "vc([678])" : $(toolset) ] ;
+            }
+            case * :
+            toolset-tag += [ MATCH "^([^-]*)" : $(toolset) ] ;
         }
-        case *cwpro9* :
-        {
-            toolset-tag += cw9 ;
-            if <runtime-link>dynamic in $(properties) { thread-tag = mt ; }
-        }
-        case *darwin* : toolset-tag += ;
-        case *edg* : toolset-tag += edg ;
-        case *gcc* : toolset-tag += gcc ;
-        case *intel-linux* : toolset-tag += il ;
-        case *intel-win32* :
-        {
-            toolset-tag += iw ;
-            if <runtime-link>dynamic in $(properties) { thread-tag = mt ; }
-        }
-        case *kcc* : toolset-tag += kcc ;
-        case *kylix* : toolset-tag += bck ;
-        case *metrowerks* : toolset-tag += cw ;
-        case *mingw* : toolset-tag += mgw ;
-        case *mipspro* : toolset-tag += mp ;
-        case *msvc* : 
-        {
-            toolset-tag += vc6 ;
-            if <runtime-link>dynamic in $(properties) { thread-tag = mt ; }
-        }
-        case *sunpro* : toolset-tag += sw ;
-        case *tru64cxx* : toolset-tag += tru ;
-        case *vacpp* : toolset-tag += xlc ;
-        case *vc7* : 
-        {
-            toolset-tag += vc7 ;
-            toolset-tag += [ MATCH "vc7[.]([0123456789]*)" : $(toolset) ] ;
-            if <runtime-link>dynamic in $(properties) { thread-tag = mt ; }
-            # <stlport-iostream> is always on, no matter what we may think
-            # this is an stlport build requirement.
-            runtime-tag = [ difference $(runtime-tag) : n ] ;
-        }
-        case * :
-        toolset-tag += [ MATCH "^([^-]*)" : $(toolset) ] ;
+        toolset-tag += [ MATCH "[-]([0123456789]+)[_]([0123456789]*)" : $(toolset) ] ;
     }
-    toolset-tag += [ MATCH "[-]([0123456789]+).([0123456789]*)" : $(toolset) ] ;
     
-    local version-number = [ get-values <version> : $(properties) ] ;
-    version-number ?= $(BOOST_VERSION) ;
-    local version-tag = [ MATCH "^([^.]+).([^.]+)" : $(version-number[1]) ] ;
-    version-tag = $(version-tag:J="_") ;
+    local version-tag = ;
+    if ! $(gUNVERSIONED_VARIANT_TAG)
+    {
+        local version-number = [ get-values <version> : $(properties) ] ;
+        version-number ?= $(BOOST_VERSION) ;
+        version-tag = [ MATCH "^([^.]+)[.]([^.]+)" : $(version-number[1]) ] ;
+        version-tag = $(version-tag:J="_") ;
+    }
     
     tags += $(toolset-tag:J=) ;
     tags += $(thread-tag:J=) ;
@@ -2684,7 +2714,7 @@ rule force-NT-static-link ( pattern : toolset : subvariant-path properties * )
 rule std::locale-support ( toolset variant : subvariant-path properties * )
 {
     return [ 
-      force-NT-static-link .*(metrowerks|cwpro).* 
+      force-NT-static-link .*(metrowerks|cwpro|cw).* 
         : $(toolset) : $(subvariant-path) $(properties)
           ] ;
 }
@@ -2745,18 +2775,33 @@ rule install (
     : options *
     )
 {
-    if $(gINSTALL_SOURCES) && ! $(name) in $(gINSTALL_EXCLUSIONS)
+    if $(gINSTALL_SOURCES)
     {
-        local result ;
-        for local source in $(sources)
+        local _include_ ;
+        if $(gINSTALL_INCLUSIONS)
         {
-            result += [ target-path-of $(source) ] ;
+            if $(name) in $(gINSTALL_INCLUSIONS)
+            {
+                _include_ = true ;
+            }
         }
-        if ! $(result) in $(gINSTALL_SOURCES($(type)))
+        else if ! $(name) in $(gINSTALL_EXCLUSIONS)
         {
-            gINSTALL_SOURCES($(type)) += $(result) ;
+            _include_ = true ;
         }
-        return $(result) ;
+        if $(_include_)
+        {
+            local result ;
+            for local source in $(sources)
+            {
+                result += [ target-path-of $(source) ] ;
+            }
+            if ! $(result) in $(gINSTALL_SOURCES($(type)))
+            {
+                gINSTALL_SOURCES($(type)) += $(result) ;
+            }
+            return $(result) ;
+        }
     }
 }
 
@@ -2766,6 +2811,7 @@ rule install-subinclude ( jamfiles + : options * )
     local gINSTALL_SOURCES = TRUE ;
     local gIN_LIB_INCLUDE = TRUE ;
     local gINSTALL_EXCLUSIONS = [ get-values <exclude> : $(options) ] ;
+    local gINSTALL_INCLUSIONS = [ get-values <include> : $(options) ] ;
     
     for local jamfile in $(jamfiles)
     {
@@ -2787,4 +2833,83 @@ rule common-names ( )
 rule common-stage-tag ( toolset variant : subvariant-path properties * )
 {
     return [ common-variant-tag $(toolset) $(variant) : $(subvariant-path) $(properties) ] ;
+}
+
+# Enforces toolset level requirements. This is added to all targets.
+rule toolset::requirements ( toolset variant : subvariant-path properties * )
+{
+    local requirements = ;
+    switch $(toolset)
+    {
+        case cwpro8* :
+        {
+            # dynamic runtime only comes in the multi-threading flavor
+            if <runtime-link>dynamic in $(properties) { requirements += <threading>multi ; }
+        }
+        case cwpro9* :
+        {
+            # dynamic runtime only comes in the multi-threading flavor
+            if <runtime-link>dynamic in $(properties) { requirements += <threading>multi ; }
+        }
+        case cw* :
+        {
+            # dynamic runtime only comes in the multi-threading flavor
+            if <runtime-link>dynamic in $(properties) { requirements += <threading>multi ; }
+        }
+        case msvc* :
+        {
+            # dynamic runtime only comes in the multi-threading flavor
+            if <runtime-link>dynamic in $(properties) { requirements += <threading>multi ; }
+            if [ MATCH .*(stlp).* : $(toolset) ] ||
+                [ MATCH .*(stlp).* : $(properties:G) ]
+            {
+                # STLPort doesn't have any single-threaded builds, so we're going
+                # to force all such targets to be built with multithread support.
+                # This is essentially a usage-requirement on the stlport library.
+                requirements += <threading>multi ;
+            }
+        }
+        case vc* :
+        {
+            # dynamic runtime only comes in the multi-threading flavor
+            if <runtime-link>dynamic in $(properties) { requirements += <threading>multi ; }
+            if [ MATCH .*(stlp).* : $(toolset) ] ||
+                [ MATCH .*(stlp).* : $(properties:G) ]
+            {
+                # STLPort doesn't have any single-threaded builds, so we're going
+                # to force all such targets to be built with multithread support.
+                # This is essentially a usage-requirement on the stlport library.
+                requirements += <threading>multi ;
+                # STLPort doesn't support <stlport-iostream>off with vc7 and vc8.
+                # This is essentially a usage-requirement on the stlport library.
+                switch $(toolset)
+                {
+                    case vc7* : requirements += <stlport-iostream>on ;
+                    case vc8* : requirements += <stlport-iostream>on ;
+                    case vc-7* : requirements += <stlport-iostream>on ;
+                    case vc-8* : requirements += <stlport-iostream>on ;
+                }
+            }
+        }
+        case intel-win32* :
+        {
+            # dynamic runtime only comes in the multi-threading flavor
+            if <runtime-link>dynamic in $(properties) { requirements += <threading>multi ; }
+        }
+        case iw* :
+        {
+            # dynamic runtime only comes in the multi-threading flavor
+            if <runtime-link>dynamic in $(properties) { requirements += <threading>multi ; }
+        }
+    }
+    requirements = [ unique $(requirements) ] ;
+    local free-feature-requirements = [ segregate-free-properties properties ] ;
+    properties =
+        [ sort
+            [ difference $(properties) : [ get-properties $(requirements:G) : $(properties) ] ]
+            $(requirements)
+            ]
+        $(free-feature-requirements)
+        ;
+    return $(subvariant-path) $(properties) ;
 }

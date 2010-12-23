@@ -12,18 +12,22 @@
 //
 //  Copyright (c) 2002 Peter Dimov and Multi Media Ltd.
 //
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 //
 
 #include <boost/current_function.hpp>
+#include <boost/config.hpp>
 #include <cstdio>
 
 void message(char const * file, long line, char const * func, char const * msg)
 {
-    std::printf("%s(%ld): %s in function '%s'\n", file, line, msg, func);
+#if !defined(BOOST_NO_STDC_NAMESPACE)
+    using std::printf;
+#endif
+
+    printf("%s(%ld): %s in function '%s'\n", file, line, msg, func);
 }
 
 #define MESSAGE(msg) message(__FILE__, __LINE__, BOOST_CURRENT_FUNCTION, msg)
@@ -31,4 +35,6 @@ void message(char const * file, long line, char const * func, char const * msg)
 int main()
 {
     MESSAGE("assertion failed");
+
+    return 0;
 }

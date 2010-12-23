@@ -18,6 +18,8 @@
 #define MULTIARRAY_TEST_ASSIGN
 #include "generative_tests.hpp"
 #include "boost/concept_check.hpp" // for ignore_unused_variable_warning
+#include "boost/mpl/if.hpp"
+#include "boost/type_traits/is_same.hpp"
 
 // iterator-test-specific code
 
@@ -64,46 +66,14 @@ struct ittraits_mutable {
   riterator1;
 };
 
-/////////////////////////////////////////////////////////////////////////
-// choose ittraits begins
-//
 
-struct choose_ittraits_const {
-  template <typename Array>
-  struct bind {
-    typedef ittraits_const<Array> type;
-  };
-};
-
-struct choose_ittraits_mutable {
-  template <typename Array>
-  struct bind {
-    typedef ittraits_mutable<Array> type;
-  };
-};
-
-
-template <typename ConstnessTag>
-struct ittraits_gen_helper {
-  typedef choose_ittraits_mutable choice;
-};
-
-template <>
-struct ittraits_gen_helper<const_array_tag> {
-  typedef choose_ittraits_const choice;
-};
-
+// Meta-program chooses ittraits implementation.
 template <typename Array, typename ConstTag>
-struct ittraits_generator {
-private:
-  typedef typename ittraits_gen_helper<ConstTag>::choice Choice;
-public:
-  typedef typename Choice::template bind<Array>::type type;
-};
-
-//
-// choose ittraits ends
-/////////////////////////////////////////////////////////////////////////
+struct ittraits_generator :
+  boost::mpl::if_< boost::is_same<ConstTag,const_array_tag>,
+                   ittraits_const<Array>,
+                   ittraits_mutable<Array> >
+{};
 
 
 template <typename Array>

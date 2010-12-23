@@ -1,18 +1,13 @@
 /* boost random/subtract_with_carry.hpp header file
  *
  * Copyright Jens Maurer 2002
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
- *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: subtract_with_carry.hpp,v 1.15.2.2 2004/01/25 21:26:45 jmaurer Exp $
+ * $Id: subtract_with_carry.hpp,v 1.20 2004/09/29 13:25:37 vladimir_prus Exp $
  *
  * Revision history
  *  2002-03-02  created
@@ -21,6 +16,7 @@
 #ifndef BOOST_RANDOM_SUBTRACT_WITH_CARRY_HPP
 #define BOOST_RANDOM_SUBTRACT_WITH_CARRY_HPP
 
+#include <cmath>
 #include <iostream>
 #include <algorithm>     // std::equal
 #include <stdexcept>
@@ -118,8 +114,8 @@ public:
     k = 0;
    }
 
-  result_type min() const { return min_value; }
-  result_type max() const { return max_value; }
+  result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return min_value; }
+  result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const { return max_value; }
 
   result_type operator()()
   {
@@ -313,8 +309,8 @@ public:
     k = 0;
   }
 
-  result_type min() const { return result_type(0); }
-  result_type max() const { return result_type(1); }
+  result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return result_type(0); }
+  result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const { return result_type(1); }
 
   result_type operator()()
   {

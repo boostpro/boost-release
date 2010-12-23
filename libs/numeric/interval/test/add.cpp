@@ -1,17 +1,11 @@
 /* Boost test/add.cpp
  * test with symbolic operations if the addition algorithm is correct
  *
- * Copyright Guillaume Melquiond 2002-2003
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation.
+ * Copyright 2002-2003 Guillaume Melquiond
  *
- * None of the above authors nor Polytechnic University make any
- * representation about the suitability of this software for any
- * purpose. It is provided "as is" without express or implied warranty.
- *
- * $Id: add.cpp,v 1.4 2003/06/03 21:59:58 hervebronnimann Exp $
+ * Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE_1_0.txt or
+ * copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
 #include <boost/numeric/interval/interval.hpp>
@@ -202,7 +196,8 @@ bool test_subeq1() {
 
 struct my_checking
 {
-  static pexpr inf() { throw; }
+  static pexpr pos_inf() { throw; }
+  static pexpr neg_inf() { throw; }
   static pexpr nan() { throw; }
   static bool is_nan(const pexpr&) { return false; }
   static pexpr empty_lower() { throw; }

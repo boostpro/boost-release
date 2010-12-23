@@ -1,8 +1,6 @@
-# (C) Copyright David Abrahams 2001. Permission to copy, use
-# modify, sell and distribute this software is granted provided this
-# copyright notice appears in all copies. This software is provided
-# "as is" without express or implied warranty, and with no claim as
-# to its suitability for any purpose.
+# (C) Copyright David Abrahams 2001.
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 # Adapted from gcc-tools.jam by Joerg Walter
 
@@ -14,6 +12,8 @@
 set-as-singleton INTEL_PATH ;
 
 INTEL_VERSION ?= $(INTEL_LINUX_VERSION) ;  # For backwards compatibility
+INTEL_CC ?= icc ;
+INTEL_CXX ?= icpc ;
 
 # Attempt to look in the PATH if no variables have been set up.
 if ! $(INTEL_VERSION) && ! $(INTEL_PATH)
@@ -22,7 +22,7 @@ if ! $(INTEL_VERSION) && ! $(INTEL_PATH)
     INTEL_PATH ?= $(paths[0]) ;
 }
 
-INTEL_VERSION ?= 70 ;
+INTEL_VERSION ?= 80 ;
 
 # In case the path is unspecified, try to deduce it from the version
 if $(INTEL_VERSION) in 50 60 70
@@ -82,6 +82,7 @@ flags intel-linux LINKFLAGS <runtime-link>static : -static ;
 
 # required libraries
 flags intel-linux FINDLIBS : rt ;
+flags intel-linux FINDLIBS <runtime-link>static : pthread ;
 
 
 #### standard settings ####
@@ -123,7 +124,7 @@ rule Cc-action
 actions intel-linux-Cc-action
 {
     $(INTEL_LINUX_SETUP)
-    icc -c -w1 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(INTEL_CC) -c -w1 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -136,7 +137,7 @@ rule C++-action
 actions intel-linux-C++-action
 {
     $(INTEL_LINUX_SETUP)
-    icc -c -w1 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(INTEL_CXX) -c -w1 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### Archive ####
@@ -179,7 +180,9 @@ rule Link-action
 actions intel-linux-Link-action bind NEEDLIBS NEEDIMPS
 {
     $(INTEL_LINUX_SETUP)
-    icc $(LINKFLAGS) -o "$(<[1])$(OUTTAG)" -L$(LIBPATH) -L$(STDLIBPATH) "$(>)" $(NEEDLIBS) $(NEEDLIBS) -l$(FINDLIBS) "$(IMPLIB_FLAGS)$(NEEDIMPS)" "-Qoption,link,-soname,$(<[1]:D=)$(SOTAG)"
+    $(INTEL_CXX) $(LINKFLAGS) -o "$(<[1])$(OUTTAG)" -L$(LIBPATH) -L$(STDLIBPATH) "$(>)" $(NEEDLIBS) $(NEEDLIBS) -l$(FINDLIBS) "$(IMPLIB_FLAGS)$(NEEDIMPS)" "-Qoption,link,-soname,$(<[1]:D=)$(SOTAG)"
     $(ACTION_1)$(LN)$(SPACE)-fs$(SPACE)"$(<[1]:D=)$(OUTTAG)"$(SPACE)"$(<[1])"
 }
+
+
 

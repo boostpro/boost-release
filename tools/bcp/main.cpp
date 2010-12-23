@@ -12,6 +12,7 @@
 #include <iostream>
 #include <cstring>
 #include <boost/filesystem/path.hpp>
+#include <boost/version.hpp>
 #include "bcp.hpp"
 
 #ifdef BOOST_NO_STDC_NAMESPACE
@@ -80,6 +81,13 @@ int cpp_main(int argc, char* argv[])
          show_usage();
          return 0;
       }
+      if(0 == std::strcmp("-v", argv[i])
+         || 0 == std::strcmp("--version", argv[i]))
+      {
+         std::cout << "bcp " << (BOOST_VERSION / 100000) << "." << (BOOST_VERSION / 100 % 1000) << "." << (BOOST_VERSION % 100) << std::endl;
+         std::cout << __DATE__ << std::endl;
+         return 0;
+      }
       else if(0 == std::strcmp("--list", argv[i]))
       {
          list_mode = true;
@@ -87,7 +95,7 @@ int cpp_main(int argc, char* argv[])
       }
       else if(0 == std::strcmp("--report", argv[i]))
       {
-         papp->enable_licence_mode();
+         papp->enable_license_mode();
       }
       else if(0 == std::strcmp("--cvs", argv[i]))
       {
@@ -96,6 +104,14 @@ int cpp_main(int argc, char* argv[])
       else if(0 == std::strcmp("--scan", argv[i]))
       {
          papp->enable_scan_mode();
+      }
+      else if(0 == std::strcmp("--bsl-convert", argv[i]))
+      {
+         papp->enable_bsl_convert_mode();
+      }
+      else if(0 == std::strcmp("--bsl-summary", argv[i]))
+      {
+         papp->enable_bsl_summary_mode();
       }
       else if(0 == std::strcmp("--unix-lines", argv[i]))
       {

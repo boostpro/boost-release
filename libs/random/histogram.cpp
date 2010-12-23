@@ -1,16 +1,11 @@
 /* boost histogram.cpp graphical verification of distribution functions
  *
  * Copyright Jens Maurer 2000
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation,
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
  *
- * Jens Maurer makes no representations about the suitability of this
- * software for any purpose. It is provided "as is" without express or
- * implied warranty.
- *
- * $Id: histogram.cpp,v 1.7 2003/07/06 21:53:42 jmaurer Exp $
+ * $Id: histogram.cpp,v 1.8 2004/07/27 03:43:34 dgregor Exp $
  *
  * This test program allows to visibly examine the results of the
  * distribution functions.

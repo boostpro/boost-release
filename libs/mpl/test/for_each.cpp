@@ -1,25 +1,23 @@
-//-----------------------------------------------------------------------------
-// boost mpl/test/for_each.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
-//
-// Copyright (c) 2000-02
-// Aleksey Gurtovoy
-//
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
 
-#include "boost/mpl/for_each.hpp"
-#include "boost/mpl/list.hpp"
-#include "boost/mpl/range_c.hpp"
-#include "boost/mpl/identity.hpp"
-#include "boost/mpl/lambda.hpp"
-#include "boost/bind.hpp"
+// Copyright Aleksey Gurtovoy 2000-2004
+//
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
+//
+// See http://www.boost.org/libs/mpl for documentation.
+
+// $Source: /cvsroot/boost/boost/libs/mpl/test/for_each.cpp,v $
+// $Date: 2004/10/30 08:27:47 $
+// $Revision: 1.12.2.2 $
+
+#include <boost/mpl/for_each.hpp>
+
+#include <boost/mpl/list.hpp>
+#include <boost/mpl/range_c.hpp>
+#include <boost/mpl/identity.hpp>
+#include <boost/mpl/lambda.hpp>
+#include <boost/bind.hpp>
 
 #include <vector>
 #include <iostream>
@@ -28,7 +26,6 @@
 #include <cassert>
 
 namespace mpl = boost::mpl;
-using mpl::_;
 
 struct type_printer
 {
@@ -61,26 +58,26 @@ struct value_printer
 int main()
 {
     typedef mpl::list<char,short,int,long,float,double> types;
-    mpl::for_each< types,mpl::make_identity<_> >(type_printer(std::cout));
+    mpl::for_each< types,mpl::make_identity<mpl::_1> >(type_printer(std::cout));
 
     typedef mpl::range_c<int,0,10> numbers;
     std::vector<int> v;
 
-#if !defined(__BORLANDC__) && (__BORLANDC__ >= 0x561 && !defined(BOOST_STRICT_CONFIG))
-    mpl::for_each<numbers,mpl::_>(
-          boost::bind(&std::vector<int>::push_back, &v, _1)
-        );    
-#else
+#if defined(__SGI_STL_PORT)
     void (std::vector<int>::* push_back)(int const&) = &std::vector<int>::push_back;
-    mpl::for_each<numbers,mpl::_>(
+    mpl::for_each<numbers>(
           boost::bind(push_back, &v, _1)
         );
+#else
+    mpl::for_each<numbers>(
+          boost::bind(&std::vector<int>::push_back, &v, _1)
+        );    
 #endif
 
     mpl::for_each< numbers >(value_printer(std::cout));
     
-    for (int i = 0; i < v.size(); ++i)
-        assert(v[i] == i);
+    for (unsigned i = 0; i < v.size(); ++i)
+        assert(v[i] == (int)i);
 
     return 0;
 }

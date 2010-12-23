@@ -14,7 +14,7 @@
 #
 #  02/21/02! Jürgen Hunold
 #
-#  $Id: Jamfile,v 1.4 2003/10/10 12:49:06 vladimir_prus Exp $
+#  $Id: Jamfile,v 1.5.2.1 2004/10/30 08:34:09 vladimir_prus Exp $
 #
 # ================================================================
 
@@ -26,11 +26,11 @@ project program
     : requirements 
         <include>$(BOOST_ROOT)
         <threading>multi
-        <library>/qt//qt
+        <library>/qt//qt    
         <hardcode-dll-paths>true
         <stdlib>stlport
         <use>/libx
-#        <dependency>../libx/src
+        <library>/libx//libx
            
  : usage-requirements 
         <include>$(BOOST_ROOT)
@@ -38,7 +38,6 @@ project program
         default-build release
         <threading>multi
         <library>/qt//qt
-        <stdlib>stlport
         <hardcode-dll-paths>true
         ;
 

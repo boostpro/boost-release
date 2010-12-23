@@ -1,9 +1,7 @@
-#~ Copyright (c) 2001 David Abrahams.
-#~ Copyright (c) 2002-2003 Rene Rivera.
-
-#~ Use, modification and distribution is subject to the Boost Software
-#~ License Version 1.0. (See accompanying file LICENSE_1_0.txt or
-#~ http://www.boost.org/LICENSE_1_0.txt)
+# Copyright (c) 2001 David Abrahams.
+# Copyright (c) 2002-2003 Rene Rivera.
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 # The following #// line will be used by the regression test table generation
 # program as the column heading for HTML tables. Must not include version number.
@@ -51,9 +49,9 @@ flags gcc GCC_BIN_DIRECTORY : $(GCC_BIN_DIRECTORY) ;
 flags gcc GCC_INCLUDE_DIRECTORY : $(GCC_INCLUDE_DIRECTORY) ;
 flags gcc GCC_STDLIB_DIRECTORY : $(GCC_STDLIB_DIRECTORY) ;
 
-GCC_BIN_DIRECTORY ?= $(GCC_ROOT_DIRECTORY)/bin/ ;
+GCC_BIN_DIRECTORY ?= $(GCC_ROOT_DIRECTORY)$(SLASH)bin ;
 GCC_BIN_DIRECTORY ?= "" ; # Don't clobber tool names if GCC_ROOT_DIRECTORY not set
-GCC_STDLIB_DIRECTORY ?= $(GCC_ROOT_DIRECTORY)/lib ;
+GCC_STDLIB_DIRECTORY ?= $(GCC_ROOT_DIRECTORY)$(SLASH)lib ;
 
 # Make sure this gets set "on" the target
 flags gcc GCC_BIN_DIR : $(GCC_BIN_DIRECTORY) ;
@@ -96,9 +94,12 @@ else if $(UNIX)
     }
 }
 
+flags gcc ON_WINDOWS : $(on-windows) ;
+
 if $(on-windows)
 {
     flags gcc CFLAGS <threading>multi : -mthreads ;
+    flags gcc LINKFLAGS <threading>multi : -mthreads ;
 }
 else if $(UNIX)
 {
@@ -121,13 +122,19 @@ else if $(UNIX)
         # There is no gcc/g++, we need to use cc/c++ instead:
         .GCC ?= cc ;
         .GXX ?= c++ ;
-        flags gcc CFLAGS : -Wno-long-double ;
         }
     case *BSD :
         {
         flags gcc CFLAGS <threading>multi : -pthread ;
         flags gcc LINKFLAGS <threading>multi : -pthread ;
         # there is no -lrt on BSD
+        }
+    case DragonFly :
+        {
+        flags gcc CFLAGS <threading>multi : -pthread ;
+        flags gcc LINKFLAGS <threading>multi : -pthread ;
+        # there is no -lrt on BSD - DragonFly is a FreeBSD variant,
+        # which anoyingly doesn't say it's a *BSD.
         }
     case IRIX :
         {
@@ -160,11 +167,13 @@ if $(UNIX)
     case SunOS* :
         {
         NO_GNU_LN = true ; # sun seems not to use the GNU linker with gcc
+        flags gcc OBJCOPY_FLAGS <debug-symbols>on : "--set-section-flags .debug_str=contents" ;
         }
     case Linux :
         {
         RPATH_LINK = -Wl,-rpath-link, ;
         SONAME = -Wl,-soname, ;
+        flags gcc OBJCOPY_FLAGS <debug-symbols>on : "--set-section-flags .debug_str=contents,debug" ;
         }
     case OpenBSD :
         {
@@ -218,6 +227,8 @@ flags gcc CFLAGS $(.ARCH)/<instruction-set>sparclet : -mcpu=sparclet ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>tsc701 : -mcpu=tsc701 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>v9 : -mcpu=v9 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>ultrasparc : -mcpu=ultrasparc ;
+flags gcc CFLAGS <architecture>sparc/<address-model>64 : -m64 ;
+flags gcc LINKFLAGS <architecture>sparc/<address-model>64 : -m64 ;
 # RS/6000 & PowerPC
 .ARCH = <architecture>power <architecture>native ;
 flags gcc CFLAGS <architecture>power/<instruction-set>default : -mcpu=power ;
@@ -247,6 +258,7 @@ flags gcc CFLAGS $(.ARCH)/<instruction-set>821 : -mcpu=821 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>823 : -mcpu=823 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>860 : -mcpu=860 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>power-common : -mcpu=common ;
+flags gcc CFLAGS <architecture>power/<address-model>64 : -mpowerpc64 ;
 # MIPS-1-2-3-4
 flags gcc MIPS <architecture>mips1 <architecture>mips2 <architecture>mips3 <architecture>mips4 : TRUE ;
 flags gcc MIPS
@@ -304,7 +316,7 @@ flags gcc C++FLAGS <cxxflags> ;
 flags gcc DEFINES <define> ;
 flags gcc UNDEFS <undef> ;
 flags gcc HDRS <include> ;
-flags gcc STDHDRS <sysinclude> ;
+flags gcc SYSHDRS <sysinclude> ;
 flags gcc LINKFLAGS <linkflags> ;
 flags gcc LINKFLAGS <debug-symbols>off : -s ;
 flags gcc ARFLAGS <arflags> ;
@@ -351,7 +363,7 @@ flags gcc .AR : [ GLOB $(GCC_BIN_DIRECTORY) $(PATH) : ar ar.exe ] ;
 # used to manipulate the object files produced by GCC to
 # prevent the merging of debug symbols (which happens to be n^2 slow)
 flags gcc .OBJCOPY : [ GLOB $(GCC_BIN_DIRECTORY) $(PATH) : objcopy ] ;
-flags gcc OBJCOPY_FLAGS <debug-symbols>on : "--set-section-flags .debug_str=contents,debug" ;
+
 if ! $(on-windows)
 {
     flags gcc .SET_EXIT : "set -e" ;
@@ -385,30 +397,32 @@ rule Link-action
         ACTION_1 on $(<) = ;
     }
 
-    # On Win32, choose different image bases for load-time efficiency
-    if $(on-windows) {
-        DLL_LINK_FLAGS = "-Wl,--enable-auto-image-base " ;
-    }
-    else {
-        DLL_LINK_FLAGS = "" ;
-    }
-
-    # Allow gcc-nocygwin to avoid this flag
-    if ! $(GCC_NO_EXPORT_ALL) {
-        DLL_LINK_FLAGS = "$(DLL_LINK_FLAGS)-Wl,--export-all-symbols " ;
-    }
-
-    # This will appear before the import library name when building a DLL, but
-    # will be "multiplied away" otherwise. The --exclude-symbols directive
-    # proved to be neccessary with some versions of Cygwin.
-    DLL_LINK_FLAGS = "$(DLL_LINK_FLAGS)-Wl,--exclude-symbols,_bss_end__:_bss_start__:_data_end__:_data_start__ " ;
-    
-    # set the link command to generate an import library
-    if ! $(NO_GNU_LN)
+    if [ on $(<) return $(ON_WINDOWS) ]
     {
-        IMPLIB_COMMAND on $(<) = "$(DLL_LINK_FLAGS)-Wl,--out-implib," ;
+        # On Win32, choose different image bases for load-time efficiency
+        DLL_LINK_FLAGS on $(<) += "-Wl,--enable-auto-image-base" ;
     }
-    
+
+    if $(<[2]) && [ on $(<) return $(ON_WINDOWS) ]
+    {
+        # Allow gcc-nocygwin to avoid this flag
+        if ! $(GCC_NO_EXPORT_ALL)
+        {
+            DLL_LINK_FLAGS on $(<) += "-Wl,--export-all-symbols" ;
+        }
+
+        # This will appear before the import library name when building a DLL, but
+        # will be "multiplied away" otherwise. The --exclude-symbols directive
+        # proved to be neccessary with some versions of Cygwin.
+        DLL_LINK_FLAGS on $(<) += "-Wl,--exclude-symbols,_bss_end__:_bss_start__:_data_end__:_data_start__" ;
+
+        # set the link command to generate an import library
+        if ! $(NO_GNU_LN)
+        {
+            IMPLIB_COMMAND on $(<) = "-Wl,--out-implib," ;
+        }
+    }
+
     DEPENDS $(<) : $(NEEDLIBS) $(NEEDIMPS) ;
     gRUN_LD_LIBRARY_PATH($(<)) += $(STDLIBPATH:T) ;
     
@@ -428,9 +442,10 @@ rule Link-action
 # for gcc, we repeat all libraries so that dependencies are always resolved
 actions gcc-Link-action bind NEEDLIBS NEEDIMPS
 {
+    $(.SET_EXIT)
     $(SHELL_SET)$(gSHELL_LIBPATH)=$(LINK_LIBPATH)$(gAPPEND_LD_LIBRARY_PATH)
     $(SHELL_EXPORT)$(gSHELL_LIBPATH)
-    $(.GXX[1]:R=$(GCC_BIN_DIR)) $(.GXX[2-]) $(IMPLIB_COMMAND)$(<[2]) $(LINKFLAGS) -o "$(<[1])$(OUTTAG)" -L"$(LIBPATH:T)" -L"$(STDLIBPATH:T)" "$(>)" "$(NEEDLIBS)" "$(NEEDLIBS)" "$(IMPLIB_FLAGS)$(NEEDIMPS)" -l$(FINDLIBS) $(LNOPT)$(RPATH_LINK). $(LNOPT)$(SONAME)$(<[1]:D=)$(SOTAG)
+    "$(.GXX[1]:R=$(GCC_BIN_DIR))" $(.GXX[2-]) "$(DLL_LINK_FLAGS)" "$(IMPLIB_COMMAND)$(<[2])" $(LINKFLAGS) -o "$(<[1])$(OUTTAG)" -L"$(LIBPATH:T)" -L"$(STDLIBPATH:T)" "$(>)" "$(NEEDLIBS)" "$(NEEDLIBS)" "$(IMPLIB_FLAGS)$(NEEDIMPS)" -l$(FINDLIBS) $(LNOPT)$(RPATH_LINK). $(LNOPT)$(SONAME)$(<[1]:D=)$(SOTAG)
     $(ACTION_1)$(LN)$(_)-fs$(_)"$(<[1]:D=)$(OUTTAG)"$(_)"$(<[1])"
 }
 
@@ -445,8 +460,8 @@ rule Cc-action
 actions gcc-Cc-action
 {
     $(.SET_EXIT)
-    $(.GCC[1]:R=$(GCC_BIN_DIR)) $(.GCC[2-]) -c -Wall -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I$(_)"$(STDHDRS)" -o "$(<)" "$(>:T)"
-    $(.OBJCOPY[1])$(_)$(OBJCOPY_FLAGS)$(_)"$(<)"
+    "$(.GCC[1]:R=$(GCC_BIN_DIR))" $(.GCC[2-]) -c -Wall -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I$(_)"$(STDHDRS)" -I$(_)"$(SYSHDRS)" -o "$(<)" "$(>)"
+    "$(.OBJCOPY[1])"$(_)$(OBJCOPY_FLAGS)$(_)"$(<)"
 }
 
 #### C++ ####
@@ -459,8 +474,8 @@ rule C++-action
 actions gcc-C++-action
 {
     $(.SET_EXIT)
-    $(.GXX[1]:R=$(GCC_BIN_DIR)) $(.GXX[2-]) -c -Wall -ftemplate-depth-100 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I$(_)"$(STDHDRS)" -o "$(<)" "$(>:T)"
-    $(.OBJCOPY[1])$(_)$(OBJCOPY_FLAGS)$(_)"$(<)"
+    "$(.GXX[1]:R=$(GCC_BIN_DIR))" $(.GXX[2-]) -c -Wall -ftemplate-depth-255 -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I$(_)"$(STDHDRS)" -I$(_)"$(SYSHDRS)" -o "$(<)" "$(>)"
+    "$(.OBJCOPY[1])"$(_)$(OBJCOPY_FLAGS)$(_)"$(<)"
 }
 
 #### Archive ####
@@ -472,5 +487,5 @@ rule Archive-action
 
 actions updated together piecemeal gcc-Archive-action
 {
-    $(.AR[1]) ru$(ARFLAGS:J=) "$(<:T)" "$(>:T)"
+    "$(.AR[1])" ru$(ARFLAGS:J=) "$(<)" "$(>)"
 }

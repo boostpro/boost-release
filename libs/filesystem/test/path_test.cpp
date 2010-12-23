@@ -59,9 +59,20 @@ namespace {
 int test_main( int, char*[] )
 {
   std::string platform( BOOST_PLATFORM );
-  platform = ( platform == "Win32" || platform == "Win64" || platform == "Cygwin" )
-             ? "Windows"
-             : "POSIX";
+
+  // The choice of platform is make at runtime rather than compile-time
+  // so that compile errors for all platforms will be detected even though
+  // only the current platform is runtime tested.
+# if defined( BOOST_POSIX )
+    platform = "POSIX";
+# elif defined( BOOST_WINDOWS )
+    platform = "Windows";
+# else
+    platform = ( platform == "Win32" || platform == "Win64" || platform == "Cygwin" )
+               ? "Windows"
+               : "POSIX";
+# endif
+  std::cout << "Platform is " << platform << '\n';
 
   BOOST_TEST( path::default_name_check_writable() );
   BOOST_TEST( path::default_name_check() == fs::portable_name );
@@ -553,18 +564,25 @@ int test_main( int, char*[] )
     PATH_CHECK( path( "c:", fs::native ), "c:" );
     PATH_CHECK( path( "c:/", fs::native ), "c:/" );
     PATH_CHECK( path( "c:.", fs::native ), "c:" );
+    PATH_CHECK( path( "c:./foo", fs::native ), "c:foo" );
+    PATH_CHECK( path( "c:.\\foo", fs::native ), "c:foo" );
     PATH_CHECK( path( "c:..", fs::native ), "c:.." );
     PATH_CHECK( path( "c:..", fs::native ).normalize(), "c:.." );
     PATH_CHECK( path( "c:/.", fs::native ), "c:/" );
     PATH_CHECK( path( "c:/..", fs::native ), "c:/" );
     PATH_CHECK( path( "c:/..", fs::native ).normalize(), "c:/" );
     PATH_CHECK( path( "c:/../", fs::native ), "c:/" );
+    PATH_CHECK( path( "c:\\..\\", fs::native ), "c:/" );
     PATH_CHECK( path( "c:/../", fs::native ).normalize(), "c:/" );
     PATH_CHECK( path( "c:/../..", fs::native ), "c:/" );
     PATH_CHECK( path( "c:/../..", fs::native ).normalize(), "c:/" );
     PATH_CHECK( path( "c:/../foo", fs::native ), "c:/foo" );
+    PATH_CHECK( path( "c:\\..\\foo", fs::native ), "c:/foo" );
+    PATH_CHECK( path( "c:../foo", fs::native ), "c:../foo" );
+    PATH_CHECK( path( "c:..\\foo", fs::native ), "c:../foo" );
     PATH_CHECK( path( "c:/../foo", fs::native ).normalize(), "c:/foo" );
     PATH_CHECK( path( "c:/../../foo", fs::native ), "c:/foo" );
+    PATH_CHECK( path( "c:\\..\\..\\foo", fs::native ), "c:/foo" );
     PATH_CHECK( path( "c:/../../foo", fs::native ).normalize(), "c:/foo" );
     PATH_CHECK( path( "c:foo/..", fs::native ), "c:foo/.." );
     PATH_CHECK( path( "c:foo/..", fs::native ).normalize(), "c:" );
@@ -782,7 +800,40 @@ int test_main( int, char*[] )
     BOOST_TEST( next( itr_ck.begin() ) == itr_ck.end() );
     BOOST_TEST( prior( itr_ck.end() ) == itr_ck.begin() );
     BOOST_TEST( *prior( itr_ck.end() ) == std::string( "prn:" ) );
-  }
+  } // Windows
+
+  else
+  { // POSIX
+    p = path( "/usr/local/bin:/usr/bin:/bin", fs::no_check );
+    BOOST_TEST( p.native_file_string() == "/usr/local/bin:/usr/bin:/bin" );
+  } // POSIX
+
+  // test relational operators
+                                                             
+  path e, e2;
+  path a( "a" );
+  path a2( "a" );
+  path b( "b" );
+
+  // probe operator <
+  BOOST_TEST( !(e < e2) );
+  BOOST_TEST( e < a );
+  BOOST_TEST( a < b );
+  BOOST_TEST( !(a < a2) );
+
+  // reality check character set is as expected
+  BOOST_TEST( std::string("a.b") < std::string("a/b") );
+  // verify compare is actually lexicographical
+  BOOST_TEST( path("a/b") < path("a.b") );
+
+  // make sure the derivative operators also work
+  BOOST_TEST( a == a2 );
+  BOOST_TEST( a != b );
+  BOOST_TEST( a <= b );
+  BOOST_TEST( a <= a2 );
+  BOOST_TEST( b >= a );
+  BOOST_TEST( a2 >= a );
+
 //  std::cout << errors << " errors detected\n";
   
   return errors;

@@ -10,6 +10,7 @@ import type ;
 import "class" : new ;
 import generators ;
 import project ;
+import toolset : flags ;
 
 # Convert this module into a project, so that we can declare
 # targets here.
@@ -45,9 +46,6 @@ rule init ( prefix ? )
         .initialized = true ;
         .prefix = $(prefix) ;
         
-        feature.extend uses : qt ;
-        #feature.action <uses>qt : add-properties ;            
-        
         generators.register-standard qt.moc : H : CPP(moc_%) : <allow>qt ;    
         
         type.register UI : ui ;
@@ -68,17 +66,31 @@ rule init ( prefix ? )
                         
             rule run ( project name ? : properties * : sources + :  multiple ? )
             {
-                # Construct CPP as usual
-                local result = [ generator.run $(project) $(name) 
-                  : $(properties) : $(sources) : $(multiple) ] ;
-                # If OK, add "UIC_H" target to the returned list
-                if $(result)
-                {
-                    local action = [ $(result[1]).action ] ;
-                    local sources = [ $(action).sources ] ;
-                    result += $(sources[2]) ;
+                # Consider this:
+                #    obj test : test_a.cpp : <optimization>off ;
+                #
+                # This generator will somehow be called in this case, and,
+                # will fail -- which is okay. However, if there are <library>
+                # properties they will be converted to sources, so the size of 
+                # 'sources' will be more than 1. In this case, the base generator
+                # will just crash -- and that's not good. Just use a quick test
+                # here.
+                                
+                local result ;
+                if ! $(sources[2])
+                {    
+                    # Construct CPP as usual
+                    result = [ generator.run $(project) $(name) 
+                      : $(properties) : $(sources) : $(multiple) ] ;
+                    # If OK, add "UIC_H" target to the returned list
+                    if $(result)
+                    {
+                        local action = [ $(result[1]).action ] ;
+                        local sources = [ $(action).sources ] ;
+                        result += $(sources[2]) ;
+                    }
                 }
-            
+                            
                 return $(result) ;
             }               
         }
@@ -97,6 +109,15 @@ rule init ( prefix ? )
     }
 }
 
+# Query the installation directory
+# This is needed in at least two scenarios
+# First, when re-using sources from the Qt-Tree.
+# Second, to "install" custom Qt plugins to the Qt-Tree.
+rule directory 
+{ 
+    return $(.prefix) ; 
+} 
+
 # -f forces moc to include the processed source file.
 # Without it, it would think that .qpp is not a header and would not
 # include it from the generated file.
@@ -105,16 +126,29 @@ actions moc
     $(.prefix)/bin/moc -f $(>) -o $(<)
 }
 
+space = " " ;
+
+# Sometimes it's required to make 'plugins' available during
+# uic invocation. To help with this we add paths to all dependency
+# libraries to uic commane line. The intention is that it's possible
+# to write
+#    
+#     exe a : ... a.ui ... : <uses>some_plugin ; 
+# 
+# and have everything work. We'd add quite a bunch of unrelated paths
+# but it won't hurt.
+flags qt.uic-h LIBRARY_PATH <xdll-path> ;
 actions uic-h
 {
-    $(.prefix)/bin/uic $(>) -o $(<)
+    $(.prefix)/bin/uic $(>) -o $(<) -L$(space)$(LIBRARY_PATH)
 }
 
+flags qt.uic-cpp LIBRARY_PATH <xdll-path> ;
 # The second target is uic-generated header name. It's placed in
 # build dir, but we want to include it using only basename.
 actions uic-cpp
 {
-    $(.prefix)/bin/uic $(>[1]) -i $(>[2]:D=) -o $(<)
+    $(.prefix)/bin/uic $(>[1]) -i $(>[2]:D=) -o $(<) -L$(space)$(LIBRARY_PATH)
 }
 
 

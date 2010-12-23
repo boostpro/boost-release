@@ -14,21 +14,6 @@
 //  GeNeSys mbH & Co. KG in producing this work.
 //
 
-#ifdef BOOST_MSVC
-
-#pragma warning (disable: 4355)
-#pragma warning (disable: 4503)
-#pragma warning (disable: 4786)
-
-#endif
-
-#include <iostream>
-
-#include <boost/numeric/ublas/config.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
-
 #include "test1.hpp"
 
 // Test vector expression templates
@@ -39,12 +24,17 @@ struct test_my_vector {
     typedef typename ublas::type_traits<value_type>::real_type real_type;
 
     template<class VP>
-    void operator () (VP &v1, VP &v2, VP &v3) const {
-        try {
+    void test_with (VP &v1, VP &v2, VP &v3) const {
+        {
             value_type t;
             size_type i;
             real_type n;
 
+            // Default Construct
+            VP default_constuct;
+            initialize_vector (default_constuct);
+            std::cout << "default construct = " << default_constuct << std::endl;
+            
             // Copy and swap
             initialize_vector (v1);
             initialize_vector (v2);
@@ -54,6 +44,17 @@ struct test_my_vector {
             std::cout << "v1.assign_temporary (v2) = " << v1 << std::endl;
             v1.swap (v2);
             std::cout << "v1.swap (v2) = " << v1 << " " << v2 << std::endl;
+
+#ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
+            // Project range and slice
+            initialize_vector (v1);
+            initialize_vector (v2);
+            project (v1, ublas::range(0,1)) = project (v2, ublas::range(0,1));
+            project (v1, ublas::range(0,1)) = project (v2, ublas::slice(0,1,1));
+            project (v1, ublas::slice(2,-1,2)) = project (v2, ublas::slice(0,1,2));
+            project (v1, ublas::slice(2,-1,2)) = project (v2, ublas::range(0,2));
+            std::cout << "v1 = range/slice " << v1 << std::endl;
+#endif
 
             // Unary vector operations resulting in a vector
             initialize_vector (v1);
@@ -88,17 +89,14 @@ struct test_my_vector {
             // Some assignments
             initialize_vector (v1);
             initialize_vector (v2);
-#ifdef BOOST_UBLAS_USE_ET
             v2 += v1;
             std::cout << "v2 += v1 = " << v2 << std::endl;
             v2 -= v1;
             std::cout << "v2 -= v1 = " << v2 << std::endl;
-#else
             v2 = v2 + v1;
-            std::cout << "v2 += v1 = " << v2 << std::endl;
+            std::cout << "v2 = v2 + v1 = " << v2 << std::endl;
             v2 = v2 - v1;
-            std::cout << "v2 -= v1 = " << v2 << std::endl;
-#endif
+            std::cout << "v2 = v2 - v1 = " << v2 << std::endl;
             v1 *= value_type (1.);
             std::cout << "v1 *= 1. = " << v1 << std::endl;
             v1 *= t;
@@ -123,38 +121,32 @@ struct test_my_vector {
             initialize_vector (v2);
             t = ublas::inner_prod (v1, v2);
             std::cout << "inner_prod (v1, v2) = " << t << std::endl;
-        }
-        catch (std::exception &e) {
-            std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
+
+            // Scalar and Binary vector expression resulting in a vector
+            initialize_vector (v1);
+            initialize_vector (v2);
+            v1 = v1 * ublas::inner_prod (v1, v2);
+            std::cout << "v1 * inner_prod (v1, v2) = " << v1 << std::endl;
         }
     }
     void operator () () const {
-        try {
+        {
             V v1 (N), v2 (N), v3 (N);
-            (*this) (v1, v2, v3);
+            test_with (v1, v2, v3);
 
 #ifdef USE_RANGE
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N)),
                                    vr3 (v3, ublas::range (0, N));
-            (*this) (vr1, vr2, vr3);
+            test_with (vr1, vr2, vr3);
 #endif
 
 #ifdef USE_SLICE
             ublas::vector_slice<V> vs1 (v1, ublas::slice (0, 1, N)),
                                    vs2 (v2, ublas::slice (0, 1, N)),
                                    vs3 (v3, ublas::slice (0, 1, N));
-            (*this) (vs1, vs2, vs3);
+            test_with (vs1, vs2, vs3);
 #endif
-        }
-        catch (std::exception &e) {
-            std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
         }
     }
 };
@@ -237,26 +229,25 @@ void test_vector () {
 
 #ifdef USE_BOUNDED_VECTOR
 #ifdef USE_FLOAT
-    std::cout << "float" << std::endl;
+    std::cout << "float, bounded" << std::endl;
     test_my_vector<ublas::bounded_vector<float, 3>, 3> () ();
 #endif
 
 #ifdef USE_DOUBLE
-    std::cout << "double" << std::endl;
+    std::cout << "double, bounded" << std::endl;
     test_my_vector<ublas::bounded_vector<double, 3>, 3> () ();
 #endif
 
 #ifdef USE_STD_COMPLEX
 #ifdef USE_FLOAT
-    std::cout << "std::complex<float>" << std::endl;
+    std::cout << "std::complex<float>, bounded" << std::endl;
     test_my_vector<ublas::bounded_vector<std::complex<float>, 3>, 3> () ();
 #endif
 
 #ifdef USE_DOUBLE
-    std::cout << "std::complex<double>" << std::endl;
+    std::cout << "std::complex<double>, bounded" << std::endl;
     test_my_vector<ublas::bounded_vector<std::complex<double>, 3>, 3> () ();
 #endif
 #endif
 #endif
 }
-

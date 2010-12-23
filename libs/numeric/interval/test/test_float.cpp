@@ -1,17 +1,11 @@
 /* Boost test/test_float.cpp
  * test arithmetic operations on a range of intervals
  *
- * Copyright Guillaume Melquiond 2003
- * Permission to use, copy, modify, sell, and distribute this software
- * is hereby granted without fee provided that the above copyright notice
- * appears in all copies and that both that copyright notice and this
- * permission notice appear in supporting documentation.
+ * Copyright 2003 Guillaume Melquiond
  *
- * None of the above authors make any representation about the
- * suitability of this software for any purpose. It is provided "as
- * is" without express or implied warranty.
- *
- * $Id: test_float.cpp,v 1.10 2003/06/04 09:18:47 gmelquio Exp $
+ * Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE_1_0.txt or
+ * copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
 #include <boost/numeric/interval.hpp>
@@ -74,10 +68,10 @@ void test_binary() {
     static bool validate(const I& a) { return val; } \
   }
 
-#ifndef BOOST_NO_STDC_NAMESPACE
+//#ifndef BOOST_NO_STDC_NAMESPACE
 using std::abs;
 using std::sqrt;
-#endif
+//#endif
 
 new_unary_bunch(bunch_pos, +, true);
 new_unary_bunch(bunch_neg, -, true);

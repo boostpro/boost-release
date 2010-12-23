@@ -6,7 +6,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2003/11/23 02:27:09 $
+ * $Date: 2004/08/27 23:30:30 $
  */
 
 #include "boost/date_time/constrained_value.hpp"
@@ -69,8 +69,33 @@ namespace gregorian {
     month_enum as_enum() const {return static_cast<month_enum>(value_);}
     const char* as_short_string() const;
     const char* as_long_string()  const;
+#ifndef BOOST_NO_STD_WSTRING
+    const wchar_t* as_short_wstring() const;
+    const wchar_t* as_long_wstring()  const;
+#endif // BOOST_NO_STD_WSTRING
     //! Shared pointer to a map of Month strings (Names & Abbrev) & numbers
     static month_map_ptr_type get_month_map_ptr();
+
+    /* parameterized as_*_string functions are intended to be called
+     * from a template function: "... as_short_string(charT c='\0');" */
+    const char* as_short_string(char) const
+    {
+      return as_short_string();
+    }
+    const char* as_long_string(char) const
+    {
+      return as_long_string();
+    }
+#ifndef BOOST_NO_STD_WSTRING
+    const wchar_t* as_short_string(wchar_t) const
+    {
+      return as_short_wstring();
+    }
+    const wchar_t* as_long_string(wchar_t) const
+    {
+      return as_long_wstring();
+    }
+#endif // BOOST_NO_STD_WSTRING
   };
 
 } } //namespace gregorian

@@ -1,55 +1,48 @@
-//-----------------------------------------------------------------------------
-// boost mpl/test/lambda_args.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
+
+// Copyright Aleksey Gurtovoy 2001-2004
 //
-// Copyright (c) 2001-02
-// Aleksey Gurtovoy
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
+// See http://www.boost.org/libs/mpl for documentation.
 
-#include "boost/mpl/lambda.hpp"
-#include "boost/mpl/apply.hpp"
-#include "boost/type_traits/is_same.hpp"
-#include "boost/static_assert.hpp"
+// $Source: /cvsroot/boost/boost/libs/mpl/test/lambda_args.cpp,v $
+// $Date: 2004/09/02 15:41:35 $
+// $Revision: 1.3 $
 
-using namespace boost;
-using namespace mpl;
+#include <boost/mpl/lambda.hpp>
+#include <boost/mpl/apply.hpp>
+#include <boost/mpl/aux_/test.hpp>
+#include <boost/mpl/aux_/config/gcc.hpp>
+#include <boost/mpl/aux_/config/workaround.hpp>
 
-class C {};
-class incomplete;
-
-typedef int C::* mem_ptr;
-typedef int (C::* mem_fun_ptr)();
+typedef int UDT::* mem_ptr;
+typedef int (UDT::* mem_fun_ptr)();
 
 #define AUX_LAMBDA_TEST(T) \
-    {BOOST_STATIC_ASSERT((apply1<lambda< is_same<_,T> >::type, T>::type::value));} \
-    {BOOST_STATIC_ASSERT((apply1<lambda< is_same<T,_> >::type, T>::type::value));} \
-    {BOOST_STATIC_ASSERT((apply2<lambda< is_same<_,_> >::type, T, T>::type::value));} \
+    { MPL_ASSERT(( apply1<lambda< is_same<_,T> >::type, T> )); } \
+    { MPL_ASSERT(( apply1<lambda< is_same<T,_> >::type, T>  )); } \
+    { MPL_ASSERT(( apply2<lambda< is_same<_,_> >::type, T, T> )); } \
 /**/
 
-int main()
+MPL_TEST_CASE()
 {
-    AUX_LAMBDA_TEST(C);
-#if !defined(BOOST_MSVC) || BOOST_MSVC > 1300
-    AUX_LAMBDA_TEST(incomplete);
+    AUX_LAMBDA_TEST( UDT );
+    AUX_LAMBDA_TEST( abstract );
+    AUX_LAMBDA_TEST( noncopyable );
+    AUX_LAMBDA_TEST( incomplete );
+    AUX_LAMBDA_TEST( int );
+    AUX_LAMBDA_TEST( void );
+    AUX_LAMBDA_TEST( double );
+    AUX_LAMBDA_TEST( int& );
+    AUX_LAMBDA_TEST( int* );
+#if !BOOST_WORKAROUND(BOOST_MPL_CFG_GCC, <= 0x0295) \
+    && !BOOST_WORKAROUND(__BORLANDC__, < 0x600)
+    AUX_LAMBDA_TEST( int[] );
 #endif
-    AUX_LAMBDA_TEST(int);
-    AUX_LAMBDA_TEST(void);
-    AUX_LAMBDA_TEST(double);
-    AUX_LAMBDA_TEST(int&);
-    AUX_LAMBDA_TEST(int*);
-//    AUX_LAMBDA_TEST(int[]);
-    AUX_LAMBDA_TEST(int[10]);
-    AUX_LAMBDA_TEST(int (*)())
-    AUX_LAMBDA_TEST(mem_ptr);
-    AUX_LAMBDA_TEST(mem_fun_ptr);
-
-    return 0;
+    AUX_LAMBDA_TEST( int[10] );
+    AUX_LAMBDA_TEST( int (*)() )
+    AUX_LAMBDA_TEST( mem_ptr );
+    AUX_LAMBDA_TEST( mem_fun_ptr );
 }

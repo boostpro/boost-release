@@ -1,3 +1,6 @@
+# Copyright David Abrahams 2004. Distributed under the Boost
+# Software License, Version 1.0. (See accompanying
+# file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 """
 >>> from str_ext import *
 >>> def printer(*args):
@@ -13,8 +16,6 @@ This is a demo string
 2
 this is a demo string
 this is a demo string
-0
-0
 ['this is a demo string']
 this is a demo string
 THIS IS A DEMO STRING
@@ -33,8 +34,6 @@ part1part2
 this is a blabla string
 18
 18
-0
-0
 aaaaaaaaaaaaaaaaaaaaa
 """
 

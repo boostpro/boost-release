@@ -1,10 +1,8 @@
 # Microsoft Visual C++
 
-# (C) Copyright David Abrahams 2001. Permission to copy, use,
-# modify, sell and distribute this software is granted provided this
-# copyright notice appears in all copies. This software is provided
-# "as is" without express or implied warranty, and with no claim as
-# to its suitability for any purpose.
+# (C) Copyright David Abrahams 2001.
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 # The following #// line will be used by the regression test table generation
 # program as the column heading for HTML tables. Must not include version number.
@@ -78,7 +76,7 @@ flags msvc CFLAGS <optimization>space : /Ogisy /O1 /Gs ;
 flags msvc CFLAGS <inlining>off : /Ob0 ;
 flags msvc CFLAGS <inlining>on : /Ob1 ;
 flags msvc CFLAGS <inlining>full : /Ob2 ;
-flags msvc CFLAGS <exception-handling>on : /GX ;
+flags msvc CFLAGS <exception-handling>on : /EHsc ;
 flags msvc CFLAGS <rtti>on : /GR ;
 
 # Note that these two options actually imply multithreading support on MSVC
@@ -99,7 +97,7 @@ flags msvc C++FLAGS <cxxflags> ;
 flags msvc DEFINES <define> ;
 flags msvc UNDEFS <undef> ;
 flags msvc HDRS <include> ;
-flags msvc STDHDRS <sysinclude> ;
+flags msvc SYSHDRS <sysinclude> ;
 flags msvc LINKFLAGS <linkflags> ;
 flags msvc ARFLAGS <arflags> ;
 
@@ -162,7 +160,7 @@ rule Cc-action
 actions vc-Cc
 {
     $(VC_SETUP)
-    "$(VC_TOOL_PATH)$(VC_COMPILER)" /Zm800 -nologo -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" $(PDB_CFLAG)"$(VC_PDB_FILE)" -Fo"$(<)" "$(>)"
+    "$(VC_TOOL_PATH)$(VC_COMPILER)" /Zm800 -nologo -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" $(PDB_CFLAG)"$(VC_PDB_FILE)" -Fo"$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -175,7 +173,7 @@ rule C++-action
 actions vc-C++
 {
     $(VC_SETUP)
-    "$(VC_TOOL_PATH)$(VC_COMPILER)" /Zm800 -nologo -GX -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" $(PDB_CFLAG)"$(VC_PDB_FILE)" -Fo"$(<)" -Tp"$(>)"
+    "$(VC_TOOL_PATH)$(VC_COMPILER)" /Zm800 -nologo /EHsc -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" $(PDB_CFLAG)"$(VC_PDB_FILE)" -Fo"$(<)" -Tp"$(>)"
 }
 
 #### Archive ####

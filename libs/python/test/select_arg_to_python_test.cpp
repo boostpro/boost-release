@@ -1,3 +1,6 @@
+// Copyright David Abrahams 2004. Distributed under the Boost
+// Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #include <boost/python/converter/arg_to_python.hpp>
 #include <boost/python/type_id.hpp>
 #include <boost/python/handle.hpp>
@@ -17,13 +20,15 @@ BOOST_PYTHON_DECL bool handle_exception_impl(function0<void>)
 
 int result;
 
-#define ASSERT_SAME(T1,T2) \
-       if (!is_same< T1, T2 >::value) { \
-             std::cout << "*********************\n"; \
-             std::cout << python::type_id< T1 >() << " != " << python::type_id< T2 >() << "\n"; \
-             std::cout << "*********************\n"; \
-             result = 1; \
-       }
+#define ASSERT_SAME(T1,T2) assert_same< T1,T2 >()
+
+template <class T, class U>
+void assert_same(U* = 0, T* = 0)
+{
+    BOOST_STATIC_ASSERT((boost::is_same<T,U>::value));
+    
+}
+
 
 int main()
 {

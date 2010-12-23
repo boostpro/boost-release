@@ -103,6 +103,7 @@ class ClassExporter(Exporter):
             self.ExportNestedEnums(exported_names)
             self.ExportSmartPointer()
             self.ExportOpaquePointerPolicies()
+            self.ExportAddedCode()
             self.Write(codeunit)
             exported_names[self.Name()] = 1
 
@@ -253,12 +254,13 @@ class ClassExporter(Exporter):
         
         constructors = [x for x in self.public_members if isinstance(x, Constructor)]
         self.constructors = constructors[:]
-        # don't export the copy constructor if the class is abstract
+        # don't export constructors if the class is abstract
         if self.class_.abstract:
             for cons in constructors:
                 if cons.IsCopy():
                     constructors.remove(cons)
                     break
+            
         if not constructors:
             # declare no_init
             self.Add('constructor', py_ns + 'no_init') 
@@ -371,7 +373,7 @@ class ClassExporter(Exporter):
                 policy = ', %s%s()' % (namespaces.python, policy.Code())
             # check for overloads
             overload = ''
-            if method.minArgs != method.maxArgs:
+            if method.minArgs != method.maxArgs and not method_info.wrapper: 
                 # add the overloads for this method
                 DeclareOverloads(method)
                 overload_name = self.OverloadName(method)
@@ -636,6 +638,11 @@ class ClassExporter(Exporter):
                 if macro:
                     self.Add('declaration-outside', macro)
 
+    def ExportAddedCode(self):
+        if self.info.__code__:
+            for code in self.info.__code__:
+                self.Add('inside', code)
+ 
 
 #==============================================================================
 # Virtual Wrapper utils
@@ -669,6 +676,9 @@ class _VirtualWrapperGenerator(object):
         self.GenerateVirtualMethods()
 
 
+    SELF = 'py_self'
+
+    
     def DefaultImplementationNames(self, method):
         '''Returns a list of default implementations for this method, one for each
         number of default arguments. Always returns at least one name, and return from 
@@ -705,8 +715,11 @@ class _VirtualWrapperGenerator(object):
         param_names_str = ', '.join(param_names)
         if param_names_str:
             param_names_str = ', ' + param_names_str
-        decl += indent*2 + '%s%scall_method< %s >(self, "%s"%s);\n' %\
-            (return_str, python, result, rename, param_names_str)
+        
+        self_str = self.SELF
+        
+        decl += indent*2 + '%(return_str)s%(python)scall_method< %(result)s >'  \
+                           '(%(self_str)s, "%(rename)s"%(param_names_str)s);\n' % locals()
         decl += indent + '}\n'
 
         # default implementations (with overloading)
@@ -774,8 +787,12 @@ class _VirtualWrapperGenerator(object):
         if method.abstract:
             pointer = namespaces.python + ('pure_virtual(%s)' % pointer)
 
+        # warn the user if this method needs a policy and doesn't have one
+        method_info = self.info[method.name]
+        method_info.policy = exporterutils.HandlePolicy(method, method_info.policy)
+
         # Add policy to overloaded methods also
-        policy = self.info[method.name].policy or ''
+        policy = method_info.policy or '' 
         if policy:
             policy = ', %s%s()' % (namespaces.python, policy.Code())
 
@@ -879,10 +896,10 @@ class _VirtualWrapperGenerator(object):
                 params, param_names, param_types = _ParamsInfo(cons, argNum)
                 if params:
                     params = ', ' + params
-                cons_code += indent + '%s(PyObject* self_%s):\n' % \
-                    (self.wrapper_name, params)
-                cons_code += indent*2 + '%s(%s), self(self_) {}\n\n' % \
-                    (class_name, ', '.join(param_names))
+                cons_code += indent + '%s(PyObject* %s_%s):\n' % \
+                    (self.wrapper_name, self.SELF, params)
+                cons_code += indent*2 + '%s(%s), %s(%s_) {}\n\n' % \
+                    (class_name, ', '.join(param_names), self.SELF, self.SELF)
             code += cons_code
         # generate the body
         body = []
@@ -892,6 +909,6 @@ class _VirtualWrapperGenerator(object):
         body = '\n'.join(body) 
         code += body + '\n'
         # add the self member
-        code += indent + 'PyObject* self;\n'
+        code += indent + 'PyObject* %s;\n' % self.SELF
         code += '};\n'
         return code 

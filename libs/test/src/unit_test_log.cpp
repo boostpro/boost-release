@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_log.cpp,v $
 //
-//  Version     : $Revision: 1.19 $
+//  Version     : $Revision: 1.24 $
 //
 //  Description : implemets Unit Test Log, Majority of implementation details
 //  are hidden in this file with use of pimpl idiom.
@@ -19,6 +19,8 @@
 #include <boost/test/detail/supplied_log_formatters.hpp>
 #include <boost/test/detail/unit_test_parameters.hpp>
 #include <boost/test/unit_test_result.hpp>
+#include <boost/test/detail/basic_cstring/compare.hpp>
+#include <boost/test/detail/fixed_mapping.hpp>
 
 // BOOST
 #include <boost/scoped_ptr.hpp>
@@ -26,6 +28,7 @@
 
 // STL
 #include <algorithm>
+#include <map>
 
 # ifdef BOOST_NO_STDC_NAMESPACE
 namespace std { using ::strcmp; }
@@ -33,7 +36,7 @@ namespace std { using ::strcmp; }
 
 namespace boost {
 
-namespace unit_test_framework {
+namespace unit_test {
 
 // ************************************************************************** //
 // **************                 unit_test_log                ************** //
@@ -68,7 +71,7 @@ struct unit_test_log::Impl {
     }
     void                set_checkpoint( checkpoint const& cp )
     {
-        m_checkpoint_data.m_message = cp.m_message;
+        cp.m_message.assign_to( m_checkpoint_data.m_message );
         m_checkpoint_data.m_file    = m_entry_data.m_file;
         m_checkpoint_data.m_line    = m_entry_data.m_line;
     }
@@ -81,7 +84,7 @@ unit_test_log::unit_test_log() : m_pimpl( new Impl() )
 {
     m_pimpl->m_threshold_level = log_all_errors;
 
-    m_pimpl->m_log_formatter.reset( new detail::msvc65_like_log_formatter( *this ) );
+    m_pimpl->m_log_formatter.reset( new ut_detail::msvc65_like_log_formatter( *this ) );
 
     m_pimpl->clear_entry_data();
     m_pimpl->clear_checkpoint();
@@ -120,7 +123,7 @@ unit_test_log::set_log_stream( std::ostream& str )
 void
 unit_test_log::set_log_threshold_level( log_level lev )
 {
-    if( m_pimpl->m_entry_in_progress )
+    if( m_pimpl->m_entry_in_progress || lev == invalid_log_level )
         return;
 
     m_pimpl->m_threshold_level = lev;
@@ -129,41 +132,28 @@ unit_test_log::set_log_threshold_level( log_level lev )
 //____________________________________________________________________________//
 
 void
-unit_test_log::set_log_threshold_level_by_name( std::string const& lev )
+unit_test_log::set_log_threshold_level_by_name( const_string lev )
 {
+    static fixed_mapping<const_string,log_level> log_level_name(
+        "all"           , log_successful_tests,
+        "success"       , log_successful_tests,
+        "test_suite"    , log_test_suites,
+        "messages"      , log_messages,
+        "warnings"      , log_warnings,
+        "all_errors"    , log_all_errors,
+        "cpp_exceptions", log_cpp_exception_errors,
+        "system_errors" , log_system_errors,
+        "fatal_errors"  , log_fatal_errors,
+        "progress"      , log_progress_only,
+        "nothing"       , log_nothing,
+
+        invalid_log_level
+    );
+
     if( m_pimpl->m_entry_in_progress )
         return;
 
-    struct my_pair {
-        c_string_literal    level_name;
-        log_level           level_value;
-    };
-
-    static const my_pair name_value_map[] = {
-        { "all"             , log_successful_tests },
-        { "success"         , log_successful_tests },
-        { "test_suite"      , log_test_suites },
-        { "messages"        , log_messages },
-        { "warnings"        , log_warnings },
-        { "all_errors"      , log_all_errors },
-        { "cpp_exceptions"  , log_cpp_exception_errors },
-        { "system_errors"   , log_system_errors },
-        { "fatal_errors"    , log_fatal_errors },
-        { "progress"        , log_progress_only},
-        { "nothing"         , log_nothing },
-    };
-
-    static int const map_size = sizeof(name_value_map)/sizeof(my_pair);
-
-    if( lev.empty() )
-        return;
-
-    for( int i=0; i < map_size; i++ ) {
-        if( lev == name_value_map[i].level_name ) {
-            set_log_threshold_level( name_value_map[i].level_value );
-            return;
-        }
-    }
+    set_log_threshold_level( log_level_name[lev] );
 }
 
 //____________________________________________________________________________//
@@ -230,7 +220,7 @@ unit_test_log&
 unit_test_log::operator<<( file const& f )
 {
     if( m_pimpl->m_entry_in_progress ) {
-        m_pimpl->m_entry_data.m_file = f.m_file_name;
+        f.m_file_name.assign_to( m_pimpl->m_entry_data.m_file );
 
         // normalize file name
         std::transform( m_pimpl->m_entry_data.m_file.begin(), m_pimpl->m_entry_data.m_file.end(), 
@@ -301,7 +291,7 @@ unit_test_log::operator<<( log_progress const& )
 //____________________________________________________________________________//
 
 unit_test_log&
-unit_test_log::operator<<( std::string const& value )
+unit_test_log::operator<<( const_string value )
 {
     if( m_pimpl->m_entry_in_progress && m_pimpl->m_entry_data.m_level >= m_pimpl->m_threshold_level && !value.empty() ) {
         if( !m_pimpl->m_entry_has_value ) {
@@ -326,6 +316,7 @@ unit_test_log::operator<<( std::string const& value )
             case log_progress_only:
             case log_nothing:
             case log_test_suites:
+            case invalid_log_level:
                 return *this;
             }
         }
@@ -335,14 +326,6 @@ unit_test_log::operator<<( std::string const& value )
     }
 
     return *this;
-}
-
-//____________________________________________________________________________//
-
-unit_test_log&
-unit_test_log::operator<<( c_string_literal value )
-{
-    return *this << std::string( value ? value : "" );
 }
 
 //____________________________________________________________________________//
@@ -382,35 +365,22 @@ unit_test_log::finish( unit_test_counter test_cases_amount )
 //____________________________________________________________________________//
 
 void
-unit_test_log::set_log_format( std::string const& logformat )
+unit_test_log::set_log_format( const_string log_format_name )
 {
     if( m_pimpl->m_entry_in_progress )
         return;
 
-    struct my_pair {
-        c_string_literal    format_name;
-        output_format       format_value;
-    };
+    static fixed_mapping<const_string,output_format,case_ins_less<char const> > log_format(
+        "HRF", HRF,
+        "XML", XML,
 
-    static const my_pair name_value_map[] = {
-        { "HRF" , HRF },
-        { "XML" , XML },
-    };
+        HRF
+        );
 
-    static int const map_size = sizeof(name_value_map)/sizeof(my_pair);
-
-    output_format of = HRF;
-    for( int i=0; i < map_size; i++ ) {
-        if( logformat == name_value_map[i].format_name ) {
-            of = name_value_map[i].format_value;
-            break;
-        }
-    }
-
-    if( of == HRF )
-        set_log_formatter( new detail::msvc65_like_log_formatter( *this ) );
+    if( log_format[log_format_name] == HRF )
+        set_log_formatter( new ut_detail::msvc65_like_log_formatter( *this ) );
     else
-        set_log_formatter( new detail::xml_log_formatter( *this ) );
+        set_log_formatter( new ut_detail::xml_log_formatter( *this ) );
 }
 
 //____________________________________________________________________________//
@@ -439,7 +409,7 @@ unit_test_log::checkpoint_data() const
 
 //____________________________________________________________________________//
 
-} // namespace unit_test_framework
+} // namespace unit_test
 
 } // namespace boost
 
@@ -447,6 +417,23 @@ unit_test_log::checkpoint_data() const
 //  Revision History :
 //
 //  $Log: unit_test_log.cpp,v $
+//  Revision 1.24  2004/06/07 07:34:22  rogeeff
+//  detail namespace renamed
+//
+//  Revision 1.23  2004/05/27 06:29:59  rogeeff
+//  eliminate  warnings
+//
+//  Revision 1.22  2004/05/21 06:26:09  rogeeff
+//  licence update
+//
+//  Revision 1.21  2004/05/13 09:04:43  rogeeff
+//  added fixed_mapping
+//
+//  Revision 1.20  2004/05/11 11:04:44  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.19  2003/12/01 00:42:37  rogeeff
 //  prerelease cleaning
 //

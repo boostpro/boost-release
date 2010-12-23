@@ -1,39 +1,55 @@
 
-// + file: libs/mpl/test/joint_view.cpp
-// + last modified: 25/may/03
-
-// Copyright (c) 2001-03
-// Aleksey Gurtovoy
+// Copyright Aleksey Gurtovoy 2001-2004
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-#include "boost/mpl/joint_view.hpp"
-#include "boost/mpl/range_c.hpp"
-#include "boost/mpl/equal.hpp"
-#include "boost/mpl/size.hpp"
-#include "boost/static_assert.hpp"
+// $Source: /cvsroot/boost/boost/libs/mpl/test/joint_view.cpp,v $
+// $Date: 2004/10/01 16:32:41 $
+// $Revision: 1.5 $
 
-namespace mpl = boost::mpl;
+#include <boost/mpl/joint_view.hpp>
 
-int main()
+#include <boost/mpl/range_c.hpp>
+#include <boost/mpl/list.hpp>
+#include <boost/mpl/equal.hpp>
+#include <boost/mpl/size.hpp>
+#include <boost/mpl/aux_/test.hpp>
+
+
+MPL_TEST_CASE()
 {
-    typedef mpl::joint_view<
-          mpl::range_c<int,0,10>
-        , mpl::range_c<int,10,15>
+    typedef joint_view<
+          range_c<int,0,10>
+        , range_c<int,10,15>
         > numbers;
 
-    typedef mpl::range_c<int,0,15> answer;
+    typedef range_c<int,0,15> answer;
 
-    BOOST_STATIC_ASSERT((mpl::equal<numbers,answer>::type::value));
-    BOOST_STATIC_ASSERT((mpl::size<numbers>::value == 15));
+    MPL_ASSERT(( equal<numbers,answer> ));
+    MPL_ASSERT_RELATION( size<numbers>::value, ==, 15 );
+}
 
-    return 0;
+template< typename View > struct test_is_empty
+{
+    typedef typename begin<View>::type first_;
+    typedef typename end<View>::type last_;
+    
+    MPL_ASSERT_RELATION( size<View>::value, ==, 0 );
+    MPL_ASSERT(( is_same< first_,last_> ));
+    
+    MPL_ASSERT_INSTANTIATION( View );
+    MPL_ASSERT_INSTANTIATION( first_ );
+    MPL_ASSERT_INSTANTIATION( last_ );
+};
+
+MPL_TEST_CASE()
+{
+    test_is_empty< joint_view< list0<>,list0<> > >();
+    test_is_empty< joint_view< list<>,list0<> > >();
+    test_is_empty< joint_view< list<>,list<> > >();
+    test_is_empty< joint_view< list<>, joint_view< list0<>,list0<> > > >();
 }

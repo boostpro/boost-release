@@ -1,25 +1,19 @@
-//-----------------------------------------------------------------------------
-// boost mpl/test/quote.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
-//
-// Copyright (c) 2000-02
-// Aleksey Gurtovoy
-//
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
 
-#include "boost/mpl/quote.hpp"
-#include "boost/mpl/apply.hpp"
-#include "boost/type_traits/is_same.hpp"
-#include "boost/static_assert.hpp"
+// Copyright Aleksey Gurtovoy 2000-2004
+//
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
+//
+// See http://www.boost.org/libs/mpl for documentation.
 
-using namespace boost::mpl;
+// $Source: /cvsroot/boost/boost/libs/mpl/test/quote.cpp,v $
+// $Date: 2004/09/02 15:41:35 $
+// $Revision: 1.3 $
+
+#include <boost/mpl/quote.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/mpl/aux_/test.hpp>
 
 template< typename T > struct f1
 {
@@ -31,16 +25,18 @@ template<
     >
 struct f5
 {
+#if !defined(BOOST_MPL_CFG_NO_IMPLICIT_METAFUNCTIONS)
     // no 'type' member!
+#else
+    typedef f5 type;
+#endif
 };
 
-int main()
+MPL_TEST_CASE()
 {
-    typedef apply1< quote1<f1>,int >::type t1;
-    typedef apply5< quote5<f5>,char,short,int,long,float >::type t5;
+    typedef quote1<f1>::apply<int>::type t1;
+    typedef quote5<f5>::apply<char,short,int,long,float>::type t5;
     
-    BOOST_STATIC_ASSERT((boost::is_same< t1, int >::value));
-    BOOST_STATIC_ASSERT((boost::is_same< t5, f5<char,short,int,long,float> >::value));
-
-    return 0;
+    MPL_ASSERT(( boost::is_same< t1, int > ));
+    MPL_ASSERT(( boost::is_same< t5, f5<char,short,int,long,float> > ));
 }

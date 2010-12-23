@@ -14,7 +14,7 @@
 <Title>Boost Graph Library: Adjacency Matrix</Title>
 <BODY BGCOLOR="#ffffff" LINK="#0000ee" TEXT="#000000" VLINK="#551a8b" 
         ALINK="#ff0000"> 
-<IMG SRC="../../../c++boost.gif" 
+<IMG SRC="../../../boost.png" 
      ALT="C++ Boost" width="277" height="86"> 
 
 <BR Clear>
@@ -59,8 +59,10 @@ graphs (where <i>E</i> is much smaller than <i>V<sup>2</sup></i>).
 
 The <tt>adjacency_matrix</tt> class extends the traditional
 data-structure by allowing objects to be attached to vertices and
-edges via the the property template parameters. See Section XXX for an
-explanation of how to use internal properties.
+edges using the same property template parameters supported by <a
+href="adjacency_list.html"><tt>adjacency_list</tt></a>. These may be
+<a href="bundles.html">bundled properties</a> or standard (backward-compatible)
+<a href="using_adjacency_list.html#sec:adjacency-list-properties">interior properties</a>.
 
 In the case of an undirected graph, the
 <tt>adjacency_matrix</tt>. class does not use a full <i>V x V</i>
@@ -509,7 +511,7 @@ argument.<br>
 <pre>
 template &lt;typename Property, typename X&gt;
 typename property_traits&lt;
-  typenamae property_map&lt;adjacency_matrix, Property&gt;::const_type
+  typename property_map&lt;adjacency_matrix, Property&gt;::const_type
 &gt;::value_type
 get(Property, const adjacency_matrix&amp; g, X x)
 </pre>

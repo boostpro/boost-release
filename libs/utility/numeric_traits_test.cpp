@@ -1,8 +1,7 @@
-//  (C) Copyright David Abrahams 2001. Permission to copy, use, modify,
-//  sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided
-//  "as is" without express or implied warranty, and with no claim as
-//  to its suitability for any purpose.
+//  (C) Copyright David Abrahams 2001.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for most recent version including documentation.
 
@@ -375,8 +374,8 @@ int main()
     test<long>();
     test<unsigned long>();
 #if defined(BOOST_HAS_LONG_LONG) && !defined(BOOST_NO_INTEGRAL_INT64_T)
-    test<long long>();
-    test<unsigned long long>();
+    test< ::boost::long_long_type>();
+    test< ::boost::ulong_long_type>();
 #elif defined(BOOST_MSVC)
     // The problem of not having compile-time static class constants other than
     // enums prevents this from working, since values get truncated.

@@ -11,7 +11,7 @@
   <xsl:param name="max-columns" select="78"/>
 
   <!-- The root of the Boost directory -->
-  <xsl:param name="boost.root" select="'./'"/>
+  <xsl:param name="boost.root" select="'../..'"/>
 
   <!-- A space-separated list of libraries to include in the
        output. If this list is empty, all libraries will be included. -->
@@ -86,7 +86,8 @@
           <xsl:text>Header &lt;</xsl:text>
           <ulink>
             <xsl:attribute name="url">
-              <xsl:text>../../</xsl:text>
+              <xsl:value-of select="$boost.root"/>
+              <xsl:text>/</xsl:text>
               <xsl:value-of select="@name"/>
             </xsl:attribute>
             <xsl:value-of select="@name"/>
@@ -106,11 +107,18 @@
           </xsl:call-template>
         </xsl:if>
 
-        <xsl:apply-templates mode="synopsis" select="namespace">
-          <xsl:with-param name="indentation" select="0"/>
-        </xsl:apply-templates>
-        
-        <xsl:apply-templates mode="reference"/>
+        <xsl:if test="namespace|class|struct|union">
+          <xsl:call-template name="synopsis">
+            <xsl:with-param name="text">
+              <xsl:apply-templates mode="synopsis" 
+                select="namespace|class|struct|union">
+                <xsl:with-param name="indentation" select="0"/>
+              </xsl:apply-templates>
+            </xsl:with-param>
+          </xsl:call-template>
+        </xsl:if>
+
+        <xsl:apply-templates mode="namespace-reference"/>
       </section>
     </xsl:if>
   </xsl:template>
@@ -255,7 +263,9 @@ Error: XSL template 'link-or-anchor' called with invalid link-type '<xsl:value-o
       </refmeta>
       <refnamediv>
         <refname><xsl:value-of select="$refname"/></refname>
-        <refpurpose><xsl:value-of select="$purpose"/></refpurpose>
+        <refpurpose>
+		  <xsl:apply-templates mode="annotation" select="$purpose"/>
+		</refpurpose>
       </refnamediv>
       <refsynopsisdiv>
         <synopsis>
@@ -377,7 +387,7 @@ Error: XSL template 'link-or-anchor' called with invalid link-type '<xsl:value-o
   </xsl:template>
 
   <!-- These DocBook elements have special meaning. Use the annotation mode -->
-  <xsl:template match="classname|methodname|functionname|libraryname|
+  <xsl:template match="classname|methodname|functionname|enumname|libraryname|
                        conceptname|macroname|headername">
     <xsl:apply-templates select="." mode="annotation"/>
   </xsl:template>
@@ -389,4 +399,10 @@ Error: XSL template 'link-or-anchor' called with invalid link-type '<xsl:value-o
   <!-- Swallow using-namespace and using-class directives along with
        last-revised elements -->
   <xsl:template match="using-namespace|using-class|last-revised"/>
+
+  <!-- If there is no "namespace-reference" mode, forward to
+       "reference" mode -->
+  <xsl:template match="*" mode="namespace-reference">
+    <xsl:apply-templates select="." mode="reference"/>
+  </xsl:template>
 </xsl:stylesheet>

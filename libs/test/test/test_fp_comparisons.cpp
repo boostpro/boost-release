@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2003.
-//  Use, modification, and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: test_fp_comparisons.cpp,v $
 //
-//  Version     : $Revision: 1.8 $
+//  Version     : $Revision: 1.13 $
 //
 //  Description : tests floating point comparison algorithms
 // ***************************************************************************
@@ -17,7 +17,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_result.hpp>
 #include <boost/test/test_case_template.hpp>
-using namespace boost::unit_test_framework;
+using namespace boost::unit_test;
 using namespace boost::test_toolbox;
 
 // Boost
@@ -60,14 +60,15 @@ normalize_file_name( char const* f )
     return buffer;
 }
 
-#if !defined(__BORLANDC__)
+#ifdef BOOST_TEST_SHIFTED_LINE
+
 #define CHECK_PATTERN( msg, shift ) \
-    (boost::wrap_stringstream().ref() << normalize_file_name( __FILE__ ) << "(" << __LINE__ << "): " << msg).str()
+    (boost::wrap_stringstream().ref() << normalize_file_name( __FILE__ ) << "(" << (__LINE__-shift) << "): " << msg).str()
 
 #else
 
 #define CHECK_PATTERN( msg, shift ) \
-    (boost::wrap_stringstream().ref() << normalize_file_name( __FILE__ ) << "(" << (__LINE__-shift) << "): " << msg).str()
+    (boost::wrap_stringstream().ref() << normalize_file_name( __FILE__ ) << "(" << __LINE__ << "): " << msg).str()
 
 #endif
 //____________________________________________________________________________//
@@ -144,8 +145,9 @@ test_close_at_tolerance()
     double fp2     = 1.00000002;
     double epsilon = 1e-6;
 
+    close_at_tolerance<double> pred( epsilon, FPC_WEAK );
     CHECK_TOOL_USAGE(
-        BOOST_CHECK_PREDICATE( close_at_tolerance<double>( epsilon, FPC_WEAK ), 2, ( fp1, fp2 ) ),
+        BOOST_CHECK_PREDICATE( pred, 2, ( fp1, fp2 ) ),
         output.is_empty()
     );
 
@@ -192,6 +194,23 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
 //  Revision History :
 //  
 //  $Log: test_fp_comparisons.cpp,v $
+//  Revision 1.13  2004/10/05 01:46:32  rogeeff
+//  borland fix
+//
+//  Revision 1.12  2004/10/01 10:55:43  rogeeff
+//  some test errors workarrounds
+//
+//  Revision 1.11  2004/07/19 12:07:26  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.10  2004/05/21 06:26:11  rogeeff
+//  licence update
+//
+//  Revision 1.9  2004/05/11 11:05:06  rogeeff
+//  basic_cstring introduced and used everywhere
+//  class properties reworked
+//  namespace names shortened
+//
 //  Revision 1.8  2003/12/01 00:42:38  rogeeff
 //  prerelease cleaning
 //

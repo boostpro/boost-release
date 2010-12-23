@@ -4,10 +4,9 @@
 
 //  (C) Samuel Krempp 2001
 //                  krempp@crans.ens-cachan.fr
-//  Permission to copy, use, modify, sell and
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  Distributed under the Boost Software License, Version 1.0. (See
+//  accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 // several suggestions from Jens Maurer
 
@@ -176,12 +175,12 @@ void test_snprintf()
 void test_try1()
 {
   using namespace std;
-  boost::io::outsstream oss;
+  boost::io::basic_oaltstringstream<char> oss;
   oss << boost::format(fstring) % arg1 % arg2 % arg3;
   boost::timer chrono;
   int dummy=0;
   for(int i=0; i<NTests; ++i) {
-      dummy += oss.pcount();
+      dummy += oss.cur_size();
   }
   double t = chrono.elapsed();
   cout  << left << setw(20) <<"try1 time"<< right <<":" << setw(5) << t
@@ -192,7 +191,7 @@ void test_try1()
 void test_try2()
 {
   using namespace std;
-  boost::io::outsstream oss;
+  boost::io::basic_oaltstringstream<char> oss;
   oss << boost::format(fstring) % arg1 % arg2 % arg3;
   oss << "blas 34567890GGGGGGGGGGGGGGGGGGGGGGGGGGGGggggggggggggggggggggggggggg " << endl;
   string s = oss.cur_str();
@@ -203,7 +202,7 @@ void test_try2()
   boost::timer chrono;
   int dummy=0;
   for(int i=0; i<NTests; ++i) {
-      dummy += oss.pcount();
+      dummy += oss.cur_size();
   }
   double t = chrono.elapsed();
   cout  << left << setw(20) <<"try2 time"<< right <<":" << setw(5) << t
@@ -229,7 +228,7 @@ void test_nullstream()
 {
     using namespace std;
     boost::timer chrono;
-    boost::io::outsstream oss;
+    boost::io::basic_oaltstringstream<char> oss;
 
     {   
         do_stream(oss);
@@ -262,7 +261,7 @@ void test_opti_nullstream()
 {
     using namespace std;
     boost::timer chrono;
-    boost::io::outsstream oss;
+    boost::io::basic_oaltstringstream<char> oss;
     //static const std::string fstring="%3$#x %1$20.10E %2$g %3$d \n";
 
     std::ios_base::fmtflags f0 = oss.flags(), f1, f2;
@@ -305,9 +304,9 @@ void test_opti_nullstream()
 void test_parsed_once_format()
 {
     using namespace std;
-    static const boost::format fmter = boost::format(fstring);
+    static const boost::format fmter(fstring);
 
-    boost::io::outsstream oss;
+    boost::io::basic_oaltstringstream<char> oss;
     oss << boost::format(fmter) % arg1 % arg2 % arg3 ;
     if( oss.str() != res ) {
       cerr << endl << oss.str();
@@ -329,7 +328,7 @@ void test_parsed_once_format()
 void test_reused_format()
 {
   using namespace std;
-  boost::io::outsstream oss;
+  boost::io::basic_oaltstringstream<char> oss;
   oss << boost::format(fstring) % arg1 % arg2 % arg3;
   if(oss.str() != res ) {
     cerr << endl << oss.str();
@@ -349,7 +348,7 @@ void test_reused_format()
 void test_format()
 {
   using namespace std;
-  boost::io::outsstream oss;
+  boost::io::basic_oaltstringstream<char> oss;
   oss << boost::format(fstring) % arg1 % arg2 % arg3;
   if(oss.str() != res ) {
     cerr << endl << oss.str();
@@ -370,7 +369,7 @@ void test_format()
 void test_format3()
 {
   using namespace std;
-  boost::io::outsstream oss;
+  boost::io::basic_oaltstringstream<char> oss;
   oss << KNelson::boost::format(fstring.c_str(), arg1, arg2, arg3);
   if(oss.str() != res ) {
     cerr << endl << oss.str();

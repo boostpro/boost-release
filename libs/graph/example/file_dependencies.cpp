@@ -131,8 +131,6 @@ int main(int,char*[])
 #endif
   typedef graph_traits<Graph>::vertex_descriptor Vertex;
 
-  typedef property_map<Graph, vertex_color_t>::type Color;
-
   // Determine ordering for a full recompilation
   {
     typedef list<Vertex> MakeOrder;
@@ -176,7 +174,7 @@ int main(int,char*[])
         dijkstra_shortest_paths_no_init
           (g, *i, &pred[0], &time[0], weight, indexmap, 
            compare, combine, 0,  // Since we are using > instead of >, we
-           std::numeric_limits<int>::max(), // flip 0 and inf.
+           (std::numeric_limits<int>::max)(), // flip 0 and inf.
            default_dijkstra_visitor());
       }
     }
@@ -215,7 +213,6 @@ int main(int,char*[])
 
   // are there any cycles in the graph?
   {
-    typedef property_map<Graph,vertex_color_t>::type Color;
     bool has_cycle = false;
     cycle_detector vis(has_cycle);
     depth_first_search(g, visitor(vis));

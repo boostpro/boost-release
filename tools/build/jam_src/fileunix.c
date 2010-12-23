@@ -5,11 +5,9 @@
  */
 
 /*  This file is ALSO:
- *  (C) Copyright David Abrahams 2001. Permission to copy, use,
- *  modify, sell and distribute this software is granted provided this
- *  copyright notice appears in all copies. This software is provided
- *  "as is" without express or implied warranty, and with no claim as
- *  to its suitability for any purpose.
+ *  Copyright 2001-2004 David Abrahams.
+ *  Distributed under the Boost Software License, Version 1.0.
+ *  (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  */
 
 # include "jam.h"
@@ -238,8 +236,13 @@ file_archscan(
 	if( DEBUG_BINDSCAN )
 	    printf( "scan archive %s\n", archive );
 
-	while( read( fd, &ar_hdr, SARHDR ) == SARHDR &&
-	       !memcmp( ar_hdr.ar_fmag, ARFMAG, SARFMAG ) )
+	while( read( fd, &ar_hdr, SARHDR ) == SARHDR
+	       && ! ( memcmp( ar_hdr.ar_fmag, ARFMAG, SARFMAG )
+#ifdef ARFZMAG
+		      /* OSF also has a compressed format */
+		      && memcmp( ar_hdr.ar_fmag, ARFZMAG, SARFMAG )
+#endif
+	      ) )
 	{
 	    char    lar_name_[257];
             char*   lar_name = lar_name_ + 1;

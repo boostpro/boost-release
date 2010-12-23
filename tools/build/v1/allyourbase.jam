@@ -7,11 +7,9 @@
 #
 
 # This file is ALSO:
-# (C) Copyright David Abrahams 2001. Permission to copy, use,
-# modify, sell and distribute this software is granted provided this
-# copyright notice appears in all copies. This software is provided
-# "as is" without express or implied warranty, and with no claim as
-# to its suitability for any purpose.
+# (C) Copyright David Abrahams 2001.
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 #
 # JAMBASE - jam 2.3 ruleset providing make(1)-like functionality
@@ -194,6 +192,7 @@ if $(NT)
     LEX_OUTPUT      ?= -o ;
     
     LN              ?= $(CP) ;
+    NULL_OUT        ?= >NUL: ;
 }
 else if $(OS2)
 {
@@ -317,7 +316,7 @@ else if $(UNIX)
     {
     case AIX :
         IMPLIB_FLAGS    ?= -bI: ;
-        SUFDLL          ?= .so .imp ;
+        SUFDLL          ?= .so ;
         gLINK_VARIABLE(.so) = NEEDLIBS ;  # shared libs should be added to the list of libs needed
         gLINK_VARIABLE(.imp) = NEEDIMPS ; # import libs are handled separately.
         gSHELL_LIBPATH = LIBPATH ;
@@ -468,8 +467,10 @@ YACCFILES       ?= ;
 YACCFLAGS       ?= ;
 BIN_DIRECTORY   ?= bin ;
 
+#~ HDRPATTERN = 
+        #~ "^[     ]*#[    ]*include[      ]*([<\"][^\">]*[\">]).*$" ;
 HDRPATTERN = 
-        "^[     ]*#[    ]*include[      ]*([<\"][^\">]*[\">]).*$" ;
+        "^[ 	]*#[ 	]*include[ 	]*([<\"][^\">]*[\">]).*$" ;
           
 #" My Jam mode gets its syntax highlighting confused without this comment
 
@@ -702,8 +703,8 @@ rule HdrRule
     # care if we can't actually find the headers (they may have been
     # within ifdefs),
 
-    local angle-includes = [ subst-list $(>) : "<(.+)>" ] ;
-    local quoted-includes = [ subst-list $(>) : "\"(.+)\"" ] ;
+    local angle-includes = [ MATCH "[<]([^>]+)[>]" : $(>) ] ;
+    local quoted-includes = [ MATCH "[\"]([^\"]+)[\"]" : $(>) ] ;
 
     local s ;
 
@@ -1056,6 +1057,7 @@ rule Object
     # Set STDHDRS on the object so that multi-compiler builds will search for
     # headers in the right places. 
     STDHDRS on $(<) = $(STDHDRS) ;
+    SYSHDRS on $(<) = $(SYSHDRS) ;
 
     # handle #includes for source: Jam scans for headers with
     # the regexp pattern $(HDRSCAN) and then invokes $(HDRRULE)
@@ -1080,7 +1082,7 @@ rule Object
 
     HDRRULE on $(>) = HdrRule ;
     HDRSCAN on $(>) = $(HDRPATTERN) ;
-    HDRSEARCH on $(>) = $(HDRS) $(h) $(STDHDRS) ;
+    HDRSEARCH on $(>) = $(HDRS) $(h) $(STDHDRS) $(SYSHDRS) ;
     HDRGRIST on $(>) = $(HDRGRIST) ;
 
     # if source is not .c, generate .c with specific rule
@@ -1393,10 +1395,18 @@ rule SubDir
     # This will strip off any leading dot on SUBDIR_TOKENS
     local nodot_subdir = [ simplify-path-tokens $(SUBDIR_TOKENS) ] ;
 
-    normalized_ALL_LOCATE_TARGET ?= [ join-path $($(gTOP)) $(ALL_LOCATE_TARGET) ] ;
+    if $(ALL_LOCATE_TARGET) && ! $(first_ALL_LOCATE_TARGET)
+    {
+        normalized_ALL_LOCATE_TARGET = [ join-path $($(gTOP)) $(ALL_LOCATE_TARGET) ] ;
+    }
+    else
+    {
+        normalized_ALL_LOCATE_TARGET ?= [ join-path $($(gTOP)) $(ALL_LOCATE_TARGET) ] ;
+    }
+    first_ALL_LOCATE_TARGET ?= $(ALL_LOCATE_TARGET) ;
     LOCATE_SOURCE = [ FDirName $(normalized_ALL_LOCATE_TARGET) $(BIN_DIRECTORY) $(PROJECT) $(nodot_subdir) ] ;
     LOCATE_TARGET = $(LOCATE_SOURCE) ;
-    HCACHEFILE ?= $(LOCATE_TARGET:B=.jamdeps) ;
+    HCACHEFILE = [ FDirName $(normalized_ALL_LOCATE_TARGET) $(BIN_DIRECTORY) .jamdeps ] ;
     
     SOURCE_GRIST = [ FGrist @$(PROJECT) $(SUBDIR_TOKENS) ] ;
 
@@ -1793,14 +1803,6 @@ rule remember-binding ( target : bound-path ) {
     gBINDING($(target)) = $(bound-path) ;
 }
 
-rule subst-list ( list + : pattern ) {
-    local result ;
-    for local i in $(list) {
-        result += [ MATCH "($(pattern))" : $(i) ] ;
-    }
-    return $(result) ;
-}
-
 #
 # Utility rules; no side effects on these
 #
@@ -2080,17 +2082,17 @@ actions Chown
 
 actions piecemeal together existing Clean
 {
-    $(RM) "$(>)"
+    $(RM) "$(>)" $(NULL_OUT)
 }
 
 actions File
 {
-    $(CP) "$(>)" "$(<)"
+    $(CP) "$(>)" "$(<)" $(NULL_OUT)
 }
 
 actions FileClone
 {
-    $(CLONE) "$(>)" "$(<)"
+    $(CLONE) "$(>)" "$(<)" $(NULL_OUT)
 }
 
 actions GenFile1
@@ -2105,7 +2107,8 @@ actions Fortran
 
 actions HardLink
 {
-    $(RM) $(<) && $(LN) $(>) $(<)
+    $(RM) "$(<)" 2$(NULL_OUT) $(NULL_OUT)
+    $(LN) "$(>)" "$(<)" $(NULL_OUT)
 }
 
 actions Install
@@ -2132,12 +2135,12 @@ actions MkDir1
 
 actions together Ranlib
 {
-    $(RANLIB) $(<)
+    $(RANLIB) "$(<)"
 }
 
 actions quietly updated piecemeal together RmTemps
 {
-    $(RM) $(>)
+    $(RM) "$(>)"
 }
 
 actions Shell

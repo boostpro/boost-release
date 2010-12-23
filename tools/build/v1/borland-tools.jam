@@ -1,8 +1,6 @@
-# (C) Copyright David Abrahams 2001. Permission to copy, use,
-# modify, sell and distribute this software is granted provided this
-# copyright notice appears in all copies. This software is provided
-# "as is" without express or implied warranty, and with no claim as
-# to its suitability for any purpose.
+# (C) Copyright David Abrahams 2001.
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 # The following #// line will be used by the regression test table generation
 # program as the column heading for HTML tables. Must not include version number.
@@ -78,7 +76,7 @@ flags borland C++FLAGS <cxxflags> ;
 flags borland DEFINES <define> ;
 flags borland UNDEFS <undef> ;
 flags borland HDRS <include> ;
-flags borland STDHDRS <sysinclude> ;
+flags borland SYSHDRS <sysinclude> ;
 flags borland LINKFLAGS <linkflags> ;
 flags borland ARFLAGS <arflags> ;
 
@@ -145,7 +143,7 @@ rule Cc-action
 
 actions borland-Cc-action
 {
-    "$(BCC_TOOL_PATH)bcc32" -j5 -g255 -q -c -w -a8 -b- -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
+    "$(BCC_TOOL_PATH)bcc32" -j5 -g255 -q -c -w -a8 -b- -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" -o"$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -172,17 +170,29 @@ rule C++-action
 #
 actions borland-C++-action
 {
-    "$(BCC_TOOL_PATH)bcc32" -j5 -g255 -q -c -P -w -Ve -Vx -a8 -b- -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)"  -I"$(STDHDRS)" -o"$(<)" "$(>)"
+    "$(BCC_TOOL_PATH)bcc32" -j5 -g255 -q -c -P -w -Ve -Vx -a8 -b- -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" -o"$(<)" "$(>)"
+}
+
+if ! $(BORLAND_ARCHIVE_LINESEP)
+{
+    if $(NT)
+    {
+        if [ W32_GETREG "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion" : CurrentVersion ]
+        {
+            BORLAND-ARCHIVE-LINESEP = " ^&" ;
+        }
+    }
+    BORLAND-ARCHIVE-LINESEP ?= " &" ;
 }
 
 #### Archive ####
 rule Archive-action
 {
-    borland-Archive-action $(<) : $(>) ;
+    with-command-file borland-Archive-action $(<) : $(>) : + $(BORLAND-ARCHIVE-LINESEP) ;
 }
 
 actions borland-Archive-action
 {
     IF EXIST "$(<)" DEL "$(<)"
-    "$(BCC_TOOL_PATH)tlib" /P64 /u /a /C /$(ARFLAGS) "$(<)" +"$(>)"
+    "$(BCC_TOOL_PATH)tlib" /P64 /u /a /C /$(ARFLAGS) "$(<)" @"$(>)"
 }

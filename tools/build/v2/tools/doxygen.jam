@@ -18,18 +18,15 @@ import path ;
 import print ;
 import regex ;
 import stage ;
+import project ;
 
 feature.feature doxygen:param : : free ;
 feature.feature prefix : : free ;
+feature.feature reftitle : : free ;
 
 type.register DOXYFILE : doxyfile ; # Doxygen input file
 type.register DOXYGEN_XML_MULTIFILE : : XML ; # Doxygen XML multi-file output
-type.register DOXYGEN_XML : doxygen : XML ; # Doxygen XML output
-
-generators.register-composing doxygen.headers-to-doxyfile : H HPP : DOXYFILE ; 
-generators.register-standard doxygen.run : DOXYFILE : DOXYGEN_XML_MULTIFILE ;
-generators.register-standard doxygen.collect : DOXYGEN_XML_MULTIFILE : DOXYGEN_XML ;
-generators.register-standard doxygen.xml-to-boostbook : DOXYGEN_XML : BOOSTBOOK ;
+type.register DOXYGEN_XML : doxygen : XML : main ; # Doxygen XML output
 
 # Initialize the Doxygen module. Parameters are:
 #   name: the name of the 'doxygen' executable. If not specified, the name
@@ -39,11 +36,27 @@ rule init ( name ? )
   if ! $(.initialized)
   {
     .initialized = true ;
-
+      
     if $(name)
     {
       .doxygen = $(name) ; 
+    }   
+    
+    generators.register-composing doxygen.headers-to-doxyfile : H HPP : DOXYFILE ; 
+    generators.register-standard doxygen.run : DOXYFILE : DOXYGEN_XML_MULTIFILE ;
+    generators.register-standard doxygen.xml-to-boostbook : DOXYGEN_XML : BOOSTBOOK ;
+    
+    if ! [ boostbook.xsl-dir ]
+    {
+        ECHO "warning: Doxygen initialization: Boost.Build stylesheets not found " ;
+        ECHO "warning: Generation of single XML file won't be possible. " ;
     }
+    else
+    {          
+        generators.register-standard doxygen.collect : DOXYGEN_XML_MULTIFILE : DOXYGEN_XML ;
+    }
+            
+    IMPORT $(__name__) : doxygen : : doxygen ;
   }
 }
 
@@ -98,6 +111,7 @@ rule headers-to-doxyfile ( target : sources * : properties * )
 rule run ( target : source : properties * )
 {
   doxygen-action $(target) : $(source) ;  
+  NAME on $(target) = $(.doxygen) ;
 }
 
 # Collect the set of Doxygen XML files into a single XML source file
@@ -133,6 +147,10 @@ rule xml-to-boostbook ( target : source : properties * )
   {
     xslt-properties += "<xsl:param>boost.doxygen.header.prefix=$(prefix)" ;
   }
+  for local title in [ feature.get-values <reftitle> : $(properties) ]
+  {
+    xslt-properties += "<xsl:param>boost.doxygen.reftitle=\"$(title)\"" ;
+  }
 
   xslt $(target) : $(source) $(d2b-xsl) : $(xslt-properties) ;
 }
@@ -140,7 +158,7 @@ rule xml-to-boostbook ( target : source : properties * )
 # User-level rule to generate BoostBook XML from a set of headers via Doxygen. 
 rule doxygen ( target-name : sources * : requirements * : default-build * )
 {
-  local project = [ CALLER_MODULE ] ;
+  local project = [ project.current ] ;
 
   local doxyfile = [ 
     new typed-target $(target-name) : $(project) : BOOSTBOOK
@@ -158,4 +176,3 @@ rule doxygen ( target-name : sources * : requirements * : default-build * )
       : [ targets.main-target-default-build $(default-build) : $(project) ] 
     ] ;
 }
-IMPORT $(__name__) : doxygen : : doxygen ;

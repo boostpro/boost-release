@@ -1,44 +1,36 @@
-//-----------------------------------------------------------------------------
-// boost mpl/test/pop_front.cpp source file
-// See http://www.boost.org for updates, documentation, and revision history.
-//-----------------------------------------------------------------------------
+
+// Copyright Aleksey Gurtovoy 2000-2004
 //
-// Copyright (c) 2000-02
-// Aleksey Gurtovoy
+// Distributed under the Boost Software License,Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee, 
-// provided that the above copyright notice appears in all copies and 
-// that both the copyright notice and this permission notice appear in 
-// supporting documentation. No representations are made about the 
-// suitability of this software for any purpose. It is provided "as is" 
-// without express or implied warranty.
+// See http://www.boost.org/libs/mpl for documentation.
 
-#include "boost/mpl/pop_front.hpp"
-#include "boost/mpl/list.hpp"
-#include "boost/mpl/size.hpp"
-#include "boost/mpl/front.hpp"
-#include "boost/mpl/assert_is_same.hpp"
-#include "boost/static_assert.hpp"
+// $Source: /cvsroot/boost/boost/libs/mpl/test/pop_front.cpp,v $
+// $Date: 2004/09/02 15:41:35 $
+// $Revision: 1.4 $
 
-namespace mpl = boost::mpl;
+#include <boost/mpl/pop_front.hpp>
+#include <boost/mpl/list.hpp>
+#include <boost/mpl/size.hpp>
+#include <boost/mpl/front.hpp>
+#include <boost/mpl/aux_/test.hpp>
 
-int main()
+MPL_TEST_CASE()
 {
-    typedef mpl::list<long>::type types1;
-    typedef mpl::list<int,long>::type types2;
-    typedef mpl::list<char,int,long>::type types3;
+    typedef list<long>::type types1;
+    typedef list<int,long>::type types2;
+    typedef list<char,int,long>::type types3;
 
-    typedef mpl::pop_front<types1>::type result1;
-    typedef mpl::pop_front<types2>::type result2;
-    typedef mpl::pop_front<types3>::type result3;
+    typedef pop_front<types1>::type result1;
+    typedef pop_front<types2>::type result2;
+    typedef pop_front<types3>::type result3;
     
-    BOOST_STATIC_ASSERT(mpl::size<result1>::type::value == 0);
-    BOOST_STATIC_ASSERT(mpl::size<result2>::type::value == 1);
-    BOOST_STATIC_ASSERT(mpl::size<result3>::type::value == 2);
+    MPL_ASSERT_RELATION( size<result1>::value, ==, 0 );
+    MPL_ASSERT_RELATION( size<result2>::value, ==, 1 );
+    MPL_ASSERT_RELATION( size<result3>::value, ==, 2 );
     
-    BOOST_MPL_ASSERT_IS_SAME(mpl::front<result2>::type, long);
-    BOOST_MPL_ASSERT_IS_SAME(mpl::front<result3>::type, int);
-
-    return 0;
+    MPL_ASSERT(( is_same< front<result2>::type, long > ));
+    MPL_ASSERT(( is_same< front<result3>::type, int > ));
 }

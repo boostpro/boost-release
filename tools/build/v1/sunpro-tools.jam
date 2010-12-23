@@ -83,7 +83,7 @@ flags sunpro C++FLAGS <cxxflags> ;
 flags sunpro DEFINES <define> ;
 flags sunpro UNDEFS <undef> ;
 flags sunpro HDRS <include> ;
-flags sunpro STDHDRS <sysinclude> ;
+flags sunpro SYSHDRS <sysinclude> ;
 flags sunpro LINKFLAGS <linkflags> ;
 flags sunpro LINKFLAGS <debug-symbols>off : -s ;
 flags sunpro ARFLAGS <arflags> ;
@@ -120,7 +120,7 @@ rule Link-action
 
 actions together sunpro-Link-action bind NEEDLIBS
 {
-    $(.CXX[1]:R=$(SUNPRO_BIN_DIR)) $(.CXX[2-]) -xildoff -h,$(<[1]:D=)$(SO_VER) $(LINKFLAGS) -o "$(<[1]:T)$(SO_EXT)" -L"$(LIBPATH:T)" "$(>)" "$(NEEDLIBS)" -l$(FINDLIBS)
+    $(.CXX[1]:R=$(SUNPRO_BIN_DIR)) $(.CXX[2-]) -xildoff -h,$(<[1]:D=)$(SO_VER) $(LINKFLAGS) -o "$(<[1]:T)$(SO_EXT)" -L"$(LIBPATH:T)" -L"$(STDLIBPATH)" "$(>)" "$(NEEDLIBS)" -l$(FINDLIBS)
     $(DO_LN)$(LN)$(_)"$(<[1]:T)$(SO_EXT)"$(_)"$(<[1])"
 }
 
@@ -145,7 +145,7 @@ rule Cc-action
 
 actions sunpro-Cc-action
 {
-    $(.CC[1]:R=$(SUNPRO_BIN_DIR)) $(.CC[2-]) -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(.CC[1]:R=$(SUNPRO_BIN_DIR)) $(.CC[2-]) -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -156,6 +156,6 @@ rule C++-action
 
 actions sunpro-C++-action
 {
-    $(.CXX[1]:R=$(SUNPRO_BIN_DIR)) $(.CXX[2-]) -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(.CXX[1]:R=$(SUNPRO_BIN_DIR)) $(.CXX[2-]) -c -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -I"$(SYSHDRS)" -o "$(<)" "$(>)"
 }
 

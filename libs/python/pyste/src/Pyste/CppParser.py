@@ -25,13 +25,14 @@ class CppParserError(Exception): pass
 class CppParser:
     'Parses a header file and returns a list of declarations'
     
-    def __init__(self, includes=None, defines=None, cache_dir=None, version=None):
+    def __init__(self, includes=None, defines=None, cache_dir=None, version=None, gccxml_path = 'gccxml'): 
         'includes and defines ar the directives given to gcc'
         if includes is None:
             includes = []
         if defines is None:
             defines = []
         self.includes = includes
+        self.gccxml_path = gccxml_path 
         self.defines = defines
         self.version = version
         #if cache_dir is None:
@@ -85,10 +86,16 @@ class CppParser:
         '''Creates a temporary file, appends the text tail to it, and returns
         the filename of the file.
         '''
-        temp = tempfile.mktemp('.h') 
-        shutil.copyfile(filename, temp)
-        f = file(temp, 'a')
-        f.write('\n\n'+tail)
+        if hasattr(tempfile, 'mkstemp'):
+            f_no, temp = tempfile.mkstemp('.h')
+            f = file(temp, 'a')
+            os.close(f_no)
+        else:
+            temp = tempfile.mktemp('.h') 
+            f = file(temp, 'a')
+        f.write('#include "%s"\n\n' % os.path.abspath(filename))
+        f.write(tail)
+        f.write('\n')
         f.close()   
         return temp
 
@@ -111,10 +118,10 @@ class CppParser:
             includes = self._IncludeParams(filename)
             defines = self._DefineParams()
             # call gccxml
-            cmd = 'gccxml %s %s %s -fxml=%s'
+            cmd = '%s %s %s "%s" -fxml=%s' 
             filename = self.Unixfy(filename)
             xmlfile = self.Unixfy(xmlfile)
-            status = os.system(cmd % (includes, defines, filename, xmlfile))
+            status = os.system(cmd % (self.gccxml_path, includes, defines, filename, xmlfile))
             if status != 0 or not os.path.isfile(xmlfile):
                 raise CppParserError, 'Error executing gccxml'
             # parse the resulting xml
@@ -130,9 +137,10 @@ class CppParser:
             return declarations
         finally:
             if settings.DEBUG and os.path.isfile(xmlfile):
-                filename = os.path.basename(header)
-                filename = os.path.splitext(filename)[0] + '.xml'
-                shutil.copy(xmlfile, filename)
+                debugname = os.path.basename(header)
+                debugname = os.path.splitext(debugname)[0] + '.xml'
+                print 'DEBUG:', debugname
+                shutil.copy(xmlfile, debugname)
             # delete the temporary files
             try:
                 os.remove(xmlfile)
@@ -151,7 +159,7 @@ class CppParser:
         '''        
         if tail is None:
             tail = ''
-        tail.strip()
+        tail = tail.strip()
         declarations = self.GetCache(header, interface, tail)
         if declarations is None:
             declarations = self.ParseWithGCCXML(header, tail)
