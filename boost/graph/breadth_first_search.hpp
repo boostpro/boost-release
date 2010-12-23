@@ -115,8 +115,8 @@ namespace boost {
     template <class IncidenceGraph, class Buffer, class BFSVisitor, 
               class ColorMap>
     void bfs_impl(const IncidenceGraph& g, 
-		  typename graph_traits<IncidenceGraph>::vertex_descriptor s, 
-		  Buffer& Q, BFSVisitor vis, ColorMap color)
+                  typename graph_traits<IncidenceGraph>::vertex_descriptor s, 
+                  Buffer& Q, BFSVisitor vis, ColorMap color)
     {
       function_requires< IncidenceGraphConcept<IncidenceGraph> >();
       typedef graph_traits<IncidenceGraph> GTraits;
@@ -131,31 +131,31 @@ namespace boost {
       vis.discover_vertex(s, g);
       Q.push(s);
       while (! Q.empty()) {
-	Vertex u = Q.top();
-	Q.pop(); // pop before push to avoid problem if Q is priority_queue.
-	vis.examine_vertex(u, g);
-	typename GTraits::out_edge_iterator ei, ei_end;
-	for (tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
-	  Edge e = *ei;
-	  vis.examine_edge(e, g);
-	  Vertex v = target(e, g);
-	  ColorValue v_color = get(color, v);
-	  if (v_color == Color::white()) {
-	    vis.tree_edge(e, g);
-	    put(color, v, Color::gray());
-	    vis.discover_vertex(v, g);
-	    Q.push(v);
-	  } else {
-	    vis.non_tree_edge(e, g);
-	    
-	    if (v_color == Color::gray())
-	      vis.gray_target(e, g);
-	    else
-	      vis.black_target(e, g);
-	  }
-	} // for
-	put(color, u, Color::black());
-	vis.finish_vertex(u, g);
+        Vertex u = Q.top();
+        Q.pop(); // pop before push to avoid problem if Q is priority_queue.
+        vis.examine_vertex(u, g);
+        typename GTraits::out_edge_iterator ei, ei_end;
+        for (tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
+          Edge e = *ei;
+          vis.examine_edge(e, g);
+          Vertex v = target(e, g);
+          ColorValue v_color = get(color, v);
+          if (v_color == Color::white()) {
+            vis.tree_edge(e, g);
+            put(color, v, Color::gray());
+            vis.discover_vertex(v, g);
+            Q.push(v);
+          } else {
+            vis.non_tree_edge(e, g);
+            
+            if (v_color == Color::gray())
+              vis.gray_target(e, g);
+            else
+              vis.black_target(e, g);
+          }
+        } // for
+        put(color, u, Color::black());
+        vis.finish_vertex(u, g);
       } // while
     }
     
@@ -202,11 +202,11 @@ namespace boost {
        const bgl_named_params<P, T, R>& params,
        ColorMap color)
       {
-	bfs_helper
-	  (g, s, color,
-	   choose_param(get_param(params, graph_visitor),
-			make_bfs_visitor(null_visitor())),
-	   params);
+        bfs_helper
+          (g, s, color,
+           choose_param(get_param(params, graph_visitor),
+                        make_bfs_visitor(null_visitor())),
+           params);
       }
     };
 
@@ -219,18 +219,18 @@ namespace boost {
        const bgl_named_params<P, T, R>& params,
        detail::error_property_not_found)
       {
-	std::vector<default_color_type> color_vec(num_vertices(g));
-	null_visitor null_vis;
-	
-	bfs_helper
-	  (g, s, 
-	   make_iterator_property_map
-	   (color_vec.begin(), 
-	    choose_const_pmap(get_param(params, vertex_index), 
-			      g, vertex_index), color_vec[0]),
-	   choose_param(get_param(params, graph_visitor),
-			make_bfs_visitor(null_vis)),
-	   params);
+        std::vector<default_color_type> color_vec(num_vertices(g));
+        null_visitor null_vis;
+        
+        bfs_helper
+          (g, s, 
+           make_iterator_property_map
+           (color_vec.begin(), 
+            choose_const_pmap(get_param(params, vertex_index), 
+                              g, vertex_index), color_vec[0]),
+           choose_param(get_param(params, graph_visitor),
+                        make_bfs_visitor(null_vis)),
+           params);
       }
     };
 
@@ -244,12 +244,15 @@ namespace boost {
      typename graph_traits<VertexListGraph>::vertex_descriptor s,
      const bgl_named_params<P, T, R>& params)
   {
-    // The graph is passed by *const* reference so that graph adaptors (temporaries)
-    // can be passed into this function. However, the graph is not really const
-    // since we may write to property maps of the graph.
+    // The graph is passed by *const* reference so that graph adaptors
+    // (temporaries) can be passed into this function. However, the
+    // graph is not really const since we may write to property maps
+    // of the graph.
     VertexListGraph& ng = const_cast<VertexListGraph&>(g);
-    typedef typename property_value< bgl_named_params<P,T,R>, vertex_color_t>::type C;
-    detail::bfs_dispatch<C>::apply(ng, s, params, get_param(params, vertex_color));
+    typedef typename property_value< bgl_named_params<P,T,R>, 
+      vertex_color_t>::type C;
+    detail::bfs_dispatch<C>::apply(ng, s, params, 
+                                   get_param(params, vertex_color));
   }
 
 
@@ -267,7 +270,7 @@ namespace boost {
     queue_t Q;
     detail::wrap_ref<queue_t> Qref(Q);
 
-    breadth_first_search
+    detail::bfs_impl
       (g, s,
        choose_param(get_param(params, buffer_param_t()), Qref).ref,
        choose_param(get_param(params, graph_visitor),

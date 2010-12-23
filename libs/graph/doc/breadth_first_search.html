@@ -163,14 +163,23 @@ IN: <tt>visitor(BFSVisitor vis)</tt>
 <blockquote>
   A visitor object that is invoked inside the algorithm at the
   event-points specified by the <a href="BFSVisitor.html">BFS
-  Visitor</a> concept.<br> <b>Default:</b>
+  Visitor</a> concept. The visitor object is passed by value <a
+  href="#1">[1]</a>.<br> <b>Default:</b>
   <tt>bfs_visitor&lt;null_visitor&gt;</tt>
 </blockquote>
 
 UTIL/OUT: <tt>color_map(ColorMap color)</tt>
 <blockquote>
   This is used by the algorithm to keep track of its progress through
-  the graph. The type <tt>ColorMap</tt> must be a model of <a
+  the graph. The user need not initialize the color map before calling
+  <tt>breadth_first_search()</tt> since the algorithm initializes the
+  color of every vertex to white at the start of the algorihtm. If you
+  need to perform multiple breadth-first searches on a graph (for
+  example, if there are some disconnected components) then use the <a
+  href="./breadth_first_visit.html"><tt>breadth_first_visit()</tt></a>
+  function and do your own color initialization.
+
+  <p>The type <tt>ColorMap</tt> must be a model of <a
   href="../../property_map/ReadWritePropertyMap.html">Read/Write
   Property Map</a> and its key type must be the graph's vertex
   descriptor type and the value type of the color map must model
@@ -276,6 +285,14 @@ from <A HREF="./graph_theory_review.html#fig:bfs-example">Figure
 <a href="./bfs_visitor.html"><tt>bfs_visitor</tt></a> and
 <a href="./depth_first_search.html"><tt>depth_first_search()</tt></a>
 
+<h3>Notes</h3>
+
+<p><a name="1">[1]</a> 
+  Since the visitor parameter is passed by value, if your visitor
+  contains state then any changes to the state during the algorithm
+  will be made to a copy of the visitor object, not the visitor object
+  passed in. Therefore you may want the visitor to hold this state by
+  pointer or reference.
 
 <br>
 <HR>

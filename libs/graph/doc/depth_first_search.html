@@ -159,7 +159,8 @@ IN: <tt>visitor(DFSVisitor vis)</tt>
 <blockquote>
   A visitor object that is invoked inside the algorithm at the
   event-points specified by the <a href="./DFSVisitor.html">DFS
-  Visitor</a> concept.<br> <b>Default:</b>
+  Visitor</a> concept. The visitor object is passed by value <a
+  href="#1">[1]</a>. <br> <b>Default:</b>
   <tt>dfs_visitor&lt;null_visitor&gt;</tt>
 </blockquote>
 
@@ -225,7 +226,14 @@ The time complexity is <i>O(E + V)</i>.
   wish to record predecessors, do so at this event point.
   
 <li><b><tt>vis.back_edge(e, g)</tt></b> is invoked on the back edges in
-  the graph.
+  the graph. For an undirected graph there is some ambiguity
+  between tree edges and back edges since the edge <i>(u,v)</i>
+  and <i>(v,u)</i> are the same edge, but both the <tt>tree_edge()</tt>
+  and <tt>back_edge()</tt> functions will be invoked. One way to
+  resolve this ambiguity is to record the tree edges, and then
+  disregard the back-edges that are already marked as tree edges.
+  An easy way to record tree edges is to record predecessors at the
+  <tt>tree_edge</tt> event point.
   
 <li><b><tt>vis.forward_or_cross_edge(e, g)</tt></b> is invoked on
   forward or cross edges in the graph. In an undirected graph this
@@ -250,6 +258,14 @@ The example in <a href="../example/dfs_basics.cpp">
 
 <a href="./depth_first_visit.html"><tt>depth_first_visit</tt></a>
 
+<h3>Notes</h3>
+
+<p><a name="1">[1]</a> 
+  Since the visitor parameter is passed by value, if your visitor
+  contains state then any changes to the state during the algorithm
+  will be made to a copy of the visitor object, not the visitor object
+  passed in. Therefore you may want the visitor to hold this state by
+  pointer or reference.
 
 <br>
 <HR>

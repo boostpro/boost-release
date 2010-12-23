@@ -23,7 +23,7 @@
   */
 
 
-/* start with C compatability API */
+/* start with C compatibility API */
 
 #ifndef BOOST_RE_REGEX_HPP
 #define BOOST_RE_REGEX_HPP
@@ -527,11 +527,11 @@ public:
 
    template <class ST, class SA>
    explicit reg_expression(const std::basic_string<charT, ST, SA>& p, flag_type f = regbase::normal, const Allocator& a = Allocator())
-    : data(a), pkmp(0) { set_expression(p, f | regbase::use_except); }
+    : data(a), pkmp(0), error_code_(REG_EMPTY), _expression(0) { set_expression(p, f | regbase::use_except); }
 
    template <class I>
    reg_expression(I first, I last, flag_type f = regbase::normal, const Allocator& al = Allocator())
-    : data(al), pkmp(0)
+    : data(al), pkmp(0), error_code_(REG_EMPTY), _expression(0)
    {
       size_type len = last-first;
       scoped_array<charT> a(new charT[len]);
@@ -637,7 +637,7 @@ public:
    bool BOOST_RE_CALL operator<(const reg_expression&)const;
    //
    // The following are deprecated as public interfaces
-   // but are available for compatability with earlier versions.
+   // but are available for compatibility with earlier versions.
    allocator_type BOOST_RE_CALL allocator()const;
    const charT* BOOST_RE_CALL expression()const { return (this->error_code() ? 0 : _expression); }
    unsigned int BOOST_RE_CALL set_expression(const charT* p, const charT* end, flag_type f = regbase::normal);
@@ -656,14 +656,14 @@ private:
    unsigned marks;
    int repeats;
    unsigned char* startmap;
-   charT* _expression;
    unsigned _expression_len;
    unsigned int _leading_len;
    const charT* _leading_string;
    unsigned int _leading_string_len;
    re_detail::kmp_info<charT>* pkmp;
-   traits_type traits_inst;
    unsigned error_code_;
+   charT* _expression;
+   traits_type traits_inst;
 
    void BOOST_RE_CALL compile_maps();
    void BOOST_RE_CALL compile_map(re_detail::re_syntax_base* node, unsigned char* _map, unsigned int* pnull, unsigned char mask, re_detail::re_syntax_base* terminal = 0)const;

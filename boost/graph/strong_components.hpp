@@ -34,7 +34,7 @@
 
 namespace boost {
 
-  //===========================================================================
+  //==========================================================================
   // This is Tarjan's algorithm for strongly connected components
   // from his paper "Depth first search and linear graph algorithms".
   // It calculates the components in a single application of DFS.
@@ -136,7 +136,8 @@ namespace boost {
                           detail::error_property_not_found)
     {
       typedef typename graph_traits<Graph>::vertices_size_type size_type;
-      std::vector<size_type> time_vec(num_vertices(g));
+      size_type	n = num_vertices(g) > 0 ? num_vertices(g) : 1;
+      std::vector<size_type> time_vec(n);
       return strong_components_impl
         (g, comp, r_map,
          make_iterator_property_map(time_vec.begin(), choose_const_pmap
@@ -165,7 +166,9 @@ namespace boost {
                           detail::error_property_not_found)
     {
       typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-      std::vector<Vertex> root_vec(num_vertices(g));
+      typename std::vector<Vertex>::size_type
+	n = num_vertices(g) > 0 ? num_vertices(g) : 1;
+      std::vector<Vertex> root_vec(n);
       return strong_comp_dispatch2
         (g, comp, 
          make_iterator_property_map(root_vec.begin(), choose_const_pmap
@@ -195,6 +198,8 @@ namespace boost {
   strong_components(const Graph& g, ComponentMap comp,
                     const bgl_named_params<P, T, R>& params)
   {
+    typedef typename graph_traits<Graph>::directed_category DirCat;
+    typedef typename require_same<DirCat, directed_tag>::type req1;
     return detail::strong_comp_dispatch1
       (g, comp, params, get_param(params, vertex_root_t()));
   }
@@ -203,9 +208,25 @@ namespace boost {
   inline typename property_traits<ComponentMap>::value_type
   strong_components(const Graph& g, ComponentMap comp)
   {
+    typedef typename graph_traits<Graph>::directed_category DirCat;
+    typedef typename require_same<DirCat, directed_tag>::type req1;
     bgl_named_params<int, int> params(0);
     return strong_components(g, comp, params);
   }
+
+  template <typename Graph, typename ComponentMap, typename ComponentLists>
+  void build_component_lists
+    (const Graph& g,
+     typename graph_traits<Graph>::vertices_size_type num_scc,
+     ComponentMap component_number,
+     ComponentLists& components)
+  {
+    components.resize(num_scc);
+    typename graph_traits<Graph>::vertex_iterator vi, vi_end;
+    for (tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+      components[component_number[*vi]].push_back(*vi);
+  }
+
 
 } // namespace boost
 
@@ -217,7 +238,7 @@ namespace boost {
 
 namespace boost {
 
-  //===========================================================================
+  //==========================================================================
   // This is the version of strongly connected components from
   // "Intro. to Algorithms" by Cormen, Leiserson, Rivest, which was
   // adapted from "Data Structure and Algorithms" by Aho, Hopcroft,
@@ -243,8 +264,8 @@ namespace boost {
     typedef color_traits<ColorValue> Color;
     typename property_traits<FinishTime>::value_type time = 0;
     depth_first_search
-      (G, make_dfs_visitor(stamp_times(finish_time, time, on_finish_vertex())),
-       color);
+     (G, make_dfs_visitor(stamp_times(finish_time, time, on_finish_vertex())),
+      color);
 
     Graph G_T(num_vertices(G));
     transpose_graph(G, G_T);

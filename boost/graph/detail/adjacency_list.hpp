@@ -469,6 +469,19 @@ namespace boost {
       // or maybe just Container
     }
 
+    template <class Config>
+    inline void 
+    clear_out_edges(typename Config::vertex_descriptor u,
+		    directed_graph_helper<Config>& g_)
+    {
+      typedef typename Config::graph_type graph_type;
+      typedef typename Config::edge_parallel_category Cat;
+      graph_type& g = static_cast<graph_type&>(g_);
+      g.out_edge_list(u).clear();
+      // clear() should be a req of Sequence and AssociativeContainer,
+      // or maybe just Container
+    }
+
     // O(V), could do better...
     template <class Config>
     inline typename Config::edges_size_type
@@ -1085,6 +1098,44 @@ namespace boost {
       in_edge_list(g, u).clear();
     }
 
+    template <class Config>
+    inline void
+    clear_out_edges(typename Config::vertex_descriptor u,
+		    bidirectional_graph_helper_with_property<Config>& g_)
+    {
+      typedef typename Config::graph_type graph_type;
+      typedef typename Config::edge_parallel_category Cat;
+      graph_type& g = static_cast<graph_type&>(g_);
+      typename Config::OutEdgeList& el = g.out_edge_list(u);
+      typename Config::OutEdgeList::iterator 
+        ei = el.begin(), ei_end = el.end();
+      for (; ei != ei_end; ++ei) {
+        detail::erase_from_incidence_list
+          (in_edge_list(g, (*ei).get_target()), u, Cat());
+        g.m_edges.erase((*ei).get_iter());
+      }      
+      g.out_edge_list(u).clear();
+    }
+
+    template <class Config>
+    inline void
+    clear_in_edges(typename Config::vertex_descriptor u,
+		   bidirectional_graph_helper_with_property<Config>& g_)
+    {
+      typedef typename Config::graph_type graph_type;
+      typedef typename Config::edge_parallel_category Cat;
+      graph_type& g = static_cast<graph_type&>(g_);
+      typename Config::InEdgeList& in_el = in_edge_list(g, u);
+      typename Config::InEdgeList::iterator 
+        in_ei = in_el.begin(), in_ei_end = in_el.end();
+      for (; in_ei != in_ei_end; ++in_ei) {
+        detail::erase_from_incidence_list
+          (g.out_edge_list((*in_ei).get_target()), u, Cat());
+        g.m_edges.erase((*in_ei).get_iter());   
+      }
+      in_edge_list(g, u).clear();
+    }
+
     // O(1) for allow_parallel_edge_tag
     // O(log(E/V)) for disallow_parallel_edge_tag
     template <class Config>
@@ -1438,6 +1489,9 @@ namespace boost {
         return *this;
       }
       inline void clear() {
+	for (typename StoredVertexList::iterator i = m_vertices.begin();
+	     i != m_vertices.end(); ++i)
+	  delete (stored_vertex*)*i;
         m_vertices.clear();
         m_edges.clear();
       }
@@ -1475,7 +1529,11 @@ namespace boost {
         }
         delete [] v;
       }
-
+      ~adj_list_impl() {
+	for (typename StoredVertexList::iterator i = m_vertices.begin();
+	     i != m_vertices.end(); ++i)
+	  delete (stored_vertex*)*i;
+      }
       //    protected:
       inline OutEdgeList& out_edge_list(vertex_descriptor v) {
         stored_vertex* sv = (stored_vertex*)v;

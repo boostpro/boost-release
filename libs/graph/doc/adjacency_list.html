@@ -317,8 +317,8 @@ vertex descriptors have become invalid, the result is incorrect.
   std::vector&lt;Vertex&gt; parent(num_vertices(G));
   std::vector&lt;Vertex&gt; distance(num_vertices(G));
 
-  dijkstra_shortest_paths(G, s, &amp;distance[0], 
-    make_ucs_visitor(record_predecessors(&amp;parent[0], on_edge_relaxed())));
+  dijkstra_shortest_paths(G, s, distance_map(&amp;distance[0]).
+    predecessor_map(&amp;parent[0]));
 
   remove_vertex(s, G); <b>// Bad idea! Invalidates vertex descriptors in parent vector.</b>
 
@@ -930,6 +930,35 @@ in the vertex set of the graph.
 The affect on descriptor and iterator stability is the
 same as that of invoking <tt>remove_edge()</tt> for all of
 the edges that have <tt>u</tt> as the source or target.
+
+<hr>
+
+<pre>
+void clear_out_edges(vertex_descriptor u, adjacency_list&amp; g)
+</pre>
+Removes all out-edges from vertex <i>u</i>. The vertex still appears
+in the vertex set of the graph.
+<p>
+The affect on descriptor and iterator stability is the
+same as that of invoking <tt>remove_edge()</tt> for all of
+the edges that have <tt>u</tt> as the source.
+<p>
+This operation is not applicable to undirected graphs
+(use <tt>clear_vertex()</tt> instead).
+
+<hr>
+
+<pre>
+void clear_in_edges(vertex_descriptor u, adjacency_list&amp; g)
+</pre>
+Removes all in-edges from vertex <i>u</i>. The vertex still appears
+in the vertex set of the graph.
+<p>
+The affect on descriptor and iterator stability is the
+same as that of invoking <tt>remove_edge()</tt> for all of
+the edges that have <tt>u</tt> as the target.
+<p>
+This operation is only applicable to bidirectional graphs.
 
 <hr>
 

@@ -91,34 +91,34 @@ inline bool BOOST_RE_CALL reg_expression<charT, traits, Allocator>::can_start(ch
 
 template <class charT, class traits, class Allocator>
 CONSTRUCTOR_INLINE reg_expression<charT, traits, Allocator>::reg_expression(const Allocator& a)
-    : regbase(), data(a), pkmp(0), error_code_(REG_EMPTY)
+    : regbase(), data(a), pkmp(0), error_code_(REG_EMPTY), _expression(0)
 {
 }
 
 template <class charT, class traits, class Allocator>
 CONSTRUCTOR_INLINE reg_expression<charT, traits, Allocator>::reg_expression(const charT* p, flag_type f, const Allocator& a)
-    : data(a), pkmp(0), error_code_(REG_EMPTY)
+    : data(a), pkmp(0), error_code_(REG_EMPTY), _expression(0)
 {
    set_expression(p, f | regbase::use_except);
 }
 
 template <class charT, class traits, class Allocator>
 CONSTRUCTOR_INLINE reg_expression<charT, traits, Allocator>::reg_expression(const charT* p1, const charT* p2, flag_type f, const Allocator& a)
-    : data(a), pkmp(0), error_code_(REG_EMPTY)
+    : data(a), pkmp(0), error_code_(REG_EMPTY), _expression(0)
 {
     set_expression(p1, p2, f | regbase::use_except);
 }
 
 template <class charT, class traits, class Allocator>
 CONSTRUCTOR_INLINE reg_expression<charT, traits, Allocator>::reg_expression(const charT* p, size_type len, flag_type f, const Allocator& a)
-    : data(a), pkmp(0), error_code_(REG_EMPTY)
+    : data(a), pkmp(0), error_code_(REG_EMPTY), _expression(0)
 {
     set_expression(p, p + len, f | regbase::use_except);
 }
 
 template <class charT, class traits, class Allocator>
 reg_expression<charT, traits, Allocator>::reg_expression(const reg_expression<charT, traits, Allocator>& e)
-   : regbase(e), data(e.allocator()), pkmp(0), error_code_(REG_EMPTY)
+   : regbase(e), data(e.allocator()), pkmp(0), error_code_(REG_EMPTY), _expression(0)
 {
    //
    // we do a deep copy only if e is a valid expression, otherwise fail.
@@ -1379,12 +1379,12 @@ unsigned int BOOST_RE_CALL reg_expression<charT, traits, Allocator>::set_express
          {
             ((re_detail::re_jump*)dat)->alt.i = data.size();
             mark.pop();
-            dat = (re_detail::re_jump*)((unsigned char*)data.data() + mark.peek());
             if(mark.empty())
             {
                fail(REG_EPAREN);
                return error_code();
             }
+            dat = (re_detail::re_jump*)((unsigned char*)data.data() + mark.peek());
          }
 
          dat = add_simple(0, re_detail::syntax_element_endmark, sizeof(re_detail::re_brace));

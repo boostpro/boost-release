@@ -59,13 +59,14 @@ all: libboost_python.a \
      abstract.pyd \
      getting_started1.pyd getting_started2.pyd \
      simple_vector.pyd \
-     do_it_yourself_converters.pyd \
+     do_it_yourself_convts.pyd \
      pickle1.pyd pickle2.pyd pickle3.pyd \
      noncopyable_export.pyd noncopyable_import.pyd \
-     ivect.pyd dvect.pyd
+     ivect.pyd dvect.pyd \
+     richcmp1.pyd richcmp2.pyd richcmp3.pyd
 
 libboost_python.a: $(OBJ)
-	del libboost_python.a
+	-del libboost_python.a
 	ar r libboost_python.a $(OBJ)
 
 DLLWRAPOPTS=-s --driver-name g++ -s \
@@ -101,11 +102,11 @@ simple_vector.pyd: $(OBJ) simple_vector.o
           --def simple_vector.def \
           $(OBJ) simple_vector.o $(PYLIB)
 
-do_it_yourself_converters.pyd: $(OBJ) do_it_yourself_converters.o
+do_it_yourself_convts.pyd: $(OBJ) do_it_yourself_convts.o
 	dllwrap $(DLLWRAPOPTS) \
-          --dllname do_it_yourself_converters.pyd \
-          --def do_it_yourself_converters.def \
-          $(OBJ) do_it_yourself_converters.o $(PYLIB)
+          --dllname do_it_yourself_convts.pyd \
+          --def do_it_yourself_convts.def \
+          $(OBJ) do_it_yourself_convts.o $(PYLIB)
 
 pickle1.pyd: $(OBJ) pickle1.o
 	dllwrap $(DLLWRAPOPTS) \
@@ -149,6 +150,24 @@ dvect.pyd: $(OBJ) dvect.o
           --def dvect.def \
           $(OBJ) dvect.o $(PYLIB)
 
+richcmp1.pyd: $(OBJ) richcmp1.o
+	dllwrap $(DLLWRAPOPTS) \
+          --dllname richcmp1.pyd \
+          --def richcmp1.def \
+          $(OBJ) richcmp1.o $(PYLIB)
+
+richcmp2.pyd: $(OBJ) richcmp2.o
+	dllwrap $(DLLWRAPOPTS) \
+          --dllname richcmp2.pyd \
+          --def richcmp2.def \
+          $(OBJ) richcmp2.o $(PYLIB)
+
+richcmp3.pyd: $(OBJ) richcmp3.o
+	dllwrap $(DLLWRAPOPTS) \
+          --dllname richcmp3.pyd \
+          --def richcmp3.def \
+          $(OBJ) richcmp3.o $(PYLIB)
+
 .cpp.o:
 	$(CPP) $(CPPOPTS) -c $*.cpp
 
@@ -158,17 +177,20 @@ test:
 	$(PYEXE) test_getting_started1.py
 	$(PYEXE) test_getting_started2.py
 	$(PYEXE) test_simple_vector.py
-	$(PYEXE) test_do_it_yourself_converters.py
+	$(PYEXE) test_do_it_yourself_convts.py
 	$(PYEXE) test_pickle1.py
 	$(PYEXE) test_pickle2.py
 	$(PYEXE) test_pickle3.py
 	$(PYEXE) test_cross_module.py
+	$(PYEXE) test_richcmp1.py
+	$(PYEXE) test_richcmp2.py
+	$(PYEXE) test_richcmp3.py
 
 clean:
-	del *.o
-	del *.a
-	del *.pyd
-	del *.pyc
+	-del *.o
+	-del *.a
+	-del *.pyd
+	-del *.pyc
 
 softlinks:
 	python $(BOOST_UNIX)/libs/python/build/filemgr.py $(BOOST_UNIX) softlinks

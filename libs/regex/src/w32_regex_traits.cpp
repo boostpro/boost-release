@@ -32,6 +32,13 @@
 
 #if defined(_WIN32) && !defined(BOOST_RE_NO_W32)
 
+//
+// VC6 needs to link to user32.lib:
+//
+#ifdef BOOST_MSVC
+#pragma comment(lib, "user32.lib")
+#endif
+
 namespace{
 
 //
@@ -272,6 +279,10 @@ void BOOST_RE_CALL w32_traits_base::do_init()
       }
       buf[map_size] = (char)0;
       GetStringTypeA(GetUserDefaultLCID(), CT_CTYPE1, buf, map_size, class_map);
+      for(i = 0; i < map_size; ++i)
+      {
+         class_map[i] &= char_class_win;
+      }
       class_map['_'] |= char_class_underscore;
       LCMapStringA(GetUserDefaultLCID(), LCMAP_LOWERCASE, buf, map_size, lower_case_map, map_size);
       //
@@ -654,7 +665,7 @@ bool BOOST_RE_CALL w32_regex_traits<wchar_t>::do_iswclass(wchar_t c, boost::uint
    if(f & char_class_unicode)
       return true;
    else if(isPlatformNT && GetStringTypeW(CT_CTYPE1, &c, 1, &mask))
-      return BOOST_RE_MAKE_BOOL(mask & f);
+      return BOOST_RE_MAKE_BOOL(mask & f &char_class_win);
    else if((f & char_class_graph) == char_class_graph)
       return true;  // all wide characters are considered "graphics"
    return false;
