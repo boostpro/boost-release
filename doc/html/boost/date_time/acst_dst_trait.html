@@ -20,52 +20,52 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="uk_dst_trait.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.local_timezone_defs_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="microsec_clock.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="uk_dst_trait.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.local_timezone_defs_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="microsec_clock.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Struct template acst_dst_trait">
+<div class="refentry">
 <a name="boost.date_time.acst_dst_trait"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Struct template acst_dst_trait</span></h2>
 <p>boost::date_time::acst_dst_trait</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../date_time/doxy.html#header.boost.date_time.local_timezone_defs_hpp" title="Header &lt;boost/date_time/local_timezone_defs.hpp&gt;">boost/date_time/local_timezone_defs.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../date_time/doxy.html#header.boost.date_time.local_timezone_defs_hpp" title="Header &lt;boost/date_time/local_timezone_defs.hpp&gt;">boost/date_time/local_timezone_defs.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> date_type&gt; 
-<span class="bold"><strong>struct</strong></span> <a class="link" href="acst_dst_trait.html" title="Struct template acst_dst_trait">acst_dst_trait</a> {
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> date_type::day_of_week_type                <a name="boost.date_time.acst_dst_trait.day_of_week_type"></a>day_of_week_type;  
-  <span class="bold"><strong>typedef</strong></span> date_type::month_type                      <a name="boost.date_time.acst_dst_trait.month_type"></a>month_type;        
-  <span class="bold"><strong>typedef</strong></span> date_type::year_type                       <a name="boost.date_time.acst_dst_trait.year_type"></a>year_type;         
-  <span class="bold"><strong>typedef</strong></span> <a class="link" href="last_kday_of_month.html" title="Class template last_kday_of_month">date_time::last_kday_of_month</a>&lt; date_type &gt; <a name="boost.date_time.acst_dst_trait.start_rule_functor"></a>start_rule_functor;
-  <span class="bold"><strong>typedef</strong></span> <a class="link" href="last_kday_of_month.html" title="Class template last_kday_of_month">date_time::last_kday_of_month</a>&lt; date_type &gt; <a name="boost.date_time.acst_dst_trait.end_rule_functor"></a>end_rule_functor;  
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> date_type<span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="acst_dst_trait.html" title="Struct template acst_dst_trait">acst_dst_trait</a> <span class="special">{</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">date_type</span><span class="special">::</span><span class="identifier">day_of_week_type</span>                <a name="boost.date_time.acst_dst_trait.day_of_week_type"></a><span class="identifier">day_of_week_type</span><span class="special">;</span>  
+  <span class="keyword">typedef</span> <span class="identifier">date_type</span><span class="special">::</span><span class="identifier">month_type</span>                      <a name="boost.date_time.acst_dst_trait.month_type"></a><span class="identifier">month_type</span><span class="special">;</span>        
+  <span class="keyword">typedef</span> <span class="identifier">date_type</span><span class="special">::</span><span class="identifier">year_type</span>                       <a name="boost.date_time.acst_dst_trait.year_type"></a><span class="identifier">year_type</span><span class="special">;</span>         
+  <span class="keyword">typedef</span> <a class="link" href="last_kday_of_month.html" title="Class template last_kday_of_month">date_time::last_kday_of_month</a><span class="special">&lt;</span> <span class="identifier">date_type</span> <span class="special">&gt;</span> <a name="boost.date_time.acst_dst_trait.start_rule_functor"></a><span class="identifier">start_rule_functor</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <a class="link" href="last_kday_of_month.html" title="Class template last_kday_of_month">date_time::last_kday_of_month</a><span class="special">&lt;</span> <span class="identifier">date_type</span> <span class="special">&gt;</span> <a name="boost.date_time.acst_dst_trait.end_rule_functor"></a><span class="identifier">end_rule_functor</span><span class="special">;</span>  
 
-  <span class="emphasis"><em>// <a class="link" href="acst_dst_trait.html#id377688-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> day_of_week_type</span> <a class="link" href="acst_dst_trait.html#id377692-bb">start_day</a>(year_type) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> month_type</span> <a class="link" href="acst_dst_trait.html#id377705-bb">start_month</a>(year_type) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> day_of_week_type</span> <a class="link" href="acst_dst_trait.html#id334186-bb">end_day</a>(year_type) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> month_type</span> <a class="link" href="acst_dst_trait.html#id315926-bb">end_month</a>(year_type) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>int</strong></span></span> <a class="link" href="acst_dst_trait.html#id315940-bb">dst_start_offset_minutes</a>() ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>int</strong></span></span> <a class="link" href="acst_dst_trait.html#id315948-bb">dst_end_offset_minutes</a>() ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>int</strong></span></span> <a class="link" href="acst_dst_trait.html#id384480-bb">dst_shift_length_minutes</a>() ;
-  <span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a class="link" href="acst_dst_trait.html#id384487-bb">local_dst_start_day</a>(year_type) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a class="link" href="acst_dst_trait.html#id583472-bb">local_dst_end_day</a>(year_type) ;
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id810006"></a><h2>Description</h2>
-<div class="refsect2" title="acst_dst_trait public static functions">
-<a name="id810009"></a><h3>
-<a name="id377688-bb"></a><code class="computeroutput">acst_dst_trait</code> public static functions</h3>
+  <span class="comment">// <a class="link" href="acst_dst_trait.html#id352174-bb">public static functions</a></span>
+  <span class="keyword">static</span> <span class="identifier">day_of_week_type</span> <a class="link" href="acst_dst_trait.html#id352178-bb"><span class="identifier">start_day</span></a><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">month_type</span> <a class="link" href="acst_dst_trait.html#id352192-bb"><span class="identifier">start_month</span></a><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">day_of_week_type</span> <a class="link" href="acst_dst_trait.html#id352205-bb"><span class="identifier">end_day</span></a><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">month_type</span> <a class="link" href="acst_dst_trait.html#id352219-bb"><span class="identifier">end_month</span></a><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">int</span> <a class="link" href="acst_dst_trait.html#id364173-bb"><span class="identifier">dst_start_offset_minutes</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">int</span> <a class="link" href="acst_dst_trait.html#id364181-bb"><span class="identifier">dst_end_offset_minutes</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">int</span> <a class="link" href="acst_dst_trait.html#id364189-bb"><span class="identifier">dst_shift_length_minutes</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">date_type</span> <a class="link" href="acst_dst_trait.html#id364197-bb"><span class="identifier">local_dst_start_day</span></a><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">date_type</span> <a class="link" href="acst_dst_trait.html#id435441-bb"><span class="identifier">local_dst_end_day</span></a><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id1149994"></a><h2>Description</h2>
+<div class="refsect2">
+<a name="id1149998"></a><h3>
+<a name="id352174-bb"></a><code class="computeroutput">acst_dst_trait</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> day_of_week_type</span> <a name="id377692-bb"></a>start_day(year_type) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> month_type</span> <a name="id377705-bb"></a>start_month(year_type) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> day_of_week_type</span> <a name="id334186-bb"></a>end_day(year_type) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> month_type</span> <a name="id315926-bb"></a>end_month(year_type) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>int</strong></span></span> <a name="id315940-bb"></a>dst_start_offset_minutes() ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>int</strong></span></span> <a name="id315948-bb"></a>dst_end_offset_minutes() ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>int</strong></span></span> <a name="id384480-bb"></a>dst_shift_length_minutes() ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a name="id384487-bb"></a>local_dst_start_day(year_type year) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a name="id583472-bb"></a>local_dst_end_day(year_type year) ;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">day_of_week_type</span> <a name="id352178-bb"></a><span class="identifier">start_day</span><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">month_type</span> <a name="id352192-bb"></a><span class="identifier">start_month</span><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">day_of_week_type</span> <a name="id352205-bb"></a><span class="identifier">end_day</span><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">month_type</span> <a name="id352219-bb"></a><span class="identifier">end_month</span><span class="special">(</span><span class="identifier">year_type</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="keyword">int</span> <a name="id364173-bb"></a><span class="identifier">dst_start_offset_minutes</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="keyword">int</span> <a name="id364181-bb"></a><span class="identifier">dst_end_offset_minutes</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="keyword">int</span> <a name="id364189-bb"></a><span class="identifier">dst_shift_length_minutes</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">date_type</span> <a name="id364197-bb"></a><span class="identifier">local_dst_start_day</span><span class="special">(</span><span class="identifier">year_type</span> year<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">date_type</span> <a name="id435441-bb"></a><span class="identifier">local_dst_end_day</span><span class="special">(</span><span class="identifier">year_type</span> year<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
@@ -78,7 +78,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="uk_dst_trait.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.local_timezone_defs_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="microsec_clock.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="uk_dst_trait.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.local_timezone_defs_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="microsec_clock.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

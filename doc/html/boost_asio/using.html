@@ -20,14 +20,14 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="overview/implementation.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_asio.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../boost_asio.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="tutorial.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview/implementation.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_asio.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../boost_asio.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tutorial.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Using Boost.Asio">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_asio.using"></a><a class="link" href="using.html" title="Using Boost.Asio"> Using Boost.Asio</a>
 </h2></div></div></div>
 <a name="boost_asio.using.supported_platforms"></a><h4>
-<a name="id572841"></a>
+<a name="id778678"></a>
       <a class="link" href="using.html#boost_asio.using.supported_platforms">Supported Platforms</a>
     </h4>
 <p>
@@ -35,50 +35,50 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        Win32 and Win64 using Visual C++ 7.1 and Visual C++ 8.0.
-      </li>
+          Win32 and Win64 using Visual C++ 7.1 and Visual C++ 8.0.
+        </li>
 <li class="listitem">
-        Win32 using MinGW.
-      </li>
+          Win32 using MinGW.
+        </li>
 <li class="listitem">
-        Win32 using Cygwin. (<code class="computeroutput"><span class="identifier">__USE_W32_SOCKETS</span></code>
-        must be defined.)
-      </li>
+          Win32 using Cygwin. (<code class="computeroutput"><span class="identifier">__USE_W32_SOCKETS</span></code>
+          must be defined.)
+        </li>
 <li class="listitem">
-        Linux (2.4 or 2.6 kernels) using g++ 3.3 or later.
-      </li>
+          Linux (2.4 or 2.6 kernels) using g++ 3.3 or later.
+        </li>
 <li class="listitem">
-        Solaris using g++ 3.3 or later.
-      </li>
+          Solaris using g++ 3.3 or later.
+        </li>
 <li class="listitem">
-        Mac OS X 10.4 using g++ 3.3 or later.
-      </li>
+          Mac OS X 10.4 using g++ 3.3 or later.
+        </li>
 </ul></div>
 <p>
       The following platforms may also work:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        AIX 5.3 using XL C/C++ v9.
-      </li>
+          AIX 5.3 using XL C/C++ v9.
+        </li>
 <li class="listitem">
-        HP-UX 11i v3 using patched aC++ A.06.14.
-      </li>
+          HP-UX 11i v3 using patched aC++ A.06.14.
+        </li>
 <li class="listitem">
-        QNX Neutrino 6.3 using g++ 3.3 or later.
-      </li>
+          QNX Neutrino 6.3 using g++ 3.3 or later.
+        </li>
 <li class="listitem">
-        Solaris using Sun Studio 11 or later.
-      </li>
+          Solaris using Sun Studio 11 or later.
+        </li>
 <li class="listitem">
-        Tru64 v5.1 using Compaq C++ v7.1.
-      </li>
+          Tru64 v5.1 using Compaq C++ v7.1.
+        </li>
 <li class="listitem">
-        Win32 using Borland C++ 5.9.2
-      </li>
+          Win32 using Borland C++ 5.9.2
+        </li>
 </ul></div>
 <a name="boost_asio.using.dependencies"></a><h4>
-<a name="id572937"></a>
+<a name="id778813"></a>
       <a class="link" href="using.html#boost_asio.using.dependencies">Dependencies</a>
     </h4>
 <p>
@@ -87,25 +87,27 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        Boost.System for the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span></code>
-        and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">system_error</span></code> classes.
-      </li>
+          Boost.System for the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span></code>
+          and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">system_error</span></code> classes.
+        </li>
 <li class="listitem">
-        Boost.Regex (optional) if you use any of the <a class="link" href="reference/read_until.html" title="read_until"><code class="computeroutput"><span class="identifier">read_until</span><span class="special">()</span></code></a>
-        or <a class="link" href="reference/async_read_until.html" title="async_read_until"><code class="computeroutput"><span class="identifier">async_read_until</span><span class="special">()</span></code></a> overloads that take a <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">regex</span></code> parameter.
-      </li>
+          Boost.Regex (optional) if you use any of the <a class="link" href="reference/read_until.html" title="read_until"><code class="computeroutput"><span class="identifier">read_until</span><span class="special">()</span></code></a>
+          or <a class="link" href="reference/async_read_until.html" title="async_read_until"><code class="computeroutput"><span class="identifier">async_read_until</span><span class="special">()</span></code></a>
+          overloads that take a <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">regex</span></code>
+          parameter.
+        </li>
 <li class="listitem">
-<a href="http://www.openssl.org" target="_top">OpenSSL</a> (optional) if you use
-        Boost.Asio's SSL support.
-      </li>
+          <a href="http://www.openssl.org" target="_top">OpenSSL</a> (optional) if you use
+          Boost.Asio's SSL support.
+        </li>
 </ul></div>
 <p>
       Furthermore, some of the examples also require the Boost.Thread, Boost.Date_Time
       or Boost.Serialization libraries.
     </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -116,7 +118,7 @@
       </p></td></tr>
 </table></div>
 <a name="boost_asio.using.building_boost_libraries"></a><h4>
-<a name="id573146"></a>
+<a name="id779032"></a>
       <a class="link" href="using.html#boost_asio.using.building_boost_libraries">Building Boost Libraries</a>
     </h4>
 <p>
@@ -131,7 +133,7 @@
       Consult the Boost.Build documentation for more details.
     </p>
 <a name="boost_asio.using.macros"></a><h4>
-<a name="id573196"></a>
+<a name="id779082"></a>
       <a class="link" href="using.html#boost_asio.using.macros">Macros</a>
     </h4>
 <p>
@@ -450,7 +452,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.using.mailing_list"></a><h4>
-<a name="id574277"></a>
+<a name="id780164"></a>
       <a class="link" href="using.html#boost_asio.using.mailing_list">Mailing List</a>
     </h4>
 <p>
@@ -458,7 +460,7 @@
       Newsgroup access is provided via <a href="http://dir.gmane.org/gmane.comp.lib.boost.asio.user" target="_top">Gmane</a>.
     </p>
 <a name="boost_asio.using.wiki"></a><h4>
-<a name="id574315"></a>
+<a name="id780201"></a>
       <a class="link" href="using.html#boost_asio.using.wiki">Wiki</a>
     </h4>
 <p>
@@ -476,7 +478,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="overview/implementation.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_asio.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../boost_asio.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="tutorial.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview/implementation.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_asio.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../boost_asio.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tutorial.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

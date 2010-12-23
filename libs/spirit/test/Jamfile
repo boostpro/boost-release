@@ -36,7 +36,7 @@ import testing ;
     [ run qi/bool.cpp                       : : : : ]
     [ run qi/char.cpp                       : : : : ]
     [ run qi/char_class.cpp                 : : : : ]
-    #[ run qi/debug.cpp                      : : : : ]
+    [ run qi/debug.cpp                      : : : : ]
     [ run qi/difference.cpp                 : : : : ]
     [ run qi/encoding.cpp                   : : : : ]
     [ run qi/end.cpp                        : : : : ]
@@ -87,7 +87,9 @@ import testing ;
     [ run karma/char.cpp                    : : : : karma_char ]
     [ run karma/char_class.cpp              : : : : karma_char_class ]
     [ run karma/columns.cpp                 : : : : ]
+    [ run karma/debug.cpp                   : : : : karma_debug ]
     [ run karma/delimiter.cpp               : : : : ]
+    [ run karma/duplicate.cpp               : : : : ]
     [ run karma/encoding.cpp                : : : : karma_encoding ]
     [ run karma/eol.cpp                     : : : : karma_eol ]
     [ run karma/eps.cpp                     : : : : karma_eps ]
@@ -143,6 +145,7 @@ import testing ;
     [ run lex/regression003_switch.cpp             : : : <dependency>.//lex_regression003_generate_switch : lex_regression003_switch ]
     [ run lex/regression004.cpp             : : : : lex_regression004 ]
     [ run lex/regression005.cpp             : : : : lex_regression005 ]
+    [ run lex/regression006.cpp             : : : : lex_regression006 ]
 
     # support tests
     [ compile support/multi_pass_regression001.cpp : : support_multi_pass_regression001 ]
@@ -151,8 +154,12 @@ import testing ;
 
 
     # regression tests
-    [ run qi/clear_test.cpp                 : : : : ]
-    [ run qi/reorder_test.cpp               : : : : ]
+    [ compile qi/attr_with_action.cpp         : : qi_attr_with_action ]
+    [ run qi/clear_test.cpp                   : : : : ]
+    [ run qi/reorder_test.cpp                 : : : : ]
+    [ run karma/karma_optional_double.cpp     : : : : ]
+    [ run karma/semantic_action_attribute.cpp : : : : ]
+    [ compile qi/single_element_sequence_attribute.cpp : : qi_single_element_sequence_attribute ]
 
     ;
 

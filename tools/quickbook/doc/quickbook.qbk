@@ -19,10 +19,7 @@
 
 [/ Some links]
 
-[def __note__       [$images/note.png]]
-[def __alert__      [$images/alert.png]]
-[def __tip__        [$images/tip.png]]
-[def :-)            [$images/smiley.png]]
+[def :-)            [$../src/images/smiley.png]]
 [def __spirit__     [@http://spirit.sourceforge.net Spirit]]
 [def __boostbook__  [@http://www.boost.org/doc/html/boostbook.html BoostBook]]
 [def __docbook__    [@http://www.docbook.org/ DocBook]]
@@ -191,6 +188,36 @@ Features include:
 * Disallow `[` in simple markup. Fixes some errors with mismatched punctuation.
 * Add command line flag to define macros at the command line,
   e.g. `quickbook "-D__italic_foo__=/foo/"`.
+
+[h3 Version 1.5.2 - Boost 1.44.0]
+
+* Use the cygwin 1.7 API for better path handling.
+* Improved boostbook generation:
+  * XML encode the documentation info correctly.
+  * Avoid generating empty paragraphs.
+  * No longer wraps block templates in paragraphs.
+  * Warns if you use invalid doc_info members for docbook document types.
+  * Fixes some other causes of invalid boostbook, although it still
+    generates invalid boostbook in places.
+* Improved grammar:
+  * Supports multiple categories in library doc_info.
+  * No longer requires commas between authors in docinfo.
+  * Allows empty document bodies.
+  * A line containing only a comment is no longer interpreted as a
+    paragraph break.
+  * If a line starts with a comment, interpret it as a paragraph even if it's
+    followed by whitespace or a list character.
+  * Doesn't treat several consecutive blank lines as multiple paragraph breaks.
+* Fixes duplicate image attribute detection.
+* Fixes using code snippets more than once.
+* Early work on quickbook 1.6, available using the `[quickbook 1.6]` version switch,
+  but liable to change in future versions.
+  * When automatically generating ids for headers, use the quickbook
+    source, rather than the generated docbook.
+  * Fix id generation in included files. It wasn't correctly using the
+    main document's documentation id.
+  * Correctly restore the quickbook version switch after including a file
+    with a different version.
 
 [endsect]
 
@@ -747,7 +774,7 @@ like this:
     [copyright 2000 2002 2003 Joe Blow, Jane Doe]
     [purpose The document's reason for being]
     [category The document's category]
-    [authors [Blow, Joe], [Doe, Jane]]
+    [authors [Blow, Joe] [Doe, Jane]]
     [license The document's license]
     [source-mode source-type]
 ]
@@ -772,6 +799,11 @@ In its absence, version 1.1 is assumed.
 
 =version=, =id=, =dirname=, =copyright=, =purpose=, =category=, =authors=,
 =license=, =last-revision= and =source-mode= are optional information.
+
+=dirname=, =purpose= and =category= are boostbook attributes which are only
+valid for =library= documents. If you use them for other document types,
+quickbook will warn about them, but still use them, generating invalid markup,
+that's just ignored by the style sheets.
 
 =source-type= is a lowercase string setting the initial __source_mode__. If
 the =source-mode= field is omitted, a default value of =c++= will be used.
@@ -1911,7 +1943,7 @@ rebuilds and install a system-wide Quickbook instead:
 
 # Go to Quickbook's source directory (`BOOST_ROOT/tools/quickbook`).
 
-# Build the utility by issuing `bjam --v2`.
+# Build the utility by issuing `bjam`.
 
 # Copy the resulting `quickbook` binary (located under the
   `BOOST_ROOT/bin.v2` hierarchy) to a safe place.  Following our previous
@@ -2001,7 +2033,7 @@ rebuilds:
 
 # Go to Quickbook's source directory (`BOOST_ROOT\tools\quickbook`).
 
-# Build the utility by issuing `bjam --v2`.
+# Build the utility by issuing `bjam`.
 
 # Copy the resulting `quickbook.exe` binary (located under the
   `BOOST_ROOT\bin.v2` hierarchy) to a safe place.  Following our previous
@@ -2052,7 +2084,7 @@ rebuilds:
 
 # Go to Quickbook's source directory (`BOOST_ROOT/tools/quickbook`).
 
-# Build the utility by issuing `bjam --v2`.
+# Build the utility by issuing `bjam`.
 
 # Copy the resulting `quickbook` binary (located under the
   `BOOST_ROOT/bin.v2` hierarchy) to a safe place.  The traditional location is
@@ -2074,7 +2106,7 @@ Editing quickbook files is usually done with text editors both simple and
 powerful. The following sections list the settings for some editors which can
 help make editing quickbook files a bit easier.
 
-[blurb __note__ You may submit your settings, tips, and suggestions to the
+[note You may submit your settings, tips, and suggestions to the
 authors, or through the [@https://lists.sourceforge.net/lists/listinfo/boost-
 docs Boost Docs mailing list].]
 
@@ -2085,7 +2117,7 @@ docs Boost Docs mailing list].]
 The Scintilla Text Editor (SciTE) is a free source code editor for Win32 and X.
 It uses the SCIntilla source code editing component.
 
-[blurb __tip__ SciTE can be downloaded from [@http://www.scintilla.org/SciTE.html]]
+[tip SciTE can be downloaded from [@http://www.scintilla.org/SciTE.html]]
 
 You can use the following settings to highlight quickbook tags when
 editing quickbook files.
@@ -2104,7 +2136,7 @@ comment.box.middle.props=
 comment.box.end.props=]
 ''']
 
-[blurb __note__ Thanks to Rene Rivera for the above SciTE settings.]
+[note Thanks to Rene Rivera for the above SciTE settings.]
 
 [endsect] [/scite]
 

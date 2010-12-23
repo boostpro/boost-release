@@ -20,351 +20,351 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="splaytree_algorithms.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../intrusive/reference.html#header.boost.intrusive.treap_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="make_trie.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="splaytree_algorithms.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../intrusive/reference.html#header.boost.intrusive.treap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="make_trie.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Class template treap">
+<div class="refentry">
 <a name="boost.intrusive.treap"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class template treap</span></h2>
 <p>boost::intrusive::treap</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../intrusive/reference.html#header.boost.intrusive.treap_hpp" title="Header &lt;boost/intrusive/treap.hpp&gt;">boost/intrusive/treap.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../intrusive/reference.html#header.boost.intrusive.treap_hpp" title="Header &lt;boost/intrusive/treap.hpp&gt;">boost/intrusive/treap.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T, <span class="bold"><strong>class</strong></span>... Options&gt; 
-<span class="bold"><strong>class</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> {
-<span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> Config::value_traits                                  <a name="boost.intrusive.treap.value_traits"></a>value_traits;          
-  <span class="bold"><strong>typedef</strong></span> real_value_traits::pointer                            <a name="boost.intrusive.treap.pointer"></a>pointer;               
-  <span class="bold"><strong>typedef</strong></span> real_value_traits::const_pointer                      <a name="boost.intrusive.treap.const_pointer"></a>const_pointer;         
-  <span class="bold"><strong>typedef</strong></span> std::iterator_traits&lt; pointer &gt;::value_type           <a name="boost.intrusive.treap.value_type"></a>value_type;            
-  <span class="bold"><strong>typedef</strong></span> value_type                                            <a name="boost.intrusive.treap.key_type"></a>key_type;              
-  <span class="bold"><strong>typedef</strong></span> std::iterator_traits&lt; pointer &gt;::reference            <a name="boost.intrusive.treap.reference"></a>reference;             
-  <span class="bold"><strong>typedef</strong></span> std::iterator_traits&lt; const_pointer &gt;::reference      <a name="boost.intrusive.treap.const_reference"></a>const_reference;       
-  <span class="bold"><strong>typedef</strong></span> std::iterator_traits&lt; pointer &gt;::difference_type      <a name="boost.intrusive.treap.difference_type"></a>difference_type;       
-  <span class="bold"><strong>typedef</strong></span> Config::size_type                                     <a name="boost.intrusive.treap.size_type"></a>size_type;             
-  <span class="bold"><strong>typedef</strong></span> Config::compare                                       <a name="boost.intrusive.treap.value_compare"></a>value_compare;         
-  <span class="bold"><strong>typedef</strong></span> Config::priority_compare                              <a name="boost.intrusive.treap.priority_compare"></a>priority_compare;      
-  <span class="bold"><strong>typedef</strong></span> value_compare                                         <a name="boost.intrusive.treap.key_compare"></a>key_compare;           
-  <span class="bold"><strong>typedef</strong></span> tree_iterator&lt; <a class="link" href="treap.html" title="Class template treap">treap</a>, <span class="bold"><strong>false</strong></span> &gt;                         <a name="boost.intrusive.treap.iterator"></a>iterator;              
-  <span class="bold"><strong>typedef</strong></span> tree_iterator&lt; <a class="link" href="treap.html" title="Class template treap">treap</a>, <span class="bold"><strong>true</strong></span> &gt;                          <a name="boost.intrusive.treap.const_iterator"></a>const_iterator;        
-  <span class="bold"><strong>typedef</strong></span> std::reverse_iterator&lt; iterator &gt;                     <a name="boost.intrusive.treap.reverse_iterator"></a>reverse_iterator;      
-  <span class="bold"><strong>typedef</strong></span> std::reverse_iterator&lt; const_iterator &gt;               <a name="boost.intrusive.treap.const_reverse_iterator"></a>const_reverse_iterator;
-  <span class="bold"><strong>typedef</strong></span> real_value_traits::node_traits                        <a name="boost.intrusive.treap.node_traits"></a>node_traits;           
-  <span class="bold"><strong>typedef</strong></span> node_traits::node                                     <a name="boost.intrusive.treap.node"></a>node;                  
-  <span class="bold"><strong>typedef</strong></span> boost::pointer_to_other&lt; pointer, node &gt;::type        <a name="boost.intrusive.treap.node_ptr"></a>node_ptr;              
-  <span class="bold"><strong>typedef</strong></span> boost::pointer_to_other&lt; node_ptr, <span class="bold"><strong>const</strong></span> node &gt;::type <a name="boost.intrusive.treap.const_node_ptr"></a>const_node_ptr;        
-  <span class="bold"><strong>typedef</strong></span> <a class="link" href="treap_algorithms.html" title="Class template treap_algorithms">treap_algorithms</a>&lt; node_traits &gt;                       <a name="boost.intrusive.treap.node_algorithms"></a>node_algorithms;       
-  <span class="bold"><strong>typedef</strong></span> node_algorithms::insert_commit_data                   <a name="boost.intrusive.treap.insert_commit_data"></a>insert_commit_data;    
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> Options<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">Config</span><span class="special">::</span><span class="identifier">value_traits</span>                                  <a name="boost.intrusive.treap.value_traits"></a><span class="identifier">value_traits</span><span class="special">;</span>          
+  <span class="keyword">typedef</span> <span class="identifier">real_value_traits</span><span class="special">::</span><span class="identifier">pointer</span>                            <a name="boost.intrusive.treap.pointer"></a><span class="identifier">pointer</span><span class="special">;</span>               
+  <span class="keyword">typedef</span> <span class="identifier">real_value_traits</span><span class="special">::</span><span class="identifier">const_pointer</span>                      <a name="boost.intrusive.treap.const_pointer"></a><span class="identifier">const_pointer</span><span class="special">;</span>         
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span> <span class="identifier">pointer</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value_type</span>           <a name="boost.intrusive.treap.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>            
+  <span class="keyword">typedef</span> <span class="identifier">value_type</span>                                            <a name="boost.intrusive.treap.key_type"></a><span class="identifier">key_type</span><span class="special">;</span>              
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span> <span class="identifier">pointer</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">reference</span>            <a name="boost.intrusive.treap.reference"></a><span class="identifier">reference</span><span class="special">;</span>             
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span> <span class="identifier">const_pointer</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">reference</span>      <a name="boost.intrusive.treap.const_reference"></a><span class="identifier">const_reference</span><span class="special">;</span>       
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span> <span class="identifier">pointer</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">difference_type</span>      <a name="boost.intrusive.treap.difference_type"></a><span class="identifier">difference_type</span><span class="special">;</span>       
+  <span class="keyword">typedef</span> <span class="identifier">Config</span><span class="special">::</span><span class="identifier">size_type</span>                                     <a name="boost.intrusive.treap.size_type"></a><span class="identifier">size_type</span><span class="special">;</span>             
+  <span class="keyword">typedef</span> <span class="identifier">Config</span><span class="special">::</span><span class="identifier">compare</span>                                       <a name="boost.intrusive.treap.value_compare"></a><span class="identifier">value_compare</span><span class="special">;</span>         
+  <span class="keyword">typedef</span> <span class="identifier">Config</span><span class="special">::</span><span class="identifier">priority_compare</span>                              <a name="boost.intrusive.treap.priority_compare"></a><span class="identifier">priority_compare</span><span class="special">;</span>      
+  <span class="keyword">typedef</span> <span class="identifier">value_compare</span>                                         <a name="boost.intrusive.treap.key_compare"></a><span class="identifier">key_compare</span><span class="special">;</span>           
+  <span class="keyword">typedef</span> <span class="identifier">tree_iterator</span><span class="special">&lt;</span> <a class="link" href="treap.html" title="Class template treap">treap</a><span class="special">,</span> <span class="keyword">false</span> <span class="special">&gt;</span>                         <a name="boost.intrusive.treap.iterator"></a><span class="identifier">iterator</span><span class="special">;</span>              
+  <span class="keyword">typedef</span> <span class="identifier">tree_iterator</span><span class="special">&lt;</span> <a class="link" href="treap.html" title="Class template treap">treap</a><span class="special">,</span> <span class="keyword">true</span> <span class="special">&gt;</span>                          <a name="boost.intrusive.treap.const_iterator"></a><span class="identifier">const_iterator</span><span class="special">;</span>        
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <span class="identifier">iterator</span> <span class="special">&gt;</span>                     <a name="boost.intrusive.treap.reverse_iterator"></a><span class="identifier">reverse_iterator</span><span class="special">;</span>      
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <span class="identifier">const_iterator</span> <span class="special">&gt;</span>               <a name="boost.intrusive.treap.const_reverse_iterator"></a><span class="identifier">const_reverse_iterator</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">real_value_traits</span><span class="special">::</span><span class="identifier">node_traits</span>                        <a name="boost.intrusive.treap.node_traits"></a><span class="identifier">node_traits</span><span class="special">;</span>           
+  <span class="keyword">typedef</span> <span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">node</span>                                     <a name="boost.intrusive.treap.node"></a><span class="identifier">node</span><span class="special">;</span>                  
+  <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">pointer_to_other</span><span class="special">&lt;</span> <span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">node</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span>        <a name="boost.intrusive.treap.node_ptr"></a><span class="identifier">node_ptr</span><span class="special">;</span>              
+  <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">pointer_to_other</span><span class="special">&lt;</span> <span class="identifier">node_ptr</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">node</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a name="boost.intrusive.treap.const_node_ptr"></a><span class="identifier">const_node_ptr</span><span class="special">;</span>        
+  <span class="keyword">typedef</span> <a class="link" href="treap_algorithms.html" title="Class template treap_algorithms">treap_algorithms</a><span class="special">&lt;</span> <span class="identifier">node_traits</span> <span class="special">&gt;</span>                       <a name="boost.intrusive.treap.node_algorithms"></a><span class="identifier">node_algorithms</span><span class="special">;</span>       
+  <span class="keyword">typedef</span> node_algorithms::insert_commit_data                   <a name="boost.intrusive.treap.insert_commit_data"></a><span class="identifier">insert_commit_data</span><span class="special">;</span>    
 
-  <span class="emphasis"><em>// <a class="link" href="treap.html#boost.intrusive.treapconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="treap.html#id1058074-bb">treap</a>(<span class="bold"><strong>const</strong></span> value_compare &amp; = value_compare(), 
-        <span class="bold"><strong>const</strong></span> priority_compare &amp; = priority_compare(), 
-        <span class="bold"><strong>const</strong></span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> &amp; = value_traits());
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; 
-    <a class="link" href="treap.html#id1058130-bb">treap</a>(<span class="bold"><strong>bool</strong></span>, Iterator, Iterator, <span class="bold"><strong>const</strong></span> value_compare &amp; = value_compare(), 
-          <span class="bold"><strong>const</strong></span> priority_compare &amp; = priority_compare(), 
-          <span class="bold"><strong>const</strong></span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> &amp; = value_traits());
-  <a class="link" href="treap.html#id1058220-bb">~treap</a>();
+  <span class="comment">// <a class="link" href="treap.html#boost.intrusive.treapconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="treap.html#id1066586-bb"><span class="identifier">treap</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">value_compare</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">value_compare</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+        <span class="keyword">const</span> <span class="identifier">priority_compare</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">priority_compare</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+        <span class="keyword">const</span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">value_traits</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> 
+    <a class="link" href="treap.html#id1066641-bb"><span class="identifier">treap</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">,</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_compare</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">value_compare</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+          <span class="keyword">const</span> <span class="identifier">priority_compare</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">priority_compare</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+          <span class="keyword">const</span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">value_traits</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="treap.html#id1066732-bb"><span class="special">~</span><span class="identifier">treap</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="treap.html#id1054728-bb">public member functions</a></em></span>
-  <span class="type"><span class="bold"><strong>const</strong></span> real_value_traits &amp;</span> <a class="link" href="treap.html#id1054731-bb">get_real_value_traits</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">real_value_traits &amp;</span> <a class="link" href="treap.html#id1054740-bb">get_real_value_traits</a>() ;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1054748-bb">begin</a>() ;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1054778-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1054809-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1054840-bb">end</a>() ;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1054870-bb">end</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1054900-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1054931-bb">top</a>() ;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1054961-bb">top</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1054992-bb">ctop</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a class="link" href="treap.html#id1055023-bb">rbegin</a>() ;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="treap.html#id1055054-bb">rbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="treap.html#id1055085-bb">crbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a class="link" href="treap.html#id1055117-bb">rend</a>() ;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="treap.html#id1055148-bb">rend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="treap.html#id1055178-bb">crend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a class="link" href="treap.html#id1055209-bb">rtop</a>() ;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="treap.html#id1055241-bb">rtop</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="treap.html#id1055272-bb">crtop</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">value_compare</span> <a class="link" href="treap.html#id1055304-bb">value_comp</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">priority_compare</span> <a class="link" href="treap.html#id1055334-bb">priority_comp</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="treap.html#id1055366-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="treap.html#id1055396-bb">size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1055429-bb">swap</a>(<a class="link" href="treap.html" title="Class template treap">treap</a> &amp;) ;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1055468-bb">insert_equal</a>(reference) ;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1055521-bb">insert_equal</a>(const_iterator, reference) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1055584-bb">insert_equal</a>(Iterator, Iterator) ;
-  <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> <a class="link" href="treap.html#id1055653-bb">insert_unique</a>(reference) ;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1055708-bb">insert_unique</a>(const_iterator, reference) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1055769-bb">insert_unique</a>(Iterator, Iterator) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare, 
-           <span class="bold"><strong>typename</strong></span> KeyValuePrioCompare&gt; 
-    <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-    <a class="link" href="treap.html#id1055838-bb">insert_unique_check</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare, KeyValuePrioCompare, 
-                        <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> &amp;) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare, 
-           <span class="bold"><strong>typename</strong></span> KeyValuePrioCompare&gt; 
-    <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-    <a class="link" href="treap.html#id1055960-bb">insert_unique_check</a>(const_iterator, <span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare, 
-                        KeyValuePrioCompare, <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> &amp;) ;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1056090-bb">insert_unique_commit</a>(reference, <span class="bold"><strong>const</strong></span> <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> &amp;) ;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1056166-bb">insert_before</a>(const_iterator, reference) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1056229-bb">push_back</a>(reference) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1056286-bb">push_front</a>(reference) ;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1056343-bb">erase</a>(const_iterator) ;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1056389-bb">erase</a>(const_iterator, const_iterator) ;
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="treap.html#id1056442-bb">erase</a>(const_reference) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="treap.html#id1056496-bb">erase</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-    <span class="type">iterator</span> <a class="link" href="treap.html#id1056571-bb">erase_and_dispose</a>(const_iterator, Disposer) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-    <span class="type">iterator</span> <a class="link" href="treap.html#id1056638-bb">erase_and_dispose</a>(const_iterator, const_iterator, Disposer) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="treap.html#id1056712-bb">erase_and_dispose</a>(const_reference, Disposer) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare, <span class="bold"><strong>typename</strong></span> Disposer&gt; 
-    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="treap.html#id1056789-bb">erase_and_dispose</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare, Disposer) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1056881-bb">clear</a>() ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1056921-bb">clear_and_dispose</a>(Disposer) ;
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="treap.html#id1056974-bb">count</a>(const_reference) <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="treap.html#id1057012-bb">count</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1057068-bb">lower_bound</a>(const_reference) ;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1057105-bb">lower_bound</a>(const_reference) <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">iterator</span> <a class="link" href="treap.html#id1057142-bb">lower_bound</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">const_iterator</span> <a class="link" href="treap.html#id1057196-bb">lower_bound</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1057250-bb">upper_bound</a>(const_reference) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">iterator</span> <a class="link" href="treap.html#id1057287-bb">upper_bound</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1057342-bb">upper_bound</a>(const_reference) <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">const_iterator</span> <a class="link" href="treap.html#id1057378-bb">upper_bound</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1057433-bb">find</a>(const_reference) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">iterator</span> <a class="link" href="treap.html#id1057470-bb">find</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1057524-bb">find</a>(const_reference) <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">const_iterator</span> <a class="link" href="treap.html#id1057560-bb">find</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
-  <span class="type">std::pair&lt; iterator, iterator &gt;</span> <a class="link" href="treap.html#id1057614-bb">equal_range</a>(const_reference) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">std::pair&lt; iterator, iterator &gt;</span> 
-    <a class="link" href="treap.html#id1057652-bb">equal_range</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="type">std::pair&lt; const_iterator, const_iterator &gt;</span> 
-  <a class="link" href="treap.html#id1057708-bb">equal_range</a>(const_reference) <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">std::pair&lt; const_iterator, const_iterator &gt;</span> 
-    <a class="link" href="treap.html#id1057746-bb">equal_range</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Cloner, <span class="bold"><strong>typename</strong></span> Disposer&gt; 
-    <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1057801-bb">clone_from</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;, Cloner, Disposer) ;
-  <span class="type">pointer</span> <a class="link" href="treap.html#id1057881-bb">unlink_leftmost_without_rebalance</a>() ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1057922-bb">replace_node</a>(iterator, reference) ;
-  <span class="type">iterator</span> <a class="link" href="treap.html#id1057985-bb">iterator_to</a>(reference) ;
-  <span class="type">const_iterator</span> <a class="link" href="treap.html#id1058029-bb">iterator_to</a>(const_reference) <span class="bold"><strong>const</strong></span>;
+  <span class="comment">// <a class="link" href="treap.html#id1062969-bb">public member functions</a></span>
+  <span class="keyword">const</span> <span class="identifier">real_value_traits</span> <span class="special">&amp;</span> <a class="link" href="treap.html#id1062972-bb"><span class="identifier">get_real_value_traits</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">real_value_traits</span> <span class="special">&amp;</span> <a class="link" href="treap.html#id1062980-bb"><span class="identifier">get_real_value_traits</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1062989-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1063019-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1063050-bb"><span class="identifier">cbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1063080-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1063111-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1063141-bb"><span class="identifier">cend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1063172-bb"><span class="identifier">top</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1063202-bb"><span class="identifier">top</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1063233-bb"><span class="identifier">ctop</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a class="link" href="treap.html#id1063264-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="treap.html#id1063295-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="treap.html#id1063326-bb"><span class="identifier">crbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a class="link" href="treap.html#id1063357-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="treap.html#id1063388-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="treap.html#id1063419-bb"><span class="identifier">crend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a class="link" href="treap.html#id1063450-bb"><span class="identifier">rtop</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="treap.html#id1063481-bb"><span class="identifier">rtop</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="treap.html#id1063513-bb"><span class="identifier">crtop</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">value_compare</span> <a class="link" href="treap.html#id1063544-bb"><span class="identifier">value_comp</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">priority_compare</span> <a class="link" href="treap.html#id1063575-bb"><span class="identifier">priority_comp</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="treap.html#id1063606-bb"><span class="identifier">empty</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a class="link" href="treap.html#id1063637-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="treap.html#id1063670-bb"><span class="identifier">swap</span></a><span class="special">(</span><a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1063709-bb"><span class="identifier">insert_equal</span></a><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1063762-bb"><span class="identifier">insert_equal</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="treap.html#id1063825-bb"><span class="identifier">insert_equal</span></a><span class="special">(</span><span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">Iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> <a class="link" href="treap.html#id1063894-bb"><span class="identifier">insert_unique</span></a><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1063948-bb"><span class="identifier">insert_unique</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="treap.html#id1064010-bb"><span class="identifier">insert_unique</span></a><span class="special">(</span><span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">Iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">,</span> 
+           <span class="keyword">typename</span> KeyValuePrioCompare<span class="special">&gt;</span> 
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+    <a class="link" href="treap.html#id1064078-bb"><span class="identifier">insert_unique_check</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">,</span> <span class="identifier">KeyValuePrioCompare</span><span class="special">,</span> 
+                        <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">,</span> 
+           <span class="keyword">typename</span> KeyValuePrioCompare<span class="special">&gt;</span> 
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+    <a class="link" href="treap.html#id1064201-bb"><span class="identifier">insert_unique_check</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">,</span> 
+                        <span class="identifier">KeyValuePrioCompare</span><span class="special">,</span> <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1064331-bb"><span class="identifier">insert_unique_commit</span></a><span class="special">(</span><span class="identifier">reference</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1064407-bb"><span class="identifier">insert_before</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="treap.html#id1064469-bb"><span class="identifier">push_back</span></a><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="treap.html#id1064527-bb"><span class="identifier">push_front</span></a><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1064584-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1064630-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a class="link" href="treap.html#id1064683-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a class="link" href="treap.html#id1064737-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+    <span class="identifier">iterator</span> <a class="link" href="treap.html#id1064812-bb"><span class="identifier">erase_and_dispose</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">Disposer</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+    <span class="identifier">iterator</span> <a class="link" href="treap.html#id1064879-bb"><span class="identifier">erase_and_dispose</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">Disposer</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+    <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a class="link" href="treap.html#id1064952-bb"><span class="identifier">erase_and_dispose</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">,</span> <span class="identifier">Disposer</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">,</span> <span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+    <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a class="link" href="treap.html#id1065030-bb"><span class="identifier">erase_and_dispose</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">,</span> <span class="identifier">Disposer</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="treap.html#id1065121-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Disposer<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="treap.html#id1065162-bb"><span class="identifier">clear_and_dispose</span></a><span class="special">(</span><span class="identifier">Disposer</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a class="link" href="treap.html#id1065214-bb"><span class="identifier">count</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a class="link" href="treap.html#id1065253-bb"><span class="identifier">count</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1065309-bb"><span class="identifier">lower_bound</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1065346-bb"><span class="identifier">lower_bound</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <span class="identifier">iterator</span> <a class="link" href="treap.html#id1065383-bb"><span class="identifier">lower_bound</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1065437-bb"><span class="identifier">lower_bound</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1065491-bb"><span class="identifier">upper_bound</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <span class="identifier">iterator</span> <a class="link" href="treap.html#id1065528-bb"><span class="identifier">upper_bound</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1065582-bb"><span class="identifier">upper_bound</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1065619-bb"><span class="identifier">upper_bound</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1065674-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <span class="identifier">iterator</span> <a class="link" href="treap.html#id1065710-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1065764-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1066072-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span> <span class="special">&gt;</span> <a class="link" href="treap.html#id1066126-bb"><span class="identifier">equal_range</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span> <span class="special">&gt;</span> 
+    <a class="link" href="treap.html#id1066164-bb"><span class="identifier">equal_range</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span> <span class="special">&gt;</span> 
+  <a class="link" href="treap.html#id1066219-bb"><span class="identifier">equal_range</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span> <span class="special">&gt;</span> 
+    <a class="link" href="treap.html#id1066258-bb"><span class="identifier">equal_range</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">KeyValueCompare</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Cloner<span class="special">,</span> <span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="treap.html#id1066313-bb"><span class="identifier">clone_from</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">Cloner</span><span class="special">,</span> <span class="identifier">Disposer</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">pointer</span> <a class="link" href="treap.html#id1066393-bb"><span class="identifier">unlink_leftmost_without_rebalance</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="treap.html#id1066434-bb"><span class="identifier">replace_node</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="treap.html#id1066496-bb"><span class="identifier">iterator_to</span></a><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1066541-bb"><span class="identifier">iterator_to</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="treap.html#id1058248-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a class="link" href="treap.html#id1058252-bb">container_from_end_iterator</a>(iterator) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a class="link" href="treap.html#id1058300-bb">container_from_end_iterator</a>(const_iterator) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a class="link" href="treap.html#id1058348-bb">container_from_iterator</a>(iterator) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a class="link" href="treap.html#id1058395-bb">container_from_iterator</a>(const_iterator) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> iterator</span> <a class="link" href="treap.html#id1058443-bb">s_iterator_to</a>(reference) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> const_iterator</span> <a class="link" href="treap.html#id1058500-bb">s_iterator_to</a>(const_reference) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>void</strong></span></span> <a class="link" href="treap.html#id1058556-bb">init_node</a>(reference) ;
+  <span class="comment">// <a class="link" href="treap.html#id1066760-bb">public static functions</a></span>
+  <span class="keyword">static</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a class="link" href="treap.html#id1066763-bb"><span class="identifier">container_from_end_iterator</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a class="link" href="treap.html#id1066811-bb"><span class="identifier">container_from_end_iterator</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a class="link" href="treap.html#id1066859-bb"><span class="identifier">container_from_iterator</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a class="link" href="treap.html#id1066907-bb"><span class="identifier">container_from_iterator</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">iterator</span> <a class="link" href="treap.html#id1066955-bb"><span class="identifier">s_iterator_to</span></a><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">const_iterator</span> <a class="link" href="treap.html#id1067011-bb"><span class="identifier">s_iterator_to</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">void</span> <a class="link" href="treap.html#id1067068-bb"><span class="identifier">init_node</span></a><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="treap.html#id1058609-bb">private static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a class="link" href="treap.html#id1058612-bb">priv_container_from_end_iterator</a>(<span class="bold"><strong>const</strong></span> const_iterator &amp;) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a class="link" href="treap.html#id1058630-bb">priv_container_from_iterator</a>(<span class="bold"><strong>const</strong></span> const_iterator &amp;) ;
-  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> <span class="bold"><strong>bool</strong></span></span> constant_time_size;
-  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> <span class="bold"><strong>bool</strong></span></span> stateful_value_traits;
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id1319153"></a><h2>Description</h2>
+  <span class="comment">// <a class="link" href="treap.html#id1067121-bb">private static functions</a></span>
+  <span class="keyword">static</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a class="link" href="treap.html#id1067124-bb"><span class="identifier">priv_container_from_end_iterator</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">const_iterator</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a class="link" href="treap.html#id1067142-bb"><span class="identifier">priv_container_from_iterator</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">const_iterator</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> constant_time_size<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> stateful_value_traits<span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id1933305"></a><h2>Description</h2>
 <p>The class template treap is an intrusive treap container that is used to construct intrusive set and multiset containers. The no-throw guarantee holds only, if the value_compare object and priority_compare object don't throw.</p>
 <p>The template parameter <code class="computeroutput">T</code> is the type to be managed by the container. The user can specify additional options and if no options are provided default options are used.</p>
 <p>The container supports the following options: <code class="computeroutput">base_hook&lt;&gt;/member_hook&lt;&gt;/value_traits&lt;&gt;</code>, <code class="computeroutput">constant_time_size&lt;&gt;</code>, <code class="computeroutput">size_type&lt;&gt;</code>, <code class="computeroutput">compare&lt;&gt;</code> and <code class="computeroutput">priority_compare&lt;&gt;</code> </p>
-<div class="refsect2" title="treap public construct/copy/destruct">
-<a name="id1319207"></a><h3>
+<div class="refsect2">
+<a name="id1933360"></a><h3>
 <a name="boost.intrusive.treapconstruct-copy-destruct"></a><code class="computeroutput">treap</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1058074-bb"></a>treap(<span class="bold"><strong>const</strong></span> value_compare &amp; cmp = value_compare(), 
-      <span class="bold"><strong>const</strong></span> priority_compare &amp; pcmp = priority_compare(), 
-      <span class="bold"><strong>const</strong></span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> &amp; v_traits = value_traits());</pre>
+<pre class="literallayout"><a name="id1066586-bb"></a><span class="identifier">treap</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">value_compare</span> <span class="special">&amp;</span> cmp <span class="special">=</span> <span class="identifier">value_compare</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+      <span class="keyword">const</span> <span class="identifier">priority_compare</span> <span class="special">&amp;</span> pcmp <span class="special">=</span> <span class="identifier">priority_compare</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+      <span class="keyword">const</span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> <span class="special">&amp;</span> v_traits <span class="special">=</span> <span class="identifier">value_traits</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Constructs an empty treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor of the value_compare/priority_compare objects throw. Basic guarantee. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; 
-  <a name="id1058130-bb"></a>treap(<span class="bold"><strong>bool</strong></span> unique, Iterator b, Iterator e, 
-        <span class="bold"><strong>const</strong></span> value_compare &amp; cmp = value_compare(), 
-        <span class="bold"><strong>const</strong></span> priority_compare &amp; pcmp = priority_compare(), 
-        <span class="bold"><strong>const</strong></span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> &amp; v_traits = value_traits());</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> 
+  <a name="id1066641-bb"></a><span class="identifier">treap</span><span class="special">(</span><span class="keyword">bool</span> unique<span class="special">,</span> <span class="identifier">Iterator</span> b<span class="special">,</span> <span class="identifier">Iterator</span> e<span class="special">,</span> 
+        <span class="keyword">const</span> <span class="identifier">value_compare</span> <span class="special">&amp;</span> cmp <span class="special">=</span> <span class="identifier">value_compare</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+        <span class="keyword">const</span> <span class="identifier">priority_compare</span> <span class="special">&amp;</span> pcmp <span class="special">=</span> <span class="identifier">priority_compare</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+        <span class="keyword">const</span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> <span class="special">&amp;</span> v_traits <span class="special">=</span> <span class="identifier">value_traits</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Constructs an empty treap and inserts elements from [b, e).</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the value_compare/priority_compare objects throw. Basic guarantee. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1058220-bb"></a>~treap();</pre>
+<pre class="literallayout"><a name="id1066732-bb"></a><span class="special">~</span><span class="identifier">treap</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the value_traits template parameter are reinitialized and thus can be reused.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to elements contained in *this if constant-time size option is disabled. Constant time otherwise.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="treap public member functions">
-<a name="id1319430"></a><h3>
-<a name="id1054728-bb"></a><code class="computeroutput">treap</code> public member functions</h3>
+<div class="refsect2">
+<a name="id1933848"></a><h3>
+<a name="id1062969-bb"></a><code class="computeroutput">treap</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> real_value_traits &amp;</span> <a name="id1054731-bb"></a>get_real_value_traits() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type">real_value_traits &amp;</span> <a name="id1054740-bb"></a>get_real_value_traits() ;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">const</span> <span class="identifier">real_value_traits</span> <span class="special">&amp;</span> <a name="id1062972-bb"></a><span class="identifier">get_real_value_traits</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">real_value_traits</span> <span class="special">&amp;</span> <a name="id1062980-bb"></a><span class="identifier">get_real_value_traits</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1054748-bb"></a>begin() ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1062989-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator pointing to the beginning of the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1054778-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1063019-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the beginning of the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1054809-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1063050-bb"></a><span class="identifier">cbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the beginning of the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1054840-bb"></a>end() ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1063080-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator pointing to the end of the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1054870-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1063111-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the end of the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1054900-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1063141-bb"></a><span class="identifier">cend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the end of the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1054931-bb"></a>top() ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1063172-bb"></a><span class="identifier">top</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator pointing to the highest priority object of the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1054961-bb"></a>top() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1063202-bb"></a><span class="identifier">top</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the highest priority object of the treap..</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1054992-bb"></a>ctop() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1063233-bb"></a><span class="identifier">ctop</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the highest priority object of the treap..</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id1055023-bb"></a>rbegin() ;</pre>
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="id1063264-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the beginning of the reversed treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id1055054-bb"></a>rbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id1063295-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the beginning of the reversed treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id1055085-bb"></a>crbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id1063326-bb"></a><span class="identifier">crbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the beginning of the reversed treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id1055117-bb"></a>rend() ;</pre>
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="id1063357-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the end of the reversed treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id1055148-bb"></a>rend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id1063388-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the end of the reversed treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id1055178-bb"></a>crend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id1063419-bb"></a><span class="identifier">crend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the end of the reversed treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id1055209-bb"></a>rtop() ;</pre>
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="id1063450-bb"></a><span class="identifier">rtop</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the highest priority object of the reversed treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id1055241-bb"></a>rtop() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id1063481-bb"></a><span class="identifier">rtop</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the highest priority objec of the reversed treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id1055272-bb"></a>crtop() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id1063513-bb"></a><span class="identifier">crtop</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the highest priority object of the reversed treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">value_compare</span> <a name="id1055304-bb"></a>value_comp() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">value_compare</span> <a name="id1063544-bb"></a><span class="identifier">value_comp</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the value_compare object used by the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If value_compare copy-constructor throws. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">priority_compare</span> <a name="id1055334-bb"></a>priority_comp() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">priority_compare</span> <a name="id1063575-bb"></a><span class="identifier">priority_comp</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the priority_compare object used by the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If priority_compare copy-constructor throws. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id1055366-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id1063606-bb"></a><span class="identifier">empty</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns true if the container is empty.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id1055396-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a name="id1063637-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of elements stored in the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to elements contained in *this if constant-time size option is disabled. Constant time otherwise.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1055429-bb"></a>swap(<a class="link" href="treap.html" title="Class template treap">treap</a> &amp; other) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1063670-bb"></a><span class="identifier">swap</span><span class="special">(</span><a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Swaps the contents of two treaps.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If the comparison functor's swap call throws. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1055468-bb"></a>insert_equal(reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1063709-bb"></a><span class="identifier">insert_equal</span><span class="special">(</span><span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts value into the treap before the upper bound.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for insert element is at most logarithmic.</p>
@@ -372,7 +372,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1055521-bb"></a>insert_equal(const_iterator hint, reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1063762-bb"></a><span class="identifier">insert_equal</span><span class="special">(</span><span class="identifier">const_iterator</span> hint<span class="special">,</span> <span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue, and "hint" must be a valid iterator.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts x into the treap, using "hint" as a hint to where it will be inserted. If "hint" is the upper_bound the insertion takes constant time (two comparisons in the worst case)</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic in general, but it is amortized constant time if t is inserted immediately before hint.</p>
@@ -380,7 +380,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1055584-bb"></a>insert_equal(Iterator b, Iterator e) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id1063825-bb"></a><span class="identifier">insert_equal</span><span class="special">(</span><span class="identifier">Iterator</span> b<span class="special">,</span> <span class="identifier">Iterator</span> e<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: Dereferencing iterator must yield an lvalue of type value_type.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts a each element of a range into the treap before the upper bound of the key of each element.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Insert range is in general O(N * log(N)), where N is the size of the range. However, it is linear in N if the range is already sorted by value_comp().</p>
@@ -388,7 +388,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> <a name="id1055653-bb"></a>insert_unique(reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> <a name="id1063894-bb"></a><span class="identifier">insert_unique</span><span class="special">(</span><span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts value into the treap if the value is not already present.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for insert element is at most logarithmic.</p>
@@ -396,7 +396,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1055708-bb"></a>insert_unique(const_iterator hint, reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1063948-bb"></a><span class="identifier">insert_unique</span><span class="special">(</span><span class="identifier">const_iterator</span> hint<span class="special">,</span> <span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue, and "hint" must be a valid iterator</p>
 <p><span class="bold"><strong>Effects</strong></span>: Tries to insert x into the treap, using "hint" as a hint to where it will be inserted.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic in general, but it is amortized constant time (two comparisons in the worst case) if t is inserted immediately before hint.</p>
@@ -404,7 +404,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1055769-bb"></a>insert_unique(Iterator b, Iterator e) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id1064010-bb"></a><span class="identifier">insert_unique</span><span class="special">(</span><span class="identifier">Iterator</span> b<span class="special">,</span> <span class="identifier">Iterator</span> e<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: Dereferencing iterator must yield an lvalue of type value_type.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Tries to insert each element of a range into the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Insert range is in general O(N * log(N)), where N is the size of the range. However, it is linear in N if the range is already sorted by value_comp().</p>
@@ -412,12 +412,12 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare, 
-         <span class="bold"><strong>typename</strong></span> KeyValuePrioCompare&gt; 
-  <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-  <a name="id1055838-bb"></a>insert_unique_check(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare key_value_comp, 
-                      KeyValuePrioCompare key_value_pcomp, 
-                      <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> &amp; commit_data) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">,</span> 
+         <span class="keyword">typename</span> KeyValuePrioCompare<span class="special">&gt;</span> 
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+  <a name="id1064078-bb"></a><span class="identifier">insert_unique_check</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> key_value_comp<span class="special">,</span> 
+                      <span class="identifier">KeyValuePrioCompare</span> key_value_pcomp<span class="special">,</span> 
+                      <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> <span class="special">&amp;</span> commit_data<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: key_value_comp must be a comparison function that induces the same strict weak ordering as value_compare. key_value_pcomp must be a comparison function that induces the same strict weak ordering as priority_compare. The difference is that key_value_pcomp and key_value_comp compare an arbitrary key with the contained values.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Checks if a value can be inserted in the container, using a user provided key instead of the value itself.</p>
 <p><span class="bold"><strong>Returns</strong></span>: If there is an equivalent value returns a pair containing an iterator to the already present value and false. If the value can be inserted returns true in the returned pair boolean and fills "commit_data" that is meant to be used with the "insert_commit" function.</p>
@@ -428,13 +428,13 @@
 <p>"commit_data" remains valid for a subsequent "insert_commit" only if no more objects are inserted or erased from the container. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare, 
-         <span class="bold"><strong>typename</strong></span> KeyValuePrioCompare&gt; 
-  <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-  <a name="id1055960-bb"></a>insert_unique_check(const_iterator hint, <span class="bold"><strong>const</strong></span> KeyType &amp; key, 
-                      KeyValueCompare key_value_comp, 
-                      KeyValuePrioCompare key_value_pcomp, 
-                      <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> &amp; commit_data) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">,</span> 
+         <span class="keyword">typename</span> KeyValuePrioCompare<span class="special">&gt;</span> 
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+  <a name="id1064201-bb"></a><span class="identifier">insert_unique_check</span><span class="special">(</span><span class="identifier">const_iterator</span> hint<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> 
+                      <span class="identifier">KeyValueCompare</span> key_value_comp<span class="special">,</span> 
+                      <span class="identifier">KeyValuePrioCompare</span> key_value_pcomp<span class="special">,</span> 
+                      <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> <span class="special">&amp;</span> commit_data<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: key_value_comp must be a comparison function that induces the same strict weak ordering as value_compare. key_value_pcomp must be a comparison function that induces the same strict weak ordering as priority_compare. The difference is that key_value_pcomp and key_value_comp compare an arbitrary key with the contained values.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Checks if a value can be inserted in the container, using a user provided key instead of the value itself, using "hint" as a hint to where it will be inserted.</p>
 <p><span class="bold"><strong>Returns</strong></span>: If there is an equivalent value returns a pair containing an iterator to the already present value and false. If the value can be inserted returns true in the returned pair boolean and fills "commit_data" that is meant to be used with the "insert_commit" function.</p>
@@ -445,8 +445,8 @@
 <p>"commit_data" remains valid for a subsequent "insert_commit" only if no more objects are inserted or erased from the container. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1056090-bb"></a>insert_unique_commit(reference value, 
-                              <span class="bold"><strong>const</strong></span> <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> &amp; commit_data) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1064331-bb"></a><span class="identifier">insert_unique_commit</span><span class="special">(</span><span class="identifier">reference</span> value<span class="special">,</span> 
+                              <span class="keyword">const</span> <a class="link" href="treap.html#boost.intrusive.treap.insert_commit_data">insert_commit_data</a> <span class="special">&amp;</span> commit_data<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue of type value_type. commit_data must have been obtained from a previous call to "insert_check". No objects should have been inserted or erased from the container between the "insert_check" that filled "commit_data" and the call to "insert_commit".</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts the value in the avl_set using the information obtained from the "commit_data" that a previous "insert_check" filled.</p>
 <p><span class="bold"><strong>Returns</strong></span>: An iterator to the newly inserted object.</p>
@@ -455,7 +455,7 @@
 <p><span class="bold"><strong>Notes</strong></span>: This function has only sense if a "insert_check" has been previously executed to fill "commit_data". No value should be inserted or erased between the "insert_check" and "insert_commit" calls. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1056166-bb"></a>insert_before(const_iterator pos, reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1064407-bb"></a><span class="identifier">insert_before</span><span class="special">(</span><span class="identifier">const_iterator</span> pos<span class="special">,</span> <span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue, "pos" must be a valid iterator (or end) and must be the succesor of value once inserted according to the predicate</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts x into the treap before "pos".</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant time.</p>
@@ -463,7 +463,7 @@
 <p><span class="bold"><strong>Note</strong></span>: This function does not check preconditions so if "pos" is not the successor of "value" treap ordering invariant will be broken. This is a low-level function to be used only for performance reasons by advanced users. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1056229-bb"></a>push_back(reference value) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1064469-bb"></a><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue, and it must be no less than the greatest inserted key</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts x into the treap in the last position.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant time.</p>
@@ -471,7 +471,7 @@
 <p><span class="bold"><strong>Note</strong></span>: This function does not check preconditions so if value is less than the greatest inserted key treap ordering invariant will be broken. This function is slightly more efficient than using "insert_before". This is a low-level function to be used only for performance reasons by advanced users. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1056286-bb"></a>push_front(reference value) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1064527-bb"></a><span class="identifier">push_front</span><span class="special">(</span><span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue, and it must be no greater than the minimum inserted key</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts x into the treap in the first position.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant time.</p>
@@ -479,21 +479,21 @@
 <p><span class="bold"><strong>Note</strong></span>: This function does not check preconditions so if value is greater than the minimum inserted key treap ordering invariant will be broken. This function is slightly more efficient than using "insert_before". This is a low-level function to be used only for performance reasons by advanced users. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1056343-bb"></a>erase(const_iterator i) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1064584-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">const_iterator</span> i<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases the element pointed to by pos.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for erase element is constant time.</p>
 <p><span class="bold"><strong>Throws</strong></span>: if the internal priority_compare function throws. Strong guarantee.</p>
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. No destructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1056389-bb"></a>erase(const_iterator b, const_iterator e) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1064630-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">const_iterator</span> b<span class="special">,</span> <span class="identifier">const_iterator</span> e<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases the range pointed to by b end e.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for erase range is at most O(log(size() + N)), where N is the number of elements in the range.</p>
 <p><span class="bold"><strong>Throws</strong></span>: if the internal priority_compare function throws. Strong guarantee.</p>
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. No destructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id1056442-bb"></a>erase(const_reference value) ;</pre>
+<pre class="literallayout"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a name="id1064683-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements with the given value.</p>
 <p><span class="bold"><strong>Returns</strong></span>: The number of erased elements.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: O(log(size() + N).</p>
@@ -501,8 +501,8 @@
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. No destructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id1056496-bb"></a>erase(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a name="id1064737-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements with the given key. according to the comparison functor "comp".</p>
 <p><span class="bold"><strong>Returns</strong></span>: The number of erased elements.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: O(log(size() + N).</p>
@@ -510,8 +510,8 @@
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. No destructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type">iterator</span> <a name="id1056571-bb"></a>erase_and_dispose(const_iterator i, Disposer disposer) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+  <span class="identifier">iterator</span> <a name="id1064812-bb"></a><span class="identifier">erase_and_dispose</span><span class="special">(</span><span class="identifier">const_iterator</span> i<span class="special">,</span> <span class="identifier">Disposer</span> disposer<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases the element pointed to by pos. Disposer::operator()(pointer) is called for the removed element.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for erase element is constant time.</p>
@@ -519,9 +519,9 @@
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators to the erased elements. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type">iterator</span> <a name="id1056638-bb"></a>erase_and_dispose(const_iterator b, const_iterator e, 
-                             Disposer disposer) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+  <span class="identifier">iterator</span> <a name="id1064879-bb"></a><span class="identifier">erase_and_dispose</span><span class="special">(</span><span class="identifier">const_iterator</span> b<span class="special">,</span> <span class="identifier">const_iterator</span> e<span class="special">,</span> 
+                             <span class="identifier">Disposer</span> disposer<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases the range pointed to by b end e. Disposer::operator()(pointer) is called for the removed elements.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for erase range is at most O(log(size() + N)), where N is the number of elements in the range.</p>
@@ -529,8 +529,8 @@
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators to the erased elements. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id1056712-bb"></a>erase_and_dispose(const_reference value, Disposer disposer) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+  <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a name="id1064952-bb"></a><span class="identifier">erase_and_dispose</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">,</span> <span class="identifier">Disposer</span> disposer<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements with the given value. Disposer::operator()(pointer) is called for the removed elements.</p>
 <p><span class="bold"><strong>Returns</strong></span>: The number of erased elements.</p>
@@ -539,9 +539,9 @@
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. No destructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare, <span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id1056789-bb"></a>erase_and_dispose(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp, 
-                              Disposer disposer) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">,</span> <span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+  <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a name="id1065030-bb"></a><span class="identifier">erase_and_dispose</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">,</span> 
+                              <span class="identifier">Disposer</span> disposer<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements with the given key. according to the comparison functor "comp". Disposer::operator()(pointer) is called for the removed elements.</p>
 <p><span class="bold"><strong>Returns</strong></span>: The number of erased elements.</p>
@@ -550,141 +550,141 @@
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators to the erased elements. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1056881-bb"></a>clear() ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1065121-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all of the elements.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements on the container. if it's a safe-mode or auto-unlink value_type. Constant time otherwise.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. No destructors are called. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1056921-bb"></a>clear_and_dispose(Disposer disposer) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Disposer<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id1065162-bb"></a><span class="identifier">clear_and_dispose</span><span class="special">(</span><span class="identifier">Disposer</span> disposer<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all of the elements calling disposer(p) for each node to be erased. <span class="bold"><strong>Complexity</strong></span>: Average complexity for is at most O(log(size() + N)), where N is the number of elements in the container.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. Calls N times to disposer functor. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id1056974-bb"></a>count(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a name="id1065214-bb"></a><span class="identifier">count</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of contained elements with the given value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic to the number of elements contained plus lineal to number of objects with the given value.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id1057012-bb"></a>count(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <a class="link" href="size_type.html" title="Struct template size_type">size_type</a> <a name="id1065253-bb"></a><span class="identifier">count</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of contained elements with the given key</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic to the number of elements contained plus lineal to number of objects with the given key.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1057068-bb"></a>lower_bound(const_reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1065309-bb"></a><span class="identifier">lower_bound</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is not less than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1057105-bb"></a>lower_bound(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1065346-bb"></a><span class="identifier">lower_bound</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is not less than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">iterator</span> <a name="id1057142-bb"></a>lower_bound(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <span class="identifier">iterator</span> <a name="id1065383-bb"></a><span class="identifier">lower_bound</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is not less than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">const_iterator</span> <a name="id1057196-bb"></a>lower_bound(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <span class="identifier">const_iterator</span> <a name="id1065437-bb"></a><span class="identifier">lower_bound</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const iterator to the first element whose key is not less than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1057250-bb"></a>upper_bound(const_reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1065491-bb"></a><span class="identifier">upper_bound</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is greater than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">iterator</span> <a name="id1057287-bb"></a>upper_bound(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <span class="identifier">iterator</span> <a name="id1065528-bb"></a><span class="identifier">upper_bound</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is greater than k according to comp or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1057342-bb"></a>upper_bound(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1065582-bb"></a><span class="identifier">upper_bound</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is greater than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">const_iterator</span> <a name="id1057378-bb"></a>upper_bound(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <span class="identifier">const_iterator</span> <a name="id1065619-bb"></a><span class="identifier">upper_bound</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is greater than k according to comp or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1057433-bb"></a>find(const_reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1065674-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds an iterator to the first element whose key is k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">iterator</span> <a name="id1057470-bb"></a>find(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <span class="identifier">iterator</span> <a name="id1065710-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds an iterator to the first element whose key is k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1057524-bb"></a>find(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1065764-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a const_iterator to the first element whose key is k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">const_iterator</span> <a name="id1057560-bb"></a>find(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <span class="identifier">const_iterator</span> <a name="id1066072-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a const_iterator to the first element whose key is k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">std::pair&lt; iterator, iterator &gt;</span> <a name="id1057614-bb"></a>equal_range(const_reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span> <span class="special">&gt;</span> <a name="id1066126-bb"></a><span class="identifier">equal_range</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a range containing all elements whose key is k or an empty range that indicates the position where those elements would be if they there is no elements with key k.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">std::pair&lt; iterator, iterator &gt;</span> 
-  <a name="id1057652-bb"></a>equal_range(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span> <span class="special">&gt;</span> 
+  <a name="id1066164-bb"></a><span class="identifier">equal_range</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a range containing all elements whose key is k or an empty range that indicates the position where those elements would be if they there is no elements with key k.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">std::pair&lt; const_iterator, const_iterator &gt;</span> 
-<a name="id1057708-bb"></a>equal_range(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span> <span class="special">&gt;</span> 
+<a name="id1066219-bb"></a><span class="identifier">equal_range</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a range containing all elements whose key is k or an empty range that indicates the position where those elements would be if they there is no elements with key k.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">std::pair&lt; const_iterator, const_iterator &gt;</span> 
-  <a name="id1057746-bb"></a>equal_range(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> KeyType<span class="special">,</span> <span class="keyword">typename</span> KeyValueCompare<span class="special">&gt;</span> 
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span> <span class="special">&gt;</span> 
+  <a name="id1066258-bb"></a><span class="identifier">equal_range</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">KeyType</span> <span class="special">&amp;</span> key<span class="special">,</span> <span class="identifier">KeyValueCompare</span> comp<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a range containing all elements whose key is k or an empty range that indicates the position where those elements would be if they there is no elements with key k.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Cloner, <span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1057801-bb"></a>clone_from(<span class="bold"><strong>const</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp; src, Cloner cloner, Disposer disposer) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Cloner<span class="special">,</span> <span class="keyword">typename</span> Disposer<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="id1066313-bb"></a><span class="identifier">clone_from</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> src<span class="special">,</span> <span class="identifier">Cloner</span> cloner<span class="special">,</span> <span class="identifier">Disposer</span> disposer<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw. Cloner should yield to nodes equivalent to the original nodes.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements from *this calling Disposer::operator()(pointer), clones all the elements from src calling Cloner::operator()(const_reference ) and inserts them on *this. Copies the predicate from the source container.</p>
 <p>If cloner throws, all cloned elements are unlinked and disposed calling Disposer::operator()(pointer).</p>
@@ -692,14 +692,14 @@
 <p><span class="bold"><strong>Throws</strong></span>: If cloner throws or predicate copy assignment throws. Basic guarantee. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">pointer</span> <a name="id1057881-bb"></a>unlink_leftmost_without_rebalance() ;</pre>
+<pre class="literallayout"><span class="identifier">pointer</span> <a name="id1066393-bb"></a><span class="identifier">unlink_leftmost_without_rebalance</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Unlinks the leftmost node from the treap.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity is constant time.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Notes</strong></span>: This function breaks the treap and the treap can only be used for more unlink_leftmost_without_rebalance calls. This function is normally used to achieve a step by step controlled destruction of the treap. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1057922-bb"></a>replace_node(iterator replace_this, reference with_this) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1066434-bb"></a><span class="identifier">replace_node</span><span class="special">(</span><span class="identifier">iterator</span> replace_this<span class="special">,</span> <span class="identifier">reference</span> with_this<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: replace_this must be a valid iterator of *this and with_this must not be inserted in any treap.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Replaces replace_this in its position in the treap with with_this. The treap does not need to be rebalanced.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
@@ -707,14 +707,14 @@
 <p><span class="bold"><strong>Note</strong></span>: This function will break container ordering invariants if with_this is not equivalent to *replace_this according to the ordering and priority rules. This function is faster than erasing and inserting the node, since no rebalancing or comparison is needed. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1057985-bb"></a>iterator_to(reference value) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1066496-bb"></a><span class="identifier">iterator_to</span><span class="special">(</span><span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue and shall be in a set of appropriate type. Otherwise the behavior is undefined.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns: a valid iterator i belonging to the set that points to the value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1058029-bb"></a>iterator_to(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1066541-bb"></a><span class="identifier">iterator_to</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue and shall be in a set of appropriate type. Otherwise the behavior is undefined.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns: a valid const_iterator i belonging to the set that points to the value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
@@ -722,40 +722,40 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="treap public static functions">
-<a name="id1323426"></a><h3>
-<a name="id1058248-bb"></a><code class="computeroutput">treap</code> public static functions</h3>
+<div class="refsect2">
+<a name="id1940464"></a><h3>
+<a name="id1066760-bb"></a><code class="computeroutput">treap</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a name="id1058252-bb"></a>container_from_end_iterator(iterator end_iterator) ;</pre>
+<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a name="id1066763-bb"></a><span class="identifier">container_from_end_iterator</span><span class="special">(</span><span class="identifier">iterator</span> end_iterator<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Precondition</strong></span>: end_iterator must be a valid end iterator of treap.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the treap associated to the end iterator</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a name="id1058300-bb"></a>container_from_end_iterator(const_iterator end_iterator) ;</pre>
+<pre class="literallayout"><span class="keyword">static</span> <span class="keyword">const</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a name="id1066811-bb"></a><span class="identifier">container_from_end_iterator</span><span class="special">(</span><span class="identifier">const_iterator</span> end_iterator<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Precondition</strong></span>: end_iterator must be a valid end const_iterator of treap.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the treap associated to the iterator</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a name="id1058348-bb"></a>container_from_iterator(iterator it) ;</pre>
+<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a name="id1066859-bb"></a><span class="identifier">container_from_iterator</span><span class="special">(</span><span class="identifier">iterator</span> it<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Precondition</strong></span>: it must be a valid iterator of treap.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the treap associated to the iterator</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a name="id1058395-bb"></a>container_from_iterator(const_iterator it) ;</pre>
+<pre class="literallayout"><span class="keyword">static</span> <span class="keyword">const</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a name="id1066907-bb"></a><span class="identifier">container_from_iterator</span><span class="special">(</span><span class="identifier">const_iterator</span> it<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Precondition</strong></span>: it must be a valid end const_iterator of treap.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the treap associated to the end iterator</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> iterator</span> <a name="id1058443-bb"></a>s_iterator_to(reference value) ;</pre>
+<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">iterator</span> <a name="id1066955-bb"></a><span class="identifier">s_iterator_to</span><span class="special">(</span><span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue and shall be in a set of appropriate type. Otherwise the behavior is undefined.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns: a valid iterator i belonging to the set that points to the value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
@@ -763,7 +763,7 @@
 <p><span class="bold"><strong>Note</strong></span>: This static function is available only if the <span class="emphasis"><em>value traits</em></span> is stateless. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> const_iterator</span> <a name="id1058500-bb"></a>s_iterator_to(const_reference value) ;</pre>
+<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">const_iterator</span> <a name="id1067011-bb"></a><span class="identifier">s_iterator_to</span><span class="special">(</span><span class="identifier">const_reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue and shall be in a set of appropriate type. Otherwise the behavior is undefined.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns: a valid const_iterator i belonging to the set that points to the value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
@@ -771,7 +771,7 @@
 <p><span class="bold"><strong>Note</strong></span>: This static function is available only if the <span class="emphasis"><em>value traits</em></span> is stateless. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>void</strong></span></span> <a name="id1058556-bb"></a>init_node(reference value) ;</pre>
+<pre class="literallayout"><span class="keyword">static</span> <span class="keyword">void</span> <a name="id1067068-bb"></a><span class="identifier">init_node</span><span class="special">(</span><span class="identifier">reference</span> value<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: value shall not be in a treap.</p>
 <p><span class="bold"><strong>Effects</strong></span>: init_node puts the hook of a value in a well-known default state.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
@@ -780,13 +780,13 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="treap private static functions">
-<a name="id1323879"></a><h3>
-<a name="id1058609-bb"></a><code class="computeroutput">treap</code> private static functions</h3>
+<div class="refsect2">
+<a name="id1941085"></a><h3>
+<a name="id1067121-bb"></a><code class="computeroutput">treap</code> private static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> 
-<a name="id1058612-bb"></a>priv_container_from_end_iterator(<span class="bold"><strong>const</strong></span> const_iterator &amp; end_iterator) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="treap.html" title="Class template treap">treap</a> &amp;</span> <a name="id1058630-bb"></a>priv_container_from_iterator(<span class="bold"><strong>const</strong></span> const_iterator &amp; it) ;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> 
+<a name="id1067124-bb"></a><span class="identifier">priv_container_from_end_iterator</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">const_iterator</span> <span class="special">&amp;</span> end_iterator<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <a class="link" href="treap.html" title="Class template treap">treap</a> <span class="special">&amp;</span> <a name="id1067142-bb"></a><span class="identifier">priv_container_from_iterator</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">const_iterator</span> <span class="special">&amp;</span> it<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
@@ -801,7 +801,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="splaytree_algorithms.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../intrusive/reference.html#header.boost.intrusive.treap_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="make_trie.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="splaytree_algorithms.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../intrusive/reference.html#header.boost.intrusive.treap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="make_trie.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

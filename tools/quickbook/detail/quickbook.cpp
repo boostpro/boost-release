@@ -29,7 +29,7 @@
 #pragma warning(disable:4355)
 #endif
 
-#define QUICKBOOK_VERSION "Quickbook Version 1.5.1"
+#define QUICKBOOK_VERSION "Quickbook Version 1.5.2"
 
 namespace quickbook
 {
@@ -38,8 +38,8 @@ namespace quickbook
     tm* current_time; // the current time
     tm* current_gm_time; // the current UTC time
     bool debug_mode; // for quickbook developers only
-    unsigned qbk_major_version = 0;
-    unsigned qbk_minor_version = 0;
+    int qbk_major_version = -1;
+    int qbk_minor_version = -1;
     unsigned qbk_version_n = 0; // qbk_major_version * 100 + qbk_minor_version
     bool ms_errors = false; // output errors/warnings as if for VS
     std::vector<std::string> include_path;
@@ -196,7 +196,7 @@ namespace quickbook
     {
         int result = 0;
         std::ofstream fileout(fileout_);
-        fs::path outdir = fs::path(fileout_, fs::native).branch_path();
+        fs::path outdir = fs::path(fileout_).parent_path();
         if (outdir.empty())
             outdir = ".";
         if (pretty_print)
@@ -238,7 +238,7 @@ main(int argc, char* argv[])
         using boost::program_options::positional_options_description;
 
         // First thing, the filesystem should record the current working directory.
-        boost::filesystem::initial_path();
+        boost::filesystem::initial_path<boost::filesystem::path>();
 
         options_description desc("Allowed options");
         desc.add_options()

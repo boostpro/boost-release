@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../../boostbook.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boostbook.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../documenting.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../../boostbook.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boostbook.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../documenting.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Getting Started">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boostbook.getting.started"></a>Getting Started</h2></div></div></div>
 <div class="toc"><dl>
@@ -49,7 +49,7 @@
 <p class="simpara"><span class="command"><strong>doxygen</strong></span>:</p> Available from <a href="http://www.doxygen.org" target="_top">http://www.doxygen.org</a>
 </li>
 </ul></div>
-<div class="section" title="Automatic setup for Unix-like systems">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boostbook.setup.autounix"></a>Automatic setup for Unix-like systems</h3></div></div></div>
 <p>BoostBook provides a nearly-automatic setup script. Once
@@ -67,7 +67,7 @@
       from a directory where you would like the resulting XSL, DTD,
       and Apache FOP installations to occur. </p>
 </div>
-<div class="section" title="Manual setup for all systems">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boostbook.setup.manual"></a>Manual setup for all systems</h3></div></div></div>
 <div class="toc"><dl>
@@ -86,7 +86,7 @@
       directory. Alternatively, you can edit
       <code class="filename">tools/build/v2/user-config.jam</code> directly or
       a site-wide <code class="filename">site-config.jam</code> file.</p>
-<div class="section" title="Configuring xsltproc">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="boostbook.setup.xsltproc"></a>Configuring <span class="command"><strong>xsltproc</strong></span>
 </h4></div></div></div>
@@ -103,7 +103,7 @@
         <span class="command"><strong>xsltproc</strong></span>):</p>
 <pre class="programlisting">using xsltproc : XSLTPROC ;</pre>
 </div>
-<div class="section" title="Configuring local DocBook XSL and DTD distributions">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="boostbook.setup.docbook"></a>Configuring local DocBook XSL and DTD distributions</h4></div></div></div>
 <p>This section describes how to configure Boost.Build to
@@ -141,11 +141,11 @@ using boostbook
 <p>At this point, you should be able to build HTML
         documentation for libraries that do not require Doxygen. To
         test this, change into the directory <code class="filename">$BOOST_ROOT/libs/function/doc</code> and
-        run the command <code class="computeroutput">bjam --v2</code>: it should produce HTML
+        run the command <code class="computeroutput">bjam</code>: it should produce HTML
         documentation for the Boost.Function library in the
         <code class="computeroutput">html</code> subdirectory.</p>
 </div>
-<div class="section" title="Configuring Doxygen for Documentation Extraction">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="boostbook.setup.doxygen"></a>Configuring Doxygen for Documentation Extraction</h4></div></div></div>
 <p>Doxygen is required to build the documentation for
@@ -161,9 +161,9 @@ using boostbook
         can be found via the path, this parameter can be
         omitted, e.g.</p>
 <pre class="programlisting">using doxygen ;</pre>
-<div class="important" title="Important"><table border="0" summary="Important">
+<div class="important"><table border="0" summary="Important">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../../doc/html/images/important.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../../doc/src/images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top"><p>The relative order of declarations in
@@ -176,7 +176,7 @@ using boostbook
           </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Configuring Apache FOP">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="boostbook.setup.fop"></a>Configuring Apache FOP</h4></div></div></div>
 <p>In order to generate PDF and PostScript output using
@@ -212,20 +212,20 @@ using fop : FOP_COMMAND
         installation.
       </p>
 <p>To test PDF generation, switch to the directory <code class="filename">$BOOST_ROOT/libs/function/doc</code> and
-      execute the command <span class="command"><strong>bjam --v2 pdf</strong></span>. In the
+      execute the command <span class="command"><strong>bjam pdf</strong></span>. In the
       absence of any errors, Apache FOP will be executed to transform
       the XSL:FO output of DocBook into a PDF file.</p>
 </div>
 </div>
-<div class="section" title="Running BoostBook">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boostbook.setup.running"></a>Running BoostBook</h3></div></div></div>
 <p>Once BoostBook has been configured, we can build some
     documentation. First, change to the directory
     <code class="computeroutput">$BOOST_ROOT/doc</code> and remove (or make writable) the
     <code class="computeroutput">.html</code> files in
-    <code class="computeroutput">$BOOST_ROOT/doc/html</code>. Then, run <code class="computeroutput">bjam
-    --v2</code> to build HTML documentation. You should see several
+    <code class="computeroutput">$BOOST_ROOT/doc/html</code>. Then, run <code class="computeroutput">bjam</code>
+    to build HTML documentation. You should see several
     warnings like these while DocBook documentation is being built
     from BoostBook documentation:</p>
 <pre class="programlisting">Cannot find function named 'checked_delete'
@@ -238,11 +238,11 @@ Cannot find function named 'next'</pre>
     documentation for Boost will be available in
     <code class="computeroutput">$BOOST_ROOT/doc/html</code>. You can also create HTML
     documentation in a single (large!) HTML file with the command line
-    <code class="computeroutput">bjam --v2 onehtml</code>, or Unix man pages with the command
-    line <code class="computeroutput">bjam --v2 man</code>. The complete list of output
+    <code class="computeroutput">bjam onehtml</code>, or Unix man pages with the command
+    line <code class="computeroutput">bjam man</code>. The complete list of output
     formats is listed in <a class="xref" href="started.html#boostbook.output.formats" title="Table&#160;30.1.&#160;BoostBook Output Formats">Table&#160;30.1, &#8220;BoostBook Output Formats&#8221;</a>. Several output formats can
     be passed to a single invocation of <code class="computeroutput">bjam</code>, e.g.,
-    <code class="computeroutput">bjam --v2 html man docbook</code> would generate HTML
+    <code class="computeroutput">bjam html man docbook</code> would generate HTML
     (multiple files), man pages, and DocBook documentation.</p>
 <div class="table">
 <a name="boostbook.output.formats"></a><p class="title"><b>Table&#160;30.1.&#160;BoostBook Output Formats</b></p>
@@ -290,7 +290,7 @@ Cannot find function named 'next'</pre>
 </div>
 <br class="table-break">
 </div>
-<div class="section" title="Troubleshooting">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boostbook.setup.troubleshooting"></a>Troubleshooting</h3></div></div></div>
 <p>The Boost documentation tools are still in their early phase of 
@@ -313,7 +313,7 @@ Cannot find function named 'next'</pre>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../../boostbook.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boostbook.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../documenting.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../../boostbook.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boostbook.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../documenting.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

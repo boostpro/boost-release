@@ -20,45 +20,45 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="make_treap_multiset.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../intrusive/reference.html#header.boost.intrusive.trivial_value_traits_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="unordered_set.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="make_treap_multiset.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../intrusive/reference.html#header.boost.intrusive.trivial_value_traits_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="unordered_set.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Struct template trivial_value_traits">
+<div class="refentry">
 <a name="boost.intrusive.trivial_value_traits"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Struct template trivial_value_traits</span></h2>
 <p>boost::intrusive::trivial_value_traits</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../intrusive/reference.html#header.boost.intrusive.trivial_value_traits_hpp" title="Header &lt;boost/intrusive/trivial_value_traits.hpp&gt;">boost/intrusive/trivial_value_traits.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../intrusive/reference.html#header.boost.intrusive.trivial_value_traits_hpp" title="Header &lt;boost/intrusive/trivial_value_traits.hpp&gt;">boost/intrusive/trivial_value_traits.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> NodeTraits, link_mode_type LinkMode = normal_link&gt; 
-<span class="bold"><strong>struct</strong></span> <a class="link" href="trivial_value_traits.html" title="Struct template trivial_value_traits">trivial_value_traits</a> {
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> NodeTraits                  <a name="boost.intrusive.trivial_value_traits.node_traits"></a>node_traits;   
-  <span class="bold"><strong>typedef</strong></span> node_traits::node_ptr       <a name="boost.intrusive.trivial_value_traits.node_ptr"></a>node_ptr;      
-  <span class="bold"><strong>typedef</strong></span> node_traits::const_node_ptr <a name="boost.intrusive.trivial_value_traits.const_node_ptr"></a>const_node_ptr;
-  <span class="bold"><strong>typedef</strong></span> node_traits::node           <a name="boost.intrusive.trivial_value_traits.value_type"></a>value_type;    
-  <span class="bold"><strong>typedef</strong></span> node_ptr                    <a name="boost.intrusive.trivial_value_traits.pointer"></a>pointer;       
-  <span class="bold"><strong>typedef</strong></span> const_node_ptr              <a name="boost.intrusive.trivial_value_traits.const_pointer"></a>const_pointer; 
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> NodeTraits<span class="special">,</span> <span class="identifier">link_mode_type</span> LinkMode <span class="special">=</span> <span class="identifier">normal_link</span><span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="trivial_value_traits.html" title="Struct template trivial_value_traits">trivial_value_traits</a> <span class="special">{</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">NodeTraits</span>                  <a name="boost.intrusive.trivial_value_traits.node_traits"></a><span class="identifier">node_traits</span><span class="special">;</span>   
+  <span class="keyword">typedef</span> <span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">node_ptr</span>       <a name="boost.intrusive.trivial_value_traits.node_ptr"></a><span class="identifier">node_ptr</span><span class="special">;</span>      
+  <span class="keyword">typedef</span> <span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">const_node_ptr</span> <a name="boost.intrusive.trivial_value_traits.const_node_ptr"></a><span class="identifier">const_node_ptr</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">node</span>           <a name="boost.intrusive.trivial_value_traits.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>    
+  <span class="keyword">typedef</span> <span class="identifier">node_ptr</span>                    <a name="boost.intrusive.trivial_value_traits.pointer"></a><span class="identifier">pointer</span><span class="special">;</span>       
+  <span class="keyword">typedef</span> <span class="identifier">const_node_ptr</span>              <a name="boost.intrusive.trivial_value_traits.const_pointer"></a><span class="identifier">const_pointer</span><span class="special">;</span> 
 
-  <span class="emphasis"><em>// <a class="link" href="trivial_value_traits.html#id1070253-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> node_ptr</span> <a class="link" href="trivial_value_traits.html#id1070256-bb">to_node_ptr</a>(value_type &amp;) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> const_node_ptr</span> <a class="link" href="trivial_value_traits.html#id1070270-bb">to_node_ptr</a>(<span class="bold"><strong>const</strong></span> value_type &amp;) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> pointer</span> <a class="link" href="trivial_value_traits.html#id1070284-bb">to_value_ptr</a>(node_ptr) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> const_pointer</span> <a class="link" href="trivial_value_traits.html#id1070297-bb">to_value_ptr</a>(const_node_ptr) ;
-  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> link_mode_type</span> link_mode;
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id1343092"></a><h2>Description</h2>
+  <span class="comment">// <a class="link" href="trivial_value_traits.html#id1078494-bb">public static functions</a></span>
+  <span class="keyword">static</span> <span class="identifier">node_ptr</span> <a class="link" href="trivial_value_traits.html#id1078497-bb"><span class="identifier">to_node_ptr</span></a><span class="special">(</span><span class="identifier">value_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">const_node_ptr</span> <a class="link" href="trivial_value_traits.html#id1078510-bb"><span class="identifier">to_node_ptr</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">value_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">pointer</span> <a class="link" href="trivial_value_traits.html#id1078524-bb"><span class="identifier">to_value_ptr</span></a><span class="special">(</span><span class="identifier">node_ptr</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">const_pointer</span> <a class="link" href="trivial_value_traits.html#id1078538-bb"><span class="identifier">to_value_ptr</span></a><span class="special">(</span><span class="identifier">const_node_ptr</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">link_mode_type</span> link_mode<span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id1976771"></a><h2>Description</h2>
 <p>This value traits template is used to create value traits from user defined node traits where value_traits::value_type and node_traits::node should be equal </p>
-<div class="refsect2" title="trivial_value_traits public static functions">
-<a name="id1343100"></a><h3>
-<a name="id1070253-bb"></a><code class="computeroutput">trivial_value_traits</code> public static functions</h3>
+<div class="refsect2">
+<a name="id1976779"></a><h3>
+<a name="id1078494-bb"></a><code class="computeroutput">trivial_value_traits</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> node_ptr</span> <a name="id1070256-bb"></a>to_node_ptr(value_type &amp; value) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> const_node_ptr</span> <a name="id1070270-bb"></a>to_node_ptr(<span class="bold"><strong>const</strong></span> value_type &amp; value) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> pointer</span> <a name="id1070284-bb"></a>to_value_ptr(node_ptr n) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> const_pointer</span> <a name="id1070297-bb"></a>to_value_ptr(const_node_ptr n) ;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">node_ptr</span> <a name="id1078497-bb"></a><span class="identifier">to_node_ptr</span><span class="special">(</span><span class="identifier">value_type</span> <span class="special">&amp;</span> value<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">const_node_ptr</span> <a name="id1078510-bb"></a><span class="identifier">to_node_ptr</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">value_type</span> <span class="special">&amp;</span> value<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">pointer</span> <a name="id1078524-bb"></a><span class="identifier">to_value_ptr</span><span class="special">(</span><span class="identifier">node_ptr</span> n<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">const_pointer</span> <a name="id1078538-bb"></a><span class="identifier">to_value_ptr</span><span class="special">(</span><span class="identifier">const_node_ptr</span> n<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
@@ -73,7 +73,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="make_treap_multiset.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../intrusive/reference.html#header.boost.intrusive.trivial_value_traits_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="unordered_set.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="make_treap_multiset.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../intrusive/reference.html#header.boost.intrusive.trivial_value_traits_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="unordered_set.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

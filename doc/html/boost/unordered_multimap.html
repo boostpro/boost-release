@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="unordered_map.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../unordered/reference.html#header.boost.unordered_map_hpp"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../unordered/bibliography.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="unordered_map.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../unordered/reference.html#header.boost.unordered_map_hpp"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../unordered/bibliography.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Class template unordered_multimap">
+<div class="refentry">
 <a name="boost.unordered_multimap"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class template unordered_multimap</span></h2>
@@ -31,134 +31,134 @@
           </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../unordered/reference.html#header.boost.unordered_map_hpp" title="Header &lt;boost/unordered_map.hpp&gt;">boost/unordered_map.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../unordered/reference.html#header.boost.unordered_map_hpp" title="Header &lt;boost/unordered_map.hpp&gt;">boost/unordered_map.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash = <span class="type">boost::hash&lt;Key&gt;</span>, 
-         <span class="bold"><strong>typename</strong></span> Pred = <span class="type">std::equal_to&lt;Key&gt;</span>, 
-         <span class="bold"><strong>typename</strong></span> Alloc = <span class="type">std::allocator&lt;std::pair&lt;Key <span class="bold"><strong>const</strong></span>, Mapped&gt; &gt;</span> &gt; 
-<span class="bold"><strong>class</strong></span> <a class="link" href="unordered_multimap.html" title="Class template unordered_multimap">unordered_multimap</a> {
-<span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#boost.unordered_multimaptypes">types</a></em></span>
-  <span class="bold"><strong>typedef</strong></span> Key                                      <a name="boost.unordered_multimap.key_type"></a>key_type;            
-  <span class="bold"><strong>typedef</strong></span> std::pair&lt;Key <span class="bold"><strong>const</strong></span>, Mapped&gt;             <a name="boost.unordered_multimap.value_type"></a>value_type;          
-  <span class="bold"><strong>typedef</strong></span> Mapped                                   <a name="boost.unordered_multimap.mapped_type"></a>mapped_type;         
-  <span class="bold"><strong>typedef</strong></span> Hash                                     <a name="boost.unordered_multimap.hasher"></a>hasher;              
-  <span class="bold"><strong>typedef</strong></span> Pred                                     <a name="boost.unordered_multimap.key_equal"></a>key_equal;           
-  <span class="bold"><strong>typedef</strong></span> Alloc                                    <a name="boost.unordered_multimap.allocator_type"></a>allocator_type;      
-  <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> allocator_type::pointer         <a name="boost.unordered_multimap.pointer"></a>pointer;             
-  <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> allocator_type::const_pointer   <a name="boost.unordered_multimap.const_pointer"></a>const_pointer;       
-  <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> allocator_type::reference       <a name="boost.unordered_multimap.reference"></a>reference;             <span class="emphasis"><em>// lvalue of <span class="type">value_type</span>.</em></span>
-  <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> allocator_type::const_reference <a name="boost.unordered_multimap.const_reference"></a>const_reference;       <span class="emphasis"><em>// const lvalue of <span class="type">value_type</span>.</em></span>
-  <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.size_type">size_type</a>;
-  <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.difference_type">difference_type</a>;
-  <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.iterator">iterator</a>;
-  <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.const_iterator">const_iterator</a>;
-  <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.local_iterator">local_iterator</a>;
-  <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.const_local_iterator">const_local_iterator</a>;
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Key<span class="special">,</span> <span class="keyword">typename</span> Mapped<span class="special">,</span> <span class="keyword">typename</span> Hash <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;</span><span class="special">,</span> 
+         <span class="keyword">typename</span> Pred <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;</span><span class="special">,</span> 
+         <span class="keyword">typename</span> Alloc <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">Key</span> <span class="keyword">const</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="unordered_multimap.html" title="Class template unordered_multimap">unordered_multimap</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a class="link" href="unordered_multimap.html#boost.unordered_multimaptypes">types</a></span>
+  <span class="keyword">typedef</span> <span class="identifier">Key</span>                                      <a name="boost.unordered_multimap.key_type"></a><span class="identifier">key_type</span><span class="special">;</span>            
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">Key</span> <span class="keyword">const</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">&gt;</span>             <a name="boost.unordered_multimap.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>          
+  <span class="keyword">typedef</span> <span class="identifier">Mapped</span>                                   <a name="boost.unordered_multimap.mapped_type"></a><span class="identifier">mapped_type</span><span class="special">;</span>         
+  <span class="keyword">typedef</span> <span class="identifier">Hash</span>                                     <a name="boost.unordered_multimap.hasher"></a><span class="identifier">hasher</span><span class="special">;</span>              
+  <span class="keyword">typedef</span> <span class="identifier">Pred</span>                                     <a name="boost.unordered_multimap.key_equal"></a><span class="identifier">key_equal</span><span class="special">;</span>           
+  <span class="keyword">typedef</span> <span class="identifier">Alloc</span>                                    <a name="boost.unordered_multimap.allocator_type"></a><span class="identifier">allocator_type</span><span class="special">;</span>      
+  <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">allocator_type</span><span class="special">::</span><span class="identifier">pointer</span>         <a name="boost.unordered_multimap.pointer"></a><span class="identifier">pointer</span><span class="special">;</span>             
+  <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">allocator_type</span><span class="special">::</span><span class="identifier">const_pointer</span>   <a name="boost.unordered_multimap.const_pointer"></a><span class="identifier">const_pointer</span><span class="special">;</span>       
+  <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">allocator_type</span><span class="special">::</span><span class="identifier">reference</span>       <a name="boost.unordered_multimap.reference"></a><span class="identifier">reference</span><span class="special">;</span>             <span class="comment">// lvalue of value_type.</span>
+  <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">allocator_type</span><span class="special">::</span><span class="identifier">const_reference</span> <a name="boost.unordered_multimap.const_reference"></a><span class="identifier">const_reference</span><span class="special">;</span>       <span class="comment">// const lvalue of value_type.</span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.size_type"><span class="identifier">size_type</span></a><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.difference_type"><span class="identifier">difference_type</span></a><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.iterator"><span class="identifier">iterator</span></a><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.const_iterator"><span class="identifier">const_iterator</span></a><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.local_iterator"><span class="identifier">local_iterator</span></a><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.const_local_iterator"><span class="identifier">const_local_iterator</span></a><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#boost.unordered_multimapconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_multimap.html#id1329045-bb">unordered_multimap</a>(size_type = <span class="emphasis"><em>implementation-defined</em></span>, 
-                              hasher <span class="bold"><strong>const</strong></span>&amp; = hasher(), 
-                              key_equal <span class="bold"><strong>const</strong></span>&amp; = key_equal(), 
-                              allocator_type <span class="bold"><strong>const</strong></span>&amp; = allocator_type());
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; 
-    <a class="link" href="unordered_multimap.html#id1329127-bb">unordered_multimap</a>(InputIterator, InputIterator, 
-                       size_type = implementation-defined, 
-                       hasher <span class="bold"><strong>const</strong></span>&amp; = hasher(), 
-                       key_equal <span class="bold"><strong>const</strong></span>&amp; = key_equal(), 
-                       allocator_type <span class="bold"><strong>const</strong></span>&amp; = allocator_type());
-  <a class="link" href="unordered_multimap.html#id1329226-bb">unordered_multimap</a>(unordered_multimap <span class="bold"><strong>const</strong></span>&amp;);
-  <a class="link" href="unordered_multimap.html#id1329257-bb">unordered_multimap</a>(unordered_multimap &amp;&amp;);
-  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_multimap.html#id1329297-bb">unordered_multimap</a>(Allocator <span class="bold"><strong>const</strong></span>&amp;);
-  <a class="link" href="unordered_multimap.html#id1329325-bb">unordered_multimap</a>(unordered_multimap <span class="bold"><strong>const</strong></span>&amp;, Allocator <span class="bold"><strong>const</strong></span>&amp;);
-  <a class="link" href="unordered_multimap.html#id1329366-bb">~unordered_multimap</a>();
-  <span class="type">unordered_multimap&amp;</span> <a class="link" href="unordered_multimap.html#id1329378-bb"><span class="bold"><strong>operator</strong></span>=</a>(unordered_multimap <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">unordered_multimap&amp;</span> <a class="link" href="unordered_multimap.html#id1329430-bb"><span class="bold"><strong>operator</strong></span>=</a>(unordered_multimap &amp;&amp;);
-  <span class="type">allocator_type</span> <a class="link" href="unordered_multimap.html#id1329483-bb">get_allocator</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="comment">// <a class="link" href="unordered_multimap.html#boost.unordered_multimapconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <span class="keyword">explicit</span> <a class="link" href="unordered_multimap.html#id1342493-bb"><span class="identifier">unordered_multimap</span></a><span class="special">(</span><span class="identifier">size_type</span> <span class="special">=</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span><span class="special">,</span> 
+                              <span class="identifier">hasher</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">hasher</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+                              <span class="identifier">key_equal</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">key_equal</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+                              <span class="identifier">allocator_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a><span class="special">&gt;</span> 
+    <a class="link" href="unordered_multimap.html#id1342574-bb"><span class="identifier">unordered_multimap</span></a><span class="special">(</span><span class="identifier">InputIterator</span><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">,</span> 
+                       <span class="identifier">size_type</span> <span class="special">=</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span><span class="special">,</span> 
+                       <span class="identifier">hasher</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">hasher</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+                       <span class="identifier">key_equal</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">key_equal</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+                       <span class="identifier">allocator_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="unordered_multimap.html#id1342673-bb"><span class="identifier">unordered_multimap</span></a><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="unordered_multimap.html#id1342704-bb"><span class="identifier">unordered_multimap</span></a><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="unordered_multimap.html#id1342745-bb"><span class="identifier">unordered_multimap</span></a><span class="special">(</span><span class="identifier">Allocator</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="unordered_multimap.html#id1342772-bb"><span class="identifier">unordered_multimap</span></a><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">,</span> <span class="identifier">Allocator</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="unordered_multimap.html#id1342813-bb"><span class="special">~</span><span class="identifier">unordered_multimap</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">unordered_multimap</span><span class="special">&amp;</span> <a class="link" href="unordered_multimap.html#id1342825-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">unordered_multimap</span><span class="special">&amp;</span> <a class="link" href="unordered_multimap.html#id1342877-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">allocator_type</span> <a class="link" href="unordered_multimap.html#id1342930-bb"><span class="identifier">get_allocator</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#id1329495-bb">size and capacity</a></em></span>
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_multimap.html#id1329500-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_multimap.html#id1329521-bb">size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_multimap.html#id1329548-bb">max_size</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="comment">// <a class="link" href="unordered_multimap.html#id1342942-bb">size and capacity</a></span>
+  <span class="keyword">bool</span> <a class="link" href="unordered_multimap.html#id1342947-bb"><span class="identifier">empty</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="unordered_multimap.html#id1342969-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="unordered_multimap.html#id1342996-bb"><span class="identifier">max_size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#id1329571-bb">iterators</a></em></span>
-  <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1329580-bb">begin</a>();
-  <span class="type">const_iterator</span> <a class="link" href="unordered_multimap.html#id1329585-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1329604-bb">end</a>();
-  <span class="type">const_iterator</span> <a class="link" href="unordered_multimap.html#id1329611-bb">end</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="unordered_multimap.html#id1329628-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="unordered_multimap.html#id1329645-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="comment">// <a class="link" href="unordered_multimap.html#id1343018-bb">iterators</a></span>
+  <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1343027-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="unordered_multimap.html#id1343032-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1343051-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="unordered_multimap.html#id1343058-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="unordered_multimap.html#id1343075-bb"><span class="identifier">cbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="unordered_multimap.html#id1343093-bb"><span class="identifier">cend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#id1329664-bb">modifiers</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1329668-bb">emplace</a>(Args&amp;&amp;...);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1329757-bb">emplace_hint</a>(const_iterator, Args&amp;&amp;...);
-  <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1329868-bb">insert</a>(value_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1328283-bb">insert</a>(const_iterator, value_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_multimap.html#id1328368-bb">insert</a>(InputIterator, InputIterator);
-  <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1328443-bb">erase</a>(const_iterator);
-  <span class="type">size_type</span> <a class="link" href="unordered_multimap.html#id1328526-bb">erase</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1328581-bb">erase</a>(const_iterator, const_iterator);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_multimap.html#id1328661-bb">quick_erase</a>(const_iterator);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_multimap.html#id1326252-bb">erase_return_void</a>(const_iterator);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_multimap.html#id1326320-bb">clear</a>();
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_multimap.html#id1326357-bb">swap</a>(unordered_multimap&amp;);
+  <span class="comment">// <a class="link" href="unordered_multimap.html#id1343111-bb">modifiers</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1343115-bb"><span class="identifier">emplace</span></a><span class="special">(</span><span class="identifier">Args</span><span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1341556-bb"><span class="identifier">emplace_hint</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1341667-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">value_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1341730-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a><span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="unordered_multimap.html#id1341815-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">InputIterator</span><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1341890-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="unordered_multimap.html#id1339761-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1339816-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="unordered_multimap.html#id1339896-bb"><span class="identifier">quick_erase</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="unordered_multimap.html#id1339970-bb"><span class="identifier">erase_return_void</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="unordered_multimap.html#id1340038-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="unordered_multimap.html#id1340076-bb"><span class="identifier">swap</span></a><span class="special">(</span><span class="identifier">unordered_multimap</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#id1326410-bb">observers</a></em></span>
-  <span class="type">hasher</span> <a class="link" href="unordered_multimap.html#id1326414-bb">hash_function</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">key_equal</span> <a class="link" href="unordered_multimap.html#id1326430-bb">key_eq</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="comment">// <a class="link" href="unordered_multimap.html#id1340128-bb">observers</a></span>
+  <span class="identifier">hasher</span> <a class="link" href="unordered_multimap.html#id1340132-bb"><span class="identifier">hash_function</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">key_equal</span> <a class="link" href="unordered_multimap.html#id1340148-bb"><span class="identifier">key_eq</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#id1326448-bb">lookup</a></em></span>
-  <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1326457-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">const_iterator</span> <a class="link" href="unordered_multimap.html#id1326475-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> CompatibleKey, <span class="bold"><strong>typename</strong></span> CompatibleHash, 
-           <span class="bold"><strong>typename</strong></span> CompatiblePredicate&gt; 
-    <span class="type">iterator</span> <a class="link" href="unordered_multimap.html#id1326495-bb">find</a>(CompatibleKey <span class="bold"><strong>const</strong></span>&amp;, CompatibleHash <span class="bold"><strong>const</strong></span>&amp;, 
-                  CompatiblePredicate <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> CompatibleKey, <span class="bold"><strong>typename</strong></span> CompatibleHash, 
-           <span class="bold"><strong>typename</strong></span> CompatiblePredicate&gt; 
-    <span class="type">const_iterator</span> 
-    <a class="link" href="unordered_multimap.html#id1326554-bb">find</a>(CompatibleKey <span class="bold"><strong>const</strong></span>&amp;, CompatibleHash <span class="bold"><strong>const</strong></span>&amp;, 
-         CompatiblePredicate <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_multimap.html#id1326642-bb">count</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">std::pair&lt;iterator, iterator&gt;</span> <a class="link" href="unordered_multimap.html#id1326680-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a class="link" href="unordered_multimap.html#id1326699-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="comment">// <a class="link" href="unordered_multimap.html#id1340166-bb">lookup</a></span>
+  <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1340175-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="unordered_multimap.html#id1340193-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CompatibleKey<span class="special">,</span> <span class="keyword">typename</span> CompatibleHash<span class="special">,</span> 
+           <span class="keyword">typename</span> CompatiblePredicate<span class="special">&gt;</span> 
+    <span class="identifier">iterator</span> <a class="link" href="unordered_multimap.html#id1340213-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="identifier">CompatibleKey</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">,</span> <span class="identifier">CompatibleHash</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">,</span> 
+                  <span class="identifier">CompatiblePredicate</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CompatibleKey<span class="special">,</span> <span class="keyword">typename</span> CompatibleHash<span class="special">,</span> 
+           <span class="keyword">typename</span> CompatiblePredicate<span class="special">&gt;</span> 
+    <span class="identifier">const_iterator</span> 
+    <a class="link" href="unordered_multimap.html#id1340272-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="identifier">CompatibleKey</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">,</span> <span class="identifier">CompatibleHash</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">,</span> 
+         <span class="identifier">CompatiblePredicate</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="unordered_multimap.html#id1340360-bb"><span class="identifier">count</span></a><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span><span class="special">&gt;</span> <a class="link" href="unordered_multimap.html#id1340398-bb"><span class="identifier">equal_range</span></a><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span><span class="special">&gt;</span> <a class="link" href="unordered_multimap.html#id1340417-bb"><span class="identifier">equal_range</span></a><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#id1326750-bb">bucket interface</a></em></span>
-  <span class="type">size_type</span> <a class="link" href="unordered_multimap.html#id1326755-bb">bucket_count</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_multimap.html#id1326774-bb">max_bucket_count</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_multimap.html#id1326795-bb">bucket_size</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_multimap.html#id1326841-bb">bucket</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">local_iterator</span> <a class="link" href="unordered_multimap.html#id1326890-bb">begin</a>(size_type);
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_multimap.html#id1326908-bb">begin</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">local_iterator</span> <a class="link" href="unordered_multimap.html#id1326961-bb">end</a>(size_type);
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_multimap.html#id1326980-bb">end</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_multimap.html#id1327029-bb">cbegin</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_multimap.html#id1327077-bb">cend</a>(size_type);
+  <span class="comment">// <a class="link" href="unordered_multimap.html#id1340468-bb">bucket interface</a></span>
+  <span class="identifier">size_type</span> <a class="link" href="unordered_multimap.html#id1340473-bb"><span class="identifier">bucket_count</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="unordered_multimap.html#id1340493-bb"><span class="identifier">max_bucket_count</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="unordered_multimap.html#id1340513-bb"><span class="identifier">bucket_size</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="unordered_multimap.html#id1340559-bb"><span class="identifier">bucket</span></a><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">local_iterator</span> <a class="link" href="unordered_multimap.html#id1340608-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_local_iterator</span> <a class="link" href="unordered_multimap.html#id1340626-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">local_iterator</span> <a class="link" href="unordered_multimap.html#id1340680-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_local_iterator</span> <a class="link" href="unordered_multimap.html#id1340698-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_local_iterator</span> <a class="link" href="unordered_multimap.html#id1340747-bb"><span class="identifier">cbegin</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_local_iterator</span> <a class="link" href="unordered_multimap.html#id1340796-bb"><span class="identifier">cend</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#id1327126-bb">hash policy</a></em></span>
-  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_multimap.html#id1327130-bb">load_factor</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_multimap.html#id1327150-bb">max_load_factor</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_multimap.html#id1327170-bb">max_load_factor</a>(<span class="bold"><strong>float</strong></span>);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_multimap.html#id1327202-bb">rehash</a>(size_type);
-};
+  <span class="comment">// <a class="link" href="unordered_multimap.html#id1340844-bb">hash policy</a></span>
+  <span class="keyword">float</span> <a class="link" href="unordered_multimap.html#id1340848-bb"><span class="identifier">load_factor</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">float</span> <a class="link" href="unordered_multimap.html#id1340868-bb"><span class="identifier">max_load_factor</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="unordered_multimap.html#id1340888-bb"><span class="identifier">max_load_factor</span></a><span class="special">(</span><span class="keyword">float</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="unordered_multimap.html#id1340920-bb"><span class="identifier">rehash</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span>
 
-<span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#id1327252-bb">Equality Comparisons</a></em></span>
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
-         <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_multimap.html#boost.operator==_id1327257"><span class="bold"><strong>operator</strong></span>==</a>(unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
-                  unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
-         <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_multimap.html#boost.operator!=_id1327337"><span class="bold"><strong>operator</strong></span>!=</a>(unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
-                  unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;);
+<span class="comment">// <a class="link" href="unordered_multimap.html#id1340970-bb">Equality Comparisons</a></span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Key<span class="special">,</span> <span class="keyword">typename</span> Mapped<span class="special">,</span> <span class="keyword">typename</span> Hash<span class="special">,</span> <span class="keyword">typename</span> Pred<span class="special">,</span> 
+         <span class="keyword">typename</span> Alloc<span class="special">&gt;</span> 
+  <span class="keyword">bool</span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.operator==_id1340975"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">,</span> 
+                  <span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Key<span class="special">,</span> <span class="keyword">typename</span> Mapped<span class="special">,</span> <span class="keyword">typename</span> Hash<span class="special">,</span> <span class="keyword">typename</span> Pred<span class="special">,</span> 
+         <span class="keyword">typename</span> Alloc<span class="special">&gt;</span> 
+  <span class="keyword">bool</span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.operator!=_id1341055"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">,</span> 
+                  <span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-<span class="emphasis"><em>// <a class="link" href="unordered_multimap.html#id1327418-bb">swap</a></em></span>
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
-         <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_multimap.html#boost.swap_id1327423">swap</a>(unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp;, 
-            unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp;);</pre></div>
-<div class="refsect1" title="Description">
-<a name="id2079746"></a><h2>Description</h2>
+<span class="comment">// <a class="link" href="unordered_multimap.html#id1341137-bb">swap</a></span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Key<span class="special">,</span> <span class="keyword">typename</span> Mapped<span class="special">,</span> <span class="keyword">typename</span> Hash<span class="special">,</span> <span class="keyword">typename</span> Pred<span class="special">,</span> 
+         <span class="keyword">typename</span> Alloc<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a class="link" href="unordered_multimap.html#boost.unordered_multimap.swap_id1341141"><span class="identifier">swap</span></a><span class="special">(</span><span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span><span class="special">&amp;</span><span class="special">,</span> 
+            <span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id3071599"></a><h2>Description</h2>
 <p>Based on chapter 23 of
               <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2960.pdf" target="_top">the working draft of the C++ standard [n2960]</a>.
               But without the updated rules for allocators.
@@ -197,82 +197,82 @@
 </table></div>
 <p>The elements are organized into buckets. Keys with the same hash code are stored in the same bucket and elements with equivalent keys are stored next to each other.</p>
 <p>The number of buckets can be automatically increased by a call to insert, or as the result of calling rehash.</p>
-<div class="refsect2" title="unordered_multimap public types">
-<a name="id2079864"></a><h3>
+<div class="refsect2">
+<a name="id3071718"></a><h3>
 <a name="boost.unordered_multimaptypes"></a><code class="computeroutput">unordered_multimap</code> 
         public
        types</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
 <p>
-<span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a name="boost.unordered_multimap.size_type"></a>size_type;</p>
+<span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a name="boost.unordered_multimap.size_type"></a><span class="identifier">size_type</span><span class="special">;</span></p>
 <p>An unsigned integral type.</p>
-<p><span class="type">size_type</span> can represent any non-negative value of <span class="type">difference_type</span>.</p>
+<p>size_type can represent any non-negative value of difference_type.</p>
 </li>
 <li class="listitem">
 <p>
-<span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a name="boost.unordered_multimap.difference_type"></a>difference_type;</p>
+<span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a name="boost.unordered_multimap.difference_type"></a><span class="identifier">difference_type</span><span class="special">;</span></p>
 <p>A signed integral type.</p>
-<p>Is identical to the difference type of <span class="type">iterator</span> and <span class="type">const_iterator</span>.</p>
+<p>Is identical to the difference type of iterator and const_iterator.</p>
 </li>
 <li class="listitem">
 <p>
-<span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a name="boost.unordered_multimap.iterator"></a>iterator;</p>
-<p>A iterator whose value type is <span class="type">value_type</span>. </p>
+<span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a name="boost.unordered_multimap.iterator"></a><span class="identifier">iterator</span><span class="special">;</span></p>
+<p>A iterator whose value type is value_type. </p>
 <p>The iterator category is at least a forward iterator.</p>
-<p>Convertible to <span class="type">const_iterator</span>.</p>
+<p>Convertible to const_iterator.</p>
 </li>
 <li class="listitem">
 <p>
-<span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a name="boost.unordered_multimap.const_iterator"></a>const_iterator;</p>
-<p>A constant iterator whose value type is <span class="type">value_type</span>. </p>
+<span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a name="boost.unordered_multimap.const_iterator"></a><span class="identifier">const_iterator</span><span class="special">;</span></p>
+<p>A constant iterator whose value type is value_type. </p>
 <p>The iterator category is at least a forward iterator.</p>
 </li>
 <li class="listitem">
 <p>
-<span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a name="boost.unordered_multimap.local_iterator"></a>local_iterator;</p>
-<p>An iterator with the same value type, difference type and pointer and reference type as <span class="type">iterator</span>.</p>
+<span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a name="boost.unordered_multimap.local_iterator"></a><span class="identifier">local_iterator</span><span class="special">;</span></p>
+<p>An iterator with the same value type, difference type and pointer and reference type as iterator.</p>
 <p>A local_iterator object can be used to iterate through a single bucket.</p>
 </li>
 <li class="listitem">
 <p>
-<span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a name="boost.unordered_multimap.const_local_iterator"></a>const_local_iterator;</p>
-<p>A constant iterator with the same value type, difference type and pointer and reference type as <span class="type">const_iterator</span>.</p>
+<span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span> <a name="boost.unordered_multimap.const_local_iterator"></a><span class="identifier">const_local_iterator</span><span class="special">;</span></p>
+<p>A constant iterator with the same value type, difference type and pointer and reference type as const_iterator.</p>
 <p>A const_local_iterator object can be used to iterate through a single bucket.</p>
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="unordered_multimap public construct/copy/destruct">
-<a name="id2080090"></a><h3>
+<div class="refsect2">
+<a name="id3072029"></a><h3>
 <a name="boost.unordered_multimapconstruct-copy-destruct"></a><code class="computeroutput">unordered_multimap</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id1329045-bb"></a>unordered_multimap(size_type n = <span class="emphasis"><em>implementation-defined</em></span>, 
-                            hasher <span class="bold"><strong>const</strong></span>&amp; hf = hasher(), 
-                            key_equal <span class="bold"><strong>const</strong></span>&amp; eq = key_equal(), 
-                            allocator_type <span class="bold"><strong>const</strong></span>&amp; a = allocator_type());</pre>
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="id1342493-bb"></a><span class="identifier">unordered_multimap</span><span class="special">(</span><span class="identifier">size_type</span> n <span class="special">=</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span><span class="special">,</span> 
+                            <span class="identifier">hasher</span> <span class="keyword">const</span><span class="special">&amp;</span> hf <span class="special">=</span> <span class="identifier">hasher</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+                            <span class="identifier">key_equal</span> <span class="keyword">const</span><span class="special">&amp;</span> eq <span class="special">=</span> <span class="identifier">key_equal</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+                            <span class="identifier">allocator_type</span> <span class="keyword">const</span><span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs an empty container with at least n buckets, using hf as the hash function, eq as the key equality predicate, a as the allocator and a maximum load factor of 1.0.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><code class="computeroutput"><a class="link" href="unordered_multimap.html#id1329521-bb">size</a>() == 0</code></td>
+<td><code class="computeroutput"><a class="link" href="unordered_multimap.html#id1342969-bb">size</a>() == 0</code></td>
 </tr></tbody>
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; 
-  <a name="id1329127-bb"></a>unordered_multimap(InputIterator f, InputIterator l, 
-                     size_type n = implementation-defined, 
-                     hasher <span class="bold"><strong>const</strong></span>&amp; hf = hasher(), 
-                     key_equal <span class="bold"><strong>const</strong></span>&amp; eq = key_equal(), 
-                     allocator_type <span class="bold"><strong>const</strong></span>&amp; a = allocator_type());</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a><span class="special">&gt;</span> 
+  <a name="id1342574-bb"></a><span class="identifier">unordered_multimap</span><span class="special">(</span><span class="identifier">InputIterator</span> f<span class="special">,</span> <span class="identifier">InputIterator</span> l<span class="special">,</span> 
+                     <span class="identifier">size_type</span> n <span class="special">=</span> <span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span></em></span><span class="special">,</span> 
+                     <span class="identifier">hasher</span> <span class="keyword">const</span><span class="special">&amp;</span> hf <span class="special">=</span> <span class="identifier">hasher</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+                     <span class="identifier">key_equal</span> <span class="keyword">const</span><span class="special">&amp;</span> eq <span class="special">=</span> <span class="identifier">key_equal</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+                     <span class="identifier">allocator_type</span> <span class="keyword">const</span><span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs an empty container with at least n buckets, using hf as the hash function, eq as the key equality predicate, a as the allocator and a maximum load factor of 1.0 and inserts the elements from [f, l) into it.</p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1329226-bb"></a>unordered_multimap(unordered_multimap <span class="bold"><strong>const</strong></span>&amp;);</pre>
+<pre class="literallayout"><a name="id1342673-bb"></a><span class="identifier">unordered_multimap</span><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre>
 <p>The copy constructor. Copies the contained elements, hash function, predicate, maximum load factor and allocator.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -283,7 +283,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1329257-bb"></a>unordered_multimap(unordered_multimap &amp;&amp;);</pre>
+<pre class="literallayout"><a name="id1342704-bb"></a><span class="identifier">unordered_multimap</span><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span></pre>
 <p>The move constructor.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -303,15 +303,15 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id1329297-bb"></a>unordered_multimap(Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="id1342745-bb"></a><span class="identifier">unordered_multimap</span><span class="special">(</span><span class="identifier">Allocator</span> <span class="keyword">const</span><span class="special">&amp;</span> a<span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs an empty container, using allocator <code class="computeroutput">a</code>.</p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1329325-bb"></a>unordered_multimap(unordered_multimap <span class="bold"><strong>const</strong></span>&amp; x, Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
+<pre class="literallayout"><a name="id1342772-bb"></a><span class="identifier">unordered_multimap</span><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="keyword">const</span><span class="special">&amp;</span> x<span class="special">,</span> <span class="identifier">Allocator</span> <span class="keyword">const</span><span class="special">&amp;</span> a<span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs an container, copying <code class="computeroutput">x</code>'s contained elements, hash function, predicate, maximum load factor, but using allocator <code class="computeroutput">a</code>.</p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1329366-bb"></a>~unordered_multimap();</pre>
+<pre class="literallayout"><a name="id1342813-bb"></a><span class="special">~</span><span class="identifier">unordered_multimap</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -322,7 +322,7 @@
 </li>
 </ol></div>
 </div>
-<pre class="literallayout"><span class="type">unordered_multimap&amp;</span> <a name="id1329378-bb"></a><span class="bold"><strong>operator</strong></span>=(unordered_multimap <span class="bold"><strong>const</strong></span>&amp;);</pre>
+<pre class="literallayout"><span class="identifier">unordered_multimap</span><span class="special">&amp;</span> <a name="id1342825-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre>
 <p>The assignment operator. Copies the contained elements, hash function, predicate and maximum load factor but not the allocator.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -341,7 +341,7 @@
 </tr>
 </tbody>
 </table></div>
-<pre class="literallayout"><span class="type">unordered_multimap&amp;</span> <a name="id1329430-bb"></a><span class="bold"><strong>operator</strong></span>=(unordered_multimap &amp;&amp;);</pre>
+<pre class="literallayout"><span class="identifier">unordered_multimap</span><span class="special">&amp;</span> <a name="id1342877-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">unordered_multimap</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span></pre>
 <p>The move assignment operator.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -363,52 +363,52 @@
 </tr>
 </tbody>
 </table></div>
-<pre class="literallayout"><span class="type">allocator_type</span> <a name="id1329483-bb"></a>get_allocator() <span class="bold"><strong>const</strong></span>;</pre>
-<div class="refsect2" title="unordered_multimap size and capacity">
-<a name="id2080571"></a><h3>
-<a name="id1329495-bb"></a><code class="computeroutput">unordered_multimap</code> size and capacity</h3>
+<pre class="literallayout"><span class="identifier">allocator_type</span> <a name="id1342930-bb"></a><span class="identifier">get_allocator</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<div class="refsect2">
+<a name="id3073027"></a><h3>
+<a name="id1342942-bb"></a><code class="computeroutput">unordered_multimap</code> size and capacity</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id1329500-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id1342947-bb"></a><span class="identifier">empty</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
-<td><code class="computeroutput"><a class="link" href="unordered_multimap.html#id1329521-bb">size</a>() == 0</code></td>
+<td><code class="computeroutput"><a class="link" href="unordered_multimap.html#id1342969-bb">size</a>() == 0</code></td>
 </tr></tbody>
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1329521-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id1342969-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
-<td><code class="computeroutput">std::distance(<a class="link" href="unordered_multimap.html#id1329575-bb">begin</a>(), <a class="link" href="unordered_multimap.html#id1329599-bb">end</a>())</code></td>
+<td><code class="computeroutput">std::distance(<a class="link" href="unordered_multimap.html#id1343022-bb">begin</a>(), <a class="link" href="unordered_multimap.html#id1343046-bb">end</a>())</code></td>
 </tr></tbody>
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1329548-bb"></a>max_size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id1342996-bb"></a><span class="identifier">max_size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
 <td>
-<code class="computeroutput"><a class="link" href="unordered_multimap.html#id1329521-bb">size</a>()</code> of the largest possible container.
+<code class="computeroutput"><a class="link" href="unordered_multimap.html#id1342969-bb">size</a>()</code> of the largest possible container.
               </td>
 </tr></tbody>
 </table></div>
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="unordered_multimap iterators">
-<a name="id2080730"></a><h3>
-<a name="id1329571-bb"></a><code class="computeroutput">unordered_multimap</code> iterators</h3>
+<div class="refsect2">
+<a name="id3073238"></a><h3>
+<a name="id1343018-bb"></a><code class="computeroutput">unordered_multimap</code> iterators</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1329575-bb"></a><span class="type">iterator</span> <a name="id1329580-bb"></a>begin();
-<span class="type">const_iterator</span> <a name="id1329585-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1343022-bb"></a><span class="identifier">iterator</span> <a name="id1343027-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+<span class="identifier">const_iterator</span> <a name="id1343032-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -419,8 +419,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1329599-bb"></a><span class="type">iterator</span> <a name="id1329604-bb"></a>end();
-<span class="type">const_iterator</span> <a name="id1329611-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1343046-bb"></a><span class="identifier">iterator</span> <a name="id1343051-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+<span class="identifier">const_iterator</span> <a name="id1343058-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -431,7 +431,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1329628-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1343075-bb"></a><span class="identifier">cbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -442,7 +442,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1329645-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id1343093-bb"></a><span class="identifier">cend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -454,12 +454,12 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="unordered_multimap modifiers">
-<a name="id2080915"></a><h3>
-<a name="id1329664-bb"></a><code class="computeroutput">unordered_multimap</code> modifiers</h3>
+<div class="refsect2">
+<a name="id3073534"></a><h3>
+<a name="id1343111-bb"></a><code class="computeroutput">unordered_multimap</code> modifiers</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">iterator</span> <a name="id1329668-bb"></a>emplace(Args&amp;&amp;... args);</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="identifier">iterator</span> <a name="id1343115-bb"></a><span class="identifier">emplace</span><span class="special">(</span><span class="identifier">Args</span><span class="special">&amp;&amp;</span><span class="special">...</span> args<span class="special">)</span><span class="special">;</span></pre>
 <p>Inserts an object, constructed with the arguments <code class="computeroutput">args</code>, in the container.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -486,8 +486,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; 
-  <span class="type">iterator</span> <a name="id1329757-bb"></a>emplace_hint(const_iterator hint, Args&amp;&amp;... args);</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span><span class="special">...</span> Args<span class="special">&gt;</span> 
+  <span class="identifier">iterator</span> <a name="id1341556-bb"></a><span class="identifier">emplace_hint</span><span class="special">(</span><span class="identifier">const_iterator</span> hint<span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;</span><span class="special">...</span> args<span class="special">)</span><span class="special">;</span></pre>
 <p>Inserts an object, constructed with the arguments <code class="computeroutput">args</code>, in the container.</p>
 <p>hint is a suggestion to where the element should be inserted.</p>
 <div class="variablelist"><table border="0">
@@ -516,7 +516,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1329868-bb"></a>insert(value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1341667-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">value_type</span> <span class="keyword">const</span><span class="special">&amp;</span> obj<span class="special">)</span><span class="special">;</span></pre>
 <p>Inserts obj in the container.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -540,7 +540,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1328283-bb"></a>insert(const_iterator hint, value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1341730-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">const_iterator</span> hint<span class="special">,</span> <span class="identifier">value_type</span> <span class="keyword">const</span><span class="special">&amp;</span> obj<span class="special">)</span><span class="special">;</span></pre>
 <p>Inserts obj in the container.</p>
 <p>hint is a suggestion to where the element should be inserted.</p>
 <div class="variablelist"><table border="0">
@@ -566,8 +566,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1328368-bb"></a>insert(InputIterator first, InputIterator last);</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a><span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="id1341815-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">InputIterator</span> first<span class="special">,</span> <span class="identifier">InputIterator</span> last<span class="special">)</span><span class="special">;</span></pre>
 <p>Inserts a range of elements into the container.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -587,7 +587,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1328443-bb"></a>erase(const_iterator position);</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1341890-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">const_iterator</span> position<span class="special">)</span><span class="special">;</span></pre>
 <p>Erase the element pointed to by <code class="computeroutput">position</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -609,7 +609,7 @@
                   When the number of elements is a lot smaller than the number of buckets
                   this function can be very inefficient as it has to search through empty
                   buckets for the next element, in order to return the iterator.
-                  The method <a class="link" href="unordered_multimap.html#id1328661-bb">quick_erase</a> is faster, but has yet
+                  The method <a class="link" href="unordered_multimap.html#id1339896-bb">quick_erase</a> is faster, but has yet
                   to be standardized.
                 </p></td>
 </tr>
@@ -617,7 +617,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1328526-bb"></a>erase(key_type <span class="bold"><strong>const</strong></span>&amp; k);</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id1339761-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> k<span class="special">)</span><span class="special">;</span></pre>
 <p>Erase all elements with key equivalent to <code class="computeroutput">k</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -634,7 +634,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1328581-bb"></a>erase(const_iterator first, const_iterator last);</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id1339816-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">const_iterator</span> first<span class="special">,</span> <span class="identifier">const_iterator</span> last<span class="special">)</span><span class="special">;</span></pre>
 <p>Erases the elements in the range from <code class="computeroutput">first</code> to <code class="computeroutput">last</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -654,7 +654,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1328661-bb"></a>quick_erase(const_iterator position);</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1339896-bb"></a><span class="identifier">quick_erase</span><span class="special">(</span><span class="identifier">const_iterator</span> position<span class="special">)</span><span class="special">;</span></pre>
 <p>Erase the element pointed to by <code class="computeroutput">position</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -670,7 +670,7 @@
 <td><p><span class="term">Notes:</span></p></td>
 <td>
 <p>
-                  This method is faster than <a class="link" href="unordered_multimap.html#id1328443-bb">erase</a> as
+                  This method is faster than <a class="link" href="unordered_multimap.html#id1341890-bb">erase</a> as
                   it doesn't have to find the next element in the container -
                   a potentially costly operation.
                 </p>
@@ -684,7 +684,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1326252-bb"></a>erase_return_void(const_iterator position);</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1339970-bb"></a><span class="identifier">erase_return_void</span><span class="special">(</span><span class="identifier">const_iterator</span> position<span class="special">)</span><span class="special">;</span></pre>
 <p>Erase the element pointed to by <code class="computeroutput">position</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -709,14 +709,14 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1326320-bb"></a>clear();</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1340038-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Erases all elements in the container.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><p><code class="computeroutput"><a class="link" href="unordered_multimap.html#id1329521-bb">size</a>() == 0</code></p></td>
+<td><p><code class="computeroutput"><a class="link" href="unordered_multimap.html#id1342969-bb">size</a>() == 0</code></p></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -726,7 +726,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1326357-bb"></a>swap(unordered_multimap&amp;);</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1340076-bb"></a><span class="identifier">swap</span><span class="special">(</span><span class="identifier">unordered_multimap</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -744,12 +744,12 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="unordered_multimap observers">
-<a name="id2081799"></a><h3>
-<a name="id1326410-bb"></a><code class="computeroutput">unordered_multimap</code> observers</h3>
+<div class="refsect2">
+<a name="id3074790"></a><h3>
+<a name="id1340128-bb"></a><code class="computeroutput">unordered_multimap</code> observers</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type">hasher</span> <a name="id1326414-bb"></a>hash_function() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">hasher</span> <a name="id1340132-bb"></a><span class="identifier">hash_function</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -760,7 +760,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">key_equal</span> <a name="id1326430-bb"></a>key_eq() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">key_equal</span> <a name="id1340148-bb"></a><span class="identifier">key_eq</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -772,22 +772,22 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="unordered_multimap lookup">
-<a name="id2081886"></a><h3>
-<a name="id1326448-bb"></a><code class="computeroutput">unordered_multimap</code> lookup</h3>
+<div class="refsect2">
+<a name="id3074913"></a><h3>
+<a name="id1340166-bb"></a><code class="computeroutput">unordered_multimap</code> lookup</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1326452-bb"></a><span class="type">iterator</span> <a name="id1326457-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k);
-<span class="type">const_iterator</span> <a name="id1326475-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> CompatibleKey, <span class="bold"><strong>typename</strong></span> CompatibleHash, 
-         <span class="bold"><strong>typename</strong></span> CompatiblePredicate&gt; 
-  <span class="type">iterator</span> <a name="id1326495-bb"></a>find(CompatibleKey <span class="bold"><strong>const</strong></span>&amp; k, CompatibleHash <span class="bold"><strong>const</strong></span>&amp; hash, 
-                CompatiblePredicate <span class="bold"><strong>const</strong></span>&amp; eq);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> CompatibleKey, <span class="bold"><strong>typename</strong></span> CompatibleHash, 
-         <span class="bold"><strong>typename</strong></span> CompatiblePredicate&gt; 
-  <span class="type">const_iterator</span> 
-  <a name="id1326554-bb"></a>find(CompatibleKey <span class="bold"><strong>const</strong></span>&amp; k, CompatibleHash <span class="bold"><strong>const</strong></span>&amp; hash, 
-       CompatiblePredicate <span class="bold"><strong>const</strong></span>&amp; eq) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1340170-bb"></a><span class="identifier">iterator</span> <a name="id1340175-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> k<span class="special">)</span><span class="special">;</span>
+<span class="identifier">const_iterator</span> <a name="id1340193-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> k<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CompatibleKey<span class="special">,</span> <span class="keyword">typename</span> CompatibleHash<span class="special">,</span> 
+         <span class="keyword">typename</span> CompatiblePredicate<span class="special">&gt;</span> 
+  <span class="identifier">iterator</span> <a name="id1340213-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="identifier">CompatibleKey</span> <span class="keyword">const</span><span class="special">&amp;</span> k<span class="special">,</span> <span class="identifier">CompatibleHash</span> <span class="keyword">const</span><span class="special">&amp;</span> hash<span class="special">,</span> 
+                <span class="identifier">CompatiblePredicate</span> <span class="keyword">const</span><span class="special">&amp;</span> eq<span class="special">)</span><span class="special">;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CompatibleKey<span class="special">,</span> <span class="keyword">typename</span> CompatibleHash<span class="special">,</span> 
+         <span class="keyword">typename</span> CompatiblePredicate<span class="special">&gt;</span> 
+  <span class="identifier">const_iterator</span> 
+  <a name="id1340272-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="identifier">CompatibleKey</span> <span class="keyword">const</span><span class="special">&amp;</span> k<span class="special">,</span> <span class="identifier">CompatibleHash</span> <span class="keyword">const</span><span class="special">&amp;</span> hash<span class="special">,</span> 
+       <span class="identifier">CompatiblePredicate</span> <span class="keyword">const</span><span class="special">&amp;</span> eq<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -808,7 +808,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1326642-bb"></a>count(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id1340360-bb"></a><span class="identifier">count</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> k<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -818,8 +818,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1326676-bb"></a><span class="type">std::pair&lt;iterator, iterator&gt;</span> <a name="id1326680-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k);
-<span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a name="id1326699-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1340394-bb"></a><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span><span class="special">&gt;</span> <a name="id1340398-bb"></a><span class="identifier">equal_range</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> k<span class="special">)</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span><span class="special">&gt;</span> <a name="id1340417-bb"></a><span class="identifier">equal_range</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> k<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -833,12 +833,12 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="unordered_multimap bucket interface">
-<a name="id2082222"></a><h3>
-<a name="id1326750-bb"></a><code class="computeroutput">unordered_multimap</code> bucket interface</h3>
+<div class="refsect2">
+<a name="id3075877"></a><h3>
+<a name="id1340468-bb"></a><code class="computeroutput">unordered_multimap</code> bucket interface</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1326755-bb"></a>bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id1340473-bb"></a><span class="identifier">bucket_count</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -848,7 +848,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1326774-bb"></a>max_bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id1340493-bb"></a><span class="identifier">max_bucket_count</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -858,13 +858,13 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1326795-bb"></a>bucket_size(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id1340513-bb"></a><span class="identifier">bucket_size</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td><p><code class="computeroutput">n &lt; <a class="link" href="unordered_multimap.html#id1326755-bb">bucket_count</a>()</code></p></td>
+<td><p><code class="computeroutput">n &lt; <a class="link" href="unordered_multimap.html#id1340473-bb">bucket_count</a>()</code></p></td>
 </tr>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
@@ -874,7 +874,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1326841-bb"></a>bucket(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id1340559-bb"></a><span class="identifier">bucket</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> k<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -890,8 +890,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1326885-bb"></a><span class="type">local_iterator</span> <a name="id1326890-bb"></a>begin(size_type n);
-<span class="type">const_local_iterator</span> <a name="id1326908-bb"></a>begin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1340604-bb"></a><span class="identifier">local_iterator</span> <a name="id1340608-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span>
+<span class="identifier">const_local_iterator</span> <a name="id1340626-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -907,8 +907,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1326957-bb"></a><span class="type">local_iterator</span> <a name="id1326961-bb"></a>end(size_type n);
-<span class="type">const_local_iterator</span> <a name="id1326980-bb"></a>end(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1340675-bb"></a><span class="identifier">local_iterator</span> <a name="id1340680-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span>
+<span class="identifier">const_local_iterator</span> <a name="id1340698-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -924,7 +924,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id1327029-bb"></a>cbegin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_local_iterator</span> <a name="id1340747-bb"></a><span class="identifier">cbegin</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -940,7 +940,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id1327077-bb"></a>cend(size_type n);</pre>
+<pre class="literallayout"><span class="identifier">const_local_iterator</span> <a name="id1340796-bb"></a><span class="identifier">cend</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -957,12 +957,12 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="unordered_multimap hash policy">
-<a name="id2082684"></a><h3>
-<a name="id1327126-bb"></a><code class="computeroutput">unordered_multimap</code> hash policy</h3>
+<div class="refsect2">
+<a name="id3076569"></a><h3>
+<a name="id1340844-bb"></a><code class="computeroutput">unordered_multimap</code> hash policy</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id1327130-bb"></a>load_factor() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">float</span> <a name="id1340848-bb"></a><span class="identifier">load_factor</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -972,7 +972,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id1327150-bb"></a>max_load_factor() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">float</span> <a name="id1340868-bb"></a><span class="identifier">max_load_factor</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -982,7 +982,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1327170-bb"></a>max_load_factor(<span class="bold"><strong>float</strong></span> z);</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1340888-bb"></a><span class="identifier">max_load_factor</span><span class="special">(</span><span class="keyword">float</span> z<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -992,7 +992,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1327202-bb"></a>rehash(size_type n);</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1340920-bb"></a><span class="identifier">rehash</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <p>Changes the number of buckets so that there at least <code class="computeroutput">n</code> buckets, and so that the load factor is less than the maximum load factor.</p>
 <p>Invalidates iterators, and changes the order of elements. Pointers and references to elements are not invalidated.</p>
 <div class="variablelist"><table border="0">
@@ -1005,15 +1005,15 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="unordered_multimap Equality Comparisons">
-<a name="id2082869"></a><h3>
-<a name="id1327252-bb"></a><code class="computeroutput">unordered_multimap</code> Equality Comparisons</h3>
+<div class="refsect2">
+<a name="id3076819"></a><h3>
+<a name="id1340970-bb"></a><code class="computeroutput">unordered_multimap</code> Equality Comparisons</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
-         <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator==_id1327257"></a><span class="bold"><strong>operator</strong></span>==(unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
-                  unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; y);</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Key<span class="special">,</span> <span class="keyword">typename</span> Mapped<span class="special">,</span> <span class="keyword">typename</span> Hash<span class="special">,</span> <span class="keyword">typename</span> Pred<span class="special">,</span> 
+         <span class="keyword">typename</span> Alloc<span class="special">&gt;</span> 
+  <span class="keyword">bool</span> <a name="boost.unordered_multimap.operator==_id1340975"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> x<span class="special">,</span> 
+                  <span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> y<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -1027,10 +1027,10 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
-         <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator!=_id1327337"></a><span class="bold"><strong>operator</strong></span>!=(unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
-                  unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; y);</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Key<span class="special">,</span> <span class="keyword">typename</span> Mapped<span class="special">,</span> <span class="keyword">typename</span> Hash<span class="special">,</span> <span class="keyword">typename</span> Pred<span class="special">,</span> 
+         <span class="keyword">typename</span> Alloc<span class="special">&gt;</span> 
+  <span class="keyword">bool</span> <a name="boost.unordered_multimap.operator!=_id1341055"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> x<span class="special">,</span> 
+                  <span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> y<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -1045,14 +1045,14 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="unordered_multimap swap">
-<a name="id2083069"></a><h3>
-<a name="id1327418-bb"></a><code class="computeroutput">unordered_multimap</code> swap</h3>
+<div class="refsect2">
+<a name="id3077364"></a><h3>
+<a name="id1341137-bb"></a><code class="computeroutput">unordered_multimap</code> swap</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
-         <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="boost.swap_id1327423"></a>swap(unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp; x, 
-            unordered_multimap&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp; y);</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Key<span class="special">,</span> <span class="keyword">typename</span> Mapped<span class="special">,</span> <span class="keyword">typename</span> Hash<span class="special">,</span> <span class="keyword">typename</span> Pred<span class="special">,</span> 
+         <span class="keyword">typename</span> Alloc<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="boost.unordered_multimap.swap_id1341141"></a><span class="identifier">swap</span><span class="special">(</span><span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span><span class="special">&amp;</span> x<span class="special">,</span> 
+            <span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">Mapped</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span><span class="special">&amp;</span> y<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1080,13 +1080,13 @@
 <td align="right"><div class="copyright-footer">Copyright &#169; 2003, 2004 Jeremy B. Maitin-Shepard<br>Copyright &#169; 2005-2008 Daniel
       James<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
-        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="unordered_map.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../unordered/reference.html#header.boost.unordered_map_hpp"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../unordered/bibliography.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="unordered_map.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../unordered/reference.html#header.boost.unordered_map_hpp"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../unordered/bibliography.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

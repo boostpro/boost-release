@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="installation.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="overview.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="installation.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="overview.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Tutorial">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.tutorial"></a>Tutorial</h2></div></div></div>
 <div class="toc"><dl>
@@ -40,7 +40,7 @@
     V2. We will start with the &#8220;Hello, world&#8221; example, learn how
     to use libraries, and finish with testing and installing features.
   </p>
-<div class="section" title="Hello, world">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tutorial.hello"></a>Hello, world</h3></div></div></div>
 <p>
@@ -109,7 +109,7 @@ bjam --clean hello2
 <p>
     </p>
 </div>
-<div class="section" title="Properties">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tutorial.properties"></a>Properties</h3></div></div></div>
 <div class="toc"><dl>
@@ -169,7 +169,7 @@ bjam variant=release inlining=off debug-symbols=on
 <p>
       A complete description of features can be found in <a class="xref" href="reference.html#bbv2.reference.features" title="Features and properties">the section called &#8220;Features and properties&#8221;</a>.
     </p>
-<div class="section" title="Build Requests and Target Requirements">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.tutorial.properties.requirements"></a>Build Requests and Target Requirements</h4></div></div></div>
 <p>
@@ -204,12 +204,12 @@ exe hello
         requirements, the target requirements usually override (or, in the case
         of &#8220;free&#8221;&#8221; features like
         <code class="varname">&lt;include&gt;</code>,
-        <sup>[<a name="id2231850" href="#ftn.id2231850" class="footnote">11</a>]</sup>
+        <sup>[<a name="id3271043" href="#ftn.id3271043" class="footnote">11</a>]</sup>
         augments) the build request.
       </p>
-<div class="tip" title="Tip"><table border="0" summary="Tip">
+<div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -219,7 +219,7 @@ exe hello
         </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Project Attributes">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.tutorial.properties.project_attributes"></a>Project Attributes</h4></div></div></div>
 <p>
@@ -245,7 +245,7 @@ exe hello2 : hello.cpp ;</pre>
       </p>
 </div>
 </div>
-<div class="section" title="Project Hierarchies">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tutorial.hierarchy"></a>Project Hierarchies</h3></div></div></div>
 <p>
@@ -284,9 +284,9 @@ top/
       immediate children of the root project.
 
       </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -315,7 +315,7 @@ top/
 
       in its requirements, then all of its subprojects will have it
       in their requirements, too.  Of course, any project can add
-      include paths to those specified by its parents. <sup>[<a name="id2232084" href="#ftn.id2232084" class="footnote">12</a>]</sup>
+      include paths to those specified by its parents. <sup>[<a name="id3271276" href="#ftn.id3271276" class="footnote">12</a>]</sup>
     More details can be found in
       <a class="xref" href="overview.html#bbv2.overview.projects" title="Projects">the section called &#8220;Projects&#8221;</a>.
     </p>
@@ -340,7 +340,7 @@ build-project app ;
       <code class="filename">top/</code> or <code class="filename">top/app/</code>.
     </p>
 </div>
-<div class="section" title="Dependent Targets">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tutorial.libs"></a>Dependent Targets</h3></div></div></div>
 <p>
@@ -377,9 +377,9 @@ exe app : app.cpp ../util/foo//bar ;
       a library <code class="filename">bar</code> declared in the Jamfile at
       <code class="filename">../util/foo</code>.
     </p>
-<div class="tip" title="Tip"><table border="0" summary="Tip">
+<div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>Some other build system have special syntax for listing dependent
@@ -451,9 +451,9 @@ exe app : app.cpp /library-example/foo//bar ;</pre>
       Jamfiles are not allowed to assign the same project id to different
       directories.
     </p>
-<div class="tip" title="Tip"><table border="0" summary="Tip">
+<div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -472,9 +472,9 @@ project
 </td></tr>
 </table></div>
 </div>
-<div class="section" title="Testing"><div class="titlepage"><div><div><h3 class="title">
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tutorial.testing"></a>Testing</h3></div></div></div></div>
-<div class="section" title="Static and shared libaries">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tutorial.linkage"></a>Static and shared libaries</h3></div></div></div>
 <p>
@@ -546,9 +546,9 @@ exe e10 : e10.cpp foo ;</pre>
 
       
     </p>
-<div class="tip" title="Tip"><table border="0" summary="Tip">
+<div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -572,9 +572,9 @@ exe app : app.cpp core ;</pre>
       </p>
 </td></tr>
 </table></div>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -589,7 +589,7 @@ exe app : app.cpp core ;</pre>
       </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Conditions and alternatives">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tutorial.conditions"></a>Conditions and alternatives</h3></div></div></div>
 <p>
@@ -633,7 +633,7 @@ lib demangler : demangler_msvc.cpp : &lt;toolset&gt;msvc ; # alternative 3</pre>
       other cases, the most generic alternative 1 will be built.
     </p>
 </div>
-<div class="section" title="Prebuilt targets">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tutorial.prebuilt"></a>Prebuilt targets</h3></div></div></div>
 <p>
@@ -714,10 +714,10 @@ lib pythonlib : : &lt;name&gt;python22_d &lt;variant&gt;debug ;</pre>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2231850" href="#id2231850" class="para">11</a>] </sup>
+<div class="footnote"><p><sup>[<a name="ftn.id3271043" href="#id3271043" class="para">11</a>] </sup>
              See <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>
           </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id2232084" href="#id2232084" class="para">12</a>] </sup>Many
+<div class="footnote"><p><sup>[<a name="ftn.id3271276" href="#id3271276" class="para">12</a>] </sup>Many
       features will be overridden,
       rather than added-to, in subprojects.  See <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a> for more
       information</p></div>
@@ -725,11 +725,15 @@ lib pythonlib : : &lt;name&gt;python22_d &lt;variant&gt;debug ;</pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer"></div></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2006-2009 Vladimir Prus<p>Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file <code class="filename">LICENSE_1_0.txt</code> or copy at 
+      <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="installation.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="overview.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="installation.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="overview.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

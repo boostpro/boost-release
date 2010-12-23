@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tutorial.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="tasks.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="tutorial.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tasks.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Overview">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.overview"></a>Overview</h2></div></div></div>
 <div class="toc"><dl>
@@ -93,7 +93,7 @@
 </ul></div>
 <p>
     </p>
-<div class="section" title="Concepts">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.overview.concepts"></a>Concepts</h3></div></div></div>
 <p>Boost.Build has a few unique concepts that are introduced in this section. The best
@@ -129,8 +129,8 @@ add_program ("a", "a.c")
       </p>
 <p>
         In order to support true multivariant builds, Boost.Build introduces the concept of
-        <a class="indexterm" name="id2233383"></a>
-        <a class="indexterm" name="id2233394"></a>
+        <a class="indexterm" name="id3272573"></a>
+        <a class="indexterm" name="id3272584"></a>
         <em class="firstterm">metatarget</em>&#8212;object that is created when build description
         is parsed and can be later called with specific build properties to generate
         actual targets. 
@@ -157,7 +157,7 @@ bjam toolset=gcc toolset=msvc
       </p>
 <p>
         Another key concept is 
-        <a class="indexterm" name="id2233453"></a>
+        <a class="indexterm" name="id3272644"></a>
         <em class="firstterm">build property</em>. Build property is a variable
         that affects the build process. It can be specified on the command line, and is
         passed when calling a metatarget. While all build tools have a similar mechanism,
@@ -165,7 +165,7 @@ bjam toolset=gcc toolset=msvc
         and providing a large set of properties with portable semantics.
       </p>
 <p>
-        The final concept is <a class="indexterm" name="id2233476"></a>
+        The final concept is <a class="indexterm" name="id3272666"></a>
         <em class="firstterm">property propagation</em>. Boost.Build does not require that every
         metatarget is called with the same properties. Instead, the 
         "top-level" metatargets are called with the properties specified on the command line.
@@ -179,7 +179,7 @@ bjam toolset=gcc toolset=msvc
       to <a href="http://syrcose.ispras.ru/2009/files/04_paper.pdf" target="_top">SYRCoSE 2009 Boost.Build article</a>.
       </p>
 </div>
-<div class="section" title="Boost.Jam Language">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.overview.jam_language"></a>Boost.Jam Language</h3></div></div></div>
 <p>
@@ -190,7 +190,7 @@ bjam toolset=gcc toolset=msvc
 <p>
         <a class="link" href="../">Boost.Jam</a> has an interpreted, procedural
         language. On the lowest level, a <a class="link" href="../">Boost.Jam
-        </a> program consists of variables and <a class="indexterm" name="id2233566"></a> <em class="firstterm">rules</em> (Jam term for
+        </a> program consists of variables and <a class="indexterm" name="id3272756"></a> <em class="firstterm">rules</em> (Jam term for
         function). They are grouped into modules&#8212;there is one global
         module and a number of named modules. Besides that, a <a class="link" href="../">Boost.Jam</a> program contains classes and class
         instances.
@@ -210,9 +210,9 @@ a = b ;
         keywords, while <code class="literal">a</code> and <code class="literal">b</code> are
         literals.
         </p>
-<div class="warning" title="Warning"><table border="0" summary="Warning">
+<div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -325,9 +325,9 @@ return values ;
         This statement should be used only inside a rule and assigns
         <code class="computeroutput">values</code> to the return value of the rule.
         </p>
-<div class="warning" title="Warning"><table border="0" summary="Warning">
+<div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -412,7 +412,7 @@ actions create-file-from-another
         More details can be found in Jam reference, <a class="xref" href="../jam/language.html#jam.language.rules" title="Rules">the section called &#8220; Rules&#8221;</a>.
       </p>
 </div>
-<div class="section" title="Configuration">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.overview.configuration"></a>Configuration</h3></div></div></div>
 <p>
@@ -467,9 +467,9 @@ actions create-file-from-another
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><div class="tip" title="Tip"><table border="0" summary="Tip">
+<br class="table-break"><div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -572,9 +572,9 @@ using gcc : 3.2 : g++-3.2 ;
 </pre>
 <p>
     </p>
-<div class="warning" title="Warning"><table border="0" summary="Warning">
+<div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -585,7 +585,7 @@ using gcc : 3.2 : g++-3.2 ;
       </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Invocation">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.overview.invocation"></a>Invocation</h3></div></div></div>
 <div class="toc"><dl>
@@ -611,7 +611,7 @@ using gcc : 3.2 : g++-3.2 ;
           what targets to build.  The available targets entirely depend on the project
           you are building.</p></dd>
 </dl></div>
-<div class="section" title="Examples">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.overview.invocation.examples"></a>Examples</h4></div></div></div>
 <p>To build all targets defined in Jamfile in the current directory with default properties, run:
@@ -637,7 +637,7 @@ bjam toolset=gcc variant=debug optimization=space
 <p>
         </p>
 </div>
-<div class="section" title="Options">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.overview.invocation.options"></a>Options</h4></div></div></div>
 <p>Boost.Build recognizes the following command line options.</p>
@@ -705,7 +705,7 @@ bjam toolset=gcc variant=debug optimization=space
               </p></dd>
 </dl></div>
 </div>
-<div class="section" title="Properties">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.overview.invocation.properties"></a>Properties</h4></div></div></div>
 <p>In the simplest case, the build is performed with a single set of properties,
@@ -714,7 +714,7 @@ bjam toolset=gcc variant=debug optimization=space
         The complete list of features can be found in <a class="xref" href="reference.html#bbv2.overview.builtins.features" title="Builtin features">the section called &#8220;Builtin features&#8221;</a>. 
         The most common features are summarized below.</p>
 <div class="table">
-<a name="id2234992"></a><p class="title"><b>Table&#160;33.2.&#160;</b></p>
+<a name="id3274188"></a><p class="title"><b>Table&#160;33.2.&#160;</b></p>
 <div class="table-contents"><table class="table">
 <colgroup>
 <col>
@@ -824,7 +824,7 @@ bjam include=static,shared
 </pre>
 <p>is not treated specially.</p>
 </div>
-<div class="section" title="Targets">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.overview.invocation.targets"></a>Targets</h4></div></div></div>
 <p>All command line elements that are neither options nor properties are the names of the
@@ -832,15 +832,15 @@ bjam include=static,shared
         the project in the current directory is built.</p>
 </div>
 </div>
-<div class="section" title="Declaring Targets">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.overview.targets"></a>Declaring Targets</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="overview.html#id2235402">Name</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2235558">Sources</a></span></dt>
+<dt><span class="section"><a href="overview.html#id3274599">Name</a></span></dt>
+<dt><span class="section"><a href="overview.html#id3274755">Sources</a></span></dt>
 <dt><span class="section"><a href="overview.html#bbv2.overview.targets.requirements">Requirements</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2235872">Default Build</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2235900">Additional Information</a></span></dt>
+<dt><span class="section"><a href="overview.html#id3275070">Default Build</a></span></dt>
+<dt><span class="section"><a href="overview.html#id3275097">Additional Information</a></span></dt>
 </dl></div>
 <p><a name="bbv2.overview.targets.main"></a>
         A <em class="firstterm">Main target</em> is a user-defined named
@@ -849,9 +849,9 @@ bjam include=static,shared
         target rules described in <a class="xref" href="reference.html#bbv2.reference.rules" title="Builtin rules">the section called &#8220;Builtin rules&#8221;</a>.  The user can also declare
         custom main target rules as shown in <a class="xref" href="extender.html#bbv2.extending.rules" title="Main target rules">the section called &#8220;Main target rules&#8221;</a>.
       </p>
-<a class="indexterm" name="id2235350"></a><p>Most main target rules in Boost.Build have the same common
+<a class="indexterm" name="id3274546"></a><p>Most main target rules in Boost.Build have the same common
       signature:</p>
-<a class="indexterm" name="id2235364"></a><a name="bbv2.main-target-rule-syntax"></a><pre class="programlisting">
+<a class="indexterm" name="id3274560"></a><a name="bbv2.main-target-rule-syntax"></a><pre class="programlisting">
 rule <em class="replaceable"><code>rule-name</code></em> (
      main-target-name :
      sources + :
@@ -897,9 +897,9 @@ rule <em class="replaceable"><code>rule-name</code></em> (
       usage-requirements. More details can be found in
       <a class="xref" href="reference.html#bbv2.reference.variants.proprefine" title="Property refinement">the section called &#8220;Property refinement&#8221;</a>
       </p>
-<div class="section" title="Name">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2235402"></a>Name</h4></div></div></div>
+<a name="id3274599"></a>Name</h4></div></div></div>
 <p>The name of main target has two purposes. First, it's used to refer to this target from
         other targets and from command line. Second, it's used to compute the names of the generated files.
         Typically, filenames are obtained from main target name by appending system-dependent suffixes and
@@ -917,9 +917,9 @@ obj test.debug : test.cpp : &lt;variant&gt;debug ;
         two files named <code class="filename">test.release.obj</code> and <code class="filename">test.debug.obj</code>.
         </p>
 </div>
-<div class="section" title="Sources">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2235558"></a>Sources</h4></div></div></div>
+<a name="id3274755"></a>Sources</h4></div></div></div>
 <p>The list of sources specifies what should be processed to
         get the resulting targets. Most of the time, it's just a list of
         files. Sometimes, you'll want to automatically construct the
@@ -962,10 +962,10 @@ exe c : c.cpp /boost/program_options//program_options ;
           can be found in <a class="xref" href="tutorial.html#bbv2.tutorial.libs" title="Dependent Targets">the section called &#8220;Dependent Targets&#8221;</a> and <a class="xref" href="reference.html#bbv2.reference.ids" title="Target identifiers and references">the section called &#8220;Target identifiers and references&#8221;</a>.
         </p>
 </div>
-<div class="section" title="Requirements">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.overview.targets.requirements"></a>Requirements</h4></div></div></div>
-<a class="indexterm" name="id2235656"></a><p>Requirements are the properties that should always be present when
+<a class="indexterm" name="id3274854"></a><p>Requirements are the properties that should always be present when
         building a target. Typically, they are includes and defines:
 </p>
 <pre class="programlisting">
@@ -1068,9 +1068,9 @@ exe test3 : test3.cpp : -&lt;threading&gt;multi ;
 <p>Note that the removal of requirements is completely textual:
         you need to specify exactly the same property to remove it.</p>
 </div>
-<div class="section" title="Default Build">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2235872"></a>Default Build</h4></div></div></div>
+<a name="id3275070"></a>Default Build</h4></div></div></div>
 <p>The <code class="varname">default-build</code> parameter
         is a set of properties to be used if the build request does
         not otherwise specify a value for features in the set. For example:
@@ -1085,9 +1085,9 @@ exe hello : hello.cpp : : &lt;threading&gt;multi ;
         overridden in any way.
         </p>
 </div>
-<div class="section" title="Additional Information">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2235900"></a>Additional Information</h4></div></div></div>
+<a name="id3275097"></a>Additional Information</h4></div></div></div>
 <p>
           The ways a target is built can be so different that
           describing them using conditional requirements would be
@@ -1131,7 +1131,7 @@ explicit install_programs ;</pre>
          </p>
 </div>
 </div>
-<div class="section" title="Projects">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.overview.projects"></a>Projects</h3></div></div></div>
 <p>As mentioned before, targets are grouped into projects,
@@ -1180,7 +1180,7 @@ project tennis
 
         </p>
 <div class="table">
-<a name="id2236108"></a><p class="title"><b>Table&#160;33.3.&#160;</b></p>
+<a name="id3275311"></a><p class="title"><b>Table&#160;33.3.&#160;</b></p>
 <div class="table-contents"><table class="table" summary="">
 <colgroup>
 <col>
@@ -1263,9 +1263,9 @@ project tennis
       another via the <code class="computeroutput">use-project</code> or a target reference,
       no specific order should be assumed.
       </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>Giving the root project the special name
@@ -1276,13 +1276,13 @@ project tennis
         </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="The Build Process">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.overview.build_process"></a>The Build Process</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="overview.html#bbv2.overview.build_request">Build Request</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2236425">Building a main target</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2236541">Building a Project</a></span></dt>
+<dt><span class="section"><a href="overview.html#id3275628">Building a main target</a></span></dt>
+<dt><span class="section"><a href="overview.html#id3275742">Building a Project</a></span></dt>
 </dl></div>
 <p>When you've described your targets, you want Boost.Build to run the
       right tools and create the needed targets.
@@ -1301,9 +1301,9 @@ project tennis
       metatarget is built several times with different properties,
       producing different files.
     </p>
-<div class="tip" title="Tip"><table border="0" summary="Tip">
+<div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -1312,7 +1312,7 @@ project tennis
         user, and each target can be built with different properties.
       </p></td></tr>
 </table></div>
-<div class="section" title="Build Request">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.overview.build_request"></a>Build Request</h4></div></div></div>
 <p>
@@ -1337,9 +1337,9 @@ bjam app1 lib1//lib1 gcc debug optimization=full
         described in <a class="xref" href="overview.html#bbv2.overview.invocation" title="Invocation">the section called &#8220;Invocation&#8221;</a>.
       </p>
 </div>
-<div class="section" title="Building a main target">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2236425"></a>Building a main target</h4></div></div></div>
+<a name="id3275628"></a>Building a main target</h4></div></div></div>
 <p>When you request, directly or indirectly, a build of a main target
         with specific requirements, the following steps are done. Some brief
         explanation is provided, and more details are given in <a class="xref" href="reference.html#bbv2.reference.buildprocess" title="Build process">the section called &#8220;Build process&#8221;</a>.
@@ -1397,9 +1397,9 @@ bjam app1 lib1//lib1 gcc debug optimization=full
 <p>
       </p>
 </div>
-<div class="section" title="Building a Project">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2236541"></a>Building a Project</h4></div></div></div>
+<a name="id3275742"></a>Building a Project</h4></div></div></div>
 <p>Often, a user builds a complete project, not just one main
       target. In fact, invoking <span class="command"><strong>bjam</strong></span> without
       arguments
@@ -1429,11 +1429,15 @@ explicit hello_test ;
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer"></div></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2006-2009 Vladimir Prus<p>Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file <code class="filename">LICENSE_1_0.txt</code> or copy at 
+      <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tutorial.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="tasks.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="tutorial.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tasks.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

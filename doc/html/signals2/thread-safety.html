@@ -20,19 +20,19 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../boost/signals2/trackable.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../boost/signals2/trackable.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Thread-Safety">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="signals2.thread-safety"></a>Thread-Safety</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="thread-safety.html#id1755571">Introduction</a></span></dt>
-<dt><span class="section"><a href="thread-safety.html#id1755627">Signals and combiners</a></span></dt>
-<dt><span class="section"><a href="thread-safety.html#id1755792">Connections and other classes</a></span></dt>
+<dt><span class="section"><a href="thread-safety.html#id2574537">Introduction</a></span></dt>
+<dt><span class="section"><a href="thread-safety.html#id2574594">Signals and combiners</a></span></dt>
+<dt><span class="section"><a href="thread-safety.html#id2574758">Connections and other classes</a></span></dt>
 </dl></div>
-<div class="section" title="Introduction">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1755571"></a>Introduction</h3></div></div></div>
+<a name="id2574537"></a>Introduction</h3></div></div></div>
 <p>
       The primary motivation for Boost.Signals2 is to provide a version of
       the original Boost.Signals library which can be used safely in a
@@ -47,9 +47,9 @@
       the limits of the provided thread-safety.
     </p>
 </div>
-<div class="section" title="Signals and combiners">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1755627"></a>Signals and combiners</h3></div></div></div>
+<a name="id2574594"></a>Signals and combiners</h3></div></div></div>
 <p>
       Each signal object default-constructs a <code class="computeroutput">Mutex</code> object to protect
       its internal state.  Furthermore, a <code class="computeroutput">Mutex</code> is created
@@ -108,7 +108,7 @@
       Note that since we unlock the connection's mutex before executing
       its associated slot, it is possible a slot will still be executing
       after it has been disconnected by a
-      <code class="computeroutput"><a class="link" href="../boost/signals2/connection.html#id693024-bb">connection::disconnect</a>()</code>, if
+      <code class="computeroutput"><a class="link" href="../boost/signals2/connection.html#id1173297-bb">connection::disconnect</a>()</code>, if
       the disconnect was called concurrently with signal invocation.
     </p>
 <p>
@@ -125,7 +125,7 @@
       Future signal invocations will receive a handle to the newly created deep
       copy of the slot list, and the old slot list will be destroyed once it
       is no longer in use.  Similarly, if you change a signal's combiner with
-      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id352031-bb">signal::set_combiner</a></code>
+      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id708344-bb">signal::set_combiner</a></code>
       while a signal invocation is running concurrently, the concurrent
       signal invocation will continue to use the old combiner undisturbed,
       while future signal invocations will receive a handle to the new combiner.
@@ -161,9 +161,9 @@
       the case may be), as was described in more detail above.
     </p>
 </div>
-<div class="section" title="Connections and other classes">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1755792"></a>Connections and other classes</h3></div></div></div>
+<a name="id2574758"></a>Connections and other classes</h3></div></div></div>
 <p>
       The methods of the <code class="computeroutput"><a class="link" href="../boost/signals2/connection.html" title="Class connection">signals2::connection</a></code> class are thread-safe,
       with the exception of assignment and swap.  This is achived via locking the mutex
@@ -214,7 +214,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../boost/signals2/trackable.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../boost/signals2/trackable.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

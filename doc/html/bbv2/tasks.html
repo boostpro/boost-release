@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="overview.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Common tasks">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.tasks"></a>Common tasks</h2></div></div></div>
 <div class="toc"><dl>
@@ -41,10 +41,10 @@
     out-of-the-box. Unless otherwise noted, all mentioned main target rules have
     the common signature, described in <a class="xref" href="overview.html#bbv2.overview.targets" title="Declaring Targets">the section called &#8220;Declaring Targets&#8221;</a>.
   </p>
-<div class="section" title="Programs">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.programs"></a>Programs</h3></div></div></div>
-<a class="indexterm" name="id2236631"></a><p>
+<a class="indexterm" name="id3275833"></a><p>
       Programs are created using the <code class="computeroutput">exe</code> rule, which follows the
       <a class="link" href="overview.html#bbv2.main-target-rule-syntax">common syntax</a>. For
       example:
@@ -61,9 +61,9 @@ exe hello : hello.cpp some_library.lib /some_project//library
       and C++ files, object files and libraries. Boost.Build will automatically
       try to convert targets of other types.
     </p>
-<div class="tip" title="Tip"><table border="0" summary="Tip">
+<div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -77,7 +77,7 @@ exe hello : hello.cpp some_library.lib /some_project//library
       </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Libraries">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.libraries"></a>Libraries</h3></div></div></div>
 <p>
@@ -183,9 +183,9 @@ lib png : z : &lt;name&gt;png ;
 </pre>
 <p>
     </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -235,7 +235,7 @@ lib helpers : helpers.cpp : : : &lt;include&gt;. ;
       feature greatly simplifies Jamfiles.
     </p>
 </div>
-<div class="section" title="Alias">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.alias"></a>Alias</h3></div></div></div>
 <p>
@@ -285,7 +285,7 @@ exe main : main.cpp static_libraries ;
       required for using the specified static libraries.
     </p>
 </div>
-<div class="section" title="Installing">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.installing"></a>Installing</h3></div></div></div>
 <p>
@@ -293,7 +293,7 @@ exe main : main.cpp static_libraries ;
       files.
     </p>
 <h4>
-<a name="id2237460"></a>Basic install</h4>
+<a name="id3276391"></a>Basic install</h4>
 <p>
       For installing a built target you should use the <code class="computeroutput">install</code>
       rule, which follows the <a class="link" href="overview.html#bbv2.main-target-rule-syntax">
@@ -332,7 +332,7 @@ install dist2 : hello helpers : &lt;location&gt;$(DIST) ;
       variables</a>
     </p>
 <h4>
-<a name="id2237572"></a>Installing with all dependencies</h4>
+<a name="id3276503"></a>Installing with all dependencies</h4>
 <p>
       Specifying the names of all libraries to install can be boring. The
       <code class="computeroutput">install</code> allows you to specify only the top-level executable
@@ -356,8 +356,8 @@ install dist : hello
       otherwise, all found target will be installed.
     </p>
 <h4>
-<a name="id2237625"></a>Preserving Directory Hierarchy</h4>
-<a class="indexterm" name="id2237628"></a><p>
+<a name="id3276556"></a>Preserving Directory Hierarchy</h4>
+<a class="indexterm" name="id3276560"></a><p>
       By default, the <code class="computeroutput">install</code> rule will strip paths from its
       sources. So, if sources include <code class="filename">a/b/c.hpp</code>, the
       <code class="filename">a/b</code> part will be ignored. To make the
@@ -381,7 +381,7 @@ install headers
       an entire directory tree.
     </p>
 <h4>
-<a name="id2237704"></a>Installing into Several Directories</h4>
+<a name="id3276636"></a>Installing into Several Directories</h4>
 <p>
       The <a class="link" href="tasks.html#bbv2.tasks.alias" title="Alias"><code class="computeroutput">alias</code></a> rule can be
       used when targets need to be installed into several directories:
@@ -395,15 +395,15 @@ install install-lib : helper : /usr/lib ;
     </p>
 <p>
       Because the <code class="computeroutput">install</code> rule just copies targets, most free
-      features <sup>[<a name="id2237740" href="#ftn.id2237740" class="footnote">13</a>]</sup> have no
+      features <sup>[<a name="id3276672" href="#ftn.id3276672" class="footnote">13</a>]</sup> have no
       effect when used in requirements of the <code class="computeroutput">install</code> rule. The
       only two that matter are <a class="link" href="reference.html#bbv2.builtin.features.dependency">
       <code class="varname">dependency</code></a> and, on Unix, <a class="link" href="reference.html#bbv2.reference.features.dll-path"><code class="varname">dll-path</code>
       </a>.
     </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -415,7 +415,7 @@ install install-lib : helper : /usr/lib ;
       </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Testing">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.builtins.testing"></a>Testing</h3></div></div></div>
 <p>
@@ -504,7 +504,7 @@ rule run ( sources + : args * : input-files * : requirements * : target-name ?
       target-name</code></em>.output</code>.
     </p>
 <p>
-      <a class="indexterm" name="id2238061"></a>
+      <a class="indexterm" name="id3276992"></a>
       If the <code class="literal">preserve-test-targets</code> feature has the value
       <code class="literal">off</code>, then <code class="computeroutput">run</code> and the <code class="computeroutput">run-fail</code>
       rules will remove the executable after running it.  This somewhat decreases
@@ -529,7 +529,7 @@ boost-test(<em class="replaceable"><code>test-type</code></em>) <em class="repla
       Such processing utilities are not included in Boost.Build.
     </p>
 </div>
-<div class="section" title="Custom commands">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.builtins.raw"></a>Custom commands</h3></div></div></div>
 <p>
@@ -620,7 +620,7 @@ rule generating-rule ( project name : property-set : sources * )
       rule can be used.
     </p>
 </div>
-<div class="section" title="Precompiled Headers">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.precompiled_headers"></a>Precompiled Headers</h3></div></div></div>
 <p>
@@ -697,7 +697,7 @@ exe main : main.cpp pch ;
         </p></li>
 </ul></div>
 </div>
-<div class="section" title="Generated headers">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.generated_headers"></a>Generated headers</h3></div></div></div>
 <p>
@@ -731,10 +731,10 @@ exe app : app.cpp : &lt;implicit-dependency&gt;parser ;
       as potential dependencies.
     </p>
 </div>
-<div class="section" title="Cross-compilation">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.crosscompile"></a>Cross-compilation</h3></div></div></div>
-<a class="indexterm" name="id2238650"></a><p>Boost.Build supports cross compilation with the gcc and msvc
+<a class="indexterm" name="id3277582"></a><p>Boost.Build supports cross compilation with the gcc and msvc
     toolsets.</p>
 <p>
       When using gcc, you first need to specify your cross compiler
@@ -773,16 +773,20 @@ bjam toolset=gcc-mingw <span class="bold"><strong>target-os=windows</strong></sp
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2237740" href="#id2237740" class="para">13</a>] </sup>see the definition of "free" in <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id3276672" href="#id3276672" class="para">13</a>] </sup>see the definition of "free" in <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer"></div></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2006-2009 Vladimir Prus<p>Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file <code class="filename">LICENSE_1_0.txt</code> or copy at 
+      <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="overview.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

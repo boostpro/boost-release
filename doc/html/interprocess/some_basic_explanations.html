@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="quick_guide.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../interprocess.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="sharedmemorybetweenprocesses.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="quick_guide.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../interprocess.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="sharedmemorybetweenprocesses.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Some basic explanations">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="interprocess.some_basic_explanations"></a><a class="link" href="some_basic_explanations.html" title="Some basic explanations"> Some basic explanations</a>
 </h2></div></div></div>
@@ -38,7 +38,7 @@
 <dt><span class="section"><a href="some_basic_explanations.html#interprocess.some_basic_explanations.constructors_destructors_and_resource_lifetime">
       Constructors, destructors and lifetime of Interprocess named resources</a></span></dt>
 </dl></div>
-<div class="section" title="Processes And Threads">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="interprocess.some_basic_explanations.processes_and_threads"></a><a class="link" href="some_basic_explanations.html#interprocess.some_basic_explanations.processes_and_threads" title="Processes And Threads">
       Processes And Threads</a>
@@ -50,7 +50,7 @@
         but also threads from the same process.
       </p>
 </div>
-<div class="section" title="Sharing information between processes">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="interprocess.some_basic_explanations.sharing_information"></a><a class="link" href="some_basic_explanations.html#interprocess.some_basic_explanations.sharing_information" title="Sharing information between processes">
       Sharing information between processes</a>
@@ -62,28 +62,28 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          Two processes share information using a <span class="bold"><strong>file</strong></span>.
-          To access to the data, each process uses the usual file read/write mechanisms.
-          When updating/reading a file shared between processes, we need some sort
-          of synchronization, to protect readers from writers.
-        </li>
+            Two processes share information using a <span class="bold"><strong>file</strong></span>.
+            To access to the data, each process uses the usual file read/write mechanisms.
+            When updating/reading a file shared between processes, we need some sort
+            of synchronization, to protect readers from writers.
+          </li>
 <li class="listitem">
-          Two processes share information that resides in the <span class="bold"><strong>kernel</strong></span>
-          of the operating system. This is the case, for example, of traditional
-          message queues. The synchronization is guaranteed by the operating system
-          kernel.
-        </li>
+            Two processes share information that resides in the <span class="bold"><strong>kernel</strong></span>
+            of the operating system. This is the case, for example, of traditional
+            message queues. The synchronization is guaranteed by the operating system
+            kernel.
+          </li>
 <li class="listitem">
-          Two processes can share a <span class="bold"><strong>memory</strong></span> region.
-          This is the case of classical shared memory or memory mapped files. Once
-          the processes set up the memory region, the processes can read/write the
-          data like any other memory segment without calling the operating system's
-          kernel. This also requires some kind of manual synchronization between
-          processes.
-        </li>
+            Two processes can share a <span class="bold"><strong>memory</strong></span> region.
+            This is the case of classical shared memory or memory mapped files. Once
+            the processes set up the memory region, the processes can read/write
+            the data like any other memory segment without calling the operating
+            system's kernel. This also requires some kind of manual synchronization
+            between processes.
+          </li>
 </ul></div>
 </div>
-<div class="section" title="Persistence Of Interprocess Mechanisms">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="interprocess.some_basic_explanations.persistence"></a><a class="link" href="some_basic_explanations.html#interprocess.some_basic_explanations.persistence" title="Persistence Of Interprocess Mechanisms"> Persistence
       Of Interprocess Mechanisms</a>
@@ -97,19 +97,19 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-<span class="bold"><strong>Process-persistence</strong></span>: The mechanism lasts
-          until all the processes that have opened the mechanism close it, exit or
-          crash.
-        </li>
+            <span class="bold"><strong>Process-persistence</strong></span>: The mechanism lasts
+            until all the processes that have opened the mechanism close it, exit
+            or crash.
+          </li>
 <li class="listitem">
-<span class="bold"><strong>Kernel-persistence</strong></span>: The mechanism exists
-          until the kernel of the operating system reboots or the mechanism is explicitly
-          deleted.
-        </li>
+            <span class="bold"><strong>Kernel-persistence</strong></span>: The mechanism exists
+            until the kernel of the operating system reboots or the mechanism is
+            explicitly deleted.
+          </li>
 <li class="listitem">
-<span class="bold"><strong>Filesystem-persistence</strong></span>: The mechanism
-          exists until the mechanism is explicitly deleted.
-        </li>
+            <span class="bold"><strong>Filesystem-persistence</strong></span>: The mechanism
+            exists until the mechanism is explicitly deleted.
+          </li>
 </ul></div>
 <p>
         Some native POSIX and Windows IPC mechanisms have different persistence so
@@ -118,7 +118,7 @@
         persistence:
       </p>
 <div class="table">
-<a name="id898025"></a><p class="title"><b>Table&#160;9.1.&#160;Boost.Interprocess Persistence Table</b></p>
+<a name="id1311363"></a><p class="title"><b>Table&#160;9.1.&#160;Boost.Interprocess Persistence Table</b></p>
 <div class="table-contents"><table class="table" summary="Boost.Interprocess Persistence Table">
 <colgroup>
 <col>
@@ -272,7 +272,7 @@
         persistence).
       </p>
 </div>
-<div class="section" title="Names Of Interprocess Mechanisms">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="interprocess.some_basic_explanations.names"></a><a class="link" href="some_basic_explanations.html#interprocess.some_basic_explanations.names" title="Names Of Interprocess Mechanisms"> Names Of
       Interprocess Mechanisms</a>
@@ -291,16 +291,17 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          Starts with a letter, lowercase or uppercase, such as a letter from a to
-          z or from A to Z. Examples: <span class="emphasis"><em>Sharedmemory, sharedmemory, sHaReDmEmOrY...</em></span>
-</li>
+            Starts with a letter, lowercase or uppercase, such as a letter from a
+            to z or from A to Z. Examples: <span class="emphasis"><em>Sharedmemory, sharedmemory,
+            sHaReDmEmOrY...</em></span>
+          </li>
 <li class="listitem">
-          Can include letters, underscore, or digits. Examples: <span class="emphasis"><em>shm1, shm2and3,
-          ShM3plus4...</em></span>
-</li>
+            Can include letters, underscore, or digits. Examples: <span class="emphasis"><em>shm1,
+            shm2and3, ShM3plus4...</em></span>
+          </li>
 </ul></div>
 </div>
-<div class="section" title="Constructors, destructors and lifetime of Interprocess named resources">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="interprocess.some_basic_explanations.constructors_destructors_and_resource_lifetime"></a><a class="link" href="some_basic_explanations.html#interprocess.some_basic_explanations.constructors_destructors_and_resource_lifetime" title="Constructors, destructors and lifetime of Interprocess named resources">
       Constructors, destructors and lifetime of Interprocess named resources</a>
@@ -316,7 +317,7 @@
         functions controlling file opening/creation/erasure:
       </p>
 <div class="table">
-<a name="id898367"></a><p class="title"><b>Table&#160;9.2.&#160;Boost.Interprocess-Filesystem Analogy</b></p>
+<a name="id1311710"></a><p class="title"><b>Table&#160;9.2.&#160;Boost.Interprocess-Filesystem Analogy</b></p>
 <div class="table-contents"><table class="table" summary="Boost.Interprocess-Filesystem Analogy">
 <colgroup>
 <col>
@@ -400,7 +401,7 @@
         memory and named semaphores:
       </p>
 <div class="table">
-<a name="id898519"></a><p class="title"><b>Table&#160;9.3.&#160;Boost.Interprocess-POSIX shared memory</b></p>
+<a name="id1311862"></a><p class="title"><b>Table&#160;9.3.&#160;Boost.Interprocess-POSIX shared memory</b></p>
 <div class="table-contents"><table class="table" summary="Boost.Interprocess-POSIX shared memory">
 <colgroup>
 <col>
@@ -460,7 +461,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id898628"></a><p class="title"><b>Table&#160;9.4.&#160;Boost.Interprocess-POSIX named semaphore</b></p>
+<a name="id1311971"></a><p class="title"><b>Table&#160;9.4.&#160;Boost.Interprocess-POSIX named semaphore</b></p>
 <div class="table-contents"><table class="table" summary="Boost.Interprocess-POSIX named semaphore">
 <colgroup>
 <col>
@@ -538,7 +539,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="quick_guide.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../interprocess.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="sharedmemorybetweenprocesses.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="quick_guide.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../interprocess.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="sharedmemorybetweenprocesses.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -117,12 +117,11 @@ namespace quickbook
 
                 doc_category =
                         "category" >> hard_space
-                    >> (*(anychar_p - ']'))         [assign_a(actions.doc_category)]
+                    >> (*(anychar_p - ']'))         [push_back_a(actions.doc_categories)]
                     ;
 
                 doc_author =
-                        space
-                    >>  '[' >> space
+                        '[' >> space
                     >>  (*(anychar_p - ','))        [assign_a(name.second)] // surname
                     >>  ',' >> space
                     >>  (*(anychar_p - ']'))        [assign_a(name.first)] // firstname
@@ -130,10 +129,13 @@ namespace quickbook
                     ;
 
                 doc_authors =
-                        "authors" >> hard_space
-                    >> doc_author                   [push_back_a(actions.doc_authors, name)]
-                    >> *(   ','
-                            >>  doc_author          [push_back_a(actions.doc_authors, name)]
+                        "authors"
+                    >>  hard_space
+                    >>  doc_author                  [push_back_a(actions.doc_authors, name)]
+                    >>  space
+                    >>  *(  !(ch_p(',') >> space)
+                        >>  doc_author              [push_back_a(actions.doc_authors, name)]
+                        >>  space
                         )
                     ;
 
@@ -179,8 +181,9 @@ namespace quickbook
             bool unused;
             std::pair<std::string, std::string> name;
             std::pair<std::vector<std::string>, std::string> copyright;
+            std::string category;
             rule<Scanner>   doc_info, doc_title, doc_version, doc_id, doc_dirname,
-                            doc_copyright, doc_purpose,doc_category, doc_authors,
+                            doc_copyright, doc_purpose, doc_category, doc_authors,
                             doc_author, comment, space, hard_space, doc_license,
                             doc_last_revision, doc_source_mode, phrase, quickbook_version;
             phrase_grammar<Actions> common;

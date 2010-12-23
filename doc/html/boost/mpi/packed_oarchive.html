@@ -20,42 +20,43 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="packed_iarchive.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../mpi/reference.html#header.boost.mpi.packed_oarchive_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="python/register_serialized.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="packed_iarchive.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../mpi/reference.html#header.boost.mpi.packed_oarchive_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="python/register_serialized.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Class packed_oarchive">
+<div class="refentry">
 <a name="boost.mpi.packed_oarchive"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class packed_oarchive</span></h2>
 <p>boost::mpi::packed_oarchive &#8212; An archive that unpacks binary data from an MPI buffer. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../mpi/reference.html#header.boost.mpi.packed_oarchive_hpp" title="Header &lt;boost/mpi/packed_oarchive.hpp&gt;">boost/mpi/packed_oarchive.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../mpi/reference.html#header.boost.mpi.packed_oarchive_hpp" title="Header &lt;boost/mpi/packed_oarchive.hpp&gt;">boost/mpi/packed_oarchive.hpp</a>&gt;
 
-</em></span>
-<span class="bold"><strong>class</strong></span> <a class="link" href="packed_oarchive.html" title="Class packed_oarchive">packed_oarchive</a> {
-<span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// <a class="link" href="packed_oarchive.html#boost.mpi.packed_oarchiveconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="packed_oarchive.html#id896184-bb">packed_oarchive</a>(MPI_Comm <span class="bold"><strong>const</strong></span> &amp;, buffer_type &amp;, 
-                  <span class="bold"><strong>unsigned</strong></span> <span class="bold"><strong>int</strong></span> = boost::archive::no_header);
-  <a class="link" href="packed_oarchive.html#id896229-bb">packed_oarchive</a>(MPI_Comm <span class="bold"><strong>const</strong></span> &amp;, <span class="bold"><strong>unsigned</strong></span> <span class="bold"><strong>int</strong></span> = boost::archive::no_header);
+</span>
+<span class="keyword">class</span> <a class="link" href="packed_oarchive.html" title="Class packed_oarchive">packed_oarchive</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a class="link" href="packed_oarchive.html#boost.mpi.packed_oarchiveconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="packed_oarchive.html#id923650-bb"><span class="identifier">packed_oarchive</span></a><span class="special">(</span><span class="identifier">MPI_Comm</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">buffer_type</span> <span class="special">&amp;</span><span class="special">,</span> 
+                  <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">archive</span><span class="special">::</span><span class="identifier">no_header</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="packed_oarchive.html#id923696-bb"><span class="identifier">packed_oarchive</span></a><span class="special">(</span><span class="identifier">MPI_Comm</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">archive</span><span class="special">::</span><span class="identifier">no_header</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="packed_oarchive.html#id896091-bb">public member functions</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="packed_oarchive.html#id896095-bb">save_override</a>(T <span class="bold"><strong>const</strong></span> &amp;, <span class="bold"><strong>int</strong></span>, mpl::false_) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="packed_oarchive.html#id896126-bb">save_override</a>(T <span class="bold"><strong>const</strong></span> &amp;, <span class="bold"><strong>int</strong></span>, mpl::true_) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="packed_oarchive.html#id896158-bb">save_override</a>(T <span class="bold"><strong>const</strong></span> &amp;, <span class="bold"><strong>int</strong></span>) ;
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id1412417"></a><h2>Description</h2>
+  <span class="comment">// <a class="link" href="packed_oarchive.html#id923538-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="packed_oarchive.html#id923542-bb"><span class="identifier">save_override</span></a><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="packed_oarchive.html#id923573-bb"><span class="identifier">save_override</span></a><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="packed_oarchive.html#id923605-bb"><span class="identifier">save_override</span></a><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">int</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="packed_oarchive.html#id923631-bb"><span class="identifier">save_override</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">archive</span><span class="special">::</span><span class="identifier">class_name_type</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">int</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id2073433"></a><h2>Description</h2>
 <p>The <code class="computeroutput">packed_oarchive</code> class is an Archiver (as in the Boost.Serialization library) that unpacks binary data from a buffer received via MPI. It can operate on any Serializable data type and will use the <code class="computeroutput">MPI_Unpack</code> function of the underlying MPI implementation to perform deserialization. </p>
-<div class="refsect2" title="packed_oarchive public construct/copy/destruct">
-<a name="id1412438"></a><h3>
+<div class="refsect2">
+<a name="id2073454"></a><h3>
 <a name="boost.mpi.packed_oarchiveconstruct-copy-destruct"></a><code class="computeroutput">packed_oarchive</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id896184-bb"></a>packed_oarchive(MPI_Comm <span class="bold"><strong>const</strong></span> &amp; comm, buffer_type &amp; b, 
-                <span class="bold"><strong>unsigned</strong></span> <span class="bold"><strong>int</strong></span> flags = boost::archive::no_header);</pre>
+<pre class="literallayout"><a name="id923650-bb"></a><span class="identifier">packed_oarchive</span><span class="special">(</span><span class="identifier">MPI_Comm</span> <span class="keyword">const</span> <span class="special">&amp;</span> comm<span class="special">,</span> <span class="identifier">buffer_type</span> <span class="special">&amp;</span> b<span class="special">,</span> 
+                <span class="keyword">unsigned</span> <span class="keyword">int</span> flags <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">archive</span><span class="special">::</span><span class="identifier">no_header</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a <code class="computeroutput">packed_oarchive</code> to receive data over the given MPI communicator and with an initial buffer.</p>
 <p>
 </p>
@@ -84,8 +85,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id896229-bb"></a>packed_oarchive(MPI_Comm <span class="bold"><strong>const</strong></span> &amp; comm, 
-                <span class="bold"><strong>unsigned</strong></span> <span class="bold"><strong>int</strong></span> flags = boost::archive::no_header);</pre>
+<pre class="literallayout"><a name="id923696-bb"></a><span class="identifier">packed_oarchive</span><span class="special">(</span><span class="identifier">MPI_Comm</span> <span class="keyword">const</span> <span class="special">&amp;</span> comm<span class="special">,</span> 
+                <span class="keyword">unsigned</span> <span class="keyword">int</span> flags <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">archive</span><span class="special">::</span><span class="identifier">no_header</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a <code class="computeroutput">packed_oarchive</code> to receive data over the given MPI communicator.</p>
 <p>
 </p>
@@ -111,14 +112,14 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" title="packed_oarchive public member functions">
-<a name="id1412632"></a><h3>
-<a name="id896091-bb"></a><code class="computeroutput">packed_oarchive</code> public member functions</h3>
+<div class="refsect2">
+<a name="id2073781"></a><h3>
+<a name="id923538-bb"></a><code class="computeroutput">packed_oarchive</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id896095-bb"></a>save_override(T <span class="bold"><strong>const</strong></span> &amp; x, <span class="bold"><strong>int</strong></span> version, mpl::false_) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id896126-bb"></a>save_override(T <span class="bold"><strong>const</strong></span> &amp; x, <span class="bold"><strong>int</strong></span>, mpl::true_) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id896158-bb"></a>save_override(T <span class="bold"><strong>const</strong></span> &amp; x, <span class="bold"><strong>int</strong></span> version) ;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id923542-bb"></a><span class="identifier">save_override</span><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span> x<span class="special">,</span> <span class="keyword">int</span> version<span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id923573-bb"></a><span class="identifier">save_override</span><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span> x<span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id923605-bb"></a><span class="identifier">save_override</span><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span> x<span class="special">,</span> <span class="keyword">int</span> version<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="id923631-bb"></a><span class="identifier">save_override</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">archive</span><span class="special">::</span><span class="identifier">class_name_type</span> <span class="special">&amp;</span> t<span class="special">,</span> <span class="keyword">int</span><span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
@@ -135,7 +136,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="packed_iarchive.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../mpi/reference.html#header.boost.mpi.packed_oarchive_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="python/register_serialized.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="packed_iarchive.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../mpi/reference.html#header.boost.mpi.packed_oarchive_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="python/register_serialized.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

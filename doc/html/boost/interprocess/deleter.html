@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../boost_interprocess_reference.html#header.boost.interprocess.smart_ptr.deleter_hpp" title="Header &lt;boost/interprocess/smart_ptr/deleter.hpp&gt;">
-<link rel="prev" href="remove_shared_memory_on_id816853.html" title="Class remove_shared_memory_on_destroy">
+<link rel="prev" href="remove_shared_memory_on_id824342.html" title="Class remove_shared_memory_on_destroy">
 <link rel="next" href="enable_shared_from_this.html" title="Class template enable_shared_from_this">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,44 +20,44 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="remove_shared_memory_on_id816853.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_interprocess_reference.html#header.boost.interprocess.smart_ptr.deleter_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="enable_shared_from_this.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="remove_shared_memory_on_id824342.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_interprocess_reference.html#header.boost.interprocess.smart_ptr.deleter_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="enable_shared_from_this.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Class template deleter">
+<div class="refentry">
 <a name="boost.interprocess.deleter"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class template deleter</span></h2>
 <p>boost::interprocess::deleter</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../boost_interprocess_reference.html#header.boost.interprocess.smart_ptr.deleter_hpp" title="Header &lt;boost/interprocess/smart_ptr/deleter.hpp&gt;">boost/interprocess/smart_ptr/deleter.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../boost_interprocess_reference.html#header.boost.interprocess.smart_ptr.deleter_hpp" title="Header &lt;boost/interprocess/smart_ptr/deleter.hpp&gt;">boost/interprocess/smart_ptr/deleter.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T, <span class="bold"><strong>typename</strong></span> SegmentManager&gt; 
-<span class="bold"><strong>class</strong></span> <a class="link" href="deleter.html" title="Class template deleter">deleter</a> {
-<span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> boost::pointer_to_other&lt; <span class="bold"><strong>typename</strong></span> SegmentManager::void_pointer, T &gt;::type <a name="boost.interprocess.deleter.pointer"></a>pointer;
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> SegmentManager<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="deleter.html" title="Class template deleter">deleter</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">pointer_to_other</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">SegmentManager</span><span class="special">::</span><span class="identifier">void_pointer</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a name="boost.interprocess.deleter.pointer"></a><span class="identifier">pointer</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="deleter.html#boost.interprocess.deleterconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="deleter.html#id816933-bb">deleter</a>(segment_manager_pointer);
+  <span class="comment">// <a class="link" href="deleter.html#boost.interprocess.deleterconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="deleter.html#id824422-bb"><span class="identifier">deleter</span></a><span class="special">(</span><span class="identifier">segment_manager_pointer</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="deleter.html#id816916-bb">public member functions</a></em></span>
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="deleter.html#id816920-bb"><span class="bold"><strong>operator</strong></span>()</a>(<span class="bold"><strong>const</strong></span> pointer &amp;) ;
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id1039486"></a><h2>Description</h2>
+  <span class="comment">// <a class="link" href="deleter.html#id824406-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="deleter.html#id824409-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">pointer</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id1498930"></a><h2>Description</h2>
 <p>A deleter that uses the segment manager's destroy_ptr function to destroy the passed pointer resource.</p>
 <p>This deleter is used </p>
-<div class="refsect2" title="deleter public construct/copy/destruct">
-<a name="id1039496"></a><h3>
+<div class="refsect2">
+<a name="id1498940"></a><h3>
 <a name="boost.interprocess.deleterconstruct-copy-destruct"></a><code class="computeroutput">deleter</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="id816933-bb"></a>deleter(segment_manager_pointer pmngr);</pre></li></ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="id824422-bb"></a><span class="identifier">deleter</span><span class="special">(</span><span class="identifier">segment_manager_pointer</span> pmngr<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
-<div class="refsect2" title="deleter public member functions">
-<a name="id1039529"></a><h3>
-<a name="id816916-bb"></a><code class="computeroutput">deleter</code> public member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id816920-bb"></a><span class="bold"><strong>operator</strong></span>()(<span class="bold"><strong>const</strong></span> pointer &amp; p) ;</pre></li></ol></div>
+<div class="refsect2">
+<a name="id1498995"></a><h3>
+<a name="id824406-bb"></a><code class="computeroutput">deleter</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="id824409-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">pointer</span> <span class="special">&amp;</span> p<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>
@@ -71,7 +71,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="remove_shared_memory_on_id816853.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_interprocess_reference.html#header.boost.interprocess.smart_ptr.deleter_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="enable_shared_from_this.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="remove_shared_memory_on_id824342.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_interprocess_reference.html#header.boost.interprocess.smart_ptr.deleter_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="enable_shared_from_this.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

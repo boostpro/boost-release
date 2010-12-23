@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="libraries.html" title="Part&#160;I.&#160;The Boost C++ Libraries (BoostBook Subset)">
-<link rel="prev" href="boost/property_tree/xml_parser/write_xml_id983884.html" title="Function template write_xml">
+<link rel="prev" href="boost/property_tree/xml_parser/write_xml_id904064.html" title="Function template write_xml">
 <link rel="next" href="proto/users_guide.html" title="Users' Guide">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="boost/property_tree/xml_parser/write_xml_id983884.html"><img src="../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="proto/users_guide.html"><img src="../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost/property_tree/xml_parser/write_xml_id904064.html"><img src="../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="proto/users_guide.html"><img src="../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="chapter" title="Chapter&#160;15.&#160;Boost.Proto">
+<div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
 <a name="proto"></a>Chapter&#160;15.&#160;Boost.Proto</h2></div>
@@ -30,8 +30,8 @@
 <span class="firstname">Eric</span> <span class="surname">Niebler</span>
 </h3></div></div>
 <div><p class="copyright">Copyright &#169; 2008 Eric Niebler</p></div>
-<div><div class="legalnotice" title="Legal Notice">
-<a name="id1460331"></a><p>
+<div><div class="legalnotice">
+<a name="id2158256"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -106,62 +106,48 @@
 </dl></dd>
 </dl>
 </div>
-<div class="section" title="Preface">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_proto.preface"></a><a class="link" href="proto.html#boost_proto.preface" title="Preface">Preface</a>
 </h2></div></div></div>
-<div class="blockquote"><blockquote class="blockquote">
-<p>
-        </p>
-<p>
-          <span class="quote">&#8220;<span class="quote">There are more things in heaven and earth, Horatio, than are dreamt
-          of in your philosophy.</span>&#8221;</span>
-        </p>
-<p>
-      </p>
-</blockquote></div>
-<div class="blockquote"><blockquote class="blockquote">
-<p>
-        </p>
-<p>
-          <span class="bold"><strong><span class="emphasis"><em>-- William Shakespeare</em></span></strong></span>
-        </p>
-<p>
-      </p>
-</blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p>
+        <span class="quote">&#8220;<span class="quote">There are more things in heaven and earth, Horatio, than are dreamt
+        of in your philosophy.</span>&#8221;</span>
+      </p></blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p>
+        <span class="bold"><strong><span class="emphasis"><em>-- William Shakespeare</em></span></strong></span>
+      </p></blockquote></div>
 <a name="boost_proto.preface.description"></a><h4>
-<a name="id1460403"></a>
+<a name="id2158321"></a>
       <a class="link" href="proto.html#boost_proto.preface.description">Description</a>
     </h4>
 <p>
       Proto is a framework for building Domain Specific Embedded Languages in C++.
       It provides tools for constructing, type-checking, transforming and executing
-      <span class="emphasis"><em>expression templates</em></span>
-      <sup>[<a name="id1460424" href="#ftn.id1460424" class="footnote">2</a>]</sup>
-      . More specifically, Proto provides:
+      <span class="emphasis"><em>expression templates</em></span><sup>[<a name="id2158342" href="#ftn.id2158342" class="footnote">2</a>]</sup>. More specifically, Proto provides:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        An expression tree data structure.
-      </li>
+          An expression tree data structure.
+        </li>
 <li class="listitem">
-        A mechanism for giving expressions additional behaviors and members.
-      </li>
+          A mechanism for giving expressions additional behaviors and members.
+        </li>
 <li class="listitem">
-        Operator overloads for building the tree from an expression.
-      </li>
+          Operator overloads for building the tree from an expression.
+        </li>
 <li class="listitem">
-        Utilities for defining the grammar to which an expression must conform.
-      </li>
+          Utilities for defining the grammar to which an expression must conform.
+        </li>
 <li class="listitem">
-        An extensible mechanism for immediately executing an expression template.
-      </li>
+          An extensible mechanism for immediately executing an expression template.
+        </li>
 <li class="listitem">
-        An extensible set of tree transformations to apply to expression trees.
-      </li>
+          An extensible set of tree transformations to apply to expression trees.
+        </li>
 </ul></div>
 <a name="boost_proto.preface.motivation"></a><h4>
-<a name="id1460478"></a>
+<a name="id2158414"></a>
       <a class="link" href="proto.html#boost_proto.preface.motivation">Motivation</a>
     </h4>
 <p>
@@ -185,7 +171,7 @@
       In short, Proto is a DSEL for defining DSELs.
     </p>
 <a name="boost_proto.preface.how_to_use_this_documentation"></a><h4>
-<a name="id1460514"></a>
+<a name="id2158452"></a>
       <a class="link" href="proto.html#boost_proto.preface.how_to_use_this_documentation">How to Use
       This Documentation</a>
     </h4>
@@ -194,35 +180,36 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        Code is in <code class="computeroutput"><span class="identifier">fixed</span> <span class="identifier">width</span>
-        <span class="identifier">font</span></code> and is syntax-highlighted.
-      </li>
+          Code is in <code class="computeroutput"><span class="identifier">fixed</span> <span class="identifier">width</span>
+          <span class="identifier">font</span></code> and is syntax-highlighted.
+        </li>
 <li class="listitem">
-        Replaceable text that you will need to supply is in <em class="replaceable"><code>italics</code></em>.
-      </li>
+          Replaceable text that you will need to supply is in <em class="replaceable"><code>italics</code></em>.
+        </li>
 <li class="listitem">
-        If a name refers to a free function, it is specified like this: <code class="computeroutput"><span class="identifier">free_function</span><span class="special">()</span></code>;
-        that is, it is in code font and its name is followed by <code class="computeroutput"><span class="special">()</span></code>
-        to indicate that it is a free function.
-      </li>
+          If a name refers to a free function, it is specified like this: <code class="computeroutput"><span class="identifier">free_function</span><span class="special">()</span></code>;
+          that is, it is in code font and its name is followed by <code class="computeroutput"><span class="special">()</span></code>
+          to indicate that it is a free function.
+        </li>
 <li class="listitem">
-        If a name refers to a class template, it is specified like this: <code class="computeroutput"><span class="identifier">class_template</span><span class="special">&lt;&gt;</span></code>;
-        that is, it is in code font and its name is followed by <code class="computeroutput"><span class="special">&lt;&gt;</span></code>
-        to indicate that it is a class template.
-      </li>
+          If a name refers to a class template, it is specified like this: <code class="computeroutput"><span class="identifier">class_template</span><span class="special">&lt;&gt;</span></code>;
+          that is, it is in code font and its name is followed by <code class="computeroutput"><span class="special">&lt;&gt;</span></code>
+          to indicate that it is a class template.
+        </li>
 <li class="listitem">
-        If a name refers to a function-like macro, it is specified like this: <code class="computeroutput"><span class="identifier">MACRO</span><span class="special">()</span></code>;
-        that is, it is uppercase in code font and its name is followed by <code class="computeroutput"><span class="special">()</span></code> to indicate that it is a function-like
-        macro. Object-like macros appear without the trailing <code class="computeroutput"><span class="special">()</span></code>.
-      </li>
+          If a name refers to a function-like macro, it is specified like this:
+          <code class="computeroutput"><span class="identifier">MACRO</span><span class="special">()</span></code>;
+          that is, it is uppercase in code font and its name is followed by <code class="computeroutput"><span class="special">()</span></code> to indicate that it is a function-like
+          macro. Object-like macros appear without the trailing <code class="computeroutput"><span class="special">()</span></code>.
+        </li>
 <li class="listitem">
-        Names that refer to <span class="emphasis"><em>concepts</em></span> in the generic programming
-        sense are specified in CamelCase.
-      </li>
+          Names that refer to <span class="emphasis"><em>concepts</em></span> in the generic programming
+          sense are specified in CamelCase.
+        </li>
 </ul></div>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -247,19 +234,19 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id1460424" href="#id1460424" class="para">2</a>] </sup>
-          See <a href="http://www.osl.iu.edu/~tveldhui/papers/Expression-Templates/exprtmpl.html" target="_top">Expression
-          Templates</a>
-        </p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2158342" href="#id2158342" class="para">2</a>] </sup>
+        See <a href="http://www.osl.iu.edu/~tveldhui/papers/Expression-Templates/exprtmpl.html" target="_top">Expression
+        Templates</a>
+      </p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: May 02, 2010 at 01:26:24 GMT</small></p></td>
+<td align="left"><p><small>Last revised: August 12, 2010 at 21:42:53 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="boost/property_tree/xml_parser/write_xml_id983884.html"><img src="../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="proto/users_guide.html"><img src="../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost/property_tree/xml_parser/write_xml_id904064.html"><img src="../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="proto/users_guide.html"><img src="../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

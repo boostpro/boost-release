@@ -20,78 +20,78 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../extract/tail.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.tail_hpp"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="tail_impl/indirect_cmp.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../extract/tail.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.tail_hpp"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tail_impl/indirect_cmp.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Struct template tail_impl">
+<div class="refentry">
 <a name="boost.accumulators.impl.tail_impl"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Struct template tail_impl</span></h2>
 <p>boost::accumulators::impl::tail_impl</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.tail_hpp" title="Header &lt;boost/accumulators/statistics/tail.hpp&gt;">boost/accumulators/statistics/tail.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.tail_hpp" title="Header &lt;boost/accumulators/statistics/tail.hpp&gt;">boost/accumulators/statistics/tail.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Sample, <span class="bold"><strong>typename</strong></span> LeftRight&gt; 
-<span class="bold"><strong>struct</strong></span> <a class="link" href="tail_impl.html" title="Struct template tail_impl">tail_impl</a> {
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> mpl::if_&lt; is_same&lt; LeftRight, <a class="link" href="../right.html" title="Struct right">right</a> &gt;, numeric::functional::greater&lt; Sample <span class="bold"><strong>const</strong></span>, Sample <span class="bold"><strong>const</strong></span>  &gt;, numeric::functional::less&lt; Sample <span class="bold"><strong>const</strong></span>, Sample <span class="bold"><strong>const</strong></span>  &gt; &gt;::type <a name="boost.accumulators.impl.tail_impl.predicate_type"></a>predicate_type;
-  <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>unspecified</em></span>                                                                                                                                                          <a name="boost.accumulators.impl.tail_impl.result_type"></a>result_type;   
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Sample<span class="special">,</span> <span class="keyword">typename</span> LeftRight<span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="tail_impl.html" title="Struct template tail_impl">tail_impl</a> <span class="special">{</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_</span><span class="special">&lt;</span> <span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">LeftRight</span><span class="special">,</span> <a class="link" href="../right.html" title="Struct right">right</a> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">numeric</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">greater</span><span class="special">&lt;</span> <span class="identifier">Sample</span> <span class="keyword">const</span><span class="special">,</span> <span class="identifier">Sample</span> <span class="keyword">const</span>  <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">numeric</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">less</span><span class="special">&lt;</span> <span class="identifier">Sample</span> <span class="keyword">const</span><span class="special">,</span> <span class="identifier">Sample</span> <span class="keyword">const</span>  <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a name="boost.accumulators.impl.tail_impl.predicate_type"></a><span class="identifier">predicate_type</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span>                                                                                                                                                          <a name="boost.accumulators.impl.tail_impl.result_type"></a><span class="identifier">result_type</span><span class="special">;</span>   
 
-  <span class="emphasis"><em>// member classes/structs/unions</em></span>
+  <span class="comment">// member classes/structs/unions</span>
 
-  <span class="bold"><strong>struct</strong></span> <a class="link" href="tail_impl/indirect_cmp.html" title="Struct indirect_cmp">indirect_cmp</a> {
-    <span class="emphasis"><em>// <a class="link" href="tail_impl/indirect_cmp.html#boost.accumulators.impl.tail_impl.indirect_cmpconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-    <a class="link" href="tail_impl/indirect_cmp.html#id559782-bb">indirect_cmp</a>(std::vector&lt; Sample &gt; <span class="bold"><strong>const</strong></span> &amp;);
-    indirect_cmp&amp; <a class="link" href="tail_impl/indirect_cmp.html#id559792-bb"><span class="bold"><strong>operator</strong></span>=</a>(indirect_cmp <span class="bold"><strong>const</strong></span> &amp;);
+  <span class="keyword">struct</span> <a class="link" href="tail_impl/indirect_cmp.html" title="Struct indirect_cmp">indirect_cmp</a> <span class="special">{</span>
+    <span class="comment">// <a class="link" href="tail_impl/indirect_cmp.html#boost.accumulators.impl.tail_impl.indirect_cmpconstruct-copy-destruct">construct/copy/destruct</a></span>
+    <a class="link" href="tail_impl/indirect_cmp.html#id564366-bb"><span class="identifier">indirect_cmp</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">Sample</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    indirect_cmp&amp; <a class="link" href="tail_impl/indirect_cmp.html#id564376-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">indirect_cmp</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-    <span class="emphasis"><em>// <a class="link" href="tail_impl/indirect_cmp.html#id559760-bb">public member functions</a></em></span>
-    <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="tail_impl/indirect_cmp.html#id559763-bb"><span class="bold"><strong>operator</strong></span>()</a>(std::size_t, std::size_t) <span class="bold"><strong>const</strong></span>;
-  };
+    <span class="comment">// <a class="link" href="tail_impl/indirect_cmp.html#id564343-bb">public member functions</a></span>
+    <span class="keyword">bool</span> <a class="link" href="tail_impl/indirect_cmp.html#id564347-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
 
-  <span class="bold"><strong>struct</strong></span> <a class="link" href="tail_impl/is_tail_variate.html" title="Struct is_tail_variate">is_tail_variate</a> {
-    <span class="emphasis"><em>// member classes/structs/unions</em></span>
-    <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; 
-    <span class="bold"><strong>struct</strong></span> <a class="link" href="tail_impl/is_tail_variate/apply.html" title="Struct template apply">apply</a> {
-    };
-  };
+  <span class="keyword">struct</span> <a class="link" href="tail_impl/is_tail_variate.html" title="Struct is_tail_variate">is_tail_variate</a> <span class="special">{</span>
+    <span class="comment">// member classes/structs/unions</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+    <span class="keyword">struct</span> <a class="link" href="tail_impl/is_tail_variate/apply.html" title="Struct template apply">apply</a> <span class="special">{</span>
+    <span class="special">}</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="tail_impl.html#boost.accumulators.impl.tail_implconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <a class="link" href="tail_impl.html#id559888-bb">tail_impl</a>(Args <span class="bold"><strong>const</strong></span> &amp;);
-  <a class="link" href="tail_impl.html#id559902-bb">tail_impl</a>(<a class="link" href="tail_impl.html" title="Struct template tail_impl">tail_impl</a> <span class="bold"><strong>const</strong></span> &amp;);
+  <span class="comment">// <a class="link" href="tail_impl.html#boost.accumulators.impl.tail_implconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <a class="link" href="tail_impl.html#id564472-bb"><span class="identifier">tail_impl</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="tail_impl.html#id564486-bb"><span class="identifier">tail_impl</span></a><span class="special">(</span><a class="link" href="tail_impl.html" title="Struct template tail_impl">tail_impl</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="tail_impl.html#id559831-bb">public member functions</a></em></span>
-  <span class="type"></span> <a class="link" href="tail_impl.html#id559834-bb">BOOST_MPL_ASSERT</a>((mpl::or_&lt; is_same&lt; LeftRight, <a class="link" href="../right.html" title="Struct right">right</a> &gt;, is_same&lt; LeftRight, <a class="link" href="../left.html" title="Struct left">left</a> &gt; &gt;)) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="tail_impl.html#id559855-bb"><span class="bold"><strong>operator</strong></span>()</a>(Args <span class="bold"><strong>const</strong></span> &amp;) ;
-  <span class="type">result_type</span> <a class="link" href="tail_impl.html#id559875-bb">result</a>(dont_care) <span class="bold"><strong>const</strong></span>;
+  <span class="comment">// <a class="link" href="tail_impl.html#id564415-bb">public member functions</a></span>
+   <a class="link" href="tail_impl.html#id564418-bb"><span class="identifier">BOOST_MPL_ASSERT</span></a><span class="special">(</span><span class="special">(</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span> <span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">LeftRight</span><span class="special">,</span> <a class="link" href="../right.html" title="Struct right">right</a> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">LeftRight</span><span class="special">,</span> <a class="link" href="../left.html" title="Struct left">left</a> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="tail_impl.html#id564438-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="tail_impl.html#id564459-bb"><span class="identifier">result</span></a><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="tail_impl.html#id559911-bb">private member functions</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="tail_impl.html#id559914-bb">assign</a>(Args <span class="bold"><strong>const</strong></span> &amp;, std::size_t) ;
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id676888"></a><h2>Description</h2>
-<div class="refsect2" title="tail_impl public construct/copy/destruct">
-<a name="id676892"></a><h3>
+  <span class="comment">// <a class="link" href="tail_impl.html#id564495-bb">private member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="tail_impl.html#id564498-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id918733"></a><h2>Description</h2>
+<div class="refsect2">
+<a name="id918736"></a><h3>
 <a name="boost.accumulators.impl.tail_implconstruct-copy-destruct"></a><code class="computeroutput">tail_impl</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <a name="id559888-bb"></a>tail_impl(Args <span class="bold"><strong>const</strong></span> &amp; args);</pre></li>
-<li class="listitem"><pre class="literallayout"><a name="id559902-bb"></a>tail_impl(<a class="link" href="tail_impl.html" title="Struct template tail_impl">tail_impl</a> <span class="bold"><strong>const</strong></span> &amp; that);</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <a name="id564472-bb"></a><span class="identifier">tail_impl</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="id564486-bb"></a><span class="identifier">tail_impl</span><span class="special">(</span><a class="link" href="tail_impl.html" title="Struct template tail_impl">tail_impl</a> <span class="keyword">const</span> <span class="special">&amp;</span> that<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
-<div class="refsect2" title="tail_impl public member functions">
-<a name="id676970"></a><h3>
-<a name="id559831-bb"></a><code class="computeroutput">tail_impl</code> public member functions</h3>
+<div class="refsect2">
+<a name="id918872"></a><h3>
+<a name="id564415-bb"></a><code class="computeroutput">tail_impl</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="type"></span> <a name="id559834-bb"></a>BOOST_MPL_ASSERT((mpl::or_&lt; is_same&lt; LeftRight, <a class="link" href="../right.html" title="Struct right">right</a> &gt;, is_same&lt; LeftRight, <a class="link" href="../left.html" title="Struct left">left</a> &gt; &gt;)) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id559855-bb"></a><span class="bold"><strong>operator</strong></span>()(Args <span class="bold"><strong>const</strong></span> &amp; args) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type">result_type</span> <a name="id559875-bb"></a>result(dont_care) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li class="listitem"><pre class="literallayout"> <a name="id564418-bb"></a><span class="identifier">BOOST_MPL_ASSERT</span><span class="special">(</span><span class="special">(</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span> <span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">LeftRight</span><span class="special">,</span> <a class="link" href="../right.html" title="Struct right">right</a> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">LeftRight</span><span class="special">,</span> <a class="link" href="../left.html" title="Struct left">left</a> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id564438-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">result_type</span> <a name="id564459-bb"></a><span class="identifier">result</span><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
-<div class="refsect2" title="tail_impl private member functions">
-<a name="id677085"></a><h3>
-<a name="id559911-bb"></a><code class="computeroutput">tail_impl</code> private member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id559914-bb"></a>assign(Args <span class="bold"><strong>const</strong></span> &amp; args, std::size_t index) ;</pre></li></ol></div>
+<div class="refsect2">
+<a name="id919148"></a><h3>
+<a name="id564495-bb"></a><code class="computeroutput">tail_impl</code> private member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id564498-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> index<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>
@@ -105,7 +105,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../extract/tail.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.tail_hpp"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="tail_impl/indirect_cmp.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../extract/tail.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.tail_hpp"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tail_impl/indirect_cmp.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

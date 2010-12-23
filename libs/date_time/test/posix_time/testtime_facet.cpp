@@ -4,7 +4,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2009-02-01 06:29:43 -0500 (Sun, 01 Feb 2009) $
+ * $Date: 2010-06-09 12:33:36 -0400 (Wed, 09 Jun 2010) $
  */
 
 #include "boost/date_time/posix_time/posix_time.hpp"
@@ -107,6 +107,25 @@ int main() {
       f->time_duration_format("%O:%M:%S");
       ss << long_td;
       check("Long time durations", ss.str() == std::string("300:02:01"));
+      ss.str("");
+
+      // Short-hand format specifiers
+      f->format("%T");
+      f->time_duration_format("%T");
+      ss << t;
+      check("Short-hand '%T' in time format", ss.str() == std::string("18:01:56"));
+      ss.str("");
+      ss << td;
+      check("Short-hand '%T' in time_duration format", ss.str() == std::string("03:02:01"));
+      ss.str("");
+
+      f->format("%R");
+      f->time_duration_format("%R");
+      ss << t;
+      check("Short-hand '%R' in time format", ss.str() == std::string("18:01"));
+      ss.str("");
+      ss << td;
+      check("Short-hand '%R' in time_duration format", ss.str() == std::string("03:02"));
       ss.str("");
     }
     { // negative time_duration tests

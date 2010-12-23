@@ -20,25 +20,25 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../signals2.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../signals2.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Tutorial">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="signals2.tutorial"></a>Tutorial</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="tutorial.html#id1739554">How to Read this Tutorial</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1739617">Hello, World! (Beginner)</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1739683">Calling Multiple Slots</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1739943">Passing Values to and from Slots</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1740373">Connection Management</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2548548">How to Read this Tutorial</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2548611">Hello, World! (Beginner)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2548677">Calling Multiple Slots</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2548937">Passing Values to and from Slots</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2549368">Connection Management</a></span></dt>
 <dt><span class="section"><a href="tutorial.html#signals2.tutorial.document-view">Example: Document-View</a></span></dt>
 <dt><span class="section"><a href="tutorial.html#signals2.tutorial.extended-slot-type">Giving a Slot Access to its Connection (Advanced)</a></span></dt>
 <dt><span class="section"><a href="tutorial.html#signals2.tutorial.signal-mutex-template-parameter">Changing the <code class="computeroutput">Mutex</code> Type of a Signal (Advanced).</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1741660">Linking against the Signals2 library</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2550655">Linking against the Signals2 library</a></span></dt>
 </dl></div>
-<div class="section" title="How to Read this Tutorial">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1739554"></a>How to Read this Tutorial</h3></div></div></div>
+<a name="id2548548"></a>How to Read this Tutorial</h3></div></div></div>
 <p>This tutorial is not meant to be read linearly. Its top-level
 structure roughly separates different concepts in the library
 (e.g., handling calling multiple slots, passing values to and from
@@ -56,9 +56,9 @@ Signals2 library, that often require a solid working knowledge of
 the <span class="emphasis"><em>Beginner</em></span> and <span class="emphasis"><em>Intermediate</em></span> topics; most users
 will not need to read the <span class="emphasis"><em>Advanced</em></span> sections.</p>
 </div>
-<div class="section" title="Hello, World! (Beginner)">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1739617"></a>Hello, World! (Beginner)</h3></div></div></div>
+<a name="id2548611"></a>Hello, World! (Beginner)</h3></div></div></div>
 <p>The following example writes "Hello, World!" using signals and
 slots. First, we create a signal <code class="computeroutput">sig</code>, a signal that
 takes no arguments and has a void return value. Next, we connect
@@ -86,16 +86,16 @@ World!".</p>
   sig();
 </code></pre>
 </div>
-<div class="section" title="Calling Multiple Slots">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1739683"></a>Calling Multiple Slots</h3></div></div></div>
+<a name="id2548677"></a>Calling Multiple Slots</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="tutorial.html#id1739688">Connecting Multiple Slots (Beginner)</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1739778">Ordering Slot Call Groups (Intermediate)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2548682">Connecting Multiple Slots (Beginner)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2548772">Ordering Slot Call Groups (Intermediate)</a></span></dt>
 </dl></div>
-<div class="section" title="Connecting Multiple Slots (Beginner)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1739688"></a>Connecting Multiple Slots (Beginner)</h4></div></div></div>
+<a name="id2548682"></a>Connecting Multiple Slots (Beginner)</h4></div></div></div>
 <p>Calling a single slot from a signal isn't very interesting, so
 we can make the Hello, World program more interesting by splitting
 the work of printing "Hello, World!" into two completely separate
@@ -137,9 +137,9 @@ so the output of this program will be as expected:</p>
 Hello, World!
 </pre>
 </div>
-<div class="section" title="Ordering Slot Call Groups (Intermediate)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1739778"></a>Ordering Slot Call Groups (Intermediate)</h4></div></div></div>
+<a name="id2548772"></a>Ordering Slot Call Groups (Intermediate)</h4></div></div></div>
 <p>Slots are free to have side effects, and that can mean that some
 slots will have to be called before others even if they are not connected in that order. The Boost.Signals2
 library allows slots to be placed into groups that are ordered in
@@ -165,7 +165,7 @@ group parameter and those that don't? The "unnamed" slots (i.e., those
 that have been connected without specifying a group name) can be
 placed at the front or back of the slot list (by passing
 <code class="computeroutput">boost::signals2::at_front</code> or <code class="computeroutput">boost::signals2::at_back</code>
-as the last parameter to <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id652130-bb">connect</a></code>, respectively),
+as the last parameter to <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id641521-bb">connect</a></code>, respectively),
 and default to the end of the list. When
 a group is specified, the final <code class="computeroutput">at_front</code> or <code class="computeroutput">at_back</code>
 parameter describes where the slot
@@ -201,16 +201,16 @@ Hello, World!
 </pre>
 </div>
 </div>
-<div class="section" title="Passing Values to and from Slots">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1739943"></a>Passing Values to and from Slots</h3></div></div></div>
+<a name="id2548937"></a>Passing Values to and from Slots</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="tutorial.html#id1739948">Slot Arguments (Beginner)</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1740057">Signal Return Values (Advanced)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2548942">Slot Arguments (Beginner)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2549051">Signal Return Values (Advanced)</a></span></dt>
 </dl></div>
-<div class="section" title="Slot Arguments (Beginner)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1739948"></a>Slot Arguments (Beginner)</h4></div></div></div>
+<a name="id2548942"></a>Slot Arguments (Beginner)</h4></div></div></div>
 <p>Signals can propagate arguments to each of the slots they call.
 For instance, a signal that propagates mouse motion events might
 want to pass along the new mouse coordinates and whether the mouse
@@ -269,9 +269,9 @@ return value and takes two <code class="computeroutput">float</code> values. Any
 connected to <code class="computeroutput">sig</code> must therefore be able to take two
 <code class="computeroutput">float</code> values.</p>
 </div>
-<div class="section" title="Signal Return Values (Advanced)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1740057"></a>Signal Return Values (Advanced)</h4></div></div></div>
+<a name="id2549051"></a>Signal Return Values (Advanced)</h4></div></div></div>
 <p>Just as slots can receive arguments, they can also return
 values. These values can then be returned back to the caller of the
 signal through a <em class="firstterm">combiner</em>. The combiner is a mechanism
@@ -448,22 +448,22 @@ struct DistributeRequest {
 </pre>
 </div>
 </div>
-<div class="section" title="Connection Management">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1740373"></a>Connection Management</h3></div></div></div>
+<a name="id2549368"></a>Connection Management</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="tutorial.html#id1740378">Disconnecting Slots (Beginner)</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1740457">Blocking Slots (Beginner)</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1740513">Scoped Connections (Intermediate)</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1740612">Disconnecting Equivalent Slots (Intermediate)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2549372">Disconnecting Slots (Beginner)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2549451">Blocking Slots (Beginner)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2549507">Scoped Connections (Intermediate)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2549607">Disconnecting Equivalent Slots (Intermediate)</a></span></dt>
 <dt><span class="section"><a href="tutorial.html#signals2.tutorial.connection-management">Automatic Connection Management (Intermediate)</a></span></dt>
 <dt><span class="section"><a href="tutorial.html#signals2.tutorial.deconstruct">Postconstructors and Predestructors (Advanced)</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1741063">When Can Disconnections Occur? (Intermediate)</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1741137">Passing Slots (Intermediate)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2550057">When Can Disconnections Occur? (Intermediate)</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id2550132">Passing Slots (Intermediate)</a></span></dt>
 </dl></div>
-<div class="section" title="Disconnecting Slots (Beginner)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1740378"></a>Disconnecting Slots (Beginner)</h4></div></div></div>
+<a name="id2549372"></a>Disconnecting Slots (Beginner)</h4></div></div></div>
 <p>Slots aren't expected to exist indefinitely after they are
 connected. Often slots are only used to receive a few events and
 are then disconnected, and the programmer needs control to decide
@@ -472,8 +472,8 @@ when a slot should no longer be connected.</p>
 <code class="computeroutput"><a class="link" href="../boost/signals2/connection.html" title="Class connection">boost::signals2::connection</a></code> class. The
 <code class="computeroutput">connection</code> class uniquely represents the connection
 between a particular signal and a particular slot. The
-<code class="computeroutput"><a class="link" href="../boost/signals2/connection.html#id618937-bb">connected</a>()</code> method checks if the signal and slot are
-still connected, and the <code class="computeroutput"><a class="link" href="../boost/signals2/connection.html#id693024-bb">disconnect()</a></code> method
+<code class="computeroutput"><a class="link" href="../boost/signals2/connection.html#id671189-bb">connected</a>()</code> method checks if the signal and slot are
+still connected, and the <code class="computeroutput"><a class="link" href="../boost/signals2/connection.html#id1173297-bb">disconnect()</a></code> method
 disconnects the signal and slot if they are connected before it is
 called. Each call to the signal's <code class="computeroutput">connect()</code> method
 returns a connection object, which can be used to determine if the
@@ -487,9 +487,9 @@ connection still exists or to disconnect the signal and slot.</p>
   sig(); // Does nothing: there are no connected slots
 </code></pre>
 </div>
-<div class="section" title="Blocking Slots (Beginner)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1740457"></a>Blocking Slots (Beginner)</h4></div></div></div>
+<a name="id2549451"></a>Blocking Slots (Beginner)</h4></div></div></div>
 <p>Slots can be temporarily "blocked", meaning that they will be
 ignored when the signal is invoked but have not been permanently disconnected.
 This is typically used to prevent infinite recursion in cases where
@@ -498,7 +498,7 @@ invoked again.  A
 <code class="computeroutput"><a class="link" href="../boost/signals2/shared_connection_block.html" title="Class shared_connection_block">boost::signals2::shared_connection_block</a></code> object will
 temporarily block a slot.  The connection is unblocked by either
 destroying or calling
-<code class="computeroutput"><a class="link" href="../boost/signals2/shared_connection_block.html#id698171-bb">unblock</a></code>
+<code class="computeroutput"><a class="link" href="../boost/signals2/shared_connection_block.html#id627917-bb">unblock</a></code>
 on all the
 <code class="computeroutput">shared_connection_block</code> objects that reference the connection.
 Here is an example of
@@ -516,9 +516,9 @@ blocking/unblocking slots:</p>
   sig(); // Prints "Hello, World!"}
 </code></pre>
 </div>
-<div class="section" title="Scoped Connections (Intermediate)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1740513"></a>Scoped Connections (Intermediate)</h4></div></div></div>
+<a name="id2549507"></a>Scoped Connections (Intermediate)</h4></div></div></div>
 <p>The <code class="computeroutput"><a class="link" href="../boost/signals2/scoped_connection.html" title="Class scoped_connection">boost::signals2::scoped_connection</a></code> class
 references a signal/slot connection that will be disconnected when
 the <code class="computeroutput">scoped_connection</code> class goes out of scope. This
@@ -539,22 +539,22 @@ e.g.,</p>
 </p>
 <pre class="programlisting">
 // doesn't compile due to compiler attempting to copy a temporary scoped_connection object
-// boost::signals2::scoped_connection c0 = sig.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id652130-bb">connect</a></code>(ShortLived());
+// boost::signals2::scoped_connection c0 = sig.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id641521-bb">connect</a></code>(ShortLived());
 
 // okay
-boost::signals2::scoped_connection c1(sig.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id652130-bb">connect</a></code>(ShortLived()));
+boost::signals2::scoped_connection c1(sig.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id641521-bb">connect</a></code>(ShortLived()));
 
 // also okay
 boost::signals2::scoped_connection c2;
-c2 = sig.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id652130-bb">connect</a></code>(ShortLived());
+c2 = sig.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id641521-bb">connect</a></code>(ShortLived());
 </pre>
 </div>
-<div class="section" title="Disconnecting Equivalent Slots (Intermediate)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1740612"></a>Disconnecting Equivalent Slots (Intermediate)</h4></div></div></div>
+<a name="id2549607"></a>Disconnecting Equivalent Slots (Intermediate)</h4></div></div></div>
 <p>One can disconnect slots that are equivalent to a given function
 object using a form of the
-<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id621233-bb">signal::disconnect</a></code> method, so long as
+<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id477209-bb">signal::disconnect</a></code> method, so long as
 the type of the function object has an accessible <code class="computeroutput">==</code>
 operator. For instance:
 
@@ -572,7 +572,7 @@ void bar() { std::cout &lt;&lt; "bar\n"; }
   sig.disconnect(&amp;foo);
   sig();
 </code></pre>
-<div class="section" title="Automatic Connection Management (Intermediate)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="signals2.tutorial.connection-management"></a>Automatic Connection Management (Intermediate)</h4></div></div></div>
 <p>Boost.Signals2 can automatically track the lifetime of objects
@@ -609,7 +609,7 @@ public:
 // ...
 NewsMessageArea *newsMessageArea = new NewsMessageArea(/* ... */);
 // ...
-deliverNews.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id652130-bb">connect</a></code>(boost::bind(&amp;NewsMessageArea::displayNews,
+deliverNews.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id641521-bb">connect</a></code>(boost::bind(&amp;NewsMessageArea::displayNews,
   newsMessageArea, _1));
 </pre>
 <p>However, what if the user closes the news message area,
@@ -617,21 +617,21 @@ destroying the <code class="computeroutput">newsMessageArea</code> object that
 <code class="computeroutput">deliverNews</code> knows about? Most likely, a segmentation
 fault will occur. However, with Boost.Signals2 one may track any object
 which is managed by a shared_ptr, by using
-<code class="computeroutput"><a class="link" href="../boost/signals2/slot.html#id643489-bb">slot::track</a></code>.  A slot will automatically
+<code class="computeroutput"><a class="link" href="../boost/signals2/slot.html#id661440-bb">slot::track</a></code>.  A slot will automatically
 disconnect when any of its tracked objects expire.  In
 addition, Boost.Signals2 will ensure that no tracked object expires
 while the slot it is associated with is in mid-execution.  It does so by creating
 temporary shared_ptr copies of the slot's tracked objects before executing it.
 To track <code class="computeroutput">NewsMessageArea</code>, we use a shared_ptr to manage
 its lifetime, and pass the shared_ptr to the slot via its
-<code class="computeroutput"><a class="link" href="../boost/signals2/slot.html#id643489-bb">slot::track</a></code>
+<code class="computeroutput"><a class="link" href="../boost/signals2/slot.html#id661440-bb">slot::track</a></code>
 method before connecting it,
 e.g.:</p>
 <pre class="programlisting">
 // ...
 boost::shared_ptr&lt;NewsMessageArea&gt; newsMessageArea(new NewsMessageArea(/* ... */));
 // ...
-deliverNews.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id652130-bb">connect</a></code>(signal_type::slot_type(&amp;NewsMessageArea::displayNews,
+deliverNews.<code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id641521-bb">connect</a></code>(signal_type::slot_type(&amp;NewsMessageArea::displayNews,
   newsMessageArea.get(), _1).track(newsMessageArea));
 </pre>
 <p>
@@ -646,12 +646,12 @@ deliverNews.<code class="computeroutput"><a class="link" href="../boost/signals2
   <code class="computeroutput">newsMessageArea</code> itself, a copy of the <code class="computeroutput">shared_ptr</code> would
   have been bound into the slot function, preventing the <code class="computeroutput">shared_ptr</code>
   from expiring.  However, the use of
-  <code class="computeroutput"><a class="link" href="../boost/signals2/slot.html#id643489-bb">slot::track</a></code>
+  <code class="computeroutput"><a class="link" href="../boost/signals2/slot.html#id661440-bb">slot::track</a></code>
   implies we wish to allow the tracked object to expire, and automatically
   disconnect the connection when this occurs.
 </p>
 </div>
-<div class="section" title="Postconstructors and Predestructors (Advanced)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="signals2.tutorial.deconstruct"></a>Postconstructors and Predestructors (Advanced)</h4></div></div></div>
 <p>One limitation of using <code class="computeroutput">shared_ptr</code> for tracking is that
@@ -688,9 +688,9 @@ deliverNews.<code class="computeroutput"><a class="link" href="../boost/signals2
       then return the <code class="computeroutput">shared_ptr</code>.
     </p>
 </div>
-<div class="section" title="When Can Disconnections Occur? (Intermediate)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1741063"></a>When Can Disconnections Occur? (Intermediate)</h4></div></div></div>
+<a name="id2550057"></a>When Can Disconnections Occur? (Intermediate)</h4></div></div></div>
 <p>Signal/slot disconnections occur when any of these conditions
 occur:</p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -723,9 +723,9 @@ signal.</p>
   or in a single-threaded environment if a slot disconnects itself.
 </p>
 </div>
-<div class="section" title="Passing Slots (Intermediate)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1741137"></a>Passing Slots (Intermediate)</h4></div></div></div>
+<a name="id2550132"></a>Passing Slots (Intermediate)</h4></div></div></div>
 <p>Slots in the Boost.Signals2 library are created from arbitrary
 function objects, and therefore have no fixed type. However, it is
 commonplace to require that slots be passed through interfaces that
@@ -774,7 +774,7 @@ signal, but the details of the <code class="computeroutput">doOnClick</code> met
 hidden in an implementation detail file.</p>
 </div>
 </div>
-<div class="section" title="Example: Document-View">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="signals2.tutorial.document-view"></a>Example: Document-View</h3></div></div></div>
 <p>Signals can be used to implement flexible Document-View
@@ -895,7 +895,7 @@ private:
     to disconnect views on their destruction.
   </p>
 </div>
-<div class="section" title="Giving a Slot Access to its Connection (Advanced)">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="signals2.tutorial.extended-slot-type"></a>Giving a Slot Access to its Connection (Advanced)</h3></div></div></div>
 <p>
@@ -914,7 +914,7 @@ private:
       access to a <code class="computeroutput"><a class="link" href="../boost/signals2/connection.html" title="Class connection">signals2::connection</a></code> object which references
       the invoking signal-slot connection.  The difficulty is,
       the <code class="computeroutput">connection</code> object is returned by the
-      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id652130-bb">signal::connect</a></code>
+      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id641521-bb">signal::connect</a></code>
       method, and therefore is not available until after the slot is
       already connected to the signal.  This can be particularly troublesome
       in a multi-threaded environment where the signal may be invoked
@@ -922,11 +922,11 @@ private:
     </p>
 <p>
       Therefore, the signal classes provide
-      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id623128-bb">signal::connect_extended</a></code>
+      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id621023-bb">signal::connect_extended</a></code>
       methods, which allow slots which take an extra argument to be connected to a signal.
       The extra argument is a <code class="computeroutput"><a class="link" href="../boost/signals2/connection.html" title="Class connection">signals2::connection</a></code> object which refers
       to the signal-slot connection currently invoking the slot.
-      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id623128-bb">signal::connect_extended</a></code>
+      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id621023-bb">signal::connect_extended</a></code>
       uses slots of the type given by the
       <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#boost.signals2.signal.extended_slot_type">signal::extended_slot_type</a></code>
       typedef.
@@ -935,10 +935,10 @@ private:
       The examples section includes an
       <a class="link" href="examples.html#signals2.examples.tutorial.extended_slot" title="extended_slot">extended_slot</a>
       program which demonstrates the syntax for using
-      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id623128-bb">signal::connect_extended</a></code>.
+      <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#id621023-bb">signal::connect_extended</a></code>.
     </p>
 </div>
-<div class="section" title="Changing the Mutex Type of a Signal (Advanced).">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="signals2.tutorial.signal-mutex-template-parameter"></a>Changing the <code class="computeroutput">Mutex</code> Type of a Signal (Advanced).</h3></div></div></div>
 <p>
@@ -972,9 +972,9 @@ using bs2::keywords;
 bs2::signal_type&lt;void (int), mutex_type&lt;bs2::dummy_mutex&gt; &gt;::type sig;
 </pre>
 </div>
-<div class="section" title="Linking against the Signals2 library">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1741660"></a>Linking against the Signals2 library</h3></div></div></div>
+<a name="id2550655"></a>Linking against the Signals2 library</h3></div></div></div>
 <p>Unlike the original Boost.Signals library, Boost.Signals2 is currently header-only.
     </p>
 </div>
@@ -988,7 +988,7 @@ bs2::signal_type&lt;void (int), mutex_type&lt;bs2::dummy_mutex&gt; &gt;::type si
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../signals2.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../signals2.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

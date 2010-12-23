@@ -20,16 +20,16 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../variant.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../variant.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../variant.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../variant.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Tutorial">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="variant.tutorial"></a>Tutorial</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="tutorial.html#variant.tutorial.basic">Basic Usage</a></span></dt>
 <dt><span class="section"><a href="tutorial.html#variant.tutorial.advanced">Advanced Topics</a></span></dt>
 </dl></div>
-<div class="section" title="Basic Usage">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="variant.tutorial.basic"></a>Basic Usage</h3></div></div></div>
 <p>A discriminated union container on some set of types is defined by
@@ -77,15 +77,15 @@
   contained value. There are two ways to accomplish this:
   <code class="computeroutput"><a class="link" href="../boost/apply_visitor.html" title="Function apply_visitor">apply_visitor</a></code>, which is safest
   and very powerful, and
-  <code class="computeroutput"><a class="link" href="../boost/get_id1453250.html" title="Function get">get</a>&lt;T&gt;</code>, which is
+  <code class="computeroutput"><a class="link" href="../boost/get_id1478742.html" title="Function get">get</a>&lt;T&gt;</code>, which is
   sometimes more convenient to use.</p>
 <p>For instance, suppose we wanted to concatenate to the string contained
   in <code class="computeroutput">v</code>. With <span class="bold"><strong>value retrieval</strong></span>
-  by <code class="computeroutput"><a class="link" href="../boost/get_id1453250.html" title="Function get">get</a></code>, this may be accomplished
+  by <code class="computeroutput"><a class="link" href="../boost/get_id1478742.html" title="Function get">get</a></code>, this may be accomplished
   quite simply, as seen in the following:
 
 </p>
-<pre class="programlisting">std::string&amp; str = <code class="computeroutput"><a class="link" href="../boost/get_id1453250.html" title="Function get">boost::get</a></code>&lt;std::string&gt;(v);
+<pre class="programlisting">std::string&amp; str = <code class="computeroutput"><a class="link" href="../boost/get_id1478742.html" title="Function get">boost::get</a></code>&lt;std::string&gt;(v);
 str += " world! ";</pre>
 <p>
 
@@ -112,9 +112,9 @@ str += " world! ";</pre>
 </p>
 <pre class="programlisting">void times_two( boost::variant&lt; int, std::string &gt; &amp; operand )
 {
-    if ( int* pi = <code class="computeroutput"><a class="link" href="../boost/get_id1453250.html" title="Function get">boost::get</a></code>&lt;int&gt;( &amp;operand ) )
+    if ( int* pi = <code class="computeroutput"><a class="link" href="../boost/get_id1478742.html" title="Function get">boost::get</a></code>&lt;int&gt;( &amp;operand ) )
         *pi *= 2;
-    else if ( std::string* pstr = <code class="computeroutput"><a class="link" href="../boost/get_id1453250.html" title="Function get">boost::get</a></code>&lt;std::string&gt;( &amp;operand ) )
+    else if ( std::string* pstr = <code class="computeroutput"><a class="link" href="../boost/get_id1478742.html" title="Function get">boost::get</a></code>&lt;std::string&gt;( &amp;operand ) )
         *pstr += *pstr;
 }</pre>
 <p>
@@ -238,7 +238,7 @@ std::for_each(
 
 </p>
 </div>
-<div class="section" title="Advanced Topics">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="variant.tutorial.advanced"></a>Advanced Topics</h3></div></div></div>
 <div class="toc"><dl>
@@ -252,7 +252,7 @@ std::for_each(
   feature presented below is largely independent of the others. Accordingly,
   this section is not necessarily intended to be read linearly or in its
   entirety.</p>
-<div class="section" title="Preprocessor macros">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.tutorial.preprocessor"></a>Preprocessor macros</h4></div></div></div>
 <p>While the <code class="computeroutput">variant</code> class template's variadic parameter
@@ -290,7 +290,7 @@ class some_class&lt; <code class="computeroutput"><a class="link" href="../boost
 
   </p>
 </div>
-<div class="section" title="Using a type sequence to specify bounded types">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.tutorial.over-sequence"></a>Using a type sequence to specify bounded types</h4></div></div></div>
 <p>While convenient for typical uses, the <code class="computeroutput">variant</code> class
@@ -329,7 +329,7 @@ typedef <code class="computeroutput">mpl::push_front</code>&lt; types_initial, i
     definition of the preprocessor symbol
     <code class="computeroutput"><a class="link" href="../BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT.html" title="Macro BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT">BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT</a></code>.</p>
 </div>
-<div class="section" title="Recursive variant types">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.tutorial.recursive"></a>Recursive <code class="computeroutput">variant</code> types</h4></div></div></div>
 <div class="toc"><dl>
@@ -399,7 +399,7 @@ struct binary_op
     types. Tutorials for use of these facilities is described in
     <a class="xref" href="tutorial.html#variant.tutorial.recursive.recursive-wrapper" title="Recursive types with recursive_wrapper">the section called &#8220;Recursive types with <code class="computeroutput">recursive_wrapper</code>&#8221;</a> and
     <a class="xref" href="tutorial.html#variant.tutorial.recursive.recursive-variant" title="Recursive types with make_recursive_variant">the section called &#8220;Recursive types with <code class="computeroutput">make_recursive_variant</code>&#8221;</a>.</p>
-<div class="section" title="Recursive types with recursive_wrapper">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="variant.tutorial.recursive.recursive-wrapper"></a>Recursive types with <code class="computeroutput">recursive_wrapper</code>
 </h5></div></div></div>
@@ -468,7 +468,7 @@ public:
 
   </p>
 </div>
-<div class="section" title="Recursive types with make_recursive_variant">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="variant.tutorial.recursive.recursive-variant"></a>Recursive types with <code class="computeroutput">make_recursive_variant</code>
 </h5></div></div></div>
@@ -505,7 +505,7 @@ int_tree_t var(result);</pre>
     <code class="computeroutput">var</code> as <code class="computeroutput">( 1 ( 3 5 ) 7 )</code>.</p>
 <p>Finally, note that a type sequence can be used to specify the bounded
     types of a recursive <code class="computeroutput">variant</code> via the use of
-    <code class="computeroutput"><a class="link" href="../boost/make_recursive_variant__id1483073.html" title="Class template make_recursive_variant_over">boost::make_recursive_variant_over</a></code>,
+    <code class="computeroutput"><a class="link" href="../boost/make_recursive_variant__id1488121.html" title="Class template make_recursive_variant_over">boost::make_recursive_variant_over</a></code>,
     whose semantics are the same as <code class="computeroutput">make_variant_over</code> (which is
     described in <a class="xref" href="tutorial.html#variant.tutorial.over-sequence" title="Using a type sequence to specify bounded types">the section called &#8220;Using a type sequence to specify bounded types&#8221;</a>).</p>
 <p><span class="bold"><strong>Portability</strong></span>: Unfortunately, due to
@@ -520,7 +520,7 @@ int_tree_t var(result);</pre>
     <a class="xref" href="tutorial.html#variant.tutorial.recursive.recursive-wrapper" title="Recursive types with recursive_wrapper">the section called &#8220;Recursive types with <code class="computeroutput">recursive_wrapper</code>&#8221;</a>.</p>
 </div>
 </div>
-<div class="section" title="Binary visitation">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.tutorial.binary-visitation"></a>Binary visitation</h4></div></div></div>
 <p>As the tutorial above demonstrates, visitation is a powerful mechanism
@@ -606,7 +606,7 @@ assert( std::equal(
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../variant.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../variant.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../variant.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../variant.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

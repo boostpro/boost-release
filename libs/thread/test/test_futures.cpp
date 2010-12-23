@@ -18,7 +18,7 @@
     template<typename T>
     typename boost::remove_reference<T>::type&& cast_to_rval(T&& t)
     {
-        return t;
+        return static_cast<typename boost::remove_reference<T>::type&&>(t);
     }
 #else
     template<typename T>
@@ -556,7 +556,7 @@ void wait_callback(boost::promise<int>& pi)
     }
 }
 
-void do_nothing_callback(boost::promise<int>& pi)
+void do_nothing_callback(boost::promise<int>& /*pi*/)
 {
     boost::lock_guard<boost::mutex> lk(callback_mutex);
     ++callback_called;
@@ -1041,6 +1041,8 @@ void test_wait_for_any_from_range()
         }
         boost::thread(::cast_to_rval(tasks[i]));
     
+        BOOST_CHECK(boost::wait_for_any(futures,futures)==futures);
+        
         boost::unique_future<int>* const future=boost::wait_for_any(futures,futures+count);
     
         BOOST_CHECK(future==(futures+i));

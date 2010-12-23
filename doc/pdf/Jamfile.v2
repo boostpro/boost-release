@@ -31,7 +31,6 @@ install pdf-install
     any_docs
     ../../libs/accumulators/doc//standalone 
     ../../libs/algorithm/string/doc//string_algo 
-    ../../libs/asio/doc//asio 
     ../../libs/bimap/doc//standalone 
     ../../libs/bind/doc//ref-doc 
     ../../libs/concept_check/doc//concepts 
@@ -39,6 +38,8 @@ install pdf-install
     ../../libs/date_time/xmldoc//date_time 
     ../../libs/foreach/doc//standalone 
     ../../libs/function/doc//function-doc 
+    ../../libs/functional/factory/doc//standalone
+    ../../libs/functional/forward/doc//standalone
     ../../libs/functional/hash/doc//standalone
     ../../libs/fusion/doc//quickbook
     ../../libs/interprocess/doc//standalone
@@ -53,15 +54,18 @@ install pdf-install
     ../../libs/math/doc/gcd//standalone
     ../../libs/math/doc/sf_and_dist//standalone
     ../../libs/mpi/doc//standalone
-    ../../libs/program_options/doc//program_option
-    ../../libs/property_tree/doc//standalone
     ../../libs/numeric/conversion/doc//standalone
     ../../libs/optional/doc//standalone
+    ../../libs/program_options/doc//program_option
+    ../../libs/property_tree/doc//standalone
     ../../libs/proto/doc//standalone
+    # Invalid Jamfile, doesn't use Boostbook anyway??
+    #../../libs/ptr_container/doc//standalone
     ../../libs/regex/doc//standalone
     ../../libs/scope_exit/doc//standalone
     ../../libs/signals/doc//doc
     ../../libs/spirit/doc//spirit2
+    ../../libs/spirit/repository/doc//spirit2_repository
     ../../libs/static_assert/doc//standalone
     ../../libs/thread/doc//standalone
     ../../libs/tr1/doc//standalone
@@ -91,6 +95,16 @@ install python-tutorial-install
     <install-type>PDF
     <format>pdf
     <name>python_tutorial.pdf
+  ;
+
+install asio-install
+  :
+    ../../libs/asio/doc//asio 
+  :
+    <location>.
+    <install-type>PDF
+    <format>pdf
+    <name>asio.pdf
   ;
 
 install phoenix-install
@@ -133,6 +147,9 @@ install range-install
     <format>pdf
     <name>range.pdf
   ;
+
+# Just copy the MSM PDF over:
+install msm_install : ../../libs/msm/doc/pdf/msm.pdf : <location>. ;
 
 
 

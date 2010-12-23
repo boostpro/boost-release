@@ -26,7 +26,7 @@ namespace quickbook
         , doc_dirname()
         , doc_copyrights()
         , doc_purpose()
-        , doc_category()
+        , doc_categories()
         , doc_authors()
         , doc_license()
         , doc_last_revision()
@@ -43,7 +43,7 @@ namespace quickbook
         , list_buffer()
 
     // state
-        , filename(fs::complete(fs::path(filein_, fs::native)))
+        , filename(fs::complete(fs::path(filein_)))
         , outdir(outdir_)
         , macro()
         , section_level(0)
@@ -60,6 +60,7 @@ namespace quickbook
         , macro_id()
         , list_marks()
         , list_indent(-1)
+        , template_identifier()
         , template_info()
         , template_depth(0)
         , template_escape(false)
@@ -78,8 +79,8 @@ namespace quickbook
         , code(out, phrase, syntax_p)
         , code_block(phrase, phrase, syntax_p)
         , inline_code(phrase, syntax_p)
-        , paragraph(out, phrase, paragraph_pre, paragraph_post)
         , inside_paragraph(temp_para, phrase, paragraph_pre, paragraph_post)
+        , write_paragraphs(out, temp_para)
         , h(out, phrase, doc_id, section_id, qualified_section_id, section_level)
         , h1(out, phrase, doc_id, section_id, qualified_section_id, h1_pre, h1_post)
         , h2(out, phrase, doc_id, section_id, qualified_section_id, h2_pre, h2_post)
@@ -99,7 +100,7 @@ namespace quickbook
         , plain_char(phrase)
         , raw_char(phrase)
         , escape_unicode(phrase)
-        , attribute(attributes, attribute_name)
+        , attribute(attributes, attribute_name, error_count)
         , image(phrase, attributes, image_fileref)
         , cond_phrase_pre(phrase, conditions, macro)
         , cond_phrase_post(phrase, conditions, macro)
@@ -185,7 +186,7 @@ namespace quickbook
         // turn off __FILENAME__ macro on debug mode = true
         std::string filename_str = debug_mode ?
             std::string("NO_FILENAME_MACRO_GENERATED_IN_DEBUG_MODE") :
-            filename.native_file_string();
+            filename.file_string();
 
         // add the predefined macros
         macro.add

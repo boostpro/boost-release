@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="thread_management.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="thread_local_storage.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="thread_management.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="thread_local_storage.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Synchronization">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="thread.synchronization"></a><a class="link" href="synchronization.html" title="Synchronization"> Synchronization</a>
 </h2></div></div></div>
@@ -36,7 +36,7 @@
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.barriers"> Barriers</a></span></dt>
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.futures"> Futures</a></span></dt>
 </dl></div>
-<div class="section" title="Mutex Concepts">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.synchronization.mutex_concepts"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts" title="Mutex Concepts"> Mutex Concepts</a>
 </h3></div></div></div>
@@ -64,7 +64,7 @@
         for lockable objects: <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable" title="Lockable Concept"><code class="computeroutput"><span class="identifier">Lockable</span></code></a>, <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.timed_lockable" title="TimedLockable Concept"><code class="computeroutput"><span class="identifier">TimedLockable</span></code></a>, <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable" title="SharedLockable Concept"><code class="computeroutput"><span class="identifier">SharedLockable</span></code></a> and <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable" title="UpgradeLockable Concept"><code class="computeroutput"><span class="identifier">UpgradeLockable</span></code></a>. Each mutex type
         implements one or more of these concepts, as do the various lock types.
       </p>
-<div class="section" title="Lockable Concept">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_concepts.lockable"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable" title="Lockable Concept"> <code class="computeroutput"><span class="identifier">Lockable</span></code> Concept</a>
 </h4></div></div></div>
@@ -82,16 +82,22 @@
           the following member functions:
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.lock" title="void lock()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">lock</span><span class="special">();</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.try_lock" title="bool try_lock()"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">try_lock</span><span class="special">();</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.unlock" title="void unlock()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock</span><span class="special">();</span></code></a></li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.lock" title="void lock()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">lock</span><span class="special">();</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.try_lock" title="bool try_lock()"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">try_lock</span><span class="special">();</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.unlock" title="void unlock()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock</span><span class="special">();</span></code></a>
+            </li>
 </ul></div>
 <p>
           Lock ownership acquired through a call to <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.lock" title="void lock()"><code class="computeroutput"><span class="identifier">lock</span><span class="special">()</span></code></a>
           or <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.try_lock" title="bool try_lock()"><code class="computeroutput"><span class="identifier">try_lock</span><span class="special">()</span></code></a>
           must be released through a call to <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.unlock" title="void unlock()"><code class="computeroutput"><span class="identifier">unlock</span><span class="special">()</span></code></a>.
         </p>
-<div class="section" title="void lock()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.lockable.lock"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.lock" title="void lock()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">lock</span><span class="special">()</span></code></a>
@@ -116,7 +122,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="bool try_lock()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.lockable.try_lock"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.try_lock" title="bool try_lock()">
           <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">try_lock</span><span class="special">()</span></code></a>
@@ -147,7 +153,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void unlock()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.lockable.unlock"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.unlock" title="void unlock()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock</span><span class="special">()</span></code></a>
@@ -175,7 +181,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="TimedLockable Concept">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_concepts.timed_lockable"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.timed_lockable" title="TimedLockable Concept">
         <code class="computeroutput"><span class="identifier">TimedLockable</span></code> Concept</a>
@@ -199,16 +205,21 @@
           the following member functions must be provided:
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.timed_lockable.timed_lock" title="bool timed_lock(boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">timed_lock</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_time</span>
-            <span class="keyword">const</span><span class="special">&amp;</span>
-            <span class="identifier">abs_time</span><span class="special">);</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.timed_lockable.timed_lock_duration" title="template&lt;typename DurationType&gt; bool timed_lock(DurationType const&amp; rel_time)"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">DurationType</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">timed_lock</span><span class="special">(</span><span class="identifier">DurationType</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rel_time</span><span class="special">);</span></code></a></li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.timed_lockable.timed_lock" title="bool timed_lock(boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">timed_lock</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_time</span>
+              <span class="keyword">const</span><span class="special">&amp;</span>
+              <span class="identifier">abs_time</span><span class="special">);</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.timed_lockable.timed_lock_duration" title="template&lt;typename DurationType&gt; bool timed_lock(DurationType const&amp; rel_time)"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">DurationType</span><span class="special">&gt;</span> <span class="keyword">bool</span>
+              <span class="identifier">timed_lock</span><span class="special">(</span><span class="identifier">DurationType</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rel_time</span><span class="special">);</span></code></a>
+            </li>
 </ul></div>
 <p>
           Lock ownership acquired through a call to <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.timed_lockable.timed_lock" title="bool timed_lock(boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="identifier">timed_lock</span><span class="special">()</span></code></a>
           must be released through a call to <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.unlock" title="void unlock()"><code class="computeroutput"><span class="identifier">unlock</span><span class="special">()</span></code></a>.
         </p>
-<div class="section" title="bool timed_lock(boost::system_time const&amp; abs_time)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.timed_lockable.timed_lock"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.timed_lockable.timed_lock" title="bool timed_lock(boost::system_time const&amp; abs_time)">
           <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">timed_lock</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_time</span>
@@ -243,7 +254,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="template&lt;typename DurationType&gt; bool timed_lock(DurationType const&amp; rel_time)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.timed_lockable.timed_lock_duration"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.timed_lockable.timed_lock_duration" title="template&lt;typename DurationType&gt; bool timed_lock(DurationType const&amp; rel_time)">
           <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">DurationType</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">timed_lock</span><span class="special">(</span><span class="identifier">DurationType</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rel_time</span><span class="special">)</span></code></a>
@@ -259,7 +270,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="SharedLockable Concept">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_concepts.shared_lockable"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable" title="SharedLockable Concept">
         <code class="computeroutput"><span class="identifier">SharedLockable</span></code> Concept</a>
@@ -291,12 +302,20 @@
           also provide the following member functions:
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.lock_shared" title="void lock_shared()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">lock_shared</span><span class="special">();</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.try_lock_shared" title="bool try_lock_shared()"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">try_lock_shared</span><span class="special">();</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.unlock_shared" title="void unlock_shared()"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">unlock_shared</span><span class="special">();</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.timed_lock_shared" title="bool timed_lock_shared(boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">timed_lock_shared</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_time</span>
-            <span class="keyword">const</span><span class="special">&amp;</span>
-            <span class="identifier">abs_time</span><span class="special">);</span></code></a></li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.lock_shared" title="void lock_shared()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">lock_shared</span><span class="special">();</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.try_lock_shared" title="bool try_lock_shared()"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">try_lock_shared</span><span class="special">();</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.unlock_shared" title="void unlock_shared()"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">unlock_shared</span><span class="special">();</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.timed_lock_shared" title="bool timed_lock_shared(boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">timed_lock_shared</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_time</span>
+              <span class="keyword">const</span><span class="special">&amp;</span>
+              <span class="identifier">abs_time</span><span class="special">);</span></code></a>
+            </li>
 </ul></div>
 <p>
           Lock ownership acquired through a call to <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.lock_shared" title="void lock_shared()"><code class="computeroutput"><span class="identifier">lock_shared</span><span class="special">()</span></code></a>,
@@ -304,7 +323,7 @@
           or <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.timed_lock_shared" title="bool timed_lock_shared(boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="identifier">timed_lock_shared</span><span class="special">()</span></code></a>
           must be released through a call to <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.unlock_shared" title="void unlock_shared()"><code class="computeroutput"><span class="identifier">unlock_shared</span><span class="special">()</span></code></a>.
         </p>
-<div class="section" title="void lock_shared()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.shared_lockable.lock_shared"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.lock_shared" title="void lock_shared()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">lock_shared</span><span class="special">()</span></code></a>
@@ -329,7 +348,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="bool try_lock_shared()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.shared_lockable.try_lock_shared"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.try_lock_shared" title="bool try_lock_shared()">
           <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">try_lock_shared</span><span class="special">()</span></code></a>
@@ -361,7 +380,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="bool timed_lock_shared(boost::system_time const&amp; abs_time)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.shared_lockable.timed_lock_shared"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.timed_lock_shared" title="bool timed_lock_shared(boost::system_time const&amp; abs_time)">
           <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">timed_lock_shared</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_time</span>
@@ -397,7 +416,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void unlock_shared()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.shared_lockable.unlock_shared"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.shared_lockable.unlock_shared" title="void unlock_shared()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_shared</span><span class="special">()</span></code></a>
@@ -425,7 +444,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="UpgradeLockable Concept">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_concepts.upgrade_lockable"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable" title="UpgradeLockable Concept">
         <code class="computeroutput"><span class="identifier">UpgradeLockable</span></code> Concept</a>
@@ -476,11 +495,21 @@
           also provide the following member functions:
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.lock_upgrade" title="void lock_upgrade()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">lock_upgrade</span><span class="special">();</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade" title="void unlock_upgrade()"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">unlock_upgrade</span><span class="special">();</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade_and_lock" title="void unlock_upgrade_and_lock()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_upgrade_and_lock</span><span class="special">();</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_and_lock_upgrade" title="void unlock_and_lock_upgrade()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_and_lock_upgrade</span><span class="special">();</span></code></a></li>
-<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade_and_lock_shared" title="void unlock_upgrade_and_lock_shared()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_upgrade_and_lock_shared</span><span class="special">();</span></code></a></li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.lock_upgrade" title="void lock_upgrade()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">lock_upgrade</span><span class="special">();</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade" title="void unlock_upgrade()"><code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">unlock_upgrade</span><span class="special">();</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade_and_lock" title="void unlock_upgrade_and_lock()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_upgrade_and_lock</span><span class="special">();</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_and_lock_upgrade" title="void unlock_and_lock_upgrade()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_and_lock_upgrade</span><span class="special">();</span></code></a>
+            </li>
+<li class="listitem">
+              <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade_and_lock_shared" title="void unlock_upgrade_and_lock_shared()"><code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_upgrade_and_lock_shared</span><span class="special">();</span></code></a>
+            </li>
 </ul></div>
 <p>
           Lock ownership acquired through a call to <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.lock_upgrade" title="void lock_upgrade()"><code class="computeroutput"><span class="identifier">lock_upgrade</span><span class="special">()</span></code></a>
@@ -489,7 +518,7 @@
           functions, ownership must be released through a call to the unlock function
           corresponding to the new level of ownership.
         </p>
-<div class="section" title="void lock_upgrade()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.upgrade_lockable.lock_upgrade"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.lock_upgrade" title="void lock_upgrade()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">lock_upgrade</span><span class="special">()</span></code></a>
@@ -514,7 +543,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void unlock_upgrade()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade" title="void unlock_upgrade()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_upgrade</span><span class="special">()</span></code></a>
@@ -541,7 +570,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void unlock_upgrade_and_lock()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade_and_lock"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade_and_lock" title="void unlock_upgrade_and_lock()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_upgrade_and_lock</span><span class="special">()</span></code></a>
@@ -570,7 +599,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void unlock_upgrade_and_lock_shared()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade_and_lock_shared"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_upgrade_and_lock_shared" title="void unlock_upgrade_and_lock_shared()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_upgrade_and_lock_shared</span><span class="special">()</span></code></a>
@@ -598,7 +627,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void unlock_and_lock_upgrade()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_concepts.upgrade_lockable.unlock_and_lock_upgrade"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.upgrade_lockable.unlock_and_lock_upgrade" title="void unlock_and_lock_upgrade()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">unlock_and_lock_upgrade</span><span class="special">()</span></code></a>
@@ -628,7 +657,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Lock Types">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.synchronization.locks"></a><a class="link" href="synchronization.html#thread.synchronization.locks" title="Lock Types"> Lock Types</a>
 </h3></div></div></div>
@@ -646,7 +675,7 @@
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.locks.scoped_try_lock"> Mutex-specific
         class <code class="computeroutput"><span class="identifier">scoped_try_lock</span></code></a></span></dt>
 </dl></div>
-<div class="section" title="Class template lock_guard">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.locks.lock_guard"></a><a class="link" href="synchronization.html#thread.synchronization.locks.lock_guard" title="Class template lock_guard"> Class template
         <code class="computeroutput"><span class="identifier">lock_guard</span></code></a>
@@ -684,7 +713,7 @@
           constructor</a> allows the <a class="link" href="synchronization.html#thread.synchronization.locks.lock_guard" title="Class template lock_guard"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lock_guard</span></code></a> object to take ownership
           of a lock already held by the current thread.
         </p>
-<div class="section" title="lock_guard(Lockable &amp; m)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.lock_guard.constructor"></a><a class="link" href="synchronization.html#thread.synchronization.locks.lock_guard.constructor" title="lock_guard(Lockable &amp; m)">
           <code class="computeroutput"><span class="identifier">lock_guard</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -705,7 +734,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="lock_guard(Lockable &amp; m,boost::adopt_lock_t)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.lock_guard.constructor_adopt"></a><a class="link" href="synchronization.html#thread.synchronization.locks.lock_guard.constructor_adopt" title="lock_guard(Lockable &amp; m,boost::adopt_lock_t)">
           <code class="computeroutput"><span class="identifier">lock_guard</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -731,7 +760,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="~lock_guard()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.lock_guard.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.locks.lock_guard.destructor" title="~lock_guard()">
           <code class="computeroutput"><span class="special">~</span><span class="identifier">lock_guard</span><span class="special">()</span></code></a>
@@ -753,7 +782,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Class template unique_lock">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.locks.unique_lock"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock" title="Class template unique_lock"> Class template
         <code class="computeroutput"><span class="identifier">unique_lock</span></code></a>
@@ -869,7 +898,7 @@
           (including the destructor) must be called by the same thread that acquired
           ownership of the lock state.
         </p>
-<div class="section" title="unique_lock()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.defaultconstructor"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.defaultconstructor" title="unique_lock()">
           <code class="computeroutput"><span class="identifier">unique_lock</span><span class="special">()</span></code></a>
@@ -894,7 +923,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="unique_lock(Lockable &amp; m)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.constructor"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.constructor" title="unique_lock(Lockable &amp; m)">
           <code class="computeroutput"><span class="identifier">unique_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -921,7 +950,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="unique_lock(Lockable &amp; m,boost::adopt_lock_t)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.constructor_adopt"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.constructor_adopt" title="unique_lock(Lockable &amp; m,boost::adopt_lock_t)">
           <code class="computeroutput"><span class="identifier">unique_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -952,7 +981,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="unique_lock(Lockable &amp; m,boost::defer_lock_t)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.constructor_defer"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.constructor_defer" title="unique_lock(Lockable &amp; m,boost::defer_lock_t)">
           <code class="computeroutput"><span class="identifier">unique_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -978,7 +1007,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="unique_lock(Lockable &amp; m,boost::try_to_lock_t)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.constructor_try"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.constructor_try" title="unique_lock(Lockable &amp; m,boost::try_to_lock_t)">
           <code class="computeroutput"><span class="identifier">unique_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -1011,7 +1040,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="unique_lock(Lockable &amp; m,boost::system_time const&amp; abs_time)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.constructor_abs_time"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.constructor_abs_time" title="unique_lock(Lockable &amp; m,boost::system_time const&amp; abs_time)">
           <code class="computeroutput"><span class="identifier">unique_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -1044,7 +1073,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="~unique_lock()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.destructor" title="~unique_lock()">
           <code class="computeroutput"><span class="special">~</span><span class="identifier">unique_lock</span><span class="special">()</span></code></a>
@@ -1065,7 +1094,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="bool owns_lock() const">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.owns_lock"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.owns_lock" title="bool owns_lock() const">
           <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">owns_lock</span><span class="special">()</span> <span class="keyword">const</span></code></a>
@@ -1086,7 +1115,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Lockable* mutex() const">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.mutex"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.mutex" title="Lockable* mutex() const">
           <code class="computeroutput"><span class="identifier">Lockable</span><span class="special">*</span>
@@ -1110,7 +1139,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="operator unspecified-bool-type() const">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.bool_conversion"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.bool_conversion" title="operator unspecified-bool-type() const">
           <code class="computeroutput"><span class="keyword">operator</span> <span class="identifier">unspecified</span><span class="special">-</span><span class="keyword">bool</span><span class="special">-</span><span class="identifier">type</span><span class="special">()</span> <span class="keyword">const</span></code></a>
@@ -1132,7 +1161,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="bool operator!() const">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.operator_not"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.operator_not" title="bool operator!() const">
           <code class="computeroutput"><span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">!()</span> <span class="keyword">const</span></code></a>
@@ -1151,7 +1180,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Lockable* release()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.unique_lock.release"></a><a class="link" href="synchronization.html#thread.synchronization.locks.unique_lock.release" title="Lockable* release()">
           <code class="computeroutput"><span class="identifier">Lockable</span><span class="special">*</span>
@@ -1192,7 +1221,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Class template shared_lock">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.locks.shared_lock"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock" title="Class template shared_lock"> Class template
         <code class="computeroutput"><span class="identifier">shared_lock</span></code></a>
@@ -1299,7 +1328,7 @@
           (including the destructor) must be called by the same thread that acquired
           ownership of the lock state.
         </p>
-<div class="section" title="shared_lock()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.defaultconstructor"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.defaultconstructor" title="shared_lock()">
           <code class="computeroutput"><span class="identifier">shared_lock</span><span class="special">()</span></code></a>
@@ -1324,7 +1353,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="shared_lock(Lockable &amp; m)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.constructor"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.constructor" title="shared_lock(Lockable &amp; m)">
           <code class="computeroutput"><span class="identifier">shared_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -1351,7 +1380,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="shared_lock(Lockable &amp; m,boost::adopt_lock_t)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.constructor_adopt"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.constructor_adopt" title="shared_lock(Lockable &amp; m,boost::adopt_lock_t)">
           <code class="computeroutput"><span class="identifier">shared_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -1382,7 +1411,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="shared_lock(Lockable &amp; m,boost::defer_lock_t)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.constructor_defer"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.constructor_defer" title="shared_lock(Lockable &amp; m,boost::defer_lock_t)">
           <code class="computeroutput"><span class="identifier">shared_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -1408,7 +1437,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="shared_lock(Lockable &amp; m,boost::try_to_lock_t)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.constructor_try"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.constructor_try" title="shared_lock(Lockable &amp; m,boost::try_to_lock_t)">
           <code class="computeroutput"><span class="identifier">shared_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -1441,7 +1470,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="shared_lock(Lockable &amp; m,boost::system_time const&amp; abs_time)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.constructor_abs_time"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.constructor_abs_time" title="shared_lock(Lockable &amp; m,boost::system_time const&amp; abs_time)">
           <code class="computeroutput"><span class="identifier">shared_lock</span><span class="special">(</span><span class="identifier">Lockable</span> <span class="special">&amp;</span>
@@ -1474,7 +1503,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="~shared_lock()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.destructor" title="~shared_lock()">
           <code class="computeroutput"><span class="special">~</span><span class="identifier">shared_lock</span><span class="special">()</span></code></a>
@@ -1495,7 +1524,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="bool owns_lock() const">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.owns_lock"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.owns_lock" title="bool owns_lock() const">
           <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">owns_lock</span><span class="special">()</span> <span class="keyword">const</span></code></a>
@@ -1516,7 +1545,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Lockable* mutex() const">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.mutex"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.mutex" title="Lockable* mutex() const">
           <code class="computeroutput"><span class="identifier">Lockable</span><span class="special">*</span>
@@ -1540,7 +1569,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="operator unspecified-bool-type() const">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.bool_conversion"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.bool_conversion" title="operator unspecified-bool-type() const">
           <code class="computeroutput"><span class="keyword">operator</span> <span class="identifier">unspecified</span><span class="special">-</span><span class="keyword">bool</span><span class="special">-</span><span class="identifier">type</span><span class="special">()</span> <span class="keyword">const</span></code></a>
@@ -1562,7 +1591,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="bool operator!() const">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.operator_not"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.operator_not" title="bool operator!() const">
           <code class="computeroutput"><span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">!()</span> <span class="keyword">const</span></code></a>
@@ -1581,7 +1610,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Lockable* release()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.locks.shared_lock.release"></a><a class="link" href="synchronization.html#thread.synchronization.locks.shared_lock.release" title="Lockable* release()">
           <code class="computeroutput"><span class="identifier">Lockable</span><span class="special">*</span>
@@ -1622,7 +1651,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Class template upgrade_lock">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.locks.upgrade_lock"></a><a class="link" href="synchronization.html#thread.synchronization.locks.upgrade_lock" title="Class template upgrade_lock"> Class template
         <code class="computeroutput"><span class="identifier">upgrade_lock</span></code></a>
@@ -1690,7 +1719,7 @@
           ownership of the lock state.
         </p>
 </div>
-<div class="section" title="Class template upgrade_to_unique_lock">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.locks.upgrade_to_unique_lock"></a><a class="link" href="synchronization.html#thread.synchronization.locks.upgrade_to_unique_lock" title="Class template upgrade_to_unique_lock">
         Class template <code class="computeroutput"><span class="identifier">upgrade_to_unique_lock</span></code></a>
@@ -1724,7 +1753,7 @@
           <span class="emphasis"><em>upgrade ownership</em></span>.
         </p>
 </div>
-<div class="section" title="Mutex-specific class scoped_try_lock">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.locks.scoped_try_lock"></a><a class="link" href="synchronization.html#thread.synchronization.locks.scoped_try_lock" title="Mutex-specific class scoped_try_lock"> Mutex-specific
         class <code class="computeroutput"><span class="identifier">scoped_try_lock</span></code></a>
@@ -1770,7 +1799,7 @@
         </p>
 </div>
 </div>
-<div class="section" title="Lock functions">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.synchronization.lock_functions"></a><a class="link" href="synchronization.html#thread.synchronization.lock_functions" title="Lock functions"> Lock functions</a>
 </h3></div></div></div>
@@ -1784,7 +1813,7 @@
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.lock_functions.try_lock_range">
         Non-member function <code class="computeroutput"><span class="identifier">try_lock</span><span class="special">(</span><span class="identifier">begin</span><span class="special">,</span><span class="identifier">end</span><span class="special">)</span></code></a></span></dt>
 </dl></div>
-<div class="section" title="Non-member function lock(Lockable1,Lockable2,...)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.lock_functions.lock_multiple"></a><a class="link" href="synchronization.html#thread.synchronization.lock_functions.lock_multiple" title="Non-member function lock(Lockable1,Lockable2,...)">
         Non-member function <code class="computeroutput"><span class="identifier">lock</span><span class="special">(</span><span class="identifier">Lockable1</span><span class="special">,</span><span class="identifier">Lockable2</span><span class="special">,...)</span></code></a>
@@ -1830,7 +1859,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Non-member function lock(begin,end)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.lock_functions.lock_range"></a><a class="link" href="synchronization.html#thread.synchronization.lock_functions.lock_range" title="Non-member function lock(begin,end)">
         Non-member function <code class="computeroutput"><span class="identifier">lock</span><span class="special">(</span><span class="identifier">begin</span><span class="special">,</span><span class="identifier">end</span><span class="special">)</span></code></a>
@@ -1873,7 +1902,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Non-member function try_lock(Lockable1,Lockable2,...)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.lock_functions.try_lock_multiple"></a><a class="link" href="synchronization.html#thread.synchronization.lock_functions.try_lock_multiple" title="Non-member function try_lock(Lockable1,Lockable2,...)">
         Non-member function <code class="computeroutput"><span class="identifier">try_lock</span><span class="special">(</span><span class="identifier">Lockable1</span><span class="special">,</span><span class="identifier">Lockable2</span><span class="special">,...)</span></code></a>
@@ -1931,7 +1960,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Non-member function try_lock(begin,end)">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.lock_functions.try_lock_range"></a><a class="link" href="synchronization.html#thread.synchronization.lock_functions.try_lock_range" title="Non-member function try_lock(begin,end)">
         Non-member function <code class="computeroutput"><span class="identifier">try_lock</span><span class="special">(</span><span class="identifier">begin</span><span class="special">,</span><span class="identifier">end</span><span class="special">)</span></code></a>
@@ -1988,7 +2017,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Mutex Types">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.synchronization.mutex_types"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types" title="Mutex Types"> Mutex Types</a>
 </h3></div></div></div>
@@ -2007,7 +2036,7 @@
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.mutex_types.shared_mutex"> Class
         <code class="computeroutput"><span class="identifier">shared_mutex</span></code></a></span></dt>
 </dl></div>
-<div class="section" title="Class mutex">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_types.mutex"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.mutex" title="Class mutex"> Class <code class="computeroutput"><span class="identifier">mutex</span></code></a>
 </h4></div></div></div>
@@ -2042,7 +2071,7 @@
           and <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.unlock" title="void unlock()"><code class="computeroutput"><span class="identifier">unlock</span><span class="special">()</span></code></a>
           shall be permitted.
         </p>
-<div class="section" title="Member function native_handle()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_types.mutex.nativehandle"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.mutex.nativehandle" title="Member function native_handle()">
           Member function <code class="computeroutput"><span class="identifier">native_handle</span><span class="special">()</span></code></a>
@@ -2069,7 +2098,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Typedef try_mutex">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_types.try_mutex"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.try_mutex" title="Typedef try_mutex"> Typedef
         <code class="computeroutput"><span class="identifier">try_mutex</span></code></a>
@@ -2084,7 +2113,7 @@
           compatibility with previous releases of boost.
         </p>
 </div>
-<div class="section" title="Class timed_mutex">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_types.timed_mutex"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.timed_mutex" title="Class timed_mutex"> Class
         <code class="computeroutput"><span class="identifier">timed_mutex</span></code></a>
@@ -2127,7 +2156,7 @@
           and <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.unlock" title="void unlock()"><code class="computeroutput"><span class="identifier">unlock</span><span class="special">()</span></code></a>
           shall be permitted.
         </p>
-<div class="section" title="Member function native_handle()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_types.timed_mutex.nativehandle"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.timed_mutex.nativehandle" title="Member function native_handle()">
           Member function <code class="computeroutput"><span class="identifier">native_handle</span><span class="special">()</span></code></a>
@@ -2154,7 +2183,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Class recursive_mutex">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_types.recursive_mutex"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.recursive_mutex" title="Class recursive_mutex">
         Class <code class="computeroutput"><span class="identifier">recursive_mutex</span></code></a>
@@ -2197,7 +2226,7 @@
           must be called once for each level of ownership acquired by a single thread
           before ownership can be acquired by another thread.
         </p>
-<div class="section" title="Member function native_handle()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_types.recursive_mutex.nativehandle"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.recursive_mutex.nativehandle" title="Member function native_handle()">
           Member function <code class="computeroutput"><span class="identifier">native_handle</span><span class="special">()</span></code></a>
@@ -2224,7 +2253,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Typedef recursive_try_mutex">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_types.recursive_try_mutex"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.recursive_try_mutex" title="Typedef recursive_try_mutex">
         Typedef <code class="computeroutput"><span class="identifier">recursive_try_mutex</span></code></a>
@@ -2238,7 +2267,7 @@
           backwards compatibility with previous releases of boost.
         </p>
 </div>
-<div class="section" title="Class recursive_timed_mutex">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_types.recursive_timed_mutex"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.recursive_timed_mutex" title="Class recursive_timed_mutex">
         Class <code class="computeroutput"><span class="identifier">recursive_timed_mutex</span></code></a>
@@ -2291,7 +2320,7 @@
           must be called once for each level of ownership acquired by a single thread
           before ownership can be acquired by another thread.
         </p>
-<div class="section" title="Member function native_handle()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.mutex_types.recursive_timed_mutex.nativehandle"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.recursive_timed_mutex.nativehandle" title="Member function native_handle()">
           Member function <code class="computeroutput"><span class="identifier">native_handle</span><span class="special">()</span></code></a>
@@ -2318,7 +2347,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Class shared_mutex">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.mutex_types.shared_mutex"></a><a class="link" href="synchronization.html#thread.synchronization.mutex_types.shared_mutex" title="Class shared_mutex"> Class
         <code class="computeroutput"><span class="identifier">shared_mutex</span></code></a>
@@ -2365,7 +2394,7 @@
         </p>
 </div>
 </div>
-<div class="section" title="Condition Variables">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.synchronization.condvar_ref"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref" title="Condition Variables"> Condition Variables</a>
 </h3></div></div></div>
@@ -2378,7 +2407,7 @@
         <code class="computeroutput"><span class="identifier">condition</span></code></a></span></dt>
 </dl></div>
 <a name="thread.synchronization.condvar_ref.synopsis"></a><h5>
-<a name="id1837048"></a>
+<a name="id2691810"></a>
         <a class="link" href="synchronization.html#thread.synchronization.condvar_ref.synopsis">Synopsis</a>
       </h5>
 <p>
@@ -2457,7 +2486,7 @@
         type; <code class="computeroutput"><span class="identifier">condition_variable_any</span></code>
         typically has a more complex implementation than <code class="computeroutput"><span class="identifier">condition_variable</span></code>.
       </p>
-<div class="section" title="Class condition_variable">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable" title="Class condition_variable">
         Class <code class="computeroutput"><span class="identifier">condition_variable</span></code></a>
@@ -2528,7 +2557,7 @@
     <span class="special">};</span>
 <span class="special">}</span>
 </pre>
-<div class="section" title="condition_variable()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable.constructor"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.constructor" title="condition_variable()">
           <code class="computeroutput"><span class="identifier">condition_variable</span><span class="special">()</span></code></a>
@@ -2548,7 +2577,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="~condition_variable()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.destructor" title="~condition_variable()">
           <code class="computeroutput"><span class="special">~</span><span class="identifier">condition_variable</span><span class="special">()</span></code></a>
@@ -2576,7 +2605,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void notify_one()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable.notify_one"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.notify_one" title="void notify_one()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">notify_one</span><span class="special">()</span></code></a>
@@ -2599,7 +2628,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void notify_all()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable.notify_all"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.notify_all" title="void notify_all()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">notify_all</span><span class="special">()</span></code></a>
@@ -2622,7 +2651,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable.wait"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.wait" title="void wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock)">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">wait</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unique_lock</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mutex</span><span class="special">&gt;&amp;</span> <span class="identifier">lock</span><span class="special">)</span></code></a>
@@ -2668,7 +2697,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="template&lt;typename predicate_type&gt; void wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock, predicate_type pred)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable.wait_predicate"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.wait_predicate" title="template&lt;typename predicate_type&gt; void wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock, predicate_type pred)">
           <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">predicate_type</span><span class="special">&gt;</span> <span class="keyword">void</span> <span class="identifier">wait</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unique_lock</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mutex</span><span class="special">&gt;&amp;</span>
@@ -2694,7 +2723,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="bool timed_wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock,boost::system_time const&amp; abs_time)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable.timed_wait"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.timed_wait" title="bool timed_wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock,boost::system_time const&amp; abs_time)">
           <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">timed_wait</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unique_lock</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mutex</span><span class="special">&gt;&amp;</span> <span class="identifier">lock</span><span class="special">,</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_time</span>
@@ -2751,7 +2780,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="template&lt;typename duration_type&gt; bool timed_wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock,duration_type const&amp; rel_time)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable.timed_wait_rel"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.timed_wait_rel" title="template&lt;typename duration_type&gt; bool timed_wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock,duration_type const&amp; rel_time)">
           <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">duration_type</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">timed_wait</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unique_lock</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mutex</span><span class="special">&gt;&amp;</span>
@@ -2804,9 +2833,9 @@
                 </p></dd>
 </dl>
 </div>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -2815,7 +2844,7 @@
             </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="template&lt;typename predicate_type&gt; bool timed_wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock, boost::system_time const&amp; abs_time, predicate_type pred)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable.timed_wait_predicate"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.timed_wait_predicate" title="template&lt;typename predicate_type&gt; bool timed_wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock, boost::system_time const&amp; abs_time, predicate_type pred)">
           <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">predicate_type</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">timed_wait</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unique_lock</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mutex</span><span class="special">&gt;&amp;</span>
@@ -2847,7 +2876,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Class condition_variable_any">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any" title="Class condition_variable_any">
         Class <code class="computeroutput"><span class="identifier">condition_variable_any</span></code></a>
@@ -2924,7 +2953,7 @@
     <span class="special">};</span>
 <span class="special">}</span>
 </pre>
-<div class="section" title="condition_variable_any()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any.constructor"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.constructor" title="condition_variable_any()">
           <code class="computeroutput"><span class="identifier">condition_variable_any</span><span class="special">()</span></code></a>
@@ -2944,7 +2973,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="~condition_variable_any()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.destructor" title="~condition_variable_any()">
           <code class="computeroutput"><span class="special">~</span><span class="identifier">condition_variable_any</span><span class="special">()</span></code></a>
@@ -2972,7 +3001,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void notify_one()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any.notify_one"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.notify_one" title="void notify_one()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">notify_one</span><span class="special">()</span></code></a>
@@ -2995,7 +3024,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="void notify_all()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any.notify_all"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.notify_all" title="void notify_all()">
           <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">notify_all</span><span class="special">()</span></code></a>
@@ -3018,7 +3047,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="template&lt;typename lock_type&gt; void wait(lock_type&amp; lock)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any.wait"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.wait" title="template&lt;typename lock_type&gt; void wait(lock_type&amp; lock)">
           <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">lock_type</span><span class="special">&gt;</span> <span class="keyword">void</span> <span class="identifier">wait</span><span class="special">(</span><span class="identifier">lock_type</span><span class="special">&amp;</span>
@@ -3053,7 +3082,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="template&lt;typename lock_type,typename predicate_type&gt; void wait(lock_type&amp; lock, predicate_type pred)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any.wait_predicate"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.wait_predicate" title="template&lt;typename lock_type,typename predicate_type&gt; void wait(lock_type&amp; lock, predicate_type pred)">
           <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">lock_type</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">predicate_type</span><span class="special">&gt;</span>
@@ -3079,7 +3108,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="template&lt;typename lock_type&gt; bool timed_wait(lock_type&amp; lock,boost::system_time const&amp; abs_time)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any.timed_wait"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.timed_wait" title="template&lt;typename lock_type&gt; bool timed_wait(lock_type&amp; lock,boost::system_time const&amp; abs_time)">
           <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">lock_type</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">timed_wait</span><span class="special">(</span><span class="identifier">lock_type</span><span class="special">&amp;</span>
@@ -3123,7 +3152,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="template&lt;typename lock_type,typename duration_type&gt; bool timed_wait(lock_type&amp; lock,duration_type const&amp; rel_time)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any.timed_wait_rel"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.timed_wait_rel" title="template&lt;typename lock_type,typename duration_type&gt; bool timed_wait(lock_type&amp; lock,duration_type const&amp; rel_time)">
           <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">lock_type</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">duration_type</span><span class="special">&gt;</span>
@@ -3166,9 +3195,9 @@
                 </p></dd>
 </dl>
 </div>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -3177,7 +3206,7 @@
             </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="template&lt;typename lock_type,typename predicate_type&gt; bool timed_wait(lock_type&amp; lock, boost::system_time const&amp; abs_time, predicate_type pred)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.condvar_ref.condition_variable_any.timed_wait_predicate"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.timed_wait_predicate" title="template&lt;typename lock_type,typename predicate_type&gt; bool timed_wait(lock_type&amp; lock, boost::system_time const&amp; abs_time, predicate_type pred)">
           <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">lock_type</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">predicate_type</span><span class="special">&gt;</span>
@@ -3210,7 +3239,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Typedef condition">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.condvar_ref.condition"></a><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition" title="Typedef condition"> Typedef
         <code class="computeroutput"><span class="identifier">condition</span></code></a>
@@ -3225,7 +3254,7 @@
         </p>
 </div>
 </div>
-<div class="section" title="One-time Initialization">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.synchronization.once"></a><a class="link" href="synchronization.html#thread.synchronization.once" title="One-time Initialization"> One-time Initialization</a>
 </h3></div></div></div>
@@ -3239,7 +3268,7 @@
         that an initialization routine is run exactly once without data races or
         deadlocks.
       </p>
-<div class="section" title="Typedef once_flag">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.once.once_flag"></a><a class="link" href="synchronization.html#thread.synchronization.once.once_flag" title="Typedef once_flag"> Typedef <code class="computeroutput"><span class="identifier">once_flag</span></code></a>
 </h4></div></div></div>
@@ -3255,7 +3284,7 @@
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">once_flag</span> <span class="identifier">f</span><span class="special">=</span><span class="identifier">BOOST_ONCE_INIT</span><span class="special">;</span>
 </pre>
 </div>
-<div class="section" title="Non-member function call_once">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.once.call_once"></a><a class="link" href="synchronization.html#thread.synchronization.once.call_once" title="Non-member function call_once"> Non-member
         function <code class="computeroutput"><span class="identifier">call_once</span></code></a>
@@ -3327,7 +3356,7 @@
         </p>
 </div>
 </div>
-<div class="section" title="Barriers">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.synchronization.barriers"></a><a class="link" href="synchronization.html#thread.synchronization.barriers" title="Barriers"> Barriers</a>
 </h3></div></div></div>
@@ -3341,7 +3370,7 @@
         thread has reached the barrier, all the waiting threads can proceed, and
         the barrier is reset.
       </p>
-<div class="section" title="Class barrier">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.barriers.barrier"></a><a class="link" href="synchronization.html#thread.synchronization.barriers.barrier" title="Class barrier"> Class <code class="computeroutput"><span class="identifier">barrier</span></code></a>
 </h4></div></div></div>
@@ -3360,7 +3389,7 @@
           Instances of <a class="link" href="synchronization.html#thread.synchronization.barriers.barrier" title="Class barrier"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">barrier</span></code></a> are not copyable or movable.
         </p>
 <a name="thread.synchronization.barriers.barrier.constructor"></a><h6>
-<a name="id1845751"></a>
+<a name="id2700518"></a>
           <a class="link" href="synchronization.html#thread.synchronization.barriers.barrier.constructor">Constructor</a>
         </h6>
 <pre class="programlisting"><span class="identifier">barrier</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">count</span><span class="special">);</span>
@@ -3381,7 +3410,7 @@
 </dl>
 </div>
 <a name="thread.synchronization.barriers.barrier.destructor"></a><h6>
-<a name="id1845867"></a>
+<a name="id2700634"></a>
           <a class="link" href="synchronization.html#thread.synchronization.barriers.barrier.destructor">Destructor</a>
         </h6>
 <pre class="programlisting"><span class="special">~</span><span class="identifier">barrier</span><span class="special">();</span>
@@ -3404,7 +3433,7 @@
 </dl>
 </div>
 <a name="thread.synchronization.barriers.barrier.member_function__code__phrase_role__identifier__wait__phrase___code_"></a><h6>
-<a name="id1845984"></a>
+<a name="id2700752"></a>
           <a class="link" href="synchronization.html#thread.synchronization.barriers.barrier.member_function__code__phrase_role__identifier__wait__phrase___code_">Member
           function <code class="computeroutput"><span class="identifier">wait</span></code></a>
         </h6>
@@ -3437,7 +3466,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Futures">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.synchronization.futures"></a><a class="link" href="synchronization.html#thread.synchronization.futures" title="Futures"> Futures</a>
 </h3></div></div></div>
@@ -3450,7 +3479,7 @@
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.futures.reference"> Futures
         Reference</a></span></dt>
 </dl></div>
-<div class="section" title="Overview">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.futures.overview"></a><a class="link" href="synchronization.html#thread.synchronization.futures.overview" title="Overview"> Overview</a>
 </h4></div></div></div>
@@ -3488,7 +3517,7 @@
           functions.
         </p>
 </div>
-<div class="section" title="Creating asynchronous values">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.futures.creating"></a><a class="link" href="synchronization.html#thread.synchronization.futures.creating" title="Creating asynchronous values"> Creating
         asynchronous values</a>
@@ -3542,7 +3571,7 @@
 <span class="identifier">assert</span><span class="special">(</span><span class="identifier">fi</span><span class="special">.</span><span class="identifier">get</span><span class="special">()==</span><span class="number">42</span><span class="special">);</span>
 </pre>
 </div>
-<div class="section" title="Wait Callbacks and Lazy Futures">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.futures.lazy_futures"></a><a class="link" href="synchronization.html#thread.synchronization.futures.lazy_futures" title="Wait Callbacks and Lazy Futures"> Wait
         Callbacks and Lazy Futures</a>
@@ -3587,7 +3616,7 @@
 <span class="special">}</span>
 </pre>
 </div>
-<div class="section" title="Futures Reference">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.futures.reference"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference" title="Futures Reference"> Futures
         Reference</a>
@@ -3608,7 +3637,7 @@
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.futures.reference.wait_for_all">
           Non-member function <code class="computeroutput"><span class="identifier">wait_for_all</span><span class="special">()</span></code></a></span></dt>
 </dl></div>
-<div class="section" title="state enum">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.futures.reference.future_state"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.future_state" title="state enum">
           <code class="computeroutput"><span class="identifier">state</span></code> enum</a>
@@ -3619,7 +3648,7 @@
 <span class="special">}</span>
 </pre>
 </div>
-<div class="section" title="unique_future class template">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.futures.reference.unique_future"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="unique_future class template">
           <code class="computeroutput"><span class="identifier">unique_future</span></code> class template</a>
@@ -3658,7 +3687,7 @@
     <span class="keyword">bool</span> <span class="identifier">timed_wait_until</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_time</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">abs_time</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">};</span>
 </pre>
-<div class="section" title="Default Constructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.default_constructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.default_constructor" title="Default Constructor">
             Default Constructor</a>
@@ -3684,7 +3713,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Destructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.destructor" title="Destructor">
             Destructor</a>
@@ -3705,7 +3734,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Move Constructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.move_constructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.move_constructor" title="Move Constructor">
             Move Constructor</a>
@@ -3742,7 +3771,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Move Assignment Operator">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.move_assignment"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.move_assignment" title="Move Assignment Operator">
             Move Assignment Operator</a>
@@ -3780,7 +3809,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function swap()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.swap"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.swap" title="Member function swap()">
             Member function <code class="computeroutput"><span class="identifier">swap</span><span class="special">()</span></code></a>
@@ -3814,7 +3843,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function get()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.get"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.get" title="Member function get()">
             Member function <code class="computeroutput"><span class="identifier">get</span><span class="special">()</span></code></a>
@@ -3862,7 +3891,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function wait()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.wait"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.wait" title="Member function wait()">
             Member function <code class="computeroutput"><span class="identifier">wait</span><span class="special">()</span></code></a>
@@ -3903,7 +3932,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function timed_wait()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.timed_wait_duration"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.timed_wait_duration" title="Member function timed_wait()">
             Member function <code class="computeroutput"><span class="identifier">timed_wait</span><span class="special">()</span></code></a>
@@ -3956,7 +3985,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function timed_wait()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.timed_wait_absolute"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.timed_wait_absolute" title="Member function timed_wait()">
             Member function <code class="computeroutput"><span class="identifier">timed_wait</span><span class="special">()</span></code></a>
@@ -4007,7 +4036,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function is_ready()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.is_ready"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.is_ready" title="Member function is_ready()">
             Member function <code class="computeroutput"><span class="identifier">is_ready</span><span class="special">()</span></code></a>
@@ -4036,7 +4065,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function has_value()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.has_value"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.has_value" title="Member function has_value()">
             Member function <code class="computeroutput"><span class="identifier">has_value</span><span class="special">()</span></code></a>
@@ -4064,7 +4093,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function has_exception()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.has_exception"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.has_exception" title="Member function has_exception()">
             Member function <code class="computeroutput"><span class="identifier">has_exception</span><span class="special">()</span></code></a>
@@ -4092,7 +4121,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function get_state()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.unique_future.get_state"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future.get_state" title="Member function get_state()">
             Member function <code class="computeroutput"><span class="identifier">get_state</span><span class="special">()</span></code></a>
@@ -4123,7 +4152,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="shared_future class template">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.futures.reference.shared_future"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future" title="shared_future class template">
           <code class="computeroutput"><span class="identifier">shared_future</span></code> class template</a>
@@ -4165,7 +4194,7 @@
     <span class="keyword">bool</span> <span class="identifier">timed_wait_until</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_time</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">abs_time</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>        
 <span class="special">};</span>
 </pre>
-<div class="section" title="Default Constructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.shared_future.default_constructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future.default_constructor" title="Default Constructor">
             Default Constructor</a>
@@ -4191,7 +4220,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function get()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.shared_future.get"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future.get" title="Member function get()">
             Member function <code class="computeroutput"><span class="identifier">get</span><span class="special">()</span></code></a>
@@ -4231,7 +4260,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function wait()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.shared_future.wait"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future.wait" title="Member function wait()">
             Member function <code class="computeroutput"><span class="identifier">wait</span><span class="special">()</span></code></a>
@@ -4272,7 +4301,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function timed_wait()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.shared_future.timed_wait_duration"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future.timed_wait_duration" title="Member function timed_wait()">
             Member function <code class="computeroutput"><span class="identifier">timed_wait</span><span class="special">()</span></code></a>
@@ -4325,7 +4354,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function timed_wait()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.shared_future.timed_wait_absolute"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future.timed_wait_absolute" title="Member function timed_wait()">
             Member function <code class="computeroutput"><span class="identifier">timed_wait</span><span class="special">()</span></code></a>
@@ -4376,7 +4405,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function is_ready()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.shared_future.is_ready"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future.is_ready" title="Member function is_ready()">
             Member function <code class="computeroutput"><span class="identifier">is_ready</span><span class="special">()</span></code></a>
@@ -4405,7 +4434,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function has_value()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.shared_future.has_value"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future.has_value" title="Member function has_value()">
             Member function <code class="computeroutput"><span class="identifier">has_value</span><span class="special">()</span></code></a>
@@ -4433,7 +4462,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function has_exception()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.shared_future.has_exception"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future.has_exception" title="Member function has_exception()">
             Member function <code class="computeroutput"><span class="identifier">has_exception</span><span class="special">()</span></code></a>
@@ -4461,7 +4490,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member function get_state()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.shared_future.get_state"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.shared_future.get_state" title="Member function get_state()">
             Member function <code class="computeroutput"><span class="identifier">get_state</span><span class="special">()</span></code></a>
@@ -4492,7 +4521,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="promise class template">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.futures.reference.promise"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise" title="promise class template">
           <code class="computeroutput"><span class="identifier">promise</span></code> class template</a>
@@ -4525,7 +4554,7 @@
     <span class="keyword">void</span> <span class="identifier">set_wait_callback</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">);</span>        
 <span class="special">};</span>
 </pre>
-<div class="section" title="Default Constructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.promise.default_constructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise.default_constructor" title="Default Constructor">
             Default Constructor</a>
@@ -4547,7 +4576,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Move Constructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.promise.move_constructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise.move_constructor" title="Move Constructor">
             Move Constructor</a>
@@ -4577,7 +4606,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Move Assignment Operator">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.promise.move_assignment"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise.move_assignment" title="Move Assignment Operator">
             Move Assignment Operator</a>
@@ -4609,7 +4638,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Destructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.promise.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise.destructor" title="Destructor">
             Destructor</a>
@@ -4634,7 +4663,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member Function get_future()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.promise.get_future"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise.get_future" title="Member Function get_future()">
             Member Function <code class="computeroutput"><span class="identifier">get_future</span><span class="special">()</span></code></a>
@@ -4661,7 +4690,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member Function set_value()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.promise.set_value"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise.set_value" title="Member Function set_value()">
             Member Function <code class="computeroutput"><span class="identifier">set_value</span><span class="special">()</span></code></a>
@@ -4700,7 +4729,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member Function set_exception()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.promise.set_exception"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise.set_exception" title="Member Function set_exception()">
             Member Function <code class="computeroutput"><span class="identifier">set_exception</span><span class="special">()</span></code></a>
@@ -4735,7 +4764,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member Function set_wait_callback()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.promise.set_wait_callback"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise.set_wait_callback" title="Member Function set_wait_callback()">
             Member Function <code class="computeroutput"><span class="identifier">set_wait_callback</span><span class="special">()</span></code></a>
@@ -4773,7 +4802,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="packaged_task class template">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.futures.reference.packaged_task"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.packaged_task" title="packaged_task class template">
           <code class="computeroutput"><span class="identifier">packaged_task</span></code> class template</a>
@@ -4817,7 +4846,7 @@
     <span class="keyword">void</span> <span class="identifier">set_wait_callback</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">);</span>        
 <span class="special">};</span>
 </pre>
-<div class="section" title="Task Constructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.packaged_task.task_constructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.packaged_task.task_constructor" title="Task Constructor">
             Task Constructor</a>
@@ -4853,7 +4882,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Move Constructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.packaged_task.move_constructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.packaged_task.move_constructor" title="Move Constructor">
             Move Constructor</a>
@@ -4883,7 +4912,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Move Assignment Operator">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.packaged_task.move_assignment"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.packaged_task.move_assignment" title="Move Assignment Operator">
             Move Assignment Operator</a>
@@ -4914,7 +4943,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Destructor">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.packaged_task.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.packaged_task.destructor" title="Destructor">
             Destructor</a>
@@ -4939,7 +4968,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member Function get_future()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.packaged_task.get_future"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.packaged_task.get_future" title="Member Function get_future()">
             Member Function <code class="computeroutput"><span class="identifier">get_future</span><span class="special">()</span></code></a>
@@ -4964,7 +4993,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member Function operator()()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.packaged_task.call_operator"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.packaged_task.call_operator" title="Member Function operator()()">
             Member Function <code class="computeroutput"><span class="keyword">operator</span><span class="special">()()</span></code></a>
@@ -4996,7 +5025,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Member Function set_wait_callback()">
+<div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.futures.reference.packaged_task.set_wait_callback"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.packaged_task.set_wait_callback" title="Member Function set_wait_callback()">
             Member Function <code class="computeroutput"><span class="identifier">set_wait_callback</span><span class="special">()</span></code></a>
@@ -5035,7 +5064,7 @@
 </div>
 </div>
 </div>
-<div class="section" title="Non-member function wait_for_any()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.futures.reference.wait_for_any"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.wait_for_any" title="Non-member function wait_for_any()">
           Non-member function <code class="computeroutput"><span class="identifier">wait_for_any</span><span class="special">()</span></code></a>
@@ -5093,7 +5122,7 @@
 </dl>
 </div>
 </div>
-<div class="section" title="Non-member function wait_for_all()">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.futures.reference.wait_for_all"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.wait_for_all" title="Non-member function wait_for_all()">
           Non-member function <code class="computeroutput"><span class="identifier">wait_for_all</span><span class="special">()</span></code></a>
@@ -5152,7 +5181,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="thread_management.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="thread_local_storage.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="thread_management.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="thread_local_storage.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

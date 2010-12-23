@@ -20,28 +20,28 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../slot.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../signals/reference.html#header.boost.signals.trackable_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="connection.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../slot.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../signals/reference.html#header.boost.signals.trackable_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="connection.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Class trackable">
+<div class="refentry">
 <a name="boost.signals.trackable"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class trackable</span></h2>
 <p>boost::signals::trackable &#8212; Enables safe use of multicast callbacks.</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../signals/reference.html#header.boost.signals.trackable_hpp" title="Header &lt;boost/signals/trackable.hpp&gt;">boost/signals/trackable.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../signals/reference.html#header.boost.signals.trackable_hpp" title="Header &lt;boost/signals/trackable.hpp&gt;">boost/signals/trackable.hpp</a>&gt;
 
-</em></span>
-<span class="bold"><strong>class</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a> {
-<span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// <a class="link" href="trackable.html#boost.signals.trackableconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="trackable.html#id1125953-bb">trackable</a>();
-  <a class="link" href="trackable.html#id427709-bb">trackable</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp;);
-  trackable&amp; <a class="link" href="trackable.html#id707450-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp;);
-  <a class="link" href="trackable.html#id707437-bb">~trackable</a>();
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id1734721"></a><h2>Description</h2>
+</span>
+<span class="keyword">class</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a class="link" href="trackable.html#boost.signals.trackableconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="trackable.html#id660389-bb"><span class="identifier">trackable</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="trackable.html#id660402-bb"><span class="identifier">trackable</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  trackable&amp; <a class="link" href="trackable.html#id1131952-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="trackable.html#id660433-bb"><span class="special">~</span><span class="identifier">trackable</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id2542491"></a><h2>Description</h2>
 <p>The <code class="computeroutput">trackable</code> class provides automatic
           disconnection of signals and slots when objects bound in
           slots (via pointer or reference) are destroyed. The
@@ -56,14 +56,14 @@
           <a class="link" href="../visit_each.html" title="Function template visit_each">visit_each</a> overloads for any
           type that may contain pointers or references to trackable
           objects.</p>
-<div class="refsect2" title="trackable public construct/copy/destruct">
-<a name="id1734774"></a><h3>
+<div class="refsect2">
+<a name="id2542545"></a><h3>
 <a name="boost.signals.trackableconstruct-copy-destruct"></a><code class="computeroutput">trackable</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1125953-bb"></a>trackable();</pre>
+<pre class="literallayout"><a name="id660389-bb"></a><span class="identifier">trackable</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -79,7 +79,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id427709-bb"></a>trackable(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp; other);</pre>
+<pre class="literallayout"><a name="id660402-bb"></a><span class="identifier">trackable</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -99,7 +99,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout">trackable&amp; <a name="id707450-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp; other);</pre>
+<pre class="literallayout">trackable&amp; <a name="id1131952-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -123,7 +123,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id707437-bb"></a>~trackable();</pre>
+<pre class="literallayout"><a name="id660433-bb"></a><span class="special">~</span><span class="identifier">trackable</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -148,7 +148,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../slot.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../signals/reference.html#header.boost.signals.trackable_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="connection.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../slot.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../signals/reference.html#header.boost.signals.trackable_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="connection.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

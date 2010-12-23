@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="avl_set_multiset.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="treap_set_multiset.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="avl_set_multiset.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="treap_set_multiset.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Intrusive scapegoat tree based associative containers: sg_set, sg_multiset and sgtree">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="intrusive.sg_set_multiset"></a><a class="link" href="sg_set_multiset.html" title="Intrusive scapegoat tree based associative containers: sg_set, sg_multiset and sgtree"> Intrusive scapegoat tree based
     associative containers: sg_set, sg_multiset and sgtree</a>
@@ -51,13 +51,13 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-<span class="bold"><strong><span class="emphasis"><em>a == 1</em></span></strong></span>: A tree forming
-        a linked list is considered balanced.
-      </li>
+          <span class="bold"><strong><span class="emphasis"><em>a == 1</em></span></strong></span>: A tree forming
+          a linked list is considered balanced.
+        </li>
 <li class="listitem">
-<span class="bold"><strong><span class="emphasis"><em>a == 0.5</em></span></strong></span>: Only a perfectly
-        balanced binary is considered balanced.
-      </li>
+          <span class="bold"><strong><span class="emphasis"><em>a == 0.5</em></span></strong></span>: Only a
+          perfectly balanced binary is considered balanced.
+        </li>
 </ul></div>
 <p>
       Scapegoat trees are loosely <span class="emphasis"><em>a-height-balanced</em></span> so:
@@ -79,17 +79,17 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        They need additional storage of data on the root (the size of the tree, for
-        example) to achieve logarithmic complexity operations so it's not possible
-        to offer <code class="computeroutput"><span class="identifier">auto_unlink</span></code> hooks.
-        The size of an empty scapegoat tree is also considerably increased.
-      </li>
+          They need additional storage of data on the root (the size of the tree,
+          for example) to achieve logarithmic complexity operations so it's not possible
+          to offer <code class="computeroutput"><span class="identifier">auto_unlink</span></code> hooks.
+          The size of an empty scapegoat tree is also considerably increased.
+        </li>
 <li class="listitem">
-        The operations needed to determine if the tree is unbalanced require floating-point
-        operations like <span class="emphasis"><em>log1/a</em></span>. If the system has no floating
-        point operations (like some embedded systems), scapegoat tree operations
-        might become slow.
-      </li>
+          The operations needed to determine if the tree is unbalanced require floating-point
+          operations like <span class="emphasis"><em>log1/a</em></span>. If the system has no floating
+          point operations (like some embedded systems), scapegoat tree operations
+          might become slow.
+        </li>
 </ul></div>
 <p>
       <span class="bold"><strong>Boost.Intrusive</strong></span> offers 3 containers based
@@ -107,7 +107,7 @@
       has also the size of 3 pointers, two integers and two floating point values
       (equivalent to the size of 7 pointers on most systems).
     </p>
-<div class="section" title="Using binary search tree hooks: bs_set_base_hook and bs_set_member_hook">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.sg_set_multiset.sg_set_multiset_hooks"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_hooks" title="Using binary search tree hooks: bs_set_base_hook and bs_set_member_hook"> Using
       binary search tree hooks: bs_set_base_hook and bs_set_member_hook</a>
@@ -123,20 +123,20 @@
 <span class="keyword">class</span> <span class="identifier">bs_set_base_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-<code class="computeroutput"><a class="link" href="../boost/intrusive/bs_set_base_hook.html" title="Class template bs_set_base_hook">bs_set_base_hook</a></code>:
-          the user class derives publicly from this class to make it compatible with
-          scapegoat tree based containers.
-        </li></ul></div>
+            <code class="computeroutput"><a class="link" href="../boost/intrusive/bs_set_base_hook.html" title="Class template bs_set_base_hook">bs_set_base_hook</a></code>:
+            the user class derives publicly from this class to make it compatible
+            with scapegoat tree based containers.
+          </li></ul></div>
 <p>
       </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">bs_set_member_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-<code class="computeroutput"><a class="link" href="../boost/intrusive/set_member_hook.html" title="Class template set_member_hook">set_member_hook</a></code>:
-          the user class contains a public member of this class to make it compatible
-          with scapegoat tree based containers.
-        </li></ul></div>
+            <code class="computeroutput"><a class="link" href="../boost/intrusive/set_member_hook.html" title="Class template set_member_hook">set_member_hook</a></code>:
+            the user class contains a public member of this class to make it compatible
+            with scapegoat tree based containers.
+          </li></ul></div>
 <p>
         <code class="computeroutput"><a class="link" href="../boost/intrusive/bs_set_base_hook.html" title="Class template bs_set_base_hook">bs_set_base_hook</a></code>
         and <code class="computeroutput"><a class="link" href="../boost/intrusive/bs_set_member_hook.html" title="Class template bs_set_member_hook">bs_set_member_hook</a></code>
@@ -145,23 +145,23 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Tag</span><span class="special">&gt;</span></code></strong></span>
-          (for base hooks only): This argument serves as a tag, so you can derive
-          from more than one base hook. Default: <code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">default_tag</span><span class="special">&gt;</span></code>.
-        </li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Tag</span><span class="special">&gt;</span></code></strong></span>
+            (for base hooks only): This argument serves as a tag, so you can derive
+            from more than one base hook. Default: <code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">default_tag</span><span class="special">&gt;</span></code>.
+          </li>
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">link_mode_type</span>
-          <span class="identifier">LinkMode</span><span class="special">&gt;</span></code></strong></span>:
-          The linking policy. Default: <code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">safe_link</span><span class="special">&gt;</span></code>.
-        </li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">link_mode_type</span>
+            <span class="identifier">LinkMode</span><span class="special">&gt;</span></code></strong></span>:
+            The linking policy. Default: <code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">safe_link</span><span class="special">&gt;</span></code>.
+          </li>
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">VoidPointer</span><span class="special">&gt;</span></code></strong></span>:
-          The pointer type to be used internally in the hook and propagated to the
-          container. Default: <code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span></code>.
-        </li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">VoidPointer</span><span class="special">&gt;</span></code></strong></span>:
+            The pointer type to be used internally in the hook and propagated to
+            the container. Default: <code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span></code>.
+          </li>
 </ul></div>
 </div>
-<div class="section" title="sg_set, sg_multiset and sgtree containers">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.sg_set_multiset.sg_set_multiset_containers"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_containers" title="sg_set, sg_multiset and sgtree containers">
       sg_set, sg_multiset and sgtree containers</a>
@@ -182,40 +182,41 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">base_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Hook</span><span class="special">&gt;</span></code></strong></span>
-          / <span class="bold"><strong><code class="computeroutput"><span class="identifier">member_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span>
-          <span class="identifier">Hook</span><span class="special">,</span>
-          <span class="identifier">Hook</span> <span class="identifier">T</span><span class="special">::*</span> <span class="identifier">PtrToMember</span><span class="special">&gt;</span></code></strong></span> / <span class="bold"><strong><code class="computeroutput"><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ValueTraits</span><span class="special">&gt;</span></code></strong></span>: To specify the hook type
-          or value traits used to configure the container. (To learn about value
-          traits go to the section <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
-          with custom ValueTraits</a>.)
-        </li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">base_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Hook</span><span class="special">&gt;</span></code></strong></span>
+            / <span class="bold"><strong><code class="computeroutput"><span class="identifier">member_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Hook</span><span class="special">,</span> <span class="identifier">Hook</span> <span class="identifier">T</span><span class="special">::*</span> <span class="identifier">PtrToMember</span><span class="special">&gt;</span></code></strong></span>
+            / <span class="bold"><strong><code class="computeroutput"><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ValueTraits</span><span class="special">&gt;</span></code></strong></span>:
+            To specify the hook type or value traits used to configure the container.
+            (To learn about value traits go to the section <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
+            with custom ValueTraits</a>.)
+          </li>
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
-          To specify the type that will be used to store the size of the container.
-          Default: <code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span></code>
-</li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
+            To specify the type that will be used to store the size of the container.
+            Default: <code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span></code>
+          </li>
 </ul></div>
 <p>
         And they also can receive additional options:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">compare</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Compare</span><span class="special">&gt;</span></code></strong></span>:
-          Comparison function for the objects to be inserted in containers. The comparison
-          functor must induce a strict weak ordering. Default: <code class="computeroutput"><span class="identifier">compare</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">less</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;</span></code>
-</li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">compare</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Compare</span><span class="special">&gt;</span></code></strong></span>:
+            Comparison function for the objects to be inserted in containers. The
+            comparison functor must induce a strict weak ordering. Default: <code class="computeroutput"><span class="identifier">compare</span><span class="special">&lt;</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">less</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;</span></code>
+          </li>
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">floating_point</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enable</span><span class="special">&gt;</span></code></strong></span>:
-          When this option is deactivated, the scapegoat tree loses the ability to
-          change the balance factor a at run-time, but the size of an empty container
-          is reduced and no floating point operations are performed, normally increasing
-          container performance. The fixed a factor that is used when this option
-          is activated is <span class="emphasis"><em>1/sqrt(2) ~ 0,70711</em></span>. Default: <code class="computeroutput"><span class="identifier">floating_point</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span></code>
-</li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">floating_point</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enable</span><span class="special">&gt;</span></code></strong></span>:
+            When this option is deactivated, the scapegoat tree loses the ability
+            to change the balance factor a at run-time, but the size of an empty
+            container is reduced and no floating point operations are performed,
+            normally increasing container performance. The fixed a factor that is
+            used when this option is activated is <span class="emphasis"><em>1/sqrt(2) ~ 0,70711</em></span>.
+            Default: <code class="computeroutput"><span class="identifier">floating_point</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span></code>
+          </li>
 </ul></div>
 </div>
-<div class="section" title="Example">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.sg_set_multiset.sg_set_multiset_example"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_example" title="Example"> Example</a>
 </h3></div></div></div>
@@ -317,7 +318,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="avl_set_multiset.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="treap_set_multiset.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="avl_set_multiset.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="treap_set_multiset.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

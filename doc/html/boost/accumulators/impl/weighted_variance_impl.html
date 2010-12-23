@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_variance_hpp" title="Header &lt;boost/accumulators/statistics/weighted_variance.hpp&gt;">
-<link rel="prev" href="lazy_weighted_variance__id567365.html" title="Struct template lazy_weighted_variance_impl">
+<link rel="prev" href="lazy_weighted_variance__id571948.html" title="Struct template lazy_weighted_variance_impl">
 <link rel="next" href="../tag/lazy_weighted_variance.html" title="Struct lazy_weighted_variance">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,51 +20,51 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="lazy_weighted_variance__id567365.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_variance_hpp"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../tag/lazy_weighted_variance.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="lazy_weighted_variance__id571948.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_variance_hpp"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../tag/lazy_weighted_variance.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Struct template weighted_variance_impl">
+<div class="refentry">
 <a name="boost.accumulators.impl.weighted_variance_impl"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Struct template weighted_variance_impl</span></h2>
 <p>boost::accumulators::impl::weighted_variance_impl &#8212; Iterative calculation of variance of weighted samples. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_variance_hpp" title="Header &lt;boost/accumulators/statistics/weighted_variance.hpp&gt;">boost/accumulators/statistics/weighted_variance.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_variance_hpp" title="Header &lt;boost/accumulators/statistics/weighted_variance.hpp&gt;">boost/accumulators/statistics/weighted_variance.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Sample, <span class="bold"><strong>typename</strong></span> Weight, <span class="bold"><strong>typename</strong></span> MeanFeature, <span class="bold"><strong>typename</strong></span> Tag&gt; 
-<span class="bold"><strong>struct</strong></span> <a class="link" href="weighted_variance_impl.html" title="Struct template weighted_variance_impl">weighted_variance_impl</a> {
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> numeric::functional::multiplies&lt; Sample, Weight &gt;::result_type       <a name="boost.accumulators.impl.weighted_variance_impl.weighted_sample"></a>weighted_sample;
-  <span class="bold"><strong>typedef</strong></span> numeric::functional::average&lt; weighted_sample, Weight &gt;::result_type <a name="boost.accumulators.impl.weighted_variance_impl.result_type"></a>result_type;    
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Sample<span class="special">,</span> <span class="keyword">typename</span> Weight<span class="special">,</span> <span class="keyword">typename</span> MeanFeature<span class="special">,</span> <span class="keyword">typename</span> Tag<span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="weighted_variance_impl.html" title="Struct template weighted_variance_impl">weighted_variance_impl</a> <span class="special">{</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">numeric</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">multiplies</span><span class="special">&lt;</span> <span class="identifier">Sample</span><span class="special">,</span> <span class="identifier">Weight</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">result_type</span>       <a name="boost.accumulators.impl.weighted_variance_impl.weighted_sample"></a><span class="identifier">weighted_sample</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">numeric</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">average</span><span class="special">&lt;</span> <span class="identifier">weighted_sample</span><span class="special">,</span> <span class="identifier">Weight</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">result_type</span> <a name="boost.accumulators.impl.weighted_variance_impl.result_type"></a><span class="identifier">result_type</span><span class="special">;</span>    
 
-  <span class="emphasis"><em>// <a class="link" href="weighted_variance_impl.html#boost.accumulators.impl.weighted_variance_implconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <a class="link" href="weighted_variance_impl.html#id567737-bb">weighted_variance_impl</a>(Args <span class="bold"><strong>const</strong></span> &amp;);
+  <span class="comment">// <a class="link" href="weighted_variance_impl.html#boost.accumulators.impl.weighted_variance_implconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <a class="link" href="weighted_variance_impl.html#id572321-bb"><span class="identifier">weighted_variance_impl</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="weighted_variance_impl.html#id567700-bb">public member functions</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="weighted_variance_impl.html#id567704-bb"><span class="bold"><strong>operator</strong></span>()</a>(Args <span class="bold"><strong>const</strong></span> &amp;) ;
-  <span class="type">result_type</span> <a class="link" href="weighted_variance_impl.html#id567724-bb">result</a>(dont_care) <span class="bold"><strong>const</strong></span>;
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id702778"></a><h2>Description</h2>
+  <span class="comment">// <a class="link" href="weighted_variance_impl.html#id572284-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="weighted_variance_impl.html#id572288-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="weighted_variance_impl.html#id572308-bb"><span class="identifier">result</span></a><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id967912"></a><h2>Description</h2>
 <p>Iterative calculation of variance of weighted samples: </p>
 <div class="equation">
-<a name="id702784"></a><p class="title"><b>Equation&#160;1.43.&#160;</b></p>
+<a name="id967918"></a><p class="title"><b>Equation&#160;1.43.&#160;</b></p>
 <div class="equation-contents"><div class="mediaobject" align="center"><img src="../../../images/accumulators/form_100.png" align="middle"></div></div>
 </div>
 <p><br class="equation-break"> where <span class="inlinemediaobject"><img src="../../../images/accumulators/form_82.png"></span> is the sum of the <span class="inlinemediaobject"><img src="../../../images/accumulators/form_60.png"></span> weights <span class="inlinemediaobject"><img src="../../../images/accumulators/form_83.png"></span> and <span class="inlinemediaobject"><img src="../../../images/accumulators/form_4.png"></span> the estimate of the mean of the weighted smaples. Note that the sample variance is not defined for <span class="inlinemediaobject"><img src="../../../images/accumulators/form_77.png"></span>. </p>
-<div class="refsect2" title="weighted_variance_impl public construct/copy/destruct">
-<a name="id702913"></a><h3>
+<div class="refsect2">
+<a name="id968039"></a><h3>
 <a name="boost.accumulators.impl.weighted_variance_implconstruct-copy-destruct"></a><code class="computeroutput">weighted_variance_impl</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <a name="id567737-bb"></a>weighted_variance_impl(Args <span class="bold"><strong>const</strong></span> &amp; args);</pre></li></ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <a name="id572321-bb"></a><span class="identifier">weighted_variance_impl</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
-<div class="refsect2" title="weighted_variance_impl public member functions">
-<a name="id702965"></a><h3>
-<a name="id567700-bb"></a><code class="computeroutput">weighted_variance_impl</code> public member functions</h3>
+<div class="refsect2">
+<a name="id968117"></a><h3>
+<a name="id572284-bb"></a><code class="computeroutput">weighted_variance_impl</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id567704-bb"></a><span class="bold"><strong>operator</strong></span>()(Args <span class="bold"><strong>const</strong></span> &amp; args) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type">result_type</span> <a name="id567724-bb"></a>result(dont_care) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id572288-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">result_type</span> <a name="id572308-bb"></a><span class="identifier">result</span><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
@@ -79,7 +79,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="lazy_weighted_variance__id567365.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_variance_hpp"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../tag/lazy_weighted_variance.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="lazy_weighted_variance__id571948.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_variance_hpp"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../tag/lazy_weighted_variance.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

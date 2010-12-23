@@ -6,7 +6,7 @@
  * Use, modification and distribution is subject to the 
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
- * $Date: 2009-07-26 16:11:03 -0400 (Sun, 26 Jul 2009) $
+ * $Date: 2010-06-09 13:36:07 -0400 (Wed, 09 Jun 2010) $
  */
 
 
@@ -34,14 +34,14 @@ public:
     }
     out << std::endl;
   }
-private:  
+private:
   TestStats() : testcount_(0), passcount_(0) {}
   unsigned int testcount_;
   unsigned int passcount_;
 };
 
 
-bool check(const std::string& testname, bool testcond) 
+inline bool check(const std::string& testname, bool testcond) 
 {
   TestStats& stat = TestStats::instance();
   if (testcond) {
@@ -79,7 +79,7 @@ inline bool check_equal(const std::string& testname, std::wstring const& left, s
 }
 #endif
 
-int printTestStats() 
+inline int printTestStats()
 {
   TestStats& stat = TestStats::instance();
   stat.print();

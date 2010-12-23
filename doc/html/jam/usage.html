@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="building.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="language.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="building.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="language.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Using BJam">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="jam.usage"></a><a class="link" href="usage.html" title="Using BJam"> Using BJam</a>
 </h2></div></div></div>
@@ -30,9 +30,9 @@
 <dt><span class="section"><a href="usage.html#jam.usage.options"> Options</a></span></dt>
 <dt><span class="section"><a href="usage.html#jam.usage.operation"> Operation</a></span></dt>
 </dl></div>
-<div class="warning" title="Warning"><table border="0" summary="Warning">
+<div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -50,7 +50,7 @@
     </p>
 <pre class="programlisting">bjam ( -option [value] | target ) *
 </pre>
-<div class="section" title="Options">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="jam.usage.options"></a><a class="link" href="usage.html#jam.usage.options" title="Options"> Options</a>
 </h3></div></div></div>
@@ -167,7 +167,7 @@
             </p></dd>
 </dl>
 </div>
-<div class="section" title="Command-line and Environment Variable Quoting">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="jam.usage.options.command_line_and_environment_variable_quoting"></a><a class="link" href="usage.html#jam.usage.options.command_line_and_environment_variable_quoting" title="Command-line and Environment Variable Quoting">Command-line
         and Environment Variable Quoting</a>
@@ -194,7 +194,7 @@
 </pre>
 </div>
 </div>
-<div class="section" title="Operation">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="jam.usage.operation"></a><a class="link" href="usage.html#jam.usage.operation" title="Operation"> Operation</a>
 </h3></div></div></div>
@@ -207,7 +207,7 @@
 <p>
         BJam has four phases of operation: start-up, parsing, binding, and updating.
       </p>
-<div class="section" title="Start-up">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="jam.usage.operation.startup"></a><a class="link" href="usage.html#jam.usage.operation.startup" title="Start-up"> Start-up</a>
 </h4></div></div></div>
@@ -233,34 +233,34 @@
         </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-            We attempt to load "<code class="literal">boost-build.jam</code>" by
-            searching from the current invocation directory up to the root of the
-            file system. This file is expected to invoke the <code class="literal">boost-build</code>
-            rule to indicate where the Boost.Build system files are, and to load
-            them.
-          </li>
+              We attempt to load "<code class="literal">boost-build.jam</code>" by
+              searching from the current invocation directory up to the root of the
+              file system. This file is expected to invoke the <code class="literal">boost-build</code>
+              rule to indicate where the Boost.Build system files are, and to load
+              them.
+            </li>
 <li class="listitem">
-            If <code class="literal">boost-build.jam</code> is not found we error and exit,
-            giving brief instructions on possible errors. As a backward-compatibility
-            measure for older versions of Boost.Build, when the <code class="literal">BOOST_ROOT</code>
-            variable is set, we first search for <code class="literal">boost-build.jam</code>
-            in <code class="literal">$(BOOST_ROOT)/tools/build</code> and <code class="literal">$(BOOST_BUILD_PATH)</code>.
-            If found, it is loaded and initialization is complete.
-          </li>
+              If <code class="literal">boost-build.jam</code> is not found we error and exit,
+              giving brief instructions on possible errors. As a backward-compatibility
+              measure for older versions of Boost.Build, when the <code class="literal">BOOST_ROOT</code>
+              variable is set, we first search for <code class="literal">boost-build.jam</code>
+              in <code class="literal">$(BOOST_ROOT)/tools/build</code> and <code class="literal">$(BOOST_BUILD_PATH)</code>.
+              If found, it is loaded and initialization is complete.
+            </li>
 <li class="listitem">
-            The <code class="literal">boost-build</code> rule adds its (optional) argument
-            to the front of <code class="literal">BOOST_BUILD_PATH</code>, and attempts to
-            load <code class="literal">bootstrap.jam</code> from those directories. If a relative
-            path is specified as an argument, it is treated as though it was relative
-            to the <code class="literal">boost-build.jam</code> file.
-          </li>
+              The <code class="literal">boost-build</code> rule adds its (optional) argument
+              to the front of <code class="literal">BOOST_BUILD_PATH</code>, and attempts to
+              load <code class="literal">bootstrap.jam</code> from those directories. If a
+              relative path is specified as an argument, it is treated as though
+              it was relative to the <code class="literal">boost-build.jam</code> file.
+            </li>
 <li class="listitem">
-            If the <code class="literal">bootstrap.jam</code> file was not found, we print
-            a likely error message and exit.
-          </li>
+              If the <code class="literal">bootstrap.jam</code> file was not found, we print
+              a likely error message and exit.
+            </li>
 </ol></div>
 </div>
-<div class="section" title="Parsing">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="jam.usage.operation.parsing"></a><a class="link" href="usage.html#jam.usage.operation.parsing" title="Parsing"> Parsing</a>
 </h4></div></div></div>
@@ -279,7 +279,7 @@
           files.
         </p>
 </div>
-<div class="section" title="Binding">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="jam.usage.operation.binding"></a><a class="link" href="usage.html#jam.usage.operation.binding" title="Binding"> Binding</a>
 </h4></div></div></div>
@@ -303,7 +303,7 @@
           build targets spread across a directory tree. See <a class="link" href="language.html#jam.language.variables.builtins.search" title="SEARCH and LOCATE">SEARCH
           and LOCATE Variables</a> below.
         </p>
-<div class="section" title="Update Determination">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="jam.usage.operation.binding.fate"></a><a class="link" href="usage.html#jam.usage.operation.binding.fate" title="Update Determination"> Update Determination</a>
 </h5></div></div></div>
@@ -319,7 +319,7 @@
             Binding</a> below.
           </p>
 </div>
-<div class="section" title="Header File Scanning">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="jam.usage.operation.binding.headerscan"></a><a class="link" href="usage.html#jam.usage.operation.binding.headerscan" title="Header File Scanning"> Header File
           Scanning</a>
@@ -336,7 +336,7 @@
           </p>
 </div>
 </div>
-<div class="section" title="Updating">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="jam.usage.operation.updating"></a><a class="link" href="usage.html#jam.usage.operation.updating" title="Updating"> Updating</a>
 </h4></div></div></div>
@@ -364,7 +364,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="building.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="language.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="building.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="language.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

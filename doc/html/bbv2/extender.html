@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="reference.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="reference.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Extender Manual">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.extender"></a>Extender Manual</h2></div></div></div>
 <div class="toc"><dl>
@@ -34,7 +34,7 @@
 <dt><span class="section"><a href="extender.html#bbv2.extending.rules">Main target rules</a></span></dt>
 <dt><span class="section"><a href="extender.html#bbv2.extending.toolset_modules">Toolset modules</a></span></dt>
 </dl></div>
-<div class="section" title="Introduction">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extender.intro"></a>Introduction</h3></div></div></div>
 <div class="toc"><dl>
@@ -76,9 +76,9 @@
         metatargets. Extending metatarget level is rarely required. The jam
         targets are typically only used inside the command line patterns.
       </p>
-<div class="warning" title="Warning"><table border="0" summary="Warning">
+<div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>All of the Boost.Jam target-related builtin functions, like
@@ -86,7 +86,7 @@
         targets. Applying them to metatargets or concrete targets has no
         effect.</p></td></tr>
 </table></div>
-<div class="section" title="Metatargets">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.extender.overview.metatargets"></a>Metatargets</h4></div></div></div>
 <p>Metatarget is an object that records information specified
@@ -94,7 +94,7 @@
         and can be called with specific properties to generate concrete
         targets. At the code level it is represented by an instance of
         class derived from <code class="computeroutput">abstract-target</code>. 
-        <sup>[<a name="id2244517" href="#ftn.id2244517" class="footnote">14</a>]</sup>
+        <sup>[<a name="id3283449" href="#ftn.id3283449" class="footnote">14</a>]</sup>
         </p>
 <p>The <code class="computeroutput">generate</code> method takes the build properties
         (as an instance of the <code class="computeroutput">property-set</code> class) and returns
@@ -150,7 +150,7 @@
         That rule creates new instance of type-target, associated with that type.                
         </p>
 </div>
-<div class="section" title="Concrete targets">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.extender.overview.targets"></a>Concrete targets</h4></div></div></div>
 <p>Concrete targets are represented by instance of classes derived
@@ -177,7 +177,7 @@ local t = [ new file-target $(name) : CPP : $(project) : $(a) ] ;
         that correspond to the same file clearly will result in problems. Therefore, whenever
         returning targets you should pass them via the <code class="computeroutput">virtual-target.register</code>
         function, that will replace targets with previously created identical ones, as
-        necessary.<sup>[<a name="id2244858" href="#ftn.id2244858" class="footnote">15</a>]</sup>
+        necessary.<sup>[<a name="id3283791" href="#ftn.id3283791" class="footnote">15</a>]</sup>
         Here are a couple of examples:
 </p>
 <pre class="programlisting">
@@ -187,7 +187,7 @@ return [ sequence.transform virtual-target.register : $(targets) ] ;
 <p>
         </p>
 </div>
-<div class="section" title="Generators">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.extender.overview.generators"></a>Generators</h4></div></div></div>
 <p>In theory, every kind of metatarget in Boost.Build (like <code class="computeroutput">exe</code>, 
@@ -199,7 +199,7 @@ return [ sequence.transform virtual-target.register : $(targets) ] ;
 <p>In practice, most files have specific types, and most tools
         consume and produce files of specific type. To take advantage of this
         fact, Boost.Build defines concept of target type and
-        <a class="indexterm" name="id2244918"></a>
+        <a class="indexterm" name="id3283850"></a>
         <em class="firstterm">generators</em>, and has special metatarget class
         <code class="computeroutput">typed-target</code>.  Target type is merely an
         identifier. It is associated with a set of file extensions that
@@ -214,7 +214,7 @@ return [ sequence.transform virtual-target.register : $(targets) ] ;
         You can define derived classes for custom scenarios.</p>
 </div>
 </div>
-<div class="section" title="Example: 1-to-1 generator">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extender.example"></a>Example: 1-to-1 generator</h3></div></div></div>
 <p>Say you're writing an application that generates C++ code. If
@@ -300,7 +300,7 @@ exe codegen : codegen.cpp class_template.verbatim usage.verbatim ;
     <code class="filename">example/customization</code> directory.
   </p>
 </div>
-<div class="section" title="Target types">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.targets"></a>Target types</h3></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="extender.html#bbv2.extending.scanners">Scanners</a></span></dt></dl></div>
@@ -355,7 +355,7 @@ type.register PLUGIN : : SHARED_LIB ;
       automatically declare a main target rule for building targets of that
       type. More details can be found <a class="link" href="extender.html#bbv2.extending.rules.main-type">later</a>.
     </p>
-<div class="section" title="Scanners">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.extending.scanners"></a>Scanners</h4></div></div></div>
 <p>
@@ -407,7 +407,7 @@ type.set-scanner VERBATIM : verbatim-scanner ;
         </p>
 </div>
 </div>
-<div class="section" title="Tools and generators">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.tools"></a>Tools and generators</h3></div></div></div>
 <p>
@@ -483,7 +483,7 @@ generators.register-composing mex.mex : CPP LIB : MEX ;
       </p>
 <p>(Need a note about UNIX)</p>
 <h4>
-<a name="id2245594"></a>Custom generator classes</h4>
+<a name="id3284522"></a>Custom generator classes</h4>
 <p>The standard generators allows you to specify source and target
         types, an action, and a set of flags. If you need anything more complex,
         
@@ -613,7 +613,7 @@ rule run ( project name ? : property-set : sources * )
         if necessary.
       </p>
 </div>
-<div class="section" title="Features">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.features"></a>Features</h3></div></div></div>
 <p>
@@ -691,7 +691,7 @@ actions inline-file
 <p>
     </p>
 <h4>
-<a name="id2245875"></a>Steps for adding a feauture</h4>
+<a name="id3284803"></a>Steps for adding a feauture</h4>
 <p>Adding a feature requires three steps:
 
         </p>
@@ -732,7 +732,7 @@ actions inline-file
 <p>
       </p>
 <h4>
-<a name="id2245975"></a>Another example</h4>
+<a name="id3284902"></a>Another example</h4>
 <p>Here's another example.
         Let's see how we can make a feature that refers to a target. For example,
         when linking dynamic libraries on Windows, one sometimes needs to
@@ -814,7 +814,7 @@ rule link
 </li>
 </ol></div>
 <h4>
-<a name="id2246086"></a>Variants and composite features.</h4>
+<a name="id3285013"></a>Variants and composite features.</h4>
 <p>Sometimes you want to create a shortcut for some set of
         features. For example, <code class="computeroutput">release</code> is a value of
         <code class="computeroutput">&lt;variant&gt;</code> and is a shortcut for a set of features.
@@ -853,7 +853,7 @@ feature.compose &lt;parallelism&gt;fake : &lt;library&gt;/mpi//fake/&lt;parallel
         library.
       </p>
 </div>
-<div class="section" title="Main target rules">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.rules"></a>Main target rules</h3></div></div></div>
 <p>
@@ -920,7 +920,7 @@ glib codegen ;
       use that as example if your main target rule is non-trivial.
     </p>
 </div>
-<div class="section" title="Toolset modules">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.toolset_modules"></a>Toolset modules</h3></div></div></div>
 <p>
@@ -1012,19 +1012,23 @@ using yfc ;
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2244517" href="#id2244517" class="para">14</a>] </sup>This name is historic, and will be eventuall changed to 
+<div class="footnote"><p><sup>[<a name="ftn.id3283449" href="#id3283449" class="para">14</a>] </sup>This name is historic, and will be eventuall changed to 
         <code class="computeroutput">metatarget</code></p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id2244858" href="#id2244858" class="para">15</a>] </sup>This create-then-register pattern is caused by limitations 
+<div class="footnote"><p><sup>[<a name="ftn.id3283791" href="#id3283791" class="para">15</a>] </sup>This create-then-register pattern is caused by limitations 
         of the Boost.Jam language. Python port is likely to never create duplicate targets.</p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer"></div></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2006-2009 Vladimir Prus<p>Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file <code class="filename">LICENSE_1_0.txt</code> or copy at 
+      <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="reference.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="reference.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -20,51 +20,51 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="base_time.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.time_clock_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="time_duration.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="base_time.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.time_clock_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="time_duration.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Class template second_clock">
+<div class="refentry">
 <a name="boost.date_time.second_clock"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class template second_clock</span></h2>
 <p>boost::date_time::second_clock &#8212; A clock providing time level services based on C time_t capabilities. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../date_time/doxy.html#header.boost.date_time.time_clock_hpp" title="Header &lt;boost/date_time/time_clock.hpp&gt;">boost/date_time/time_clock.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../date_time/doxy.html#header.boost.date_time.time_clock_hpp" title="Header &lt;boost/date_time/time_clock.hpp&gt;">boost/date_time/time_clock.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> time_type&gt; 
-<span class="bold"><strong>class</strong></span> <a class="link" href="second_clock.html" title="Class template second_clock">second_clock</a> {
-<span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> time_type::date_type          <a name="boost.date_time.second_clock.date_type"></a>date_type;         
-  <span class="bold"><strong>typedef</strong></span> time_type::time_duration_type <a name="boost.date_time.second_clock.time_duration_type"></a>time_duration_type;
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> time_type<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="second_clock.html" title="Class template second_clock">second_clock</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">time_type</span><span class="special">::</span><span class="identifier">date_type</span>          <a name="boost.date_time.second_clock.date_type"></a><span class="identifier">date_type</span><span class="special">;</span>         
+  <span class="keyword">typedef</span> <span class="identifier">time_type</span><span class="special">::</span><span class="identifier">time_duration_type</span> <a name="boost.date_time.second_clock.time_duration_type"></a><span class="identifier">time_duration_type</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="second_clock.html#id368000-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id580025-bb">local_time</a>() ;
-  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id580033-bb">universal_time</a>() ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> time_zone_type&gt; 
-    <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id361478-bb">local_time</a>(boost::shared_ptr&lt; time_zone_type &gt;) ;
+  <span class="comment">// <a class="link" href="second_clock.html#id363186-bb">public static functions</a></span>
+  <span class="keyword">static</span> <span class="identifier">time_type</span> <a class="link" href="second_clock.html#id367904-bb"><span class="identifier">local_time</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">time_type</span> <a class="link" href="second_clock.html#id364746-bb"><span class="identifier">universal_time</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> time_zone_type<span class="special">&gt;</span> 
+    <span class="keyword">static</span> <span class="identifier">time_type</span> <a class="link" href="second_clock.html#id364757-bb"><span class="identifier">local_time</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span> <span class="identifier">time_zone_type</span> <span class="special">&gt;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="second_clock.html#id361499-bb">private static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id361502-bb">create_time</a>(::std::tm *) ;
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id819006"></a><h2>Description</h2>
+  <span class="comment">// <a class="link" href="second_clock.html#id364778-bb">private static functions</a></span>
+  <span class="keyword">static</span> <span class="identifier">time_type</span> <a class="link" href="second_clock.html#id364782-bb"><span class="identifier">create_time</span></a><span class="special">(</span><span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tm</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id1169270"></a><h2>Description</h2>
 <p>This clock provides resolution to the 1 second level </p>
-<div class="refsect2" title="second_clock public static functions">
-<a name="id819013"></a><h3>
-<a name="id368000-bb"></a><code class="computeroutput">second_clock</code> public static functions</h3>
+<div class="refsect2">
+<a name="id1169277"></a><h3>
+<a name="id363186-bb"></a><code class="computeroutput">second_clock</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id580025-bb"></a>local_time() ;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">time_type</span> <a name="id367904-bb"></a><span class="identifier">local_time</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id580033-bb"></a>universal_time() ;</pre>Get the current day in universal date as a ymd_type. </li>
-<li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> time_zone_type&gt; 
-  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id361478-bb"></a>local_time(boost::shared_ptr&lt; time_zone_type &gt; tz_ptr) ;</pre></li>
+<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">time_type</span> <a name="id364746-bb"></a><span class="identifier">universal_time</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Get the current day in universal date as a ymd_type. </li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> time_zone_type<span class="special">&gt;</span> 
+  <span class="keyword">static</span> <span class="identifier">time_type</span> <a name="id364757-bb"></a><span class="identifier">local_time</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span> <span class="identifier">time_zone_type</span> <span class="special">&gt;</span> tz_ptr<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
-<div class="refsect2" title="second_clock private static functions">
-<a name="id819112"></a><h3>
-<a name="id361499-bb"></a><code class="computeroutput">second_clock</code> private static functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id361502-bb"></a>create_time(::std::tm * current) ;</pre></li></ol></div>
+<div class="refsect2">
+<a name="id1169470"></a><h3>
+<a name="id364778-bb"></a><code class="computeroutput">second_clock</code> private static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">time_type</span> <a name="id364782-bb"></a><span class="identifier">create_time</span><span class="special">(</span><span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tm</span> <span class="special">*</span> current<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>
@@ -76,7 +76,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="base_time.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.time_clock_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="time_duration.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="base_time.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.time_clock_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="time_duration.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

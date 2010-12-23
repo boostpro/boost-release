@@ -1780,6 +1780,14 @@
                 in a namespace don't appear to be found by ADL.
             </note>
         </mark-expected-failures>
+
+        <mark-expected-failures>
+            <test name="container_fwd_gcc_debug"/>
+            <toolset name="darwin-4.2"/>
+            <note author="Daniel James">
+              Debug containers aren't supported on Apple's version of gcc 4.2.
+            </note>
+        </mark-expected-failures>
     </library>
 
 
@@ -1866,7 +1874,7 @@
             <note author="Jim Douglas" date="18 Feb 06" refid="27"/>
         </mark-expected-failures>
         <mark-expected-failures>
-          <test name="kolmogorov_max_flow_test"/>
+          <test name="boykov_kolmogorov_max_flow_test"/>
           <test name="max_flow_test"/>
           <toolset name="acc*"/>
           <note author="Markus Schoepflin" refid="45"/>
@@ -2603,7 +2611,9 @@ for more information.
         <toolset name="sun-5.7"/>
         <toolset name="sun-5.8"/>
         <toolset name="sun-5.9"/>
+        <toolset name="sun-5.10"/>
         <toolset name="borland-*"/>
+        <toolset name="vacpp"/>
       </mark-unusable>
     </library>
 
@@ -4993,31 +5003,9 @@ With aC++, the tests compile cleanly in strict ansi mode and succeed.
         <mark-expected-failures>
             <test name="test_thread_move_return"/>
             <test name="test_thread_move_return_lib"/>
-            <toolset name="gcc-3.4.3"/>
-            <toolset name="gcc-4.2.4"/>
-            <toolset name="gcc-4.3.3"/>
-            <toolset name="gcc-4.4.1"/>
-            <toolset name="gcc-mingw-4.4.1"/>
-            <toolset name="darwin-*"/>
-            <toolset name="sun-*"/>
-            <toolset name="acc-*"/>
-            <note author="Anthony Williams" date="2009-10-28">
-These tests will fail in most compilers that don't support rvalue references.
-            </note>
-        </mark-expected-failures>
-        <mark-expected-failures>
             <test name="test_thread_return_local"/>
             <test name="test_thread_return_local_lib"/>
-            <toolset name="gcc-3.4.3"/>
-            <toolset name="gcc-4.2.4"/>
-            <toolset name="gcc-4.3.3"/>
-            <toolset name="gcc-4.4.1"/>
-            <toolset name="gcc-mingw-4.4.1"/>
-            <toolset name="darwin-*"/>
-            <toolset name="sun-*"/>
-            <toolset name="acc-*"/>
-            <toolset name="msvc-*"/>
-            <toolset name="intel-*"/>
+            <toolset name="*"/>
             <note author="Anthony Williams" date="2009-10-28">
 These tests will fail in most compilers that don't support rvalue references.
             </note>
@@ -6172,9 +6160,9 @@ These tests will fail in most compilers that don't support rvalue references.
             </note>
         </mark-unusable>
         <mark-unusable>
-            <toolset name="borland-5*"/>
+            <toolset name="borland-*"/>
             <note author="Eric Niebler">
-                Boost.Fusion doesn't work on this compiler.
+                Boost.Proto doesn't work on this compiler.
             </note>
         </mark-unusable>
         <mark-unusable>
@@ -6195,6 +6183,7 @@ These tests will fail in most compilers that don't support rvalue references.
             <toolset name="sun-5.7"/>
             <toolset name="sun-5.8"/>
             <toolset name="sun-5.9"/>
+            <toolset name="sun-5.10"/>
             <note refid="17"/>
         </mark-unusable>
 

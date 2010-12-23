@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="unordered/bibliography.html"><img src="../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="variant/tutorial.html"><img src="../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="unordered/bibliography.html"><img src="../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="variant/tutorial.html"><img src="../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="chapter" title="Chapter&#160;28.&#160;Boost.Variant">
+<div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
 <a name="variant"></a>Chapter&#160;28.&#160;Boost.Variant</h2></div>
@@ -33,8 +33,8 @@
 <span class="firstname">Itay</span> <span class="surname">Maman</span>
 </h3></div></div>
 <div><p class="copyright">Copyright &#169; 2002, 2003 Eric Friedman, Itay Maman</p></div>
-<div><div class="legalnotice" title="Legal Notice">
-<a name="id2083307"></a><p>Distributed under the Boost Software License, Version 1.0.
+<div><div class="legalnotice">
+<a name="id3077776"></a><p>Distributed under the Boost Software License, Version 1.0.
     (See accompanying file <code class="filename">LICENSE_1_0.txt</code> or copy at 
     <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
     </p>
@@ -72,21 +72,21 @@
 <dt><span class="section"><a href="variant/misc.html">Miscellaneous Notes</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="variant/misc.html#variant.versus-any">Boost.Variant vs. Boost.Any</a></span></dt>
-<dt><span class="section"><a href="variant/misc.html#id2095899">Portability</a></span></dt>
+<dt><span class="section"><a href="variant/misc.html#id3096357">Portability</a></span></dt>
 <dt><span class="section"><a href="variant/misc.html#variant.troubleshooting">Troubleshooting</a></span></dt>
 <dt><span class="section"><a href="variant/misc.html#variant.ack">Acknowledgments</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="variant/refs.html">References</a></span></dt>
 </dl>
 </div>
-<div class="section" title="Introduction">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="variant.intro"></a>Introduction</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="variant.html#variant.abstract">Abstract</a></span></dt>
 <dt><span class="section"><a href="variant.html#variant.motivation">Motivation</a></span></dt>
 </dl></div>
-<div class="section" title="Abstract">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="variant.abstract"></a>Abstract</h3></div></div></div>
 <p>The <code class="computeroutput">variant</code> class template is a safe, generic, stack-based
@@ -104,7 +104,7 @@ include:</p>
 <li class="listitem">Compile-time type-safe value visitation via
     <code class="computeroutput"><a class="link" href="boost/apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>.</li>
 <li class="listitem">Run-time checked explicit value retrieval via
-    <code class="computeroutput"><a class="link" href="boost/get_id1453250.html" title="Function get">boost::get</a></code>.</li>
+    <code class="computeroutput"><a class="link" href="boost/get_id1478742.html" title="Function get">boost::get</a></code>.</li>
 <li class="listitem">Support for recursive variant types via both
     <code class="computeroutput"><a class="link" href="boost/make_recursive_variant.html" title="Class template make_recursive_variant">boost::make_recursive_variant</a></code> and
     <code class="computeroutput"><a class="link" href="boost/recursive_wrapper.html" title="Class template recursive_wrapper">boost::recursive_wrapper</a></code>.</li>
@@ -112,14 +112,14 @@ include:</p>
     <a class="xref" href="variant/design.html#variant.design.never-empty" title='"Never-Empty" Guarantee'>the section called &#8220;"Never-Empty" Guarantee&#8221;</a> for more details).</li>
 </ul></div>
 </div>
-<div class="section" title="Motivation">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="variant.motivation"></a>Motivation</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="variant.html#variant.motivation.problem">Problem</a></span></dt>
 <dt><span class="section"><a href="variant.html#variant.motivation.solution">Solution: A Motivating Example</a></span></dt>
 </dl></div>
-<div class="section" title="Problem">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.motivation.problem"></a>Problem</h4></div></div></div>
 <p>Many times, during the development of a C++ program, the
@@ -167,7 +167,7 @@ to the following:</p>
 to incur a relatively significant abstraction penalty due to the use of
 the heap, virtual function calls, and polymorphic downcasts.</p>
 </div>
-<div class="section" title="Solution: A Motivating Example">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.motivation.solution"></a>Solution: A Motivating Example</h4></div></div></div>
 <p>The <code class="computeroutput"><a class="link" href="boost/variant.html" title="Class template variant">boost::variant</a></code> class template
@@ -209,7 +209,7 @@ int main()
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="unordered/bibliography.html"><img src="../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="variant/tutorial.html"><img src="../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="unordered/bibliography.html"><img src="../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="variant/tutorial.html"><img src="../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

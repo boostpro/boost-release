@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="slist.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="set_multiset.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="slist.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="set_multiset.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Intrusive doubly linked list: list">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="intrusive.list"></a><a class="link" href="list.html" title="Intrusive doubly linked list: list"> Intrusive doubly linked list: list</a>
 </h2></div></div></div>
@@ -40,7 +40,7 @@
       and provides a bidirectional iterator. It is recommended to use <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code> instead of <code class="computeroutput"><a class="link" href="../boost/intrusive/slist.html" title="Class template slist">slist</a></code>
       if the size overhead is acceptable:
     </p>
-<div class="section" title="list hooks">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.list.list_hooks"></a><a class="link" href="list.html#intrusive.list.list_hooks" title="list hooks"> list hooks</a>
 </h3></div></div></div>
@@ -54,20 +54,20 @@
 <span class="keyword">class</span> <span class="identifier">list_base_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-<code class="computeroutput"><a class="link" href="../boost/intrusive/list_base_hook.html" title="Class template list_base_hook">list_base_hook</a></code>:
-          the user class derives publicly from <code class="computeroutput"><a class="link" href="../boost/intrusive/list_base_hook.html" title="Class template list_base_hook">list_base_hook</a></code>
-          to make it <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code>-compatible.
-        </li></ul></div>
+            <code class="computeroutput"><a class="link" href="../boost/intrusive/list_base_hook.html" title="Class template list_base_hook">list_base_hook</a></code>:
+            the user class derives publicly from <code class="computeroutput"><a class="link" href="../boost/intrusive/list_base_hook.html" title="Class template list_base_hook">list_base_hook</a></code>
+            to make it <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code>-compatible.
+          </li></ul></div>
 <p>
       </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">list_member_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-<code class="computeroutput"><a class="link" href="../boost/intrusive/list_member_hook.html" title="Class template list_member_hook">list_member_hook</a></code>:
-          the user class contains a public <code class="computeroutput"><a class="link" href="../boost/intrusive/list_member_hook.html" title="Class template list_member_hook">list_member_hook</a></code>
-          to make it <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code>-compatible.
-        </li></ul></div>
+            <code class="computeroutput"><a class="link" href="../boost/intrusive/list_member_hook.html" title="Class template list_member_hook">list_member_hook</a></code>:
+            the user class contains a public <code class="computeroutput"><a class="link" href="../boost/intrusive/list_member_hook.html" title="Class template list_member_hook">list_member_hook</a></code>
+            to make it <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code>-compatible.
+          </li></ul></div>
 <p>
         <code class="computeroutput"><a class="link" href="../boost/intrusive/list_base_hook.html" title="Class template list_base_hook">list_base_hook</a></code>
         and <code class="computeroutput"><a class="link" href="../boost/intrusive/list_member_hook.html" title="Class template list_member_hook">list_member_hook</a></code>
@@ -76,23 +76,23 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Tag</span><span class="special">&gt;</span></code></strong></span>
-          (for base hooks only): This argument serves as a tag, so you can derive
-          from more than one list hook. Default: <code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">default_tag</span><span class="special">&gt;</span></code>.
-        </li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Tag</span><span class="special">&gt;</span></code></strong></span>
+            (for base hooks only): This argument serves as a tag, so you can derive
+            from more than one list hook. Default: <code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">default_tag</span><span class="special">&gt;</span></code>.
+          </li>
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">link_mode_type</span>
-          <span class="identifier">LinkMode</span><span class="special">&gt;</span></code></strong></span>:
-          The linking policy. Default: <code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">safe_link</span><span class="special">&gt;</span></code>.
-        </li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">link_mode_type</span>
+            <span class="identifier">LinkMode</span><span class="special">&gt;</span></code></strong></span>:
+            The linking policy. Default: <code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">safe_link</span><span class="special">&gt;</span></code>.
+          </li>
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">VoidPointer</span><span class="special">&gt;</span></code></strong></span>:
-          The pointer type to be used internally in the hook and propagated to the
-          container. Default: <code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span></code>.
-        </li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">VoidPointer</span><span class="special">&gt;</span></code></strong></span>:
+            The pointer type to be used internally in the hook and propagated to
+            the container. Default: <code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span></code>.
+          </li>
 </ul></div>
 </div>
-<div class="section" title="list container">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.list.list_container"></a><a class="link" href="list.html#intrusive.list.list_container" title="list container"> list container</a>
 </h3></div></div></div>
@@ -108,26 +108,25 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">base_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Hook</span><span class="special">&gt;</span></code></strong></span>
-          / <span class="bold"><strong><code class="computeroutput"><span class="identifier">member_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span>
-          <span class="identifier">Hook</span><span class="special">,</span>
-          <span class="identifier">Hook</span> <span class="identifier">T</span><span class="special">::*</span> <span class="identifier">PtrToMember</span><span class="special">&gt;</span></code></strong></span> / <span class="bold"><strong><code class="computeroutput"><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ValueTraits</span><span class="special">&gt;</span></code></strong></span>: To specify the hook type
-          or value traits used to configure the container. (To learn about value
-          traits go to the section <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
-          with custom ValueTraits</a>.)
-        </li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">base_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Hook</span><span class="special">&gt;</span></code></strong></span>
+            / <span class="bold"><strong><code class="computeroutput"><span class="identifier">member_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Hook</span><span class="special">,</span> <span class="identifier">Hook</span> <span class="identifier">T</span><span class="special">::*</span> <span class="identifier">PtrToMember</span><span class="special">&gt;</span></code></strong></span>
+            / <span class="bold"><strong><code class="computeroutput"><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ValueTraits</span><span class="special">&gt;</span></code></strong></span>:
+            To specify the hook type or value traits used to configure the container.
+            (To learn about value traits go to the section <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
+            with custom ValueTraits</a>.)
+          </li>
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
-          To activate the constant-time <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code> operation. Default: <code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span></code>
-</li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
+            To activate the constant-time <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code> operation. Default: <code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span></code>
+          </li>
 <li class="listitem">
-<span class="bold"><strong><code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
-          To specify the type that will be used to store the size of the container.
-          Default: <code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span></code>
-</li>
+            <span class="bold"><strong><code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
+            To specify the type that will be used to store the size of the container.
+            Default: <code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span></code>
+          </li>
 </ul></div>
 </div>
-<div class="section" title="Example">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.list.list_example"></a><a class="link" href="list.html#intrusive.list.list_example" title="Example"> Example</a>
 </h3></div></div></div>
@@ -219,7 +218,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="slist.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="set_multiset.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="slist.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="set_multiset.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

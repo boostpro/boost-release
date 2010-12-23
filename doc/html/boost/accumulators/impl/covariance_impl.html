@@ -20,53 +20,53 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../extract/covariance.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.covariance_hpp"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../tag/covariance.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../extract/covariance.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.covariance_hpp"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../tag/covariance.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Struct template covariance_impl">
+<div class="refentry">
 <a name="boost.accumulators.impl.covariance_impl"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Struct template covariance_impl</span></h2>
 <p>boost::accumulators::impl::covariance_impl &#8212; Covariance Estimator. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.covariance_hpp" title="Header &lt;boost/accumulators/statistics/covariance.hpp&gt;">boost/accumulators/statistics/covariance.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.covariance_hpp" title="Header &lt;boost/accumulators/statistics/covariance.hpp&gt;">boost/accumulators/statistics/covariance.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Sample, <span class="bold"><strong>typename</strong></span> VariateType, <span class="bold"><strong>typename</strong></span> VariateTag&gt; 
-<span class="bold"><strong>struct</strong></span> <a class="link" href="covariance_impl.html" title="Struct template covariance_impl">covariance_impl</a> {
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> numeric::functional::average&lt; Sample, std::size_t &gt;::result_type             <a name="boost.accumulators.impl.covariance_impl.sample_type"></a>sample_type; 
-  <span class="bold"><strong>typedef</strong></span> numeric::functional::average&lt; VariateType, std::size_t &gt;::result_type        <a name="boost.accumulators.impl.covariance_impl.variate_type"></a>variate_type;
-  <span class="bold"><strong>typedef</strong></span> <a class="link" href="../../numeric/functional/outer_product.html" title="Struct template outer_product">numeric::functional::outer_product</a>&lt; sample_type, variate_type &gt;::result_type <a name="boost.accumulators.impl.covariance_impl.result_type"></a>result_type; 
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Sample<span class="special">,</span> <span class="keyword">typename</span> VariateType<span class="special">,</span> <span class="keyword">typename</span> VariateTag<span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="covariance_impl.html" title="Struct template covariance_impl">covariance_impl</a> <span class="special">{</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">numeric</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">average</span><span class="special">&lt;</span> <span class="identifier">Sample</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">result_type</span>             <a name="boost.accumulators.impl.covariance_impl.sample_type"></a><span class="identifier">sample_type</span><span class="special">;</span> 
+  <span class="keyword">typedef</span> <span class="identifier">numeric</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">average</span><span class="special">&lt;</span> <span class="identifier">VariateType</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">result_type</span>        <a name="boost.accumulators.impl.covariance_impl.variate_type"></a><span class="identifier">variate_type</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <a class="link" href="../../numeric/functional/outer_product.html" title="Struct template outer_product">numeric::functional::outer_product</a><span class="special">&lt;</span> <span class="identifier">sample_type</span><span class="special">,</span> <span class="identifier">variate_type</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">result_type</span> <a name="boost.accumulators.impl.covariance_impl.result_type"></a><span class="identifier">result_type</span><span class="special">;</span> 
 
-  <span class="emphasis"><em>// <a class="link" href="covariance_impl.html#boost.accumulators.impl.covariance_implconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <a class="link" href="covariance_impl.html#id552547-bb">covariance_impl</a>(Args <span class="bold"><strong>const</strong></span> &amp;);
+  <span class="comment">// <a class="link" href="covariance_impl.html#boost.accumulators.impl.covariance_implconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <a class="link" href="covariance_impl.html#id557131-bb"><span class="identifier">covariance_impl</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a class="link" href="covariance_impl.html#id552510-bb">public member functions</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="covariance_impl.html#id552514-bb"><span class="bold"><strong>operator</strong></span>()</a>(Args <span class="bold"><strong>const</strong></span> &amp;) ;
-  <span class="type">result_type</span> <a class="link" href="covariance_impl.html#id552534-bb">result</a>(dont_care) <span class="bold"><strong>const</strong></span>;
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id648139"></a><h2>Description</h2>
+  <span class="comment">// <a class="link" href="covariance_impl.html#id557094-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="covariance_impl.html#id557097-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="covariance_impl.html#id557118-bb"><span class="identifier">result</span></a><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id862922"></a><h2>Description</h2>
 <p>An iterative Monte Carlo estimator for the covariance <span class="inlinemediaobject"><img src="../../../images/accumulators/form_0.png"></span>, where <span class="inlinemediaobject"><img src="../../../images/accumulators/form_1.png"></span> is a sample and <span class="inlinemediaobject"><img src="../../../images/accumulators/form_2.png"></span> is a variate, is given by:</p>
 <div class="equation">
-<a name="id648207"></a><p class="title"><b>Equation&#160;1.1.&#160;</b></p>
+<a name="id862990"></a><p class="title"><b>Equation&#160;1.1.&#160;</b></p>
 <div class="equation-contents"><div class="mediaobject" align="center"><img src="../../../images/accumulators/form_3.png" align="middle"></div></div>
 </div>
 <p><br class="equation-break"></p>
 <p><span class="inlinemediaobject"><img src="../../../images/accumulators/form_4.png"></span> and <span class="inlinemediaobject"><img src="../../../images/accumulators/form_5.png"></span> being the means of the samples and variates. </p>
-<div class="refsect2" title="covariance_impl public construct/copy/destruct">
-<a name="id648274"></a><h3>
+<div class="refsect2">
+<a name="id863057"></a><h3>
 <a name="boost.accumulators.impl.covariance_implconstruct-copy-destruct"></a><code class="computeroutput">covariance_impl</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <a name="id552547-bb"></a>covariance_impl(Args <span class="bold"><strong>const</strong></span> &amp; args);</pre></li></ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <a name="id557131-bb"></a><span class="identifier">covariance_impl</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
-<div class="refsect2" title="covariance_impl public member functions">
-<a name="id648325"></a><h3>
-<a name="id552510-bb"></a><code class="computeroutput">covariance_impl</code> public member functions</h3>
+<div class="refsect2">
+<a name="id863144"></a><h3>
+<a name="id557094-bb"></a><code class="computeroutput">covariance_impl</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id552514-bb"></a><span class="bold"><strong>operator</strong></span>()(Args <span class="bold"><strong>const</strong></span> &amp; args) ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type">result_type</span> <a name="id552534-bb"></a>result(dont_care) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id557097-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">result_type</span> <a name="id557118-bb"></a><span class="identifier">result</span><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
@@ -81,7 +81,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../extract/covariance.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.covariance_hpp"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../tag/covariance.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../extract/covariance.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.covariance_hpp"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../tag/covariance.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

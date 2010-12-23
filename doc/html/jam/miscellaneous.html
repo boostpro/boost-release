@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="language.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="history.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="language.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="history.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Miscellaneous">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="jam.miscellaneous"></a><a class="link" href="miscellaneous.html" title="Miscellaneous">Miscellaneous</a>
 </h2></div></div></div>
@@ -31,7 +31,7 @@
 <dt><span class="section"><a href="miscellaneous.html#jam.miscellaneous.bugs__limitations">Bugs, Limitations</a></span></dt>
 <dt><span class="section"><a href="miscellaneous.html#jam.miscellaneous.fundamentals">Fundamentals</a></span></dt>
 </dl></div>
-<div class="section" title="Diagnostics">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="jam.miscellaneous.diagnostics"></a><a class="link" href="miscellaneous.html#jam.miscellaneous.diagnostics" title="Diagnostics">Diagnostics</a>
 </h3></div></div></div>
@@ -82,7 +82,7 @@
         <code class="literal">BJam</code> removed a partially built target after being interrupted.
       </p>
 </div>
-<div class="section" title="Bugs, Limitations">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="jam.miscellaneous.bugs__limitations"></a><a class="link" href="miscellaneous.html#jam.miscellaneous.bugs__limitations" title="Bugs, Limitations">Bugs, Limitations</a>
 </h3></div></div></div>
@@ -97,7 +97,7 @@
         failure.
       </p>
 </div>
-<div class="section" title="Fundamentals">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="jam.miscellaneous.fundamentals"></a><a class="link" href="miscellaneous.html#jam.miscellaneous.fundamentals" title="Fundamentals">Fundamentals</a>
 </h3></div></div></div>
@@ -111,143 +111,145 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          Jam "<code class="literal">rules</code>" are actually simple procedural
-          entities. Think of them as functions. Arguments are separated by colons.
-        </li>
+            Jam "<code class="literal">rules</code>" are actually simple procedural
+            entities. Think of them as functions. Arguments are separated by colons.
+          </li>
 <li class="listitem">
-          A Jam <span class="bold"><strong>target</strong></span> is an abstract entity identified
-          by an arbitrary string. The build-in <code class="literal">DEPENDS</code> rule creates
-          a link in the dependency graph between the named targets.
-        </li>
+            A Jam <span class="bold"><strong>target</strong></span> is an abstract entity identified
+            by an arbitrary string. The build-in <code class="literal">DEPENDS</code> rule
+            creates a link in the dependency graph between the named targets.
+          </li>
 <li class="listitem">
-          Note that the original Jam documentation for the built-in <code class="literal">INCLUDES</code>
-          rule is incorrect: <code class="literal">INCLUDES <span class="emphasis"><em>targets1</em></span> : <span class="emphasis"><em>targets2</em></span></code>
-          causes everything that depends on a member of <span class="emphasis"><em>targets1</em></span>
-          to depend on all members of <span class="emphasis"><em>targets2</em></span>. It does this
-          in an odd way, by tacking <span class="emphasis"><em>targets2</em></span> onto a special
-          tail section in the dependency list of everything in <span class="emphasis"><em>targets1</em></span>.
-          It seems to be OK to create circular dependencies this way; in fact, it
-          appears to be the "right thing to do" when a single build action
-          produces both <span class="emphasis"><em>targets1</em></span> and <span class="emphasis"><em>targets2</em></span>.
-        </li>
+            Note that the original Jam documentation for the built-in <code class="literal">INCLUDES</code>
+            rule is incorrect: <code class="literal">INCLUDES <span class="emphasis"><em>targets1</em></span> :
+            <span class="emphasis"><em>targets2</em></span></code> causes everything that depends
+            on a member of <span class="emphasis"><em>targets1</em></span> to depend on all members
+            of <span class="emphasis"><em>targets2</em></span>. It does this in an odd way, by tacking
+            <span class="emphasis"><em>targets2</em></span> onto a special tail section in the dependency
+            list of everything in <span class="emphasis"><em>targets1</em></span>. It seems to be OK
+            to create circular dependencies this way; in fact, it appears to be the
+            "right thing to do" when a single build action produces both
+            <span class="emphasis"><em>targets1</em></span> and <span class="emphasis"><em>targets2</em></span>.
+          </li>
 <li class="listitem">
-          When a rule is invoked, if there are <code class="literal">actions</code> declared
-          with the same name as the rule, the actions are added to the updating actions
-          for the target identified by the rule's first argument. It is actually
-          possible to invoke an undeclared rule if corresponding actions are declared:
-          the rule is treated as empty.
-        </li>
+            When a rule is invoked, if there are <code class="literal">actions</code> declared
+            with the same name as the rule, the actions are added to the updating
+            actions for the target identified by the rule's first argument. It is
+            actually possible to invoke an undeclared rule if corresponding actions
+            are declared: the rule is treated as empty.
+          </li>
 <li class="listitem">
-          Targets (other than <code class="literal">NOTFILE</code> targets) are associated
-          with paths in the file system through a process called binding. Binding
-          is a process of searching for a file with the same name as the target (sans
-          grist), based on the settings of the target-specific <code class="literal">SEARCH</code>
-          and <code class="literal">LOCATE</code> variables.
-        </li>
+            Targets (other than <code class="literal">NOTFILE</code> targets) are associated
+            with paths in the file system through a process called binding. Binding
+            is a process of searching for a file with the same name as the target
+            (sans grist), based on the settings of the target-specific <code class="literal">SEARCH</code>
+            and <code class="literal">LOCATE</code> variables.
+          </li>
 <li class="listitem">
-          In addition to local and global variables, jam allows you to set a variable
-          <code class="literal">on</code> a target. Target-specific variable values can usually
-          not be read, and take effect only in the following contexts:
-          <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+            In addition to local and global variables, jam allows you to set a variable
+            <code class="literal">on</code> a target. Target-specific variable values can usually
+            not be read, and take effect only in the following contexts:
+            <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-              In updating actions, variable values are first looked up <code class="literal">on</code>
-              the target named by the first argument (the target being updated).
-              Because Jam builds its entire dependency tree before executing actions,
-              Jam rules make target-specific variable settings as a way of supplying
-              parameters to the corresponding actions.
-            </li>
+                  In updating actions, variable values are first looked up <code class="literal">on</code>
+                  the target named by the first argument (the target being updated).
+                  Because Jam builds its entire dependency tree before executing
+                  actions, Jam rules make target-specific variable settings as a
+                  way of supplying parameters to the corresponding actions.
+                </li>
 <li class="listitem">
-              Binding is controlled <span class="emphasis"><em>entirely</em></span> by the target-specific
-              setting of the <code class="literal">SEARCH</code> and <code class="literal">LOCATE</code>
-              variables, as described here.
-            </li>
+                  Binding is controlled <span class="emphasis"><em>entirely</em></span> by the target-specific
+                  setting of the <code class="literal">SEARCH</code> and <code class="literal">LOCATE</code>
+                  variables, as described here.
+                </li>
 <li class="listitem">
-              In the special rule used for header file scanning, variable values
-              are first looked up <code class="literal">on</code> the target named by the rule's
-              first argument (the source file being scanned).
-            </li>
+                  In the special rule used for header file scanning, variable values
+                  are first looked up <code class="literal">on</code> the target named by the
+                  rule's first argument (the source file being scanned).
+                </li>
 </ul></div>
-</li>
+          </li>
 <li class="listitem">
-          The "bound value" of a variable is the path associated with the
-          target named by the variable. In build actions, the first two arguments
-          are automatically replaced with their bound values. Target-specific variables
-          can be selectively replaced by their bound values using the <code class="literal">bind</code>
-          action modifier.
-        </li>
+            The "bound value" of a variable is the path associated with
+            the target named by the variable. In build actions, the first two arguments
+            are automatically replaced with their bound values. Target-specific variables
+            can be selectively replaced by their bound values using the <code class="literal">bind</code>
+            action modifier.
+          </li>
 <li class="listitem">
-          Note that the term "binding" as used in the Jam documentation
-          indicates a phase of processing that includes three sub-phases: <span class="emphasis"><em>binding</em></span>
-          (yes!), update determination, and header file scanning. The repetition
-          of the term "binding" can lead to some confusion. In particular,
-          the Modifying Binding section in the Jam documentation should probably
-          be titled "Modifying Update Determination".
-        </li>
+            Note that the term "binding" as used in the Jam documentation
+            indicates a phase of processing that includes three sub-phases: <span class="emphasis"><em>binding</em></span>
+            (yes!), update determination, and header file scanning. The repetition
+            of the term "binding" can lead to some confusion. In particular,
+            the Modifying Binding section in the Jam documentation should probably
+            be titled "Modifying Update Determination".
+          </li>
 <li class="listitem">
-          "Grist" is just a string prefix of the form &lt;<span class="emphasis"><em>characters</em></span>&gt;.
-          It is used in Jam to create unique target names based on simpler names.
-          For example, the file name "<code class="literal">test.exe</code>" may
-          be used by targets in separate subprojects, or for the debug and release
-          variants of the "same" abstract target. Each distinct target
-          bound to a file called "test.exe" has its own unique grist prefix.
-          The Boost build system also takes full advantage of Jam's ability to divide
-          strings on grist boundaries, sometimes concatenating multiple gristed elements
-          at the beginning of a string. Grist is used instead of identifying targets
-          with absolute paths for two reasons:
-          <div class="orderedlist"><ol class="orderedlist" type="1">
+            "Grist" is just a string prefix of the form &lt;<span class="emphasis"><em>characters</em></span>&gt;.
+            It is used in Jam to create unique target names based on simpler names.
+            For example, the file name "<code class="literal">test.exe</code>" may
+            be used by targets in separate subprojects, or for the debug and release
+            variants of the "same" abstract target. Each distinct target
+            bound to a file called "test.exe" has its own unique grist
+            prefix. The Boost build system also takes full advantage of Jam's ability
+            to divide strings on grist boundaries, sometimes concatenating multiple
+            gristed elements at the beginning of a string. Grist is used instead
+            of identifying targets with absolute paths for two reasons:
+            <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-              The location of targets cannot always be derived solely from what the
-              user puts in a Jamfile, but sometimes depends also on the binding process.
-              Some mechanism to distinctly identify targets with the same name is
-              still needed.
-            </li>
+                  The location of targets cannot always be derived solely from what
+                  the user puts in a Jamfile, but sometimes depends also on the binding
+                  process. Some mechanism to distinctly identify targets with the
+                  same name is still needed.
+                </li>
 <li class="listitem">
-              Grist allows us to use a uniform abstract identifier for each built
-              target, regardless of target file location (as allowed by setting ALL_LOCATE_TARGET).
-            </li>
+                  Grist allows us to use a uniform abstract identifier for each built
+                  target, regardless of target file location (as allowed by setting
+                  ALL_LOCATE_TARGET).
+                </li>
 </ol></div>
-</li>
+          </li>
 <li class="listitem">
-          When grist is extracted from a name with $(var:G), the result includes
-          the leading and trailing angle brackets. When grist is added to a name
-          with $(var:G=expr), existing grist is first stripped. Then, if expr is
-          non-empty, leading &lt;s and trailing &gt;s are added if necessary to form
-          an expression of the form &lt;expr2&gt;; &lt;expr2&gt; is then prepended.
-        </li>
+            When grist is extracted from a name with $(var:G), the result includes
+            the leading and trailing angle brackets. When grist is added to a name
+            with $(var:G=expr), existing grist is first stripped. Then, if expr is
+            non-empty, leading &lt;s and trailing &gt;s are added if necessary to
+            form an expression of the form &lt;expr2&gt;; &lt;expr2&gt; is then prepended.
+          </li>
 <li class="listitem">
-          When Jam is invoked it imports all environment variable settings into corresponding
-          Jam variables, followed by all command-line (-s...) variable settings.
-          Variables whose name ends in PATH, Path, or path are split into string
-          lists on OS-specific path-list separator boundaries (e.g. ":"
-          for UNIX and ";" for Windows). All other variables are split
-          on space (" ") boundaries. Boost Jam modifies that behavior by
-          allowing variables to be quoted.
-        </li>
+            When Jam is invoked it imports all environment variable settings into
+            corresponding Jam variables, followed by all command-line (-s...) variable
+            settings. Variables whose name ends in PATH, Path, or path are split
+            into string lists on OS-specific path-list separator boundaries (e.g.
+            ":" for UNIX and ";" for Windows). All other variables
+            are split on space (" ") boundaries. Boost Jam modifies that
+            behavior by allowing variables to be quoted.
+          </li>
 <li class="listitem">
-          A variable whose value is an empty list or which consists entirely of empty
-          strings has a negative logical value. Thus, for example, code like the
-          following allows a sensible non-empty default which can easily be overridden
-          by the user: 
+            A variable whose value is an empty list or which consists entirely of
+            empty strings has a negative logical value. Thus, for example, code like
+            the following allows a sensible non-empty default which can easily be
+            overridden by the user: 
 <pre class="programlisting"><span class="identifier">MESSAGE</span> <span class="special">?\=</span> <span class="identifier">starting</span> <span class="identifier">jam</span><span class="special">...</span> <span class="special">;</span>
 <span class="keyword">if</span> <span class="error">$</span><span class="special">(</span><span class="identifier">MESSAGE</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">ECHO</span> <span class="identifier">The</span> <span class="identifier">message</span> <span class="identifier">is</span><span class="special">:</span> <span class="error">$</span><span class="special">(</span><span class="identifier">MESSAGE</span><span class="special">)</span> <span class="special">;</span> <span class="special">}</span>
 </pre>
-          If the user wants a specific message, he invokes jam with <code class="literal">"-sMESSAGE=message
-          text"</code>. If he wants no message, he invokes jam with <code class="literal">-sMESSAGE=</code>
-          and nothing at all is printed.
-        </li>
+            If the user wants a specific message, he invokes jam with <code class="literal">"-sMESSAGE=message
+            text"</code>. If he wants no message, he invokes jam with <code class="literal">-sMESSAGE=</code>
+            and nothing at all is printed.
+          </li>
 <li class="listitem">
-          The parsing of command line options in Jam can be rather unintuitive, with
-          regards to how other Unix programs accept options. There are two variants
-          accepted as valid for an option:
-          <div class="orderedlist"><ol class="orderedlist" type="1">
+            The parsing of command line options in Jam can be rather unintuitive,
+            with regards to how other Unix programs accept options. There are two
+            variants accepted as valid for an option:
+            <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<code class="literal">-xvalue</code>, and
-            </li>
+                  <code class="literal">-xvalue</code>, and
+                </li>
 <li class="listitem">
-<code class="literal">-x value</code>.
-            </li>
+                  <code class="literal">-x value</code>.
+                </li>
 </ol></div>
-</li>
+          </li>
 </ul></div>
 </div>
 </div>
@@ -261,7 +263,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="language.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="history.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="language.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="history.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="change_log.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../quickbook.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="install.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="change_log.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../quickbook.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="install.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Syntax Summary">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="quickbook.syntax"></a><a class="link" href="syntax.html" title="Syntax Summary"> Syntax Summary</a>
 </h2></div></div></div>
@@ -46,7 +46,7 @@
       such as un-matched closing brackets do not go haywire and corrupt anything
       past a single block.
     </p>
-<div class="section" title="Comments">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="quickbook.syntax.comments"></a><a class="link" href="syntax.html#quickbook.syntax.comments" title="Comments">Comments</a>
 </h3></div></div></div>
@@ -60,7 +60,7 @@
 <pre class="programlisting">[/ Quickbook blocks can nest inside comments. [*Comment this out too!] ]
 </pre>
 </div>
-<div class="section" title="Phrase Level Elements">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="quickbook.syntax.phrase"></a><a class="link" href="syntax.html#quickbook.syntax.phrase" title="Phrase Level Elements"> Phrase Level Elements</a>
 </h3></div></div></div>
@@ -86,7 +86,7 @@
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.footnotes">Footnotes</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.cond"> Conditional Generation</a></span></dt>
 </dl></div>
-<div class="section" title="Font Styles">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.font_styles"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.font_styles" title="Font Styles">Font Styles</a>
 </h4></div></div></div>
@@ -110,7 +110,7 @@
           <span class="bold"><strong><span class="emphasis"><em>bold-italic</em></span></strong></span>
         </p>
 </div>
-<div class="section" title="Replaceable">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.replaceable"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.replaceable" title="Replaceable">Replaceable</a>
 </h4></div></div></div>
@@ -127,7 +127,7 @@
           <em class="replaceable"><code>replacement</code></em>
         </p>
 </div>
-<div class="section" title="Quotations">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.quotations"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.quotations" title="Quotations">Quotations</a>
 </h4></div></div></div>
@@ -159,7 +159,7 @@ the true business precept.]
           do you.</span>&#8217;</span> That's the true business precept.</span>&#8221;</span>
         </p>
 </div>
-<div class="section" title="Simple formatting">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.simple_formatting"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.simple_formatting" title="Simple formatting">Simple formatting</a>
 </h4></div></div></div>
@@ -177,40 +177,38 @@ the true business precept.]
         </p>
 <p>
           Unlike QuickBook's standard formatting scheme, the rules for simpler alternatives
-          are much stricter
-          <sup>[<a name="id2205920" href="#ftn.id2205920" class="footnote">6</a>]</sup>
-          .
+          are much stricter<sup>[<a name="id3244461" href="#ftn.id3244461" class="footnote">6</a>]</sup>.
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            Simple markups cannot nest. You can combine a simple markup with a nestable
-            markup.
-          </li>
+              Simple markups cannot nest. You can combine a simple markup with a
+              nestable markup.
+            </li>
 <li class="listitem">
-            Simple markups cannot contain any other form of quickbook markup.
-          </li>
+              Simple markups cannot contain any other form of quickbook markup.
+            </li>
 <li class="listitem">
-            A non-space character must follow the leading markup
-          </li>
+              A non-space character must follow the leading markup
+            </li>
 <li class="listitem">
-            A non-space character must precede the trailing markup
-          </li>
+              A non-space character must precede the trailing markup
+            </li>
 <li class="listitem">
-            A space or a punctuation must follow the trailing markup
-          </li>
+              A space or a punctuation must follow the trailing markup
+            </li>
 <li class="listitem">
-            If the matching markup cannot be found within a block, the formatting
-            will not be applied. This is to ensure that un-matched formatting markups,
-            which can be a common mistake, does not corrupt anything past a single
-            block. We do not want the rest of the document to be rendered bold just
-            because we forgot a trailing '*'. A single block is terminated by two
-            end of lines or the close bracket: ']'.
-          </li>
+              If the matching markup cannot be found within a block, the formatting
+              will not be applied. This is to ensure that un-matched formatting markups,
+              which can be a common mistake, does not corrupt anything past a single
+              block. We do not want the rest of the document to be rendered bold
+              just because we forgot a trailing '*'. A single block is terminated
+              by two end of lines or the close bracket: ']'.
+            </li>
 <li class="listitem">
-            A line starting with the star will be interpreted as an unordered list.
-            See <a class="link" href="syntax.html#quickbook.syntax.block.lists.unordered_lists" title="Unordered lists">Unordered
-            lists</a>.
-          </li>
+              A line starting with the star will be interpreted as an unordered list.
+              See <a class="link" href="syntax.html#quickbook.syntax.block.lists.unordered_lists" title="Unordered lists">Unordered
+              lists</a>.
+            </li>
 </ul></div>
 <div class="table">
 <a name="quickbook.syntax.phrase.simple_formatting.more_formatting_samples"></a><p class="title"><b>Table&#160;31.1.&#160;More Formatting Samples</b></p>
@@ -434,7 +432,7 @@ And one for the little boy who lives down the lane.
           down the lane.
         </p>
 </div>
-<div class="section" title="Inline code">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.inline_code"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.inline_code" title="Inline code">Inline code</a>
 </h4></div></div></div>
@@ -451,9 +449,9 @@ And one for the little boy who lives down the lane.
           This text has inlined code <code class="computeroutput"><span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span> <span class="special">}</span></code>
           in it. The code will be syntax highlighted.
         </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -463,7 +461,7 @@ And one for the little boy who lives down the lane.
           </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Code blocks">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.code_blocks"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.code_blocks" title="Code blocks">Code blocks</a>
 </h4></div></div></div>
@@ -508,7 +506,7 @@ And one for the little boy who lives down the lane.
 <p>
         </p>
 </div>
-<div class="section" title="Source Mode">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.source_mode"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.source_mode" title="Source Mode">Source Mode</a>
 </h4></div></div></div>
@@ -596,9 +594,9 @@ C++ comment `// looks like this` whereas a Python comment [python]
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><div class="note" title="Note"><table border="0" summary="Note">
+<br class="table-break"><div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -606,15 +604,15 @@ C++ comment `// looks like this` whereas a Python comment [python]
           </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="line-break">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.line_break"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.line_break" title="line-break">line-break</a>
 </h4></div></div></div>
 <pre class="programlisting">[br]
 </pre>
-<div class="warning" title="Warning"><table border="0" summary="Warning">
+<div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -625,7 +623,7 @@ C++ comment `// looks like this` whereas a Python comment [python]
           </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Anchors">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.anchors"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.anchors" title="Anchors">Anchors</a>
 </h4></div></div></div>
@@ -643,7 +641,7 @@ Some link text]</code>.
           documentation. Be careful to avoid clashes with anchors in other sections.
         </p>
 </div>
-<div class="section" title="Links">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.links"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.links" title="Links">Links</a>
 </h4></div></div></div>
@@ -687,7 +685,7 @@ Some link text]</code>.
           - it can't be used for images.
         </p>
 </div>
-<div class="section" title="Anchor links">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.anchor_links"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.anchor_links" title="Anchor links">Anchor links</a>
 </h4></div></div></div>
@@ -702,7 +700,7 @@ Some link text]</code>.
           more info.
         </p>
 </div>
-<div class="section" title="refentry links">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.refentry_links"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.refentry_links" title="refentry links">refentry links</a>
 </h4></div></div></div>
@@ -725,7 +723,7 @@ Some link text]</code>.
           This gets converted into <code class="literal">&lt;link linkend="xml.refentry"&gt;xml.refentry&lt;/link&gt;</code>.
         </p>
 </div>
-<div class="section" title="Code Links">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.code_links"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.code_links" title="Code Links"> Code Links</a>
 </h4></div></div></div>
@@ -753,7 +751,7 @@ Some link text]</code>.
           would have "boost::bar::baz" as the link text.
         </p>
 </div>
-<div class="section" title="Escape">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.escape"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.escape" title="Escape">Escape</a>
 </h4></div></div></div>
@@ -775,9 +773,9 @@ escape (no processing/formatting)
 <p>
           <span class="bold"><strong>This is direct XML markup</strong></span>
         </p>
-<div class="important" title="Important"><table border="0" summary="Important">
+<div class="important"><table border="0" summary="Important">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../doc/html/images/important.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../doc/src/images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -785,7 +783,7 @@ escape (no processing/formatting)
           </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Single char escape">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.single_char_escape"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.single_char_escape" title="Single char escape">Single
         char escape</a>
@@ -800,9 +798,9 @@ escape (no processing/formatting)
           <code class="computeroutput"><span class="special">\</span><span class="identifier">n</span></code>
           has a special meaning. It is used to generate line breaks.
         </p>
-<div class="warning" title="Warning"><table border="0" summary="Warning">
+<div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -818,7 +816,7 @@ escape (no processing/formatting)
           has a special meaning. The escaped space is removed from the output.
         </p>
 </div>
-<div class="section" title="Unicode escape">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.unicode_escape"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.unicode_escape" title="Unicode escape">Unicode escape</a>
 </h4></div></div></div>
@@ -832,17 +830,11 @@ escape (no processing/formatting)
 <p>
           will generate:
         </p>
-<div class="blockquote"><blockquote class="blockquote">
-<p>
-            </p>
-<p>
-              &#945; + &#946;
-            </p>
-<p>
-          </p>
-</blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p>
+            &#945; + &#946;
+          </p></blockquote></div>
 </div>
-<div class="section" title="Images">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.images"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.images" title="Images">Images</a>
 </h4></div></div></div>
@@ -855,7 +847,7 @@ escape (no processing/formatting)
 <pre class="programlisting">[$image.jpg [width 200in] [height 200in]]
 </pre>
 </div>
-<div class="section" title="Footnotes">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.footnotes"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.footnotes" title="Footnotes">Footnotes</a>
 </h4></div></div></div>
@@ -873,11 +865,9 @@ escape (no processing/formatting)
 <pre class="programlisting">[footnote A sample footnote]
 </pre>
 <p>
-          will generate this
-          <sup>[<a name="id2207806" href="#ftn.id2207806" class="footnote">7</a>]</sup>
-          .
+          will generate this<sup>[<a name="id3246364" href="#ftn.id3246364" class="footnote">7</a>]</sup>.
         </p>
-<div class="section" title="Macro Expansion">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="quickbook.syntax.phrase.footnotes.macro_expansion"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.footnotes.macro_expansion" title="Macro Expansion">Macro
           Expansion</a>
@@ -888,7 +878,7 @@ escape (no processing/formatting)
             See <a class="link" href="syntax.html#quickbook.syntax.block.macros" title="Macros">Macros</a> for details.
           </p>
 </div>
-<div class="section" title="Template Expansion">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="quickbook.syntax.phrase.footnotes.template_expansion"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.footnotes.template_expansion" title="Template Expansion">Template
           Expansion</a>
@@ -901,7 +891,7 @@ escape (no processing/formatting)
           </p>
 </div>
 </div>
-<div class="section" title="Conditional Generation">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.cond"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.cond" title="Conditional Generation"> Conditional Generation</a>
 </h4></div></div></div>
@@ -927,12 +917,11 @@ escape (no processing/formatting)
           To be or not to be
         </p>
 <p>
-          Yes!
-          <sup>[<a name="id2207953" href="#ftn.id2207953" class="footnote">8</a>]</sup>
+          Yes!<sup>[<a name="id3246511" href="#ftn.id3246511" class="footnote">8</a>]</sup>
         </p>
 </div>
 </div>
-<div class="section" title="Block Level Elements">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="quickbook.syntax.block"></a><a class="link" href="syntax.html#quickbook.syntax.block" title="Block Level Elements"> Block Level Elements</a>
 </h3></div></div></div>
@@ -960,7 +949,7 @@ escape (no processing/formatting)
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.block.include">Include</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.block.import">Import</a></span></dt>
 </dl></div>
-<div class="section" title="Document">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.document"></a><a class="link" href="syntax.html#quickbook.syntax.block.document" title="Document">Document</a>
 </h4></div></div></div>
@@ -976,7 +965,7 @@ escape (no processing/formatting)
     [copyright 2000 2002 2003 Joe Blow, Jane Doe]
     [purpose The document's reason for being]
     [category The document's category]
-    [authors [Blow, Joe], [Doe, Jane]]
+    [authors [Blow, Joe] [Doe, Jane]]
     [license The document's license]
     [source-mode source-type]
 ]
@@ -986,38 +975,38 @@ escape (no processing/formatting)
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            book
-          </li>
+              book
+            </li>
 <li class="listitem">
-            article
-          </li>
+              article
+            </li>
 <li class="listitem">
-            library
-          </li>
+              library
+            </li>
 <li class="listitem">
-            chapter
-          </li>
+              chapter
+            </li>
 <li class="listitem">
-            part
-          </li>
+              part
+            </li>
 <li class="listitem">
-            appendix
-          </li>
+              appendix
+            </li>
 <li class="listitem">
-            preface
-          </li>
+              preface
+            </li>
 <li class="listitem">
-            qandadiv
-          </li>
+              qandadiv
+            </li>
 <li class="listitem">
-            qandaset
-          </li>
+              qandaset
+            </li>
 <li class="listitem">
-            reference
-          </li>
+              reference
+            </li>
 <li class="listitem">
-            set
-          </li>
+              set
+            </li>
 </ul></div>
 <p>
           quickbook 1.5 declares the version of quickbook the document is written
@@ -1030,13 +1019,20 @@ escape (no processing/formatting)
           and <code class="literal">source-mode</code> are optional information.
         </p>
 <p>
+          <code class="literal">dirname</code>, <code class="literal">purpose</code> and <code class="literal">category</code>
+          are boostbook attributes which are only valid for <code class="literal">library</code>
+          documents. If you use them for other document types, quickbook will warn
+          about them, but still use them, generating invalid markup, that's just
+          ignored by the style sheets.
+        </p>
+<p>
           <code class="literal">source-type</code> is a lowercase string setting the initial
           <a class="link" href="syntax.html#quickbook.syntax.phrase.source_mode" title="Source Mode">Source Mode</a>.
           If the <code class="literal">source-mode</code> field is omitted, a default value
           of <code class="literal">c++</code> will be used.
         </p>
 </div>
-<div class="section" title="Section">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.section"></a><a class="link" href="syntax.html#quickbook.syntax.block.section" title="Section">Section</a>
 </h4></div></div></div>
@@ -1063,7 +1059,7 @@ escape (no processing/formatting)
           Sections can nest, and that results in a hierarchy in the table of contents.
         </p>
 </div>
-<div class="section" title="xinclude">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.xinclude"></a><a class="link" href="syntax.html#quickbook.syntax.block.xinclude" title="xinclude">xinclude</a>
 </h4></div></div></div>
@@ -1077,7 +1073,7 @@ escape (no processing/formatting)
           your reference section.
         </p>
 </div>
-<div class="section" title="Paragraphs">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.paragraphs"></a><a class="link" href="syntax.html#quickbook.syntax.block.paragraphs" title="Paragraphs">Paragraphs</a>
 </h4></div></div></div>
@@ -1086,13 +1082,10 @@ escape (no processing/formatting)
           No markup is needed for paragraphs. QuickBook automatically detects paragraphs
           from the context. Block markups [section, endsect, h1, h2, h3, h4, h5,
           h6, blurb, (block-quote) ':', pre, def, table and include ] may also terminate
-          a paragraph.
-        </p>
-<p>
-          This is a new paragraph...
+          a paragraph. This is a new paragraph...
         </p>
 </div>
-<div class="section" title="Lists">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.lists"></a><a class="link" href="syntax.html#quickbook.syntax.block.lists" title="Lists">Lists</a>
 </h4></div></div></div>
@@ -1107,7 +1100,7 @@ escape (no processing/formatting)
           lists</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.block.lists.mixed_lists">Mixed lists</a></span></dt>
 </dl></div>
-<div class="section" title="Ordered lists">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="quickbook.syntax.block.lists.ordered_lists"></a><a class="link" href="syntax.html#quickbook.syntax.block.lists.ordered_lists" title="Ordered lists">Ordered
           lists</a>
@@ -1121,17 +1114,17 @@ escape (no processing/formatting)
           </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-              One
-            </li>
+                One
+              </li>
 <li class="listitem">
-              Two
-            </li>
+                Two
+              </li>
 <li class="listitem">
-              Three
-            </li>
+                Three
+              </li>
 </ol></div>
 </div>
-<div class="section" title="List Hierarchies">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="quickbook.syntax.block.lists.list_hierarchies"></a><a class="link" href="syntax.html#quickbook.syntax.block.lists.list_hierarchies" title="List Hierarchies">List
           Hierarchies</a>
@@ -1156,45 +1149,45 @@ escape (no processing/formatting)
           </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-              One
-            </li>
+                One
+              </li>
 <li class="listitem">
-              Two
-            </li>
+                Two
+              </li>
 <li class="listitem">
-              Three
-              <div class="orderedlist"><ol class="orderedlist" type="a">
+                Three
+                <div class="orderedlist"><ol class="orderedlist" type="a">
 <li class="listitem">
-                  Three.a
-                </li>
-<li class="listitem">
-                  Three.b
-                </li>
-<li class="listitem">
-                  Three.c
-                </li>
-</ol></div>
-</li>
-<li class="listitem">
-              Fourth
-              <div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
-                  Four.a
-                  <div class="orderedlist"><ol class="orderedlist" type="i">
-<li class="listitem">
-                      Four.a.i
+                      Three.a
                     </li>
 <li class="listitem">
-                      Four.a.ii
+                      Three.b
+                    </li>
+<li class="listitem">
+                      Three.c
                     </li>
 </ol></div>
-</li></ol></div>
-</li>
+              </li>
 <li class="listitem">
-              Five
-            </li>
+                Fourth
+                <div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+                      Four.a
+                      <div class="orderedlist"><ol class="orderedlist" type="i">
+<li class="listitem">
+                            Four.a.i
+                          </li>
+<li class="listitem">
+                            Four.a.ii
+                          </li>
+</ol></div>
+                    </li></ol></div>
+              </li>
+<li class="listitem">
+                Five
+              </li>
 </ol></div>
 </div>
-<div class="section" title="Long List Lines">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="quickbook.syntax.block.lists.long_list_lines"></a><a class="link" href="syntax.html#quickbook.syntax.block.lists.long_list_lines" title="Long List Lines">Long
           List Lines</a>
@@ -1212,20 +1205,21 @@ escape (no processing/formatting)
 </pre>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-              A short item.
-            </li>
+                A short item.
+              </li>
 <li class="listitem">
-              A very long item. A very long item. A very long item. A very long item.
-              A very long item. A very long item. A very long item. A very long item.
-              A very long item. A very long item. A very long item. A very long item.
-              A very long item. A very long item. A very long item.
-            </li>
+                A very long item. A very long item. A very long item. A very long
+                item. A very long item. A very long item. A very long item. A very
+                long item. A very long item. A very long item. A very long item.
+                A very long item. A very long item. A very long item. A very long
+                item.
+              </li>
 <li class="listitem">
-              A short item.
-            </li>
+                A short item.
+              </li>
 </ol></div>
 </div>
-<div class="section" title="Unordered lists">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="quickbook.syntax.block.lists.unordered_lists"></a><a class="link" href="syntax.html#quickbook.syntax.block.lists.unordered_lists" title="Unordered lists">Unordered
           lists</a>
@@ -1239,17 +1233,17 @@ escape (no processing/formatting)
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-              First
-            </li>
+                First
+              </li>
 <li class="listitem">
-              Second
-            </li>
+                Second
+              </li>
 <li class="listitem">
-              Third
-            </li>
+                Third
+              </li>
 </ul></div>
 </div>
-<div class="section" title="Mixed lists">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="quickbook.syntax.block.lists.mixed_lists"></a><a class="link" href="syntax.html#quickbook.syntax.block.lists.mixed_lists" title="Mixed lists">Mixed lists</a>
 </h5></div></div></div>
@@ -1269,28 +1263,28 @@ escape (no processing/formatting)
           </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-              One
-            </li>
+                One
+              </li>
 <li class="listitem">
-              Two
-            </li>
+                Two
+              </li>
 <li class="listitem">
-              Three
-              <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+                Three
+                <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                  Three.a
-                </li>
+                      Three.a
+                    </li>
 <li class="listitem">
-                  Three.b
-                </li>
+                      Three.b
+                    </li>
 <li class="listitem">
-                  Three.c
-                </li>
+                      Three.c
+                    </li>
 </ul></div>
-</li>
+              </li>
 <li class="listitem">
-              Four
-            </li>
+                Four
+              </li>
 </ol></div>
 <p>
             And...
@@ -1313,55 +1307,55 @@ escape (no processing/formatting)
           </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-              1
-              <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+                1
+                <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                  1.a
-                  <div class="orderedlist"><ol class="orderedlist" type="a">
+                      1.a
+                      <div class="orderedlist"><ol class="orderedlist" type="a">
 <li class="listitem">
-                      1.a.1
-                    </li>
+                            1.a.1
+                          </li>
 <li class="listitem">
-                      1.a.2
-                    </li>
+                            1.a.2
+                          </li>
 </ol></div>
-</li>
-<li class="listitem">
-                  1.b
-                </li>
-</ul></div>
-</li>
-<li class="listitem">
-              2
-              <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-                  2.a
-                </li>
-<li class="listitem">
-                  2.b
-                  <div class="orderedlist"><ol class="orderedlist" type="a">
-<li class="listitem">
-                      2.b.1
                     </li>
 <li class="listitem">
-                      2.b.2
-                      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
-                          2.b.2.a
-                        </li>
-<li class="listitem">
-                          2.b.2.b
-                        </li>
+                      1.b
+                    </li>
 </ul></div>
-</li>
+              </li>
+<li class="listitem">
+                2
+                <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                      2.a
+                    </li>
+<li class="listitem">
+                      2.b
+                      <div class="orderedlist"><ol class="orderedlist" type="a">
+<li class="listitem">
+                            2.b.1
+                          </li>
+<li class="listitem">
+                            2.b.2
+                            <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                                  2.b.2.a
+                                </li>
+<li class="listitem">
+                                  2.b.2.b
+                                </li>
+</ul></div>
+                          </li>
 </ol></div>
-</li>
+                    </li>
 </ul></div>
-</li>
+              </li>
 </ol></div>
 </div>
 </div>
-<div class="section" title="Code">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.code"></a><a class="link" href="syntax.html#quickbook.syntax.block.code" title="Code">Code</a>
 </h4></div></div></div>
@@ -1406,7 +1400,7 @@ escape (no processing/formatting)
 <pre class="programlisting"><span class="keyword">using</span> <a href="http://www.boost.org/libs/libraries.htm" target="_top">boost</a><span class="special">::</span><a href="http://www.boost.org/doc/html/array/reference.html" target="_top">array</a><span class="special">;</span>
 </pre>
 </div>
-<div class="section" title="Escaping Back To QuickBook">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.escape_back"></a><a class="link" href="syntax.html#quickbook.syntax.block.escape_back" title="Escaping Back To QuickBook"> Escaping Back
         To QuickBook</a>
@@ -1435,7 +1429,7 @@ escape (no processing/formatting)
           Block level markups like lists, tables etc. are not allowed.
         </p>
 </div>
-<div class="section" title="Preformatted">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.preformatted"></a><a class="link" href="syntax.html#quickbook.syntax.block.preformatted" title="Preformatted">Preformatted</a>
 </h4></div></div></div>
@@ -1470,23 +1464,17 @@ escape (no processing/formatting)
           inside <code class="literal">pre</code> blocks.
         </p>
 </div>
-<div class="section" title="Blockquote">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.blockquote"></a><a class="link" href="syntax.html#quickbook.syntax.block.blockquote" title="Blockquote">Blockquote</a>
 </h4></div></div></div>
 <pre class="programlisting">[:sometext...]
 </pre>
-<div class="blockquote"><blockquote class="blockquote">
-<p>
-            </p>
-<p>
-              Indents the paragraph. This applies to one paragraph only.
-            </p>
-<p>
-          </p>
-</blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p>
+            Indents the paragraph. This applies to one paragraph only.
+          </p></blockquote></div>
 </div>
-<div class="section" title="Admonitions">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.admonitions"></a><a class="link" href="syntax.html#quickbook.syntax.block.admonitions" title="Admonitions">Admonitions</a>
 </h4></div></div></div>
@@ -1499,45 +1487,45 @@ escape (no processing/formatting)
 <p>
           generates <a href="http://www.docbook.org/" target="_top">DocBook</a> admonitions:
         </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
             This is a note
           </p></td></tr>
 </table></div>
-<div class="tip" title="Tip"><table border="0" summary="Tip">
+<div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
             This is a tip
           </p></td></tr>
 </table></div>
-<div class="important" title="Important"><table border="0" summary="Important">
+<div class="important"><table border="0" summary="Important">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../doc/html/images/important.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../doc/src/images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top"><p>
             This is important
           </p></td></tr>
 </table></div>
-<div class="caution" title="Caution"><table border="0" summary="Caution">
+<div class="caution"><table border="0" summary="Caution">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../doc/html/images/caution.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../doc/src/images/caution.png"></td>
 <th align="left">Caution</th>
 </tr>
 <tr><td align="left" valign="top"><p>
             This is a caution
           </p></td></tr>
 </table></div>
-<div class="warning" title="Warning"><table border="0" summary="Warning">
+<div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -1550,7 +1538,7 @@ escape (no processing/formatting)
           is unlikely to produce the desired effect.
         </p>
 </div>
-<div class="section" title="Headings">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.headings"></a><a class="link" href="syntax.html#quickbook.syntax.block.headings" title="Headings">Headings</a>
 </h4></div></div></div>
@@ -1562,27 +1550,27 @@ escape (no processing/formatting)
 [h6 Heading 6]
 </pre>
 <a name="quickbook.syntax.block.headings.heading_1"></a><h2>
-<a name="id2209333"></a>
+<a name="id3248080"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_1">Heading 1</a>
         </h2>
 <a name="quickbook.syntax.block.headings.heading_2"></a><h3>
-<a name="id2209354"></a>
+<a name="id3248101"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_2">Heading 2</a>
         </h3>
 <a name="quickbook.syntax.block.headings.heading_3"></a><h4>
-<a name="id2209376"></a>
+<a name="id3248122"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_3">Heading 3</a>
         </h4>
 <a name="quickbook.syntax.block.headings.heading_4"></a><h5>
-<a name="id2209397"></a>
+<a name="id3248144"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_4">Heading 4</a>
         </h5>
 <a name="quickbook.syntax.block.headings.heading_5"></a><h6>
-<a name="id2209418"></a>
+<a name="id3248164"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_5">Heading 5</a>
         </h6>
 <a name="quickbook.syntax.block.headings.heading_6"></a><h5>
-<a name="id2209439"></a>
+<a name="id3248185"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_6">Heading 6</a>
         </h5>
 <p>
@@ -1602,7 +1590,7 @@ escape (no processing/formatting)
           for more info.
         </p>
 </div>
-<div class="section" title="Generic Heading">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.generic_heading"></a><a class="link" href="syntax.html#quickbook.syntax.block.generic_heading" title="Generic Heading">Generic Heading</a>
 </h4></div></div></div>
@@ -1650,7 +1638,7 @@ escape (no processing/formatting)
           in the future.
         </p>
 </div>
-<div class="section" title="Macros">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.macros"></a><a class="link" href="syntax.html#quickbook.syntax.block.macros" title="Macros">Macros</a>
 </h4></div></div></div>
@@ -1672,9 +1660,9 @@ sf_logo
 <p>
           <span class="inlinemediaobject"></span>
         </p>
-<div class="tip" title="Tip"><table border="0" summary="Tip">
+<div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -1710,10 +1698,10 @@ sf_logo
           will generate this:
         </p>
 <p>
-          Hi <a href="http://spirit.sourceforge.net" target="_top">Spirit</a> <span class="inlinemediaobject"><img src="../images/smiley.png" alt="smiley"></span>
+          Hi <a href="http://spirit.sourceforge.net" target="_top">Spirit</a> <span class="inlinemediaobject"><img src="../../src/images/smiley.png" alt="smiley"></span>
         </p>
 </div>
-<div class="section" title="Predefined Macros">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.predefined_macros"></a><a class="link" href="syntax.html#quickbook.syntax.block.predefined_macros" title="Predefined Macros">Predefined
         Macros</a>
@@ -1760,7 +1748,7 @@ sf_logo
                 </td>
 <td>
                   <p>
-                    2010-May-02
+                    2010-Aug-12
                   </p>
                 </td>
 </tr>
@@ -1777,7 +1765,7 @@ sf_logo
                 </td>
 <td>
                   <p>
-                    02:27:27 AM
+                    10:43:40 PM
                   </p>
                 </td>
 </tr>
@@ -1803,7 +1791,7 @@ sf_logo
 </div>
 <br class="table-break">
 </div>
-<div class="section" title="Templates">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.templates"></a><a class="link" href="syntax.html#quickbook.syntax.block.templates" title="Templates">Templates</a>
 </h4></div></div></div>
@@ -1825,7 +1813,7 @@ Hi, my name is [name]. I am [age] years old. I am a [what].
 ]
 </pre>
 <a name="quickbook.syntax.block.templates.template_identifier"></a><h6>
-<a name="id2209997"></a>
+<a name="id3248738"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_identifier">Template
           Identifier</a>
         </h6>
@@ -1834,16 +1822,16 @@ Hi, my name is [name]. I am [age] years old. I am a [what].
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            An initial alphabetic character or the underscore, followed by zero or
-            more alphanumeric characters or the underscore. This is similar to your
-            typical C/C++ identifier.
-          </li>
+              An initial alphabetic character or the underscore, followed by zero
+              or more alphanumeric characters or the underscore. This is similar
+              to your typical C/C++ identifier.
+            </li>
 <li class="listitem">
-            A single character punctuation (a non-alphanumeric printable character)
-          </li>
+              A single character punctuation (a non-alphanumeric printable character)
+            </li>
 </ul></div>
 <a name="quickbook.syntax.block.templates.formal_template_arguments"></a><h6>
-<a name="id2210038"></a>
+<a name="id3248787"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.formal_template_arguments">Formal
           Template Arguments</a>
         </h6>
@@ -1863,7 +1851,7 @@ Hi, my name is [name]. I am [age] years old. I am a [what].
           of the template call.
         </p>
 <a name="quickbook.syntax.block.templates.template_body"></a><h6>
-<a name="id2210143"></a>
+<a name="id3248892"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_body">Template
           Body</a>
         </h6>
@@ -1888,7 +1876,7 @@ replacement text...
           block level elements are not allowed in phrase templates.
         </p>
 <a name="quickbook.syntax.block.templates.template_expansion"></a><h6>
-<a name="id2210196"></a>
+<a name="id3248945"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_expansion">Template
           Expansion</a>
         </h6>
@@ -1919,9 +1907,9 @@ replacement text...
           </p>
 <p>
         </p>
-<div class="caution" title="Caution"><table border="0" summary="Caution">
+<div class="caution"><table border="0" summary="Caution">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../doc/html/images/caution.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../doc/src/images/caution.png"></td>
 <th align="left">Caution</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -1939,7 +1927,7 @@ replacement text...
           by the close parenthesis.
         </p>
 <a name="quickbook.syntax.block.templates.nullary_templates"></a><h6>
-<a name="id2210290"></a>
+<a name="id3249038"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.nullary_templates">Nullary
           Templates</a>
         </h6>
@@ -1964,17 +1952,17 @@ replacement text...
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            The explicit <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_expansion">template
-            expansion syntax</a>. This is an advantage because, now, we don't
-            have to use obscure naming conventions like double underscores (e.g.
-            __alpha__) to avoid unwanted macro replacement.
-          </li>
+              The explicit <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_expansion">template
+              expansion syntax</a>. This is an advantage because, now, we don't
+              have to use obscure naming conventions like double underscores (e.g.
+              __alpha__) to avoid unwanted macro replacement.
+            </li>
 <li class="listitem">
-            The template is expanded at the point where it is invoked. A macro is
-            expanded immediately at its point of declaration. This is subtle and
-            can cause a slight difference in behavior especially if you refer to
-            other macros and templates in the body.
-          </li>
+              The template is expanded at the point where it is invoked. A macro
+              is expanded immediately at its point of declaration. This is subtle
+              and can cause a slight difference in behavior especially if you refer
+              to other macros and templates in the body.
+            </li>
 </ul></div>
 <p>
           The empty brackets after the template identifier (<code class="literal">alpha[]</code>)
@@ -2022,7 +2010,7 @@ for the journey to old age.]]]
           brackets, though.
         </p>
 <a name="quickbook.syntax.block.templates.simple_arguments"></a><h6>
-<a name="id2210490"></a>
+<a name="id3249245"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.simple_arguments">Simple
           Arguments</a>
         </h6>
@@ -2034,13 +2022,13 @@ for the journey to old age.]]]
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            Break the last argument into two, at the first space found (<code class="literal">'',
-            '\n', \t' or '\r'</code>).
-          </li>
+              Break the last argument into two, at the first space found (<code class="literal">'',
+              '\n', \t' or '\r'</code>).
+            </li>
 <li class="listitem">
-            Repeat until there are enough arguments or if there are no more spaces
-            found (in which case, an error is reported).
-          </li>
+              Repeat until there are enough arguments or if there are no more spaces
+              found (in which case, an error is reported).
+            </li>
 </ul></div>
 <p>
           For example:
@@ -2076,9 +2064,9 @@ for the journey to old age.]]]
           The arguments being: "w", "x", "y" and "z
           trail".
         </p>
-<div class="caution" title="Caution"><table border="0" summary="Caution">
+<div class="caution"><table border="0" summary="Caution">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../doc/html/images/caution.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../doc/src/images/caution.png"></td>
 <th align="left">Caution</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -2090,7 +2078,7 @@ for the journey to old age.]]]
           </p></td></tr>
 </table></div>
 <a name="quickbook.syntax.block.templates.punctuation_templates"></a><h6>
-<a name="id2210626"></a>
+<a name="id3249388"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.punctuation_templates">Punctuation
           Templates</a>
         </h6>
@@ -2115,7 +2103,7 @@ for the journey to old age.]]]
 <pre class="programlisting">&lt;hey&gt;baz&lt;/hey&gt;
 </pre>
 </div>
-<div class="section" title="Blurbs">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.blurbs"></a><a class="link" href="syntax.html#quickbook.syntax.block.blurbs" title="Blurbs">Blurbs</a>
 </h4></div></div></div>
@@ -2133,7 +2121,7 @@ for the journey to old age.]]]
 <div class="sidebar">
 <p class="title"><b></b></p>
 <p>
-          <span class="inlinemediaobject"><img src="../images/smiley.png" alt="smiley"></span> <span class="bold"><strong>An eye catching advertisement
+          <span class="inlinemediaobject"><img src="../../src/images/smiley.png" alt="smiley"></span> <span class="bold"><strong>An eye catching advertisement
           or note...</strong></span>
         </p>
 <p>
@@ -2143,9 +2131,9 @@ for the journey to old age.]]]
           the syntax of Extended Backus-Normal Form (EBNF) completely in C++.
         </p>
 </div>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -2154,7 +2142,7 @@ for the journey to old age.]]]
           </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Tables">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.tables"></a><a class="link" href="syntax.html#quickbook.syntax.block.tables" title="Tables">Tables</a>
 </h4></div></div></div>
@@ -2327,8 +2315,6 @@ for the journey to old age.]]]
                   </p>
                   <p>
                     Boost provides free peer-reviewed portable C++ source libraries.
-                  </p>
-                  <p>
                     We emphasize libraries that work well with the C++ Standard Library.
                     Boost libraries are intended to be widely useful, and usable
                     across a broad spectrum of applications. The Boost license encourages
@@ -2415,7 +2401,7 @@ for the journey to old age.]]]
 </div>
 <br class="table-break">
 </div>
-<div class="section" title="Variable Lists">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.variable_lists"></a><a class="link" href="syntax.html#quickbook.syntax.block.variable_lists" title="Variable Lists">Variable Lists</a>
 </h4></div></div></div>
@@ -2432,7 +2418,7 @@ for the journey to old age.]]]
 <p>
           will generate:
         </p>
-<div class="variablelist" title="A Variable List">
+<div class="variablelist">
 <p class="title"><b>A Variable List</b></p>
 <dl>
 <dt><span class="term">term 1</span></dt>
@@ -2461,7 +2447,7 @@ for the journey to old age.]]]
           will recognize this as a "definition list".
         </p>
 </div>
-<div class="section" title="Include">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.include"></a><a class="link" href="syntax.html#quickbook.syntax.block.include" title="Include">Include</a>
 </h4></div></div></div>
@@ -2476,12 +2462,12 @@ for the journey to old age.]]]
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            The __FILENAME__ predefined macro will reflect the name of the file currently being
-            processed.
-          </li>
+              The __FILENAME__ predefined macro will reflect the name of the file currently being
+              processed.
+            </li>
 <li class="listitem">
-            Any macros defined in the included file are scoped to that file.
-          </li>
+              Any macros defined in the included file are scoped to that file.
+            </li>
 </ul></div>
 <p>
           The <code class="literal">[include]</code> directive lets you specify a document
@@ -2498,7 +2484,7 @@ for the journey to old age.]]]
           you can link to it with <code class="literal">[link someid.intro The Intro]</code>.
         </p>
 </div>
-<div class="section" title="Import">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.import"></a><a class="link" href="syntax.html#quickbook.syntax.block.import" title="Import">Import</a>
 </h4></div></div></div>
@@ -2514,7 +2500,7 @@ for the journey to old age.]]]
           QuickBook's import facility provides a nice solution.
         </p>
 <a name="quickbook.syntax.block.import.example"></a><h6>
-<a name="id2211463"></a>
+<a name="id3250233"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.example">Example</a>
         </h6>
 <p>
@@ -2559,11 +2545,11 @@ for the journey to old age.]]]
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-              lists
-            </li>
+                lists
+              </li>
 <li class="listitem">
-              etc.
-            </li>
+                etc.
+              </li>
 </ul></div>
 <p>
           </p>
@@ -2609,7 +2595,7 @@ for the journey to old age.]]]
 <p>
         </p>
 <a name="quickbook.syntax.block.import.code_snippet_markup"></a><h6>
-<a name="id2211723"></a>
+<a name="id3250770"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.code_snippet_markup">Code
           Snippet Markup</a>
         </h6>
@@ -2629,7 +2615,7 @@ for the journey to old age.]]]
           This too will not be visible in quickbook.
         </p>
 <a name="quickbook.syntax.block.import.special_comments"></a><h6>
-<a name="id2211828"></a>
+<a name="id3250875"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.special_comments">Special
           Comments</a>
         </h6>
@@ -2672,7 +2658,7 @@ for the journey to old age.]]]
           between the delimeters will simply be ignored.
         </p>
 <a name="quickbook.syntax.block.import.callouts"></a><h6>
-<a name="id2211978"></a>
+<a name="id3251025"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.callouts">Callouts</a>
         </h6>
 <p>
@@ -2691,9 +2677,9 @@ for the journey to old age.]]]
 <p>
             
 </p>
-<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">foo_bar</span><span class="special">()</span> <span class="callout_bug"><a class="co" name="quickbook0co" href="syntax.html#quickbook0"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a></span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">foo_bar</span><span class="special">()</span> <a class="co" name="quickbook0co" href="syntax.html#quickbook0"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>
 <span class="special">{</span>
-    <span class="keyword">return</span> <span class="string">"foo-bar"</span><span class="special">;</span> <span class="callout_bug"><a class="co" name="quickbook1co" href="syntax.html#quickbook1"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a></span>
+    <span class="keyword">return</span> <span class="string">"foo-bar"</span><span class="special">;</span> <a class="co" name="quickbook1co" href="syntax.html#quickbook1"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>
 <span class="special">}</span>
 </pre>
 <p>
@@ -2750,20 +2736,20 @@ for the journey to old age.]]]
 <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
 
-    <span class="line_callout_bug"><a class="co" name="quickbook2co" href="syntax.html#quickbook2"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a></span><span class="identifier">x</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">n</span><span class="special">(</span><span class="number">0</span><span class="special">)</span>
+    <a class="co" name="quickbook2co" href="syntax.html#quickbook2"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="identifier">x</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">n</span><span class="special">(</span><span class="number">0</span><span class="special">)</span>
     <span class="special">{</span>
     <span class="special">}</span>
 
-    <span class="line_callout_bug"><a class="co" name="quickbook3co" href="syntax.html#quickbook3"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a></span><span class="special">~</span><span class="identifier">x</span><span class="special">()</span>
+    <a class="co" name="quickbook3co" href="syntax.html#quickbook3"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a><span class="special">~</span><span class="identifier">x</span><span class="special">()</span>
     <span class="special">{</span>
     <span class="special">}</span>
 
-    <span class="line_callout_bug"><a class="co" name="quickbook4co" href="syntax.html#quickbook4"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a></span><span class="keyword">int</span> <span class="identifier">get</span><span class="special">()</span> <span class="keyword">const</span>
+    <a class="co" name="quickbook4co" href="syntax.html#quickbook4"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a><span class="keyword">int</span> <span class="identifier">get</span><span class="special">()</span> <span class="keyword">const</span>
     <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">n</span><span class="special">;</span> 
     <span class="special">}</span>
 
-    <span class="line_callout_bug"><a class="co" name="quickbook5co" href="syntax.html#quickbook5"><img src="../../../doc/src/images/callouts/4.png" alt="4" border="0"></a></span><span class="keyword">void</span> <span class="identifier">set</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">n_</span><span class="special">)</span>
+    <a class="co" name="quickbook5co" href="syntax.html#quickbook5"><img src="../../../doc/src/images/callouts/4.png" alt="4" border="0"></a><span class="keyword">void</span> <span class="identifier">set</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">n_</span><span class="special">)</span>
     <span class="special">{</span>
         <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">n_</span><span class="special">;</span>
     <span class="special">}</span>
@@ -2806,19 +2792,19 @@ for the journey to old age.]]]
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2205920" href="#id2205920" class="para">6</a>] </sup>
-              Thanks to David Barrett, author of <a href="http://quinthar.com/qwikiwiki/index.php?page=Home" target="_top">Qwiki</a>,
-              for sharing these samples and teaching me these obscure formatting
-              rules. I wasn't sure at all if <a href="http://spirit.sourceforge.net" target="_top">Spirit</a>,
-              being more or less a formal EBNF parser, can handle the context sensitivity
-              and ambiguity.
-            </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id2207806" href="#id2207806" class="para">7</a>] </sup>
-              A sample footnote
-            </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id2207953" href="#id2207953" class="para">8</a>] </sup>
-              Conditional Generation makes quickbook turing complete.
-            </p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id3244461" href="#id3244461" class="para">6</a>] </sup>
+            Thanks to David Barrett, author of <a href="http://quinthar.com/qwikiwiki/index.php?page=Home" target="_top">Qwiki</a>,
+            for sharing these samples and teaching me these obscure formatting rules.
+            I wasn't sure at all if <a href="http://spirit.sourceforge.net" target="_top">Spirit</a>,
+            being more or less a formal EBNF parser, can handle the context sensitivity
+            and ambiguity.
+          </p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id3246364" href="#id3246364" class="para">7</a>] </sup>
+            A sample footnote
+          </p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id3246511" href="#id3246511" class="para">8</a>] </sup>
+            Conditional Generation makes quickbook turing complete.
+          </p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -2832,7 +2818,7 @@ for the journey to old age.]]]
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="change_log.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../quickbook.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="install.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="change_log.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../quickbook.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="install.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-# $Id: Jamfile.v2 56992 2009-10-19 09:18:13Z anthonyw $
+# $Id: Jamfile.v2 63789 2010-07-09 19:13:09Z anthonyw $
 # Copyright 2006-2007 Roland Schwarz.
 # Copyright 2007 Anthony Williams
 # Distributed under the Boost Software License, Version 1.0. (See
@@ -43,6 +43,7 @@ project boost/thread
       <link>shared:<define>BOOST_THREAD_BUILD_DLL=1
       -<tag>@$(BOOST_JAMROOT_MODULE)%$(BOOST_JAMROOT_MODULE).tag
       <tag>@$(__name__).tag
+      <toolset>gcc:<cxxflags>-Wno-long-long
     : default-build <threading>multi
     ;
 

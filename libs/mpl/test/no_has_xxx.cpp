@@ -8,9 +8,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Id: no_has_xxx.cpp 49268 2008-10-11 06:26:17Z agurtovoy $
-// $Date: 2008-10-11 02:26:17 -0400 (Sat, 11 Oct 2008) $
-// $Revision: 49268 $
+// $Id: no_has_xxx.cpp 63518 2010-07-02 08:32:03Z agurtovoy $
+// $Date: 2010-07-02 04:32:03 -0400 (Fri, 02 Jul 2010) $
+// $Revision: 63518 $
 
 
 // This file tests that we have the right value for
@@ -21,6 +21,10 @@
 
 #if defined(BOOST_MPL_CFG_NO_HAS_XXX)
 #   define HAS_XXX_ASSERT(x) MPL_ASSERT_NOT(x)
+#endif
+
+#if defined(BOOST_MPL_CFG_NO_HAS_XXX_TEMPLATE)
+#   define HAS_XXX_TEMPLATE_ASSERT(x) MPL_ASSERT_NOT(x)
 #endif
 
 #include "has_xxx.cpp"

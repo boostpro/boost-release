@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="not_/impl.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../proto/reference.html#header.boost.proto.matches_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="if_/impl.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="not_/impl.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../proto/reference.html#header.boost.proto.matches_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="if_/impl.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" title="Struct template if_">
+<div class="refentry">
 <a name="boost.proto.if_"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Struct template if_</span></h2>
@@ -31,32 +31,32 @@
           transforms based on a compile-time Boolean.</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../proto/reference.html#header.boost.proto.matches_hpp" title="Header &lt;boost/proto/matches.hpp&gt;">boost/proto/matches.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../proto/reference.html#header.boost.proto.matches_hpp" title="Header &lt;boost/proto/matches.hpp&gt;">boost/proto/matches.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> If, <span class="bold"><strong>typename</strong></span> Then = <span class="type"><a class="link" href="_.html" title="Struct _">proto::_</a></span>, 
-         <span class="bold"><strong>typename</strong></span> Else = <span class="type"><a class="link" href="not_.html" title="Struct template not_">proto::not_</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>&gt;</span> &gt; 
-<span class="bold"><strong>struct</strong></span> <a class="link" href="if_.html" title="Struct template if_">if_</a> : <span class="bold"><strong></strong></span> <a class="link" href="transform.html" title="Struct template transform">proto::transform</a>&lt;if_&lt;If, Then, Else&gt; &gt; {
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> if_ <a name="boost.proto.if_.proto_base_expr"></a>proto_base_expr;
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> If<span class="special">,</span> <span class="keyword">typename</span> Then <span class="special">=</span> <a class="link" href="_.html" title="Struct _">proto::_</a><span class="special">,</span> 
+         <span class="keyword">typename</span> Else <span class="special">=</span> <a class="link" href="not_.html" title="Struct template not_">proto::not_</a><span class="special">&lt;</span><a class="link" href="_.html" title="Struct _">proto::_</a><span class="special">&gt;</span> <span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="if_.html" title="Struct template if_">if_</a> <span class="special">:</span> <span class="keyword"></span> <a class="link" href="transform.html" title="Struct template transform">proto::transform</a><span class="special">&lt;</span><span class="identifier">if_</span><span class="special">&lt;</span><span class="identifier">If</span><span class="special">,</span> <span class="identifier">Then</span><span class="special">,</span> <span class="identifier">Else</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">{</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">if_</span> <a name="boost.proto.if_.proto_grammar"></a><span class="identifier">proto_grammar</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// member classes/structs/unions</em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../../Expr.html" title="Concept Expr">Expr</a>, <span class="bold"><strong>typename</strong></span> State, <span class="bold"><strong>typename</strong></span> Data&gt; 
-  <span class="bold"><strong>struct</strong></span> <a class="link" href="if_/impl.html" title="Struct template impl">impl</a> : <span class="bold"><strong></strong></span> <span class="type"><a class="link" href="transform_impl.html" title="Struct template transform_impl">proto::transform_impl</a>&lt; Expr, State, Data &gt;</span> {
-    <span class="emphasis"><em>// types</em></span>
-    <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> mpl::if_&lt;
-      <span class="bold"><strong>typename</strong></span> boost::result_of&lt;<a class="link" href="when.html" title="Struct template when">proto::when</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>, If&gt;(Expr, State, Data)&gt;::type,
-      <span class="bold"><strong>typename</strong></span> boost::result_of&lt;<a class="link" href="when.html" title="Struct template when">proto::when</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>, Then&gt;(Expr, State, Data)&gt;::type,
-      <span class="bold"><strong>typename</strong></span> boost::result_of&lt;<a class="link" href="when.html" title="Struct template when">proto::when</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>, Else&gt;(Expr, State, Data)&gt;::type
-    &gt;::type <a class="link" href="if_/impl.html#boost.proto.if_.impl.result_type">result_type</a>;
+  <span class="comment">// member classes/structs/unions</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <a class="link" href="../../Expr.html" title="Concept Expr">Expr</a><span class="special">,</span> <span class="keyword">typename</span> State<span class="special">,</span> <span class="keyword">typename</span> Data<span class="special">&gt;</span> 
+  <span class="keyword">struct</span> <a class="link" href="if_/impl.html" title="Struct template impl">impl</a> <span class="special">:</span> <span class="keyword"></span> <a class="link" href="transform_impl.html" title="Struct template transform_impl">proto::transform_impl</a>&lt; Expr, State, Data &gt; <span class="special">{</span>
+    <span class="comment">// types</span>
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_</span><span class="special">&lt;</span>
+      <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><a class="link" href="when.html" title="Struct template when">proto::when</a><span class="special">&lt;</span><a class="link" href="_.html" title="Struct _">proto::_</a><span class="special">,</span> <span class="identifier">If</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">State</span><span class="special">,</span> <span class="identifier">Data</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span>
+      <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><a class="link" href="when.html" title="Struct template when">proto::when</a><span class="special">&lt;</span><a class="link" href="_.html" title="Struct _">proto::_</a><span class="special">,</span> <span class="identifier">Then</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">State</span><span class="special">,</span> <span class="identifier">Data</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span>
+      <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><a class="link" href="when.html" title="Struct template when">proto::when</a><span class="special">&lt;</span><a class="link" href="_.html" title="Struct _">proto::_</a><span class="special">,</span> <span class="identifier">Else</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">State</span><span class="special">,</span> <span class="identifier">Data</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span>
+    <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a class="link" href="if_/impl.html#boost.proto.if_.impl.result_type"><span class="identifier">result_type</span></a><span class="special">;</span>
 
-    <span class="emphasis"><em>// <a class="link" href="if_/impl.html#id1248963-bb">public member functions</a></em></span>
-    <span class="type">result_type</span> <a class="link" href="if_/impl.html#id1248968-bb"><span class="bold"><strong>operator</strong></span>()</a>(<span class="bold"><strong>typename</strong></span> impl::expr_param, 
-                           <span class="bold"><strong>typename</strong></span> impl::state_param, 
-                           <span class="bold"><strong>typename</strong></span> impl::data_param) <span class="bold"><strong>const</strong></span>;
-  };
-};</pre></div>
-<div class="refsect1" title="Description">
-<a name="id1601846"></a><h2>Description</h2>
+    <span class="comment">// <a class="link" href="if_/impl.html#id1263016-bb">public member functions</a></span>
+    <span class="identifier">result_type</span> <a class="link" href="if_/impl.html#id1263021-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">expr_param</span><span class="special">,</span> 
+                           <span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">state_param</span><span class="special">,</span> 
+                           <span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">data_param</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id2338067"></a><h2>Description</h2>
 <p>
             When <code class="computeroutput">proto::if_&lt;If, Then, Else&gt;</code> is used as a grammar,
             <code class="computeroutput">If</code> must be a Proto transform and
@@ -80,14 +80,14 @@
           </p>
 <p>
             </p>
-<pre class="programlisting">// A grammar that only matches integral terminals,
-// using is_integral&lt;&gt; from Boost.Type_traits.
-struct IsIntegral :
-  <a class="link" href="and_.html" title="Struct template and_">proto::and_</a>&lt;
-    <a class="link" href="terminal.html" title="Struct template terminal">proto::terminal</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>&gt;,
-    <a class="link" href="if_.html" title="Struct template if_">proto::if_</a>&lt; boost::is_integral&lt;<a class="link" href="_value.html" title="Struct _value">proto::_value</a>&gt;()&gt;
-  &gt;
-{};</pre>
+<pre class="programlisting"><span class="comment">// A grammar that only matches integral terminals,</span>
+<span class="comment">// using is_integral&lt;&gt; from Boost.Type_traits.</span>
+<span class="keyword">struct</span> <span class="identifier">IsIntegral</span> <span class="special">:</span>
+  <a class="link" href="and_.html" title="Struct template and_">proto::and_</a><span class="special">&lt;</span>
+    <a class="link" href="terminal.html" title="Struct template terminal">proto::terminal</a><span class="special">&lt;</span><a class="link" href="_.html" title="Struct _">proto::_</a><span class="special">&gt;</span><span class="special">,</span>
+    <a class="link" href="if_.html" title="Struct template if_">proto::if_</a><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_integral</span><span class="special">&lt;</span><a class="link" href="_value.html" title="Struct _value">proto::_value</a><span class="special">&gt;</span><span class="special">(</span><span class="special">)</span><span class="special">&gt;</span>
+  <span class="special">&gt;</span>
+<span class="special">{</span><span class="special">}</span><span class="special">;</span></pre>
 <p>
           </p>
 <p>
@@ -100,18 +100,18 @@ struct IsIntegral :
             is <code class="computeroutput">true</code> then the <code class="computeroutput">Then</code> transform
             is applied; otherwise the <code class="computeroutput">Else</code> transform is applied.
             </p>
-<pre class="programlisting">// Match a terminal. If the terminal is integral, return
-// mpl::true_; otherwise, return mpl::false_.
-struct IsIntegral2 :
-  <a class="link" href="when.html" title="Struct template when">proto::when</a>&lt;
-    <a class="link" href="terminal.html" title="Struct template terminal">proto::terminal</a>&lt;_&gt;,
-    proto::if_&lt;
-      boost::is_integral&lt;<a class="link" href="_value.html" title="Struct _value">proto::_value</a>&gt;(),
-      mpl::true_(),
-      mpl::false_()
-    &gt;
-  &gt;
-{};</pre>
+<pre class="programlisting"><span class="comment">// Match a terminal. If the terminal is integral, return</span>
+<span class="comment">// mpl::true_; otherwise, return mpl::false_.</span>
+<span class="keyword">struct</span> <span class="identifier">IsIntegral2</span> <span class="special">:</span>
+  <a class="link" href="when.html" title="Struct template when">proto::when</a><span class="special">&lt;</span>
+    <a class="link" href="terminal.html" title="Struct template terminal">proto::terminal</a><span class="special">&lt;</span><span class="identifier">_</span><span class="special">&gt;</span><span class="special">,</span>
+    <span class="identifier">proto</span><span class="special">::</span><span class="identifier">if_</span><span class="special">&lt;</span>
+      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_integral</span><span class="special">&lt;</span><a class="link" href="_value.html" title="Struct _value">proto::_value</a><span class="special">&gt;</span><span class="special">(</span><span class="special">)</span><span class="special">,</span>
+      <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span><span class="special">(</span><span class="special">)</span><span class="special">,</span>
+      <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">(</span><span class="special">)</span>
+    <span class="special">&gt;</span>
+  <span class="special">&gt;</span>
+<span class="special">{</span><span class="special">}</span><span class="special">;</span></pre>
 <p>
           </p>
 </div>
@@ -126,7 +126,7 @@ struct IsIntegral2 :
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="not_/impl.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../proto/reference.html#header.boost.proto.matches_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="if_/impl.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="not_/impl.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../proto/reference.html#header.boost.proto.matches_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="if_/impl.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

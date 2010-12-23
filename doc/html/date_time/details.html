@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="serialization.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../date_time.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="serialization.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../date_time.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Details">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="date_time.details"></a>Details</h2></div></div></div>
 <div class="toc"><dl>
@@ -36,7 +36,7 @@
 <dt><span class="section"><a href="details.html#date_time.changes">Change History</a></span></dt>
 <dt><span class="section"><a href="details.html#date_time.acknowledgements">Acknowledgements</a></span></dt>
 </dl></div>
-<div class="section" title="Calculations">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.calculations"></a>Calculations</h3></div></div></div>
 <p>
@@ -46,7 +46,7 @@
     <a class="link" href="details.html#special_value_handling">Special Value Handling</a>
   </p>
 <a name="timepoints"></a><h4>
-<a name="id758869"></a>Timepoints</h4>
+<a name="id1050512"></a>Timepoints</h4>
 <p>
     This section describes some of basic arithmetic rules that can be performed with timepoints. In general, Timepoints support basic arithmetic in conjunction with Durations as follows:
     </p>
@@ -66,7 +66,7 @@
 <p>
   </p>
 <a name="durations"></a><h4>
-<a name="id758906"></a>Durations</h4>
+<a name="id1050549"></a>Durations</h4>
 <p>
     Durations represent a length of time and can have positive and negative values. It is frequently useful to be able to perform calculations with other durations and with simple integral values. The following describes these calculations:
     </p>
@@ -81,7 +81,7 @@
 <p>
   </p>
 <a name="intervals"></a><h4>
-<a name="id758925"></a>Intervals (Periods)</h4>
+<a name="id1050568"></a>Intervals (Periods)</h4>
 <p>
     Interval logic is extremely useful for simplifying many 'calculations' for dates and times. The following describes the operations provided by periods which are based on half-open range. The following operations calculate new time periods based on two input time periods: 
     </p>
@@ -114,7 +114,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <a name="special_value_handling"></a><h4>
-<a name="id758989"></a>Special Value Handling</h4>
+<a name="id1050632"></a>Special Value Handling</h4>
 <p>
     For many temporal problems it is useful for Duration and Timepoint types to support special values such as Not A Date Time (NADT) and infinity. In general special values such as Not A Date Time (NADT) and infinity should follow rules like floating point values. Note that it should be possible to configure NADT based systems to throw an exception instead of result in NADT. 
     </p>
@@ -139,7 +139,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 </div>
-<div class="section" title="Design Goals">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.design_goals"></a>Design Goals</h3></div></div></div>
 <div class="informaltable"><table class="table">
@@ -236,11 +236,11 @@ Timeperiod shift Duration          --&gt; Timeperiod
 </tbody>
 </table></div>
 </div>
-<div class="section" title="Tradeoffs: Stability, Predictability, and Approximations">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.tradeoffs"></a>Tradeoffs: Stability, Predictability, and Approximations</h3></div></div></div>
 <h3>
-<a name="id759366"></a>
+<a name="id1051009"></a>
     Unavoidable Trade-offs
   </h3>
 <p>
@@ -264,14 +264,14 @@ Timeperiod shift Duration          --&gt; Timeperiod
     If you want accurate calculations with future times, you will have to use TAI or an equivalent, but the mapping from TAI to UTC or local time depends on leap seconds, so you will not have exact agreement with wall-clock time. 
   </p>
 <h3>
-<a name="id759432"></a>
+<a name="id1051075"></a>
     Stability, Predictability, and Approximations
   </h3>
 <p>
     Here is some underlying theory that helps to explain what's going on. Remember that a temporal type, like any abstract data type (ADT), is a set of values together with operations on those values. 
   </p>
 <h4>
-<a name="id759445"></a>
+<a name="id1051088"></a>
     Stability
   </h4>
 <p>
@@ -281,7 +281,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
     An operation on a type is stable if the result of applying the operation to a particular operand(s) does not change over time. 
   </p>
 <h4>
-<a name="id759468"></a>
+<a name="id1051111"></a>
     Predictability
   </h4>
 <p>
@@ -320,7 +320,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
     Ill-formed sets are not of much practical use, so we will not discuss them further. In plain english the above simply says that all the values of a predictable type are known ahead of time, but some values of an unpredictable type are not known until some particular time. 
   </p>
 <h4>
-<a name="id759626"></a>
+<a name="id1051269"></a>
     Stability of Operations
   </h4>
 <p>
@@ -351,7 +351,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
     We can refine this a little by saying that a range within an unpredicatable type can be predictable, and operations performed entirely on values within that range will be stable. For example, the range of UTC timepoints from 1970-01-01 through the present is predictable, so calculations of durations within that range will be stable. 
   </p>
 <h4>
-<a name="id759690"></a>
+<a name="id1051333"></a>
     Approximations
   </h4>
 <p>
@@ -364,7 +364,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
     For situations where exact answers are required or instability cannot be tolerated, the user must be able to specify this, and then the library should throw an exception if the user requests a computation for which an exact, stable answer is not possible. 
   </p>
 </div>
-<div class="section" title="Terminology">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.terminology"></a>Terminology</h3></div></div></div>
 <p>
@@ -425,7 +425,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 </div>
-<div class="section" title="References">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.references"></a>References</h3></div></div></div>
 <p>The design of the library is currently being evolved using Wiki and email discussions. You can find more information at: <a href="http://www.crystalclearsoftware.com/cgi-bin/boost_wiki/wiki.pl?GDTL" target="_top">Boost Wiki GDTL Start Page</a>.
@@ -444,7 +444,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <a name="date_ref"></a><h4>
-<a name="id759990"></a>Date Calendar References</h4>
+<a name="id1051634"></a>Date Calendar References</h4>
 <p>
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="bullet">
@@ -463,7 +463,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <a name="time_ref"></a><h4>
-<a name="id760073"></a>Time</h4>
+<a name="id1051717"></a>Time</h4>
 <p>
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="bullet">
@@ -487,7 +487,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <a name="other_c_libs"></a><h4>
-<a name="id760169"></a>Other C/C++ Libraries</h4>
+<a name="id1051812"></a>Other C/C++ Libraries</h4>
 <p>
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="bullet">
@@ -514,7 +514,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <a name="java_libs"></a><h4>
-<a name="id760282"></a>JAVA Date &amp; Time Library Quick Reference</h4>
+<a name="id1051926"></a>JAVA Date &amp; Time Library Quick Reference</h4>
 <p>
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="bullet">
@@ -530,7 +530,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <a name="script_libs"></a><h4>
-<a name="id760366"></a>Scripting Language Libraries</h4>
+<a name="id1052009"></a>Scripting Language Libraries</h4>
 <p>
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="bullet">
@@ -549,7 +549,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <a name="related"></a><h4>
-<a name="id760430"></a>Related Commercial and Fanciful Pages</h4>
+<a name="id1052074"></a>Related Commercial and Fanciful Pages</h4>
 <p>
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="bullet">
@@ -565,7 +565,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <a name="resolution"></a><h4>
-<a name="id760491"></a>Resolution, Precision, and Accuracy</h4>
+<a name="id1052134"></a>Resolution, Precision, and Accuracy</h4>
 <p>
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="bullet">
@@ -577,7 +577,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 </div>
-<div class="section" title="Build-Compiler Information">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.buildinfo"></a>Build-Compiler Information</h3></div></div></div>
 <p>
@@ -588,12 +588,12 @@ Timeperiod shift Duration          --&gt; Timeperiod
     <a class="link" href="details.html#other_boost_libs">Required Boost Libraries</a>
   </p>
 <a name="overview"></a><h4>
-<a name="id760585"></a>Overview</h4>
+<a name="id1052228"></a>Overview</h4>
 <p>
     The library has a few functions that require the creation of a library file (mostly to_string, from_string functions).  Most library users can make effective use of the library WITHOUT building the library, but simply including the required headers. If the library is needed, the Jamfile in the build directory will produce a "static" library (libboost_date_time) and a "dynamic/shared" library (boost_date_time) that contains these functions. 
   </p>
 <a name="compile_options"></a><h4>
-<a name="id760607"></a>Compilation Options</h4>
+<a name="id1052249"></a>Compilation Options</h4>
 <p>
     By default the posix_time system uses a single 64 bit integer internally to provide a microsecond level resolution. As an alternative, a combination of a 64 bit integer and a 32 bit integer (96 bit resolution) can be used to provide nano-second level resolutions. The default implementation may provide better performance and more compact memory usage for many applications that do not require nano-second resolutions. 
   </p>
@@ -604,7 +604,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>As a convenience, <code class="computeroutput">date_time</code> has provided some <a class="link" href="gregorian.html#additional_duration_types">additional duration types</a>. Use of these types may have unexpected results due to the snap-to-end-of-month behavior (see <a class="link" href="gregorian.html#snap_to_details">Reversibility of Operations Pitfall</a> for complete details and examples). These types are enabled by default. To disable these types, simply undefine <code class="computeroutput">BOOST_DATE_TIME_OPTIONAL_GREGORIAN_TYPES</code> in your project file.</p>
 <p>Another convenience is the default constructors for <code class="computeroutput"><a class="link" href="gregorian.html#date_time.gregorian.date_class" title="Date">date</a></code>, and <code class="computeroutput"><a class="link" href="posix_time.html#date_time.posix_time.ptime_class" title="Ptime">ptime</a></code>. These constructors are enabled by default. To disable them, simply define <code class="computeroutput">DATE_TIME_NO_DEFAULT_CONSTRUCTOR</code> in your project file.</p>
 <a name="portability"></a><h4>
-<a name="id760726"></a>Compiler/Portability Notes</h4>
+<a name="id1052368"></a>Compiler/Portability Notes</h4>
 <p>
     The Boost Date-Time library has been built and tested with many compilers and platforms. However, some compilers and standard libraries have issues. While some of these issues can be worked around, others are difficult to work around. The following compilers are known to fully support all aspects of the library:
     </p>
@@ -665,7 +665,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <h6>
-<a name="id760870"></a>Visual Studio &amp; STLPort</h6>
+<a name="id1052513"></a>Visual Studio &amp; STLPort</h6>
 <p>There is a known issue with Visual Studio (7.0 &amp; 7.1) and STLPort. The build errors typically make reference to a type issue or 'no acceptable conversion' and are attempting to instantiate a template with <code class="computeroutput">wchar_t</code>. The default build of STLPort does not support <code class="computeroutput">wchar_t</code>. There are two possible workarounds for this issue. The simplest is the user can build date_time with no wide stream/string etc. The other is to rebuild STLPort with wchar_t support.
   </p>
 <p>To build date_time with no wide stream/string etc, execute the following command from <code class="computeroutput">$BOOST_ROOT</code>:
@@ -685,7 +685,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
     (replace the ellipsis with the correct paths for the build system and adjust the <code class="computeroutput">TOOLS</code> to the proper toolset if necessary)
   </p>
 <a name="dir_structure"></a><h4>
-<a name="id760913"></a>Directory Structure</h4>
+<a name="id1052555"></a>Directory Structure</h4>
 <p>
     The directory tree has the following structure:
     </p>
@@ -706,7 +706,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <p>
   </p>
 <a name="other_boost_libs"></a><h4>
-<a name="id760998"></a>Required Boost Libraries</h4>
+<a name="id1052639"></a>Required Boost Libraries</h4>
 <p>
     Various parts of date-time depend on other boost libraries.  These include:
     </p>
@@ -723,7 +723,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
     so these libraries need to be installed. 
   </p>
 </div>
-<div class="section" title="Tests">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.tests"></a>Tests</h3></div></div></div>
 <p>
@@ -739,11 +739,31 @@ Timeperiod shift Duration          --&gt; Timeperiod
     directories. Building and executing these tests assures that the installation is correct and that the library is functioning correctly. In addition, these tests facilitate the porting to new compilers. Finally, the tests provide examples of many functions not explicitly described in the usage examples. 
   </p>
 </div>
-<div class="section" title="Change History">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.changes"></a>Change History</h3></div></div></div>
 <h4>
-<a name="id761112"></a>Changes from Boost 1.40 to 1.41 (date_time 1.07 to 1.08)</h4>
+<a name="id1052754"></a>Changes from Boost 1.41 to 1.44 (date_time 1.08 to 1.09)</h4>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td>Bug fix</td>
+<td>
+            The "%T" and "%R" format specifiers are now processed by the library rather than underlying standard facet.
+            This fixes the cases when the placeholders are not supported by the facet
+            (<a href="https://svn.boost.org/trac/boost/ticket/3876" target="_top">#3876</a>).
+          </td>
+</tr></tbody>
+</table></div>
+<h4>
+<a name="id1052807"></a>Changes from Boost 1.40 to 1.41 (date_time 1.07 to 1.08)</h4>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -775,7 +795,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 </tbody>
 </table></div>
 <h4>
-<a name="id761201"></a>Changes from Boost 1.38 to 1.40 (date_time 1.06 to 1.07)</h4>
+<a name="id1052897"></a>Changes from Boost 1.38 to 1.40 (date_time 1.06 to 1.07)</h4>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -796,7 +816,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 </tr></tbody>
 </table></div>
 <h4>
-<a name="id761271"></a>Changes from Boost 1.34 to 1.38 (date_time 1.05 to 1.06)</h4>
+<a name="id1052966"></a>Changes from Boost 1.34 to 1.38 (date_time 1.05 to 1.06)</h4>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -910,7 +930,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 </tbody>
 </table></div>
 <h4>
-<a name="id761586"></a>Changes from Boost 1.33 to 1.34 (date_time 1.04 to 1.05)</h4>
+<a name="id1053282"></a>Changes from Boost 1.33 to 1.34 (date_time 1.04 to 1.05)</h4>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -924,12 +944,12 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <tr>
 <td>Feature</td>
 <td>
-             Updated the data in the date_time_zonespec.csv file to reflect new US/Canada 
+             Updated the data in the date_time_zonespec.csv file to reflect new US/Canada
              daylight savings time rules for 2007.  If you upgrade to the new file, be aware
              that the library will only give correct answers for current/future date
-             conversions.  So if you are converting dates from earlier years the answers 
-             will reflect current time zone rules not past rules.  The library doesn't support 
-             historic timezone rules presently. 
+             conversions.  So if you are converting dates from earlier years the answers
+             will reflect current time zone rules not past rules.  The library doesn't support
+             historic timezone rules presently.
           </td>
 </tr>
 <tr>
@@ -971,14 +991,14 @@ Timeperiod shift Duration          --&gt; Timeperiod
 </tr>
 <tr>
 <td>Bug Fix</td>
-<td>Fix regression errors that showed up under FreeBSD with GCC and the 
-                 LANG environment set to russian -- changed parser to use classic 
+<td>Fix regression errors that showed up under FreeBSD with GCC and the
+                 LANG environment set to russian -- changed parser to use classic
                  locale instead of blank locale.
           </td>
 </tr>
 <tr>
 <td>Bug Fix</td>
-<td>Changes for tracker issue 1178092 -- change in convert_to_lower to make 
+<td>Changes for tracker issue 1178092 -- change in convert_to_lower to make
                  local a const static and speed up parsing.
           </td>
 </tr>
@@ -989,16 +1009,16 @@ Timeperiod shift Duration          --&gt; Timeperiod
 </tr>
 <tr>
 <td>Feature</td>
-<td>Reduce the usage of basic_stringstream as much a possible to work around 
-                 a bug in the VC8 standard library. See 
-                 <a href="http://lists.boost.org/Archives/boost/2006/02/101122.php" target="_top">mailing list archive</a> 
+<td>Reduce the usage of basic_stringstream as much a possible to work around
+                 a bug in the VC8 standard library. See
+                 <a href="http://lists.boost.org/Archives/boost/2006/02/101122.php" target="_top">mailing list archive</a>
                  for more information.
           </td>
 </tr>
 </tbody>
 </table></div>
 <h4>
-<a name="id761756"></a>Changes from Boost 1.32 to 1.33 (date_time 1.03 to 1.04)</h4>
+<a name="id1053451"></a>Changes from Boost 1.32 to 1.33 (date_time 1.03 to 1.04)</h4>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -1058,7 +1078,7 @@ Timeperiod shift Duration          --&gt; Timeperiod
 </tr>
 <tr>
 <td>Feature</td>
-<td>Input and output facets have been re-written to support format-based 
+<td>Input and output facets have been re-written to support format-based
             redefinition of formats (see <a class="link" href="date_time_io.html" title="Date Time Input/Output">Date Time IO</a> for complete details).
           </td>
 </tr>
@@ -1085,16 +1105,16 @@ Timeperiod shift Duration          --&gt; Timeperiod
 <tr>
 <td>Feature</td>
 <td>Date-time now uses reentrant POSIX functions on those platforms that
-                 support them when BOOST_HAS_THREADS is defined. 
+                 support them when BOOST_HAS_THREADS is defined.
           </td>
 </tr>
 <tr>
 <td>Bug Fix</td>
-<td>Fixed a bug in serialization code where special values 
+<td>Fixed a bug in serialization code where special values
                 (not-a-date-time, infinities, etc) for
-                ptime, time_duration would not read back correctly from an archive.  
+                ptime, time_duration would not read back correctly from an archive.
                 The output serialization code wrote subfields such
-                as time_duration.seconds() which are invalid for special values and 
+                as time_duration.seconds() which are invalid for special values and
                 thus undefined values.  Thus when read back the values could cause
                 strange behavior including execeptions on construction.
           </td>
@@ -1138,7 +1158,7 @@ void save_to(archive_type&amp; ar,
 </tbody>
 </table></div>
 <h4>
-<a name="id762277"></a>Changes from Boost 1.31 to 1.32 (date_time 1.02 to 1.03)</h4>
+<a name="id1053973"></a>Changes from Boost 1.31 to 1.32 (date_time 1.02 to 1.03)</h4>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -1151,16 +1171,16 @@ void save_to(archive_type&amp; ar,
 <tbody>
 <tr>
 <td>Bug Fix</td>
-<td>Snap to end of month behavior corrected for year_functor. Previously, starting 
-                 from 2000-Feb-28 (leap year and not end of month) and iterating through the next 
-                 leap year would result in 2004-Feb-29 instead of 2004-Feb-28. This behavior has 
-                 been corrected to produce the correct result of 2004-Feb-28. Thanks to Bart Garst 
+<td>Snap to end of month behavior corrected for year_functor. Previously, starting
+                 from 2000-Feb-28 (leap year and not end of month) and iterating through the next
+                 leap year would result in 2004-Feb-29 instead of 2004-Feb-28. This behavior has
+                 been corrected to produce the correct result of 2004-Feb-28. Thanks to Bart Garst
                  for this change.
           </td>
 </tr>
 <tr>
 <td>Feature</td>
-<td>Free function for creating a ptime object from a FILETIME struct. This function 
+<td>Free function for creating a ptime object from a FILETIME struct. This function
                  is only available on platforms that define BOOST_HAS_FTIME.
           </td>
 </tr>
@@ -1172,24 +1192,24 @@ void save_to(archive_type&amp; ar,
 </tr>
 <tr>
 <td>Feature</td>
-<td>Use of the boost::serialization library is now available with most of the 
-                 date_time classes. Classes capable of serialization are: date_generator classes, 
+<td>Use of the boost::serialization library is now available with most of the
+                 date_time classes. Classes capable of serialization are: date_generator classes,
                  date, days, date_period, greg_month, greg_weekday, greg_day, ptime, time_duration,
                  and time_period. Thanks to Bart Garst for this change.
           </td>
 </tr>
 <tr>
 <td>Feature</td>
-<td>Functions added to convert date and time classes to wstring. The library now 
-                 provides to_*_wstring as well as to_*_string functions for: simple, iso, 
-                 iso_extended, and sql for dates and compilers that support wstrings. Thanks to 
+<td>Functions added to convert date and time classes to wstring. The library now
+                 provides to_*_wstring as well as to_*_string functions for: simple, iso,
+                 iso_extended, and sql for dates and compilers that support wstrings. Thanks to
                  Bart Garst for this change.
           </td>
 </tr>
 <tr>
 <td>Feature</td>
-<td>Period classes now handle zero length and NULL periods correctly. A NULL period 
-                 is a period with a negative length. Thanks to Frank Wolf and Bart Garst for this 
+<td>Period classes now handle zero length and NULL periods correctly. A NULL period
+                 is a period with a negative length. Thanks to Frank Wolf and Bart Garst for this
                  change.
           </td>
 </tr>
@@ -1207,7 +1227,7 @@ void save_to(archive_type&amp; ar,
 </tr>
 <tr>
 <td>Feature</td>
-<td>New names added for some date classes. Original names are still valid but may 
+<td>New names added for some date classes. Original names are still valid but may
                  some day be deprecated. Changes are:
             <table border="0" summary="Simple list" class="simplelist">
 <tr>
@@ -1255,13 +1275,13 @@ date previous_weekday(date, greg_weekday);</pre>
 </tr>
 <tr>
 <td>Feature</td>
-<td>New experimental duration types added for months, years, and weeks. These classes 
+<td>New experimental duration types added for months, years, and weeks. These classes
                  also provide mathematical operators for use with date and time classes.  Be aware
-                 that adding of months or years a time or date past the 28th of a month may show 
-                 non-normal mathematical properties.  This is a result of 'end-of-month' 
-                 snapping used in the calculation.  The last example below illustrates the    
-                 issue.  
-           
+                 that adding of months or years a time or date past the 28th of a month may show
+                 non-normal mathematical properties.  This is a result of 'end-of-month'
+                 snapping used in the calculation.  The last example below illustrates the
+                 issue.
+
             <pre class="screen">months m(12);
 years y(1);
 m == y; // true
@@ -1273,7 +1293,7 @@ t += months(3);
 date d(2004,Jan,30);
 d += months(1); //2004-Feb-29
 d -= months(1); //2004-Jan-29</pre>
-            Input  streaming is not yet implemented for these types.              
+            Input  streaming is not yet implemented for these types.
 	    Thanks to Bart Garst for this change.
           </td>
 </tr>
@@ -1284,8 +1304,8 @@ d -= months(1); //2004-Jan-29</pre>
 </tr>
 <tr>
 <td>Feature</td>
-<td>Added constructors for date and ptime that allow for default construction (both) 
-                 and special values construction (ptime, both now support this). Default 
+<td>Added constructors for date and ptime that allow for default construction (both)
+                 and special values construction (ptime, both now support this). Default
                  constructors initialize the objects to not_a_date_time (NADT).
                  <pre class="screen">ptime p_nadt(not_a_date_time);
 ptime p_posinf(pos_infin);
@@ -1319,21 +1339,21 @@ ws &gt;&gt; d; //Feb 29th, 2000</pre>
 <td> Fixed bug in duration_from_string() where a string formatted with
                   less than full amount of fractional digits created an incorrect
                   time_duration.  With microsecond resolution for time durations
-                  the string "1:01:01.010" created a time duration of 
+                  the string "1:01:01.010" created a time duration of
                   01:01:01.000010 instead of 01:01:01.010000
           </td>
 </tr>
 <tr>
 <td>Bug Fix</td>
-<td>Fixed the special value constructor for gregorian::date and posix_time::ptime 
-                 when constructing with min_date_time or max_date_time.  The wrong value was 
+<td>Fixed the special value constructor for gregorian::date and posix_time::ptime
+                 when constructing with min_date_time or max_date_time.  The wrong value was
                  constructed for these.
           </td>
 </tr>
 </tbody>
 </table></div>
 <h4>
-<a name="id762667"></a>Changes from Boost 1.30 to 1.31 (date_time 1.01 to 1.02)</h4>
+<a name="id1054370"></a>Changes from Boost 1.30 to 1.31 (date_time 1.01 to 1.02)</h4>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -1386,8 +1406,8 @@ ws &gt;&gt; d; //Feb 29th, 2000</pre>
 </tr>
 <tr>
 <td>Feature</td>
-<td>Added a function to time_duration to get the total number of seconds in a 
-                 duration truncating any fractional seconds. In addition, other resolutions 
+<td>Added a function to time_duration to get the total number of seconds in a
+                 duration truncating any fractional seconds. In addition, other resolutions
                  were added to allow for easy conversions. For example
 	    <pre class="screen">seconds(1).total_milliseconds() == 1000
 seconds(1).total_microseconds() == 1000000
@@ -1422,9 +1442,9 @@ td = -td; //-5 hours</pre>
 </tbody>
 </table></div>
 <h4>
-<a name="id762976"></a>Changes from Boost 1.29 to 1.30 (date_time 1.00 to 1.01)</h4>
+<a name="id1054680"></a>Changes from Boost 1.29 to 1.30 (date_time 1.00 to 1.01)</h4>
 <p>
-    Notice: The interface to the partial_date class (see <a class="link" href="gregorian.html#date_time.gregorian.date_algorithms" title="Date Generators/Algorithms">date_algorithms</a>) was changed. The order of construction parameters was changed which will cause some code to fail execution. This change was made to facilitate more generic local time adjustment code. Thus instead of specifying partial_date pd(Dec,25) the code needs to be changed to partial_date pd(25, Dec); 
+    Notice: The interface to the partial_date class (see <a class="link" href="gregorian.html#date_time.gregorian.date_algorithms" title="Date Generators/Algorithms">date_algorithms</a>) was changed. The order of construction parameters was changed which will cause some code to fail execution. This change was made to facilitate more generic local time adjustment code. Thus instead of specifying partial_date pd(Dec,25) the code needs to be changed to partial_date pd(25, Dec);
   </p>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -1483,7 +1503,7 @@ td = -td; //-5 hours</pre>
 </tbody>
 </table></div>
 </div>
-<div class="section" title="Acknowledgements">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.acknowledgements"></a>Acknowledgements</h3></div></div></div>
 <p>
@@ -1499,7 +1519,7 @@ td = -td; //-5 hours</pre>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="serialization.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../date_time.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="serialization.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../date_time.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
