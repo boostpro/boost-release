@@ -2,11 +2,11 @@
  * Subject to the Boost Software License, Version 1.0. 
  * (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2008-02-27 15:00:24 -0500 (Wed, 27 Feb 2008) $
+ * $Date: 2008-11-26 16:07:14 -0500 (Wed, 26 Nov 2008) $
  */
 
 
-#include "boost/date_time/testfrmwk.hpp"
+#include "../testfrmwk.hpp"
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/date_time/local_time/custom_time_zone.hpp"
@@ -32,7 +32,7 @@ int main(){
   try{
     tz_database tz_db;
     tz_db.load_from_file("missing_file.csv"); // file does not exist
-  }catch(data_not_accessible e){
+  }catch(data_not_accessible& e){
     check("Caught Missing data file exception", true);
   }catch(...){
     check("Caught first unexpected exception", false);
@@ -52,7 +52,7 @@ int main(){
   try {
     // first try to find the data file from the test dir
     tz_db.load_from_file("../data/date_time_zonespec.csv");
-  }catch(data_not_accessible e) {
+  }catch(data_not_accessible& e) {
     // couldn't find the data file so assume we are being run from 
     // boost_root/status and try again
     tz_db.load_from_file("../libs/date_time/data/date_time_zonespec.csv");
@@ -121,14 +121,14 @@ bool run_bad_field_count_test()
   tz_database other_db;
   try{
     other_db.load_from_file("local_time/poorly_formed_zonespec.csv");
-  }catch(bad_field_count be){
+  }catch(bad_field_count& be){
     caught_bfc = true;
   }catch(...) {
     // do nothing (file not found)
   }
   try{
     other_db.load_from_file("../libs/date_time/test/local_time/poorly_formed_zonespec.csv");
-  }catch(bad_field_count be){
+  }catch(bad_field_count& be){
     caught_bfc = true;
   }catch(...) {
     // do nothing (file not found)

@@ -34,6 +34,7 @@
 <dt><span class="section"><a href="tasks.html#bbv2.builtins.raw">Custom commands</a></span></dt>
 <dt><span class="section"><a href="tasks.html#bbv2.reference.precompiled_headers">Precompiled Headers</a></span></dt>
 <dt><span class="section"><a href="tasks.html#bbv2.reference.generated_headers">Generated headers</a></span></dt>
+<dt><span class="section"><a href="tasks.html#bbv2.tasks.crosscompile">Cross-compilation</a></span></dt>
 </dl></div>
 <p>
     This section describes main targets types that Boost.Build supports
@@ -43,7 +44,7 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.programs"></a>Programs</h3></div></div></div>
-<a class="indexterm" name="id4120366"></a><p>
+<a class="indexterm" name="id4455545"></a><p>
       Programs are created using the <code class="computeroutput">exe</code> rule, which follows the
       <a class="link" href="advanced.html#bbv2.main-target-rule-syntax">common syntax</a>. For
       example:
@@ -292,7 +293,7 @@ exe main : main.cpp static_libraries ;
       files.
     </p>
 <h4>
-<a name="id4120933"></a>Basic install</h4>
+<a name="id4456112"></a>Basic install</h4>
 <p>
       For installing a built target you should use the <code class="computeroutput">install</code>
       rule, which follows the <a class="link" href="advanced.html#bbv2.main-target-rule-syntax">
@@ -331,7 +332,7 @@ install dist2 : hello helpers : &lt;location&gt;$(DIST) ;
       variables</a>
     </p>
 <h4>
-<a name="id4121048"></a>Installing with all dependencies</h4>
+<a name="id4456226"></a>Installing with all dependencies</h4>
 <p>
       Specifying the names of all libraries to install can be boring. The
       <code class="computeroutput">install</code> allows you to specify only the top-level executable
@@ -355,8 +356,8 @@ install dist : hello
       otherwise, all found target will be installed.
     </p>
 <h4>
-<a name="id4121101"></a>Preserving Directory Hierarchy</h4>
-<a class="indexterm" name="id4121105"></a><p>
+<a name="id4456279"></a>Preserving Directory Hierarchy</h4>
+<a class="indexterm" name="id4456283"></a><p>
       By default, the <code class="computeroutput">install</code> rule will strip paths from its
       sources. So, if sources include <code class="filename">a/b/c.hpp</code>, the
       <code class="filename">a/b</code> part will be ignored. To make the
@@ -380,7 +381,7 @@ install headers
       an entire directory tree.
     </p>
 <h4>
-<a name="id4121181"></a>Installing into Several Directories</h4>
+<a name="id4456358"></a>Installing into Several Directories</h4>
 <p>
       The <a class="link" href="tasks.html#bbv2.tasks.alias" title="Alias"><code class="computeroutput">alias</code></a> rule can be
       used when targets need to be installed into several directories:
@@ -394,7 +395,7 @@ install install-lib : helper : /usr/lib ;
     </p>
 <p>
       Because the <code class="computeroutput">install</code> rule just copies targets, most free
-      features <sup>[<a name="id4121218" href="#ftn.id4121218" class="footnote">13</a>]</sup> have no
+      features <sup>[<a name="id4456395" href="#ftn.id4456395" class="footnote">13</a>]</sup> have no
       effect when used in requirements of the <code class="computeroutput">install</code> rule. The
       only two that matter are <a class="link" href="reference.html#bbv2.builtin.features.dependency">
       <code class="varname">dependency</code></a> and, on Unix, <a class="link" href="reference.html#bbv2.reference.features.dll-path"><code class="varname">dll-path</code>
@@ -728,9 +729,49 @@ exe app : app.cpp : &lt;implicit-dependency&gt;parser ;
       as potential dependencies.
     </p>
 </div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="bbv2.tasks.crosscompile"></a>Cross-compilation</h3></div></div></div>
+<a class="indexterm" name="id4457306"></a><p>Boost.Build supports cross compilation with the gcc and msvc
+    toolsets.</p>
+<p>
+      When using gcc, you first need to specify your cross compiler
+      in <code class="filename">user-config.jam</code> (see <a class="xref" href="advanced.html#bbv2.advanced.configuration" title="Configuration">the section called &#8220;Configuration&#8221;</a>), 
+      for example:</p>
+<pre class="programlisting">
+using gcc : arm : arm-none-linux-gnueabi-g++ ;
+</pre>
+<p>
+      After that, if the host and target os are the same, for example Linux, you can
+      just request that this compiler version to be used:
+    </p>
+<pre class="screen">
+bjam toolset=gcc-arm
+</pre>
+<p>
+      If you want to target different operating system from the host, you need
+      to additionally specify the value for the <code class="computeroutput">target-os</code> feature, for
+      example:
+    </p>
+<pre class="screen">
+# On windows box
+bjam toolset=gcc-arm <span class="bold"><strong>target-os=linux</strong></span>
+# On Linux box
+bjam toolset=gcc-mingw <span class="bold"><strong>target-os=windows</strong></span>
+</pre>
+<p>
+      For the complete list of allowed opeating system names, please see the documentation for 
+      <a class="link" href="reference.html#bbv2.reference.features.target-os">target-os feature</a>.
+    </p>
+<p>
+      When using the msvc compiler, it's only possible to cross-compiler to a 64-bit system
+      on a 32-bit host. Please see <a class="xref" href="reference.html#v2.reference.tools.compiler.msvc.64" title="64-bit support">the section called &#8220;64-bit support&#8221;</a> for
+      details.
+    </p>
+</div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id4121218" href="#id4121218" class="para">13</a>] </sup>see the definition of "free" in <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id4456395" href="#id4456395" class="para">13</a>] </sup>see the definition of "free" in <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

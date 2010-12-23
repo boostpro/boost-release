@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../jam.html" title="Chapter 29. Boost.Jam : 3.1.16">
+<link rel="up" href="../jam.html" title="Chapter 29. Boost.Jam : 3.1.17">
 <link rel="prev" href="miscellaneous.html" title="Miscellaneous">
 <link rel="next" href="../bbv2.html" title="Chapter 30. Boost.Build V2 User Manual">
 </head>
@@ -29,6 +29,171 @@
 <div class="variablelist">
 <p class="title"><b></b></p>
 <dl>
+<dt><span class="term">3.1.17</span></dt>
+<dd>
+<p>
+        </p>
+<p>
+          A year in the making this release has many stability improvements and various
+          performance improvements. And because of the efforts of Jurko the code
+          is considerably more readable!
+        </p>
+<p>
+          </p>
+<div class="itemizedlist"><ul type="disc">
+<li>Reflect the results of calling bjam from Python. -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>For building on Windows: Rework how arguments are parsed and tested to
+          fix handling of quoted arguments, options arguments, and arguments with
+          "=". -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>Try to work around at least
+          one compiler bug with GCC and variable aliasing that causes crashes with
+          hashing file cache entries. -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>Add -Wc,-fno-strict-aliasing
+          for QCC/QNX to avoid the same aliasing crashes as in the general GCC 4.x
+          series (thanks to Niklas Angare for the fix). -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>On Windows let the child bjam commands inherit stdin, as some commands
+          assume it's available. -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>On Windows don't
+          limit bjam output to ASCII as some tools output characters in extended
+          character sets. -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>Isolate running of bjam
+          tests to individual bjam instances to prevent possible spillover errors
+          from one test affecting another test. Separate the bjam used to run the
+          tests vs. the bjam being tested. And add automatic re-building of the bjam
+          being tested. -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>Fix some possible overrun
+          issues revealed by Fortify build. Thanks to Steven Robbins for pointing
+          out the issues. -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>Handle \n and \r escape
+          sequences. -- <span class="emphasis"><em>Vladimir P.</em></span>
+</li>
+<li>Minor edits to remove -Wall
+          warnings. -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>Dynamically adjust pwd buffer
+          query size to allow for when PATH_MAX is default defined instead of being
+          provided by the system C library. -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>Minor
+          perf improvement for bjam by replacing hash function with faster version.
+          Only 1% diff for Boost tree. -- <span class="emphasis"><em>Rene R.</em></span>
+</li>
+<li>Updated Boost
+          Jam's error location reporting when parsing Jamfiles. Now it reports the
+          correct error location information when encountering an unexpected EOF.
+          It now also reports where an invalid lexical token being read started instead
+          of finished which makes it much easier to find errors like unclosed quotes
+          or curly braces. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Removed the -xarch=generic
+          architecture from build.jam as this option is unknown so the Sun compilers
+          on Linux. -- <span class="emphasis"><em>Noel B.</em></span>
+</li>
+<li>Fixed a bug with T_FATE_ISTMP
+          getting reported as T_FATE_ISTMP &amp; T_FATE_NEEDTMP at the same time
+          due to a missing break in a switch statement. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Fixed a Boost Jam bug causing it to sometimes trigger actions depending
+          on targets that have not been built yet. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Added missing documentation for Boost Jam's :T variable expansion modifier
+          which converts all back-slashes ('\') to forward slashed ('/'). -- <span class="emphasis"><em>Jurko
+          G.</em></span>
+</li>
+<li>Added Boost Jam support for executing command lines longer
+          than 2047 characters (up to 8191) characters when running on Windows XP
+          or later OS version. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Fixed a Boost Jam
+          bug on Windows causing its SHELL command not to work correctly with some
+          commands containing quotes. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Corrected
+          a potential memory leak in Boost Jam's builtin_shell() function that would
+          appear should Boost Jam ever start to release its allocated string objects.
+          -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Made all Boost Jam's ECHO commands automatically
+          flush the standard output to make that output more promptly displayed to
+          the user. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Made Boost Jam tests quote their
+          bjam executable name when calling it allowing those executables to contain
+          spaces in their name and/or path. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Change
+          execunix.c to always use fork() instead of vfork() on the Mac. This works
+          around known issues with bjam on PPC under Tiger and a problem reported
+          by Rene with bjam on x86 under Leopard. -- <span class="emphasis"><em>Noel B.</em></span>
+</li>
+<li>Corrected a bug in Boost Jam's base Jambase script causing it to trim the
+          error message displayed when its boost-build rule gets called multiple
+          times. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>When importing from Python into
+          an module with empty string as name, import into root module. -- <span class="emphasis"><em>Vladimir
+          P.</em></span>
+</li>
+<li>Patch for the NORMALIZE_PATH builtin Boost Jam rule as well
+          as an appropriate update for the path.jam Boost Build module where that
+          rule was being used to implement path join and related operations. --
+          <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Fixed a bug causing Boost Jam not to handle
+          target file names specified as both short and long file names correctly.
+          -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Relaxed test, ignoring case of drive letter.
+          -- <span class="emphasis"><em>Roland S.</em></span>
+</li>
+<li>Implemented a patch contributed by Igor
+          Nazarenko reimplementing the list_sort() function to use a C qsort() function
+          instead of a hand-crafted merge-sort algorithm. Makes some list sortings
+          (e.g. 1,2,1,2,1,2,1,2, ...) extremely faster, in turn significantly speeding
+          up some project builds. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Fixed a bug with
+          bjam not handling the '' root Windows path correctly without its drive
+          letter being specified. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Solved the problem
+          with child process returning the value 259 (Windows constant STILL_ACTIVE)
+          causing bjam never to detect that it exited and therefore keep running
+          in an endless loop. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Solved the problem
+          with bjam going into an active wait state, hogging up processor resources,
+          when waiting for one of its child processes to terminate while not all
+          of its available child process slots are being used. -- <span class="emphasis"><em>Jurko
+          G.</em></span>
+</li>
+<li>Solved a race condition between bjam's output reading/child
+          process termination detection and the child process's output generation/termination
+          which could have caused bjam not to collect the terminated process's final
+          output. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Change from vfork to fork for
+          executing actions on Darwin to improve stability. -- <span class="emphasis"><em>Noel B.</em></span>
+</li>
+<li>Code reformatting and cleanups. -- <span class="emphasis"><em>Jurko G.</em></span>
+</li>
+<li>Implement
+          ISFILE built-in. -- <span class="emphasis"><em>Vladimir P.</em></span>
+</li>
+</ul></div>
+<p>
+        </p>
+<p>
+        </p>
+</dd>
 <dt><span class="term">3.1.16</span></dt>
 <dd>
 <p>

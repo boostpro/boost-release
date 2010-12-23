@@ -3,11 +3,11 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2008-02-27 15:00:24 -0500 (Wed, 27 Feb 2008) $
+ * $Date: 2008-11-26 16:07:14 -0500 (Wed, 26 Nov 2008) $
  */
 
 #include "boost/date_time/gregorian/gregorian.hpp"
-#include "boost/date_time/testfrmwk.hpp"
+#include "../testfrmwk.hpp"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -18,7 +18,7 @@
 template<class temporal_type, class exception_type>
 bool failure_test(temporal_type component,
                   const std::string& input,
-                  exception_type /*except*/,
+                  exception_type const& /*except*/,
                   boost::gregorian::date_input_facet* facet)
 {
   using namespace boost::gregorian;
@@ -29,7 +29,7 @@ bool failure_test(temporal_type component,
   try {
     iss >> component;
   }
-  catch(exception_type e) {
+  catch(exception_type& e) {
     std::cout << "Expected exception caught: \"" 
               << e.what() << "\"" << std::endl;
     result = iss.fail(); // failbit must be set to pass test
@@ -398,6 +398,12 @@ int main(){
   iss >> d;
   check("Special values, default strings, not_a_date_time date",
       d == date(not_a_date_time));
+
+  // in addition check that special_value_from_string also works correctly for other special values
+  check("Special values, default strings, not_special test",
+      special_value_from_string("not_special") == not_special);
+  check("Special values, default strings, junk test",
+      special_value_from_string("junk") == not_special);
 
   // special values custom, strings
   special_values_parser svp("NADT", "MINF", "INF", "MINDT", "MAXDT");

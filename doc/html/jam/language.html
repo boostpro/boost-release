@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../jam.html" title="Chapter 29. Boost.Jam : 3.1.16">
+<link rel="up" href="../jam.html" title="Chapter 29. Boost.Jam : 3.1.17">
 <link rel="prev" href="usage.html" title="Using BJam">
 <link rel="next" href="miscellaneous.html" title="Miscellaneous">
 </head>
@@ -386,7 +386,7 @@ report I 2 : sorry : Joe Dave Pete ;
               Builds a direct dependency: makes each of <span class="emphasis"><em>targets1</em></span>
               depend on each of <span class="emphasis"><em>targets2</em></span>. Generally, <span class="emphasis"><em>targets1</em></span>
               will be rebuilt if <span class="emphasis"><em>targets2</em></span> are themselves rebuilt
-              are or are newer than <span class="emphasis"><em>targets1</em></span>.
+              or are newer than <span class="emphasis"><em>targets1</em></span>.
             </p>
 </div>
 <div class="section" lang="en">
@@ -550,7 +550,7 @@ INCLUDES foo.c : foo.h ;
 </pre>
 <p>
               For handling targets whose build actions are expected to fail (e.g.
-              when testing that assertions or compile-time type checkin work properly),
+              when testing that assertions or compile-time type checking work properly),
               Boost Jam supplies the <code class="literal">FAIL_EXPECTED</code> rule in the
               same style as <code class="literal">NOCARE</code>, et. al. During target updating,
               the return code of the build actions for arguments to <code class="literal">FAIL_EXPECTED</code>
@@ -727,8 +727,8 @@ INCLUDES foo.c : foo.h ;
 <p>
               If no target was specified with the <code class="literal">UPDATE</code> rule,
               no targets will be updated. To support changing of the update list
-              in more usefull ways, the rule also returns the targets previously
-              in the update list. This makes it possible to add targets as such:
+              in more useful ways, the rule also returns the targets previously in
+              the update list. This makes it possible to add targets as such:
             </p>
 <pre class="programlisting">local previous-updates = [ UPDATE ] ;
 UPDATE $(previous-updates) a-new-target ;
@@ -1198,6 +1198,18 @@ $(Z) -&gt;
 <dd><p>
               Replace uppercase characters with lowercase.
             </p></dd>
+<dt><span class="term"><code class="literal">:T</code></span></dt>
+<dd>
+<p>
+              Converts all back-slashes ("\") to forward slashes ("/").
+              For example 
+</p>
+<pre class="programlisting"><span class="identifier">x</span> <span class="special">=</span> <span class="string">"C:\\Program Files\\Borland"</span> <span class="special">;</span> <span class="identifier">ECHO</span> #<span class="special">(</span><span class="identifier">x</span><span class="special">:</span><span class="identifier">T</span><span class="special">)</span> <span class="special">;</span>
+</pre>
+<p>
+              prints <code class="literal">"C:/Program Files/Borland"</code>
+            </p>
+</dd>
 <dt><span class="term"><code class="literal">:W</code></span></dt>
 <dd>
 <p>
@@ -1492,7 +1504,7 @@ ECHO $(y) ;     # prints "4 5 6"
               </p></dd>
 <dt><span class="term"><code class="literal">JAMVERSION</code></span></dt>
 <dd><p>
-                <code class="literal">bjam</code> version, currently "3.1.16"
+                <code class="literal">bjam</code> version, currently "3.1.17"
               </p></dd>
 <dt><span class="term"><code class="literal">JAM_VERSION</code></span></dt>
 <dd><p>

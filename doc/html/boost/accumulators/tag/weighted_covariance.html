@@ -29,9 +29,10 @@
 <p>boost::accumulators::tag::weighted_covariance</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> VariateType, <span class="bold"><strong>typename</strong></span> VariateTag&gt; 
-<span class="bold"><strong>struct</strong></span> <a class="link" href="weighted_covariance.html" title="Struct template weighted_covariance">weighted_covariance</a> :
-  <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; Feature1, Feature2, &gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_covariance_hpp" title="Header &lt;boost/accumulators/statistics/weighted_covariance.hpp&gt;">boost/accumulators/statistics/weighted_covariance.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> VariateType, <span class="bold"><strong>typename</strong></span> VariateTag&gt; 
+<span class="bold"><strong>struct</strong></span> <a class="link" href="weighted_covariance.html" title="Struct template weighted_covariance">weighted_covariance</a> : <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; boost::accumulators::tag::count, boost::accumulators::tag::sum_of_weights, boost::accumulators::tag::weighted_mean, boost::accumulators::tag::weighted_mean_of_variates&lt; VariateType, VariateTag &gt; &gt;
 {
   <span class="emphasis"><em>// types</em></span>
   <span class="bold"><strong>typedef</strong></span> <a class="link" href="../impl/weighted_covariance_impl.html" title="Struct template weighted_covariance_impl">accumulators::impl::weighted_covariance_impl</a>&lt; mpl::_1, mpl::_2, VariateType, VariateTag &gt; <a name="boost.accumulators.tag.weighted_covariance.impl"></a>impl;

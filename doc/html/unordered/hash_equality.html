@@ -122,8 +122,24 @@
       This is a simplified version of the example at <a href="../../../libs/unordered/examples/case_insensitive.hpp" target="_top">/libs/unordered/examples/case_insensitive.hpp</a>
       which supports other locales and string types.
     </p>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../doc/html/images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Be careful when using the equality (<code class="computeroutput"><span class="special">==</span></code>)
+        operator with custom equality predicates, especially if you're using a function
+        pointer. If you compare two containers with different equality predicates
+        then the result is undefined. For most stateless function objects this is
+        impossible - since you can only compare objects with the same equality predicate
+        you know the equality predicates must be equal. But if you're using function
+        pointers or a stateful equality predicate (e.g. boost::function) then you
+        can get into trouble.
+      </p></td></tr>
+</table></div>
 <a name="unordered.hash_equality.custom_types"></a><h3>
-<a name="id3950739"></a>
+<a name="id4282610"></a>
       <a class="link" href="hash_equality.html#unordered.hash_equality.custom_types">Custom Types</a>
     </h3>
 <p>
@@ -203,7 +219,7 @@
       containers.
     </p>
 <div class="table">
-<a name="id3951830"></a><p class="title"><b>Table 24.3. Methods for accessing the hash and equality functions.</b></p>
+<a name="id4283701"></a><p class="title"><b>Table 24.3. Methods for accessing the hash and equality functions.</b></p>
 <div class="table-contents"><table class="table" summary="Methods for accessing the hash and equality functions.">
 <colgroup>
 <col>

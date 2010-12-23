@@ -29,9 +29,10 @@
 <p>boost::accumulators::tag::mean_of_variates</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> VariateType, <span class="bold"><strong>typename</strong></span> VariateTag&gt; 
-<span class="bold"><strong>struct</strong></span> <a class="link" href="mean_of_variates.html" title="Struct template mean_of_variates">mean_of_variates</a> :
-  <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; Feature1, Feature2, &gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.mean_hpp" title="Header &lt;boost/accumulators/statistics/mean.hpp&gt;">boost/accumulators/statistics/mean.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> VariateType, <span class="bold"><strong>typename</strong></span> VariateTag&gt; 
+<span class="bold"><strong>struct</strong></span> <a class="link" href="mean_of_variates.html" title="Struct template mean_of_variates">mean_of_variates</a> : <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; boost::accumulators::tag::count, boost::accumulators::tag::sum_of_variates&lt; VariateType, VariateTag &gt; &gt;
 {
 };</pre></div>
 </div>

@@ -75,6 +75,10 @@ main()
         BOOST_TEST(test("0", xdigit));
         BOOST_TEST(test("f", xdigit));
         BOOST_TEST(!test("g", xdigit));
+
+        BOOST_TEST(test("é", alpha));
+        BOOST_TEST(test("é", lower));
+        BOOST_TEST(!test("é", upper));
     }
 
     {
@@ -138,7 +142,7 @@ main()
         BOOST_STATIC_ASSERT((
             boost::is_same<
                 attribute_of<domain, alpha_type, char const*, int>::type
-              , char>::value));
+              , unsigned char>::value));
 
         int attr = 0;
         BOOST_TEST(test_attr("a", alpha, attr));

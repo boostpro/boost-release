@@ -29,7 +29,9 @@
 <p>boost::date_time::local_adjustor &#8212; Template that simplifies the creation of local time calculator. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> time_type, <span class="bold"><strong>short</strong></span> utc_offset, <span class="bold"><strong>typename</strong></span> dst_rule&gt; 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../date_time/doxy.html#header.boost.date_time.local_time_adjustor_hpp" title="Header &lt;boost/date_time/local_time_adjustor.hpp&gt;">boost/date_time/local_time_adjustor.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> time_type, <span class="bold"><strong>short</strong></span> utc_offset, <span class="bold"><strong>typename</strong></span> dst_rule&gt; 
 <span class="bold"><strong>class</strong></span> <a class="link" href="local_adjustor.html" title="Class template local_adjustor">local_adjustor</a> {
 <span class="bold"><strong>public</strong></span>:
   <span class="emphasis"><em>// types</em></span>
@@ -37,13 +39,13 @@
   <span class="bold"><strong>typedef</strong></span> time_type::date_type                                                                                <a name="boost.date_time.local_adjustor.date_type"></a>date_type;         
   <span class="bold"><strong>typedef</strong></span> <a class="link" href="static_local_time_adjustor.html" title="Class template static_local_time_adjustor">static_local_time_adjustor</a>&lt; time_type, dst_rule, <a class="link" href="utc_adjustment.html" title="Class template utc_adjustment">utc_adjustment</a>&lt; time_duration_type, utc_offset &gt; &gt; <a name="boost.date_time.local_adjustor.dst_adjustor"></a>dst_adjustor;      
 
-  <span class="emphasis"><em>// <a class="link" href="local_adjustor.html#id2457582-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="local_adjustor.html#id2457585-bb">utc_to_local</a>(<span class="bold"><strong>const</strong></span> time_type &amp;) ;
+  <span class="emphasis"><em>// <a class="link" href="local_adjustor.html#id3011363-bb">public static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="local_adjustor.html#id3004007-bb">utc_to_local</a>(<span class="bold"><strong>const</strong></span> time_type &amp;) ;
   <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> 
-  <a class="link" href="local_adjustor.html#id2457601-bb">local_to_utc</a>(<span class="bold"><strong>const</strong></span> time_type &amp;, date_time::dst_flags = date_time::calculate) ;
+  <a class="link" href="local_adjustor.html#id3004023-bb">local_to_utc</a>(<span class="bold"><strong>const</strong></span> time_type &amp;, date_time::dst_flags = date_time::calculate) ;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id2847530"></a><h2>Description</h2>
+<a name="id3112951"></a><h2>Description</h2>
 <p>Use this template to create the timezone to utc convertors as required.</p>
 <p>This class will also work for other regions that don't use dst and have a utc offset which is an integral number of hours.</p>
 <p><span class="bold"><strong>Template Parameters</strong></span> -time_type -- Time class to use -utc_offset -- Number hours local time is adjust from utc -use_dst -- true (default) if region uses dst, false otherwise For example: </p>
@@ -56,12 +58,12 @@
 </pre>
 <p> </p>
 <div class="refsect2" lang="en">
-<a name="id2847569"></a><h3>
-<a name="id2457582-bb"></a><code class="computeroutput">local_adjustor</code> public static functions</h3>
+<a name="id3112990"></a><h3>
+<a name="id3011363-bb"></a><code class="computeroutput">local_adjustor</code> public static functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id2457585-bb"></a>utc_to_local(<span class="bold"><strong>const</strong></span> time_type &amp; t) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id3004007-bb"></a>utc_to_local(<span class="bold"><strong>const</strong></span> time_type &amp; t) ;</pre></li>
 <li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> 
-<a name="id2457601-bb"></a>local_to_utc(<span class="bold"><strong>const</strong></span> time_type &amp; t, 
+<a name="id3004023-bb"></a>local_to_utc(<span class="bold"><strong>const</strong></span> time_type &amp; t, 
              date_time::dst_flags dst = date_time::calculate) ;</pre></li>
 </ol></div>
 </div>

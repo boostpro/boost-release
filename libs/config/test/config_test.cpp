@@ -1,4 +1,4 @@
-//  This file was automatically generated on Sat Sep 20 09:49:52 2008
+//  This file was automatically generated on Tue Dec 16 16:41:41 2008
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -6,7 +6,7 @@
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/config for the most recent version.//
-//  Revision $Id: config_test.cpp 49212 2008-10-09 16:08:03Z johnmaddock $
+//  Revision $Id: config_test.cpp 50531 2009-01-10 11:18:42Z johnmaddock $
 //
 
 // Test file for config setup
@@ -116,6 +116,11 @@ namespace boost_no_function_template_ordering = empty_boost;
 #include "boost_no_i64_limits.ipp"
 #else
 namespace boost_no_ms_int64_numeric_limits = empty_boost;
+#endif
+#ifndef BOOST_NO_INITIALIZER_LISTS
+#include "boost_no_initializer_lists.ipp"
+#else
+namespace boost_no_initializer_lists = empty_boost;
 #endif
 #ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
 #include "boost_no_inline_memb_init.ipp"
@@ -286,6 +291,11 @@ namespace boost_no_std_output_iterator_assign = empty_boost;
 #include "boost_no_std_typeinfo.ipp"
 #else
 namespace boost_no_std_typeinfo = empty_boost;
+#endif
+#ifndef BOOST_NO_STD_UNORDERED
+#include "boost_no_std_unordered.ipp"
+#else
+namespace boost_no_std_unordered = empty_boost;
 #endif
 #ifndef BOOST_NO_STD_USE_FACET
 #include "boost_no_std_use_facet.ipp"
@@ -966,6 +976,11 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_MS_INT64_NUMERIC_LIMITS at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_initializer_lists::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_INITIALIZER_LISTS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_inclass_member_initialization::test())
    {
       std::cerr << "Failed test for BOOST_NO_INCLASS_MEMBER_INITIALIZATION at: " << __FILE__ << ":" << __LINE__ << std::endl;
@@ -1134,6 +1149,11 @@ int main( int, char *[] )
    if(0 != boost_no_std_typeinfo::test())
    {
       std::cerr << "Failed test for BOOST_NO_STD_TYPEINFO at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_std_unordered::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_STD_UNORDERED at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_std_use_facet::test())

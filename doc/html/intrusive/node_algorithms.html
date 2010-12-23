@@ -38,6 +38,8 @@
       splay tree algorithms</a></span></dt>
 <dt><span class="section"><a href="node_algorithms.html#intrusive.node_algorithms.avltree_algorithms"> Intrusive
       avl tree algorithms</a></span></dt>
+<dt><span class="section"><a href="node_algorithms.html#intrusive.node_algorithms.treap_algorithms"> Intrusive
+      treap algorithms</a></span></dt>
 </dl></div>
 <p>
       As explained in the <a class="link" href="concepts.html" title="Concepts explained">Concepts</a> section,
@@ -456,7 +458,7 @@
 
 <span class="keyword">struct</span> <span class="identifier">node_ptr_compare</span>
 <span class="special">{</span>
-   <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">b</span><span class="special">)</span>
+   <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">b</span><span class="special">)</span>
    <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">a</span><span class="special">-&gt;</span><span class="identifier">int_</span> <span class="special">&lt;</span> <span class="identifier">b</span><span class="special">-&gt;</span><span class="identifier">int_</span><span class="special">;</span>  <span class="special">}</span>
 <span class="special">};</span>
 
@@ -615,7 +617,7 @@
 
 <span class="keyword">struct</span> <span class="identifier">node_ptr_compare</span>
 <span class="special">{</span>
-   <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">b</span><span class="special">)</span>
+   <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">b</span><span class="special">)</span>
    <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">a</span><span class="special">-&gt;</span><span class="identifier">int_</span> <span class="special">&lt;</span> <span class="identifier">b</span><span class="special">-&gt;</span><span class="identifier">int_</span><span class="special">;</span>  <span class="special">}</span>
 <span class="special">};</span>
 
@@ -809,7 +811,7 @@
 
 <span class="keyword">struct</span> <span class="identifier">node_ptr_compare</span>
 <span class="special">{</span>
-   <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">b</span><span class="special">)</span>
+   <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">b</span><span class="special">)</span>
    <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">a</span><span class="special">-&gt;</span><span class="identifier">int_</span> <span class="special">&lt;</span> <span class="identifier">b</span><span class="special">-&gt;</span><span class="identifier">int_</span><span class="special">;</span>  <span class="special">}</span>
 <span class="special">};</span>
 
@@ -854,10 +856,169 @@
         reference</a></code>.
       </p>
 </div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="intrusive.node_algorithms.treap_algorithms"></a><a class="link" href="node_algorithms.html#intrusive.node_algorithms.treap_algorithms" title="Intrusive treap algorithms"> Intrusive
+      treap algorithms</a>
+</h3></div></div></div>
+<p>
+        <code class="computeroutput"><a class="link" href="../boost/intrusive/treap_algorithms.html" title="Class template treap_algorithms">treap_algorithms</a></code>
+        have the same interface as <code class="computeroutput"><a class="link" href="../boost/intrusive/rbtree_algorithms.html" title="Class template rbtree_algorithms">rbtree_algorithms</a></code>.
+      </p>
+<p>
+      </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">NodeTraits</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">treap_algorithms</span><span class="special">;</span>
+</pre>
+<p>
+        <code class="computeroutput"><a class="link" href="../boost/intrusive/treap_algorithms.html" title="Class template treap_algorithms">treap_algorithms</a></code>
+        is configured with a NodeTraits class, which encapsulates the information
+        about the node to be manipulated. NodeTraits must support the following interface:
+      </p>
+<p>
+        <span class="bold"><strong>Typedefs</strong></span>:
+      </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<code class="computeroutput"><span class="identifier">node</span></code>: The type of the node
+          that forms the circular treap
+        </li>
+<li>
+<code class="computeroutput"><span class="identifier">node_ptr</span></code>: The type of a
+          pointer to a node (usually node*)
+        </li>
+<li>
+<code class="computeroutput"><span class="identifier">const_node_ptr</span></code>: The type
+          of a pointer to a const node (usually const node*)
+        </li>
+</ul></div>
+<p>
+        <span class="bold"><strong>Static functions</strong></span>:
+      </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<code class="computeroutput"><span class="keyword">static</span> <span class="identifier">node_ptr</span>
+          <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">);</span></code>: Returns a pointer to the parent node
+          stored in "n".
+        </li>
+<li>
+<code class="computeroutput"><span class="keyword">static</span> <span class="keyword">void</span>
+          <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span>
+          <span class="identifier">p</span><span class="special">);</span></code>:
+          Sets the pointer to the parent node stored in "n" to "p".
+        </li>
+<li>
+<code class="computeroutput"><span class="keyword">static</span> <span class="identifier">node_ptr</span>
+          <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">);</span></code>: Returns a pointer to the left node stored
+          in "n".
+        </li>
+<li>
+<code class="computeroutput"><span class="keyword">static</span> <span class="keyword">void</span>
+          <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span>
+          <span class="identifier">l</span><span class="special">);</span></code>:
+          Sets the pointer to the left node stored in "n" to "l".
+        </li>
+<li>
+<code class="computeroutput"><span class="keyword">static</span> <span class="identifier">node_ptr</span>
+          <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">);</span></code>: Returns a pointer to the right node
+          stored in "n".
+        </li>
+<li>
+<code class="computeroutput"><span class="keyword">static</span> <span class="keyword">void</span>
+          <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span>
+          <span class="identifier">r</span><span class="special">);</span></code>:
+          Sets the pointer to the right node stored in "n" to "r".
+        </li>
+</ul></div>
+<p>
+        Once we have a node traits configuration we can use <span class="bold"><strong>Boost.Intrusive</strong></span>
+        algorithms with our nodes:
+      </p>
+<p>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">treap_algorithms</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
+
+<span class="keyword">struct</span> <span class="identifier">my_node</span>
+<span class="special">{</span>
+   <span class="identifier">my_node</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">priority</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span>
+      <span class="special">:</span>  <span class="identifier">prio_</span><span class="special">(</span><span class="identifier">priority</span><span class="special">),</span> <span class="identifier">int_</span><span class="special">(</span><span class="identifier">i</span><span class="special">)</span>
+   <span class="special">{}</span>
+   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">parent_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">left_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">right_</span><span class="special">;</span>
+   <span class="keyword">int</span> <span class="identifier">prio_</span><span class="special">;</span>
+   <span class="comment">//other members
+</span>   <span class="keyword">int</span>      <span class="identifier">int_</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="comment">//Define our own treap_node_traits
+</span><span class="keyword">struct</span> <span class="identifier">my_treap_node_traits</span>
+<span class="special">{</span>
+   <span class="keyword">typedef</span> <span class="identifier">my_node</span>                                    <span class="identifier">node</span><span class="special">;</span>
+   <span class="keyword">typedef</span> <span class="identifier">my_node</span> <span class="special">*</span>                                  <span class="identifier">node_ptr</span><span class="special">;</span>
+   <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span>                            <span class="identifier">const_node_ptr</span><span class="special">;</span>
+
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span><span class="special">;</span>   <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">parent</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span> <span class="special">=</span> <span class="identifier">parent</span><span class="special">;</span> <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span><span class="special">;</span>     <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">left</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">;</span>     <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span><span class="special">;</span>    <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">right</span><span class="special">)</span>  <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">;</span>   <span class="special">}</span>  
+<span class="special">};</span>
+
+<span class="keyword">struct</span> <span class="identifier">node_ptr_compare</span>
+<span class="special">{</span>  <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">b</span><span class="special">)</span> <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">a</span><span class="special">-&gt;</span><span class="identifier">int_</span> <span class="special">&lt;</span> <span class="identifier">b</span><span class="special">-&gt;</span><span class="identifier">int_</span><span class="special">;</span>  <span class="special">}</span>  <span class="special">};</span>
+
+<span class="keyword">struct</span> <span class="identifier">node_ptr_priority</span>
+<span class="special">{</span>  <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">b</span><span class="special">)</span> <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">a</span><span class="special">-&gt;</span><span class="identifier">prio_</span> <span class="special">&lt;</span> <span class="identifier">b</span><span class="special">-&gt;</span><span class="identifier">prio_</span><span class="special">;}</span>  <span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+   <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">treap_algorithms</span><span class="special">&lt;</span><span class="identifier">my_treap_node_traits</span><span class="special">&gt;</span> <span class="identifier">algo</span><span class="special">;</span>
+   <span class="identifier">my_node</span> <span class="identifier">header</span><span class="special">,</span> <span class="identifier">two</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="number">5</span><span class="special">),</span> <span class="identifier">three</span><span class="special">(</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
+
+   <span class="comment">//Create an empty treap container:
+</span>   <span class="comment">//"header" will be the header node of the tree
+</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">);</span>
+
+   <span class="comment">//Now insert node "two" in the tree using the sorting functor
+</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_upper_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">(),</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
+
+   <span class="comment">//Now insert node "three" in the tree using the sorting functor
+</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_lower_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">(),</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
+
+   <span class="comment">//Now take the first node (the left node of the header)
+</span>   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">n</span> <span class="special">=</span> <span class="identifier">header</span><span class="special">.</span><span class="identifier">left_</span><span class="special">;</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">);</span>
+
+   <span class="comment">//Now go to the next node
+</span>   <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">algo</span><span class="special">::</span><span class="identifier">next_node</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>      
+
+   <span class="comment">//Erase a node just using a pointer to it
+</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
+
+   <span class="comment">//Erase a node using also the header (faster)
+</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">erase</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+
+</pre>
+<p>
+        </p>
+<p>
+      </p>
+<p>
+        For a complete list of functions see <code class="computeroutput"><a class="link" href="../boost/intrusive/treap_algorithms.html" title="Class template treap_algorithms">treap_algorithms
+        reference</a></code>.
+      </p>
+</div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2005 Olaf Krzikalla, 2006-2007 Ion Gaztañaga<p>
+<td align="right"><div class="copyright-footer">Copyright © 2005 Olaf Krzikalla, 2006-2008 Ion Gaztañaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

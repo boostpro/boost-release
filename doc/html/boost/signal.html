@@ -29,7 +29,9 @@
 <p>boost::signal &#8212; Safe multicast callback.</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="emphasis"><em>  // Function type R (T1, T2, ..., TN)</em></span>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../signals/reference.html#header.boost.signal_hpp" title="Header &lt;boost/signal.hpp&gt;">boost/signal.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="emphasis"><em>  // Function type R (T1, T2, ..., TN)</em></span>
          <span class="bold"><strong>typename</strong></span> Combiner = <a class="link" href="last_value.html" title="Class template last_value">last_value</a>&lt;R&gt;, 
          <span class="bold"><strong>typename</strong></span> Group = <span class="bold"><strong>int</strong></span>, 
          <span class="bold"><strong>typename</strong></span> GroupCompare = std::less&lt;Group&gt;, 
@@ -38,11 +40,11 @@
 {
 <span class="bold"><strong>public</strong></span>:
   <span class="emphasis"><em>// <a class="link" href="signal.html#boost.signalconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="signal.html#id2311737-bb">signal</a>(<span class="bold"><strong>const</strong></span> combiner_type&amp; = combiner_type(), 
+  <a class="link" href="signal.html#id2746149-bb">signal</a>(<span class="bold"><strong>const</strong></span> combiner_type&amp; = combiner_type(), 
          <span class="bold"><strong>const</strong></span> group_compare_type&amp; = group_compare_type());
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3668960"></a><h2>Description</h2>
+<a name="id3993306"></a><h2>Description</h2>
 <p>Class template <a class="link" href="signal.html" title="Class template signal">signal</a> is a thin
         wrapper around the numbered class templates <a class="link" href="signalN.html" title="Class template signalN">signal0</a>, <a class="link" href="signalN.html" title="Class template signalN">signal1</a>, etc. It accepts a function
         type with N arguments instead of N separate arguments, and
@@ -51,12 +53,12 @@
 <p>All functionality of this class template is in its base
         class <a class="link" href="signalN.html" title="Class template signalN">signalN</a>.</p>
 <div class="refsect2" lang="en">
-<a name="id3669012"></a><h3>
+<a name="id3993358"></a><h3>
 <a name="boost.signalconstruct-copy-destruct"></a><code class="computeroutput">signal</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1"><li>
-<pre class="literallayout"><a name="id2311737-bb"></a>signal(<span class="bold"><strong>const</strong></span> combiner_type&amp; combiner = combiner_type(), 
+<pre class="literallayout"><a name="id2746149-bb"></a>signal(<span class="bold"><strong>const</strong></span> combiner_type&amp; combiner = combiner_type(), 
        <span class="bold"><strong>const</strong></span> group_compare_type&amp; compare = group_compare_type());</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">

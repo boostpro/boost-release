@@ -4,11 +4,11 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2008-02-27 15:00:24 -0500 (Wed, 27 Feb 2008) $
+ * $Date: 2009-02-01 06:29:43 -0500 (Sun, 01 Feb 2009) $
  */
 
 #include "boost/date_time/posix_time/posix_time.hpp"
-#include "boost/date_time/testfrmwk.hpp"
+#include "../testfrmwk.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -24,7 +24,7 @@ teststreaming(std::string testname,
   std::basic_stringstream<charT> ss;
   ss.imbue(locale);
   ss << value;
-  check(testname, ss.str() == expected_result);
+  check_equal(testname, ss.str(), expected_result);
 }
 
 
@@ -54,6 +54,8 @@ int main() {
     ptime tf = t + microseconds(3);
     time_period tp(t, tf + days(7) + time_duration(1,1,1));
     time_duration td = hours(3) + minutes(2) + seconds(1) + milliseconds(9);
+    time_duration longer_td = hours(10) + minutes(22) + seconds(15) + milliseconds(980); // two characters in hours
+    time_duration long_td = hours(300) + minutes(2) + seconds(1) + milliseconds(9); // more than two characters in hours
     {
       std::stringstream ss;
       ss << t;
@@ -93,6 +95,18 @@ int main() {
       ss.str("");
       ss << td;
       check("Multiple literal '%'s in time_duration format", ss.str() == std::string("03:02:01 %01"));
+      ss.str("");
+
+      // Longer time durations
+      f->time_duration_format("%H:%M:%S");
+      ss << longer_td;
+      check("Longer time durations", ss.str() == std::string("10:22:15"));
+      ss.str("");
+
+      // Long time durations
+      f->time_duration_format("%O:%M:%S");
+      ss << long_td;
+      check("Long time durations", ss.str() == std::string("300:02:01"));
       ss.str("");
     }
     { // negative time_duration tests
@@ -168,9 +182,35 @@ int main() {
       ss << td4 - td3;
       result = "-00 hours and -01 minutes";
       check("Negative time_duration two sign flags" + ss.str(), result == ss.str());
+      ss.str("");
 
+      // Longer time durations
+      f->time_duration_format("%-%H:%M:%S");
+      ss << -longer_td;
+      check("Longer negative time durations", ss.str() == std::string("-10:22:15"));
+      ss.str("");
+
+      // Long time durations
+      f->time_duration_format("%-%O:%M:%S");
+      ss << -long_td;
+      check("Long negative time durations", ss.str() == std::string("-300:02:01"));
+      ss.str("");
     }
-      
+
+    // The test verifies that #2698 is fixed. That is, the time and date facet should
+    // not dereference end() iterator for the format string in do_put_tm.
+    {
+      boost::gregorian::date date(2009, 1, 1);
+      boost::posix_time::time_duration td(0, 0, 0, 0);
+      boost::posix_time::ptime boost_time(date, td);
+      std::stringstream sstr;
+    
+      boost::posix_time::time_facet* pFacet = new boost::posix_time::time_facet("");
+      sstr.imbue(std::locale(std::locale::classic(), pFacet));
+    
+      sstr << boost_time;
+    }
+
 #if !defined(BOOST_NO_STD_WSTRING) 
     std::copy(&short_month_names[0], 
               &short_month_names[12],

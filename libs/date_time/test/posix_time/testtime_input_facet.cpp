@@ -3,12 +3,12 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2008-02-27 15:00:24 -0500 (Wed, 27 Feb 2008) $
+ * $Date: 2008-11-26 16:07:14 -0500 (Wed, 26 Nov 2008) $
  */
 
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
-#include "boost/date_time/testfrmwk.hpp"
+#include "../testfrmwk.hpp"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -18,7 +18,7 @@
 template<class temporal_type, class exception_type>
 bool failure_test(temporal_type component,
                   const std::string& input,
-                  exception_type /*except*/,
+                  exception_type const& /*except*/,
                   boost::posix_time::time_input_facet* facet)
 {
   using namespace boost::posix_time;
@@ -29,7 +29,7 @@ bool failure_test(temporal_type component,
   try {
     iss >> component;
   }
-  catch(exception_type e) {
+  catch(exception_type& e) {
     std::cout << "Expected exception caught: \"" 
               << e.what() << "\"" << std::endl;
     result = iss.fail(); // failbit must be set to pass test

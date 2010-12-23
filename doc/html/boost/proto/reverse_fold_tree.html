@@ -31,7 +31,9 @@
           sub-trees that all share a common tag type.</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Sequence, <span class="bold"><strong>typename</strong></span> State0, <span class="bold"><strong>typename</strong></span> Fun&gt; 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../proto/reference.html#header.boost.proto.transform.fold_tree_hpp" title="Header &lt;boost/proto/transform/fold_tree.hpp&gt;">boost/proto/transform/fold_tree.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Sequence, <span class="bold"><strong>typename</strong></span> State0, <span class="bold"><strong>typename</strong></span> Fun&gt; 
 <span class="bold"><strong>struct</strong></span> <a class="link" href="reverse_fold_tree.html" title="Struct template reverse_fold_tree">reverse_fold_tree</a> :
   <span class="bold"><strong></strong></span> <a class="link" href="transform.html" title="Struct template transform">proto::transform</a>&lt; reverse_fold_tree&lt;Sequence, State0, Fun&gt; &gt;
 {
@@ -43,7 +45,7 @@
   };
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3649911"></a><h2>Description</h2>
+<a name="id3973227"></a><h2>Description</h2>
 <p>
             <code class="computeroutput">proto::reverse_fold_tree&lt;&gt;</code> is useful for flattening trees
             into lists; for example, you might use <code class="computeroutput">proto::reverse_fold_tree&lt;&gt;</code>
@@ -56,11 +58,11 @@
             </p>
 <pre class="programlisting"> template&lt;typename Tag, typename Fun&gt;
 struct recurse_if_ :
-  proto::if_&lt;
+  <a class="link" href="if_.html" title="Struct template if_">proto::if_</a>&lt;
     // If the current node has type type "Tag" ...
-    boost::is_same&lt;proto::tag_of&lt;proto::_&gt;, Tag&gt;(),
+    boost::is_same&lt;<a class="link" href="tag_of.html" title="Struct template tag_of">proto::tag_of</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>&gt;, Tag&gt;(),
     // ... recurse, otherwise ...
-    proto::reverse_fold&lt;proto::_, proto::_state, recurse_if_&lt;Tag, Fun&gt; &gt;,
+    <a class="link" href="reverse_fold.html" title="Struct template reverse_fold">proto::reverse_fold</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>, <a class="link" href="_state.html" title="Struct _state">proto::_state</a>, recurse_if_&lt;Tag, Fun&gt; &gt;,
     // ... apply the Fun transform.
     Fun
   &gt;
@@ -72,7 +74,7 @@ struct recurse_if_ :
             <code class="computeroutput">proto::reverse_fold_tree&lt;Sequence, State0, Fun&gt;()(expr, state, data)</code>
             is equivalent to:
             </p>
-<pre class="programlisting">proto::reverse_fold&lt;
+<pre class="programlisting"><a class="link" href="reverse_fold.html" title="Struct template reverse_fold">proto::reverse_fold</a>&lt;
   Sequence,
   State0,
   recurse_if_&lt;typename Expr::proto_tag, Fun&gt;

@@ -29,9 +29,10 @@
 <p>boost::accumulators::tag::weighted_density</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis">
-<span class="bold"><strong>struct</strong></span> <a class="link" href="weighted_density.html" title="Struct weighted_density">weighted_density</a> :
-  <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; Feature1, Feature2, &gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_density_hpp" title="Header &lt;boost/accumulators/statistics/weighted_density.hpp&gt;">boost/accumulators/statistics/weighted_density.hpp</a>&gt;
+
+</em></span>
+<span class="bold"><strong>struct</strong></span> <a class="link" href="weighted_density.html" title="Struct weighted_density">weighted_density</a> : <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; boost::accumulators::tag::count, boost::accumulators::tag::sum_of_weights, boost::accumulators::tag::min, boost::accumulators::tag::max &gt;
 {
   <span class="bold"><strong>static</strong></span> <span class="type">boost::parameter::keyword&lt; density_cache_size &gt; <span class="bold"><strong>const</strong></span></span> cache_size;
   <span class="bold"><strong>static</strong></span> <span class="type">boost::parameter::keyword&lt; density_num_bins &gt; <span class="bold"><strong>const</strong></span></span> num_bins;

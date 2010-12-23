@@ -27,7 +27,7 @@
 <a name="unordered.changes"></a><a class="link" href="changes.html" title="Change Log"> Change Log</a>
 </h2></div></div></div>
 <a name="unordered.changes.review_version"></a><h3>
-<a name="id3954268"></a>
+<a name="id4286143"></a>
       <a class="link" href="changes.html#unordered.changes.review_version">Review Version</a>
     </h3>
 <p>
@@ -35,7 +35,7 @@
       16th December 2007.
     </p>
 <a name="unordered.changes.1_35_0_add_on___31st_march_2008"></a><h3>
-<a name="id3954295"></a>
+<a name="id4286171"></a>
       <a class="link" href="changes.html#unordered.changes.1_35_0_add_on___31st_march_2008">1.35.0 Add-on
       - 31st March 2008</a>
     </h3>
@@ -59,7 +59,7 @@
       </li>
 </ul></div>
 <a name="unordered.changes.boost_1_36_0"></a><h3>
-<a name="id3954370"></a>
+<a name="id4286247"></a>
       <a class="link" href="changes.html#unordered.changes.boost_1_36_0">Boost 1.36.0</a>
     </h3>
 <p>
@@ -85,7 +85,7 @@
       </li>
 </ul></div>
 <a name="unordered.changes.boost_1_37_0"></a><h3>
-<a name="id3954422"></a>
+<a name="id4286298"></a>
       <a class="link" href="changes.html#unordered.changes.boost_1_37_0">Boost 1.37.0</a>
     </h3>
 <div class="itemizedlist"><ul type="disc">
@@ -102,6 +102,38 @@
         Move all the implementation inside <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">unordered</span></code>,
         to assist modularization and hopefully make it easier to track changes in
         subversion.
+      </li>
+</ul></div>
+<a name="unordered.changes.boost_1_38_0"></a><h3>
+<a name="id4286472"></a>
+      <a class="link" href="changes.html#unordered.changes.boost_1_38_0">Boost 1.38.0</a>
+    </h3>
+<div class="itemizedlist"><ul type="disc">
+<li>
+        Use <a href="../../../libs/utility/swap.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">swap</span></code></a>.
+      </li>
+<li>
+<a href="https://svn.boost.org/trac/boost/ticket/2237" target="_top">Ticket 2237</a>:
+        Document that the equality and inequality operators are undefined for two
+        objects if their equality predicates aren't equivalent. Thanks to Daniel
+        Krügler.
+      </li>
+<li>
+<a href="https://svn.boost.org/trac/boost/ticket/1710" target="_top">Ticket 1710</a>:
+        Use a larger prime number list. Thanks to Thorsten Ottosen and Hervé Brönnimann.
+      </li>
+<li>
+        Use <a href="../../../libs/type_traits/doc/html/boost_typetraits/category/alignment.html" target="_top">aligned
+        storage</a> to store the types. This changes the way the allocator is
+        used to construct nodes. It used to construct the node with two calls to
+        the allocator's <code class="computeroutput"><span class="identifier">construct</span></code>
+        method - once for the pointers and once for the value. It now constructs
+        the node with a single call to construct and then constructs the value using
+        in place construction.
+      </li>
+<li>
+        Add support for C++0x initializer lists where they're available (currently
+        only g++ 4.4 in C++0x mode).
       </li>
 </ul></div>
 </div>

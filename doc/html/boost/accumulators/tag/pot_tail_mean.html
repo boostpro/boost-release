@@ -29,9 +29,10 @@
 <p>boost::accumulators::tag::pot_tail_mean</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> LeftRight&gt; 
-<span class="bold"><strong>struct</strong></span> <a class="link" href="pot_tail_mean.html" title="Struct template pot_tail_mean">pot_tail_mean</a> :
-  <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; Feature1, Feature2, &gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.pot_tail_mean_hpp" title="Header &lt;boost/accumulators/statistics/pot_tail_mean.hpp&gt;">boost/accumulators/statistics/pot_tail_mean.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> LeftRight&gt; 
+<span class="bold"><strong>struct</strong></span> <a class="link" href="pot_tail_mean.html" title="Struct template pot_tail_mean">pot_tail_mean</a> : <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; boost::accumulators::tag::peaks_over_threshold&lt; LeftRight &gt;, boost::accumulators::tag::pot_quantile&lt; LeftRight &gt; &gt;
 {
 };</pre></div>
 </div>

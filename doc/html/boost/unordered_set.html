@@ -31,7 +31,9 @@
           </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Value, <span class="bold"><strong>typename</strong></span> Hash = <span class="type">boost::hash&lt;Value&gt;</span>, 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../unordered/reference.html#header.boost.unordered_set_hpp" title="Header &lt;boost/unordered_set.hpp&gt;">boost/unordered_set.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Value, <span class="bold"><strong>typename</strong></span> Hash = <span class="type">boost::hash&lt;Value&gt;</span>, 
          <span class="bold"><strong>typename</strong></span> Pred = <span class="type">std::equal_to&lt;Value&gt;</span>, 
          <span class="bold"><strong>typename</strong></span> Alloc = <span class="type">std::allocator&lt;Value&gt;</span> &gt; 
 <span class="bold"><strong>class</strong></span> <a class="link" href="unordered_set.html" title="Class template unordered_set">unordered_set</a> {
@@ -54,91 +56,91 @@
   <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a class="link" href="unordered_set.html#boost.unordered_set.const_local_iterator">const_local_iterator</a>;
 
   <span class="emphasis"><em>// <a class="link" href="unordered_set.html#boost.unordered_setconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_set.html#id2930006-bb">unordered_set</a>(size_type = <span class="emphasis"><em>implementation-defined</em></span>, 
+  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_set.html#id3331369-bb">unordered_set</a>(size_type = <span class="emphasis"><em>implementation-defined</em></span>, 
                          hasher <span class="bold"><strong>const</strong></span>&amp; = hasher(), 
                          key_equal <span class="bold"><strong>const</strong></span>&amp; = key_equal(), 
                          allocator_type <span class="bold"><strong>const</strong></span>&amp; = allocator_type());
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; 
-    <a class="link" href="unordered_set.html#id2669863-bb">unordered_set</a>(InputIterator, InputIterator, 
+    <a class="link" href="unordered_set.html#id3325795-bb">unordered_set</a>(InputIterator, InputIterator, 
                   size_type = implementation-defined, 
                   hasher <span class="bold"><strong>const</strong></span>&amp; = hasher(), key_equal <span class="bold"><strong>const</strong></span>&amp; = key_equal(), 
                   allocator_type <span class="bold"><strong>const</strong></span>&amp; = allocator_type());
-  <a class="link" href="unordered_set.html#id3109226-bb">unordered_set</a>(unordered_set <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_set.html#id3109247-bb">unordered_set</a>(Allocator <span class="bold"><strong>const</strong></span>&amp;);
-  <a class="link" href="unordered_set.html#id2967990-bb">unordered_set</a>(unordered_set <span class="bold"><strong>const</strong></span>&amp;, Allocator <span class="bold"><strong>const</strong></span>&amp;);
-  <a class="link" href="unordered_set.html#id2968030-bb">~unordered_set</a>();
-  <span class="type">unordered_set&amp;</span> <a class="link" href="unordered_set.html#id2968034-bb"><span class="bold"><strong>operator</strong></span>=</a>(unordered_set <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">allocator_type</span> <a class="link" href="unordered_set.html#id2669775-bb">get_allocator</a>() <span class="bold"><strong>const</strong></span>;
+  <a class="link" href="unordered_set.html#id3556805-bb">unordered_set</a>(unordered_set <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_set.html#id3556826-bb">unordered_set</a>(Allocator <span class="bold"><strong>const</strong></span>&amp;);
+  <a class="link" href="unordered_set.html#id2793928-bb">unordered_set</a>(unordered_set <span class="bold"><strong>const</strong></span>&amp;, Allocator <span class="bold"><strong>const</strong></span>&amp;);
+  <a class="link" href="unordered_set.html#id2793969-bb">~unordered_set</a>();
+  <span class="type">unordered_set&amp;</span> <a class="link" href="unordered_set.html#id2793972-bb"><span class="bold"><strong>operator</strong></span>=</a>(unordered_set <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">allocator_type</span> <a class="link" href="unordered_set.html#id2794000-bb">get_allocator</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id2669787-bb">size and capacity</a></em></span>
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_set.html#id2669792-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id2669815-bb">size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id2595331-bb">max_size</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id2794012-bb">size and capacity</a></em></span>
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_set.html#id2794017-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id3319581-bb">size</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id3319609-bb">max_size</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id2595354-bb">iterators</a></em></span>
-  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id2595363-bb">begin</a>();
-  <span class="type">const_iterator</span> <a class="link" href="unordered_set.html#id2595368-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id2463017-bb">end</a>();
-  <span class="type">const_iterator</span> <a class="link" href="unordered_set.html#id2463024-bb">end</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="unordered_set.html#id2463041-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="unordered_set.html#id2463060-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3319632-bb">iterators</a></em></span>
+  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id3319641-bb">begin</a>();
+  <span class="type">const_iterator</span> <a class="link" href="unordered_set.html#id3319646-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id3720575-bb">end</a>();
+  <span class="type">const_iterator</span> <a class="link" href="unordered_set.html#id3720583-bb">end</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_iterator</span> <a class="link" href="unordered_set.html#id3720600-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_iterator</span> <a class="link" href="unordered_set.html#id3720618-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id2970892-bb">modifiers</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a class="link" href="unordered_set.html#id2970897-bb">emplace</a>(Args&amp;&amp;...);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">iterator</span> <a class="link" href="unordered_set.html#id3308869-bb">emplace_hint</a>(const_iterator, Args&amp;&amp;...);
-  <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a class="link" href="unordered_set.html#id2421644-bb">insert</a>(value_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id2386432-bb">insert</a>(const_iterator, value_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id2920081-bb">insert</a>(InputIterator, InputIterator);
-  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id2441040-bb">erase</a>(const_iterator);
-  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id2923474-bb">erase</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id2966678-bb">erase</a>(const_iterator, const_iterator);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id3081272-bb">clear</a>();
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id3081309-bb">swap</a>(unordered_set&amp;);
+  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3720638-bb">modifiers</a></em></span>
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a class="link" href="unordered_set.html#id3720642-bb">emplace</a>(Args&amp;&amp;...);
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">iterator</span> <a class="link" href="unordered_set.html#id2873292-bb">emplace_hint</a>(const_iterator, Args&amp;&amp;...);
+  <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a class="link" href="unordered_set.html#id3562484-bb">insert</a>(value_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id3329401-bb">insert</a>(const_iterator, value_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id3328192-bb">insert</a>(InputIterator, InputIterator);
+  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id3559063-bb">erase</a>(const_iterator);
+  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id3559128-bb">erase</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id3557818-bb">erase</a>(const_iterator, const_iterator);
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id3328663-bb">clear</a>();
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id3328700-bb">swap</a>(unordered_set&amp;);
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id2986333-bb">observers</a></em></span>
-  <span class="type">hasher</span> <a class="link" href="unordered_set.html#id2986337-bb">hash_function</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">key_equal</span> <a class="link" href="unordered_set.html#id2986354-bb">key_eq</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3328753-bb">observers</a></em></span>
+  <span class="type">hasher</span> <a class="link" href="unordered_set.html#id3328758-bb">hash_function</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">key_equal</span> <a class="link" href="unordered_set.html#id3328775-bb">key_eq</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id2986373-bb">lookup</a></em></span>
-  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id2986382-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id2986400-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id2676424-bb">count</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">std::pair&lt;iterator, iterator&gt;</span> <a class="link" href="unordered_set.html#id2676463-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a class="link" href="unordered_set.html#id2676481-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3328793-bb">lookup</a></em></span>
+  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id3328803-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">iterator</span> <a class="link" href="unordered_set.html#id3329574-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id3329612-bb">count</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">std::pair&lt;iterator, iterator&gt;</span> <a class="link" href="unordered_set.html#id3329652-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a class="link" href="unordered_set.html#id3329669-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id2932316-bb">bucket interface</a></em></span>
-  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id2932321-bb">bucket_count</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id2932341-bb">max_bucket_count</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id2932362-bb">bucket_size</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id2932408-bb">bucket</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">local_iterator</span> <a class="link" href="unordered_set.html#id2664789-bb">begin</a>(size_type);
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_set.html#id2664807-bb">begin</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">local_iterator</span> <a class="link" href="unordered_set.html#id2664860-bb">end</a>(size_type);
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_set.html#id2947563-bb">end</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_set.html#id2947610-bb">cbegin</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_set.html#id2947659-bb">cend</a>(size_type);
+  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3329720-bb">bucket interface</a></em></span>
+  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id3559484-bb">bucket_count</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id3559504-bb">max_bucket_count</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id3559524-bb">bucket_size</a>(size_type) <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_set.html#id3559571-bb">bucket</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">local_iterator</span> <a class="link" href="unordered_set.html#id3559621-bb">begin</a>(size_type);
+  <span class="type">const_local_iterator</span> <a class="link" href="unordered_set.html#id3559639-bb">begin</a>(size_type) <span class="bold"><strong>const</strong></span>;
+  <span class="type">local_iterator</span> <a class="link" href="unordered_set.html#id3400602-bb">end</a>(size_type);
+  <span class="type">const_local_iterator</span> <a class="link" href="unordered_set.html#id3400621-bb">end</a>(size_type) <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_local_iterator</span> <a class="link" href="unordered_set.html#id3400669-bb">cbegin</a>(size_type) <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_local_iterator</span> <a class="link" href="unordered_set.html#id3400718-bb">cend</a>(size_type);
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id2931033-bb">hash policy</a></em></span>
-  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_set.html#id2931038-bb">load_factor</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_set.html#id2931058-bb">max_load_factor</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id2931079-bb">max_load_factor</a>(<span class="bold"><strong>float</strong></span>);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id2931112-bb">rehash</a>(size_type);
+  <span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3724610-bb">hash policy</a></em></span>
+  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_set.html#id3724615-bb">load_factor</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_set.html#id3724636-bb">max_load_factor</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id3724657-bb">max_load_factor</a>(<span class="bold"><strong>float</strong></span>);
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#id3724690-bb">rehash</a>(size_type);
 };
 
-<span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3313544-bb">Equality Comparisons</a></em></span>
+<span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3724740-bb">Equality Comparisons</a></em></span>
 <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Value, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_set.html#boost.operator==_id3313547"><span class="bold"><strong>operator</strong></span>==</a>(unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_set.html#boost.operator==_id3724744"><span class="bold"><strong>operator</strong></span>==</a>(unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
                   unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;);
 <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Value, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_set.html#boost.operator!=_id3313616"><span class="bold"><strong>operator</strong></span>!=</a>(unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_set.html#boost.operator!=_id3558934"><span class="bold"><strong>operator</strong></span>!=</a>(unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
                   unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;);
 
-<span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3284625-bb">swap</a></em></span>
+<span class="emphasis"><em>// <a class="link" href="unordered_set.html#id3559009-bb">swap</a></em></span>
 <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Value, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#boost.swap_id3284630">swap</a>(unordered_set&lt;Value, Hash, Pred, Alloc&gt;&amp;, 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_set.html#boost.swap_id3559014">swap</a>(unordered_set&lt;Value, Hash, Pred, Alloc&gt;&amp;, 
             unordered_set&lt;Value, Hash, Pred, Alloc&gt;&amp;);</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3956678"></a><h2>Description</h2>
+<a name="id4288677"></a><h2>Description</h2>
 <p>For the normative reference see chapter 23 of
               <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2691.pdf" target="_top">the working draft of the C++ standard [n2691].</a></p>
 <p><span class="bold"><strong>Template Parameters</strong></span>
@@ -172,7 +174,7 @@
 <p>The elements are organized into buckets. Keys with the same hash code are stored in the same bucket.</p>
 <p>The number of buckets can be automatically increased by a call to insert, or as the result of calling rehash.</p>
 <div class="refsect2" lang="en">
-<a name="id3956786"></a><h3>
+<a name="id4288785"></a><h3>
 <a name="boost.unordered_settypes"></a><code class="computeroutput">unordered_set</code> 
         public
        types</h3>
@@ -217,13 +219,13 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3957014"></a><h3>
+<a name="id4289012"></a><h3>
 <a name="boost.unordered_setconstruct-copy-destruct"></a><code class="computeroutput">unordered_set</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id2930006-bb"></a>unordered_set(size_type n = <span class="emphasis"><em>implementation-defined</em></span>, 
+<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id3331369-bb"></a>unordered_set(size_type n = <span class="emphasis"><em>implementation-defined</em></span>, 
                        hasher <span class="bold"><strong>const</strong></span>&amp; hf = hasher(), 
                        key_equal <span class="bold"><strong>const</strong></span>&amp; eq = key_equal(), 
                        allocator_type <span class="bold"><strong>const</strong></span>&amp; a = allocator_type());</pre>
@@ -232,13 +234,13 @@
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><code class="computeroutput"><a class="link" href="unordered_set.html#id2669815-bb">size</a>() == 0</code></td>
+<td><code class="computeroutput"><a class="link" href="unordered_set.html#id3319581-bb">size</a>() == 0</code></td>
 </tr></tbody>
 </table></div>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; 
-  <a name="id2669863-bb"></a>unordered_set(InputIterator f, InputIterator l, 
+  <a name="id3325795-bb"></a>unordered_set(InputIterator f, InputIterator l, 
                 size_type n = implementation-defined, 
                 hasher <span class="bold"><strong>const</strong></span>&amp; hf = hasher(), 
                 key_equal <span class="bold"><strong>const</strong></span>&amp; eq = key_equal(), 
@@ -246,55 +248,55 @@
 <p>Constructs an empty container with at least n buckets, using hf as the hash function, eq as the key equality predicate, a as the allocator and a maximum load factor of 1.0 and inserts the elements from [f, l) into it.</p>
 </li>
 <li>
-<pre class="literallayout"><a name="id3109226-bb"></a>unordered_set(unordered_set <span class="bold"><strong>const</strong></span>&amp;);</pre>
+<pre class="literallayout"><a name="id3556805-bb"></a>unordered_set(unordered_set <span class="bold"><strong>const</strong></span>&amp;);</pre>
 <p>The copy constructor. Copies the contained elements, hash function, predicate, maximum load factor and allocator.</p>
 </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id3109247-bb"></a>unordered_set(Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
+<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id3556826-bb"></a>unordered_set(Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
 <p>Constructs an empty container, using allocator <code class="computeroutput">a</code>.</p>
 </li>
 <li>
-<pre class="literallayout"><a name="id2967990-bb"></a>unordered_set(unordered_set <span class="bold"><strong>const</strong></span>&amp; x, Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
+<pre class="literallayout"><a name="id2793928-bb"></a>unordered_set(unordered_set <span class="bold"><strong>const</strong></span>&amp; x, Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
 <p>Constructs an container, copying <code class="computeroutput">x</code>'s contained elements, hash function, predicate, maximum load factor, but using allocator <code class="computeroutput">a</code>.</p>
 </li>
-<li><pre class="literallayout"><a name="id2968030-bb"></a>~unordered_set();</pre></li>
+<li><pre class="literallayout"><a name="id2793969-bb"></a>~unordered_set();</pre></li>
 </ol></div>
 </div>
-<pre class="literallayout"><span class="type">unordered_set&amp;</span> <a name="id2968034-bb"></a><span class="bold"><strong>operator</strong></span>=(unordered_set <span class="bold"><strong>const</strong></span>&amp;);</pre>
+<pre class="literallayout"><span class="type">unordered_set&amp;</span> <a name="id2793972-bb"></a><span class="bold"><strong>operator</strong></span>=(unordered_set <span class="bold"><strong>const</strong></span>&amp;);</pre>
 <p>The assignment operator. Copies the contained elements, hash function, predicate and maximum load factor but not the allocator.</p>
-<pre class="literallayout"><span class="type">allocator_type</span> <a name="id2669775-bb"></a>get_allocator() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">allocator_type</span> <a name="id2794000-bb"></a>get_allocator() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="refsect2" lang="en">
-<a name="id3957337"></a><h3>
-<a name="id2669787-bb"></a><code class="computeroutput">unordered_set</code> size and capacity</h3>
+<a name="id4289335"></a><h3>
+<a name="id2794012-bb"></a><code class="computeroutput">unordered_set</code> size and capacity</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2669792-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2794017-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
-<td><code class="computeroutput"><a class="link" href="unordered_set.html#id2669815-bb">size</a>() == 0</code></td>
+<td><code class="computeroutput"><a class="link" href="unordered_set.html#id3319581-bb">size</a>() == 0</code></td>
 </tr></tbody>
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id2669815-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id3319581-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
-<td><code class="computeroutput">std::distance(<a class="link" href="unordered_set.html#id2595358-bb">begin</a>(), <a class="link" href="unordered_set.html#id2463012-bb">end</a>())</code></td>
+<td><code class="computeroutput">std::distance(<a class="link" href="unordered_set.html#id3319636-bb">begin</a>(), <a class="link" href="unordered_set.html#id3720570-bb">end</a>())</code></td>
 </tr></tbody>
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id2595331-bb"></a>max_size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id3319609-bb"></a>max_size() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
 <td>
-<code class="computeroutput"><a class="link" href="unordered_set.html#id2669815-bb">size</a>()</code> of the largest possible container.
+<code class="computeroutput"><a class="link" href="unordered_set.html#id3319581-bb">size</a>()</code> of the largest possible container.
               </td>
 </tr></tbody>
 </table></div>
@@ -302,12 +304,12 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3957502"></a><h3>
-<a name="id2595354-bb"></a><code class="computeroutput">unordered_set</code> iterators</h3>
+<a name="id4289499"></a><h3>
+<a name="id3319632-bb"></a><code class="computeroutput">unordered_set</code> iterators</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id2595358-bb"></a><span class="type">iterator</span> <a name="id2595363-bb"></a>begin();
-<span class="type">const_iterator</span> <a name="id2595368-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id3319636-bb"></a><span class="type">iterator</span> <a name="id3319641-bb"></a>begin();
+<span class="type">const_iterator</span> <a name="id3319646-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -318,8 +320,8 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id2463012-bb"></a><span class="type">iterator</span> <a name="id2463017-bb"></a>end();
-<span class="type">const_iterator</span> <a name="id2463024-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id3720570-bb"></a><span class="type">iterator</span> <a name="id3720575-bb"></a>end();
+<span class="type">const_iterator</span> <a name="id3720583-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -330,7 +332,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id2463041-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3720600-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -341,7 +343,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id2463060-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3720618-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -354,11 +356,11 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3957693"></a><h3>
-<a name="id2970892-bb"></a><code class="computeroutput">unordered_set</code> modifiers</h3>
+<a name="id4289691"></a><h3>
+<a name="id3720638-bb"></a><code class="computeroutput">unordered_set</code> modifiers</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a name="id2970897-bb"></a>emplace(Args&amp;&amp;... args);</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a name="id3720642-bb"></a>emplace(Args&amp;&amp;... args);</pre>
 <p>Inserts an object, constructed with the arguments <code class="computeroutput">args</code>, in the container if and only if there is no element in the container with an equivalent value.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -387,7 +389,7 @@
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; 
-  <span class="type">iterator</span> <a name="id3308869-bb"></a>emplace_hint(const_iterator hint, Args&amp;&amp;... args);</pre>
+  <span class="type">iterator</span> <a name="id2873292-bb"></a>emplace_hint(const_iterator hint, Args&amp;&amp;... args);</pre>
 <p>Inserts an object, constructed with the arguments <code class="computeroutput">args</code>, in the container if and only if there is no element in the container with an equivalent value.</p>
 <p>hint is a suggestion to where the element should be inserted.</p>
 <div class="variablelist"><table border="0">
@@ -414,7 +416,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a name="id2421644-bb"></a>insert(value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
+<pre class="literallayout"><span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a name="id3562484-bb"></a>insert(value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
 <p>Inserts obj in the container if and only if there is no element in the container with an equivalent value.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -441,7 +443,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id2386432-bb"></a>insert(const_iterator hint, value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3329401-bb"></a>insert(const_iterator hint, value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
 <p>Inserts obj in the container if and only if there is no element in the container with an equivalent value.</p>
 <p>hint is a suggestion to where the element should be inserted.</p>
 <div class="variablelist"><table border="0">
@@ -468,7 +470,7 @@
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2920081-bb"></a>insert(InputIterator first, InputIterator last);</pre>
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3328192-bb"></a>insert(InputIterator first, InputIterator last);</pre>
 <p>Inserts a range of elements into the container. Elements are inserted if and only if there is no element in the container with an equivalent value.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -488,7 +490,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id2441040-bb"></a>erase(const_iterator position);</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3559063-bb"></a>erase(const_iterator position);</pre>
 <p>Erase the element pointed to by <code class="computeroutput">position</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -508,7 +510,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id2923474-bb"></a>erase(key_type <span class="bold"><strong>const</strong></span>&amp; k);</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id3559128-bb"></a>erase(key_type <span class="bold"><strong>const</strong></span>&amp; k);</pre>
 <p>Erase all elements with key equivalent to <code class="computeroutput">k</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -525,7 +527,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id2966678-bb"></a>erase(const_iterator first, const_iterator last);</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3557818-bb"></a>erase(const_iterator first, const_iterator last);</pre>
 <p>Erases the elements in the range from <code class="computeroutput">first</code> to <code class="computeroutput">last</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -545,14 +547,14 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3081272-bb"></a>clear();</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3328663-bb"></a>clear();</pre>
 <p>Erases all elements in the container.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><p><code class="computeroutput"><a class="link" href="unordered_set.html#id2669815-bb">size</a>() == 0</code></p></td>
+<td><p><code class="computeroutput"><a class="link" href="unordered_set.html#id3319581-bb">size</a>() == 0</code></p></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -562,7 +564,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3081309-bb"></a>swap(unordered_set&amp;);</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3328700-bb"></a>swap(unordered_set&amp;);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -581,11 +583,11 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3958457"></a><h3>
-<a name="id2986333-bb"></a><code class="computeroutput">unordered_set</code> observers</h3>
+<a name="id4290455"></a><h3>
+<a name="id3328753-bb"></a><code class="computeroutput">unordered_set</code> observers</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type">hasher</span> <a name="id2986337-bb"></a>hash_function() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">hasher</span> <a name="id3328758-bb"></a>hash_function() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -596,7 +598,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">key_equal</span> <a name="id2986354-bb"></a>key_eq() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">key_equal</span> <a name="id3328775-bb"></a>key_eq() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -609,12 +611,12 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3958546"></a><h3>
-<a name="id2986373-bb"></a><code class="computeroutput">unordered_set</code> lookup</h3>
+<a name="id4290545"></a><h3>
+<a name="id3328793-bb"></a><code class="computeroutput">unordered_set</code> lookup</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id2986378-bb"></a><span class="type">iterator</span> <a name="id2986382-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k);
-<span class="type">iterator</span> <a name="id2986400-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id3328798-bb"></a><span class="type">iterator</span> <a name="id3328803-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k);
+<span class="type">iterator</span> <a name="id3329574-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -624,7 +626,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id2676424-bb"></a>count(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id3329612-bb"></a>count(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -634,8 +636,8 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id2676459-bb"></a><span class="type">std::pair&lt;iterator, iterator&gt;</span> <a name="id2676463-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k);
-<span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a name="id2676481-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id3329647-bb"></a><span class="type">std::pair&lt;iterator, iterator&gt;</span> <a name="id3329652-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k);
+<span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a name="id3329669-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -650,11 +652,11 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3958767"></a><h3>
-<a name="id2932316-bb"></a><code class="computeroutput">unordered_set</code> bucket interface</h3>
+<a name="id4290764"></a><h3>
+<a name="id3329720-bb"></a><code class="computeroutput">unordered_set</code> bucket interface</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id2932321-bb"></a>bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id3559484-bb"></a>bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -664,7 +666,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id2932341-bb"></a>max_bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id3559504-bb"></a>max_bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -674,13 +676,13 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id2932362-bb"></a>bucket_size(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id3559524-bb"></a>bucket_size(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td><p><code class="computeroutput">n &lt; <a class="link" href="unordered_set.html#id2932321-bb">bucket_count</a>()</code></p></td>
+<td><p><code class="computeroutput">n &lt; <a class="link" href="unordered_set.html#id3559484-bb">bucket_count</a>()</code></p></td>
 </tr>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
@@ -690,7 +692,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id2932408-bb"></a>bucket(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id3559571-bb"></a>bucket(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -706,8 +708,8 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id2664784-bb"></a><span class="type">local_iterator</span> <a name="id2664789-bb"></a>begin(size_type n);
-<span class="type">const_local_iterator</span> <a name="id2664807-bb"></a>begin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id3559616-bb"></a><span class="type">local_iterator</span> <a name="id3559621-bb"></a>begin(size_type n);
+<span class="type">const_local_iterator</span> <a name="id3559639-bb"></a>begin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -723,8 +725,8 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id2664855-bb"></a><span class="type">local_iterator</span> <a name="id2664860-bb"></a>end(size_type n);
-<span class="type">const_local_iterator</span> <a name="id2947563-bb"></a>end(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id3400598-bb"></a><span class="type">local_iterator</span> <a name="id3400602-bb"></a>end(size_type n);
+<span class="type">const_local_iterator</span> <a name="id3400621-bb"></a>end(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -740,7 +742,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id2947610-bb"></a>cbegin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id3400669-bb"></a>cbegin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -756,7 +758,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id2947659-bb"></a>cend(size_type n);</pre>
+<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id3400718-bb"></a>cend(size_type n);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -774,11 +776,11 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3959237"></a><h3>
-<a name="id2931033-bb"></a><code class="computeroutput">unordered_set</code> hash policy</h3>
+<a name="id4291237"></a><h3>
+<a name="id3724610-bb"></a><code class="computeroutput">unordered_set</code> hash policy</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id2931038-bb"></a>load_factor() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id3724615-bb"></a>load_factor() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -788,7 +790,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id2931058-bb"></a>max_load_factor() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id3724636-bb"></a>max_load_factor() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -798,7 +800,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2931079-bb"></a>max_load_factor(<span class="bold"><strong>float</strong></span> z);</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3724657-bb"></a>max_load_factor(<span class="bold"><strong>float</strong></span> z);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -808,7 +810,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2931112-bb"></a>rehash(size_type n);</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3724690-bb"></a>rehash(size_type n);</pre>
 <p>Changes the number of buckets so that there at least <code class="computeroutput">n</code> buckets, and so that the load factor is less than the maximum load factor.</p>
 <p>Invalidates iterators, and changes the order of elements. Pointers and references to elements are not invalidated.</p>
 <div class="variablelist"><table border="0">
@@ -822,41 +824,49 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3959430"></a><h3>
-<a name="id3313544-bb"></a><code class="computeroutput">unordered_set</code> Equality Comparisons</h3>
+<a name="id4291428"></a><h3>
+<a name="id3724740-bb"></a><code class="computeroutput">unordered_set</code> Equality Comparisons</h3>
 <div class="orderedlist"><ol type="1">
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Value, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator==_id3313547"></a><span class="bold"><strong>operator</strong></span>==(unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator==_id3724744"></a><span class="bold"><strong>operator</strong></span>==(unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
                   unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; y);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Notes:</span></p></td>
-<td><p>This is a boost extension.</p></td>
+<td>
+<p>This is a boost extension.</p>
+<p>Behavior is undefined if the two containers don't have
+                    equivalent equality predicates.</p>
+</td>
 </tr></tbody>
 </table></div>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Value, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator!=_id3313616"></a><span class="bold"><strong>operator</strong></span>!=(unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator!=_id3558934"></a><span class="bold"><strong>operator</strong></span>!=(unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
                   unordered_set&lt;Value, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; y);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Notes:</span></p></td>
-<td><p>This is a boost extension.</p></td>
+<td>
+<p>This is a boost extension.</p>
+<p>Behavior is undefined if the two containers don't have
+                    equivalent equality predicates.</p>
+</td>
 </tr></tbody>
 </table></div>
 </li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3959615"></a><h3>
-<a name="id3284625-bb"></a><code class="computeroutput">unordered_set</code> swap</h3>
+<a name="id4291621"></a><h3>
+<a name="id3559009-bb"></a><code class="computeroutput">unordered_set</code> swap</h3>
 <div class="orderedlist"><ol type="1"><li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Value, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="boost.swap_id3284630"></a>swap(unordered_set&lt;Value, Hash, Pred, Alloc&gt;&amp; x, 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="boost.swap_id3559014"></a>swap(unordered_set&lt;Value, Hash, Pred, Alloc&gt;&amp; x, 
             unordered_set&lt;Value, Hash, Pred, Alloc&gt;&amp; y);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">

@@ -206,7 +206,10 @@ path-constant DATA : data/a.txt ;
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.advanced.builtins.features"></a>Builtin features</h3></div></div></div>
-<div class="variablelist"><dl>
+<p>This section documents the features that are built-in into
+    Boost.Build. For features with a fixed set of values, that set is
+    provided, with the default value listed first.</p>
+<a class="indexterm" name="id4458070"></a><div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">variant</code></span></dt>
 <dd>
 <p>
@@ -271,6 +274,18 @@ path-constant DATA : data/a.txt ;
             not use shared libraries at all, and on some compilers,
             mixing static and shared runtime requires extreme care.  Check
             your compiler documentation for more details.
+          </p>
+</dd>
+<dt><span class="term"><code class="literal">threading</code></span></dt>
+<dd>
+<p><span class="bold"><strong>Allowed values:</strong></span> <code class="literal">single</code>,
+            <code class="literal">multi</code></p>
+<p>
+            Controls if the project should be built in multi-threaded mode.  This feature does not
+            necessary change code generation in the compiler, but it causes the compiler to link
+            to additional or different runtime libraries, and define additional preprocessor 
+            symbols (for example, <code class="computeroutput">_MT</code> on Windows and <code class="computeroutput">_REENTRANT</code> on Linux). 
+            How those symbols affect the compiled code depends on the code itself.
           </p>
 </dd>
 <dt><span class="term"><code class="literal">source</code></span></dt>
@@ -423,6 +438,23 @@ path-constant DATA : data/a.txt ;
           specified by the user. The most common usage is to build
           release variant with debugging information.</p>
 </dd>
+<dt><span class="term"><code class="literal">target-os</code></span></dt>
+<dd>
+<a name="bbv2.reference.features.target-os"></a><p>
+            The operating system for which the code is to be generated. The
+            compiler you used should be the compiler for that operating
+            system. This option causes Boost.Build to use naming conventions
+            suitable for that operating system, and adjust build process
+            accordingly. For example, with gcc, it controls if import
+            libraries are produced for shared libraries or not.                       
+          </p>
+<p>The complete list of possible values for this feature is: 
+            aix, bsd, cygwin, darwin, freebsd, hpux, iphone, linux, netbsd,
+            openbsd, osf, qnx, qnxnto, sgi, solaris, unix, unixware, windows.
+          </p>
+<p>See <a class="xref" href="tasks.html#bbv2.tasks.crosscompile" title="Cross-compilation">the section called &#8220;Cross-compilation&#8221;</a> for details of
+          crosscompilation</p>
+</dd>
 <dt><span class="term"><code class="literal">architecture</code></span></dt>
 <dd><p>The <code class="literal">architecture</code> features specifies
           the general processor familty to generate code for.</p></dd>
@@ -474,6 +506,19 @@ path-constant DATA : data/a.txt ;
             calling the feature.extend rule.
           </p>
 </dd>
+<dt><span class="term"><code class="literal">embed-manifest</code></span></dt>
+<dd>
+<a class="indexterm" name="id4459198"></a><a class="indexterm" name="id4459207"></a><p>
+            <span class="bold"><strong>Allowed values:</strong></span> on, off.
+          </p>
+<p>This feature is specific to the msvc toolset (see
+          <a class="xref" href="reference.html#bbv2.reference.tools.compiler.msvc" title="Microsoft Visual C++">the section called &#8220;Microsoft Visual C++&#8221;</a>),
+          and controls whether the manifest files should be embedded inside
+          executables and shared libraries, or placed alongside them.  This
+          feature corresponds to the IDE option found in the project settings dialog,
+          under <span class="guimenu">Configuration Properties</span> &#8594; <span class="guisubmenu">Manifest Tool</span> &#8594; <span class="guisubmenu">Input and Output</span> &#8594; <span class="guimenuitem">Embed manifest</span>.
+          </p>
+</dd>
 </dl></div>
 </div>
 <div class="section" lang="en">
@@ -481,7 +526,7 @@ path-constant DATA : data/a.txt ;
 <a name="bbv2.reference.tools"></a>Builtin tools</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compilers">C++ Compilers</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4126355">Third-party libraries</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4461851">Third-party libraries</a></span></dt>
 </dl></div>
 <p>Boost.Build comes with support for a large number of C++ compilers,
       and other tools. This section documents how to use those tools.</p>
@@ -568,7 +613,7 @@ using gcc : [<span class="optional"><em class="replaceable"><code>version</code>
                 be either <code class="computeroutput">windres</code> for msvc resource compiler,
                 or <code class="computeroutput">rc</code> for borland's resource compiler.</p></dd>
 </dl></div>
-<a class="indexterm" name="id4124121"></a>
+<a class="indexterm" name="id4459613"></a>
 
           In order to compile 64-bit applications, you have to specify
           <code class="computeroutput">address-model=64</code>, and the <code class="computeroutput">instruction-set</code>
@@ -674,8 +719,8 @@ using msvc : [<span class="optional"><em class="replaceable"><code>version</code
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h6 class="title">
-<a name="id4124624"></a>64-bit support</h6></div></div></div>
-<a class="indexterm" name="id4124630"></a><p>Starting with version 8.0, Microsoft Visual Studio can
+<a name="v2.reference.tools.compiler.msvc.64"></a>64-bit support</h6></div></div></div>
+<a class="indexterm" name="id4460127"></a><p>Starting with version 8.0, Microsoft Visual Studio can
             generate binaries for 64-bit processor, both 64-bit flavours of x86
             (codenamed AMD64/EM64T), and Itanium (codenamed IA64). In addition,
             compilers that are itself run in 64-bit mode, for better
@@ -1015,7 +1060,7 @@ using sun : [<span class="optional"><em class="replaceable"><code>version</code>
 <dd><p>Specifies additional command line options that will be
       passed to the linker.</p></dd>
 </dl></div>
-<a class="indexterm" name="id4126273"></a>
+<a class="indexterm" name="id4461768"></a>
           Starting with Sun Studio 12, you can create 64-bit applications
           by using the <code class="computeroutput">address-model=64</code> property.
 
@@ -1040,14 +1085,14 @@ using vacpp ;</pre>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4126355"></a>Third-party libraries</h4></div></div></div>
+<a name="id4461851"></a>Third-party libraries</h4></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="reference.html#bbv2.reference.tools.libraries.stlport">STLport library</a></span></dt></dl></div>
 <p>Boost.Build provides special support for some
         third-party C++ libraries, documented below.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.libraries.stlport"></a>STLport library</h5></div></div></div>
-<a class="indexterm" name="id4126377"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
+<a class="indexterm" name="id4461872"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
           is an alternative implementation of C++ runtime library. Boost.Build
           supports using that library on Windows platfrom.  Linux is
           hampered by different naming of libraries in each STLport
@@ -1532,11 +1577,11 @@ requested-properties -&gt; property-path
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.generators"></a>Generators</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="reference.html#id4127598">Selecting and ranking viable generators</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4127662">Running generators</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4127706">Selecting dependency graph</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4127722">Property adjustment</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4127798">Transformations cache</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4463095">Selecting and ranking viable generators</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4463159">Running generators</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4463203">Selecting dependency graph</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4463219">Property adjustment</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4463295">Transformations cache</a></span></dt>
 </dl></div>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
@@ -1567,7 +1612,7 @@ requested-properties -&gt; property-path
       below.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4127598"></a>Selecting and ranking viable generators</h4></div></div></div>
+<a name="id4463095"></a>Selecting and ranking viable generators</h4></div></div></div>
 <p>Each generator, in addition to target types that it can
         produce, have attribute that affects its applicability in
         particular sitiation. Those attributes are:</p>
@@ -1601,7 +1646,7 @@ requested-properties -&gt; property-path
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4127662"></a>Running generators</h4></div></div></div>
+<a name="id4463159"></a>Running generators</h4></div></div></div>
 <p>When generators are selected, each is run to produce a list of
         created targets. This list might include targets that are not of
         requested types, because generators create the same targets as
@@ -1623,7 +1668,7 @@ requested-properties -&gt; property-path
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4127706"></a>Selecting dependency graph</h4></div></div></div>
+<a name="id4463203"></a>Selecting dependency graph</h4></div></div></div>
 <p>
         After all generators are run,
         it is necessary to decide which of successfull invocation will be
@@ -1634,7 +1679,7 @@ requested-properties -&gt; property-path
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4127722"></a>Property adjustment</h4></div></div></div>
+<a name="id4463219"></a>Property adjustment</h4></div></div></div>
 <p>Because target location is determined by the build system, it
         is sometimes necessary to adjust properties, in order to not
         break actions. For example, if there's an action that generates
@@ -1673,7 +1718,7 @@ requested-properties -&gt; property-path
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4127798"></a>Transformations cache</h4></div></div></div>
+<a name="id4463295"></a>Transformations cache</h4></div></div></div>
 <p>
         Under certain conditions, an
         attempt is made to cache results of transformation search. First,

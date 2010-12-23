@@ -31,7 +31,9 @@
           <a class="link" href="../../ObjectTransform.html" title="Concept ObjectTransform">ObjectTransform</a>.</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../../PrimitiveTransform.html" title="Concept PrimitiveTransform">PrimitiveTransform</a>&gt; 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../proto/reference.html#header.boost.proto.transform.make_hpp" title="Header &lt;boost/proto/transform/make.hpp&gt;">boost/proto/transform/make.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../../PrimitiveTransform.html" title="Concept PrimitiveTransform">PrimitiveTransform</a>&gt; 
 <span class="bold"><strong>struct</strong></span> <a class="link" href="protect.html" title="Struct template protect">protect</a> : <span class="bold"><strong></strong></span> <a class="link" href="transform.html" title="Struct template transform">proto::transform</a>&lt; protect&lt;PrimitiveTransform&gt; &gt; {
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> , <span class="bold"><strong>typename</strong></span> , <span class="bold"><strong>typename</strong></span> &gt; 
   <span class="bold"><strong>struct</strong></span> <a class="link" href="protect/impl.html" title="Struct template impl">impl</a> {
@@ -40,7 +42,7 @@
   };
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3652775"></a><h2>Description</h2>
+<a name="id3976449"></a><h2>Description</h2>
 <p>
             When building higher order transforms with
             <code class="computeroutput">
@@ -63,10 +65,10 @@ struct Bar
 {};
 
 struct Foo :
-  proto::when&lt;_, Bar&lt;_&gt;() &gt;
+  <a class="link" href="when.html" title="Struct template when">proto::when</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>, Bar&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>&gt;() &gt;
 {};
 
-proto::terminal&lt;int&gt;::type i = {0};
+<a class="link" href="terminal.html" title="Struct template terminal">proto::terminal</a>&lt;int&gt;::type i = {0};
 
 int main() {
   Foo()(i);
@@ -76,7 +78,7 @@ int main() {
           </p>
 <p>
             If you actually wanted to default-construct an object of type
-            <code class="computeroutput">Bar&lt;_&gt;</code>, you would have to protect the
+            <code class="computeroutput">Bar&lt;proto::_&gt;</code>, you would have to protect the
             <code class="computeroutput">_</code> to prevent it from being applied. You can
             use <code class="computeroutput">proto::protect&lt;&gt;</code> as follows:
           </p>
@@ -84,7 +86,7 @@ int main() {
             </p>
 <pre class="programlisting">// OK: replace anything with Bar&lt;_&gt;()
 struct Foo :
-  proto::when&lt;_, Bar&lt;protect&lt;_&gt; &gt;() &gt;
+  <a class="link" href="when.html" title="Struct template when">proto::when</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>, Bar&lt;<a class="link" href="protect.html" title="Struct template protect">proto::protect</a>&lt;<a class="link" href="_.html" title="Struct _">proto::_</a>&gt; &gt;() &gt;
 {};</pre>
 <p>
           </p>

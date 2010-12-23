@@ -29,7 +29,9 @@
 <p>boost::intrusive::derivation_value_traits</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T, <span class="bold"><strong>typename</strong></span> NodeTraits, link_mode_type LinkMode = safe_link&gt; 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../intrusive/reference.html#header.boost.intrusive.derivation_value_traits_hpp" title="Header &lt;boost/intrusive/derivation_value_traits.hpp&gt;">boost/intrusive/derivation_value_traits.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T, <span class="bold"><strong>typename</strong></span> NodeTraits, link_mode_type LinkMode = safe_link&gt; 
 <span class="bold"><strong>struct</strong></span> <a class="link" href="derivation_value_traits.html" title="Struct template derivation_value_traits">derivation_value_traits</a> {
   <span class="emphasis"><em>// types</em></span>
   <span class="bold"><strong>typedef</strong></span> NodeTraits                                         <a name="boost.intrusive.derivation_value_traits.node_traits"></a>node_traits;    
@@ -42,31 +44,31 @@
   <span class="bold"><strong>typedef</strong></span> std::iterator_traits&lt; pointer &gt;::reference         <a name="boost.intrusive.derivation_value_traits.reference"></a>reference;      
   <span class="bold"><strong>typedef</strong></span> std::iterator_traits&lt; const_pointer &gt;::reference   <a name="boost.intrusive.derivation_value_traits.const_reference"></a>const_reference;
 
-  <span class="emphasis"><em>// <a class="link" href="derivation_value_traits.html#id3011687-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> node_ptr</span> <a class="link" href="derivation_value_traits.html#id3011690-bb">to_node_ptr</a>(reference) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> const_node_ptr</span> <a class="link" href="derivation_value_traits.html#id3011704-bb">to_node_ptr</a>(const_reference) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> pointer</span> <a class="link" href="derivation_value_traits.html#id3011718-bb">to_value_ptr</a>(node_ptr) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> const_pointer</span> <a class="link" href="derivation_value_traits.html#id3011732-bb">to_value_ptr</a>(const_node_ptr) ;
+  <span class="emphasis"><em>// <a class="link" href="derivation_value_traits.html#id3421793-bb">public static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> node_ptr</span> <a class="link" href="derivation_value_traits.html#id3421796-bb">to_node_ptr</a>(reference) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> const_node_ptr</span> <a class="link" href="derivation_value_traits.html#id3421808-bb">to_node_ptr</a>(const_reference) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> pointer</span> <a class="link" href="derivation_value_traits.html#id3421820-bb">to_value_ptr</a>(node_ptr) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> const_pointer</span> <a class="link" href="derivation_value_traits.html#id3421833-bb">to_value_ptr</a>(const_node_ptr) ;
   <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> link_mode_type</span> link_mode;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3275694"></a><h2>Description</h2>
+<a name="id3553521"></a><h2>Description</h2>
 <p>This value traits template is used to create value traits from user defined node traits where value_traits::value_type will derive from node_traits::node </p>
 <div class="refsect2" lang="en">
-<a name="id3275702"></a><h3>
-<a name="id3011687-bb"></a><code class="computeroutput">derivation_value_traits</code> public static functions</h3>
+<a name="id3553529"></a><h3>
+<a name="id3421793-bb"></a><code class="computeroutput">derivation_value_traits</code> public static functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> node_ptr</span> <a name="id3011690-bb"></a>to_node_ptr(reference value) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> const_node_ptr</span> <a name="id3011704-bb"></a>to_node_ptr(const_reference value) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> pointer</span> <a name="id3011718-bb"></a>to_value_ptr(node_ptr n) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> const_pointer</span> <a name="id3011732-bb"></a>to_value_ptr(const_node_ptr n) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> node_ptr</span> <a name="id3421796-bb"></a>to_node_ptr(reference value) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> const_node_ptr</span> <a name="id3421808-bb"></a>to_node_ptr(const_reference value) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> pointer</span> <a name="id3421820-bb"></a>to_value_ptr(node_ptr n) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> const_pointer</span> <a name="id3421833-bb"></a>to_value_ptr(const_node_ptr n) ;</pre></li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2005 Olaf Krzikalla, 2006-2007 Ion Gaztañaga<p>
+<td align="right"><div class="copyright-footer">Copyright © 2005 Olaf Krzikalla, 2006-2008 Ion Gaztañaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

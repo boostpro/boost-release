@@ -13,7 +13,7 @@
           <para>
             <computeroutput>proto::is_callable&lt;&gt;</computeroutput> is used by the
             <computeroutput><classname alt="proto::when">proto::when&lt;&gt;</classname></computeroutput>
-            transform to determine whether a function type <computeroutput>R(A<subscript>1</subscript>,...<subscript>n</subscript>)</computeroutput>
+            transform to determine whether a function type <computeroutput>R(A<subscript>1</subscript>,...A<subscript>n</subscript>)</computeroutput>
             is a <conceptname>CallableTransform</conceptname> or an <conceptname>ObjectTransform</conceptname>.
             The former are evaluated using <computeroutput><classname>proto::call&lt;&gt;</classname></computeroutput>
             and the later with <computeroutput><classname>proto::make&lt;&gt;</classname></computeroutput>.
@@ -50,6 +50,7 @@
             </itemizedlist>
           </para>
         </description>
+        <inherit><type>mpl::bool_&lt;<replaceable>true-or-false</replaceable>&gt;</type></inherit>
       </struct>
 
       <struct name="is_aggregate">
@@ -66,13 +67,16 @@
             If <computeroutput>proto::is_aggregate&lt;T&gt;::value</computeroutput> is <computeroutput>true</computeroutput>,
             then an object of type <computeroutput>T</computeroutput> will be initialized as
             <computeroutput>T t = {a<subscript>0</subscript>,...a<subscript>n</subscript>};</computeroutput>.
-            Otherwise, it will be initialized as <computeroutput>T t(a<subscript>0</subscript>,...a<subscript>n</subscript>)</computeroutput>.
+            Otherwise, it will be initialized as
+            <computeroutput>T t(a<subscript>0</subscript>,...a<subscript>n</subscript>)</computeroutput>.
           </para>
           <para>
             Note: <computeroutput><classname>proto::expr&lt;&gt;</classname> is an aggregate.</computeroutput>
           </para>
         </description>
+        <inherit><type>mpl::bool_&lt;<replaceable>true-or-false</replaceable>&gt;</type></inherit>
       </struct>
+
       <namespace name="functional">
         <struct name="as_expr">
           <template>
@@ -113,7 +117,7 @@
               </description>
               <returns>
                 <para>
-                  <computeroutput>proto::as_expr&lt;Domain&gt;(t)</computeroutput>
+                  <computeroutput><functionname>proto::as_expr</functionname>&lt;Domain&gt;(t)</computeroutput>
                 </para>
               </returns>
             </method>
@@ -172,7 +176,7 @@
               </description>
               <returns>
                 <para>
-                  <computeroutput>proto::as_child&lt;Domain&gt;(t)</computeroutput>
+                  <computeroutput><functionname>proto::as_child</functionname>&lt;Domain&gt;(t)</computeroutput>
                 </para>
               </returns>
             </method>
@@ -383,10 +387,6 @@
                 <para>
                   <computeroutput>0 == Expr::proto_arity::value</computeroutput>
                 </para>
-                <para>
-                  <computeroutput>Expr::proto_tag</computeroutput> is
-                  <computeroutput><classname>proto::tag::terminal</classname></computeroutput>
-                </para>
               </requires>
               <returns>
                 <para>
@@ -563,7 +563,7 @@
           </typedef>
           <method-group name="public member functions">
             <method name="operator()" cv="const">
-              <type>impl::expr_param</type>
+              <type>Expr</type>
               <parameter name="expr">
                 <paramtype>typename impl::expr_param</paramtype>
                 <description>
@@ -1863,6 +1863,70 @@
         </typedef>
       </struct>
       
+      <struct name="nullary_expr">
+        <template>
+          <template-type-parameter name="Tag"/>
+          <template-type-parameter name="T"/>
+        </template>
+        <inherit><classname>proto::transform</classname>&lt; nullary_expr&lt;Tag, T&gt; &gt;</inherit>
+        <purpose>A metafunction for generating nullary expression types, a grammar element for matching
+          nullary expressions, and
+          a <conceptname>PrimitiveTransform</conceptname> that returns the current expression unchanged. </purpose>
+        <description>
+          <para>
+            Use <computeroutput>proto::nullary_expr&lt;<classname>proto::_</classname>, <classname>proto::_</classname>&gt;</computeroutput>
+            as a grammar element to match any nullary expression.
+          </para>
+        </description>
+        <struct name="impl">
+          <template>
+            <template-type-parameter name="Expr"/>
+            <template-type-parameter name="State"/>
+            <template-type-parameter name="Data"/>
+          </template>
+          <inherit><classname>proto::transform_impl</classname>&lt; Expr, State, Data &gt;</inherit>
+          <typedef name="result_type">
+            <type>Expr</type>
+          </typedef>
+          <method-group name="public member functions">
+            <method name="operator()" cv="const">
+              <type>Expr</type>
+              <parameter name="expr">
+                <paramtype>typename impl::expr_param</paramtype>
+                <description>
+                  <para>The current expression </para>
+                </description>
+              </parameter>
+              <parameter name="">
+                <paramtype>typename impl::state_param</paramtype>
+              </parameter>
+              <parameter name="">
+                <paramtype>typename impl::data_param</paramtype>
+              </parameter>
+              <requires>
+                <para>
+                  <computeroutput><classname>proto::matches</classname>&lt;Expr, proto::nullary_expr&lt;Tag, T&gt; &gt;::value</computeroutput> is <computeroutput>true</computeroutput>.
+                </para>
+              </requires>
+              <returns>
+                <para>
+                  <computeroutput>expr</computeroutput>
+                </para>
+              </returns>
+              <throws>
+                <simpara>Will not throw.</simpara>
+              </throws>
+            </method>
+          </method-group>
+        </struct>
+        <typedef name="type">
+          <type><classname>proto::expr</classname>&lt; Tag, <classname>proto::term</classname>&lt; T &gt; &gt;</type>
+        </typedef>
+        <typedef name="proto_base_expr">
+          <type>type</type>
+        </typedef>
+      </struct>
+
       <struct name="unary_expr">
         <template>
           <template-type-parameter name="Tag"/>
@@ -1964,7 +2028,7 @@
           </inherit>
         </struct>
         <typedef name="type">
-          <type><classname>proto::expr</classname>&lt; Tag, <classname alt="proto::listN">proto::list<replaceable>N</replaceable></classname>&lt; A0 &gt; &gt;</type>
+          <type><classname>proto::expr</classname>&lt; Tag, <classname alt="proto::listN">proto::list<replaceable>N</replaceable></classname>&lt; A... &gt; &gt;</type>
         </typedef>
         <typedef name="proto_base_expr">
           <type>type</type>
@@ -2100,7 +2164,7 @@
           <typedef name="value_type">
             <description>
               <para>
-                The raw type of the <replaceable>N</replaceable><superscript>th</superscript> child as it is
+                The raw type of the value as it is
                 stored within <computeroutput>Expr</computeroutput>. This may be a value or a reference.
               </para>
             </description>
@@ -2114,22 +2178,22 @@
                 <itemizedlist>
                   <listitem>
                     <para>
-                      <computeroutput>T const(&amp;)[N]</computeroutput> becomes <computeroutput>T const(&amp;)[N]</computeroutput>
+                      <computeroutput>T const(&amp;)[N]</computeroutput> becomes <computeroutput>T[N]</computeroutput>
                     </para>
                   </listitem>
                   <listitem>
                     <para>
-                      <computeroutput>T[N]</computeroutput> becomes <computeroutput>T(&amp;)[N]</computeroutput>
+                      <computeroutput>T[N]</computeroutput> becomes <computeroutput>T[N]</computeroutput>
                     </para>
                   </listitem>
                   <listitem>
                     <para>
-                      <computeroutput>T(&amp;)[N]</computeroutput> becomes <computeroutput>T(&amp;)[N]</computeroutput>
+                      <computeroutput>T(&amp;)[N]</computeroutput> becomes <computeroutput>T[N]</computeroutput>
                     </para>
                   </listitem>
                   <listitem>
                     <para>
-                      <computeroutput>R(&amp;)(A0,...)</computeroutput> becomes <computeroutput>R(&amp;)(A0,...)</computeroutput>
+                      <computeroutput>R(&amp;)(A...)</computeroutput> becomes <computeroutput>R(&amp;)(A...)</computeroutput>
                     </para>
                   </listitem>
                   <listitem>
@@ -2170,7 +2234,7 @@
                   </listitem>
                   <listitem>
                     <para>
-                      <computeroutput>R(&amp;)(A0,...)</computeroutput> becomes <computeroutput>R(&amp;)(A0,...)</computeroutput>
+                      <computeroutput>R(&amp;)(A...)</computeroutput> becomes <computeroutput>R(&amp;)(A...)</computeroutput>
                     </para>
                   </listitem>
                   <listitem>
@@ -2211,7 +2275,7 @@
                   </listitem>
                   <listitem>
                     <para>
-                      <computeroutput>R(&amp;)(A0,...)</computeroutput> becomes <computeroutput>R(&amp;)(A0,...)</computeroutput>
+                      <computeroutput>R(&amp;)(A...)</computeroutput> becomes <computeroutput>R(&amp;)(A...)</computeroutput>
                     </para>
                   </listitem>
                   <listitem>

@@ -32,9 +32,9 @@
 <div><div class="author"><h3 class="author">
 <span class="firstname">Ion</span> <span class="surname">Gaztañaga</span>
 </h3></div></div>
-<div><p class="copyright">Copyright © 2005 Olaf Krzikalla, 2006-2007 Ion Gaztañaga</p></div>
+<div><p class="copyright">Copyright © 2005 Olaf Krzikalla, 2006-2008 Ion Gaztañaga</p></div>
 <div><div class="legalnotice">
-<a name="id3166596"></a><p>
+<a name="id3435627"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -152,6 +152,18 @@
       sg_set, sg_multiset and sgtree containers</a></span></dt>
 <dt><span class="section"><a href="intrusive/sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_example"> Example</a></span></dt>
 </dl></dd>
+<dt><span class="section"><a href="intrusive/treap_set_multiset.html"> Intrusive treap based associative
+    containers: treap_set, treap_multiset and treap</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="intrusive/treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_hooks">
+      Using binary search tree hooks: bs_set_base_hook and bs_set_member_hook</a></span></dt>
+<dt><span class="section"><a href="intrusive/treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_containers">
+      treap_set, treap_multiset and treap containers</a></span></dt>
+<dt><span class="section"><a href="intrusive/treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_exceptions"> Exception
+      safety of treap-based intrusive containers</a></span></dt>
+<dt><span class="section"><a href="intrusive/treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_example">
+      Example</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="intrusive/advanced_lookups_insertions.html"> Advanced lookup
     and insertion functions for associative containers</a></span></dt>
 <dd><dl>
@@ -186,6 +198,8 @@
       splay tree algorithms</a></span></dt>
 <dt><span class="section"><a href="intrusive/node_algorithms.html#intrusive.node_algorithms.avltree_algorithms"> Intrusive
       avl tree algorithms</a></span></dt>
+<dt><span class="section"><a href="intrusive/node_algorithms.html#intrusive.node_algorithms.treap_algorithms"> Intrusive
+      treap algorithms</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="intrusive/value_traits.html"> Containers with custom ValueTraits</a></span></dt>
 <dd><dl>
@@ -228,6 +242,8 @@
 </dl></dd>
 <dt><span class="section"><a href="intrusive/release_notes.html"> Release Notes</a></span></dt>
 <dd><dl>
+<dt><span class="section"><a href="intrusive/release_notes.html#intrusive.release_notes.release_notes_boost_1_38_00">
+      Boost 1.38 Release</a></span></dt>
 <dt><span class="section"><a href="intrusive/release_notes.html#intrusive.release_notes.release_notes_boost_1_37_00">
       Boost 1.37 Release</a></span></dt>
 <dt><span class="section"><a href="intrusive/release_notes.html#intrusive.release_notes.release_notes_boost_1_36_00">
@@ -235,7 +251,7 @@
 </dl></dd>
 <dt><span class="section"><a href="intrusive/tested_compilers.html"> Tested compilers</a></span></dt>
 <dt><span class="section"><a href="intrusive/references.html"> References</a></span></dt>
-<dt><span class="section"><a href="intrusive/acknowledgements.html"> Acknowledegements</a></span></dt>
+<dt><span class="section"><a href="intrusive/acknowledgements.html"> Acknowledgements</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html">Reference</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.any_hook_hpp">Header &lt;boost/intrusive/any_hook.hpp&gt;</a></span></dt>
@@ -255,6 +271,7 @@
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.member_value_traits_hpp">Header &lt;boost/intrusive/member_value_traits.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.options_hpp">Header &lt;boost/intrusive/options.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.pointer_plus_bits_hpp">Header &lt;boost/intrusive/pointer_plus_bits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.priority_compare_hpp">Header &lt;boost/intrusive/priority_compare.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.rbtree_hpp">Header &lt;boost/intrusive/rbtree.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.rbtree_algorithms_hpp">Header &lt;boost/intrusive/rbtree_algorithms.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.set_hpp">Header &lt;boost/intrusive/set.hpp&gt;</a></span></dt>
@@ -268,6 +285,9 @@
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.splay_set_hook_hpp">Header &lt;boost/intrusive/splay_set_hook.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.splaytree_hpp">Header &lt;boost/intrusive/splaytree.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.splaytree_algorithms_hpp">Header &lt;boost/intrusive/splaytree_algorithms.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.treap_hpp">Header &lt;boost/intrusive/treap.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.treap_algorithms_hpp">Header &lt;boost/intrusive/treap_algorithms.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.treap_set_hpp">Header &lt;boost/intrusive/treap_set.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.trivial_value_traits_hpp">Header &lt;boost/intrusive/trivial_value_traits.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.unordered_set_hpp">Header &lt;boost/intrusive/unordered_set.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.unordered_set_hook_hpp">Header &lt;boost/intrusive/unordered_set_hook.hpp&gt;</a></span></dt>
@@ -324,7 +344,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: November 02, 2008 at 13:06:44 GMT</small></p></td>
+<td align="left"><p><small>Last revised: February 07, 2009 at 16:13:41 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

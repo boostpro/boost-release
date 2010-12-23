@@ -30,7 +30,9 @@
           node according to the corresponding children of a Grammar.</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Grammar&gt; 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../proto/reference.html#header.boost.proto.transform.pass_through_hpp" title="Header &lt;boost/proto/transform/pass_through.hpp&gt;">boost/proto/transform/pass_through.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Grammar&gt; 
 <span class="bold"><strong>struct</strong></span> <a class="link" href="pass_through.html" title="Struct template pass_through">pass_through</a> : <span class="bold"><strong></strong></span> <span class="type"><a class="link" href="transform.html" title="Struct template transform">proto::transform</a>&lt; pass_through&lt;Grammar&gt; &gt;</span> {
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Expr, <span class="bold"><strong>typename</strong></span> State, <span class="bold"><strong>typename</strong></span> Data&gt; 
   <span class="bold"><strong>struct</strong></span> <a class="link" href="pass_through/impl.html" title="Struct template impl">impl</a> : <span class="bold"><strong></strong></span> <span class="type"><a class="link" href="transform_impl.html" title="Struct template transform_impl">proto::transform_impl</a>&lt;Expr, State, Data&gt;</span> {
@@ -41,14 +43,14 @@
     <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> Expr::proto_tag                             <a class="link" href="pass_through/impl.html#boost.proto.pass_through.impl.T">T</a>;            <span class="emphasis"><em>// For exposition only</em></span>
     <span class="bold"><strong>typedef</strong></span> <a class="link" href="expr.html" title="Struct template expr">proto::expr</a>&lt;T, <a class="link" href="listN.html" title="Struct template listN">proto::listN</a>&lt;R0,...RN&gt; &gt;              <a class="link" href="pass_through/impl.html#boost.proto.pass_through.impl.result_type">result_type</a>;
 
-    <span class="emphasis"><em>// <a class="link" href="pass_through/impl.html#id3268729-bb">public member functions</a></em></span>
-    <span class="type">result_type</span> <a class="link" href="pass_through/impl.html#id3268734-bb"><span class="bold"><strong>operator</strong></span>()</a>(<span class="bold"><strong>typename</strong></span> impl::expr_param, 
+    <span class="emphasis"><em>// <a class="link" href="pass_through/impl.html#id3695786-bb">public member functions</a></em></span>
+    <span class="type">result_type</span> <a class="link" href="pass_through/impl.html#id3695791-bb"><span class="bold"><strong>operator</strong></span>()</a>(<span class="bold"><strong>typename</strong></span> impl::expr_param, 
                            <span class="bold"><strong>typename</strong></span> impl::state_param, 
                            <span class="bold"><strong>typename</strong></span> impl::data_param) <span class="bold"><strong>const</strong></span>;
   };
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3654287"></a><h2>Description</h2>
+<a name="id3978253"></a><h2>Description</h2>
 <p>
             Given a Grammar such as <code class="computeroutput"><a class="link" href="plus.html" title="Struct template plus">proto::plus</a>&lt;T0, T1&gt;</code>,
             an expression type that matches the grammar such as

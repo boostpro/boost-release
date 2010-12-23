@@ -38,6 +38,7 @@
         </xsl:call-template>
       </xsl:with-param>
       <xsl:with-param name="synopsis">
+        <xsl:call-template name="header-link"/>
         <xsl:call-template name="macro-synopsis">
           <xsl:with-param name="link-type" select="'none'"/>
         </xsl:call-template>
@@ -73,7 +74,8 @@
 
   <xsl:template match="macro" mode="generate.id">
     <xsl:value-of select="@name"/>
-    <xsl:if test="count(key('named-entities', @name))!=1">
+    <xsl:if test="count(key('named-entities',
+        translate(@name, $uppercase-letters, $lowercase-letters)))!=1">
       <xsl:text>_</xsl:text>
       <xsl:value-of select="generate-id(.)"/>
     </xsl:if>

@@ -1,6 +1,6 @@
 /*=============================================================================
     Copyright (c) 2001-2007 Joel de Guzman
-    Copyright (c) 2001-2008 Hartmut Kaiser
+    Copyright (c) 2001-2009 Hartmut Kaiser
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -238,8 +238,8 @@ main()
         BOOST_TEST(!test("-1.2e", double_));
         BOOST_TEST(!test_attr("-1.2e", double_, d));
 
-        using boost::math::fpclassify;
-        using boost::math::signbit;
+        using boost::spirit::math::fpclassify;
+        using boost::spirit::math::signbit;
         BOOST_TEST(test("-inf", double_));
         BOOST_TEST(test("-infinity", double_));
         BOOST_TEST(test_attr("-inf", double_, d) &&

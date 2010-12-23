@@ -13,7 +13,7 @@
 #include "boost/date_time/gregorian/greg_facet.hpp"
 #include "boost/date_time/date_format_simple.hpp"
 #include "boost/date_time/gregorian/gregorian.hpp"
-#include "boost/date_time/testfrmwk.hpp"
+#include "../testfrmwk.hpp"
 
 #ifndef BOOST_DATE_TIME_NO_LOCALE
 
@@ -295,7 +295,7 @@ main()
     try{
       ss2 >> m; // misspelled
       check("Bad month exception NOT thrown (misspelled name)", false);
-    }catch(bad_month){
+    }catch(bad_month&){
       check("Bad month exception caught (misspelled name)", true);
     }catch(...){
       check("Bad month exception NOT caught (misspelled name)", false);
@@ -324,7 +324,7 @@ main()
     try{
       ss2 >> wd;
       check("Bad weekday exception NOT thrown (misspelled name)", false);
-    }catch(bad_weekday){
+    }catch(bad_weekday&){
       check("Bad weekday exception caught (misspelled name)", true);
     }catch(...){
       check("Bad weekday exception NOT caught (misspelled name)", false);

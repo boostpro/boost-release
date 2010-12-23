@@ -29,16 +29,18 @@
 <p>boost::proto::result_of::value &#8212; A metafunction that returns the type of the value of a terminal Proto expression. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Expr&gt; 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../proto/reference.html#header.boost.proto.traits_hpp" title="Header &lt;boost/proto/traits.hpp&gt;">boost/proto/traits.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Expr&gt; 
 <span class="bold"><strong>struct</strong></span> <a class="link" href="value.html" title="Struct template value">value</a> {
   <span class="emphasis"><em>// <a class="link" href="value.html#boost.proto.result_of.valuetypes">types</a></em></span>
   <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> Expr::proto_child0 <a class="link" href="value.html#boost.proto.result_of.value.value_type">value_type</a>;
   <span class="bold"><strong>typedef</strong></span> <em class="replaceable"><code>see-below</code></em> <a class="link" href="value.html#boost.proto.result_of.value.type">type</a>;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3624354"></a><h2>Description</h2>
+<a name="id3945368"></a><h2>Description</h2>
 <div class="refsect2" lang="en">
-<a name="id3624357"></a><h3>
+<a name="id3945372"></a><h3>
 <a name="boost.proto.result_of.valuetypes"></a><code class="computeroutput">value</code> 
         public
        types</h3>
@@ -47,7 +49,7 @@
 <p>
 <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> Expr::proto_child0 <a name="boost.proto.result_of.value.value_type"></a>value_type;</p>
 <p>
-                The raw type of the <em class="replaceable"><code>N</code></em><sup>th</sup> child as it is
+                The raw type of the value as it is
                 stored within <code class="computeroutput">Expr</code>. This may be a value or a reference.
               </p>
 </li>
@@ -60,16 +62,16 @@
                 </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>
-                      <code class="computeroutput">T const(&amp;)[N]</code> becomes <code class="computeroutput">T const(&amp;)[N]</code>
+                      <code class="computeroutput">T const(&amp;)[N]</code> becomes <code class="computeroutput">T[N]</code>
                     </p></li>
 <li><p>
-                      <code class="computeroutput">T[N]</code> becomes <code class="computeroutput">T(&amp;)[N]</code>
+                      <code class="computeroutput">T[N]</code> becomes <code class="computeroutput">T[N]</code>
                     </p></li>
 <li><p>
-                      <code class="computeroutput">T(&amp;)[N]</code> becomes <code class="computeroutput">T(&amp;)[N]</code>
+                      <code class="computeroutput">T(&amp;)[N]</code> becomes <code class="computeroutput">T[N]</code>
                     </p></li>
 <li><p>
-                      <code class="computeroutput">R(&amp;)(A0,...)</code> becomes <code class="computeroutput">R(&amp;)(A0,...)</code>
+                      <code class="computeroutput">R(&amp;)(A...)</code> becomes <code class="computeroutput">R(&amp;)(A...)</code>
                     </p></li>
 <li><p>
                       <code class="computeroutput">T const &amp;</code> becomes <code class="computeroutput">T</code>
@@ -98,7 +100,7 @@
                       <code class="computeroutput">T(&amp;)[N]</code> becomes <code class="computeroutput">T(&amp;)[N]</code>
                     </p></li>
 <li><p>
-                      <code class="computeroutput">R(&amp;)(A0,...)</code> becomes <code class="computeroutput">R(&amp;)(A0,...)</code>
+                      <code class="computeroutput">R(&amp;)(A...)</code> becomes <code class="computeroutput">R(&amp;)(A...)</code>
                     </p></li>
 <li><p>
                       <code class="computeroutput">T const &amp;</code> becomes <code class="computeroutput">T const &amp;</code>
@@ -127,7 +129,7 @@
                       <code class="computeroutput">T(&amp;)[N]</code> becomes <code class="computeroutput">T(&amp;)[N]</code>
                     </p></li>
 <li><p>
-                      <code class="computeroutput">R(&amp;)(A0,...)</code> becomes <code class="computeroutput">R(&amp;)(A0,...)</code>
+                      <code class="computeroutput">R(&amp;)(A...)</code> becomes <code class="computeroutput">R(&amp;)(A...)</code>
                     </p></li>
 <li><p>
                       <code class="computeroutput">T const &amp;</code> becomes <code class="computeroutput">T const &amp;</code>

@@ -1,7 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <header name="boost/proto/matches.hpp">
-  <para>Contains definition of the <classname alt="boost::proto::matches">proto::matches&lt;&gt;</classname>
-    metafunction for determining if a given expression matches a given pattern.</para>
+  <para>
+    Contains definition of the
+    <computeroutput>
+      <classname alt="boost::proto::matches">proto::matches&lt;&gt;</classname>
+    </computeroutput>
+    metafunction for determining if a given expression matches a given pattern.
+  </para>
   <namespace name="boost">
     <namespace name="proto">
       <struct name="_">
@@ -56,7 +61,7 @@
           </typedef>
           <method-group name="public member functions">
             <method name="operator()" cv="const">
-              <type>typename impl::expr_param</type>
+              <type>Expr</type>
               <parameter name="expr">
                 <paramtype>typename impl::expr_param</paramtype>
                 <description>
@@ -112,7 +117,7 @@
           </typedef>
           <method-group name="public member functions">
             <method name="operator()" cv="const">
-              <type>typename impl::expr_param</type>
+              <type>Expr</type>
               <parameter name="expr">
                 <paramtype>typename impl::expr_param</paramtype>
                 <description>
@@ -695,18 +700,14 @@ struct Function :
           <para>
             A terminal expression
             <computeroutput>
-              <classname>proto::expr</classname>&lt;<classname>proto::tag::terminal</classname>,
+              <classname>proto::expr</classname>&lt;AT,
               <classname>proto::term</classname>&lt;A&gt; &gt;
             </computeroutput> matches a grammar
             <computeroutput>
               <classname>proto::expr</classname>&lt;BT, <classname>proto::term</classname>&lt;B&gt; &gt;
             </computeroutput>
-            if <computeroutput>BT</computeroutput> is <computeroutput>
-              <classname>proto::_</classname>
-            </computeroutput> or
-            <computeroutput>
-              <classname>proto::tag::terminal</classname>
-            </computeroutput> and one of the following is true:
+            if <computeroutput>BT</computeroutput> is <computeroutput><classname>proto::_</classname></computeroutput>
+            or <computeroutput>AT</computeroutput> and one of the following is true:
             <itemizedlist>
               <listitem>
                 <para>

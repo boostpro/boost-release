@@ -80,12 +80,17 @@
 <div class="sidebar">
 <p class="title"><b></b></p>
 <p>
-        <span class="bold"><strong>Important Note #1</strong></span><br> <br> The include
-        path order is very important if you want this library to work correctly.
-        If you get compiler errors then suspect the include paths. The correct order
-        is:<br> <br> 1) boost-root/boost/tr1/tr1<br> 2) boost-root<br> 3)
-        Any other standard library replacements (STLport for example).<br> 4) Your
-        regular standard library.
+        <span class="bold"><strong>Important Note #1</strong></span>
+      </p>
+<p>
+        The include path order is very important if you want this library to work
+        correctly. If you get compiler errors then suspect the include paths. The
+        correct order is:
+      </p>
+<p>
+        1) boost-root/boost/tr1/tr1<br> 2) boost-root<br> 3) Any other standard
+        library replacements (STLport for example).<br> 4) Your regular standard
+        library.<br>
       </p>
 </div>
 <div class="sidebar">
@@ -143,8 +148,10 @@
         Sun's compiler has a particularly interesting form of <code class="computeroutput"><span class="preprocessor">#include</span></code>,
         that will actually look for a file named <code class="computeroutput"><span class="identifier">array</span><span class="special">.</span><span class="identifier">SUNWCCh</span></code>
         if you <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">array</span><span class="special">&gt;</span></code>.
-        In order to make this library work with Sun's compiler you will need to set
-        up the include paths as follows:
+        What's more it won't include a standard header file that it thinks it's already
+        seen. In order to make this library work with Sun's compiler you can either
+        pass the undocumented compiler switch <span class="emphasis"><em>"-Qoption ccfe -nosunwcch"</em></span>
+        to the compiler, or else you will need to set up the include paths as follows:
       </p>
 <p>
         1) boost-root/boost/tr1/tr1/sun<br> 2) boost-root/boost/tr1/tr1<br> 3)

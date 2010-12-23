@@ -29,41 +29,43 @@
 <p>boost::date_time::day_clock &#8212; A clock providing day level services based on C time_t capabilities. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> date_type&gt; 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../date_time/doxy.html#header.boost.date_time.date_clock_device_hpp" title="Header &lt;boost/date_time/date_clock_device.hpp&gt;">boost/date_time/date_clock_device.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> date_type&gt; 
 <span class="bold"><strong>class</strong></span> <a class="link" href="day_clock.html" title="Class template day_clock">day_clock</a> {
 <span class="bold"><strong>public</strong></span>:
   <span class="emphasis"><em>// types</em></span>
   <span class="bold"><strong>typedef</strong></span> date_type::ymd_type <a name="boost.date_time.day_clock.ymd_type"></a>ymd_type;
 
-  <span class="emphasis"><em>// <a class="link" href="day_clock.html#id2475265-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a class="link" href="day_clock.html#id2488279-bb">local_day</a>() ;
-  <span class="type"><span class="bold"><strong>static</strong></span> date_type::ymd_type</span> <a class="link" href="day_clock.html#id2488289-bb">local_day_ymd</a>() ;
-  <span class="type"><span class="bold"><strong>static</strong></span> date_type::ymd_type</span> <a class="link" href="day_clock.html#id2401415-bb">universal_day_ymd</a>() ;
-  <span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a class="link" href="day_clock.html#id2401426-bb">universal_day</a>() ;
+  <span class="emphasis"><em>// <a class="link" href="day_clock.html#id2791766-bb">public static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a class="link" href="day_clock.html#id2791769-bb">local_day</a>() ;
+  <span class="type"><span class="bold"><strong>static</strong></span> date_type::ymd_type</span> <a class="link" href="day_clock.html#id2798202-bb">local_day_ymd</a>() ;
+  <span class="type"><span class="bold"><strong>static</strong></span> date_type::ymd_type</span> <a class="link" href="day_clock.html#id2798212-bb">universal_day_ymd</a>() ;
+  <span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a class="link" href="day_clock.html#id3008656-bb">universal_day</a>() ;
 
-  <span class="emphasis"><em>// <a class="link" href="day_clock.html#id2423977-bb">private static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> ::std::tm *</span> <a class="link" href="day_clock.html#id2423980-bb">get_local_time</a>(std::tm &amp;) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> ::std::tm *</span> <a class="link" href="day_clock.html#id2404096-bb">get_universal_time</a>(std::tm &amp;) ;
+  <span class="emphasis"><em>// <a class="link" href="day_clock.html#id2988818-bb">private static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> ::std::tm *</span> <a class="link" href="day_clock.html#id2988822-bb">get_local_time</a>(std::tm &amp;) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> ::std::tm *</span> <a class="link" href="day_clock.html#id3010676-bb">get_universal_time</a>(std::tm &amp;) ;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id2811204"></a><h2>Description</h2>
+<a name="id3074557"></a><h2>Description</h2>
 <p>This clock uses Posix interfaces as its implementation and hence uses the timezone settings of the operating system. Incorrect user settings will result in incorrect results for the calls to local_day. </p>
 <div class="refsect2" lang="en">
-<a name="id2811213"></a><h3>
-<a name="id2475265-bb"></a><code class="computeroutput">day_clock</code> public static functions</h3>
+<a name="id3074566"></a><h3>
+<a name="id2791766-bb"></a><code class="computeroutput">day_clock</code> public static functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a name="id2488279-bb"></a>local_day() ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type::ymd_type</span> <a name="id2488289-bb"></a>local_day_ymd() ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type::ymd_type</span> <a name="id2401415-bb"></a>universal_day_ymd() ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a name="id2401426-bb"></a>universal_day() ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a name="id2791769-bb"></a>local_day() ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type::ymd_type</span> <a name="id2798202-bb"></a>local_day_ymd() ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type::ymd_type</span> <a name="id2798212-bb"></a>universal_day_ymd() ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> date_type</span> <a name="id3008656-bb"></a>universal_day() ;</pre></li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2811321"></a><h3>
-<a name="id2423977-bb"></a><code class="computeroutput">day_clock</code> private static functions</h3>
+<a name="id3074674"></a><h3>
+<a name="id2988818-bb"></a><code class="computeroutput">day_clock</code> private static functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> ::std::tm *</span> <a name="id2423980-bb"></a>get_local_time(std::tm &amp; result) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> ::std::tm *</span> <a name="id2404096-bb"></a>get_universal_time(std::tm &amp; result) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> ::std::tm *</span> <a name="id2988822-bb"></a>get_local_time(std::tm &amp; result) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> ::std::tm *</span> <a name="id3010676-bb"></a>get_universal_time(std::tm &amp; result) ;</pre></li>
 </ol></div>
 </div>
 </div>

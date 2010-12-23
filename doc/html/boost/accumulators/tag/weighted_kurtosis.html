@@ -29,9 +29,10 @@
 <p>boost::accumulators::tag::weighted_kurtosis</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis">
-<span class="bold"><strong>struct</strong></span> <a class="link" href="weighted_kurtosis.html" title="Struct weighted_kurtosis">weighted_kurtosis</a> :
-  <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; Feature1, Feature2, &gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.weighted_kurtosis_hpp" title="Header &lt;boost/accumulators/statistics/weighted_kurtosis.hpp&gt;">boost/accumulators/statistics/weighted_kurtosis.hpp</a>&gt;
+
+</em></span>
+<span class="bold"><strong>struct</strong></span> <a class="link" href="weighted_kurtosis.html" title="Struct weighted_kurtosis">weighted_kurtosis</a> : <span class="bold"><strong>public</strong></span> boost::accumulators::depends_on&lt; boost::accumulators::tag::weighted_mean, boost::accumulators::tag::weighted_moment&lt; 2 &gt;, boost::accumulators::tag::weighted_moment&lt; 3 &gt;, boost::accumulators::tag::weighted_moment&lt; 4 &gt; &gt;
 {
 };</pre></div>
 </div>

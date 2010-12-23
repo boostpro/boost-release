@@ -29,7 +29,9 @@
 <p>boost::date_time::period_formatter &#8212; Not a facet, but a class used to specify and control period formats. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> CharT, 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../date_time/doxy.html#header.boost.date_time.period_formatter_hpp" title="Header &lt;boost/date_time/period_formatter.hpp&gt;">boost/date_time/period_formatter.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> CharT, 
          <span class="bold"><strong>typename</strong></span> OutItrT = std::ostreambuf_iterator&lt;CharT, std::char_traits&lt;CharT&gt; &gt; &gt; 
 <span class="bold"><strong>class</strong></span> <a class="link" href="period_formatter.html" title="Class template period_formatter">period_formatter</a> {
 <span class="bold"><strong>public</strong></span>:
@@ -42,22 +44,22 @@
   <span class="bold"><strong>enum</strong></span> <a name="boost.date_time.period_formatter.range_display_options"></a>range_display_options { AS_OPEN_RANGE, AS_CLOSED_RANGE };
 
   <span class="emphasis"><em>// <a class="link" href="period_formatter.html#boost.date_time.period_formatterconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="period_formatter.html#id2489950-bb">period_formatter</a>(range_display_options = AS_CLOSED_RANGE, 
+  <a class="link" href="period_formatter.html#id3005673-bb">period_formatter</a>(range_display_options = AS_CLOSED_RANGE, 
                    <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  = default_period_separator, 
                    <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  = default_period_start_delimeter, 
                    <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  = default_period_open_range_end_delimeter, 
                    <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  = default_period_closed_range_end_delimeter);
 
-  <span class="emphasis"><em>// <a class="link" href="period_formatter.html#id2382374-bb">public member functions</a></em></span>
-  <span class="type">OutItrT</span> <a class="link" href="period_formatter.html#id2382377-bb">put_period_separator</a>(OutItrT &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">OutItrT</span> <a class="link" href="period_formatter.html#id2486125-bb">put_period_start_delimeter</a>(OutItrT &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">OutItrT</span> <a class="link" href="period_formatter.html#id2628248-bb">put_period_end_delimeter</a>(OutItrT &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">range_display_options</span> <a class="link" href="period_formatter.html#id2628266-bb">range_option</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="period_formatter.html#id2400492-bb">range_option</a>(range_display_options) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="period_formatter.html#id2400507-bb">delimiter_strings</a>(<span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
+  <span class="emphasis"><em>// <a class="link" href="period_formatter.html#id2826402-bb">public member functions</a></em></span>
+  <span class="type">OutItrT</span> <a class="link" href="period_formatter.html#id2826406-bb">put_period_separator</a>(OutItrT &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">OutItrT</span> <a class="link" href="period_formatter.html#id3018916-bb">put_period_start_delimeter</a>(OutItrT &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">OutItrT</span> <a class="link" href="period_formatter.html#id3018932-bb">put_period_end_delimeter</a>(OutItrT &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">range_display_options</span> <a class="link" href="period_formatter.html#id3016775-bb">range_option</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="period_formatter.html#id3016783-bb">range_option</a>(range_display_options) <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="period_formatter.html#id2836462-bb">delimiter_strings</a>(<span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
                          <span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> period_type, <span class="bold"><strong>typename</strong></span> facet_type&gt; 
-    <span class="type">OutItrT</span> <a class="link" href="period_formatter.html#id2620356-bb">put_period</a>(OutItrT, std::ios_base &amp;, char_type, 
+    <span class="type">OutItrT</span> <a class="link" href="period_formatter.html#id3007130-bb">put_period</a>(OutItrT, std::ios_base &amp;, char_type, 
                        <span class="bold"><strong>const</strong></span> period_type &amp;, <span class="bold"><strong>const</strong></span> facet_type &amp;) <span class="bold"><strong>const</strong></span>;
   <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> default_period_separator;
   <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> default_period_start_delimeter;
@@ -65,7 +67,7 @@
   <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> default_period_closed_range_end_delimeter;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id2852431"></a><h2>Description</h2>
+<a name="id3117830"></a><h2>Description</h2>
 <p>Provides settings for the following:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>period_separator -- default '/'</p></li>
@@ -86,32 +88,32 @@
 </pre>
 <p> where the date formatting is controlled by the date facet </p>
 <div class="refsect2" lang="en">
-<a name="id2852478"></a><h3>
+<a name="id3117877"></a><h3>
 <a name="boost.date_time.period_formatterconstruct-copy-destruct"></a><code class="computeroutput">period_formatter</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id2489950-bb"></a>period_formatter(range_display_options range_option_in = AS_CLOSED_RANGE, 
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id3005673-bb"></a>period_formatter(range_display_options range_option_in = AS_CLOSED_RANGE, 
                  <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  period_separator = default_period_separator, 
                  <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  period_start_delimeter = default_period_start_delimeter, 
                  <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  period_open_range_end_delimeter = default_period_open_range_end_delimeter, 
                  <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  period_closed_range_end_delimeter = default_period_closed_range_end_delimeter);</pre></li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2852568"></a><h3>
-<a name="id2382374-bb"></a><code class="computeroutput">period_formatter</code> public member functions</h3>
+<a name="id3117966"></a><h3>
+<a name="id2826402-bb"></a><code class="computeroutput">period_formatter</code> public member functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type">OutItrT</span> <a name="id2382377-bb"></a>put_period_separator(OutItrT &amp; oitr) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">OutItrT</span> <a name="id2486125-bb"></a>put_period_start_delimeter(OutItrT &amp; oitr) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">OutItrT</span> <a name="id2628248-bb"></a>put_period_end_delimeter(OutItrT &amp; oitr) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">range_display_options</span> <a name="id2628266-bb"></a>range_option() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2400492-bb"></a>range_option(range_display_options option) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2400507-bb"></a>delimiter_strings(<span class="bold"><strong>const</strong></span> string_type &amp; separator, 
+<li><pre class="literallayout"><span class="type">OutItrT</span> <a name="id2826406-bb"></a>put_period_separator(OutItrT &amp; oitr) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">OutItrT</span> <a name="id3018916-bb"></a>put_period_start_delimeter(OutItrT &amp; oitr) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">OutItrT</span> <a name="id3018932-bb"></a>put_period_end_delimeter(OutItrT &amp; oitr) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">range_display_options</span> <a name="id3016775-bb"></a>range_option() <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3016783-bb"></a>range_option(range_display_options option) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2836462-bb"></a>delimiter_strings(<span class="bold"><strong>const</strong></span> string_type &amp; separator, 
                        <span class="bold"><strong>const</strong></span> string_type &amp; start_delim, 
                        <span class="bold"><strong>const</strong></span> string_type &amp; open_end_delim, 
                        <span class="bold"><strong>const</strong></span> string_type &amp; closed_end_delim) ;</pre></li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> period_type, <span class="bold"><strong>typename</strong></span> facet_type&gt; 
-  <span class="type">OutItrT</span> <a name="id2620356-bb"></a>put_period(OutItrT next, std::ios_base &amp; a_ios, char_type a_fill, 
+  <span class="type">OutItrT</span> <a name="id3007130-bb"></a>put_period(OutItrT next, std::ios_base &amp; a_ios, char_type a_fill, 
                      <span class="bold"><strong>const</strong></span> period_type &amp; p, <span class="bold"><strong>const</strong></span> facet_type &amp; facet) <span class="bold"><strong>const</strong></span>;</pre>
 <p>This generic code will output any period using a facet to to output the 'elements'. For example, in the case of a date_period the elements will be instances of a date which will be formatted according the to setup in the passed facet parameter.</p>
 <p>The steps for formatting a period are always the same:</p>

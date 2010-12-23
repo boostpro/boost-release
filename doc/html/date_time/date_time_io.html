@@ -35,7 +35,7 @@
 <dt><span class="section"><a href="date_time_io.html#date_time.io_tutorial">Date Time IO Tutorial</a></span></dt>
 </dl></div>
 <h3>
-<a name="id2791046"></a>Date Time IO System</h3>
+<a name="id3053660"></a>Date Time IO System</h3>
 <p>
     <a class="link" href="date_time_io.html#streaming_exceptions">Exception Handling on Streams</a>
   </p>
@@ -44,7 +44,7 @@
 <p>It is important to note, that while all the examples shown here use narrow streams, there are wide stream facets available as well (see <a class="link" href="date_time_io.html#io_objects_table">IO Objects</a> for a complete list).</p>
 <p>It should be further noted that not all compilers are capable of using this IO system. For those compilers the IO system used in previous <code class="computeroutput">date_time</code> versions is still available. The "legacy IO" is automatically selected for these compilers, however, the legacy IO system can be manually selected by defining <code class="computeroutput">USE_DATE_TIME_PRE_1_33_FACET_IO</code>. See the <a class="link" href="details.html#date_time.buildinfo" title="Build-Compiler Information">Build-Compiler Information</a> for more information.</p>
 <a name="streaming_exceptions"></a><h6>
-<a name="id2791121"></a>Exception Handling on Streams</h6>
+<a name="id3053749"></a>Exception Handling on Streams</h6>
 <p>When an error occurs during the input streaming process, the <code class="computeroutput">std::ios_base::failbit</code> will (always) be set on the stream. It is also possible to have exceptions thrown when an error occurs. To "turn on" these exceptions, call the stream's <code class="computeroutput">exceptions</code> function with a parameter of <code class="computeroutput">std::ios_base::failbit</code>.</p>
 <pre class="screen">// "Turning on" exceptions
 date d(not_a_date_time);
@@ -53,7 +53,7 @@ ss.exceptions(std::ios_base::failbit);
 ss.str("204-Jan-01");
 ss &gt;&gt; d; // throws bad_year exception AND sets failbit on stream</pre>
 <h6>
-<a name="id2791160"></a>A simple example of this new system:</h6>
+<a name="id3053790"></a>A simple example of this new system:</h6>
 <pre class="screen">//example to customize output to be "LongWeekday LongMonthname day, year"
 //                                  "%A %b %d, %Y"
 date d(2005,Jun,25);
@@ -270,6 +270,11 @@ std::cout &lt;&lt; d &lt;&lt; std::endl;
   "05:04:03.001234"
             </pre></td></tr>
 <tr>
+<td rowspan="2" valign="top"><pre class="screen">%O</pre></td>
+<td>The number of hours in a time duration as a decimal number (range 0 to max. representable duration); single digits are preceded by a zero.</td>
+</tr>
+<tr><td><pre class="screen"></pre></td></tr>
+<tr>
 <td rowspan="2" valign="top"><pre class="screen">%I !</pre></td>
 <td>The hour as a decimal number using a 12-hour clock</td>
 </tr>
@@ -400,7 +405,7 @@ std::cout &lt;&lt; d &lt;&lt; std::endl;
 </div>
 <p>The following table lists the available facets.</p>
 <a name="io_objects_table"></a><h4>
-<a name="id2792723"></a>IO Objects</h4>
+<a name="id3055459"></a>IO Objects</h4>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -447,7 +452,7 @@ std::cout &lt;&lt; d &lt;&lt; std::endl;
     * These links lead to the <code class="computeroutput">time_facet</code> and <code class="computeroutput">time_input_facet</code> reference sections. They are not actual classes but typedefs.
   </p>
 <h4>
-<a name="id2792926"></a>Formatter/Parser Objects</h4>
+<a name="id3055678"></a>Formatter/Parser Objects</h4>
 <p>To implement the new i/o facets the date-time library uses a number of new parsers and formatters. These classes are available for users that want to implement specialized input/output routines.</p>
 <p>
     </p>
@@ -487,11 +492,11 @@ std::cout &lt;&lt; d &lt;&lt; std::endl;
 <a class="link" href="date_time_io.html#date_facet_intro">Introduction</a> -
   <a class="link" href="date_time_io.html#date_facet_constr">Construction</a> -
   <a class="link" href="date_time_io.html#date_facet_accessors">Accessors</a><a name="date_facet_intro"></a><h4>
-<a name="id2793120"></a>Introduction</h4>
+<a name="id3055872"></a>Introduction</h4>
 <p>The <code class="computeroutput">boost::date_time::date_facet</code> enables users to have significant control over the output streaming of dates (and other gregorian objects). The date_facet is typedef'd in the <code class="computeroutput">gregorian</code> namespace as <code class="computeroutput">date_facet</code> and <code class="computeroutput">wdate_facet</code>. 
   </p>
 <a name="date_facet_constr"></a><h4>
-<a name="id2793161"></a>Construction</h4>
+<a name="id3055913"></a>Construction</h4>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -529,7 +534,7 @@ std::cout &lt;&lt; d &lt;&lt; std::endl;
 <p>
   </p>
 <a name="date_facet_accessors"></a><h4>
-<a name="id2793276"></a>Accessors</h4>
+<a name="id3056028"></a>Accessors</h4>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -720,11 +725,11 @@ ss &lt;&lt; greg_weekday(2); // "Tue"</pre></td></tr>
 <a class="link" href="date_time_io.html#date_input_facet_intro">Introduction</a> -
   <a class="link" href="date_time_io.html#date_input_facet_constr">Construction</a> -
   <a class="link" href="date_time_io.html#date_input_facet_accessors">Accessors</a><a name="date_input_facet_intro"></a><h4>
-<a name="id2794272"></a>Introduction</h4>
+<a name="id3057026"></a>Introduction</h4>
 <p>The <code class="computeroutput">boost::date_time::date_input_facet</code> enables users to have significant control how dates (and other gregorian objects) are streamed in. The date_input_facet is typedef'd in the <code class="computeroutput">gregorian</code> namespace as <code class="computeroutput">date_input_facet</code> and <code class="computeroutput">wdate_input_facet</code>. 
   </p>
 <a name="date_input_facet_constr"></a><h4>
-<a name="id2794315"></a>Construction</h4>
+<a name="id3057068"></a>Construction</h4>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -760,7 +765,7 @@ ss &lt;&lt; greg_weekday(2); // "Tue"</pre></td></tr>
 <p>
   </p>
 <a name="date_input_facet_accessors"></a><h4>
-<a name="id2794417"></a>Accessors</h4>
+<a name="id3057171"></a>Accessors</h4>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -969,11 +974,11 @@ ss &gt;&gt; dys; // a full year</pre></td></tr>
 <a class="link" href="date_time_io.html#time_facet_intro">Introduction</a> -
   <a class="link" href="date_time_io.html#time_facet_constr">Construction</a> -
   <a class="link" href="date_time_io.html#time_facet_accessors">Accessors</a><a name="time_facet_intro"></a><h4>
-<a name="id2795486"></a>Introduction</h4>
+<a name="id3058242"></a>Introduction</h4>
 <p>The <code class="computeroutput">boost::date_time::time_facet</code> is an extension of the <code class="computeroutput">boost::date_time::date_facet</code>. The time_facet is typedef'ed in the <code class="computeroutput">posix_time</code> namespace as <code class="computeroutput">time_facet</code> and <code class="computeroutput">wtime_facet</code>. It is typedef'd in the <code class="computeroutput">local_time</code> namespace as <code class="computeroutput">local_time_facet</code> and <code class="computeroutput">wlocal_time_facet</code>.
   </p>
 <a name="time_facet_constr"></a><h4>
-<a name="id2795551"></a>Construction</h4>
+<a name="id3058307"></a>Construction</h4>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1004,7 +1009,7 @@ ss &gt;&gt; dys; // a full year</pre></td></tr>
 <p>
   </p>
 <a name="time_facet_accessors"></a><h4>
-<a name="id2795644"></a>Accessors</h4>
+<a name="id3058400"></a>Accessors</h4>
 <p>
     The time_facet inherits all the public date_facet methods. Therefore, the date_facet methods are not listed here. Instead, they can be found by following <a class="link" href="date_time_io.html#date_time.date_facet" title="Date Facet">this</a> link.
     </p>
@@ -1084,11 +1089,11 @@ ss &lt;&lt; td2; // "-12:25:56"
 <a class="link" href="date_time_io.html#time_input_facet_intro">Introduction</a> -
   <a class="link" href="date_time_io.html#time_input_facet_constr">Construction</a> -
   <a class="link" href="date_time_io.html#time_input_facet_accessors">Accessors</a><a name="time_input_facet_intro"></a><h4>
-<a name="id2795993"></a>Introduction</h4>
+<a name="id3058749"></a>Introduction</h4>
 <p>The <code class="computeroutput">boost::date_time::time_input_facet</code> is an extension of the <code class="computeroutput">date_input_facet</code>. It is typedef'ed in the <code class="computeroutput">boost::posix_time</code> namespace as <code class="computeroutput">time_input_facet</code> and <code class="computeroutput">wtime_input_facet</code>. It is typedef'ed in the <code class="computeroutput">boost::local_time</code> namespace as <code class="computeroutput">local_time_input_facet</code> and <code class="computeroutput">wlocal_time_input_facet</code>.
   </p>
 <a name="time_input_facet_constr"></a><h4>
-<a name="id2796058"></a>Construction</h4>
+<a name="id3058816"></a>Construction</h4>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1124,7 +1129,7 @@ ss &lt;&lt; td2; // "-12:25:56"
 <p>
   </p>
 <a name="time_input_facet_accessors"></a><h4>
-<a name="id2796161"></a>Accessors</h4>
+<a name="id3058919"></a>Accessors</h4>
 <p>
     The time_input_facet inherits all the public date_input_facet methods. Therefore, the date_input_facet methods are not listed here. Instead, they can be found by following <a class="link" href="date_time_io.html#date_time.date_input_facet" title="Date Input Facet">this</a> link.
     </p>
@@ -1201,20 +1206,20 @@ ss &gt;&gt; td; // default format</pre></td></tr>
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.io_objects"></a>Date Time Formatter/Parser Objects</h3></div></div></div>
 <h3>
-<a name="id2796473"></a>Date Time Formatter/Parser Objects</h3>
+<a name="id3059231"></a>Date Time Formatter/Parser Objects</h3>
 <a class="link" href="date_time_io.html#io_objects.periods">Periods</a> |
   <a class="link" href="date_time_io.html#io_objects.date_generators">Date Generators</a> |
   <a class="link" href="date_time_io.html#io_objects.special_values">Special Values</a> |
   <a class="link" href="date_time_io.html#io_objects.format_date_parser">Format Date Parser</a><a name="io_objects.periods"></a><h4>
-<a name="id2796520"></a>Periods</h4>
+<a name="id3059278"></a>Periods</h4>
 <p>The period_formatter and period_parser provide a uniform interface for the input and output of date_periods, time_periods, and in a future release, local_date_time_periods. The user has control over the delimiters, formats of the date/time components, and the form the period takes. The format of the date/time components is controlled via the date_time input and output facets.</p>
 <h5>
-<a name="id2796535"></a>Period Form</h5>
+<a name="id3059293"></a>Period Form</h5>
 <p>Periods are constructed with open ranged parameters. The first value is the starting point, and is included in the period. The end value is not included but immediately follows the last value: [begin/end). However, a period can be streamed as either an open range or a closed range.</p>
 <pre class="screen">[2003-Jan-01/2003-Dec-31] &lt;-- period holding 365 days
 [2003-Jan-01/2004-Jan-01) &lt;-- period holding 365 days</pre>
 <h5>
-<a name="id2796558"></a>Delimiters</h5>
+<a name="id3059316"></a>Delimiters</h5>
 <p>There are four delimiters. The default values are</p>
 <table class="simplelist" border="0" summary="Simple list">
 <tr><td>"\" - separator</td></tr>
@@ -1224,14 +1229,14 @@ ss &gt;&gt; td; // default format</pre></td></tr>
 </table>
 <p>A user can provide a custom set of delimiters. Custom delimiters may contain spaces.</p>
 <h5>
-<a name="id2796591"></a>Customization</h5>
+<a name="id3059349"></a>Customization</h5>
 <p>The period form and delimiters can be set as construction parameters or by means of accessor functions. A custom period parser/formatter can then be used as a construction parameter to a new facet, or can be set in an existing facet via an accessor function.</p>
 <h5>
-<a name="id2796604"></a>Period Formatter/Parser Reference</h5>
+<a name="id3059362"></a>Period Formatter/Parser Reference</h5>
   The complete class reference can be found here: <code class="computeroutput"><a class="link" href="../boost/date_time/period_formatter.html" title="Class template period_formatter">Period Formatter Doxygen Reference</a></code> and here: <code class="computeroutput"><a class="link" href="../boost/date_time/period_parser.html" title="Class template period_parser">Period Parser Doxygen Reference</a></code><p>
     </p>
 <h5>
-<a name="id2796636"></a>Period Formatter Construction</h5>
+<a name="id3059394"></a>Period Formatter Construction</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1257,7 +1262,7 @@ ss &gt;&gt; td; // default format</pre></td></tr>
 <p>
     </p>
 <h5>
-<a name="id2796711"></a>Period Formatter Accessors</h5>
+<a name="id3059468"></a>Period Formatter Accessors</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1345,7 +1350,7 @@ pf.delimiter_strings(beg, sep,
 <p>
     </p>
 <h5>
-<a name="id2796968"></a>Period Parser Construction</h5>
+<a name="id3059726"></a>Period Parser Construction</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1377,7 +1382,7 @@ pf.delimiter_strings(beg, sep,
 <p>
     </p>
 <h5>
-<a name="id2797058"></a>Period Parser Accessors</h5>
+<a name="id3059816"></a>Period Parser Accessors</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1443,10 +1448,10 @@ pp.delimiter_strings(beg, sep,
   </p>
 <p>_____________________________________________________</p>
 <a name="io_objects.date_generators"></a><h4>
-<a name="id2797280"></a>Date Generators</h4>
+<a name="id3060038"></a>Date Generators</h4>
 <p>The date_generator formatter and parser provide flexibility by allowing the user to use custom "phrase elements". These phrase elements are the "in-between" words in the date_generators. For example, in the date_generator "Second Monday of March", "Second" and "of" are the phrase elements, where "Monday" and "March" are the date elements. Customization of the date elements is done with the facet. The order of the date and phrase elements cannot be changed. When parsing, all elements of the date_generator phrase must parse correctly or an ios_base::failure exception will be thrown.</p>
 <h5>
-<a name="id2797299"></a>Customization</h5>
+<a name="id3060057"></a>Customization</h5>
 <p>The default "phrase_strings" are:
     </p>
 <table class="simplelist" border="0" summary="Simple list"><tr>
@@ -1471,11 +1476,11 @@ pp.delimiter_strings(beg, sep,
 <p>The custom set of phrase elements can be set as construction parameters or through an accessor function.A custom date_generator parser/formatter can then be used as a construction parameter to a new facet, or can be set in an existing facet via an accessor function.</p>
 <p>IMPORTANT NOTE: Prior to 1.33, partial_date was output as "1 Jan" with a single *or* double digit number for the day. The new behavior is to *always* place a double digit number for the day - "01 Jan".</p>
 <h5>
-<a name="id2797383"></a>Date Generator Reference</h5>
+<a name="id3060141"></a>Date Generator Reference</h5>
   The complete class references can be found here: <code class="computeroutput"><a class="link" href="../boost/date_time/date_generator_formatter.html" title="Class template date_generator_formatter">Date Generator Formatter Doxygen Reference</a></code> and here: <code class="computeroutput"><a class="link" href="../boost/date_time/date_generator_parser.html" title="Class template date_generator_parser">Date Generator Parser Doxygen Reference</a></code><p>
     </p>
 <h5>
-<a name="id2797415"></a>Date Generator Formatter Construction</h5>
+<a name="id3060173"></a>Date Generator Formatter Construction</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1511,7 +1516,7 @@ pp.delimiter_strings(beg, sep,
 <p>
     </p>
 <h5>
-<a name="id2797489"></a>Date Generator Formatter Accessors</h5>
+<a name="id3060247"></a>Date Generator Formatter Accessors</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1629,7 +1634,7 @@ formatter.elements(col, dgf::last);
 <p>
     </p>
 <h5>
-<a name="id2797755"></a>Date Generator Parser Construction</h5>
+<a name="id3060513"></a>Date Generator Parser Construction</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1671,7 +1676,7 @@ formatter.elements(col, dgf::last);
 <p>
     </p>
 <h5>
-<a name="id2797845"></a>Date Generator Parser Accessors</h5>
+<a name="id3060602"></a>Date Generator Parser Accessors</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1787,7 +1792,7 @@ formatter.elements(col, dgf::last);
   </p>
 <p>_____________________________________________________</p>
 <a name="io_objects.special_values"></a><h4>
-<a name="id2798134"></a>Special Values</h4>
+<a name="id3060891"></a>Special Values</h4>
 <p>The date_time library uses five special_values. They are:
     </p>
 <table class="simplelist" border="0" summary="Simple list"><tr>
@@ -1801,14 +1806,14 @@ formatter.elements(col, dgf::last);
   </p>
 <p>The default set of strings used to represent these types are: "not-a-date-time", "-infinity", "+infinity", "minimum-date-time", "maximum-date-time". When output, the min_date-time and max_date_time appear as normal date/time representations: "1400-Jan-01" and "9999-Dec-31" repectively.</p>
 <h5>
-<a name="id2798177"></a>Customization</h5>
+<a name="id3060935"></a>Customization</h5>
 <p>The special values parser/formatter allows the user to set custom strings for these special values. These strings can be set as construction parameters to a new facet, or can be set in an existing facet via an accessor function.</p>
 <h5>
-<a name="id2798190"></a>Special Values Formatter/Parser Reference</h5>
+<a name="id3060948"></a>Special Values Formatter/Parser Reference</h5>
   The complete class references can be found here: <code class="computeroutput"><a class="link" href="../boost/date_time/special_values_formatter.html" title="Class template special_values_formatter">Special Values Formatter Doxygen Reference</a></code> and here: <code class="computeroutput"><a class="link" href="../boost/date_time/special_values_parser.html" title="Class template special_values_parser">Special Values Parser Doxygen Reference</a></code><p>
     </p>
 <h5>
-<a name="id2798223"></a>Special Values Formatter Constructor</h5>
+<a name="id3060981"></a>Special Values Formatter Constructor</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1846,7 +1851,7 @@ formatter.elements(col, dgf::last);
 <p>
     </p>
 <h5>
-<a name="id2798316"></a>Special Values Formatter Accessors</h5>
+<a name="id3061074"></a>Special Values Formatter Accessors</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1883,7 +1888,7 @@ formatter.put_special(itr, d2);
 <p>
     </p>
 <h5>
-<a name="id2798396"></a>Special Values Parser Constructor</h5>
+<a name="id3061154"></a>Special Values Parser Constructor</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1930,7 +1935,7 @@ formatter.put_special(itr, d2);
 <p>
     </p>
 <h5>
-<a name="id2798503"></a>Special Values Parser Accessors</h5>
+<a name="id3061261"></a>Special Values Parser Accessors</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -1982,14 +1987,14 @@ if(parser.match(itr, str_end, mr)) {
   </p>
 <p>_____________________________________________________</p>
 <a name="io_objects.format_date_parser"></a><h4>
-<a name="id2798632"></a>Format Date Parser</h4>
+<a name="id3061389"></a>Format Date Parser</h4>
 <p>The format date parser is the object that holds the strings for months and weekday names, as well as their abbreviations. Custom sets of strings can be set at construction time, or, the strings in an existing format_date_parser can be replaced through accessor functions. Both the constructor and the accessor functions take a vector of strings as their arguments.</p>
 <h5>
-<a name="id2798647"></a>Format Date Parser Reference</h5>
+<a name="id3061405"></a>Format Date Parser Reference</h5>
   The complete class reference can be found here: <code class="computeroutput"><a class="link" href="../boost/date_time/format_date_parser.html" title="Class template format_date_parser">Doxygen Reference</a></code><p>
     </p>
 <h5>
-<a name="id2798667"></a>Format Date Parser Constructor</h5>
+<a name="id3061425"></a>Format Date Parser Constructor</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -2032,7 +2037,7 @@ if(parser.match(itr, str_end, mr)) {
 <p>
     </p>
 <h5>
-<a name="id2798765"></a>Format Date Parser Accessors</h5>
+<a name="id3061523"></a>Format Date Parser Accessors</h5>
 <p>
     </p>
 <div class="informaltable"><table class="table">
@@ -2205,17 +2210,17 @@ y = parser.parse_year(itr,
 <div class="titlepage"><div><div><h3 class="title">
 <a name="date_time.io_tutorial"></a>Date Time IO Tutorial</h3></div></div></div>
 <h3>
-<a name="id2799258"></a>Date Time IO Tutorial</h3>
+<a name="id3062017"></a>Date Time IO Tutorial</h3>
 <a class="link" href="date_time_io.html#basic_use">Basic Use</a> |
   <a class="link" href="date_time_io.html#format_strings">Format Strings</a> |
   <a class="link" href="date_time_io.html#content_strings">Content Strings</a> |
   <a class="link" href="date_time_io.html#tut_sv">Special Values</a> |
   <a class="link" href="date_time_io.html#tut_dper">Date/Time Periods</a> |
   <a class="link" href="date_time_io.html#tut_dgen">Date Generators</a><a name="basic_use"></a><h5>
-<a name="id2799320"></a>Basic Use</h5>
+<a name="id3062078"></a>Basic Use</h5>
 <p>Facets are automatically imbued when operators '&gt;&gt;' and '&lt;&lt;' are called. The list of date_time objects that can be streamed are:</p>
 <h6>
-<a name="id2799334"></a>Gregorian</h6>
+<a name="id3062092"></a>Gregorian</h6>
 <p>
     <code class="computeroutput">date</code>, 
     <code class="computeroutput">days</code>, 
@@ -2231,14 +2236,14 @@ y = parser.parse_year(itr,
     <code class="computeroutput">first_day_of_the_week_before</code>
   </p>
 <h6>
-<a name="id2799417"></a>Posix_time</h6>
+<a name="id3062175"></a>Posix_time</h6>
 <p>
     <code class="computeroutput">ptime</code>, 
     <code class="computeroutput">time_period</code>, 
     <code class="computeroutput">time_duration</code>
   </p>
 <h6>
-<a name="id2799444"></a>Local_time</h6>
+<a name="id3062202"></a>Local_time</h6>
 <p>
     <code class="computeroutput">local_date_time</code>
   </p>
@@ -2264,7 +2269,7 @@ y = parser.parse_year(itr,
   </pre>
 <p>This example used the default settings for the input and output facets. The default formats are such that interoperability like that shown in the example is possible. NOTE: Input streaming of local_date_time can only be done with a <a class="link" href="local_time.html#date_time.local_time.posix_time_zone" title="Posix Time Zone">posix time zone string</a>. The default output format uses a time zone abbreviation. The format can be changed so out and in match (as we will see later in this tutorial).</p>
 <a name="format_strings"></a><h5>
-<a name="id2799508"></a>Format Strings</h5>
+<a name="id3062266"></a>Format Strings</h5>
 <p>The format strings control the order, type, and style of the date/time elements used. The facets provide some predefined formats (iso_format_specifier, iso_format_extended_specifier, and default_date_format) but the user can easily create their own.</p>
   (continued from previous example)
   <pre class="programlisting">
@@ -2311,11 +2316,11 @@ y = parser.parse_year(itr,
     
   </pre>
 <a name="content_strings"></a><h5>
-<a name="id2799581"></a>Content Strings</h5>
+<a name="id3062339"></a>Content Strings</h5>
 <p>So far we've shown how a user can achieve a great deal of customization with very little effort by using formats. Further customization can be achieved through user defined elements (ie strings). The elements that can be customized are: Special value names, month names, month abbreviations, weekday names, weekday abbreviations, delimiters of the date/time periods, and the phrase elements of the date_generators.</p>
 <p>The default values for these are as follows:</p>
 <h6>
-<a name="id2799601"></a>Special values</h6>
+<a name="id3062359"></a>Special values</h6>
 <p>
     <code class="computeroutput">not-a-date-time</code>, 
     <code class="computeroutput">-infinity</code>, 
@@ -2324,17 +2329,17 @@ y = parser.parse_year(itr,
     <code class="computeroutput">maximum-date-time</code>
   </p>
 <h6>
-<a name="id2799640"></a>Months</h6>
+<a name="id3062398"></a>Months</h6>
 <p>
     <code class="computeroutput">English calendar and three letter abbreviations</code>
   </p>
 <h6>
-<a name="id2799655"></a>Weekdays</h6>
+<a name="id3062413"></a>Weekdays</h6>
 <p>
     <code class="computeroutput">English calendar and three letter abbreviations</code>
   </p>
 <h6>
-<a name="id2799671"></a>Date generator phrase elements</h6>
+<a name="id3062428"></a>Date generator phrase elements</h6>
 <p>
     <code class="computeroutput">first</code>, 
     <code class="computeroutput">second</code>, 
@@ -2348,7 +2353,7 @@ y = parser.parse_year(itr,
   </p>
 <p>NOTE: We've shown earlier that the components of a date/time representation can be re-ordered via the format string. This is not the case with date_generators. The elements themselves can be customized but their order cannot be changed.</p>
 <h5>
-<a name="id2799741"></a>Content Strings</h5>
+<a name="id3062499"></a>Content Strings</h5>
 <p>To illustrate the customization possibilities we will use custom strings for months and weekdays (we will only use long names, is all lowercase, for this example).</p>
   (continued from previous example)
   <pre class="programlisting">
@@ -2398,7 +2403,7 @@ y = parser.parse_year(itr,
     
   </pre>
 <a name="tut_sv"></a><h5>
-<a name="id2799801"></a>Special Values</h5>
+<a name="id3062559"></a>Special Values</h5>
 <p>Customizing the input and output of special values is best done by creating a new special_values_parser and special_values_formatter. The new strings can be set at construction time (as in the example below).</p>
   (continued from previous example)
   <pre class="programlisting">
@@ -2430,7 +2435,7 @@ y = parser.parse_year(itr,
   </pre>
 <p>NOTE: even though we sent in strings for min and max to the formatter, they are ignored because those special values construct to actual dates (as shown above).</p>
 <a name="tut_dper"></a><h5>
-<a name="id2799856"></a>Date/Time Periods</h5>
+<a name="id3062614"></a>Date/Time Periods</h5>
 <p>Customizing the input and output of periods is best done by creating a new period_parser and period_formatter. The new strings can be set at construction time (as in the example below).</p>
   (continued from previous example)
   <pre class="programlisting">
@@ -2462,7 +2467,7 @@ y = parser.parse_year(itr,
     
   </pre>
 <a name="tut_dgen"></a><h5>
-<a name="id2799898"></a>Date Generators</h5>
+<a name="id3062656"></a>Date Generators</h5>
 <p>Customizing the input and output of date_generators is done by replacing the existing strings (in the facet) with new strings.</p>
 <p>NOTE: We've shown earlier that the components of a date/time representation can be re-ordered via the format string. This is not the case with date_generators. The elements themselves can be customized but their order cannot be changed.</p>
   (continued from previous example)

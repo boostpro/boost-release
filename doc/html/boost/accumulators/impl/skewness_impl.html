@@ -29,37 +29,39 @@
 <p>boost::accumulators::impl::skewness_impl &#8212; Skewness estimation. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Sample&gt; 
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.skewness_hpp" title="Header &lt;boost/accumulators/statistics/skewness.hpp&gt;">boost/accumulators/statistics/skewness.hpp</a>&gt;
+
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Sample&gt; 
 <span class="bold"><strong>struct</strong></span> <a class="link" href="skewness_impl.html" title="Struct template skewness_impl">skewness_impl</a> {
   <span class="emphasis"><em>// types</em></span>
   <span class="bold"><strong>typedef</strong></span> numeric::functional::average&lt; Sample, Sample &gt;::result_type <a name="boost.accumulators.impl.skewness_impl.result_type"></a>result_type;
 
   <span class="emphasis"><em>// <a class="link" href="skewness_impl.html#boost.accumulators.impl.skewness_implconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="skewness_impl.html#id2580794-bb">skewness_impl</a>(dont_care);
+  <a class="link" href="skewness_impl.html#id2963355-bb">skewness_impl</a>(dont_care);
 
-  <span class="emphasis"><em>// <a class="link" href="skewness_impl.html#id2580770-bb">public member functions</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type">result_type</span> <a class="link" href="skewness_impl.html#id2580773-bb">result</a>(Args <span class="bold"><strong>const</strong></span> &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="skewness_impl.html#id2963331-bb">public member functions</a></em></span>
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type">result_type</span> <a class="link" href="skewness_impl.html#id2963334-bb">result</a>(Args <span class="bold"><strong>const</strong></span> &amp;) <span class="bold"><strong>const</strong></span>;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id2715421"></a><h2>Description</h2>
-<p>The skewness of a sample distribution is defined as the ratio of the 3rd central moment and the <span class="inlinemediaobject"><img src="../../../images/accumulators/form_86.png"></span>-th power of the 2nd central moment (the variance) of the sampless 3. The skewness can also be expressed by the simple moments:</p>
+<a name="id2974022"></a><h2>Description</h2>
+<p>The skewness of a sample distribution is defined as the ratio of the 3rd central moment and the <span class="inlinemediaobject"><img src="../../../images/accumulators/form_99.png"></span>-th power of the 2nd central moment (the variance) of the sampless 3. The skewness can also be expressed by the simple moments:</p>
 <div class="equation">
-<a name="id2715452"></a><p class="title"><b>Equation 1.11. </b></p>
-<div class="equation-contents"><div class="mediaobject" align="center"><img src="../../../images/accumulators/form_87.png" align="middle"></div></div>
+<a name="id2974052"></a><p class="title"><b>Equation 1.11. </b></p>
+<div class="equation-contents"><div class="mediaobject" align="center"><img src="../../../images/accumulators/form_100.png" align="middle"></div></div>
 </div>
 <p><br class="equation-break"></p>
-<p>where <span class="inlinemediaobject"><img src="../../../images/accumulators/form_78.png"></span> are the <span class="inlinemediaobject"><img src="../../../images/accumulators/form_79.png"></span>-th moment and <span class="inlinemediaobject"><img src="../../../images/accumulators/form_80.png"></span> the mean (first moment) of the <span class="inlinemediaobject"><img src="../../../images/accumulators/form_23.png"></span> samples. </p>
+<p>where <span class="inlinemediaobject"><img src="../../../images/accumulators/form_52.png"></span> are the <span class="inlinemediaobject"><img src="../../../images/accumulators/form_53.png"></span>-th moment and <span class="inlinemediaobject"><img src="../../../images/accumulators/form_54.png"></span> the mean (first moment) of the <span class="inlinemediaobject"><img src="../../../images/accumulators/form_23.png"></span> samples. </p>
 <div class="refsect2" lang="en">
-<a name="id2715564"></a><h3>
+<a name="id2974163"></a><h3>
 <a name="boost.accumulators.impl.skewness_implconstruct-copy-destruct"></a><code class="computeroutput">skewness_impl</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id2580794-bb"></a>skewness_impl(dont_care);</pre></li></ol></div>
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id2963355-bb"></a>skewness_impl(dont_care);</pre></li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2715600"></a><h3>
-<a name="id2580770-bb"></a><code class="computeroutput">skewness_impl</code> public member functions</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type">result_type</span> <a name="id2580773-bb"></a>result(Args <span class="bold"><strong>const</strong></span> &amp; args) <span class="bold"><strong>const</strong></span>;</pre></li></ol></div>
+<a name="id2974200"></a><h3>
+<a name="id2963331-bb"></a><code class="computeroutput">skewness_impl</code> public member functions</h3>
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; <span class="type">result_type</span> <a name="id2963334-bb"></a>result(Args <span class="bold"><strong>const</strong></span> &amp; args) <span class="bold"><strong>const</strong></span>;</pre></li></ol></div>
 </div>
 </div>
 </div>
