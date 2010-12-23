@@ -15,8 +15,17 @@ Once we have array conversion support, this test will fail. Er,
 succeed<wink>:
 
 >>> try: apply_to_string_literal(identity)
-... except: pass # expected
+... except ReferenceError: pass # expected
 ... else: print 'expected an exception!'
+
+>>> try: apply_X_ref_handle(lambda ignored:X(42), None)
+... except ReferenceError: pass # expected
+... else: print 'expected an exception!'
+
+>>> x = X(42)
+>>> x.y = X(7)
+>>> apply_X_ref_handle(lambda z:z.y, x).value()
+7
 
 >>> x = apply_X_X(identity, X(42))
 >>> x.value()
@@ -130,4 +139,6 @@ def run(args = None):
 if __name__ == '__main__':
     print "running..."
     import sys
-    sys.exit(run()[0])
+    status = run()[0]
+    if (status == 0): print "Done."
+    sys.exit(status)

@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: test_tools_test.cpp,v $
 //
-//  Version     : $Id: test_tools_test.cpp,v 1.17 2003/02/18 22:17:12 rogeeff Exp $
+//  Version     : $Revision: 1.28 $
 //
 //  Description : tests all Test Tools but output_test_stream
 // ***************************************************************************
@@ -17,12 +16,14 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_result.hpp>
 using namespace boost::unit_test_framework;
+using boost::test_toolbox::extended_predicate_value;
 
 // BOOST
-#include <boost/compose.hpp>
+#include <boost/bind.hpp>
 
 // STL
 #include <iostream>
+#include <iomanip>
 #include <list>
 #include <typeinfo>
 #include <cassert>
@@ -62,15 +63,33 @@ using namespace boost::unit_test_framework;
 
 //____________________________________________________________________________//
 
-#if defined(__BORLANDC__) || defined(__IBMCPP__)
+char
+set_unix_slash( char in )
+{
+    return in == '\\' ? '/' : in;
+}
+
+static std::string const&
+normalize_file_name( char const* f )
+{
+    static std::string buffer;
+
+    buffer = f;
+
+    std::transform( buffer.begin(), buffer.end(), buffer.begin(), &set_unix_slash );
+
+    return buffer;
+}
+
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570)) || BOOST_WORKAROUND(__IBMCPP__, BOOST_TESTED_AT(600))
 
 #define CHECK_PATTERN( msg, shift ) \
-    (boost::wrap_stringstream().ref() << __FILE__ << "(" << (__LINE__-shift) << "): " << msg).str()
+    (boost::wrap_stringstream().ref() << normalize_file_name( __FILE__ ) << "(" << (__LINE__-shift) << "): " << msg).str()
 
 #else
 
 #define CHECK_PATTERN( msg, shift ) \
-    (boost::wrap_stringstream().ref() << __FILE__ << "(" << __LINE__ << "): " << msg).str()
+    (boost::wrap_stringstream().ref() << normalize_file_name( __FILE__ ) << "(" << __LINE__ << "): " << msg).str()
 
 #endif
 //____________________________________________________________________________//
@@ -83,7 +102,8 @@ public:
 };
 
 void
-test_BOOST_CHECK() {
+test_BOOST_CHECK()
+{
 #define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK" << '\"' <<
 
     unit_test_log::instance().set_log_threshold_level( log_all_errors );
@@ -128,7 +148,8 @@ test_BOOST_CHECK() {
 //____________________________________________________________________________//
 
 void
-test_BOOST_REQUIRE() {
+test_BOOST_REQUIRE()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_REQUIRE" << '\"' <<
 
@@ -166,7 +187,8 @@ struct A {
 };
 
 void
-test_BOOST_MESSAGE() {
+test_BOOST_MESSAGE()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_REQUIRE" << '\"' <<
 
@@ -193,12 +215,34 @@ test_BOOST_MESSAGE() {
         BOOST_MESSAGE( a ),
         output.is_equal( "struct A\n" )
     );
+
+#ifndef BOOST_NO_STD_LOCALE
+
+    CHECK_TOOL_USAGE(
+        BOOST_MESSAGE( std::hex << std::showbase << 20 ),
+        output.is_equal( "0x14\n" )
+    );
+
+#else
+
+    CHECK_TOOL_USAGE(
+        BOOST_MESSAGE( std::hex << "0x" << 20 ),
+        output.is_equal( "0x14\n" )
+    );
+
+#endif
+
+    CHECK_TOOL_USAGE(
+        BOOST_MESSAGE( std::setw( 4 ) << 20 ),
+        output.is_equal( "  20\n" )
+        );
 }
 
 //____________________________________________________________________________//
 
 void
-test_BOOST_WARN() {
+test_BOOST_WARN()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_WARN" << '\"' <<
 
@@ -223,7 +267,8 @@ public:
 } bad;
 
 void
-test_BOOST_CHECKPOINT() {
+test_BOOST_CHECKPOINT()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_CHECKPOINT" << '\"' <<
 
@@ -236,7 +281,7 @@ test_BOOST_CHECKPOINT() {
         output.is_equal(
             (boost::wrap_stringstream().ref()
                 << "Exception in " TEST_CASE_NAME ": C string: some error\n"
-                << __FILE__ << "(" << 232 << ") : "
+                << normalize_file_name( __FILE__ ) << "(" << 277 << "): "
                 << "last checkpoint: Going to do a silly things\n").str()
         )
     );
@@ -245,7 +290,8 @@ test_BOOST_CHECKPOINT() {
 //____________________________________________________________________________//
 
 void
-test_BOOST_WARN_MESSAGE() {
+test_BOOST_WARN_MESSAGE()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_WARN_MESSAGE" << '\"' <<
 
@@ -269,7 +315,8 @@ test_BOOST_WARN_MESSAGE() {
 //____________________________________________________________________________//
 
 void
-test_BOOST_CHECK_MESSAGE() {
+test_BOOST_CHECK_MESSAGE()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_MESSAGE" << '\"' <<
 
@@ -286,7 +333,8 @@ test_BOOST_CHECK_MESSAGE() {
 //____________________________________________________________________________//
 
 void
-test_BOOST_REQUIRE_MESSAGE() {
+test_BOOST_REQUIRE_MESSAGE()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_REQUIRE_MESSAGE" << '\"' <<
 
@@ -301,8 +349,7 @@ test_BOOST_REQUIRE_MESSAGE() {
 
 //____________________________________________________________________________//
 
-struct B
-{
+struct B {
     B( int i ) : m_i( i ) {}
 
     friend bool operator==( B const& b1, B const& b2 ) { return b1.m_i == b2.m_i; }
@@ -312,7 +359,8 @@ struct B
 };
 
 void
-test_BOOST_CHECK_EQUAL() {
+test_BOOST_CHECK_EQUAL()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_EQUAL" << '\"' <<
 
@@ -361,17 +409,30 @@ test_BOOST_CHECK_EQUAL() {
 
 //____________________________________________________________________________//
 
-bool is_even( int i ) {
-    return i%2 == 0;
-}
+bool is_even( int i )        { return i%2 == 0;  }
+int  foo( int arg, int mod ) { return arg % mod; }
 
-int foo( int arg, int mod ) 
+BOOST_TEST_DONT_PRINT_LOG_VALUE( std::list<int> )
+
+extended_predicate_value
+compare_lists( std::list<int> const& l1, std::list<int> const& l2 )
 {
-    return arg % mod;
+    if( l1.size() != l2.size() ) {
+        extended_predicate_value res( false );
+
+        res.p_message.reset( new boost::wrap_stringstream );
+
+        *res.p_message << " Different sizes [" << l1.size() << "!=" << l2.size() << "]";
+
+        return res;
+    }
+
+    return true;
 }
 
 void
-test_BOOST_CHECK_PREDICATE() {
+test_BOOST_CHECK_PREDICATE()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_PREDICATE" << '\"' <<
 
@@ -392,15 +453,27 @@ test_BOOST_CHECK_PREDICATE() {
     );
 
     CHECK_TOOL_USAGE(
-        BOOST_CHECK_PREDICATE( boost::compose_f_gxy( std::ptr_fun( &is_even ), std::ptr_fun( &foo ) ), 2, (i,15) ),
+        BOOST_CHECK_PREDICATE( boost::bind( &is_even, boost::bind( &foo, _1, _2 ) ), 2, (i,15) ),
         output.is_empty()
+    );
+
+    std::list<int> l1, l2, l3;
+    l1.push_back( 1 );
+    l3.push_back( 1 );
+    l1.push_back( 2 );
+    l3.push_back( 3 );
+
+    CHECK_TOOL_USAGE(
+        BOOST_CHECK_PREDICATE( &compare_lists, 2, (l1,l2) ),
+        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test &compare_lists(l1, l2) failed for (, ) Different sizes [2!=0]\n", 2 ) )
     );
 }
 
 //____________________________________________________________________________//
 
 void
-test_BOOST_REQUIRE_PREDICATE() {
+test_BOOST_REQUIRE_PREDICATE()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_REQUIRE_PREDICATE" << '\"' <<
 
@@ -423,7 +496,8 @@ test_BOOST_REQUIRE_PREDICATE() {
 //____________________________________________________________________________//
 
 void
-test_BOOST_ERROR() {
+test_BOOST_ERROR()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_ERROR" << '\"' <<
 
@@ -442,10 +516,17 @@ test_BOOST_ERROR() {
 
 //____________________________________________________________________________//
 
-class my_exception {};
+struct my_exception {
+    explicit my_exception( int ec = 0 ) : m_error_code( ec ) {}
+    
+    int m_error_code;
+};
+
+bool is_critical( my_exception const& ex ) { return ex.m_error_code < 0; }
 
 void
-test_BOOST_CHECK_THROW() {
+test_BOOST_CHECK_THROW()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_THROW" << '\"' <<
 
@@ -470,7 +551,33 @@ test_BOOST_CHECK_THROW() {
 //____________________________________________________________________________//
 
 void
-test_BOOST_CHECK_NO_THROW() {
+test_BOOST_CHECK_EXCEPTION()
+{
+#undef  TEST_CASE_NAME
+#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_EXCEPTION" << '\"' <<
+
+    unit_test_log::instance().set_log_threshold_level( log_all_errors );
+
+    CHECK_TOOL_USAGE(
+        BOOST_CHECK_EXCEPTION( throw my_exception( 1 ), my_exception, is_critical ),
+        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": incorrect exception my_exception is caught\n", 2 ) )
+    );
+
+    unit_test_log::instance().set_log_threshold_level( log_successful_tests );
+
+    CHECK_TOOL_USAGE(
+        BOOST_CHECK_EXCEPTION( throw my_exception( -1 ), my_exception, is_critical ),
+        output.is_equal( CHECK_PATTERN( "info: incorrect exception my_exception is caught\n", 2 ) )
+    );
+
+    unit_test_log::instance().set_log_threshold_level( log_all_errors );
+}
+
+//____________________________________________________________________________//
+
+void
+test_BOOST_CHECK_NO_THROW()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_NO_THROW" << '\"' <<
 
@@ -489,7 +596,8 @@ test_BOOST_CHECK_NO_THROW() {
 //____________________________________________________________________________//
 
 void
-test_BOOST_CHECK_EQUAL_COLLECTIONS() {
+test_BOOST_CHECK_EQUAL_COLLECTIONS()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_EQUAL_COLLECTIONS" << '\"' <<
 
@@ -511,18 +619,18 @@ test_BOOST_CHECK_EQUAL_COLLECTIONS() {
     CHECK_TOOL_USAGE(
         BOOST_CHECK_EQUAL_COLLECTIONS( testlist.begin(), testlist.end(), pattern ),
             output.is_equal( CHECK_PATTERN( 
-              "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed [4 != 3]\n"
-              __FILE__ << "(" << __LINE__ << "): " << 
-              "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed [7 != 6]\n"
+              "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed in a position 2 [4 != 3]\n"
+              << normalize_file_name( __FILE__ ) << "(" << __LINE__ << "): "
+              << "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed in a position 5 [7 != 6]\n"
               , 6 ) )
     );
 #else
     CHECK_TOOL_USAGE(
         BOOST_CHECK_EQUAL_COLLECTIONS( testlist.begin(), testlist.end(), pattern ),
             output.is_equal( CHECK_PATTERN( 
-              "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed [4 != 3]\n"
-              __FILE__ << "(" << (__LINE__-6) << "): " << 
-              "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed [7 != 6]\n"
+              "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed in a position 2 [4 != 3]\n"
+              << normalize_file_name( __FILE__ ) << "(" << (__LINE__-6) << "): "
+              << "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed in a position 5 [7 != 6]\n"
               , 6 ) )
     );
 #endif
@@ -532,7 +640,8 @@ test_BOOST_CHECK_EQUAL_COLLECTIONS() {
 //____________________________________________________________________________//
 
 void
-test_BOOST_IS_DEFINED() {
+test_BOOST_IS_DEFINED()
+{
 #define SYMBOL1
 #define SYMBOL2 std::cout
 #define ONE_ARG( arg ) arg
@@ -550,7 +659,8 @@ test_BOOST_IS_DEFINED() {
 //____________________________________________________________________________//
 
 void
-test_BOOST_BITWISE_EQUAL() {
+test_BOOST_BITWISE_EQUAL()
+{
 #undef  TEST_CASE_NAME
 #define TEST_CASE_NAME << '\"' << "test_BOOST_BITWISE_EQUAL" << '\"' <<
 
@@ -576,7 +686,8 @@ test_BOOST_BITWISE_EQUAL() {
 
 
 test_suite*
-init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
+init_unit_test_suite( int /*argc*/, char* /*argv*/[] )
+{
     test_suite* test = BOOST_TEST_SUITE("Test Tools test");
 
     test->add( BOOST_TEST_CASE( &test_BOOST_CHECK ) );
@@ -591,6 +702,7 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
     test->add( BOOST_TEST_CASE( &test_BOOST_ERROR ) );
     test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_THROW ) );
     test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_NO_THROW ) );
+    test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_EXCEPTION ) );
     test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_EQUAL_COLLECTIONS ) );
     test->add( BOOST_TEST_CASE( &test_BOOST_IS_DEFINED ) );
     test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_PREDICATE ) );
@@ -606,25 +718,11 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
 //  Revision History :
 //  
 //  $Log: test_tools_test.cpp,v $
-//  Revision 1.17  2003/02/18 22:17:12  rogeeff
-//  Visual Age fix
+//  Revision 1.28  2003/12/23 13:23:35  johnmaddock
+//  Added patch for gcc2.95.3 (and no new iostreams).
 //
-//  Revision 1.16  2003/02/14 06:40:58  rogeeff
-//  Intel on linux fix
-//
-//  Revision 1.15  2003/02/13 08:47:12  rogeeff
-//  *** empty log message ***
-//
-//  Revision 1.14  2002/12/09 05:18:34  rogeeff
-//  switched to use unit_test_result_saver for internal testing
-//  switched to wrap_stringstream
-//  test cases added for the NULL char strings comparisons
-//
-//  Revision 1.13  2002/11/02 20:23:24  rogeeff
-//  wrapstream copy constructor isuue fix reworked
-//
-//  Revision 1.12  2002/11/02 20:04:43  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.27  2003/12/01 00:42:38  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

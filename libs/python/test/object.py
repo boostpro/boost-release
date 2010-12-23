@@ -1,5 +1,9 @@
 '''
 >>> from object_ext import *
+
+>>> type(ref_to_noncopyable())
+<class 'object_ext.NotCopyable'>
+
 >>> def print1(x):
 ...     print x
 >>> call_object_3(print1)
@@ -123,4 +127,6 @@ def run(args = None):
 if __name__ == '__main__':
     print "running..."
     import sys
-    sys.exit(run()[0])
+    status = run()[0]
+    if (status == 0): print "Done."
+    sys.exit(status)

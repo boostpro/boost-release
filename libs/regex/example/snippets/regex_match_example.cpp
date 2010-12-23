@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -21,6 +17,7 @@
   */
   
 #include <cstdlib>
+#include <stdlib.h>
 #include <boost/regex.hpp>
 #include <string>
 #include <iostream>
@@ -44,7 +41,7 @@ int process_ftp(const char* response, std::string* msg)
       // what[3] contains the text message.
       if(msg)
          msg->assign(what[3].first, what[3].second);
-      return atoi(what[1].first);
+      return ::atoi(what[1].first);
    }
    // failure did not match
    if(msg)
@@ -98,6 +95,8 @@ int main(int argc)
    } while(argc == 1);
    return 0;
 }
+
+
 
 
 

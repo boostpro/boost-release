@@ -1,173 +1,109 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 1998-2003 Joel de Guzman
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #if !defined(BOOST_SPIRIT_MATCH_IPP)
 #define BOOST_SPIRIT_MATCH_IPP
+#include <algorithm>
 
-///////////////////////////////////////////////////////////////////////////////
-#include <boost/ref.hpp>
-
-///////////////////////////////////////////////////////////////////////////////
-namespace boost { namespace spirit {
+namespace boost { namespace spirit
+{
+    template <typename T>
+    inline match<T>::match()
+    : len(-1), val() {}
 
     template <typename T>
-    class match;
+    inline match<T>::match(std::size_t length)
+    : len(length), val() {}
 
-    namespace impl
+    template <typename T>
+    inline match<T>::match(std::size_t length, ctor_param_t val_)
+    : len(length), val(val_) {}
+
+    template <typename T>
+    inline bool
+    match<T>::operator!() const
     {
-        ///////////////////////////////////////////////////////////////////////
-        //
-        //  Assignment of the match result
-        //
-        //      Implementation note: This assignment is wrapped by a
-        //      template to allow its specialization for other types
-        //      elsewhere.
-        //
-        ///////////////////////////////////////////////////////////////////////
-        template <typename DestT>
-        struct match_attr_traits
-        {
-            static DestT
-            convert(DestT const& attr)  //  case where input *IS*
-            { return DestT(attr); }     //  convertible to DestT
+        return len < 0;
+    }
 
-            static DestT
-            convert(...)                //  case where input *IS NOT*
-            { return DestT(); }         //  convertible to DestT
-        };
+    template <typename T>
+    inline std::ptrdiff_t
+    match<T>::length() const
+    {
+        return len;
+    }
 
-    #if defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+    template <typename T>
+    inline bool
+    match<T>::has_valid_attribute() const
+    {
+        return val.is_initialized();
+    }
 
-        struct match_attr_helper1   // T is not a boost::reference_wrapper
-        {
-            template <typename T>
-            struct apply
-            {
-                template <typename MatchT>
-                static T get(MatchT const& m)
-                { return match_attr_traits<T>::convert(m.value()); }
+    template <typename T>
+    inline typename match<T>::return_t
+    match<T>::value() const
+    {
+        BOOST_SPIRIT_ASSERT(val);
+        return *val;
+    }
 
-                static T get(match<nil_t> const&)
-                { return T(); }
+    template <typename T>
+    inline void
+    match<T>::swap(match& other)
+    {
+        std::swap(len, other.len);
+        std::swap(val, other.val);
+    }
 
-                static T get_default()
-                { return T(); }
-            };
-        };
+    inline match<nil_t>::match()
+    : len(-1) {}
 
-        struct match_attr_helper2   // T is a boost::reference_wrapper
-        {
-            template <typename T>
-            struct apply
-            {
-                template <typename MatchT>
-                static T get(MatchT const& m)
-                {
-                    return T(m.value());
-                }
+    inline match<nil_t>::match(std::size_t length)
+    : len(length) {}
 
-                static T get(match<nil_t> const&)
-                {
-                    typedef typename T::type plain_type;
-                    static plain_type v;
-                    return T(v);
-                }
+    inline match<nil_t>::match(std::size_t length, nil_t)
+    : len(length) {}
 
-                static T get_default()
-                {
-                    typedef typename T::type plain_type;
-                    static plain_type v;
-                    return T(v);
-                }
-            };
-        };
+    inline bool
+    match<nil_t>::operator!() const
+    {
+        return len < 0;
+    }
 
-        template <typename T>
-        struct match_attr
-        {
-            typedef mpl::if_<
-                boost::is_reference_wrapper<T>, //  IF
-                match_attr_helper2,             //  THEN
-                match_attr_helper1              //  ELSE
-            >::type select_t;
+    inline bool
+    match<nil_t>::has_valid_attribute() const
+    {
+        return false;
+    }
 
-            template <typename MatchT>
-            static T get(MatchT const& m)
-            { return select_t::template apply<T>::get(m); }
+    inline std::ptrdiff_t
+    match<nil_t>::length() const
+    {
+        return len;
+    }
 
-            static T get(match<nil_t> const& m)
-            { return select_t::template apply<T>::get(m); }
+    inline nil_t
+    match<nil_t>::value() const
+    {
+        return nil_t();
+    }
 
-            static T get_default()
-            { return select_t::template apply<T>::get_default(); }
-        };
+    inline void
+    match<nil_t>::value(nil_t) {}
 
-    #else // !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+    inline void
+    match<nil_t>::swap(match& other)
+    {
+        std::swap(len, other.len);
+    }
 
-        template <typename T>
-        struct match_attr
-        {
-            template <typename MatchT>
-            static T get(MatchT const& m)
-            { return match_attr_traits<T>::convert(m.value()); }
-
-            static T get(match<nil_t> const&)
-            { return T(); }
-
-            static T get_default()
-            { return T(); }
-        };
-
-        template <typename T>
-        struct match_attr<boost::reference_wrapper<T> >
-        {
-            template <typename MatchT>
-            static boost::reference_wrapper<T>
-            get(MatchT const& m)
-            { return boost::reference_wrapper<T>(m.value()); }
-
-            static boost::reference_wrapper<T>
-            get(match<nil_t> const&)
-            { static T v; return boost::reference_wrapper<T>(v); }
-
-            static boost::reference_wrapper<T>
-            get_default()
-            { static T v; return boost::reference_wrapper<T>(v); }
-        };
-
-    #endif // defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
-
-        template <>
-        struct match_attr<nil_t>
-        {
-            template <typename MatchT>
-            static nil_t get(MatchT const&)
-            { return nil_t(); }
-            static nil_t get_default()
-            { return nil_t(); }
-        };
-
-    #if !defined(__BORLANDC__)
-        struct dummy { void nonnull() {}; };
-        typedef void (dummy::*safe_bool)();
-    #else
-        typedef bool safe_bool;
-    #endif
-
-    #if !defined(__BORLANDC__)
-    #define BOOST_SPIRIT_SAFE_BOOL(cond)  ((cond) ? &impl::dummy::nonnull : 0)
-    #else
-    #define BOOST_SPIRIT_SAFE_BOOL(cond)  (cond)
-    #endif
-
-}}} // namespace boost::spirit::impl
+}} // namespace boost::spirit
 
 #endif
 

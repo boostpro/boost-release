@@ -1,5 +1,13 @@
 '''
 >>> from operators_ext import *
+
+  Check __nonzero__ support
+  
+>>> assert X(2)
+>>> assert not X(0)
+
+ ----
+ 
 >>> x = X(42)
 >>> x.value()
 42
@@ -14,6 +22,9 @@
 -39
 >>> (-y).value()
 39
+
+>>> (x + y).value()
+3
 
 >>> abs(y).value()
 39
@@ -83,4 +94,6 @@ def run(args = None):
 if __name__ == '__main__':
     print "running..."
     import sys
-    sys.exit(run()[0])
+    status = run()[0]
+    if (status == 0): print "Done."
+    sys.exit(status)

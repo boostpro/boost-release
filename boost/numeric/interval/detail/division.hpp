@@ -10,7 +10,7 @@
  * suitability of this software for any purpose. It is provided "as
  * is" without express or implied warranty.
  *
- * $Id: division.hpp,v 1.3 2003/02/05 17:34:32 gmelquio Exp $
+ * $Id: division.hpp,v 1.5 2003/08/10 21:28:15 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_DETAIL_DIVISION_HPP
@@ -72,7 +72,7 @@ template<class T, class Policies> inline
 interval<T, Policies> div_positive(const interval<T, Policies>& x, const T& yu)
 {
   // assert(yu > T(0));
-  if (is_zero(x)) return x;
+  if (is_zero(x.lower()) && is_zero(x.upper())) return x;
   typename Policies::rounding rnd;
   typedef interval<T, Policies> I;
   const T& xl = x.lower();
@@ -165,7 +165,7 @@ interval<T, Policies> div_zero_part1(const interval<T, Policies>& x,
   const T& xu = x.upper();
   const T& yl = y.lower();
   const T& yu = y.upper();
-  typedef typename I::checking checking;
+  typedef typename Policies::checking checking;
   const T& inf = checking::inf();
   if (is_neg(xu))
     { b = true;  return I(-inf, rnd.div_up(xu, yu), true); }
@@ -182,7 +182,7 @@ interval<T, Policies> div_zero_part2(const interval<T, Policies>& x,
   // assert(y.lower() < 0 && y.upper() > 0 && (div_zero_part1(x, y, b), b));
   typename Policies::rounding rnd;
   typedef interval<T, Policies> I;
-  typedef typename I::checking checking;
+  typedef typename Policies::checking checking;
   const T& inf = checking::inf();
   if (is_neg(x.upper()))
     return I(rnd.div_down(x.upper(), y.lower()), inf, true);

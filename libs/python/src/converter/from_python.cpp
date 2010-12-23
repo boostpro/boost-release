@@ -14,8 +14,6 @@
 #include <boost/python/detail/raw_pyobject.hpp>
 #include <boost/python/cast.hpp>
 
-#include <boost/lexical_cast.hpp>
-
 #include <vector>
 #include <algorithm>
 
@@ -218,7 +216,7 @@ namespace
       , char const* ref_type)
   {
       handle<> holder(source);
-      if (source->ob_refcnt <= 2)
+      if (source->ob_refcnt <= 1)
       {
           handle<> msg(
               ::PyString_FromFormat(

@@ -1,15 +1,9 @@
 // Boost.Signals library
-//
-// Copyright (C) 2001-2002 Doug Gregor (gregod@cs.rpi.edu)
-//
-// Permission to copy, use, sell and distribute this software is granted
-// provided this copyright notice appears in all copies.
-// Permission to modify the code and to distribute modified code is granted
-// provided this copyright notice appears in all copies, and a notice
-// that the code was modified is included with the copyright notice.
-//
-// This software is provided "as is" without express or implied warranty,
-// and with no claim as to its suitability for any purpose.
+
+// Copyright Doug Gregor 2001-2003. Use, modification and
+// distribution is subject to the Boost Software License, Version
+// 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 
 // For more information, see http://www.boost.org
 
@@ -67,11 +61,11 @@ test_zero_args()
 
   {
     boost::signal0<int, max_or_default<int>, std::string> s0;
-    boost::signals::connection c2 = s0.connect(i2);
-    boost::signals::connection c72 = s0.connect("72", i72);
-    boost::signals::connection c62 = s0.connect("6x", i62);
-    boost::signals::connection c42 = s0.connect(i42);
-    boost::signals::connection c37 = s0.connect(&get_37);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c2 = s0.connect(i2);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c72 = s0.connect("72", i72);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c62 = s0.connect("6x", i62);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c42 = s0.connect(i42);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c37 = s0.connect(&get_37);
 
     BOOST_TEST(s0() == 72);
 
@@ -104,10 +98,10 @@ test_zero_args()
 
   {
     boost::signal0<int, max_or_default<int> > s0;
-    boost::signals::connection c2 = s0.connect(i2);
-    boost::signals::connection c72 = s0.connect(i72);
-    boost::signals::connection c62 = s0.connect(i62);
-    boost::signals::connection c42 = s0.connect(i42);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c2 = s0.connect(i2);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c72 = s0.connect(i72);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c62 = s0.connect(i62);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c42 = s0.connect(i42);
 
     const boost::signal0<int, max_or_default<int> >& cs0 = s0;
     BOOST_TEST(cs0() == 72);
@@ -118,8 +112,8 @@ test_zero_args()
     make_increasing_int<10> i10;
 
     boost::signal0<int, max_or_default<int> > s0;
-    boost::signals::connection c7 = s0.connect(i7);
-    boost::signals::connection c10 = s0.connect(i10);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c7 = s0.connect(i7);
+    boost::BOOST_SIGNALS_NAMESPACE::connection c10 = s0.connect(i10);
 
     BOOST_TEST(s0() == 10);
     BOOST_TEST(s0() == 11);
@@ -160,7 +154,7 @@ test_signal_signal_connect()
   BOOST_TEST(s1(3) == -3);
 }
 
-struct EventCounter 
+struct EventCounter
 {
   EventCounter() : count(0) {}
 
@@ -179,11 +173,11 @@ test_ref()
   boost::signal0<void> s;
 
   {
-    boost::signals::scoped_connection c = s.connect(boost::ref(ec));
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection c = s.connect(boost::ref(ec));
     BOOST_TEST(ec.count == 0);
     s();
     BOOST_TEST(ec.count == 1);
-  }  
+  }
   s();
   BOOST_TEST(ec.count == 1);
 }
@@ -193,7 +187,7 @@ test_main(int, char* [])
 {
   test_zero_args();
   test_one_arg();
-  test_signal_signal_connect(); 
+  test_signal_signal_connect();
   test_ref();
   return 0;
 }

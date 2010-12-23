@@ -1,23 +1,26 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2002-2003 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_REGEX_IPP
 #define BOOST_SPIRIT_REGEX_IPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "boost/spirit/core/primitives/impl/primitives.ipp"
+#include <boost/spirit/core/primitives/impl/primitives.ipp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
 
 namespace impl {
+
+///////////////////////////////////////////////////////////////////////////////
+//
+const char* rx_prefix(char) { return "\\A"; }
+const wchar_t* rx_prefix(wchar_t) { return L"\\A"; }
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -32,10 +35,15 @@ public:
     typedef rx_parser<CharT> self_t;
 
     rx_parser(CharT const *first, CharT const *last)
-    { rxstr = string_t("\\A") + string_t(first, last); }
+    { 
+        rxstr = string_t(rx_prefix(CharT())) + string_t(first, last); 
+    }
 
     rx_parser(CharT const *first)
-    { rxstr = string_t("\\A") + string_t(first, impl::get_last(first)); }
+    { 
+        rxstr = string_t(rx_prefix(CharT())) + 
+            string_t(first, impl::get_last(first)); 
+    }
 
     template <typename ScannerT>
     typename parser_result<self_t, ScannerT>::type

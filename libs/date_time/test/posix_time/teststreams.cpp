@@ -1,10 +1,14 @@
-/* Copyright (c) 2001 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
- * Author: Jeff Garland 
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
+ * Author: Jeff Garland, Bart Garst
  */
 
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/date_time/testfrmwk.hpp"
+
+#ifndef BOOST_DATE_TIME_NO_LOCALE
 
 const char* const de_short_month_names[]={"Jan","Feb","Mar","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez", "NAM"};
 
@@ -15,7 +19,7 @@ const char* const de_short_weekday_names[]={"Son", "Mon", "Die","Mit", "Don", "F
 
 const char* const de_long_weekday_names[]={"Sonntag", "Montag", "Dienstag","Mittwoch", "Donnerstag", "Freitag", "Samstag"};
 
-
+#endif
 
 int
 main() 
@@ -46,21 +50,30 @@ main()
   ss.imbue(german); 
   ss.str("");
   ss << t1;
-  check("check time output: "+ss.str(), 
+  check("check time output: "+ ss.str(), 
         ss.str() == std::string("01.Mai.2002 12:10:05"));
 
 
   time_duration td(5,4,3);
+  time_duration td1(-1,25,0), td2(0,-40,0);
   ss.str("");
   ss << td;
-  check("check time period output: "+ss.str(), 
+  check("check time period output: "+ ss.str(), 
         ss.str() == std::string("05:04:03"));
+  ss.str("");
+  ss << td1;
+  check("check time period output: "+ ss.str(), 
+        ss.str() == std::string("-01:25:00"));
+  ss.str("");
+  ss << td2;
+  check("check time period output: "+ ss.str(), 
+        ss.str() == std::string("-00:40:00"));
 
   ss.imbue(global); 
   time_period tp(t1, ptime(d1, hours(23)+time_duration::unit()));
   ss.str("");
   ss << tp;
-  check("check time period output: "+ss.str(), 
+  check("check time period output: "+ ss.str(), 
         ss.str() == std::string("[2002-May-01 12:10:05/2002-May-01 23:00:00]"));
 
 
@@ -72,19 +85,3 @@ main()
   return printTestStats();
 }
 
-/*
- * Copyright (c) 2001
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided as is without express or implied warranty.
- *
- *
- * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
- *
- */

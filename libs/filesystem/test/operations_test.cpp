@@ -1,12 +1,11 @@
 //  Boost operations_test.cpp  -----------------------------------------------//
 
-//  (C) Copyright Beman Dawes 2002. Permission to copy,
-//  use, modify, sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided "as is"
-//  without express or implied warranty, and with no claim as to its
-//  suitability for any purpose.
+//  Copyright Beman Dawes 2002.
+//  Use, modification, and distribution is subject to the Boost Software
+//  License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See library home page at http://www.boost.org/libs/filesystem
 
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
@@ -22,6 +21,12 @@ using boost::bind;
 #include <iostream>
 #include <string>
 #include <cerrno>
+#include <ctime>
+
+# ifdef BOOST_NO_STDC_NAMESPACE
+    namespace std { using ::asctime; using ::gmtime; using ::localtime;
+    using ::difftime; using ::time; using ::tm; using ::mktime; }
+# endif
 
 namespace
 {
@@ -155,7 +160,7 @@ int test_main( int argc, char * argv[] )
       == fs::initial_path().root_path().string()+"foo" );
   }
 
-  fs::path ng( " no-way, Jose ", fs::native );
+  fs::path ng( " no-way, Jose", fs::native );
 
   fs::remove_all( dir );  // in case residue from prior failed tests
   BOOST_TEST( !fs::exists( dir ) );
@@ -169,8 +174,10 @@ int test_main( int argc, char * argv[] )
 
   BOOST_TEST( fs::exists( dir ) );
   BOOST_TEST( fs::_is_empty( dir ) );
-
   BOOST_TEST( fs::is_directory( dir ) );
+
+  BOOST_TEST( !fs::symbolic_link_exists( dir ) );
+  BOOST_TEST( !fs::symbolic_link_exists( "nosuchfileordirectory" ) );
 
   fs::path d1( dir / "d1" );
   fs::create_directory( d1  );
@@ -209,12 +216,16 @@ int test_main( int argc, char * argv[] )
     BOOST_TEST( dir_itr->leaf() == "d1" || dir_itr->leaf() == "d2" );
     if ( dir_itr->leaf() == "d1" )
     {
-      BOOST_TEST( (*dir_itr++).leaf() == "d1" );
+      // Note result for single_pass_traversal requirements is
+      // different than for input_iterator requirements
+      BOOST_TEST( (*dir_itr++).leaf() == "d2" );
       BOOST_TEST( dir_itr->leaf() == "d2" );
     }
     else
     {
-      BOOST_TEST( (*dir_itr++).leaf() == "d2" );
+      // Note result for single_pass_traversal requirements is
+      // different than for input_iterator requirements
+      BOOST_TEST( (*dir_itr++).leaf() == "d1" );
       BOOST_TEST( dir_itr->leaf() == "d1" );
     }
   }
@@ -229,9 +240,42 @@ int test_main( int argc, char * argv[] )
   // create a file named "f1"
   file_ph = dir / "f1";
   create_file( file_ph, "foobar1" );
+
+  std::time_t ft = fs::last_write_time( file_ph );
+  std::cout << "UTC should currently be about " << std::asctime(std::gmtime(&ft)) << "\n";
+  std::cout << "Local time should currently be about " << std::asctime(std::localtime(&ft)) << std::endl;
+
+  // hard to test time exactly, but except under the most unusual circumstances,
+  // time since file creation should be no more than one minute, I'm hoping.
+  double time_diff = std::difftime( std::time(0), fs::last_write_time( file_ph ) );
+  BOOST_TEST( time_diff >= 0.0 && time_diff < 60.0 );
+
   BOOST_TEST( fs::exists( file_ph ) );
   BOOST_TEST( !fs::is_directory( file_ph ) );
   verify_file( file_ph, "foobar1" );
+
+#if !BOOST_WORKAROUND(__BORLANDC__, <= 0x564)
+  std::tm * tmp = std::localtime( &ft );
+  --tmp->tm_year;
+  std::cout << "Change year to " << tmp->tm_year << std::endl;
+  fs::last_write_time( file_ph, std::mktime( tmp ) );
+  std::cout << "Now get time difference" << std::endl;
+  time_diff = std::difftime( std::time(0), fs::last_write_time( file_ph ) );
+  BOOST_TEST( time_diff >= 365*24*3600.0 && time_diff < (366*24*3600.0 + 60.0) );
+  ft = fs::last_write_time( file_ph );
+  std::cout << "Local time one year ago should currently be about " << std::asctime(std::localtime(&ft)) << "\n";
+  fs::last_write_time( file_ph, std::time_t() );
+  time_diff = std::difftime( std::time(0), fs::last_write_time( file_ph ) );
+  BOOST_TEST( time_diff >= 0.0 && time_diff < 60.0 );
+  ft = fs::last_write_time( file_ph );
+  std::cout << "Local time should currently be about " << std::asctime(std::localtime(&ft)) << "\n";
+#else
+  std::cout <<
+    "<note>\n"
+    "Changing a file time via boost::filesystem::last_write_time() fails for this compiler\n"
+    "This will not affect other uses of the library.\n"
+    "</note>\n";
+#endif
 
   // there was an inital bug in directory_iterator that caused premature
   // close of an OS handle. This block will detect regression.

@@ -1,3 +1,17 @@
+
+# Copyright (c) 2001-03
+# Aleksey Gurtovoy
+#
+# Permission to use, copy, modify, distribute and sell this software
+# and its documentation for any purpose is hereby granted without fee, 
+# provided that the above copyright notice appears in all copies and 
+# that both the copyright notice and this permission notice appear in 
+# supporting documentation. No representations are made about the 
+# suitability of this software for any purpose. It is provided "as is" 
+# without express or implied warranty.
+#
+# See http://www.boost.org/libs/mpl for documentation.
+
 import fileinput
 import os
 import re
@@ -118,7 +132,7 @@ class pretty:
         self.output = open(name, "w")
         self.prev_line = ''
 
-        self.re_header_name_comment = re.compile(r"^\s*//\s*boost\s+(mpl(/\w+)+\.hpp)\s+header\s+file\s*$")
+        self.re_header_name_comment = re.compile(r"^\s*//\s+\+\s+file:\s+(boost/mpl(/\w+)+\.hpp)s*$")
         self.header_was_written = 0
 
         self.re_junk = re.compile(r"^\s*(#|//[^:]).*$")
@@ -143,6 +157,9 @@ class pretty:
         self.re_simple_list = re.compile(r'(\w+)\s*<((\w|,| |-|>|<)+)>')
         self.re_static_const = re.compile(r'(\s*)((static\s+.*?|enum\s*{\s*)value\s*=)(.*?)(}?;)$')
         self.re_typedefs = re.compile(r'(\s*)((\s*typedef\s*.*?;)+)\s*$')
+        self.re_closing_curly_brace = re.compile(r'^(}|struct\s+\w+);\s*$')
+        self.re_namespace_scope_templ = re.compile(r'^template\s*<\s*$')
+        self.re_namespace = re.compile(r'^\n?namespace\s+\w+\s*{\s*\n?$')
 
     def process(self, line):
 
@@ -151,7 +168,7 @@ class pretty:
             self.header_was_written = 1
             match = self.re_header_name_comment.match(line)
             self.output.write( \
-                "// preprocessed version of 'boost/%s' header\n"\
+                "// preprocessed version of '%s' header\n"\
                 "// see the original for copyright information\n\n" \
                 % match.group(1)
                 )
@@ -166,7 +183,12 @@ class pretty:
             return
 
         # restoring some empty lines
-        if self.re_templ_decl.match(line) and self.re_typedef.match(self.prev_line):
+        if self.re_templ_decl.match(line) and self.re_typedef.match(self.prev_line) \
+           or not self.re_empty_line.match(line) and self.re_closing_curly_brace.match(self.prev_line) \
+           or not self.re_empty_line.match(self.prev_line) \
+              and ( self.re_namespace_scope_templ.match(line) \
+                    or self.re_namespace.match(line) and not self.re_namespace.match(self.prev_line) \
+                    ):
             line = '\n%s' % line
 
         # removing excessive empty lines

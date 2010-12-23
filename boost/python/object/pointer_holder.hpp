@@ -9,11 +9,12 @@
 # ifndef POINTER_HOLDER_DWA20011215_HPP
 #  define POINTER_HOLDER_DWA20011215_HPP 
 
+# include <boost/get_pointer.hpp>
 #  include <boost/type.hpp>
 
 #  include <boost/python/instance_holder.hpp>
 #  include <boost/python/type_id.hpp>
-#  include <boost/python/object/inheritance.hpp>
+#  include <boost/python/object/inheritance_query.hpp>
 #  include <boost/python/object/forward.hpp>
 #  include <boost/python/pointee.hpp>
 #  include <boost/python/detail/force_instantiate.hpp>
@@ -29,21 +30,15 @@
 #  include <boost/preprocessor/enum_params.hpp>
 #  include <boost/preprocessor/repetition/enum_binary_params.hpp>
 
+#  include <boost/detail/workaround.hpp>
+
 namespace boost { namespace python { namespace objects {
 
-template <class T>
-bool is_null(T const& p, ...)
-{
-    return p.get() == 0;
-}
-
-template <class T>
-bool is_null(T* p, int)
-{
-    return p == 0;
-}
-
-#  define BOOST_PYTHON_UNFORWARD_LOCAL(z, n, _) BOOST_PP_COMMA_IF(n) (typename unforward<A##n>::type)(a##n)
+#  if BOOST_WORKAROUND(__GNUC__, == 2)
+#   define BOOST_PYTHON_UNFORWARD_LOCAL(z, n, _) BOOST_PP_COMMA_IF(n) (typename unforward<A##n>::type)objects::do_unforward(a##n,0)
+#  else
+#   define BOOST_PYTHON_UNFORWARD_LOCAL(z, n, _) BOOST_PP_COMMA_IF(n) objects::do_unforward(a##n,0)
+#  endif 
 
 template <class Pointer, class Value>
 struct pointer_holder : instance_holder
@@ -109,11 +104,11 @@ void* pointer_holder<Pointer, Value>::holds(type_info dst_t)
     if (dst_t == python::type_id<Pointer>())
         return &this->m_p;
 
-    if (objects::is_null(this->m_p, 0))
+    Value* p = get_pointer(this->m_p);
+    if (p == 0)
         return 0;
     
     type_info src_t = python::type_id<Value>();
-    Value* p = &*this->m_p;
     return src_t == dst_t ? p : find_dynamic_type(p, src_t, dst_t);
 }
 
@@ -123,14 +118,15 @@ void* pointer_holder_back_reference<Pointer, Value>::holds(type_info dst_t)
     if (dst_t == python::type_id<Pointer>())
         return &this->m_p;
 
-    if (objects::is_null(this->m_p, 0))
+    if (!get_pointer(this->m_p))
         return 0;
     
+    Value* p = get_pointer(m_p);
+    
     if (dst_t == python::type_id<held_type>())
-        return &*this->m_p;
+        return p;
 
     type_info src_t = python::type_id<Value>();
-    Value* p = &*this->m_p;
     return src_t == dst_t ? p : find_dynamic_type(p, src_t, dst_t);
 }
 

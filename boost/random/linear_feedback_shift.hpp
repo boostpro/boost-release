@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: linear_feedback_shift.hpp,v 1.5 2002/12/22 22:03:10 jmaurer Exp $
+ * $Id: linear_feedback_shift.hpp,v 1.7 2003/07/09 12:56:40 jmaurer Exp $
  *
  */
 
@@ -92,7 +92,7 @@ public:
   result_type operator()()
   {
     const UIntType b = (((value << q) ^ value) & wordmask) >> (k-s);
-    const UIntType mask = ( (~0) << (w-k) ) & wordmask;
+    const UIntType mask = ( (~static_cast<UIntType>(0)) << (w-k) ) & wordmask;
     value = ((value & mask) << s) ^ b;
     return value;
   }
@@ -123,6 +123,7 @@ public:
   bool operator!=(linear_feedback_shift rhs) const
   { return !(*this == rhs); }
 #endif
+
 private:
   UIntType wordmask; // avoid "left shift count >= width of type" warnings
   UIntType value;

@@ -1,29 +1,19 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2002-2003 Joel de Guzman
     Copyright (c) 2002 Juan Carlos Arevalo-Baeza
     Copyright (c) 2002-2003 Martin Wille
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_IF_HPP
 #define BOOST_SPIRIT_IF_HPP
 
-#if !defined(BOOST_SPIRIT_PARSER_HPP)
-#include "boost/spirit/core/parser.hpp"
-#endif
-
-#if !defined(BOOST_SPIRIT_COMPOSITE_HPP)
-#include "boost/spirit/core/composite/composite.hpp"
-#endif
-
-#if !defined(BOOST_SPIRIT_CONDITIONS_IPP)
-#include "boost/spirit/dynamic/impl/conditions.ipp"
-#endif
+#include <boost/spirit/core/parser.hpp>
+#include <boost/spirit/core/composite/composite.hpp>
+#include <boost/spirit/dynamic/impl/conditions.ipp>
 
 namespace boost { namespace spirit {
 
@@ -85,14 +75,14 @@ namespace boost { namespace spirit {
 
             typename ScannerT::iterator_t const  save(scan.first);
 
-            int length = this->evaluate(scan);
+            std::ptrdiff_t length = this->evaluate(scan);
             if (length >= 0)
             {
                 then_result_t then_result(this->left().parse(scan));
                 if (then_result)
                 {
                     length += then_result.length();
-                    return scan.create_match(length, nil_t(), save, scan.first);
+                    return scan.create_match(std::size_t(length), nil_t(), save, scan.first);
                 }
             }
             else
@@ -101,7 +91,7 @@ namespace boost { namespace spirit {
                 if (else_result)
                 {
                     length = else_result.length();
-                    return scan.create_match(length, nil_t(), save, scan.first);
+                    return scan.create_match(std::size_t(length), nil_t(), save, scan.first);
                 }
             }
             return scan.no_match();
@@ -179,14 +169,14 @@ namespace boost { namespace spirit {
             typedef typename parser_result<parser_t, ScannerT>::type t_result_t;
             typename ScannerT::iterator_t const save(scan.first);
 
-            int length = this->evaluate(scan);
+            std::ptrdiff_t length = this->evaluate(scan);
             if (length >= 0)
             {
                 t_result_t then_result(this->subject().parse(scan));
                 if (then_result)
                 {
                     length += then_result.length();
-                    return scan.create_match(length, nil_t(), save, scan.first);
+                    return scan.create_match(std::size_t(length), nil_t(), save, scan.first);
                 }
             }
             return scan.empty_match();

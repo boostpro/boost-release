@@ -1,16 +1,10 @@
 // Boost.Signals library
-//
-// Copyright (C) 2001-2002 Doug Gregor (gregod@cs.rpi.edu)
-//
-// Permission to copy, use, sell and distribute this software is granted
-// provided this copyright notice appears in all copies.
-// Permission to modify the code and to distribute modified code is granted
-// provided this copyright notice appears in all copies, and a notice
-// that the code was modified is included with the copyright notice.
-//
-// This software is provided "as is" without express or implied warranty,
-// and with no claim as to its suitability for any purpose.
- 
+
+// Copyright Doug Gregor 2001-2003. Use, modification and
+// distribution is subject to the Boost Software License, Version
+// 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
 // For more information, see http://www.boost.org
 
 #define BOOST_INCLUDE_MAIN
@@ -19,22 +13,21 @@
 #include <iostream>
 #include <string>
 
-static boost::signals::connection connections[5];
+static boost::BOOST_SIGNALS_NAMESPACE::connection connections[5];
 
 static std::string test_output;
 
 struct remove_connection {
   explicit remove_connection(int v = 0, int i = -1) : value(v), idx(i) {}
 
-  void operator()() const { 
+  void operator()() const {
     if (idx >= 0)
       connections[idx].disconnect();
-    
+
     //return value;
     std::cout << value << " ";
 
-    //    test_output.push_back(static_cast<char>(value + '0'));
-    test_output.insert(test_output.end(), value + '0');
+    test_output += static_cast<char>(value + '0');
   }
 
   int value;
@@ -80,7 +73,7 @@ test_remove_self()
   BOOST_TEST(test_output == "012");
 
   s0.disconnect_all_slots();
-  BOOST_TEST(s0.empty());
+  BOOST_TEST(s0.num_slots() == 0);
 
   connections[0] = s0.connect(remove_connection(0, 0));
   connections[1] = s0.connect(remove_connection(1));
@@ -110,7 +103,7 @@ test_remove_self()
   test_output = "";
   s0(); std::cout << std::endl;
   BOOST_TEST(test_output == "0123");
- 
+
   test_output = "";
   s0(); std::cout << std::endl;
   BOOST_TEST(test_output == "");
@@ -174,7 +167,7 @@ test_remove_after()
   test_output = "";
   s0(); std::cout << std::endl;
   BOOST_TEST(test_output == "023");
- 
+
   s0.disconnect_all_slots();
   BOOST_TEST(s0.empty());
 

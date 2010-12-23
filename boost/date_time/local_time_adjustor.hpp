@@ -1,8 +1,12 @@
 #ifndef DATE_TIME_LOCAL_TIME_ADJUSTOR_HPP__
 #define DATE_TIME_LOCAL_TIME_ADJUSTOR_HPP__
-/* Copyright (c) 2002 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
+
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland 
+ * $Date: 2003/11/23 03:29:56 $
  */
 
 /*! @file local_time_adjustor.hpp
@@ -52,7 +56,7 @@ namespace boost {
       time_duration_type utc_offset(bool is_dst) 
       { 
         if (is_dst) {
-          return utc_offset_ + dst_offset();
+          return utc_offset_ + this->dst_offset();
         }
         else {
           return utc_offset_;
@@ -101,23 +105,23 @@ namespace boost {
       static time_duration_type utc_to_local_offset(const time_type& t)
       {
         //get initial local time guess by applying utc offset
-        time_type initial = t + utc_to_local_base_offset();
+        time_type initial = t + utc_offset_rules::utc_to_local_base_offset();
         time_is_dst_result dst_flag = 
           dst_rules::local_is_dst(initial.date(), initial.time_of_day());
         switch(dst_flag) {
-        case is_in_dst:        return utc_to_local_base_offset() + dst_offset();
-        case is_not_in_dst:    return utc_to_local_base_offset();
-        case invalid_time_label:return utc_to_local_base_offset() + dst_offset();
+    case is_in_dst:        return utc_offset_rules::utc_to_local_base_offset() + dst_rules::dst_offset();
+        case is_not_in_dst:    return utc_offset_rules::utc_to_local_base_offset();
+        case invalid_time_label:return utc_offset_rules::utc_to_local_base_offset() + dst_rules::dst_offset();
         case ambiguous: {
-          time_type retry = initial + dst_offset();
+          time_type retry = initial + dst_rules::dst_offset();
           dst_flag = dst_rules::local_is_dst(retry.date(), retry.time_of_day());
           //if still ambibuous then the utc time still translates to a dst time
           if (dst_flag == ambiguous) {
-            return utc_to_local_base_offset() + dst_offset();
+            return utc_offset_rules::utc_to_local_base_offset() + dst_rules::dst_offset();
           }
           // we are past the dst boundary
           else {
-            return utc_to_local_base_offset();
+            return utc_offset_rules::utc_to_local_base_offset();
           }
         }
         }//case
@@ -132,16 +136,16 @@ namespace boost {
       { 
         switch (dst) {
         case is_dst:
-          return local_to_utc_base_offset() - dst_offset();
+          return utc_offset_rules::local_to_utc_base_offset() - dst_rules::dst_offset();
         case not_dst:
-          return local_to_utc_base_offset();
+          return utc_offset_rules::local_to_utc_base_offset();
         case calculate:
           time_is_dst_result res = 
             dst_rules::local_is_dst(t.date(), t.time_of_day());
           switch(res) {
-          case is_in_dst:      return local_to_utc_base_offset() - dst_offset();
-          case is_not_in_dst:      return local_to_utc_base_offset();
-          case ambiguous:          return local_to_utc_base_offset();
+          case is_in_dst:      return utc_offset_rules::local_to_utc_base_offset() - dst_rules::dst_offset();
+          case is_not_in_dst:      return utc_offset_rules::local_to_utc_base_offset();
+          case ambiguous:          return utc_offset_rules::local_to_utc_base_offset();
           case invalid_time_label: throw std::out_of_range("Time label invalid");
           }
         }  
@@ -205,17 +209,5 @@ namespace boost {
   } } //namespace date_time
 
 
-/* Copyright (c) 2002
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- *
- */
 
 #endif

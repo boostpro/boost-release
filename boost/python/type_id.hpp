@@ -6,14 +6,23 @@
 #ifndef TYPE_ID_DWA2002517_HPP
 # define TYPE_ID_DWA2002517_HPP
 
-# include <boost/python/detail/wrap_python.hpp>
-# include <boost/python/detail/config.hpp>
+# include <boost/python/detail/prefix.hpp>
+
 # include <boost/python/detail/msvc_typeinfo.hpp>
 # include <boost/operators.hpp>
 # include <typeinfo>
 # include <cstring>
 # include <boost/static_assert.hpp>
+# include <boost/detail/workaround.hpp>
 # include <boost/type_traits/same_traits.hpp>
+
+#  ifndef BOOST_PYTHON_HAVE_GCC_CP_DEMANGLE
+#   if defined(__GNUC__)                                                \
+    && ((__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 1)))   \
+    && !defined(__EDG_VERSION__)
+#    define BOOST_PYTHON_HAVE_GCC_CP_DEMANGLE
+#   endif
+#  endif
 
 namespace boost { namespace python { 
 
@@ -50,30 +59,39 @@ struct type_info : private totally_ordered<type_info>
     base_id_t m_base_type;
 };
 
+#  ifdef BOOST_NO_EXPLICIT_FUNCTION_TEMPLATE_ARGUMENTS
+#   define BOOST_PYTHON_EXPLICIT_TT_DEF(T) ::boost::type<T>*
+#  else
+#   define BOOST_PYTHON_EXPLICIT_TT_DEF(T)
+#  endif
+
 template <class T>
-inline type_info type_id(boost::type<T>* = 0)
+inline type_info type_id(BOOST_EXPLICIT_TEMPLATE_TYPE(T))
 {
     return type_info(
-#  if (!defined(BOOST_MSVC) || BOOST_MSVC > 1300) && (!defined(BOOST_INTEL_CXX_VERSION) || BOOST_INTEL_CXX_VERSION > 700)
+#  if !defined(_MSC_VER)                                       \
+      || (!BOOST_WORKAROUND(BOOST_MSVC, <= 1300)                \
+          && !BOOST_WORKAROUND(BOOST_INTEL_CXX_VERSION, <= 700))
         typeid(T)
 #  else // strip the decoration which msvc and Intel mistakenly leave in
-        python::detail::msvc_typeid<T>()
+        python::detail::msvc_typeid((boost::type<T>*)0)
 #  endif 
         );
 }
 
-#  if defined(__EDG_VERSION__) && __EDG_VERSION__ < 245
+#  if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
+   || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 741)
 // Older EDG-based compilers seems to mistakenly distinguish "int" from
 // "signed int", etc., but only in typeid() expressions. However
 // though int == signed int, the "signed" decoration is propagated
 // down into template instantiations. Explicit specialization stops
 // that from taking hold.
 
-#   define BOOST_PYTHON_SIGNED_INTEGRAL_TYPE_ID(T)      \
-template <>                                             \
-inline type_info type_id<T>(boost::type<T>*)            \
-{                                                       \
-    return type_info(typeid(T));                        \
+#   define BOOST_PYTHON_SIGNED_INTEGRAL_TYPE_ID(T)              \
+template <>                                                     \
+inline type_info type_id<T>(BOOST_PYTHON_EXPLICIT_TT_DEF(T))    \
+{                                                               \
+    return type_info(typeid(T));                                \
 }
 
 BOOST_PYTHON_SIGNED_INTEGRAL_TYPE_ID(short)
@@ -87,7 +105,7 @@ BOOST_PYTHON_SIGNED_INTEGRAL_TYPE_ID(long long)
 #   undef BOOST_PYTHON_SIGNED_INTEGRAL_TYPE_ID
 #  endif
 
-
+//
 inline type_info::type_info(std::type_info const& id)
     : m_base_type(
 #  ifdef BOOST_PYTHON_TYPE_ID_NAME
@@ -117,12 +135,26 @@ inline bool type_info::operator==(type_info const& rhs) const
 #  endif 
 }
 
+#  ifdef BOOST_PYTHON_HAVE_GCC_CP_DEMANGLE
+namespace detail
+{
+  BOOST_PYTHON_DECL char const* gcc_demangle(char const*);
+}
+#  endif
+    
 inline char const* type_info::name() const
 {
-#  ifdef BOOST_PYTHON_TYPE_ID_NAME
-    return m_base_type;
+    char const* raw_name
+        = m_base_type
+#  ifndef BOOST_PYTHON_TYPE_ID_NAME
+          ->name()
+#  endif
+        ;
+    
+#  ifdef BOOST_PYTHON_HAVE_GCC_CP_DEMANGLE
+    return detail::gcc_demangle(raw_name);
 #  else
-    return m_base_type->name();
+    return raw_name;
 #  endif 
 }
 

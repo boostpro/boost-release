@@ -1,28 +1,19 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2002-2003 Joel de Guzman
     Copyright (c) 2002-2003 Martin Wille
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_FOR_HPP
 #define BOOST_SPIRIT_FOR_HPP
 ////////////////////////////////////////////////////////////////////////////////
-#if !defined(BOOST_SPIRIT_PARSER_HPP)
-#include "boost/spirit/core/parser.hpp"
-#endif
+#include <boost/spirit/core/parser.hpp>
+#include <boost/spirit/core/composite/composite.hpp>
+#include <boost/spirit/dynamic/impl/conditions.ipp>
 
-#if !defined(BOOST_SPIRIT_COMPOSITE_HPP)
-#include "boost/spirit/core/composite/composite.hpp"
-#endif
-
-#if !defined(BOOST_SPIRIT_CONDITIONS_IPP)
-#include "boost/spirit/dynamic/impl/conditions.ipp"
-#endif
 ////////////////////////////////////////////////////////////////////////////////
 
 namespace boost { namespace spirit
@@ -31,15 +22,13 @@ namespace boost { namespace spirit
     {
 
         template <typename FuncT>
-        struct for_functor : private subject_type<FuncT, nil_t>::type
+        struct for_functor
         {
-            typedef typename subject_type<FuncT, nil_t>::type       base_t;
             typedef typename boost::call_traits<FuncT>::param_type  param_t;
-            typedef typename base_t::return_t                       return_t;
 
-            for_functor(param_t f) : base_t(f) {}
-            for_functor() : base_t() {}
-            return_t get() const { return base_t::get(); }
+            for_functor(param_t f) : func(f) {}
+            for_functor() {}
+            FuncT func;
         };
 
         template <typename InitF>
@@ -50,7 +39,7 @@ namespace boost { namespace spirit
 
             for_init_functor(param_t f) : base_t(f) {}
             for_init_functor() : base_t() {}
-            void init() const { /*return*/ base_t::get()(); }
+            void init() const { /*return*/ this->func(); }
         };
 
         template <typename StepF>
@@ -61,7 +50,7 @@ namespace boost { namespace spirit
 
             for_step_functor(param_t f) : base_t(f) {}
             for_step_functor() : base_t() {}
-            void step() const { /*return*/ base_t::get()(); }
+            void step() const { /*return*/ this->func(); }
         };
 
         //////////////////////////////////
@@ -124,7 +113,7 @@ namespace boost { namespace spirit
 
                 typename ScannerT::iterator_t save(scan.first);
 
-                int length = 0;
+                std::size_t length = 0;
                 int eval_length = 0;
 
                 this->init();

@@ -1,14 +1,11 @@
 /*=============================================================================
-  Spirit V1.6.1
-  Copyright (c) 2003 Martin Wille
-  http://spirit.sourceforge.net/
+    Copyright (c) 2003 Martin Wille
+    http://spirit.sourceforge.net/
 
-  Permission to copy, use, modify, sell and distribute this software
-  is granted provided this copyright notice appears in all copies.
-  This software is provided "as is" without express or implied
-  warranty, and with no claim as to its suitability for any purpose.
- =============================================================================*/
-
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+=============================================================================*/
 #include <iostream>
 #include <boost/config.hpp>
 #include <boost/test/included/unit_test_framework.hpp>
@@ -59,7 +56,7 @@ struct simple : public boost::spirit::grammar<simple>
     template <typename ScannerT>
     struct definition
     {
-        definition(simple const &self)
+        definition(simple const& /*self*/)
         {
             top = boost::spirit::epsilon_p;
             boost::mutex::scoped_lock lock(simple_mutex);

@@ -13,6 +13,7 @@ Number Holidays: 7
 
 
 #include "boost/date_time/gregorian/gregorian.hpp"
+#include "boost/date_time/compiler_config.hpp"
 #include <algorithm>
 #include <functional>
 #include <vector>
@@ -23,7 +24,12 @@ Number Holidays: 7
 void
 print_date(boost::gregorian::date d) 
 {
+  using namespace boost::gregorian;
+#if defined(BOOST_DATE_TIME_NO_LOCALE)
+  std::cout << to_simple_string(d) << " [" << d.day_of_week() << "]\n";
+#else
   std::cout << d << " [" << d.day_of_week() << "]\n";
+#endif
 }
 
 

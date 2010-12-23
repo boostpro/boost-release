@@ -30,9 +30,12 @@
 #include <iterator>
 #include <boost/tuple/tuple.hpp>
 #include <boost/pending/ct_if.hpp>
+#include <boost/iterator/iterator_categories.hpp>
+#include <boost/iterator/iterator_adaptor.hpp>
+#include <boost/detail/workaround.hpp>
 
 namespace boost {
-  
+
   template <typename G>
   struct graph_traits {
     typedef typename G::vertex_descriptor      vertex_descriptor;
@@ -50,7 +53,16 @@ namespace boost {
     typedef typename G::vertices_size_type     vertices_size_type;
     typedef typename G::edges_size_type        edges_size_type;
     typedef typename G::degree_size_type       degree_size_type;
+
+    static inline vertex_descriptor null_vertex();
   };
+
+  template <typename G>
+  inline typename graph_traits<G>::vertex_descriptor
+  graph_traits<G>::null_vertex()
+  {
+    return G::null_vertex();
+  }
 
   // directed_category tags
   struct directed_tag { };
@@ -97,7 +109,20 @@ namespace boost {
   struct adjacency_matrix_tag { };
 
   //?? not the right place ?? Lee
-  struct multi_pass_input_iterator_tag : std::input_iterator_tag { };
+  typedef boost::forward_traversal_tag multi_pass_input_iterator_tag;
+
+  template <typename G>
+  struct edge_property_type {
+    typedef typename G::edge_property_type type;
+  };
+  template <typename G>
+  struct vertex_property_type {
+    typedef typename G::vertex_property_type type;
+  };
+  template <typename G>
+  struct graph_property_type {
+    typedef typename G::graph_property_type type;
+  };
 
 } // namespace boost
 

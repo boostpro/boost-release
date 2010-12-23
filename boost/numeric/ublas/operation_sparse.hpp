@@ -38,15 +38,20 @@ namespace boost { namespace numeric { namespace ublas {
         vector<value_type> temporary (e2 ().size2 ());
 #ifdef BOOST_UBLAS_TYPE_CHECK
         matrix<value_type, row_major> cm (m.size1 (), m.size2 ());
-        indexing_matrix_assign (scalar_assign<value_type, value_type> (), cm, prod (e1, e2), row_major_tag ());
+        indexing_matrix_assign (scalar_assign<typename matrix<value_type, row_major>::reference, value_type> (), cm, prod (e1, e2), row_major_tag ());
 #endif
         typename expression1_type::const_iterator1 it1 (e1 ().begin1 ());
         typename expression1_type::const_iterator1 it1_end (e1 ().end1 ());
         while (it1 != it1_end) {
             size_type jb (temporary.size ());
             size_type je (0);
+#ifndef BOOST_UBLAS_NO_NESTED_CLASS_RELATION
             typename expression1_type::const_iterator2 it2 (it1.begin ());
             typename expression1_type::const_iterator2 it2_end (it1.end ());
+#else
+            typename expression1_type::const_iterator2 it2 (boost::numeric::ublas::begin (it1, iterator1_tag ()));
+            typename expression1_type::const_iterator2 it2_end (boost::numeric::ublas::end (it1, iterator1_tag ()));
+#endif
             while (it2 != it2_end) {
                 // temporary.plus_assign (*it2 * row (e2 (), it2.index2 ()));
                 matrix_row<expression2_type> mr (e2 (), it2.index2 ());
@@ -96,15 +101,20 @@ namespace boost { namespace numeric { namespace ublas {
         vector<value_type> temporary (e1 ().size1 ());
 #ifdef BOOST_UBLAS_TYPE_CHECK
         matrix<value_type, column_major> cm (m.size1 (), m.size2 ());
-        indexing_matrix_assign (scalar_assign<value_type, value_type> (), cm, prod (e1, e2), column_major_tag ());
+        indexing_matrix_assign (scalar_assign<typename matrix<value_type, column_major>::reference, value_type> (), cm, prod (e1, e2), column_major_tag ());
 #endif
         typename expression2_type::const_iterator2 it2 (e2 ().begin2 ());
         typename expression2_type::const_iterator2 it2_end (e2 ().end2 ());
         while (it2 != it2_end) {
             size_type ib (temporary.size ());
             size_type ie (0);
+#ifndef BOOST_UBLAS_NO_NESTED_CLASS_RELATION
             typename expression2_type::const_iterator1 it1 (it2.begin ());
             typename expression2_type::const_iterator1 it1_end (it2.end ());
+#else
+            typename expression2_type::const_iterator1 it1 (boost::numeric::ublas::begin (it2, iterator2_tag ()));
+            typename expression2_type::const_iterator1 it1_end (boost::numeric::ublas::end (it2, iterator2_tag ()));
+#endif
             while (it1 != it1_end) {
                 // column (m, it2.index2 ()).plus_assign (*it1 * column (e1 (), it1.index1 ()));
                 matrix_column<expression1_type> mc (e1 (), it1.index1 ());

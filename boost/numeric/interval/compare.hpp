@@ -10,12 +10,14 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: compare.hpp,v 1.2 2003/02/05 17:34:29 gmelquio Exp $
+ * $Id: compare.hpp,v 1.3 2003/04/24 14:02:49 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_COMPARE_HPP
 #define BOOST_NUMERIC_INTERVAL_COMPARE_HPP
 
+#include <boost/numeric/interval/compare/certain.hpp>
+#include <boost/numeric/interval/compare/possible.hpp>
 #include <boost/numeric/interval/compare/explicit.hpp>
 #include <boost/numeric/interval/compare/lexicographic.hpp>
 #include <boost/numeric/interval/compare/set.hpp>

@@ -1,21 +1,18 @@
 //  boost cstdint.hpp test program  ------------------------------------------//
 
-//  (C) Copyright Beman Dawes 2000. Permission to copy, use, modify, sell
-//  and distribute this software is granted provided this copyright
-//  notice appears in all copies. This software is provided "as is" without
-//  express or implied warranty, and with no claim as to its suitability for
-//  any purpose.
+//  Copyright Beman Dawes 2000.
+//  See accompanying license for terms and conditions of use.
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/integer for documentation.
 
 //  Revision History
 //   11 Sep 01  Adapted to work with macros defined in native stdint.h (John Maddock)
 //   12 Nov 00  Adapted to merged <boost/cstdint.hpp>
 //   23 Sep 00  Added INTXX_C constant macro support + int64_t support (John Maddock).
 //   28 Jun 00  Initial version
+#define __STDC_CONSTANT_MACROS
 #include <cassert>
 #include <iostream>
-#define __STDC_CONSTANT_MACROS
 #include <boost/cstdint.hpp>
 
 #ifdef NDEBUG

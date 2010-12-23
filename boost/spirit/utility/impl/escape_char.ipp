@@ -1,13 +1,11 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Daniel Nuffer
     Copyright (c) 2002-2003 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_ESCAPE_CHAR_IPP
 #define BOOST_SPIRIT_ESCAPE_CHAR_IPP
@@ -28,6 +26,10 @@ const unsigned long lex_escapes = c_escapes << 1;
 namespace impl {
 
     //////////////////////////////////
+#if (defined(BOOST_MSVC) && (BOOST_MSVC <= 1310))
+#pragma warning(push)
+#pragma warning(disable:4127)
+#endif
     template <unsigned long Flags, typename CharT>
     struct escape_char_action_parse {
 
@@ -157,6 +159,9 @@ namespace impl {
             return scan.no_match(); // overflow detected
         }
     };
+#if (defined(BOOST_MSVC) && (BOOST_MSVC <= 1310))
+#pragma warning(pop)
+#endif
 
     //////////////////////////////////
     template <typename CharT>
@@ -177,15 +182,26 @@ namespace impl {
                 >
                 hex_parser_t;
 
-        static rule<ScannerT> escape
-                =   oct_parser_t()
-                |   as_lower_d['x'] >> hex_parser_t()
-                |   (anychar_p - as_lower_d['x'] - oct_parser_t())
-                ;
+            typedef alternative<difference<anychar_parser, chlit<CharT> >,
+                sequence<chlit<CharT>, alternative<alternative<oct_parser_t,
+                sequence<inhibit_case<chlit<CharT> >, hex_parser_t > >,
+                difference<difference<anychar_parser,
+                inhibit_case<chlit<CharT> > >, oct_parser_t > > > >
+                parser_t;
 
-            BOOST_SPIRIT_DEBUG_TRACE_NODE(escape,
-                BOOST_SPIRIT_DEBUG_FLAGS & BOOST_SPIRIT_DEBUG_FLAGS_ESCAPE_CHAR);
-            return ((anychar_p - '\\') | ('\\' >> escape)).parse(scan);
+            static parser_t p =
+                ( (anychar_p - CharT('\\'))
+                | (CharT('\\') >>
+                    (  oct_parser_t()
+                     | as_lower_d[CharT('x')] >> hex_parser_t()
+                     | (anychar_p - as_lower_d[CharT('x')] - oct_parser_t())
+                    )
+                ));
+
+            BOOST_SPIRIT_DEBUG_TRACE_NODE(p,
+                (BOOST_SPIRIT_DEBUG_FLAGS & BOOST_SPIRIT_DEBUG_FLAGS_ESCAPE_CHAR) != 0);
+
+            return p.parse(scan);
         }
     };
 

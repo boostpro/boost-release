@@ -1,8 +1,12 @@
 #ifndef DATE_TIME_PERIOD_HPP___
 #define DATE_TIME_PERIOD_HPP___
-/* Copyright (c) 2000 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
+
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland 
+ * $Date: 2004/01/11 19:33:21 $
  */
 
 /*! \file period.hpp
@@ -62,8 +66,8 @@ namespace date_time {
     typedef point_rep point_type;
     typedef duration_rep duration_type;
 
-    period(point_rep begin, point_rep last);
-    period(point_rep begin, duration_rep len);
+    period(point_rep first_point, point_rep end_point);
+    period(point_rep first_point, duration_rep len);
     point_rep begin() const;
     point_rep end() const;
     point_rep last() const;
@@ -80,6 +84,7 @@ namespace date_time {
     bool is_after(const point_rep& point) const;
     period intersection(const period& other) const;
     period merge(const period& other) const;
+    period span(const period& other) const;
   private:
     point_rep begin_;
     point_rep last_;
@@ -90,10 +95,10 @@ namespace date_time {
    */
   template<class point_rep, class duration_rep>
   inline
-  period<point_rep,duration_rep>::period(point_rep begin, 
-                                         point_rep end) : 
-    begin_(begin), 
-    last_(end - duration_rep::unit())
+  period<point_rep,duration_rep>::period(point_rep first_point, 
+                                         point_rep end_point) : 
+    begin_(first_point), 
+    last_(end_point - duration_rep::unit())
   {}
 
   //! create a period as [begin, begin+len)
@@ -101,9 +106,9 @@ namespace date_time {
    */
   template<class point_rep, class duration_rep>
   inline
-  period<point_rep,duration_rep>::period(point_rep begin, duration_rep len) :
-    begin_(begin), 
-    last_(begin + len-duration_rep::unit()) 
+  period<point_rep,duration_rep>::period(point_rep first_point, duration_rep len) :
+    begin_(first_point), 
+    last_(first_point + len-duration_rep::unit()) 
   {}
 
 
@@ -136,7 +141,7 @@ namespace date_time {
   inline
   bool period<point_rep,duration_rep>::is_null() const 
   {
-    return last_ <= begin_;
+    return end() <= begin_;
   }
 
   //! Return the length of the period
@@ -161,7 +166,7 @@ namespace date_time {
   inline
   bool period<point_rep,duration_rep>::operator<(const period& rhs) const 
   {
-    return (last_ <= rhs.begin_);
+    return (last_ < rhs.begin_);
   } 
 
 
@@ -319,20 +324,30 @@ namespace date_time {
     return period<point_rep,duration_rep>(begin_,begin_); // no intersect return null
   }
 
+  //! Combine two periods with earliest start and latest end.
+  /*! Combines two periods and any gap between them such that 
+   *  start = min(p1.start, p2.start)
+   *  end   = max(p1.end  , p2.end)
+   *@code
+   *        [---p1---)
+   *                       [---p2---)
+   * result:
+   *        [-----------p3----------) 
+   *@endcode
+   */
+  template<class point_rep, class duration_rep>
+  inline
+  period<point_rep,duration_rep>
+  period<point_rep,duration_rep>::span(const period<point_rep,duration_rep>& other) const 
+  {
+    point_rep start((begin_ < other.begin_) ? begin() : other.begin());
+    point_rep newend((last_  < other.last_)  ? other.end() : this->end());
+    return period<point_rep,duration_rep>(start, newend);
+  }
+
 
 } } //namespace date_time
 
-/* Copyright (c) 2000
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- */
 
 
 #endif

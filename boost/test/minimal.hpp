@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2002-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: minimal.hpp,v $
 //
-//  Version     : $Id: minimal.hpp,v 1.7 2002/12/08 17:41:57 rogeeff Exp $
+//  Version     : $Revision: 1.11 $
 //
 //  Description : simple minimal testing definitions and implementation
 // ***************************************************************************
@@ -146,11 +145,8 @@ int main( int argc, char* argv[] )
 //  Revision History :
 //  
 //  $Log: minimal.hpp,v $
-//  Revision 1.7  2002/12/08 17:41:57  rogeeff
-//  switched to use c_string_literal
-//
-//  Revision 1.6  2002/11/02 19:31:04  rogeeff
-//  merged into the main trank
+//  Revision 1.11  2003/12/01 00:41:56  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

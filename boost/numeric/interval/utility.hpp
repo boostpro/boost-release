@@ -11,7 +11,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: utility.hpp,v 1.3 2003/02/05 17:34:30 gmelquio Exp $
+ * $Id: utility.hpp,v 1.7 2003/09/12 06:06:12 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_UTILITY_HPP
@@ -20,6 +20,7 @@
 #include <boost/numeric/interval/detail/interval_prototype.hpp>
 #include <boost/numeric/interval/detail/test_input.hpp>
 #include <boost/numeric/interval/detail/bugs.hpp>
+#include <algorithm>
 #include <utility>
 
 /*
@@ -68,7 +69,7 @@ T checked_upper(const interval<T, Policies>& x)
 template<class T, class Policies> inline
 T width(const interval<T, Policies>& x)
 {
-  if (interval_lib::detail::test_input(x)) return 0;
+  if (interval_lib::detail::test_input(x)) return static_cast<T>(0);
   typename Policies::rounding rnd;
   return rnd.sub_up(x.upper(), x.lower());
 }
@@ -108,7 +109,7 @@ template<class T, class Policies> inline
 bool in_zero(const interval<T, Policies>& x)
 {
   if (interval_lib::detail::test_input(x)) return false;
-  return x.lower() <= T(0) && T(0) <= x.upper();
+  return x.lower() <= static_cast<T>(0) && static_cast<T>(0) <= x.upper();
 }
 
 template<class T, class Policies> inline
@@ -243,6 +244,18 @@ bisect(const interval<T, Policies>& x)
  */
 
 template<class T, class Policies> inline
+T norm(const interval<T, Policies>& x)
+{
+  BOOST_NUMERIC_INTERVAL_using_max(max);
+  typedef interval<T, Policies> I;
+  if (interval_lib::detail::test_input(x)) {
+    typedef typename Policies::checking checking;
+    return checking::nan();
+  }
+  return max(-x.lower(), x.upper());
+}
+
+template<class T, class Policies> inline
 interval<T, Policies> abs(const interval<T, Policies>& x)
 {
   BOOST_NUMERIC_INTERVAL_using_max(max);
@@ -251,7 +264,7 @@ interval<T, Policies> abs(const interval<T, Policies>& x)
     return I::empty();
   if (!interval_lib::detail::is_neg(x.lower())) return x;
   if (interval_lib::detail::is_neg(x.upper())) return -x;
-  return I(0, max(-x.lower(), x.upper()), true);
+  return I(static_cast<T>(0), max(-x.lower(), x.upper()), true);
 }
 
 template<class T, class Policies> inline

@@ -12,7 +12,7 @@
  * purpose. It is provided "as is" without express or implied
  * warranty.
  *
- * $Id: findroot_demo.cpp,v 1.2 2003/02/05 17:34:34 gmelquio Exp $
+ * $Id: findroot_demo.cpp,v 1.3 2003/08/10 21:14:36 gmelquio Exp $
  *
  *
  * The idea and the 2D function are based on RVInterval,
@@ -47,7 +47,6 @@
 */
 
 #include <boost/numeric/interval.hpp>    // must be first for <limits> workaround
-#include <boost/numeric/interval/io.hpp>
 #include <list>
 #include <deque>
 #include <vector>
@@ -107,9 +106,15 @@ void find_zeros(std::ostream & os, Function f, I searchrange)
 }
 
 template<class T>
-inline std::ostream & operator<<(std::ostream & os, const std::pair<T, T> & x)
-{
+std::ostream &operator<<(std::ostream &os, const std::pair<T, T> &x) {
   os << "(" << x.first << ", " << x.second << ")";
+  return os;
+}
+
+template<class T, class Policies>
+std::ostream &operator<<(std::ostream &os,
+                         const boost::numeric::interval<T, Policies> &x) {
+  os << "[" << x.lower() << ", " << x.upper() << "]";
   return os;
 }
 

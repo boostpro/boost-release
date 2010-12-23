@@ -1,10 +1,9 @@
 //  inspect program  ---------------------------------------------------------//
 
-//  (C) Copyright Beman Dawes 2002. Permission to copy,
-//  use, modify, sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided "as is"
-//  without express or implied warranty, and with no claim as to its
-//  suitability for any purpose.
+//  (C) Copyright Beman Dawes 2002
+//  Use, modification, and distribution is subject to the Boost Software
+//  License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 //  This program recurses through sub-directories looking for various problems.
 //  It contains some Boost specific features, like ignoring "CVS" and "bin",
@@ -18,20 +17,24 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>
 
+#include <iostream>
 #include <cassert>
 #include <vector>
 #include <list>
 #include <utility>
 #include <algorithm>
+#include <cstring>
 
 #include "inspector.hpp" // includes <string>, <boost/filesystem/path.hpp>,
                          // <iostream>, <set>
                          // and gives using for string and path.
 #include "copyright_check.hpp"
 #include "crlf_check.hpp"
+#include "license_check.hpp"
 #include "link_check.hpp"
 #include "long_name_check.hpp"
 #include "tab_check.hpp"
+#include "cvs_iterator.hpp"
 
 namespace fs = boost::filesystem;
 
@@ -53,8 +56,6 @@ namespace
   long error_count;
 
   boost::inspect::string_set content_signatures;
-
-  fs::directory_iterator end_itr;
 
   struct error_msg
   {
@@ -157,12 +158,14 @@ namespace
 
 //  visit_all  ---------------------------------------------------------------//
 
+  template< class DirectoryIterator >
   void visit_all( const string & lib,
     const path & dir_path, const inspector_list & insps )
   {
+    static DirectoryIterator end_itr;
     ++directory_count;
 
-    for ( fs::directory_iterator itr( dir_path ); itr != end_itr; ++itr )
+    for ( DirectoryIterator itr( dir_path ); itr != end_itr; ++itr )
     {
 
       if ( fs::is_directory( *itr ) )
@@ -171,7 +174,7 @@ namespace
         {
           string cur_lib( boost::inspect::impute_library( *itr ) );
           check( cur_lib, *itr, "", insps );
-          visit_all( cur_lib, *itr, insps );
+          visit_all<DirectoryIterator>( cur_lib, *itr, insps );
         }
       }
       else
@@ -185,27 +188,72 @@ namespace
     }
   }
 
-//  display_errors  ----------------------------------------------------------//
+//  display_summary_helper  --------------------------------------------------//
 
-  void display_errors()
+  void display_summary_helper( const string & current_library, int err_count )
   {
+    std::cout << "  <tr><td><a href=\"#" 
+              << current_library
+              << "\">" << current_library
+              << "</a></td><td align=\"center\">"
+              << err_count << "</td></tr>\n";
+  }
+  
+//  display_summary  ---------------------------------------------------------//
 
-    std::sort( msgs.begin(), msgs.end() );
+  void display_summary()
+  {
+    std::cout << "</pre>\n"
+            "<h2>Summary</h2>\n"
+            "<table border=\"1\" cellpadding=\"5\" cellspacing=\"0\">\n"
+            "  <tr>\n"
+            "    <td><b>Library</b></td>\n"
+            "    <td><b>Problems</b></td>\n"
+            "  </tr>\n"
+            ;
+    string current_library( msgs.begin()->library ); 
+    int err_count = 0;
+    for ( error_msg_vector::iterator itr ( msgs.begin() );
+      itr != msgs.end(); ++itr )
+    {
+      if ( current_library != itr->library )
+      {
+        display_summary_helper( current_library, err_count );
+        current_library = itr->library;
+        err_count = 0;
+      }
+      ++err_count;
+    }
+    display_summary_helper( current_library, err_count );
+
+    std::cout << "</table>\n";
+  }
+
+
+//  display_details  ---------------------------------------------------------//
+
+  void display_details()
+  {
+    std::cout << "<h2>Details</h2>\n";
 
     // display error messages with group indication
     error_msg current;
     string sep;
+    bool first = true;
     for ( error_msg_vector::iterator itr ( msgs.begin() );
       itr != msgs.end(); ++itr )
     {
       if ( current.library != itr->library )
       {
-        std::cout << "\n\n" << itr->library;
+        if ( !first ) std::cout << "</pre>\n";
+        std::cout << "\n<h3><a name=\"" << itr->library
+                  << "\">" << itr->library << "</a></h3>\n<pre>";
       }
       if ( current.library != itr->library
         || current.rel_path != itr->rel_path )
       {
-        std::cout << "\n   " << itr->rel_path;
+        std::cout << "\n";
+        std::cout << itr->rel_path;
         sep = ": ";
       }
       if ( current.library != itr->library
@@ -218,7 +266,21 @@ namespace
       current.library = itr->library;
       current.rel_path = itr->rel_path;
       current.msg = itr->msg;
+      first = false;
    }
+   std::cout << "</pre>\n";
+  }
+
+  const char * options()
+  {
+    return
+         "  -license\n"
+         "  -copyright\n"
+         "  -crlf\n"
+         "  -link\n"
+         "  -long_name\n"
+         "  -tab\n"
+         "default is all checks on; otherwise options specify desired checks\n";
   }
 
 } // unnamed namespace
@@ -258,7 +320,8 @@ namespace boost
 
     string impute_library( const path & full_dir_path )
     {
-      path relative( relative_to( full_dir_path, fs::initial_path() ) );
+      path relative( relative_to( full_dir_path, fs::initial_path() ),
+        fs::no_check );
       if ( relative.empty() ) return "boost-root";
       string first( *relative.begin() );
       string second =  // borland 5.61 requires op=  
@@ -277,19 +340,90 @@ namespace boost
 
 //  cpp_main()  --------------------------------------------------------------//
 
+#include <boost/test/included/prg_exec_monitor.hpp>
+
 int cpp_main( int argc, char * argv[] )
 {
   fs::initial_path();
 
+  if ( argc > 1 && (std::strcmp( argv[1], "-help" ) == 0
+    || std::strcmp( argv[1], "--help" ) == 0 ) )
+  {
+    std::clog << "Usage: inspect [-cvs] [options...]\n"
+      "options:\n"
+      << options();
+    return 1;
+  }
+
+  bool license_ck = true;
+  bool copyright_ck = true;
+  bool crlf_ck = true;
+  bool link_ck = true;
+  bool long_name_ck = true;
+  bool tab_ck = true;
+  bool cvs = false;
+
+  if ( argc > 1 && std::strcmp( argv[1], "-cvs" ) == 0 )
+  {
+    cvs = true;
+    --argc; ++argv;
+  }
+
+  if ( argc > 1 && *argv[1] == '-' )
+  {
+    license_ck = false;
+    copyright_ck = false;
+    crlf_ck = false;
+    link_ck = false;
+    long_name_ck = false;
+    tab_ck = false;
+  }
+
+  for(; argc > 1; --argc, ++argv )
+  {
+    if ( std::strcmp( argv[1], "-license" ) == 0 )
+      license_ck = true;
+    else if ( std::strcmp( argv[1], "-copyright" ) == 0 )
+      copyright_ck = true;
+    else if ( std::strcmp( argv[1], "-crlf" ) == 0 )
+      crlf_ck = true;
+    else if ( std::strcmp( argv[1], "-link" ) == 0 )
+      link_ck = true;
+    else if ( std::strcmp( argv[1], "-long_name" ) == 0 )
+      long_name_ck = true;
+    else if ( std::strcmp( argv[1], "-tab" ) == 0 )
+      tab_ck = true;
+    else
+    {
+      std::cerr << "unknown option: " << argv[1]
+      << "\nvalid options are:\n"
+      << options();
+      return 1;
+    }
+  }
+
   inspector_list inspectors;
 
-  inspectors.push_back( inspector_element( new boost::inspect::copyright_check ) );
-  inspectors.push_back( inspector_element( new boost::inspect::crlf_check ) );
-  inspectors.push_back( inspector_element( new boost::inspect::link_check ) );
-  inspectors.push_back( inspector_element( new boost::inspect::long_name_check ) );
-  inspectors.push_back( inspector_element( new boost::inspect::tab_check ) );
+  if ( license_ck )
+    inspectors.push_back( inspector_element( new boost::inspect::license_check ) );
+  if ( copyright_ck )
+    inspectors.push_back( inspector_element( new boost::inspect::copyright_check ) );
+  if ( crlf_ck )
+    inspectors.push_back( inspector_element( new boost::inspect::crlf_check ) );
+  if ( link_ck )
+    inspectors.push_back( inspector_element( new boost::inspect::link_check ) );
+  if ( long_name_ck )
+    inspectors.push_back( inspector_element( new boost::inspect::long_name_check ) );
+  if ( tab_ck )
+    inspectors.push_back( inspector_element( new boost::inspect::tab_check ) );
 
-  visit_all( "boost-root", fs::initial_path(), inspectors );
+  // perform the actual inspection, using the requested type of iteration
+  if ( cvs )
+    visit_all<hack::cvs_iterator>( "boost-root",
+      fs::initial_path(), inspectors );
+  else
+    visit_all<fs::directory_iterator>( "boost-root",
+      fs::initial_path(), inspectors );
 
   // close
   for ( inspector_list::iterator itr = inspectors.begin();
@@ -298,13 +432,54 @@ int cpp_main( int argc, char * argv[] )
     itr->inspector->close();
   }
 
-  display_errors();
+  char run_date[128];
+  std::time_t tod;
+  std::time( &tod );
+  std::strftime( run_date, sizeof(run_date),
+    "%X UTC, %A %d %B %Y", std::gmtime( &tod ) );
 
-  std::cout << "\n\n";
-  std::cout << file_count << " files scanned\n";
-  std::cout << directory_count << " directories scanned\n";
-  std::cout << error_count << " problems reported\n";
+  std::cout << "<html>\n"
+          "<head>\n"
+          "<title>Boost Inspection Report</title>\n"
+          "</head>\n"
+          "<body bgcolor=\"#ffffff\" text=\"#000000\">\n"
+          "<table border=\"0\">\n"
+          "<tr>\n"
+          "<td><img border=\"0\" src=\"../c++boost.gif\" width=\"277\" "
+          "height=\"86\"></td>\n"
+          "<td align=\"center\">\n"
+          "<h1>Boost Inspection Report</h1>\n"
+          "<b>Run Date:</b> " << run_date  << "\n"
+          "</td>\n"
+          "</table>\n"
+          "<p>An <a href=\"http://www.boost.org/tools/inspect/index.html\">inspection\n" 
+          "program</a> checks each file in the current Boost CVS for various problems,\n" 
+          "generating this web page as output. Problems detected include tabs in files,\n" 
+          "missing copyrights, broken URL's, and similar misdemeanors.</p>\n"
+          ;
+
+  std::cout << "<h2>Totals</h2>\n<pre>"
+            << file_count << " files scanned\n"
+            << directory_count << " directories scanned\n"
+            << error_count << " problems reported\n";
+
   std::cout << "\nproblem counts:\n";
 
+  for ( inspector_list::iterator itr = inspectors.begin();
+        itr != inspectors.end(); ++itr )
+  {
+    itr->inspector.reset();
+  }
+
+  std::sort( msgs.begin(), msgs.end() );
+
+  if ( !msgs.empty() )
+  {
+    display_summary();
+    display_details();
+  }
+
+  std::cout << "</body>\n"
+               "</html>\n";
   return 0;
 }

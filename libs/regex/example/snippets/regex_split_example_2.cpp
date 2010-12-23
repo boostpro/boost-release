@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -28,11 +24,12 @@
 #include <boost/regex.hpp>
 
 boost::regex e("<\\s*A\\s+[^>]*href\\s*=\\s*\"([^\"]*)\"",
-               boost::regbase::normal | boost::regbase::icase);
+               boost::regex::normal | boost::regbase::icase);
 
 void load_file(std::string& s, std::istream& is)
 {
    s.erase();
+   if(is.bad()) return;
    //
    // attempt to grow string buffer to match file size,
    // this doesn't always work...
@@ -59,6 +56,7 @@ int main(int argc, char** argv)
       s.erase();
       std::ifstream is(argv[i]);
       load_file(s, is);
+      is.close();
       boost::regex_split(std::back_inserter(l), s, e);
       while(l.size())
       {
@@ -78,10 +76,12 @@ int main(int argc, char** argv)
       s.erase();
       std::ifstream is(argv[i]);
       load_file(s, is);
+      is.close();
       while(boost::regex_split(std::ostream_iterator<std::string>(std::cout), s, e, boost::match_default, 1)) std::cout << std::endl;
    }
 
    return 0;
 }
+
 
 

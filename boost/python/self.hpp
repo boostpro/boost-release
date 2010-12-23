@@ -6,13 +6,11 @@
 #ifndef SELF_DWA2002531_HPP
 # define SELF_DWA2002531_HPP
 
-# include <boost/python/detail/config.hpp>
+# include <boost/python/detail/prefix.hpp>
 
 namespace boost { namespace python {
 
-//# if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-#  define BOOST_PYTHON_SELF_IS_CLASS
-//# endif
+#define BOOST_PYTHON_SELF_IS_CLASS
 
 // Sink self_t into its own namespace so that we have a safe place to
 // put the completely general operator templates which operate on

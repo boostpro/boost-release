@@ -10,7 +10,7 @@
  * suitability of this software for any purpose. It is provided "as
  * is" without express or implied warranty.
  *
- * $Id: cmp_header.hpp,v 1.2 2003/02/05 17:34:36 gmelquio Exp $
+ * $Id: cmp_header.hpp,v 1.3 2003/06/03 21:59:59 hervebronnimann Exp $
  */
 
 #include <boost/numeric/interval/interval.hpp>
@@ -18,6 +18,7 @@
 #include <boost/numeric/interval/compare.hpp>
 #include <boost/numeric/interval/policies.hpp>
 #include <boost/test/test_tools.hpp>
+#include "bugs.hpp"
 
 struct empty_class {};
 

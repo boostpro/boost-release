@@ -143,6 +143,9 @@ void bad()
     shared_ptr&lt;T&gt; <A href="#static_pointer_cast" >static_pointer_cast</A>(shared_ptr&lt;U&gt; const &amp; r); // never throws
 
   template&lt;class T, class U&gt;
+    shared_ptr&lt;T&gt; <A href="#const_pointer_cast" >const_pointer_cast</A>(shared_ptr&lt;U&gt; const &amp; r); // never throws
+
+  template&lt;class T, class U&gt;
     shared_ptr&lt;T&gt; <A href="#dynamic_pointer_cast" >dynamic_pointer_cast</A>(shared_ptr&lt;U&gt; const &amp; r); // never throws
 
   template&lt;class E, class T, class Y&gt;
@@ -473,6 +476,21 @@ q = p;
 			<p>will eventually result in undefined behavior, attempting to delete the same 
 				object twice.</p>
 		</BLOCKQUOTE>
+		<h3><a name="const_pointer_cast">const_pointer_cast</a></h3>
+		<pre>template&lt;class T, class U&gt;
+  shared_ptr&lt;T&gt; const_pointer_cast(shared_ptr&lt;U&gt; const &amp; r); // never throws</pre>
+		<BLOCKQUOTE>
+			<P><STRONG>Requires:</STRONG> The expression <code>const_cast&lt;T*&gt;(r.get())</code>
+				must be well-formed.</P>
+			<P><B>Returns:</B> If <b>r</b> is <i>empty</i>, an <i>empty</i> <b>shared_ptr&lt;T&gt;</b>; 
+				otherwise, a <STRONG>shared_ptr&lt;T&gt;</STRONG> object that stores a copy of <code>
+					const_cast&lt;T*&gt;(r.get())</code> and <i>shares ownership</i> with <b>r</b>.</P>
+			<P><B>Throws:</B> nothing.</P>
+			<P><B>Notes:</B> the seemingly equivalent expression</P>
+			<p><code>shared_ptr&lt;T&gt;(const_cast&lt;T*&gt;(r.get()))</code></p>
+			<p>will eventually result in undefined behavior, attempting to delete the same 
+				object twice.</p>
+		</BLOCKQUOTE>
 		<h3><a name="dynamic_pointer_cast">dynamic_pointer_cast</a></h3>
 		<pre>template&lt;class T, class U&gt;
   shared_ptr&lt;T&gt; dynamic_pointer_cast(shared_ptr&lt;U&gt; const &amp; r);</pre>
@@ -671,7 +689,7 @@ int * p = a.release();
 		</P>
 		<hr>
 		<p>
-			$Date: 2003/02/13 19:07:19 $</p>
+			$Date: 2003/07/16 11:51:12 $</p>
 		<p><small>Copyright 1999 Greg Colvin and Beman Dawes. Copyright 2002 Darin Adler. 
 				Copyright 2002, 2003 Peter Dimov. Permission to copy, use, modify, sell and 
 				distribute this document is granted provided this copyright notice appears in 

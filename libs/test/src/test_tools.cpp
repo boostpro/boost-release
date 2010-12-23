@@ -1,14 +1,14 @@
-//  (C) Copyright Ullrich Koethe 2001, Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  (C) Copyright Ullrich Koethe 2001.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for updates, documentation, and revision history.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: test_tools.cpp,v $
 //
-//  Version     : $Id: test_tools.cpp,v 1.15 2003/02/15 21:54:18 rogeeff Exp $
+//  Version     : $Revision: 1.25 $
 //
 //  Description : supplies offline implemtation for the Test Tools
 // ***************************************************************************
@@ -26,9 +26,10 @@
 #include <algorithm>
 #include <cstring>  
 #include <string>
+#include <cctype>
 
 # ifdef BOOST_NO_STDC_NAMESPACE
-namespace std { using ::strcmp; using ::strncmp; using ::strlen; }
+namespace std { using ::strcmp; using ::strncmp; using ::strlen; using ::isprint; }
 # endif
 
 namespace boost {
@@ -42,7 +43,7 @@ namespace detail {
 // ************************************************************************** //
 
 void
-checkpoint_impl( wrap_stringstream& message, c_string_literal file_name, int line_num )
+checkpoint_impl( wrap_stringstream& message, c_string_literal file_name, std::size_t line_num )
 {
     BOOST_UT_LOG_BEGIN( file_name, line_num, unit_test_framework::log_test_suites )
         unit_test_framework::checkpoint( message.str() )
@@ -52,7 +53,7 @@ checkpoint_impl( wrap_stringstream& message, c_string_literal file_name, int lin
 //____________________________________________________________________________//
 
 void
-message_impl( wrap_stringstream& message, c_string_literal file_name, int line_num )
+message_impl( wrap_stringstream& message, c_string_literal file_name, std::size_t line_num )
 {
     BOOST_UT_LOG_BEGIN( file_name, line_num, unit_test_framework::log_messages )
         message.str()
@@ -63,7 +64,7 @@ message_impl( wrap_stringstream& message, c_string_literal file_name, int line_n
 
 void
 warn_and_continue_impl( bool predicate, wrap_stringstream& message,
-                        c_string_literal file_name, int line_num, bool add_fail_pass )
+                        c_string_literal file_name, std::size_t line_num, bool add_fail_pass )
 {
     if( !predicate ) {
         BOOST_UT_LOG_BEGIN( file_name, line_num, unit_test_framework::log_warnings )
@@ -80,7 +81,7 @@ warn_and_continue_impl( bool predicate, wrap_stringstream& message,
 //____________________________________________________________________________//
 
 void
-warn_and_continue_impl( extended_predicate_value const& v, wrap_stringstream& message, c_string_literal file_name, int line_num,
+warn_and_continue_impl( extended_predicate_value const& v, wrap_stringstream& message, c_string_literal file_name, std::size_t line_num,
                         bool add_fail_pass )
 {
     warn_and_continue_impl( !!v,
@@ -92,7 +93,7 @@ warn_and_continue_impl( extended_predicate_value const& v, wrap_stringstream& me
 
 bool
 test_and_continue_impl( bool predicate, wrap_stringstream& message,
-                        c_string_literal file_name, int line_num,
+                        c_string_literal file_name, std::size_t line_num,
                         bool add_fail_pass, unit_test_framework::log_level loglevel )
 {
     if( !predicate ) {
@@ -119,7 +120,7 @@ test_and_continue_impl( bool predicate, wrap_stringstream& message,
 
 bool
 test_and_continue_impl( extended_predicate_value const& v, wrap_stringstream& message,
-                        c_string_literal file_name, int line_num,
+                        c_string_literal file_name, std::size_t line_num,
                         bool add_fail_pass, unit_test_framework::log_level loglevel )
 {
     return test_and_continue_impl( !!v,
@@ -131,7 +132,7 @@ test_and_continue_impl( extended_predicate_value const& v, wrap_stringstream& me
 
 void
 test_and_throw_impl( bool predicate, wrap_stringstream& message,
-                     c_string_literal file_name, int line_num,
+                     c_string_literal file_name, std::size_t line_num,
                      bool add_fail_pass, unit_test_framework::log_level loglevel )
 {
     if( test_and_continue_impl( predicate, message, file_name, line_num, add_fail_pass, loglevel ) ) {
@@ -143,7 +144,7 @@ test_and_throw_impl( bool predicate, wrap_stringstream& message,
 
 void
 test_and_throw_impl( extended_predicate_value const& v, wrap_stringstream& message,
-                     c_string_literal file_name, int line_num,
+                     c_string_literal file_name, std::size_t line_num,
                      bool add_fail_pass, unit_test_framework::log_level loglevel )
 {
     if( test_and_continue_impl( v, message, file_name, line_num, add_fail_pass, loglevel ) ) {
@@ -155,7 +156,7 @@ test_and_throw_impl( extended_predicate_value const& v, wrap_stringstream& messa
 
 bool
 equal_and_continue_impl( c_string_literal left, c_string_literal right, wrap_stringstream& message,
-                         c_string_literal file_name, int line_num,
+                         c_string_literal file_name, std::size_t line_num,
                          unit_test_framework::log_level loglevel )
 {
     bool predicate = (left && right) ? std::strcmp( left, right ) == 0 : (left == right);
@@ -183,6 +184,43 @@ is_defined_impl( c_string_literal symbol_name, c_string_literal symbol_value )
 
 //____________________________________________________________________________//
 
+// ************************************************************************** //
+// **************               log print helper               ************** //
+// ************************************************************************** //
+
+void
+print_log_value<char>::operator()( std::ostream& ostr, char t )
+{
+    if( std::isprint( t ) )
+        ostr << '\'' << t << '\'';
+    else
+        ostr << std::hex 
+        // showbase is only available for new style streams:
+#ifndef BOOST_NO_STD_LOCALE
+        << std::showbase
+#else
+        << "0x"
+#endif
+        << (int)t;
+}
+
+//____________________________________________________________________________//
+
+void
+print_log_value<unsigned char>::operator()( std::ostream& ostr, unsigned char t )
+{
+    ostr << std::hex 
+        // showbase is only available for new style streams:
+#ifndef BOOST_NO_STD_LOCALE
+        << std::showbase
+#else
+        << "0x"
+#endif
+       << (int)t;
+}
+
+//____________________________________________________________________________//
+
 } // namespace detail
 
 // ************************************************************************** //
@@ -195,7 +233,19 @@ struct output_test_stream::Impl
     bool            m_match_or_save;
     std::string     m_synced_string;
 
-    void            check_and_fill( detail::extended_predicate_value& res )
+    char            get_char()
+    {
+        char res;
+        do {
+            m_pattern_to_match_or_save.get( res );
+        } while( res == '\r'                        &&
+                 !m_pattern_to_match_or_save.fail() &&
+                 !m_pattern_to_match_or_save.eof() );
+
+        return res;
+    }
+
+    void            check_and_fill( extended_predicate_value& res )
     {
         if( !res.p_predicate_value.get() )
             *(res.p_message) << "Output content: \"" << m_synced_string << '\"';
@@ -232,7 +282,7 @@ output_test_stream::~output_test_stream()
 
 //____________________________________________________________________________//
 
-detail::extended_predicate_value
+extended_predicate_value
 output_test_stream::is_empty( bool flush_stream )
 {
     sync();
@@ -249,7 +299,7 @@ output_test_stream::is_empty( bool flush_stream )
 
 //____________________________________________________________________________//
 
-detail::extended_predicate_value
+extended_predicate_value
 output_test_stream::check_length( std::size_t length_, bool flush_stream )
 {
     sync();
@@ -266,7 +316,7 @@ output_test_stream::check_length( std::size_t length_, bool flush_stream )
 
 //____________________________________________________________________________//
 
-detail::extended_predicate_value
+extended_predicate_value
 output_test_stream::is_equal( c_string_literal arg, bool flush_stream )
 {
     sync();
@@ -283,7 +333,7 @@ output_test_stream::is_equal( c_string_literal arg, bool flush_stream )
 
 //____________________________________________________________________________//
 
-detail::extended_predicate_value
+extended_predicate_value
 output_test_stream::is_equal( std::string const& arg, bool flush_stream )
 {
     sync();
@@ -300,7 +350,7 @@ output_test_stream::is_equal( std::string const& arg, bool flush_stream )
 
 //____________________________________________________________________________//
 
-detail::extended_predicate_value
+extended_predicate_value
 output_test_stream::is_equal( c_string_literal arg, std::size_t n, bool flush_stream )
 {
     sync();
@@ -317,32 +367,52 @@ output_test_stream::is_equal( c_string_literal arg, std::size_t n, bool flush_st
 
 //____________________________________________________________________________//
 
-bool
+extended_predicate_value
 output_test_stream::match_pattern( bool flush_stream )
 {
     sync();
 
-    bool result = true;
+    result_type result( true );
 
-    if( !m_pimpl->m_pattern_to_match_or_save.is_open() )
+    if( !m_pimpl->m_pattern_to_match_or_save.is_open() ) {
         result = false;
+        *(result.p_message) << "Couldn't open pattern file for " 
+            << ( m_pimpl->m_match_or_save ? "reading" : "writing");
+    }
     else {
         if( m_pimpl->m_match_or_save ) {
-            c_string_literal ptr = m_pimpl->m_synced_string.c_str();
+            for ( std::string::size_type i = 0; i < m_pimpl->m_synced_string.length(); ++i ) {
+                char c = m_pimpl->get_char();
 
-            for( std::size_t i = 0; i != m_pimpl->m_synced_string.length(); i++, ptr++ ) {
-                char c;
-                m_pimpl->m_pattern_to_match_or_save.get( c );
+                result = !m_pimpl->m_pattern_to_match_or_save.fail() && 
+                         !m_pimpl->m_pattern_to_match_or_save.eof() && 
+                         (m_pimpl->m_synced_string[i] == c);
 
-                if( m_pimpl->m_pattern_to_match_or_save.fail() ||
-                    m_pimpl->m_pattern_to_match_or_save.eof() )
-                {
-                    result = false;
+                if( !result ) {
+                    std::string::size_type suffix_size  = std::min( m_pimpl->m_synced_string.length() - i,
+                                                                    static_cast<std::string::size_type>(5) );
+
+                    // try to log area around the mismatch 
+                    *(result.p_message) << "Mismatch at position " << i << '\n'
+                        << "..." << m_pimpl->m_synced_string.substr( i, suffix_size ) << "..." << '\n'
+                        << "..." << c;
+
+                    std::string::size_type counter = suffix_size;
+                    while( --counter ) {
+                        char c = m_pimpl->get_char();
+
+                        if( m_pimpl->m_pattern_to_match_or_save.fail() || 
+                            m_pimpl->m_pattern_to_match_or_save.eof() )
+                            break;
+
+                        *(result.p_message) << c;
+                    }
+
+                    *(result.p_message) << "...";
+
+                    // skip rest of the bytes. May help for further matching
+                    m_pimpl->m_pattern_to_match_or_save.ignore( m_pimpl->m_synced_string.length() - i - suffix_size);
                     break;
-                }
-
-                if( *ptr != c ) {
-                    result = false;
                 }
             }
         }
@@ -406,28 +476,8 @@ output_test_stream::sync()
 //  Revision History :
 //  
 //  $Log: test_tools.cpp,v $
-//  Revision 1.15  2003/02/15 21:54:18  rogeeff
-//  is_defined made portable
-//
-//  Revision 1.14  2003/02/14 06:40:27  rogeeff
-//  mingw fix
-//
-//  Revision 1.13  2003/02/13 08:15:25  rogeeff
-//  BOOST_BITWIZE_EQUAL introduced
-//  BOOST_CHECK_NO_THROW introduced
-//  C string literals eliminated
-//  report_level -> log_level
-//  other minor fixes
-//
-//  Revision 1.12  2002/12/08 18:20:30  rogeeff
-//  wrapstratream separated in standalone file and renamed
-//  switched to use c_string_literal
-//
-//  Revision 1.11  2002/11/02 20:23:24  rogeeff
-//  wrapstream copy constructor isuue fix reworked
-//
-//  Revision 1.10  2002/11/02 20:04:41  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.25  2003/12/01 00:42:37  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

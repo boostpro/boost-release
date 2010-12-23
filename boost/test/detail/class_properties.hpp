@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: class_properties.hpp,v $
 //
-//  Version     : $Id: class_properties.hpp,v 1.8 2003/02/13 08:04:49 rogeeff Exp $
+//  Version     : $Revision: 1.13 $
 //
 //  Description : simple facility that mimmic notion of read-only read-write 
 //  properties in C++ classes. Original idea by Henrik Ravn.
@@ -62,14 +61,8 @@ private:                                                                        
 //  Revision History :
 //  
 //  $Log: class_properties.hpp,v $
-//  Revision 1.8  2003/02/13 08:04:49  rogeeff
-//  switch on using Boost.Preprocessor for friends declarations
-//
-//  Revision 1.7  2002/12/08 17:34:46  rogeeff
-//  guard name fixed
-//
-//  Revision 1.6  2002/11/02 19:31:05  rogeeff
-//  merged into the main trank
+//  Revision 1.13  2003/12/01 00:41:56  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

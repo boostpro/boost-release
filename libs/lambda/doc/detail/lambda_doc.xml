@@ -588,19 +588,18 @@ in the lambda functor.
 This means that the value of a bound argument is fixed at the time of the 
 creation of the lambda function and remains constant during the lifetime 
 of the lambda function object.
-
 For example:
-
 <programlisting>
 int i = 1;
-(_1 + i)(i = 2);
+(_1 = 2, _1 + i)(i);
 </programlisting>
-
+The comma operator is overloaded to combine lambda expressions into a sequence;
+the resulting unary lambda functor first assigns 2 to its argument, 
+then adds the value of <literal>i</literal> to it.
 The value of the expression in the last line is 3, not 4. 
-
-In other words, the lambda expression <literal>_1 + i</literal> creates 
-a lambda function <literal>lambda x.x+1</literal> rather than 
-<literal>lambda x.x+i</literal>.
+In other words, the lambda expression that is created is
+<literal>lambda x.(x = 2, x + 1)</literal> rather than
+<literal>lambda x.(x = 2, x + i)</literal>.
       
 </para>
 
@@ -624,12 +623,12 @@ or as a reference to const respectively.
 
 For example, if we rewrite the previous example and wrap the variable 
 <literal>i</literal> with <literal>ref</literal>, 
-we are creating the lambda expression <literal>lambda x.x+i</literal> 
+we are creating the lambda expression <literal>lambda x.(x = 2, x + i)</literal> 
 and the value of the expression in the last line will be 4:
 
 <programlisting>
 i = 1;
-(_1 + ref(i))(i = 2);
+(_1 = 2, _1 + ref(i))(i);
 </programlisting>
 
 Note that <literal>ref</literal> and <literal>cref</literal> are different
@@ -1593,7 +1592,7 @@ For example, using this syntax the <literal>if_then</literal> example above
 can be written as:
 <programlisting>
 <![CDATA[for_each(a.begin(), a.end(), 
-         if(_1 % 2 == 0)[ cout << _1 ])]]>  
+         if_(_1 % 2 == 0)[ cout << _1 ])]]>  
 </programlisting>
 
 As more experience is gained, we may end up deprecating one or the other 
@@ -3034,8 +3033,8 @@ For example:
 <![CDATA[boost::function<int(int, int)> f = _1 + _2;
 boost::function<int&(int&)> g = (_1 += 10);
 int i = 1, j = 2;
-f(i); // returns 3
-g(i); // sets i to = 11;]]>
+f(i, j); // returns 3
+g(i);    // sets i to = 11;]]>
 </programlisting>
 
 The return and parameter types of the wrapped function object must be written explicilty as the template argument to the wrapper template <literal>boost::function</literal>; even when lambda functors, which otherwise have generic parameters, are wrapped.
@@ -3349,6 +3348,37 @@ was dropped.
 <pubdate>2001</pubdate>
 <bibliomisc><ulink url="http://www.oonumerics.org/tmpw01/">www.oonumerics.org/tmpw01/</ulink></bibliomisc>
 </biblioentry>
+
+<biblioentry id="cit:jarvi:03">
+<abbrev>Jär03</abbrev>
+
+<articleinfo>
+
+<author>
+<surname>Järvi</surname>
+<firstname>Jaakko</firstname>
+</author>
+
+<author>
+<firstname>Gary</firstname>
+<surname>Powell</surname>
+</author>
+
+<author>
+<firstname>Andrew</firstname>
+<surname>Lumsdaine</surname>
+</author>
+<title>The Lambda Library : unnamed functions in C++</title>
+
+</articleinfo>
+
+<title>Software - Practice and Expreience</title>
+<volumenum>33:259-291</volumenum>
+
+
+<pubdate>2003</pubdate>
+</biblioentry>
+
 
 <biblioentry id="cit:boost::tuple">
 <abbrev>tuple</abbrev>

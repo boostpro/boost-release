@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2002-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: wrap_stringstream.hpp,v $
 //
-//  Version     : $Id: wrap_stringstream.hpp,v 1.2.2.1 2003/03/18 04:07:29 rwgk Exp $
+//  Version     : $Revision: 1.9 $
 //
 //  Description : wraps strstream and stringstream (depends with one is present )
 //                to prodive the unified interface
@@ -23,7 +22,13 @@
 #else
 #include <sstream>          // for std::ostringstream
 #endif // BOOST_NO_STRINGSTREAM
-#include <string>           // std::string
+
+#ifdef BOOST_MSVC
+# pragma warning(push)
+# pragma warning(disable: 4511) // copy constructor could not be generated
+# pragma warning(disable: 4512) // assignment operator could not be generated
+#endif
+
 namespace boost {
 
 // ************************************************************************** //
@@ -39,9 +44,9 @@ class wrap_stringstream {
 public:
 
     // access methods
-    inline wrap_stringstream&   ref();
-    inline wrapped_stream&      stream();
-    inline std::string const&   str();
+    wrap_stringstream&          ref();
+    wrapped_stream&             stream();
+    std::string const&          str();
 
 private:
     // Data members
@@ -52,7 +57,7 @@ private:
 //____________________________________________________________________________//
 
 template <class T>
-wrap_stringstream&
+inline wrap_stringstream&
 operator<<( wrap_stringstream& targ, T const& t )
 {
     targ.stream() << t;
@@ -77,15 +82,6 @@ wrap_stringstream::ref()
 
 //____________________________________________________________________________//
 
-inline wrap_stringstream&
-operator<<( wrap_stringstream& targ, wrap_stringstream& src )
-{
-    targ << src.str();
-    return targ;
-}
-
-//____________________________________________________________________________//
-
 inline std::string const&
 wrap_stringstream::str()
 {
@@ -102,6 +98,62 @@ wrap_stringstream::str()
 
 //____________________________________________________________________________//
 
+inline wrap_stringstream&
+operator<<( wrap_stringstream& targ, wrap_stringstream& src )
+{
+    targ << src.str();
+    return targ;
+}
+
+#ifndef BOOST_NO_STD_LOCALE
+//____________________________________________________________________________//
+
+inline wrap_stringstream&
+operator<<( wrap_stringstream& targ, std::ios_base& (*man)(std::ios_base&) )
+{
+    targ.stream() << man;
+    return targ;
+}
+
+//____________________________________________________________________________//
+
+template<typename Elem,typename Tr>
+inline wrap_stringstream&
+operator<<( wrap_stringstream& targ, std::basic_ostream<Elem,Tr>& (*man)(std::basic_ostream<Elem, Tr>&) )
+{
+    targ.stream() << man;
+    return targ;
+}
+
+//____________________________________________________________________________//
+
+template<typename Elem,typename Tr>
+inline wrap_stringstream&
+operator<<( wrap_stringstream& targ, std::basic_ios<Elem, Tr>& (*man)(std::basic_ios<Elem, Tr>&) )
+{
+    targ.stream() << man;
+    return targ;
+}
+
+#endif
+//____________________________________________________________________________//
+
 }  // namespace boost
+
+#ifdef BOOST_MSVC
+# pragma warning(default: 4511) // copy constructor could not be generated
+# pragma warning(default: 4512) // assignment operator could not be generated
+# pragma warning(pop)
+#endif
+
+// ***************************************************************************
+//  Revision History :
+//  
+//  $Log: wrap_stringstream.hpp,v $
+//  Revision 1.9  2003/12/01 00:41:56  rogeeff
+//  prerelease cleaning
+//
+
+// ***************************************************************************
 
 #endif  // BOOST_WRAP_STRINGSTREAM_HPP

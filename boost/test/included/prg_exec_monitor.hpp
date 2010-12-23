@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: prg_exec_monitor.hpp,v $
 //
-//  Version     : $Id: prg_exec_monitor.hpp,v 1.1 2002/08/26 09:09:00 rogeeff Exp $
+//  Version     : $Revision: 1.5 $
 //
 //  Description : included (vs. linked ) version of Program Execution Monitor
 // ***************************************************************************
@@ -24,8 +23,8 @@
 //  Revision History :
 //  
 //  $Log: prg_exec_monitor.hpp,v $
-//  Revision 1.1  2002/08/26 09:09:00  rogeeff
-//  Initial commit
+//  Revision 1.5  2003/12/01 00:41:56  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

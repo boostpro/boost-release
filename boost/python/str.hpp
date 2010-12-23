@@ -6,6 +6,8 @@
 #ifndef STR_20020703_HPP
 #define STR_20020703_HPP
 
+# include <boost/python/detail/prefix.hpp>
+
 #include <boost/python/object.hpp>
 #include <boost/python/list.hpp>
 #include <boost/python/converter/pytype_object_mgr_traits.hpp>
@@ -124,6 +126,11 @@ namespace detail
       str_base(); // new str
     
       str_base(const char* s); // new str
+
+      str_base(char const* start, char const* finish);
+      
+      str_base(char const* start, std::size_t length);
+      
       explicit str_base(object_cref other);
 
       BOOST_PYTHON_FORWARD_OBJECT_CONSTRUCTORS(str_base, object)
@@ -140,6 +147,14 @@ class str : public detail::str_base
     str() {} // new str
     
     str(const char* s) : base(s) {} // new str
+    
+    str(char const* start, char const* finish) // new str
+      : base(start, finish)
+    {}
+    
+    str(char const* start, std::size_t length) // new str
+      : base(start, length)
+    {}
     
     template <class T>
     explicit str(T const& other)

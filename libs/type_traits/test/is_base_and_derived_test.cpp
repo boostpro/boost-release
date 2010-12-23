@@ -1,13 +1,17 @@
 
-//  (C) Copyright John Maddock 2000. Permission to copy, use, modify, sell and   
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2000. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 
 #include "test.hpp"
 #include "check_integral_constant.hpp"
-#include TYPE_TRAITS(is_base_and_derived)
+#ifdef TEST_STD
+#  include <type_traits>
+#else
+#  include <boost/type_traits/is_base_and_derived.hpp>
+#endif
 
 
 
@@ -34,6 +38,7 @@ BOOST_CHECK_INTEGRAL_CONSTANT((::tt::is_base_and_derived<test_abc1,test_abc3>::v
 BOOST_CHECK_INTEGRAL_CONSTANT((::tt::is_base_and_derived<test_abc3,test_abc1>::value), false);
 
 TT_TEST_END
+
 
 
 

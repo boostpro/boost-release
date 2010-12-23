@@ -11,7 +11,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: cmp_exp.cpp,v 1.2 2003/02/05 17:34:36 gmelquio Exp $
+ * $Id: cmp_exp.cpp,v 1.5 2003/06/04 09:18:46 gmelquio Exp $
  */
 
 #include "cmp_header.hpp"
@@ -50,6 +50,11 @@ static void test_12_34() {
   BOOST_CHECK(cerne(b, a));
   BOOST_CHECK(!poseq(b, a));
   BOOST_CHECK(posne(b, a));
+
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 // comparisons between [1,3] and [2,4]
@@ -86,6 +91,11 @@ static void test_13_24() {
   BOOST_CHECK(!cerne(b, a));
   BOOST_CHECK(poseq(b, a));
   BOOST_CHECK(posne(b, a));
+
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 // comparisons between [1,2] and [2,3]
@@ -122,6 +132,11 @@ static void test_12_23() {
   BOOST_CHECK(!cerne(b, a));
   BOOST_CHECK(poseq(b, a));
   BOOST_CHECK(posne(b, a));
+
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 // comparisons between [1,2] and 0
@@ -159,6 +174,11 @@ static void test_12_0() {
   BOOST_CHECK(cerne(b, a));
   BOOST_CHECK(!poseq(b, a));
   BOOST_CHECK(posne(b, a));
+
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 // comparisons between [1,2] and 1
@@ -196,6 +216,11 @@ static void test_12_1() {
   BOOST_CHECK(!cerne(b, a));
   BOOST_CHECK(poseq(b, a));
   BOOST_CHECK(posne(b, a));
+
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 // comparisons between [1,2] and 2
@@ -233,6 +258,11 @@ static void test_12_2() {
   BOOST_CHECK(!cerne(b, a));
   BOOST_CHECK(poseq(b, a));
   BOOST_CHECK(posne(b, a));
+
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 // comparisons between [1,2] and 3
@@ -270,6 +300,11 @@ static void test_12_3() {
   BOOST_CHECK(cerne(b, a));
   BOOST_CHECK(!poseq(b, a));
   BOOST_CHECK(posne(b, a));
+
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 static void test_12_12() {
@@ -282,6 +317,10 @@ static void test_12_12() {
   BOOST_CHECK(!cerne(b, a));
   BOOST_CHECK(poseq(b, a));
   BOOST_CHECK(posne(b, a));
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 static void test_11_11() {
@@ -294,6 +333,10 @@ static void test_11_11() {
   BOOST_CHECK(!cerne(b, a));
   BOOST_CHECK(poseq(b, a));
   BOOST_CHECK(!posne(b, a));
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 static void test_11_1() {
@@ -307,6 +350,10 @@ static void test_11_1() {
   BOOST_CHECK(!cerne(b, a));
   BOOST_CHECK(poseq(b, a));
   BOOST_CHECK(!posne(b, a));
+# ifdef __BORLANDC__
+  ::detail::ignore_unused_variable_warning(a);
+  ::detail::ignore_unused_variable_warning(b);
+# endif
 }
 
 int test_main(int, char *[]) {

@@ -1,12 +1,10 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Daniel Nuffer
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_ESCAPE_CHAR_HPP
 #define BOOST_SPIRIT_ESCAPE_CHAR_HPP
@@ -17,7 +15,7 @@
 #include <cctype>
 #include <boost/limits.hpp>
 
-#include "boost/spirit/utility/impl/escape_char.ipp"
+#include <boost/spirit/utility/impl/escape_char.ipp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
@@ -61,8 +59,6 @@ struct escape_char_action
         typedef typename match_result<ScannerT, CharT>::type type;
     };
 
-    escape_char_action()
-    : base_t(ParserT()), actor(ActionT()) {}
     escape_char_action(ParserT const& p, ActionT const& a)
     : base_t(p), actor(a) {}
 
@@ -131,10 +127,6 @@ struct escape_char_parser :
 
         typedef typename match_result<ScannerT, CharT>::type type;
     };
-
-#if defined(__MWERKS__) && (__MWERKS__ <= 0x2407)
-    escape_char_parser() {} // Don't take this line out CW7.2 will hate it!
-#endif
 
     template <typename ActionT>
     escape_char_action<self_t, ActionT, Flags, CharT>

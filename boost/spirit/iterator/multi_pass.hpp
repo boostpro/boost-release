@@ -1,51 +1,27 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001, Daniel C. Nuffer
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_ITERATOR_MULTI_PASS_HPP
 #define BOOST_SPIRIT_ITERATOR_MULTI_PASS_HPP
 
 #include <boost/config.hpp>
 #include <boost/throw_exception.hpp>
-#include <boost/detail/workaround.hpp>
-
-#if BOOST_WORKAROUND(BOOST_MSVC, < 1300)
-#  error multi_pass iterator supported only on MSVC 7.0 and above.
-#else
-// the newer version of multi_pass
-
 #include <deque>
 #include <iterator>
 #include <iostream>
 #include <algorithm>    // for std::swap
 #include <exception>    // for std::exception
-
 #include <boost/limits.hpp>
 #include <boost/iterator.hpp>
-
 #include "fixed_size_queue.hpp"
-#include "boost/spirit/core/assert.hpp" // for BOOST_SPIRIT_ASSERT
+#include <boost/spirit/core/assert.hpp> // for BOOST_SPIRIT_ASSERT
+#include <boost/detail/iterator.hpp> // for boost::detail::iterator_traits
 
-#if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
-# include "boost/spirit/core/impl/msvc.hpp"  // for more compatible iterator_traits
-#define BOOST_SPIRIT_IT_NS impl
-#else
-#define BOOST_SPIRIT_IT_NS std
-#endif
-
-#if (defined(BOOST_INTEL_CXX_VERSION) && !defined(_STLPORT_VERSION))
-# include "boost/spirit/core/impl/msvc.hpp"  // for more compatible iterator_traits
-#undef BOOST_SPIRIT_IT_NS
-#define BOOST_SPIRIT_IT_NS impl
-#endif
-
-///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
 
 namespace impl {
@@ -67,7 +43,7 @@ class ref_counted
 {
     protected:
         ref_counted()
-            : count(new unsigned int(1))
+            : count(new std::size_t(1))
         {}
 
         ref_counted(ref_counted const& x)
@@ -109,7 +85,7 @@ class ref_counted
         }
 
     private:
-        unsigned int* count;
+        std::size_t* count;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -265,11 +241,8 @@ class std_deque
 template <typename ValueT>
 class inner
 {
-#if defined(__BORLANDC__) || BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
-    public:
-#else
     private:
-#endif
+
         typedef std::deque<ValueT> queue_type;
         queue_type* queuedElements;
         mutable typename queue_type::size_type queuePosition;
@@ -407,11 +380,8 @@ class fixed_size_queue
 template <typename ValueT>
 class inner
 {
-#if defined(__BORLANDC__) || BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
-    public:
-#else
     private:
-#endif
+
         typedef boost::spirit::fixed_size_queue<ValueT, N> queue_type;
         queue_type * queuedElements;
         mutable typename queue_type::iterator queuePosition;
@@ -516,41 +486,36 @@ template <typename InputT>
 class inner
 {
     public:
-        typedef 
-            typename BOOST_SPIRIT_IT_NS::iterator_traits<InputT>::value_type 
+        typedef
+            typename boost::detail::iterator_traits<InputT>::value_type
             value_type;
-        typedef 
-            typename BOOST_SPIRIT_IT_NS::iterator_traits<InputT>::difference_type
+        typedef
+            typename boost::detail::iterator_traits<InputT>::difference_type
             difference_type;
-        typedef 
-            typename BOOST_SPIRIT_IT_NS::iterator_traits<InputT>::pointer 
+        typedef
+            typename boost::detail::iterator_traits<InputT>::pointer
             pointer;
-        typedef 
-            typename BOOST_SPIRIT_IT_NS::iterator_traits<InputT>::reference 
+        typedef
+            typename boost::detail::iterator_traits<InputT>::reference
             reference;
 
     protected:
         inner()
-            : input(new InputT())
-            , val(new value_type)
+            : input(new InputT)
         {}
 
         inner(InputT x)
             : input(new InputT(x))
-            , val(new value_type(**input))
         {}
 
         inner(inner const& x)
             : input(x.input)
-            , val(x.val)
         {}
 
         void destroy()
         {
-            delete input;
-            input = 0;
-            delete val;
-            val = 0;
+          delete input;
+          input = 0;
         }
 
         bool same_input(inner const& x) const
@@ -558,25 +523,23 @@ class inner
             return input == x.input;
         }
 
-        typedef 
-            typename BOOST_SPIRIT_IT_NS::iterator_traits<InputT>::value_type 
+        typedef
+            typename boost::detail::iterator_traits<InputT>::value_type
             value_t;
         void swap(inner& x)
         {
             impl::mp_swap(input, x.input);
-            impl::mp_swap(val, x.val);
         }
 
     public:
         reference get_input() const
         {
-            return *val;
+            return **input;
         }
 
         void advance_input()
         {
             ++*input;
-            *val = **input;
         }
 
         bool input_at_eof() const
@@ -586,8 +549,6 @@ class inner
 
     private:
         InputT* input;
-        value_type* val;
-
 };
 
 };
@@ -823,7 +784,7 @@ class multi_pass
         typedef typename StoragePolicy::template inner<
             typename InputPolicy::template inner<InputT>::value_type> SP;
         typedef typename InputPolicy::template inner<InputT> IP;
-        typedef typename 
+        typedef typename
             iterator_::impl::iterator_base_creator<InputPolicy, InputT>::type
             IB;
 
@@ -1296,9 +1257,7 @@ void swap(
 }
 
 namespace impl {
-#if __GNUC__ == 2
-    using std::swap;
-#endif
+
     template <typename T>
     inline void mp_swap(T& t1, T& t2)
     {
@@ -1308,10 +1267,8 @@ namespace impl {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
 }} // namespace boost::spirit
 
-#undef BOOST_SPIRIT_IT_NS
-#endif  // defined(BOOST_MSVC) && (BOOST_MSVC <= 1300)
-#endif  // BOOST_SPIRIT_ITERATOR_MULTI_PASS_HPP
+#endif // BOOST_SPIRIT_ITERATOR_MULTI_PASS_HPP
+
 

@@ -32,7 +32,7 @@
 #include <boost/property_map.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/concept_check.hpp>
-
+#include <boost/detail/workaround.hpp>
 
 namespace boost {
 
@@ -82,6 +82,7 @@ namespace boost {
       e = *p.first;
       u = source(e, g);
       v = target(e, g);
+      const_constraints(g);
     }
     void const_constraints(const G& g) {
       p = out_edges(v, g);
@@ -152,6 +153,25 @@ namespace boost {
     G g;
   };
 
+// dwa 2003/7/11 -- This clearly shouldn't be neccessary, but if
+// you want to use vector_as_graph, it is!  I'm sure the graph
+// library leaves these out all over the place.  Probably a
+// redesign involving specializing a template with a static
+// member function is in order :(
+//
+// It is needed in order to allow us to write using boost::vertices as
+// needed for ADL when using vector_as_graph below.
+#if !defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)            \
+ && !BOOST_WORKAROUND(__GNUC__, <= 2)                       \
+ && !BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564))
+# define BOOST_VECTOR_AS_GRAPH_GRAPH_ADL_HACK
+#endif 
+
+#ifdef BOOST_VECTOR_AS_GRAPH_GRAPH_ADL_HACK
+template <class T>
+typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
+#endif      
+
   template <class G>
   struct VertexListGraphConcept
   {
@@ -165,11 +185,28 @@ namespace boost {
       function_requires< ConvertibleConcept<traversal_category,
         vertex_list_graph_tag> >();
 
+#ifdef BOOST_VECTOR_AS_GRAPH_GRAPH_ADL_HACK
+      // dwa 2003/7/11 -- This clearly shouldn't be neccessary, but if
+      // you want to use vector_as_graph, it is!  I'm sure the graph
+      // library leaves these out all over the place.  Probably a
+      // redesign involving specializing a template with a static
+      // member function is in order :(
+      using boost::vertices;
+#endif      
       p = vertices(g);
       v = *p.first;
       const_constraints(g);
     }
     void const_constraints(const G& g) {
+#ifdef BOOST_VECTOR_AS_GRAPH_GRAPH_ADL_HACK
+      // dwa 2003/7/11 -- This clearly shouldn't be neccessary, but if
+      // you want to use vector_as_graph, it is!  I'm sure the graph
+      // library leaves these out all over the place.  Probably a
+      // redesign involving specializing a template with a static
+      // member function is in order :(
+      using boost::vertices;
+#endif 
+      
       p = vertices(g);
       v = *p.first;
       V = num_vertices(g);

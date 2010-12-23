@@ -32,7 +32,7 @@ extern "C"
         ((life_support*)self)->patient = 0;
         // Let the weak reference die. This probably kills us.
         Py_XDECREF(PyTuple_GET_ITEM(arg, 0));
-        return detail::none();
+        return ::boost::python::detail::none();
     }
 }
 
@@ -82,7 +82,7 @@ PyTypeObject life_support_type = {
 PyObject* make_nurse_and_patient(PyObject* nurse, PyObject* patient)
 {
     if (nurse == Py_None)
-        return incref(nurse);
+        return nurse;
     
     if (life_support_type.ob_type == 0)
     {
@@ -99,11 +99,12 @@ PyObject* make_nurse_and_patient(PyObject* nurse, PyObject* patient)
     // We're going to leak this reference, but don't worry; the
     // life_support system decrements it when the nurse dies.
     PyObject* weakref = PyWeakref_NewRef(nurse, (PyObject*)system);
+
+    // weakref has either taken ownership, or we have to release it
+    // anyway
+    Py_DECREF(system);
     if (!weakref)
-    {
-        Py_XDECREF(system);
         return 0;
-    }
     
     system->patient = patient;
     Py_XINCREF(patient); // hang on to the patient until death

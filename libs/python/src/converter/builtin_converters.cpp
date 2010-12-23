@@ -171,7 +171,7 @@ namespace
   
   struct long_long_rvalue_from_python : long_long_rvalue_from_python_base
   {
-      static LONG_LONG extract(PyObject* intermediate)
+      static BOOST_PYTHON_LONG_LONG extract(PyObject* intermediate)
       {
           if (PyInt_Check(intermediate))
           {
@@ -179,7 +179,7 @@ namespace
           }
           else
           {
-              LONG_LONG result = PyLong_AsLongLong(intermediate);
+              BOOST_PYTHON_LONG_LONG result = PyLong_AsLongLong(intermediate);
               
               if (PyErr_Occurred())
                   throw_error_already_set();
@@ -191,15 +191,15 @@ namespace
 
   struct unsigned_long_long_rvalue_from_python : long_long_rvalue_from_python_base
   {
-      static unsigned LONG_LONG extract(PyObject* intermediate)
+      static unsigned BOOST_PYTHON_LONG_LONG extract(PyObject* intermediate)
       {
           if (PyInt_Check(intermediate))
           {
-              return numeric_cast<unsigned LONG_LONG>(PyInt_AS_LONG(intermediate));
+              return numeric_cast<unsigned BOOST_PYTHON_LONG_LONG>(PyInt_AS_LONG(intermediate));
           }
           else
           {
-              unsigned LONG_LONG result = PyLong_AsUnsignedLongLong(intermediate);
+              unsigned BOOST_PYTHON_LONG_LONG result = PyLong_AsUnsignedLongLong(intermediate);
               
               if (PyErr_Occurred())
                   throw_error_already_set();
@@ -271,6 +271,45 @@ namespace
           return std::string(PyString_AsString(intermediate),PyString_Size(intermediate));
       }
   };
+
+  // encode_string_unaryfunc/py_encode_string -- manufacture a unaryfunc
+  // "slot" which encodes a Python string using the default encoding
+  extern "C" PyObject* encode_string_unaryfunc(PyObject* x)
+  {
+      return PyUnicode_FromEncodedObject( x, 0, 0 );
+  }
+  unaryfunc py_encode_string = encode_string_unaryfunc;
+
+
+#ifndef BOOST_NO_STD_WSTRING
+  // A SlotPolicy for extracting C++ strings from Python objects.
+  struct wstring_rvalue_from_python
+  {
+      // If the underlying object is "string-able" this will succeed
+      static unaryfunc* get_slot(PyObject* obj)
+      {
+          return PyUnicode_Check(obj)
+              ? &py_object_identity
+            : PyString_Check(obj)
+              ? &py_encode_string
+            : 0;
+      };
+
+      // Remember that this will be used to construct the result object 
+      static std::wstring extract(PyObject* intermediate)
+      {
+          std::wstring result(::PyObject_Length(intermediate), L' ');
+          int err = PyUnicode_AsWideChar(
+              (PyUnicodeObject *)intermediate
+            , result.size() ? &result[0] : 0
+            , result.size());
+
+          if (err == -1)
+              throw_error_already_set();
+          return result;
+      }
+  };
+#endif 
 
   struct complex_rvalue_from_python
   {
@@ -350,8 +389,8 @@ void initialize_builtin_converters()
 // using Python's macro instead of Boost's - we don't seem to get the
 // config right all the time.
 # ifdef HAVE_LONG_LONG
-    slot_rvalue_from_python<signed LONG_LONG,long_long_rvalue_from_python>();
-    slot_rvalue_from_python<unsigned LONG_LONG,unsigned_long_long_rvalue_from_python>();
+    slot_rvalue_from_python<signed BOOST_PYTHON_LONG_LONG,long_long_rvalue_from_python>();
+    slot_rvalue_from_python<unsigned BOOST_PYTHON_LONG_LONG,unsigned_long_long_rvalue_from_python>();
 # endif
         
     // floating types
@@ -366,7 +405,10 @@ void initialize_builtin_converters()
     // Add an lvalue converter for char which gets us char const*
     registry::insert(convert_to_cstring,type_id<char>());
 
-    // Register by-value converters to std::string
+# ifndef BOOST_NO_STD_WSTRING
+    // Register by-value converters to std::string, std::wstring
+    slot_rvalue_from_python<std::wstring, wstring_rvalue_from_python>();
+# endif 
     slot_rvalue_from_python<std::string, string_rvalue_from_python>();
 }
 

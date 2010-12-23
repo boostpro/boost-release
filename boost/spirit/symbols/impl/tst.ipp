@@ -1,12 +1,10 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Joel de Guzman
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_TST_IPP
 #define BOOST_SPIRIT_TST_IPP
@@ -102,7 +100,7 @@ namespace boost { namespace spirit {
         struct search_info
         {
             T*          data;
-            unsigned    length;
+            std::size_t length;
         };
 
         tst()
@@ -193,7 +191,7 @@ namespace boost { namespace spirit {
             CharT       ch = *scan;
             iterator_t  save = scan.first;
             iterator_t  latest = scan.first;
-            unsigned    latest_len = 0;
+            std::size_t latest_len = 0;
 
             while (np)
             {

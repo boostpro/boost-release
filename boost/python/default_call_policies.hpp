@@ -5,7 +5,8 @@
 // to its suitability for any purpose.
 #ifndef DEFAULT_CALL_POLICIES_DWA2002131_HPP
 # define DEFAULT_CALL_POLICIES_DWA2002131_HPP
-# include <boost/python/detail/wrap_python.hpp>
+
+# include <boost/python/detail/prefix.hpp>
 # include <boost/mpl/if.hpp>
 # include <boost/python/to_python_value.hpp>
 # include <boost/type_traits/transform_traits.hpp>
@@ -28,19 +29,23 @@ struct default_result_converter;
 
 struct default_call_policies
 {
-    // Nothing to do
-    static bool precall(PyObject*)
+    // Ownership of this argument tuple will ultimately be adopted by
+    // the caller.
+    template <class ArgumentPackage>
+    static bool precall(ArgumentPackage const&)
     {
         return true;
     }
 
     // Pass the result through
-    static PyObject* postcall(PyObject*, PyObject* result)
+    template <class ArgumentPackage>
+    static PyObject* postcall(ArgumentPackage const&, PyObject* result)
     {
         return result;
     }
 
     typedef default_result_converter result_converter;
+    typedef PyObject* argument_package;
 };
 
 struct default_result_converter

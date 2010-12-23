@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -25,13 +21,14 @@
 #include <map>
 #include <boost/regex.hpp>
 #include <functional>
+#include <boost/detail/workaround.hpp>
 
 // purpose:
 // takes the contents of a file in the form of a string
 // and searches for all the C++ class definitions, storing
 // their locations in a map of strings/int's
 
-typedef std::map<std::string, int, std::less<std::string> > map_type;
+typedef std::map<std::string, std::string::difference_type, std::less<std::string> > map_type;
 
 const char* re = 
    // possibly leading whitespace:   
@@ -62,17 +59,15 @@ class class_index
    map_type index;
    std::string::const_iterator base;
 
-   bool grep_callback(boost::match_results<std::string::const_iterator, boost::regex::allocator_type> what);
+   bool grep_callback(boost::match_results<std::string::const_iterator> what);
 public:
    map_type& get_map() { return index; }
    void IndexClasses(const std::string& file);
    class_index()
-      : index(),
-        expression(re)
-        {}
+      : expression(re) {}
 };
 
-bool class_index::grep_callback(boost::match_results<std::string::const_iterator, boost::regex::allocator_type> what)
+bool class_index::grep_callback(boost::match_results<std::string::const_iterator> what)
 {
    // what[0] contains the whole string
    // what[5] contains the class name.
@@ -89,10 +84,17 @@ void class_index::IndexClasses(const std::string& file)
    start = file.begin();
    end = file.end();
    base = start;
+#if BOOST_WORKAROUND(_MSC_VER, < 1300) && !defined(_STLP_VERSION)
+   boost::regex_grep(std::bind1st(std::mem_fun1(&class_index::grep_callback), this),
+            start,
+            end,
+            expression);
+#else
    boost::regex_grep(std::bind1st(std::mem_fun(&class_index::grep_callback), this),
             start,
             end,
             expression);
+#endif
 }
 
 
@@ -104,6 +106,7 @@ using namespace std;
 void load_file(std::string& s, std::istream& is)
 {
    s.erase();
+   if(is.bad()) return;
    s.reserve(is.rdbuf()->in_avail());
    char c;
    while(is.get(c))
@@ -122,6 +125,7 @@ int main(int argc, const char** argv)
       cout << "Processing file " << argv[i] << endl;
       std::ifstream fs(argv[i]);
       load_file(text, fs);
+      fs.close();
       class_index idx;
       idx.IndexClasses(text);
       cout << idx.get_map().size() << " matches found" << endl;
@@ -136,6 +140,8 @@ int main(int argc, const char** argv)
    }
    return 0;
 }
+
+
 
 
 

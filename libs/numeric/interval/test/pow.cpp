@@ -11,11 +11,12 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: pow.cpp,v 1.3 2003/02/05 17:34:36 gmelquio Exp $
+ * $Id: pow.cpp,v 1.6 2003/06/04 09:18:47 gmelquio Exp $
  */
 
 #include <boost/numeric/interval.hpp>
 #include <boost/test/minimal.hpp>
+#include "bugs.hpp"
 
 bool test_pow(double al, double au, double bl, double bu, int p) {
   typedef boost::numeric::interval<double> I;
@@ -40,5 +41,8 @@ int test_main(int, char *[]) {
   BOOST_TEST(test_pow(-3, 2, 1, 1, 0));
   BOOST_TEST(test_pow(-3, -2, 1, 1, 0));
 
+# ifdef __BORLANDC__
+  ::detail::ignore_warnings();
+# endif
   return 0;
 }

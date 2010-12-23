@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_demo.cpp,v 1.11 2001/12/17 19:56:05 jmaurer Exp $
+ * $Id: random_demo.cpp,v 1.15 2003/07/14 20:09:11 jmaurer Exp $
  *
  * A short demo program how to use the random number library.
  */
@@ -20,8 +20,9 @@
 #include <ctime>            // std::time
 
 #include <boost/random/linear_congruential.hpp>
-#include <boost/random/uniform_smallint.hpp>
-#include <boost/random/uniform_01.hpp>
+#include <boost/random/uniform_int.hpp>
+#include <boost/random/uniform_real.hpp>
+#include <boost/random/variate_generator.hpp>
 
 // Sun CC doesn't handle boost::iterator_adaptor yet
 #if !defined(__SUNPRO_CC) || (__SUNPRO_CC > 0x530)
@@ -42,15 +43,15 @@ typedef boost::minstd_rand base_generator_type;
 void experiment(base_generator_type & generator)
 {
   // Define a uniform random number distribution of integer values between
-  // 1 and 6 inclusive.  The random numbers come from "generator".
-  typedef boost::uniform_smallint<base_generator_type> generator_type;
-  generator_type die_gen(generator, 1, 6);
+  // 1 and 6 inclusive.
+  typedef boost::uniform_int<> distribution_type;
+  typedef boost::variate_generator<base_generator_type, distribution_type> gen_type;
+  gen_type die_gen(generator, distribution_type(1, 6));
 
 #if !defined(__SUNPRO_CC) || (__SUNPRO_CC > 0x530)
   // If you want to use an STL iterator interface, use iterator_adaptors.hpp.
   // Unfortunately, this doesn't work on SunCC yet.
-  boost::generator_iterator_generator<generator_type>::type
-    die = boost::make_generator_iterator(die_gen);
+  boost::generator_iterator<gen_type> die(&die_gen);
   for(int i = 0; i < 10; i++)
     std::cout << *die++ << " ";
   std::cout << '\n';
@@ -69,7 +70,8 @@ int main()
 
   // Define a uniform random number distribution which produces "double"
   // values between 0 and 1 (0 inclusive, 1 exclusive).
-  boost::uniform_01<base_generator_type> uni(generator);
+  boost::uniform_real<> uni_dist(0,1);
+  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
 
   std::cout.setf(std::ios::fixed);
   // You can now retrieve random numbers from that distribution by means
@@ -112,6 +114,11 @@ int main()
   // After that, both generators are equivalent
   assert(generator == saved_generator);
 
+  // as a degenerate case, you can set min = max for uniform_int
+  boost::uniform_int<> degen_dist(4,4);
+  boost::variate_generator<base_generator_type&, boost::uniform_int<> > deg(generator, degen_dist);
+  std::cout << deg() << " " << deg() << " " << deg() << std::endl;
+  
 #ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
   {
     // You can save the generator state for future use.  You can read the

@@ -7,7 +7,6 @@
 #include <boost/python/class.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/def.hpp>
-#include <string>
 #include "test_class.hpp"
 #if __GNUC__ != 2
 # include <ostream>
@@ -19,6 +18,15 @@
 // trouble for non-conforming compilers and libraries.
 #include <math.h>
 
+#if BOOST_WORKAROUND(BOOST_MSVC, == 1310)
+// vc7.1 seems to require this (incorrectly) in order to use the "not" keyword
+#include <ciso646>
+#elif BOOST_WORKAROUND(BOOST_MSVC, <= 1300) \
+   || BOOST_WORKAROUND(__GNUC__, <= 2) \
+   || BOOST_WORKAROUND(__EDG_VERSION__, <= 238)
+#define not !
+#endif
+
 using namespace boost::python;
 
 struct X : test_class<>
@@ -27,6 +35,9 @@ struct X : test_class<>
     
     X(int x) : base_t(x) {}
     X const operator+(X const& r) const { return X(value() + r.value()); }
+    
+//    typedef int (X::*safe_bool)() const;
+//    operator safe_bool() const { return value() != 0 ? &X::value : 0; }
 };
 
 X operator-(X const& l, X const& r) { return X(l.value() - r.value()); }
@@ -82,6 +93,7 @@ BOOST_PYTHON_MODULE(operators_ext)
         .def(pow(self,self))
         .def(pow(self,int()))
         .def(pow(int(),self))
+        .def(not self)
         ;
 
     class_<test_class<1> >("Z", init<int>())

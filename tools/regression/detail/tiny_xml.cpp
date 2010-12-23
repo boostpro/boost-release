@@ -1,13 +1,11 @@
 //  tiny XML sub-set tools implementation  -----------------------------------//
 
-//  (C) Copyright Beman Dawes 2002. Permission to copy,
-//  use, modify, sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided "as is"
-//  without express or implied warranty, and with no claim as to its
-//  suitability for any purpose.
+//  (C) Copyright Beman Dawes 2002.
+//  See accompanying license for terms and conditions of use.
 
 #include "tiny_xml.hpp"
 #include <cassert>
+#include <cstring>
 
 namespace
 {
@@ -27,7 +25,8 @@ namespace
       != 0 )
     {
       result += c;
-      in.get( c );
+      if(!in.get( c ))
+        throw std::string("xml: unexpected eof");
     }
     return result;
   }
@@ -68,8 +67,11 @@ namespace boost
       char c = 0;  // current character
       element_ptr e( new element );
 
-      in.get( c );
-      if ( c == '<' ) in.get( c );
+      if(!in.get( c ))
+        throw std::string("xml: unexpected eof");
+      if ( c == '<' )
+        if(!in.get( c ))
+          throw std::string("xml: unexpected eof");
 
       e->name = get_name( c, in );
       eat_whitespace( c, in );
@@ -88,7 +90,9 @@ namespace boost
         e->attributes.push_back( a );
         eat_whitespace( c, in );
       }
-      in.get( c ); // next after '>'
+      if(!in.get( c )) // next after '>'
+        throw std::string("xml: unexpected eof");
+
       eat_whitespace( c, in );
 
       // sub-elements
@@ -107,12 +111,14 @@ namespace boost
         while ( c != '<' )
         {
           e->content += c;
-          in.get( c );
+          if(!in.get( c ))
+            throw std::string("xml: unexpected eof");
         }
       }
 
       assert( c == '<' );
-      in.get( c ); // next after '<'
+      if(!in.get( c )) // next after '<'
+        throw std::string("xml: unexpected eof");
 
       eat_delim( c, in, '/', msg );
       std::string end_name( get_name( c, in ) );

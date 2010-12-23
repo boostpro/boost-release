@@ -1,30 +1,26 @@
+// Copyright 2002 The Trustees of Indiana University.
+
+// Use, modification and distribution is subject to the Boost Software 
+// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
+//  Boost.MultiArray Library
+//  Authors: Ronald Garcia
+//           Jeremy Siek
+//           Andrew Lumsdaine
+//  See http://www.boost.org/libs/multi_array for documentation.
+
 //
 // resize.cpp - Test of resizing multi_arrays
 //
 
+#include "boost/test/test_tools.hpp"
 #include "boost/multi_array.hpp"
 #include <iostream>
 using namespace std;
 
-template <typename Array>
-void print(std::ostream& os, const Array& A)
-{
-  typename Array::const_iterator i;
-  os << "[";
-  for (i = A.begin(); i != A.end(); ++i) {
-    print(os, *i);
-    if (boost::next(i) != A.end())
-      os << ',';
-  }
-  os << "]";
-}
 
-void print(std::ostream& os, const int& x)
-{
-  os << x;
-}
-
-int main() {
+int test_main(int,char*[]) {
 
   typedef boost::multi_array<int,3> marray;
 
@@ -64,6 +60,14 @@ int main() {
     0,0
   };
 
-  assert(std::equal(A_resize,A_resize+(4*3*2),A.data()));
+  BOOST_TEST(std::equal(A_resize,A_resize+(4*3*2),A.data()));
 
+
+  {
+    marray defaultA;
+    defaultA.resize(boost::extents[2][3][4]);
+    BOOST_TEST(std::accumulate(defaultA.data(),
+                               defaultA.data()+(2*3*4),0) == 0);
+  }
+  return boost::exit_success;
 }

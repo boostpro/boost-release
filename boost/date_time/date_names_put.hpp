@@ -1,8 +1,12 @@
 #ifndef DATE_TIME_DATE_NAMES_PUT_HPP___
 #define DATE_TIME_DATE_NAMES_PUT_HPP___
-/* Copyright (c) 2002 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
+
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland 
+ * $Date: 2003/11/23 03:29:56 $
  */
 
 
@@ -216,35 +220,35 @@ namespace date_time {
       //! Generic facet that takes array of chars
       virtual void do_put_month_short(iter_type& oitr, month_enum moy) const
       {
-        put_string(oitr, month_short_names_[moy-1]);
+        this->put_string(oitr, month_short_names_[moy-1]);
       }
       //! Long month names 
       virtual void do_put_month_long(iter_type& oitr, month_enum moy) const
       {
-        put_string(oitr, month_long_names_[moy-1]);
+        this->put_string(oitr, month_long_names_[moy-1]);
       }
       //! Special values names
       virtual void do_put_special_value(iter_type& oitr, special_value_enum sv) const
       {
-        put_string(oitr, special_value_names_[sv]);
+        this->put_string(oitr, special_value_names_[sv]);
       }
       virtual void do_put_weekday_short(iter_type& oitr, weekday_enum wd) const
       {
-        put_string(oitr, weekday_short_names_[wd]);
+        this->put_string(oitr, weekday_short_names_[wd]);
       }
       virtual void do_put_weekday_long(iter_type& oitr, weekday_enum wd) const
       {
-        put_string(oitr, weekday_long_names_[wd]);
+        this->put_string(oitr, weekday_long_names_[wd]);
       }
       //! char between year-month
       virtual void do_month_sep_char(iter_type& oitr) const
       {
-        put_string(oitr, separator_char_);
+        this->put_string(oitr, separator_char_);
       }
       //! Char to separate month-day
       virtual void do_day_sep_char(iter_type& oitr) const
       {
-        put_string(oitr, separator_char_);
+        this->put_string(oitr, separator_char_);
       }
       //! Set the date ordering
       virtual ymd_order_spec do_date_order() const
@@ -272,15 +276,4 @@ namespace date_time {
 
 #endif //BOOST_NO_STD_LOCALE
 
-/* Copyright (c) 2002
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- */
 #endif

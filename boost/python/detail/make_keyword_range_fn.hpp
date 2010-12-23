@@ -21,12 +21,29 @@ namespace boost { namespace python { namespace detail {
 // F. This version is needed when defining functions with default
 // arguments, because compile-time information about the number of
 // keywords is missing for all but the initial function definition.
+//
+// @group make_keyword_range_function {
 template <class F, class Policies>
-object make_keyword_range_function(F f, Policies const& policies, keyword_range const& kw)
+object make_keyword_range_function(
+    F f
+  , Policies const& policies
+  , keyword_range const& kw)
 {
     return detail::make_function_aux(
-        f, policies, args_from_python(), detail::get_signature(f), kw, mpl::int_<0>());
+        f, policies, detail::get_signature(f), kw, mpl::int_<0>());
 }
+
+template <class F, class Policies, class Signature>
+object make_keyword_range_function(
+    F f
+  , Policies const& policies
+  , keyword_range const& kw
+  , Signature const& sig)
+{
+    return detail::make_function_aux(
+        f, policies, sig, kw, mpl::int_<0>());
+}
+// }
 
 // Builds an '__init__' function which inserts the given Holder type
 // in a wrapped C++ class instance. ArgList is an MPL type sequence
@@ -34,17 +51,15 @@ object make_keyword_range_function(F f, Policies const& policies, keyword_range 
 // constructor.
 //
 // Holder and ArgList are intended to be explicitly specified. 
-template <class ArgList, class Holder, class CallPolicies>
+template <class ArgList, class Arity, class Holder, class CallPolicies>
 object make_keyword_range_constructor(
     CallPolicies const& policies        // The CallPolicies with which to invoke the Holder's constructor
     , detail::keyword_range const& kw   // The (possibly empty) set of associated argument keywords
     , Holder* = 0                       
-    , ArgList* = 0)
+    , ArgList* = 0, Arity* = 0)
 {
-    BOOST_STATIC_CONSTANT(unsigned, arity = mpl::size<ArgList>::value);
-    
     return detail::make_keyword_range_function(
-        objects::make_holder<arity>
+        objects::make_holder<Arity::value>
             ::template apply<Holder,ArgList>::execute
         , policies
         , kw);

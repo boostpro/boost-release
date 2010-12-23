@@ -1,13 +1,11 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Joel de Guzman
     Copyright (c) 2001-2003 Daniel Nuffer
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_CHSET_OPERATORS_HPP
 #define BOOST_SPIRIT_CHSET_OPERATORS_HPP
@@ -151,58 +149,6 @@ template <typename CharT>
 chset<CharT>
 operator^(chlit<CharT> const& a, chset<CharT> const& b);
 
-#if BOOST_WORKAROUND(BOOST_MSVC, < 1300)
-
-///////////////////////////////////////////////////////////////////////////////
-//
-//  negated_char_parser <--> chset free operators
-//
-//      Where a is a chset and b is a range, and vice-versa, implements:
-//
-//          a | b, a & b, a - b, a ^ b
-//
-///////////////////////////////////////////////////////////////////////////////
-template <typename CharT, typename ParserT>
-chset<CharT>
-operator|(chset<CharT> const& a, negated_char_parser<ParserT> const& b);
-
-//////////////////////////////////
-template <typename CharT, typename ParserT>
-chset<CharT>
-operator&(chset<CharT> const& a, negated_char_parser<ParserT> const& b);
-
-//////////////////////////////////
-template <typename CharT, typename ParserT>
-chset<CharT>
-operator-(chset<CharT> const& a, negated_char_parser<ParserT> const& b);
-
-//////////////////////////////////
-template <typename CharT, typename ParserT>
-chset<CharT>
-operator^(chset<CharT> const& a, negated_char_parser<ParserT> const& b);
-
-//////////////////////////////////
-template <typename CharT, typename ParserT>
-chset<CharT>
-operator|(negated_char_parser<ParserT> const& a, chset<CharT> const& b);
-
-//////////////////////////////////
-template <typename CharT, typename ParserT>
-chset<CharT>
-operator&(negated_char_parser<ParserT> const& a, chset<CharT> const& b);
-
-//////////////////////////////////
-template <typename CharT, typename ParserT>
-chset<CharT>
-operator-(negated_char_parser<ParserT> const& a, chset<CharT> const& b);
-
-//////////////////////////////////
-template <typename CharT, typename ParserT>
-chset<CharT>
-operator^(negated_char_parser<ParserT> const& a, chset<CharT> const& b);
-
-#else // BOOST_WORKAROUND(BOOST_MSVC, < 1300)
-
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  negated_char_parser<range> <--> chset free operators
@@ -298,8 +244,6 @@ operator-(negated_char_parser<chlit<CharT> > const& a, chset<CharT> const& b);
 template <typename CharT>
 chset<CharT>
 operator^(negated_char_parser<chlit<CharT> > const& a, chset<CharT> const& b);
-
-#endif // BOOST_WORKAROUND(BOOST_MSVC, < 1300)
 
 ///////////////////////////////////////////////////////////////////////////////
 //

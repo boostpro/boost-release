@@ -1,20 +1,9 @@
-#if defined(_MSC_VER) && !defined(__ICL) && !defined(__COMO__)
-# pragma warning(disable: 4786)  // identifier truncated in debug info
-# pragma warning(disable: 4710)  // function not inlined
-# pragma warning(disable: 4711)  // function selected for automatic inline expansion
-# pragma warning(disable: 4514)  // unreferenced inline removed
-#endif
-
-#ifdef __BORLANDC__
-# pragma warn -8092 // template argument passed to 'find' is not an iterator
-#endif
-
 //  smart pointer test program  ----------------------------------------------//
 
-//  (C) Copyright Beman Dawes 1998, 1999. Permission to copy, use, modify, sell
-//  and distribute this software is granted provided this copyright notice
-//  appears in all copies. This software is provided "as is" without express or
-//  implied warranty, and with no claim as to its suitability for any purpose.
+//  Copyright Beman Dawes 1998, 1999.
+//  See accompanying license for terms and conditions of use.
+
+//  See http://www.boost.org/libs/smart_ptr for documentation.
 
 //  Revision History
 //  24 May 01  use Boost test library for error detection, reporting, add tests
@@ -23,6 +12,25 @@
 //  25 Sep 99  added swap tests
 //  20 Jul 99  header name changed to .hpp
 //  20 Apr 99  additional error tests added.
+
+#include <boost/config.hpp>
+
+#if defined(BOOST_MSVC)
+
+# pragma warning(disable: 4786)  // identifier truncated in debug info
+# pragma warning(disable: 4710)  // function not inlined
+# pragma warning(disable: 4711)  // function selected for automatic inline expansion
+# pragma warning(disable: 4514)  // unreferenced inline removed
+
+#if (BOOST_MSVC >= 1310)
+# pragma warning(disable: 4675)  // resolved overload found with Koenig lookup
+#endif
+
+#endif
+
+#ifdef __BORLANDC__
+# pragma warn -8092 // template argument passed to 'find' is not an iterator
+#endif
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/scoped_array.hpp>

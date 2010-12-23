@@ -1,8 +1,8 @@
 
-//  (C) Copyright John Maddock 2000. Permission to copy, use, modify, sell and   
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2000. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #ifndef TT_TEST_HPP
 #define TT_TEST_HPP
@@ -16,17 +16,17 @@
 
 #define tt std
 
-#define TYPE_TRAITS(x) <type_traits>
-#define TYPE_COMPARE(x) <type_compare>
-#define TYPE_TRANSFORM(x) <type_transform>
+//#define TYPE_TRAITS(x) <type_traits>
+//#define TYPE_COMPARE(x) <type_compare>
+//#define TYPE_TRANSFORM(x) <type_transform>
 
 #else
 
 #define tt boost
 
-#define TYPE_TRAITS(x) BOOST_STRINGIZE(boost/type_traits/x.hpp)
-#define TYPE_COMPARE(x) BOOST_STRINGIZE(boost/type_traits/x.hpp)
-#define TYPE_TRANSFORM(x) BOOST_STRINGIZE(boost/type_traits/x.hpp)
+//#define TYPE_TRAITS(x) BOOST_STRINGIZE(boost/type_traits/x.hpp)
+//#define TYPE_COMPARE(x) BOOST_STRINGIZE(boost/type_traits/x.hpp)
+//#define TYPE_TRANSFORM(x) BOOST_STRINGIZE(boost/type_traits/x.hpp)
 
 #endif
 
@@ -126,7 +126,7 @@ typedef int (UDT::*cmf)(int) const;
 # ifdef BOOST_MSVC
 #  pragma warning(push)
 #  pragma warning(disable: 4181)
-# elif defined(__ICL)
+# elif defined(BOOST_INTEL)
 #  pragma warning(push)
 #  pragma warning(disable: 21)
 # endif
@@ -141,7 +141,7 @@ typedef int& r_type;
 typedef const r_type cr_type;
 # ifdef BOOST_MSVC
 #  pragma warning(pop)
-# elif defined(__ICL)
+# elif defined(BOOST_INTEL)
 #  pragma warning(pop)
 #  pragma warning(disable: 985) // identifier truncated in debug information
 # endif
@@ -265,3 +265,4 @@ typedef void foo4_t(int, bool, int*, int[], int, int, int, int, int);
 
 
 #endif
+

@@ -1,5 +1,5 @@
 import sys
-sys.path.append('..') 
+sys.path.append('../src') 
 import unittest
 import tempfile
 import os.path
@@ -30,7 +30,7 @@ class Tester(unittest.TestCase):
             param, 
             ReferenceType, 
             class_.FullName(), 
-            'const %s &' % class_.FullName(),
+            'const %s&' % class_.FullName(),
             True)
         self.assert_(method.IsCopy())
 
@@ -52,7 +52,6 @@ class ClassBaseTest(Tester):
         'test the properties of the class Base'
         self.assert_(isinstance(self.base, Class))
         self.assert_(self.base.abstract)
-        self.assertEqual(self.base.RawName(), 'Base')
                 
 
     def testFoo(self):
@@ -72,7 +71,7 @@ class ClassBaseTest(Tester):
         self.TestType(param, FundamentalType, 'int', 'int', False)  
         self.assertEqual(foo.namespace, None)
         self.assertEqual(
-            foo.PointerDeclaration(), '(void (test::Base::*)(int) )&test::Base::foo')
+            foo.PointerDeclaration(1), '(void (test::Base::*)(int) )&test::Base::foo')
 
     def testX(self):
         'test the member x in class Base'
@@ -105,11 +104,11 @@ class ClassBaseTest(Tester):
         self.assertEqual(simple.FullName(), 'test::Base::simple')
         self.assertEqual(len(simple.parameters), 1)
         param = simple.parameters[0]
-        self.TestType(param, ReferenceType, 'std::string', 'const std::string &', True)
+        self.TestType(param, ReferenceType, 'std::string', 'const std::string&', True)
         self.TestType(simple.result, FundamentalType, 'bool', 'bool', False)
         self.assertEqual(
-            simple.PointerDeclaration(), 
-            '(bool (test::Base::*)(const std::string &) )&test::Base::simple')
+            simple.PointerDeclaration(1), 
+            '(bool (test::Base::*)(const std::string&) )&test::Base::simple')
         
           
     def testZ(self):
@@ -134,7 +133,6 @@ class ClassTemplateTest(Tester):
         self.assertEqual(self.template.FullName(), 'Template<int>')
         self.assertEqual(self.template.namespace, '')
         self.assertEqual(self.template.name, 'Template<int>')
-        self.assertEqual(self.template.RawName(), 'Template')
 
     def testConstructors(self):
         'test the automatic constructors of the class Template<int>'
@@ -180,20 +178,20 @@ class FreeFuncTest(Tester):
         self.assertEqual(self.func.FullName(), 'test::FreeFunc')
         self.assertEqual(self.func.namespace, 'test')
         self.assertEqual(
-            self.func.PointerDeclaration(), 
-            '(const test::Base & (*)(const std::string &, int))&test::FreeFunc')
+            self.func.PointerDeclaration(1), 
+            '(const test::Base& (*)(const std::string&, int))&test::FreeFunc')
 
 
     def testResult(self):
         'test the return value of FreeFunc'
         res = self.func.result
-        self.TestType(res, ReferenceType, 'test::Base', 'const test::Base &', True)
+        self.TestType(res, ReferenceType, 'test::Base', 'const test::Base&', True)
 
     def testParameters(self):
         'test the parameters of FreeFunc'
         self.assertEqual(len(self.func.parameters), 2)
         strp, intp = self.func.parameters
-        self.TestType(strp, ReferenceType, 'std::string', 'const std::string &', True)
+        self.TestType(strp, ReferenceType, 'std::string', 'const std::string&', True)
         self.assertEqual(strp.default, None)
         self.TestType(intp, FundamentalType, 'int', 'int', False)
         self.assertEqual(intp.default, '10')

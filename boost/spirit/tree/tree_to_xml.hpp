@@ -1,13 +1,11 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Daniel Nuffer
     Copyright (c) 2001-2003 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 
 #if !defined(TREE_TO_XML_HPP)
@@ -67,7 +65,7 @@ namespace boost { namespace spirit {
 
 }} // namespace boost::spirit
 
-#include "boost/spirit/tree/impl/tree_to_xml.ipp"
+#include <boost/spirit/tree/impl/tree_to_xml.ipp>
 
 #endif // !defined(TREE_TO_XML_HPP)
 

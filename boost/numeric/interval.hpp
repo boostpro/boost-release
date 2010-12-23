@@ -11,7 +11,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: interval.hpp,v 1.2 2003/02/05 17:34:28 gmelquio Exp $
+ * $Id: interval.hpp,v 1.3 2003/04/15 11:05:11 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_HPP
@@ -32,6 +32,7 @@
 
 #include <boost/numeric/interval/arith.hpp>
 #include <boost/numeric/interval/arith2.hpp>
+#include <boost/numeric/interval/arith3.hpp>
 #include <boost/numeric/interval/transc.hpp>
 
 #endif // BOOST_NUMERIC_INTERVAL_HPP

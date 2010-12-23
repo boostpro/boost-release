@@ -1,21 +1,20 @@
 /*=============================================================================
-    Phoenix V1.0
+    Phoenix v1.2
     Copyright (c) 2001-2003 Joel de Guzman
     Copyright (c) 2001-2003 Hartmut Kaiser
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
 #ifndef PHOENIX_CASTS_HPP
 #define PHOENIX_CASTS_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "boost/spirit/phoenix/actor.hpp"
-#include "boost/spirit/phoenix/composite.hpp"
-#include "boost/static_assert.hpp"
+#include <boost/spirit/phoenix/actor.hpp>
+#include <boost/spirit/phoenix/composite.hpp>
+#include <boost/static_assert.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace phoenix {
@@ -238,23 +237,30 @@ struct construct_l {
     >
     struct result { typedef T type; };
 
-    T operator()() const {
+    T operator()() const 
+    {
         return T();
     }
 
     template <typename A>
-    T operator()(A const& a) const {
-        return T(a);
+    T operator()(A const& a) const 
+    {
+        T t(a); 
+        return t;
     }
 
     template <typename A, typename B>
-    T operator()(A const& a, B const& b) const {
-        return T(a, b);
+    T operator()(A const& a, B const& b) const 
+    {
+        T t(a, b);
+        return t;
     }
 
     template <typename A, typename B, typename C>
-    T operator()(A const& a, B const& b, C const& c) const {
-        return T(a, b, c);
+    T operator()(A const& a, B const& b, C const& c) const 
+    {
+        T t(a, b, c);
+        return t;
     }
 
 #if PHOENIX_CONSTRUCT_LIMIT > 3
@@ -264,7 +270,8 @@ struct construct_l {
     T operator()(
         A const& a, B const& b, C const& c, D const& d) const
     {
-        return T(a, b, c, d);
+        T t(a, b, c, d);
+        return t;
     }
 
     template <
@@ -273,7 +280,8 @@ struct construct_l {
     T operator()(
         A const& a, B const& b, C const& c, D const& d, E const& e) const
     {
-        return T(a, b, c, d, e);
+        T t(a, b, c, d, e);
+        return t;
     }
 
     template <
@@ -284,7 +292,8 @@ struct construct_l {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f) const
     {
-        return T(a, b, c, d, e, f);
+        T t(a, b, c, d, e, f);
+        return t;
     }
 
 #if PHOENIX_CONSTRUCT_LIMIT > 6
@@ -296,7 +305,8 @@ struct construct_l {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f, G const& g) const
     {
-        return T(a, b, c, d, e, f, g);
+        T t(a, b, c, d, e, f, g);
+        return t;
     }
 
     template <
@@ -307,7 +317,8 @@ struct construct_l {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f, G const& g, H const& h) const
     {
-        return T(a, b, c, d, e, f, g, h);
+        T t(a, b, c, d, e, f, g, h);
+        return t;
     }
 
     template <
@@ -318,7 +329,8 @@ struct construct_l {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f, G const& g, H const& h, I const& i) const
     {
-        return T(a, b, c, d, e, f, g, h, i);
+        T t(a, b, c, d, e, f, g, h, i);
+        return t;
     }
 
 #if PHOENIX_CONSTRUCT_LIMIT > 9
@@ -330,7 +342,8 @@ struct construct_l {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f, G const& g, H const& h, I const& i, J const& j) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j);
+        T t(a, b, c, d, e, f, g, h, i, j);
+        return t;
     }
 
     template <
@@ -343,7 +356,8 @@ struct construct_l {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j, k);
+        T t(a, b, c, d, e, f, g, h, i, j, k);
+        return t;
     }
 
     template <
@@ -356,7 +370,8 @@ struct construct_l {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k, L const& l) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j, k, l);
+        T t(a, b, c, d, e, f, g, h, i, j, k, l);
+        return t;
     }
 
 #if PHOENIX_CONSTRUCT_LIMIT > 12
@@ -370,7 +385,8 @@ struct construct_l {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k, L const& l, M const& m) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j, k, l, m);
+        T t(a, b, c, d, e, f, g, h, i, j, k, l, m);
+        return t;
     }
 
     template <
@@ -383,7 +399,8 @@ struct construct_l {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k, L const& l, M const& m, N const& n) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j, k, l, m, n);
+        T t(a, b, c, d, e, f, g, h, i, j, k, l, m, n);
+        return t;
     }
 
     template <
@@ -396,7 +413,8 @@ struct construct_l {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k, L const& l, M const& m, N const& n, O const& o) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o);
+        T t(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o);
+        return t;
     }
 
 #endif
@@ -415,8 +433,10 @@ struct construct_1 {
     struct result { typedef T type; };
 
     template <typename A>
-    T operator()(A const& a) const {
-        return T(a);
+    T operator()(A const& a) const 
+    {
+        T t(a);
+        return t;
     }
 
 };
@@ -431,8 +451,10 @@ struct construct_2 {
     struct result { typedef T type; };
 
     template <typename A, typename B>
-    T operator()(A const& a, B const& b) const {
-        return T(a, b);
+    T operator()(A const& a, B const& b) const 
+    {
+        T t(a, b);
+        return t;
     }
 
 };
@@ -448,8 +470,10 @@ struct construct_3 {
     struct result { typedef T type; };
 
     template <typename A, typename B, typename C>
-    T operator()(A const& a, B const& b, C const& c) const {
-        return T(a, b, c);
+    T operator()(A const& a, B const& b, C const& c) const 
+    {
+        T t(a, b, c);
+        return t;
     }
 };
 
@@ -465,14 +489,14 @@ struct construct_4 {
     >
     struct result { typedef T type; };
 
-
     template <
         typename A, typename B, typename C, typename D
     >
     T operator()(
         A const& a, B const& b, C const& c, D const& d) const
     {
-        return T(a, b, c, d);
+        T t(a, b, c, d);
+        return t;
     }
 };
 
@@ -495,7 +519,8 @@ struct construct_5 {
     T operator()(
         A const& a, B const& b, C const& c, D const& d, E const& e) const
     {
-        return T(a, b, c, d, e);
+        T t(a, b, c, d, e);
+        return t;
     }
 };
 
@@ -521,7 +546,8 @@ struct construct_6 {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f) const
     {
-        return T(a, b, c, d, e, f);
+        T t(a, b, c, d, e, f);
+        return t;
     }
 };
 #endif
@@ -550,7 +576,8 @@ struct construct_7 {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f, G const& g) const
     {
-        return T(a, b, c, d, e, f, g);
+        T t(a, b, c, d, e, f, g);
+        return t;
     }
 };
 
@@ -577,7 +604,8 @@ struct construct_8 {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f, G const& g, H const& h) const
     {
-        return T(a, b, c, d, e, f, g, h);
+        T t(a, b, c, d, e, f, g, h);
+        return t;
     }
 };
 
@@ -605,7 +633,8 @@ struct construct_9 {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f, G const& g, H const& h, I const& i) const
     {
-        return T(a, b, c, d, e, f, g, h, i);
+        T t(a, b, c, d, e, f, g, h, i);
+        return t;
     }
 };
 #endif
@@ -629,7 +658,6 @@ struct construct_10 {
     >
     struct result { typedef T type; };
 
-
     template <
         typename A, typename B, typename C, typename D, typename E,
         typename F, typename G, typename H, typename I, typename J
@@ -638,7 +666,8 @@ struct construct_10 {
         A const& a, B const& b, C const& c, D const& d, E const& e,
         F const& f, G const& g, H const& h, I const& i, J const& j) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j);
+        T t(a, b, c, d, e, f, g, h, i, j);
+        return t;
     }
 };
 
@@ -660,7 +689,6 @@ struct construct_11 {
     >
     struct result { typedef T type; };
 
-
     template <
         typename A, typename B, typename C, typename D, typename E,
         typename F, typename G, typename H, typename I, typename J,
@@ -671,9 +699,9 @@ struct construct_11 {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j, k);
+        T t(a, b, c, d, e, f, g, h, i, j, k);
+        return t;
     }
-
 };
 
 template <typename T>
@@ -695,7 +723,6 @@ struct construct_12 {
     >
     struct result { typedef T type; };
 
-
     template <
         typename A, typename B, typename C, typename D, typename E,
         typename F, typename G, typename H, typename I, typename J,
@@ -706,7 +733,8 @@ struct construct_12 {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k, L const& l) const
     {
-        return T(a, b, c, d, f, e, g, h, i, j, k, l);
+        T t(a, b, c, d, f, e, g, h, i, j, k, l);
+        return t;
     }
 };
 #endif
@@ -732,7 +760,6 @@ struct construct_13 {
     >
     struct result { typedef T type; };
 
-
     template <
         typename A, typename B, typename C, typename D, typename E,
         typename F, typename G, typename H, typename I, typename J,
@@ -743,7 +770,8 @@ struct construct_13 {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k, L const& l, M const& m) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j, k, l, m);
+        T t(a, b, c, d, e, f, g, h, i, j, k, l, m);
+        return t;
     }
 };
 
@@ -768,7 +796,6 @@ struct construct_14 {
     >
     struct result { typedef T type; };
 
-
     template <
         typename A, typename B, typename C, typename D, typename E,
         typename F, typename G, typename H, typename I, typename J,
@@ -779,9 +806,9 @@ struct construct_14 {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k, L const& l, M const& m, N const& n) const
     {
-        return T(a, b, c, d, e, f, g, h, i, j, k, l, m, n);
+        T t(a, b, c, d, e, f, g, h, i, j, k, l, m, n);
+        return t;
     }
-
 };
 
 template <typename T>
@@ -806,7 +833,6 @@ struct construct_15 {
     >
     struct result { typedef T type; };
 
-
     template <
         typename A, typename B, typename C, typename D, typename E,
         typename F, typename G, typename H, typename I, typename J,
@@ -817,9 +843,9 @@ struct construct_15 {
         F const& f, G const& g, H const& h, I const& i, J const& j,
         K const& k, L const& l, M const& m, N const& n, O const& o) const
     {
-        return T(a, b, c, d, f, e, g, h, i, j, k, l, m, n, o);
+        T t(a, b, c, d, f, e, g, h, i, j, k, l, m, n, o);
+        return t;
     }
-
 };
 #endif
 
@@ -1017,7 +1043,9 @@ construct_(A const& a)
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(construct_1<T>(), a));
+    return type_t(composite_type_t(construct_1<T>(), 
+        as_actor<A>::convert(a)
+    ));
 }
 
 //////////////////////////////////
@@ -1029,7 +1057,10 @@ construct_(A const& a, B const& b)
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(construct_2<T>(), a, b));
+    return type_t(composite_type_t(construct_2<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b)
+    ));
 }
 
 //////////////////////////////////
@@ -1041,7 +1072,11 @@ construct_(A const& a, B const& b, C const& c)
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(construct_3<T>(), a, b, c));
+    return type_t(composite_type_t(construct_3<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c)
+    ));
 }
 
 #if PHOENIX_CONSTRUCT_LIMIT > 3
@@ -1059,7 +1094,12 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(construct_4<T>(), a, b, c, d));
+    return type_t(composite_type_t(construct_4<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d)
+    ));
 }
 
 //////////////////////////////////
@@ -1076,7 +1116,13 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(construct_5<T>(), a, b, c, d, e));
+    return type_t(composite_type_t(construct_5<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e)
+    ));
 }
 
 //////////////////////////////////
@@ -1095,7 +1141,14 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(construct_6<T>(), a, b, c, d, e, f));
+    return type_t(composite_type_t(construct_6<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f)
+    ));
 }
 
 #if PHOENIX_CONSTRUCT_LIMIT > 6
@@ -1115,7 +1168,15 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(construct_7<T>(), a, b, c, d, e, f, g));
+    return type_t(composite_type_t(construct_7<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f),
+        as_actor<G>::convert(g)
+    ));
 }
 
 //////////////////////////////////
@@ -1134,7 +1195,16 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(construct_8<T>(), a, b, c, d, e, f, g, h));
+    return type_t(composite_type_t(construct_8<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f),
+        as_actor<G>::convert(g),
+        as_actor<H>::convert(h)
+    ));
 }
 
 //////////////////////////////////
@@ -1153,8 +1223,17 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(
-            construct_9<T>(), a, b, c, d, e, f, g, h, i));
+    return type_t(composite_type_t(construct_9<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f),
+        as_actor<G>::convert(g),
+        as_actor<H>::convert(h),
+        as_actor<I>::convert(i)
+    ));
 }
 
 #if PHOENIX_CONSTRUCT_LIMIT > 9
@@ -1177,8 +1256,18 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(
-            construct_10<T>(), a, b, c, d, e, f, g, h, i, j));
+    return type_t(composite_type_t(construct_10<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f),
+        as_actor<G>::convert(g),
+        as_actor<H>::convert(h),
+        as_actor<I>::convert(i),
+        as_actor<J>::convert(j)
+    ));
 }
 
 //////////////////////////////////
@@ -1201,8 +1290,19 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(
-            construct_11<T>(), a, b, c, d, e, f, g, h, i, j, k));
+    return type_t(composite_type_t(construct_11<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f),
+        as_actor<G>::convert(g),
+        as_actor<H>::convert(h),
+        as_actor<I>::convert(i),
+        as_actor<J>::convert(j),
+        as_actor<K>::convert(k)
+    ));
 }
 
 //////////////////////////////////
@@ -1226,8 +1326,20 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(
-            construct_12<T>(), a, b, c, d, e, f, g, h, i, j, k, l));
+    return type_t(composite_type_t(construct_12<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f),
+        as_actor<G>::convert(g),
+        as_actor<H>::convert(h),
+        as_actor<I>::convert(i),
+        as_actor<J>::convert(j),
+        as_actor<K>::convert(k),
+        as_actor<L>::convert(l)
+    ));
 }
 
 #if PHOENIX_CONSTRUCT_LIMIT > 12
@@ -1252,8 +1364,21 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(
-            construct_13<T>(), a, b, c, d, e, f, g, h, i, j, k, l, m));
+    return type_t(composite_type_t(construct_13<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f),
+        as_actor<G>::convert(g),
+        as_actor<H>::convert(h),
+        as_actor<I>::convert(i),
+        as_actor<J>::convert(j),
+        as_actor<K>::convert(k),
+        as_actor<L>::convert(l),
+        as_actor<M>::convert(m)
+    ));
 }
 
 //////////////////////////////////
@@ -1277,8 +1402,22 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(
-            construct_14<T>(), a, b, c, d, e, f, g, h, i, j, k, l, m, n));
+    return type_t(composite_type_t(construct_14<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f),
+        as_actor<G>::convert(g),
+        as_actor<H>::convert(h),
+        as_actor<I>::convert(i),
+        as_actor<J>::convert(j),
+        as_actor<K>::convert(k),
+        as_actor<L>::convert(l),
+        as_actor<M>::convert(m),
+        as_actor<N>::convert(n)
+    ));
 }
 
 //////////////////////////////////
@@ -1302,8 +1441,23 @@ construct_(
     typedef typename make_composite_t::type type_t;
     typedef typename make_composite_t::composite_type composite_type_t;
 
-    return type_t(composite_type_t(
-            construct_15<T>(), a, b, c, d, e, f, g, h, i, j, k, l, m, n, o));
+    return type_t(composite_type_t(construct_15<T>(), 
+        as_actor<A>::convert(a), 
+        as_actor<B>::convert(b),
+        as_actor<C>::convert(c),
+        as_actor<D>::convert(d),
+        as_actor<E>::convert(e),
+        as_actor<F>::convert(f),
+        as_actor<G>::convert(g),
+        as_actor<H>::convert(h),
+        as_actor<I>::convert(i),
+        as_actor<J>::convert(j),
+        as_actor<K>::convert(k),
+        as_actor<L>::convert(l),
+        as_actor<M>::convert(m),
+        as_actor<N>::convert(n),
+        as_actor<O>::convert(o)
+    ));
 }
 
 #endif

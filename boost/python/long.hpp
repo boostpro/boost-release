@@ -6,6 +6,8 @@
 #ifndef LONG_DWA2002627_HPP
 # define LONG_DWA2002627_HPP
 
+# include <boost/python/detail/prefix.hpp>
+
 # include <boost/python/object.hpp>
 # include <boost/python/converter/pytype_object_mgr_traits.hpp>
 
@@ -36,13 +38,13 @@ class long_ : public detail::long_base
 
     template <class T>
     explicit long_(T const& rhs)
-        : base(object(rhs))
+        : detail::long_base(object(rhs))
     {
     }
 
     template <class T, class U>
     explicit long_(T const& rhs, U const& base)
-        : base(object(rhs), object(base))
+        : detail::long_base(object(rhs), object(base))
     {
     }
     

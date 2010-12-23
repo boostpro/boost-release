@@ -10,7 +10,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: arith2.hpp,v 1.3 2003/02/05 17:34:29 gmelquio Exp $
+ * $Id: arith2.hpp,v 1.6 2003/08/16 20:56:27 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_ARITH2_HPP
@@ -24,7 +24,6 @@
 #include <boost/numeric/interval/policies.hpp>
 #include <algorithm>
 #include <cmath>
-#include <utility>
 
 namespace boost {
 namespace numeric {
@@ -92,8 +91,9 @@ interval<T, Policies> division_part1(const interval<T, Policies>& x,
 
 template<class T, class Policies> inline
 interval<T, Policies> division_part2(const interval<T, Policies>& x,
-                                     const interval<T, Policies>& y)
+                                     const interval<T, Policies>& y, bool b = true)
 {
+  if (!b) return interval<T, Policies>::empty();
   return detail::div_zero_part2(x, y);
 }
 
@@ -156,7 +156,7 @@ interval<T, Policies> pow(const interval<T, Policies>& x, int pwr)
     else
       return I(1);
   else if (pwr < 0)
-    return multiplicative_inverse(pow(x, -pwr));
+    return interval_lib::multiplicative_inverse(pow(x, -pwr));
 
   typename Policies::rounding rnd;
   

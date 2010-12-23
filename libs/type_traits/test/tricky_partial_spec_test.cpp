@@ -1,19 +1,23 @@
 
-//  (C) Copyright John Maddock 2000. Permission to copy, use, modify, sell and   
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2000. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
 #include "check_integral_constant.hpp"
-#include TYPE_TRAITS(alignment_of)
-#include TYPE_TRAITS(has_nothrow_assign)
-#include TYPE_TRAITS(has_nothrow_constructor)
-#include TYPE_TRAITS(has_nothrow_copy)
-#include TYPE_TRAITS(is_base_and_derived)
-#include TYPE_COMPARE(is_same)
-#include TYPE_COMPARE(is_convertible)
-#include TYPE_TRAITS(is_polymorphic)
+#ifdef TEST_STD
+#  include <type_traits>
+#else
+#include <boost/type_traits/alignment_of.hpp>
+#include <boost/type_traits/has_nothrow_assign.hpp>
+#include <boost/type_traits/has_nothrow_constructor.hpp>
+#include <boost/type_traits/has_nothrow_copy.hpp>
+#include <boost/type_traits/is_base_and_derived.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/type_traits/is_convertible.hpp>
+#include <boost/type_traits/is_polymorphic.hpp>
+#endif
 
 //
 // VC++ emits an awful lot of warnings unless we define these:
@@ -73,6 +77,7 @@ BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<const std::out_of_range>::val
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<const std::range_error>::value, true);
 
 TT_TEST_END
+
 
 
 

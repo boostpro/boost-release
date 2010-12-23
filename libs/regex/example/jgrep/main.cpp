@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.  
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
  
@@ -20,6 +16,7 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <boost/regex.hpp>
 #ifdef JM_OLD_IOSTREAM
 #include <iostream.h>
@@ -34,8 +31,13 @@ using std::endl;
 #  pragma hrdstop
 #endif
 
+#ifdef BOOST_REGEX_V3
 #include <boost/regex/v3/fileiter.hpp>
+#else
+#include <boost/regex/v4/fileiter.hpp>
+#endif
 #include "jgrep.h"
+#ifndef BOOST_REGEX_NO_FILEITER
 
 #ifndef JM_ALGO_INCLUDED
 // HP and SGI STL's use <algo.h> instead
@@ -165,6 +167,8 @@ void parse_switch(const char* flag)
    }
 }
 
+using namespace boost;
+
 void HandleFile(const char* wild)
 {
    using namespace boost;
@@ -226,14 +230,14 @@ void HandleArg(const char* arg)
       {
          if(words_only == 0)
          {
-            e.set_expression(arg, use_case ? regbase::normal : regbase::normal | regbase::icase);
+            e.set_expression(arg, use_case ? regex::normal : regbase::normal | regbase::icase);
             //ei.set_expression(arg);
          }
          else
          {
             char* buf = new char[std::strlen(arg) + 8];
             std::sprintf(buf, "\\<%s\\>", arg);
-            e.set_expression(buf, use_case ? regbase::normal : regbase::normal | regbase::icase);
+            e.set_expression(buf, use_case ? regex::normal : regbase::normal | regbase::icase);
             //ei.set_expression(buf);
             delete[] buf;
          }
@@ -255,7 +259,7 @@ void HandleArg(const char* arg)
          }
          if(words_only)
             std::strcat(buf2, "\\>");
-         e.set_expression(buf2, use_case ? regbase::normal : regbase::normal | regbase::icase);
+         e.set_expression(buf2, use_case ? regex::normal : regbase::normal | regbase::icase);
          //ei.set_expression(buf2);
          delete[] buf2;
       }
@@ -276,6 +280,20 @@ int main(int argc, char * argv[])
    return 0;
 }
 
+#else
+
+#include <iostream>
+
+int main(int argc, char * argv[])
+{
+   std::cout <<
+   "\n<note>\n"
+   "This functionality is not available on with this compiler on this platform.\n"
+   "</note>\n";
+   return 0;
+}
+
+#endif
 
 
 

@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -40,7 +36,7 @@ using std::getline;
 #include <boost/timer.hpp> 
 #include <boost/smart_ptr.hpp>
 
-#if defined(_MSC_VER) && (_MSC_VER <= 1300)
+#if (defined(_MSC_VER) && (_MSC_VER <= 1300)) || defined(__sgi)
 // maybe no Koenig lookup, use using declaration instead:
 using namespace boost;
 #endif
@@ -87,6 +83,7 @@ public:
    }
 };
 
+namespace boost{
 #if defined(BOOST_MSVC) || (defined(__BORLANDC__) && (__BORLANDC__ == 0x550)) || defined(__SGI_STL_PORT)
 //
 // problem with std::getline under MSVC6sp3
@@ -102,7 +99,18 @@ istream& getline(istream& is, std::string& s)
    }
    return is;
 }
+#elif defined(__CYGWIN__)
+istream& getline(istream& is, std::string& s)
+{
+   std::getline(is, s);
+   if(s.size() && (s[s.size() -1] == '\r'))
+      s.erase(s.size() - 1);
+   return is;
+}
+#else
+using std::getline;
 #endif
+}
 
 
 int main(int argc, char**argv)
@@ -142,7 +150,7 @@ int main(int argc, char**argv)
    while(true)
    {
       cout << "Enter expression (or \"quit\" to exit): ";
-      getline(cin, s1);
+      boost::getline(cin, s1);
       if(argc == 2)
          cout << endl << s1 << endl;
       if(s1 == "quit")
@@ -176,7 +184,7 @@ int main(int argc, char**argv)
       while(true)
       {
          cout << "Enter string to search (or \"quit\" to exit): ";
-         getline(cin, s2);
+         boost::getline(cin, s2);
          if(argc == 2)
             cout << endl << s2 << endl;
          if(s2 == "quit")
@@ -351,10 +359,16 @@ int main(int argc, char**argv)
    }
 
    if(pbuf)
+   {
       cin.rdbuf(pbuf);
+      ifs.close();
+   }
 
    return 0;
 }
+
+
+
 
 
 

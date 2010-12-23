@@ -27,8 +27,6 @@
 #include <boost/python/extract.hpp>
 #include <boost/python/detail/api_placeholder.hpp>
 
-#include <string>
-
 namespace { // Avoid cluttering the global namespace.
 
   // A friendly class.

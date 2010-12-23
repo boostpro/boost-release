@@ -1,12 +1,16 @@
 
-//  (C) Copyright John Maddock 2000. Permission to copy, use, modify, sell and   
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2000. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
 #include "check_integral_constant.hpp"
-#include TYPE_TRAITS(has_nothrow_constructor)
+#ifdef TEST_STD
+#  include <type_traits>
+#else
+#  include <boost/type_traits/has_nothrow_constructor.hpp>
+#endif
 
 TT_TEST_BEGIN(has_nothrow_constructor)
 
@@ -154,5 +158,6 @@ BOOST_CHECK_SOFT_INTEGRAL_CONSTANT(::tt::has_nothrow_constructor<empty_POD_union
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_nothrow_constructor<test_abc1>::value, false);
 
 TT_TEST_END
+
 
 

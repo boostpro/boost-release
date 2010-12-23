@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_log.hpp,v $
 //
-//  Version     : $Id: unit_test_log.hpp,v 1.15 2003/02/15 22:26:00 rogeeff Exp $
+//  Version     : $Revision: 1.20 $
 //
 //  Description : defines singleton class unit_test_log and all manipulators.
 //  unit_test_log has output stream like interface. It's implementation is
@@ -28,6 +27,11 @@
 #include <iosfwd>   // for std::ostream&
 #include <string>   // for std::string&; in fact need only forward declaration
 
+#ifdef BOOST_MSVC
+# pragma warning(push)
+# pragma warning(disable: 4512) // assignment operator could not be generated
+#endif
+
 namespace boost {
 
 namespace unit_test_framework {
@@ -45,6 +49,42 @@ enum            log_level {
                                      // fatal system errors
     log_progress_only        = 8, // only unit test progress to be reported
     log_nothing              = 9
+};
+
+// ************************************************************************** //
+// **************                log_entry_data                ************** //
+// ************************************************************************** //
+
+struct log_entry_data
+{
+    std::string     m_file;
+    std::size_t     m_line;
+    log_level       m_level;
+
+    void clear()
+    {
+        m_file    = std::string();
+        m_line    = 0;
+        m_level   = log_nothing;
+    }
+};
+
+// ************************************************************************** //
+// **************                checkpoint_data               ************** //
+// ************************************************************************** //
+
+struct log_checkpoint_data
+{
+    std::string     m_file;
+    std::size_t     m_line;
+    std::string     m_message;
+
+    void clear()
+    {
+        m_file    = std::string();
+        m_line    = 0;
+        m_message = std::string();
+    }
 };
 
 // ************************************************************************** //
@@ -95,6 +135,7 @@ struct log_progress {
 // ************************************************************************** //
 
 class test_case;
+class unit_test_log_formatter;
 
 class unit_test_log : private boost::noncopyable { //!! Singleton
 public:
@@ -114,6 +155,7 @@ public:
     void            set_log_threshold_level( log_level lev_ );
     void            set_log_threshold_level_by_name( std::string const& lev_ );
     void            set_log_format( std::string const& of );
+    void            set_log_formatter( unit_test_log_formatter* the_formatter );
     void            clear_checkpoint();
 
     // test case scope tracking
@@ -134,9 +176,14 @@ public:
     unit_test_log&  operator<<( std::string const& value_ );
 
 private:
+    // formatters interface
+    friend class unit_test_log_formatter;
+    log_entry_data      const& entry_data() const;
+    log_checkpoint_data const& checkpoint_data() const;
+
+private:
     // Constructor
     unit_test_log();
-    friend class unit_test_log_formatter;
 
     struct          Impl;
     Impl*           m_pimpl;
@@ -152,28 +199,34 @@ private:
 /**/
 #define BOOST_UT_LOG_END             << boost::unit_test_framework::end();
 
+// ************************************************************************** //
+// **************            test_case_scope_tracker           ************** //
+// ************************************************************************** //
+
+struct test_case_scope_tracker {
+    explicit            test_case_scope_tracker( test_case const& tc ) 
+    : m_tc( tc )                                    { unit_test_log::instance().track_test_case_scope( m_tc, true ); }
+                        ~test_case_scope_tracker()  { unit_test_log::instance().track_test_case_scope( m_tc, false ); }
+
+private:
+    test_case const&    m_tc;
+};
+
 } // namespace unit_test_framework
 
 } // namespace boost
+
+#ifdef BOOST_MSVC
+# pragma warning(default: 4512) // assignment operator could not be generated
+# pragma warning(pop)
+#endif
 
 // ***************************************************************************
 //  Revision History :
 //  
 //  $Log: unit_test_log.hpp,v $
-//  Revision 1.15  2003/02/15 22:26:00  rogeeff
-//  excessive include parameters moved to source file
-//
-//  Revision 1.14  2003/02/13 08:20:56  rogeeff
-//  report_level->log_level
-//  log format config methods added
-//  log interface slightly changed to allow multiple log formats
-//  Unused macros deleted
-//
-//  Revision 1.13  2002/12/08 17:43:55  rogeeff
-//  switched to use c_string_literal
-//
-//  Revision 1.12  2002/11/02 19:31:04  rogeeff
-//  merged into the main trank
+//  Revision 1.20  2003/12/01 00:41:56  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

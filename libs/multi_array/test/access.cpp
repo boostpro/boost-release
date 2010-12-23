@@ -1,9 +1,22 @@
+// Copyright 2002 The Trustees of Indiana University.
+
+// Use, modification and distribution is subject to the Boost Software 
+// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
+//  Boost.MultiArray Library
+//  Authors: Ronald Garcia
+//           Jeremy Siek
+//           Andrew Lumsdaine
+//  See http://www.boost.org/libs/multi_array for documentation.
+
 // 
 // access.cpp - operator[] and operator() tests with various arrays
 //    The tests assume that they are working on an Array of shape 2x3x4
 //
 
 #include "generative_tests.hpp"
+#include "boost/static_assert.hpp"
 
 template <typename Array>
 void access(Array& A, const mutable_array_tag&) {
@@ -16,8 +29,8 @@ void access(Array& A, const mutable_array_tag&) {
 
 template <typename Array>
 void access(Array& A, const const_array_tag&) {
-  const int ndims = 3;
-
+  const unsigned int ndims = 3;
+  BOOST_STATIC_ASSERT((Array::dimensionality == ndims));
   typedef typename Array::index index;
   const index idx0 = A.index_bases()[0];
   const index idx1 = A.index_bases()[1];

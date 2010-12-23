@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: floating_point_comparison.hpp,v $
 //
-//  Version     : $Id: floating_point_comparison.hpp,v 1.7 2002/11/02 19:31:04 rogeeff Exp $
+//  Version     : $Revision: 1.13 $
 //
 //  Description : defines algoirthms for comparing 2 floating point values
 // ***************************************************************************
@@ -16,9 +15,25 @@
 #ifndef BOOST_FLOATING_POINT_COMPARISON_HPP
 #define BOOST_FLOATING_POINT_COMPARISON_HPP
 
-#include <boost/limits.hpp>  // for std::numareic_limits
+#include <boost/limits.hpp>  // for std::numeric_limits
 
 #include <boost/test/detail/class_properties.hpp>
+
+namespace boost {
+
+namespace test_toolbox {
+
+// ************************************************************************** //
+// **************        floating_point_comparison_type        ************** //
+// ************************************************************************** //
+
+enum floating_point_comparison_type { FPC_STRONG, FPC_WEAK };
+
+// ************************************************************************** //
+// **************                    details                   ************** //
+// ************************************************************************** //
+
+namespace detail {
 
 template<typename FPT>
 inline FPT
@@ -42,63 +57,70 @@ safe_fpt_division( FPT f1, FPT f2 )
 
 //____________________________________________________________________________//
 
-template<typename FPT>
+} // namespace detail
+
+// ************************************************************************** //
+// **************             close_at_tolerance               ************** //
+// ************************************************************************** //
+
+template<typename FPT, typename PersentType = FPT >
 class close_at_tolerance {
 public:
-    explicit    close_at_tolerance( FPT tolerance, bool strong_or_weak = true ) 
-    : p_tolerance( tolerance ), m_strong_or_weak( strong_or_weak ) {}
-
-    explicit    close_at_tolerance( int number_of_rounding_errors, bool strong_or_weak = true ) 
-    : p_tolerance( std::numeric_limits<FPT>::epsilon() * number_of_rounding_errors/2 ), 
-      m_strong_or_weak( strong_or_weak ) {}
+    explicit    close_at_tolerance( PersentType tolerance, floating_point_comparison_type fpc_type = FPC_STRONG ) 
+    : p_fraction_tolerance( static_cast<FPT>(0.01)*tolerance ), p_strong_or_weak( fpc_type ==  FPC_STRONG ) {}
 
     bool        operator()( FPT left, FPT right ) const
     {
-        FPT diff = fpt_abs( left - right );
-        FPT d1   = safe_fpt_division( diff, fpt_abs( right ) );
-        FPT d2   = safe_fpt_division( diff, fpt_abs( left ) );
+        FPT diff = detail::fpt_abs( left - right );
+        FPT d1   = detail::safe_fpt_division( diff, detail::fpt_abs( right ) );
+        FPT d2   = detail::safe_fpt_division( diff, detail::fpt_abs( left ) );
         
-        return m_strong_or_weak ? (d1 <= p_tolerance.get() && d2 <= p_tolerance.get()) 
-                                : (d1 <= p_tolerance.get() || d2 <= p_tolerance.get());
+        return p_strong_or_weak ? (d1 <= p_fraction_tolerance.get() && d2 <= p_fraction_tolerance.get()) 
+                                : (d1 <= p_fraction_tolerance.get() || d2 <= p_fraction_tolerance.get());
     }
 
-    // Data members
-    BOOST_READONLY_PROPERTY( FPT, 0, () )
-                p_tolerance;
-private:
-    bool        m_strong_or_weak;
+    // Public properties
+    BOOST_READONLY_PROPERTY( FPT, 0, () )   p_fraction_tolerance;
+    BOOST_READONLY_PROPERTY( bool, 0, () )  p_strong_or_weak;
 };
 
 //____________________________________________________________________________//
 
-template<typename FPT, typename ToleranceSource>
+// ************************************************************************** //
+// **************               check_is_closed                ************** //
+// ************************************************************************** //
+
+template<typename FPT, typename PersentType>
 bool
-check_is_closed( FPT left, FPT right, ToleranceSource tolerance, bool strong_or_weak = true )
+check_is_closed( FPT left, FPT right, PersentType tolerance, floating_point_comparison_type fpc_type = FPC_STRONG )
 {
-    close_at_tolerance<FPT> pred( tolerance, strong_or_weak );
+    close_at_tolerance<FPT,PersentType> pred( tolerance, fpc_type );
 
     return pred( left, right );
 }
 
 //____________________________________________________________________________//
 
-template<typename FPT, typename ToleranceSource>
+template<typename FPT>
 FPT
-compute_tolerance( ToleranceSource tolerance, FPT /* unfortunately we need to pass type information this way*/ )
+compute_tolerance( FPT tolerance )
 {
     close_at_tolerance<FPT> pred( tolerance );
 
-    return pred.p_tolerance.get();
+    return pred.p_fraction_tolerance.get();
 }
 
 //____________________________________________________________________________//
+
+} // namespace test_toolbox
+} // namespace boost
 
 // ***************************************************************************
 //  Revision History :
 //  
 //  $Log: floating_point_comparison.hpp,v $
-//  Revision 1.7  2002/11/02 19:31:04  rogeeff
-//  merged into the main trank
+//  Revision 1.13  2003/12/01 00:41:56  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

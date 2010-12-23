@@ -11,7 +11,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: fmod.cpp,v 1.3 2003/02/05 17:34:36 gmelquio Exp $
+ * $Id: fmod.cpp,v 1.4 2003/06/03 21:59:59 hervebronnimann Exp $
  */
 
 #include <boost/numeric/interval/interval.hpp>
@@ -21,6 +21,7 @@
 #include <boost/numeric/interval/checking.hpp>
 #include <boost/numeric/interval/rounding.hpp>
 #include <boost/test/minimal.hpp>
+#include "bugs.hpp"
 
 struct my_rounded_arith {
   int sub_down(int x, int y) { return x - y; }

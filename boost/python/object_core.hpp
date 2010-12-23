@@ -6,23 +6,39 @@
 #ifndef OBJECT_CORE_DWA2002615_HPP
 # define OBJECT_CORE_DWA2002615_HPP
 
-#if defined(__ALPHA) && defined(__osf__) && defined(__DECCXX_VER)
-# include <pyconfig.h>
-#endif
+# include <boost/python/detail/prefix.hpp>
+
 # include <boost/type.hpp>
 
 # include <boost/python/call.hpp>
 # include <boost/python/handle_fwd.hpp>
 # include <boost/python/errors.hpp>
 # include <boost/python/slice_nil.hpp>
-# include <boost/python/detail/raw_pyobject.hpp>
 # include <boost/python/refcount.hpp>
 # include <boost/python/detail/preprocessor.hpp>
 # include <boost/python/tag.hpp>
+# include <boost/python/def_visitor.hpp>
+
+# include <boost/python/detail/raw_pyobject.hpp>
 # include <boost/python/detail/dependent.hpp>
+
+# include <boost/python/object/forward.hpp>
+# include <boost/python/object/add_to_namespace.hpp>
 
 # include <boost/preprocessor/iterate.hpp>
 # include <boost/preprocessor/debug/line.hpp>
+
+# include <boost/python/detail/is_xxx.hpp>
+# include <boost/python/detail/string_literal.hpp>
+# include <boost/python/detail/def_helper_fwd.hpp>
+
+# include <boost/type_traits/is_same.hpp>
+# include <boost/type_traits/is_convertible.hpp>
+# include <boost/type_traits/remove_reference.hpp>
+
+# if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
+#  include <boost/type_traits/add_pointer.hpp>
+# endif
 
 namespace boost { namespace python { 
 
@@ -58,39 +74,15 @@ namespace api
   //
   // is_proxy -- proxy type detection
   //
-# ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-  template <class T>
-  struct is_proxy
-  {
-      BOOST_STATIC_CONSTANT(bool, value = false);
-  };
-  template <class T>
-  struct is_proxy<proxy<T> >
-  {
-      BOOST_STATIC_CONSTANT(bool, value = true);
-  };
-# else
-  typedef char yes_proxy;
-  typedef char (&no_proxy)[2];
-  template <class T>
-  yes_proxy is_proxy_helper(boost::type<proxy<T> >*);
-  no_proxy is_proxy_helper(...);
-  template <class T>
-  struct is_proxy
-  {
-      BOOST_STATIC_CONSTANT(
-          bool, value = (sizeof(is_proxy_helper((boost::type<T>*)0))
-                         == sizeof(yes_proxy)));
-  };
-# endif 
+  BOOST_PYTHON_IS_XXX_DEF(proxy, boost::python::api::proxy, 1)
 
-  template <bool is_proxy, bool is_object_manager>  struct object_initializer;
+  template <class T> struct object_initializer;
   
   class object;
   typedef PyObject* (object::*bool_type)() const;
   
   template <class U>
-  class object_operators
+  class object_operators : public def_visitor<U>
   {
    protected:
 # if !defined(BOOST_MSVC) || BOOST_MSVC > 1200
@@ -154,6 +146,9 @@ namespace api
       const_object_slice slice(object_cref, slice_nil) const;
       object_slice slice(object_cref, slice_nil);
 
+      const_object_slice slice(slice_nil, slice_nil) const;
+      object_slice slice(slice_nil, slice_nil);
+
       template <class T, class V>
       const_object_slice
       slice(T const& start, V const& end) const
@@ -178,7 +173,23 @@ namespace api
               slice_bound<T>::type(start)
               , slice_bound<V>::type(end));
       }
-# endif 
+# endif
+      
+   private: // def visitation for adding callable objects as class methods
+      template <class ClassT, class DocStringT>
+      void visit(ClassT& cl, char const* name, python::detail::def_helper<DocStringT> const& helper) const
+      {
+          // It's too late to specify anything other than docstrings if
+          // the callable object is already wrapped.
+          BOOST_STATIC_ASSERT(
+              (is_same<char const*,DocStringT>::value
+               || detail::is_string_literal<DocStringT>::value));
+        
+          objects::add_to_namespace(cl, name, this->derived_visitor(), helper.doc());
+      }
+
+      friend class python::def_visitor_access;
+      
    private:
      // there is a confirmed CWPro8 codegen bug here. We prevent the
      // early destruction of a temporary by binding a named object
@@ -190,6 +201,7 @@ namespace api
 # endif
   };
 
+  
   // VC6 and VC7 require this base class in order to generate the
   // correct copy constructor for object. We can't define it there
   // explicitly or it will complain of ambiguity.
@@ -209,25 +221,90 @@ namespace api
       PyObject* m_ptr;
   };
 
+# ifdef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+  template <class T, class U>
+  struct is_derived_impl
+  {
+      static T x;
+      template <class X>
+      static X* to_pointer(X const&);
+      
+      static char test(U const*);
+      typedef char (&no)[2];
+      static no test(...);
+
+      BOOST_STATIC_CONSTANT(bool, value = sizeof(test(to_pointer(x))) == 1);
+  };
+  
+  template <class T, class U>
+  struct is_derived
+    : mpl::bool_<is_derived_impl<T,U>::value>
+  {};
+# else
+  template <class T, class U>
+  struct is_derived
+    : is_convertible<
+          typename remove_reference<T>::type*
+        , U const*
+      >
+  {};
+# endif 
+
+  template <class T>
+  typename objects::unforward_cref<T>::type do_unforward_cref(T const& x)
+  {
+# if BOOST_WORKAROUND(__GNUC__, == 2)
+      typedef typename objects::unforward_cref<T>::type ret;
+      return ret(x);
+# else
+      return x;
+# endif 
+  }
+
+# if BOOST_WORKAROUND(__GNUC__, == 2)
+  // GCC 2.x has non-const string literals; this hacks around that problem.
+  template <unsigned N>
+  char const (& do_unforward_cref(char const(&x)[N]) )[N]
+  {
+      return x;
+  }
+# endif
+  
+  class object;
+  
+  template <class T>
+  PyObject* object_base_initializer(T const& x)
+  {
+      typedef typename is_derived<
+          BOOST_DEDUCED_TYPENAME objects::unforward_cref<T>::type
+        , object
+      >::type is_obj;
+
+      return object_initializer<
+          BOOST_DEDUCED_TYPENAME unwrap_reference<T>::type
+      >::get(
+            x
+          , is_obj()
+      );
+  }
+  
   class object : public object_base
   {
    public:
       // default constructor creates a None object
       object();
+      
       // explicit conversion from any C++ object to Python
       template <class T>
       explicit object(T const& x)
-          : object_base(
-              object_initializer<
-                 is_proxy<T>::value
-                 , converter::is_object_manager<T>::value
-              >::get(&x, detail::convertible<object const*>::check(&x)))
+        : object_base(object_base_initializer(x))
       {
       }
 
       // Throw error_already_set() if the handle is null.
       BOOST_PYTHON_DECL explicit object(handle<> const&);
-
+   private:
+      
    public: // implementation detail -- for internal use only
       explicit object(detail::borrowed_reference);
       explicit object(detail::new_reference);
@@ -267,47 +344,55 @@ namespace api
   // based on whether T is a proxy or derived from object
   //
   template <bool is_proxy = false, bool is_object_manager = false>
-  struct object_initializer
+  struct object_initializer_impl
   {
       static PyObject*
-      get(object const* x, detail::yes_convertible)
+      get(object const& x, mpl::true_)
       {
-          return python::incref(x->ptr());
+          return python::incref(x.ptr());
       }
       
       template <class T>
       static PyObject*
-      get(T const* x, detail::no_convertible)
+      get(T const& x, mpl::false_)
       {
-          return python::incref(converter::arg_to_python<T>(*x).get());
+          return python::incref(converter::arg_to_python<T>(x).get());
       }
   };
       
   template <>
-  struct object_initializer<true, false>
+  struct object_initializer_impl<true, false>
   {
       template <class Policies>
       static PyObject* 
-      get(proxy<Policies> const* x, detail::no_convertible)
+      get(proxy<Policies> const& x, mpl::false_)
       {
-          return python::incref(x->operator object().ptr());
+          return python::incref(x.operator object().ptr());
       }
   };
 
   template <>
-  struct object_initializer<false, true>
+  struct object_initializer_impl<false, true>
   {
       template <class T>
       static PyObject*
-      get(T const* x, ...)
+      get(T const& x, ...)
       {
-          return python::incref(get_managed_object(*x, tag));
+          return python::incref(get_managed_object(x, tag));
       }
   };
 
   template <>
-  struct object_initializer<true, true>
+  struct object_initializer_impl<true, true>
   {}; // empty implementation should cause an error
+
+  template <class T>
+  struct object_initializer : object_initializer_impl<
+      is_proxy<T>::value
+    , converter::is_object_manager<T>::value
+  >
+  {};
+
 }
 using api::object;
 template <class T> struct extract;

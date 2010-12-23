@@ -1,6 +1,8 @@
-/* Copyright (c) 2001 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
- * Author: Jeff Garland 
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
+ * Author: Jeff Garland, Bart Garst 
  */
 
 #include <sstream>
@@ -13,6 +15,7 @@
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/testfrmwk.hpp"
 
+#ifndef BOOST_DATE_TIME_NO_LOCALE
 
     const char* const de_short_month_names[]={"Jan","Feb","Mar","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez", "NAM"};
 
@@ -23,11 +26,14 @@ const char* const de_short_weekday_names[]={"Son", "Mon", "Die","Mit", "Don", "F
 
     const char* const de_long_weekday_names[]={"Sonntag", "Montag", "Dienstag","Mittwoch", "Donnerstag", "Freitag", "Samstag"};
 
+#endif 
+
+/** Not used for now
     const char* const es_short_month_names[]={"Ene","Feb","Mar","Abr","Pue","Jun","Jul","Ago","Sep","Oct","Nov","Dic", "NAM"};
 
     const char* const es_long_month_names[]={"Enero","Febrero","Marcha","Abril","Pueda","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre","NoAMes"};
     const char* const es_special_value_names[]={"NoUnRatoDeLaFacha","-infinito", "+infinito"};
-
+**/
 int
 main()
 {
@@ -188,6 +194,65 @@ main()
   os3 << dp;
   check("check date period: "+os3.str(), 
         os3.str() == std::string("[Oktober 01 2002/Oktober 03 2002]"));
+
+
+  /*******************************************************************/
+  /* Streaming operations for date durations                         */
+  /*******************************************************************/
+
+  date_duration dur(26);
+  std::stringstream ss2;
+  ss2 << dur;
+  check("date_duration stream out", ss2.str() == std::string("26"));
+
+  dur = date_duration(boost::date_time::pos_infin);
+  ss2.str("");
+  ss2 << dur;
+  check("date_duration stream out", ss2.str() == std::string("+infinity"));
+
+  /*******************************************************************/
+  /* Streaming operations for date generator functions               */
+  /*******************************************************************/
+
+  partial_date pd(26, Jun);
+  //std::stringstream ss2;
+  ss2.str("");
+  ss2 << pd;
+  check("partial date stream out", ss2.str() == std::string("26 Jun"));
+
+  ss2.str("");
+  nth_kday_of_month nkm(nth_kday_of_month::second, Friday, Sep);
+  ss2 << nkm;
+  check("nth kday of month", ss2.str() == std::string("second Fri of Sep"));
+
+  ss2.str("");
+  first_kday_of_month fkm(Saturday, May);
+  ss2 << fkm;
+  check("first kday of month", ss2.str() == std::string("first Sat of May"));
+
+  ss2.str("");
+  last_kday_of_month lkm(Monday, Aug);
+  ss2 << lkm;
+  check("last kday of month", ss2.str() == std::string("last Mon of Aug"));
+
+  ss2.str("");
+  first_kday_after  fka(Thursday);//fkb.get_date(d)
+  ss2 << fka;
+  check("first kday after", ss2.str() == std::string("Thu after"));
+
+  ss2.str("");
+  first_kday_before fkb(Tuesday); // same ^
+  ss2 << fkb;
+  check("first kday after", ss2.str() == std::string("Tue before"));
+
+  std::cout << pd << '\n'
+            << nkm << '\n'
+            << fkm << '\n'
+            << lkm << '\n'
+            << fka << '\n'
+            << fkb << '\n'
+            << std::endl;
+
 #else
   check("All pass, no tests executed - Locales not supported", true);
 
@@ -197,19 +262,3 @@ main()
 
 }
 
-/*
- * Copyright (c) 2001
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided as is without express or implied warranty.
- *
- *
- * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
- *
- */

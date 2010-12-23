@@ -1,13 +1,11 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Daniel Nuffer
     Copyright (c) 2001-2003 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 
 #if !defined(PARSE_TREE_UTILS_IPP)
@@ -98,7 +96,7 @@ tree_node<T> const &node = *start;
         const_tree_iterator end = node.children.end();
         for (const_tree_iterator it = node.children.begin(); it != end; ++it)
         {
-            if (get_node_range<T>(it, node_to_search, nodes))
+            if (impl::get_node_range<T>(it, node_to_search, nodes))
                 return true;
         }
     }

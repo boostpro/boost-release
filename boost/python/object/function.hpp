@@ -6,9 +6,8 @@
 #ifndef FUNCTION_DWA20011214_HPP
 # define FUNCTION_DWA20011214_HPP
 
-# include <boost/python/detail/wrap_python.hpp>
+# include <boost/python/detail/prefix.hpp>
 # include <boost/python/args_fwd.hpp>
-# include <boost/python/detail/config.hpp>
 # include <boost/python/handle.hpp>
 # include <boost/function/function2.hpp>
 # include <boost/python/object_core.hpp>
@@ -20,8 +19,6 @@ struct BOOST_PYTHON_DECL function : PyObject
 {
     function(
         py_function const&
-        , unsigned min_arity
-        , unsigned max_arity
         , python::detail::keyword const* names_and_defaults
         , unsigned num_keywords);
       
@@ -49,12 +46,12 @@ struct BOOST_PYTHON_DECL function : PyObject
     
  private: // data members
     py_function m_fn;
-    unsigned m_min_arity;
-    unsigned m_max_arity;
     handle<function> m_overloads;
     object m_name;
+    object m_namespace;
     object m_doc;
     object m_arg_names;
+    unsigned m_nkeyword_values;
 };
 
 //

@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta name="generator" content=
-    "HTML Tidy for Windows (vers 1st August 2002), see www.w3.org">
+    "HTML Tidy for Cygwin (vers 1st April 2002), see www.w3.org">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <link rel="stylesheet" type="text/css" href="boost.css">
 
@@ -29,18 +29,100 @@
     <hr>
 
     <dl class="page-index">
+      <dt>11 Sept 2003</dt>
+
+      <dd>
+        <ul>
+          <li>Changed the response to multiple to-python converters being
+          registered for the same type from a hard error into warning;
+          Boost.Python now reports the offending type in the message.</li>
+
+          <li>Added builtin <code>std::wstring</code> conversions</li>
+
+          <li>Added <code>std::out_of_range</code> =&gt; Python
+          <code>IndexError</code> exception conversion, thanks to <a href=
+          "mailto:RaoulGough-at-yahoo.co.uk">Raoul Gough</a></li>
+        </ul>
+      </dd>
+
+      <dt>9 Sept 2003</dt>
+
+      <dd>Added new <code><a href="v2/str.html#str-spec">str</a></code></dd>
+
+      <dt>constructors which take a range of characters, allowing strings
+      containing nul (<code>'\0'</code>) characters.</dt>
+
+      <dt>8 Sept 2003</dt>
+
+      <dd>Added the ability to create methods from function objects (with an
+      <code>operator()</code>); see the <a href=
+      "v2/make_function.html#make_function-spec">make_function</a> docs for
+      more info.</dd>
+
+      <dt>10 August 2003</dt>
+
+      <dd>Added the new <code>properties</code> unit tests contributed by <a
+      href="mailto:romany-at-actimize.com">Roman Yakovenko</a> and documented
+      <code>add_static_property</code> at his urging.</dd>
+
+      <dt>1 August 2003</dt>
+
+      <dd>
+        Added the new <code>arg</code> class contributed by <a href=
+        "mailto:nickm-at-sitius.com">Nikolay Mladenov</a> which supplies the
+        ability to wrap functions that can be called with ommitted arguments
+        in the middle: 
+<pre>
+void f(int x = 0, double y = 3.14, std::string z = std::string("foo"));
+
+BOOST_PYTHON_MODULE(test)
+{
+   def("f", f
+       , (arg("x", 0), arg("y", 3.14), arg("z", "foo")));
+}
+ 
+</pre>
+        And in Python: 
+<pre>
+&gt;&gt;&gt; import test
+&gt;&gt;&gt; f(0, z = "bar")
+&gt;&gt;&gt; f(z = "bar", y = 0.0)
+</pre>
+        Thanks, Nikolay!
+      </dd>
+
+      <dt>22 July 2003</dt>
+
+      <dd>Killed the dreaded "bad argument type for builtin operation" error.
+      Argument errors now show the actual and expected argument types!</dd>
+
+      <dt>19 July 2003</dt>
+
+      <dd>Added the new <code><a href=
+      "v2/return_arg.html">return_arg</a></code> policy from <a href=
+      "mailto:nickm-at-sitius.com">Nikolay Mladenov</a>. Thanks,
+      Nikolay!</dd>
+
+      <dt>18 March, 2003</dt>
+
+      <dd><a href="mailto:Gottfried.Ganssauge-at-haufe.de">Gottfried
+      Gan&szlig;auge</a> has contributed <a href=
+      "v2/opaque_pointer_converter.html">opaque pointer support</a>.<br>
+       <a href="mailto:nicodemus-at-globalite.com.br">Bruno da Silva de Oliveira</a>
+      has contributed the exciting <a href="../pyste/index.html">Pyste</a>
+      ("Pie-steh") package.</dd>
+
       <dt>24 February 2003</dt>
 
-      <dd>Finished improved support
-      for <code>boost::shared_ptr</code>.  Now any wrapped object of
-      C++ class <code>X</code> can be converted automatically
-      to <code>shared_ptr&lt;X&gt;</code>, regardless of how it was
-      wrapped.  The <code>shared_ptr</code> will manage the lifetime
-      of the Python object which supplied the <code>X</code>, rather
-      than just the <code>X</code> object itself, and when such
-      a <code>shared_ptr</code> is converted back to Python, the
-      original Python object will be returned.</dd>
-      
+      <dd>Finished improved support for <code>boost::shared_ptr</code>. Now
+      any wrapped object of C++ class <code>X</code> can be converted
+      automatically to <code>shared_ptr&lt;X&gt;</code>, regardless of how it
+      was wrapped. The <code>shared_ptr</code> will manage the lifetime of
+      the Python object which supplied the <code>X</code>, rather than just
+      the <code>X</code> object itself, and when such a
+      <code>shared_ptr</code> is converted back to Python, the original
+      Python object will be returned.</dd>
+
       <dt>19 January 2003</dt>
 
       <dd>Integrated <code>staticmethod</code> support from <a href=
@@ -98,12 +180,12 @@
 
     <p>Revised 
     <!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->
-     20 December, 2002 
+     11 September 2003 
     <!--webbot bot="Timestamp" endspan i-checksum="39359" -->
     </p>
 
     <p><i>&copy; Copyright <a href="../../../people/dave_abrahams.htm">Dave
-    Abrahams</a> 2002. All Rights Reserved.</i></p>
+    Abrahams</a> 2002-2003. All Rights Reserved.</i></p>
   </body>
 </html>
 

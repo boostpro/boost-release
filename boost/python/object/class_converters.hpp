@@ -14,8 +14,11 @@
 # include <boost/python/detail/force_instantiate.hpp>
 
 # include <boost/type_traits/add_pointer.hpp>
+# include <boost/type_traits/is_polymorphic.hpp>
 
 # include <boost/mpl/for_each.hpp>
+
+# include <boost/detail/workaround.hpp>
 
 namespace boost { namespace python { namespace objects { 
 
@@ -58,11 +61,15 @@ struct register_base_of
         register_conversion<Derived,Base>(false);
 
         // Register the down-cast, if appropriate.
-        mpl::if_c<
-            is_polymorphic<Base>::value
-            , register_downcast<Base,Derived>
-            , do_nothing
-            >::type::execute();
+        mpl::if_<
+# if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
+            mpl::true_
+# else
+            is_polymorphic<Base>
+# endif 
+          , register_downcast<Base,Derived>
+          , do_nothing
+        >::type::execute();
     }
 };
 
@@ -71,8 +78,9 @@ struct register_base_of
 template <class Derived, class Bases>
 inline void register_class_from_python(Derived* = 0, Bases* = 0)
 {
-    python::detail::force_instantiate(converter::shared_ptr_from_python<Derived>::registration);
-    
+    // Static object constructor performs registration
+    static converter::shared_ptr_from_python<Derived> shared_ptr_registration;
+
     // register all up/downcasts here
     register_dynamic_id<Derived>();
 

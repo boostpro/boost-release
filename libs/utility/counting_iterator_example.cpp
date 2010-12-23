@@ -5,17 +5,18 @@
 
 
 #include <boost/config.hpp>
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 #include <vector>
-#include <boost/counting_iterator.hpp>
-#include <boost/iterator_adaptors.hpp>
+#include <boost/iterator/counting_iterator.hpp>
+#include <boost/iterator/indirect_iterator.hpp>
 
 int main(int, char*[])
 {
   // Example of using counting_iterator_generator
   std::cout << "counting from 0 to 4:" << std::endl;
-  boost::counting_iterator_generator<int>::type first(0), last(4);
+  boost::counting_iterator<int> first(0), last(4);
   std::copy(first, last, std::ostream_iterator<int>(std::cout, " "));
   std::cout << std::endl;
 
@@ -27,23 +28,25 @@ int main(int, char*[])
   std::cout << std::endl;
 
   // Example of using counting iterator to create an array of pointers.
-  const int N = 7;
+#if !BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x551))
+  const
+#endif 
+      int N = 7;
   std::vector<int> numbers;
   // Fill "numbers" array with [0,N)
-  std::copy(boost::make_counting_iterator(0), boost::make_counting_iterator(N),
-            std::back_inserter(numbers));
+  std::copy(
+      boost::make_counting_iterator(0)
+      , boost::make_counting_iterator(N)
+      , std::back_inserter(numbers));
 
   std::vector<std::vector<int>::iterator> pointers;
 
   // Use counting iterator to fill in the array of pointers.
   // causes an ICE with MSVC6
-#if !defined(BOOST_MSVC) || (BOOST_MSVC > 1200)
   std::copy(boost::make_counting_iterator(numbers.begin()),
             boost::make_counting_iterator(numbers.end()),
             std::back_inserter(pointers));
-#endif 
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC > 1300)
   // Use indirect iterator to print out numbers by accessing
   // them through the array of pointers.
   std::cout << "indirectly printing out the numbers from 0 to " 
@@ -52,6 +55,6 @@ int main(int, char*[])
             boost::make_indirect_iterator(pointers.end()),
             std::ostream_iterator<int>(std::cout, " "));
   std::cout << std::endl;
-#endif
+  
   return 0;
 }

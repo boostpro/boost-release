@@ -1,18 +1,16 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2002-2003 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_LISTS_IPP
 #define BOOST_SPIRIT_LISTS_IPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "boost/spirit/utility/refactoring.hpp"
+#include <boost/spirit/meta/refactoring.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
@@ -48,9 +46,9 @@ namespace impl {
             const refactor_t refactor_item_d = refactor_t(refactor_unary_d);
 
             return (
-                    refactor_item_d[item - (delim | end)]
-                >> *(delim >> refactor_item_d[item - (delim | end)])
-                >> !end
+                    refactor_item_d[item - (end | delim)]
+                >> *(delim >> refactor_item_d[item - (end | delim)])
+                >> !(delim >> end)
             ).parse(scan);
         }
     };
@@ -96,9 +94,9 @@ namespace impl {
             ItemT const &item, DelimT const &delim, EndT const &end)
         {
             return (
-                    (item - (delim | end))
-                >> *(delim >> (item - (delim | end)))
-                >> !end
+                    (item - (end | delim))
+                >> *(delim >> (item - (end | delim)))
+                >> !(delim >> end)
             ).parse(scan);
         }
     };

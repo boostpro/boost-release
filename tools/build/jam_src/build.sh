@@ -1,9 +1,9 @@
 #!/bin/sh
-# Copyrigt (C) 2002-2003 Rene Rivera.
-# Permission to copy, use, modify, sell and distribute this software
-# is granted provided this copyright notice appears in all copies.
-# This software is provided "as is" without express or implied
-# warranty, and with no claim as to its suitability for any purpose.
+
+#~ Copyright (C) Rene Rivera, 2002-2003.
+#~ Use, modification and distribution is subject to the
+#~ Boost Software License, Version 1.0. (See accompanying file
+#~ LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 # Reset the toolset.
 BOOST_JAM_TOOLSET=
@@ -80,6 +80,9 @@ Guess_Toolset ()
     elif test_path bc++ ; then BOOST_JAM_TOOLSET=kylix
     elif test_path aCC ; then BOOST_JAM_TOOLSET=acc
     elif test_uname HP-UX ; then BOOST_JAM_TOOLSET=acc
+    elif test -r /opt/SUNWspro/bin/cc ; then
+        BOOST_JAM_TOOLSET=sunpro
+        BOOST_JAM_TOOLSET_ROOT=/opt/SUNWspro/
     # Test for "cc" as the default fallback.
     elif test_path $CC ; then BOOST_JAM_TOOLSET=cc
     elif test_path cc ; then
@@ -112,7 +115,11 @@ case $BOOST_JAM_TOOLSET in
     ;;
     
     intel-linux)
-    if test -r /opt/intel/compiler50/ia32/bin/iccvars.sh ; then
+    if test -r /opt/intel/compiler70/ia32/bin/iccvars.sh ; then
+        BOOST_JAM_TOOLSET_ROOT=/opt/intel/compiler70/ia32/
+    elif test -r /opt/intel/compiler60/ia32/bin/iccvars.sh ; then
+        BOOST_JAM_TOOLSET_ROOT=/opt/intel/compiler60/ia32/
+    elif test -r /opt/intel/compiler50/ia32/bin/iccvars.sh ; then
         BOOST_JAM_TOOLSET_ROOT=/opt/intel/compiler50/ia32/
     fi
     if test -r ${BOOST_JAM_TOOLSET_ROOT}bin/iccvars.sh ; then
@@ -142,7 +149,13 @@ case $BOOST_JAM_TOOLSET in
     ;;
     
     sunpro)
-    BOOST_JAM_CC=CC
+    if test -r /opt/SUNWspro/bin/cc ; then
+        BOOST_JAM_TOOLSET_ROOT=/opt/SUNWspro/
+    fi
+    if test -r $BOOST_JAM_TOOLSET_ROOTbin/cc ; then
+        export PATH=$BOOST_JAM_TOOLSET_ROOTbin:$PATH
+    fi
+    BOOST_JAM_CC=cc
     ;;
     
     tru64cxx)
@@ -178,7 +191,9 @@ BJAM_SOURCES="\
  hdrmacro.c headers.c jam.c jambase.c jamgram.c lists.c make.c make1.c\
  newstr.c option.c parse.c pathunix.c pathvms.c regexp.c\
  rules.c scan.c search.c subst.c timestamp.c variable.c modules.c\
- strings.c filesys.c builtins.c pwd.c"
+ strings.c filesys.c builtins.c pwd.c class.c native.c modules/set.c\
+ modules/path.c modules/regex.c modules/property-set.c\
+ modules/sequence.c"
 
 echo_run rm -rf bootstrap.$BOOST_JAM_TOOLSET
 echo_run mkdir bootstrap.$BOOST_JAM_TOOLSET
@@ -204,5 +219,6 @@ if test ! -r jambase.c ; then
 fi
 echo_run ${BOOST_JAM_CC} ${BOOST_JAM_OPT_JAM} ${BJAM_SOURCES}
 if test -x "./bootstrap.$BOOST_JAM_TOOLSET/jam0" ; then
+    echo_run ./bootstrap.$BOOST_JAM_TOOLSET/jam0 -f build.jam --toolset=$BOOST_JAM_TOOLSET "--toolset-root=$BOOST_JAM_TOOLSET_ROOT" clean
     echo_run ./bootstrap.$BOOST_JAM_TOOLSET/jam0 -f build.jam --toolset=$BOOST_JAM_TOOLSET "--toolset-root=$BOOST_JAM_TOOLSET_ROOT" "$@"
 fi

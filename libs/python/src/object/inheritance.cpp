@@ -35,6 +35,7 @@ namespace boost {
 namespace
 {
   enum edge_cast_t { edge_cast = 8010 };
+  template <class T> inline void unused_variable(const T&) { }
 }
 
 // Install properties
@@ -126,8 +127,6 @@ namespace
       cast_graph& topology() { return m_topology; }
       cast_graph const& topology() const { return m_topology; }
 
-      std::size_t known_vertices() const { return m_known_vertices; }
-
       smart_graph()
           : m_known_vertices(0)
       {}
@@ -215,6 +214,7 @@ namespace
 
       vertex_t v = add_vertex(full_graph().topology());
       vertex_t v2 = add_vertex(up_graph().topology());
+      unused_variable(v2);
       assert(v == v2);
       return type_index().insert(p, boost::make_tuple(type, v, dynamic_id_function(0)));
   }

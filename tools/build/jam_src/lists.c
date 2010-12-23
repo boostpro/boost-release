@@ -133,6 +133,85 @@ list_sublist(
 	return nl;
 }
 
+LIST *
+list_sort(
+    LIST *l)
+{
+
+    LIST* first = 0;
+    LIST* second = 0;
+    LIST* merged = l;
+    LIST* result;
+
+    if (!l)
+        return L0;
+
+    for(;;) {
+        
+        /* Split the list in two */
+        LIST** dst = &first;
+        LIST* src = merged;
+        
+        for(;;) {
+            
+            *dst = list_append(*dst, list_new(0, src->string));
+            
+            if (!src->next)
+                break;
+
+            if (strcmp(src->string, src->next->string) > 0) 
+            {
+                if (dst == &first)
+                    dst = &second;
+                else
+                    dst = &first;
+            }
+            
+            src = src->next;
+        }
+
+        if (merged != l)
+            list_free( merged );
+        merged = 0;
+        
+        if (second == 0) {
+            result = first;
+            break;
+        }
+
+        
+        /* Merge lists 'first' and 'second' into 'merged' and free
+           'first'/'second'. */
+        {
+            LIST* f = first;
+            LIST* s = second;
+
+            while(f && s)
+            {
+                if (strcmp(f->string, s->string) < 0)
+                {
+                    merged = list_append( merged, list_new(0, f->string ));
+                    f = f->next;
+                }
+                else
+                {
+                    merged = list_append( merged, list_new(0, s->string ));
+                    s = s->next;
+                }
+            }
+
+            merged = list_copy( merged, f );
+            merged = list_copy( merged, s );
+            list_free( first );
+            list_free( second );
+            first = 0;
+            second = 0;
+        }                            
+    }
+
+    return result;
+}
+
 /*
  * list_free() - free a list of strings
  */
@@ -194,6 +273,33 @@ list_length( LIST *l )
 
 	return n;
 }
+
+int     
+list_in(LIST* l, char* value)
+{
+    for(; l; l = l->next)
+        if (strcmp(l->string, value) == 0)
+            return 1;
+    return 0;
+}
+
+LIST *  
+list_unique( LIST *sorted_list)
+{
+    LIST* result = 0;
+    LIST* last_added = 0;
+
+    for(; sorted_list; sorted_list = sorted_list->next)
+    {
+        if (!last_added || strcmp(sorted_list->string, last_added->string) != 0)
+        {
+            result = list_new(result, sorted_list->string);
+            last_added = sorted_list;
+        }
+    }
+    return result;    
+}
+
 
 /*
  * lol_init() - initialize a LOL (list of lists)

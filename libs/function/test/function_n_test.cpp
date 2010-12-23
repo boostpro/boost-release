@@ -1,15 +1,9 @@
 // Boost.Function library
 
-// Copyright (C) 2001, 2002 Doug Gregor (gregod@cs.rpi.edu)
-//
-// Permission to copy, use, sell and distribute this software is granted
-// provided this copyright notice appears in all copies.
-// Permission to modify the code and to distribute modified code is granted
-// provided this copyright notice appears in all copies, and a notice
-// that the code was modified is included with the copyright notice.
-//
-// This software is provided "as is" without express or implied warranty,
-// and with no claim as to its suitability for any purpose.
+//  Copyright Doug Gregor 2001-2003. Use, modification and
+//  distribution is subject to the Boost Software License, Version
+//  1.0. (See accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 // For more information, see http://www.boost.org
 
@@ -57,8 +51,8 @@ test_zero_args()
 {
   typedef function0<void> func_void_type;
 
-  write_five_obj five;
-  write_three_obj three;
+  write_five_obj five = write_five_obj(); // Initialization for Borland C++ 5.5
+  write_three_obj three = write_three_obj(); // Ditto
 
   // Default construction
   func_void_type v1;
@@ -478,7 +472,8 @@ test_zero_args()
   BOOST_TEST(global_int == 5);
 
   // Const vs. non-const
-  write_const_1_nonconst_2 one_or_two;
+  // Initialization for Borland C++ 5.5
+  write_const_1_nonconst_2 one_or_two = write_const_1_nonconst_2(); 
   const function0<void> v7(one_or_two);
   function0<void> v8(one_or_two);
 
@@ -501,9 +496,9 @@ test_zero_args()
 
   // Test return values
   typedef function0<int> func_int_type;
-  generate_five_obj gen_five;
-  generate_three_obj gen_three;
-
+  // Initialization for Borland C++ 5.5
+  generate_five_obj gen_five = generate_five_obj();
+  generate_three_obj gen_three = generate_three_obj();
   func_int_type i0(gen_five);
 
   BOOST_TEST(i0() == 5);
@@ -536,7 +531,7 @@ test_zero_args()
 static void
 test_one_arg()
 {
-  negate<int> neg;
+  negate<int> neg = negate<int>(); // Initialization for Borland C++ 5.5
 
   function1<int, int> f1(neg);
   BOOST_TEST(f1(5) == -5);

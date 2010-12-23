@@ -1,10 +1,9 @@
 //  process jam regression test output into XML  -----------------------------//
 
-//  (C) Copyright Beman Dawes 2002. Permission to copy,
-//  use, modify, sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided "as is"
-//  without express or implied warranty, and with no claim as to its
-//  suitability for any purpose.
+//  Copyright Beman Dawes 2002.
+//  See accompanying license for terms and conditions of use.
+
+//  See http://www.boost.org/tools/regression for documentation.
 
 #include "detail/tiny_xml.hpp"
 #include "boost/filesystem/operations.hpp"
@@ -13,6 +12,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <map>
 #include <utility> // for make_pair
 #include <ctime>
@@ -102,11 +102,8 @@ namespace
   string toolset( const string & s )
   {
     string t( s );
-    string::size_type pos = t.find( "/bin/" );
-    if ( pos != string::npos ) pos += 5;
-    else return "";
-    pos = t.find( "/", pos );
-    if ( pos != string::npos ) pos += 1;
+    string::size_type pos = t.find( ".test/" );
+    if ( pos != string::npos ) pos += 6;
     else return "";
     return t.substr( pos, t.find( "/", pos ) - pos );
   }
@@ -114,10 +111,10 @@ namespace
   string test_name( const string & s )
   {
     string t( s );
-    string::size_type pos = t.find( "/bin/" );
-    if ( pos != string::npos ) pos += 5;
-    else return "";
-    return t.substr( pos, t.find( ".", pos ) - pos );
+    string::size_type pos = t.find( ".test/" );
+    if ( pos == string::npos ) return "";
+    string::size_type pos_start = t.rfind( '/', pos ) + 1;
+    return t.substr( pos_start, pos - pos_start );
   }
 
   // the format of paths is really kinky, so convert to normal form
@@ -136,9 +133,19 @@ namespace
     ++start_pos;
     string::size_type end_pos( msg.find( '>', start_pos ) );
     first_dir += msg.substr( start_pos, end_pos - start_pos );
-    start_pos = first_dir.rfind( '!' );
-    convert_path_separators( first_dir );
-    first_dir.insert( first_dir.find( '/', start_pos + 1), "/bin" );
+    if ( first_dir[0] == '@' )
+    {
+      // new style build path, rooted build tree
+      convert_path_separators( first_dir );
+      first_dir.replace( 0, 1, "bin/" );
+    }
+    else
+    {
+      // old style build path, integrated build tree
+      start_pos = first_dir.rfind( '!' );
+      convert_path_separators( first_dir );
+      first_dir.insert( first_dir.find( '/', start_pos + 1), "/bin" );
+    }
 //std::cout << first_dir << std::endl;
 
     start_pos = msg.find( '<', end_pos );
@@ -146,9 +153,19 @@ namespace
     ++start_pos;
     end_pos = msg.find( '>', start_pos );
     second_dir += msg.substr( start_pos, end_pos - start_pos );
-    start_pos = second_dir.rfind( '!' );
-    convert_path_separators( second_dir );
-    second_dir.insert( second_dir.find( '/', start_pos + 1), "/bin" );
+    if ( second_dir[0] == '@' )
+    {
+      // new style build path, rooted build tree
+      convert_path_separators( second_dir );
+      second_dir.replace( 0, 1, "bin/" );
+    }
+    else
+    {
+      // old style build path, integrated build tree
+      start_pos = second_dir.rfind( '!' );
+      convert_path_separators( second_dir );
+      second_dir.insert( second_dir.find( '/', start_pos + 1), "/bin" );
+    }
 //std::cout << second_dir << std::endl;
   }
 
@@ -321,7 +338,7 @@ namespace
       assert( m_target_directory == target_directory );
       assert( result == "succeed" || result == "fail" );
 
-      // if test_log.xml entry needed, create it
+      // if test_log.xml entry needed
       if ( !m_compile_failed
         || action_name != "compile"
         || m_previous_target_directory != target_directory )
@@ -330,6 +347,7 @@ namespace
           && result == "fail" ) m_compile_failed = true;
 
         test_log tl( target_directory, m_test_name, m_toolset );
+        tl.remove_action( "lib" ); // always clear out lib residue
 
         // dependency removal
         if ( action_name == "lib" )
@@ -366,7 +384,7 @@ namespace
 int cpp_main( int argc, char ** argv )
 {
   if ( argc <= 1 )
-    std::cout << "Usage: bjam [bjam-args] | process_jam_log [locate-root]\n"
+    std::cout << "Usage: bjam [bjam-args] | process_jam_log [--echo] [locate-root]\n"
                  "  locate-root is the same as the bjam ALL_LOCATE_TARGET\n"
                  "  parameter, if any. Default is boost-root.\n";
 
@@ -382,6 +400,13 @@ int cpp_main( int argc, char ** argv )
   {
     std::cout << "must be run from within the boost-root directory tree\n";
     return 1;
+  }
+
+  bool echo = false;
+  if ( argc > 1 && std::strcmp( argv[1], "--echo" ) == 0 )
+  {
+    echo = true;
+    --argc; ++argv;
   }
 
   locate_root = argc > 1 
@@ -405,7 +430,7 @@ int cpp_main( int argc, char ** argv )
 
   while ( std::getline( std::cin, line ) )
   {
-    //    std::cout << line << "\n";
+    if ( echo ) std::cout << line << "\n";
 
     // create map of test-name to test-info
     if ( line.find( "boost-test(" ) == 0 )
@@ -419,12 +444,16 @@ int cpp_main( int argc, char ** argv )
       for (unsigned int i = 0; i!=info.type.size(); ++i )
         { info.type[i] = std::tolower( info.type[i] ); }
       pos = line.find( ':' );
-      info.file_path = line.substr( pos+3,
-        line.find( "\"", pos+3 )-pos-3 );
-      convert_path_separators( info.file_path );
-      if ( info.file_path.find( "libs/libs/" ) == 0 ) info.file_path.erase( 0, 5 );
-      test2info.insert( std::make_pair( test_name, info ) );
-//      std::cout << test_name << ", " << info.type << ", " << info.file_path << "\n";
+      // the rest of line is missing if bjam didn't know how to make target
+      if ( pos + 1 != line.size() )
+      {
+        info.file_path = line.substr( pos+3,
+          line.find( "\"", pos+3 )-pos-3 );
+        convert_path_separators( info.file_path );
+        if ( info.file_path.find( "libs/libs/" ) == 0 ) info.file_path.erase( 0, 5 );
+        test2info.insert( std::make_pair( test_name, info ) );
+  //      std::cout << test_name << ", " << info.type << ", " << info.file_path << "\n";
+      }
       continue;
     }
 
@@ -436,10 +465,14 @@ int cpp_main( int argc, char ** argv )
       || line.find( "Cc-action " ) != string::npos
       || line.find( "vc-Cc " ) != string::npos
       || line.find( "Link-action " ) != string::npos
-      || line.find( "vc-Link " ) != string::npos )
+      || line.find( "vc-Link " ) != string::npos 
+      || line.find( ".compile.") != string::npos
+      || line.find( ".link") != string::npos
+    )
     {
       string action( ( line.find( "Link-action " ) != string::npos
-        || line.find( "vc-Link " ) != string::npos )
+        || line.find( "vc-Link " ) != string::npos 
+        || line.find( ".link") != string::npos)
         ? "link" : "compile" );
       if ( line.find( "...failed " ) != string::npos )
         mgr.stop_message( action, target_directory( line ),
@@ -463,7 +496,8 @@ int cpp_main( int argc, char ** argv )
       capture_lines = false;
     }
 
-    else if ( line.find( "execute-test" ) != string::npos )
+    else if ( line.find( "execute-test" ) != string::npos 
+             || line.find( "testing.capture-output" ) != string::npos )
     {
       if ( line.find( "...failed " ) != string::npos )
       {

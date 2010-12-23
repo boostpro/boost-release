@@ -4,6 +4,14 @@
 >>> raw(3, 4, foo = 'bar', baz = 42)
 ((3, 4), {'foo': 'bar', 'baz': 42})
 
+   Prove that we can handle empty keywords and non-keywords
+   
+>>> raw(3, 4)
+((3, 4), {})
+
+>>> raw(foo = 'bar')
+((), {'foo': 'bar'})
+
 >>> f(x= 1, y = 3, z = 'hello')
 (1, 3.0, 'hello')
 
@@ -121,7 +129,9 @@ def run(args = None):
 if __name__ == '__main__':
     print "running..."
     import sys
-    sys.exit(run()[0])
+    status = run()[0]
+    if (status == 0): print "Done."
+    sys.exit(status)
 
 
 

@@ -1,13 +1,17 @@
-//  (C) Copyright John Maddock 2001. Permission to copy, use, modify, sell and
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2001. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+//  See http://www.boost.org/libs/config for most recent version.
 
 //  MACRO:         BOOST_NO_STD_WSTREAMBUF
 //  TITLE:         std::basic_streambuf<wchar_t>
 //  DESCRIPTION:   The standard library lacks std::basic_streambuf<wchar_t>.
 
 #include <iostream>
+#include <streambuf>
+#include <string>
 
 namespace boost_no_std_wstreambuf{
 
@@ -49,8 +53,8 @@ parser_buf<charT, traits>::seekoff(off_type off, ::std::ios_base::seekdir way, :
    typedef typename parser_buf<charT, traits>::pos_type pos_type;
    if(which & ::std::ios_base::out)
       return pos_type(off_type(-1));
-   std::ptrdiff_t size = this->egptr() - this->eback();
-   std::ptrdiff_t pos = this->gptr() - this->eback();
+   int size = this->egptr() - this->eback();
+   int pos = this->gptr() - this->eback();
    charT* g = this->eback();
    switch(way)
    {
@@ -66,7 +70,7 @@ parser_buf<charT, traits>::seekoff(off_type off, ::std::ios_base::seekdir way, :
          this->setg(g, g + size - off, g + size);
    case ::std::ios_base::cur:
    {
-      std::ptrdiff_t newpos = pos + off;
+      int newpos = pos + off;
       if((newpos < 0) || (newpos > size))
          return pos_type(off_type(-1));
       else
@@ -82,11 +86,11 @@ parser_buf<charT, traits>::seekpos(pos_type sp, ::std::ios_base::openmode which)
 {
    if(which & ::std::ios_base::out)
       return pos_type(off_type(-1));
-   std::ptrdiff_t size = this->egptr() - this->eback();
+   int size = this->egptr() - this->eback();
    charT* g = this->eback();
-   if(sp <= size)
+   if(off_type(sp) <= size)
    {
-      this->setg(g, g + ::std::streamsize(sp), g + size);
+      this->setg(g, g + off_type(sp), g + size);
    }
    return pos_type(off_type(-1));
 }
@@ -101,3 +105,4 @@ template class parser_buf<char>;
 template class parser_buf<wchar_t>;
 
 }
+

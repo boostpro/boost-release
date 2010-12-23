@@ -1,20 +1,19 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2002-2003 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_CONFIX_HPP
 #define BOOST_SPIRIT_CONFIX_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "boost/spirit/core/meta/impl/parser_type.hpp"
-#include "boost/spirit/core/composite/operators.hpp"
-#include "boost/spirit/utility/impl/confix.ipp"
+#include <boost/config.hpp>
+#include <boost/spirit/meta/as_parser.hpp>
+#include <boost/spirit/core/composite/operators.hpp>
+#include <boost/spirit/utility/impl/confix.ipp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
@@ -359,7 +358,7 @@ private:
     {
         return
             impl::contiguous_parser_parse<
-                BOOST_SPIRIT_TYPENAME parser_result<ParserT, ScannerT>::type
+                BOOST_DEDUCED_TYPENAME parser_result<ParserT, ScannerT>::type
             >(p, scan, scan);
     }
 
@@ -383,13 +382,13 @@ comment_nest_parser<
 {
     return
         comment_nest_parser<
-            BOOST_SPIRIT_TYPENAME as_parser<OpenT>::type,
-            BOOST_SPIRIT_TYPENAME as_parser<CloseT>::type
+            BOOST_DEDUCED_TYPENAME as_parser<OpenT>::type,
+            BOOST_DEDUCED_TYPENAME as_parser<CloseT>::type
         >(
             as_parser<OpenT>::convert(open),
             as_parser<CloseT>::convert(close)
         );
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 }} // namespace boost::spirit

@@ -1,10 +1,7 @@
 //  tiny XML sub-set tools  --------------------------------------------------//
 
-//  (C) Copyright Beman Dawes 2002. Permission to copy,
-//  use, modify, sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided "as is"
-//  without express or implied warranty, and with no claim as to its
-//  suitability for any purpose.
+//  (C) Copyright Beman Dawes 2002.
+//  See accompanying license for terms and conditions of use.
 
 //  Provides self-contained tools for this XML sub-set:
 //
@@ -41,7 +38,7 @@ namespace boost
     typedef std::list< attribute >        attribute_list;
 
     class element
-      : boost::noncopyable  // because deep copy sematics would be required
+      : private boost::noncopyable  // because deep copy sematics would be required
     {
      public:
       std::string     name;

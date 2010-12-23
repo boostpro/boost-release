@@ -1,14 +1,12 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Joel de Guzman
     Copyright (c) 2002-2003 Hartmut Kaiser
     Copyright (c) 2003 Gustavo Guerra
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #if !defined(BOOST_SPIRIT_DEBUG_NODE_HPP)
 #define BOOST_SPIRIT_DEBUG_NODE_HPP
@@ -151,13 +149,18 @@ namespace impl {
     inline ResultT &
     print_closure_info(ResultT &hit, int level, std::string const& name)
     {
-        if (!name.empty()) {
+        if (!name.empty())
+        {
             for (int i = 0; i < level-1; ++i)
                 BOOST_SPIRIT_DEBUG_OUT << "  ";
 
         // for now, print out the return value only
-            BOOST_SPIRIT_DEBUG_OUT
-                << "^" << name << ":\t" << hit.value() << "\n";
+            BOOST_SPIRIT_DEBUG_OUT << "^" << name << ":\t";
+            if (hit.has_valid_attribute())
+                BOOST_SPIRIT_DEBUG_OUT << hit.value();
+            else
+                BOOST_SPIRIT_DEBUG_OUT << "undefined attribute";
+            BOOST_SPIRIT_DEBUG_OUT << "\n";
         }
         return hit;
     }
@@ -196,12 +199,12 @@ namespace impl {
             this->base_t::pre_parse(p, scan);
 
 #if BOOST_SPIRIT_DEBUG_FLAGS & BOOST_SPIRIT_DEBUG_FLAGS_NODES
-            if (trace_parser(p)) {
+            if (trace_parser(p.derived())) {
                 impl::print_node_info(
                     false,
                     scan.get_level(),
                     false,
-                    parser_name(p),
+                    parser_name(p.derived()),
                     scan.first,
                     scan.last);
             }
@@ -214,12 +217,12 @@ namespace impl {
         {
 #if BOOST_SPIRIT_DEBUG_FLAGS & BOOST_SPIRIT_DEBUG_FLAGS_NODES
             --scan.get_level();
-            if (trace_parser(p)) {
+            if (trace_parser(p.derived())) {
                 impl::print_node_info(
                     hit,
                     scan.get_level(),
                     true,
-                    parser_name(p),
+                    parser_name(p.derived()),
                     scan.first,
                     scan.last);
             }
@@ -288,12 +291,12 @@ namespace impl {
         post_parse(ResultT& hit, ParserT const& p, ScannerT &scan)
         {
 #if BOOST_SPIRIT_DEBUG_FLAGS & BOOST_SPIRIT_DEBUG_FLAGS_CLOSURES
-            if (hit && trace_parser(p)) {
+            if (hit && trace_parser(p.derived())) {
             // for now, print out the return value only
                 return impl::print_closure_info(
                     this->base_t::post_parse(hit, p, scan),
                     scan.get_level(),
-                    parser_name(p)
+                    parser_name(p.derived())
                 );
             }
 #endif // BOOST_SPIRIT_DEBUG_FLAGS & BOOST_SPIRIT_DEBUG_FLAGS_CLOSURES

@@ -6,6 +6,8 @@
 #ifndef POINTEE_DWA2002323_HPP
 # define POINTEE_DWA2002323_HPP
 
+# include <boost/python/detail/prefix.hpp>
+
 # include <boost/type_traits/object_traits.hpp>
 # include <boost/type_traits/remove_pointer.hpp>
 
@@ -31,7 +33,9 @@ namespace detail
 
 template <class T>
 struct pointee
-    : detail::pointee_impl<is_pointer<T>::value>::template apply<T>
+    : detail::pointee_impl<
+        ::boost::is_pointer<T>::value
+      >::template apply<T>
 {
 };
 

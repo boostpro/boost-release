@@ -203,6 +203,12 @@ var_string(
 		*out++ = *in++;
 	    }
 
+        /* Add zero to 'out' so that 'lastword' is correctly zero-terminated. */
+        if (out >= oute)
+            return -1;
+        /* Don't increment, intentionally. */
+        *out= '\0';
+           
 	    /* If a variable encountered, expand it and and embed the */
 	    /* space-separated members of the list in the output. */
 
@@ -367,9 +373,16 @@ var_dump(
 /*
  * var_done() - free variable tables
  */
+static void delete_var_( void* xvar, void* data )
+{
+    VARIABLE *v = (VARIABLE*)xvar;
+    freestr( v->symbol );
+    list_free( v-> value );
+}
 
 void
 var_done()
 {
+    hashenumerate( varhash, delete_var_, (void*)0 );
 	hashdone( varhash );
 }

@@ -1,8 +1,12 @@
 #ifndef DATE_TIME_TIME_CLOCK_HPP___
 #define DATE_TIME_TIME_CLOCK_HPP___
-/* Copyright (c) 2002 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
- * Author: Jeff Garland 
+
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
+ * Author: Jeff Garland, Bart Garst 
+ * $Date: 2003/11/23 03:29:56 $
  */
 
 /*! @file time_clock.hpp
@@ -46,9 +50,9 @@ namespace date_time {
   private:
     static time_type create_time(::std::tm* current)
     {
-      date_type d(current->tm_year + 1900, 
-                  current->tm_mon + 1, 
-                  current->tm_mday);
+      date_type d(static_cast<unsigned short>(current->tm_year + 1900), 
+                  static_cast<unsigned short>(current->tm_mon + 1), 
+                  static_cast<unsigned short>(current->tm_mday));
       time_duration_type td(current->tm_hour,
                             current->tm_min,
                             current->tm_sec);
@@ -60,16 +64,5 @@ namespace date_time {
 
 } } //namespace date_time
 
-/* Copyright (c) 2002
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- */
 
 #endif

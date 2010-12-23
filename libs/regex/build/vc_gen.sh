@@ -17,13 +17,16 @@ debug="no"
 opts=""
 # main output sub-directory:
 subdir=""
+stlport_suffix=""
+# extra debug /RTc options:
+debug_extra=""
 
 function vc6_gen_lib()
 {
-	all_dep="$all_dep $libname""_dir ./$subdir/$libname.lib"
-	echo "	copy $subdir\\$libname.lib "'"$'"(MSVCDIR)\\lib"'"' >> $iout
+	all_dep="$all_dep $libname""_dir ./$subdir$stlport_suffix/$libname.lib"
+	echo "	copy $subdir$stlport_suffix\\$libname.lib "'"$'"(MSVCDIR)\\lib"'"' >> $iout
 	if test $debug == "yes"; then
-		echo "	copy $subdir\\$libname.pdb "'"$'"(MSVCDIR)\\lib"'"' >> $iout
+		echo "	copy $subdir$stlport_suffix\\$libname.pdb "'"$'"(MSVCDIR)\\lib"'"' >> $iout
 	fi
 #
 # set up section comments:
@@ -40,40 +43,40 @@ EOF
 	for file in $src
 	do
 		obj=`echo "$file" | sed 's/.*src\/\(.*\)cpp/\1obj/g'`
-		obj="$subdir/$libname/$obj"
+		obj="$subdir$stlport_suffix/$libname/$obj"
 		all_obj="$all_obj $obj"
 		echo "$obj: $file \$(ALL_HEADER)" >> $tout
-		echo "	cl \$(INCLUDES) $opts \$(CXXFLAGS) -Fp$subdir/$libname/$libname.pch -Fo./$subdir/$libname/ -Fd$subdir/$libname.pdb $file" >> $tout
+		echo "	cl \$(INCLUDES) $opts \$(CXXFLAGS) -Y- -Fo./$subdir$stlport_suffix/$libname/ -Fd$subdir$stlport_suffix/$libname.pdb $file" >> $tout
 		echo "" >> $tout
 	done
 #
 #	 now for the directories for this library:
 	echo "$libname"_dir : >> $tout
-	echo "	@if not exist \"$subdir\\$libname\\\$(NULL)\" mkdir $subdir\\$libname" >> $tout
+	echo "	@if not exist \"$subdir$stlport_suffix\\$libname\\\$(NULL)\" mkdir $subdir$stlport_suffix\\$libname" >> $tout
 	echo "" >> $tout
 #
 #	 now for the clean options for this library:
 	all_clean="$all_clean $libname""_clean"
 	echo "$libname"_clean : >> $tout
-	echo "	del $subdir\\$libname\\"'*.obj' >> $tout
-	echo "	del $subdir\\$libname\\"'*.idb' >> $tout
-	echo "	del $subdir\\$libname\\"'*.exp' >> $tout
-	echo "	del $subdir\\$libname\\"'*.pch' >> $tout
+	echo "	del $subdir$stlport_suffix\\$libname\\"'*.obj' >> $tout
+	echo "	del $subdir$stlport_suffix\\$libname\\"'*.idb' >> $tout
+	echo "	del $subdir$stlport_suffix\\$libname\\"'*.exp' >> $tout
+	echo "	del $subdir$stlport_suffix\\$libname\\"'*.pch' >> $tout
 	echo "" >> $tout
 #
 #	 now for the main target for this library:
-	echo ./$subdir/$libname.lib : $all_obj >> $tout
-	echo "	link -lib /nologo /out:$subdir/$libname.lib \$(XSFLAGS) $all_obj" >> $tout
+	echo ./$subdir$stlport_suffix/$libname.lib : $all_obj >> $tout
+	echo "	link -lib /nologo /out:$subdir$stlport_suffix/$libname.lib \$(XSFLAGS) $all_obj" >> $tout
 	echo "" >> $tout
 }
 
 function vc6_gen_dll()
 {
-	all_dep="$all_dep $libname""_dir ./$subdir/$libname.lib"
-	echo "	copy $subdir\\$libname.lib "'"$'"(MSVCDIR)\\lib"'"' >> $iout
-	echo "	copy $subdir\\$libname.dll "'"$'"(MSVCDIR)\\bin"'"' >> $iout
+	all_dep="$all_dep $libname""_dir ./$subdir$stlport_suffix/$libname.lib"
+	echo "	copy $subdir$stlport_suffix\\$libname.lib "'"$'"(MSVCDIR)\\lib"'"' >> $iout
+	echo "	copy $subdir$stlport_suffix\\$libname.dll "'"$'"(MSVCDIR)\\bin"'"' >> $iout
 	if test $debug == "yes"; then
-		echo "	copy $subdir\\$libname.pdb "'"$'"(MSVCDIR)\\lib"'"' >> $iout
+		echo "	copy $subdir$stlport_suffix\\$libname.pdb "'"$'"(MSVCDIR)\\lib"'"' >> $iout
 	fi
 #
 # set up section comments:
@@ -90,30 +93,30 @@ EOF
 	for file in $src
 	do
 		obj=`echo "$file" | sed 's/.*src\/\(.*\)cpp/\1obj/g'`
-		obj="$subdir/$libname/$obj"
+		obj="$subdir$stlport_suffix/$libname/$obj"
 		all_obj="$all_obj $obj"
 		echo "$obj: $file \$(ALL_HEADER)" >> $tout
-		echo "	cl \$(INCLUDES) $opts \$(CXXFLAGS) -Fp$subdir/$libname/$libname.pch -Fo./$subdir/$libname/ -Fd$subdir/$libname.pdb $file" >> $tout
+		echo "	cl \$(INCLUDES) $opts \$(CXXFLAGS) -Y- -Fo./$subdir$stlport_suffix/$libname/ -Fd$subdir$stlport_suffix/$libname.pdb $file" >> $tout
 		echo "" >> $tout
 	done
 #
 #	 now for the directories for this library:
 	echo "$libname"_dir : >> $tout
-	echo "	@if not exist \"$subdir\\$libname\\\$(NULL)\" mkdir $subdir\\$libname" >> $tout
+	echo "	@if not exist \"$subdir$stlport_suffix\\$libname\\\$(NULL)\" mkdir $subdir$stlport_suffix\\$libname" >> $tout
 	echo "" >> $tout
 #
 #	 now for the clean options for this library:
 	all_clean="$all_clean $libname""_clean"
 	echo "$libname"_clean : >> $tout
-	echo "	del $subdir\\$libname\\"'*.obj' >> $tout
-	echo "	del $subdir\\$libname\\"'*.idb' >> $tout
-	echo "	del $subdir\\$libname\\"'*.exp' >> $tout
-	echo "	del $subdir\\$libname\\"'*.pch' >> $tout
+	echo "	del $subdir$stlport_suffix\\$libname\\"'*.obj' >> $tout
+	echo "	del $subdir$stlport_suffix\\$libname\\"'*.idb' >> $tout
+	echo "	del $subdir$stlport_suffix\\$libname\\"'*.exp' >> $tout
+	echo "	del $subdir$stlport_suffix\\$libname\\"'*.pch' >> $tout
 	echo "" >> $tout
 #
 #	 now for the main target for this library:
-	echo ./$subdir/$libname.lib : $all_obj >> $tout
-	echo "	link kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:\"$subdir/$libname.pdb\" /debug /machine:I386 /out:\"$subdir/$libname.dll\" /implib:\"$subdir/$libname.lib\" /LIBPATH:\$(STLPORT_PATH)\\lib \$(XLFLAGS) $all_obj" >> $tout
+	echo ./$subdir$stlport_suffix/$libname.lib : $all_obj >> $tout
+	echo "	link kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:\"$subdir$stlport_suffix/$libname.pdb\" /debug /machine:I386 /out:\"$subdir$stlport_suffix/$libname.dll\" /implib:\"$subdir$stlport_suffix/$libname.lib\" /LIBPATH:\$(STLPORT_PATH)\\lib \$(XLFLAGS) $all_obj" >> $tout
 	echo "" >> $tout
 }
 
@@ -129,43 +132,42 @@ function vc6_gen()
 	echo > $out
 	echo > $tout
 	rm -f $iout
+	stlport_suffix=""
 	
-	prefix="$subdir-"
-
-	libname="boost_regex_${subdir}_sss"
-	opts='/c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD'
+	libname="libboost_regex-${subdir}-s-${boost_version}"
+	opts='/c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD '"$release_extra"' '
 	vc6_gen_lib
 	
-	libname="boost_regex_${subdir}_mss"
-	opts='/nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c'
-	vc6_gen_lib
-	
-	debug="yes"
-	libname="boost_regex_${subdir}_sssd"
-	opts='/nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c '
-	vc6_gen_lib
-	
-	libname="boost_regex_${subdir}_mssd"
-	opts='/nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c'
-	vc6_gen_lib
-	
-	libname="boost_regex_${subdir}_mdid"
-	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c'
-	vc6_gen_dll
-	
-	debug="no"
-	opts='/nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c'
-	libname="boost_regex_${subdir}_mdi"
-	vc6_gen_dll
-	
-	debug="no"
-	opts='/nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c'
-	libname="boost_regex_${subdir}_mds"
+	libname="libboost_regex-${subdir}-mt-s-${boost_version}"
+	opts='/nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD '"$release_extra"' /c'
 	vc6_gen_lib
 	
 	debug="yes"
-	libname="boost_regex_${subdir}_mdsd"
-	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c'
+	libname="libboost_regex-${subdir}-sgd-${boost_version}"
+	opts='/nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD '"$debug_extra"' /c '
+	vc6_gen_lib
+	
+	libname="libboost_regex-${subdir}-mt-sgd-${boost_version}"
+	opts='/nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD '"$debug_extra"' /c'
+	vc6_gen_lib
+	
+	libname="boost_regex-${subdir}-mt-gd-${boost_version}"
+	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD '"$debug_extra"' /c'
+	vc6_gen_dll
+	
+	debug="no"
+	opts='/nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD '"$release_extra"' /c'
+	libname="boost_regex-${subdir}-mt-${boost_version}"
+	vc6_gen_dll
+	
+	debug="no"
+	opts='/nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD '"$release_extra"' /c'
+	libname="libboost_regex-${subdir}-mt-${boost_version}"
+	vc6_gen_lib
+	
+	debug="yes"
+	libname="libboost_regex-${subdir}-mt-gd-${boost_version}"
+	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD '"$debug_extra"' /c'
 	vc6_gen_lib
 	
 	cat > $out << EOF
@@ -218,7 +220,7 @@ EOF
 	cat $iout >> $out
 	echo >> $out
 	echo main_dir : >> $out
-	echo "	@if not exist \"$subdir\\\$(NULL)\" mkdir $subdir" >> $out
+	echo "	@if not exist \"$subdir$stlport_suffix\\\$(NULL)\" mkdir $subdir$stlport_suffix" >> $out
 	echo "" >> $out
 
 	cat $tout >> $out
@@ -234,47 +236,46 @@ function vc6_stlp_gen()
 	echo > $out
 	echo > $tout
 	rm -f $iout
+	stlport_suffix="-stlport"
 	
-	prefix="$subdir-"
-
-	libname="boost_regex_${subdir}_mss"
-	opts='/nologo /MT /W3 /GX /O2 /GB /GF /Gy /I$(STLPORT_PATH)\stlport /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c'
+	libname="libboost_regex-${subdir}-mt-sp-${boost_version}"
+	opts='/nologo /MT /W3 /GX /O2 /GB /GF /Gy /I$(STLPORT_PATH)\stlport /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB '"$release_extra"' /c'
 	vc6_gen_lib
 	
 	debug="true"
-	libname="boost_regex_${subdir}_mssd"
-	opts='/nologo /MTd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c'
-	vc6_gen_lib
+	libname="libboost_regex-${subdir}-mt-sgdp-${boost_version}"
+	opts='/nologo /MTd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB '"$debug_extra"' /c'
+	#vc6_gen_lib
 	
-	libname="boost_regex_${subdir}_mdid"
-	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c'
+	libname="boost_regex-${subdir}-mt-gdp-${boost_version}"
+	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_DYN_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
+	#vc6_gen_dll
+	
+	debug="no"
+	opts='/nologo /MD /W3 /GX /O2 /GB /GF /I$(STLPORT_PATH)\stlport /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL '"$release_extra"' /c'
+	libname="boost_regex-${subdir}-mt-p-${boost_version}"
 	vc6_gen_dll
 	
 	debug="no"
-	opts='/nologo /MD /W3 /GX /O2 /GB /GF /I$(STLPORT_PATH)\stlport /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c'
-	libname="boost_regex_${subdir}_mdi"
-	vc6_gen_dll
-	
-	debug="no"
-	opts='/nologo /MD /W3 /GX /O2 /GB /GF /Gy /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c'
-	libname="boost_regex_${subdir}_mds"
+	opts='/nologo /MD /W3 /GX /O2 /GB /GF /Gy /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL '"$release_extra"' /c'
+	libname="libboost_regex-${subdir}-mt-p-${boost_version}"
 	vc6_gen_lib
 	
 	debug="true"
-	libname="boost_regex_${subdir}_mdsd"
-	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c'
-	vc6_gen_lib
+	libname="libboost_regex-${subdir}-mt-gdp-${boost_version}"
+	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
+	#vc6_gen_lib
 
 #  debug STLPort mode:
 	debug="yes"
-	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /D__STL_DEBUG /D_STLP_DEBUG /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GZ  /c'
-	libname="boost_regex_${subdir}_mdidd"
+	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_DYN_LINK /D__STL_DEBUG /D_STLP_DEBUG /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
+	libname="boost_regex-${subdir}-mt-gdp-${boost_version}"
 	vc6_gen_dll
-	libname="boost_regex_${subdir}_mssdd"
-	opts='/nologo /MTd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I..\..\..\ /D__STL_DEBUG /D_STLP_DEBUG /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c'
+	libname="libboost_regex-${subdir}-mt-sgdp-${boost_version}"
+	opts='/nologo /MTd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I..\..\..\ /D__STL_DEBUG /D_STLP_DEBUG /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB '"$debug_extra"' /c'
 	vc6_gen_lib
-	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_STATIC_LINK /D__STL_DEBUG /D_STLP_DEBUG /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GZ  /c'
-	libname="boost_regex_${subdir}_mdsdd"
+	opts='/nologo /MDd /W3 /Gm /GX /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_STATIC_LINK /D__STL_DEBUG /D_STLP_DEBUG /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
+	libname="libboost_regex-${subdir}-mt-gdp-${boost_version}"
 	vc6_gen_lib
 	
 	cat > $out << EOF
@@ -331,7 +332,7 @@ EOF
 	cat $iout >> $out
 	echo >> $out
 	echo main_dir : >> $out
-	echo "	@if not exist \"$subdir\\\$(NULL)\" mkdir $subdir" >> $out
+	echo "	@if not exist \"$subdir$stlport_suffix\\\$(NULL)\" mkdir $subdir$stlport_suffix" >> $out
 	echo "" >> $out
 	echo 'stlport_check : $(STLPORT_PATH)\stlport\string' >> $out
 	echo "	echo" >> $out
@@ -345,6 +346,7 @@ EOF
 
 #
 # generate vc6 makefile:
+debug_extra="/GX"
 out="vc6.mak"
 subdir="vc6"
 vc6_gen
@@ -353,20 +355,46 @@ vc6_gen
 is_stlport="yes"
 out="vc6-stlport.mak"
 no_single="yes"
-subdir="vc6-stlport"
+subdir="vc6"
 vc6_stlp_gen
 #
 # generate vc7 makefile:
+debug_extra="/GX /RTC1 /Zc:wchar_t"
+release_extra="/Zc:wchar_t"
 is_stlport="no"
 out="vc7.mak"
 no_single="no"
 subdir="vc7"
 vc6_gen
+#
+# generate vc7-stlport makefile:
+is_stlport="yes"
+out="vc7-stlport.mak"
+no_single="yes"
+subdir="vc7"
+vc6_stlp_gen
+#
+# generate vc71 makefile:
+is_stlport="no"
+out="vc71.mak"
+no_single="no"
+subdir="vc71"
+vc6_gen
+#
+# generate vc71-stlport makefile:
+is_stlport="yes"
+out="vc71-stlport.mak"
+no_single="yes"
+subdir="vc71"
+vc6_stlp_gen
 
 
 #
 # remove tmep files;
 rm -f $tout $iout
+
+
+
 
 
 

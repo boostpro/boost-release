@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for updates, documentation, and revision history.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_parameters.cpp,v $
 //
-//  Version     : $Id: unit_test_parameters.cpp,v 1.7 2003/02/13 08:40:05 rogeeff Exp $
+//  Version     : $Revision: 1.11 $
 //
 //  Description : simple implementation for Unit Test Framework parameter 
 //  handling routines. May be rewritten in future to use some kind of 
@@ -94,17 +93,8 @@ retrieve_framework_parameter( c_string_literal parameter_name, int* argc, char**
 //  Revision History :
 //  
 //  $Log: unit_test_parameters.cpp,v $
-//  Revision 1.7  2003/02/13 08:40:05  rogeeff
-//  log_format, report_format, output_format introduced
-//  data() -> c_str()
-//
-//  Revision 1.6  2002/12/08 18:18:10  rogeeff
-//  catch ststem error parameter introduced
-//  eliminated of uses of NULL
-//  switched to use c_string_literal
-//
-//  Revision 1.5  2002/11/02 20:04:42  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.11  2003/12/01 00:42:37  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

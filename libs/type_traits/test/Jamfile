@@ -2,9 +2,8 @@
 subproject libs/type_traits/test ;
 
 # bring in the rules for testing
-SEARCH on testing.jam = $(BOOST_BUILD_PATH) ;
-include testing.jam ;
-    			
+import testing ;
+            
 rule type-traits-run ( sources + )
 {
         return [ 
@@ -25,9 +24,9 @@ rule type-traits-run ( sources + )
 }
 
 lib type_traits_init : init.cpp 
-    	: 
-        	<sysinclude>$(BOOST_ROOT)
-    	: 
+      : 
+         <sysinclude>$(BOOST_ROOT)
+      : 
 ;
     
         
@@ -82,10 +81,13 @@ test-suite type_traits :
 [ type-traits-run tricky_add_pointer_test.cpp ]
 [ type-traits-run tricky_function_type_test.cpp ]
 [ type-traits-run tricky_incomplete_type_test.cpp ]
+[ type-traits-run tricky_is_enum_test.cpp ]
 [ type-traits-run tricky_partial_spec_test.cpp ]
 [ type-traits-run type_with_alignment_test.cpp ]
+[ type-traits-run udt_specialisations.cpp ]
 
 ; # type traits suite
+
 
 
 

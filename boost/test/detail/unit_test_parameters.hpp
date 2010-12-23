@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_parameters.hpp,v $
 //
-//  Version     : $Id: unit_test_parameters.hpp,v 1.7 2003/02/13 08:07:20 rogeeff Exp $
+//  Version     : $Revision: 1.12 $
 //
 //  Description : storage for unit test framework parameters information
 // ***************************************************************************
@@ -37,8 +36,8 @@ c_string_literal const REPORT_FORMAT     = "BOOST_TEST_REPORT_FORMAT";          
 c_string_literal const LOG_FORMAT        = "BOOST_TEST_LOG_FORMAT";             // --log_format
 c_string_literal const OUTPUT_FORMAT     = "BOOST_TEST_OUTPUT_FORMAT";          // --output_format
 
-enum report_level                             { CONFIRMATION_REPORT, SHORT_REPORT, DETAILED_REPORT, NO_REPORT };
-c_string_literal const report_level_names[] = { "confirm"          , "short"     , "detailed"     , "no"      };
+enum report_level                             { CONFIRMATION_REPORT, SHORT_REPORT, DETAILED_REPORT, NO_REPORT, UNDEF_REPORT };
+c_string_literal const report_level_names[] = { "confirm"          , "short"     , "detailed"     , "no"     };
 
 enum output_format { HRF /* human readable format */, XML /* XML */ };
 
@@ -52,15 +51,8 @@ std::string retrieve_framework_parameter( c_string_literal parameter_name_, int*
 //  Revision History :
 //  
 //  $Log: unit_test_parameters.hpp,v $
-//  Revision 1.7  2003/02/13 08:07:20  rogeeff
-//  report_format log_format and output_format introduced
-//
-//  Revision 1.6  2002/12/08 17:38:44  rogeeff
-//  catch_system_error framework cla parameter and envronment variable introduced
-//  switch to use c_string_literal
-//
-//  Revision 1.5  2002/11/02 19:31:05  rogeeff
-//  merged into the main trank
+//  Revision 1.12  2003/12/01 00:41:56  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

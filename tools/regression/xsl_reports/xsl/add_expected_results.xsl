@@ -17,7 +17,9 @@
   <xsl:output method="xml" encoding="utf-8"/>
   
   <xsl:param name="expected_results_file"/>
+  <xsl:param name="failures_markup_file"/>
   <xsl:variable name="expected_results" select="document( $expected_results_file )" />
+  <xsl:variable name="failures_markup" select="document( $failures_markup_file )" />
 
   <xsl:template match="/">
     <xsl:apply-templates/>
@@ -33,6 +35,10 @@
 
       <xsl:variable name="actual_result">
         <xsl:choose>
+          <!-- Hack: needs to be researched (and removed). See M.Wille's incident. -->
+          <xsl:when test="run/@result='succeed' and lib/@result='fail'">
+            <xsl:text>success</xsl:text>
+	  </xsl:when>
           <xsl:when test="./*/@result = 'fail'" >
             <xsl:text>fail</xsl:text>
           </xsl:when>
@@ -43,23 +49,7 @@
       </xsl:variable>
 
       <xsl:variable name="expected_results_test_case" select="$expected_results//*/test-result[ @library=$library and ( @test-name=$test-name or @test-name='*' ) and @toolset = $toolset]"/>
-
-      <xsl:variable name="expected_result">
-        <xsl:choose>
-          <xsl:when test="$expected_results_test_case and $expected_results_test_case/@result = 'fail'">
-            <xsl:text>fail</xsl:text>
-          </xsl:when>
-          <xsl:otherwise>success</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-
-      <xsl:variable name="status">
-        <xsl:choose>
-          <xsl:when test="$expected_result = $actual_result">expected</xsl:when>
-          <xsl:otherwise>unexpected</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-
+      <xsl:variable name="failures_markup" select="$failures_markup//library[@name=$library]/test[@name = $test-name or @name = '*']/mark-failure[  ( toolset/@name = $toolset or toolset/@name = '*' ) ]"/>
       <xsl:variable name="is_new">
          <xsl:choose>
             <xsl:when test="$expected_results_test_case">
@@ -69,28 +59,65 @@
          </xsl:choose>
       </xsl:variable>
 
+      
+      <xsl:variable name="expected_result">
+        <xsl:choose>
+          <xsl:when test='count( $failures_markup ) &gt; 0'>
+            <xsl:text>fail</xsl:text>
+          </xsl:when>
+          
+          <xsl:otherwise>
+            <xsl:choose>
+              <xsl:when test="$expected_results_test_case and $expected_results_test_case/@result = 'fail'">
+                <xsl:text>fail</xsl:text>
+              </xsl:when>
+              
+              <xsl:otherwise>success</xsl:otherwise>
+            </xsl:choose>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:variable name="status">
+        <xsl:choose>
+          <xsl:when test="count( $failures_markup ) &gt; 0">
+            <xsl:choose>
+              <xsl:when test="$expected_result = $actual_result">expected</xsl:when>
+              <xsl:otherwise>unexpected</xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+
+          <xsl:otherwise>
+            <xsl:choose>
+              <xsl:when test="$expected_result = $actual_result">expected</xsl:when>
+              <xsl:otherwise>unexpected</xsl:otherwise>
+            </xsl:choose>
+          </xsl:otherwise>
+          
+        </xsl:choose>
+      </xsl:variable>
+
       <xsl:variable name="notes">
-        <xsl:for-each select="$expected_results_test_case/note">
-          <xsl:choose>
-            <xsl:when test="@ref">
-              <xsl:variable name="note-ref">
-                <xsl:value-of select="@ref"/>
-              </xsl:variable>
-              <xsl:copy-of select="$expected_results//*/note[@id=$note-ref]"/>
-            </xsl:when>
-            <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test='count( $failures_markup ) &gt; 0'>
+            <xsl:for-each select="$failures_markup/note">
               <xsl:copy-of select="."/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:for-each>
-        <!--        <xsl:copy-of select="$expected_results_test_case/node()"/>-->
+            </xsl:for-each>
+            <!--        <xsl:copy-of select="$expected_results_test_case/node()"/>-->
+          </xsl:when>
+
+          
+        </xsl:choose>
       </xsl:variable>
 
       <xsl:attribute name="result"><xsl:value-of select="$actual_result"/></xsl:attribute>
       <xsl:attribute name="expected-result"><xsl:value-of select="$expected_result"/></xsl:attribute>
       <xsl:attribute name="status"><xsl:value-of select="$status"/></xsl:attribute>
       <xsl:attribute name="is-new"><xsl:value-of select="$is_new"/></xsl:attribute>
+      <!--<a><xsl:value-of select="count( $failures_markup )"/></a>-->
       <xsl:element name="notes"><xsl:copy-of select="$notes"/></xsl:element>
+
+
       <xsl:apply-templates select="node()" />
     </xsl:element>
   </xsl:template>

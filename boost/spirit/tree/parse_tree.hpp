@@ -1,18 +1,16 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Daniel Nuffer
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_TREE_PARSE_TREE_HPP
 #define BOOST_SPIRIT_TREE_PARSE_TREE_HPP
 
-#include "boost/spirit/tree/common.hpp"
-#include "boost/spirit/core/scanner/scanner.hpp"
+#include <boost/spirit/tree/common.hpp>
+#include <boost/spirit/core/scanner/scanner.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
@@ -182,7 +180,7 @@ pt_parse(
     IteratorT const&        last,
     parser<ParserT> const&  p,
     SkipT const&            skip,
-    NodeFactoryT const &    dummy_ = NodeFactoryT())
+    NodeFactoryT const &    /*dummy_*/ = NodeFactoryT())
 {
     typedef skip_parser_iteration_policy<SkipT> iter_policy_t;
     typedef pt_match_policy<IteratorT, NodeFactoryT> pt_match_policy_t;

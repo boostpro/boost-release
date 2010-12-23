@@ -1,15 +1,14 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
 //  (C) Copyright Ullrich Koethe 2001.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_suite.hpp,v $
 //
-//  Version     : $Id: unit_test_suite.hpp,v 1.13 2003/02/13 08:23:08 rogeeff Exp $
+//  Version     : $Revision: 1.18 $
 //
 //  Description : defines all classes in test_case hierarchy and object generators
 //  for them.
@@ -28,6 +27,8 @@
 
 // STL
 #include <string>  // for std::string
+
+//____________________________________________________________________________//
 
 #define BOOST_TEST_CASE( function ) \
 boost::unit_test_framework::create_test_case((function), #function )
@@ -52,20 +53,26 @@ class test_case {
 public:
     typedef detail::unit_test_monitor::error_level error_level_type;
 
+    // post creation configuration
+    void                depends_on( test_case const* rhs );
+
     // Destructor
     virtual             ~test_case()    {}
 
-    // number of tests in this test case
+    // total number of test cases
     virtual unit_test_counter size() const;
 
     // execute this method to run the test case
     void                run();
 
+    // status
+    bool                has_passed() const;
+
     // public properties
     BOOST_READONLY_PROPERTY( int, 2, (test_case,test_suite) )
                         p_timeout;                  // timeout for the excecution monitor
     BOOST_READONLY_PROPERTY( unit_test_counter, 1, (test_suite) )
-                        p_expected_failures;        // number of aseertions that are expected to fail in this test case
+                        p_expected_failures;        // number of assertions that are expected to fail in this test case
     BOOST_READONLY_PROPERTY( bool, 0, () )
                         p_type;                     // true = test case, false - test suite
     BOOST_READONLY_PROPERTY( std::string, 0, () )
@@ -87,7 +94,7 @@ protected:
     // Constructor
     explicit            test_case( std::string const&   name_,
                                    bool                 type_,
-                                   unit_test_counter    stages_number_,
+                                   unit_test_counter    stages_amount_,
                                    bool                 monitor_run_    = true );
 
     // test case implementation hooks to be called with unit_test_monitor or alone
@@ -97,10 +104,20 @@ protected:
 
 private:
     // Data members
-    bool                m_monitor_run;              // true - unit_test_monitor will be user to monitor running
-                                                    // of implementation function
-    static bool         s_abort_testing;            // used to flag critical error and try gracefully stop testing
+    struct Impl;
+    boost::shared_ptr<Impl> m_pimpl;
 };
+
+//____________________________________________________________________________//
+
+extern detail::unit_test_monitor the_monitor;
+
+template<typename Exception, typename ExceptionTranslator>
+void
+register_exception_translator( ExceptionTranslator const& tr, boost::type<Exception>* d = 0 )
+{
+    the_monitor.register_exception_translator( tr, d );
+}
 
 //____________________________________________________________________________//
 
@@ -307,20 +324,8 @@ create_test_case( void (UserTestCase::*fct_)( ParamType ), std::string name_, bo
 //  Revision History :
 //  
 //  $Log: unit_test_suite.hpp,v $
-//  Revision 1.13  2003/02/13 08:23:08  rogeeff
-//  C strings eliminated
-//  type: virtual method -> property
-//  const added to user test case shared instance reference
-//
-//  Revision 1.12  2002/12/08 17:51:04  rogeeff
-//  notion of number of stages is separated from number of test cases, so that
-//  parameterized test case in reported as one test case
-//  fixed bug in both parameterized function/class test cases with not iterating
-//  parameter iterator if exception occured
-//  switched to use c_string_literal
-//
-//  Revision 1.11  2002/11/02 19:31:04  rogeeff
-//  merged into the main trank
+//  Revision 1.18  2003/12/01 00:41:56  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

@@ -21,6 +21,7 @@
 # include <boost/mpl/bool.hpp>
 # include <boost/mpl/if.hpp>
 # include <boost/mpl/or.hpp>
+# include <boost/mpl/not.hpp>
 
 # include <boost/type_traits/same_traits.hpp>
 # include <boost/type_traits/is_base_and_derived.hpp>
@@ -49,7 +50,7 @@ namespace detail
   // constructor. Normally this means U is a virtual function
   // dispatcher subclass for T.
   template <class T, class U>
-  void check_default_constructible(T*, U*, mpl::bool_<true>)
+  void check_default_constructible(T*, U*, mpl::true_)
   {
       python::detail::force_instantiate(
           sizeof(specify_init_arguments_or_no_init_for_class_<T>(U((::PyObject*)0)))
@@ -59,7 +60,7 @@ namespace detail
   // Handles the "normal" case where T is held directly and
   // has_back_reference<T> is not specialized.
   template <class T>
-  void check_default_constructible(T*, T*, mpl::bool_<false>)
+  void check_default_constructible(T*, T*, mpl::false_)
   {
       python::detail::force_instantiate(
           sizeof(specify_init_arguments_or_no_init_for_class_<T>(T()))
@@ -90,19 +91,26 @@ namespace detail
   template <class T, class Held>
   struct select_value_holder
   {
-      BOOST_STATIC_CONSTANT(bool, back_ref = (!is_same<T,Held>::value) | has_back_reference<T>::value);
-
+   private:
+      typedef mpl::or_<
+          mpl::not_<is_same<T,Held> >
+        , has_back_reference<T>
+      > use_back_ref;
+  
+   public:
       static void assert_default_constructible()
       {
-          detail::check_default_constructible((T*)0,(Held*)0,mpl::bool_<back_ref>());
+          detail::check_default_constructible((T*)0,(Held*)0, use_back_ref());
       }
   
-      typedef typename mpl::if_c<
-          back_ref
-          , value_holder_back_reference<T,Held>
-          , value_holder<T>
+      typedef typename mpl::if_<
+          use_back_ref
+        , value_holder_back_reference<T,Held>
+        , value_holder<T>
       >::type type;
 
+      typedef Held held_type;
+      
       static inline void register_() {}
 
       static type* get() { return 0; }
@@ -111,23 +119,30 @@ namespace detail
   template <class T,class Ptr>
   struct select_pointer_holder
   {
-      typedef typename python::pointee<Ptr>::type pointee;
-      BOOST_STATIC_CONSTANT(bool, back_ref = (!is_same<T,pointee>::value) | has_back_reference<T>::value);
-      
+   private:
+      typedef typename python::pointee<Ptr>::type wrapper;
+      typedef mpl::or_<
+          mpl::not_<is_same<T,wrapper> >
+        , has_back_reference<T>
+      > use_back_ref;
+
+   public:
       static void assert_default_constructible()
       {
-          detail::check_default_constructible((T*)0,(pointee*)0,mpl::bool_<back_ref>());
+          detail::check_default_constructible((T*)0,(wrapper*)0, use_back_ref());
       }
   
-      typedef typename mpl::if_c<
-          back_ref
+      typedef typename mpl::if_<
+            use_back_ref
           , pointer_holder_back_reference<Ptr,T>
           , pointer_holder<Ptr,T>
       >::type type;
       
+      typedef typename pointee<Ptr>::type held_type;
+      
       static inline void register_()
       {
-          select_pointer_holder::register_(mpl::bool_<back_ref>());
+          select_pointer_holder::register_(use_back_ref());
       }
 
       static type* get() { return 0; }
@@ -155,60 +170,12 @@ namespace detail
 
 //    select_holder<T,Held>::execute((Held*)0)
 //
-// implements a compile-time returns an instantiation of
+// Returns an instantiation of
 // detail::select_value_holder or detail::select_pointer_holder, as
 // appropriate for class_<T,Held>
 template <class T, class Held>
 struct select_holder
-{
-    // Return the additional size to allocate in Python class
-    // instances to hold the C++ instance data.
-    static inline std::size_t additional_size()
-    {
-        return additional_size_helper(
-# if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
-            execute((Held*)0)
-# else
-            type()
-# endif 
-            );
-    }
-
- # if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
-    // These overloads are an elaborate workaround for deficient
-    // compilers:
-    //
-    // They are meant to be called with a null pointer to the class_'s
-    // Held template argument.  The selected overload will create an
-    // appropriate instantiation of select_value_holder or
-    // select_pointer_holder, which is itself an empty class that is
-    // ultimately used to create the class_'s instance_holder subclass
-    // object.
-
-    // No Held was specified; T is held directly by-value
-    static inline detail::select_value_holder<T,T>
-    execute(python::detail::not_specified*)
-    {
-        return detail::select_value_holder<T,T>();
-    }
-
-    // A type derived from T was specified; it is assumed to be a
-    // virtual function dispatcher class, and T is held as Held.
-    static inline detail::select_value_holder<T, Held>
-    execute(T*)
-    {
-        return detail::select_value_holder<T, Held>();
-    }
-
-    // Some other type was specified; Held is assumed to be a (smart)
-    // pointer to T or a class derived from T.
-    static inline detail::select_pointer_holder<T,Held>
-    execute(void*)
-    {
-        return detail::select_pointer_holder<T,Held>();
-    }
-#  else
-    typedef typename mpl::if_<
+  : mpl::if_<
         is_same<Held, python::detail::not_specified>
       , detail::select_value_holder<T,T>
       , typename mpl::if_<
@@ -219,16 +186,8 @@ struct select_holder
           , detail::select_value_holder<T,Held>
           , detail::select_pointer_holder<T, Held>
         >::type
-    >::type type;
-#  endif 
-    
- private:
-    template <class Selector>
-    static inline std::size_t additional_size_helper(Selector const&)
-    {
-        typedef typename Selector::type holder;
-        return additional_instance_size<holder>::value;
-    }
+    >::type
+{
 };
 
 }}} // namespace boost::python::objects

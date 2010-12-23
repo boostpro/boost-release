@@ -1,10 +1,9 @@
 #  (C) Copyright Gennadiy Rozental 2001-2003.
-#  Permission to copy, use, modify, sell and distribute this software
-#  is granted provided this copyright notice appears in all copies.
-#  This software is provided "as is" without express or implied warranty,
-#  and with no claim as to its suitability for any purpose.
+#  Use, modification, and distribution are subject to the 
+#  Boost Software License, Version 1.0. (See accompanying file 
+#  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
-#  See http://www.boost.org for most recent version including documentation.
+#  See http://www.boost.org/libs/test for the library home page.
 
 subproject libs/test/build ;
 
@@ -21,6 +20,7 @@ TEST_EXEC_MON_SOURCES =
   unit_test_monitor
   unit_test_result
   unit_test_suite
+  supplied_log_formatters
   test_main
   ;
 
@@ -33,13 +33,14 @@ UTF_SOURCES =
   unit_test_result
   unit_test_suite
   unit_test_main
+  supplied_log_formatters
   ;
 
 template boost_test_lib 
      ## sources ##
      : 
      ## requirements ##
-     : <sysinclude>$(BOOST_ROOT) <borland><*><cxxflags>-w-8080
+     : <sysinclude>$(BOOST_ROOT) <borland><*><cxxflags>-w-8080 <define>BOOST_TEST_NO_AUTO_LINK=1
      ## default build ##
      : <threading>single/multi <runtime-link>static/dynamic
      ;
@@ -62,5 +63,36 @@ dll boost_test_exec_monitor   : <template>boost_test_lib
                                 ../src/$(TEST_EXEC_MON_SOURCES).cpp ; 
 
 dll boost_unit_test_framework : <template>boost_test_lib
-                                ../src/$(UTF_SOURCES).cpp ; 
+                                ../src/$(UTF_SOURCES).cpp ;
 }
+
+install test lib
+    :
+        [ unless $(NT) :
+            <dll>boost_prg_exec_monitor
+            <dll>boost_test_exec_monitor
+            <dll>boost_unit_test_framework ]
+        <lib>boost_prg_exec_monitor
+        <lib>boost_test_exec_monitor
+        <lib>boost_unit_test_framework
+    ;
+
+stage stage/lib 
+    : 
+        [ unless $(NT) :
+            <dll>boost_prg_exec_monitor
+            <dll>boost_test_exec_monitor
+            <dll>boost_unit_test_framework ]
+        <lib>boost_prg_exec_monitor
+        <lib>boost_test_exec_monitor
+        <lib>boost_unit_test_framework
+
+    :
+        <locate>$(BOOST_ROOT)
+        common-stage-tag
+        <tag><postfix>-$(version-tag)
+        <target>stage
+        <target>all
+    :
+        debug release
+    ;

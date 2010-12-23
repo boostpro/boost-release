@@ -6,7 +6,7 @@
 #ifndef MAKE_INSTANCE_DWA200296_HPP
 # define MAKE_INSTANCE_DWA200296_HPP
 
-# include <boost/python/detail/wrap_python.hpp>
+# include <boost/python/detail/prefix.hpp>
 # include <boost/python/object/instance.hpp>
 # include <boost/python/converter/registered.hpp>
 # include <boost/python/detail/decref_guard.hpp>
@@ -26,8 +26,8 @@ struct make_instance_impl
 
         PyTypeObject* type = Derived::get_class_object(x);
 
-		if (type == 0)
-			return python::detail::none();
+        if (type == 0)
+            return python::detail::none();
 
         PyObject* raw_result = type->tp_alloc(
             type, objects::additional_instance_size<Holder>::value);

@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -63,9 +59,9 @@ class class_index
    boost::regex expression;
    map_type index;
    std::string::const_iterator base;
-   typedef boost::match_results<std::string::const_iterator, boost::regex::allocator_type> arg_type;
+   typedef boost::match_results<std::string::const_iterator> arg_type;
 
-   bool grep_callback(const boost::match_results<std::string::const_iterator, boost::regex::allocator_type>& what);
+   bool grep_callback(const boost::match_results<std::string::const_iterator>& what);
 public:
    map_type& get_map() { return index; }
    typedef bool (__closure* grep_callback_type)(const arg_type&);
@@ -76,7 +72,7 @@ public:
         {}
 };
 
-bool class_index::grep_callback(const boost::match_results<std::string::const_iterator, boost::regex::allocator_type>& what)
+bool class_index::grep_callback(const boost::match_results<std::string::const_iterator>& what)
 {
    // what[0] contains the whole string
    // what[5] contains the class name.
@@ -109,6 +105,7 @@ using namespace std;
 void load_file(std::string& s, std::istream& is)
 {
    s.erase();
+   if(is.bad()) return;
    s.reserve(is.rdbuf()->in_avail());
    char c;
    while(is.get(c))
@@ -127,6 +124,7 @@ int main(int argc, const char** argv)
       cout << "Processing file " << argv[i] << endl;
       std::ifstream fs(argv[i]);
       load_file(text, fs);
+      fs.close();
       class_index i;
       i.IndexClasses(text);
       cout << i.get_map().size() << " matches found" << endl;
@@ -147,9 +145,11 @@ int main(int argc, const char** argv)
 int main()
 {
    return 0;
-};
+}
 
 
 #endif
+
+
 
 

@@ -8,11 +8,14 @@
  */
 # ifndef OPAQUE_POINTER_CONVERTER_HPP_
 # define OPAQUE_POINTER_CONVERTER_HPP_
+
+# include <boost/python/detail/prefix.hpp>
 # include <boost/python/lvalue_from_pytype.hpp>
 # include <boost/python/to_python_converter.hpp>
 # include <boost/python/detail/dealloc.hpp>
 # include <boost/python/detail/none.hpp>
 # include <boost/type_traits/remove_pointer.hpp>
+# include <boost/type_traits/is_pointer.hpp>
 
 // opaque_pointer_converter --
 //
@@ -73,10 +76,8 @@ public:
         if (x != 0) {
             instance *o = PyObject_New (instance, &type_object);
 
-            if (o != 0) {
-                o->x   = x;
-                result = &o->base_;
-            }
+            o->x   = x;
+            result = &o->base_;
         } else {
             result = detail::none();
         }
@@ -112,34 +113,24 @@ PyTypeObject opaque_pointer_converter<Pointer>::type_object =
     ::boost::python::detail::dealloc
 };
 }} // namespace boost::python
-# if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
+#  ifdef BOOST_MSVC
 // MSC works without this workaround, but needs another one ...
-# define BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(Pointee)  \
-BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION(Pointee)
-# elif BOOST_WORKAROUND(__GNUC__, < 3)
-# define BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(Pointee)  \
-namespace boost { namespace python {                       \
-    template<>                                             \
-    inline type_info type_id<Pointee>() {                  \
-        return type_info (typeid (Pointee *));             \
-    }                                                      \
-    template<>                                             \
-    inline type_info type_id<const volatile Pointee &>() { \
-        return type_info (typeid (Pointee *));             \
-    }                                                      \
+#  define BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(Pointee)      \
+     BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION(Pointee)
+#  else
+#   define BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(Pointee)                     \
+    namespace boost { namespace python {                                        \
+    template<>                                                                  \
+    inline type_info type_id<Pointee>(BOOST_PYTHON_EXPLICIT_TT_DEF(Pointee))    \
+    {                                                                           \
+        return type_info (typeid (Pointee *));                                  \
+    }                                                                           \
+    template<>                                                                  \
+    inline type_info type_id<const volatile Pointee&>(                          \
+        BOOST_PYTHON_EXPLICIT_TT_DEF(const volatile Pointee&))                  \
+    {                                                                           \
+        return type_info (typeid (Pointee *));                                  \
+    }                                                                           \
 }}
-# else
-# define BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(Pointee) \
-namespace boost { namespace python {                      \
-    template<>                                            \
-    inline type_info type_id(boost::type<Pointee>*) {     \
-        return type_info (typeid (Pointee *));            \
-    }                                                     \
-    template<>                                            \
-    inline type_info type_id(                             \
-        boost::type<const volatile Pointee &>*) {         \
-        return type_info (typeid (Pointee *));            \
-    }                                                     \
-}}
-# endif
-# endif	// OPAQUE_POINTER_CONVERTER_HPP_
+#  endif
+# endif    // OPAQUE_POINTER_CONVERTER_HPP_

@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -78,11 +74,12 @@ int main(int argc, char* argv[])
 {
    if(argc > 1)
    {
-      for(unsigned int i = 1; i < argc; ++i)
+      for(int i = 1; i < argc; ++i)
       {
          std::ifstream fs(argv[i]);
          if(fs.bad()) continue;
          search(fs);
+         fs.close();
       }
    }
    else
@@ -101,6 +98,7 @@ int main(int argc, char* argv[])
    std::cout << "total tag count was " << tags << std::endl;
    return 0;
 }
+
 
 
 

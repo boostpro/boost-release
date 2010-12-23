@@ -6,13 +6,12 @@
 #ifndef ITERATOR_CORE_DWA2002512_HPP
 # define ITERATOR_CORE_DWA2002512_HPP
 
-# include <boost/python/detail/config.hpp>
 # include <boost/python/object_fwd.hpp>
 
 namespace boost { namespace python { namespace objects {
 
 BOOST_PYTHON_DECL object const& identity_function();
-BOOST_PYTHON_DECL void set_stop_iteration_error();
+BOOST_PYTHON_DECL void stop_iteration_error();
 
 }}} // namespace boost::python::object
 

@@ -1,22 +1,21 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
 //  (C) Copyright Beman Dawes and Ullrich Koethe 1995-2001.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  Use, modification, and distribution are subject to the
+//  Boost Software License, Version 1.0. (See accompanying file
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for updates, documentation, and revision history.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: execution_monitor.cpp,v $
 //
-//  Version     : $Id: execution_monitor.cpp,v 1.21 2003/02/17 10:04:21 rogeeff Exp $
+//  Version     : $Revision: 1.30 $
 //
-//  Description : provides execution monitor implementation for all supported 
+//  Description : provides execution monitor implementation for all supported
 //  configurations, including Microsoft structured exception based, unix signals
 //  based and special workarounds for borland
 //
 //  Note that when testing requirements or user wishes preclude use of this
-//  file as a separate compilation uses, it may be #included as a header file.
+//  file as a separate compilation unit, it may be included as a header file.
 //
 //  Header dependencies are deliberately restricted to reduce coupling to other
 //  boost libraries.
@@ -37,26 +36,30 @@
 #include <stdexcept>          // for std exception hierarchy
 #include <cstring>            // for C string API
 #include <cassert>            // for assert
+#include <cstddef>            // for NULL
 
 #ifdef BOOST_NO_STDC_NAMESPACE
 namespace std { using ::strlen; using ::strncat; }
 #endif
 
 // Microsoft + other compatible compilers such as Intel
-#if defined(_MSC_VER) || (defined(__INTEL__) && defined(__MWERKS__) && __MWERKS__ >= 0x3000)
+#if !defined(BOOST_DISABLE_WIN32) &&                                        \
+    !defined(__BORLANDC__) &&                                               \
+    (defined(_MSC_VER) && !defined(__COMO__)) ||                            \
+    (defined(__INTEL__) && defined(__MWERKS__) && __MWERKS__ >= 0x3000)
 
 #define BOOST_MS_STRCTURED_EXCEPTION_HANDLING
 #include <wtypes.h>
 #include <winbase.h>
 #include <excpt.h>
-#include <eh.h> 
+#include <eh.h>
 
 #if !defined(NDEBUG) && !defined(__MWERKS__)  // __MWERKS__ does not seem to supply implementation of C runtime debug hooks, causing linking errors
 #define BOOST_MS_CRT_DEBUG_HOOK
 #include <crtdbg.h>
 #endif
 
-#elif (defined(__BORLANDC__) && defined(_Windows))
+#elif (defined(__BORLANDC__) && defined(_Windows) && !defined(BOOST_DISABLE_WIN32))
 #define BOOST_MS_STRCTURED_EXCEPTION_HANDLING
 #include <windows.h>  // Borland 5.5.1 has its own way of doing things.
 
@@ -68,7 +71,7 @@ namespace std { using ::strlen; using ::strncat; }
 #include <setjmp.h>
 
 #else
- 
+
 #define BOOST_NO_SIGNAL_HANDLING
 
 #endif
@@ -91,7 +94,7 @@ static int  catch_signals( execution_monitor & exmon, bool catch_system_errors, 
 static void report_error( execution_exception::error_code   ec,
                           c_string_literal                  msg1,           // first part of the message
                           c_string_literal                  msg2 = "" );    // second part of the message; sum length msg1 + msg2 should
-                                                                            // exceed REPORT_ERROR_BUFFER_SIZE; never concatinate mesages
+                                                                            // exceed REPORT_ERROR_BUFFER_SIZE; never concatenate messages
                                                                             // manually, cause it should work even in case of memory lack
 
 //____________________________________________________________________________//
@@ -103,7 +106,7 @@ static void report_error( execution_exception::error_code   ec,
 class ms_se_exception {
 public:
     // Constructor
-    explicit        ms_se_exception( unsigned int n ) 
+    explicit        ms_se_exception( unsigned int n )
     : m_se_id( n )                      {}
 
     // Destructor
@@ -158,11 +161,11 @@ assert_reporting_function( int reportType, char* userMessage, int* retVal )
     switch( reportType ) {
     case _CRT_ASSERT:
         detail::report_error( execution_exception::user_error, userMessage );
-        
+
         return 1; // return value and retVal are not important since we never reach this line
     case _CRT_ERROR:
         detail::report_error( execution_exception::system_error, userMessage );
-        
+
         return 1; // return value and retVal are not important since we never reach this line
     default:
         return 0; // use usual reporting method
@@ -177,7 +180,16 @@ assert_reporting_function( int reportType, char* userMessage, int* retVal )
 // **************               execution_monitor              ************** //
 // ************************************************************************** //
 
-int execution_monitor::execute( bool catch_system_errors, int timeout )
+int
+execution_monitor::run_function()
+{
+    return m_custom_translators ? (*m_custom_translators)( *this ) : function();
+}
+
+//____________________________________________________________________________//
+
+int
+execution_monitor::execute( bool catch_system_errors, int timeout )
 {
     using unit_test_framework::c_string_literal;
 
@@ -308,7 +320,7 @@ private:
     bool                    m_set_timeout;
 };
 
-signal_handler* signal_handler::s_active_handler = NULL; // need to be placed in thread specific storage
+signal_handler* signal_handler::s_active_handler = NULL; //!! need to be placed in thread specific storage
 
 //____________________________________________________________________________//
 
@@ -329,13 +341,13 @@ signal_handler::signal_handler( bool catch_system_errors, int timeout )
   m_set_timeout( timeout > 0 )
 {
     s_active_handler = this;
-    
+
     if( m_catch_system_errors || m_set_timeout ) {
         m_same_action_for_all_signals.sa_flags   = 0;
         m_same_action_for_all_signals.sa_handler = &execution_monitor_signal_handler;
         sigemptyset( &m_same_action_for_all_signals.sa_mask );
     }
-    
+
     if( m_catch_system_errors ) {
         sigaction( SIGFPE , &m_same_action_for_all_signals, &m_old_SIGFPE_action  );
         sigaction( SIGTRAP, &m_same_action_for_all_signals, &m_old_SIGTRAP_action );
@@ -343,7 +355,7 @@ signal_handler::signal_handler( bool catch_system_errors, int timeout )
         sigaction( SIGBUS , &m_same_action_for_all_signals, &m_old_SIGBUS_action  );
         sigaction( SIGABRT, &m_same_action_for_all_signals, &m_old_SIGABRT_action  );
     }
-    
+
     if( m_set_timeout ) {
         sigaction( SIGALRM , &m_same_action_for_all_signals, &m_old_SIGALRM_action );
         alarm( timeout );
@@ -389,7 +401,7 @@ int catch_signals( execution_monitor & exmon, bool catch_system_errors, int time
 
     volatile int sigtype = sigsetjmp( signal_handler::jump_buffer(), 1 );
     if( sigtype == 0 ) {
-        result = exmon.function();
+        result = exmon.run_function();
     }
     else {
         switch(sigtype) {
@@ -429,7 +441,7 @@ int catch_signals( execution_monitor & exmon, bool catch_system_errors, int time
 
 //____________________________________________________________________________//
 
-#elif (defined(__BORLANDC__) && defined(_Windows))
+#elif (defined(__BORLANDC__) && defined(_Windows) && !defined(BOOST_DISABLE_WIN32))
 
 // this works for Borland but not other Win32 compilers (which trap too many cases)
 int catch_signals( execution_monitor & exmon, bool catch_system_errors, int )
@@ -437,24 +449,24 @@ int catch_signals( execution_monitor & exmon, bool catch_system_errors, int )
     int result;
 
     if( catch_system_errors ) {
-        __try { result = exmon.function(); }
-        
+        __try { result = exmon.run_function(); }
+
         __except (1)
         {
             throw ms_se_exception( GetExceptionCode() );
         }
     }
     else {
-        result = exmon.function();
+        result = exmon.run_function();
     }
     return result;
 }
 
 #else  // default signal handler
 
-int catch_signals( execution_monitor & exmon, bool, int )
+int catch_signals( execution_monitor& exmon, bool, int )
 {
-    return exmon.function();
+    return exmon.run_function();
 }
 
 #endif  // choose signal handler
@@ -495,7 +507,7 @@ report_ms_se_error( unsigned int id )
         break;
 
     case EXCEPTION_PRIV_INSTRUCTION:
-        detail::report_error( execution_exception::system_fatal_error, "privilaged instruction" );
+        detail::report_error( execution_exception::system_fatal_error, "privileged instruction" );
         break;
 
     case EXCEPTION_IN_PAGE_ERROR:
@@ -541,6 +553,7 @@ report_ms_se_error( unsigned int id )
 
     default:
         detail::report_error( execution_exception::system_error, "unrecognized exception or signal" );
+        break;
     }  // switch
 }  // report_ms_se_error
 
@@ -569,40 +582,13 @@ static void report_error( execution_exception::error_code ec, c_string_literal m
 
 // ***************************************************************************
 //  Revision History :
-//  
+//
 //  $Log: execution_monitor.cpp,v $
-//  Revision 1.21  2003/02/17 10:04:21  rogeeff
-//  some exception safety and reentrance issues addressed
+//  Revision 1.30  2003/12/20 11:27:28  johnmaddock
+//  Added fixes for Borland C++ 6.0 compiler (With EDG frontend).
 //
-//  Revision 1.20  2003/02/15 21:56:14  rogeeff
-//  temporary cwpro fix for most of link problems
-//
-//  Revision 1.19  2003/02/14 06:40:00  rogeeff
-//  use BOOST_HAS_SIGACTION for signal based algorithm selection
-//
-//  Revision 1.18  2003/02/13 08:34:12  rogeeff
-//  tentative fix for signal handling selection algorithm
-//  other minor fixes
-//
-//  Revision 1.17  2002/12/18 17:04:18  beman_dawes
-//  quiet unused parameter warning
-//
-//  Revision 1.16  2002/12/17 22:01:09  beman_dawes
-//  Add :space to std::string to prevent garbled msg
-//
-//  Revision 1.15  2002/12/10 21:09:49  beman_dawes
-//  Metrowerks fix
-//
-//  Revision 1.14  2002/12/08 18:02:14  rogeeff
-//  MS C runtime debug hooks added
-//  switched to csignal and csetjmp
-//  switched to use c_string_literal
-//  catch_system_errors switch introduced for all configurations
-//  SIGABRT catch added
-//  REPORT_ERROR_BUFFER_SIZE is named
-//
-//  Revision 1.13  2002/11/02 20:04:41  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.29  2003/12/01 00:42:37  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

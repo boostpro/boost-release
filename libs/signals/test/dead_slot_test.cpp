@@ -1,16 +1,10 @@
 // Boost.Signals library
-//
-// Copyright (C) 2001-2002 Doug Gregor (gregod@cs.rpi.edu)
-//
-// Permission to copy, use, sell and distribute this software is granted
-// provided this copyright notice appears in all copies.
-// Permission to modify the code and to distribute modified code is granted
-// provided this copyright notice appears in all copies, and a notice
-// that the code was modified is included with the copyright notice.
-//
-// This software is provided "as is" without express or implied warranty,
-// and with no claim as to its suitability for any purpose.
- 
+
+// Copyright Doug Gregor 2001-2003. Use, modification and
+// distribution is subject to the Boost Software License, Version
+// 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
 // For more information, see http://www.boost.org
 
 #define BOOST_INCLUDE_MAIN
@@ -20,7 +14,7 @@
 
 typedef boost::signal1<int, int> sig_type;
 
-class with_constant : public boost::signals::trackable {
+class with_constant : public boost::BOOST_SIGNALS_NAMESPACE::trackable {
 public:
   with_constant(int c) : constant(c) {}
 
@@ -37,7 +31,7 @@ void do_delayed_connect(with_constant* wc,
   // Should invalidate the slot, so that we cannot connect to it
   delete wc;
 
-  boost::signals::connection c = sig.connect(slot);
+  boost::BOOST_SIGNALS_NAMESPACE::connection c = sig.connect(slot);
   BOOST_TEST(!c.connected());
 }
 

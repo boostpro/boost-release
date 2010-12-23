@@ -1,25 +1,24 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Joel de Guzman
     Copyright (c) 2002-2003 Martin Wille
+    Copyright (c) 2003 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #if !defined(BOOST_SPIRIT_GRAMMAR_HPP)
 #define BOOST_SPIRIT_GRAMMAR_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#if defined(BOOST_SPIRIT_THREADSAFE) && defined(SPIRIT_SINGLE_GRAMMAR_INSTANCE)
+#if defined(BOOST_SPIRIT_THREADSAFE) && defined(BOOST_SPIRIT_SINGLE_GRAMMAR_INSTANCE)
 #undef BOOST_SPIRIT_SINGLE_GRAMMAR_INSTANCE
 #endif
 
-#include "boost/spirit/core/parser.hpp"
-#include "boost/spirit/core/non_terminal/parser_context.hpp"
-#include "boost/spirit/core/non_terminal/impl/grammar.ipp"
+#include <boost/spirit/core/parser.hpp>
+#include <boost/spirit/core/non_terminal/parser_context.hpp>
+#include <boost/spirit/core/non_terminal/impl/grammar.ipp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
@@ -29,7 +28,7 @@ namespace boost { namespace spirit {
 //  grammar class
 //
 ///////////////////////////////////////////////////////////////////////////////
-template <typename DerivedT, typename ContextT = parser_context>
+template <typename DerivedT, typename ContextT = parser_context<> >
 struct grammar
     : public parser<DerivedT>
     , public ContextT::base_t
@@ -53,7 +52,7 @@ struct grammar
     template <typename ScannerT>
     typename parser_result<self_t, ScannerT>::type
     parse_main(ScannerT const& scan) const
-    { return impl::grammar_parser_parse(this, scan); }
+    { return impl::grammar_parser_parse<0>(this, scan); }
 
     template <typename ScannerT>
     typename parser_result<self_t, ScannerT>::type
@@ -63,6 +62,11 @@ struct grammar
         typedef parser_scanner_linker<ScannerT> scanner_t;
         BOOST_SPIRIT_CONTEXT_PARSE(scan, *this, scanner_t, context_t, result_t)
     }
+
+    template <int N>
+    impl::entry_grammar<DerivedT, N, ContextT>
+    use_parser() const
+    { return impl::entry_grammar<DerivedT, N, ContextT>( this->derived()); }
 
     BOOST_SPIRIT_GRAMMAR_STATE
 };

@@ -36,27 +36,27 @@ NULL=nul
 !ENDIF
 
 
-ALL_HEADER= ../../../boost/regex/config.hpp ../../../boost/regex/pattern_except.hpp ../../../boost/regex/regex_traits.hpp ../../../boost/regex/user.hpp ../../../boost/regex/v3/fileiter.hpp ../../../boost/regex/v3/instances.hpp ../../../boost/regex/v3/regex_compile.hpp ../../../boost/regex/v3/regex_cstring.hpp ../../../boost/regex/v3/regex_format.hpp ../../../boost/regex/v3/regex_kmp.hpp ../../../boost/regex/v3/regex_library_include.hpp ../../../boost/regex/v3/regex_match.hpp ../../../boost/regex/v3/regex_raw_buffer.hpp ../../../boost/regex/v3/regex_split.hpp ../../../boost/regex/v3/regex_stack.hpp ../../../boost/regex/v3/regex_synch.hpp
+ALL_HEADER= ../../../boost/regex/config.hpp ../../../boost/regex/pattern_except.hpp ../../../boost/regex/regex_traits.hpp ../../../boost/regex/user.hpp ../../../boost/regex/v3/cregex.hpp ../../../boost/regex/v3/fileiter.hpp ../../../boost/regex/v3/instances.hpp ../../../boost/regex/v3/regex.hpp ../../../boost/regex/v3/regex_compile.hpp ../../../boost/regex/v3/regex_cstring.hpp ../../../boost/regex/v3/regex_format.hpp ../../../boost/regex/v3/regex_fwd.hpp ../../../boost/regex/v3/regex_kmp.hpp ../../../boost/regex/v3/regex_library_include.hpp ../../../boost/regex/v3/regex_match.hpp ../../../boost/regex/v3/regex_raw_buffer.hpp ../../../boost/regex/v3/regex_split.hpp ../../../boost/regex/v3/regex_stack.hpp ../../../boost/regex/v3/regex_synch.hpp ../../../boost/regex/v3/regex_traits.hpp ../../../boost/regex/v4/basic_regex.hpp ../../../boost/regex/v4/char_regex_traits.hpp ../../../boost/regex/v4/cregex.hpp ../../../boost/regex/v4/fileiter.hpp ../../../boost/regex/v4/instances.hpp ../../../boost/regex/v4/iterator_category.hpp ../../../boost/regex/v4/iterator_traits.hpp ../../../boost/regex/v4/match_flags.hpp ../../../boost/regex/v4/match_results.hpp ../../../boost/regex/v4/mem_block_cache.hpp ../../../boost/regex/v4/perl_matcher.hpp ../../../boost/regex/v4/perl_matcher_common.hpp ../../../boost/regex/v4/perl_matcher_non_recursive.hpp ../../../boost/regex/v4/perl_matcher_recursive.hpp ../../../boost/regex/v4/regbase.hpp ../../../boost/regex/v4/regex.hpp ../../../boost/regex/v4/regex_compile.hpp ../../../boost/regex/v4/regex_cstring.hpp ../../../boost/regex/v4/regex_format.hpp ../../../boost/regex/v4/regex_fwd.hpp ../../../boost/regex/v4/regex_grep.hpp ../../../boost/regex/v4/regex_iterator.hpp ../../../boost/regex/v4/regex_kmp.hpp ../../../boost/regex/v4/regex_match.hpp ../../../boost/regex/v4/regex_merge.hpp ../../../boost/regex/v4/regex_raw_buffer.hpp ../../../boost/regex/v4/regex_replace.hpp ../../../boost/regex/v4/regex_search.hpp ../../../boost/regex/v4/regex_split.hpp ../../../boost/regex/v4/regex_stack.hpp ../../../boost/regex/v4/regex_synch.hpp ../../../boost/regex/v4/regex_token_iterator.hpp ../../../boost/regex/v4/regex_traits.hpp ../../../boost/regex/v4/states.hpp ../../../boost/regex/v4/sub_match.hpp ../../../boost/regex/config/borland.hpp ../../../boost/regex/config/cstring.hpp ../../../boost/regex/config/cwchar.hpp ../../../boost/regex/config/regex_library_include.hpp
 
-all : main_dir boost_regex_vc6_sss_dir ./vc6/boost_regex_vc6_sss.lib boost_regex_vc6_mss_dir ./vc6/boost_regex_vc6_mss.lib boost_regex_vc6_sssd_dir ./vc6/boost_regex_vc6_sssd.lib boost_regex_vc6_mssd_dir ./vc6/boost_regex_vc6_mssd.lib boost_regex_vc6_mdid_dir ./vc6/boost_regex_vc6_mdid.lib boost_regex_vc6_mdi_dir ./vc6/boost_regex_vc6_mdi.lib boost_regex_vc6_mds_dir ./vc6/boost_regex_vc6_mds.lib boost_regex_vc6_mdsd_dir ./vc6/boost_regex_vc6_mdsd.lib
+all : main_dir libboost_regex-vc6-s-1_31_dir ./vc6/libboost_regex-vc6-s-1_31.lib libboost_regex-vc6-mt-s-1_31_dir ./vc6/libboost_regex-vc6-mt-s-1_31.lib libboost_regex-vc6-sgd-1_31_dir ./vc6/libboost_regex-vc6-sgd-1_31.lib libboost_regex-vc6-mt-sgd-1_31_dir ./vc6/libboost_regex-vc6-mt-sgd-1_31.lib boost_regex-vc6-mt-gd-1_31_dir ./vc6/boost_regex-vc6-mt-gd-1_31.lib boost_regex-vc6-mt-1_31_dir ./vc6/boost_regex-vc6-mt-1_31.lib libboost_regex-vc6-mt-1_31_dir ./vc6/libboost_regex-vc6-mt-1_31.lib libboost_regex-vc6-mt-gd-1_31_dir ./vc6/libboost_regex-vc6-mt-gd-1_31.lib
 
-clean :  boost_regex_vc6_sss_clean boost_regex_vc6_mss_clean boost_regex_vc6_sssd_clean boost_regex_vc6_mssd_clean boost_regex_vc6_mdid_clean boost_regex_vc6_mdi_clean boost_regex_vc6_mds_clean boost_regex_vc6_mdsd_clean
+clean :  libboost_regex-vc6-s-1_31_clean libboost_regex-vc6-mt-s-1_31_clean libboost_regex-vc6-sgd-1_31_clean libboost_regex-vc6-mt-sgd-1_31_clean boost_regex-vc6-mt-gd-1_31_clean boost_regex-vc6-mt-1_31_clean libboost_regex-vc6-mt-1_31_clean libboost_regex-vc6-mt-gd-1_31_clean
 
 install : all
-	copy vc6\boost_regex_vc6_sss.lib "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_mss.lib "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_sssd.lib "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_sssd.pdb "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_mssd.lib "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_mssd.pdb "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_mdid.lib "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_mdid.dll "$(MSVCDIR)\bin"
-	copy vc6\boost_regex_vc6_mdid.pdb "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_mdi.lib "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_mdi.dll "$(MSVCDIR)\bin"
-	copy vc6\boost_regex_vc6_mds.lib "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_mdsd.lib "$(MSVCDIR)\lib"
-	copy vc6\boost_regex_vc6_mdsd.pdb "$(MSVCDIR)\lib"
+	copy vc6\libboost_regex-vc6-s-1_31.lib "$(MSVCDIR)\lib"
+	copy vc6\libboost_regex-vc6-mt-s-1_31.lib "$(MSVCDIR)\lib"
+	copy vc6\libboost_regex-vc6-sgd-1_31.lib "$(MSVCDIR)\lib"
+	copy vc6\libboost_regex-vc6-sgd-1_31.pdb "$(MSVCDIR)\lib"
+	copy vc6\libboost_regex-vc6-mt-sgd-1_31.lib "$(MSVCDIR)\lib"
+	copy vc6\libboost_regex-vc6-mt-sgd-1_31.pdb "$(MSVCDIR)\lib"
+	copy vc6\boost_regex-vc6-mt-gd-1_31.lib "$(MSVCDIR)\lib"
+	copy vc6\boost_regex-vc6-mt-gd-1_31.dll "$(MSVCDIR)\bin"
+	copy vc6\boost_regex-vc6-mt-gd-1_31.pdb "$(MSVCDIR)\lib"
+	copy vc6\boost_regex-vc6-mt-1_31.lib "$(MSVCDIR)\lib"
+	copy vc6\boost_regex-vc6-mt-1_31.dll "$(MSVCDIR)\bin"
+	copy vc6\libboost_regex-vc6-mt-1_31.lib "$(MSVCDIR)\lib"
+	copy vc6\libboost_regex-vc6-mt-gd-1_31.lib "$(MSVCDIR)\lib"
+	copy vc6\libboost_regex-vc6-mt-gd-1_31.pdb "$(MSVCDIR)\lib"
 
 main_dir :
 	@if not exist "vc6\$(NULL)" mkdir vc6
@@ -64,451 +64,449 @@ main_dir :
 
 ########################################################
 #
-# section for boost_regex_vc6_sss.lib
+# section for libboost_regex-vc6-s-1_31.lib
 #
 ########################################################
-vc6/boost_regex_vc6_sss/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/c_regex_traits.cpp
+vc6/libboost_regex-vc6-s-1_31/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/c_regex_traits.cpp
 
-vc6/boost_regex_vc6_sss/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/c_regex_traits_common.cpp
+vc6/libboost_regex-vc6-s-1_31/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/c_regex_traits_common.cpp
 
-vc6/boost_regex_vc6_sss/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/cpp_regex_traits.cpp
+vc6/libboost_regex-vc6-s-1_31/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/cpp_regex_traits.cpp
 
-vc6/boost_regex_vc6_sss/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/cregex.cpp
+vc6/libboost_regex-vc6-s-1_31/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/cregex.cpp
 
-vc6/boost_regex_vc6_sss/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/fileiter.cpp
+vc6/libboost_regex-vc6-s-1_31/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/fileiter.cpp
 
-vc6/boost_regex_vc6_sss/instances.obj: ../src/instances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/instances.cpp
+vc6/libboost_regex-vc6-s-1_31/instances.obj: ../src/instances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/instances.cpp
 
-vc6/boost_regex_vc6_sss/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/posix_api.cpp
+vc6/libboost_regex-vc6-s-1_31/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/posix_api.cpp
 
-vc6/boost_regex_vc6_sss/regex.obj: ../src/regex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/regex.cpp
+vc6/libboost_regex-vc6-s-1_31/regex.obj: ../src/regex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/regex.cpp
 
-vc6/boost_regex_vc6_sss/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/regex_debug.cpp
+vc6/libboost_regex-vc6-s-1_31/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/regex_debug.cpp
 
-vc6/boost_regex_vc6_sss/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/regex_synch.cpp
+vc6/libboost_regex-vc6-s-1_31/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/regex_synch.cpp
 
-vc6/boost_regex_vc6_sss/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/w32_regex_traits.cpp
+vc6/libboost_regex-vc6-s-1_31/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/w32_regex_traits.cpp
 
-vc6/boost_regex_vc6_sss/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/wide_posix_api.cpp
+vc6/libboost_regex-vc6-s-1_31/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/wide_posix_api.cpp
 
-vc6/boost_regex_vc6_sss/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sss/boost_regex_vc6_sss.pch -Fo./vc6/boost_regex_vc6_sss/ -Fdvc6/boost_regex_vc6_sss.pdb ../src/winstances.cpp
+vc6/libboost_regex-vc6-s-1_31/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /c /nologo /ML /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD   $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-s-1_31/ -Fdvc6/libboost_regex-vc6-s-1_31.pdb ../src/winstances.cpp
 
-boost_regex_vc6_sss_dir :
-	@if not exist "vc6\boost_regex_vc6_sss\$(NULL)" mkdir vc6\boost_regex_vc6_sss
+libboost_regex-vc6-s-1_31_dir :
+	@if not exist "vc6\libboost_regex-vc6-s-1_31\$(NULL)" mkdir vc6\libboost_regex-vc6-s-1_31
 
-boost_regex_vc6_sss_clean :
-	del vc6\boost_regex_vc6_sss\*.obj
-	del vc6\boost_regex_vc6_sss\*.idb
-	del vc6\boost_regex_vc6_sss\*.exp
-	del vc6\boost_regex_vc6_sss\*.pch
+libboost_regex-vc6-s-1_31_clean :
+	del vc6\libboost_regex-vc6-s-1_31\*.obj
+	del vc6\libboost_regex-vc6-s-1_31\*.idb
+	del vc6\libboost_regex-vc6-s-1_31\*.exp
+	del vc6\libboost_regex-vc6-s-1_31\*.pch
 
-./vc6/boost_regex_vc6_sss.lib : vc6/boost_regex_vc6_sss/c_regex_traits.obj vc6/boost_regex_vc6_sss/c_regex_traits_common.obj vc6/boost_regex_vc6_sss/cpp_regex_traits.obj vc6/boost_regex_vc6_sss/cregex.obj vc6/boost_regex_vc6_sss/fileiter.obj vc6/boost_regex_vc6_sss/instances.obj vc6/boost_regex_vc6_sss/posix_api.obj vc6/boost_regex_vc6_sss/regex.obj vc6/boost_regex_vc6_sss/regex_debug.obj vc6/boost_regex_vc6_sss/regex_synch.obj vc6/boost_regex_vc6_sss/w32_regex_traits.obj vc6/boost_regex_vc6_sss/wide_posix_api.obj vc6/boost_regex_vc6_sss/winstances.obj
-	link -lib /nologo /out:vc6/boost_regex_vc6_sss.lib $(XSFLAGS)  vc6/boost_regex_vc6_sss/c_regex_traits.obj vc6/boost_regex_vc6_sss/c_regex_traits_common.obj vc6/boost_regex_vc6_sss/cpp_regex_traits.obj vc6/boost_regex_vc6_sss/cregex.obj vc6/boost_regex_vc6_sss/fileiter.obj vc6/boost_regex_vc6_sss/instances.obj vc6/boost_regex_vc6_sss/posix_api.obj vc6/boost_regex_vc6_sss/regex.obj vc6/boost_regex_vc6_sss/regex_debug.obj vc6/boost_regex_vc6_sss/regex_synch.obj vc6/boost_regex_vc6_sss/w32_regex_traits.obj vc6/boost_regex_vc6_sss/wide_posix_api.obj vc6/boost_regex_vc6_sss/winstances.obj
-
-########################################################
-#
-# section for boost_regex_vc6_mss.lib
-#
-########################################################
-vc6/boost_regex_vc6_mss/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/c_regex_traits.cpp
-
-vc6/boost_regex_vc6_mss/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/c_regex_traits_common.cpp
-
-vc6/boost_regex_vc6_mss/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/cpp_regex_traits.cpp
-
-vc6/boost_regex_vc6_mss/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/cregex.cpp
-
-vc6/boost_regex_vc6_mss/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/fileiter.cpp
-
-vc6/boost_regex_vc6_mss/instances.obj: ../src/instances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/instances.cpp
-
-vc6/boost_regex_vc6_mss/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/posix_api.cpp
-
-vc6/boost_regex_vc6_mss/regex.obj: ../src/regex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/regex.cpp
-
-vc6/boost_regex_vc6_mss/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/regex_debug.cpp
-
-vc6/boost_regex_vc6_mss/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/regex_synch.cpp
-
-vc6/boost_regex_vc6_mss/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/w32_regex_traits.cpp
-
-vc6/boost_regex_vc6_mss/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/wide_posix_api.cpp
-
-vc6/boost_regex_vc6_mss/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mss/boost_regex_vc6_mss.pch -Fo./vc6/boost_regex_vc6_mss/ -Fdvc6/boost_regex_vc6_mss.pdb ../src/winstances.cpp
-
-boost_regex_vc6_mss_dir :
-	@if not exist "vc6\boost_regex_vc6_mss\$(NULL)" mkdir vc6\boost_regex_vc6_mss
-
-boost_regex_vc6_mss_clean :
-	del vc6\boost_regex_vc6_mss\*.obj
-	del vc6\boost_regex_vc6_mss\*.idb
-	del vc6\boost_regex_vc6_mss\*.exp
-	del vc6\boost_regex_vc6_mss\*.pch
-
-./vc6/boost_regex_vc6_mss.lib : vc6/boost_regex_vc6_mss/c_regex_traits.obj vc6/boost_regex_vc6_mss/c_regex_traits_common.obj vc6/boost_regex_vc6_mss/cpp_regex_traits.obj vc6/boost_regex_vc6_mss/cregex.obj vc6/boost_regex_vc6_mss/fileiter.obj vc6/boost_regex_vc6_mss/instances.obj vc6/boost_regex_vc6_mss/posix_api.obj vc6/boost_regex_vc6_mss/regex.obj vc6/boost_regex_vc6_mss/regex_debug.obj vc6/boost_regex_vc6_mss/regex_synch.obj vc6/boost_regex_vc6_mss/w32_regex_traits.obj vc6/boost_regex_vc6_mss/wide_posix_api.obj vc6/boost_regex_vc6_mss/winstances.obj
-	link -lib /nologo /out:vc6/boost_regex_vc6_mss.lib $(XSFLAGS)  vc6/boost_regex_vc6_mss/c_regex_traits.obj vc6/boost_regex_vc6_mss/c_regex_traits_common.obj vc6/boost_regex_vc6_mss/cpp_regex_traits.obj vc6/boost_regex_vc6_mss/cregex.obj vc6/boost_regex_vc6_mss/fileiter.obj vc6/boost_regex_vc6_mss/instances.obj vc6/boost_regex_vc6_mss/posix_api.obj vc6/boost_regex_vc6_mss/regex.obj vc6/boost_regex_vc6_mss/regex_debug.obj vc6/boost_regex_vc6_mss/regex_synch.obj vc6/boost_regex_vc6_mss/w32_regex_traits.obj vc6/boost_regex_vc6_mss/wide_posix_api.obj vc6/boost_regex_vc6_mss/winstances.obj
+./vc6/libboost_regex-vc6-s-1_31.lib : vc6/libboost_regex-vc6-s-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-s-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-s-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-s-1_31/cregex.obj vc6/libboost_regex-vc6-s-1_31/fileiter.obj vc6/libboost_regex-vc6-s-1_31/instances.obj vc6/libboost_regex-vc6-s-1_31/posix_api.obj vc6/libboost_regex-vc6-s-1_31/regex.obj vc6/libboost_regex-vc6-s-1_31/regex_debug.obj vc6/libboost_regex-vc6-s-1_31/regex_synch.obj vc6/libboost_regex-vc6-s-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-s-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-s-1_31/winstances.obj
+	link -lib /nologo /out:vc6/libboost_regex-vc6-s-1_31.lib $(XSFLAGS)  vc6/libboost_regex-vc6-s-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-s-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-s-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-s-1_31/cregex.obj vc6/libboost_regex-vc6-s-1_31/fileiter.obj vc6/libboost_regex-vc6-s-1_31/instances.obj vc6/libboost_regex-vc6-s-1_31/posix_api.obj vc6/libboost_regex-vc6-s-1_31/regex.obj vc6/libboost_regex-vc6-s-1_31/regex_debug.obj vc6/libboost_regex-vc6-s-1_31/regex_synch.obj vc6/libboost_regex-vc6-s-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-s-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-s-1_31/winstances.obj
 
 ########################################################
 #
-# section for boost_regex_vc6_sssd.lib
+# section for libboost_regex-vc6-mt-s-1_31.lib
 #
 ########################################################
-vc6/boost_regex_vc6_sssd/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/c_regex_traits.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/c_regex_traits.cpp
 
-vc6/boost_regex_vc6_sssd/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/c_regex_traits_common.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/c_regex_traits_common.cpp
 
-vc6/boost_regex_vc6_sssd/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/cpp_regex_traits.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/cpp_regex_traits.cpp
 
-vc6/boost_regex_vc6_sssd/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/cregex.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/cregex.cpp
 
-vc6/boost_regex_vc6_sssd/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/fileiter.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/fileiter.cpp
 
-vc6/boost_regex_vc6_sssd/instances.obj: ../src/instances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/instances.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/instances.obj: ../src/instances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/instances.cpp
 
-vc6/boost_regex_vc6_sssd/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/posix_api.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/posix_api.cpp
 
-vc6/boost_regex_vc6_sssd/regex.obj: ../src/regex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/regex.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/regex.obj: ../src/regex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/regex.cpp
 
-vc6/boost_regex_vc6_sssd/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/regex_debug.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/regex_debug.cpp
 
-vc6/boost_regex_vc6_sssd/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/regex_synch.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/regex_synch.cpp
 
-vc6/boost_regex_vc6_sssd/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/w32_regex_traits.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/w32_regex_traits.cpp
 
-vc6/boost_regex_vc6_sssd/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/wide_posix_api.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/wide_posix_api.cpp
 
-vc6/boost_regex_vc6_sssd/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c  $(CXXFLAGS) -Fpvc6/boost_regex_vc6_sssd/boost_regex_vc6_sssd.pch -Fo./vc6/boost_regex_vc6_sssd/ -Fdvc6/boost_regex_vc6_sssd.pdb ../src/winstances.cpp
+vc6/libboost_regex-vc6-mt-s-1_31/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MT /W3 /GX /O2 /GB /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-s-1_31/ -Fdvc6/libboost_regex-vc6-mt-s-1_31.pdb ../src/winstances.cpp
 
-boost_regex_vc6_sssd_dir :
-	@if not exist "vc6\boost_regex_vc6_sssd\$(NULL)" mkdir vc6\boost_regex_vc6_sssd
+libboost_regex-vc6-mt-s-1_31_dir :
+	@if not exist "vc6\libboost_regex-vc6-mt-s-1_31\$(NULL)" mkdir vc6\libboost_regex-vc6-mt-s-1_31
 
-boost_regex_vc6_sssd_clean :
-	del vc6\boost_regex_vc6_sssd\*.obj
-	del vc6\boost_regex_vc6_sssd\*.idb
-	del vc6\boost_regex_vc6_sssd\*.exp
-	del vc6\boost_regex_vc6_sssd\*.pch
+libboost_regex-vc6-mt-s-1_31_clean :
+	del vc6\libboost_regex-vc6-mt-s-1_31\*.obj
+	del vc6\libboost_regex-vc6-mt-s-1_31\*.idb
+	del vc6\libboost_regex-vc6-mt-s-1_31\*.exp
+	del vc6\libboost_regex-vc6-mt-s-1_31\*.pch
 
-./vc6/boost_regex_vc6_sssd.lib : vc6/boost_regex_vc6_sssd/c_regex_traits.obj vc6/boost_regex_vc6_sssd/c_regex_traits_common.obj vc6/boost_regex_vc6_sssd/cpp_regex_traits.obj vc6/boost_regex_vc6_sssd/cregex.obj vc6/boost_regex_vc6_sssd/fileiter.obj vc6/boost_regex_vc6_sssd/instances.obj vc6/boost_regex_vc6_sssd/posix_api.obj vc6/boost_regex_vc6_sssd/regex.obj vc6/boost_regex_vc6_sssd/regex_debug.obj vc6/boost_regex_vc6_sssd/regex_synch.obj vc6/boost_regex_vc6_sssd/w32_regex_traits.obj vc6/boost_regex_vc6_sssd/wide_posix_api.obj vc6/boost_regex_vc6_sssd/winstances.obj
-	link -lib /nologo /out:vc6/boost_regex_vc6_sssd.lib $(XSFLAGS)  vc6/boost_regex_vc6_sssd/c_regex_traits.obj vc6/boost_regex_vc6_sssd/c_regex_traits_common.obj vc6/boost_regex_vc6_sssd/cpp_regex_traits.obj vc6/boost_regex_vc6_sssd/cregex.obj vc6/boost_regex_vc6_sssd/fileiter.obj vc6/boost_regex_vc6_sssd/instances.obj vc6/boost_regex_vc6_sssd/posix_api.obj vc6/boost_regex_vc6_sssd/regex.obj vc6/boost_regex_vc6_sssd/regex_debug.obj vc6/boost_regex_vc6_sssd/regex_synch.obj vc6/boost_regex_vc6_sssd/w32_regex_traits.obj vc6/boost_regex_vc6_sssd/wide_posix_api.obj vc6/boost_regex_vc6_sssd/winstances.obj
-
-########################################################
-#
-# section for boost_regex_vc6_mssd.lib
-#
-########################################################
-vc6/boost_regex_vc6_mssd/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/c_regex_traits.cpp
-
-vc6/boost_regex_vc6_mssd/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/c_regex_traits_common.cpp
-
-vc6/boost_regex_vc6_mssd/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/cpp_regex_traits.cpp
-
-vc6/boost_regex_vc6_mssd/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/cregex.cpp
-
-vc6/boost_regex_vc6_mssd/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/fileiter.cpp
-
-vc6/boost_regex_vc6_mssd/instances.obj: ../src/instances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/instances.cpp
-
-vc6/boost_regex_vc6_mssd/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/posix_api.cpp
-
-vc6/boost_regex_vc6_mssd/regex.obj: ../src/regex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/regex.cpp
-
-vc6/boost_regex_vc6_mssd/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/regex_debug.cpp
-
-vc6/boost_regex_vc6_mssd/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/regex_synch.cpp
-
-vc6/boost_regex_vc6_mssd/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/w32_regex_traits.cpp
-
-vc6/boost_regex_vc6_mssd/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/wide_posix_api.cpp
-
-vc6/boost_regex_vc6_mssd/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mssd/boost_regex_vc6_mssd.pch -Fo./vc6/boost_regex_vc6_mssd/ -Fdvc6/boost_regex_vc6_mssd.pdb ../src/winstances.cpp
-
-boost_regex_vc6_mssd_dir :
-	@if not exist "vc6\boost_regex_vc6_mssd\$(NULL)" mkdir vc6\boost_regex_vc6_mssd
-
-boost_regex_vc6_mssd_clean :
-	del vc6\boost_regex_vc6_mssd\*.obj
-	del vc6\boost_regex_vc6_mssd\*.idb
-	del vc6\boost_regex_vc6_mssd\*.exp
-	del vc6\boost_regex_vc6_mssd\*.pch
-
-./vc6/boost_regex_vc6_mssd.lib : vc6/boost_regex_vc6_mssd/c_regex_traits.obj vc6/boost_regex_vc6_mssd/c_regex_traits_common.obj vc6/boost_regex_vc6_mssd/cpp_regex_traits.obj vc6/boost_regex_vc6_mssd/cregex.obj vc6/boost_regex_vc6_mssd/fileiter.obj vc6/boost_regex_vc6_mssd/instances.obj vc6/boost_regex_vc6_mssd/posix_api.obj vc6/boost_regex_vc6_mssd/regex.obj vc6/boost_regex_vc6_mssd/regex_debug.obj vc6/boost_regex_vc6_mssd/regex_synch.obj vc6/boost_regex_vc6_mssd/w32_regex_traits.obj vc6/boost_regex_vc6_mssd/wide_posix_api.obj vc6/boost_regex_vc6_mssd/winstances.obj
-	link -lib /nologo /out:vc6/boost_regex_vc6_mssd.lib $(XSFLAGS)  vc6/boost_regex_vc6_mssd/c_regex_traits.obj vc6/boost_regex_vc6_mssd/c_regex_traits_common.obj vc6/boost_regex_vc6_mssd/cpp_regex_traits.obj vc6/boost_regex_vc6_mssd/cregex.obj vc6/boost_regex_vc6_mssd/fileiter.obj vc6/boost_regex_vc6_mssd/instances.obj vc6/boost_regex_vc6_mssd/posix_api.obj vc6/boost_regex_vc6_mssd/regex.obj vc6/boost_regex_vc6_mssd/regex_debug.obj vc6/boost_regex_vc6_mssd/regex_synch.obj vc6/boost_regex_vc6_mssd/w32_regex_traits.obj vc6/boost_regex_vc6_mssd/wide_posix_api.obj vc6/boost_regex_vc6_mssd/winstances.obj
+./vc6/libboost_regex-vc6-mt-s-1_31.lib : vc6/libboost_regex-vc6-mt-s-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-mt-s-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-mt-s-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-mt-s-1_31/cregex.obj vc6/libboost_regex-vc6-mt-s-1_31/fileiter.obj vc6/libboost_regex-vc6-mt-s-1_31/instances.obj vc6/libboost_regex-vc6-mt-s-1_31/posix_api.obj vc6/libboost_regex-vc6-mt-s-1_31/regex.obj vc6/libboost_regex-vc6-mt-s-1_31/regex_debug.obj vc6/libboost_regex-vc6-mt-s-1_31/regex_synch.obj vc6/libboost_regex-vc6-mt-s-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-mt-s-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-mt-s-1_31/winstances.obj
+	link -lib /nologo /out:vc6/libboost_regex-vc6-mt-s-1_31.lib $(XSFLAGS)  vc6/libboost_regex-vc6-mt-s-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-mt-s-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-mt-s-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-mt-s-1_31/cregex.obj vc6/libboost_regex-vc6-mt-s-1_31/fileiter.obj vc6/libboost_regex-vc6-mt-s-1_31/instances.obj vc6/libboost_regex-vc6-mt-s-1_31/posix_api.obj vc6/libboost_regex-vc6-mt-s-1_31/regex.obj vc6/libboost_regex-vc6-mt-s-1_31/regex_debug.obj vc6/libboost_regex-vc6-mt-s-1_31/regex_synch.obj vc6/libboost_regex-vc6-mt-s-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-mt-s-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-mt-s-1_31/winstances.obj
 
 ########################################################
 #
-# section for boost_regex_vc6_mdid.lib
+# section for libboost_regex-vc6-sgd-1_31.lib
 #
 ########################################################
-vc6/boost_regex_vc6_mdid/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/c_regex_traits.cpp
+vc6/libboost_regex-vc6-sgd-1_31/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/c_regex_traits.cpp
 
-vc6/boost_regex_vc6_mdid/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/c_regex_traits_common.cpp
+vc6/libboost_regex-vc6-sgd-1_31/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/c_regex_traits_common.cpp
 
-vc6/boost_regex_vc6_mdid/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/cpp_regex_traits.cpp
+vc6/libboost_regex-vc6-sgd-1_31/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/cpp_regex_traits.cpp
 
-vc6/boost_regex_vc6_mdid/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/cregex.cpp
+vc6/libboost_regex-vc6-sgd-1_31/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/cregex.cpp
 
-vc6/boost_regex_vc6_mdid/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/fileiter.cpp
+vc6/libboost_regex-vc6-sgd-1_31/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/fileiter.cpp
 
-vc6/boost_regex_vc6_mdid/instances.obj: ../src/instances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/instances.cpp
+vc6/libboost_regex-vc6-sgd-1_31/instances.obj: ../src/instances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/instances.cpp
 
-vc6/boost_regex_vc6_mdid/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/posix_api.cpp
+vc6/libboost_regex-vc6-sgd-1_31/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/posix_api.cpp
 
-vc6/boost_regex_vc6_mdid/regex.obj: ../src/regex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/regex.cpp
+vc6/libboost_regex-vc6-sgd-1_31/regex.obj: ../src/regex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/regex.cpp
 
-vc6/boost_regex_vc6_mdid/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/regex_debug.cpp
+vc6/libboost_regex-vc6-sgd-1_31/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/regex_debug.cpp
 
-vc6/boost_regex_vc6_mdid/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/regex_synch.cpp
+vc6/libboost_regex-vc6-sgd-1_31/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/regex_synch.cpp
 
-vc6/boost_regex_vc6_mdid/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/w32_regex_traits.cpp
+vc6/libboost_regex-vc6-sgd-1_31/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/w32_regex_traits.cpp
 
-vc6/boost_regex_vc6_mdid/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/wide_posix_api.cpp
+vc6/libboost_regex-vc6-sgd-1_31/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/wide_posix_api.cpp
 
-vc6/boost_regex_vc6_mdid/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdid/boost_regex_vc6_mdid.pch -Fo./vc6/boost_regex_vc6_mdid/ -Fdvc6/boost_regex_vc6_mdid.pdb ../src/winstances.cpp
+vc6/libboost_regex-vc6-sgd-1_31/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MLd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD /GX /c  $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-sgd-1_31/ -Fdvc6/libboost_regex-vc6-sgd-1_31.pdb ../src/winstances.cpp
 
-boost_regex_vc6_mdid_dir :
-	@if not exist "vc6\boost_regex_vc6_mdid\$(NULL)" mkdir vc6\boost_regex_vc6_mdid
+libboost_regex-vc6-sgd-1_31_dir :
+	@if not exist "vc6\libboost_regex-vc6-sgd-1_31\$(NULL)" mkdir vc6\libboost_regex-vc6-sgd-1_31
 
-boost_regex_vc6_mdid_clean :
-	del vc6\boost_regex_vc6_mdid\*.obj
-	del vc6\boost_regex_vc6_mdid\*.idb
-	del vc6\boost_regex_vc6_mdid\*.exp
-	del vc6\boost_regex_vc6_mdid\*.pch
+libboost_regex-vc6-sgd-1_31_clean :
+	del vc6\libboost_regex-vc6-sgd-1_31\*.obj
+	del vc6\libboost_regex-vc6-sgd-1_31\*.idb
+	del vc6\libboost_regex-vc6-sgd-1_31\*.exp
+	del vc6\libboost_regex-vc6-sgd-1_31\*.pch
 
-./vc6/boost_regex_vc6_mdid.lib : vc6/boost_regex_vc6_mdid/c_regex_traits.obj vc6/boost_regex_vc6_mdid/c_regex_traits_common.obj vc6/boost_regex_vc6_mdid/cpp_regex_traits.obj vc6/boost_regex_vc6_mdid/cregex.obj vc6/boost_regex_vc6_mdid/fileiter.obj vc6/boost_regex_vc6_mdid/instances.obj vc6/boost_regex_vc6_mdid/posix_api.obj vc6/boost_regex_vc6_mdid/regex.obj vc6/boost_regex_vc6_mdid/regex_debug.obj vc6/boost_regex_vc6_mdid/regex_synch.obj vc6/boost_regex_vc6_mdid/w32_regex_traits.obj vc6/boost_regex_vc6_mdid/wide_posix_api.obj vc6/boost_regex_vc6_mdid/winstances.obj
-	link kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"vc6/boost_regex_vc6_mdid.pdb" /debug /machine:I386 /out:"vc6/boost_regex_vc6_mdid.dll" /implib:"vc6/boost_regex_vc6_mdid.lib" /LIBPATH:$(STLPORT_PATH)\lib $(XLFLAGS)  vc6/boost_regex_vc6_mdid/c_regex_traits.obj vc6/boost_regex_vc6_mdid/c_regex_traits_common.obj vc6/boost_regex_vc6_mdid/cpp_regex_traits.obj vc6/boost_regex_vc6_mdid/cregex.obj vc6/boost_regex_vc6_mdid/fileiter.obj vc6/boost_regex_vc6_mdid/instances.obj vc6/boost_regex_vc6_mdid/posix_api.obj vc6/boost_regex_vc6_mdid/regex.obj vc6/boost_regex_vc6_mdid/regex_debug.obj vc6/boost_regex_vc6_mdid/regex_synch.obj vc6/boost_regex_vc6_mdid/w32_regex_traits.obj vc6/boost_regex_vc6_mdid/wide_posix_api.obj vc6/boost_regex_vc6_mdid/winstances.obj
-
-########################################################
-#
-# section for boost_regex_vc6_mdi.lib
-#
-########################################################
-vc6/boost_regex_vc6_mdi/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/c_regex_traits.cpp
-
-vc6/boost_regex_vc6_mdi/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/c_regex_traits_common.cpp
-
-vc6/boost_regex_vc6_mdi/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/cpp_regex_traits.cpp
-
-vc6/boost_regex_vc6_mdi/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/cregex.cpp
-
-vc6/boost_regex_vc6_mdi/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/fileiter.cpp
-
-vc6/boost_regex_vc6_mdi/instances.obj: ../src/instances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/instances.cpp
-
-vc6/boost_regex_vc6_mdi/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/posix_api.cpp
-
-vc6/boost_regex_vc6_mdi/regex.obj: ../src/regex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/regex.cpp
-
-vc6/boost_regex_vc6_mdi/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/regex_debug.cpp
-
-vc6/boost_regex_vc6_mdi/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/regex_synch.cpp
-
-vc6/boost_regex_vc6_mdi/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/w32_regex_traits.cpp
-
-vc6/boost_regex_vc6_mdi/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/wide_posix_api.cpp
-
-vc6/boost_regex_vc6_mdi/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdi/boost_regex_vc6_mdi.pch -Fo./vc6/boost_regex_vc6_mdi/ -Fdvc6/boost_regex_vc6_mdi.pdb ../src/winstances.cpp
-
-boost_regex_vc6_mdi_dir :
-	@if not exist "vc6\boost_regex_vc6_mdi\$(NULL)" mkdir vc6\boost_regex_vc6_mdi
-
-boost_regex_vc6_mdi_clean :
-	del vc6\boost_regex_vc6_mdi\*.obj
-	del vc6\boost_regex_vc6_mdi\*.idb
-	del vc6\boost_regex_vc6_mdi\*.exp
-	del vc6\boost_regex_vc6_mdi\*.pch
-
-./vc6/boost_regex_vc6_mdi.lib : vc6/boost_regex_vc6_mdi/c_regex_traits.obj vc6/boost_regex_vc6_mdi/c_regex_traits_common.obj vc6/boost_regex_vc6_mdi/cpp_regex_traits.obj vc6/boost_regex_vc6_mdi/cregex.obj vc6/boost_regex_vc6_mdi/fileiter.obj vc6/boost_regex_vc6_mdi/instances.obj vc6/boost_regex_vc6_mdi/posix_api.obj vc6/boost_regex_vc6_mdi/regex.obj vc6/boost_regex_vc6_mdi/regex_debug.obj vc6/boost_regex_vc6_mdi/regex_synch.obj vc6/boost_regex_vc6_mdi/w32_regex_traits.obj vc6/boost_regex_vc6_mdi/wide_posix_api.obj vc6/boost_regex_vc6_mdi/winstances.obj
-	link kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"vc6/boost_regex_vc6_mdi.pdb" /debug /machine:I386 /out:"vc6/boost_regex_vc6_mdi.dll" /implib:"vc6/boost_regex_vc6_mdi.lib" /LIBPATH:$(STLPORT_PATH)\lib $(XLFLAGS)  vc6/boost_regex_vc6_mdi/c_regex_traits.obj vc6/boost_regex_vc6_mdi/c_regex_traits_common.obj vc6/boost_regex_vc6_mdi/cpp_regex_traits.obj vc6/boost_regex_vc6_mdi/cregex.obj vc6/boost_regex_vc6_mdi/fileiter.obj vc6/boost_regex_vc6_mdi/instances.obj vc6/boost_regex_vc6_mdi/posix_api.obj vc6/boost_regex_vc6_mdi/regex.obj vc6/boost_regex_vc6_mdi/regex_debug.obj vc6/boost_regex_vc6_mdi/regex_synch.obj vc6/boost_regex_vc6_mdi/w32_regex_traits.obj vc6/boost_regex_vc6_mdi/wide_posix_api.obj vc6/boost_regex_vc6_mdi/winstances.obj
+./vc6/libboost_regex-vc6-sgd-1_31.lib : vc6/libboost_regex-vc6-sgd-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-sgd-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-sgd-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-sgd-1_31/cregex.obj vc6/libboost_regex-vc6-sgd-1_31/fileiter.obj vc6/libboost_regex-vc6-sgd-1_31/instances.obj vc6/libboost_regex-vc6-sgd-1_31/posix_api.obj vc6/libboost_regex-vc6-sgd-1_31/regex.obj vc6/libboost_regex-vc6-sgd-1_31/regex_debug.obj vc6/libboost_regex-vc6-sgd-1_31/regex_synch.obj vc6/libboost_regex-vc6-sgd-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-sgd-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-sgd-1_31/winstances.obj
+	link -lib /nologo /out:vc6/libboost_regex-vc6-sgd-1_31.lib $(XSFLAGS)  vc6/libboost_regex-vc6-sgd-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-sgd-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-sgd-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-sgd-1_31/cregex.obj vc6/libboost_regex-vc6-sgd-1_31/fileiter.obj vc6/libboost_regex-vc6-sgd-1_31/instances.obj vc6/libboost_regex-vc6-sgd-1_31/posix_api.obj vc6/libboost_regex-vc6-sgd-1_31/regex.obj vc6/libboost_regex-vc6-sgd-1_31/regex_debug.obj vc6/libboost_regex-vc6-sgd-1_31/regex_synch.obj vc6/libboost_regex-vc6-sgd-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-sgd-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-sgd-1_31/winstances.obj
 
 ########################################################
 #
-# section for boost_regex_vc6_mds.lib
+# section for libboost_regex-vc6-mt-sgd-1_31.lib
 #
 ########################################################
-vc6/boost_regex_vc6_mds/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/c_regex_traits.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/c_regex_traits.cpp
 
-vc6/boost_regex_vc6_mds/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/c_regex_traits_common.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/c_regex_traits_common.cpp
 
-vc6/boost_regex_vc6_mds/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/cpp_regex_traits.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/cpp_regex_traits.cpp
 
-vc6/boost_regex_vc6_mds/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/cregex.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/cregex.cpp
 
-vc6/boost_regex_vc6_mds/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/fileiter.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/fileiter.cpp
 
-vc6/boost_regex_vc6_mds/instances.obj: ../src/instances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/instances.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/instances.obj: ../src/instances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/instances.cpp
 
-vc6/boost_regex_vc6_mds/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/posix_api.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/posix_api.cpp
 
-vc6/boost_regex_vc6_mds/regex.obj: ../src/regex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/regex.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/regex.obj: ../src/regex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/regex.cpp
 
-vc6/boost_regex_vc6_mds/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/regex_debug.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/regex_debug.cpp
 
-vc6/boost_regex_vc6_mds/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/regex_synch.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/regex_synch.cpp
 
-vc6/boost_regex_vc6_mds/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/w32_regex_traits.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/w32_regex_traits.cpp
 
-vc6/boost_regex_vc6_mds/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/wide_posix_api.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/wide_posix_api.cpp
 
-vc6/boost_regex_vc6_mds/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /YX /FD /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mds/boost_regex_vc6_mds.pch -Fo./vc6/boost_regex_vc6_mds/ -Fdvc6/boost_regex_vc6_mds.pdb ../src/winstances.cpp
+vc6/libboost_regex-vc6-mt-sgd-1_31/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MTd /W3 /Gm /GX /Zi /Od /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-sgd-1_31/ -Fdvc6/libboost_regex-vc6-mt-sgd-1_31.pdb ../src/winstances.cpp
 
-boost_regex_vc6_mds_dir :
-	@if not exist "vc6\boost_regex_vc6_mds\$(NULL)" mkdir vc6\boost_regex_vc6_mds
+libboost_regex-vc6-mt-sgd-1_31_dir :
+	@if not exist "vc6\libboost_regex-vc6-mt-sgd-1_31\$(NULL)" mkdir vc6\libboost_regex-vc6-mt-sgd-1_31
 
-boost_regex_vc6_mds_clean :
-	del vc6\boost_regex_vc6_mds\*.obj
-	del vc6\boost_regex_vc6_mds\*.idb
-	del vc6\boost_regex_vc6_mds\*.exp
-	del vc6\boost_regex_vc6_mds\*.pch
+libboost_regex-vc6-mt-sgd-1_31_clean :
+	del vc6\libboost_regex-vc6-mt-sgd-1_31\*.obj
+	del vc6\libboost_regex-vc6-mt-sgd-1_31\*.idb
+	del vc6\libboost_regex-vc6-mt-sgd-1_31\*.exp
+	del vc6\libboost_regex-vc6-mt-sgd-1_31\*.pch
 
-./vc6/boost_regex_vc6_mds.lib : vc6/boost_regex_vc6_mds/c_regex_traits.obj vc6/boost_regex_vc6_mds/c_regex_traits_common.obj vc6/boost_regex_vc6_mds/cpp_regex_traits.obj vc6/boost_regex_vc6_mds/cregex.obj vc6/boost_regex_vc6_mds/fileiter.obj vc6/boost_regex_vc6_mds/instances.obj vc6/boost_regex_vc6_mds/posix_api.obj vc6/boost_regex_vc6_mds/regex.obj vc6/boost_regex_vc6_mds/regex_debug.obj vc6/boost_regex_vc6_mds/regex_synch.obj vc6/boost_regex_vc6_mds/w32_regex_traits.obj vc6/boost_regex_vc6_mds/wide_posix_api.obj vc6/boost_regex_vc6_mds/winstances.obj
-	link -lib /nologo /out:vc6/boost_regex_vc6_mds.lib $(XSFLAGS)  vc6/boost_regex_vc6_mds/c_regex_traits.obj vc6/boost_regex_vc6_mds/c_regex_traits_common.obj vc6/boost_regex_vc6_mds/cpp_regex_traits.obj vc6/boost_regex_vc6_mds/cregex.obj vc6/boost_regex_vc6_mds/fileiter.obj vc6/boost_regex_vc6_mds/instances.obj vc6/boost_regex_vc6_mds/posix_api.obj vc6/boost_regex_vc6_mds/regex.obj vc6/boost_regex_vc6_mds/regex_debug.obj vc6/boost_regex_vc6_mds/regex_synch.obj vc6/boost_regex_vc6_mds/w32_regex_traits.obj vc6/boost_regex_vc6_mds/wide_posix_api.obj vc6/boost_regex_vc6_mds/winstances.obj
+./vc6/libboost_regex-vc6-mt-sgd-1_31.lib : vc6/libboost_regex-vc6-mt-sgd-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-mt-sgd-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-mt-sgd-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-mt-sgd-1_31/cregex.obj vc6/libboost_regex-vc6-mt-sgd-1_31/fileiter.obj vc6/libboost_regex-vc6-mt-sgd-1_31/instances.obj vc6/libboost_regex-vc6-mt-sgd-1_31/posix_api.obj vc6/libboost_regex-vc6-mt-sgd-1_31/regex.obj vc6/libboost_regex-vc6-mt-sgd-1_31/regex_debug.obj vc6/libboost_regex-vc6-mt-sgd-1_31/regex_synch.obj vc6/libboost_regex-vc6-mt-sgd-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-mt-sgd-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-mt-sgd-1_31/winstances.obj
+	link -lib /nologo /out:vc6/libboost_regex-vc6-mt-sgd-1_31.lib $(XSFLAGS)  vc6/libboost_regex-vc6-mt-sgd-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-mt-sgd-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-mt-sgd-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-mt-sgd-1_31/cregex.obj vc6/libboost_regex-vc6-mt-sgd-1_31/fileiter.obj vc6/libboost_regex-vc6-mt-sgd-1_31/instances.obj vc6/libboost_regex-vc6-mt-sgd-1_31/posix_api.obj vc6/libboost_regex-vc6-mt-sgd-1_31/regex.obj vc6/libboost_regex-vc6-mt-sgd-1_31/regex_debug.obj vc6/libboost_regex-vc6-mt-sgd-1_31/regex_synch.obj vc6/libboost_regex-vc6-mt-sgd-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-mt-sgd-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-mt-sgd-1_31/winstances.obj
 
 ########################################################
 #
-# section for boost_regex_vc6_mdsd.lib
+# section for boost_regex-vc6-mt-gd-1_31.lib
 #
 ########################################################
-vc6/boost_regex_vc6_mdsd/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/c_regex_traits.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/c_regex_traits.cpp
 
-vc6/boost_regex_vc6_mdsd/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/c_regex_traits_common.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/c_regex_traits_common.cpp
 
-vc6/boost_regex_vc6_mdsd/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/cpp_regex_traits.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/cpp_regex_traits.cpp
 
-vc6/boost_regex_vc6_mdsd/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/cregex.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/cregex.cpp
 
-vc6/boost_regex_vc6_mdsd/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/fileiter.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/fileiter.cpp
 
-vc6/boost_regex_vc6_mdsd/instances.obj: ../src/instances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/instances.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/instances.obj: ../src/instances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/instances.cpp
 
-vc6/boost_regex_vc6_mdsd/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/posix_api.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/posix_api.cpp
 
-vc6/boost_regex_vc6_mdsd/regex.obj: ../src/regex.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/regex.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/regex.obj: ../src/regex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/regex.cpp
 
-vc6/boost_regex_vc6_mdsd/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/regex_debug.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/regex_debug.cpp
 
-vc6/boost_regex_vc6_mdsd/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/regex_synch.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/regex_synch.cpp
 
-vc6/boost_regex_vc6_mdsd/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/w32_regex_traits.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/w32_regex_traits.cpp
 
-vc6/boost_regex_vc6_mdsd/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/wide_posix_api.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/wide_posix_api.cpp
 
-vc6/boost_regex_vc6_mdsd/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
-	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /YX /FD /GZ  /c $(CXXFLAGS) -Fpvc6/boost_regex_vc6_mdsd/boost_regex_vc6_mdsd.pch -Fo./vc6/boost_regex_vc6_mdsd/ -Fdvc6/boost_regex_vc6_mdsd.pdb ../src/winstances.cpp
+vc6/boost_regex-vc6-mt-gd-1_31/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /D_DEBUG /DBOOST_REGEX_DYN_LINK /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-gd-1_31/ -Fdvc6/boost_regex-vc6-mt-gd-1_31.pdb ../src/winstances.cpp
 
-boost_regex_vc6_mdsd_dir :
-	@if not exist "vc6\boost_regex_vc6_mdsd\$(NULL)" mkdir vc6\boost_regex_vc6_mdsd
+boost_regex-vc6-mt-gd-1_31_dir :
+	@if not exist "vc6\boost_regex-vc6-mt-gd-1_31\$(NULL)" mkdir vc6\boost_regex-vc6-mt-gd-1_31
 
-boost_regex_vc6_mdsd_clean :
-	del vc6\boost_regex_vc6_mdsd\*.obj
-	del vc6\boost_regex_vc6_mdsd\*.idb
-	del vc6\boost_regex_vc6_mdsd\*.exp
-	del vc6\boost_regex_vc6_mdsd\*.pch
+boost_regex-vc6-mt-gd-1_31_clean :
+	del vc6\boost_regex-vc6-mt-gd-1_31\*.obj
+	del vc6\boost_regex-vc6-mt-gd-1_31\*.idb
+	del vc6\boost_regex-vc6-mt-gd-1_31\*.exp
+	del vc6\boost_regex-vc6-mt-gd-1_31\*.pch
 
-./vc6/boost_regex_vc6_mdsd.lib : vc6/boost_regex_vc6_mdsd/c_regex_traits.obj vc6/boost_regex_vc6_mdsd/c_regex_traits_common.obj vc6/boost_regex_vc6_mdsd/cpp_regex_traits.obj vc6/boost_regex_vc6_mdsd/cregex.obj vc6/boost_regex_vc6_mdsd/fileiter.obj vc6/boost_regex_vc6_mdsd/instances.obj vc6/boost_regex_vc6_mdsd/posix_api.obj vc6/boost_regex_vc6_mdsd/regex.obj vc6/boost_regex_vc6_mdsd/regex_debug.obj vc6/boost_regex_vc6_mdsd/regex_synch.obj vc6/boost_regex_vc6_mdsd/w32_regex_traits.obj vc6/boost_regex_vc6_mdsd/wide_posix_api.obj vc6/boost_regex_vc6_mdsd/winstances.obj
-	link -lib /nologo /out:vc6/boost_regex_vc6_mdsd.lib $(XSFLAGS)  vc6/boost_regex_vc6_mdsd/c_regex_traits.obj vc6/boost_regex_vc6_mdsd/c_regex_traits_common.obj vc6/boost_regex_vc6_mdsd/cpp_regex_traits.obj vc6/boost_regex_vc6_mdsd/cregex.obj vc6/boost_regex_vc6_mdsd/fileiter.obj vc6/boost_regex_vc6_mdsd/instances.obj vc6/boost_regex_vc6_mdsd/posix_api.obj vc6/boost_regex_vc6_mdsd/regex.obj vc6/boost_regex_vc6_mdsd/regex_debug.obj vc6/boost_regex_vc6_mdsd/regex_synch.obj vc6/boost_regex_vc6_mdsd/w32_regex_traits.obj vc6/boost_regex_vc6_mdsd/wide_posix_api.obj vc6/boost_regex_vc6_mdsd/winstances.obj
+./vc6/boost_regex-vc6-mt-gd-1_31.lib : vc6/boost_regex-vc6-mt-gd-1_31/c_regex_traits.obj vc6/boost_regex-vc6-mt-gd-1_31/c_regex_traits_common.obj vc6/boost_regex-vc6-mt-gd-1_31/cpp_regex_traits.obj vc6/boost_regex-vc6-mt-gd-1_31/cregex.obj vc6/boost_regex-vc6-mt-gd-1_31/fileiter.obj vc6/boost_regex-vc6-mt-gd-1_31/instances.obj vc6/boost_regex-vc6-mt-gd-1_31/posix_api.obj vc6/boost_regex-vc6-mt-gd-1_31/regex.obj vc6/boost_regex-vc6-mt-gd-1_31/regex_debug.obj vc6/boost_regex-vc6-mt-gd-1_31/regex_synch.obj vc6/boost_regex-vc6-mt-gd-1_31/w32_regex_traits.obj vc6/boost_regex-vc6-mt-gd-1_31/wide_posix_api.obj vc6/boost_regex-vc6-mt-gd-1_31/winstances.obj
+	link kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"vc6/boost_regex-vc6-mt-gd-1_31.pdb" /debug /machine:I386 /out:"vc6/boost_regex-vc6-mt-gd-1_31.dll" /implib:"vc6/boost_regex-vc6-mt-gd-1_31.lib" /LIBPATH:$(STLPORT_PATH)\lib $(XLFLAGS)  vc6/boost_regex-vc6-mt-gd-1_31/c_regex_traits.obj vc6/boost_regex-vc6-mt-gd-1_31/c_regex_traits_common.obj vc6/boost_regex-vc6-mt-gd-1_31/cpp_regex_traits.obj vc6/boost_regex-vc6-mt-gd-1_31/cregex.obj vc6/boost_regex-vc6-mt-gd-1_31/fileiter.obj vc6/boost_regex-vc6-mt-gd-1_31/instances.obj vc6/boost_regex-vc6-mt-gd-1_31/posix_api.obj vc6/boost_regex-vc6-mt-gd-1_31/regex.obj vc6/boost_regex-vc6-mt-gd-1_31/regex_debug.obj vc6/boost_regex-vc6-mt-gd-1_31/regex_synch.obj vc6/boost_regex-vc6-mt-gd-1_31/w32_regex_traits.obj vc6/boost_regex-vc6-mt-gd-1_31/wide_posix_api.obj vc6/boost_regex-vc6-mt-gd-1_31/winstances.obj
 
+########################################################
+#
+# section for boost_regex-vc6-mt-1_31.lib
+#
+########################################################
+vc6/boost_regex-vc6-mt-1_31/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/c_regex_traits.cpp
 
+vc6/boost_regex-vc6-mt-1_31/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/c_regex_traits_common.cpp
+
+vc6/boost_regex-vc6-mt-1_31/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/cpp_regex_traits.cpp
+
+vc6/boost_regex-vc6-mt-1_31/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/cregex.cpp
+
+vc6/boost_regex-vc6-mt-1_31/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/fileiter.cpp
+
+vc6/boost_regex-vc6-mt-1_31/instances.obj: ../src/instances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/instances.cpp
+
+vc6/boost_regex-vc6-mt-1_31/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/posix_api.cpp
+
+vc6/boost_regex-vc6-mt-1_31/regex.obj: ../src/regex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/regex.cpp
+
+vc6/boost_regex-vc6-mt-1_31/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/regex_debug.cpp
+
+vc6/boost_regex-vc6-mt-1_31/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/regex_synch.cpp
+
+vc6/boost_regex-vc6-mt-1_31/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/w32_regex_traits.cpp
+
+vc6/boost_regex-vc6-mt-1_31/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/wide_posix_api.cpp
+
+vc6/boost_regex-vc6-mt-1_31/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/boost_regex-vc6-mt-1_31/ -Fdvc6/boost_regex-vc6-mt-1_31.pdb ../src/winstances.cpp
+
+boost_regex-vc6-mt-1_31_dir :
+	@if not exist "vc6\boost_regex-vc6-mt-1_31\$(NULL)" mkdir vc6\boost_regex-vc6-mt-1_31
+
+boost_regex-vc6-mt-1_31_clean :
+	del vc6\boost_regex-vc6-mt-1_31\*.obj
+	del vc6\boost_regex-vc6-mt-1_31\*.idb
+	del vc6\boost_regex-vc6-mt-1_31\*.exp
+	del vc6\boost_regex-vc6-mt-1_31\*.pch
+
+./vc6/boost_regex-vc6-mt-1_31.lib : vc6/boost_regex-vc6-mt-1_31/c_regex_traits.obj vc6/boost_regex-vc6-mt-1_31/c_regex_traits_common.obj vc6/boost_regex-vc6-mt-1_31/cpp_regex_traits.obj vc6/boost_regex-vc6-mt-1_31/cregex.obj vc6/boost_regex-vc6-mt-1_31/fileiter.obj vc6/boost_regex-vc6-mt-1_31/instances.obj vc6/boost_regex-vc6-mt-1_31/posix_api.obj vc6/boost_regex-vc6-mt-1_31/regex.obj vc6/boost_regex-vc6-mt-1_31/regex_debug.obj vc6/boost_regex-vc6-mt-1_31/regex_synch.obj vc6/boost_regex-vc6-mt-1_31/w32_regex_traits.obj vc6/boost_regex-vc6-mt-1_31/wide_posix_api.obj vc6/boost_regex-vc6-mt-1_31/winstances.obj
+	link kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"vc6/boost_regex-vc6-mt-1_31.pdb" /debug /machine:I386 /out:"vc6/boost_regex-vc6-mt-1_31.dll" /implib:"vc6/boost_regex-vc6-mt-1_31.lib" /LIBPATH:$(STLPORT_PATH)\lib $(XLFLAGS)  vc6/boost_regex-vc6-mt-1_31/c_regex_traits.obj vc6/boost_regex-vc6-mt-1_31/c_regex_traits_common.obj vc6/boost_regex-vc6-mt-1_31/cpp_regex_traits.obj vc6/boost_regex-vc6-mt-1_31/cregex.obj vc6/boost_regex-vc6-mt-1_31/fileiter.obj vc6/boost_regex-vc6-mt-1_31/instances.obj vc6/boost_regex-vc6-mt-1_31/posix_api.obj vc6/boost_regex-vc6-mt-1_31/regex.obj vc6/boost_regex-vc6-mt-1_31/regex_debug.obj vc6/boost_regex-vc6-mt-1_31/regex_synch.obj vc6/boost_regex-vc6-mt-1_31/w32_regex_traits.obj vc6/boost_regex-vc6-mt-1_31/wide_posix_api.obj vc6/boost_regex-vc6-mt-1_31/winstances.obj
+
+########################################################
+#
+# section for libboost_regex-vc6-mt-1_31.lib
+#
+########################################################
+vc6/libboost_regex-vc6-mt-1_31/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/c_regex_traits.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/c_regex_traits_common.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/cpp_regex_traits.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/cregex.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/fileiter.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/instances.obj: ../src/instances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/instances.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/posix_api.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/regex.obj: ../src/regex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/regex.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/regex_debug.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/regex_synch.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/w32_regex_traits.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/wide_posix_api.cpp
+
+vc6/libboost_regex-vc6-mt-1_31/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MD /W3 /GX /O2 /GB /GF /Gy /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL /FD  /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-1_31/ -Fdvc6/libboost_regex-vc6-mt-1_31.pdb ../src/winstances.cpp
+
+libboost_regex-vc6-mt-1_31_dir :
+	@if not exist "vc6\libboost_regex-vc6-mt-1_31\$(NULL)" mkdir vc6\libboost_regex-vc6-mt-1_31
+
+libboost_regex-vc6-mt-1_31_clean :
+	del vc6\libboost_regex-vc6-mt-1_31\*.obj
+	del vc6\libboost_regex-vc6-mt-1_31\*.idb
+	del vc6\libboost_regex-vc6-mt-1_31\*.exp
+	del vc6\libboost_regex-vc6-mt-1_31\*.pch
+
+./vc6/libboost_regex-vc6-mt-1_31.lib : vc6/libboost_regex-vc6-mt-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-mt-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-mt-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-mt-1_31/cregex.obj vc6/libboost_regex-vc6-mt-1_31/fileiter.obj vc6/libboost_regex-vc6-mt-1_31/instances.obj vc6/libboost_regex-vc6-mt-1_31/posix_api.obj vc6/libboost_regex-vc6-mt-1_31/regex.obj vc6/libboost_regex-vc6-mt-1_31/regex_debug.obj vc6/libboost_regex-vc6-mt-1_31/regex_synch.obj vc6/libboost_regex-vc6-mt-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-mt-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-mt-1_31/winstances.obj
+	link -lib /nologo /out:vc6/libboost_regex-vc6-mt-1_31.lib $(XSFLAGS)  vc6/libboost_regex-vc6-mt-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-mt-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-mt-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-mt-1_31/cregex.obj vc6/libboost_regex-vc6-mt-1_31/fileiter.obj vc6/libboost_regex-vc6-mt-1_31/instances.obj vc6/libboost_regex-vc6-mt-1_31/posix_api.obj vc6/libboost_regex-vc6-mt-1_31/regex.obj vc6/libboost_regex-vc6-mt-1_31/regex_debug.obj vc6/libboost_regex-vc6-mt-1_31/regex_synch.obj vc6/libboost_regex-vc6-mt-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-mt-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-mt-1_31/winstances.obj
+
+########################################################
+#
+# section for libboost_regex-vc6-mt-gd-1_31.lib
+#
+########################################################
+vc6/libboost_regex-vc6-mt-gd-1_31/c_regex_traits.obj: ../src/c_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/c_regex_traits.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/c_regex_traits_common.obj: ../src/c_regex_traits_common.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/c_regex_traits_common.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/cpp_regex_traits.obj: ../src/cpp_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/cpp_regex_traits.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/cregex.obj: ../src/cregex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/cregex.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/fileiter.obj: ../src/fileiter.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/fileiter.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/instances.obj: ../src/instances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/instances.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/posix_api.obj: ../src/posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/posix_api.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/regex.obj: ../src/regex.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/regex.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/regex_debug.obj: ../src/regex_debug.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/regex_debug.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/regex_synch.obj: ../src/regex_synch.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/regex_synch.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/w32_regex_traits.obj: ../src/w32_regex_traits.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/w32_regex_traits.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/wide_posix_api.obj: ../src/wide_posix_api.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/wide_posix_api.cpp
+
+vc6/libboost_regex-vc6-mt-gd-1_31/winstances.obj: ../src/winstances.cpp $(ALL_HEADER)
+	cl $(INCLUDES) /nologo /MDd /W3 /Gm /GX /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD /GX /c $(CXXFLAGS) -Y- -Fo./vc6/libboost_regex-vc6-mt-gd-1_31/ -Fdvc6/libboost_regex-vc6-mt-gd-1_31.pdb ../src/winstances.cpp
+
+libboost_regex-vc6-mt-gd-1_31_dir :
+	@if not exist "vc6\libboost_regex-vc6-mt-gd-1_31\$(NULL)" mkdir vc6\libboost_regex-vc6-mt-gd-1_31
+
+libboost_regex-vc6-mt-gd-1_31_clean :
+	del vc6\libboost_regex-vc6-mt-gd-1_31\*.obj
+	del vc6\libboost_regex-vc6-mt-gd-1_31\*.idb
+	del vc6\libboost_regex-vc6-mt-gd-1_31\*.exp
+	del vc6\libboost_regex-vc6-mt-gd-1_31\*.pch
+
+./vc6/libboost_regex-vc6-mt-gd-1_31.lib : vc6/libboost_regex-vc6-mt-gd-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-mt-gd-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-mt-gd-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-mt-gd-1_31/cregex.obj vc6/libboost_regex-vc6-mt-gd-1_31/fileiter.obj vc6/libboost_regex-vc6-mt-gd-1_31/instances.obj vc6/libboost_regex-vc6-mt-gd-1_31/posix_api.obj vc6/libboost_regex-vc6-mt-gd-1_31/regex.obj vc6/libboost_regex-vc6-mt-gd-1_31/regex_debug.obj vc6/libboost_regex-vc6-mt-gd-1_31/regex_synch.obj vc6/libboost_regex-vc6-mt-gd-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-mt-gd-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-mt-gd-1_31/winstances.obj
+	link -lib /nologo /out:vc6/libboost_regex-vc6-mt-gd-1_31.lib $(XSFLAGS)  vc6/libboost_regex-vc6-mt-gd-1_31/c_regex_traits.obj vc6/libboost_regex-vc6-mt-gd-1_31/c_regex_traits_common.obj vc6/libboost_regex-vc6-mt-gd-1_31/cpp_regex_traits.obj vc6/libboost_regex-vc6-mt-gd-1_31/cregex.obj vc6/libboost_regex-vc6-mt-gd-1_31/fileiter.obj vc6/libboost_regex-vc6-mt-gd-1_31/instances.obj vc6/libboost_regex-vc6-mt-gd-1_31/posix_api.obj vc6/libboost_regex-vc6-mt-gd-1_31/regex.obj vc6/libboost_regex-vc6-mt-gd-1_31/regex_debug.obj vc6/libboost_regex-vc6-mt-gd-1_31/regex_synch.obj vc6/libboost_regex-vc6-mt-gd-1_31/w32_regex_traits.obj vc6/libboost_regex-vc6-mt-gd-1_31/wide_posix_api.obj vc6/libboost_regex-vc6-mt-gd-1_31/winstances.obj
 

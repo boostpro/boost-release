@@ -1,19 +1,24 @@
 /*=============================================================================
-  Spirit V1.7.0
-  Copyright (c) 2003 Martin Wille
-  http://spirit.sourceforge.net/
+    Copyright (c) 2003 Martin Wille
+    http://spirit.sourceforge.net/
 
-  Permission to copy, use, modify, sell and distribute this software
-  is granted provided this copyright notice appears in all copies.
-  This software is provided "as is" without express or implied
-  warranty, and with no claim as to its suitability for any purpose.
- =============================================================================*/
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+=============================================================================*/
 
   // see http://article.gmane.org/gmane.comp.parsers.spirit.general/4575
   // or https://sf.net/mailarchive/forum.php?thread_id=2692308&forum_id=1595
   // for a description of the bug being tested for by this program
   //
   // the problem should be solved with version 1.3 of phoenix/closures.hpp
+
+#if defined(BOOST_SPIRIT_DEBUG) && defined(__GNUC__) && defined(__WIN32__)
+// It seems that MinGW has some problems with threads and iostream ?
+// This code crashes MinGW when BOOST_SPIRIT_DEBUG is defined. The reason
+// is beyond me. Disable BOOST_SPIRIT_DEBUG for now.
+#undef BOOST_SPIRIT_DEBUG
+#endif
 
 #include <iostream>
 #include <boost/config.hpp>
@@ -110,7 +115,6 @@ bug_000008()
     t4.join();
 }
 
-////////////////////////////////////////////////////////////////////////////////
 ut::test_suite *
 init_unit_test_suite( int argc, char *argv[] )
 {

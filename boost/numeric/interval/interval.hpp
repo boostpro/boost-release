@@ -10,7 +10,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: interval.hpp,v 1.2 2003/02/05 17:34:29 gmelquio Exp $
+ * $Id: interval.hpp,v 1.3 2003/05/30 06:31:11 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_INTERVAL_HPP
@@ -121,6 +121,7 @@ private:
   struct number_holder {
     number_holder(const T& r) : val(r)
     {
+      typedef typename Policies::checking checking;
       if (checking::is_nan(r))
         throw interval_lib::comparison_error();
     }

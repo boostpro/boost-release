@@ -5,7 +5,7 @@
 // to its suitability for any purpose.
 #ifndef FUNCTION_OBJECT_DWA2002725_HPP
 # define FUNCTION_OBJECT_DWA2002725_HPP
-# include <boost/python/detail/wrap_python.hpp>
+# include <boost/python/detail/prefix.hpp>
 # include <boost/function/function2.hpp>
 # include <boost/python/object_core.hpp>
 # include <boost/python/args_fwd.hpp>
@@ -17,15 +17,13 @@ namespace objects
 { 
   BOOST_PYTHON_DECL api::object function_object(
       py_function const& f
-      , unsigned min_arity, unsigned max_arity
       , python::detail::keyword_range const&);
 
   BOOST_PYTHON_DECL api::object function_object(
       py_function const& f
-      , unsigned arity
       , python::detail::keyword_range const&);
 
-  BOOST_PYTHON_DECL api::object function_object(py_function const& f, unsigned arity);
+  BOOST_PYTHON_DECL api::object function_object(py_function const& f);
 
   // Add an attribute to the name_space with the given name. If it is
   // a Boost.Python function object

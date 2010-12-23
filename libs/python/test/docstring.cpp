@@ -9,7 +9,6 @@
 #include <boost/python/def.hpp>
 #include <boost/python/scope.hpp>
 #include <boost/python/manage_new_object.hpp>
-#include <string>
 #include "test_class.hpp"
 
 // Just use math.h here; trying to use std::pow() causes too much

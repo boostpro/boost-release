@@ -80,7 +80,9 @@ cache_name(void)
 	    TARGET *t = bindtarget( hcachevar->string );
 
 	    pushsettings( t->settings );
-	    t->boundname = search( t->name, &t->time );
+        /* Don't expect cache file to be generated, so pass 0
+           as third argument to search. */
+	    t->boundname = search( t->name, &t->time, 0 );
 	    popsettings( t->settings );
 
 	    if (hcachevar) {
@@ -135,7 +137,7 @@ read_netstring(FILE* f)
 	unsigned long new_len = buf_len * 2;
 	if (new_len < len)
 	    new_len = len;
-	buf = realloc(buf, new_len + 1);
+	buf = (char*)realloc(buf, new_len + 1);
 	if (buf)
 	    buf_len = new_len;
     }

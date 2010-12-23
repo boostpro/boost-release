@@ -1,5 +1,8 @@
-# Specify our location in the boost project hierarchy
-subproject libs/python/example ;
+# Copyright David Abrahams 2003. See accompanying LICENSE for terms
+# and conditions of use.
+
+# This is the top of our own project tree
+project-root ;
 
 # Declares the following targets:
 #    
@@ -19,18 +22,17 @@ subproject libs/python/example ;
 #
 
 # Include definitions needed for Python modules
-SEARCH on python.jam = $(BOOST_BUILD_PATH) ;
-include python.jam ;
+import python ;
 
 # ----- getting_started1 -------
 
 # Declare a Python extension called getting_started1
 extension getting_started1
-:  # sources
-   getting_started1.cpp
+: # sources
+  getting_started1.cpp
   
-   # dependencies
-   <dll>../build/boost_python
+  # requirements and dependencies for Boost.Python extensions
+  <template>@boost/libs/python/build/extension
   ;
 
 # Declare a test for the extension module
@@ -49,8 +51,8 @@ extension getting_started2
 :  # sources
    getting_started2.cpp
   
-   # dependencies
-   <dll>../build/boost_python
+  # requirements and dependencies for Boost.Python extensions
+  <template>@boost/libs/python/build/extension
   ;
 
 # Declare a test for the extension module

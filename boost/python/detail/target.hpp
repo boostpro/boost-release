@@ -31,7 +31,7 @@ namespace boost { namespace python { namespace detail {
 #  include BOOST_PP_ITERATE()
 
 template <class R, class T>
-boost::type<T*>* target(R (T::*)) { return 0; }
+T& (* target(R (T::*)) )() { return 0; }
 
 }}} // namespace boost::python::detail
 
@@ -39,12 +39,15 @@ boost::type<T*>* target(R (T::*)) { return 0; }
 
 /* --------------- function pointers --------------- */
 #elif BOOST_PP_ITERATION_DEPTH() == 1 && BOOST_PP_ITERATION_FLAGS() == BOOST_PYTHON_FUNCTION_POINTER
-# line BOOST_PP_LINE(__LINE__, target.hpp(function_pointers))
+# if !(BOOST_WORKAROUND(__MWERKS__, > 0x3100)                      \
+        && BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3201)))
+#  line BOOST_PP_LINE(__LINE__, target.hpp(function_pointers))
+# endif 
 
 # define N BOOST_PP_ITERATION()
 
 template <class R BOOST_PP_ENUM_TRAILING_PARAMS_Z(1, N, class A)>
-boost::type<BOOST_PP_IF(N, A0, void)>* target(R (*)(BOOST_PP_ENUM_PARAMS_Z(1, N, A)))
+BOOST_PP_IF(N, A0, void)(* target(R (*)(BOOST_PP_ENUM_PARAMS_Z(1, N, A))) )()
 {
     return 0;
 }
@@ -59,14 +62,17 @@ boost::type<BOOST_PP_IF(N, A0, void)>* target(R (*)(BOOST_PP_ENUM_PARAMS_Z(1, N,
 # include BOOST_PP_ITERATE()
 
 #elif BOOST_PP_ITERATION_DEPTH() == 2
-# line BOOST_PP_LINE(__LINE__, target.hpp(pointers-to-members))
+# if !(BOOST_WORKAROUND(__MWERKS__, > 0x3100)                      \
+        && BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3201)))
+#  line BOOST_PP_LINE(__LINE__, target.hpp(pointers-to-members))
+# endif 
 // Inner over arities
 
 # define N BOOST_PP_ITERATION()
 # define Q BOOST_PYTHON_CV_QUALIFIER(BOOST_PP_RELATIVE_ITERATION(1))
 
 template <class R, class T BOOST_PP_ENUM_TRAILING_PARAMS_Z(1, N, class A)>
-boost::type<T Q*>* target(R (T::*)(BOOST_PP_ENUM_PARAMS_Z(1, N, A)) Q)
+T& (* target(R (T::*)(BOOST_PP_ENUM_PARAMS_Z(1, N, A)) Q) )()
 {
     return 0;
 }

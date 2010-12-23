@@ -1,13 +1,11 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Joel de Guzman
     Copyright (c) 2001-2003 Daniel Nuffer
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_BASIC_CHSET_IPP
 #define BOOST_SPIRIT_BASIC_CHSET_IPP
@@ -29,8 +27,8 @@ inline basic_chset<CharT>::basic_chset() {}
 
 //////////////////////////////////
 template <typename CharT>
-inline basic_chset<CharT>::basic_chset(basic_chset const& arg)
-: rr(arg.rr) {}
+inline basic_chset<CharT>::basic_chset(basic_chset const& arg_)
+: rr(arg_.rr) {}
 
 //////////////////////////////////
 template <typename CharT>
@@ -143,8 +141,8 @@ inline basic_chset_8bit<CharT>::basic_chset_8bit() {}
 
 /////////////////////////////////
 template <typename CharT>
-inline basic_chset_8bit<CharT>::basic_chset_8bit(basic_chset_8bit const& arg)
-: bset(arg.bset) {}
+inline basic_chset_8bit<CharT>::basic_chset_8bit(basic_chset_8bit const& arg_)
+: bset(arg_.bset) {}
 
 /////////////////////////////////
 template <typename CharT>

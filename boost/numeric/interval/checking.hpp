@@ -10,7 +10,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: checking.hpp,v 1.2 2003/02/05 17:34:29 gmelquio Exp $
+ * $Id: checking.hpp,v 1.5 2003/06/01 05:50:53 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_CHECKING_HPP
@@ -60,12 +60,12 @@ struct checking_base
   static T empty_lower()
   {
     return (std::numeric_limits<T>::has_quiet_NaN ?
-            std::numeric_limits<T>::quiet_NaN() : T(1));
+            std::numeric_limits<T>::quiet_NaN() : static_cast<T>(1));
   }
   static T empty_upper()
   {
     return (std::numeric_limits<T>::has_quiet_NaN ?
-            std::numeric_limits<T>::quiet_NaN() : T(0));
+            std::numeric_limits<T>::quiet_NaN() : static_cast<T>(0));
   }
   static bool is_empty(const T& l, const T& u)
   {
@@ -120,7 +120,7 @@ struct checking_catch_nan: Checking
 
 template<class T>
 struct checking_strict:
-  checking_catch_nan<T, checking_no_empty<T> >
+  checking_no_nan<T, checking_no_empty<T> >
 {};
 
 namespace detail {
@@ -129,7 +129,7 @@ template <class T> inline bool is_nan(const T& x) { return x != x; }
 
 } // namespace detail
 
-} // namespace interval
+} // namespace interval_lib
 } // namespace numeric
 } // namespace boost
 

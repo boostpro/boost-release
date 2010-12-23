@@ -5,7 +5,6 @@
 // to its suitability for any purpose.
 #include <boost/python/module.hpp>
 #include <boost/python/def.hpp>
-#include <string>
 #include <complex>
 #include <boost/python/handle.hpp>
 #include <boost/python/cast.hpp>
@@ -57,6 +56,8 @@ handle<> return_null_handle()
 
 char const* rewrap_value_mutable_cstring(char* x) { return x; }
 
+object identity_(object x) { return x; }
+
 BOOST_PYTHON_MODULE(builtin_converters)
 {    
     def("get_type", get_type);
@@ -75,8 +76,8 @@ BOOST_PYTHON_MODULE(builtin_converters)
 // using Python's macro instead of Boost's - we don't seem to get the
 // config right all the time.
 #ifdef HAVE_LONG_LONG
-    def("rewrap_value_long_long", by_value<LONG_LONG>::rewrap);
-    def("rewrap_value_unsigned_long_long", by_value<unsigned LONG_LONG>::rewrap);
+    def("rewrap_value_long_long", by_value<BOOST_PYTHON_LONG_LONG>::rewrap);
+    def("rewrap_value_unsigned_long_long", by_value<unsigned BOOST_PYTHON_LONG_LONG>::rewrap);
 # endif 
     def("rewrap_value_float", by_value<float>::rewrap);
     def("rewrap_value_double", by_value<double>::rewrap);
@@ -84,6 +85,20 @@ BOOST_PYTHON_MODULE(builtin_converters)
     def("rewrap_value_complex_float", by_value<std::complex<float> >::rewrap);
     def("rewrap_value_complex_double", by_value<std::complex<double> >::rewrap);
     def("rewrap_value_complex_long_double", by_value<std::complex<long double> >::rewrap);
+    def("rewrap_value_wstring",
+# ifdef BOOST_NO_STD_WSTRING
+        identity_
+# else 
+        by_value<std::wstring>::rewrap
+# endif 
+    );
+    def("rewrap_value_string",
+# ifdef BOOST_NO_STD_WSTRING
+        identity_
+# else 
+        by_value<std::wstring>::rewrap
+# endif 
+    );
     def("rewrap_value_string", by_value<std::string>::rewrap);
     def("rewrap_value_cstring", by_value<char const*>::rewrap);
     def("rewrap_value_handle", by_value<handle<> >::rewrap);
@@ -106,8 +121,8 @@ BOOST_PYTHON_MODULE(builtin_converters)
 // using Python's macro instead of Boost's - we don't seem to get the
 // config right all the time.
 # ifdef HAVE_LONG_LONG
-    def("rewrap_const_reference_long_long", by_const_reference<LONG_LONG>::rewrap);
-    def("rewrap_const_reference_unsigned_long_long", by_const_reference<unsigned LONG_LONG>::rewrap);
+    def("rewrap_const_reference_long_long", by_const_reference<BOOST_PYTHON_LONG_LONG>::rewrap);
+    def("rewrap_const_reference_unsigned_long_long", by_const_reference<unsigned BOOST_PYTHON_LONG_LONG>::rewrap);
 # endif
     def("rewrap_const_reference_float", by_const_reference<float>::rewrap);
     def("rewrap_const_reference_double", by_const_reference<double>::rewrap);

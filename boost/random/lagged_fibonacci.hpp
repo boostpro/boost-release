@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: lagged_fibonacci.hpp,v 1.15 2003/01/15 15:43:36 david_abrahams Exp $
+ * $Id: lagged_fibonacci.hpp,v 1.18.2.1 2004/01/25 21:26:45 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -27,8 +27,10 @@
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
 #include <boost/cstdint.hpp>
+#include <boost/detail/workaround.hpp>
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_01.hpp>
+#include <boost/random/detail/pass_through_engine.hpp>
 
 namespace boost {
 namespace random {
@@ -289,7 +291,10 @@ public:
   template<class Generator>
   void seed(Generator & gen)
   {
-    uniform_01<Generator, RealType> gen01(gen);
+    // use pass-by-reference, but wrap argument in pass_through_engine
+    typedef detail::pass_through_engine<Generator&> ref_gen;
+    uniform_01<ref_gen, RealType> gen01 =
+      uniform_01<ref_gen, RealType>(ref_gen(gen));
     // I could have used std::generate_n, but it takes "gen" by value
     for(unsigned int j = 0; j < long_lag; ++j)
       x[j] = gen01();
@@ -368,7 +373,7 @@ public:
 # else
         is >> f.i >> std::ws;
         for(unsigned int i = 0; i < f.long_lag; ++i) {
-            RealType value;
+            typename lagged_fibonacci_01::result_type value;
             is >> value >> std::ws;
             f.x[i] = value / f._modulus;
         }
@@ -406,6 +411,8 @@ template<class RealType, int w, unsigned int p, unsigned int q>
 const unsigned int lagged_fibonacci_01<RealType, w, p, q>::long_lag;
 template<class RealType, int w, unsigned int p, unsigned int q>
 const unsigned int lagged_fibonacci_01<RealType, w, p, q>::short_lag;
+template<class RealType, int w, unsigned int p, unsigned int q>
+const int lagged_fibonacci_01<RealType,w,p,q>::word_size;
 
 #endif
 

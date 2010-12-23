@@ -9,6 +9,7 @@
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/same_traits.hpp>
 #include <boost/function/function0.hpp>
+#include <boost/mpl/bool.hpp>
 #include <memory>
 
 #define BOOST_INCLUDE_MAIN
@@ -24,8 +25,8 @@ namespace boost { namespace python
   // specialization
   template <>
   struct has_back_reference<BR>
+    : mpl::true_
   {
-      BOOST_STATIC_CONSTANT(bool, value = true);
   };
 }} // namespace boost::python
 
@@ -40,13 +41,10 @@ void assert_same(U* = 0, T* = 0)
 template <class T, class Held, class Holder>
 void assert_holder(T* = 0, Held* = 0, Holder* = 0)
 {
+    typedef typename boost::python::objects::select_holder<T,Held>::type h;
     assert_same<Holder>(
-#if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
-        boost::python::objects::select_holder<T,Held>::execute((Held*)0).get()
-#else
-        boost::python::objects::select_holder<T,Held>::type::get()
-#endif 
-        );
+        (h*)0
+    );
 }
 
 int test_main(int, char * [])

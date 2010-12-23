@@ -1,18 +1,21 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2001-2003 Joel de Guzman
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_SYMBOLS_IPP
 #define BOOST_SPIRIT_SYMBOLS_IPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "boost/spirit/symbols/impl/tst.ipp"
+#include <boost/spirit/symbols/impl/tst.ipp>
+
+// MSVC: void warning about the use of 'this' pointer in constructors
+#if defined(BOOST_MSVC)
+#pragma warning(disable : 4355)
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
@@ -94,5 +97,9 @@ add(symbols<T, CharT, SetT>& table, CharT const* sym, T const& data)
 
 ///////////////////////////////////////////////////////////////////////////////
 }} // namespace boost::spirit
+
+#if defined(BOOST_MSVC)
+#pragma warning(default : 4355)
+#endif
 
 #endif

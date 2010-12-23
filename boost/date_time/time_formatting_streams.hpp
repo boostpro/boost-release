@@ -1,12 +1,17 @@
 #ifndef DATE_TIME_TIME_FORMATTING_STREAMS_HPP___
 #define DATE_TIME_TIME_FORMATTING_STREAMS_HPP___
-/* Copyright (c) 2002 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
- * Author: Jeff Garland 
+
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
+ * Author: Jeff Garland, Bart Garst
+ * $Date: 2003/12/03 02:58:20 $
  */
 
 
 #include "boost/date_time/date_formatting_locales.hpp" 
+#include "boost/date_time/time_resolution_traits.hpp"
 
 #ifndef BOOST_DATE_TIME_NO_LOCALE
 
@@ -27,16 +32,28 @@ namespace date_time {
     static void duration_put(const time_duration_type& td, 
                              ostream_type& os)
     {
-      os  << std::setw(2) << std::setfill('0') << td.hours() << ":";
-      os  << std::setw(2) << std::setfill('0') << td.minutes() << ":";
-      os  << std::setw(2) << std::setfill('0') << td.seconds();
-      fractional_seconds_type frac_sec = td.fractional_seconds();
-      if (frac_sec != 0) {
-        os  << "." << std::setw(time_duration_type::num_fractional_digits())
-            << std::setfill('0')
-            << frac_sec;
+      if(td.is_special()) {
+        os << td.get_rep(); 
       }
-      
+      else {
+        if(td.is_negative()) {
+          os << '-';
+        }
+        os  << std::setw(2) << std::setfill('0') 
+            << absolute_value(td.hours()) << ":";
+        os  << std::setw(2) << std::setfill('0') 
+            << absolute_value(td.minutes()) << ":";
+        os  << std::setw(2) << std::setfill('0') 
+            << absolute_value(td.seconds());
+        fractional_seconds_type frac_sec = 
+          absolute_value(td.fractional_seconds());
+        if (frac_sec != 0) {
+          os  << "." 
+              << std::setw(time_duration_type::num_fractional_digits())
+              << std::setfill('0')
+              << frac_sec;
+        }
+      } // else
     } // duration_put
   }; //class ostream_time_duration_formatter
 
@@ -57,7 +74,10 @@ namespace date_time {
     {
       date_type d = t.date();
       os << d << " "; //TODO: fix the separator here.
-      duration_formatter::duration_put(t.time_of_day(), os);
+      if(!d.is_infinity() && !d.is_not_a_date())
+      {
+        duration_formatter::duration_put(t.time_of_day(), os);
+      }
       
     } // time_to_ostream    
   }; //class ostream_time_formatter
@@ -93,16 +113,5 @@ namespace date_time {
 
 #endif //BOOST_DATE_TIME_NO_LOCALE
 
-/* Copyright (c) 2002
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- */
 #endif
 

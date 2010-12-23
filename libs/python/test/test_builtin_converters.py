@@ -75,6 +75,13 @@ r"""
 'hello, world'
 >>> rewrap_value_string('yo, wassup?')
 'yo, wassup?'
+>>> rewrap_value_wstring(u'yo, wassup?')
+u'yo, wassup?'
+
+    test that overloading on unicode works:
+    
+>>> rewrap_value_string(u'yo, wassup?')
+u'yo, wassup?'
 
    wrap strings with embedded nulls:
    
@@ -235,4 +242,6 @@ def run(args = None):
 if __name__ == '__main__':
     print "running..."
     import sys
-    sys.exit(run()[0])
+    status = run()[0]
+    if (status == 0): print "Done."
+    sys.exit(status)

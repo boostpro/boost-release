@@ -1,15 +1,14 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
 //  (C) Copyright Beman Dawes 1995-2001. 
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for updates, documentation, and revision history.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: test_main.cpp,v $
 //
-//  Version     : $Id: test_main.cpp,v 1.10 2003/02/13 08:35:45 rogeeff Exp $
+//  Version     : $$Revision: 1.15 $
 //
 //  Description : implements main function for Test Execution Monitor. 
 // ***************************************************************************
@@ -18,6 +17,7 @@
 #include <boost/test/unit_test.hpp>         // for unit test framework
 #include <boost/test/unit_test_result.hpp>
 #include <boost/test/detail/unit_test_parameters.hpp>
+#include <boost/test/detail/unit_test_monitor.hpp>
 
 // BOOST
 #include <boost/scoped_ptr.hpp>
@@ -69,6 +69,9 @@ int main( int argc, char* argv[] ) {
     // set the result code flag
     bool no_result_code = retrieve_framework_parameter( NO_RESULT_CODE, &argc, argv ) == "no";
 
+    // set catch_system_error switch
+    detail::unit_test_monitor::catch_system_errors( retrieve_framework_parameter( CATCH_SYS_ERRORS, &argc, argv ) != "no" );
+
     //  set up the test   
     argc_ = argc;
     argv_ = argv;
@@ -95,12 +98,8 @@ int main( int argc, char* argv[] ) {
 //  Revision History :
 //  
 //  $Log: test_main.cpp,v $
-//  Revision 1.10  2003/02/13 08:35:45  rogeeff
-//  log/report format introduced
-//  other minot fixes
-//
-//  Revision 1.9  2002/11/02 20:04:41  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.15  2003/12/01 00:42:37  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

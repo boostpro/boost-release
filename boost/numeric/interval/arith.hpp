@@ -11,7 +11,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: arith.hpp,v 1.2 2003/02/05 17:34:29 gmelquio Exp $
+ * $Id: arith.hpp,v 1.3 2003/09/10 15:26:16 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_ARITH_HPP
@@ -199,7 +199,7 @@ interval<T, Policies> operator*(const interval<T, Policies>& x,
         if (interval_lib::detail::is_pos(yu)) // M * P
           return I(rnd.mul_down(xl, yu), rnd.mul_up(xu, yu), true);
         else                    // M * Z
-          return I(0, 0, true);
+          return I(static_cast<T>(0), static_cast<T>(0), true);
     else
       if (interval_lib::detail::is_neg(yl))
         if (interval_lib::detail::is_pos(yu)) // N * M
@@ -210,7 +210,7 @@ interval<T, Policies> operator*(const interval<T, Policies>& x,
         if (interval_lib::detail::is_pos(yu)) // N * P
           return I(rnd.mul_down(xl, yu), rnd.mul_up(xu, yl), true);
         else                    // N * Z
-          return I(0, 0, true);
+          return I(static_cast<T>(0), static_cast<T>(0), true);
   else
     if (interval_lib::detail::is_pos(xu))
       if (interval_lib::detail::is_neg(yl))
@@ -222,9 +222,9 @@ interval<T, Policies> operator*(const interval<T, Policies>& x,
         if (interval_lib::detail::is_pos(yu)) // P * P
           return I(rnd.mul_down(xl, yl), rnd.mul_up(xu, yu), true);
         else                    // P * Z
-          return I(0, 0, true);
+          return I(static_cast<T>(0), static_cast<T>(0), true);
     else                        // Z * ?
-      return I(0, 0, true);
+      return I(static_cast<T>(0), static_cast<T>(0), true);
 }
 
 template<class T, class Policies> inline
@@ -240,7 +240,7 @@ interval<T, Policies> operator*(const T& x, const interval<T, Policies>& y)
   if (interval_lib::detail::is_neg(x))
     return I(rnd.mul_down(x, yu), rnd.mul_up(x, yl), true);
   else if (interval_lib::detail::is_zero(x))
-    return I(0, 0, true);
+    return I(static_cast<T>(0), static_cast<T>(0), true);
   else
     return I(rnd.mul_down(x, yl), rnd.mul_up(x, yu), true);
 }

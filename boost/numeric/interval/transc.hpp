@@ -11,7 +11,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: transc.hpp,v 1.2 2003/02/05 17:34:30 gmelquio Exp $
+ * $Id: transc.hpp,v 1.4 2003/07/30 05:08:44 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_TRANSC_HPP
@@ -105,14 +105,14 @@ interval<T, Policies> tan(const interval<T, Policies>& x)
   typedef typename interval_lib::unprotect<I>::type R;
 
   // get lower bound within [-pi/2, pi/2]
-  const R pi = interval_lib::pi<I>();
-  R tmp = fmod((const I&)x, pi);
+  const R pi = interval_lib::pi<R>();
+  R tmp = fmod((const R&)x, pi);
   const T pi_half_d = interval_lib::constants::pi_half_lower<T>();
   if (tmp.lower() >= pi_half_d)
     tmp -= pi;
   if (tmp.lower() <= -pi_half_d || tmp.upper() >= pi_half_d)
     return I::whole();
-  return I(rnd.tan_down(tmp.lower()), rnd.tan_up  (tmp.upper()), true);
+  return I(rnd.tan_down(tmp.lower()), rnd.tan_up(tmp.upper()), true);
 }
 
 template<class T, class Policies> inline

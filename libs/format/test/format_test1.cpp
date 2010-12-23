@@ -19,7 +19,7 @@ int test_main(int, char* [])
 {
 
   using boost::format;
-  using boost::io::str;
+  using boost::str; // for compilers with bad koenig lookup
 
   if(str( format("  %%  ") ) != "  %  ")
       BOOST_ERROR("Basic parsing without arguments Failed");

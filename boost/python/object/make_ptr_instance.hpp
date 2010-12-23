@@ -10,6 +10,7 @@
 # include <boost/python/converter/registry.hpp>
 # include <boost/type_traits/is_polymorphic.hpp>
 # include <boost/get_pointer.hpp>
+# include <boost/detail/workaround.hpp>
 # include <typeinfo>
 
 namespace boost { namespace python { namespace objects { 
@@ -34,10 +35,12 @@ struct make_ptr_instance
     template <class U>
     static inline PyTypeObject* get_class_object_impl(U const volatile* p)
     {
-		if (p == 0)
-			return 0;
+        if (p == 0)
+            return 0; // means "return None".
 
-        PyTypeObject* derived = get_derived_class_object(is_polymorphic<U>::type(), p);
+        PyTypeObject* derived = get_derived_class_object(
+            BOOST_DEDUCED_TYPENAME is_polymorphic<U>::type(), p);
+        
         if (derived)
             return derived;
         return converter::registered<T>::converters.get_class_object();
@@ -46,19 +49,15 @@ struct make_ptr_instance
     template <class U>
     static inline PyTypeObject* get_derived_class_object(mpl::true_, U const volatile* x)
     {
-        converter::registration const* r = converter::registry::query(type_info(typeid(*x)));
+        converter::registration const* r = converter::registry::query(
+            type_info(typeid(*get_pointer(x)))
+        );
         return r ? r->m_class_object : 0;
     }
     
     template <class U>
-    static inline PyTypeObject* get_derived_class_object(mpl::false_, U* x)
+    static inline PyTypeObject* get_derived_class_object(mpl::false_, U*)
     {
-# if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
-        if (typeid(*x) != typeid(U))
-            return get_derived_class_object(mpl::true_(), x);
-# else
-        (void)x;
-# endif 
         return 0;
     }
 };

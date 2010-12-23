@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: cauchy_distribution.hpp,v 1.12 2002/12/22 22:03:10 jmaurer Exp $
+ * $Id: cauchy_distribution.hpp,v 1.13.2.1 2004/01/25 21:26:45 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -22,7 +22,9 @@
 #define BOOST_RANDOM_CAUCHY_DISTRIBUTION_HPP
 
 #include <cmath>
-#include <boost/random/uniform_01.hpp>
+#include <iostream>
+#include <boost/limits.hpp>
+#include <boost/static_assert.hpp>
 
 namespace boost {
 
@@ -33,45 +35,39 @@ namespace boost {
 #endif
 
 // Cauchy distribution: p(x) = sigma/(pi*(sigma**2 + (x-median)**2))
-template<class UniformRandomNumberGenerator, class RealType = double,
-         class Adaptor = uniform_01<UniformRandomNumberGenerator, RealType> >
+template<class RealType = double>
 class cauchy_distribution
 {
 public:
-  typedef Adaptor adaptor_type;
-  typedef UniformRandomNumberGenerator base_type;
+  typedef RealType input_type;
   typedef RealType result_type;
 
-  explicit cauchy_distribution(base_type & rng,
-                               result_type median = result_type(0), 
+#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+  BOOST_STATIC_ASSERT(!std::numeric_limits<RealType>::is_integer);
+#endif
+
+  explicit cauchy_distribution(result_type median = result_type(0), 
                                result_type sigma = result_type(1))
-    : _rng(rng), _median(median), _sigma(sigma) { }
+    : _median(median), _sigma(sigma) { }
 
   // compiler-generated copy ctor and assignment operator are fine
 
-  adaptor_type& adaptor() { return _rng; }
-  base_type& base() const { return _rng.base(); }
   result_type median() const { return _median; }
   result_type sigma() const { return _sigma; }
-  void reset() { _rng.reset(); }
+  void reset() { }
 
-  result_type operator()()
+  template<class Engine>
+  result_type operator()(Engine& eng)
   {
     // Can we have a boost::mathconst please?
     const result_type pi = result_type(3.14159265358979323846);
 #ifndef BOOST_NO_STDC_NAMESPACE
     using std::tan;
 #endif
-    return _median + _sigma * tan(pi*(_rng()-result_type(0.5)));
-  }
-#ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
-  friend bool operator==(const cauchy_distribution& x, 
-                         const cauchy_distribution& y)
-  {
-    return x._median == y._median && x._sigma == y._sigma && x._rng == y._rng; 
+    return _median + _sigma * tan(pi*(eng()-result_type(0.5)));
   }
 
-#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+#if !defined(BOOST_NO_OPERATORS_IN_NAMESPACE) && !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
   template<class CharT, class Traits>
   friend std::basic_ostream<CharT,Traits>&
   operator<<(std::basic_ostream<CharT,Traits>& os, const cauchy_distribution& cd)
@@ -89,15 +85,7 @@ public:
   }
 #endif
 
-#else
-  // Use a member function
-  bool operator==(const cauchy_distribution& rhs) const
-  {
-    return _median == rhs._median && _sigma == rhs._sigma && _rng == rhs._rng;
-  }
-#endif
 private:
-  adaptor_type _rng;
   result_type _median, _sigma;
 };
 

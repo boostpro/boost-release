@@ -1,12 +1,10 @@
 /*=============================================================================
-    Spirit V1.6.1
     Copyright (c) 2003 Giovanni Bajo
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software
-    is granted provided this copyright notice appears in all copies.
-    This software is provided "as is" without express or implied
-    warranty, and with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #include <boost/spirit/core.hpp>
 #include <boost/spirit/tree/ast.hpp>
@@ -380,7 +378,7 @@ int main()
 
     mpl::for_each<tests_t, mpl::_> (run_test());
 
-	cout << "Test completed successfully" << endl;
+    cout << "Test completed successfully" << endl;
 
     return 0;
 }

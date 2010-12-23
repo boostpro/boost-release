@@ -1,23 +1,13 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2002-2003 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_REGEX_HPP
 #define BOOST_SPIRIT_REGEX_HPP
-
-#include "boost/spirit/core/impl/msvc.hpp"
-
-#if defined(BOOST_MSVC) && (BOOST_MSVC <= 1300)
-#define BOOST_SPIRIT_IT_NS impl
-#else
-#define BOOST_SPIRIT_IT_NS std
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -36,8 +26,8 @@
 #define BOOST_REGEX_NO_LIB
 #define BOOST_REGEX_STATIC_LINK
 #define BOOST_REGEX_NO_EXTERNAL_TEMPLATES
-#include "boost/regex.hpp"
-#include "boost/regex/src.cpp"
+#include <boost/regex.hpp>
+#include <boost/regex/src.cpp>
 
 #else
 //
@@ -45,15 +35,16 @@
 //  application against the Boost.Regex library as described in the related
 //  documentation.
 //
-#include "boost/regex.hpp"
+#include <boost/regex.hpp>
 #endif // defined(BOOST_SPIRIT_NO_REGEX_LIB)
 
-#include "boost/static_assert.hpp"
+#include <boost/static_assert.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "boost/spirit/core/meta/impl/parser_type.hpp"
-#include "boost/spirit/core/parser.hpp"
-#include "boost/spirit/utility/impl/regex.ipp"
+#include <boost/spirit/meta/as_parser.hpp>
+#include <boost/spirit/core/parser.hpp>
+#include <boost/spirit/utility/impl/regex.ipp>
+#include <boost/detail/iterator.hpp> // for boost::detail::iterator_traits
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
@@ -79,7 +70,7 @@ struct rxstrlit : public parser<rxstrlit<CharT> > {
     //  forward iterators do not work here.
         typedef typename ScannerT::iterator_t iterator_t;
         typedef
-            typename BOOST_SPIRIT_IT_NS::iterator_traits<iterator_t>::iterator_category
+            typename boost::detail::iterator_traits<iterator_t>::iterator_category
             iterator_category;
 
         BOOST_STATIC_ASSERT((
@@ -110,7 +101,5 @@ regex_p(CharT const *first, CharT const *last)
 
 ///////////////////////////////////////////////////////////////////////////////
 }} // namespace boost::spirit
-
-#undef BOOST_SPIRIT_IT_NS
 
 #endif // BOOST_SPIRIT_REGEX_HPP

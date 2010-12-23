@@ -1,15 +1,15 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
 //  (C) Copyright Beman Dawes 2001.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for updates, documentation, and revision history.
+
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: errors_handling_test.cpp,v $
 //
-//  Version     : $Id: errors_handling_test.cpp,v 1.11 2003/02/15 21:49:57 rogeeff Exp $
+//  Version     : $Revision: 1.17 $
 //
 //  Description : tests an ability of Unit Test Framework to catch all kinds
 //  of test errors in a user code and properly report it.
@@ -19,11 +19,23 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_result.hpp>
 #include <boost/test/detail/unit_test_parameters.hpp>
+#include <boost/test/detail/supplied_log_formatters.hpp>
 using namespace boost::unit_test_framework;
 using namespace boost::test_toolbox;
 
 // STL
 #include <iostream>
+
+struct this_test_log_formatter : public boost::unit_test_framework::detail::msvc65_like_log_formatter 
+{
+    explicit this_test_log_formatter( unit_test_log const& log )
+    : boost::unit_test_framework::detail::msvc65_like_log_formatter( log ) {}
+
+    void    print_prefix( std::ostream& output, std::string const&, std::size_t line )
+    {
+        output << line << ": ";
+    }
+};
 
 //____________________________________________________________________________//
 
@@ -144,6 +156,7 @@ namespace {
 int
 test_main( int argc, char * argv[] )
 {
+
     bool match_or_save = retrieve_framework_parameter( SAVE_TEST_PATTERN, &argc, argv ) != "yes";
 
     std::string pattern_file_name( argc > 1 ? argv[1] : "errors_handling_test.pattern" );
@@ -151,6 +164,7 @@ test_main( int argc, char * argv[] )
     output_test_stream output( pattern_file_name, match_or_save );
 
     unit_test_log::instance().set_log_stream( output );
+    unit_test_log::instance().set_log_formatter( new this_test_log_formatter( unit_test_log::instance() ) );
 
     boost::shared_ptr<bad_test> bad_test_instance( new bad_test );
 
@@ -189,14 +203,14 @@ test_main( int argc, char * argv[] )
                     break;
                 case tct_param_free_function:
 // Borland bug workaround
-#if defined(__BORLANDC__) && (__BORLANDC__ < 0x570)
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570))
                     test.add( boost::unit_test_framework::create_test_case<int*,int>( &bad_function_param, std::string( "bad_function_param" ), (int*)params, params+1 ) );
 #else
                     test.add( BOOST_PARAM_TEST_CASE( &bad_function_param, (int*)params, params+1 ) );
 #endif
                     break;
                 case tct_param_user_test_case:
-#if defined(__BORLANDC__) && (__BORLANDC__ < 0x570)
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x570))
                     test.add( boost::unit_test_framework::create_test_case<bad_test,int*,int>( &bad_test::test_param, std::string( "bad_test::test_param" ),  bad_test_instance, (int*)params, params+1 ) );
 #else
                     test.add( BOOST_PARAM_CLASS_TEST_CASE( &bad_test::test_param, bad_test_instance, (int*)params, params+1 ) );
@@ -233,17 +247,8 @@ test_main( int argc, char * argv[] )
 //  Revision History :
 //
 //  $Log: errors_handling_test.cpp,v $
-//  Revision 1.11  2003/02/15 21:49:57  rogeeff
-//  borland warning fix
-//
-//  Revision 1.10  2003/02/13 08:47:05  rogeeff
-//  *** empty log message ***
-//
-//  Revision 1.9  2002/12/09 05:14:45  rogeeff
-//  switch to use unit_test_result_saver for internal testing
-//
-//  Revision 1.8  2002/11/02 20:04:43  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.17  2003/12/01 00:42:37  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

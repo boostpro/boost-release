@@ -18,6 +18,7 @@
     { "actions", ACTIONS_t },
     { "bind", BIND_t },
     { "case", CASE_t },
+    { "class", CLASS_t },
     { "default", DEFAULT_t },
     { "else", ELSE_t },
     { "existing", EXISTING_t },

@@ -19,6 +19,7 @@
 
 #include "boost/mpl/clear_fwd.hpp"
 #include "boost/mpl/aux_/traits_lambda_spec.hpp"
+#include "boost/mpl/aux_/config/eti.hpp"
 
 namespace boost {
 namespace mpl {

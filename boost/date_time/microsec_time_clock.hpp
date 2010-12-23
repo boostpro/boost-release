@@ -1,11 +1,23 @@
 #ifndef DATE_TIME_HIGHRES_TIME_CLOCK_HPP___
 #define DATE_TIME_HIGHRES_TIME_CLOCK_HPP___
 
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
+ * Author: Jeff Garland 
+ * $Date: 2003/12/03 02:48:56 $
+ */
+
+
 /*! @file highres_time_clock.hpp
-  This file contains the interface for clock devices
+  This file contains a high resolution time clock implementation.
 */
 
 #include "boost/date_time/c_time.hpp"
+#include "boost/cstdint.hpp"
+
+
 #ifdef BOOST_DATE_TIME_HAS_GETTIMEOFDAY_HIGH_PRECISION_CLOCK
 
 namespace boost {
@@ -45,8 +57,8 @@ namespace date_time {
       ::std::time(&t); 
       tm* curr = localtime(&t);
       date_type d(curr->tm_year + 1900, 
-		  curr->tm_mon + 1, 
-		  curr->tm_mday);
+                  curr->tm_mon + 1, 
+                  curr->tm_mday);
       //The following line will adjusts the fractional second tick in terms
       //of the current time system.  For example, if the time system
       //doesn't support fractional seconds then res_adjust returns 0
@@ -54,9 +66,9 @@ namespace date_time {
       int adjust = resolution_traits_type::res_adjust()/1000000;
 
       time_duration_type td(curr->tm_hour,
-			    curr->tm_min,
+                            curr->tm_min,
                             curr->tm_sec,
-			    fs*adjust);
+                            fs*adjust);
       return time_type(d,td);
       
     }
@@ -68,5 +80,7 @@ namespace date_time {
 } } //namespace date_time
 
 #endif //BOOST_DATE_TIME_HAS_GETTIMEOFDAY_HIGH_PRECISION_CLOCK
+
+
 
 #endif

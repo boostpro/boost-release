@@ -24,9 +24,6 @@
 // Python's LongObject.h helpfully #defines ULONGLONG_MAX for us,
 // which confuses Boost's config
 //
-#if defined(__ALPHA) && defined(__osf__) && defined(__DECCXX_VER)
-# include <pyconfig.h>
-#endif
 #include <limits.h>
 #ifndef ULONG_MAX
 # define BOOST_PYTHON_ULONG_MAX_UNDEFINED
@@ -157,4 +154,14 @@ typedef int pid_t;
 # pragma warn_possunwant off
 #elif _MSC_VER
 # pragma warning(disable:4786)
+#endif
+
+#if defined(HAVE_LONG_LONG)
+# if defined(PY_LONG_LONG)
+#  define BOOST_PYTHON_LONG_LONG PY_LONG_LONG
+# elif defined(LONG_LONG)
+#  define BOOST_PYTHON_LONG_LONG LONG_LONG
+# else
+#  error "HAVE_LONG_LONG defined but not PY_LONG_LONG or LONG_LONG"
+# endif
 #endif

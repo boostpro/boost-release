@@ -1,3 +1,15 @@
+// Copyright 2002 The Trustees of Indiana University.
+
+// Use, modification and distribution is subject to the Boost Software 
+// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
+//  Boost.MultiArray Library
+//  Authors: Ronald Garcia
+//           Jeremy Siek
+//           Andrew Lumsdaine
+//  See http://www.boost.org/libs/multi_array for documentation.
+
 // 
 // fail_ref_cdata.cpp -
 //   Testing data() member function constness.
@@ -24,7 +36,6 @@ test_main(int,char*[])
   const array_ref& csma = sma;
 
   // FAIL! data() returns const int*.
-  int* cdptr = csma.data();
-  (void)cdptr; // suppress compiler warnings
+  *csma.data() = 0;
   return boost::exit_success;
 }

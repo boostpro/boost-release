@@ -6,10 +6,8 @@
 #ifndef HAS_BACK_REFERENCE_DWA2002323_HPP
 # define HAS_BACK_REFERENCE_DWA2002323_HPP
 
-#if defined(__ALPHA) && defined(__osf__) && defined(__DECCXX_VER)
-# include <pyconfig.h>
-#endif
-#include <boost/config.hpp>
+# include <boost/python/detail/prefix.hpp>
+# include <boost/mpl/bool.hpp>
 
 namespace boost { namespace python { 
 
@@ -17,8 +15,8 @@ namespace boost { namespace python {
 // contains a back-reference to its owning PyObject*
 template <class T>
 struct has_back_reference
+  : mpl::false_
 {
-    BOOST_STATIC_CONSTANT(bool, value = false);
 };
 
 

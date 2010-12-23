@@ -17,6 +17,7 @@
 #ifndef BOOST_MPL_AUX_LAMBDA_SPEC_HPP_INCLUDED
 #define BOOST_MPL_AUX_LAMBDA_SPEC_HPP_INCLUDED
 
+#include "boost/mpl/void.hpp"
 #include "boost/mpl/lambda_fwd.hpp"
 #include "boost/mpl/int_fwd.hpp"
 #include "boost/mpl/aux_/preprocessor/params.hpp"
@@ -28,9 +29,11 @@
 #   define BOOST_MPL_AUX_PASS_THROUGH_LAMBDA_SPEC(i, name) \
 template< \
       BOOST_MPL_PP_PARAMS(i, typename T) \
+    , typename Tag \
     > \
 struct lambda< \
       name< BOOST_MPL_PP_PARAMS(i, T) > \
+    , Tag \
     BOOST_MPL_AUX_LAMBDA_ARITY_PARAM(int_<-1>) \
     > \
 { \

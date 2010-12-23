@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_01.hpp,v 1.13 2002/12/22 22:03:11 jmaurer Exp $
+ * $Id: uniform_01.hpp,v 1.15.2.1 2004/01/25 21:26:45 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -21,6 +21,7 @@
 #ifndef BOOST_RANDOM_UNIFORM_01_HPP
 #define BOOST_RANDOM_UNIFORM_01_HPP
 
+#include <iostream>
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
 #include <boost/static_assert.hpp>
@@ -34,20 +35,19 @@ template<class UniformRandomNumberGenerator, class RealType = double>
 class uniform_01
 {
 public:
-  typedef uniform_01<UniformRandomNumberGenerator, RealType> adaptor_type;
   typedef UniformRandomNumberGenerator base_type;
   typedef RealType result_type;
 
   BOOST_STATIC_CONSTANT(bool, has_fixed_range = false);
 
-#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+#if !defined(BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS) && !(defined(BOOST_MSVC) && BOOST_MSVC <= 1300)
   BOOST_STATIC_ASSERT(!std::numeric_limits<RealType>::is_integer);
 #endif
 
-  explicit uniform_01(base_type & rng)
-    : _rng(&rng),
+  explicit uniform_01(base_type rng)
+    : _rng(rng),
       _factor(result_type(1) /
-              (result_type(_rng->max()-_rng->min()) +
+              (result_type(_rng.max()-_rng.min()) +
                result_type(std::numeric_limits<base_result>::is_integer ? 1 : 0)))
   {
   }
@@ -55,42 +55,35 @@ public:
 
   result_type min() const { return result_type(0); }
   result_type max() const { return result_type(1); }
-  adaptor_type& adaptor() { return *this; }
-  base_type& base() const { return *_rng; }
+  base_type& base() { return _rng; }
+  const base_type& base() const { return _rng; }
   void reset() { }
 
   result_type operator()() {
-    return result_type((*_rng)() - _rng->min()) * _factor;
+    return result_type(_rng() - _rng.min()) * _factor;
   }
 
-#ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
-  friend bool operator==(const uniform_01& x, const uniform_01& y)
-  { return *x._rng == *y._rng; }
-
-#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+#if !defined(BOOST_NO_OPERATORS_IN_NAMESPACE) && !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
   template<class CharT, class Traits>
   friend std::basic_ostream<CharT,Traits>&
-  operator<<(std::basic_ostream<CharT,Traits>& os, const uniform_01&)
+  operator<<(std::basic_ostream<CharT,Traits>& os, const uniform_01& u)
   {
+    os << u._rng;
     return os;
   }
 
   template<class CharT, class Traits>
   friend std::basic_istream<CharT,Traits>&
-  operator>>(std::basic_istream<CharT,Traits>& is, uniform_01&)
+  operator>>(std::basic_istream<CharT,Traits>& is, uniform_01& u)
   {
+    is >> u._rng;
     return is;
   }
 #endif
 
-#else
-  // Use a member function
-  bool operator==(const uniform_01& rhs) const
-  { return *_rng == *rhs._rng;  }
-#endif
 private:
   typedef typename base_type::result_type base_result;
-  base_type * _rng;
+  base_type _rng;
   result_type _factor;
 };
 

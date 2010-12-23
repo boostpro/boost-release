@@ -1,22 +1,18 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2003 2003 Vaclav Vesely
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
-#include <boost/test/included/unit_test_framework.hpp>
 #include <boost/spirit/core.hpp>
 #include <boost/spirit/utility/confix.hpp>
+#include <boost/test/included/unit_test_framework.hpp>
 
 using namespace boost;
 using namespace unit_test_framework;
 using namespace spirit;
-
-//-----------------------------------------------------------------------------
 
 typedef
     scanner<char const*, scanner_policies<skipper_iteration_policy<> > >
@@ -25,8 +21,6 @@ typedef
 typedef
     rule<scanner_t>
         rule_t;
-
-//-----------------------------------------------------------------------------
 
 void comment_nest_p_test()
 {
@@ -58,9 +52,7 @@ void comment_nest_p_test()
     }
 }
 
-//-----------------------------------------------------------------------------
-
-test_suite* init_unit_test_suite(int argc, char* argv[])
+test_suite* init_unit_test_suite(int /*argc*/, char* /*argv*/[])
 {
     test_suite* test = BOOST_TEST_SUITE("confix tests");
 
@@ -69,4 +61,3 @@ test_suite* init_unit_test_suite(int argc, char* argv[])
     return test;
 }
 
-//-----------------------------------------------------------------------------

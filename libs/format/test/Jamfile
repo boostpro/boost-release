@@ -9,8 +9,7 @@
 
 subproject libs/format/test ;
 
-SEARCH on testing.jam = $(BOOST_BUILD_PATH) ;
-include testing.jam ;
+import testing ;
 
 # Make tests run by default.
 DEPENDS all : test ;
@@ -22,21 +21,28 @@ test-suite "format"
                 <lib>../../../libs/test/build/boost_test_exec_monitor
               : # args
               : # input files
-              : std::locale-support std::facet-support
+              : std::locale-support
         ]
 
         [ run format_test2.cpp 
                 <lib>../../../libs/test/build/boost_test_exec_monitor
               : # args
               : # input files
-              : std::locale-support std::facet-support
+              : std::locale-support
+        ]
+
+        [ run format_test3.cpp 
+                <lib>../../../libs/test/build/boost_test_exec_monitor
+              : # args
+              : # input files
+              : std::locale-support
         ]
 
         [ run format_test_wstring.cpp 
                 <lib>../../../libs/test/build/boost_test_exec_monitor
               : # args
               : # input files
-              : std::locale-support std::facet-support
+              : std::locale-support
         ]
   ;
 }

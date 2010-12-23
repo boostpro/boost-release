@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_config.hpp,v $
 //
-//  Version     : $Id: unit_test_config.hpp,v 1.12 2002/12/08 17:35:26 rogeeff Exp $
+//  Version     : $Revision: 1.16 $
 //
 //  Description : contains workarounds and works as a central place for configurable types
 // ***************************************************************************
@@ -56,11 +55,8 @@ using std::distance;
 //  Revision History :
 //  
 //  $Log: unit_test_config.hpp,v $
-//  Revision 1.12  2002/12/08 17:35:26  rogeeff
-//  c_string_literal introduced
-//
-//  Revision 1.11  2002/11/02 19:31:05  rogeeff
-//  merged into the main trank
+//  Revision 1.16  2003/12/01 00:41:56  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

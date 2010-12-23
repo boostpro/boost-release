@@ -1,23 +1,28 @@
 
-//  (C) Copyright John Maddock 2000. Permission to copy, use, modify, sell and   
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2002. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
 #include "check_integral_constant.hpp"
-#include TYPE_TRAITS(is_function)
-#include TYPE_TRAITS(is_float)
-#include TYPE_TRAITS(is_enum)
-#include TYPE_TRAITS(is_class)
-#include TYPE_TRAITS(is_scalar)
-#include TYPE_TRAITS(is_pod)
-#include TYPE_TRAITS(has_trivial_constructor)
-#include TYPE_TRAITS(has_trivial_copy)
-#include TYPE_TRAITS(has_trivial_assign)
-#include TYPE_TRAITS(has_trivial_destructor)
-#include TYPE_TRAITS(is_compound)
-#include TYPE_TRAITS(is_base_and_derived)
+#ifdef TEST_STD
+#  include <type_traits>
+#else
+#  include <boost/type_traits/is_function.hpp>
+#  include <boost/type_traits/is_float.hpp>
+#  include <boost/type_traits/is_enum.hpp>
+#  include <boost/type_traits/is_class.hpp>
+#  include <boost/type_traits/is_scalar.hpp>
+#  include <boost/type_traits/is_pod.hpp>
+#  include <boost/type_traits/has_trivial_constructor.hpp>
+#  include <boost/type_traits/has_trivial_copy.hpp>
+#  include <boost/type_traits/has_trivial_assign.hpp>
+#  include <boost/type_traits/has_trivial_destructor.hpp>
+#  include <boost/type_traits/is_compound.hpp>
+#  include <boost/type_traits/is_base_and_derived.hpp>
+#  include <boost/type_traits/is_convertible.hpp>
+#endif
 
 TT_TEST_BEGIN(tricky_function_type_test)
 
@@ -35,6 +40,7 @@ BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_trivial_copy<foo0_t>::value, false);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_trivial_assign<foo0_t>::value, false);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_trivial_destructor<foo0_t>::value, false);
 BOOST_CHECK_INTEGRAL_CONSTANT((::tt::is_base_and_derived<foo0_t, foo0_t>::value), false);
+BOOST_CHECK_INTEGRAL_CONSTANT((::tt::is_convertible<foo0_t, int>::value), false);
 
 
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_class<foo1_t>::value, false);
@@ -78,6 +84,7 @@ BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_trivial_assign<foo4_t>::value, false);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_trivial_destructor<foo4_t>::value, false);
 
 TT_TEST_END
+
 
 
 

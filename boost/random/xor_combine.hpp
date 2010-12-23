@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: xor_combine.hpp,v 1.5 2002/12/22 22:03:11 jmaurer Exp $
+ * $Id: xor_combine.hpp,v 1.6 2003/04/02 23:21:59 jmaurer Exp $
  *
  */
 
@@ -67,7 +67,7 @@ public:
   result_type operator()()
   {
     // MSVC fails BOOST_STATIC_ASSERT with std::numeric_limits at class scope
-#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+#if !defined(BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS) && !(defined(BOOST_MSVC) && BOOST_MSVC <= 1300)
     BOOST_STATIC_ASSERT(std::numeric_limits<typename base1_type::result_type>::is_integer);
     BOOST_STATIC_ASSERT(std::numeric_limits<typename base2_type::result_type>::is_integer);
     BOOST_STATIC_ASSERT(std::numeric_limits<typename base1_type::result_type>::digits >= std::numeric_limits<typename base2_type::result_type>::digits);

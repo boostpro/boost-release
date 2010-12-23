@@ -1,19 +1,26 @@
 
-//  (C) Copyright John Maddock 2000. Permission to copy, use, modify, sell and   
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2000. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
 #include "check_integral_constant.hpp"
-#include TYPE_TRAITS(is_polymorphic)
+#ifdef TEST_STD
+#  include <type_traits>
+#else
+#  include <boost/type_traits/is_polymorphic.hpp>
+#endif
 
 #include <exception>
 #include <stdexcept>
 
-#if defined(_WINDOWS) || defined(_WIN32) || defined(_WIN64)
+#if (defined(_WINDOWS) || defined(_WIN32) || defined(_WIN64)) && !defined(BOOST_DISABLE_WIN32)
 #include <windows.h> // more things to test
 #endif
+
+// this test was added to check for bug reported on 21 May 2003:
+struct poly_bug { virtual int foo() = 0; };
 
 TT_TEST_BEGIN(is_polymorphic)
 
@@ -56,7 +63,7 @@ BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<std::runtime_error>::value, t
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<std::out_of_range>::value, true);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<std::range_error>::value, true);
 
-#if defined(_WINDOWS) || defined(_WIN32) || defined(_WIN64)
+#if (defined(_WINDOWS) || defined(_WIN32) || defined(_WIN64)) && !defined(BOOST_DISABLE_WIN32)
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<IUnknown>::value, true);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<ITypeInfo>::value, true);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<ITypeComp>::value, true);
@@ -64,7 +71,12 @@ BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<ICreateTypeInfo>::value, true
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<IDispatch>::value, true);
 #endif
 
+//
+// this test was added to check for bug reported on 21 May 2003:
+BOOST_CHECK_INTEGRAL_CONSTANT(::tt::is_polymorphic<poly_bug>::value, true);
+
 TT_TEST_END
+
 
 
 

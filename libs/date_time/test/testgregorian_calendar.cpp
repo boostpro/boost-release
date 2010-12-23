@@ -1,5 +1,7 @@
-/* Copyright (c) 2001 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland 
  */
 
@@ -145,6 +147,9 @@ main()
   int weeknum13 = gregorian_calendar::week_number(gregorian_calendar::ymd_type(9999,12,31));
   check("ToWeekNumber 9999-12-31 is week 52", weeknum13 == 52);
 
+  int weeknum14 = gregorian_calendar::week_number(gregorian_calendar::ymd_type(2003,12,29));
+  check("ToWeekNumber 2003-12-29 is week 1", weeknum14 == 1);
+
 
   unsigned long jday1 = gregorian_calendar::day_number(gregorian_calendar::ymd_type(2000,1,1));
   unsigned long jday2 = gregorian_calendar::day_number(gregorian_calendar::ymd_type(2001,1,1));
@@ -244,21 +249,5 @@ main()
 
   return printTestStats();
 
-};
+}
 
-/*
- * Copyright (c) 2001
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided as is without express or implied warranty.
- *
- *
- * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
- *
- */

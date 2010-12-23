@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: linear_congruential.hpp,v 1.10 2002/12/22 22:03:10 jmaurer Exp $
+ * $Id: linear_congruential.hpp,v 1.15 2003/08/05 19:32:30 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -28,6 +28,7 @@
 #include <boost/limits.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/random/detail/const_mod.hpp>
+#include <boost/detail/workaround.hpp>
 
 namespace boost {
 namespace random {
@@ -98,39 +99,81 @@ public:
 
   static bool validation(IntType x) { return val == x; }
 
-#ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
+#ifdef BOOST_NO_OPERATORS_IN_NAMESPACE
+    
+  // Use a member function; Streamable concept not supported.
+  bool operator==(const linear_congruential& rhs) const
+  { return _x == rhs._x; }
+  bool operator!=(const linear_congruential& rhs) const
+  { return !(*this == rhs); }
 
-#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
-  template<class CharT, class Traits>
-  friend std::basic_ostream<CharT,Traits>&
-  operator<<(std::basic_ostream<CharT,Traits>& os,
-             const linear_congruential& lcg)
-  { os << lcg._x; return os; }
-
-  template<class CharT, class Traits>
-  friend std::basic_istream<CharT,Traits>&
-  operator>>(std::basic_istream<CharT,Traits>& is, linear_congruential& lcg)
-  { is >> lcg._x; return is; }
-#endif
-
+#else 
   friend bool operator==(const linear_congruential& x,
                          const linear_congruential& y)
   { return x._x == y._x; }
   friend bool operator!=(const linear_congruential& x,
                          const linear_congruential& y)
   { return !(x == y); }
-#else
-  // Use a member function; Streamable concept not supported.
-  bool operator==(const linear_congruential& rhs) const
-  { return _x == rhs._x; }
-  bool operator!=(const linear_congruential& rhs) const
-  { return !(*this == rhs); }
-#endif
+    
+#if !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS) && !BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x551))
+  template<class CharT, class Traits>
+  friend std::basic_ostream<CharT,Traits>&
+  operator<<(std::basic_ostream<CharT,Traits>& os,
+             const linear_congruential& lcg)
+  {
+    return os << lcg._x;
+  }
 
+  template<class CharT, class Traits>
+  friend std::basic_istream<CharT,Traits>&
+  operator>>(std::basic_istream<CharT,Traits>& is,
+             linear_congruential& lcg)
+  {
+    return is >> lcg._x;
+  }
+ 
 private:
+#endif
+#endif
+    
   IntType _modulus;   // work-around for gcc "divide by zero" warning in ctor
   IntType _x;
 };
+
+// probably needs the "no native streams" caveat for STLPort
+#if !defined(__SGI_STL_PORT) && BOOST_WORKAROUND(__GNUC__, == 2)
+template<class IntType, IntType a, IntType c, IntType m, IntType val>
+std::ostream&
+operator<<(std::ostream& os,
+           const linear_congruential<IntType,a,c,m,val>& lcg)
+{
+    return os << lcg._x;
+}
+
+template<class IntType, IntType a, IntType c, IntType m, IntType val>
+std::istream&
+operator>>(std::istream& is,
+           linear_congruential<IntType,a,c,m,val>& lcg)
+{
+    return is >> lcg._x;
+}
+#elif defined(BOOST_NO_OPERATORS_IN_NAMESPACE) || defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS) || BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x551))
+template<class CharT, class Traits, class IntType, IntType a, IntType c, IntType m, IntType val>
+std::basic_ostream<CharT,Traits>&
+operator<<(std::basic_ostream<CharT,Traits>& os,
+           const linear_congruential<IntType,a,c,m,val>& lcg)
+{
+    return os << lcg._x;
+}
+
+template<class CharT, class Traits, class IntType, IntType a, IntType c, IntType m, IntType val>
+std::basic_istream<CharT,Traits>&
+operator>>(std::basic_istream<CharT,Traits>& is,
+           linear_congruential<IntType,a,c,m,val>& lcg)
+{
+    return is >> lcg._x;
+}
+#endif
 
 #ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
 //  A definition is required even for integral static constants
@@ -140,6 +183,8 @@ template<class IntType, IntType a, IntType c, IntType m, IntType val>
 const typename linear_congruential<IntType, a, c, m, val>::result_type linear_congruential<IntType, a, c, m, val>::min_value;
 template<class IntType, IntType a, IntType c, IntType m, IntType val>
 const typename linear_congruential<IntType, a, c, m, val>::result_type linear_congruential<IntType, a, c, m, val>::max_value;
+template<class IntType, IntType a, IntType c, IntType m, IntType val>
+const IntType linear_congruential<IntType,a,c,m,val>::modulus;
 #endif
 
 } // namespace random

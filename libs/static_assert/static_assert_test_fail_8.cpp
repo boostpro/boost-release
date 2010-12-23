@@ -1,8 +1,7 @@
 //  (C) Copyright John Maddock 2000.
-//  Permission to copy, use, modify, sell and
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for most recent version including documentation.
 
@@ -24,6 +23,12 @@ RandomAccessIterator foo(RandomAccessIterator from, RandomAccessIterator)
    return from;
 }
 
+// ensure that delayed instantiation compilers like Comeau see the failure early
+// enough for "compile-fail" testing with the Boost.Build testing framework. (Greg Comeau)
+template
+std::list<int>::iterator
+   foo(std::list<int>::iterator, std::list<int>::iterator);
+
 int main()
 {
    std::deque<int> d;
@@ -35,4 +40,5 @@ int main()
 
 
  
+
 

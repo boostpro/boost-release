@@ -10,8 +10,7 @@
 subproject libs/python/build ;
 
 # bring in the rules for python
-SEARCH on <module@>python.jam = $(BOOST_BUILD_PATH) ;
-include <module@>python.jam ;
+import python ;
 
 if [ check-python-config ]
 {
@@ -61,8 +60,14 @@ if [ check-python-config ]
       <define>BOOST_PYTHON_SOURCE
       $(bpl-linkflags)
         <msvc-stlport><release>$(msvc-stlport-workarounds)
+        <darwin><*><linkflags>-bind_at_load
       ;
 
+  template extension
+    : <dll>boost_python
+    : <sysinclude>../../..
+    ;
+  
   lib boost_python
     : # sources
       ../src/$(sources)
@@ -80,5 +85,9 @@ if [ check-python-config ]
       <tag><debug-python>"_pydebug"
     :
         debug release
+    ;
+
+  install python lib
+    : <dll>boost_python <lib>boost_python
     ;
 }

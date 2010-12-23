@@ -1,11 +1,15 @@
 //  Boost config.hpp configuration test program file  -----------------------//
 
-//  (C) Copyright Boost.org 2000. Permission to copy, use, modify, sell and
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2001 - 2003. 
+//  (C) Copyright Jens Maurer 2001. 
+//  (C) Copyright Peter Dimov 2001. 
+//  (C) Copyright Darin Adler 2001. 
+//  (C) Copyright Beman Dawes 2002. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for the most recent version.
+//  See http://www.boost.org/libs/config for most recent version.
 
 #include <boost/config.hpp>
 #include <boost/version.hpp>
@@ -18,8 +22,8 @@
 #include <unistd.h>
 #endif
 
-unsigned int indent = 4;
-unsigned int width = 40;
+static unsigned int indent = 4;
+static unsigned int width = 40;
 
 using std::cout;
 using std::istream;
@@ -260,6 +264,7 @@ void print_compiler_macros()
   // misc compilers not covered so far:
   PRINT_MACRO(__ICC);
   PRINT_MACRO(__ICL);
+  PRINT_MACRO(__ECC);
   PRINT_MACRO(__INTEL_COMPILER);
   PRINT_MACRO(__USLC__);
   PRINT_MACRO(__DECCXX);
@@ -717,6 +722,9 @@ void print_platform_macros()
    PRINT_MACRO(LLONG_MAX);
    PRINT_MACRO(LONG_LONG_MAX);
    PRINT_MACRO(LONGLONG_MAX);
+   PRINT_MACRO(ULLONG_MAX); // <boost/cstdint.hpp> uses these, so we need to know them
+   PRINT_MACRO(ULONG_LONG_MAX);
+   PRINT_MACRO(ULONGLONG_MAX);
    // general C99:
    PRINT_MACRO(__STDC_IEC_559__);
    PRINT_MACRO(__STDC_IEC_559_COMPLEX__);
@@ -840,8 +848,10 @@ void print_boost_macros()
    PRINT_MACRO(BOOST_DEDUCED_TYPENAME);
    PRINT_MACRO(BOOST_DISABLE_THREADS);
    PRINT_MACRO(BOOST_DISABLE_WIN32);
+   PRINT_MACRO(BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL);
    PRINT_MACRO(BOOST_HAS_BETHREADS);
    PRINT_MACRO(BOOST_HAS_CLOCK_GETTIME);
+   PRINT_MACRO(BOOST_HAS_DECLSPEC);
    PRINT_MACRO(BOOST_HAS_DIRENT_H);
    PRINT_MACRO(BOOST_HAS_FTIME);
    PRINT_MACRO(BOOST_HAS_GETTIMEOFDAY);
@@ -852,6 +862,7 @@ void print_boost_macros()
    PRINT_MACRO(BOOST_HAS_NANOSLEEP);
    PRINT_MACRO(BOOST_HAS_NL_TYPES_H);
    PRINT_MACRO(BOOST_HAS_NRVO);
+   PRINT_MACRO(BOOST_HAS_PARTIAL_STD_ALLOCATOR);
    PRINT_MACRO(BOOST_HAS_PTHREAD_DELAY_NP);
    PRINT_MACRO(BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE);
    PRINT_MACRO(BOOST_HAS_PTHREAD_YIELD);
@@ -866,11 +877,13 @@ void print_boost_macros()
    PRINT_MACRO(BOOST_HAS_TWO_ARG_USE_FACET);
    PRINT_MACRO(BOOST_HAS_UNISTD_H);
    PRINT_MACRO(BOOST_HAS_WINTHREADS);
+   PRINT_MACRO(BOOST_INTEL);
    PRINT_MACRO(BOOST_MSVC);
    PRINT_MACRO(BOOST_MSVC_STD_ITERATOR);
    PRINT_MACRO(BOOST_MSVC6_MEMBER_TEMPLATES);
    PRINT_MACRO(BOOST_NESTED_TEMPLATE);
    PRINT_MACRO(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP);
+   PRINT_MACRO(BOOST_NO_ARRAY_TYPE_SPECIALIZATIONS);
    PRINT_MACRO(BOOST_NO_AUTO_PTR);
    PRINT_MACRO(BOOST_NO_CTYPE_FUNCTIONS);
    PRINT_MACRO(BOOST_NO_CV_SPECIALIZATIONS);
@@ -899,6 +912,7 @@ void print_boost_macros()
    PRINT_MACRO(BOOST_NO_OPERATORS_IN_NAMESPACE);
    PRINT_MACRO(BOOST_NO_POINTER_TO_MEMBER_CONST);
    PRINT_MACRO(BOOST_NO_PRIVATE_IN_AGGREGATE);
+   PRINT_MACRO(BOOST_NO_SFINAE);
    PRINT_MACRO(BOOST_NO_SLIST);
    PRINT_MACRO(BOOST_NO_STD_ALLOCATOR);
    PRINT_MACRO(BOOST_NO_STD_DISTANCE);
@@ -944,6 +958,7 @@ int main()
 
   return 0;
 }
+
 
 
 

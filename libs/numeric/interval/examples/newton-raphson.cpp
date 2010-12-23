@@ -1,5 +1,5 @@
 /* Boost example/newton-raphson.cpp
- * Newton iteration for intervals (partial: 0/0 is missing)
+ * Newton iteration for intervals
  *
  * Copyright Guillaume Melquiond 2003
  * Permission to use, copy, modify, sell, and distribute this software
@@ -11,11 +11,10 @@
  * suitability of this software for any purpose. It is provided "as
  * is" without express or implied warranty.
  *
- * $Id: newton-raphson.cpp,v 1.2 2003/02/05 17:34:35 gmelquio Exp $
+ * $Id: newton-raphson.cpp,v 1.5 2003/08/16 20:56:28 gmelquio Exp $
  */
 
 #include <boost/numeric/interval.hpp>
-#include <boost/numeric/interval/io.hpp>
 #include <vector>
 #include <algorithm>
 #include <utility>
@@ -48,8 +47,8 @@ std::vector<I1> newton_raphson(const I1& xs) {
     l.pop_back();
     bool x2_used;
     double xx = median(x);
-    vf = f(xx);
-    vd = f_diff(x);
+    vf = f<I1>(xx);
+    vd = f_diff<I1>(x);
     if (in_zero(vf) && in_zero(vd)) {
       x1 = I1::whole();
       x2_used = false;
@@ -75,7 +74,7 @@ std::vector<I1> newton_raphson(const I1& xs) {
       x2_used = true;
     } else l.push_back(x1);
     if (x2_used && in_zero(f(x2)))
-      if (width(x2) < max_width) res.push_back(x1);
+      if (width(x2) < max_width) res.push_back(x2);
       else l.push_back(x2);
   }
   return res;
@@ -94,15 +93,15 @@ std::vector<I2> newton_raphson(const I2& xs) {
     x = l.back();
     l.pop_back();
     double xx = median(x);
-    vf = f(xx);
-    vd = f_diff(x);
+    vf = f<I2>(xx);
+    vd = f_diff<I2>(x);
     if (in_zero(vf) && in_zero(vd)) {
       x1 = x;
       x2 = I2::empty();
     } else {
       bool x2_used;
       x1 = intersect(x, xx - division_part1(vf, vd, x2_used));
-      x2 = x2_used ? intersect(x, xx - division_part2(vf, vd)) : I2::empty();
+      x2 = intersect(x, xx - division_part2(vf, vd, x2_used));
     }
     if (width(x2) > width(x1)) std::swap(x1, x2);
     if (empty(x1) || !in_zero(f(x1)))
@@ -115,10 +114,17 @@ std::vector<I2> newton_raphson(const I2& xs) {
       x2 = p.second;
     } else l.push_back(x1);
     if (!empty(x2) && in_zero(f(x2)))
-      if (width(x2) < max_width) res.push_back(x1);
+      if (width(x2) < max_width) res.push_back(x2);
       else l.push_back(x2);
   }
   return res;
+}
+
+template<class T, class Policies>
+std::ostream &operator<<(std::ostream &os,
+                         const boost::numeric::interval<T, Policies> &x) {
+  os << "[" << x.lower() << ", " << x.upper() << "]";
+  return os;
 }
 
 int main() {

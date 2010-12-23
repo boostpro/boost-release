@@ -1,13 +1,11 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2002-2003 Joel de Guzman
     Copyright (c) 2002-2003 Martin Wille
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #if !defined BOOST_SPIRIT_OBJECT_WITH_ID_IPP
 #define BOOST_SPIRIT_OBJECT_WITH_ID_IPP
@@ -25,7 +23,7 @@ namespace boost { namespace spirit {
     namespace impl {
 
         //////////////////////////////////
-        template <typename IdT = unsigned long>
+        template <typename IdT = std::size_t>
         struct object_with_id_base_supply
         {
             typedef IdT                     object_id;
@@ -44,7 +42,7 @@ namespace boost { namespace spirit {
         };
 
         //////////////////////////////////
-        template <typename TagT, typename IdT = unsigned long>
+        template <typename TagT, typename IdT = std::size_t>
         struct object_with_id_base
         {
             typedef TagT        tag_t;
@@ -61,7 +59,7 @@ namespace boost { namespace spirit {
         };
 
         //////////////////////////////////
-        template<class TagT, typename IdT = unsigned long>
+        template<class TagT, typename IdT = std::size_t>
         struct object_with_id : private object_with_id_base<TagT, IdT>
         {
             typedef object_with_id<TagT, IdT>       self_t;

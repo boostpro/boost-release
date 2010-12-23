@@ -10,8 +10,22 @@
 
 #include "lists.h"
 
-int make( int n_targets, char **targets, int anyhow );
+int make( int n_targets, const char **targets, int anyhow );
 int make1( TARGET *t );
+
+typedef struct {
+	int	temp;
+	int	updating;
+	int	cantfind;
+	int	cantmake;
+	int	targets;
+	int	made;
+} COUNTS ;
+
+
+void make0( TARGET *t, TARGET  *p, int depth, 
+            COUNTS *counts, int anyhow );
+
 
 /*
  * Specifies that the target should be updated.

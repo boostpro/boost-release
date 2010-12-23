@@ -1,21 +1,20 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 2002-2003 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #ifndef BOOST_SPIRIT_LISTS_HPP
 #define BOOST_SPIRIT_LISTS_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "boost/spirit/core/meta/impl/parser_type.hpp"
-#include "boost/spirit/core/parser.hpp"
-#include "boost/spirit/core/composite/composite.hpp"
-#include "boost/spirit/utility/impl/lists.ipp"
+#include <boost/config.hpp>
+#include <boost/spirit/meta/as_parser.hpp>
+#include <boost/spirit/core/parser.hpp>
+#include <boost/spirit/core/composite/composite.hpp>
+#include <boost/spirit/utility/impl/lists.ipp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit {
@@ -215,7 +214,7 @@ struct list_parser_gen :
         typedef typename as_parser<ItemT>::type item_t;
         typedef typename as_parser<DelimT>::type delim_t;
         typedef list_parser<item_t, delim_t, no_list_endtoken,
-                BOOST_SPIRIT_TYPENAME item_t::parser_category_t>
+                BOOST_DEDUCED_TYPENAME item_t::parser_category_t>
             return_t;
 
         return return_t(
@@ -243,7 +242,7 @@ struct list_parser_gen :
         typedef typename as_parser<EndT>::type end_t;
 
         typedef list_parser<item_t, delim_t, end_t,
-                BOOST_SPIRIT_TYPENAME item_t::parser_category_t>
+                BOOST_DEDUCED_TYPENAME item_t::parser_category_t>
             return_t;
 
         return return_t(

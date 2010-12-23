@@ -1,15 +1,14 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
 //  (C) Copyright Ullrich Koethe 2001.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for updates, documentation, and revision history.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_monitor.cpp,v $
 //
-//  Version     : $Id: unit_test_monitor.cpp,v 1.7 2003/02/13 08:40:44 rogeeff Exp $
+//  Version     : $Revision: 1.12 $
 //
 //  Description : implements specific subclass of Executon Monitor used by Unit
 //  Test Framework to monitor test cases run.
@@ -35,8 +34,11 @@ namespace detail {
 bool unit_test_monitor::s_catch_system_errors = true;
 
 unit_test_monitor::error_level
-unit_test_monitor::execute_and_translate( int timeout ) 
+unit_test_monitor::execute_and_translate( test_case* target_test_case, function_to_monitor f, int timeout ) 
 {
+    m_test_case         = target_test_case;
+    m_test_case_method  = f;
+
     try {
         execute( s_catch_system_errors, timeout );
     }
@@ -50,7 +52,7 @@ unit_test_monitor::execute_and_translate( int timeout )
 
         unit_test_result::instance().caught_exception();
 
-        // translate execution_exception::error_code to detail::error_level
+        // translate execution_exception::error_code to error_level
         switch( exex.code() ) {
         case execution_exception::no_error:             return test_ok;
         case execution_exception::user_error:           return unexpected_exception;
@@ -72,7 +74,7 @@ int
 unit_test_monitor::function() 
 {
     try {
-        (m_test_case.*m_test_case_function)();
+        (m_test_case->*m_test_case_method)();
     }
     catch( test_toolbox::detail::test_tool_failed const& /*e*/ ) { // e not used; error already reported
         // nothing to do
@@ -93,14 +95,8 @@ unit_test_monitor::function()
 //  Revision History :
 //  
 //  $Log: unit_test_monitor.cpp,v $
-//  Revision 1.7  2003/02/13 08:40:44  rogeeff
-//  report_level -> log_level
-//
-//  Revision 1.6  2002/12/08 18:19:06  rogeeff
-//  catch system errors switch introduced
-//
-//  Revision 1.5  2002/11/02 20:04:42  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.12  2003/12/01 00:42:37  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

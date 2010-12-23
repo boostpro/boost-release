@@ -1,10 +1,10 @@
+//  (C) Copyright Gennadiy Rozental 2002-2003.
 //  (C) Copyright Gennadiy Rozental & Ullrich Koethe 2001.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
-//
-//  See http://www.boost.org for most recent version including documentation.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+//  See http://www.boost.org/libs/test for the library home page.
 
 // Boost.Test
 #include <boost/test/unit_test.hpp>
@@ -18,7 +18,7 @@ void free_test_function()
 }
 
 test_suite*
-init_unit_test_suite( int argc, char * argv[] ) {
+init_unit_test_suite( int, char* [] ) {
     test_suite* test= BOOST_TEST_SUITE( "Unit test example 1" );
 
     // this example will pass cause we know ahead of time number of expected failures

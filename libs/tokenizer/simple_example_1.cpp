@@ -22,5 +22,6 @@ int main(){
    for(tokenizer<>::iterator beg=tok.begin(); beg!=tok.end();++beg){
        cout << *beg << "\n";
    }
+   return 0;
 }
 

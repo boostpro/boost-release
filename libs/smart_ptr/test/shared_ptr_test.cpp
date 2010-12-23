@@ -1,9 +1,17 @@
-#if defined(_MSC_VER) && !defined(__ICL) && !defined(__COMO__)
+#include <boost/config.hpp>
+
+#if defined(BOOST_MSVC)
+
 #pragma warning(disable: 4786)  // identifier truncated in debug info
 #pragma warning(disable: 4710)  // function not inlined
 #pragma warning(disable: 4711)  // function selected for automatic inline expansion
 #pragma warning(disable: 4514)  // unreferenced inline removed
 #pragma warning(disable: 4355)  // 'this' : used in base member initializer list
+
+#if (BOOST_MSVC >= 1310)
+#pragma warning(disable: 4675)  // resolved overload found with Koenig lookup
+#endif
+
 #endif
 
 //
@@ -123,10 +131,31 @@ private:
 
 long Y::instances = 0;
 
+template<class T> void pc0_test(T * p)
+{
+    BOOST_TEST(p == 0);
+    boost::shared_ptr<T> pt(p);
+    BOOST_TEST(pt? false: true);
+    BOOST_TEST(!pt);
+    BOOST_TEST(pt.get() == 0);
+    BOOST_TEST(pt.use_count() == 1);
+    BOOST_TEST(pt.unique());
+}
+
 void pointer_constructor()
 {
+    pc0_test(static_cast<int*>(0));
+
+#if !defined(BOOST_MSVC) || (BOOST_MSVC > 1300)
+
+    pc0_test(static_cast<int const*>(0));
+    pc0_test(static_cast<int volatile*>(0));
+    pc0_test(static_cast<int const volatile*>(0));
+
+#endif
+
     {
-        boost::shared_ptr<int> pi(static_cast<int*>(0));
+        boost::shared_ptr<int const> pi(static_cast<int*>(0));
         BOOST_TEST(pi? false: true);
         BOOST_TEST(!pi);
         BOOST_TEST(pi.get() == 0);
@@ -135,7 +164,7 @@ void pointer_constructor()
     }
 
     {
-        boost::shared_ptr<int const> pi(static_cast<int*>(0));
+        boost::shared_ptr<int volatile> pi(static_cast<int*>(0));
         BOOST_TEST(pi? false: true);
         BOOST_TEST(!pi);
         BOOST_TEST(pi.get() == 0);
@@ -161,14 +190,10 @@ void pointer_constructor()
         BOOST_TEST(pv.unique());
     }
 
-    {
-        boost::shared_ptr<X> px(static_cast<X*>(0));
-        BOOST_TEST(px? false: true);
-        BOOST_TEST(!px);
-        BOOST_TEST(px.get() == 0);
-        BOOST_TEST(px.use_count() == 1);
-        BOOST_TEST(px.unique());
-    }
+    pc0_test(static_cast<X*>(0));
+    pc0_test(static_cast<X const*>(0));
+    pc0_test(static_cast<X volatile*>(0));
+    pc0_test(static_cast<X const volatile*>(0));
 
     {
         boost::shared_ptr<X const> px(static_cast<X*>(0));
@@ -817,6 +842,10 @@ void weak_ptr_constructor()
     }
 }
 
+#if defined(BOOST_DINKUMWARE_STDLIB) && (BOOST_DINKUMWARE_STDLIB < 306)
+#  define BOOST_OLD_AUTO_PTR
+#endif
+
 void auto_ptr_constructor()
 {
     {
@@ -940,7 +969,7 @@ void auto_ptr_constructor()
         BOOST_TEST(pi.unique());
         BOOST_TEST(*pi == 7);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -956,7 +985,7 @@ void auto_ptr_constructor()
         BOOST_TEST(pi.unique());
         BOOST_TEST(*pi == 7);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -971,7 +1000,7 @@ void auto_ptr_constructor()
         BOOST_TEST(pv.use_count() == 1);
         BOOST_TEST(pv.unique());
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -986,7 +1015,7 @@ void auto_ptr_constructor()
         BOOST_TEST(pv.use_count() == 1);
         BOOST_TEST(pv.unique());
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -1004,7 +1033,7 @@ void auto_ptr_constructor()
         BOOST_TEST(px.unique());
         BOOST_TEST(X::instances == 1);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -1022,7 +1051,7 @@ void auto_ptr_constructor()
         BOOST_TEST(px.unique());
         BOOST_TEST(X::instances == 1);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -1040,7 +1069,7 @@ void auto_ptr_constructor()
         BOOST_TEST(pv.unique());
         BOOST_TEST(X::instances == 1);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -1058,7 +1087,7 @@ void auto_ptr_constructor()
         BOOST_TEST(pv.unique());
         BOOST_TEST(X::instances == 1);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -1078,7 +1107,7 @@ void auto_ptr_constructor()
         BOOST_TEST(X::instances == 1);
         BOOST_TEST(Y::instances == 1);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -1098,7 +1127,7 @@ void auto_ptr_constructor()
         BOOST_TEST(X::instances == 1);
         BOOST_TEST(Y::instances == 1);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p.get() == 0);
 #endif
     }
@@ -1407,7 +1436,7 @@ void auto_ptr_assignment()
         BOOST_TEST(p1.get() == p);
         BOOST_TEST(p1.use_count() == 1);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p3.get() == 0);
 #endif
 
@@ -1436,7 +1465,7 @@ void auto_ptr_assignment()
         BOOST_TEST(p1.get() == p);
         BOOST_TEST(p1.use_count() == 1);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p3.get() == 0);
 #endif
 
@@ -1473,7 +1502,7 @@ void auto_ptr_assignment()
         BOOST_TEST(X::instances == 1);
         BOOST_TEST(Y::instances == 1);
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
+#if !defined(BOOST_OLD_AUTO_PTR)
         BOOST_TEST(p3.get() == 0);
 #endif
 
@@ -2371,6 +2400,57 @@ void test()
 
 } // namespace n_static_cast
 
+namespace n_const_cast
+{
+
+struct X;
+
+void test()
+{
+    {
+        boost::shared_ptr<void const volatile> px;
+
+        boost::shared_ptr<void> px2 = boost::const_pointer_cast<void>(px);
+        BOOST_TEST(px2.get() == 0);
+    }
+
+    {
+        boost::shared_ptr<int const volatile> px;
+
+        boost::shared_ptr<int> px2 = boost::const_pointer_cast<int>(px);
+        BOOST_TEST(px2.get() == 0);
+    }
+
+    {
+        boost::shared_ptr<X const volatile> px;
+
+        boost::shared_ptr<X> px2 = boost::const_pointer_cast<X>(px);
+        BOOST_TEST(px2.get() == 0);
+    }
+
+    {
+        boost::shared_ptr<void const volatile> px(new int);
+
+        boost::shared_ptr<void> px2 = boost::const_pointer_cast<void>(px);
+        BOOST_TEST(px.get() == px2.get());
+        BOOST_TEST(!(px < px2 || px2 < px));
+        BOOST_TEST(px.use_count() == 2);
+        BOOST_TEST(px2.use_count() == 2);
+    }
+
+    {
+        boost::shared_ptr<int const volatile> px(new int);
+
+        boost::shared_ptr<int> px2 = boost::const_pointer_cast<int>(px);
+        BOOST_TEST(px.get() == px2.get());
+        BOOST_TEST(!(px < px2 || px2 < px));
+        BOOST_TEST(px.use_count() == 2);
+        BOOST_TEST(px2.use_count() == 2);
+    }
+}
+
+} // namespace n_const_cast
+
 namespace n_dynamic_cast
 {
 
@@ -3137,6 +3217,7 @@ int main()
     n_swap::test();
     n_comparison::test();
     n_static_cast::test();
+    n_const_cast::test();
     n_dynamic_cast::test();
 
     n_map::test();

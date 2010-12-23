@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_suite_ex_test.cpp,v $
 //
-//  Version     : $Id: unit_test_suite_ex_test.cpp,v 1.9 2003/02/15 21:49:58 rogeeff Exp $
+//  Version     : $Revision: 1.13 $
 //
 //  Description : tests an extentions to Unit Test Framework
 // ***************************************************************************
@@ -110,11 +109,8 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
 //  Revision History :
 //  
 //  $Log: unit_test_suite_ex_test.cpp,v $
-//  Revision 1.9  2003/02/15 21:49:58  rogeeff
-//  borland warning fix
-//
-//  Revision 1.8  2002/11/02 20:04:43  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.13  2003/12/01 00:42:38  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

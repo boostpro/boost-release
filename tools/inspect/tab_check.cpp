@@ -1,10 +1,9 @@
 //  tab_check implementation  ------------------------------------------------//
 
-//  (C) Copyright Beman Dawes 2002. Permission to copy,
-//  use, modify, sell and distribute this software is granted provided this
-//  copyright notice appears in all copies. This software is provided "as is"
-//  without express or implied warranty, and with no claim as to its
-//  suitability for any purpose.
+//  Copyright Beman Dawes 2002.
+//  Use, modification, and distribution is subject to the Boost Software
+//  License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
 
 #include "tab_check.hpp"
 
@@ -20,7 +19,9 @@ namespace boost
      register_signature( ".h" );
      register_signature( ".hpp" );
      register_signature( ".hxx" );
+     register_signature( ".ipp" );
      register_signature( "Jamfile" );
+     register_signature( ".py" );
    }
      
    void tab_check::inspect(

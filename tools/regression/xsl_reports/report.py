@@ -127,12 +127,16 @@ def msxsl( xml_file, xsl_file, output_file, parameters = None ):
     os.system( transform_command )    
 
 def libxslt( xml_file, xsl_file, output_file, parameters = None ):
+
+    if sys.platform == "win32":
+        os.chdir( os.path.dirname( xsl_file ) )
     transform_command = "xsltproc"
     transform_command = transform_command + ' -o ' + "%s" % output_file
 
     if parameters is not None:
          for i in parameters: 
-              transform_command = transform_command + ' --param %s "\'%s\'" ' % ( i, parameters[ i ] )
+             parameters[i] = parameters[i].replace( "\\", "/" )
+             transform_command = transform_command + ' --param %s "\'%s\'" ' % ( i, parameters[ i ] )
 
     transform_command = transform_command + ' "%s" ' % xsl_file
     transform_command = transform_command + ' "%s" ' % xml_file
@@ -153,12 +157,14 @@ def xsl_path( xsl_file_name ):
 
 def make_result_pages( test_results_file
                        , expected_results_file
+                       , failures_markup_file
                        , source
                        , run_date
                        , comment_file
                        , results_dir
                        , result_prefix
                        , xslt_proc_name
+                       , reports
                        ):
     log( "Producing the reports..." )
     __log__ = 1
@@ -177,58 +183,81 @@ def make_result_pages( test_results_file
     else:
         expected_results_file = os.path.abspath( map_path( "empty_expected_results.xml" ) )
         
-    
+
     extended_test_results = os.path.join( output_dir, "extended_test_results.xml" )
-    log( "    Merging with expected results..." )
-    xslt_proc( test_results_file
-               , xsl_path( "add_expected_results.xsl" )
-               , extended_test_results
-               , { "expected_results_file": expected_results_file }
-           )
+    if "x" in reports:    
+        log( "    Merging with expected results..." )
+        xslt_proc( test_results_file
+                   , xsl_path( "add_expected_results.xsl" )
+                   , extended_test_results
+                   , { "expected_results_file": expected_results_file, "failures_markup_file" : failures_markup_file }
+                 )
 
     links = os.path.join( output_dir, "links.html"  )
-    log( "    Making -links file..." )
-    xslt_proc( extended_test_results
-               , xsl_path( "links_page.xsl" )
-               , links
-               , {
-                 "source": source
-                 , "run_date": run_date 
-                 , "comment_file": comment_file
-                 }
-           )
+    if "l" in reports:        
+        log( "    Making -links file..." )
+        xslt_proc( extended_test_results
+                   , xsl_path( "links_page.xsl" )
+                   , links
+                   , {
+                     "source": source
+                     , "run_date": run_date 
+                     , "comment_file": comment_file
+                     , "explicit_markup_file" : failures_markup_file
+                     }
+                   )
 
-    log( "    Making detailed reports..." )
+    issues = os.path.join( output_dir, "issues.html"  )
+    if "i" in reports:
+        log( "    Making issues list..." )
+        xslt_proc( extended_test_results
+                   , xsl_path( "issues_page.xsl" )
+                   , issues
+                   , {
+                     "source": source
+                     , "run_date": run_date 
+                     , "comment_file": comment_file
+                     , "explicit_markup_file" : failures_markup_file
+                     }
+                   )
+                   
     for mode in ( "developer", "user" ):
-        xslt_proc(  extended_test_results
-                    , xsl_path( "result_page.xsl" )
-                    , os.path.join( output_dir, "%s_%s" % ( mode, "result_page.html" ) )
-                    , { "links_file": "links.html"
-                        , "mode": mode
-                        , "source": source
-                        , "run_date": run_date 
-                        , "comment_file": comment_file
-                        , "expected_results_file": expected_results_file
-                        }
-                    );
+        if mode[0] + "d" in reports:
+            log( "    Making detailed %s  report..." % mode )
+            xslt_proc(  extended_test_results
+                        , xsl_path( "result_page.xsl" )
+                        , os.path.join( output_dir, "%s_%s" % ( mode, "result_page.html" ) )
+                        , { "links_file": "links.html"
+                            , "mode": mode
+                            , "source": source
+                            , "run_date": run_date 
+                            , "comment_file": comment_file
+                            , "expected_results_file": expected_results_file
+                            , "explicit_markup_file" : failures_markup_file
+                            }
+                        );
 
-    log( "    Making summary reports..." )
+
     for mode in ( "developer", "user" ):
-        xslt_proc(  extended_test_results
-                    , xsl_path( "summary_page.xsl" )
-                    , os.path.join( output_dir, "%s_%s" % ( mode, "summary_page.html" ) )
-                    , { "mode" : mode 
-                        , "source": source
-                        , "run_date": run_date 
-                        , "comment_file": comment_file
-                        }
-                    );
-    
-    log( "    Generating expected_results ..." )
-    xslt_proc( extended_test_results
-               , xsl_path( "produce_expected_results.xsl" )
-               , os.path.join( output_dir, "expected_results.xml" )
-               )
+        if mode[0] + "s" in reports:
+            log( "    Making summary %s  report..." % mode )
+            xslt_proc(  extended_test_results
+                        , xsl_path( "summary_page.xsl" )
+                        , os.path.join( output_dir, "%s_%s" % ( mode, "summary_page.html" ) )
+                        , { "mode" : mode 
+                            , "source": source
+                            , "run_date": run_date 
+                            , "comment_file": comment_file
+                            , "explicit_markup_file" : failures_markup_file
+                            }
+                        );
+
+    if "e" in reports:
+        log( "    Generating expected_results ..." )
+        xslt_proc( extended_test_results
+                   , xsl_path( "produce_expected_results.xsl" )
+                   , os.path.join( output_dir, "expected_results.xml" )
+                   )
     
     shutil.copyfile( xsl_path( "master.css" ),  os.path.join( output_dir, "master.css" ) )
 
@@ -236,25 +265,33 @@ def make_result_pages( test_results_file
 def build_experimental_reports( locate_root_dir
                                 , source
                                 , expected_results_file
+                                , failures_markup_file
                                 , comment_file
                                 , results_dir
                                 , result_file_prefix
                                 , xslt_proc_name
+                                , dont_collect_logs = 0
+                                , reports = [ "dd", "ud", "us", "ds", "l", "p", "x", "i" ]
                                 ):
     ( run_date ) = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime() )
     test_results_file = os.path.join( results_dir, "test_results.xml" )
-    collect_test_logs( [ os.path.join( locate_root_dir, "libs" ), os.path.join( locate_root_dir, "status" ) ]
-                       , test_results_file
-                       )
+    bin_boost_dir = os.path.join( locate_root_dir, "bin", "boost" )
+    print "dont_collect_logs: %s" % dont_collect_logs
+    if not dont_collect_logs:
+        collect_test_logs( [ os.path.join( bin_boost_dir, "libs" ), os.path.join( bin_boost_dir, "status" ) ]
+                           , test_results_file
+                           )
 
     make_result_pages( test_results_file
                        , expected_results_file
+                       , failures_markup_file
                        , source
                        , run_date
                        , comment_file
                        , results_dir
                        , result_file_prefix
                        , xslt_proc_name
+                       , reports
                        )
 
 
@@ -262,18 +299,23 @@ def accept_args( args ):
     ( option_pairs, rest_args ) = getopt.getopt( sys.argv[1:], "", [ "locate-root="
                                                                      , "tag="
                                                                      , "expected-results="
+                                                                     , "failures-markup="
                                                                      , "comment="
                                                                      , "results-dir="
                                                                      , "results-prefix="
                                                                      , "xsltproc="
+                                                                     , "dont-collect-logs"
+                                                                     , "reports="
                                                                      , "help"
                                                                      ] )
     options = { "--comment": ""
-                , "--expected-results": "" }
+                , "--expected-results": ""
+                , "--failures-markup": ""
+                , "--reports" : "dd,ud,us,ds,l,p,x,i" }
     
     map( lambda x: options.__setitem__( x[0], x[1] ), option_pairs )
 
-    if ( options.has_key( "--help" ) or len( options.keys() ) == 2 ):
+    if ( options.has_key( "--help" ) or len( options.keys() ) == 4 ):
         usage()
         sys.exit( 1 )
 
@@ -283,10 +325,13 @@ def accept_args( args ):
     return ( options[ "--locate-root" ]
              , options[ "--tag" ]
              , options[ "--expected-results" ]
+             , options[ "--failures-markup" ]
              , options[ "--comment" ]
              , options[ "--results-dir" ]
              , options[ "--results-prefix" ]
              , options[ "--xsltproc" ]
+             , options.has_key( '--dont-collect-logs' )
+             , options[ "--reports" ].split( "," )
              )
 
 def usage():
@@ -295,7 +340,8 @@ def usage():
 \t--locate-root       the same as --locate-root in compiler_status
 \t--tag               the tag for the results (i.e. "CVS main trunk")
 \t--expected-results  the file with the results to be compared with
-\t                    the current run 
+\t                    the current run
+\t--failures-markup   the file with the failures markup
 \t--comment           an html comment file (will be inserted in the reports)
 \t--results-dir       the directory containing -links.html, -fail.html
 \t                    files produced by compiler_status (by default the
@@ -303,6 +349,23 @@ def usage():
 \t--results-prefix    the prefix of -links.html, -fail.html
 \t                    files produced by compiler_status
 \t--xsltproc          the name of xslt processor (msxsl, xalan, libxslt)
+
+\t                    The XSLT used in report generation uses exsl 
+\t                    (http:///www.exsl.org). Make sure that specified 
+\t                    processor supports it.
+
+The following options are useful in debugging:
+
+\t--dont-collect-logs dont collect the test logs
+\t--reports           produce only the specified reports
+\t                        us - user summary
+\t                        ds - developer summary
+\t                        ud - user detailed
+\t                        dd - developer detailed
+\t                        l  - links
+\t                        p  - patches
+\t                        x  - extended results file
+\t                        i  - issues
     """
 
 def main():

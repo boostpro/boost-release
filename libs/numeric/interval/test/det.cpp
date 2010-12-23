@@ -1,4 +1,4 @@
-/* Boost test/det.hpp
+/* Boost test/det.cpp
  * test protected and unprotected rounding on an unstable determinant
  *
  * Copyright Guillaume Melquiond 2002-2003
@@ -11,11 +11,12 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: det.cpp,v 1.3 2003/02/05 17:34:36 gmelquio Exp $
+ * $Id: det.cpp,v 1.7 2003/06/04 09:18:46 gmelquio Exp $
  */
 
 #include <boost/numeric/interval.hpp>
 #include <boost/test/minimal.hpp>
+#include "bugs.hpp"
 
 #define size 8
 
@@ -101,5 +102,8 @@ int test_main(int, char *[]) {
   BOOST_TEST(test<float>());
   BOOST_TEST(test<double>());
   BOOST_TEST(test<long double>());
+# ifdef __BORLANDC__
+  ::detail::ignore_warnings();
+# endif
   return 0;
 }

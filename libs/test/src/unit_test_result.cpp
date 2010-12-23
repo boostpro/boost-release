@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for updates, documentation, and revision history.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: unit_test_result.cpp,v $
 //
-//  Version     : $Id: unit_test_result.cpp,v 1.15 2003/02/15 21:55:32 rogeeff Exp $
+//  Version     : $Revision: 1.22 $
 //
 //  Description : implements Unit Test Result reporting facility. Note that majority of 
 //  implementation is hidden in this file using pimple idiom.
@@ -82,8 +81,8 @@ public:
 
 class hrf_report_formatter : public report_formatter {
 public:
-    void    start_result_report( std::ostream& where_to ) {}
-    void    finish_result_report( std::ostream& where_to ) {}
+    void    start_result_report( std::ostream& /* where_to */ ) {}
+    void    finish_result_report( std::ostream& /* where_to */ ) {}
 
     void    start_test_case_report( std::ostream& where_to, std::size_t indent,
                                     std::string const& test_case_name, bool case_suite, bool failed )
@@ -211,7 +210,7 @@ public:
     }
 
     void    finish_test_case_report( std::ostream& where_to, std::size_t indent, 
-                                     std::string const& test_case_name, bool case_suite, bool aborted )
+                                     std::string const& /* test_case_name */, bool case_suite, bool aborted )
     {
         if( aborted ) {
             where_to << std::setw( indent+2 ) << ""
@@ -267,10 +266,13 @@ struct unit_test_result::Impl {
     static unit_test_result_ptr                 m_curr;
     static boost::scoped_ptr<report_formatter>  m_report_formatter;
 
-    bool                            is_failed()   { return m_assertions_failed != m_expected_failures || m_exception_caught; }
+    bool                            has_failed()
+    {
+        return m_test_cases_failed != 0 || m_assertions_failed != m_expected_failures || m_exception_caught;
+    }
     int                             result_code()
     { 
-        return is_failed() 
+        return has_failed() 
                     ? ( (m_assertions_failed != 0) 
                             ? boost::exit_test_failure 
                             : boost::exit_exception_failure )
@@ -353,9 +355,9 @@ unit_test_result::test_case_end()
         parent->m_pimpl->m_test_cases_passed += curr_impl->m_test_cases_passed;
         parent->m_pimpl->m_test_cases_failed += curr_impl->m_test_cases_failed;
 
-        // for test_cases (vs. test_suite)
+        // for test_cases (vs. test_suite) //!! need better identification
         if( curr_impl->m_test_cases_passed == 0 && curr_impl->m_test_cases_failed == 0 ) {
-            if( curr_impl->is_failed() )
+            if( curr_impl->has_failed() )
                 parent->m_pimpl->m_test_cases_failed++;
             else
                 parent->m_pimpl->m_test_cases_passed++;
@@ -414,6 +416,9 @@ void
 unit_test_result::inc_failed_assertions()
 {
     m_pimpl->m_assertions_failed++;
+
+    if( m_pimpl->m_assertions_failed == 1 )
+        first_failed_assertion();
 }
 
 //____________________________________________________________________________//
@@ -476,27 +481,15 @@ unit_test_result::failures_details( unit_test_counter& num_of_failures, bool& ex
 void
 unit_test_result::report( std::string const& reportlevel, std::ostream& where_to_ )
 {
-    struct my_pair {
-        c_string_literal    level_name;
-        report_level        level_value;
-    };
+    static int const map_size = sizeof(report_level_names)/sizeof(c_string_literal);
 
-    static const my_pair name_value_map[] = {
-        { "confirm"     , CONFIRMATION_REPORT },
-        { "short"       , SHORT_REPORT },
-        { "detailed"    , DETAILED_REPORT },
-        { "no"          , NO_REPORT },
-    };
-
-    static int const map_size = sizeof(name_value_map)/sizeof(my_pair);
-
-    report_level rl;
+    report_level rl = UNDEF_REPORT;
     if( reportlevel.empty() )
         rl = CONFIRMATION_REPORT;
     else {
-        for( int i =0; i < map_size; i++ ) {
-            if( reportlevel == name_value_map[i].level_name ) {
-                rl = name_value_map[i].level_value;
+         for( int i = 0; i < map_size; i++ ) {
+            if( reportlevel == report_level_names[i] ) {
+                rl = (report_level)i;
                 break;
             }
         }
@@ -531,7 +524,7 @@ unit_test_result::confirmation_report( std::ostream& where_to )
 
     m_pimpl->m_report_formatter->start_confirmation_report( where_to, 
                                                             m_pimpl->m_test_case_name, m_pimpl->m_children.empty(),
-                                                            m_pimpl->m_test_cases_failed != 0 || m_pimpl->is_failed(),
+                                                            m_pimpl->m_test_cases_failed != 0 || m_pimpl->has_failed(),
                                                             m_pimpl->m_assertions_failed, m_pimpl->m_expected_failures );
 
     m_pimpl->m_report_formatter->finish_test_case_report( where_to, 0,
@@ -550,7 +543,7 @@ unit_test_result::report_result( std::ostream& where_to, std::size_t indent, boo
 
     m_pimpl->m_report_formatter->start_test_case_report( where_to, indent, 
                                                          m_pimpl->m_test_case_name, m_pimpl->m_children.empty(),
-                                                         m_pimpl->m_test_cases_failed != 0 || m_pimpl->is_failed() );
+                                                         m_pimpl->m_test_cases_failed != 0 || m_pimpl->has_failed() );
 
     if( m_pimpl->m_test_cases_passed + m_pimpl->m_test_cases_failed > 1 )
         m_pimpl->m_report_formatter->report_sub_test_cases_stat( where_to, indent, 
@@ -579,9 +572,17 @@ unit_test_result::report_result( std::ostream& where_to, std::size_t indent, boo
 //____________________________________________________________________________//
 
 int
-unit_test_result::result_code()
+unit_test_result::result_code() const
 {
     return m_pimpl->result_code();
+}
+
+//____________________________________________________________________________//
+
+bool
+unit_test_result::has_passed() const
+{
+    return !m_pimpl->has_failed();
 }
 
 //____________________________________________________________________________//
@@ -594,22 +595,8 @@ unit_test_result::result_code()
 //  Revision History :
 //  
 //  $Log: unit_test_result.cpp,v $
-//  Revision 1.15  2003/02/15 21:55:32  rogeeff
-//  bormland warning fix
-//
-//  Revision 1.14  2003/02/13 08:37:59  rogeeff
-//  reworked to support multiple report formats
-//  C strings eliminated
-//
-//  Revision 1.13  2002/12/11 13:41:49  beman_dawes
-//  fix missing std::
-//
-//  Revision 1.12  2002/12/08 18:16:57  rogeeff
-//  eliminated all uses of NULL
-//  switched to use c_string_literal
-//
-//  Revision 1.11  2002/11/02 20:04:42  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.22  2003/12/01 00:42:37  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

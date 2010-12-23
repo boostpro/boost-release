@@ -11,7 +11,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: c99_rounding_control.hpp,v 1.2 2003/02/05 17:34:32 gmelquio Exp $
+ * $Id: c99_rounding_control.hpp,v 1.3 2003/07/30 05:08:44 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_DETAIL_C99_ROUNDING_CONTROL_HPP
@@ -20,7 +20,7 @@
 #include <boost/numeric/interval/detail/c99sub_rounding_control.hpp>
 
 namespace boost {
-namespace nuemric {
+namespace numeric {
 namespace interval_lib {
 namespace detail {
 

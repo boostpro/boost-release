@@ -18,7 +18,11 @@ using namespace boost::python;
 
 typedef test_class<> X;
 
-typedef test_class<1> Y;
+struct Y : test_class<1>
+{
+    Y(int v) : test_class<1>(v) {}
+    Y& operator=(Y const& rhs) { x = rhs.x; return *this; }
+};
 
 double get_fair_value(X const& x) { return x.value(); }
 
@@ -29,6 +33,7 @@ struct VarBase
     
     std::string const name;
     std::string get_name1() const { return name; }
+    
 };
 
 struct Var : VarBase
@@ -38,7 +43,46 @@ struct Var : VarBase
     float value;
     char const* name2;
     Y y;
+
+    static int static1;
+    static Y static2;
 };
+
+int Var::static1 = 0;
+Y Var::static2(0);
+
+// Compilability regression tests
+namespace
+{
+  struct trivial
+  {
+    trivial() : value(123) {}
+    double value;
+  };
+
+  struct Color3
+  {
+    static const Color3 black;
+  };
+
+  const Color3 Color3::black
+#if BOOST_WORKAROUND(__GNUC__, BOOST_TESTED_AT(3))
+  = {}
+#endif 
+      ;
+
+  void compilability_test()
+  {
+    class_<trivial>("trivial")
+      .add_property("property", make_getter(&trivial::value, return_value_policy<return_by_value>()))
+      .def_readonly("readonly", &trivial::value)
+    ;
+
+    class_< Color3 >("Color3", init< const Color3 & >())
+        .def_readonly("BLACK", &Color3::black)   // line 17
+        ;
+  }
+}
 
 BOOST_PYTHON_MODULE(data_members_ext)
 {
@@ -57,12 +101,7 @@ BOOST_PYTHON_MODULE(data_members_ext)
 
     class_<Var>("Var", init<std::string>())
         .def_readonly("name", &Var::name)
-        .def_readonly("name2",
-#if __MWERKS__ <= 0x2407 // Old MWerks mis-deduces the type here as `char* Var::*'
-                      (char const* Var::*)
-#endif 
-                      &Var::name2
-            )
+        .def_readonly("name2", &Var::name2)
         .def_readwrite("value", &Var::value)
         .def_readonly("y", &Var::y)
         
@@ -74,6 +113,17 @@ BOOST_PYTHON_MODULE(data_members_ext)
         .def("get_name2", &Var::get_name2, return_value_policy<return_by_value>())
         
         .add_property("name3", &Var::get_name1)
+
+        // Test static data members
+        .def_readonly("ro1a", &Var::static1)
+        .def_readonly("ro1b", Var::static1)
+        .def_readwrite("rw1a", &Var::static1)
+        .def_readwrite("rw1b", Var::static1)
+
+        .def_readonly("ro2a", &Var::static2)
+        .def_readonly("ro2b", Var::static2)
+        .def_readwrite("rw2a", &Var::static2)
+        .def_readwrite("rw2b", Var::static2)
         ;
 }
 

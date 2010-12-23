@@ -12,9 +12,6 @@
 #ifndef CONFIG_DWA052200_H_
 # define CONFIG_DWA052200_H_
 
-#if defined(__ALPHA) && defined(__osf__) && defined(__DECCXX_VER)
-# include <pyconfig.h>
-#endif
 # include <boost/config.hpp>
 
 # ifdef BOOST_NO_OPERATORS_IN_NAMESPACE
@@ -74,7 +71,7 @@
 # define BOOST_PYTHON_NO_TEMPLATE_EXPORT
 #endif
 
-#if defined(BOOST_PYTHON_DYNAMIC_LIB) && defined(_WIN32)
+#if defined(BOOST_PYTHON_DYNAMIC_LIB) && (defined(_WIN32) || defined(__CYGWIN__))
 #  if defined(BOOST_PYTHON_SOURCE)
 #     define BOOST_PYTHON_DECL __declspec(dllexport)
 #     define BOOST_PYTHON_BUILD_DLL

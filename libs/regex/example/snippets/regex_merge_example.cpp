@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -45,6 +41,7 @@ extern const char* footer_text;
 void load_file(std::string& s, std::istream& is)
 {
    s.erase();
+   if(is.bad()) return;
    s.reserve(is.rdbuf()->in_avail());
    char c;
    while(is.get(c))
@@ -66,6 +63,7 @@ int main(int argc, const char** argv)
       std::ifstream fs(argv[i]);
       std::string in;
       load_file(in, fs);
+      fs.close();
       std::string out_name = std::string(argv[i]) + std::string(".htm");
       std::ofstream os(out_name.c_str());
       os << header_text;
@@ -73,13 +71,14 @@ int main(int argc, const char** argv)
       // temporary string stream
       std::ostringstream t(std::ios::out | std::ios::binary);
       std::ostream_iterator<char> oi(t);
-      boost::regex_merge(oi, in.begin(), in.end(), e2, pre_format);
+      boost::regex_merge(oi, in.begin(), in.end(), e2, pre_format, boost::match_default | boost::format_all);
       // then output to final output stream
       // adding syntax highlighting:
       std::string s(t.str());
       std::ostream_iterator<char> out(os);
-      boost::regex_merge(out, s.begin(), s.end(), e1, format_string);
+      boost::regex_merge(out, s.begin(), s.end(), e1, format_string, boost::match_default | boost::format_all);
       os << footer_text;
+      os.close();
    }
    }
    catch(...)
@@ -125,6 +124,7 @@ const char* header_text = "<HTML>\n<HEAD>\n"
                           "<P> </P>\n<PRE>";
 
 const char* footer_text = "</PRE>\n</BODY>\n\n";
+
 
 
 

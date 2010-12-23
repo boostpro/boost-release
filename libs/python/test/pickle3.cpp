@@ -24,8 +24,6 @@
 #include <boost/python/detail/api_placeholder.hpp>
 #include <boost/python/back_reference.hpp>
 
-#include <string>
-
 namespace { // Avoid cluttering the global namespace.
 
   // A friendly class.

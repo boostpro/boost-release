@@ -55,12 +55,17 @@
 # include "assert.h"
 # include "variable.h"
 # include "rules.h"
+# include "headers.h"
 
 # include "search.h"
 # include "newstr.h"
 # include "make.h"
 # include "command.h"
 # include "execcmd.h"
+
+#if defined(sun) || defined(__sun)
+#include <unistd.h> /* for unlink */
+#endif
 
 static CMD *make1cmds( TARGET *t );
 static LIST *make1list( LIST *l, TARGETS *targets, int flags );
@@ -265,7 +270,7 @@ make1a( state *pState)
 {
     TARGET* t = pState->t;
 	TARGETS	*c;
-	int i;
+    TARGETS   *inc;
 
 	/* If the parent is the first to try to build this target */
 	/* or this target is in the make1c() quagmire, arrange for the */
@@ -295,17 +300,23 @@ make1a( state *pState)
 
 	pState->t->asynccnt = 1;
 
+    /* Add header node that was created during building process. */
+
+    inc = 0;
+    for (c = t->depends; c; c = c->next) {        
+        if (c->target->rescanned && c->target->includes)
+            inc = targetentry(inc, c->target->includes);           
+    }
+    t->depends = targetchain(t->depends, inc);
+
 	/* against circular dependency. */
 
 	pState->t->progress = T_MAKE_ONSTACK;
 
 	{
 		stack temp_stack = { NULL };
-		for( i = T_DEPS_DEPENDS; i <= T_DEPS_INCLUDES; i++ )
-			for( c = pState->t->deps[i]; c && !intr; c = c->next )
-			{
-				push_state(&temp_stack, c->target, pState->t, T_STATE_MAKE1A);
-			}
+        for( c = t->depends; c && !intr; c = c->next )            
+            push_state(&temp_stack, c->target, pState->t, T_STATE_MAKE1A);
 
 		/* using stacks reverses the order of execution. Reverse it back */
 		push_stack_on_stack(&state_stack, &temp_stack);
@@ -332,8 +343,8 @@ make1b( state *pState )
 {
     TARGET      *t = pState->t;
     TARGETS     *c;
-    int         i;
-    char        *failed = "dependents";
+    TARGET      *failed = 0;
+    char* failed_name = "dependencies";
 
     /* If any dependents are still outstanding, wait until they */
     /* call make1b() to signal their completion. */
@@ -366,13 +377,21 @@ make1b( state *pState )
 
     /* Collect status from dependents */
 
-    for( i = T_DEPS_DEPENDS; i <= T_DEPS_INCLUDES; i++ )
-        for( c = pState->t->deps[i]; c; c = c->next )
-            if( c->target->status > pState->t->status && !( c->target->flags & T_FLAG_NOCARE ) )
-            {
-                failed = c->target->name;
-                pState->t->status = c->target->status;
-            }
+
+    for( c = t->depends; c; c = c->next )
+        if( c->target->status > t->status && !( c->target->flags & T_FLAG_NOCARE ))
+        {
+            failed = c->target;
+            pState->t->status = c->target->status;
+        }
+    /* If a internal header node failed to build, we'd want to output the 
+       target that it failed on. */
+    if (failed && (failed->flags & T_FLAG_INTERNAL)) {
+        failed_name = failed->failed;
+    } else if (failed) {
+        failed_name = failed->name;
+    }
+    t->failed = failed_name;
 
     /* If actions on deps have failed, bail. */
     /* Otherwise, execute all actions to make target */
@@ -385,8 +404,9 @@ make1b( state *pState )
             if( !unlink( pState->t->boundname ) )
                 printf( "...removing outdated %s\n", pState->t->boundname );
         }
-        else
-        printf( "...skipped %s for lack of %s...\n", pState->t->name, failed );
+        else {
+            printf( "...skipped %s for lack of %s...\n", pState->t->name, failed_name );
+        }
     }
 
     if( pState->t->status == EXEC_CMD_OK )
@@ -412,6 +432,7 @@ make1b( state *pState )
 
         case T_FATE_TOUCHED:
         case T_FATE_MISSING:
+        case T_FATE_NEEDTMP:
         case T_FATE_OUTDATED:
         case T_FATE_UPDATE:
 
@@ -533,12 +554,69 @@ make1c( state *pState )
 	    /* Tell parents dependent has been built */
 		{
 			stack temp_stack = { NULL };
-			TARGET *t = pState->t;
+			TARGET *t = pState->t;            
+            TARGET* additional_includes = NULL;
 
 			t->progress = T_MAKE_DONE;
 
-			for( c = t->parents; c; c = c->next )
+            /* Target was updated. Rescan dependencies. */
+            if (t->fate >= T_FATE_MISSING &&
+                t->status == EXEC_CMD_OK &&
+                !t->rescanned) {
+
+                TARGET *target_to_rescan = t;
+                SETTINGS *s;               
+
+                target_to_rescan->rescanned = 1;
+
+                if (target_to_rescan->flags & T_FLAG_INTERNAL) {
+                    target_to_rescan = t->original_target;                    
+                }
+
+                /* Clean current includes */
+                if (target_to_rescan->includes) {
+                    target_to_rescan->includes = 0;
+                }
+
+                s = copysettings( target_to_rescan->settings );
+                pushsettings( s );
+                headers(target_to_rescan);
+                popsettings( s );
+                freesettings( s );
+
+                if (target_to_rescan->includes) {
+                    target_to_rescan->includes->rescanned = 1;
+                    /* Tricky. The parents were already processed, but they
+                       did not seen the internal node, because it was just 
+                       created. We need to make the calls to make1a that would
+                       have been done by parents here, and also make sure all
+                       unprocessed parents will pick up the includes. We must
+                       make sure processing of the additional make1a invocations
+                       is done before make1b which means this target is built,
+                       otherwise the parent will be considered built before this
+                       make1a processing is even started.
+                    */
+                    make0(target_to_rescan->includes, target_to_rescan->parents->target, 0, 0, 0);
+                    for( c = target_to_rescan->parents; c; c = c->next) {
+                        c->target->depends = targetentry( c->target->depends, 
+                                                          target_to_rescan->includes );
+                    }
+                    /* Will be processed below. */
+                    additional_includes = target_to_rescan->includes;
+                }                
+            }
+
+            if (additional_includes)
+                for ( c = t->parents; c; c = c->next ) {                            
+                    push_state(&temp_stack, additional_includes, c->target, T_STATE_MAKE1A);
+                    
+                }
+
+			for( c = t->parents; c; c = c->next ) {
 				push_state(&temp_stack, c->target, NULL, T_STATE_MAKE1B);
+            }
+             
+
 
 #ifdef OPT_SEMAPHORE
 	    /* If there is a semaphore, its now free */
@@ -661,9 +739,9 @@ make1d(state *pState)
  *                   target with those from the new module and target
  */
 static void swap_settings(
-    module** current_module
+    module_t** current_module
     , TARGET** current_target
-    , module* new_module
+    , module_t* new_module
     , TARGET* new_target)
 {
     if (new_module == root_module())
@@ -707,7 +785,7 @@ make1cmds( TARGET *t )
 	CMD *cmds = 0;
 	LIST *shell = 0;
         
-        module *settings_module = 0;
+        module_t *settings_module = 0;
         TARGET *settings_target = 0;
         
 	/* Step through actions */
@@ -867,11 +945,19 @@ make1list(
 	if( t->binding == T_BIND_UNBOUND )
 	    make1bind( t, !( flags & RULE_EXISTING ) );
 
-	if( ( flags & RULE_EXISTING ) && t->binding != T_BIND_EXISTS )
-	    continue;
+    if ( ( flags & RULE_EXISTING ) && ( flags & RULE_NEWSRCS ) )
+    {
+        if ( t->binding != T_BIND_EXISTS && t->fate <= T_FATE_STABLE)
+            continue;
+    }
+    else
+    { 
+        if( ( flags & RULE_EXISTING ) && t->binding != T_BIND_EXISTS )
+            continue;
 
-	if( ( flags & RULE_NEWSRCS ) && t->fate <= T_FATE_STABLE )
-	    continue;
+        if( ( flags & RULE_NEWSRCS ) && t->fate <= T_FATE_STABLE )
+            continue;
+    }
 
 	/* Prohibit duplicates for RULE_TOGETHER */
 
@@ -956,7 +1042,7 @@ make1bind(
 	    printf( "warning: using independent target %s\n", t->name );
 
 	pushsettings( t->settings );
-	t->boundname = search( t->name, &t->time );
+	t->boundname = search( t->name, &t->time, 0 );
 	t->binding = t->time ? T_BIND_EXISTS : T_BIND_MISSING;
 	popsettings( t->settings );
 }

@@ -37,6 +37,8 @@
  * 12/29/00 (seiwald) - OSVER dropped.
  */
 
+#ifndef JAM_H_VP_2003_08_01
+#define JAM_H_VP_2003_08_01
 /*
  * VMS, OPENVMS
  */
@@ -466,7 +468,7 @@
  */
 
 # ifndef MAXLINE
-# define MAXLINE 10240	/* longest 'together' actions' */
+# define MAXLINE 102400	/* longest 'together' actions' */
 # endif
 
 # ifndef EXITOK
@@ -528,4 +530,4 @@ extern struct globs globs;
 # define DEBUG_GRAPH	( globs.debug[ 12 ] )	/* debug dependencies */
 # define DEBUG_FATE ( globs.debug[ 13 ] )  /* show changes to fate in make0() */
 
-
+#endif

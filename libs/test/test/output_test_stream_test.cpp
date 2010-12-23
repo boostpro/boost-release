@@ -1,14 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2002.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for most recent version including documentation.
+//  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: output_test_stream_test.cpp,v $
 //
-//  Version     : $Id: output_test_stream_test.cpp,v 1.9 2003/02/15 21:51:17 rogeeff Exp $
+//  Version     : $Revision: 1.14 $
 //
 //  Description : tests output_test_stream test tool functionality
 // ***************************************************************************
@@ -17,6 +16,9 @@
 #include <boost/test/unit_test.hpp>
 using boost::test_toolbox::output_test_stream;
 using boost::unit_test_framework::test_suite;
+
+// STL
+#include <iomanip>
 
 //____________________________________________________________________________//
 
@@ -123,8 +125,8 @@ test_is_equal()
     output << '\0';
     BOOST_CHECK( output.is_equal( "", (std::size_t)1 ) );
 
-    output << "qwerty" << '\n';
-    BOOST_CHECK( output.is_equal( "qwerty\n" ) );
+    output << std::setw( 10 ) << "qwerty" << '\n';
+    BOOST_CHECK( output.is_equal( "    qwerty\n" ) );
 
     std::string s( "test string" );
 
@@ -192,6 +194,8 @@ test_match_pattern()
     }
 }
 
+//____________________________________________________________________________//
+
 test_suite*
 init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
     test_suite* test = BOOST_TEST_SUITE("ostream_test_stream test");
@@ -211,15 +215,8 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
 //  Revision History :
 //  
 //  $Log: output_test_stream_test.cpp,v $
-//  Revision 1.9  2003/02/15 21:51:17  rogeeff
-//  borland warnings fix
-//  cwpro complains on size_t fix
-//
-//  Revision 1.8  2002/12/09 05:15:26  rogeeff
-//  NULL eliminated
-//
-//  Revision 1.7  2002/11/02 20:04:43  rogeeff
-//  release 1.29.0 merged into the main trank
+//  Revision 1.14  2003/12/01 00:42:37  rogeeff
+//  prerelease cleaning
 //
 
 // ***************************************************************************

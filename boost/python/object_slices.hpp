@@ -6,6 +6,8 @@
 #ifndef OBJECT_SLICES_DWA2002615_HPP
 # define OBJECT_SLICES_DWA2002615_HPP
 
+# include <boost/python/detail/prefix.hpp>
+
 # include <boost/python/proxy.hpp>
 # include <boost/python/object_core.hpp>
 # include <boost/python/object_protocol.hpp>
@@ -59,6 +61,22 @@ object_operators<U>::slice(slice_nil, object_cref finish) const
 {
     object_cref2 x = *static_cast<U const*>(this);
     return const_object_slice(x, std::make_pair(allow_null((PyObject*)0), borrowed(finish.ptr())));
+}
+
+template <class U>
+object_slice
+object_operators<U>::slice(slice_nil, slice_nil)
+{
+    object_cref2 x = *static_cast<U*>(this);
+    return object_slice(x, std::make_pair(allow_null((PyObject*)0), allow_null((PyObject*)0)));
+}
+
+template <class U>
+const_object_slice
+object_operators<U>::slice(slice_nil, slice_nil) const
+{
+    object_cref2 x = *static_cast<U const*>(this);
+    return const_object_slice(x, std::make_pair(allow_null((PyObject*)0), allow_null((PyObject*)0)));
 }
 
 template <class U>

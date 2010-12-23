@@ -1,12 +1,16 @@
 
-//  (C) Copyright John Maddock 2000. Permission to copy, use, modify, sell and   
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2000. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
 #include "check_type.hpp"
-#include TYPE_TRANSFORM(remove_pointer)
+#ifdef TEST_STD
+#  include <type_traits>
+#else
+#  include <boost/type_traits/remove_pointer.hpp>
+#endif
 
 BOOST_DECL_TRANSFORM_TEST(remove_pointer_test_1, ::boost::remove_pointer, const, const)
 BOOST_DECL_TRANSFORM_TEST(remove_pointer_test_2, ::boost::remove_pointer, volatile, volatile)
@@ -39,6 +43,7 @@ TT_TEST_BEGIN(remove_pointer)
    remove_pointer_test_13();
 
 TT_TEST_END
+
 
 
 

@@ -15,6 +15,8 @@
 # include "jam.h"
 # include "pathsys.h"
 # include "strings.h"
+# include "newstr.h"
+# include "filesys.h"
 
 # ifdef USE_PATHUNIX
 
@@ -135,7 +137,49 @@ path_parse(
 }
 
 /*
+ * path_delims - the string of legal path delimiters
+ */
+static char path_delims[] = {
+    PATH_DELIM,
+#  if PATH_DELIM == '\\'
+    '/',
+#  endif
+    0
+};
+
+/*
+ * is_path_delim() - true iff c is a path delimiter
+ */
+static int is_path_delim( char c )
+{
+    char* p = strchr( path_delims, c );
+    return p && *p;
+}
+
+/*
+ * as_path_delim() - convert c to a path delimiter if it isn't one
+ * already
+ */
+static char as_path_delim( char c )
+{
+    return is_path_delim( c ) ? c : PATH_DELIM;
+}
+
+/*
  * path_build() - build a filename given dir/base/suffix/member
+ *
+ * To avoid changing slash direction on NT when reconstituting paths,
+ * instead of unconditionally appending PATH_DELIM we check the
+ * past-the-end character of the previous path element.  If it is in
+ * path_delims, we append that, and only append PATH_DELIM as a last
+ * resort.  This heuristic is based on the fact that PATHNAME objects
+ * are usually the result of calling path_parse, which leaves the
+ * original slashes in the past-the-end position. Correctness depends
+ * on the assumption that all strings are zero terminated, so a
+ * past-the-end character will always be available.
+ *
+ * As an attendant patch, we had to ensure that backslashes are used
+ * explicitly in timestamp.c
  */
 
 void
@@ -165,7 +209,7 @@ path_build(
 
     {
         string_append_range( file, f->f_root.ptr, f->f_root.ptr + f->f_root.len  );
-        string_push_back( file, PATH_DELIM );
+        string_push_back( file, as_path_delim( f->f_root.ptr[f->f_root.len] ) );
     }
 
     if( f->f_dir.len )
@@ -184,8 +228,8 @@ path_build(
 # if PATH_DELIM == '\\'
         if( !( f->f_dir.len == 3 && f->f_dir.ptr[1] == ':' ) )
 # endif
-            if( !( f->f_dir.len == 1 && f->f_dir.ptr[0] == PATH_DELIM ) )
-                string_push_back( file, PATH_DELIM );
+            if( !( f->f_dir.len == 1 && is_path_delim( f->f_dir.ptr[0] ) ) )
+                string_push_back( file, as_path_delim( f->f_dir.ptr[f->f_dir.len] ) );
     }
 
     if( f->f_base.len )
@@ -223,5 +267,130 @@ path_parent( PATHNAME *f )
 	f->f_suffix.len = 
 	f->f_member.len = 0;
 }
+
+#ifdef NT
+#include <windows.h>
+#include <tchar.h>
+
+/* The definition of this in winnt.h is not ANSI-C compatible. */
+#undef INVALID_FILE_ATTRIBUTES
+#define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
+
+
+DWORD ShortPathToLongPath(LPCTSTR lpszShortPath,LPTSTR lpszLongPath,DWORD
+                          cchBuffer)
+{
+    DWORD i=0;
+    TCHAR path[_MAX_PATH]={0};
+    TCHAR ret[_MAX_PATH]={0};
+    DWORD pos=0, prev_pos=0;
+    DWORD len=_tcslen(lpszShortPath);
+
+    /* Is the string valid? */
+    if (!lpszShortPath) {
+        SetLastError(ERROR_INVALID_PARAMETER);
+        return 0;  
+    }
+
+    /* Is the path valid? */
+    if (GetFileAttributes(lpszShortPath)==INVALID_FILE_ATTRIBUTES)
+        return 0;
+
+    /* Convert "/" to "\" */
+    for (i=0;i<len;++i) {
+        if (lpszShortPath[i]==_T('/')) 
+            path[i]=_T('\\');
+        else
+            path[i]=lpszShortPath[i];
+    }
+
+    /* UNC path? */
+    if (path[0]==_T('\\') && path[1]==_T('\\')) {
+        pos=2;
+        for (i=0;i<2;++i) {
+            while (path[pos]!=_T('\\') && path[pos]!=_T('\0'))
+                ++pos;
+            ++pos;
+        }
+        _tcsncpy(ret,path,pos-1);
+    } /* Drive letter? */
+    else if (path[1]==_T(':')) {
+        if (path[2]==_T('\\'))
+            pos=3;
+        if (len==3) {
+            if (cchBuffer>3)
+                _tcscpy(lpszLongPath,lpszShortPath);
+            return len;
+        }
+        _tcsncpy(ret,path,2);
+    }
+    
+    /* Expand the path for each subpath, and strip trailing backslashes */
+    for (prev_pos = pos-1;pos<=len;++pos) {
+        if (path[pos]==_T('\\') || (path[pos]==_T('\0') &&
+                                    path[pos-1]!=_T('\\'))) {
+            WIN32_FIND_DATA fd;
+            HANDLE hf=0;
+            TCHAR c=path[pos];
+            char* new_element;
+            path[pos]=_T('\0');
+
+            /* the path[prev_pos+1]... path[pos] range is the part of
+               path we're handling right now. We need to find long
+               name for that element and add it. */
+            new_element = path + prev_pos + 1;
+
+            /* First add separator, but only if there's something in result already. */
+            if (ret[0] != _T('\0'))
+            {
+                _tcscat(ret,_T("\\"));
+            }
+
+            /* If it's ".." element, we need to append it, not
+               the name in parent that FindFirstFile will return.
+               Same goes for "." */
+            
+            if (new_element[0] == _T('.') && new_element[1] == _T('\0') ||
+                new_element[0] == _T('.') && new_element[1] == _T('.') 
+                && new_element[2] == _T('\0'))
+            {
+                _tcscat(ret, new_element);
+            }
+            else
+            {
+                hf=FindFirstFile(path, &fd);
+                if (hf==INVALID_HANDLE_VALUE)
+                    return 0;
+
+                _tcscat(ret,fd.cFileName);
+                FindClose(hf);
+            }
+
+            path[pos]=c;
+
+            prev_pos = pos;
+        }
+    }
+ 
+    len=_tcslen(ret)+1;
+    if (cchBuffer>=len)
+        _tcscpy(lpszLongPath,ret);
+    
+    return len;
+}
+
+char* short_path_to_long_path(char* short_path)
+{  
+    char buffer2[_MAX_PATH];
+    int ret = ShortPathToLongPath(short_path, buffer2, _MAX_PATH);
+
+    if (ret)
+	return newstr(buffer2);
+    else
+      return newstr(short_path);
+}
+
+#endif
+
 
 # endif /* unix, NT, OS/2, AmigaOS */

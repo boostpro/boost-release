@@ -344,6 +344,15 @@ class MyInt
       above</li>
     </ul>
 
+    <p>As Daniel Kr&uuml;gler pointed out, this technique violates 14.6.5/2
+    and is thus non-portable. The reasoning is, that the operators injected 
+    by the instantiation of e.g.
+    <code>less_than_comparable&lt;myclass&gt;</code> can not be found
+    by ADL according to the rules given by 3.4.2/2, since myclass is
+    not an associated class of
+    <code>less_than_comparable&lt;myclass&gt;</code>.
+    Thus only use this technique if all else fails.</p>
+
     <h3>Requirement <a name="portability">Portability</a></h3>
 
     <p>Many compilers (<i>e.g.</i> MSVC 6.3, GCC 2.95.2) will not enforce the
@@ -974,7 +983,6 @@ T operator+( T lhs, const T&amp; rhs )
     that don't implement the NRVO. <br>
      <br>
      
-
     <h3><a name="grpd_oprs">Grouped Arithmetic Operators</a></h3>
 
     <p>The following templates provide common groups of related operations.
@@ -2062,6 +2070,7 @@ public:
 
       <dd>Contributed the NRVO-friendly and symmetric implementation of
       arithmetic operators.</dd>
+
     </dl>
 
     <h2>Note for Users of <a name="old_lib_note">Older Versions</a></h2>
@@ -2110,13 +2119,15 @@ public:
     backward-compatible.</p>
     <hr>
 
-    <p>Revised: 30 Oct 2001</p>
+    <p>Revised: 03 Dec 2003</p>
 
-    <p>Copyright &copy; David Abrahams and Beman Dawes 1999-2001. Permission
-    to copy, use, modify, sell and distribute this document is granted
-    provided this copyright notice appears in all copies. This document is
-    provided "as is" without express or implied warranty, and with no claim
-    as to its suitability for any purpose.</p>
+    <p>Copyright &copy; Beman Dawes, David Abrahams, 1999-2001.</p>
+    <p>Copyright &copy; Daniel Frey, 2002-2003.</p>
+    <p>Use, modification, and distribution is subject to the Boost Software 
+    License, Version 1.0. (See accompanying file
+    <a href="../../LICENSE_1_0.txt">LICENSE_1_0.txt</a> or copy at
+    <a href="http://www.boost.org/LICENSE_1_0.txt">
+    www.boost.org/LICENSE_1_0.txt</a>)</p>
   </body>
 </html>
 

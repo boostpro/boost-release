@@ -1,13 +1,11 @@
 /*=============================================================================
-  Spirit V1.6.1
-  Copyright (c) 2003 Martin Wille
-  http://spirit.sourceforge.net/
+    Copyright (c) 2003 Martin Wille
+    http://spirit.sourceforge.net/
 
-  Permission to copy, use, modify, sell and distribute this software
-  is granted provided this copyright notice appears in all copies.
-  This software is provided "as is" without express or implied
-  warranty, and with no claim as to its suitability for any purpose.
- =============================================================================*/
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+=============================================================================*/
 #ifndef BOOST_SPIRIT_TEST_IMPL_UTIL_IPP
 #define BOOST_SPIRIT_TEST_IMPL_UTIL_IPP
 
@@ -23,7 +21,7 @@ bool    verbose_runtests; // set to true when started by
 void init(int /*argc*/, char* /*argv*/[])
 {
     using namespace std;
-    verbose_runtests = !!::getenv("VERBOSE_RUNTESTS");
+    verbose_runtests = !!getenv("VERBOSE_RUNTESTS");
 }
 
 void banner(char const *text)
@@ -33,7 +31,7 @@ void banner(char const *text)
 
     using namespace std;
 
-    int len = ::strlen(text);
+    int len = strlen(text);
     std::cout << "/////////////////////////////////////////////////////////\n";
     len = (57-len)/2;
     while(len-->0) std::cout << ' ';

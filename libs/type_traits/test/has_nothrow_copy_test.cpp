@@ -1,12 +1,16 @@
 
-//  (C) Copyright John Maddock 2000. Permission to copy, use, modify, sell and   
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2000. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
 #include "check_integral_constant.hpp"
-#include TYPE_TRAITS(has_nothrow_copy)
+#ifdef TEST_STD
+#  include <type_traits>
+#else
+#  include <boost/type_traits/has_nothrow_copy.hpp>
+#endif
 
 TT_TEST_BEGIN(has_nothrow_copy)
 
@@ -143,9 +147,9 @@ BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<int[2]>::value, true);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<int[3][2]>::value, true);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<int[2][4][5][6][3]>::value, true);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<UDT>::value, false);
-BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<empty_UDT>::value, false);
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<void>::value, true);
 // cases we would like to succeed but can't implement in the language:
+BOOST_CHECK_SOFT_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<empty_UDT>::value, true, false);
 BOOST_CHECK_SOFT_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<empty_POD_UDT>::value, true, false);
 BOOST_CHECK_SOFT_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<POD_UDT>::value, true, false);
 BOOST_CHECK_SOFT_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<POD_union_UDT>::value, true, false);
@@ -154,5 +158,6 @@ BOOST_CHECK_SOFT_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<empty_POD_union_UDT>::
 BOOST_CHECK_INTEGRAL_CONSTANT(::tt::has_nothrow_copy<test_abc1>::value, false);
 
 TT_TEST_END
+
 
 

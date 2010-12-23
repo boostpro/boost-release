@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.  
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
  
@@ -26,6 +22,22 @@
 #define _REGRESS_H
 
 #include <boost/regex/config.hpp>
+
+#if defined(BOOST_NO_WREGEX) && defined(TEST_UNICODE)
+#  define BOOST_REGEX_NO_TEST
+#endif
+
+#if defined(__CYGWIN__) && defined(BOOST_REGEX_DYN_LINK)
+// dll tests don't work under cygwin (linking fails, looks like a compiler bug)
+#  define BOOST_REGEX_NO_TEST
+#endif
+
+#if defined(__GNUC__) && (__GNUC__ < 3) && (defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION)) && defined(BOOST_REGEX_DYN_LINK)
+// gcc2.95 + STLport runs out of memory trying to link, looks like a compiler bug...
+#  define BOOST_REGEX_NO_TEST
+#endif
+
+#ifndef BOOST_REGEX_NO_TEST
 
 #ifdef BOOST_RE_OLD_IOSTREAM
 #include <iostream.h>
@@ -157,8 +169,7 @@ public:
 
    void deallocate(pointer p, size_type n)
    {
-      assert( (p == 0) == (n == 0) );
-      if (p != 0)
+      if ((p != 0) && (n != 0))
          base_type::deallocate((void*)p, n * sizeof(value_type));
    }
 
@@ -171,7 +182,7 @@ public:
    void destroy(pointer p) const
    { boost::detail::allocator_destroy(p); }
 
-#ifndef BOOST_NO_MEMBER_TEMPLATES
+#ifdef BOOST_MSVC6_MEMBER_TEMPLATES
    template <class U>
    struct rebind
    {
@@ -197,7 +208,7 @@ public:
    typedef jm_debug_alloc base_type;
 
 
-#ifndef BOOST_NO_MEMBER_TEMPLATES
+#ifdef BOOST_MSVC6_MEMBER_TEMPLATES
    template <class U>
    struct rebind
    {
@@ -272,7 +283,7 @@ struct debug_iterator
 
   debug_iterator(T c, T f, T l)
     : cur(c), first(f), last(l) {}
-  debug_iterator() : cur(), first(), last() {}
+  debug_iterator(int = 0) : cur(), first(), last() {}
   debug_iterator(const debug_iterator& x)
     : cur(x.cur), first(x.first), last(x.last) {}
   debug_iterator& operator=(const debug_iterator& x)
@@ -418,22 +429,28 @@ __iterator_category(const debug_iterator<T>&) {
 #define BOOST_RE_TEST_LOCALE_W32
 #endif
 
-
-#ifdef BOOST_RE_TEST_LOCALE_W32
-typedef boost::reg_expression<char_t, boost::w32_regex_traits<char_t>, jm_debug_alloc> re_type;
-#elif defined(BOOST_RE_TEST_LOCALE_CPP)
-typedef boost::reg_expression<char_t, boost::cpp_regex_traits<char_t>, jm_debug_alloc> re_type;
-#else
-typedef boost::reg_expression<char_t, boost::c_regex_traits<char_t>, jm_debug_alloc> re_type;
+#ifdef BOOST_REGEX_V3
+#  define basic_regex reg_expression
 #endif
-
+#ifdef BOOST_RE_TEST_LOCALE_W32
+typedef boost::basic_regex<char_t, boost::w32_regex_traits<char_t>, jm_debug_alloc> re_type;
+#elif defined(BOOST_RE_TEST_LOCALE_CPP)
+typedef boost::basic_regex<char_t, boost::cpp_regex_traits<char_t>, jm_debug_alloc> re_type;
+#else
+typedef boost::basic_regex<char_t, boost::c_regex_traits<char_t>, jm_debug_alloc> re_type;
+#endif
 #define REG_NO_POSIX_TEST 1
 #define REG_UNICODE_ONLY 2
 #define REG_GREP 4
 #define REG_MERGE 8
 #define REG_MERGE_COPY 16
+#define REG_PARTIAL_MATCH 32
 
 #endif
+
+#endif
+
+
 
 
 

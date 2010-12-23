@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: const_mod.hpp,v 1.5 2002/05/05 10:57:07 johnmaddock Exp $
+ * $Id: const_mod.hpp,v 1.7 2003/07/18 21:06:30 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -25,6 +25,7 @@
 #include <boost/static_assert.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/integer_traits.hpp>
+#include <boost/detail/workaround.hpp>
 
 namespace boost {
 namespace random {
@@ -135,8 +136,13 @@ private:
     assert(r < q);        // check that overflow cannot happen
 
     value = a*(value%q) - r*(value/q);
-    while(value <= 0)
+    // An optimizer bug in the SGI MIPSpro 7.3.1.x compiler requires this
+    // convoluted formulation of the loop (Synge Todo)
+    for(;;) {
+      if (value > 0)
+        break;
       value += m;
+    }
     return value;
   }
 
@@ -145,7 +151,9 @@ private:
   {
     // we are interested in the gcd factor for c, because this is our inverse
     BOOST_STATIC_ASSERT(m > 0);
-#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+#if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3003))
+    assert(boost::integer_traits<IntType>::is_signed);
+#elif !defined(BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS)
     BOOST_STATIC_ASSERT(boost::integer_traits<IntType>::is_signed);
 #endif
     assert(c > 0);

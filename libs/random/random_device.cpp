@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_device.cpp,v 1.5 2002/09/30 22:46:05 jmaurer Exp $
+ * $Id: random_device.cpp,v 1.6 2003/12/29 22:28:00 jmaurer Exp $
  *
  */
 
@@ -111,7 +111,7 @@ boost::random_device::~random_device()
   delete pimpl;
 }
 
-double boost::random_device::entropy()
+double boost::random_device::entropy() const
 {
   return 10;
 }

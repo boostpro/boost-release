@@ -1,12 +1,10 @@
 /*=============================================================================
-    Spirit v1.6.0
     Copyright (c) 1998-2003 Joel de Guzman
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 #include <iostream>
 #include <cassert>
@@ -14,7 +12,7 @@
 
 using namespace std;
 
-#include "boost/spirit/core.hpp"
+#include <boost/spirit/core.hpp>
 using namespace boost::spirit;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -25,7 +23,7 @@ using namespace boost::spirit;
 struct to_upper_iter_policy : public iteration_policy {
 
     char filter(char ch) const
-    { return toupper(ch); }
+    { return char(toupper(ch)); }
 };
 
 inline bool test_isspace(char c)
@@ -74,11 +72,6 @@ scanner_tests()
     cout << '\n';
     cp_first = cp;
 
-#if (defined(BOOST_MSVC) && (BOOST_MSVC <= 1300)) \
-    || defined(BOOST_INTEL_CXX_VERSION)
-#else
-//  VC++6 Cannot handle iterator traits properly
-
     list<char>              li(cp_first, cp_last);
     list<char>::iterator    li_first = li.begin();
     list<char>::iterator    li_last = li.end();
@@ -93,8 +86,6 @@ scanner_tests()
     }
     cout << '\n';
     li_first = li.begin();
-
-#endif
 
     scanner<char const*, scanner_policies<to_upper_iter_policy> >
         pp3(cp_first, cp_last);

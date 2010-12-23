@@ -1,20 +1,12 @@
 
 #ifndef TEST_FRMWK_HPP___
 #define TEST_FRMWK_HPP___
-/*
- * Copyright (c) 2000
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- *
- *
- * Author: Jeff Garland 
+
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
+ * $Date: 2003/11/23 03:29:56 $
  */
 
 
@@ -61,7 +53,7 @@ bool check(const std::string& testname, bool testcond)
     std::cout << "FAIL :: " << testname << " " <<  std::endl;
     return false;
   }
-};
+}
 
 
 int printTestStats() 
@@ -69,6 +61,6 @@ int printTestStats()
   TestStats& stat = TestStats::instance();
   stat.print();
   return stat.testcount() - stat.passcount();
-};
+}
 
 #endif

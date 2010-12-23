@@ -11,7 +11,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: add.cpp,v 1.3 2003/02/05 17:34:35 gmelquio Exp $
+ * $Id: add.cpp,v 1.4 2003/06/03 21:59:58 hervebronnimann Exp $
  */
 
 #include <boost/numeric/interval/interval.hpp>
@@ -21,6 +21,7 @@
 #include <boost/numeric/interval/utility.hpp>
 #include <boost/numeric/interval/policies.hpp>
 #include <boost/test/minimal.hpp>
+#include "bugs.hpp"
 
 typedef enum { EXPR_VAR, EXPR_NEG, EXPR_UP, EXPR_DOWN, EXPR_ADD, EXPR_SUB } e_type;
 

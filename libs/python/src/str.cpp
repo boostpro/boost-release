@@ -11,24 +11,32 @@ detail::new_reference str_base::call(object const& arg_)
 } 
 
 str_base::str_base()
-    : object(detail::new_reference(PyString_FromString("")))
+  : object(detail::new_reference(::PyString_FromString("")))
 {}
 
 str_base::str_base(const char* s)
-    : object(detail::new_reference(PyString_FromString(s)))
+  : object(detail::new_reference(::PyString_FromString(s)))
+{}
+
+str_base::str_base(char const* start, char const* finish)
+    : object(
+        detail::new_reference(
+            ::PyString_FromStringAndSize(start, finish - start)
+        )
+    )
+{}
+
+str_base::str_base(char const* start, std::size_t length) // new str
+    : object(
+        detail::new_reference(
+            ::PyString_FromStringAndSize(start, length)
+        )
+    )
 {}
 
 str_base::str_base(object_cref other)
     : object(str_base::call(other))
 {}
-
-namespace
-{
-  new_reference new_attr_reference(object const* obj, char const* name)
-  {
-      return new_reference(incref(object(obj->attr(name)).ptr()));
-  }
-}
 
 #define BOOST_PYTHON_FORMAT_OBJECT(z, n, data) "O"
 #define BOOST_PYTHON_OBJECT_PTR(z, n, data) , x##n .ptr()
@@ -320,5 +328,5 @@ BOOST_PYTHON_DEFINE_STR_METHOD(title, 0)
 BOOST_PYTHON_DEFINE_STR_METHOD(translate, 1)
 BOOST_PYTHON_DEFINE_STR_METHOD(translate, 2)
 BOOST_PYTHON_DEFINE_STR_METHOD(upper, 0)
-
+    
 }}}  // namespace boost::python

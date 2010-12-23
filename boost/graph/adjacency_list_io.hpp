@@ -67,7 +67,7 @@ std::istream& operator >> ( std::istream& in, property<Tag,Value,no_property>& p
         return in;
 }
 
-std::istream& operator >> ( std::istream& in, no_property& )
+inline std::istream& operator >> ( std::istream& in, no_property& )
 {
         return in;
 }
@@ -109,7 +109,7 @@ void getSubset
         get( p, s.m_value, Stag() );
 }
 
-void getSubset
+inline void getSubset
 ( no_property& p, const no_property& s )
 {
 }
@@ -130,7 +130,7 @@ struct GraphParser
         
         GraphParser& operator () ( std::istream& in )
         {
-                typedef graph_traits<Graph>::vertex_descriptor Vertex;
+                typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
                 std::vector<Vertex> nodes;
 
                 typedef enum{ PARSE_NUM_NODES, PARSE_VERTEX, PARSE_EDGE } State;
@@ -145,7 +145,7 @@ struct GraphParser
                         else if( c== 'v' ) state = PARSE_VERTEX;
                         else if( c== 'e' ) state = PARSE_EDGE;
                         else if( c== '\n' ) numLine++;
-                        else if( !isspace(c) ){
+                        else if( !std::isspace(c) ){
                                 in.putback(c);
                                 if( state == PARSE_VERTEX ){
                                         VertexPropertySubset readProp;
@@ -215,7 +215,7 @@ struct PropertyPrinter
         template<class Iterator>
         PropertyPrinter& operator () ( std::ostream& out, Iterator it )
         {
-                property_map<Graph,Tag>::type ps = get(Tag(), *graph);
+                typename property_map<Graph,Tag>::type ps = get(Tag(), *graph);
                 out << ps[ *it ] <<" ";
                 PropertyPrinter<Graph,Next> print(*graph);
                 print(out, it);
@@ -253,7 +253,7 @@ struct EdgePrinter
                 // assign indices to vertices
                 std::map<Vertex,int> indices;
                 int num = 0;
-                graph_traits<Graph>::vertex_iterator vi;
+                typename graph_traits<Graph>::vertex_iterator vi;
                 for (vi = vertices(graph).first; vi != vertices(graph).second; ++vi){
                         indices[*vi] = num++;
                 }
@@ -261,7 +261,7 @@ struct EdgePrinter
                 // write edges
                 PropertyPrinter<Graph, EdgeProperty> print_Edge(graph);
                 out << "e" << std::endl;
-                graph_traits<Graph>::edge_iterator ei;
+                typename graph_traits<Graph>::edge_iterator ei;
                 for (ei = edges(graph).first; ei != edges(graph).second; ++ei){
                         out << indices[source(*ei,graph)] <<  " " << indices[target(*ei,graph)] << "  "; 
                         print_Edge(out,ei); 
@@ -288,8 +288,8 @@ struct GraphPrinter: public EdgePrinter<Graph,E>
         {
                 PropertyPrinter<Graph, V> printNode(this->graph);
                 out << "v"<<std::endl;
-                graph_traits<Graph>::vertex_iterator vi;
-                for (vi = vertices(graph).first; vi != vertices(graph).second; ++vi){
+                typename graph_traits<Graph>::vertex_iterator vi;
+                for (vi = vertices(this->graph).first; vi != vertices(this->graph).second; ++vi){
                         printNode(out,vi); 
                         out << std::endl;
                 }
@@ -299,17 +299,17 @@ struct GraphPrinter: public EdgePrinter<Graph,E>
         }
 };
 
-template<class G, class E>
-struct GraphPrinter<G,no_property,E> 
-  : public EdgePrinter<G,E>
+template<class Graph, class E>
+struct GraphPrinter<Graph,no_property,E> 
+  : public EdgePrinter<Graph,E>
 {
-        GraphPrinter( G& g )
-          : EdgePrinter<G,E>(g)
+        GraphPrinter( Graph& g )
+          : EdgePrinter<Graph,E>(g)
         {}
         
         const GraphPrinter& operator () ( std::ostream& out ) const
         {
-                out << "n "<< num_vertices(graph) << std::endl;
+                out << "n "<< num_vertices(this->graph) << std::endl;
                 EdgePrinter<Graph,E>::operator ()( out );
                 return (*this);
         }

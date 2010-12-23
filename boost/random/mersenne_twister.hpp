@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: mersenne_twister.hpp,v 1.12 2003/01/15 15:43:36 david_abrahams Exp $
+ * $Id: mersenne_twister.hpp,v 1.14 2003/07/31 01:11:36 david_abrahams Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -30,7 +30,8 @@
 #include <boost/integer_traits.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/random/linear_congruential.hpp>
-# include <boost/detail/workaround.hpp>
+#include <boost/detail/workaround.hpp>
+#include <boost/random/detail/ptr_helper.hpp>
 
 namespace boost {
 namespace random {
@@ -143,11 +144,10 @@ public:
   {
     for(int j = 0; j < mt.state_size; ++j)
       is >> mt.x[j] >> std::ws;
-# if BOOST_WORKAROUND(_MSC_FULL_VER, BOOST_TESTED_AT(13102292)) && BOOST_MSVC > 1300
+    // MSVC (up to 7.1) and Borland (up to 5.64) don't handle the template
+    // value parameter "n" available from the class template scope, so use
+    // the static constant with the same value
     mt.i = mt.state_size;
-# else 
-    mt.i = n;
-# endif 
     return is;
   }
 #endif
@@ -294,5 +294,7 @@ typedef random::mersenne_twister<uint32_t,32,624,397,31,0x9908b0df,11,
   7,0x9d2c5680,15,0xefc60000,18, 3346425566U> mt19937;
 
 } // namespace boost
+
+BOOST_RANDOM_PTR_HELPER_SPEC(boost::mt19937)
 
 #endif // BOOST_RANDOM_MERSENNE_TWISTER_HPP

@@ -1,5 +1,7 @@
-/* Copyright (c) 2001 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland 
  */
 
@@ -67,7 +69,7 @@ int main()
   date_period r2(date(2000,Jan,7), date(2000,Jan,10));
   check("intersect case3", i1.intersection(i4) == r2);
   check("intersect case3", i4.intersection(i1) == r2);
-  //case 4    [5-10) interset [6-9)  -> [6-9)
+  //case 4    [5-10) intersect [6-9)  -> [6-9)
   date_period i5(date(2000,Jan,6), date(2000,Jan,9));
   check("intersect case4", i1.intersection(i5) == i5);
   check("intersect case4", i5.intersection(i1) == i5);
@@ -81,6 +83,15 @@ int main()
   check("[1 -7)  merge [7-10) ->  null",  i2.merge(i4).is_null());
   date_period r4(date(2000,Jan,5), date(2000,Jan,10));
   check("[5 -10) merge [6-9)  -> [5-10)", i1.merge(i5) == r4);
+
+  check("[5-10) span [1-7)  -> [1-10)", i1.span(i2) == r3);
+  check("[1-7)  span [7-10) -> [1-10)", i2.span(i4) == r3);
+  check("[7-10)  span [1-7) -> [1-10)", i4.span(i2) == r3);
+  check("[1-15)  span [1-7) -> [1-15)", i3.span(i2) == i3);
+
+  date_period i6(date(2000,Jan,1), date(2000,Jan,2));
+  check("[1-2)  span [7-10) -> [1-10)", i6.span(i4) == r3);
+  check("[7-10)  span [1-2) -> [1-10)", i4.span(i6) == r3);
   
 
   date bf_start(2000,Jan,5);
@@ -136,19 +147,3 @@ int main()
   return 0;
 }
 
-/*
- * Copyright (c) 2001
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided as is without express or implied warranty.
- *
- *
- * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
- *
- */

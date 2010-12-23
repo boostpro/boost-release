@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -29,7 +25,7 @@
 // and searches for all the C++ class definitions, storing
 // their locations in a map of strings/int's
 
-typedef std::map<std::string, int, std::less<std::string> > map_type;
+typedef std::map<std::string, std::string::difference_type, std::less<std::string> > map_type;
 
 const char* re = 
    // possibly leading whitespace:   
@@ -62,7 +58,7 @@ void IndexClasses(map_type& m, const std::string& file)
    start = file.begin();
    end = file.end();   
    boost::match_results<std::string::const_iterator> what;
-   unsigned int flags = boost::match_default;
+   boost::match_flag_type flags = boost::match_default;
    while(boost::regex_search(start, end, what, expression, flags))   
    {
       // what[0] contains the whole string
@@ -88,6 +84,7 @@ using namespace std;
 void load_file(std::string& s, std::istream& is)
 {
    s.erase();
+   if(is.bad()) return;
    s.reserve(is.rdbuf()->in_avail());
    char c;
    while(is.get(c))
@@ -107,6 +104,7 @@ int main(int argc, const char** argv)
       map_type m;
       std::ifstream fs(argv[i]);
       load_file(text, fs);
+      fs.close();
       IndexClasses(m, text);
       cout << m.size() << " matches found" << endl;
       map_type::iterator c, d;
@@ -120,6 +118,7 @@ int main(int argc, const char** argv)
    }
    return 0;
 }
+
 
 
 

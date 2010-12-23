@@ -23,18 +23,24 @@
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/limits.hpp>
+#include <boost/utility.hpp>
 #include <boost/mpl/if.hpp>
+#include <boost/mpl/and.hpp>
+#include <boost/mpl/vector.hpp>
+#include <boost/mpl/find.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/is_const.hpp>
+#include <boost/type_traits/remove_reference.hpp>
 
-// Compiler specific problems
+// Compiler specific problems: default configuration
 #if defined (BOOST_STRICT_CONFIG) || ! (\
         defined (BOOST_MSVC) || \
         defined (__GNUC__) || \
         defined (__BORLANDC__) || \
         defined (_ICL) || \
         defined (_ICC) || \
-        defined (__COMO__))
+        defined (__COMO__) || \
+        defined (__MWERKS__))
 
 #define BOOST_UBLAS_TYPENAME typename
 #define BOOST_UBLAS_USING using
@@ -50,7 +56,10 @@
 
 
 // Microsoft Visual C++
-#if defined (BOOST_MSVC) && ! (BOOST_MSVC > 1300 && defined (BOOST_STRICT_CONFIG))
+#if defined (BOOST_MSVC) && ! defined (BOOST_STRICT_CONFIG)
+
+// Version 6.0 & 7.0
+#if BOOST_MSVC <= 1300
 
 // Disable some MSVC specific warnings.
 #pragma warning (disable: 4355)
@@ -84,12 +93,10 @@
 //     typedef signed ptrdiff_t;
 //
 //     template<class T>
-//     BOOST_UBLAS_INLINE
 //     const T &max (const T &t1, const T &t2) {
 //         return t1 > t2 ? t1 : t2;
 //     }
 //     template<class T>
-//     BOOST_UBLAS_INLINE
 //     const T &min (const T &t1, const T &t2) {
 //         return t1 < t2 ? t1 : t2;
 //     }
@@ -100,6 +107,26 @@
 // This seems to be a problem in boost.config, but won't be fixed.
 #ifdef __SGI_STL_PORT
 #define BOOST_MSVC_STD_ITERATOR
+#endif
+
+// Version 7.1
+#else
+
+#define BOOST_UBLAS_TYPENAME typename
+#define BOOST_UBLAS_USING using
+// This could be eliminated.
+#define BOOST_UBLAS_EXPLICIT explicit
+
+#define BOOST_UBLAS_USE_LONG_DOUBLE
+
+#define BOOST_UBLAS_USE_STREAM
+
+// One of these workarounds is needed for MSVC 7.1 AFAIK
+// (thanks to John Maddock and Martin Lauer).
+// The second workaround looks like BOOST_UBLAS_QUALIFIED_TYPENAME.
+#define BOOST_UBLAS_NO_NESTED_CLASS_RELATION
+// #define BOOST_UBLAS_MSVC_NESTED_CLASS_RELATION
+
 #endif
 
 #endif
@@ -146,6 +173,7 @@
 #define BOOST_UBLAS_NO_SMART_PROXIES
 
 #define BOOST_UBLAS_NO_PROXY_SHORTCUTS
+#define BOOST_UBLAS_NO_DERIVED_HELPERS
 
 // BCC's <complex> broken.
 // Thanks to John Maddock for providing a workaround.
@@ -190,6 +218,43 @@ namespace std {
 
 #define BOOST_UBLAS_USE_STREAM
 
+#define BOOST_UBLAS_USE_SIMD
+
+namespace boost { namespace numeric { namespace ublas {
+
+    template<class C, class IC>
+    class indexed_iterator;
+
+    template<class V>
+    class index_pair;
+    template<class M>
+    class index_triple;
+
+}}}
+
+namespace std {
+
+    // Needed for Intel on Itanium?
+    template<class C, class IC>
+    inline
+    void iter_swap (boost::numeric::ublas::indexed_iterator<C, IC> it1,
+                    boost::numeric::ublas::indexed_iterator<C, IC> it2) {
+        swap (*it1, *it2);
+    }
+
+    template<class V>
+    inline
+    void swap (boost::numeric::ublas::index_pair<V> i1, boost::numeric::ublas::index_pair<V> i2) {
+        i1.swap (i2);
+    }
+    template<class M>
+    inline
+    void swap (boost::numeric::ublas::index_triple<M> i1, boost::numeric::ublas::index_triple<M> i2) {
+        i1.swap (i2);
+    }
+
+}
+
 #endif
 
 
@@ -207,6 +272,23 @@ namespace std {
 #define BOOST_UBLAS_USE_LONG_DOUBLE
 
 #define BOOST_UBLAS_USE_STREAM
+
+#endif
+
+
+
+// Metrowerks Codewarrior
+#if defined (__MWERKS__) && ! defined (BOOST_STRICT_CONFIG)
+
+#define BOOST_UBLAS_TYPENAME typename
+#define BOOST_UBLAS_USING using
+#define BOOST_UBLAS_EXPLICIT explicit
+
+#define BOOST_UBLAS_USE_LONG_DOUBLE
+
+#define BOOST_UBLAS_USE_STREAM
+
+#define BOOST_UBLAS_NO_MEMBER_FRIENDS
 
 #endif
 
@@ -283,6 +365,12 @@ namespace std {
 #ifdef BOOST_UBLAS_TYPE_CHECK
 static bool disable_type_check = false;
 #endif
+#ifndef BOOST_UBLAS_TYPE_CHECK_EPSILON
+#define BOOST_UBLAS_TYPE_CHECK_EPSILON (type_traits<real_type>::sqrt (std::numeric_limits<real_type>::epsilon ()))
+#endif
+#ifndef BOOST_UBLAS_TYPE_CHECK_MIN
+#define BOOST_UBLAS_TYPE_CHECK_MIN (type_traits<real_type>::sqrt (std::numeric_limits<real_type>::min ()))
+#endif
 
 
 
@@ -301,151 +389,11 @@ static bool disable_type_check = false;
 // Use indexed iterators.
 // #define BOOST_UBLAS_USE_INDEXED_ITERATOR
 
+// 16 byte aligned arrays (for ICC)
+// #define BOOST_UBLAS_ALIGN_16 __declspec (align (16))
+#define BOOST_UBLAS_ALIGN_16
 
-
-// Forward declarations
-namespace boost { namespace numeric { namespace ublas {
-
-    template<class T>
-    class unbounded_array;
-
-    class range;
-    class slice;
-    template<class A = unbounded_array<std::size_t> >
-    class indirect_array;
-
-    template<class I, class T>
-    class map_array;
-
-    struct vector_tag {};
-
-    template<class E>
-    struct vector_expression;
-
-    struct matrix_tag {};
-
-    template<class E>
-    struct matrix_expression;
-
-    template<class E>
-    class vector_range;
-    template<class E>
-    class vector_slice;
-    template<class E, class IA = indirect_array<> >
-    class vector_indirect;
-
-    template<class E>
-    class matrix_row;
-    template<class E>
-    class matrix_column;
-    template<class E>
-    class matrix_range;
-    template<class E>
-    class matrix_slice;
-    template<class E, class IA = indirect_array<> >
-    class matrix_indirect;
-
-    template<class T, class A = unbounded_array<T> >
-    class vector;
-
-    template<class T>
-    class unit_vector;
-
-    template<class T>
-    class scalar_vector;
-
-    template<class T, class A = map_array<std::size_t, T> >
-    class sparse_vector;
-
-    template<class T, std::size_t IB = 0, class IA = unbounded_array<std::size_t>, class TA = unbounded_array<T> >
-    class compressed_vector;
-
-    template<class T, std::size_t IB = 0, class IA = unbounded_array<std::size_t>, class TA = unbounded_array<T> >
-    class coordinate_vector;
-
-    struct unknown_orientation_tag {};
-
-    struct row_major_tag {};
-    struct row_major;
-
-    struct column_major_tag {};
-    struct column_major;
-
-    template<class T, class F = row_major, class A = unbounded_array<T> >
-    class matrix;
-
-    template<class T>
-    class identity_matrix;
-
-    template<class T>
-    class scalar_matrix;
-
-    template<class T, class F = row_major, class A = unbounded_array<unbounded_array<T> > >
-    class vector_of_vector;
-
-    template<class T, class F = row_major, class A = unbounded_array<T> >
-    class banded_matrix;
-
-    struct lower_tag {};
-    struct lower;
-
-    struct upper_tag {};
-    struct upper;
-
-    struct unit_lower_tag: public lower_tag {};
-    struct unit_lower;
-
-    struct unit_upper_tag: public upper_tag {};
-    struct unit_upper;
-
-    template<class T, class F1 = lower, class F2 = row_major, class A = unbounded_array<T> >
-    class triangular_matrix;
-
-    template<class M, class F = lower>
-    class triangular_adaptor;
-
-    template<class T, class F1 = lower, class F2 = row_major, class A = unbounded_array<T> >
-    class symmetric_matrix;
-
-    template<class M, class F = lower>
-    class symmetric_adaptor;
-
-    template<class T, class F1 = lower, class F2 = row_major, class A = unbounded_array<T> >
-    class hermitian_matrix;
-
-    template<class M, class F = lower>
-    class hermitian_adaptor;
-
-    template<class T, class F = row_major, class A = map_array<std::size_t, T> >
-    class sparse_matrix;
-
-    template<class T, class F = row_major, class A = map_array<std::size_t, map_array<std::size_t, T> > >
-    class sparse_vector_of_sparse_vector;
-
-    template<class T, class F = row_major, std::size_t IB = 0, class IA = unbounded_array<std::size_t>, class TA = unbounded_array<T> >
-    class compressed_matrix;
-
-    template<class T, class F = row_major, std::size_t IB = 0, class IA = unbounded_array<std::size_t>, class TA = unbounded_array<T> >
-    class coordinate_matrix;
-
-    template<class V>
-    typename V::size_type num_elements (const V &v) {
-        return v.size ();
-    }
-    template<class M>
-    typename M::size_type num_rows (const M &m) {
-        return m.size1 ();
-    }
-    template<class M>
-    typename M::size_type num_columns (const M &m) {
-        return m.size2 ();
-    }
-    template<class MV>
-    typename MV::size_type num_non_zeros (const MV &mv) {
-        return mv.non_zeros ();
-    }
-
-}}}
+#include <boost/numeric/ublas/fwd.hpp>
 
 #endif
 

@@ -14,8 +14,8 @@
 #include <boost/python/implicit.hpp>
 #include <string>
 #include <boost/lexical_cast.hpp>
-#include "test_class.hpp"
 #include <cassert>
+#include "test_class.hpp"
 
 using namespace boost::python;
 

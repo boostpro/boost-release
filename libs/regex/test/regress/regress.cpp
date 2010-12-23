@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.  
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
  
@@ -42,6 +38,8 @@ using std::endl;
 #include <boost/test/execution_monitor.hpp>
 
 #include "regress.h"
+
+#ifndef BOOST_REGEX_NO_TEST
 
 #if defined(BOOST_MSVC) && defined(_DEBUG)
 #include <CRTDBG.H>
@@ -81,10 +79,10 @@ int cpp_main(int argc, char * argv[])
 {
 #if defined(BOOST_MSVC) && defined(_DEBUG)
    // turn on heap reporting at program exit:
-   int tmpFlag = _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG );
-   tmpFlag |= _CRTDBG_LEAK_CHECK_DF;
-   tmpFlag &= ~_CRTDBG_CHECK_CRT_DF;
-   _CrtSetDbgFlag( tmpFlag );
+   //int tmpFlag = _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG );
+   //tmpFlag |= _CRTDBG_LEAK_CHECK_DF;
+   //tmpFlag &= ~_CRTDBG_CHECK_CRT_DF;
+   //_CrtSetDbgFlag( tmpFlag );
 #endif
 #ifdef TIME_TEST
    boost::timer tim;
@@ -284,5 +282,25 @@ void jm_debug_alloc::deallocate(void* pv, size_type n)
    delete[] p;
 }
 
+#else
+
+#include <iostream>
+
+int cpp_main(int argc, char * argv[])
+{
+   std::cout <<
+   "\n<note>\n"
+#if defined(BOOST_NO_WREGEX) && defined(TEST_UNICODE)
+   "This platform does not provide the needed wide character support for this test.\n"
+#elif defined(BOOST_REGEX_DYN_LINK)
+   "Dynamic linking with this compiler is known not to work in this case - please complain to your compiler vendor.\n"
+#else
+   "This test has been disabled due to a compiler bug - please complain to your compiler vendor.\n"
+#endif
+   "</note>\n";
+   return 0;
+}
+
+#endif
 
 

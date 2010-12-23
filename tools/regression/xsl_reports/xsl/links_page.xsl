@@ -13,7 +13,13 @@
 
      -->
 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:func="http://exslt.org/functions"
+  xmlns:meta="http://www.meta-comm.com"
+  extension-element-prefixes="func"
+  version="1.0">
+
+  <xsl:import href="common.xsl"/>
 
   <xsl:output method="html" 
     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" 
@@ -21,10 +27,14 @@
     indent="yes"
     />
 
+
+
   <xsl:param name="source"/>
   <xsl:param name="run_date"/>
   <xsl:param name="comment_file"/>
-  <xsl:param name="expected_results_file"/>
+  <xsl:param name="explicit_markup_file"/>
+
+  <xsl:variable name="explicit_markup" select="document( $explicit_markup_file )"/>
 
   <xsl:template match="/">
     <html>
@@ -36,7 +46,7 @@
         <div>
           <table border="0">
             <tr>
-              <td><img border="0" src="../c++boost.gif" width="277" height="86" alt="Boost logo"></img></td>
+              <td><img border="0" src="../../c++boost.gif" width="277" height="86" alt="Boost logo"></img></td>
               <td>
                 <h1 class="page-title">
                   <xsl:text>Regression Tests Log: </xsl:text>
@@ -61,29 +71,45 @@
           </table>
         </div>
         <div>
-          <xsl:apply-templates select="//test-log[@result = 'fail']"/>
+          <xsl:apply-templates select="//test-log[@test-name != '' and @result = 'fail']"/>
         </div>
+        <div>
+          <xsl:apply-templates select="//test-log[@test-name = '' and @result = 'fail']" />
+        </div>
+
       </body>
     </html>
   </xsl:template>
 
+
   <xsl:template match="test-log">
     <div>
-      <xsl:variable name="test-anchor">
-        <xsl:value-of select="concat( @test-name, '-', @toolset )"/>
-      </xsl:variable>
-      <div class="log-test-title">
-        <a name="{$test-anchor}"><xsl:value-of select="concat( @test-name, ' / ', @toolset )"/></a>
-      </div>
+      <xsl:choose>
+        <xsl:when test="@test-name != ''">
+          <xsl:variable name="test-anchor">
+            <xsl:value-of select="concat( @library, '-', @test-name, '-', @toolset )"/>
+          </xsl:variable>
+          <div class="log-test-title">
+            <a name="{$test-anchor}"><xsl:value-of select="concat( @library, ' - ', @test-name, ' / ', @toolset )"/></a>
+          </div>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:variable name="test-anchor">
+            <xsl:value-of select="meta:path-to-anchor( @target-directory )"/>
+          </xsl:variable>
+          <div class="log-test-title">
+            <a name="{$test-anchor}"><xsl:value-of select="@target-directory"/></a>
+          </div>
+        </xsl:otherwise>
+      </xsl:choose>
 
     <xsl:if test="notes/note">
       <p>
-        <div class="log-notes-title">Notes:</div>
-        <div class="log-notes">
-          <xsl:for-each select="notes/note">
-            <xsl:copy-of select="."/>
-          </xsl:for-each>
-        </div>
+        <div class="notes-title">Notes</div>
+        <xsl:call-template name="show_notes">
+            <xsl:with-param name="notes" select="notes/note"/>
+            <xsl:with-param name="explicit_markup" select="$explicit_markup"/>
+        </xsl:call-template>
       </p>
     </xsl:if>
 
@@ -108,9 +134,11 @@
     <xsl:if test="lib">
       <p>
         <div class="log-linker-output-title">Lib &#160;output:</div>
-        <pre>
-          <xsl:copy-of select="lib/node()"/>
-        </pre>
+        <p>
+          See <a href="#{meta:path-to-anchor( lib/node() )}">
+            <xsl:copy-of select="lib/node()"/>
+          </a>
+        </p>
       </p>
     </xsl:if>
 
@@ -126,4 +154,11 @@
     </div>
 
   </xsl:template>
+
+  <func:function name="meta:path-to-anchor">
+      <xsl:param name="path"/>
+      <func:result select="translate( $path, '/', '-' )"/>
+  </func:function>
+  
+
 </xsl:stylesheet>

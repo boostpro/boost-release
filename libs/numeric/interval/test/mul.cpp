@@ -11,12 +11,12 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: mul.cpp,v 1.3 2003/02/05 17:34:36 gmelquio Exp $
+ * $Id: mul.cpp,v 1.7 2003/08/10 21:14:37 gmelquio Exp $
  */
 
 #include <boost/numeric/interval.hpp>
-#include <boost/numeric/interval/io.hpp>
 #include <boost/test/minimal.hpp>
+#include "bugs.hpp"
 
 typedef boost::numeric::interval<double> I;
 
@@ -123,5 +123,8 @@ int test_main(int, char*[]) {
   BOOST_CHECK(test_sqrt(5, 7));
   BOOST_CHECK(test_sqrt(-1, 2));
 
+# ifdef __BORLANDC__
+  ::detail::ignore_warnings();
+# endif
   return 0;
 }

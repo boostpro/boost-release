@@ -19,6 +19,9 @@
 # include "pwd.h"
 # include "pathsys.h"
 # include "make.h"
+# include "hdrmacro.h"
+# include "compile.h"
+# include "native.h"
 # include <ctype.h>
 
 /*
@@ -47,9 +50,13 @@
 # define P0 (PARSE *)0
 # define C0 (char *)0
 
+# ifdef OS_NT
+LIST* builtin_system_registry( PARSE *parse, FRAME *frame );
+# endif
+
 int glob( char *s, char *c );
 
-static void lol_build( LOL* lol, char** elements );
+void lol_build( LOL* lol, char** elements );
 void backtrace( FRAME *frame );
 void backtrace_line( FRAME *frame );
 void print_source_line( PARSE* p );
@@ -82,7 +89,7 @@ load_builtins()
 
     duplicate_rule( "Depends" ,
       bind_builtin( "DEPENDS" ,
-                    builtin_depends, T_DEPS_DEPENDS, 0 ) );
+                    builtin_depends, 0, 0 ) );
 
     duplicate_rule( "echo" ,
     duplicate_rule( "Echo" ,
@@ -104,7 +111,7 @@ load_builtins()
 
     duplicate_rule( "Includes" ,
       bind_builtin( "INCLUDES" ,
-                    builtin_depends, T_DEPS_INCLUDES, 0 ) );
+                    builtin_depends, 1, 0 ) );
 
     duplicate_rule( "Leaves" ,
       bind_builtin( "LEAVES" ,
@@ -161,6 +168,19 @@ load_builtins()
                          builtin_rulenames, 0, args );
       }
 
+
+      {
+          char * args[] = { "module", "?", 0 };
+          bind_builtin( "VARNAMES" ,
+                         builtin_varnames, 0, args );
+      }
+
+      {
+          char * args[] = { "module", "?", 0 };
+          bind_builtin( "DELETE_MODULE" ,
+                         builtin_delete_module, 0, args );
+      }
+
       {
            char * args[] = { "source_module", "?",
                              ":", "source_rules", "*",
@@ -200,6 +220,117 @@ load_builtins()
           bind_builtin( "SEARCH_FOR_TARGET",
                         builtin_search_for_target, 0, args );
       }
+
+      {
+          char * args[] = { "modules_to_import", "+", ":", "target_module", "?", 0 };
+          bind_builtin( "IMPORT_MODULE",
+                        builtin_import_module, 0, args );
+      }
+
+      {
+          char * args[] = { "module", "?", 0 };
+          bind_builtin( "IMPORTED_MODULES",
+                        builtin_imported_modules, 0, args );
+      }
+
+      {
+          char * args[] = { "instance_module", ":", "class_module", 0 };
+          bind_builtin( "INSTANCE",
+                        builtin_instance, 0, args );
+      }
+
+      {
+          char * args[] = { "sequence", "*", 0 };
+          bind_builtin( "SORT",
+                        builtin_sort, 0, args );
+      }
+
+      {
+          char * args[] = { "path", 0 };
+          bind_builtin( "NORMALIZE_PATH",
+              builtin_normalize_path, 0, args );
+      }
+
+      {
+          char * args[] = { "args", "*", 0 };
+          bind_builtin( "CALC",
+              builtin_calc, 0, args );
+      }
+
+      {
+          char * args[] = { "module", ":", "rule", 0 };
+          bind_builtin( "NATIVE_RULE",
+              builtin_native_rule, 0, args );
+      }
+
+# ifdef OS_NT
+      {
+          char * args[] = { "key_path", ":", "data", "?", 0 };
+          bind_builtin( "W32_GETREG",
+              builtin_system_registry, 0, args );
+      }
+# endif
+
+      /* Initialize builtin modules */
+      init_set();
+      init_path();
+      init_regex();
+      init_property_set();
+      init_sequence();
+}
+
+/*
+* builtin_calc() - CALC rule
+*
+* The CALC rule performs simple mathematical operations on two arguments.
+*/
+
+LIST *
+builtin_calc(
+    PARSE *parse,
+    FRAME *frame )
+{
+    LIST *arg = lol_get( frame->args, 0 );
+
+    LIST *result = 0;
+    long lhs_value;
+    long rhs_value;
+    long result_value;
+    char buffer [16];
+    const char* lhs;
+    const char* op;
+    const char* rhs;
+
+    if (arg == 0) return L0;
+    lhs = arg->string;
+
+    arg = list_next( arg );
+    if (arg == 0) return L0;
+    op = arg->string;
+
+    arg = list_next( arg );
+    if (arg == 0) return L0;
+    rhs = arg->string;
+
+    lhs_value = atoi (lhs);
+    rhs_value = atoi (rhs);
+
+    if (strcmp ("+", op) == 0)
+    {
+        result_value = lhs_value + rhs_value;
+    }
+    else if (strcmp ("-", op) == 0)
+    {
+        result_value = lhs_value - rhs_value;
+    }
+    else
+    {
+        return L0;
+    }
+
+    sprintf (buffer, "%ld", result_value);
+    result = list_new( result, newstr( buffer ) );
+    return result;
 }
 
 /*
@@ -223,7 +354,21 @@ builtin_depends(
 	for( l = targets; l; l = list_next( l ) )
 	{
 	    TARGET *t = bindtarget( l->string );
-	    t->deps[ which ] = targetlist( t->deps[ which ], sources );
+
+	    /* If doing INCLUDES, switch to the TARGET's include */
+	    /* TARGET, creating it if needed.  The internal include */
+	    /* TARGET shares the name of its parent. */
+
+	    if( parse->num )
+	    {
+            if( !t->includes ) {
+                t->includes = copytarget( t );
+                t->includes->original_target = t;
+            }
+            t = t->includes;
+	    }
+
+	    t->depends = targetlist( t->depends, sources );
 	}
 
 	return L0;
@@ -402,7 +547,6 @@ builtin_match(
 {
 	LIST *l, *r;
 	LIST *result = 0;
-        extern regexp* regex_compile( char* );
         
         string buf[1];
         string_new(buf);
@@ -476,8 +620,8 @@ builtin_hdrmacro(
 /* helper function for builtin_rulenames(), below */
 static void add_rule_name( void* r_, void* result_ )
 {
-    RULE* r = r_;
-    LIST** result = result_;
+    RULE* r = (RULE*)r_;
+    LIST** result = (LIST**)result_;
 
     if ( r->exported )
         *result = list_new( *result, copystr( r->name ) );
@@ -490,9 +634,59 @@ builtin_rulenames(
 {
     LIST *arg0 = lol_get( frame->args, 0 );
     LIST *result = L0;
-    module* source_module = bindmodule( arg0 ? arg0->string : 0 );
+    module_t* source_module = bindmodule( arg0 ? arg0->string : 0 );
 
-    hashenumerate( source_module->rules, add_rule_name, &result );
+    if ( source_module->rules )
+        hashenumerate( source_module->rules, add_rule_name, &result );
+    return result;
+}
+
+/*  builtin_varnames() - VARNAMES ( MODULE ? )
+ *
+ *  Returns a list of the variable names in the given MODULE. If
+ *  MODULE is not supplied, returns the list of variable names in the
+ *  global module.
+ */
+
+/* helper function for builtin_varnames(), below.  Used with
+ * hashenumerate, will prepend the key of each element to a list
+ */
+static void add_hash_key( void* np, void* result_ )
+{
+    LIST** result = (LIST**)result_;
+
+    *result = list_new( *result, copystr( *(char**)np ) );
+}
+
+LIST *
+builtin_varnames(
+    PARSE   *parse,
+    FRAME *frame )
+{
+    LIST *arg0 = lol_get( frame->args, 0 );
+    LIST *result = L0;
+    module_t* source_module = bindmodule( arg0 ? arg0->string : 0 );
+
+    if ( source_module->variables )
+        hashenumerate( source_module->variables, add_hash_key, &result );
+    return result;
+}
+
+/*
+ * builtin_delete_module() - MODULE ?
+ *
+ * Clears all rules and variables from the given module.
+ */
+LIST *
+builtin_delete_module(
+    PARSE   *parse,
+    FRAME *frame )
+{
+    LIST *arg0 = lol_get( frame->args, 0 );
+    LIST *result = L0;
+    module_t* source_module = bindmodule( arg0 ? arg0->string : 0 );
+
+    delete_module( source_module );
     return result;
 }
 
@@ -531,8 +725,8 @@ builtin_import(
     LIST *target_rules = lol_get( frame->args, 3 );
     LIST *localize = lol_get( frame->args, 4 );
 
-    module* target_module = bindmodule( target_module_list ? target_module_list->string : 0 );
-    module* source_module = bindmodule( source_module_list ? source_module_list->string : 0 );
+    module_t* target_module = bindmodule( target_module_list ? target_module_list->string : 0 );
+    module_t* source_module = bindmodule( source_module_list ? source_module_list->string : 0 );
     
     LIST *source_name, *target_name;
             
@@ -544,8 +738,12 @@ builtin_import(
         RULE r_, *r = &r_, *imported;
         r_.name = source_name->string;
                 
-        if ( !hashcheck( source_module->rules, (HASHDATA**)&r ) )
+        if ( !source_module->rules
+             || !hashcheck( source_module->rules, (HASHDATA**)&r )
+            )
+        {
             unknown_rule( frame, "IMPORT", source_module->name, r_.name );
+        }
         
         imported = import_rule( r, target_module, target_name->string );
         if ( localize )
@@ -585,7 +783,7 @@ builtin_export(
     LIST *module_list = lol_get( frame->args, 0 );
     LIST *rules = lol_get( frame->args, 1 );
 
-    module* m = bindmodule( module_list ? module_list->string : 0 );
+    module_t* m = bindmodule( module_list ? module_list->string : 0 );
     
             
     for ( ; rules; rules = list_next( rules ) )
@@ -593,7 +791,7 @@ builtin_export(
         RULE r_, *r = &r_;
         r_.name = rules->string;
                 
-        if ( !hashcheck( m->rules, (HASHDATA**)&r ) )
+        if ( !m->rules || !hashcheck( m->rules, (HASHDATA**)&r ) )
             unknown_rule( frame, "EXPORT", m->name, r_.name );
         
         r->exported = 1;
@@ -640,8 +838,15 @@ void print_source_line( PARSE* p )
 /* Print a single line of error backtrace for the given frame */
 void backtrace_line( FRAME *frame )
 {
-    print_source_line( frame->procedure );
-    printf( " in %s\n", frame->rulename );
+    if ( frame == 0 )
+    {
+        printf( "(no frame):" );
+    }
+    else
+    {
+        print_source_line( frame->procedure );
+        printf( " in %s\n", frame->rulename );
+    }
 }
 
 /*  Print the entire backtrace from the given frame to the Jambase
@@ -649,6 +854,7 @@ void backtrace_line( FRAME *frame )
  */
 void backtrace( FRAME *frame )
 {
+	if ( !frame ) return;
     while ( frame = frame->prev )
     {
         backtrace_line( frame );
@@ -756,7 +962,163 @@ builtin_search_for_target( PARSE *parse, FRAME *frame )
     return list_new( L0, t->name );
 }
 
-static void lol_build( LOL* lol, char** elements )
+LIST *builtin_import_module( PARSE *parse, FRAME *frame )
+{
+    LIST* arg1 = lol_get( frame->args, 0 );
+    LIST* arg2 = lol_get( frame->args, 1 );
+
+    module_t* m = arg2 ? bindmodule(arg2->string) : root_module();
+
+    import_module(arg1, m);
+
+    return L0;
+}
+
+
+LIST *builtin_imported_modules( PARSE *parse, FRAME *frame )
+{
+    LIST *arg0 = lol_get( frame->args, 0 );
+    module_t* source_module = bindmodule( arg0 ? arg0->string : 0 );
+
+    return imported_modules(source_module);
+}
+
+LIST *builtin_instance( PARSE *parse, FRAME *frame )
+{
+    LIST* arg1 = lol_get( frame->args, 0 );
+    LIST* arg2 = lol_get( frame->args, 1 );
+
+    module_t* instance = bindmodule( arg1->string );
+    module_t* class_module = bindmodule( arg2->string );
+    instance->class_module = class_module;
+
+    return L0;
+}
+
+LIST*
+builtin_sort( PARSE *parse, FRAME *frame )
+{
+    LIST* arg1 = lol_get( frame->args, 0 );
+
+    return list_sort(arg1);
+}
+
+LIST *builtin_normalize_path( PARSE *parse, FRAME *frame )
+{
+    LIST* arg1 = lol_get( frame->args, 0 );
+
+    /* First, we iterate over all '/'-separated elements, starting from
+       the end of string. If we see '..', we remove previous path elements.
+       If we see '.', we remove it.
+       The removal is done by putting '\1' in the string. After all the string
+       is processed, we do a second pass, removing '\1' characters.
+    */
+    
+    string in[1], out[1], tmp[1];
+    char* end;      /* Last character of the part of string still to be processed. */
+    char* current;  /* Working pointer. */  
+    int dotdots = 0; /* Number of '..' elements seen and not processed yet. */
+    int rooted = arg1->string[0] == '/';
+    char* result;
+
+    /* Make a copy of input: we should not change it. */
+    string_new(in);
+    if (!rooted)
+        string_push_back(in, '/');
+    string_append(in, arg1->string);
+    
+
+    end = in->value + in->size - 1;
+    current = end;
+    
+    for(;end >= in->value;) {
+        /* Set 'current' to the next occurence of '/', which always exists. */
+        for(current = end; *current != '/'; --current)
+            ;
+        
+        if (current == end && current != in->value) {
+            /* Found a trailing slash. Remove it. */
+            *current = '\1';
+        } else if (current == end && *(current+1) == '/') {
+            /* Found duplicated slash. Remove it. */
+            *current = '\1';
+        } else if (end - current == 1 && strncmp(current, "/.", 2) == 0) {
+            /* Found '/.'. Drop them all. */
+            *current = '\1';
+            *(current+1) = '\1';                   
+        } else if (end - current == 2 && strncmp(current, "/..", 3) == 0) {
+            /* Found '/..' */                
+            *current = '\1';
+            *(current+1) = '\1';                   
+            *(current+2) = '\1';                   
+            ++dotdots;
+        } else if (dotdots) {
+            char* p = current;
+            memset(current, '\1', end-current+1);
+            --dotdots;
+        }                 
+        end = current-1;
+    }
+
+
+    string_new(tmp);
+    while(dotdots--)
+        string_append(tmp, "/..");
+    string_append(tmp, in->value);
+    string_copy(in, tmp->value);
+    string_free(tmp);
+        
+       
+    string_new(out);
+    /* The resulting path is either empty or has '/' as the first significant
+       element. If the original path was not rooted, we need to drop first '/'. 
+       If the original path was rooted, and we've got empty path, need to add '/'
+    */
+    if (!rooted) {
+        current = strchr(in->value, '/');
+        if (current)
+            *current = '\1';
+    } 
+       
+    for (current = in->value; *current; ++current)
+        if (*current != '\1')
+            string_push_back(out, *current);
+
+    
+    result = newstr(out->size ? out->value : (rooted ? "/" : "."));
+    string_free(in);
+    string_free(out);
+
+    return list_new(0, result);
+
+}
+
+LIST *builtin_native_rule( PARSE *parse, FRAME *frame )
+{
+    LIST* module_name = lol_get( frame->args, 0 );    
+    LIST* rule_name = lol_get( frame->args, 1 );    
+
+    module_t* module = bindmodule(module_name->string);
+
+    native_rule_t n, *np = &n;
+    n.name = rule_name->string;
+    if (module->native_rules && hashcheck(module->native_rules, (HASHDATA**)&np))
+    {
+        new_rule_body(module, np->name, np->arguments, np->procedure, 1);
+    }
+    else
+    {
+        backtrace_line( frame->prev );
+        printf( "error: no native rule \"%s\" defined in module \"%s\"\n", 
+                n.name, module->name);
+        backtrace( frame->prev );
+        exit(1);
+    }
+    return L0;    
+}
+
+
+void lol_build( LOL* lol, char** elements )
 {
     LIST* l = L0;
     lol_init( lol );

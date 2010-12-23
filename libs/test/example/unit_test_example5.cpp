@@ -1,10 +1,9 @@
-//  (C) Copyright Gennadiy Rozental 2001.
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied warranty,
-//  and with no claim as to its suitability for any purpose.
-//
-//  See http://www.boost.org for most recent version including documentation.
+//  (C) Copyright Gennadiy Rozental 2001-2003.
+//  Use, modification, and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+//  See http://www.boost.org/libs/test for the library home page.
 
 // Boost.Test
 #include <boost/test/unit_test.hpp>

@@ -22,43 +22,62 @@
 
 #include <boost/math/octonion.hpp>
 
+#if defined(__GNUC__) && (__GNUC__ < 3)
+    // gcc 2.x ignores function scope using declarations,
+    // put them in the scope of the enclosing namespace instead:
+using   ::std::sqrt;
+using   ::std::atan;
+using   ::std::log;
+using   ::std::exp;
+using   ::std::cos;
+using   ::std::sin;
+using   ::std::tan;
+using   ::std::cosh;
+using   ::std::sinh;
+using   ::std::tanh;
 
-#ifdef    BOOST_NO_STDC_NAMESPACE
-using    ::sqrt;
-using    ::atan;
-using    ::log;
-using    ::exp;
-using    ::cos;
-using    ::sin;
-using    ::tan;
-using    ::cosh;
-using    ::sinh;
-using    ::tanh;
-#endif    /* BOOST_NO_STDC_NAMESPACE */
+using   ::std::numeric_limits;
 
-#ifdef    BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
-using    ::boost::math::real;
-using    ::boost::math::unreal;
-using    ::boost::math::sup;
-using    ::boost::math::l1;
-using    ::boost::math::abs;
-using    ::boost::math::norm;
-using    ::boost::math::conj;
-using    ::boost::math::exp;
-using    ::boost::math::pow;
-using    ::boost::math::cos;
-using    ::boost::math::sin;
-using    ::boost::math::tan;
-using    ::boost::math::cosh;
-using    ::boost::math::sinh;
-using    ::boost::math::tanh;
-using    ::boost::math::sinc_pi;
-using    ::boost::math::sinhc_pi;
-#endif    /* BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP */
+using   ::boost::math::abs;
+#endif  /* defined(__GNUC__) && (__GNUC__ < 3) */
+
+
+#ifdef  BOOST_NO_STDC_NAMESPACE
+using   ::sqrt;
+using   ::atan;
+using   ::log;
+using   ::exp;
+using   ::cos;
+using   ::sin;
+using   ::tan;
+using   ::cosh;
+using   ::sinh;
+using   ::tanh;
+#endif  /* BOOST_NO_STDC_NAMESPACE */
+
+#ifdef  BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
+using   ::boost::math::real;
+using   ::boost::math::unreal;
+using   ::boost::math::sup;
+using   ::boost::math::l1;
+using   ::boost::math::abs;
+using   ::boost::math::norm;
+using   ::boost::math::conj;
+using   ::boost::math::exp;
+using   ::boost::math::pow;
+using   ::boost::math::cos;
+using   ::boost::math::sin;
+using   ::boost::math::tan;
+using   ::boost::math::cosh;
+using   ::boost::math::sinh;
+using   ::boost::math::tanh;
+using   ::boost::math::sinc_pi;
+using   ::boost::math::sinhc_pi;
+#endif  /* BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP */
   
 // Provide standard floating point abs() overloads for MSVC
 #ifdef    BOOST_MSVC
-#if        (BOOST_MSVC < 1300) || defined(_MSC_EXTENSIONS)
+#if        (BOOST_MSVC < 1300) || (defined(_MSC_EXTENSIONS) && BOOST_MSVC < 1310)
 inline float        abs(float v)
 {
     return(fabs(v));
@@ -73,7 +92,7 @@ inline long double    abs(long double v)
 {
     return(fabs(v));
 }
-#endif    /* (BOOST_MSVC < 1300) || defined(_MSC_EXTENSIONS) */
+#endif    /* need abs */
 #endif    /* BOOST_MSVC */
 
 
@@ -626,9 +645,12 @@ void    octonion_manual_test()
 template<typename T>
 void    multiplication_test(const char * more_blurb)
 {
+#if defined(__GNUC__) && (__GNUC__ < 3)
+#else   /* defined(__GNUC__) && (__GNUC__ < 3) */
     using ::std::numeric_limits;
     
     using ::boost::math::abs;
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
     
     
     BOOST_MESSAGE("Testing multiplication for " << more_blurb << ".");
@@ -657,11 +679,14 @@ void    multiplication_test(const char * more_blurb)
 template<typename T>
 void    exp_test(const char * more_blurb)
 {
+#if defined(__GNUC__) && (__GNUC__ < 3)
+#else   /* defined(__GNUC__) && (__GNUC__ < 3) */
     using ::std::numeric_limits;
     
     using ::std::atan;
     
     using ::boost::math::abs;
+#endif  /* defined(__GNUC__) && (__GNUC__ < 3) */
     
     
     BOOST_MESSAGE("Testing exp for " << more_blurb << ".");

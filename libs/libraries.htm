@@ -53,24 +53,12 @@ Metaprogramming</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#Memory">Memory</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#Parsing">Parsing</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#Miscellaneous">Miscellaneous</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp; <a href="#workarounds">Broken compiler workarounds</a><br>
-<a href="#Obsolete">Obsolete Libraries</a><br>
-<a href="#Beta">Beta Libraries</a></p>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#workarounds">Broken compiler workarounds</a></p>
 
 <p>See <a href="../status/compiler_status.html">Compiler Status</a>
  page to find out what library works with which compiler.<br>
-See <a href="hdr_depend.html">Header Dependencies</a>  page to find
-out what other headers each boost header includes.<br>
-See <a href="../more/download.html">Download and Installation</a>  page to find out
-how to download and install the libraries.<br>
-See <a href="../tools/build/index.html">Building Boost Libraries</a>  page to find
-out how to build object libraries, when needed.</p>
-
-<p>Documentation for some Boost libraries is available in alternative formats:</p>
-<ul>
-  <li>PDF [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_pdf.zip">zip</a>] [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_pdf.tar.gz">tar.gz</a>] [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_pdf.tar.bz2">tar.bz2</a>]</li>
-  <li>Unix man pages [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_man.tar.gz">tar.gz</a>] [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_man.tar.bz2">tar.bz2</a>]</li>
-</ul>
+See <a href="../more/getting_started.html">Getting Started</a>  page to find out
+how to download, build, and install the libraries.</p>
 
 <hr>
 
@@ -79,7 +67,7 @@ out how to build object libraries, when needed.</p>
 <ul>
     <li><a href="any/index.html">any</a> - Safe, generic container for single
       values of different value types, from Kevlin Henney.&nbsp;</li>
-    <li><a href="array/index.htm">array</a> - STL compliant
+    <li><a href="array/index.html">array</a> - STL compliant
         container wrapper for arrays of constant size, from
         Nicolai Josuttis.</li>
     <li><a href="bind/bind.html">bind</a> and <a href="bind/mem_fn.html"> mem_fn</a> - Generalized binders for function/object/pointers and member functions, from Peter
@@ -90,8 +78,6 @@ out how to build object libraries, when needed.</p>
     <li><a href="compatibility/index.html">compatibility</a> - Help for
       non-conforming standard libraries, from Ralf Grosse-Kunstleve and Jens
       Maurer.</li>
-    <li><a href="compose/index.htm">compose</a> - Functional
-        composition adapters for the STL, from Nicolai Josuttis.</li>
     <li><a href="utility/compressed_pair.htm">compressed_pair</a>
         - Empty member optimization, from John Maddock, Howard
         Hinnant, et al.</li>
@@ -100,17 +86,18 @@ out how to build object libraries, when needed.</p>
     <li><a href="config/config.htm">config</a> - Helps boost
         library developers adapt to compiler idiosyncrasies; not
         intended for library users.</li>
-    <li><a href="conversion/index.htm">conversion</a> - Numeric,
+    <li><a href="conversion/index.html">conversion</a> - Numeric,
         polymorphic, and lexical casts, from Dave Abrahams and
         Kevlin Henney.</li>
     <li><a href="crc/index.html">crc</a> - Cyclic Redundancy Code, from Daryle
       Walker.</li>
     <li><a href="date_time/doc/index.html">date_time</a> - Date-Time library from Jeff Garland.</li>
     <li><a href="dynamic_bitset/dynamic_bitset.html">dynamic_bitset</a> - A runtime sized version of <tt>std::bitset</tt> from Jeremy Siek and Chuck Allison.</li>
+    <li><a href="utility/enable_if.html">enable_if</a> - Selective inclusion of function template overloads, from Jaakko J&auml;rvi, Jeremiah Willcock, and Andrew Lumsdaine.</li>
     <li><a href="filesystem/doc/index.htm">filesystem</a> - Portable paths, 
     iteration over directories, and other useful filesystem operations, from 
     Beman Dawes.</li>
-    <li><a href="format/index.htm">format</a> - Type-safe 'printf-like' format 
+    <li><a href="format/index.html">format</a> - Type-safe 'printf-like' format 
     operations, from Samuel Krempp.</li>
     <li><a href="function/index.html">function</a> - Function object wrappers
       for deferred calls or callbacks, from Doug Gregor.</li>
@@ -119,17 +106,16 @@ out how to build object libraries, when needed.</p>
     <li><a href="graph/doc/table_of_contents.html">graph</a> -
         Generic graph components and algorithms, from Jeremy Siek
         and a University of Notre Dame team.</li>
-    <li><a href="integer/index.htm">integer</a> - Headers to ease
+    <li><a href="integer/index.html">integer</a> - Headers to ease
         dealing with integral types.</li>
     <li><a href="numeric/interval/doc/interval.htm">interval </a>- Extends the 
     usual arithmetic functions to mathematical intervals, from Guillaume 
     Melquiond, Hervé Brönnimann and Sylvain Pion.</li>
     <li><a href="io/doc/ios_state.html">io state savers</a> - Save I/O state to 
     prevent jumbled data, from Daryle Walker.</li>
-    <li><a href="utility/iterator_adaptors.htm">iterator adaptors</a>
-        - Adapt a base type into a standard conforming iterator,
-        and more, from Dave Abrahams, Jeremy Siek, and John
-        Potter.</li>
+    <li><a href="iterator/doc/index.html">iterators</a> - Iterator
+        construction framework, adaptors, concepts, and more, from Dave
+        Abrahams, Jeremy Siek, and Thomas Witt.</li>
     <li><a href="lambda/doc/index.html">lambda</a> - Define small unnamed 
     function objects at the actual call site, and more, from Jaakko Järvi and 
     Gary Powell.</li>
@@ -175,11 +161,11 @@ out how to build object libraries, when needed.</p>
     passing references to generic functions, from Jaako J&auml;rvi,
     Peter Dimov, Doug Gregor, and Dave Abrahams.</li>
 
-    <li><a href="regex/index.htm">regex</a> - Regular expression
+    <li><a href="regex/index.html">regex</a> - Regular expression
         library, from John Maddock.</li>
     <li><a href="signals/index.html">signals</a> - managed signals &amp;
          slots callback implementation, from Doug Gregor.</li>
-    <li><a href="smart_ptr/index.htm">smart_ptr</a> - Five smart
+    <li><a href="smart_ptr/index.html">smart_ptr</a> - Five smart
         pointer class templates, from Greg Colvin, Beman Dawes,
         Peter Dimov, and Darin Adler.</li>
     <li><a href="static_assert/static_assert.htm">static_assert</a>
@@ -188,19 +174,19 @@ out how to build object libraries, when needed.</p>
     <li><a href="spirit/index.html">spirit</a> - LL parser framework&nbsp; 
     represents parsers directly as EBNF grammars in inlined C++, from Joel de 
     Guzman and team.</li>
-    <li><a href="test/doc/index.htm">test</a> - Support for simple program testing, 
+    <li><a href="test/doc/index.html">test</a> - Support for simple program testing, 
     full unit testing, and for program
       execution monitoring, from Gennadiy Rozental.</li>
     <li><a href="thread/doc/index.html">thread</a> - Portable C++
       multi-threading, from William Kempf.</li>
-    <li><a href="timer/index.htm">timer</a> - Event timer,
+    <li><a href="timer/index.html">timer</a> - Event timer,
         progress timer, and progress display classes, from Beman
         Dawes.</li>
-    <li><a href="tokenizer/index.htm">tokenizer</a> - Break of a string or other
+    <li><a href="tokenizer/index.html">tokenizer</a> - Break of a string or other
       character sequence into a series of tokens, from John Bandela.</li>
     <li><a href="tuple/doc/tuple_users_guide.html">tuple</a> - Ease definition of functions returning multiple values, and more,
     from Jaakko Järvi.</li>
-    <li><a href="type_traits/index.htm">type_traits</a> -
+    <li><a href="type_traits/index.html">type_traits</a> -
         Templates for fundamental properties of types, from John
         Maddock, Steve Cleary, et al.</li>
     <li><a href="numeric/ublas/doc/index.htm">uBLAS</a> - Basic linear algebra 
@@ -208,7 +194,11 @@ out how to build object libraries, when needed.</p>
     <li><a href="utility/utility.htm">utility</a> - Class <b>noncopyable</b>
         plus <b>checked_delete()</b>, <b>checked_array_delete()</b>, <b>next(),</b>&nbsp;
       <b>prior()</b>
-        function templates, plus <b>base-from-member idiom</b>, from Dave Abrahams and others. </li>
+        function templates, plus <b>base-from-member idiom</b>, from Dave Abrahams and others.</li>
+	<li><a href="utility/value_init.htm">value_initialized</a> - Wrapper for uniform-syntax value initialization, 
+	from Fernando Cacciola, based on the original idea of David Abrahams.</li>
+    <li><a href="variant/index.html">variant</a> - Safe, generic, stack-based discriminated union
+    container, from Eric Friedman and Itay Maman.</li>
 </ul>
 
 <hr>
@@ -220,21 +210,21 @@ out how to build object libraries, when needed.</p>
 <ul>
     <li><a href="conversion/lexical_cast.htm">conversion/lexical_cast</a> - <tt>lexical_cast</tt>
       class template, from Kevlin Henney.</li>
-    <li><a href="format/index.htm">format</a> - Type-safe 'printf-like' format 
+    <li><a href="format/index.html">format</a> - Type-safe 'printf-like' format 
     operations, from Samuel Krempp.</li>
-    <li><a href="regex/index.htm">regex</a> - Regular expression
+    <li><a href="regex/index.html">regex</a> - Regular expression
         library, from John Maddock</li>
     <li><a href="spirit/index.html">spirit</a> - LL parser framework&nbsp; 
     represents parsers directly as EBNF grammars in inlined C++, from Joel de 
     Guzman and team.</li>
-    <li><a href="tokenizer/index.htm">tokenizer</a> - Break of a string or other
+    <li><a href="tokenizer/index.html">tokenizer</a> - Break of a string or other
       character sequence into a series of tokens, from John Bandela.</li>
 </ul>
 
 <h3><a name="Containers">Containers</a></h3>
 
 <ul>
-    <li><a href="array/index.htm">array</a> - STL compliant
+    <li><a href="array/index.html">array</a> - STL compliant
         container wrapper for arrays of constant size, from
         Nicolai Josuttis.</li>
     <li><a href="dynamic_bitset/dynamic_bitset.html">dynamic_bitset</a> - A runtime sized version of <tt>std::bitset</tt> from Jeremy Siek and Chuck Allison.</li>
@@ -246,6 +236,8 @@ out how to build object libraries, when needed.</p>
     <li><a href="property_map/property_map.html">property map</a>
         - Concepts defining interfaces which map key objects to
         value objects, from Jeremy Siek.</li>
+    <li><a href="variant/index.html">variant</a> - Safe, generic, stack-based
+    discriminated union container, from Eric Friedman and Itay Maman.</li>
 </ul>
 
 <h3><a name="Iterators">Iterators</a></h3>
@@ -254,14 +246,13 @@ out how to build object libraries, when needed.</p>
     <li><a href="graph/doc/table_of_contents.html">graph</a> -
         Generic graph components and algorithms, from Jeremy Siek
         and a University of Notre Dame team.</li>
-    <li><a href="utility/iterator_adaptors.htm">iterator adaptors</a>
-        - Adapt a base type into a standard conforming iterator,
-        and more, from Dave Abrahams, Jeremy Siek, and John
-        Potter.</li>
+    <li><a href="iterator/doc/index.html">iterators</a> - Iterator
+        construction framework, adaptors, concepts, and more, from Dave
+        Abrahams, Jeremy Siek, and Thomas Witt.</li>
     <li><a href="utility/operators.htm">operators</a> - Templates
         ease arithmetic classes and iterators, from Dave Abrahams
         and Jeremy Siek.</li>
-    <li><a href="tokenizer/index.htm">tokenizer</a> - Break of a string or other
+    <li><a href="tokenizer/index.html">tokenizer</a> - Break of a string or other
       character sequence into a series of tokens, from John Bandela.</li>
 </ul>
 
@@ -280,8 +271,6 @@ out how to build object libraries, when needed.</p>
 <ul>
     <li><a href="bind/bind.html">bind</a> and <a href="bind/mem_fn.html"> mem_fn</a> - Generalized binders for function/object/pointers and member functions, from Peter Dimov.</li>
 
-    <li><a href="compose/index.htm">compose</a> - Functional
-        composition adapters for the STL, from Nicolai Josuttis.</li>
     <li><a href="function/index.html">function</a> - Function object wrappers
       for deferred calls or callbacks, from Doug Gregor.</li>
     <li><a href="functional/index.html">functional</a> - Enhanced
@@ -306,6 +295,9 @@ out how to build object libraries, when needed.</p>
         Howard Hinnant, et al.</li>
     <li><a href="concept_check/concept_check.htm">concept check</a>
         - Tools for generic programming, from Jeremy Siek.</li>
+    <li><a href="utility/enable_if.html">enable_if</a> - 
+	Selective inclusion of function template overloads, from Jaakko
+	J&auml;rvi, Jeremiah Willcock, and Andrew Lumsdaine.</li>
     <li><a href="utility/operators.htm">operators</a> - Templates
         ease arithmetic classes and iterators, from Dave Abrahams
         and Jeremy Siek.</li>
@@ -315,7 +307,7 @@ out how to build object libraries, when needed.</p>
     <li><a href="static_assert/static_assert.htm">static_assert</a>
         - Static assertions (compile time assertions), from John
         Maddock.</li>
-    <li><a href="type_traits/index.htm">type_traits</a> -
+    <li><a href="type_traits/index.html">type_traits</a> -
         Templates for fundamental properties of types, from John
         Maddock, Steve Cleary, et al.</li>
 </ul>
@@ -329,7 +321,7 @@ out how to build object libraries, when needed.</p>
     <li><a href="static_assert/static_assert.htm">static_assert</a>
         - Static assertions (compile time assertions), from John
         Maddock.</li>
-    <li><a href="type_traits/index.htm">type_traits</a> -
+    <li><a href="type_traits/index.html">type_traits</a> -
         Templates for fundamental properties of types, from John
         Maddock, Steve Cleary, et al.</li>
 </ul>
@@ -356,7 +348,7 @@ out how to build object libraries, when needed.</p>
     domain of mathematics, from various authors.</li>
     <li><a href="conversion/cast.htm">conversion/numeric_cast</a> - <tt>numeric_cast</tt>
       class template, from Kevlin Henney.</li>
-    <li><a href="integer/index.htm">integer</a> - Headers to ease
+    <li><a href="integer/index.html">integer</a> - Headers to ease
         dealing with integral types.</li>
     <li><a href="numeric/interval/doc/interval.htm">interval </a>- Extends the 
     usual arithmetic functions to mathematical intervals, from Guillaume 
@@ -391,7 +383,7 @@ out how to build object libraries, when needed.</p>
     <li><a href="static_assert/static_assert.htm">static_assert</a>
         - Static assertions (compile time assertions), from John
         Maddock.</li>
-    <li><a href="test/doc/index.htm">test</a> - Support for simple program testing, 
+    <li><a href="test/doc/index.html">test</a> - Support for simple program testing, 
     full unit testing, and for program
       execution monitoring, from Gennadiy Rozental.</li>
 </ul>
@@ -406,11 +398,13 @@ out how to build object libraries, when needed.</p>
         Hinnant, et al.</li>
     <li><a href="tuple/doc/tuple_users_guide.html">tuple</a> - Ease definition of functions returning multiple values, and more,
     from Jaakko Järvi.</li>
+    <li><a href="variant/index.html">variant</a> - Safe, generic, stack-based
+    discriminated union container, from Eric Friedman and Itay Maman.</li>
 </ul>
 
 <h3><a name="IO">Input/Output</a></h3>
 <ul>
-  <li><a href="format/index.htm">format</a> - Type-safe 'printf-like' format 
+  <li><a href="format/index.html">format</a> - Type-safe 'printf-like' format 
   operations, from Samuel Krempp.</li>
   <li><a href="io/doc/ios_state.html">io state savers</a> - Save I/O state to 
   prevent jumbled data, from Daryle Walker.</li>
@@ -430,7 +424,7 @@ out how to build object libraries, when needed.</p>
 <ul>
     <li><a href="pool/doc/index.html">pool</a> - Memory pool management, from
       Steve Cleary.</li>
-    <li><a href="smart_ptr/index.htm">smart_ptr</a> - Five smart
+    <li><a href="smart_ptr/index.html">smart_ptr</a> - Five smart
         pointer class templates, from Greg Colvin, Beman Dawes,
         Peter Dimov, and Darin Adler.</li>
     <li><a href="utility/utility.htm">utility</a> - Class <b>noncopyable</b>
@@ -455,7 +449,7 @@ out how to build object libraries, when needed.</p>
     <li><a href="utility/compressed_pair.htm">compressed_pair</a>
         - Empty member optimization, from John Maddock, Howard
         Hinnant, et al.</li>
-    <li><a href="conversion/index.htm">conversion</a> - Numeric,
+    <li><a href="conversion/index.html">conversion</a> - Numeric,
         polymorphic, and lexical casts, from Dave Abrahams and
         Kevlin Henney.</li>
     <li><a href="crc/index.html">crc</a> - Cyclic Redundancy Code, from Daryle
@@ -466,13 +460,15 @@ out how to build object libraries, when needed.</p>
     Beman Dawes.</li>
     <li><a href="optional/doc/optional.html">optional</a> - Discriminated-union 
     wrapper for optional values, from Fernando Cacciola.</li>
-    <li><a href="timer/index.htm">timer</a> - Event timer,
+    <li><a href="timer/index.html">timer</a> - Event timer,
         progress timer, and progress display classes, from Beman
         Dawes.</li>
     <li><a href="utility/utility.htm">utility</a> - Class <b>noncopyable</b>
         plus <b>checked_delete()</b>, <b>checked_array_delete()</b>, <b>next(),</b>&nbsp;
       <b>prior()</b>
         function templates, plus <b>base-from-member idiom</b>, from Dave Abrahams and others. </li>
+	<li><a href="utility/value_init.htm">value_initialized</a> - Wrapper for uniform-syntax value initialization, 
+	from Fernando Cacciola, based on the original idea of David Abrahams.</li>		
 </ul>
 
 <h3>Broken compiler <a name="workarounds">workarounds</a></h3>
@@ -490,18 +486,8 @@ out how to build object libraries, when needed.</p>
 
 <hr>
 
-<h2><a name="Obsolete">Obsolete</a> Libraries</h2>
-
-<ul>
-    <li><a href="min_rand/index.htm">min_rand</a> - a random
-        number generator class from Beman Dawes. Replaced by <a
-        href="random/index.html">random</a>.</li>
-</ul>
-
-<hr>
-
 <p>Revised 
 <!--webbot bot="Timestamp" s-type="EDITED"
-s-format="%d %b %Y" startspan -->04 Feb 2003<!--webbot bot="Timestamp" endspan i-checksum="14388" --></p>
+s-format="%d %b %Y" startspan -->30 Jan 2004<!--webbot bot="Timestamp" endspan i-checksum="15258" --></p>
 </body>
 </html>

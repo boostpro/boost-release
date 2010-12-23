@@ -1,12 +1,16 @@
 
-//  (C) Copyright John Maddock 2000. Permission to copy, use, modify, sell and   
-//  distribute this software is granted provided this copyright notice appears
-//  in all copies. This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  (C) Copyright John Maddock 2000. 
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
 #include "check_type.hpp"
-#include TYPE_TRANSFORM(add_volatile)
+#ifdef TEST_STD
+#  include <type_traits>
+#else
+#  include <boost/type_traits/add_volatile.hpp>
+#endif
 
 BOOST_DECL_TRANSFORM_TEST(add_volatile_test_1, ::boost::add_volatile, const, const volatile)
 BOOST_DECL_TRANSFORM_TEST(add_volatile_test_2, ::boost::add_volatile, volatile, volatile)
@@ -39,6 +43,7 @@ TT_TEST_BEGIN(add_volatile)
    add_volatile_test_13();
 
 TT_TEST_END
+
 
 
 

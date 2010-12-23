@@ -3,13 +3,9 @@
  * Copyright (c) 1998-2002
  * Dr John Maddock
  *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Dr John Maddock makes no representations
- * about the suitability of this software for any purpose.
- * It is provided "as is" without express or implied warranty.
+ * Use, modification and distribution are subject to the 
+ * Boost Software License, Version 1.0. (See accompanying file 
+ * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -35,12 +31,12 @@ const std::string human_format("\\1-\\2-\\3-\\4");
 
 std::string machine_readable_card_number(const std::string& s)
 {
-   return boost::regex_merge(s, e, machine_format, boost::match_default | boost::format_sed);
+   return boost::regex_replace(s, e, machine_format, boost::match_default | boost::format_sed);
 }
 
 std::string human_readable_card_number(const std::string& s)
 {
-   return boost::regex_merge(s, e, human_format, boost::match_default | boost::format_sed);
+   return boost::regex_replace(s, e, human_format, boost::match_default | boost::format_sed);
 }
 
 #include <iostream>
@@ -65,6 +61,7 @@ int main()
    }
    return 0;
 }
+
 
 
 

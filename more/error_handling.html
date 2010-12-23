@@ -41,26 +41,57 @@
     guideline. After all, if you check for an error condition, then in some
     sense you expect it to happen, or the check is wasted code.</p>
 
-    <p>A more appropriate question to ask is: ``do we want stack unwinding
-    here?'' Because actually handling an exception is likely to be
-    significantly slower than executing mainline code, you should also ask:
-    ``Can I afford stack unwinding here?'' For example, a desktop application
-    performing a long computation might periodically check to see whether the
-    user had pressed a cancel button. Throwing an exception could allow the
-    operation to be cancelled gracefully. On the other hand, it would
-    probably be inappropriate to throw and <i>handle</i> exceptions in the
-    inner loop of this computation because that could have a significant
-    performance impact.</p>
+    <p>A more appropriate question to ask is: ``do we want stack
+    unwinding here?'' Because actually handling an exception is likely
+    to be significantly slower than executing mainline code, you
+    should also ask: ``Can I afford stack unwinding here?'' For
+    example, a desktop application performing a long computation might
+    periodically check to see whether the user had pressed a cancel
+    button. Throwing an exception could allow the operation to be
+    cancelled gracefully. On the other hand, it would probably be
+    inappropriate to throw and <i>handle</i> exceptions in the inner
+    loop of this computation because that could have a significant
+    performance impact.  The guideline mentioned above has a grain of
+    truth in it: in time critical code, throwing an exception
+    should <em>be</em> the exception, not the rule.</p>
 
     <h3>How should I design my exception classes?</h3>
 
     <ol>
-      <li><b>Inherit from <code>std::exception</code></b>. Except in *very*
-      rare circumstances where you can't afford the cost of a virtual table,
+      <li><b>Derive your exception class
+      from <code>std::exception</code></b>. Except in *very* rare
+      circumstances where you can't afford the cost of a virtual
+      table,
       <code>std::exception</code> makes a reasonable exception base class,
       and when used universally, allows programmers to catch "everything"
       without resorting to <code>catch(...)</code>. For more about
-      <code>catch(...)</code>, see below.</li>
+      <code>catch(...)</code>, see below.  
+
+      <li><b>Use <i>virtual</i> inheritance.</b> This insight is due
+      to Andrew Koenig.  Using virtual inheritance from your
+      exception's base class(es) prevents ambiguity problems at the
+      catch-site in case someone throws an exception derived from
+      multiple bases which have a base class in common:
+
+<pre>
+#include &lt;iostream&gt;
+struct my_exc1 : std::exception { char const* what() throw(); };
+struct my_exc2 : std::exception { char const* what() throw(); };
+struct your_exc3 : my_exc1, my_exc2 {};
+
+int main()
+{
+   try { throw your_exc3(); }
+   catch(std::exception const&amp; e) {}
+   catch(...) { std::cout &lt;&lt; &quot;whoops!&quot; &lt;&lt; std::endl; }
+}
+</pre>
+
+The program above prints <code>&quot;whoops&quot;</code> because the
+C++ runtime can't resolve which <code>exception</code> instance to
+match in the first catch clause.
+
+      </li>
 
       <li>
         <b><i>Don't</i> embed a std::string object</b> or any other data
@@ -184,9 +215,10 @@ extern "C" void (*old_translator)(unsigned, EXCEPTION_POINTERS*)
     usual safe assumptions that destructors and catch blocks have taken valid
     steps to ensure program invariants during unwinding. 
 
-    <p>I reluctantly concede this point to Hillel Y. Sims, who beat it into
-    me (&lt;wink&gt;): until all OSes are "fixed", if every exception were
-    derived from <code>std::exception</code> and everyone substituted
+    <p>I reluctantly concede this point to Hillel Y. Sims, after many
+    long debates in the newsgroups: until all OSes are "fixed", if
+    every exception were derived from <code>std::exception</code> and
+    everyone substituted
     <code>catch(std::exception&amp;)</code> for <code>catch(...)</code>, the
     world would be a better place.</p>
 
@@ -197,15 +229,11 @@ extern "C" void (*old_translator)(unsigned, EXCEPTION_POINTERS*)
     place where this occurs is at language boundaries.</p>
     <hr>
 
-    <p>&copy; Copyright David Abrahams 2001-2003. Permission to copy, use,
-    modify, sell and distribute this document is granted provided this
-    copyright notice appears in all copies. This document is provided "as is"
-    without express or implied warranty, and with no claim as to its
-    suitability for any purpose.</p>
+    <p>&copy; Copyright David Abrahams 2001-2003. All rights reserved.</p>
 
     <p>Revised 
     <!--webbot bot="Timestamp" s-type="EDITED" s-format="%d %B, %Y" startspan -->
-     25 March, 2003<!--webbot bot="Timestamp" endspan i-checksum="34359" -->
+     21 August, 2003<!--webbot bot="Timestamp" endspan i-checksum="34359" -->
     </p>
   </body>
 </html>

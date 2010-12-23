@@ -1,8 +1,12 @@
 #ifndef GREG_DATE_HPP___
 #define GREG_DATE_HPP___
-/* Copyright (c) 2002 CrystalClear Software, Inc.
- * Disclaimer & Full Copyright at end of file
+
+/* Copyright (c) 2002,2003 CrystalClear Software, Inc.
+ * Use, modification and distribution is subject to the 
+ * Boost Software License, Version 1.0. (See accompanying
+ * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland 
+ * $Date: 2004/01/11 19:33:21 $
  */
 
 #include "boost/date_time/date.hpp"
@@ -41,11 +45,11 @@ namespace gregorian {
     typedef gregorian_calendar::date_int_type date_int_type;
     typedef date_duration  duration_type;
     //! Main constructor with year, month, day
-    date(year_type year, month_type month, day_type day) 
-      : date_time::date<date, gregorian_calendar, date_duration>(year, month, day)
+    date(year_type y, month_type m, day_type d) 
+      : date_time::date<date, gregorian_calendar, date_duration>(y, m, d)
     {
-      if (gregorian_calendar::end_of_month_day(year, month) < day) {
-        throw bad_day_of_month();
+      if (gregorian_calendar::end_of_month_day(y, m) < d) {
+        throw bad_day_of_month(std::string("Day of month is not valid for year"));
       }
     }
     //! Constructor from a ymd_type structure
@@ -53,11 +57,11 @@ namespace gregorian {
       : date_time::date<date, gregorian_calendar, date_duration>(ymd)
     {}
     //! Needed copy constructor
-    date(const date_int_type& rhs):
+    explicit date(const date_int_type& rhs):
       date_time::date<date,gregorian_calendar, date_duration>(rhs)
     {}
     //! Needed copy constructor
-    date(date_rep_type rhs):
+    explicit date(date_rep_type rhs):
       date_time::date<date,gregorian_calendar, date_duration>(rhs)
     {}
     //! Constructor for infinities, not a date, max and min date
@@ -74,7 +78,8 @@ namespace gregorian {
     day_of_year_type day_of_year() const
     {
       date start_of_year(year(), 1, 1);
-      return ((*this-start_of_year).days() + 1);
+      unsigned short doy = static_cast<unsigned short>((*this-start_of_year).days() + 1);
+      return day_of_year_type(doy);
     }
     //!Return the Modified Julian Day number for the date.
     long modjulian_day() const
@@ -102,17 +107,6 @@ namespace gregorian {
 
 } } //namespace gregorian
 
-/* Copyright (c) 2002
- * CrystalClear Software, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  CrystalClear Software makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- */
 
 
 #endif

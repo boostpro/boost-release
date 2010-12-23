@@ -1,12 +1,10 @@
 /*=============================================================================
-    Spirit v1.6.1
     Copyright (c) 1998-2003 Joel de Guzman
     http://spirit.sourceforge.net/
 
-    Permission to copy, use, modify, sell and distribute this software is
-    granted provided this copyright notice appears in all copies. This
-    software is provided "as is" without express or implied warranty, and
-    with no claim as to its suitability for any purpose.
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
 ============================================================================*/
 #if !defined(BOOST_SPIRIT_SKIPPER_IPP)
 #define BOOST_SPIRIT_SKIPPER_IPP
@@ -29,12 +27,12 @@ namespace boost { namespace spirit {
         {
             typedef scanner_policies<
                 no_skipper_iteration_policy<
-                    BOOST_SPIRIT_TYPENAME ScannerT::iteration_policy_t>,
-                BOOST_SPIRIT_TYPENAME ScannerT::match_policy_t,
-                BOOST_SPIRIT_TYPENAME ScannerT::action_policy_t
+                    BOOST_DEDUCED_TYPENAME ScannerT::iteration_policy_t>,
+                BOOST_DEDUCED_TYPENAME ScannerT::match_policy_t,
+                BOOST_DEDUCED_TYPENAME ScannerT::action_policy_t
             > policies_t;
 
-            scanner<BOOST_SPIRIT_TYPENAME ScannerT::iterator_t, policies_t>
+            scanner<BOOST_DEDUCED_TYPENAME ScannerT::iterator_t, policies_t>
                 scan2(scan.first, scan.last, policies_t(scan));
             typedef typename ScannerT::iterator_t iterator_t;
 
@@ -109,7 +107,8 @@ namespace boost { namespace spirit {
                 match<nil_t> hit = p.parse(scan);
                 scan.skip(scan);
                 return parse_info<IteratorT>(
-                    first, hit, hit && (first == last), hit.length());
+                    first, hit, hit && (first == last),
+                    hit.length());
             }
         };
 
@@ -133,47 +132,47 @@ namespace boost { namespace spirit {
                 match<nil_t> hit = p.parse(scan);
                 scan.skip(scan);
                 return parse_info<IteratorT>(
-                    first, hit, hit && (first == last), hit.length());
+                    first, hit, hit && (first == last),
+                    hit.length());
             }
         };
     }
 
-///////////////////////////////////////////////////////////////////////////////
-//
-//  Free parse functions using the skippers
-//
-///////////////////////////////////////////////////////////////////////////////
-template <typename IteratorT, typename ParserT, typename SkipT>
-inline parse_info<IteratorT>
-parse(
-    IteratorT const&        first,
-    IteratorT const&        last,
-    parser<ParserT> const&  p,
-    parser<SkipT> const&    skip)
-{
-    return impl::phrase_parser<SkipT>::
-        parse(first, last, p.derived(), skip.derived());
-}
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    //  Free parse functions using the skippers
+    //
+    ///////////////////////////////////////////////////////////////////////////
+    template <typename IteratorT, typename ParserT, typename SkipT>
+    inline parse_info<IteratorT>
+    parse(
+        IteratorT const&        first,
+        IteratorT const&        last,
+        parser<ParserT> const&  p,
+        parser<SkipT> const&    skip)
+    {
+        return impl::phrase_parser<SkipT>::
+            parse(first, last, p.derived(), skip.derived());
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    //  Parse function for null terminated strings using the skippers
+    //
+    ///////////////////////////////////////////////////////////////////////////
+    template <typename CharT, typename ParserT, typename SkipT>
+    inline parse_info<CharT const*>
+    parse(
+        CharT const*            str,
+        parser<ParserT> const&  p,
+        parser<SkipT> const&    skip)
+    {
+        CharT const* last = str;
+        while (*last)
+            last++;
+        return parse(str, last, p, skip);
+    }
 
-///////////////////////////////////////////////////////////////////////////////
-//
-//  Parse function for null terminated strings using the skippers
-//
-///////////////////////////////////////////////////////////////////////////////
-template <typename CharT, typename ParserT, typename SkipT>
-inline parse_info<CharT const*>
-parse(
-    CharT const*            str,
-    parser<ParserT> const&  p,
-    parser<SkipT> const&    skip)
-{
-    CharT const* last = str;
-    while (*last)
-        last++;
-    return parse(str, last, p, skip);
-}
-
-///////////////////////////////////////////////////////////////////////////////
 }} // namespace boost::spirit
 
 #endif

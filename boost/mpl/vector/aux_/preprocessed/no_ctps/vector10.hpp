@@ -7,9 +7,9 @@ namespace mpl {
 namespace aux {
 template<> struct vector_item_impl<0>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item0 type;
+        typedef typename V_::item0 type;
     };
 };
 }
@@ -17,10 +17,10 @@ template<> struct vector_item_impl<0>
 template<>
 struct at_traits< aux::vector_tag< 0> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -28,7 +28,7 @@ template<>
 struct size_traits< aux::vector_tag< 0> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,0 >
+        : integral_c< long,0 >
     {
     };
 };
@@ -87,9 +87,9 @@ struct pop_front_traits< aux::vector_tag< 1> >
 namespace aux {
 template<> struct vector_item_impl<1>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item1 type;
+        typedef typename V_::item1 type;
     };
 };
 }
@@ -97,10 +97,10 @@ template<> struct vector_item_impl<1>
 template<>
 struct at_traits< aux::vector_tag< 1> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -135,7 +135,7 @@ template<>
 struct size_traits< aux::vector_tag< 1> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,1 >
+        : integral_c< long,1 >
     {
     };
 };
@@ -199,9 +199,9 @@ struct pop_front_traits< aux::vector_tag< 2> >
 namespace aux {
 template<> struct vector_item_impl<2>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item2 type;
+        typedef typename V_::item2 type;
     };
 };
 }
@@ -209,10 +209,10 @@ template<> struct vector_item_impl<2>
 template<>
 struct at_traits< aux::vector_tag< 2> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -247,7 +247,7 @@ template<>
 struct size_traits< aux::vector_tag< 2> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,2 >
+        : integral_c< long,2 >
     {
     };
 };
@@ -312,9 +312,9 @@ struct pop_front_traits< aux::vector_tag< 3> >
 namespace aux {
 template<> struct vector_item_impl<3>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item3 type;
+        typedef typename V_::item3 type;
     };
 };
 }
@@ -322,10 +322,10 @@ template<> struct vector_item_impl<3>
 template<>
 struct at_traits< aux::vector_tag< 3> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -360,7 +360,7 @@ template<>
 struct size_traits< aux::vector_tag< 3> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,3 >
+        : integral_c< long,3 >
     {
     };
 };
@@ -428,9 +428,9 @@ struct pop_front_traits< aux::vector_tag< 4> >
 namespace aux {
 template<> struct vector_item_impl<4>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item4 type;
+        typedef typename V_::item4 type;
     };
 };
 }
@@ -438,10 +438,10 @@ template<> struct vector_item_impl<4>
 template<>
 struct at_traits< aux::vector_tag< 4> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -476,7 +476,7 @@ template<>
 struct size_traits< aux::vector_tag< 4> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,4 >
+        : integral_c< long,4 >
     {
     };
 };
@@ -545,9 +545,9 @@ struct pop_front_traits< aux::vector_tag< 5> >
 namespace aux {
 template<> struct vector_item_impl<5>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item5 type;
+        typedef typename V_::item5 type;
     };
 };
 }
@@ -555,10 +555,10 @@ template<> struct vector_item_impl<5>
 template<>
 struct at_traits< aux::vector_tag< 5> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -593,7 +593,7 @@ template<>
 struct size_traits< aux::vector_tag< 5> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,5 >
+        : integral_c< long,5 >
     {
     };
 };
@@ -666,9 +666,9 @@ struct pop_front_traits< aux::vector_tag< 6> >
 namespace aux {
 template<> struct vector_item_impl<6>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item6 type;
+        typedef typename V_::item6 type;
     };
 };
 }
@@ -676,10 +676,10 @@ template<> struct vector_item_impl<6>
 template<>
 struct at_traits< aux::vector_tag< 6> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -714,7 +714,7 @@ template<>
 struct size_traits< aux::vector_tag< 6> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,6 >
+        : integral_c< long,6 >
     {
     };
 };
@@ -788,9 +788,9 @@ struct pop_front_traits< aux::vector_tag< 7> >
 namespace aux {
 template<> struct vector_item_impl<7>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item7 type;
+        typedef typename V_::item7 type;
     };
 };
 }
@@ -798,10 +798,10 @@ template<> struct vector_item_impl<7>
 template<>
 struct at_traits< aux::vector_tag< 7> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -836,7 +836,7 @@ template<>
 struct size_traits< aux::vector_tag< 7> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,7 >
+        : integral_c< long,7 >
     {
     };
 };
@@ -913,9 +913,9 @@ struct pop_front_traits< aux::vector_tag< 8> >
 namespace aux {
 template<> struct vector_item_impl<8>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item8 type;
+        typedef typename V_::item8 type;
     };
 };
 }
@@ -923,10 +923,10 @@ template<> struct vector_item_impl<8>
 template<>
 struct at_traits< aux::vector_tag< 8> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -961,7 +961,7 @@ template<>
 struct size_traits< aux::vector_tag< 8> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,8 >
+        : integral_c< long,8 >
     {
     };
 };
@@ -1039,9 +1039,9 @@ struct pop_front_traits< aux::vector_tag< 9> >
 namespace aux {
 template<> struct vector_item_impl<9>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item9 type;
+        typedef typename V_::item9 type;
     };
 };
 }
@@ -1049,10 +1049,10 @@ template<> struct vector_item_impl<9>
 template<>
 struct at_traits< aux::vector_tag< 9> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -1087,7 +1087,7 @@ template<>
 struct size_traits< aux::vector_tag< 9> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,9 >
+        : integral_c< long,9 >
     {
     };
 };
@@ -1168,9 +1168,9 @@ struct pop_front_traits< aux::vector_tag< 10> >
 namespace aux {
 template<> struct vector_item_impl<10>
 {
-    template< typename V > struct result_
+    template< typename V_ > struct result_
     {
-        typedef typename V::item10 type;
+        typedef typename V_::item10 type;
     };
 };
 }
@@ -1178,10 +1178,10 @@ template<> struct vector_item_impl<10>
 template<>
 struct at_traits< aux::vector_tag< 10> >
 {
-    template< typename V, typename N > struct algorithm
+    template< typename V_, typename N > struct algorithm
     {
         typedef typename aux::vector_item_impl<BOOST_MPL_AUX_VALUE_WKND(N)::value>
-            ::template result_<V>::type type;
+            ::template result_<V_>::type type;
     };
 };
 
@@ -1216,7 +1216,7 @@ template<>
 struct size_traits< aux::vector_tag< 10> >
 {
     template< typename Vector > struct algorithm
-        : integral_c< int,10 >
+        : integral_c< long,10 >
     {
     };
 };

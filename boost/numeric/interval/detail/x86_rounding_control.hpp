@@ -11,7 +11,7 @@
  * representation about the suitability of this software for any
  * purpose. It is provided "as is" without express or implied warranty.
  *
- * $Id: x86_rounding_control.hpp,v 1.2 2003/02/05 17:34:33 gmelquio Exp $
+ * $Id: x86_rounding_control.hpp,v 1.6 2003/05/30 13:54:58 gmelquio Exp $
  */
 
 #ifndef BOOST_NUMERIC_INTERVAL_DETAIL_X86_ROUNDING_CONTROL_HPP
@@ -73,6 +73,8 @@ struct rounding_control<float>: detail::x86_rounding_control
 template<>
 struct rounding_control<double>: detail::x86_rounding_control
 {
+  /*static double force_rounding(double r) 
+  { asm volatile ("" : "+m"(r) : ); return r; }*/
   static double force_rounding(const double& r) 
   { volatile double r_ = r; return r_; }
 };
