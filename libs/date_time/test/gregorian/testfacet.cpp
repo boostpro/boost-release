@@ -1,3 +1,8 @@
+/* Copyright (c) 2001 CrystalClear Software, Inc.
+ * Disclaimer & Full Copyright at end of file
+ * Author: Jeff Garland 
+ */
+
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -178,15 +183,33 @@ main()
   check("check date order: "+os3.str(), 
         os3.str() == std::string("Oktober 01 2002"));
 
-
-
+  date_period dp(d1, date_duration(3));
+  os3.str("");
+  os3 << dp;
+  check("check date period: "+os3.str(), 
+        os3.str() == std::string("[Oktober 01 2002/Oktober 03 2002]"));
 #else
   check("All pass, no tests executed - Locales not supported", true);
 
 #endif //BOOST_DATE_TIME_NO_LOCALE
 
-  printTestStats();
+  return printTestStats();
 
-
-  return 0;
 }
+
+/*
+ * Copyright (c) 2001
+ * CrystalClear Software, Inc.
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  CrystalClear Software makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided as is without express or implied warranty.
+ *
+ *
+ * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
+ *
+ */

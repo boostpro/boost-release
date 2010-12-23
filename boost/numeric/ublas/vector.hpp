@@ -32,7 +32,7 @@ namespace boost { namespace numeric { namespace ublas {
     class vector:
         public vector_expression<vector<T, A> > {
     public:
-#ifdef BOOST_UBLAS_ENABLE_PROXY_SHORTCUTS
+#ifndef BOOST_UBLAS_NO_PROXY_SHORTCUTS
         BOOST_UBLAS_USING vector_expression<vector<T, A> >::operator ();
 #endif
         typedef std::size_t size_type;
@@ -47,7 +47,11 @@ namespace boost { namespace numeric { namespace ublas {
         typedef const A const_array_type;
         typedef const vector<T, A> const_self_type;
         typedef vector<T, A> self_type;
+#ifndef BOOST_UBLAS_CT_REFERENCE_BASE_TYPEDEFS
         typedef const vector_const_reference<const_self_type> const_closure_type;
+#else
+        typedef const vector_reference<const_self_type> const_closure_type;
+#endif
         typedef vector_reference<self_type> closure_type;
         typedef typename A::const_iterator const_iterator_type;
         typedef typename A::iterator iterator_type;
@@ -70,12 +74,12 @@ namespace boost { namespace numeric { namespace ublas {
         BOOST_UBLAS_INLINE
         vector (const vector_expression<AE> &ae):
             size_ (ae ().size ()), data_ (ae ().size ()) {
-            vector_assign<scalar_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> > () (*this, ae);
+            vector_assign (scalar_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> (), *this, ae);
         }
 
         // Accessors
         BOOST_UBLAS_INLINE
-        size_type size () const { 
+        size_type size () const {
             return size_;
         }
         BOOST_UBLAS_INLINE
@@ -97,25 +101,25 @@ namespace boost { namespace numeric { namespace ublas {
         // Element access
         BOOST_UBLAS_INLINE
         const_reference operator () (size_type i) const {
-            return data () [i]; 
+            return data () [i];
         }
         BOOST_UBLAS_INLINE
         reference operator () (size_type i) {
-            return data () [i]; 
+            return data () [i];
         }
 
         BOOST_UBLAS_INLINE
-        const_reference operator [] (size_type i) const { 
-            return (*this) (i); 
+        const_reference operator [] (size_type i) const {
+            return (*this) (i);
         }
         BOOST_UBLAS_INLINE
-        reference operator [] (size_type i) { 
-            return (*this) (i); 
+        reference operator [] (size_type i) {
+            return (*this) (i);
         }
 
         // Assignment
         BOOST_UBLAS_INLINE
-        vector &operator = (const vector &v) { 
+        vector &operator = (const vector &v) {
             BOOST_UBLAS_CHECK (size_ == v.size_, bad_size ());
             size_ = v.size_;
             data () = v.data ();
@@ -147,7 +151,7 @@ namespace boost { namespace numeric { namespace ublas {
         template<class AE>
         BOOST_UBLAS_INLINE
         vector &assign (const vector_expression<AE> &ae) {
-            vector_assign<scalar_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> > () (*this, ae);
+            vector_assign (scalar_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> (), *this, ae);
             return *this;
         }
         template<class AE>
@@ -164,7 +168,7 @@ namespace boost { namespace numeric { namespace ublas {
         template<class AE>
         BOOST_UBLAS_INLINE
         vector &plus_assign (const vector_expression<AE> &ae) {
-            vector_assign<scalar_plus_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> > () (*this, ae);
+            vector_assign (scalar_plus_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> (), *this, ae);
             return *this;
         }
         template<class AE>
@@ -181,19 +185,19 @@ namespace boost { namespace numeric { namespace ublas {
         template<class AE>
         BOOST_UBLAS_INLINE
         vector &minus_assign (const vector_expression<AE> &ae) {
-            vector_assign<scalar_minus_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> > () (*this, ae);
+            vector_assign (scalar_minus_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> (), *this, ae);
             return *this;
         }
         template<class AT>
         BOOST_UBLAS_INLINE
         vector &operator *= (const AT &at) {
-            vector_assign_scalar<scalar_multiplies_assign<value_type, AT> > () (*this, at);
+            vector_assign_scalar (scalar_multiplies_assign<value_type, AT> (), *this, at);
             return *this;
         }
         template<class AT>
         BOOST_UBLAS_INLINE
         vector &operator /= (const AT &at) {
-            vector_assign_scalar<scalar_divides_assign<value_type, AT> > () (*this, at);
+            vector_assign_scalar (scalar_divides_assign<value_type, AT> (), *this, at);
             return *this;
         }
 
@@ -209,7 +213,7 @@ namespace boost { namespace numeric { namespace ublas {
                 data ().swap (v.data ());
             }
         }
-#ifdef BOOST_UBLAS_FRIEND_FUNCTION
+#ifndef BOOST_UBLAS_NO_MEMBER_FRIENDS
         BOOST_UBLAS_INLINE
         friend void swap (vector &v1, vector &v2) {
             v1.swap (v2);
@@ -299,17 +303,17 @@ namespace boost { namespace numeric { namespace ublas {
             // Construction and destruction
             BOOST_UBLAS_INLINE
             const_iterator ():
-                container_const_reference<vector> (), it_ () {}
+                container_const_reference<self_type> (), it_ () {}
             BOOST_UBLAS_INLINE
-            const_iterator (const vector &v, const const_iterator_type &it):
-                container_const_reference<vector> (v), it_ (it) {}
+            const_iterator (const self_type &v, const const_iterator_type &it):
+                container_const_reference<self_type> (v), it_ (it) {}
             BOOST_UBLAS_INLINE
 #ifndef BOOST_UBLAS_QUALIFIED_TYPENAME
             const_iterator (const iterator &it):
 #else
-            const_iterator (const typename vector::iterator &it):
+            const_iterator (const typename self_type::iterator &it):
 #endif
-                container_const_reference<vector> (it ()), it_ (it.it_) {}
+                container_const_reference<self_type> (it ()), it_ (it.it_) {}
 
             // Arithmetic
             BOOST_UBLAS_INLINE
@@ -334,6 +338,7 @@ namespace boost { namespace numeric { namespace ublas {
             }
             BOOST_UBLAS_INLINE
             difference_type operator - (const const_iterator &it) const {
+                BOOST_UBLAS_CHECK (&(*this) () == &it (), external_logic ());
                 return it_ - it.it_;
             }
 
@@ -353,7 +358,7 @@ namespace boost { namespace numeric { namespace ublas {
             // Assignment 
             BOOST_UBLAS_INLINE
             const_iterator &operator = (const const_iterator &it) {
-                container_const_reference<vector>::assign (&it ());
+                container_const_reference<self_type>::assign (&it ());
                 it_ = it.it_;
                 return *this;
             }
@@ -383,7 +388,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
         BOOST_UBLAS_INLINE
         const_iterator end () const {
-            return find_last (size_);
+            return find_first (size_);
         }
 
 #ifndef BOOST_UBLAS_USE_INDEXED_ITERATOR
@@ -403,10 +408,10 @@ namespace boost { namespace numeric { namespace ublas {
             // Construction and destruction
             BOOST_UBLAS_INLINE
             iterator ():
-                container_reference<vector> (), it_ () {}
+                container_reference<self_type> (), it_ () {}
             BOOST_UBLAS_INLINE
-            iterator (vector &v, const iterator_type &it):
-                container_reference<vector> (v), it_ (it) {}
+            iterator (self_type &v, const iterator_type &it):
+                container_reference<self_type> (v), it_ (it) {}
 
             // Arithmetic
             BOOST_UBLAS_INLINE
@@ -431,6 +436,7 @@ namespace boost { namespace numeric { namespace ublas {
             }
             BOOST_UBLAS_INLINE
             difference_type operator - (const iterator &it) const {
+                BOOST_UBLAS_CHECK (&(*this) () == &it (), external_logic ());
                 return it_ - it.it_;
             }
 
@@ -450,7 +456,7 @@ namespace boost { namespace numeric { namespace ublas {
             // Assignment
             BOOST_UBLAS_INLINE
             iterator &operator = (const iterator &it) {
-                container_reference<vector>::assign (&it ());
+                container_reference<self_type>::assign (&it ());
                 it_ = it.it_;
                 return *this;
             }
@@ -480,7 +486,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
         BOOST_UBLAS_INLINE
         iterator end () {
-            return find_last (size_);
+            return find_first (size_);
         }
 
         // Reverse iterator
@@ -525,7 +531,7 @@ namespace boost { namespace numeric { namespace ublas {
     class unit_vector:
         public vector_expression<unit_vector<T> > {
     public:
-#ifdef BOOST_UBLAS_ENABLE_PROXY_SHORTCUTS
+#ifndef BOOST_UBLAS_NO_PROXY_SHORTCUTS
         BOOST_UBLAS_USING vector_expression<unit_vector<T> >::operator ();
 #endif
         typedef std::size_t size_type;
@@ -538,7 +544,11 @@ namespace boost { namespace numeric { namespace ublas {
         typedef T *pointer;
         typedef const unit_vector<T> const_self_type;
         typedef unit_vector<T> self_type;
+#ifndef BOOST_UBLAS_CT_REFERENCE_BASE_TYPEDEFS
         typedef const vector_const_reference<const_self_type> const_closure_type;
+#else
+        typedef const vector_reference<const_self_type> const_closure_type;
+#endif
         typedef size_type const_iterator_type;
         typedef packed_tag storage_category;
 
@@ -606,7 +616,7 @@ namespace boost { namespace numeric { namespace ublas {
                 std::swap (index_, v.index_);
             }
         }
-#ifdef BOOST_UBLAS_FRIEND_FUNCTION
+#ifndef BOOST_UBLAS_NO_MEMBER_FRIENDS
         BOOST_UBLAS_INLINE
         friend void swap (unit_vector &v1, unit_vector &v2) {
             v1.swap (v2);
@@ -679,6 +689,7 @@ namespace boost { namespace numeric { namespace ublas {
             }
             BOOST_UBLAS_INLINE
             difference_type operator - (const const_iterator &it) const {
+                BOOST_UBLAS_CHECK (&(*this) () == &it (), external_logic ());
                 return it_ - it.it_;
             }
 
@@ -728,7 +739,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
         BOOST_UBLAS_INLINE
         const_iterator end () const {
-            return find_last (size_);
+            return find_first (size_);
         }
 
         // Reverse iterator
@@ -765,7 +776,7 @@ namespace boost { namespace numeric { namespace ublas {
     class zero_vector:
         public vector_expression<zero_vector<T> > {
     public:
-#ifdef BOOST_UBLAS_ENABLE_PROXY_SHORTCUTS
+#ifndef BOOST_UBLAS_NO_PROXY_SHORTCUTS
         BOOST_UBLAS_USING vector_expression<zero_vector<T> >::operator ();
 #endif
         typedef std::size_t size_type;
@@ -778,7 +789,11 @@ namespace boost { namespace numeric { namespace ublas {
         typedef T *pointer;
         typedef const zero_vector<T> const_self_type;
         typedef zero_vector<T> self_type;
+#ifndef BOOST_UBLAS_CT_REFERENCE_BASE_TYPEDEFS
         typedef const vector_const_reference<const_self_type> const_closure_type;
+#else
+        typedef const vector_reference<const_self_type> const_closure_type;
+#endif
         typedef size_type const_iterator_type;
         typedef sparse_tag storage_category;
 
@@ -840,7 +855,7 @@ namespace boost { namespace numeric { namespace ublas {
                 std::swap (size_, v.size_);
             }
         }
-#ifdef BOOST_UBLAS_FRIEND_FUNCTION
+#ifndef BOOST_UBLAS_NO_MEMBER_FRIENDS
         BOOST_UBLAS_INLINE
         friend void swap (zero_vector &v1, zero_vector &v2) {
             v1.swap (v2);
@@ -879,10 +894,10 @@ namespace boost { namespace numeric { namespace ublas {
             // Construction and destruction
             BOOST_UBLAS_INLINE
             const_iterator ():
-                container_const_reference<zero_vector> (), it_ () {}
+                container_const_reference<self_type> (), it_ () {}
             BOOST_UBLAS_INLINE
-            const_iterator (const zero_vector &v, const const_iterator_type &it):
-                container_const_reference<zero_vector> (v), it_ (it) {}
+            const_iterator (const self_type &v, const const_iterator_type &it):
+                container_const_reference<self_type> (v), it_ (it) {}
 
             // Arithmetic
             BOOST_UBLAS_INLINE
@@ -912,7 +927,7 @@ namespace boost { namespace numeric { namespace ublas {
             // Assignment
             BOOST_UBLAS_INLINE
             const_iterator &operator = (const const_iterator &it) {
-                container_const_reference<zero_vector>::assign (&it ());
+                container_const_reference<self_type>::assign (&it ());
                 it_ = it.it_;
                 return *this;
             }
@@ -936,7 +951,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
         BOOST_UBLAS_INLINE
         const_iterator end () const {
-            return find_last (size_);
+            return find_first (size_);
         }
 
         // Reverse iterator
@@ -969,7 +984,7 @@ namespace boost { namespace numeric { namespace ublas {
     class scalar_vector:
         public vector_expression<scalar_vector<T> > {
     public:
-#ifdef BOOST_UBLAS_ENABLE_PROXY_SHORTCUTS
+#ifndef BOOST_UBLAS_NO_PROXY_SHORTCUTS
         BOOST_UBLAS_USING vector_expression<scalar_vector<T> >::operator ();
 #endif
         typedef std::size_t size_type;
@@ -982,7 +997,11 @@ namespace boost { namespace numeric { namespace ublas {
         typedef T *pointer;
         typedef const scalar_vector<T> const_self_type;
         typedef scalar_vector<T> self_type;
+#ifndef BOOST_UBLAS_CT_REFERENCE_BASE_TYPEDEFS
         typedef const vector_const_reference<const_self_type> const_closure_type;
+#else
+        typedef const vector_reference<const_self_type> const_closure_type;
+#endif
         typedef size_type const_iterator_type;
         typedef dense_tag storage_category;
 
@@ -1046,7 +1065,7 @@ namespace boost { namespace numeric { namespace ublas {
                 std::swap (value_, v.value_);
             }
         }
-#ifdef BOOST_UBLAS_FRIEND_FUNCTION
+#ifndef BOOST_UBLAS_NO_MEMBER_FRIENDS
         BOOST_UBLAS_INLINE
         friend void swap (scalar_vector &v1, scalar_vector &v2) {
             v1.swap (v2);
@@ -1123,6 +1142,7 @@ namespace boost { namespace numeric { namespace ublas {
             }
             BOOST_UBLAS_INLINE
             difference_type operator - (const const_iterator &it) const {
+                BOOST_UBLAS_CHECK (&(*this) () == &it (), external_logic ());
                 return it_ - it.it_;
             }
 
@@ -1172,7 +1192,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
         BOOST_UBLAS_INLINE
         const_iterator end () const {
-            return find_last (size_);
+            return find_first (size_);
         }
 
         // Reverse iterator
@@ -1199,10 +1219,10 @@ namespace boost { namespace numeric { namespace ublas {
 
     // Array based vector class 
     template<class T, std::size_t N>
-    class c_vector: 
+    class c_vector:
         public vector_expression<c_vector<T, N> > {
     public:
-#ifdef BOOST_UBLAS_ENABLE_PROXY_SHORTCUTS
+#ifndef BOOST_UBLAS_NO_PROXY_SHORTCUTS
         BOOST_UBLAS_USING vector_expression<c_vector<T, N> >::operator ();
 #endif
         typedef std::size_t size_type;
@@ -1215,7 +1235,11 @@ namespace boost { namespace numeric { namespace ublas {
         typedef T *pointer;
         typedef const c_vector<T, N> const_self_type;
         typedef c_vector<T, N> self_type;
+#ifndef BOOST_UBLAS_CT_REFERENCE_BASE_TYPEDEFS
         typedef const vector_const_reference<const_self_type> const_closure_type;
+#else
+        typedef const vector_reference<const_self_type> const_closure_type;
+#endif
         typedef vector_reference<self_type> closure_type;
         typedef const T *const_iterator_type;
         typedef T *iterator_type;
@@ -1223,10 +1247,10 @@ namespace boost { namespace numeric { namespace ublas {
 
         // Construction and destruction
         BOOST_UBLAS_INLINE
-        c_vector (): 
+        c_vector ():
             size_ (N) /* , data_ () */ {}
         BOOST_UBLAS_EXPLICIT BOOST_UBLAS_INLINE
-        c_vector (size_type size): 
+        c_vector (size_type size):
             size_ (size) /* , data_ () */ {
             if (size_ > N) 
                 // Raising exceptions abstracted as requested during review.
@@ -1244,13 +1268,13 @@ namespace boost { namespace numeric { namespace ublas {
         }
         template<class AE>
         BOOST_UBLAS_INLINE
-        c_vector (const vector_expression<AE> &ae): 
-            size_ (ae ().size ()) /* , data_ () */ { 
-            if (size_ > N) 
+        c_vector (const vector_expression<AE> &ae):
+            size_ (ae ().size ()) /* , data_ () */ {
+            if (size_ > N)
                 // Raising exceptions abstracted as requested during review.
                 // throw std::bad_alloc ();
                 bad_size ().raise ();
-            vector_assign<scalar_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> > () (*this, ae);
+            vector_assign (scalar_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> (), *this, ae);
         }
 
         // Accessors
@@ -1325,7 +1349,7 @@ namespace boost { namespace numeric { namespace ublas {
         template<class AE>
         BOOST_UBLAS_INLINE
         c_vector &assign (const vector_expression<AE> &ae) {
-            vector_assign<scalar_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> > () (*this, ae);
+            vector_assign (scalar_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> (), *this, ae);
             return *this;
         }
         template<class AE>
@@ -1342,7 +1366,7 @@ namespace boost { namespace numeric { namespace ublas {
         template<class AE>
         BOOST_UBLAS_INLINE
         c_vector &plus_assign (const vector_expression<AE> &ae) {
-            vector_assign<scalar_plus_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> > () (*this, ae);
+            vector_assign (scalar_plus_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> (), *this, ae);
             return *this;
         }
         template<class AE>
@@ -1359,19 +1383,19 @@ namespace boost { namespace numeric { namespace ublas {
         template<class AE>
         BOOST_UBLAS_INLINE
         c_vector &minus_assign (const vector_expression<AE> &ae) {
-            vector_assign<scalar_minus_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> > () (*this, ae);
+            vector_assign (scalar_minus_assign<value_type, BOOST_UBLAS_TYPENAME AE::value_type> (), *this, ae);
             return *this;
         }
         template<class AT>
         BOOST_UBLAS_INLINE
         c_vector &operator *= (const AT &at) {
-            vector_assign_scalar<scalar_multiplies_assign<value_type, AT> > () (*this, at);
+            vector_assign_scalar (scalar_multiplies_assign<value_type, AT> (), *this, at);
             return *this;
         }
         template<class AT>
         BOOST_UBLAS_INLINE
         c_vector &operator /= (const AT &at) {
-            vector_assign_scalar<scalar_divides_assign<value_type, AT> > () (*this, at);
+            vector_assign_scalar (scalar_divides_assign<value_type, AT> (), *this, at);
             return *this;
         }
 
@@ -1386,7 +1410,7 @@ namespace boost { namespace numeric { namespace ublas {
                 std::swap_ranges (data_, data_ + size_, v.data_);
             }
         }
-#ifdef BOOST_UBLAS_FRIEND_FUNCTION
+#ifndef BOOST_UBLAS_NO_MEMBER_FRIENDS
         BOOST_UBLAS_INLINE
         friend void swap (c_vector &v1, c_vector &v2) {
             v1.swap (v2);
@@ -1473,17 +1497,17 @@ namespace boost { namespace numeric { namespace ublas {
             // Construction and destruction
             BOOST_UBLAS_INLINE
             const_iterator ():
-                container_const_reference<c_vector> (), it_ () {}
+                container_const_reference<self_type> (), it_ () {}
             BOOST_UBLAS_INLINE
-            const_iterator (const c_vector &v, const const_iterator_type &it):
-                container_const_reference<c_vector> (v), it_ (it) {}
+            const_iterator (const self_type &v, const const_iterator_type &it):
+                container_const_reference<self_type> (v), it_ (it) {}
             BOOST_UBLAS_INLINE
 #ifndef BOOST_UBLAS_QUALIFIED_TYPENAME
             const_iterator (const iterator &it):
 #else
-            const_iterator (const typename c_vector::iterator &it):
+            const_iterator (const typename self_type::iterator &it):
 #endif
-                container_const_reference<c_vector> (it ()), it_ (it.it_) {}
+                container_const_reference<self_type> (it ()), it_ (it.it_) {}
 
             // Arithmetic
             BOOST_UBLAS_INLINE
@@ -1508,6 +1532,7 @@ namespace boost { namespace numeric { namespace ublas {
             }
             BOOST_UBLAS_INLINE
             difference_type operator - (const const_iterator &it) const {
+                BOOST_UBLAS_CHECK (&(*this) () == &it (), external_logic ());
                 return it_ - it.it_;
             }
 
@@ -1521,14 +1546,14 @@ namespace boost { namespace numeric { namespace ublas {
             // Index
             BOOST_UBLAS_INLINE
             size_type index () const {
-                const c_vector &v = (*this) ();
+                const self_type &v = (*this) ();
                 return it_ - v.begin ().it_;
             }
 
-            // Assignment 
+            // Assignment
             BOOST_UBLAS_INLINE
             const_iterator &operator = (const const_iterator &it) {
-                container_const_reference<c_vector>::assign (&it ());
+                container_const_reference<self_type>::assign (&it ());
                 it_ = it.it_;
                 return *this;
             }
@@ -1558,7 +1583,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
         BOOST_UBLAS_INLINE
         const_iterator end () const {
-            return find_last (size_);
+            return find_first (size_);
         }
 
 #ifndef BOOST_UBLAS_USE_INDEXED_ITERATOR
@@ -1578,10 +1603,10 @@ namespace boost { namespace numeric { namespace ublas {
             // Construction and destruction
             BOOST_UBLAS_INLINE
             iterator ():
-                container_reference<c_vector> (), it_ () {}
+                container_reference<self_type> (), it_ () {}
             BOOST_UBLAS_INLINE
-            iterator (c_vector &v, const iterator_type &it):
-                container_reference<c_vector> (v), it_ (it) {}
+            iterator (self_type &v, const iterator_type &it):
+                container_reference<self_type> (v), it_ (it) {}
 
             // Arithmetic
             BOOST_UBLAS_INLINE
@@ -1606,6 +1631,7 @@ namespace boost { namespace numeric { namespace ublas {
             }
             BOOST_UBLAS_INLINE
             difference_type operator - (const iterator &it) const {
+                BOOST_UBLAS_CHECK (&(*this) () == &it (), external_logic ());
                 return it_ - it.it_;
             }
 
@@ -1619,14 +1645,14 @@ namespace boost { namespace numeric { namespace ublas {
             // Index
             BOOST_UBLAS_INLINE
             size_type index () const {
-                c_vector &v = (*this) ();
+                self_type &v = (*this) ();
                 return it_ - v.begin ().it_;
             }
 
-            // Assignment 
+            // Assignment
             BOOST_UBLAS_INLINE
             iterator &operator = (const iterator &it) {
-                container_reference<c_vector>::assign (&it ());
+                container_reference<self_type>::assign (&it ());
                 it_ = it.it_;
                 return *this;
             }
@@ -1656,7 +1682,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
         BOOST_UBLAS_INLINE
         iterator end () {
-            return find_last (size_);
+            return find_first (size_);
         }
 
         // Reverse iterator

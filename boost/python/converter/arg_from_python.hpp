@@ -103,12 +103,17 @@ template <class T>
 struct arg_rvalue_from_python
 {
     typedef typename boost::add_reference<
-        typename boost::add_const<T>::type
+        T
+        // We can't add_const here, or it would be impossible to pass
+        // auto_ptr<U> args from Python to C++
     >::type result_type;
     
     arg_rvalue_from_python(PyObject*);
     bool convertible() const;
-    
+
+# if BOOST_MSVC < 1301 || _MSC_FULL_VER > 13102196
+    typename arg_rvalue_from_python<T>::
+# endif 
     result_type operator()(PyObject*);
     
  private:
@@ -154,11 +159,11 @@ struct select_arg_from_python
             = boost::python::detail::is_reference_to_pointer<T>::value
             && boost::python::detail::is_reference_to_const<T>::value
             && !boost::python::detail::is_reference_to_volatile<T>::value);
-    
+
     
     BOOST_STATIC_CONSTANT(
         bool, ref =
-        boost::python::detail::is_reference_to_non_const<T>::value
+            boost::python::detail::is_reference_to_non_const<T>::value
         || boost::python::detail::is_reference_to_volatile<T>::value);
 
     BOOST_STATIC_CONSTANT(

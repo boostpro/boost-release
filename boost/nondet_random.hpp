@@ -10,11 +10,14 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: nondet_random.hpp,v 1.5 2002/02/08 20:08:15 darinadler Exp $
+ * $Id: nondet_random.hpp,v 1.7 2002/12/27 16:51:52 beman_dawes Exp $
  *
  * Revision history
  *  2000-02-18  Portability fixes (thanks to Beman Dawes)
  */
+
+//  See http://www.boost.org/libs/random for documentation.
+
 
 #ifndef BOOST_NONDET_RANDOM_HPP
 #define BOOST_NONDET_RANDOM_HPP
@@ -41,6 +44,7 @@ public:
   result_type max() const { return max_value; }
   explicit random_device(const std::string& token = default_token);
   ~random_device();
+  double entropy() const;
   unsigned int operator()();
 
 private:

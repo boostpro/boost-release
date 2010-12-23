@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: unit_test_result.hpp,v $
 //
-//  Version     : $Id: unit_test_result.hpp,v 1.8.2.1 2002/10/01 17:26:37 rogeeff Exp $
+//  Version     : $Id: unit_test_result.hpp,v 1.13 2003/02/13 08:26:33 rogeeff Exp $
 //
 //  Description : defines class unit_test_result that is responsible for 
 //  gathering test results and presenting this information to end-user
@@ -24,8 +24,9 @@
 #include <boost/shared_ptr.hpp>
 
 // STL
-#include <iosfwd>   // for std::ostream&
-
+#include <iosfwd>                       // std::ostream
+#include <string>                       // std::string
+#include <cstddef>                      // std::size_t
 namespace boost {
 
 namespace unit_test_framework {
@@ -35,23 +36,28 @@ namespace unit_test_framework {
 // ************************************************************************** //
 
 class unit_test_result {
+    friend struct unit_test_result_saver;
 public:
     // Destructor
     ~unit_test_result();
 
     // current test results access and management
     static unit_test_result& instance();
-    static void     test_case_start( char const* name_, unit_test_counter expected_failures_ = 0 );
+    static void     test_case_start( std::string const& name_, unit_test_counter expected_failures_ = 0 );
     static void     test_case_end();
     
+    static void     set_report_format( std::string const& reportformat );
+
     // use to dynamically change amount of errors expected in current test case
     void            increase_expected_failures( unit_test_counter amount = 1 );
 
     // reporting
-    void            confirmation_report( std::ostream& where_to_ );                 // shortest
-    void            short_report( std::ostream& where_to_, int indent_ = 0 );       // short
-    void            detailed_report( std::ostream& where_to_, int indent_ = 0 );    // long
-    int             result_code();                                                  // to be returned from main
+    void            report( std::string const& reportlevel, std::ostream& where_to_ );              // report by level
+    void            confirmation_report( std::ostream& where_to_ );                                 // shortest
+    void            short_report( std::ostream& where_to_ ) { report( "short", where_to_ ); }       // short
+    void            detailed_report( std::ostream& where_to_ ) { report( "detailed", where_to_ ); } // long
+
+    int             result_code();                                                                  // to be returned from main
 
     // to be used by tool box implementation
     void            inc_failed_assertions();
@@ -61,18 +67,34 @@ public:
     void            caught_exception();
 
     // access method; to be used by unit_test_log
-    char const*     test_case_name();
+    std::string const& test_case_name();
 
     // used mostly by the Boost.Test unit testing
-    static void     reset_current_result_set();
-    void            failures_details( unit_test_counter& num_of_failures, bool& exception_caught );
+    void            failures_details( unit_test_counter& num_of_failures_, bool& exception_caught_ );
 
 private:
+    // report impl method
+    void            report_result( std::ostream& where_to_, std::size_t indent_, bool detailed_ );
+
+    // used to temporarely introduce new results set without polluting current one
+    static void     reset_current_result_set();
+
     // Constructor
-    unit_test_result( unit_test_result* parent_, char const* test_case_name_, unit_test_counter expected_failures_ = 0 );
+    unit_test_result( unit_test_result* parent_, std::string const& test_case_name_, unit_test_counter expected_failures_ = 0 );
    
+    // Data members
     struct Impl;
     boost::shared_ptr<Impl> m_pimpl;
+};
+
+// ************************************************************************** //
+// **************            unit_test_result_saver            ************** //
+// ************************************************************************** //
+
+struct unit_test_result_saver
+{
+    unit_test_result_saver()  { unit_test_result::reset_current_result_set(); }
+    ~unit_test_result_saver() { unit_test_result::reset_current_result_set(); }
 };
 
 } // namespace unit_test_framework
@@ -83,25 +105,21 @@ private:
 //  Revision History :
 //  
 //  $Log: unit_test_result.hpp,v $
-//  Revision 1.8.2.1  2002/10/01 17:26:37  rogeeff
-//  reset current set feature introduces. Mostly for internal testing
+//  Revision 1.13  2003/02/13 08:26:33  rogeeff
+//  report format config method added
+//  result set interface changed slightly to allow single entry point with string as report selector
 //
-//  Revision 1.8  2002/09/16 09:29:52  rogeeff
-//  since boost::smart_ptrs now support incomplete types on borland, no need in grinning_ptr any more
+//  Revision 1.12  2002/12/11 13:41:19  beman_dawes
+//  fix missing std::
 //
-//  Revision 1.7  2002/09/16 08:47:29  rogeeff
-//  STL includes normalized
+//  Revision 1.11  2002/12/08 17:47:31  rogeeff
+//  switched to use c_string_literal
+//  unit_test_result_saver introduced to properly managed reset_current_test_set calls
+//  in case of exceptions
 //
-//  Revision 1.6  2002/09/09 09:07:03  rogeeff
-//  descriptions added
+//  Revision 1.10  2002/11/02 19:31:04  rogeeff
+//  merged into the main trank
 //
-//  Revision 1.5  2002/08/20 22:24:53  rogeeff
-//  all formal arguments trailed with underscore
-//
-//  Revision 1.4  2002/08/20 08:52:40  rogeeff
-//  cvs keywords added
-//
-//   5 Oct 01  Initial version (Gennadiy Rozental)
 
 // ***************************************************************************
 

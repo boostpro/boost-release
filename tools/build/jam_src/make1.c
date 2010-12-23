@@ -52,6 +52,7 @@
 
 # include "lists.h"
 # include "parse.h"
+# include "assert.h"
 # include "variable.h"
 # include "rules.h"
 
@@ -61,7 +62,7 @@
 # include "command.h"
 # include "execcmd.h"
 
-static CMD *make1cmds( ACTIONS *a0 );
+static CMD *make1cmds( TARGET *t );
 static LIST *make1list( LIST *l, TARGETS *targets, int flags );
 static SETTINGS *make1settings( LIST *vars );
 static void make1bind( TARGET *t, int warn );
@@ -208,6 +209,9 @@ make1( TARGET *t )
 	{
 		while((pState = current_state(&state_stack)) != NULL)
 		{
+            if (intr) 
+                pop_state(&state_stack);
+
 			switch(pState->curstate)
 			{
 			case T_STATE_MAKE1A:
@@ -259,6 +263,7 @@ make1( TARGET *t )
 static void
 make1a( state *pState)
 {
+    TARGET* t = pState->t;
 	TARGETS	*c;
 	int i;
 
@@ -290,7 +295,6 @@ make1a( state *pState)
 
 	pState->t->asynccnt = 1;
 
-	/* Recurse on our dependents, manipulating progress to guard */
 	/* against circular dependency. */
 
 	pState->t->progress = T_MAKE_ONSTACK;
@@ -326,6 +330,7 @@ static void make1atail(state *pState)
 static void
 make1b( state *pState )
 {
+    TARGET      *t = pState->t;
     TARGETS     *c;
     int         i;
     char        *failed = "dependents";
@@ -338,6 +343,24 @@ make1b( state *pState )
 		pop_state(&state_stack);
 		return;
 	}
+    
+    /* Try to aquire a semaphore. If it's locked, wait until the target
+       that locked it is build and signals completition. */
+#ifdef OPT_SEMAPHORE
+	if( t->semaphore && t->semaphore->asynccnt )
+	{
+        /* Append 't' to the list of targets waiting on semaphore. */
+	    t->semaphore->parents = targetentry( t->semaphore->parents, t );
+	    t->asynccnt++;
+
+	    if( DEBUG_EXECCMD )
+		printf( "SEM: %s is busy, delaying launch of %s\n",
+			t->semaphore->name, t->name);
+		pop_state(&state_stack);
+	    return;
+	}
+#endif
+
 
     /* Now ready to build target 't'... if dependents built ok. */
 
@@ -391,6 +414,7 @@ make1b( state *pState )
         case T_FATE_MISSING:
         case T_FATE_OUTDATED:
         case T_FATE_UPDATE:
+
             /* Set "on target" vars, build actions, unset vars */
             /* Set "progress" so that make1c() counts this target among */
             /* the successes/failures. */
@@ -401,10 +425,7 @@ make1b( state *pState )
                 if( DEBUG_MAKE && !( counts->total % 100 ) )
                     printf( "...on %dth target...\n", counts->total );
 
-                pushsettings( pState->t->settings );
-                pState->t->cmds = (char *)make1cmds( pState->t->actions );
-                popsettings( pState->t->settings );
-
+                pState->t->cmds = (char *)make1cmds( pState->t );
                 pState->t->progress = T_MAKE_RUNNING;
             }
 
@@ -416,6 +437,21 @@ make1b( state *pState )
 		/* (because of dependency failures or because no commands need to */
 		/* be run) the chain will be empty and make1c() will directly */
 		/* signal the completion of target. */
+
+	/* Recurse on our dependents, manipulating progress to guard */
+
+#ifdef OPT_SEMAPHORE
+	/* If there is a semaphore, indicate that its in use */
+	if( pState->t->semaphore )
+	{
+	    ++(pState->t->semaphore->asynccnt);
+
+	    if( DEBUG_EXECCMD )
+		printf( "SEM: %s now used by %s\n", pState->t->semaphore->name,
+		       pState->t->name );
+	}
+#endif
+
 	pState->curstate = T_STATE_MAKE1C;
 }
 
@@ -438,7 +474,8 @@ make1c( state *pState )
 
 	if( cmd && pState->t->status == EXEC_CMD_OK )
 	{
-		if( DEBUG_MAKEQ || ! ( cmd->rule->actions->flags & RULE_QUIETLY ) )
+		if( DEBUG_MAKEQ || 
+            ! ( cmd->rule->actions->flags & RULE_QUIETLY ) && DEBUG_MAKE)
 	    {
 		printf( "%s ", cmd->rule->name );
 		list_print( lol_get( &cmd->args, 0 ) );
@@ -502,12 +539,42 @@ make1c( state *pState )
 
 			for( c = t->parents; c; c = c->next )
 				push_state(&temp_stack, c->target, NULL, T_STATE_MAKE1B);
+
+#ifdef OPT_SEMAPHORE
+	    /* If there is a semaphore, its now free */
+	    if( t->semaphore )
+	    {
+		assert( t->semaphore->asynccnt == 1 );
+		--(t->semaphore->asynccnt);
+
+		if( DEBUG_EXECCMD )
+		    printf( "SEM: %s is now free\n", t->semaphore->name);
+
+		/* If anything is waiting, notify the next target. There's no
+            point in notifying all waiting targets, since they'll be
+            serialized again. */
+		if( t->semaphore->parents )
+		{
+		    TARGETS *first = t->semaphore->parents;
+		    if( first->next )
+			first->next->tail = first->tail;
+		    t->semaphore->parents = first->next;
+
+		    if( DEBUG_EXECCMD )
+			printf( "SEM: placing %s on stack\n", first->target->name);
+            push_state(&temp_stack, first->target, NULL, T_STATE_MAKE1B);
+		    free( first );
+		}
+	    }
+#endif
+
 		
 			/* must pop state before pushing any more */
 			pop_state(&state_stack);
 		
 			/* using stacks reverses the order of execution. Reverse it back */
 			push_stack_on_stack(&state_stack, &temp_stack);
+
 		}
 	}
 }
@@ -590,6 +657,41 @@ make1d(state *pState)
 }
 
 /*
+ * swap_settings() - replace the settings from the current module and
+ *                   target with those from the new module and target
+ */
+static void swap_settings(
+    module** current_module
+    , TARGET** current_target
+    , module* new_module
+    , TARGET* new_target)
+{
+    if (new_module == root_module())
+        new_module = 0;
+    
+    if (new_target == *current_target && new_module == *current_module)
+        return;
+
+    if (*current_target)
+        popsettings( (*current_target)->settings );
+        
+    if (new_module != *current_module)
+    {
+        if (*current_module)
+            exit_module( *current_module );
+
+        *current_module = new_module;
+        
+        if (new_module)
+            enter_module( new_module );
+    }
+
+    *current_target = new_target;
+    if (new_target)
+        pushsettings( new_target->settings );
+}
+
+/*
  * make1cmds() - turn ACTIONS into CMDs, grouping, splitting, etc
  *
  * Essentially copies a chain of ACTIONs to a chain of CMDs, 
@@ -600,16 +702,20 @@ make1d(state *pState)
  */
 
 static CMD *
-make1cmds( ACTIONS *a0 )
+make1cmds( TARGET *t )
 {
 	CMD *cmds = 0;
-	LIST *shell = var_get( "JAMSHELL" );	/* shell is per-target */
-
+	LIST *shell = 0;
+        
+        module *settings_module = 0;
+        TARGET *settings_target = 0;
+        
 	/* Step through actions */
 	/* Actions may be shared with other targets or grouped with */
 	/* RULE_TOGETHER, so actions already seen are skipped. */
-
-	for( ; a0; a0 = a0->next )
+        
+        ACTIONS* a0;
+	for(a0 = t->actions ; a0; a0 = a0->next )
 	{
 	    RULE    *rule = a0->action->rule;
             rule_actions *actions = rule->actions;
@@ -650,6 +756,10 @@ make1cmds( ACTIONS *a0 )
 		continue;
 	    }
 
+            swap_settings( &settings_module, &settings_target, rule->module, t );
+            if (!shell)
+                shell = var_get( "JAMSHELL" );	/* shell is per-target */
+                
 	    /* If we had 'actions xxx bind vars' we bind the vars now */
 
 	    boundvars = make1settings( actions->bindlist );
@@ -731,6 +841,7 @@ make1cmds( ACTIONS *a0 )
 	    freesettings( boundvars );
 	}
 
+        swap_settings( &settings_module, &settings_target, 0, 0 );
 	return cmds;
 }
 

@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: test_exec_monitor.hpp,v $
 //
-//  Version     : $Id: test_exec_monitor.hpp,v 1.1.2.1 2002/10/01 17:25:29 rogeeff Exp $
+//  Version     : $Id: test_exec_monitor.hpp,v 1.2 2002/11/02 19:31:05 rogeeff Exp $
 //
 //  Description : included (vs. linked) version of Test Execution Monitor
 // ***************************************************************************
@@ -33,6 +33,9 @@
 //  Revision History :
 //  
 //  $Log: test_exec_monitor.hpp,v $
+//  Revision 1.2  2002/11/02 19:31:05  rogeeff
+//  merged into the main trank
+//
 //  Revision 1.1.2.1  2002/10/01 17:25:29  rogeeff
 //  borland bug workaround
 //

@@ -30,6 +30,10 @@
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_archetypes.hpp>
+#include <boost/graph/graph_utility.hpp>
+#include <boost/graph/random.hpp>
+
+#include <boost/random/mersenne_twister.hpp>
 
 template <typename ColorMap, typename ParentMap,
   typename DiscoverTimeMap, typename FinishTimeMap>

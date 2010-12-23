@@ -17,7 +17,7 @@
 #ifndef BOOST_MPL_MAX_ELEMENT_HPP_INCLUDED
 #define BOOST_MPL_MAX_ELEMENT_HPP_INCLUDED
 
-#include "boost/mpl/comparison/less.hpp"
+#include "boost/mpl/less.hpp"
 #include "boost/mpl/iter_fold.hpp"
 #include "boost/mpl/begin_end.hpp"
 #include "boost/mpl/if.hpp"
@@ -52,6 +52,9 @@ struct select_max
 
 } // namespace aux 
 
+
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_BEGIN
+
 template<
       typename BOOST_MPL_AUX_VOID_SPEC_PARAM(Sequence)
     , typename Predicate = less<_,_>
@@ -69,7 +72,9 @@ struct max_element
         >::type type;
 };
 
-BOOST_MPL_AUX_VOID_SPEC(1, max_element)
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_END
+
+BOOST_MPL_AUX_ALGORITHM_VOID_SPEC(1, max_element)
 
 } // namespace mpl
 } // namespace boost

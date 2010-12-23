@@ -13,7 +13,7 @@
 # include <boost/python/detail/unwind_type.hpp>
 # include <boost/python/detail/none.hpp>
 # include <boost/shared_ptr.hpp>
-# include <boost/python/object/make_instance.hpp>
+# include <boost/python/object/make_ptr_instance.hpp>
 # include <memory>
 
 namespace boost { namespace python {
@@ -21,7 +21,6 @@ namespace boost { namespace python {
 template <class T, class MakeHolder>
 struct to_python_indirect
 {
-    static bool convertible();
     PyObject* operator()(T ptr) const;
  private:
     static PyTypeObject* type();
@@ -38,7 +37,9 @@ namespace detail
       template <class T>
       static result_type execute(T* p)
       {
-          // can't use auto_ptr with Intel 5 for some reason
+          // can't use auto_ptr with Intel 5 and VC6 Dinkum library
+          // for some reason. We get link errors against the auto_ptr
+          // copy constructor.
 # if defined(__ICL) && __ICL < 600 
           typedef boost::shared_ptr<T> smart_pointer;
 # else 
@@ -47,7 +48,7 @@ namespace detail
           typedef objects::pointer_holder<smart_pointer, T> holder_t;
 
           smart_pointer ptr(p);
-          return objects::make_instance<T, holder_t>::execute(ptr);
+          return objects::make_ptr_instance<T, holder_t>::execute(ptr);
       }
   };
 
@@ -58,7 +59,7 @@ namespace detail
       static result_type execute(T* p)
       {
           typedef objects::pointer_holder<T*, T> holder_t;
-          return objects::make_instance<T, holder_t>::execute(p);
+          return objects::make_ptr_instance<T, holder_t>::execute(p);
       }
   };
 
@@ -91,15 +92,10 @@ namespace detail
 }
 
 template <class T, class MakeHolder>
-inline bool to_python_indirect<T,MakeHolder>::convertible()
-{
-    BOOST_STATIC_ASSERT(is_pointer<T>::value || is_reference<T>::value);
-    return type() != 0;
-}
-
-template <class T, class MakeHolder>
 inline PyObject* to_python_indirect<T,MakeHolder>::operator()(T x) const
 {
+    BOOST_STATIC_ASSERT(is_pointer<T>::value || is_reference<T>::value);
+        
     PyObject* const null_result = detail::null_pointer_to_none(x, 1L);
     if (null_result != 0)
         return null_result;

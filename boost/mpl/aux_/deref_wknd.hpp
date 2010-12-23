@@ -31,7 +31,7 @@ struct deref_wknd
 
 template<> struct deref_wknd<int>
 {
-    typedef deref_wknd type;
+    typedef int type;
 };
 
 }}} // namespace boost::mpl::aux

@@ -17,7 +17,6 @@
 #include <boost/python/self.hpp>
 #include <boost/python/dict.hpp>
 #include <boost/python/str.hpp>
-#include <boost/bind.hpp>
 #include <functional>
 #include <vector>
 #include <cstddef>
@@ -278,16 +277,11 @@ namespace objects
 
   object module_prefix()
   {
-      object result(
+      return object(
           PyObject_IsInstance(scope().ptr(), upcast<PyObject>(&PyModule_Type))
           ? object(scope().attr("__name__"))
           : api::getattr(scope(), "__module__", str())
           );
-
-      if (result)
-          result += '.';
-      
-      return result;
   }
 
   namespace
@@ -299,7 +293,7 @@ namespace objects
         converter::registration const* p = converter::registry::query(id);
         return type_handle(
             python::borrowed(
-                python::allow_null(p ? p->class_object : 0))
+                python::allow_null(p ? p->m_class_object : 0))
             );
     }
 
@@ -349,11 +343,14 @@ namespace objects
 
       // Call the class metatype to create a new class
       dict d;
-      
+   
+      object m = module_prefix();
+      if (m) d["__module__"] = m;
+
       if (doc != 0)
           d["__doc__"] = doc;
       
-      object result = object(class_metatype())(module_prefix() + name, bases, d);
+      object result = object(class_metatype())(name, bases, d);
       assert(PyType_IsSubtype(result.ptr()->ob_type, &PyType_Type));
       
       if (scope().ptr() != Py_None)
@@ -372,7 +369,7 @@ namespace objects
           converter::registry::lookup(types[0]));
 
       // Class object is leaked, for now
-      converters.class_object = (PyTypeObject*)incref(this->ptr());
+      converters.m_class_object = (PyTypeObject*)incref(this->ptr());
   }
 
   void class_base::set_instance_size(std::size_t instance_size)
@@ -439,6 +436,37 @@ namespace objects
       {
           setattr("__getstate_manages_dict__", object(true));
       }
+  }
+
+  namespace
+  {
+    PyObject* callable_check(PyObject* callable)
+    {
+        if (PyCallable_Check(expect_non_null(callable)))
+            return callable;
+
+        ::PyErr_Format(
+            PyExc_TypeError
+            , "staticmethod expects callable object; got an object of type %s, which is not callable"
+            , callable->ob_type->tp_name
+            );
+        
+        throw_error_already_set();
+        return 0;
+    }
+  }
+  
+  void class_base::make_method_static(const char * method_name)
+  {
+      PyTypeObject* self = downcast<PyTypeObject>(this->ptr());
+      dict d((handle<>(borrowed(self->tp_dict))));
+
+      object method(d[method_name]);
+
+      this->attr(method_name) = object(
+          handle<>(
+              PyStaticMethod_New((callable_check)(method.ptr()) )
+              ));
   }
 
   BOOST_PYTHON_DECL type_handle registered_class_object(class_id id)

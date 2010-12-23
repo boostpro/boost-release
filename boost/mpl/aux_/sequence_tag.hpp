@@ -20,10 +20,14 @@
 //#include "boost/mpl/aux_/config/internal.hpp"
 #include "boost/config.hpp"
 
-#if defined(BOOST_MPL_INTERNAL_USE_SEQUENCE_TAG) || \
-    defined(BOOST_MSVC) && BOOST_MSVC < 1300
-#   include "boost/mpl/sequence_tag.hpp"
+#if !defined(BOOST_MPL_INTERNAL_USE_SEQUENCE_TAG)
+#   define BOOST_MPL_INTERNAL_USE_SEQUENCE_TAG
+#endif
 
+#if defined(BOOST_MPL_INTERNAL_USE_SEQUENCE_TAG) \
+ || defined(BOOST_MSVC) && BOOST_MSVC < 1300
+
+#   include "boost/mpl/sequence_tag.hpp"
 #   define BOOST_MPL_AUX_SEQUENCE_TAG(seq) sequence_tag<seq>::type
 
 #else

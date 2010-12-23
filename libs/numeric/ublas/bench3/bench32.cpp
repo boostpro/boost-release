@@ -1,3 +1,19 @@
+//
+//  Copyright (c) 2000-2002
+//  Joerg Walter, Mathias Koch
+//
+//  Permission to use, copy, modify, distribute and sell this software
+//  and its documentation for any purpose is hereby granted without fee,
+//  provided that the above copyright notice appear in all copies and
+//  that both that copyright notice and this permission notice appear
+//  in supporting documentation.  The authors make no representations
+//  about the suitability of this software for any purpose.
+//  It is provided "as is" without express or implied warranty.
+//
+//  The authors gratefully acknowledge the support of
+//  GeNeSys mbH & Co. KG in producing this work.
+//
+
 #ifdef BOOST_MSVC
 
 #pragma warning (disable: 4355)
@@ -52,19 +68,11 @@ struct bench_my_outer_prod {
 
     void operator () (int runs, safe_tag) const {
         try {
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-            static M m (N, N);
-            ublas::matrix_range<M> mr (m, ublas::range<> (0, N), ublas::range<> (0, N));
-            static V v1 (N), v2 (N);
-            ublas::vector_range<V> vr1 (v1, ublas::range<> (0, N)),
-                                   vr2 (v2, ublas::range<> (0, N));
-#else
             static M m (N, N);
             ublas::matrix_range<M> mr (m, ublas::range (0, N), ublas::range (0, N));
             static V v1 (N), v2 (N);
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N));
-#endif
             initialize_vector (vr1);
             initialize_vector (vr2);
             boost::timer t;
@@ -83,19 +91,11 @@ struct bench_my_outer_prod {
     }
     void operator () (int runs, fast_tag) const {
         try {
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-            static M m (N, N);
-            ublas::matrix_range<M> mr (m, ublas::range<> (0, N), ublas::range<> (0, N));
-            static V v1 (N), v2 (N);
-            ublas::vector_range<V> vr1 (v1, ublas::range<> (0, N)),
-                                   vr2 (v2, ublas::range<> (0, N));
-#else
             static M m (N, N);
             ublas::matrix_range<M> mr (m, ublas::range (0, N), ublas::range (0, N));
             static V v1 (N), v2 (N);
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N));
-#endif
             initialize_vector (vr1);
             initialize_vector (vr2);
             boost::timer t;
@@ -179,19 +179,11 @@ struct bench_my_matrix_vector_prod {
 
     void operator () (int runs, safe_tag) const {
         try {
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-            static M m (N, N);
-            ublas::matrix_range<M> mr (m, ublas::range<> (0, N), ublas::range<> (0, N));
-            static V v1 (N), v2 (N);
-            ublas::vector_range<V> vr1 (v1, ublas::range<> (0, N)),
-                                   vr2 (v2, ublas::range<> (0, N));
-#else
             static M m (N, N);
             ublas::matrix_range<M> mr (m, ublas::range (0, N), ublas::range (0, N));
             static V v1 (N), v2 (N);
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N));
-#endif
             initialize_matrix (mr);
             initialize_vector (vr1);
             boost::timer t;
@@ -210,19 +202,11 @@ struct bench_my_matrix_vector_prod {
     }
     void operator () (int runs, fast_tag) const {
         try {
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-            static M m (N, N);
-            ublas::matrix_range<M> mr (m, ublas::range<> (0, N), ublas::range<> (0, N));
-            static V v1 (N), v2 (N);
-            ublas::vector_range<V> vr1 (v1, ublas::range<> (0, N)),
-                                   vr2 (v2, ublas::range<> (0, N));
-#else
             static M m (N, N);
             ublas::matrix_range<M> mr (m, ublas::range (0, N), ublas::range (0, N));
             static V v1 (N), v2 (N);
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N));
-#endif
             initialize_matrix (mr);
             initialize_vector (vr1);
             boost::timer t;
@@ -391,13 +375,13 @@ void bench_2<T, N>::operator () (int runs) {
                         ublas::vector<T, ublas::bounded_array<T, N> >, N> () (runs, safe_tag ());
 
     header ("matrix<bounded_array>, vector<bounded_array> fast");
-    bench_my_outer_prod<ublas::matrix<T, ublas::row_major, ublas::bounded_array<T, N * N> >, 
+    bench_my_outer_prod<ublas::matrix<T, ublas::row_major, ublas::bounded_array<T, N * N> >,
                         ublas::vector<T, ublas::bounded_array<T, N> >, N> () (runs, fast_tag ());
 #endif
 
 #ifdef USE_UNBOUNDED_ARRAY
     header ("matrix<unbounded_array>, vector<unbounded_array> safe");
-    bench_my_outer_prod<ublas::matrix<T, ublas::row_major, ublas::unbounded_array<T> >, 
+    bench_my_outer_prod<ublas::matrix<T, ublas::row_major, ublas::unbounded_array<T> >,
                         ublas::vector<T, ublas::unbounded_array<T> >, N> () (runs, safe_tag ());
 
     header ("matrix<unbounded_array>, vector<unbounded_array> fast");
@@ -407,7 +391,7 @@ void bench_2<T, N>::operator () (int runs) {
 
 #ifdef USE_STD_VALARRAY
     header ("matrix<std::valarray>, vector<std::valarray> safe");
-    bench_my_outer_prod<ublas::matrix<T, ublas::row_major, std::valarray<T> >, 
+    bench_my_outer_prod<ublas::matrix<T, ublas::row_major, std::valarray<T> >,
                         ublas::vector<T, std::valarray<T> >, N> () (runs, safe_tag ());
 
     header ("matrix<std::valarray>, vector<std::valarray> fast");
@@ -451,13 +435,13 @@ void bench_2<T, N>::operator () (int runs) {
                                 ublas::vector<T, ublas::bounded_array<T, N> >, N> () (runs, safe_tag ());
 
     header ("matrix<bounded_array>, vector<bounded_array> fast");
-    bench_my_matrix_vector_prod<ublas::matrix<T, ublas::row_major, ublas::bounded_array<T, N * N> >, 
+    bench_my_matrix_vector_prod<ublas::matrix<T, ublas::row_major, ublas::bounded_array<T, N * N> >,
                                 ublas::vector<T, ublas::bounded_array<T, N> >, N> () (runs, fast_tag ());
 #endif
 
 #ifdef USE_UNBOUNDED_ARRAY
     header ("matrix<unbounded_array>, vector<unbounded_array> safe");
-    bench_my_matrix_vector_prod<ublas::matrix<T, ublas::row_major, ublas::unbounded_array<T> >, 
+    bench_my_matrix_vector_prod<ublas::matrix<T, ublas::row_major, ublas::unbounded_array<T> >,
                                 ublas::vector<T, ublas::unbounded_array<T> >, N> () (runs, safe_tag ());
 
     header ("matrix<unbounded_array>, vector<unbounded_array> fast");
@@ -467,7 +451,7 @@ void bench_2<T, N>::operator () (int runs) {
 
 #ifdef USE_STD_VALARRAY
     header ("matrix<std::valarray>, vector<std::valarray> safe");
-    bench_my_matrix_vector_prod<ublas::matrix<T, ublas::row_major, std::valarray<T> >, 
+    bench_my_matrix_vector_prod<ublas::matrix<T, ublas::row_major, std::valarray<T> >,
                                 ublas::vector<T, std::valarray<T> >, N> () (runs, safe_tag ());
 
     header ("matrix<std::valarray>, vector<std::valarray> fast");
@@ -541,28 +525,34 @@ void bench_2<T, N>::operator () (int runs) {
 #endif
 }
 
+#ifdef USE_FLOAT
 template struct bench_2<float, 3>;
 template struct bench_2<float, 10>;
 template struct bench_2<float, 30>;
 template struct bench_2<float, 100>;
+#endif
 
+#ifdef USE_DOUBLE
 template struct bench_2<double, 3>;
 template struct bench_2<double, 10>;
 template struct bench_2<double, 30>;
 template struct bench_2<double, 100>;
+#endif
 
 #ifdef USE_STD_COMPLEX
-
+#ifdef USE_FLOAT
 template struct bench_2<std::complex<float>, 3>;
 template struct bench_2<std::complex<float>, 10>;
 template struct bench_2<std::complex<float>, 30>;
 template struct bench_2<std::complex<float>, 100>;
+#endif
 
+#ifdef USE_DOUBLE
 template struct bench_2<std::complex<double>, 3>;
 template struct bench_2<std::complex<double>, 10>;
 template struct bench_2<std::complex<double>, 30>;
 template struct bench_2<std::complex<double>, 100>;
-
+#endif
 #endif
 
 

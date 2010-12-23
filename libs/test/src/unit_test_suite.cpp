@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: unit_test_suite.cpp,v $
 //
-//  Version     : $Id: unit_test_suite.cpp,v 1.4.2.1 2002/10/01 05:48:27 rogeeff Exp $
+//  Version     : $Id: unit_test_suite.cpp,v 1.7 2003/02/13 08:39:05 rogeeff Exp $
 //
 //  Description : privide core implementation for Unit Test Framework. 
 //  Extensions could be provided in separate files
@@ -31,21 +31,33 @@ namespace unit_test_framework {
 // **************                   test_case                  ************** //
 // ************************************************************************** //
 
+test_case::test_case( std::string const& name_, bool type, unit_test_counter stages_number_, bool monitor_run_ )
+: p_timeout( 0 ), p_expected_failures( 0 ), p_type( type ),
+  p_name( name_ ), p_compound_stage( false ), p_stages_amount( stages_number_ ),
+  m_monitor_run( monitor_run_ )
+{
+}
+
+//____________________________________________________________________________//
+
+unit_test_counter
+test_case::size() const
+{
+    return 1;
+}
+
+//____________________________________________________________________________//
+
 void
 test_case::run()
 {
+    unit_test_log::instance().track_test_case_scope( *this, true );
+    
     bool is_initialized  = true;
          s_abort_testing = false;
 
-    char const* name = ((std::string&)p_name).data();
-
     // 1. Init test results
-    unit_test_result::test_case_start( name, p_expected_failures );
-
-
-    BOOST_TEST_SUITE_MESSAGE_BEGIN
-        "\nEntering test " << (size() > 1 ? "suite" : "case") << " \"" << name << "\""
-    BOOST_TEST_SUITE_MESSAGE_END
+    unit_test_result::test_case_start( p_name, p_expected_failures );
 
     // 2. Initialize test case
     if( m_monitor_run ) {
@@ -75,7 +87,7 @@ test_case::run()
         }
 
         if( p_stages_amount != 1 && !p_compound_stage.get() ) // compound test
-            unit_test_log::instance() << report_progress();
+            unit_test_log::instance() << log_progress();
     }
 
     // 3. Finalize test case
@@ -92,16 +104,13 @@ test_case::run()
     }
 
     if( s_abort_testing ) {
-        BOOST_UT_LOCAL_LOG_BEGIN( report_fatal_errors )
+        BOOST_UT_LOG_BEGIN( __FILE__, __LINE__, log_fatal_errors )
             "testing aborted"
         BOOST_UT_LOG_END
     }
 
-    BOOST_TEST_SUITE_MESSAGE_BEGIN
-        "Leaving  test " << (size() > 1 ? "suite" : "case") << " \"" << name << "\""
-    BOOST_TEST_SUITE_MESSAGE_END
-
     unit_test_result::test_case_end();
+    unit_test_log::instance().track_test_case_scope( *this, false );
 }
 
 //____________________________________________________________________________//
@@ -120,7 +129,8 @@ struct test_suite::Impl {
 
 //____________________________________________________________________________//
 
-test_suite::test_suite( char const* name ) : test_case( name, 0, false ), m_pimpl( new Impl )
+test_suite::test_suite( std::string const& name )
+: test_case( name, false, 0, false ), m_pimpl( new Impl )
 {
     m_pimpl->m_cumulative_size = 0;
 }
@@ -187,6 +197,19 @@ test_suite::do_run()
 // **************               object generators              ************** //
 // ************************************************************************** //
 
+namespace detail {
+
+std::string const&
+normalize_test_case_name( std::string& name_ )
+{
+    if( name_[0] == '&' )
+        name_.erase( 0, 1 );
+
+    return name_;
+}
+
+} // namespace detail
+
 } // namespace unit_test_framework
 
 } // namespace boost
@@ -195,13 +218,16 @@ test_suite::do_run()
 //  Revision History :
 //  
 //  $Log: unit_test_suite.cpp,v $
-//  Revision 1.4.2.1  2002/10/01 05:48:27  rogeeff
-//  coment clarified
+//  Revision 1.7  2003/02/13 08:39:05  rogeeff
+//  type: virtual function -> property
+//  C strings eliminated
 //
-//  Revision 1.4  2002/08/20 08:24:13  rogeeff
-//  cvs keywords added
+//  Revision 1.6  2002/12/08 18:15:19  rogeeff
+//  switched to use c_string_literal
 //
-//   5 Oct 01  Initial version (Gennadiy Rozental)
+//  Revision 1.5  2002/11/02 20:04:42  rogeeff
+//  release 1.29.0 merged into the main trank
+//
 
 // ***************************************************************************
 

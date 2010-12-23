@@ -43,8 +43,6 @@
 
 # ifdef VMS
 
-int unlink( char *f ); 	/* In filevms.c */
-
 # include <types.h>
 # include <file.h>
 # include <stat.h>
@@ -54,6 +52,7 @@ int unlink( char *f ); 	/* In filevms.c */
 # include <signal.h>
 # include <string.h>
 # include <time.h>
+# include <unistd.h>
 # include <unixlib.h>
 
 # define OSMINOR "OS=VMS"
@@ -83,7 +82,9 @@ int unlink( char *f ); 	/* In filevms.c */
 # include <stdio.h>
 # include <ctype.h>
 # include <malloc.h>
+# ifndef __MWERKS__
 # include <memory.h>
+#endif
 # include <signal.h>
 # include <string.h>
 # include <time.h>
@@ -358,6 +359,11 @@ int unlink( char *f ); 	/* In filevms.c */
 # define OSMINOR "OS=UNIXWARE"
 # define OS_UNIXWARE
 # endif
+# ifdef __OpenBSD__
+# define OSMINOR "OS=OPENBSD"
+# define OS_OPENBSD
+# define unix
+# endif
 # ifndef OSMINOR
 # define OSMINOR "OS=UNKNOWN"
 # endif
@@ -392,7 +398,8 @@ int unlink( char *f ); 	/* In filevms.c */
      !defined(OS_MACHTEN) && \
      !defined(OS_MACOSX) && \
      !defined(OS_RHAPSODY) && \
-     !defined(OS_MVS)
+     !defined(OS_MVS) && \
+     !defined(OS_OPENBSD)
 # include <malloc.h>
 # endif
 

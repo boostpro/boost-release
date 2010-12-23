@@ -1,3 +1,7 @@
+/* Copyright (c) 2001 CrystalClear Software, Inc.
+ * Disclaimer & Full Copyright at end of file
+ * Author: Jeff Garland 
+ */
 
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/testfrmwk.hpp"
@@ -9,11 +13,18 @@ main()
 
   using namespace boost::gregorian;
 
-  partial_date pd(1,1);
-  date d = pd.get_date(2000);
+  partial_date pd1(1,Jan);
+  date d = pd1.get_date(2000);
   check("Partial date getdate",     date(2000,1,1) == d);
-  d = pd.get_date(2001);
+  d = pd1.get_date(2001);
   check("Partial date getdate",     date(2001,1,1) == d);
+  partial_date pd2(1,Feb);
+  check("Partial date operator==",  pd1 == pd1);
+  check("Partial date operator==",  !(pd1 == pd2));
+  check("Partial date operator==",  !(pd2 == pd1));
+  check("Partial date operator<",   !(pd1 < pd1));
+  check("Partial date operator<",    pd1 < pd2);
+  check("Partial date operator<",   !(pd2 < pd1));
 
   typedef boost::date_time::last_kday_of_month<date> lastkday;
 
@@ -54,9 +65,23 @@ main()
   check("kday before",date(2002,Jan,31) == fkbf2.get_date(date(2002,Feb,1)));
   check("kday before",date(2002,Feb,7)== fkbf2.get_date(date(2002,Feb,14)));
   
+  return printTestStats();
 
-
-
-  printTestStats();
-  return 0;
 };
+
+/*
+ * Copyright (c) 2001
+ * CrystalClear Software, Inc.
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  CrystalClear Software makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided as is without express or implied warranty.
+ *
+ *
+ * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
+ *
+ */

@@ -1,6 +1,6 @@
 // Boost.Function library
 
-// Copyright (C) 2001 Doug Gregor (gregod@cs.rpi.edu)
+// Copyright (C) 2001, 2002 Doug Gregor (gregod@cs.rpi.edu)
 //
 // Permission to copy, use, sell and distribute this software is granted
 // provided this copyright notice appears in all copies.
@@ -13,8 +13,7 @@
 
 // For more information, see http://www.boost.org
 
-#define BOOST_INCLUDE_MAIN
-#include <boost/test/test_tools.hpp>
+#include <boost/test/minimal.hpp>
 #include <boost/function.hpp>
 #include <functional>
 #include <cassert>
@@ -65,7 +64,7 @@ test_zero_args()
   func_void_type v1;
   BOOST_TEST(v1.empty());
 
-  // Assignment to an empty function 
+  // Assignment to an empty function
   v1 = five;
   BOOST_TEST(!v1.empty());
 
@@ -76,7 +75,7 @@ test_zero_args()
 
   // clear() method
   v1.clear();
-  BOOST_TEST(v1.empty());
+  BOOST_TEST(!v1);
 
   // Assignment to an empty function
   v1 = three;
@@ -97,12 +96,12 @@ test_zero_args()
   v1();
   BOOST_TEST(global_int == 5);
 
-  // clear()
-  v1.clear();
+  // clear
+  v1 = 0;
   BOOST_TEST(v1.empty());
 
   // Assignment to an empty function from a free function
-  v1 = write_five;
+  v1 = &write_five;
   BOOST_TEST(!v1.empty());
 
   // Invocation
@@ -210,8 +209,8 @@ test_zero_args()
 
   // Assignment to a function from an empty function
   v2 = v1;
-  BOOST_TEST(v2.empty()); 
-  
+  BOOST_TEST(v2.empty());
+
   // Assignment to a function from a function with a functor
   v1 = three;
   v2 = v1;
@@ -245,7 +244,7 @@ test_zero_args()
   global_int = 0;
   v3();
   BOOST_TEST(global_int == 5);
-  
+
   // clear() method
   v3.clear();
   BOOST_TEST(!v3? true : false);
@@ -305,7 +304,7 @@ test_zero_args()
   global_int = 0;
   v4();
   BOOST_TEST(global_int == 5);
-  
+
   // clear() method
   v4.clear();
   BOOST_TEST(v4.empty());
@@ -365,7 +364,7 @@ test_zero_args()
   global_int = 0;
   v5();
   BOOST_TEST(global_int == 5);
-  
+
   // clear() method
   v5.clear();
   BOOST_TEST(v5.empty());
@@ -416,7 +415,7 @@ test_zero_args()
   // Invocation
   global_int = 0;
   v5();
-  BOOST_TEST(global_int == 5);  
+  BOOST_TEST(global_int == 5);
 
   // Construction of a function from a function
   func_void_type v6(&write_five);
@@ -476,20 +475,29 @@ test_zero_args()
   // Invocation
   global_int = 0;
   v6();
-  BOOST_TEST(global_int == 5);  
+  BOOST_TEST(global_int == 5);
 
   // Const vs. non-const
   write_const_1_nonconst_2 one_or_two;
   const function0<void> v7(one_or_two);
-  function <void> v8(one_or_two);
+  function0<void> v8(one_or_two);
 
   global_int = 0;
   v7();
   BOOST_TEST(global_int == 2);
-  
+
   global_int = 0;
   v8();
   BOOST_TEST(global_int == 2);
+
+  // Test construction from 0 and comparison to 0
+  func_void_type v9(0);
+  BOOST_TEST(v9 == 0);
+# if !defined(__SUNPRO_CC) || __SUNPRO_CC > 0x540 || defined(BOOST_STRICT_CONFIG)
+  BOOST_TEST(0 == v9);
+#else
+  BOOST_TEST(v9.empty());
+#endif
 
   // Test return values
   typedef function0<int> func_int_type;
@@ -551,7 +559,7 @@ static void
 test_two_args()
 {
   function2<string, const string&, const string&> cat(&string_cat);
-  BOOST_TEST(cat("str", "ing") == "string");  
+  BOOST_TEST(cat("str", "ing") == "string");
 
   function2<int, short, short> sum(&sum_ints);
   BOOST_TEST(sum(2, 3) == 5);
@@ -586,7 +594,7 @@ test_member_functions()
 {
 
   boost::function1<int, X*> f1(&X::twice);
-  
+
   X one(1);
   X five(5);
 

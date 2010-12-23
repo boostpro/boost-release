@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: online_test.cpp,v $
 //
-//  Version     : $Id: online_test.cpp,v 1.6 2002/08/26 09:07:41 rogeeff Exp $
+//  Version     : $Id: online_test.cpp,v 1.8 2003/02/15 21:51:56 rogeeff Exp $
 //
 //  Description : included Test Execution Monitor test
 // ***************************************************************************
@@ -17,7 +17,7 @@
 #include <boost/test/included/test_exec_monitor.hpp>
 
 int 
-test_main( int argc, char * argv[] ) 
+test_main( int /*argc*/, char* /*argv*/[] ) 
 {
     return 0;
 }
@@ -28,10 +28,12 @@ test_main( int argc, char * argv[] )
 //  Revision History :
 //  
 //  $Log: online_test.cpp,v $
-//  Revision 1.6  2002/08/26 09:07:41  rogeeff
-//  switch to use included Test Execution Monitor
+//  Revision 1.8  2003/02/15 21:51:56  rogeeff
+//  borland warnings fix
 //
-//   5 Oct 01  Initial version (Gennadiy Rozental)
+//  Revision 1.7  2002/11/02 20:04:43  rogeeff
+//  release 1.29.0 merged into the main trank
+//
 
 // ***************************************************************************
 

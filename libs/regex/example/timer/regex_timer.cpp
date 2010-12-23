@@ -13,6 +13,11 @@
  *
  */
 
+#include <string>
+#include <algorithm>
+#include <deque>
+#include <iterator>
+
 #ifdef BOOST_RE_OLD_IOSTREAM
 #include <iostream.h>
 #include <fstream.h>
@@ -27,19 +32,16 @@ using std::ostream;
 using std::endl;
 using std::ifstream;
 using std::streambuf;
+using std::getline;
 #endif
 
-#include <algorithm>
-#include <string>
-#include <deque>
-#include <iterator>
 #include <boost/config.hpp>
 #include <boost/regex.hpp>
 #include <boost/timer.hpp> 
 #include <boost/smart_ptr.hpp>
 
-#ifdef BOOST_MSVC
-// no Koenig lookup, use using declaration instead:
+#if defined(_MSC_VER) && (_MSC_VER <= 1300)
+// maybe no Koenig lookup, use using declaration instead:
 using namespace boost;
 #endif
 
@@ -353,6 +355,8 @@ int main(int argc, char**argv)
 
    return 0;
 }
+
+
 
 
 

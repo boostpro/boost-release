@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: statistic_tests.cpp,v 1.7 2002/04/08 21:20:39 jmaurer Exp $
+ * $Id: statistic_tests.cpp,v 1.9 2002/11/04 22:30:47 jmaurer Exp $
  *
  * Revision history
  */
@@ -332,7 +332,7 @@ public:
     // generator_reference_t<RNG> gen_ref(rng);
     RNG& gen_ref(rng);
     kolmogorov_experiment ks(n1);
-    uniform_distribution ud(rng.min_value, rng.max_value);
+    uniform_distribution ud(rng.min(), rng.max());
     check(run_experiment(test_distrib_chi_square,
                          ks_experiment_generator(ks, gen_ref, ud), n2));
     check(run_experiment(test_distrib_chi_square,
@@ -527,7 +527,7 @@ public:
   {
     using namespace boost;
     std::cout << "birthday spacing: " << std::flush;
-    uniform_int<RNG> uni(rng, 0, (1<<25));
+    uniform_int<RNG> uni(rng, 0, (1<<25)-1);
     birthday_spacing_experiment bsp(4, 512, (1<<25));
     std::cout << run_experiment(bsp, uni, n1);
 #if 0

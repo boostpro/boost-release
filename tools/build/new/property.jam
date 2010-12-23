@@ -3,14 +3,17 @@
 #  all copies. This software is provided "as is" without express or implied
 #  warranty, and with no claim as to its suitability for any purpose.
 
-import feature ;
+import feature : grist ;
 import utility : ungrist ;
 import sequence : unique ;
 import errors : error ;
+import class : class ;
+
 
 # Refines 'properties' by overriding any elements for which a different
 # value is specified in 'requirements'. If the resulting property set
 # will be link-incompatible with 'properties', it is an error.
+# Conditional requirements are just added without modification.
 # On success, returns properties. On error, returns a list which first
 # element is "@error" and the other elements compose the explanation
 # string.
@@ -20,14 +23,16 @@ rule refine ( properties * : requirements * : feature-space ? )
 
     local result ;
     local error ;
-
-
+    
     # All the elements of requirements should be present in the result
     # Record them so that we can handle 'properties'.
     for local r in $(requirements)
     {
-        # Note: cannot use local here, so take an ugly name
-         __require__$(r:G) = $(r:G=) ;
+        if ! [ MATCH (:) : $(r) ]
+        {            
+            # Note: cannot use local here, so take an ugly name
+            __require__$(r:G) = $(r:G=) ;
+        }        
     }
 
     for local p in $(properties)
@@ -84,6 +89,41 @@ rule refine ( properties * : requirements * : feature-space ? )
     }
 }
 
+# Removes all conditional properties which conditions are not met
+# For those with met conditions, removes the condition.
+rule evaluate-conditionals ( properties * )
+{
+    local base ;
+    local conditionals ;
+    for local p in $(properties)
+    {
+        if [ MATCH (:<) : $(p) ]
+        {
+            conditionals += $(p) ;
+        }
+        else
+        {
+            base += $(p) ;
+        }        
+    }
+
+    local result = $(base) ;
+    for local p in $(conditionals)
+    {
+        # Separate condition and property
+        local s = [ MATCH (.*):(.*) : $(p) ] ;
+        # Split condition into individual properties
+        local c = [ regex.split $(s[1]) "," ] ;
+        # Evaluate condition
+        if $(c) in $(base)
+        {
+            result += $(s[2]) ;
+        }                
+    }
+    return $(result) ;    
+}
+
+
 # Helper for as-path, below. Orders properties with the implicit ones
 # first, and within the two sections in alphabetical order of feature
 # name.
@@ -117,30 +157,38 @@ rule as-path ( properties * : feature-space ? )
 {
     feature-space ?= feature ;
     
-    # trim redundancy
-    properties = [ $(feature-space).minimize $(properties) ] ;
+    local entry = .result.$(properties:J=-).$(feature-space) ;
     
-    # sort according to path-order
-    properties = [ sequence.insertion-sort $(properties) : path-order $(feature-space) ] ;
-    
-    local components ;
-    for local p in $(properties)
+    if ! $($(entry))
     {
-        if $(p:G)
+        # trim redundancy
+        properties = [ $(feature-space).minimize $(properties) ] ;
+    
+        # sort according to path-order
+        properties = [ sequence.insertion-sort $(properties) : path-order $(feature-space) ] ;
+    
+        local components ;
+        for local p in $(properties)
         {
-            local f = [ ungrist $(p:G) ] ;
-            components += $(f)-$(p:G=) ;
+            if $(p:G)
+            {
+                local f = [ ungrist $(p:G) ] ;
+                components += $(f)-$(p:G=) ;
+            }
+            else
+            {
+                components += $(p) ;
+            }
         }
-        else
-        {
-            components += $(p) ;
-        }
-    }
-    return $(components:J=/) ;
+        
+        $(entry) = $(components:J=/) ;
+    }    
+    
+    return $($(entry)) ;
 }
 
 # Exit with error if property is not valid.
-rule validate ( property : feature-space ?  )
+local rule validate1 ( property : feature-space ?  )
 {
     feature-space ?= feature ;
     local msg ;
@@ -153,10 +201,9 @@ rule validate ( property : feature-space ?  )
         {
             msg = "unknown feature '$(feature)'" ;
         }
-        else if $(value) && ! $(value) in [ $(feature-space).values $(feature) ]
-                && ! free in [ $(feature-space).attributes $(feature) ] 
+        else if $(value) && ! free in [ $(feature-space).attributes $(feature) ] 
         {
-            msg = "value '"$(value:J=" ")"' is not valid for feature'"$(feature)' ;
+            $(feature-space).validate-value-string $(feature) $(value) ;
         } 
         else if ! $(value)
         {
@@ -165,14 +212,28 @@ rule validate ( property : feature-space ?  )
     }
     else
     {
-        if ! [ $(feature-space).is-implicit-value $(property) ]
-        {
-            msg = '$(property:J=" ")' "is not a value of implicit feature" ;        
-        }
+        local feature = [ $(feature-space).implied-feature $(property) ] ;
+        $(feature-space).validate-value-string $(feature) $(property) ;
     }
     if $(msg) 
     {
         error "Invalid property "'$(property:J=" ")'": "$(msg:J=" "). ;
+    }
+}
+
+rule validate ( properties * : feature-space ? )
+{
+    for local p in $(properties)
+    {
+        validate1 $(p) : $(feature-space) ;
+    }
+}
+
+rule validate-property-sets ( property-sets * : feature-space ? )
+{
+    for local s in $(property-sets)
+    {
+        validate [ feature.split $(s) ] : $(feature-space) ;
     }
 }
 
@@ -233,6 +294,125 @@ rule take ( attributes + : properties * : feature-space ? )
     return $(result) ;
 }
 
+# Selects properties which correspond to any of the given features.
+rule select ( features * : properties * )
+{
+    local result ;
+    
+    # add any missing angle brackets
+    local empty = "" ;
+    features = $(empty:G=$(features)) ;
+    
+    for local p in $(properties)
+    {
+        if $(p:G) in $(features)
+        {
+            result += $(p) ;
+        }
+    }
+    return $(result) ;
+}
+
+# Changes the value of 'feature' to 'value', or adds it.
+rule change ( properties * : feature value )
+{
+    local result ; 
+    feature = [ grist $(feature) ] ;
+    for local p in $(properties)
+    {
+        if $(p:G) = $(feature)
+        {
+            result += $(value:G=$(feature)) ;            
+        }
+        else
+        {
+            result += $(p) ;
+        }
+                
+    }
+    return $(result) ;
+}
+
+
+# Interpret all path properties in 'properties' as relative to 'path'
+rule translate-paths ( properties * : path )
+{
+    local result ;
+    for local p in $(properties)
+    {
+        if path in [ feature.attributes $(p:G) ] 
+        {
+            local t = [ path.root $(p:TG=) $(path) ] ;
+            result += $(t:TG=$(p:G)) ;
+        }
+        else
+        {
+            result += $(p) ;
+        }        
+    }
+    return $(result) ;
+}
+
+# Class which maintains a property set -> string
+# mapping
+rule property-map ( )
+{
+    self.next-flag = 1 ;
+
+    # Associate 'value' with 'properties'
+    rule insert ( properties + : value )
+    {
+        self.all-flags += $(self.next-flag) ;
+        self.properties.$(self.next-flag) = $(properties) ;
+        self.value.$(self.next-flag) = $(value) ;
+
+        self.next-flag = [ numbers.increment $(self.next-flag) ] ;
+    }
+
+    # Return the value associated with 'properties'
+    # or any subset of it. If more than one
+    # subset has value assigned to it, return the
+    # value for the longest subset, if it's unique.
+    rule find ( properties + )
+    {
+        return [ find-replace $(properties) ] ;
+    }
+    
+    # Find the value associated with 'properties'.
+    # If 'value' parameter is given, replaces the found value
+    # Returns the value that were stored originally.
+    rule find-replace ( properties + : value ? )
+    {
+        # First find all matches
+        local matches ;
+        local match-ranks ;
+        for local i in $(self.all-flags)
+        {
+            if $(self.properties.$(i)) in $(properties)
+            {
+                matches += $(i) ;
+                match-ranks += [ sequence.length 
+                    $(self.properties.$(i)) ] ;
+            }
+        }
+        local best = [ sequence.select-highest-ranked 
+            $(matches) : $(match-ranks) ] ;
+        if $(best[2])
+        {
+            errors.error "Ambiguous key" ;
+        }        
+        local original = $(self.value.$(best)) ;
+        if $(value)
+        {
+            self.value.$(best) = $(value) ;
+        }        
+        return $(original) ;
+    }      
+}
+
+class property-map ;
+
+
 local rule __test__ ( )
 {
     import class : new ;
@@ -245,6 +425,8 @@ local rule __test__ ( )
         import assert ;
 
         feature toolset : gcc : implicit ;
+        subfeature toolset gcc : version : 2.95.2 2.95.3 2.95.4
+          3.0 3.0.1 3.0.2 : optional ;
         feature define : : free ;
         feature runtime-link : dynamic static : symmetric link-incompatible ;
         feature optimization : on off ;
@@ -256,6 +438,9 @@ local rule __test__ ( )
 
     }
 
+    validate gcc gcc-3.0.1 : $(test-space) ;
+    validate <toolset>gcc  <toolset>gcc-3.0.1 : $(test-space) ;
+    
     assert.result <toolset>gcc <rtti>off <define>FOO
         : refine <toolset>gcc <rtti>off
         : <define>FOO
@@ -270,6 +455,16 @@ local rule __test__ ( )
 
     assert.result <toolset>gcc <rtti>off
         : refine <toolset>gcc : <rtti>off : $(test-space)
+        ;
+
+    assert.result <toolset>gcc <rtti>off <rtti>off:<define>FOO
+        : refine <toolset>gcc : <rtti>off <rtti>off:<define>FOO 
+        : $(test-space)
+        ;
+
+    assert.result <toolset>gcc <variant>release <rtti>off <define>MY_RELEASE
+        : evaluate-conditionals <toolset>gcc <variant>release <rtti>off
+          <variant>release,<rtti>off:<define>MY_RELEASE       
         ;
 
     assert.result debug
@@ -293,7 +488,7 @@ local rule __test__ ( )
 
     try ;
         validate <rtti>default : $(test-space) ;
-    catch "Invalid property '<rtti>default': value 'default' is not valid for feature'rtti'." ;
+    catch \"default\" is not a known value of feature <rtti> ;
     
     validate <define>WHATEVER : $(test-space) ;
 
@@ -303,10 +498,38 @@ local rule __test__ ( )
 
     try ;
         validate value : $(test-space) ;
-    catch "Invalid property 'value': 'value' is not a value of implicit feature." ;
+    catch "value" is not a value of an implicit feature ;
            
 
     assert.result <rtti>on 
         : remove free implicit : <toolset>gcc <define>foo <rtti>on : $(test-space) ;
+
+    assert.result <include>a 
+        : select include : <include>a <toolset>gcc ;
+
+    assert.result <include>a 
+        : select include bar : <include>a <toolset>gcc ;
+
+    assert.result <include>a <toolset>gcc
+        : select include <bar> <toolset> : <include>a <toolset>gcc ;
+    
+    assert.result <toolset>kylix <include>a 
+        : change <toolset>gcc <include>a : toolset kylix ;
+
+    pm = [ new property-map ] ;
+    $(pm).insert <toolset>gcc : o ;
+    $(pm).insert <toolset>gcc <os>NT : obj ;
+    $(pm).insert <toolset>gcc <os>CYGWIN : obj ;
+
+    assert.equal o
+      : [ $(pm).find <toolset>gcc ] ;
+
+    assert.equal obj
+      : [ $(pm).find <toolset>gcc <os>NT ] ;
+
+    try ;
+        $(pm).find <toolset>gcc <os>NT <os>CYGWIN ;
+    catch "Ambiguous key" ;
+
 }
 

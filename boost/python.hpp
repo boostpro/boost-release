@@ -3,6 +3,9 @@
 // copyright notice appears in all copies. This software is provided
 // "as is" without express or implied warranty, and with no claim as
 // to its suitability for any purpose.
+
+//  See http://www.boost.org/libs/python for documentation.
+
 #ifndef PYTHON_DWA2002810_HPP
 # define PYTHON_DWA2002810_HPP
 
@@ -41,12 +44,14 @@
 # include <boost/python/object_protocol.hpp>
 # include <boost/python/object_protocol_core.hpp>
 # include <boost/python/operators.hpp>
+# include <boost/python/opaque_pointer_converter.hpp>
 # include <boost/python/other.hpp>
 # include <boost/python/overloads.hpp>
 # include <boost/python/pointee.hpp>
 # include <boost/python/ptr.hpp>
 # include <boost/python/reference_existing_object.hpp>
 # include <boost/python/return_internal_reference.hpp>
+# include <boost/python/return_opaque_pointer.hpp>
 # include <boost/python/return_value_policy.hpp>
 # include <boost/python/scope.hpp>
 # include <boost/python/self.hpp>
@@ -59,4 +64,4 @@
 # include <boost/python/type_id.hpp>
 # include <boost/python/with_custodian_and_ward.hpp>
 
-#endif PYTHON_DWA2002810_HPP
+#endif // PYTHON_DWA2002810_HPP

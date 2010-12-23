@@ -51,6 +51,7 @@ Metaprogramming</a><br>
 </a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#IO">Input/Output</a><a href="#Memory"><br>
 </a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Inter-language">Inter-language support</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#Memory">Memory</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Parsing">Parsing</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#Miscellaneous">Miscellaneous</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#workarounds">Broken compiler workarounds</a><br>
 <a href="#Obsolete">Obsolete Libraries</a><br>
@@ -64,6 +65,12 @@ See <a href="../more/download.html">Download and Installation</a>  page to find 
 how to download and install the libraries.<br>
 See <a href="../tools/build/index.html">Building Boost Libraries</a>  page to find
 out how to build object libraries, when needed.</p>
+
+<p>Documentation for some Boost libraries is available in alternative formats:</p>
+<ul>
+  <li>PDF [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_pdf.zip">zip</a>] [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_pdf.tar.gz">tar.gz</a>] [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_pdf.tar.bz2">tar.bz2</a>]</li>
+  <li>Unix man pages [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_man.tar.gz">tar.gz</a>] [<a href="http://boost.sourceforge.net/release/boost_1_30_doc_man.tar.bz2">tar.bz2</a>]</li>
+</ul>
 
 <hr>
 
@@ -100,6 +107,9 @@ out how to build object libraries, when needed.</p>
       Walker.</li>
     <li><a href="date_time/doc/index.html">date_time</a> - Date-Time library from Jeff Garland.</li>
     <li><a href="dynamic_bitset/dynamic_bitset.html">dynamic_bitset</a> - A runtime sized version of <tt>std::bitset</tt> from Jeremy Siek and Chuck Allison.</li>
+    <li><a href="filesystem/doc/index.htm">filesystem</a> - Portable paths, 
+    iteration over directories, and other useful filesystem operations, from 
+    Beman Dawes.</li>
     <li><a href="format/index.htm">format</a> - Type-safe 'printf-like' format 
     operations, from Samuel Krempp.</li>
     <li><a href="function/index.html">function</a> - Function object wrappers
@@ -111,6 +121,9 @@ out how to build object libraries, when needed.</p>
         and a University of Notre Dame team.</li>
     <li><a href="integer/index.htm">integer</a> - Headers to ease
         dealing with integral types.</li>
+    <li><a href="numeric/interval/doc/interval.htm">interval </a>- Extends the 
+    usual arithmetic functions to mathematical intervals, from Guillaume 
+    Melquiond, Hervé Brönnimann and Sylvain Pion.</li>
     <li><a href="io/doc/ios_state.html">io state savers</a> - Save I/O state to 
     prevent jumbled data, from Daryle Walker.</li>
     <li><a href="utility/iterator_adaptors.htm">iterator adaptors</a>
@@ -131,15 +144,21 @@ out how to build object libraries, when needed.</p>
     <li><a href="math/special_functions/index.html">math/special_functions</a> -
         Mathematical special functions such as atanh, sinc, and sinhc,
         from Hubert Holin.</li>
+    <li><a href="mpl/doc/index.html">mpl</a> - Template metaprogramming 
+    framework of compile-time algorithms, sequences and metafunction classes, 
+    from Aleksey Gurtovoy.</li>
     <li><a href="multi_array/doc/index.html">multi_array</a> - Multidimensional 
     containers and adaptors for arrays of contiguous data, from Ron Garcia.</li>
     <li><a href="utility/operators.htm">operators</a> - Templates
         ease arithmetic classes and iterators, from Dave Abrahams
         and Jeremy Siek.</li>
+    <li><a href="optional/doc/optional.html">optional</a> - Discriminated-union 
+    wrapper for optional values, from Fernando Cacciola.</li>
     <li><a href="pool/doc/index.html">pool</a> - Memory pool management, from
       Steve Cleary.</li>
     <li><a href="preprocessor/doc/index.html">preprocessor</a> - Preprocessor 
-    metaprogramming tools including repetition and recursion, from Vesa Karvonen.</li>
+    metaprogramming tools including repetition and recursion, from Vesa Karvonen 
+    and Paul Mensonides.</li>
     <li><a href="property_map/property_map.html">property map</a>
         - Concepts defining interfaces which map key objects to
         value objects, from Jeremy Siek.</li>
@@ -158,7 +177,7 @@ out how to build object libraries, when needed.</p>
 
     <li><a href="regex/index.htm">regex</a> - Regular expression
         library, from John Maddock.</li>
-    <li><a href="signals/doc/index.html">signals</a> - managed signals &amp;
+    <li><a href="signals/index.html">signals</a> - managed signals &amp;
          slots callback implementation, from Doug Gregor.</li>
     <li><a href="smart_ptr/index.htm">smart_ptr</a> - Five smart
         pointer class templates, from Greg Colvin, Beman Dawes,
@@ -166,6 +185,9 @@ out how to build object libraries, when needed.</p>
     <li><a href="static_assert/static_assert.htm">static_assert</a>
         - Static assertions (compile time assertions), from John
         Maddock.</li>
+    <li><a href="spirit/index.html">spirit</a> - LL parser framework&nbsp; 
+    represents parsers directly as EBNF grammars in inlined C++, from Joel de 
+    Guzman and team.</li>
     <li><a href="test/doc/index.htm">test</a> - Support for simple program testing, 
     full unit testing, and for program
       execution monitoring, from Gennadiy Rozental.</li>
@@ -202,6 +224,9 @@ out how to build object libraries, when needed.</p>
     operations, from Samuel Krempp.</li>
     <li><a href="regex/index.htm">regex</a> - Regular expression
         library, from John Maddock</li>
+    <li><a href="spirit/index.html">spirit</a> - LL parser framework&nbsp; 
+    represents parsers directly as EBNF grammars in inlined C++, from Joel de 
+    Guzman and team.</li>
     <li><a href="tokenizer/index.htm">tokenizer</a> - Break of a string or other
       character sequence into a series of tokens, from John Bandela.</li>
 </ul>
@@ -269,7 +294,7 @@ out how to build object libraries, when needed.</p>
     passing references to generic functions, from Jaako J&auml;rvi,
     Peter Dimov, Doug Gregor, and Dave Abrahams.</li>
 
-    <li><a href="signals/doc/index.html">signals</a> - managed signals &amp;
+    <li><a href="signals/index.html">signals</a> - managed signals &amp;
          slots callback implementation, from Doug Gregor.</li>
 </ul>
 
@@ -298,6 +323,9 @@ out how to build object libraries, when needed.</p>
 <h3>Template <a name="Metaprogramming"> Metaprogramming</a></h3>
 
 <ul>
+    <li><a href="mpl/doc/index.html">mpl</a> - Template metaprogramming 
+    framework of compile-time algorithms, sequences and metafunction classes, 
+    from Aleksey Gurtovoy.</li>
     <li><a href="static_assert/static_assert.htm">static_assert</a>
         - Static assertions (compile time assertions), from John
         Maddock.</li>
@@ -310,7 +338,8 @@ out how to build object libraries, when needed.</p>
 
 <ul>
     <li><a href="preprocessor/doc/index.html">preprocessor</a> - Preprocessor 
-    metaprogramming tools including repetition and recursion, from Vesa Karvonen.</li>
+    metaprogramming tools including repetition and recursion, from Vesa Karvonen 
+    and Paul Mensonides.</li>
 </ul>
 
 <h3><a name="Concurrent">Concurrent</a> Programming</h3>
@@ -329,6 +358,9 @@ out how to build object libraries, when needed.</p>
       class template, from Kevlin Henney.</li>
     <li><a href="integer/index.htm">integer</a> - Headers to ease
         dealing with integral types.</li>
+    <li><a href="numeric/interval/doc/interval.htm">interval </a>- Extends the 
+    usual arithmetic functions to mathematical intervals, from Guillaume 
+    Melquiond, Hervé Brönnimann and Sylvain Pion.</li>
     <li><a href="math/doc/common_factor.html">math/common_factor</a> - Greatest 
     common divisor and least common multiple, from Daryle Walker.</li>
     <li><a href="math/octonion/index.html">math/octonion</a> -
@@ -407,6 +439,14 @@ out how to build object libraries, when needed.</p>
         function templates, plus <b>base-from-member idiom</b>, from Dave Abrahams and others. </li>
 </ul>
 
+<h3><a name="Parsing">Parsing</a></h3>
+
+<ul>
+  <li><a href="spirit/index.html">spirit</a> - LL parser framework&nbsp; 
+  represents parsers directly as EBNF grammars in inlined C++, from Joel de 
+  Guzman and team.</li>
+</ul>
+
 <h3><a name="Miscellaneous">Miscellaneous</a></h3>
 
 <ul>
@@ -421,6 +461,11 @@ out how to build object libraries, when needed.</p>
     <li><a href="crc/index.html">crc</a> - Cyclic Redundancy Code, from Daryle
       Walker.</li>
     <li><a href="date_time/doc/index.html">date_time</a> - Date-Time library from Jeff Garland.</li>
+    <li><a href="filesystem/doc/index.htm">filesystem</a> - Portable paths, 
+    iteration over directories, and other useful filesystem operations, from 
+    Beman Dawes.</li>
+    <li><a href="optional/doc/optional.html">optional</a> - Discriminated-union 
+    wrapper for optional values, from Fernando Cacciola.</li>
     <li><a href="timer/index.htm">timer</a> - Event timer,
         progress timer, and progress display classes, from Beman
         Dawes.</li>
@@ -455,7 +500,8 @@ out how to build object libraries, when needed.</p>
 
 <hr>
 
-<p>Revised <!--webbot bot="Timestamp" s-type="EDITED"
-s-format="%d %b %Y" startspan -->16 Sep 2002<!--webbot bot="Timestamp" i-checksum="14941" endspan --></p>
+<p>Revised 
+<!--webbot bot="Timestamp" s-type="EDITED"
+s-format="%d %b %Y" startspan -->04 Feb 2003<!--webbot bot="Timestamp" endspan i-checksum="14388" --></p>
 </body>
 </html>

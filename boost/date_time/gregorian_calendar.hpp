@@ -11,6 +11,15 @@ namespace date_time {
 
 
   //! An implementation of the Gregorian calendar
+  /*! This is a parameterized implementation of a proleptic Gregorian Calendar that
+      can be used in the creation of date systems or just to perform calculations.
+      All the methods of this class are static functions, so the intent is to
+      never create instances of this class.
+    @param ymd_type_ Struct type representing the year, month, day.  The ymd_type must
+           define a of types for the year, month, and day.  These types need to be
+           arithmetic types.
+    @param date_int_type_ Underlying type for the date count.  Must be an arithmetic type.
+  */
   template<typename ymd_type_, typename date_int_type_>
   class gregorian_calendar_base {
   public:
@@ -27,22 +36,26 @@ namespace date_time {
 
 
     static unsigned short day_of_week(const ymd_type& ymd);
-    //static unsigned short day_of_year(date_rep_type);
+    static int week_number(const ymd_type&ymd);
+    //static unsigned short day_of_year(date_int_type);
     static date_int_type day_number(const ymd_type& ymd);
+    static date_int_type julian_day_number(const ymd_type& ymd);
+    static long modjulian_day_number(const ymd_type& ymd);
     static ymd_type from_day_number(date_int_type);
+    static ymd_type from_julian_day_number(date_int_type);
+    static ymd_type from_modjulian_day_number(long);
     static bool is_leap_year(year_type);
     static unsigned short end_of_month_day(year_type y, month_type m);
     static ymd_type epoch();
     static unsigned short days_in_week();
-    
-  private:
+
   };
 
 
 
 } } //namespace
   
-#ifdef DATE_TIME_INLINE
+#ifndef NO_BOOST_DATE_TIME_INLINE
 #include "gregorian_calendar.ipp"
 #endif
 
@@ -61,3 +74,4 @@ namespace date_time {
 
 #endif
   
+

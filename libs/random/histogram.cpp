@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: histogram.cpp,v 1.3 2001/11/19 22:13:04 jmaurer Exp $
+ * $Id: histogram.cpp,v 1.6 2002/10/06 23:22:34 jmaurer Exp $
  *
  * This test program allows to visibly examine the results of the
  * distribution functions.
@@ -120,9 +120,13 @@ void histograms()
 {
   PRNG rng;
   using namespace boost;
+  histogram(uniform_smallint<PRNG>(rng, 0, 5), 100000, -1, 6, "uniform_smallint(0,5)");
+  histogram(uniform_int<PRNG>(rng, 0, 5), 100000, -1, 6, "uniform_int(0,5)");
   histogram(uniform_01<PRNG>(rng), 100000, -0.5, 1.5, "uniform_01(0,1)");
   histogram(bernoulli_distribution<PRNG>(rng, 0.2), 100000, -0.5, 1.5,
             "bernoulli(0.2)");
+  histogram(binomial_distribution<PRNG>(rng, 4, 0.2), 100000, -1, 5,
+            "binomial(4, 0.2)");
   histogram(triangle_distribution<PRNG>(rng, 1, 2, 8), 100000, 0, 10,
             "triangle(1,2,8)");
   histogram(geometric_distribution<PRNG>(rng, 5.0/6.0), 100000, 0, 10,
@@ -137,11 +141,22 @@ void histograms()
             "normal");
   histogram(normal_distribution<PRNG>(rng, 0.5, 0.5), 100000, -3, 3,
             "normal(0.5, 0.5)");
+  histogram(poisson_distribution<PRNG>(rng, 1.5), 100000, 0, 5,
+            "poisson(1.5)");
+  histogram(poisson_distribution<PRNG>(rng, 10), 100000, 0, 20,
+            "poisson(10)");
+  histogram(gamma_distribution<PRNG>(rng, 0.5), 100000, 0, 0.5,
+            "gamma(0.5)");
+  histogram(gamma_distribution<PRNG>(rng, 1), 100000, 0, 3,
+            "gamma(1)");
+  histogram(gamma_distribution<PRNG>(rng, 2), 100000, 0, 6,
+            "gamma(2)");
 }
 
 
 int main()
 {
   histograms<boost::mt19937>();
+  // histograms<boost::lagged_fibonacci607>();
 }
 

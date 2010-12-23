@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_device.cpp,v 1.4 2002/01/03 22:21:34 jmaurer Exp $
+ * $Id: random_device.cpp,v 1.5 2002/09/30 22:46:05 jmaurer Exp $
  *
  */
 
@@ -109,6 +109,11 @@ boost::random_device::~random_device()
   // the complete class impl is now visible, so we're safe
   // (see comment in random.hpp)
   delete pimpl;
+}
+
+double boost::random_device::entropy()
+{
+  return 10;
 }
 
 unsigned int boost::random_device::operator()()

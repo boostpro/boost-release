@@ -1,3 +1,7 @@
+/* Copyright (c) 2001 CrystalClear Software, Inc.
+ * Disclaimer & Full Copyright at end of file
+ * Author: Jeff Garland 
+ */
 
 #include <iostream>
 #include "boost/date_time/gregorian/gregorian.hpp"
@@ -24,9 +28,9 @@ main()
   check("1900-01-01 day is 01",     d1.day()   == 1);
   check("1900-01-01 month is 01",   d1.month() == 1);
   check("1900-01-01 year is 1900",  d1.year()  == 1900);
-  check("1900-12-31 day is 31",     d4.day()   == 31);
-  check("1900-12-31 month is 12",   d4.month() == 12);
-  check("1900-12-31 year is 2000",  d4.year()  == 2000);
+  check("2000-12-31 day is 31",     d4.day()   == 31);
+  check("2000-12-31 month is 12",   d4.month() == 12);
+  check("2000-12-31 year is 2000",  d4.year()  == 2000);
   //operator<
   check("1900-01-01 is less than 2000-01-01",          d1 < d2);
   check("2000-01-01 is NOT less than 2000-01-01",      !(d1 < d1));
@@ -110,6 +114,48 @@ main()
     check("day out of range", true);
   }
 
+  try {
+    date d20(2000, Feb, 31);
+    check("day out of range", false);
+    //never reached if working -- but stops compiler warnings :-)
+    std::cout << "Oops: " << to_iso_string(d20) << std::endl;
+  }
+  catch (bad_day_of_month) {
+    check("day out of range", true);
+  }
+
+  //more subtle -- one day past in a leap year
+  try {
+    date d21(2000, Feb, 30);
+    check("day out of range", false);
+    //never reached if working -- but stops compiler warnings :-)
+    std::cout << "Oops: " << to_iso_string(d21) << std::endl;
+  }
+  catch (bad_day_of_month) {
+    check("day out of range", true);
+  }
+
+  //more subtle -- one day past in a leap year
+  try {
+    date d22(2000, Feb, 29);
+    check("last day of month ok", true);
+    std::cout << to_iso_string(d22) << std::endl; //stop compiler warning
+  }
+  catch (bad_day_of_month) {
+    check("last day of month -- oops bad exception", false);
+  }
+
+  //Not a leap year -- now Feb 29 is bad
+  try {
+    date d23(1999, Feb, 29);
+    check("day out of range", false);
+    //never reached if working -- but stops compiler warnings :-)
+    std::cout << "Oops: " << to_iso_string(d23) << std::endl;
+  }
+  catch (bad_day_of_month) {
+    check("day out of range", true);
+  }
+
   //check out some special values
   check("check not a date - false",           !d7.is_not_a_date());
   check("check positive infinity - false",    !d7.is_pos_infinity());
@@ -141,6 +187,69 @@ main()
   std::cout << d15.day_of_week().as_long_string() << std::endl;
   check("check infinity - min compare   ",      d10 < d15);
 
-  printTestStats();
-  return 0;
+  // most of this testing is in the gregorian_calendar tests
+  std::cout << d15.julian_day() << std::endl;
+  check("check julian day   ", d15.julian_day() == 2232400);
+  check("check modjulian day   ", d15.modjulian_day() == -167601);
+  date d16(2004,2,29);
+  check("check julian day   ", d16.julian_day() == 2453065);
+  check("check modjulian day   ", d16.modjulian_day() == 53064);
+
+  // most of this testing is in the gregorian_calendar tests
+  date d31(2000, Jun, 1);
+  check("check iso week number   ", d31.week_number() == 22);
+  date d32(2000, Aug, 1);
+  check("check iso week number   ", d32.week_number() == 31);
+  date d33(2000, Oct, 1);
+  check("check iso week number   ", d33.week_number() == 39);
+  date d34(2000, Dec, 1);
+  check("check iso week number   ", d34.week_number() == 48);
+  date d35(2000, Dec, 24);
+  check("check iso week number   ", d35.week_number() == 51);
+  date d36(2000, Dec, 25);
+  check("check iso week number   ", d36.week_number() == 52);
+  date d37(2000, Dec, 31);
+  check("check iso week number   ", d37.week_number() == 52);
+  date d38(2001, Jan, 1);
+  check("check iso week number   ", d38.week_number() == 1);
+
+  try {
+    int dayofyear1 = d38.day_of_year();
+    check("check day of year number", dayofyear1 == 1);
+    check("check day of year number", d37.day_of_year() == 366);
+    date d39(2001,Dec,31);
+    check("check day of year number", d39.day_of_year() == 365);
+    date d40(2000,Feb,29);
+    check("check day of year number", d40.day_of_year() == 60);
+    date d41(1400,Jan,1);
+    check("check day of year number", d41.day_of_year() == 1);
+    date d42(1400,Jan,1);
+    check("check day of year number", d42.day_of_year() == 1);
+    date d43(2002,Nov,17);
+    check("check day of year number", d43.day_of_year() == 321);
+  }
+  catch(std::exception& e) {
+    std::cout << e.what() << std::endl;
+    check("check day of year number", false);
+  }
+
+  return printTestStats();
+
 };
+
+/*
+ * Copyright (c) 2001
+ * CrystalClear Software, Inc.
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  CrystalClear Software makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided as is without express or implied warranty.
+ *
+ *
+ * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
+ *
+ */

@@ -5,13 +5,21 @@
 //  This software is provided "as is" without express or implied warranty,
 //  and with no claim as to its suitability for any purpose.
 
-//  See http://www.boost.org for updates, documentation, and revision history. 
+//  See http://www.boost.org for most recent version including documentation.
+//
+//  File        : $RCSfile: nullstream.hpp,v $
+//
+//  Version     : $Id: nullstream.hpp,v 1.3 2003/02/15 21:57:25 rogeeff Exp $
+//
+//  Description : simulate /dev/null stream
+// ***************************************************************************
 
 #ifndef BOOST_NULLSTREAM_HPP
 #define BOOST_NULLSTREAM_HPP
 
 #include <ostream>    // for std::basic_ostream
 #include <streambuf>  // for std::basic_streambuf
+#include <string>     // for std::char_traits
 
 #include <boost/utility/base_from_member.hpp>
 
@@ -46,7 +54,7 @@ protected:
 
     // The output virtual member functions need to be changed to
     // accept anything without any problems, instead of being at EOF.
-    virtual  ::std::streamsize  xsputn( const char_type *s, ::std::streamsize n )   { return n; } // "s" is unused
+    virtual  ::std::streamsize  xsputn( char_type const* /*s*/, ::std::streamsize n )   { return n; } // "s" is unused
     virtual  int_type           overflow( int_type c = traits_type::eof() )         { return traits_type::not_eof( c ); }
 };
 

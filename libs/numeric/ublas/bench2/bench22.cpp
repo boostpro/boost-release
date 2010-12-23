@@ -1,3 +1,19 @@
+//
+//  Copyright (c) 2000-2002
+//  Joerg Walter, Mathias Koch
+//
+//  Permission to use, copy, modify, distribute and sell this software
+//  and its documentation for any purpose is hereby granted without fee,
+//  provided that the above copyright notice appear in all copies and
+//  that both that copyright notice and this permission notice appear
+//  in supporting documentation.  The authors make no representations
+//  about the suitability of this software for any purpose.
+//  It is provided "as is" without express or implied warranty.
+//
+//  The authors gratefully acknowledge the support of
+//  GeNeSys mbH & Co. KG in producing this work.
+//
+
 #ifdef BOOST_MSVC
 
 #pragma warning (disable: 4355)
@@ -333,6 +349,7 @@ void bench_2<T, N>::operator () (int runs) {
     header ("C array");
     bench_c_outer_prod<T, N> () (runs);
 
+#ifdef USE_SPARSE_MATRIX
 #ifdef USE_MAP_ARRAY
     header ("sparse_matrix<map_array>, sparse_vector<map_array> safe");
     bench_my_outer_prod<ublas::sparse_matrix<T, ublas::row_major, ublas::map_array<std::size_t, T> >,
@@ -352,24 +369,46 @@ void bench_2<T, N>::operator () (int runs) {
     bench_my_outer_prod<ublas::sparse_matrix<T, ublas::row_major, std::map<std::size_t, T> >,
                         ublas::sparse_vector<T, std::map<std::size_t, T> >, N> () (runs, fast_tag ());
 #endif
+#endif
+
+#ifdef USE_COMPRESSED_MATRIX
+    header ("compressed_matrix, compressed_vector safe");
+    bench_my_outer_prod<ublas::compressed_matrix<T, ublas::row_major>,
+                        ublas::compressed_vector<T>, N> () (runs, safe_tag ());
+
+    header ("compressed_matrix, compressed_vector fast");
+    bench_my_outer_prod<ublas::compressed_matrix<T, ublas::row_major>,
+                        ublas::compressed_vector<T>, N> () (runs, fast_tag ());
+#endif
+
+#ifdef USE_COORDINATE_MATRIX
+    header ("coordinate_matrix, coordinate_vector safe");
+    bench_my_outer_prod<ublas::coordinate_matrix<T, ublas::row_major>,
+                        ublas::coordinate_vector<T>, N> () (runs, safe_tag ());
+
+    header ("coordinate_matrix, coordinate_vector fast");
+    bench_my_outer_prod<ublas::coordinate_matrix<T, ublas::row_major>,
+                        ublas::coordinate_vector<T>, N> () (runs, fast_tag ());
+#endif
 
 #ifdef USE_STD_VALARRAY
     header ("std::valarray");
     bench_cpp_outer_prod<std::valarray<T>, std::valarray<T>, N> () (runs);
 #endif
 
-    header ("prod (sparse_matrix, sparse_vector)");
+    header ("prod (matrix, vector)");
 
     header ("C array");
     bench_c_matrix_vector_prod<T, N> () (runs);
 
+#ifdef USE_SPARSE_MATRIX
 #ifdef USE_MAP_ARRAY
     header ("sparse_matrix<map_array>, sparse_vector<map_array> safe");
     bench_my_matrix_vector_prod<ublas::sparse_matrix<T, ublas::row_major, ublas::map_array<std::size_t, T> >,
                                 ublas::sparse_vector<T, ublas::map_array<std::size_t, T> >, N> () (runs, safe_tag ());
 
     header ("sparse_matrix<map_array>, sparse_vector<map_array> fast");
-    bench_my_matrix_vector_prod<ublas::sparse_matrix<T, ublas::row_major, ublas::map_array<std::size_t, T> >, 
+    bench_my_matrix_vector_prod<ublas::sparse_matrix<T, ublas::row_major, ublas::map_array<std::size_t, T> >,
                                 ublas::sparse_vector<T, ublas::map_array<std::size_t, T> >, N> () (runs, fast_tag ());
 #endif
 
@@ -379,8 +418,29 @@ void bench_2<T, N>::operator () (int runs) {
                                 ublas::sparse_vector<T, std::map<std::size_t, T> >, N> () (runs, safe_tag ());
 
     header ("sparse_matrix<std::map>, sparse_vector<std::map> fast");
-    bench_my_matrix_vector_prod<ublas::sparse_matrix<T, ublas::row_major, std::map<std::size_t, T> >, 
+    bench_my_matrix_vector_prod<ublas::sparse_matrix<T, ublas::row_major, std::map<std::size_t, T> >,
                                 ublas::sparse_vector<T, std::map<std::size_t, T> >, N> () (runs, fast_tag ());
+#endif
+#endif
+
+#ifdef USE_COMPRESSED_MATRIX
+    header ("compressed_matrix, compressed_vector safe");
+    bench_my_matrix_vector_prod<ublas::compressed_matrix<T, ublas::row_major>,
+                                ublas::compressed_vector<T>, N> () (runs, safe_tag ());
+
+    header ("compressed_matrix, compressed_vector fast");
+    bench_my_matrix_vector_prod<ublas::compressed_matrix<T, ublas::row_major>,
+                                ublas::compressed_vector<T>, N> () (runs, fast_tag ());
+#endif
+
+#ifdef USE_COORDINATE_MATRIX
+    header ("coordinate_matrix, coordinate_vector safe");
+    bench_my_matrix_vector_prod<ublas::coordinate_matrix<T, ublas::row_major>,
+                                ublas::coordinate_vector<T>, N> () (runs, safe_tag ());
+
+    header ("coordinate_matrix, coordinate_vector fast");
+    bench_my_matrix_vector_prod<ublas::coordinate_matrix<T, ublas::row_major>,
+                                ublas::coordinate_vector<T>, N> () (runs, fast_tag ());
 #endif
 
 #ifdef USE_STD_VALARRAY
@@ -388,11 +448,12 @@ void bench_2<T, N>::operator () (int runs) {
     bench_cpp_matrix_vector_prod<std::valarray<T>, std::valarray<T>, N> () (runs);
 #endif
 
-    header ("sparse_matrix + sparse_matrix");
+    header ("matrix + matrix");
 
     header ("C array");
     bench_c_matrix_add<T, N> () (runs);
 
+#ifdef USE_SPARSE_MATRIX
 #ifdef USE_MAP_ARRAY
     header ("sparse_matrix<map_array> safe");
     bench_my_matrix_add<ublas::sparse_matrix<T, ublas::row_major, ublas::map_array<std::size_t, T> >, N> () (runs, safe_tag ());
@@ -408,6 +469,23 @@ void bench_2<T, N>::operator () (int runs) {
     header ("sparse_matrix<std::map> fast");
     bench_my_matrix_add<ublas::sparse_matrix<T, ublas::row_major, std::map<std::size_t, T> >, N> () (runs, fast_tag ());
 #endif
+#endif
+
+#ifdef USE_COMPRESSED_MATRIX
+    header ("compressed_matrix safe");
+    bench_my_matrix_add<ublas::compressed_matrix<T, ublas::row_major>, N> () (runs, safe_tag ());
+
+    header ("compressed_matrix fast");
+    bench_my_matrix_add<ublas::compressed_matrix<T, ublas::row_major>, N> () (runs, fast_tag ());
+#endif
+
+#ifdef USE_COORDINATE_MATRIX
+    header ("coordinate_matrix safe");
+    bench_my_matrix_add<ublas::coordinate_matrix<T, ublas::row_major>, N> () (runs, safe_tag ());
+
+    header ("coordinate_matrix fast");
+    bench_my_matrix_add<ublas::coordinate_matrix<T, ublas::row_major>, N> () (runs, fast_tag ());
+#endif
 
 #ifdef USE_STD_VALARRAY
     header ("std::valarray");
@@ -415,28 +493,34 @@ void bench_2<T, N>::operator () (int runs) {
 #endif
 }
 
+#ifdef USE_FLOAT
 template struct bench_2<float, 3>;
 template struct bench_2<float, 10>;
 template struct bench_2<float, 30>;
 template struct bench_2<float, 100>;
+#endif
 
+#ifdef USE_DOUBLE
 template struct bench_2<double, 3>;
 template struct bench_2<double, 10>;
 template struct bench_2<double, 30>;
 template struct bench_2<double, 100>;
+#endif
 
 #ifdef USE_STD_COMPLEX
-
+#ifdef USE_FLOAT
 template struct bench_2<std::complex<float>, 3>;
 template struct bench_2<std::complex<float>, 10>;
 template struct bench_2<std::complex<float>, 30>;
 template struct bench_2<std::complex<float>, 100>;
+#endif
 
+#ifdef USE_DOUBLE
 template struct bench_2<std::complex<double>, 3>;
 template struct bench_2<std::complex<double>, 10>;
 template struct bench_2<std::complex<double>, 30>;
 template struct bench_2<std::complex<double>, 100>;
-
+#endif
 #endif
 
 

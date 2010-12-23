@@ -1,27 +1,34 @@
-# (C) Copyright Toon Knapen 2001, Markus Schoepflin 2002.
-# Permission to copy, use,
-# modify, sell and distribute this software is granted provided this
-# copyright notice appears in all copies. This software is provided
-# "as is" without express or implied warranty, and with no claim as
-# to its suitability for any purpose.
+# (C) Copyright Toon Knapen 2001, Markus Schoepflin 2002, 2003.
+#
+# Permission to copy, use, modify, sell and distribute this software is
+# granted provided this copyright notice appears in all copies. This
+# software is provided "as is" without express or implied warranty, and
+# with no claim as to its suitability for any purpose.
 
 #
 # Jam tools information for :
 # IBM VisualAge C++ compiler
 #   version 5.0
+#   version 6.0
 #
 # These settings are created and tested with VisualAge running on
-# IBM/Aix 3.4. They should also work for VisualAge
-# on Windows NT, OS/2 and AS/400.
-#
-# Current settings tested and working on VisualAge-5/AIX.
+# IBM/Aix 4.3.3.0. They should also work for VisualAge on Windows NT,
+# OS/2 and AS/400.
 
-flags vacpp CC  <threading>single : xlc   ;
-flags vacpp CC  <threading>multi : xlc_r ;
+# The default tool path is declared as empty. This looks for the tools in
+# the current path. You can overide this in derived toolsets.
+set-as-singleton VA_TOOL_PATH ;
+flags vacpp VA_TOOL_PATH ;
+VA_TOOL_PATH = "" ;
 
-flags vacpp CXX <threading>single : xlC   ;
-flags vacpp CXX <threading>multi : xlC_r ;
+# Select the compiler name according to the threading model.
+flags vacpp VA_C_COMPILER  <threading>single : xlc   ;
+flags vacpp VA_C_COMPILER  <threading>multi : xlc_r ;
+flags vacpp VA_CXX_COMPILER <threading>single : xlC   ;
+flags vacpp VA_CXX_COMPILER <threading>multi : xlC_r ;
 
+# This disables the automatic generation of separate include files for
+# template functions and class declarations.
 flags vacpp C++FLAGS : -qnotempinc ;
 
 # The following is needed to get rid of most of the annoying linker warnings
@@ -86,7 +93,7 @@ rule Link-action
 # for xlc, we repeat all libraries so that dependencies are always resolved
 actions xlc-Link-action bind NEEDLIBS
 {
-    $(CXX) $(LINKFLAGS) -o "$(<[1])" -L$(LIBPATH) -L$(STDLIBPATH) "$(>)" "$(NEEDLIBS)" "$(NEEDLIBS)" -l$(FINDLIBS) -bdynamic
+    $(VA_CXX_COMPILER:R=$(VA_TOOL_PATH)) $(LINKFLAGS) -o "$(<[1])" -L$(LIBPATH) -L$(STDLIBPATH) "$(>)" "$(NEEDLIBS)" "$(NEEDLIBS)" -l$(FINDLIBS) -bdynamic
 }
 
 #### Cc #####
@@ -96,9 +103,10 @@ rule Cc-action
     xlc-Cc-action $(<) : $(>) ;
 }
 
+# Always allow C++ comments in C source files!
 actions xlc-Cc-action
 {
-    $(CC) -c -I$(BOOST_ROOT) -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(VA_C_COMPILER:R=$(VA_TOOL_PATH)) -qcpluscmt -c -I$(BOOST_ROOT) -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -109,7 +117,7 @@ rule C++-action
 
 actions xlc-C++-action
 {
-    $(CXX) -c -I$(BOOST_ROOT) -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    $(VA_CXX_COMPILER:R=$(VA_TOOL_PATH)) -c -I$(BOOST_ROOT) -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(C++FLAGS) -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### Archive ####

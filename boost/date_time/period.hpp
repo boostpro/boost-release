@@ -53,17 +53,21 @@ namespace date_time {
 
    */
   template<class point_rep, class duration_rep>
-  class period 
-    : boost::less_than_comparable<period<point_rep, duration_rep> 
+  class period : private
+      boost::less_than_comparable<period<point_rep, duration_rep> 
     , boost::equality_comparable< period<point_rep, duration_rep> 
     > >
   {
   public:
+    typedef point_rep point_type;
+    typedef duration_rep duration_type;
+
     period(point_rep begin, point_rep last);
     period(point_rep begin, duration_rep len);
     point_rep begin() const;
     point_rep end() const;
     point_rep last() const;
+    duration_rep length() const;
     bool is_null() const;
     bool operator==(const period& rhs) const;
     bool operator<(const period& rhs) const;
@@ -71,6 +75,9 @@ namespace date_time {
     bool contains(const point_rep& point) const;
     bool contains(const period& other) const;
     bool intersects(const period& other) const;
+    bool is_adjacent(const period& other) const;
+    bool is_before(const point_rep& point) const;
+    bool is_after(const point_rep& point) const;
     period intersection(const period& other) const;
     period merge(const period& other) const;
   private:
@@ -132,6 +139,14 @@ namespace date_time {
     return last_ <= begin_;
   }
 
+  //! Return the length of the period
+  template<class point_rep, class duration_rep>
+  inline
+  duration_rep period<point_rep,duration_rep>::length() const
+  {
+    return end() - begin_;
+  }
+
   //! Equality operator
   template<class point_rep, class duration_rep>
   inline
@@ -178,7 +193,81 @@ namespace date_time {
   }
 
 
+  //! True if periods are next to each other without a gap.
+  /* In the example below, p1 and p2 are adjacent, but p3 is not adjacent
+   * with either of p1 or p2.
+   *@code
+   *   [-p1-)
+   *        [-p2-)
+   *          [-p3-) 
+   *@endcode
+   */
+  template<class point_rep, class duration_rep>
+  inline
+  bool 
+  period<point_rep,duration_rep>::is_adjacent(const period<point_rep,duration_rep>& other) const 
+  { 
+    return (other.begin() == end() ||
+            begin_ == other.end());
+  }
+
+
+  //! True if all of the period is prior or t < start
+  /* In the example below only point 1 would evaluate to true.
+   *@code
+   *     [---------])
+   * ^   ^    ^     ^   ^
+   * 1   2    3     4   5
+   * 
+   *@endcode
+   */
+  template<class point_rep, class duration_rep>
+  inline
+  bool 
+  period<point_rep,duration_rep>::is_after(const point_rep& t) const 
+  { 
+    if (is_null()) 
+    {
+      return false; //null period isn't after
+    }
+    
+    return t < begin_;
+  }
+
+  //! True if all of the period is prior to the passed point or end <= t
+  /* In the example below points 4 and 5 return true.
+   *@code
+   *     [---------])
+   * ^   ^    ^     ^   ^
+   * 1   2    3     4   5
+   * 
+   *@endcode
+   */
+  template<class point_rep, class duration_rep>
+  inline
+  bool 
+  period<point_rep,duration_rep>::is_before(const point_rep& t) const 
+  { 
+    if (is_null()) 
+    {
+      return false;  //null period isn't before anything
+    }
+    
+    return last_ < t;
+  }
+
+
   //! True if the periods overlap in any way
+  /* In the example below p1 intersects with p2, p4, and p6.
+   *@code
+   *       [---p1---)
+   *             [---p2---)
+   *                [---p3---) 
+   *  [---p4---) 
+   * [-p5-) 
+   *         [-p6-) 
+   *@endcode
+   */
   template<class point_rep, class duration_rep>
   inline
   bool period<point_rep,duration_rep>::intersects(const period<point_rep,duration_rep>& other) const 

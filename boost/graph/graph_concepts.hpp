@@ -217,6 +217,15 @@ namespace boost {
     G g;
   };
 
+  template <class G>
+  struct VertexAndEdgeListGraphConcept
+  {
+    void constraints() {
+      function_requires< VertexListGraphConcept<G> >();    
+      function_requires< EdgeListGraphConcept<G> >();
+    }
+  };
+
   // Where to put the requirement for this constructor?
   //      G g(n_vertices);
   // Not in mutable graph, then LEDA graph's can't be models of
@@ -395,7 +404,6 @@ namespace boost {
     void constraints() {
       function_requires< ReadablePropertyGraphConcept<G, X, Property> >();
       function_requires< LvaluePropertyMapConcept<const_Map, X> >();
-      function_requires< Mutable_LvaluePropertyMapConcept<Map, X> >();
 
       pval = get(Property(), g, x);
       put(Property(), g, x, pval);

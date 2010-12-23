@@ -11,9 +11,11 @@
 # include <boost/python/converter/registered.hpp>
 # include <boost/python/converter/registered_pointee.hpp>
 # include <boost/python/detail/void_ptr.hpp>
-# include <boost/call_traits.hpp>
 # include <boost/python/detail/void_return.hpp>
 # include <boost/python/errors.hpp>
+# include <boost/type_traits/has_trivial_copy.hpp>
+# include <boost/mpl/and.hpp>
+# include <boost/mpl/bool.hpp>
 
 namespace boost { namespace python { namespace converter { 
 
@@ -38,7 +40,8 @@ namespace detail
   template <class T>
   struct return_rvalue_from_python
   {
-      typedef typename call_traits<T>::param_type result_type;
+      typedef T result_type;
+
       return_rvalue_from_python();
       result_type operator()(PyObject*);
    private:
@@ -118,6 +121,12 @@ namespace detail
   inline typename return_rvalue_from_python<T>::result_type
   return_rvalue_from_python<T>::operator()(PyObject* obj)
   {
+    // Take possession of the source object here.  If the result is in
+    // fact going to be a copy of an lvalue embedded in the object,
+    // and we take possession inside rvalue_result_from_python, it
+    // will be destroyed too early.
+    handle<> holder(obj);
+
       return *(T*)
           (rvalue_result_from_python)(obj, m_data.stage1);
   }

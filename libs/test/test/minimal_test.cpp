@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: minimal_test.cpp,v $
 //
-//  Version     : $Id: minimal_test.cpp,v 1.2 2002/09/12 08:28:30 rogeeff Exp $
+//  Version     : $Id: minimal_test.cpp,v 1.4 2003/02/15 21:51:56 rogeeff Exp $
 //
 //  Description : minimal testing unit test
 // ***************************************************************************
@@ -48,7 +48,7 @@ struct bool_convertible3 {
 //____________________________________________________________________________//
 
 int 
-test_main( int argc, char* argv[] ) 
+test_main( int /*argc*/, char* /*argv*/[] ) 
 {
     int i = 1;
 
@@ -77,11 +77,11 @@ test_main( int argc, char* argv[] )
 //  Revision History :
 //  
 //  $Log: minimal_test.cpp,v $
-//  Revision 1.2  2002/09/12 08:28:30  rogeeff
-//  tabs cleaned
+//  Revision 1.4  2003/02/15 21:51:56  rogeeff
+//  borland warnings fix
 //
-//  Revision 1.1  2002/09/04 07:23:32  rogeeff
-//  minimal testiing unit test added
+//  Revision 1.3  2002/11/02 20:04:43  rogeeff
+//  release 1.29.0 merged into the main trank
 //
 
 // ***************************************************************************

@@ -18,6 +18,7 @@
 #define BOOST_MPL_AUX_CONFIG_COMPILER_HPP_INCLUDED
 
 #include "boost/mpl/aux_/config/dtp.hpp"
+#include "boost/mpl/aux_/config/ttp.hpp"
 #include "boost/config.hpp"
 
 #if defined(BOOST_MSVC) && BOOST_MSVC < 1300
@@ -45,6 +46,9 @@
 
 #elif defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 #   define BOOST_MPL_COMPILER_DIR no_ctps
+
+#elif defined(BOOST_NO_TEMPLATE_TEMPLATE_PARAMETERS)
+#   define BOOST_MPL_COMPILER_DIR no_ttp
 
 #else
 #   define BOOST_MPL_COMPILER_DIR plain

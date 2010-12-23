@@ -40,9 +40,17 @@
 #include <sstream>
 #endif
 
-#ifndef GRAPHVIZ_GRAPH
-#error Need to define the GRAPHVIZ_GRAPH macro to either GraphvizGraph or GraphvizDigraph.
+#ifndef GRAPHVIZ_DIRECTED
+#error Need to define the GRAPHVIZ_DIRECTED macro to either 0 or 1
 #endif 
+
+#if GRAPHVIZ_DIRECTED == 0
+#define GRAPHVIZ_GRAPH boost::GraphvizGraph
+#define yyrestart bgl_undir_restart
+#else
+#define GRAPHVIZ_GRAPH boost::GraphvizDigraph
+#define yyrestart bgl_dir_restart
+#endif
 
 #define YYPARSE_PARAM g
 
@@ -210,7 +218,7 @@
       char buf[256];
       sprintf(buf, "default%i\0", i);
       ++i;
-      return  string(buf);
+      return std::string(buf);
 #else
       std::stringstream out;
       out << "default" << i;

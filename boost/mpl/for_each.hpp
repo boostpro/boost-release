@@ -19,10 +19,13 @@
 
 #include "boost/mpl/begin_end.hpp"
 #include "boost/mpl/apply.hpp"
-#include "boost/mpl/bool_c.hpp"
+#include "boost/mpl/bool.hpp"
 #include "boost/mpl/lambda.hpp"
+#include "boost/mpl/identity.hpp"
+#include "boost/mpl/aux_/unwrap.hpp"
+
 #include "boost/type_traits/is_same.hpp"
-#include <boost/utility/value_init.hpp>
+#include "boost/utility/value_init.hpp"
 
 namespace boost {
 namespace mpl {
@@ -33,13 +36,13 @@ template <bool done = true>
 struct for_each_impl
 {
     template<
-      typename Iterator
-    , typename LastIterator
-    , typename TransformFunc
-    , typename F
-    >
+          typename Iterator
+        , typename LastIterator
+        , typename TransformFunc
+        , typename F
+        >
     static void execute(
-        Iterator*
+          Iterator*
         , LastIterator*
         , TransformFunc*
         , F
@@ -52,13 +55,13 @@ template <>
 struct for_each_impl<false>
 {
     template<
-      typename Iterator
-    , typename LastIterator
-    , typename TransformFunc
-    , typename F
-    >
+          typename Iterator
+        , typename LastIterator
+        , typename TransformFunc
+        , typename F
+        >
     static void execute(
-        Iterator*
+          Iterator*
         , LastIterator*
         , TransformFunc* 
         , F f
@@ -70,7 +73,7 @@ struct for_each_impl<false>
         // dwa 2002/9/10 -- make sure not to invoke undefined behavior
         // when we pass arg.
         value_initialized<arg> x;
-        f(get(x));
+        aux::unwrap(f, 0)(boost::get(x));
         
         typedef typename Iterator::next iter;
         for_each_impl<boost::is_same<iter,LastIterator>::value>::execute(
@@ -78,10 +81,10 @@ struct for_each_impl<false>
     }
 };
 
-// agurt, 17/mar/02: pointer default parameters are necessary to workaround 
-// MSVC 6.5 function template signature's mangling bug
 } // namespace aux
 
+// agurt, 17/mar/02: pointer default parameters are necessary to workaround 
+// MSVC 6.5 function template signature's mangling bug
 template<
       typename Sequence
     , typename TransformOp
@@ -96,6 +99,16 @@ void for_each(F f, Sequence* = 0, TransformOp* = 0)
 
     aux::for_each_impl< boost::is_same<first,last>::value >::execute(
         (first*)0, (last*)0, (transform_op*)0, f);
+}
+
+template<
+      typename Sequence
+    , typename F
+    >
+inline
+void for_each(F f, Sequence* = 0)
+{
+    for_each<Sequence, identity<> >(f);
 }
 
 } // namespace mpl

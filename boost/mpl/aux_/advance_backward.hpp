@@ -27,7 +27,7 @@
 
 #include "boost/mpl/aux_/config/use_preprocessed.hpp"
 
-#if defined(BOOST_MPL_USE_PREPROCESSED_HEADERS) && \
+#if !defined(BOOST_MPL_NO_PREPROCESSED_HEADERS) && \
     !defined(BOOST_MPL_PREPROCESSING_MODE)
 
 #   define BOOST_MPL_PREPROCESSED_HEADER advance_backward.hpp
@@ -36,6 +36,8 @@
 #else
 
 #   include "boost/mpl/limits/unrolling.hpp"
+#   include "boost/mpl/aux_/config/nttp.hpp"
+
 #   include "boost/preprocessor/iterate.hpp"
 #   include "boost/preprocessor/cat.hpp"
 #   include "boost/preprocessor/inc.hpp"
@@ -45,14 +47,14 @@ namespace mpl {
 namespace aux {
 
 // forward declaration
-template< long N > struct advance_backward;
+template< BOOST_MPL_AUX_NTTP_DECL(long, N) > struct advance_backward;
 
 #   define BOOST_PP_ITERATION_PARAMS_1 \
     (3,(0, BOOST_MPL_UNROLLING_LIMIT, "boost/mpl/aux_/advance_backward.hpp"))
 #   include BOOST_PP_ITERATE()
 
 // implementation for N that exceeds BOOST_MPL_UNROLLING_LIMIT
-template< long N >
+template< BOOST_MPL_AUX_NTTP_DECL(long, N) >
 struct advance_backward
 {
     template< typename Iterator > struct apply
@@ -101,7 +103,7 @@ struct advance_backward< BOOST_PP_FRAME_ITERATION(1) >
         typedef BOOST_PP_CAT(iter,BOOST_PP_FRAME_ITERATION(1)) type;
     };
 
-#if defined(BOOST_MPL_MSVC_ETI_BUG)
+#if defined(BOOST_MPL_MSVC_60_ETI_BUG)
     //: ETI workaround
     template<> struct apply<int>
     {

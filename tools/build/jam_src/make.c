@@ -129,6 +129,11 @@ make(
 
 	memset( (char *)counts, 0, sizeof( *counts ) );
 
+    /* First bind all targets with LOCATE_TARGET setting. This is
+       needed to correctly handle dependencies to generated headers.       
+    */
+    bind_explicitly_located_targets();
+
 	for( i = 0; i < n_targets; i++ )
 	{
 	    TARGET *t = bindtarget( targets[i] );
@@ -269,6 +274,19 @@ make0(
 	    t->binding = T_BIND_PARENTS;
 
 	/* Step 2c: If its a file, search for headers. */
+
+#ifdef OPT_SEMAPHORE
+	{
+	    LIST *var = var_get( "JAM_SEMAPHORE" );
+	    if( var )
+	    {
+		TARGET *semaphore = bindtarget( var->string );
+
+		semaphore->progress = T_MAKE_SEMAPHORE;
+		t->semaphore = semaphore;
+	    }
+	}
+#endif
 
 	if( t->binding == T_BIND_EXISTS )
 	    headers( t );
@@ -734,4 +752,10 @@ void mark_target_for_updating(char *target)
 LIST *targets_to_update()
 {
     return targets_to_update_;
+}
+
+void clear_targets_to_update()
+{
+    list_free(targets_to_update_);
+    targets_to_update_ = 0;
 }

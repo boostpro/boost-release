@@ -7,9 +7,15 @@
 #include <boost/python/converter/from_python.hpp>
 #include <boost/python/converter/registrations.hpp>
 #include <boost/python/converter/rvalue_from_python_data.hpp>
+
+#include <boost/python/object/find_instance.hpp>
+
 #include <boost/python/handle.hpp>
 #include <boost/python/detail/raw_pyobject.hpp>
 #include <boost/python/cast.hpp>
+
+#include <boost/lexical_cast.hpp>
+
 #include <vector>
 #include <algorithm>
 
@@ -36,18 +42,28 @@ BOOST_PYTHON_DECL rvalue_from_python_stage1_data rvalue_from_python_stage1(
     PyObject* source
     , registration const& converters)
 {
-    rvalue_from_python_chain const* chain = converters.rvalue_chain;
-    
     rvalue_from_python_stage1_data data;
-    data.convertible = 0;
-    for (;chain != 0; chain = chain->next)
+
+    // First check to see if it's embedded in an extension class
+    // instance, as a special case.
+    data.convertible = objects::find_instance_impl(source, converters.target_type);
+    if (data.convertible)
     {
-        void* r = chain->convertible(source);
-        if (r != 0)
+        data.construct = 0;
+    }
+    else
+    {
+        for (rvalue_from_python_chain const* chain = converters.rvalue_chain;
+             chain != 0;
+             chain = chain->next)
         {
-            data.convertible = r;
-            data.construct = chain->construct;
-            break;
+            void* r = chain->convertible(source);
+            if (r != 0)
+            {
+                data.convertible = r;
+                data.construct = chain->construct;
+                break;
+            }
         }
     }
     return data;
@@ -67,9 +83,6 @@ BOOST_PYTHON_DECL rvalue_from_python_stage1_data rvalue_from_python_stage1(
 BOOST_PYTHON_DECL void* rvalue_result_from_python(
     PyObject* src, rvalue_from_python_stage1_data& data)
 {
-    // Take possession of the source object.
-    handle<> holder(src);
-
     // Retrieve the registration
     // Cast in two steps for less-capable compilers
     void const* converters_ = data.convertible;
@@ -109,8 +122,12 @@ BOOST_PYTHON_DECL void* get_lvalue_from_python(
     PyObject* source
     , registration const& converters)
 {
+    // Check to see if it's embedded in a class instance
+    void* x = objects::find_instance_impl(source, converters.target_type);
+    if (x)
+        return x;
+
     lvalue_from_python_chain const* chain = converters.lvalue_chain;
-    
     for (;chain != 0; chain = chain->next)
     {
         void* r = chain->convert(source);
@@ -136,38 +153,45 @@ namespace
       return true;
   }
 
-  void unvisit(rvalue_from_python_chain const* chain)
+  // RAII class for managing global visited marks.
+  struct unvisit
   {
-      visited_t::iterator const p = std::lower_bound(visited.begin(), visited.end(), chain);
-      assert(p != visited.end());
-      visited.erase(p);
-  }
+      unvisit(rvalue_from_python_chain const* chain)
+          : chain(chain) {}
+      
+      ~unvisit()
+      {
+          visited_t::iterator const p = std::lower_bound(visited.begin(), visited.end(), chain);
+          assert(p != visited.end());
+          visited.erase(p);
+      }
+   private:
+      rvalue_from_python_chain const* chain;
+  };
 }
 
-BOOST_PYTHON_DECL rvalue_from_python_chain const* implicit_conversion_chain(
+
+BOOST_PYTHON_DECL bool implicit_rvalue_convertible_from_python(
     PyObject* source
     , registration const& converters)
 {    
+    if (objects::find_instance_impl(source, converters.target_type))
+        return true;
+    
     rvalue_from_python_chain const* chain = converters.rvalue_chain;
     
     if (!visit(chain))
-        return 0;
+        return false;
+
+    unvisit protect(chain);
     
-    try
+    for (;chain != 0; chain = chain->next)
     {
-        for (;chain != 0; chain = chain->next)
-        {
-            if (chain->convertible(source))
-                break;
-        }
+        if (chain->convertible(source))
+            return true;
     }
-    catch(...)
-    {
-        unvisit(chain);
-        throw;
-    }
-    unvisit(chain);
-    return chain;
+
+    return false;
 }
 
 namespace
@@ -244,14 +268,6 @@ BOOST_PYTHON_DECL void* pointer_result_from_python(
     return (lvalue_result_from_python)(source, converters, "pointer");
 }
   
-BOOST_PYTHON_DECL void throw_no_class_registered()
-{
-    PyErr_SetString(
-        PyExc_TypeError
-        , const_cast<char*>("class not registered for to_python type"));
-    throw_error_already_set();
-}
-  
 BOOST_PYTHON_DECL void void_result_from_python(PyObject* o)
 {
     Py_DECREF(expect_non_null(o));
@@ -264,14 +280,12 @@ pytype_check(PyTypeObject* type_, PyObject* source)
 {
     if (!PyObject_IsInstance(source, python::upcast<PyObject>(type_)))
     {
-        handle<> keeper(source);
-        handle<> msg(
-            ::PyString_FromFormat(
-                "Expecting an object of type %s; got an object of type %s instead"
-                , type_->tp_name
-                , source->ob_type->tp_name
-                ));
-        PyErr_SetObject(PyExc_TypeError, msg.get());
+        ::PyErr_Format(
+            PyExc_TypeError
+            , "Expecting an object of type %s; got an object of type %s instead"
+            , type_->tp_name
+            , source->ob_type->tp_name
+            );
         throw_error_already_set();
     }
     return source;

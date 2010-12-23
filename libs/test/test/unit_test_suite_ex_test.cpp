@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: unit_test_suite_ex_test.cpp,v $
 //
-//  Version     : $Id: unit_test_suite_ex_test.cpp,v 1.7 2002/09/16 08:40:55 rogeeff Exp $
+//  Version     : $Id: unit_test_suite_ex_test.cpp,v 1.9 2003/02/15 21:49:58 rogeeff Exp $
 //
 //  Description : tests an extentions to Unit Test Framework
 // ***************************************************************************
@@ -88,7 +88,7 @@ struct sub_test_suite : public test_suite {
 //____________________________________________________________________________//
 
 test_suite*
-init_unit_test_suite( int argc, char* argv[] ) {
+init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
     test_suite* test = BOOST_TEST_SUITE("unit_test_suite extensions test");
 
     function0<void> fct1 = &test0;
@@ -110,13 +110,12 @@ init_unit_test_suite( int argc, char* argv[] ) {
 //  Revision History :
 //  
 //  $Log: unit_test_suite_ex_test.cpp,v $
-//  Revision 1.7  2002/09/16 08:40:55  rogeeff
-//  test fixed to follow latest changes
+//  Revision 1.9  2003/02/15 21:49:58  rogeeff
+//  borland warning fix
 //
-//  Revision 1.6  2002/08/26 09:08:06  rogeeff
-//  cvs kw added
+//  Revision 1.8  2002/11/02 20:04:43  rogeeff
+//  release 1.29.0 merged into the main trank
 //
-//   6 Nov 01  Initial  version (Gennadiy Rozental)
 
 // ***************************************************************************
 

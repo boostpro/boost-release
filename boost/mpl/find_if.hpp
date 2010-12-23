@@ -19,8 +19,8 @@
 
 #include "boost/mpl/aux_/iter_fold_if_impl.hpp"
 #include "boost/mpl/aux_/iter_apply.hpp"
-#include "boost/mpl/logical/or.hpp"
-#include "boost/mpl/logical/not.hpp"
+#include "boost/mpl/or.hpp"
+#include "boost/mpl/not.hpp"
 #include "boost/mpl/begin_end.hpp"
 #include "boost/mpl/always.hpp"
 #include "boost/mpl/lambda.hpp"
@@ -45,7 +45,7 @@ struct find_if_pred
         >
     struct apply
     {
-        typedef typename logical_not< logical_or<
+        typedef typename not_< or_<
               is_same<Iterator,LastIterator>
             , aux::iter_apply1<Predicate,Iterator>
             > >::type type;
@@ -53,6 +53,8 @@ struct find_if_pred
 };
 
 } // namespace aux
+
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_BEGIN
 
 template<
       typename BOOST_MPL_AUX_VOID_SPEC_PARAM(Sequence)
@@ -72,13 +74,15 @@ struct find_if
         , mpl::arg<1>
         , aux::find_if_pred<last_>
         , void
-        , always<false_c>
+        , always<false_>
         >::iterator type;
 
     BOOST_MPL_AUX_LAMBDA_SUPPORT(2,find_if,(Sequence,Predicate))
 };
 
-BOOST_MPL_AUX_VOID_SPEC(2,find_if)
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_END
+
+BOOST_MPL_AUX_ALGORITHM_VOID_SPEC(2,find_if)
 
 } // namespace mpl
 } // namespace boost

@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: unit_test_config.hpp,v $
 //
-//  Version     : $Id: unit_test_config.hpp,v 1.10.2.2 2002/10/10 18:14:41 rogeeff Exp $
+//  Version     : $Id: unit_test_config.hpp,v 1.12 2002/12/08 17:35:26 rogeeff Exp $
 //
 //  Description : contains workarounds and works as a central place for configurable types
 // ***************************************************************************
@@ -27,7 +27,8 @@ namespace boost {
 
 namespace unit_test_framework {
 
-typedef unsigned long unit_test_counter;
+typedef unsigned long   unit_test_counter;
+typedef char const*     c_string_literal;
 
 namespace detail {
 
@@ -55,26 +56,12 @@ using std::distance;
 //  Revision History :
 //  
 //  $Log: unit_test_config.hpp,v $
-//  Revision 1.10.2.2  2002/10/10 18:14:41  rogeeff
-//  removed incorrect fix
+//  Revision 1.12  2002/12/08 17:35:26  rogeeff
+//  c_string_literal introduced
 //
-//  Revision 1.10.2.1  2002/10/01 17:23:15  rogeeff
-//  borlang temporary bug fix introduced
+//  Revision 1.11  2002/11/02 19:31:05  rogeeff
+//  merged into the main trank
 //
-//  Revision 1.10  2002/09/16 08:47:29  rogeeff
-//  STL includes normalized
-//
-//  Revision 1.9  2002/09/09 09:07:03  rogeeff
-//  descriptions added
-//
-//  Revision 1.8  2002/08/20 22:24:53  rogeeff
-//  all formal arguments trailed with underscore
-//
-//  Revision 1.7  2002/08/20 08:52:41  rogeeff
-//  cvs keywords added
-//
-//   8 Aug 02  Parameters definition separated (Gennadiy Rozental)
-//   5 Oct 01  Initial version (Gennadiy Rozental)
 
 // ***************************************************************************
 

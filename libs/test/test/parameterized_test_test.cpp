@@ -8,7 +8,7 @@
 //
 //  File        : $$
 //
-//  Version     : $Id: parameterized_test_test.cpp,v 1.1.2.1 2002/10/01 17:45:52 rogeeff Exp $
+//  Version     : $Id: parameterized_test_test.cpp,v 1.4 2003/02/15 21:52:37 rogeeff Exp $
 //
 //  Description : tests parameterized tests
 // ***************************************************************************
@@ -17,7 +17,9 @@
 #include <boost/test/unit_test_suite.hpp>
 #include <boost/test/unit_test_result.hpp>
 #include <boost/test/test_tools.hpp>
+#if !defined ( __GNUC__ ) || __GNUC__ > 2
 #include <boost/test/detail/nullstream.hpp>
+#endif
 
 using namespace boost::unit_test_framework;
 
@@ -43,7 +45,7 @@ void test1( int i )
 //____________________________________________________________________________//
 
 
-#if defined(__BORLANDC__) && (__BORLANDC__ < 0x560)
+#if defined(__BORLANDC__) && (__BORLANDC__ < 0x570)
 #define BOOST_PARAM_TEST_CASE__( arg1, arg2, arg3 ) \
     boost::unit_test_framework::create_test_case<int*,int>( (arg1), std::string( "" ), (arg2), (arg3) )
 #else
@@ -53,10 +55,15 @@ void test1( int i )
 int test_main( int, char* [] ) {
     unit_test_counter               num_of_failures;
     bool                            exception_caught;
+#if !defined ( __GNUC__ ) || __GNUC__ > 2
     boost::onullstream              null_output;
+#else
+    boost::test_toolbox::output_test_stream null_output;
+#endif
     boost::scoped_ptr<test_case>    test;  
 
-    unit_test_result::reset_current_result_set();
+    {
+    unit_test_result_saver saver;
     unit_test_log::instance().set_log_stream( null_output );
 
     {
@@ -99,8 +106,9 @@ int test_main( int, char* [] ) {
     BOOST_CHECK( !exception_caught );
     }
 
-    unit_test_result::reset_current_result_set();
-    unit_test_result::reset_current_result_set();
+    }
+    {
+    unit_test_result_saver saver;
 
     {
     int test_data[] = { 6, 6, 6 };    
@@ -112,8 +120,9 @@ int test_main( int, char* [] ) {
     BOOST_CHECK( !exception_caught );
     }
 
-    unit_test_result::reset_current_result_set();
-    unit_test_result::reset_current_result_set();
+    }
+    {
+    unit_test_result_saver saver;
 
     {
     int test_data[] = { 0, 3, 9 };    
@@ -126,7 +135,7 @@ int test_main( int, char* [] ) {
     }
 
     {
-    int test_data[] = { 2, 3, 3 };    
+    int test_data[] = { 2, 3, 9 };
     test.reset( BOOST_PARAM_TEST_CASE__( &test1, (int*)test_data, (int*)test_data + sizeof(test_data)/sizeof(int) ) );
     test->run();
 
@@ -145,7 +154,7 @@ int test_main( int, char* [] ) {
     BOOST_CHECK( exception_caught );
     }
 
-    unit_test_result::reset_current_result_set();
+    }
     unit_test_log::instance().set_log_stream( std::cout );
 
     return 0;
@@ -157,9 +166,14 @@ int test_main( int, char* [] ) {
 //  Revision History :
 //  
 //  $Log: parameterized_test_test.cpp,v $
-//  Revision 1.1.2.1  2002/10/01 17:45:52  rogeeff
-//  some tests reworked
-//  "parameterized test" test added
+//  Revision 1.4  2003/02/15 21:52:37  rogeeff
+//  mingw ostream fix
+//
+//  Revision 1.3  2002/12/09 05:16:10  rogeeff
+//  switched to use unit_test_result_saver for internal testing
+//
+//  Revision 1.2  2002/11/02 20:04:43  rogeeff
+//  release 1.29.0 merged into the main trank
 //
 
 // ***************************************************************************

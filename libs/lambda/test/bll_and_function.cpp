@@ -1,4 +1,18 @@
-//  bll_and_function.cpp  --------------------------------
+//  bll_and_function.cpp  - The Boost Lambda Library -----------------------
+//
+// Copyright (C) 2000-2003 Jaakko Järvi (jaakko.jarvi@cs.utu.fi)
+// Copyright (C) 2000-2003 Gary Powell (powellg@amazon.com)
+//
+// Permission to copy, use, sell and distribute this software is granted
+// provided this copyright notice appears in all copies. 
+// Permission to modify the code and to distribute modified code is granted
+// provided this copyright notice appears in all copies, and a notice 
+// that the code was modified is included with the copyright notice.
+//
+// This software is provided "as is" without express or implied warranty, 
+// and with no claim as to its suitability for any purpose.
+//
+// For more information, see www.boost.org
 
 // test using BLL and boost::function
 
@@ -21,13 +35,13 @@ using namespace std;
 
 void test_function() {
 
-  boost::function<int, int, int> f;
+  boost::function<int (int, int)> f;
   f = _1 + _2;
 
  BOOST_TEST(f(1, 2)== 3);
 
  int i=1; int j=2;
- boost::function<int&, int&, int> g = _1 += _2;
+ boost::function<int& (int&, int)> g = _1 += _2;
  g(i, j);
  BOOST_TEST(i==3);
 
@@ -35,7 +49,7 @@ void test_function() {
 
   int* sum = new int();
   *sum = 0;
-  boost::function<int&, int> counter = *sum += _1;
+  boost::function<int& (int)> counter = *sum += _1;
   counter(5); // ok, sum* = 5;
   BOOST_TEST(*sum == 5);
   delete sum; 

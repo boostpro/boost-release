@@ -2,25 +2,16 @@
 import class : class new ;
 
 import gcc ;
+import borland ;
 import lex ;
 import qt ;
 import extra ;
 
 import type ;
 
-type.register EXE : : : main ;
-type.register LIB : : : main ;
-type.register CPP : cpp cxx ;
-type.register C : c ;
-type.register OBJ : o ;
-type.register LEX : l ;
-type.register WHL : whl ;
-type.register DLP : dlp ;
-type.register WHL-LR0 : lr0 ;
-type.register WD : wd ;
-type.register H : h ;
 type.register UI : ui ;
-type.register UIC-H : h ;
+type.register UIC_H ;
+type.set-generated-target-suffix UIC_H : : h ;
 
 type.register X1 : x1 ;
 type.register X2 : x2  ;
@@ -28,17 +19,8 @@ type.register X_PRO : x_pro ;
 
 import generators ;
 
-generators.register-composing gcc.link : LIB OBJ : EXE : <toolset>gcc ;
-generators.register-composing gcc.archive : OBJ : LIB : <toolset>gcc ;
-generators.register-standard gcc.compile : CPP : OBJ : <toolset>gcc ;
-generators.register-standard gcc.compile : C : OBJ : <toolset>gcc ;
-generators.register-standard lex.lex : LEX : C ;
-
-generators.register-standard extra.whale : WHL : CPP WHL-LR0 ;
-generators.register-standard extra.dolphin : DLP : CPP ;
-generators.register-standard extra.wd : WD : WHL(%_parser) DLP(%_lexer) ;
-generators.register-standard qt.uic : UI UIC-H : CPP ;
-generators.register-standard qt.uic-h : UI : UIC-H ;
+generators.register-standard qt.uic : UI UIC_H : CPP ;
+generators.register-standard qt.uic-h : UI : UIC_H ;
 
 # That's an interesting example. Currently, X_PRO will be processed
 # twice.
@@ -53,15 +35,13 @@ generators.register-standard extra.x_pro : X_PRO : X1 X2 ;
 #if $(no-var) {
 import nm ;
 
-type.register CPP-MARKED : marked.cpp : CPP ;
+type.register CPP_MARKED : marked.cpp : CPP ;
 type.register POSITIONS : positions ;
 type.register NM.TARGET.CPP : target.cpp : CPP ;
 type.register NM_EXE : : EXE : main ;
 
-# Should inherit generators from base class?
-generators.register-composing gcc.link : OBJ : NM_EXE : <toolset>gcc ;
-generators.register-standard nm.target-source : CPP-MARKED : NM.TARGET.CPP ;
-generators.register-standard nm.cpp-mark : CPP : CPP-MARKED POSITIONS ;
+generators.register-standard nm.target-source : CPP_MARKED : NM.TARGET.CPP ;
+generators.register-standard nm.cpp-mark : CPP : CPP_MARKED POSITIONS ;
     
         
 rule nm.target.cpp-obj-generator 
@@ -82,13 +62,11 @@ rule nm.target.cpp-obj-generator
     rule run ( project name ? : properties * : source : multiple ? ) 
     {
         if [ $(source).type ] = CPP {    
-            local converted = [ generators.construct-dbg $(project) : NM.TARGET.CPP : $(properties) : $(source) ] ;
-            local first = [ $(converted).at 1 ] ;
-            if ! [ $(first).empty ] 
-            {
-                converted = [ $(first).get ] ;                
-                local result = [ generators.construct-dbg $(project) : OBJ : $(properties) : $(converted) ] ;
-                return [ $(result).get-at 1 ] ;
+            local converted = [ generators.construct $(project) : NM.TARGET.CPP : $(properties) : $(source) ] ;
+        if $(converted[1])
+            {            
+                local result = [ generators.construct $(project) : OBJ : $(properties) : $(converted[1]) ] ;
+                return $(result) ;
             }
             else
             {

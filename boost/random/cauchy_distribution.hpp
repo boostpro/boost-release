@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: cauchy_distribution.hpp,v 1.4 2001/11/14 21:53:38 jmaurer Exp $
+ * $Id: cauchy_distribution.hpp,v 1.12 2002/12/22 22:03:10 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -33,25 +33,36 @@ namespace boost {
 #endif
 
 // Cauchy distribution: p(x) = sigma/(pi*(sigma**2 + (x-median)**2))
-template<class UniformRandomNumberGenerator, class RealType = double>
+template<class UniformRandomNumberGenerator, class RealType = double,
+         class Adaptor = uniform_01<UniformRandomNumberGenerator, RealType> >
 class cauchy_distribution
 {
 public:
+  typedef Adaptor adaptor_type;
   typedef UniformRandomNumberGenerator base_type;
   typedef RealType result_type;
 
-  cauchy_distribution(base_type & rng, result_type median = 0, 
-                      result_type sigma = 1)
+  explicit cauchy_distribution(base_type & rng,
+                               result_type median = result_type(0), 
+                               result_type sigma = result_type(1))
     : _rng(rng), _median(median), _sigma(sigma) { }
-  // compiler-generated copy constructor is fine
-  // uniform_01 cannot be assigned, neither can this class
+
+  // compiler-generated copy ctor and assignment operator are fine
+
+  adaptor_type& adaptor() { return _rng; }
+  base_type& base() const { return _rng.base(); }
+  result_type median() const { return _median; }
+  result_type sigma() const { return _sigma; }
+  void reset() { _rng.reset(); }
+
   result_type operator()()
   {
-    const double pi = 3.14159265358979323846;
+    // Can we have a boost::mathconst please?
+    const result_type pi = result_type(3.14159265358979323846);
 #ifndef BOOST_NO_STDC_NAMESPACE
     using std::tan;
 #endif
-    return _median + _sigma * tan(pi*(_rng()-0.5));
+    return _median + _sigma * tan(pi*(_rng()-result_type(0.5)));
   }
 #ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
   friend bool operator==(const cauchy_distribution& x, 
@@ -59,6 +70,25 @@ public:
   {
     return x._median == y._median && x._sigma == y._sigma && x._rng == y._rng; 
   }
+
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+  template<class CharT, class Traits>
+  friend std::basic_ostream<CharT,Traits>&
+  operator<<(std::basic_ostream<CharT,Traits>& os, const cauchy_distribution& cd)
+  {
+    os << cd._median << " " << cd._sigma;
+    return os;
+  }
+
+  template<class CharT, class Traits>
+  friend std::basic_istream<CharT,Traits>&
+  operator>>(std::basic_istream<CharT,Traits>& is, cauchy_distribution& cd)
+  {
+    is >> std::ws >> cd._median >> std::ws >> cd._sigma;
+    return is;
+  }
+#endif
+
 #else
   // Use a member function
   bool operator==(const cauchy_distribution& rhs) const
@@ -67,7 +97,7 @@ public:
   }
 #endif
 private:
-  uniform_01<base_type, result_type> _rng;
+  adaptor_type _rng;
   result_type _median, _sigma;
 };
 

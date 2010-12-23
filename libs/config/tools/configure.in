@@ -120,10 +120,18 @@ ac_ext=$use_ac_ext
 
 AC_LANG_CPLUSPLUS
 
+OLD_CXXFLAGS="$CXXFLAGS"
+
+
 if test $enable_test = 'yes'; then
    CXXFLAGS="-I$boost_base -I$boost_base/libs/config/test $CXXFLAGS"
 else
    CXXFLAGS="-I$boost_base -I$boost_base/libs/config/test $CXXFLAGS -DBOOST_NO_CONFIG"
+fi
+
+# add the -AA conformance option to CXXFLAGS for HP aCC only
+if test $CXX = 'aCC'; then
+   CXXFLAGS="-AA $CXXFLAGS"
 fi
 
 dnl check for some standard libraries
@@ -155,7 +163,7 @@ for file in $boost_base/libs/config/test/boost_no*.cxx; do
    else
       AC_MSG_CHECKING($title )
    fi
-   AC_TRY_LINK(
+   AC_TRY_RUN(
    [
 #include <boost/config.hpp>
 #include "test.hpp"
@@ -166,9 +174,7 @@ for file in $boost_base/libs/config/test/boost_no*.cxx; do
 namespace ${namespace} = empty_boost;
 #endif
 
-   ]
-   ,
-   [ return ${namespace}::test(); ]
+int main(){ return ${namespace}::test(); } ]
    ,
    [AC_MSG_RESULT(OK)]
    ,
@@ -180,7 +186,7 @@ namespace ${namespace} = empty_boost;
    
    ac_ext=$use_ac_ext
    AC_MSG_CHECKING($title (fail expected) )
-   AC_TRY_LINK(
+   AC_TRY_RUN(
    [
 #include <boost/config.hpp>
 #include "test.hpp"
@@ -191,9 +197,7 @@ namespace ${namespace} = empty_boost;
 #error "this file should not compile"
 #endif
 
-   ]
-   ,
-   [return ${namespace}::test();]
+int main() { return ${namespace}::test(); }]
    ,
    [AC_MSG_RESULT(failed)
    required_undefs="$macroname $required_undefs"]
@@ -223,7 +227,7 @@ for file in $boost_base/libs/config/test/boost_has*.cxx; do
    ac_ext=$use_ac_ext
    if test $enable_test = 'yes'; then
    AC_MSG_CHECKING($title (pass expected) )
-   AC_TRY_LINK(
+   AC_TRY_RUN(
    [
 #include <boost/config.hpp>
 #include "test.hpp"
@@ -234,9 +238,7 @@ for file in $boost_base/libs/config/test/boost_has*.cxx; do
 namespace ${namespace} = empty_boost;
 #endif
 
-   ]
-   ,
-   [return ${namespace}::test();]
+int main(){ return ${namespace}::test(); }]
    ,
    [AC_MSG_RESULT(OK)]
    ,
@@ -245,7 +247,7 @@ namespace ${namespace} = empty_boost;
    )
    
    AC_MSG_CHECKING($title (fail expected) )
-   AC_TRY_LINK(
+   AC_TRY_RUN(
    [
 #include <boost/config.hpp>
 #include "test.hpp"
@@ -256,9 +258,7 @@ namespace ${namespace} = empty_boost;
 #error "this file should not compile"
 #endif
 
-   ]
-   ,
-   [return ${namespace}::test();]
+int main(){ return ${namespace}::test(); }]
    ,
    [
    AC_MSG_RESULT(failed)
@@ -274,16 +274,14 @@ namespace ${namespace} = empty_boost;
 
    ac_ext=$use_ac_ext
    AC_MSG_CHECKING($title)
-   AC_TRY_LINK(
+   AC_TRY_RUN(
    [
 #include <boost/config.hpp>
 #include "test.hpp"
 
 #include "boost_$basename.cxx"
 
-   ]
-   ,
-   [return ${namespace}::test();]
+int main(){ return ${namespace}::test(); }]
    ,
    [
       AC_MSG_RESULT(Yes)
@@ -307,15 +305,21 @@ if test $enable_test = 'yes'; then
 
 if test "$required_defs" = ""; then
 echo no boost macros need to be defined
+echo no boost macros need to be defined >&5
 else
 echo the following macros need to be defined
 echo    $required_defs
+echo the following macros need to be defined >&5
+echo    $required_defs >&5
 fi
 if test "$required_undefs" = ""; then
 echo no boost macros need to be undefined
+echo no boost macros need to be undefined >&5
 else
 echo "the following macros need to be undef'ed"
 echo    $required_undefs
+echo "the following macros need to be undef'ed" >&5
+echo    $required_undefs >&5
 fi
 
 else
@@ -374,6 +378,20 @@ done
 
 cat_conts=`cat user.hpp`
 
+#
+# post configuration step:
+#   
+AC_MSG_CHECKING(original configuration )
+rm -f conftest$ac_exeext
+$CXX -I$boost_base $OLD_CXXFLAGS -DBOOST_NO_USER_CONFIG -o conftest$ac_exeext $LDFLAGS $boost_base/libs/config/test/config_info.cpp $LIBS >&5 2>&1
+./conftest >&5 2>&1
+AC_MSG_RESULT(done)
+AC_MSG_CHECKING(new configuration )
+rm -f conftest$ac_exeext
+$CXX -I$boost_base -I$boost_base/libs/config $OLD_CXXFLAGS -DBOOST_USER_CONFIG='"user.hpp"' -o conftest$ac_exeext $LDFLAGS $boost_base/libs/config/test/config_info.cpp $LIBS >&5 2>&1
+./conftest >&5 2>&1
+AC_MSG_RESULT(done)
+
 AC_OUTPUT(
 [],
 [
@@ -397,6 +415,10 @@ cat_conts="$cat_conts"
 )
 
 fi
+
+
+
+
 
 
 

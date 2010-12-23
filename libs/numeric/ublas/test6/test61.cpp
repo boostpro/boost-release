@@ -1,3 +1,19 @@
+//
+//  Copyright (c) 2000-2002
+//  Joerg Walter, Mathias Koch
+//
+//  Permission to use, copy, modify, distribute and sell this software
+//  and its documentation for any purpose is hereby granted without fee,
+//  provided that the above copyright notice appear in all copies and
+//  that both that copyright notice and this permission notice appear
+//  in supporting documentation.  The authors make no representations
+//  about the suitability of this software for any purpose.
+//  It is provided "as is" without express or implied warranty.
+//
+//  The authors gratefully acknowledge the support of
+//  GeNeSys mbH & Co. KG in producing this work.
+//
+
 #ifdef BOOST_MSVC
 
 #pragma warning (disable: 4355)
@@ -17,7 +33,7 @@
 
 #include "test6.hpp"
 
-// Test vector expression templates 
+// Test vector expression templates
 template<class V, int N>
 struct test_my_vector {
     typedef typename V::value_type value_type;
@@ -26,7 +42,7 @@ struct test_my_vector {
 
     template<class VP>
     void operator () (VP &v1, VP &v2, VP &v3) const {
-        try {            
+        try {
             value_type t;
             size_type i;
             real_type n;
@@ -117,25 +133,10 @@ struct test_my_vector {
         }
     }
     void operator () () const {
-        try {            
+        try {
             V v1 (N), v2 (N), v3 (N);
             (*this) (v1, v2, v3);
 
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-#ifdef USE_RANGE
-            ublas::vector_range<V> vr1 (v1, ublas::range<> (0, N)),
-                                   vr2 (v2, ublas::range<> (0, N)),
-                                   vr3 (v3, ublas::range<> (0, N));
-            (*this) (vr1, vr2, vr3);
-#endif
-
-#ifdef USE_SLICE
-            ublas::vector_slice<V> vs1 (v1, ublas::slice<> (0, 1, N)),
-                                   vs2 (v2, ublas::slice<> (0, 1, N)),
-                                   vs3 (v3, ublas::slice<> (0, 1, N));
-            (*this) (vs1, vs2, vs3);
-#endif
-#else
 #ifdef USE_RANGE
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N)),
@@ -148,7 +149,6 @@ struct test_my_vector {
                                    vs2 (v2, ublas::slice (0, 1, N)),
                                    vs3 (v3, ublas::slice (0, 1, N));
             (*this) (vs1, vs2, vs3);
-#endif
 #endif
         }
         catch (std::exception &e) {
@@ -165,45 +165,75 @@ void test_vector () {
     std::cout << "test_vector" << std::endl;
 
 #ifdef USE_BOUNDED_ARRAY
+#ifdef USE_FLOAT
     std::cout << "float, bounded_array" << std::endl;
     test_my_vector<ublas::vector<float, ublas::bounded_array<float, 3> >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "double, bounded_array" << std::endl;
     test_my_vector<ublas::vector<double, ublas::bounded_array<double, 3> >, 3 > () ();
+#endif
 
+#ifdef USE_STD_COMPLEX
+#ifdef USE_FLOAT
     std::cout << "std::complex<float>, bounded_array" << std::endl;
     test_my_vector<ublas::vector<std::complex<float>, ublas::bounded_array<std::complex<float>, 3> >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "std::complex<double>, bounded_array" << std::endl;
     test_my_vector<ublas::vector<std::complex<double>, ublas::bounded_array<std::complex<double>, 3> >, 3 > () ();
 #endif
+#endif
+#endif
 
 #ifdef USE_UNBOUNDED_ARRAY
+#ifdef USE_FLOAT
     std::cout << "float, unbounded_array" << std::endl;
     test_my_vector<ublas::vector<float, ublas::unbounded_array<float> >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "double, unbounded_array" << std::endl;
     test_my_vector<ublas::vector<double, ublas::unbounded_array<double> >, 3 > () ();
+#endif
 
+#ifdef USE_STD_COMPLEX
+#ifdef USE_FLOAT
     std::cout << "std::complex<float>, unbounded_array" << std::endl;
     test_my_vector<ublas::vector<std::complex<float>, ublas::unbounded_array<std::complex<float> > >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "std::complex<double>, unbounded_array" << std::endl;
     test_my_vector<ublas::vector<std::complex<double>, ublas::unbounded_array<std::complex<double> > >, 3 > () ();
 #endif
+#endif
+#endif
 
 #ifdef USE_STD_VECTOR
+#ifdef USE_FLOAT
     std::cout << "float, std::vector" << std::endl;
     test_my_vector<ublas::vector<float, std::vector<float> >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "double, std::vector" << std::endl;
     test_my_vector<ublas::vector<double, std::vector<double> >, 3 > () ();
+#endif
 
+#ifdef USE_STD_COMPLEX
+#ifdef USE_FLOAT
     std::cout << "std::complex<float>, std::vector" << std::endl;
     test_my_vector<ublas::vector<std::complex<float>, std::vector<std::complex<float> > >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "std::complex<double>, std::vector" << std::endl;
     test_my_vector<ublas::vector<std::complex<double>, std::vector<std::complex<double> > >, 3 > () ();
+#endif
+#endif
 #endif
 }
 

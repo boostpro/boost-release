@@ -9,7 +9,7 @@
 //
 //  File        : $RCSfile: test_exec_fail2.cpp,v $
 //
-//  Version     : $Id: test_exec_fail2.cpp,v 1.4 2002/08/26 09:08:06 rogeeff Exp $
+//  Version     : $Id: test_exec_fail2.cpp,v 1.6 2003/02/15 21:58:32 rogeeff Exp $
 //
 //  Description : test failures reported by differen Test Tools.
 //  Should fail during run.
@@ -22,11 +22,13 @@ int test_main( int, char *[] )  // note the name
 {
     int v = 1;
 
-    BOOST_CHECK( v == 2 );
-    BOOST_ERROR( "sample BOOST_ERROR call" );
-    BOOST_REQUIRE( 2 == v );
+    if( v < 10 ) { // to eliminate unreachable return statement warning
+        BOOST_CHECK( v == 2 );
+        BOOST_ERROR( "sample BOOST_ERROR call" );
+        BOOST_REQUIRE( 2 == v );
 
-    throw "Opps! should never reach this point";
+        throw "Opps! should never reach this point";
+    }
 
     return 1;
 }
@@ -37,11 +39,12 @@ int test_main( int, char *[] )  // note the name
 //  Revision History :
 //  
 //  $Log: test_exec_fail2.cpp,v $
-//  Revision 1.4  2002/08/26 09:08:06  rogeeff
-//  cvs kw added
+//  Revision 1.6  2003/02/15 21:58:32  rogeeff
+//  borland warning fix
 //
-//  25 Oct 01  Revisited version (Gennadiy Rozental)
-//   7 Nov 00  Initial boost version (Beman Dawes)
+//  Revision 1.5  2002/11/02 20:04:43  rogeeff
+//  release 1.29.0 merged into the main trank
+//
 
 // ***************************************************************************
 

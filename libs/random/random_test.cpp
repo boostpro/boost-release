@@ -10,14 +10,15 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_test.cpp,v 1.25 2002/07/18 19:01:59 beman_dawes Exp $
+ * $Id: random_test.cpp,v 1.40 2003/02/21 19:24:36 beman_dawes Exp $
  */
 
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include <string>
 #include <cmath>
 #include <iterator>
+#include <vector>
 #include <boost/random.hpp>
 #include <boost/config.hpp>
 
@@ -25,7 +26,7 @@
 #include <boost/test/test_tools.hpp>
 
 #ifdef BOOST_NO_STDC_NAMESPACE
-  namespace std { using ::fabs; }
+  namespace std { using ::abs; using ::fabs; using ::pow; }
 #endif
 
 
@@ -43,16 +44,58 @@
  * Validate correct implementation
  */
 
+// own run
+bool check(unsigned long x, const boost::mt11213b&) { return x == 0xa37d3c92; }
+
+// validation by experiment from mt19937.c
+bool check(unsigned long x, const boost::mt19937&) { return x == 3346425566U; }
+
+// validation values from the publications
+bool check(int x, const boost::minstd_rand0&) { return x == 1043618065; }
+
+// validation values from the publications
+bool check(int x, const boost::minstd_rand&) { return x == 399268537; }
+
+#if !defined(BOOST_NO_INT64_T) && !defined(BOOST_NO_INTEGRAL_INT64_T)
+// by experiment from lrand48()
+bool check(unsigned long x, const boost::rand48&) { return x == 1993516219; }
+#endif
+
+// ????
+bool check(unsigned long x, const boost::taus88&) { return x == 3535848941U; }
+
+// ????
+bool check(int x, const boost::ecuyer1988&) { return x == 2060321752; }
+
+// validation by experiment from Harry Erwin's generator.h (private e-mail)
+bool check(unsigned int x, const boost::kreutzer1986&) { return x == 139726; }
+
+bool check(double x, const boost::lagged_fibonacci607&) { return std::abs(x-0.401269) < 1e-5; }
+
+// principal operation validated with CLHEP, values by experiment
+bool check(unsigned long x, const boost::ranlux3&) { return x == 5957620; }
+bool check(unsigned long x, const boost::ranlux4&) { return x == 8587295; }
+
+bool check(float x, const boost::ranlux3_01&)
+{ return std::abs(x-5957620/std::pow(2.0f,24)) < 1e-6; }
+bool check(float x, const boost::ranlux4_01&)
+{ return std::abs(x-8587295/std::pow(2.0f,24)) < 1e-6; }
+
+bool check(double x, const boost::ranlux64_3_01&)
+{ return std::abs(x-0.838413) < 1e-6; }
+bool check(double x, const boost::ranlux64_4_01&)
+{ return std::abs(x-0.59839) < 1e-6; }
+
 template<class PRNG>
 void validate(const std::string & name, const PRNG &)
 {
   std::cout << "validating " << name << ": ";
-  PRNG rng;
+  PRNG rng;  // default ctor
   for(int i = 0; i < 9999; i++)
     rng();
   typename PRNG::result_type val = rng();
-  // make sure the validation function is a const member
-  bool result = const_cast<const PRNG&>(rng).validation(val);
+  // make sure the validation function is a static member
+  bool result = check(val, rng);
   
   // allow for a simple eyeball check for MSVC instantiation brokenness
   // (if the numbers for all generators are the same, it's obviously broken)
@@ -69,8 +112,17 @@ void validate_all()
   validate("minstd_rand", minstd_rand());
   validate("minstd_rand0", minstd_rand0());
   validate("ecuyer combined", ecuyer1988());
+  validate("mt11213b", mt11213b());
   validate("mt19937", mt19937());
   validate("kreutzer1986", kreutzer1986());
+  validate("ranlux3", ranlux3());
+  validate("ranlux4", ranlux4());
+  validate("ranlux3_01", ranlux3_01());
+  validate("ranlux4_01", ranlux4_01());
+  validate("ranlux64_3_01", ranlux64_3_01());
+  validate("ranlux64_4_01", ranlux64_4_01());
+  validate("taus88", taus88());
+  validate("lagged_fibonacci607", lagged_fibonacci607());
 }
 
 
@@ -78,10 +130,79 @@ void validate_all()
  * Check function signatures
  */
 
+template<class Dist>
+void instantiate_dist(const char * name, const Dist& dist)
+{
+  // check reference maintenance throughout
+  typename Dist::base_type& b = dist.base();
+  Dist d = dist;       // copy ctor
+  typename Dist::result_type result = d();
+  (void) &result;      // avoid "unused variable" warning
+  b();
+  BOOST_TEST(d.base() == b);
+  d.reset();
+  d = dist;            // copy assignment
+  b();
+  BOOST_TEST(d.base() == b);
+
+  Dist d2(dist.base());    // single-argument constructor
+  d2();
+
+  typename Dist::adaptor_type& adapt = d2.adaptor();
+  adapt();
+
+#if !defined(BOOST_NO_OPERATORS_IN_NAMESPACE) && !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
+  {
+    std::ostringstream file;
+    file << d.base() << std::endl;
+    file << d;
+    std::istringstream input(file.str());
+    // std::cout << file.str() << std::endl;
+    typename Dist::base_type engine;
+    input >> engine;
+    input >> std::ws;
+    Dist restored_dist(engine);
+    input >> restored_dist;
+#if !defined(BOOST_MSVC) || BOOST_MSVC > 1300 // MSVC brokenness
+    // advance some more so that state is exercised
+    for(int i = 0; i < 10000; ++i) {
+      d();
+      restored_dist();
+    }
+    BOOST_CHECK_MESSAGE(std::abs(double(d()-restored_dist())) < 0.0001,
+                        std::string(name) + " d == restored_dist");
+#endif // BOOST_MSVC
+  }
+#endif // BOOST_NO_OPERATORS_IN_NAMESPACE
+}
+
+template<class URNG, class RealType>
+void instantiate_real_dist(URNG& urng, RealType /* ignored */)
+{
+  instantiate_dist("uniform_01",
+                   boost::uniform_01<URNG, RealType>(urng));
+  instantiate_dist("uniform_real",
+                   boost::uniform_real<URNG, RealType>(urng, 0, 2.1));
+  instantiate_dist("triangle_distribution",
+                   boost::triangle_distribution<URNG, RealType>(urng, 1, 1.5, 7));
+  instantiate_dist("exponential_distribution",
+                   boost::exponential_distribution<URNG, RealType>(urng, 5));
+  instantiate_dist("normal_distribution",
+                   boost::normal_distribution<URNG, RealType>(urng));
+  instantiate_dist("lognormal_distribution",
+                   boost::lognormal_distribution<URNG, RealType>(urng, 1, 1));
+  instantiate_dist("poisson_distribution",
+                   boost::poisson_distribution<URNG, RealType>(urng, 1));
+  instantiate_dist("cauchy_distribution",
+                   boost::cauchy_distribution<URNG, RealType>(urng, 1));
+  instantiate_dist("gamma_distribution",
+                   boost::gamma_distribution<URNG, RealType>(urng, 1));
+}
+
 template<class URNG, class ResultType>
 void instantiate_urng(const std::string & s, const URNG &, const ResultType &)
 {
-  std::cout << "Basic tests for " << s << std::endl;
+  std::cout << "Basic tests for " << s;
   URNG urng;
   int a[URNG::has_fixed_range ? 5 : 10];        // compile-time constant
   (void) a;   // avoid "unused" warning
@@ -89,54 +210,95 @@ void instantiate_urng(const std::string & s, const URNG &, const ResultType &)
   ResultType x2 = x1;
   (void) &x2;           // avoid "unused" warning
 
+  URNG urng2 = urng;             // copy constructor
 #if !defined(BOOST_MSVC) || BOOST_MSVC > 1300 // MSVC brokenness
-  URNG urng2 = urng;           // copy constructor
-  BOOST_TEST(urng == urng2);   // operator==
+  BOOST_TEST(urng == urng2);     // operator==
+  BOOST_TEST(!(urng != urng2));  // operator!=
   urng();
-  urng2 = urng;              // assignment
+  urng2 = urng;                  // copy assignment
   BOOST_TEST(urng == urng2);
 #endif // BOOST_MSVC
 
-#ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
+  const std::vector<int> v(9999u, 0x41);
+  std::vector<int>::const_iterator it = v.begin();
+  URNG urng3(it, v.end());
+  BOOST_TEST(it != v.begin());
+  std::cout << "; seeding uses " << (it - v.begin()) << " words" << std::endl;
+
+  bool have_exception = false;
+  try {
+    // now check that exceptions are thrown
+    it = v.end();
+    urng3.seed(it, v.end());
+  } catch(std::invalid_argument& x) {
+    have_exception = true;
+  }
+  BOOST_TEST(have_exception);
+
+#if !defined(BOOST_NO_OPERATORS_IN_NAMESPACE) && !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
   // Streamable concept not supported for broken compilers
+
+  // advance a little so that state is relatively arbitrary
+  for(int i = 0; i < 9307; ++i)
+    urng();
+  urng2 = urng;
+
   {
-    std::ofstream file("rng.tmp", std::ofstream::trunc);
+    // narrow stream first
+    std::ostringstream file;
     file << urng;
-  }
-  // move forward
-  urng();
-  {
+    // move forward
+    urng();
     // restore old state
-    std::ifstream file("rng.tmp");
-    file >> urng;
-  }
+    std::istringstream input(file.str());
+    input >> urng;
+    // std::cout << file.str() << std::endl;
 #if !defined(BOOST_MSVC) || BOOST_MSVC > 1300 // MSVC brokenness
-  BOOST_TEST(urng == urng2);
+    // advance some more so that state is exercised
+    for(int i = 0; i < 10000; ++i) {
+      urng();
+      urng2();
+    }
+    BOOST_TEST(urng == urng2);
 #endif // BOOST_MSVC
+  }
+  
+  urng2 = urng;
+  {
+    // then wide stream
+    std::wostringstream file;
+    file << urng;
+    // move forward
+    urng();
+    std::wistringstream input(file.str());
+    input >> urng;
+#if !defined(BOOST_MSVC) || BOOST_MSVC > 1300 // MSVC brokenness
+    BOOST_TEST(urng == urng2);
+#endif // BOOST_MSVC
+  }
 #endif // BOOST_NO_OPERATORS_IN_NAMESPACE
 
   // instantiate various distributions with this URNG
-  boost::uniform_smallint<URNG> unismall(urng, 0, 11);
-  unismall();
-  boost::uniform_int<URNG> uni_int(urng, -200, 20000);
-  uni_int();
-  boost::uniform_real<URNG> uni_real(urng, 0, 2.1);
-  uni_real();
+  instantiate_dist("uniform_smallint",
+                   boost::uniform_smallint<URNG>(urng, 0, 11));
+  instantiate_dist("uniform_int",
+                   boost::uniform_int<URNG>(urng, -200, 20000));
+  instantiate_dist("geometric_distribution",
+                   boost::geometric_distribution<URNG>(urng, 0.8));
+  instantiate_dist("bernoulli_distribution",
+                   boost::bernoulli_distribution<URNG>(urng, 0.2));
+  instantiate_dist("binomial_distribution",
+                   boost::binomial_distribution<URNG>(urng, 4, 0.2));
 
-  boost::bernoulli_distribution<URNG> ber(urng, 0.2);
-  ber();
-  boost::geometric_distribution<URNG> geo(urng, 0.8);
-  geo();
-  boost::triangle_distribution<URNG> tria(urng, 1, 1.5, 7);
-  tria();
-  boost::exponential_distribution<URNG> ex(urng, 5);
-  ex();
-  boost::normal_distribution<URNG> norm(urng);
-  norm();
-  boost::lognormal_distribution<URNG> lnorm(urng, 1, 1);
-  lnorm();
-  boost::uniform_on_sphere<URNG> usph(urng, 2);
-  usph();
+  instantiate_real_dist(urng, 1.0f);
+  instantiate_real_dist(urng, 1.0);
+  instantiate_real_dist(urng, 1.0l);
+
+#if 0
+  // We cannot compare the outcomes before/after save with std::abs(x-y)
+  instantiate_dist("uniform_on_sphere",
+                   boost::uniform_on_sphere<URNG>(urng, 2));
+#endif
 }
 
 void instantiate_all()
@@ -171,6 +333,22 @@ void instantiate_all()
 
   random_number_generator<mt19937> std_rng(mt2);
   (void) std_rng(10);
+
+  instantiate_urng("lagged_fibonacci",
+                   boost::random::lagged_fibonacci<boost::uint32_t, 24, 607, 273>(),
+                   0u);
+  instantiate_urng("lagged_fibonacci607", lagged_fibonacci607(), 0.0);
+
+  instantiate_urng("ranlux3", ranlux3(), 0u);
+  instantiate_urng("ranlux4", ranlux4(), 0u);
+
+  instantiate_urng("ranlux3_01", ranlux3_01(), 0.0f);
+  instantiate_urng("ranlux4_01", ranlux4_01(), 0.0f);
+
+  instantiate_urng("ranlux64_3_01", ranlux64_3_01(), 0.0);
+  instantiate_urng("ranlux64_4_01", ranlux64_4_01(), 0.0);
+
+  instantiate_urng("taus88", taus88(), 0u);
 }
 
 /*
@@ -280,6 +458,8 @@ INSTANT(boost::mt11213b)
 
 int test_main(int, char*[])
 {
+
+#if !defined(__INTEL_COMPILER) || !defined(_MSC_VER) || __INTEL_COMPILER > 700 
   instantiate_all();
   validate_all();
   boost::mt19937 mt;
@@ -298,4 +478,8 @@ int test_main(int, char*[])
   (void) x();
 
   return 0;
+#else
+  std::cout << "Intel 7.00 on Win32 loops, so the test is disabled\n";
+  return 1;
+#endif
 }

@@ -10,9 +10,9 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * See http://www.boost.org for most recent version including documentation.
+ * See http://www.boost.org/libs/random for documentation.
  *
- * $Id: random.hpp,v 1.15 2001/06/01 17:14:54 jmaurer Exp $
+ * $Id: random.hpp,v 1.17 2002/12/27 16:51:53 beman_dawes Exp $
  *
  * Revision history
  *  2000-02-18  portability fixes (thanks to Beman Dawes)
@@ -44,6 +44,15 @@
 #include <boost/random/shuffle_output.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/lagged_fibonacci.hpp>
+#include <boost/random/ranlux.hpp>
+#include <boost/random/linear_feedback_shift.hpp>
+#include <boost/random/xor_combine.hpp>
+
+namespace boost {
+  typedef random::xor_combine<random::xor_combine<random::linear_feedback_shift<uint32_t, 32, 31, 13, 12, 0>, 0,
+    random::linear_feedback_shift<uint32_t, 32, 29, 2, 4, 0>, 0, 0>, 0,
+                      random::linear_feedback_shift<uint32_t, 32, 28, 3, 17, 0>, 0, 0> taus88;
+} // namespace  boost
 
 // misc
 #include <boost/random/random_number_generator.hpp>
@@ -60,6 +69,9 @@
 #include <boost/random/geometric_distribution.hpp>
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/lognormal_distribution.hpp>
+#include <boost/random/poisson_distribution.hpp>
+#include <boost/random/gamma_distribution.hpp>
+#include <boost/random/binomial_distribution.hpp>
 #include <boost/random/uniform_on_sphere.hpp>
 
 #endif // BOOST_RANDOM_HPP

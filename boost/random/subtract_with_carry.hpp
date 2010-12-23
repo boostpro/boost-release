@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: subtract_with_carry.hpp,v 1.1 2002/09/13 21:30:54 jmaurer Exp $
+ * $Id: subtract_with_carry.hpp,v 1.11 2003/01/15 15:43:36 david_abrahams Exp $
  *
  * Revision history
  *  2002-03-02  created
@@ -23,38 +23,67 @@
 
 #include <iostream>
 #include <algorithm>     // std::equal
+#include <stdexcept>
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
 #include <boost/cstdint.hpp>
+#include <boost/static_assert.hpp>
 #include <boost/random/linear_congruential.hpp>
 
 
 namespace boost {
 namespace random {
 
-// subtract-with-carry generator for integers
-// by Martin Luscher
+# if BOOST_WORKAROUND(_MSC_FULL_VER, BOOST_TESTED_AT(13102292)) && BOOST_MSVC > 1300
+namespace detail
+{
+  template <class IStream, class SubtractWithCarry, class RealType>
+  void extract_subtract_with_carry_01(
+      IStream& is
+      , SubtractWithCarry& f
+      , RealType& carry
+      , RealType* x
+      , RealType modulus)
+  {
+    RealType value;
+    for(unsigned int j = 0; j < f.long_lag; ++j) {
+      is >> value >> std::ws;
+      x[j] = value / modulus;
+    }
+    is >> value >> std::ws;
+    carry = value / modulus;
+  }
+}
+# endif 
+// subtract-with-carry generator
+// Marsaglia and Zaman
 
-template<class IntType, unsigned int b, unsigned int s, unsigned int r,
+template<class IntType, IntType m, unsigned int s, unsigned int r,
   IntType val>
 class subtract_with_carry
 {
 public:
   typedef IntType result_type;
   BOOST_STATIC_CONSTANT(bool, has_fixed_range = true);
-  BOOST_STATIC_CONSTANT(bool, min_value = 0);
-  BOOST_STATIC_CONSTANT(bool, max_value = b-1);
-  BOOST_STATIC_CONSTANT(unsigned int, base = b);
+  BOOST_STATIC_CONSTANT(result_type, min_value = 0);
+  BOOST_STATIC_CONSTANT(result_type, max_value = m-1);
+  BOOST_STATIC_CONSTANT(result_type, modulus = m);
   BOOST_STATIC_CONSTANT(unsigned int, long_lag = r);
   BOOST_STATIC_CONSTANT(unsigned int, short_lag = s);
 
-  result_type min() const { return min_value; }
-  result_type max() const { return max_value; }
-
-  subtract_with_carry() { seed(); }
+  subtract_with_carry() {
+    // MSVC fails BOOST_STATIC_ASSERT with std::numeric_limits at class scope
+#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+    BOOST_STATIC_ASSERT(std::numeric_limits<result_type>::is_signed);
+    BOOST_STATIC_ASSERT(std::numeric_limits<result_type>::is_integer);
+#endif
+    seed();
+  }
   explicit subtract_with_carry(uint32_t value) { seed(value); }
   template<class Generator>
   explicit subtract_with_carry(Generator & gen) { seed(gen); }
+  template<class It> subtract_with_carry(It& first, It last) { seed(first,last); }
+
   // compiler-generated copy ctor and assignment operator are fine
 
   void seed(uint32_t value = 19780503u)
@@ -71,98 +100,330 @@ public:
   {
     // I could have used std::generate_n, but it takes "gen" by value
     for(unsigned int j = 0; j < long_lag; ++j)
-      x[j] = gen() % base;
+      x[j] = gen() % modulus;
     carry = (x[long_lag-1] == 0);
-    // call fill() next time operator() is called
-    i = long_lag;
+    k = 0;
   }
+
+  template<class It>
+  void seed(It& first, It last)
+  {
+    unsigned int j;
+    for(j = 0; j < long_lag && first != last; ++j, ++first)
+      x[j] = *first % modulus;
+    if(first == last && j < long_lag)
+      throw std::invalid_argument("subtract_with_carry::seed");
+    carry = (x[long_lag-1] == 0);
+    k = 0;
+   }
+
+  result_type min() const { return min_value; }
+  result_type max() const { return max_value; }
 
   result_type operator()()
   {
-    if(i >= long_lag)
-      fill();
-    return x[i++];
+    int short_index = k - short_lag;
+    if(short_index < 0)
+      short_index += long_lag;
+    IntType delta = x[short_index] - x[k] - carry;
+    if(delta < 0) {
+      delta += modulus;
+      carry = 1;
+    } else {
+      carry = 0;
+    }
+    x[k] = delta;
+    ++k;
+    if(k >= long_lag)
+      k = 0;
+    return delta;
   }
 
+public:
   static bool validation(result_type x) { return x == val; }
   
 #ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
-  friend std::ostream& operator<<(std::ostream& os, const subtract_with_carry& f)
+
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+  template<class CharT, class Traits>
+  friend std::basic_ostream<CharT,Traits>&
+  operator<<(std::basic_ostream<CharT,Traits>& os,
+             const subtract_with_carry& f)
   {
-    os << f.i << " " << f.carry << " ";
-    for(unsigned int i = 0; i < long_lag; ++i)
-      os << f.x[i] << " ";
+    for(unsigned int j = 0; j < f.long_lag; ++j)
+      os << f.compute(j) << " ";
+    os << f.carry << " ";
     return os;
   }
-  friend std::istream& operator>>(std::istream& is, subtract_with_carry& f)
+
+  template<class CharT, class Traits>
+  friend std::basic_istream<CharT,Traits>&
+  operator>>(std::basic_istream<CharT,Traits>& is, subtract_with_carry& f)
   {
-    is >> f.i >> std::ws >> f.carry >> std::ws;
-    for(unsigned int i = 0; i < long_lag; ++i)
-      is >> f.x[i] >> std::ws;
+    for(unsigned int j = 0; j < f.long_lag; ++j)
+      is >> f.x[j] >> std::ws;
+    is >> f.carry >> std::ws;
+    f.k = 0;
     return is;
   }
+#endif
+
   friend bool operator==(const subtract_with_carry& x, const subtract_with_carry& y)
-  { return x.i == y.i && std::equal(x.x, x.x+long_lag, y.x); }
+  {
+    for(unsigned int j = 0; j < r; ++j)
+      if(x.compute(j) != y.compute(j))
+        return false;
+    return true;
+  }
+
+  friend bool operator!=(const subtract_with_carry& x, const subtract_with_carry& y)
+  { return !(x == y); }
 #else
   // Use a member function; Streamable concept not supported.
   bool operator==(const subtract_with_carry& rhs) const
-  { return i == rhs.i && std::equal(x, x+long_lag, rhs.x); }
+  {
+    for(unsigned int j = 0; j < r; ++j)
+      if(compute(j) != rhs.compute(j))
+        return false;
+    return true;
+  }
+
+  bool operator!=(const subtract_with_carry& rhs) const
+  { return !(*this == rhs); }
 #endif
 
 private:
-  void fill();
-  unsigned int i;
-  unsigned int carry;
+  // returns x(i-r+index), where index is in 0..r-1
+  IntType compute(unsigned int index) const
+  {
+    return x[(k+index) % long_lag];
+  }
+
+  // state representation; next output (state) is x(i)
+  //   x[0]  ... x[k] x[k+1] ... x[long_lag-1]     represents
+  //  x(i-k) ... x(i) x(i+1) ... x(i-k+long_lag-1)
+  // speed: base: 20-25 nsec
+  // ranlux_4: 230 nsec, ranlux_7: 430 nsec, ranlux_14: 810 nsec
+  // This state representation makes operator== and save/restore more
+  // difficult, because we've already computed "too much" and thus
+  // have to undo some steps to get at x(i-r) etc.
+
+  // state representation: next output (state) is x(i)
+  //   x[0]  ... x[k] x[k+1]          ... x[long_lag-1]     represents
+  //  x(i-k) ... x(i) x(i-long_lag+1) ... x(i-k-1)
+  // speed: base 28 nsec
+  // ranlux_4: 370 nsec, ranlux_7: 688 nsec, ranlux_14: 1343 nsec
   IntType x[long_lag];
+  unsigned int k;
+  unsigned int carry;
 };
 
 #ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
 //  A definition is required even for integral static constants
-template<class IntType, unsigned int b, unsigned int s, unsigned int r, IntType val>
-const bool subtract_with_carry<IntType, b, s, r, val>::has_fixed_range;
-template<class IntType, unsigned int b, unsigned int s, unsigned int r, IntType val>
-const unsigned int subtract_with_carry<IntType, b, s, r, val>::base;
-template<class IntType, unsigned int b, unsigned int s, unsigned int r, IntType val>
-const unsigned int subtract_with_carry<IntType, b, s, r, val>::long_lag;
-template<class IntType, unsigned int b, unsigned int s, unsigned int r, IntType val>
-const unsigned int subtract_with_carry<IntType, b, s, r, val>::short_lag;
+template<class IntType, IntType m, unsigned int s, unsigned int r, IntType val>
+const bool subtract_with_carry<IntType, m, s, r, val>::has_fixed_range;
+template<class IntType, IntType m, unsigned int s, unsigned int r, IntType val>
+const IntType subtract_with_carry<IntType, m, s, r, val>::min_value;
+template<class IntType, IntType m, unsigned int s, unsigned int r, IntType val>
+const IntType subtract_with_carry<IntType, m, s, r, val>::max_value;
+template<class IntType, IntType m, unsigned int s, unsigned int r, IntType val>
+const IntType subtract_with_carry<IntType, m, s, r, val>::modulus;
+template<class IntType, IntType m, unsigned int s, unsigned int r, IntType val>
+const unsigned int subtract_with_carry<IntType, m, s, r, val>::long_lag;
+template<class IntType, IntType m, unsigned int s, unsigned int r, IntType val>
+const unsigned int subtract_with_carry<IntType, m, s, r, val>::short_lag;
 #endif
 
-template<class IntType, unsigned int b, unsigned int s, unsigned int r, IntType val>
-void subtract_with_carry<IntType, b, s, r, val>::fill()
+
+// use a floating-point representation to produce values in [0..1)
+template<class RealType, int w, unsigned int s, unsigned int r, int val=0>
+class subtract_with_carry_01
 {
-  // two loops to avoid costly modulo operations
-  {  // extra scope for MSVC brokenness w.r.t. for scope
-  for(unsigned int j = 0; j < short_lag; ++j) {
-    IntType delta = x[j+(long_lag-short_lag)] - x[j] - carry;
+public:
+  typedef RealType result_type;
+  BOOST_STATIC_CONSTANT(bool, has_fixed_range = false);
+  BOOST_STATIC_CONSTANT(int, word_size = w);
+  BOOST_STATIC_CONSTANT(unsigned int, long_lag = r);
+  BOOST_STATIC_CONSTANT(unsigned int, short_lag = s);
+
+#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+  BOOST_STATIC_ASSERT(!std::numeric_limits<result_type>::is_integer);
+#endif
+
+  subtract_with_carry_01() { init_modulus(); seed(); }
+  explicit subtract_with_carry_01(uint32_t value)
+  { init_modulus(); seed(value);   }
+  template<class It> subtract_with_carry_01(It& first, It last)
+  { init_modulus(); seed(first,last); }
+
+private:
+  void init_modulus()
+  {
+#ifndef BOOST_NO_STDC_NAMESPACE
+    // allow for Koenig lookup
+    using std::pow;
+#endif
+    _modulus = pow(RealType(2), word_size);
+  }
+
+public:
+  // compiler-generated copy ctor and assignment operator are fine
+
+  void seed(uint32_t value = 19780503u)
+  {
+#ifndef BOOST_NO_STDC_NAMESPACE
+    // allow for Koenig lookup
+    using std::fmod;
+#endif
+    random::linear_congruential<int32_t, 40014, 0, 2147483563, 0> gen(value);
+    unsigned long array[(w/32+1) * long_lag];
+    for(unsigned int j = 0; j < sizeof(array)/sizeof(unsigned long); ++j)
+      array[j] = gen();
+    unsigned long * start = array;
+    seed(start, array + sizeof(array)/sizeof(unsigned long));
+  }
+
+  template<class It>
+  void seed(It& first, It last)
+  {
+#ifndef BOOST_NO_STDC_NAMESPACE
+    // allow for Koenig lookup
+    using std::fmod;
+    using std::pow;
+#endif
+    unsigned long mask = ~((~0u) << (w%32));   // now lowest (w%32) bits set
+    RealType two32 = pow(RealType(2), 32);
+    unsigned int j;
+    for(j = 0; j < long_lag && first != last; ++j, ++first) {
+      x[j] = RealType(0);
+      for(int i = 0; i < w/32 && first != last; ++i, ++first)
+        x[j] += *first / pow(two32,i+1);
+      if(first != last && mask != 0)
+        x[j] += fmod((*first & mask) / _modulus, RealType(1));
+    }
+    if(first == last && j < long_lag)
+      throw std::invalid_argument("subtract_with_carry::seed");
+    carry = (x[long_lag-1] ? 0 : 1 / _modulus);
+    k = 0;
+  }
+
+  result_type min() const { return result_type(0); }
+  result_type max() const { return result_type(1); }
+
+  result_type operator()()
+  {
+    int short_index = k - short_lag;
+    if(short_index < 0)
+      short_index += long_lag;
+    RealType delta = x[short_index] - x[k] - carry;
     if(delta < 0) {
-      delta += base;
-      carry = 1;
+      delta += RealType(1);
+      carry = RealType(1)/_modulus;
     } else {
       carry = 0;
     }
-    x[j] = delta;
+    x[k] = delta;
+    ++k;
+    if(k >= long_lag)
+      k = 0;
+    return delta;
   }
+
+  static bool validation(result_type x)
+  { return x == val/pow(RealType(2), word_size); }
+  
+#ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
+
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+  template<class CharT, class Traits>
+  friend std::basic_ostream<CharT,Traits>&
+  operator<<(std::basic_ostream<CharT,Traits>& os,
+             const subtract_with_carry_01& f)
+  {
+#ifndef BOOST_NO_STDC_NAMESPACE
+    // allow for Koenig lookup
+    using std::pow;
+#endif
+    std::ios_base::fmtflags oldflags = os.flags(os.dec | os.fixed | os.left); 
+    for(unsigned int j = 0; j < f.long_lag; ++j)
+      os << (f.compute(j) * f._modulus) << " ";
+    os << (f.carry * f._modulus);
+    os.flags(oldflags);
+    return os;
   }
-  for(unsigned int j = short_lag; j < long_lag; ++j) {
-    IntType delta = x[j-short_lag] - x[j] - carry;
-    if(delta < 0) {
-      delta += base;
-      carry = 1;
-    } else {
-      carry = 0;
+
+  template<class CharT, class Traits>
+  friend std::basic_istream<CharT,Traits>&
+  operator>>(std::basic_istream<CharT,Traits>& is, subtract_with_carry_01& f)
+  {
+# if BOOST_WORKAROUND(_MSC_FULL_VER, BOOST_TESTED_AT(13102292)) && BOOST_MSVC > 1300
+      detail::extract_subtract_with_carry_01(is, f, f.carry, f.x, f._modulus);
+# else
+    RealType value;
+    for(unsigned int j = 0; j < long_lag; ++j) {
+      is >> value >> std::ws;
+      f.x[j] = value / f._modulus;
     }
-    x[j] = delta;
+    is >> value >> std::ws;
+    f.carry = value / f._modulus;
+# endif 
+    f.k = 0;
+    return is;
   }
-  i = 0;
+#endif
+
+  friend bool operator==(const subtract_with_carry_01& x,
+                         const subtract_with_carry_01& y)
+  {
+    for(unsigned int j = 0; j < r; ++j)
+      if(x.compute(j) != y.compute(j))
+        return false;
+    return true;
+  }
+
+  friend bool operator!=(const subtract_with_carry_01& x,
+                         const subtract_with_carry_01& y)
+  { return !(x == y); }
+#else
+  // Use a member function; Streamable concept not supported.
+  bool operator==(const subtract_with_carry_01& rhs) const
+  { 
+    for(unsigned int j = 0; j < r; ++j)
+      if(compute(j) != rhs.compute(j))
+        return false;
+    return true;
+  }
+
+  bool operator!=(const subtract_with_carry_01& rhs) const
+  { return !(*this == rhs); }
+#endif
+
+private:
+  RealType compute(unsigned int index) const;
+  unsigned int k;
+  RealType carry;
+  RealType x[long_lag];
+  RealType _modulus;
+};
+
+#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+//  A definition is required even for integral static constants
+template<class RealType, int w, unsigned int s, unsigned int r, int val>
+const bool subtract_with_carry_01<RealType, w, s, r, val>::has_fixed_range;
+template<class RealType, int w, unsigned int s, unsigned int r, int val>
+const int subtract_with_carry_01<RealType, w, s, r, val>::word_size;
+template<class RealType, int w, unsigned int s, unsigned int r, int val>
+const unsigned int subtract_with_carry_01<RealType, w, s, r, val>::long_lag;
+template<class RealType, int w, unsigned int s, unsigned int r, int val>
+const unsigned int subtract_with_carry_01<RealType, w, s, r, val>::short_lag;
+#endif
+
+template<class RealType, int w, unsigned int s, unsigned int r, int val>
+RealType subtract_with_carry_01<RealType, w, s, r, val>::compute(unsigned int index) const
+{
+  return x[(k+index) % long_lag];
 }
 
-
-typedef random::subtract_with_carry<int, (1<<24), 10, 24, 0> ranlux_base;
-
-#if !defined(BOOST_NO_INT64_T) && !defined(BOOST_NO_INTEGRAL_INT64_T)
-typedef random::subtract_with_carry<int64_t, (int64_t(1)<<48), 10, 24, 0> ranlux64_base;
-#endif /* !BOOST_NO_INT64_T && !BOOST_NO_INTEGRAL_INT64_T */
 
 } // namespace random
 } // namespace boost

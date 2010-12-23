@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: inversive_congruential.hpp,v 1.3 2002/01/03 22:20:56 jmaurer Exp $
+ * $Id: inversive_congruential.hpp,v 1.6 2002/12/22 22:03:10 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -57,26 +57,49 @@ public:
     if(b == 0) 
       assert(y0 > 0); 
   }
+  template<class It> inversive_congruential(It& first, It last)
+  { seed(first, last); }
+
   void seed(IntType y0) { value = y0; if(b == 0) assert(y0 > 0); }
+  template<class It> void seed(It& first, It last)
+  {
+    if(first == last)
+      throw std::invalid_argument("inversive_congruential::seed");
+    value = *first++;
+  }
   IntType operator()()
   {
     typedef const_mod<IntType, p> do_mod;
     value = do_mod::mult_add(a, do_mod::invert(value), b);
     return value;
   }
+
   bool validation(result_type x) const { return val == x; }
 
 #ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
-  friend std::ostream& operator<<(std::ostream& os, inversive_congruential x)
+
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+  template<class CharT, class Traits>
+  friend std::basic_ostream<CharT,Traits>&
+  operator<<(std::basic_ostream<CharT,Traits>& os, inversive_congruential x)
   { os << x.value; return os; }
-  friend std::istream& operator>>(std::istream& is, inversive_congruential& x)
+
+  template<class CharT, class Traits>
+  friend std::basic_istream<CharT,Traits>&
+  operator>>(std::basic_istream<CharT,Traits>& is, inversive_congruential& x)
   { is >> x.value; return is; }
+#endif
+
   friend bool operator==(inversive_congruential x, inversive_congruential y)
   { return x.value == y.value; }
+  friend bool operator!=(inversive_congruential x, inversive_congruential y)
+  { return !(x == y); }
 #else
   // Use a member function; Streamable concept not supported.
   bool operator==(inversive_congruential rhs) const
   { return value == rhs.value; }
+  bool operator!=(inversive_congruential rhs) const
+  { return !(*this == rhs); }
 #endif
 private:
   IntType value;

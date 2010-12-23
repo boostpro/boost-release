@@ -4,7 +4,7 @@
 <title>Enums</title>
 <link rel="stylesheet" href="theme/style.css" type="text/css">
 <link rel="prev" href="extracting_c___objects.html">
-<link rel="next" href="iterators.html">
+<link rel="next" href="embedding.html">
 </head>
 <body>
 <table width="100%" height="48" border="0" cellspacing="2">
@@ -21,7 +21,7 @@
   <tr>
     <td width="30"><a href="../index.html"><img src="theme/u_arr.gif" border="0"></a></td>
     <td width="30"><a href="extracting_c___objects.html"><img src="theme/l_arr.gif" border="0"></a></td>
-    <td width="20"><a href="iterators.html"><img src="theme/r_arr.gif" border="0"></a></td>
+    <td width="20"><a href="embedding.html"><img src="theme/r_arr.gif" border="0"></a></td>
    </tr>
 </table>
 <p>
@@ -38,9 +38,9 @@ enums). To illustrate, given a C++ enum:</p>
 the construct:</p>
 <code><pre>
     <span class=identifier>enum_</span><span class=special>&lt;</span><span class=identifier>choice</span><span class=special>&gt;(</span><span class=string>&quot;choice&quot;</span><span class=special>)
-        </span><span class=special>.</span><span class=identifier>value</span><span class=special>(</span><span class=string>&quot;red&quot;</span><span class=special>, </span><span class=identifier>red</span><span class=special>)
-        </span><span class=special>.</span><span class=identifier>value</span><span class=special>(</span><span class=string>&quot;blue&quot;</span><span class=special>, </span><span class=identifier>blue</span><span class=special>)
-        </span><span class=special>;
+        .</span><span class=identifier>value</span><span class=special>(</span><span class=string>&quot;red&quot;</span><span class=special>, </span><span class=identifier>red</span><span class=special>)
+        .</span><span class=identifier>value</span><span class=special>(</span><span class=string>&quot;blue&quot;</span><span class=special>, </span><span class=identifier>blue</span><span class=special>)
+        ;
 </span></pre></code>
 <p>
 can be used to expose to Python. The new enum type is created in the
@@ -67,26 +67,26 @@ You can access those values in Python as</p>
 where my_module is the module where the enum is declared. You can also
 create a new scope around a class:</p>
 <code><pre>
-    <span class=identifier>scope </span><span class=identifier>in_X</span><span class=special>(</span><span class=identifier>class_</span><span class=special>&lt;</span><span class=identifier>X</span><span class=special>&gt;(</span><span class=string>&quot;X&quot;</span><span class=special>)
-                    </span><span class=special>.</span><span class=identifier>def</span><span class=special>( </span><span class=special>... </span><span class=special>)
-                    </span><span class=special>.</span><span class=identifier>def</span><span class=special>( </span><span class=special>... </span><span class=special>)
-                </span><span class=special>);
+    <span class=identifier>scope </span><span class=identifier>in_X </span><span class=special>= </span><span class=identifier>class_</span><span class=special>&lt;</span><span class=identifier>X</span><span class=special>&gt;(</span><span class=string>&quot;X&quot;</span><span class=special>)
+                    .</span><span class=identifier>def</span><span class=special>( ... )
+                    .</span><span class=identifier>def</span><span class=special>( ... )
+                ;
 
-    </span><span class=comment>// Expose X::nested as X.nested
+    // </span><span class=identifier>Expose </span><span class=identifier>X</span><span class=special>::</span><span class=identifier>nested </span><span class=identifier>as </span><span class=identifier>X</span><span class=special>.</span><span class=identifier>nested
     </span><span class=identifier>enum_</span><span class=special>&lt;</span><span class=identifier>X</span><span class=special>::</span><span class=identifier>nested</span><span class=special>&gt;(</span><span class=string>&quot;nested&quot;</span><span class=special>)
-        </span><span class=special>.</span><span class=identifier>value</span><span class=special>(</span><span class=string>&quot;red&quot;</span><span class=special>, </span><span class=identifier>red</span><span class=special>)
-        </span><span class=special>.</span><span class=identifier>value</span><span class=special>(</span><span class=string>&quot;blue&quot;</span><span class=special>, </span><span class=identifier>blue</span><span class=special>)
-        </span><span class=special>;
+        .</span><span class=identifier>value</span><span class=special>(</span><span class=string>&quot;red&quot;</span><span class=special>, </span><span class=identifier>red</span><span class=special>)
+        .</span><span class=identifier>value</span><span class=special>(</span><span class=string>&quot;blue&quot;</span><span class=special>, </span><span class=identifier>blue</span><span class=special>)
+        ;
 </span></pre></code>
 <table border="0">
   <tr>
     <td width="30"><a href="../index.html"><img src="theme/u_arr.gif" border="0"></a></td>
     <td width="30"><a href="extracting_c___objects.html"><img src="theme/l_arr.gif" border="0"></a></td>
-    <td width="20"><a href="iterators.html"><img src="theme/r_arr.gif" border="0"></a></td>
+    <td width="20"><a href="embedding.html"><img src="theme/r_arr.gif" border="0"></a></td>
    </tr>
 </table>
 <br>
-<hr size="1"><p class="copyright">Copyright &copy; 2002 David Abrahams<br>Copyright &copy; 2002 Joel de Guzman<br><br>
+<hr size="1"><p class="copyright">Copyright &copy; 2002-2003 David Abrahams<br>Copyright &copy; 2002-2003 Joel de Guzman<br><br>
 <font size="2">Permission to copy, use, modify, sell and distribute this document
  is granted provided this copyright notice appears in all copies. This document
  is provided &quot;as is&quot; without express or implied warranty, and with

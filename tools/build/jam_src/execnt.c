@@ -17,6 +17,7 @@
 # include "execcmd.h"
 # include <errno.h>
 # include <assert.h>
+# include <ctype.h>
 
 # ifdef USE_EXECNT
 
@@ -122,15 +123,11 @@ string_to_args( const char*  string, int*  pcount )
   *pcount = 0;  
 
   /* do not copy trailing newlines, if any */  
+  while ( total > 0 )
   {
-    int  i;
-    
-    for ( i = total-1; i > 0; i-- )
-    {
-      if ( string[i] != '\n' && string[i] != '\r' )
-        break;
-      total --;
-    }
+      if ( !isspace( string[total - 1] ) )
+          break;
+      --total;
   }
   
   /* first of all, copy the input string */
@@ -423,6 +420,34 @@ void execnt_unit_test()
 #endif 
 }
 
+// SVA - handle temp dirs with spaces in the path
+static const char *getTempDir(void)
+{
+    static char tempPath[_MAX_PATH];
+    static char *pTempPath=NULL;
+
+    if(pTempPath == NULL)
+    {
+        char *p;
+
+        p = getenv("TEMP");
+        if(p == NULL)
+        {
+            p = getenv("TMP");
+        }
+        if(p == NULL)
+        {
+            pTempPath = "\\temp";
+        }
+        else
+        {
+            GetShortPathName(p, tempPath, _MAX_PATH);
+            pTempPath = tempPath;
+        }
+    }
+    return pTempPath;
+}
+
 /*
  * execcmd() - launch an async command execution
  */
@@ -473,16 +498,18 @@ execcmd(
   
     if( !cmdtab[ slot ].tempfile )
     {
-        char *tempdir;
+        const char *tempdir;
+        DWORD procID;
+
+        tempdir = getTempDir();
   
-        if( !( tempdir = getenv( "TEMP" ) ) &&
-            !( tempdir = getenv( "TMP" ) ) )
-            tempdir = "\\temp";
+        // SVA - allocate 64 other just to be safe
+        cmdtab[ slot ].tempfile = malloc( strlen( tempdir ) + 64 );
   
-        cmdtab[ slot ].tempfile = malloc( strlen( tempdir ) + 14 );
+        procID = GetCurrentProcessId();
   
-        sprintf( cmdtab[ slot ].tempfile, "%s\\jamtmp%02d.bat", 
-                 tempdir, slot );
+        sprintf( cmdtab[ slot ].tempfile, "%s\\jam%d-%02d.bat", 
+                 tempdir, procID, slot );		
     }
 
     /* Trim leading, ending white space */
@@ -633,6 +660,19 @@ execcmd(
         return;
     }
 
+    if( DEBUG_EXECCMD )
+    {
+        char **argp = argv;
+
+        printf("Executing command");
+        while(*argp != 0)
+        {
+            printf(" [%s]", *argp);
+            argp++;
+        }
+        printf("\n");
+    }
+
     /* the rest is for Windows NT only */
     if( ( pid = spawnvp( P_NOWAIT, argv[0], argv ) ) == -1 )
     {
@@ -714,7 +754,12 @@ execwait()
 	    rstat = EXEC_CMD_OK;
 
 	cmdtab[ i ].pid = 0;
-
+	// SVA don't leak temp files
+	if(cmdtab[i].tempfile != NULL)
+	{
+            free(cmdtab[i].tempfile);
+            cmdtab[i].tempfile = NULL;
+	}
 	(*cmdtab[ i ].func)( cmdtab[ i ].closure, rstat );
 
 	return 1;

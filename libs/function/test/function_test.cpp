@@ -1,6 +1,6 @@
 // Boost.Function library
 
-// Copyright (C) 2001 Doug Gregor (gregod@cs.rpi.edu)
+// Copyright (C) 2001, 2002 Doug Gregor (gregod@cs.rpi.edu)
 //
 // Permission to copy, use, sell and distribute this software is granted
 // provided this copyright notice appears in all copies.
@@ -13,13 +13,12 @@
 
 // For more information, see http://www.boost.org
 
-#define BOOST_INCLUDE_MAIN
-#define BOOST_FUNCTION_NO_DEPRECATED
-#include <boost/test/test_tools.hpp>
+#include <boost/test/minimal.hpp>
 #include <boost/function.hpp>
 #include <functional>
 #include <cassert>
 #include <string>
+#include <utility>
 
 using namespace boost;
 using namespace std;
@@ -65,9 +64,9 @@ test_zero_args()
   func_void_type v1;
   BOOST_TEST(v1.empty());
 
-  // Assignment to an empty function 
+  // Assignment to an empty function
   v1 = five;
-  BOOST_TEST(!v1.empty());
+  BOOST_TEST(v1 != 0);
 
   // Invocation of a function
   global_int = 0;
@@ -76,7 +75,7 @@ test_zero_args()
 
   // clear() method
   v1.clear();
-  BOOST_TEST(v1.empty());
+  BOOST_TEST(v1 == 0);
 
   // Assignment to an empty function
   v1 = three;
@@ -97,13 +96,13 @@ test_zero_args()
   v1();
   BOOST_TEST(global_int == 5);
 
-  // clear()
-  v1.clear();
-  BOOST_TEST(v1.empty());
+  // clear
+  v1 = 0;
+  BOOST_TEST(0 == v1);
 
   // Assignment to an empty function from a free function
   v1 = BOOST_FUNCTION_TARGET_FIX(&) write_five;
-  BOOST_TEST(!v1.empty());
+  BOOST_TEST(0 != v1);
 
   // Invocation
   global_int = 0;
@@ -210,8 +209,8 @@ test_zero_args()
 
   // Assignment to a function from an empty function
   v2 = v1;
-  BOOST_TEST(v2.empty()); 
-  
+  BOOST_TEST(v2.empty());
+
   // Assignment to a function from a function with a functor
   v1 = three;
   v2 = v1;
@@ -245,7 +244,7 @@ test_zero_args()
   global_int = 0;
   v3();
   BOOST_TEST(global_int == 5);
-  
+
   // clear() method
   v3.clear();
   BOOST_TEST(!v3? true : false);
@@ -305,7 +304,7 @@ test_zero_args()
   global_int = 0;
   v4();
   BOOST_TEST(global_int == 5);
-  
+
   // clear() method
   v4.clear();
   BOOST_TEST(v4.empty());
@@ -365,7 +364,7 @@ test_zero_args()
   global_int = 0;
   v5();
   BOOST_TEST(global_int == 5);
-  
+
   // clear() method
   v5.clear();
   BOOST_TEST(v5.empty());
@@ -416,7 +415,7 @@ test_zero_args()
   // Invocation
   global_int = 0;
   v5();
-  BOOST_TEST(global_int == 5);  
+  BOOST_TEST(global_int == 5);
 
   // Construction of a function from a function
   func_void_type v6(&write_five);
@@ -476,7 +475,7 @@ test_zero_args()
   // Invocation
   global_int = 0;
   v6();
-  BOOST_TEST(global_int == 5);  
+  BOOST_TEST(global_int == 5);
 
   // Const vs. non-const
   write_const_1_nonconst_2 one_or_two;
@@ -486,10 +485,15 @@ test_zero_args()
   global_int = 0;
   v7();
   BOOST_TEST(global_int == 2);
-  
+
   global_int = 0;
   v8();
   BOOST_TEST(global_int == 2);
+
+  // Test construction from 0 and comparison to 0
+  func_void_type v9(0);
+  BOOST_TEST(v9 == 0);
+  BOOST_TEST(0 == v9);
 
   // Test return values
   typedef function<int ()> func_int_type;
@@ -551,7 +555,7 @@ static void
 test_two_args()
 {
   function<string (const string&, const string&)> cat(&string_cat);
-  BOOST_TEST(cat("str", "ing") == "string");  
+  BOOST_TEST(cat("str", "ing") == "string");
 
   function<int (short, short)> sum(&sum_ints);
   BOOST_TEST(sum(2, 3) == 5);
@@ -585,7 +589,7 @@ static void
 test_member_functions()
 {
   boost::function<int (X*)> f1(&X::twice);
-  
+
   X one(1);
   X five(5);
 
@@ -644,7 +648,7 @@ struct counting_allocator : public allocator<T>
     typedef counting_allocator<U> other;
   };
 
-  
+
   T* allocate(size_t n)
   {
     alloc_count++;
@@ -688,12 +692,49 @@ static void test_allocator()
   fv.clear();
   BOOST_TEST(alloc_count == 1);
   BOOST_TEST(dealloc_count == 1);
-  
+
   alloc_count = 0;
   dealloc_count = 0;
   fv = &do_nothing;
   fv.clear();
 #endif // ndef BOOST_NO_STD_ALLOCATOR
+}
+
+static void test_exception()
+{
+  boost::function<int (int, int)> f;
+  try {
+    f(5, 4);
+    BOOST_TEST(false);
+  }
+  catch(boost::bad_function_call) {
+    // okay
+  }
+}
+
+typedef boost::function< void * (void * reader) > reader_type;
+typedef std::pair<int, reader_type> mapped_type;
+
+static void test_implicit()
+{
+  mapped_type m;
+  m = mapped_type();
+}
+
+static void test_call_obj(boost::function<int (int, int)> f)
+{
+  assert(!f.empty());
+}
+
+static void test_call_cref(const boost::function<int (int, int)>& f)
+{
+  assert(!f.empty());
+}
+
+static void test_call()
+{
+  test_call_obj(std::plus<int>());
+  test_call_cref(std::plus<int>());
 }
 
 int test_main(int, char* [])
@@ -705,6 +746,9 @@ int test_main(int, char* [])
   test_member_functions();
   test_ref();
   test_allocator();
+  test_exception();
+  test_implicit();
+  test_call();
 
   return 0;
 }

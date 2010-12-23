@@ -8,29 +8,29 @@
 //
 //  File        : $RCSfile: class_properties.hpp,v $
 //
-//  Version     : $Id: class_properties.hpp,v 1.5.2.1 2002/10/01 17:23:53 rogeeff Exp $
+//  Version     : $Id: class_properties.hpp,v 1.8 2003/02/13 08:04:49 rogeeff Exp $
 //
 //  Description : simple facility that mimmic notion of read-only read-write 
 //  properties in C++ classes. Original idea by Henrik Ravn.
 // ***************************************************************************
 
-#ifndef CLASS_PROPERTY_HPP
-#define CLASS_PROPERTY_HPP
+#ifndef BOOST_TEST_CLASS_PROPERTIES_HPP
+#define BOOST_TEST_CLASS_PROPERTIES_HPP
+
+// BOOST
+#include <boost/preprocessor/repetition/repeat.hpp> 
+#include <boost/preprocessor/array/elem.hpp>
 
 // ************************************************************************** //
 // **************               readonly_property              ************** //
 // ************************************************************************** //
 
-#define BOOST_FRIENDS_DECLARER0()
-#define BOOST_FRIENDS_DECLARER1( friend1 )                            friend class friend1;
-#define BOOST_FRIENDS_DECLARER2( friend1, friend2 )                   BOOST_FRIENDS_DECLARER1( friend1 ) friend class friend2;
-#define BOOST_FRIENDS_DECLARER3( friend1, friend2, friend3 )          BOOST_FRIENDS_DECLARER2( friend1, friend2 ) friend class friend3;
-#define BOOST_FRIENDS_DECLARER4( friend1, friend2, friend3, friend4 ) BOOST_FRIENDS_DECLARER3( friend1, friend2, friend3 ) friend class friend4;
+#define DECLARE_FRIEND( z, count, array ) friend class BOOST_PP_ARRAY_ELEM(count, array);
 
 #define BOOST_READONLY_PROPERTY( property_type, friends_num, friends )                                              \
 class BOOST_JOIN( readonly_property, __LINE__ )                                                                     \
 {                                                                                                                   \
-    BOOST_FRIENDS_DECLARER ## friends_num friends                                                                   \
+    BOOST_PP_REPEAT( friends_num, DECLARE_FRIEND, (friends_num, friends) )                                          \
 public:                                                                                                             \
     explicit BOOST_JOIN( readonly_property, __LINE__ )( property_type const& init_value  ) : value( init_value ) {} \
                                                                                                                     \
@@ -62,17 +62,16 @@ private:                                                                        
 //  Revision History :
 //  
 //  $Log: class_properties.hpp,v $
-//  Revision 1.5.2.1  2002/10/01 17:23:53  rogeeff
-//  cr fixed
+//  Revision 1.8  2003/02/13 08:04:49  rogeeff
+//  switch on using Boost.Preprocessor for friends declarations
 //
-//  Revision 1.5  2002/09/09 09:07:03  rogeeff
-//  descriptions added
+//  Revision 1.7  2002/12/08 17:34:46  rogeeff
+//  guard name fixed
 //
-//  Revision 1.4  2002/08/20 08:52:41  rogeeff
-//  cvs keywords added
+//  Revision 1.6  2002/11/02 19:31:05  rogeeff
+//  merged into the main trank
 //
-//   5 Oct 01  Initial version (Gennadiy Rozental)
 
 // ***************************************************************************
 
-#endif // CLASS_PROPERTY_HPP
+#endif // BOOST_TEST_CLASS_PROPERTIES_HPP

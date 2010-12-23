@@ -19,21 +19,11 @@ Number Holidays: 7
 #include <iostream>
 #include <set>
 
-namespace std {
-  //define an operator << for date so transform can call
-  std::ostream&
-  operator<<(std::ostream& os, const boost::gregorian::date& d)
-  {
-    os << boost::gregorian::to_simple_string(d);
-    return os;
-  }
-
-}
 
 void
 print_date(boost::gregorian::date d) 
 {
-  std::cout << d << " [" << d.day_of_week().as_short_string() << "]\n";
+  std::cout << d << " [" << d.day_of_week() << "]\n";
 }
 
 
@@ -49,9 +39,9 @@ main() {
 
   //define a collection of holidays fixed by month and day
   std::vector<partial_date> holidays;
-  holidays.push_back(partial_date(Jan,1)); //Western New Year
-  holidays.push_back(partial_date(Jul,4)); //US Independence Day
-  holidays.push_back(partial_date(Dec,25));//Christmas day
+  holidays.push_back(partial_date(1,Jan)); //Western New Year
+  holidays.push_back(partial_date(4,Jul)); //US Independence Day
+  holidays.push_back(partial_date(25, Dec));//Christmas day
 
 
   //define a shorthand for the nkday function object

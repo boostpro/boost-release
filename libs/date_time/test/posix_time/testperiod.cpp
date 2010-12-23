@@ -1,3 +1,8 @@
+/* Copyright (c) 2001 CrystalClear Software, Inc.
+ * Disclaimer & Full Copyright at end of file
+ * Author: Jeff Garland 
+ */
+
 #include <iostream>
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/date_time/posix_time/time_period.hpp"
@@ -16,6 +21,7 @@ int main()
   time_period p3 = p2;
   check("assignment", p3 == p2);
   time_period p4(t1,hours(1));
+  check("length", p4.length() == hours(1));
   std::cout << to_simple_string(t1) << std::endl;
   std::cout << to_simple_string(p4) << std::endl;
   std::cout << to_simple_string(p1) << std::endl;
@@ -63,7 +69,23 @@ int main()
                           ptime(d1,time_duration(4,0,0))));
   
   
-  printTestStats();
+  return printTestStats();
 
-  return 0;
 }
+
+/*
+ * Copyright (c) 2001
+ * CrystalClear Software, Inc.
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  CrystalClear Software makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided as is without express or implied warranty.
+ *
+ *
+ * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
+ *
+ */

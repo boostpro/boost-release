@@ -20,9 +20,9 @@
 #ifndef BOOST_FORMAT_IMPLEMENTATION_HPP
 #define BOOST_FORMAT_IMPLEMENTATION_HPP
 
-#include <cassert>
-
-#include "boost/format/format_class.hpp"
+#include <boost/throw_exception.hpp>
+#include <boost/assert.hpp>
+#include <boost/format/format_class.hpp>
 
 namespace boost {
 
@@ -37,6 +37,8 @@ basic_format<Ch, Tr> ::basic_format(const Ch* str)
     if( !str) str = emptyStr.c_str();
     parse( str );
 }
+
+#ifndef BOOST_NO_STD_LOCALE
 template< class Ch, class Tr>
 basic_format<Ch, Tr> ::basic_format(const Ch* str, const std::locale & loc)
     : style_(0), cur_arg_(0), num_args_(0), dumped_(false),
@@ -50,20 +52,21 @@ basic_format<Ch, Tr> ::basic_format(const Ch* str, const std::locale & loc)
 }
 
 template< class Ch, class Tr>
-basic_format<Ch, Tr> ::basic_format(const string_t& s)
-    : style_(0), cur_arg_(0), num_args_(0), dumped_(false),
-      items_(),  oss_(), exceptions_(io::all_error_bits)
-{
-    state0_.set_by_stream(oss_);
-    parse(s);  
-}
-
-template< class Ch, class Tr>
 basic_format<Ch, Tr> ::basic_format(const string_t& s, const std::locale & loc)
     : style_(0), cur_arg_(0), num_args_(0), dumped_(false),
       items_(),  oss_(), exceptions_(io::all_error_bits)
 {
     oss_.imbue( loc );
+    state0_.set_by_stream(oss_);
+    parse(s);  
+}
+#endif //BOOST_NO_STD_LOCALE
+
+template< class Ch, class Tr>
+basic_format<Ch, Tr> ::basic_format(const string_t& s)
+    : style_(0), cur_arg_(0), num_args_(0), dumped_(false),
+      items_(),  oss_(), exceptions_(io::all_error_bits)
+{
     state0_.set_by_stream(oss_);
     parse(s);  
 }
@@ -119,7 +122,7 @@ basic_format<Ch,Tr>& basic_format<Ch,Tr> ::clear()
   // empty the string buffers (except bound arguments, see clear_binds() )
   // and make the format object ready for formatting a new set of arguments
 {
-    assert( bound_.size()==0 || num_args_ == static_cast<int>(bound_.size()) );
+    BOOST_ASSERT( bound_.size()==0 || num_args_ == static_cast<int>(bound_.size()) );
 
     for(unsigned long i=0; i<items_.size(); ++i){
       items_[i].state_ = items_[i].ref_state_;
@@ -150,8 +153,8 @@ basic_format<Ch,Tr>& basic_format<Ch,Tr> ::clear_bind(int argN)
 {
     if(argN<1 || argN > num_args_ || bound_.size()==0 || !bound_[argN-1] ) 
       {
-        if( exceptions() & out_of_range_bit )
-          throw out_of_range(); // arg not in range.
+        if( exceptions() & io::out_of_range_bit )
+          boost::throw_exception(io::out_of_range()); // arg not in range.
         else return *this;
       }
     bound_[argN-1]=false;
@@ -169,7 +172,7 @@ std::basic_string<Ch,Tr> basic_format<Ch,Tr> ::str() const
     return prefix_;
   if( cur_arg_ < num_args_)
       if( exceptions() & io::too_few_args_bit )
-        throw io::too_few_args(); // not enough variables have been supplied !
+        boost::throw_exception(io::too_few_args()); // not enough variables have been supplied !
 
   unsigned long sz = prefix_.size();
   unsigned long i;
@@ -185,7 +188,7 @@ std::basic_string<Ch,Tr> basic_format<Ch,Tr> ::str() const
     res += item.res_;
     if( item.argN_ == format_item_t::argN_tabulation) 
     { 
-      assert( item.pad_scheme_ & format_item_t::tabulation);
+      BOOST_ASSERT( item.pad_scheme_ & format_item_t::tabulation);
       std::streamsize  n = item.state_.width_ - res.size();
       if( n > 0 )
         res.append( n, item.state_.fill_ );
@@ -208,14 +211,14 @@ basic_format<Ch, Tr>&  bind_arg_body( basic_format<Ch, Tr>& self,
     if(self.dumped_) self.clear(); // needed, because we will modify cur_arg_..
     if(argN<1 || argN > self.num_args_) 
       {
-        if( self.exceptions() & out_of_range_bit )
-          throw out_of_range(); // arg not in range.
+        if( self.exceptions() & io::out_of_range_bit )
+          boost::throw_exception(io::out_of_range()); // arg not in range.
         else return self;
       }
     if(self.bound_.size()==0) 
       self.bound_.assign(self.num_args_,false);
     else 
-      assert( self.num_args_ == static_cast<signed int>(self.bound_.size()) );
+      BOOST_ASSERT( self.num_args_ == static_cast<signed int>(self.bound_.size()) );
     int o_cur_arg = self.cur_arg_;
     self.cur_arg_ = argN-1; // arrays begin at 0
 
@@ -232,7 +235,7 @@ basic_format<Ch, Tr>&  bind_arg_body( basic_format<Ch, Tr>& self,
         while(self.cur_arg_ < self.num_args_ && self.bound_[self.cur_arg_])   ++self.cur_arg_;
       }
     // In any case, we either have all args, or are on a non-binded arg :
-    assert( self.cur_arg_ >= self.num_args_ || ! self.bound_[self.cur_arg_]);
+    BOOST_ASSERT( self.cur_arg_ >= self.num_args_ || ! self.bound_[self.cur_arg_]);
     return self;
 }
 
@@ -245,8 +248,8 @@ basic_format<Ch, Tr>&  modify_item_body( basic_format<Ch, Tr>& self,
 {
   if(itemN<1 || itemN >= static_cast<signed int>(self.items_.size() )) 
     {
-      if( self.exceptions() & out_of_range_bit ) 
-        throw out_of_range(); // item not in range.
+      if( self.exceptions() & io::out_of_range_bit ) 
+        boost::throw_exception(io::out_of_range()); // item not in range.
       else return self;
     }
   self.items_[itemN-1].ref_state_.apply_manip( manipulator );

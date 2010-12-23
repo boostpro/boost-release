@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: unit_test_parameters.cpp,v $
 //
-//  Version     : $Id: unit_test_parameters.cpp,v 1.4.2.1 2002/10/01 05:48:27 rogeeff Exp $
+//  Version     : $Id: unit_test_parameters.cpp,v 1.7 2003/02/13 08:40:05 rogeeff Exp $
 //
 //  Description : simple implementation for Unit Test Framework parameter 
 //  handling routines. May be rewritten in future to use some kind of 
@@ -34,35 +34,39 @@ namespace boost {
 namespace unit_test_framework {
 
 const struct parameter_names {
-    char const* env_name;
-    char const* cla_name;
+    c_string_literal env_name;
+    c_string_literal cla_name;
 } parameter_cla_names [] = {
-    { LOGLEVEL          , "--log_level" },
+    { LOG_LEVEL         , "--log_level" },
     { NO_RESULT_CODE    , "--result_code" },
-    { RESULT_REPORT     , "--report_level" },
+    { REPORT_LEVEL      , "--report_level" },
     { TESTS_TO_RUN      , "--run_test" },
     { SAVE_TEST_PATTERN , "--save_pattern" },
     { BUILD_INFO        , "--build_info" },
-    { NULL              , NULL }
+    { CATCH_SYS_ERRORS  , "--catch_system_errors" },
+    { REPORT_FORMAT     , "--report_format" },
+    { LOG_FORMAT        , "--log_format" },
+    { OUTPUT_FORMAT     , "--output_format" },
+    { c_string_literal(), c_string_literal() }
     
 } ;
 
 std::string
-retrieve_framework_parameter( char const* parameter_name, int* argc, char** argv )
+retrieve_framework_parameter( c_string_literal parameter_name, int* argc, char** argv )
 {
     // first try to find parameter among command line arguments if present
-    if( argc != NULL ) {
+    if( argc ) {
         // locate corresponding cla name
         parameter_names const* curr = parameter_cla_names;
-        while( curr->env_name != NULL && std::strcmp( curr->env_name, parameter_name ) != 0 )
+        while( curr->env_name && std::strcmp( curr->env_name, parameter_name ) != 0 )
             curr++;
 
-        if( curr->env_name != NULL ) {
+        if( curr->env_name ) {
             std::string parameter_cla_name = curr->cla_name;
             parameter_cla_name += '=';
             
             for( int i = 1; i < *argc; ++i ) {
-                if( std::strncmp( parameter_cla_name.data(), argv[i], parameter_cla_name.length() ) == 0 ) {
+                if( std::strncmp( parameter_cla_name.c_str(), argv[i], parameter_cla_name.length() ) == 0 ) {
                     std::string result = argv[i] + parameter_cla_name.length();
                     
                     for( int j = i; j < *argc; ++j ) {
@@ -76,8 +80,8 @@ retrieve_framework_parameter( char const* parameter_name, int* argc, char** argv
         }
     }
 
-    char const* env_var_value = std::getenv( parameter_name );
-    return  env_var_value == NULL ? "" : env_var_value;
+    c_string_literal env_var_value = std::getenv( parameter_name );
+    return  env_var_value ? env_var_value : "";
 }
 
 //____________________________________________________________________________//
@@ -90,16 +94,18 @@ retrieve_framework_parameter( char const* parameter_name, int* argc, char** argv
 //  Revision History :
 //  
 //  $Log: unit_test_parameters.cpp,v $
-//  Revision 1.4.2.1  2002/10/01 05:48:27  rogeeff
-//  coment clarified
+//  Revision 1.7  2003/02/13 08:40:05  rogeeff
+//  log_format, report_format, output_format introduced
+//  data() -> c_str()
 //
-//  Revision 1.4  2002/09/15 11:17:23  johnmaddock
-//  Added missing includes
+//  Revision 1.6  2002/12/08 18:18:10  rogeeff
+//  catch ststem error parameter introduced
+//  eliminated of uses of NULL
+//  switched to use c_string_literal
 //
-//  Revision 1.3  2002/08/20 08:24:13  rogeeff
-//  cvs keywords added
+//  Revision 1.5  2002/11/02 20:04:42  rogeeff
+//  release 1.29.0 merged into the main trank
 //
-//   26 Oct 01  Initial version (Gennadiy Rozental)
 
 // ***************************************************************************
 

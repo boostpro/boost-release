@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: unit_test.hpp,v $
 //
-//  Version     : $Id: unit_test.hpp,v 1.5 2002/09/09 09:07:03 rogeeff Exp $
+//  Version     : $Id: unit_test.hpp,v 1.6 2002/11/02 19:31:04 rogeeff Exp $
 //
 //  Description : wrapper include . To be used by end-user
 // ***************************************************************************
@@ -23,11 +23,8 @@
 //  Revision History :
 //  
 //  $Log: unit_test.hpp,v $
-//  Revision 1.5  2002/09/09 09:07:03  rogeeff
-//  descriptions added
-//
-//  Revision 1.4  2002/08/20 08:52:40  rogeeff
-//  cvs keywords added
+//  Revision 1.6  2002/11/02 19:31:04  rogeeff
+//  merged into the main trank
 //
 
 // ***************************************************************************

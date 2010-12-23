@@ -169,6 +169,10 @@ QDGlobals qd;
 #   define  use_environ _environ
 # endif
 
+# if defined( __MWERKS__)
+# define use_environ _environ
+extern char **_environ;
+#endif
 
 # ifndef use_environ
 # define use_environ environ
@@ -316,7 +320,7 @@ int  main( int argc, char **argv, char **arg_environ )
 
     var_set( "JAM_VERSION",
              list_new( list_new( list_new( L0, newstr( "03" ) ), newstr( "01" ) ), 
-                       newstr( "02" ) ),
+                       newstr( "03" ) ),
              VAR_SET );
 
     /* And JAMUNAME */
@@ -372,6 +376,13 @@ int  main( int argc, char **argv, char **arg_environ )
 
 	load_builtins();
 
+    /* Add the targets in the command line to update list */
+
+    for ( n = 0; n < argc; ++n )
+    {
+        mark_target_for_updating(argv[n]);
+    }
+
     /* Parse ruleset */
 
     {
@@ -408,7 +419,9 @@ int  main( int argc, char **argv, char **arg_environ )
     {
         LIST* targets = targets_to_update();
         if ( !targets )
-            make( 1, &all, anyhow );
+        {
+            status |= make( 1, &all, anyhow );
+        }
         else 
         {
             int targets_count = list_length(targets);

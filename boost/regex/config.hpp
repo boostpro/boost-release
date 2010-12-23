@@ -125,8 +125,10 @@
 // If there isn't good enough wide character support then there will
 // be no wide character regular expressions:
 //
-#if (defined(BOOST_NO_CWCHAR) || defined(BOOST_NO_CWCTYPE) || defined(BOOST_NO_STD_WSTRING)) && !defined(BOOST_NO_WREGEX)
-#  define BOOST_NO_WREGEX
+#if (defined(BOOST_NO_CWCHAR) || defined(BOOST_NO_CWCTYPE) || defined(BOOST_NO_STD_WSTRING))
+#  if !defined(BOOST_NO_WREGEX)
+#     define BOOST_NO_WREGEX
+#  endif
 #else
 #  if defined(__sgi) && defined(__SGI_STL_PORT)
       // STLPort on IRIX is misconfigured: <cwctype> does not compile
@@ -165,7 +167,7 @@
 
 // We don't make our templates external if the compiler
 // can't handle it:
-#if (defined(BOOST_NO_MEMBER_FUNCTION_SPECIALIZATIONS) || defined(__MWERKS__) || defined(__COMO__) || defined(__ICL) || defined(__ICC))\
+#if (defined(BOOST_NO_MEMBER_FUNCTION_SPECIALIZATIONS) || defined(__HP_aCC) || defined(__MWERKS__) || defined(__COMO__) || defined(__ICL) || defined(__ICC))\
    && !defined(BOOST_MSVC) && !defined(__BORLANDC__)
 #  define BOOST_REGEX_NO_EXTERNAL_TEMPLATES
 #endif
@@ -257,7 +259,7 @@ using std::distance;
 #endif
  
 #if (defined(BOOST_MSVC) || defined(__BORLANDC__)) && !defined(BOOST_REGEX_NO_LIB) && !defined(BOOST_REGEX_SOURCE)
-#  include <boost/regex/detail/regex_library_include.hpp>
+#  include <boost/regex/v3/regex_library_include.hpp>
 #endif
 
 /*****************************************************************************
@@ -637,6 +639,9 @@ inline void pointer_construct(T* p, const T& t)
 #endif
 
 #endif
+
+
+
 
 
 

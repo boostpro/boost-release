@@ -12,9 +12,12 @@
 
 
 #include <cmath>
-#include <boost/limits.hpp>
+#include <limits>
 #include <string>
 #include <stdexcept>
+
+
+#include <boost/config.hpp>
 
 
 // This is the inverse of the hyperbolic sine function.

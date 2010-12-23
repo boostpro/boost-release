@@ -9,7 +9,7 @@
 //
 //  File        : $RCSfile: errors_handling_test.cpp,v $
 //
-//  Version     : $Id: errors_handling_test.cpp,v 1.7.2.2 2002/10/05 11:11:16 johnmaddock Exp $
+//  Version     : $Id: errors_handling_test.cpp,v 1.11 2003/02/15 21:49:57 rogeeff Exp $
 //
 //  Description : tests an ability of Unit Test Framework to catch all kinds
 //  of test errors in a user code and properly report it.
@@ -66,7 +66,6 @@ namespace {
         case et_cpp_exception:
             BOOST_CHECKPOINT( "error_on_demand() throw runtime_error" );
             throw std::runtime_error( "test std::runtime error what() message" );
-            break;
 
         case et_system:
             BOOST_CHECKPOINT( "error_on_demand() divide by zero" );
@@ -147,16 +146,18 @@ test_main( int argc, char * argv[] )
 {
     bool match_or_save = retrieve_framework_parameter( SAVE_TEST_PATTERN, &argc, argv ) != "yes";
 
-    output_test_stream output( "error_handling_test.pattern", match_or_save );
+    std::string pattern_file_name( argc > 1 ? argv[1] : "errors_handling_test.pattern" );
+
+    output_test_stream output( pattern_file_name, match_or_save );
 
     unit_test_log::instance().set_log_stream( output );
 
     boost::shared_ptr<bad_test> bad_test_instance( new bad_test );
 
     // for each log level
-    for( report_level level = report_successful_tests;
-         level             <= report_nothing;
-         level              = static_cast<report_level>(level+1) )
+    for( log_level level = log_successful_tests;
+         level           <= log_nothing;
+         level           = static_cast<log_level>(level+1) )
     {
         unit_test_log::instance().set_log_threshold_level( level );
 
@@ -205,13 +206,15 @@ test_main( int argc, char * argv[] )
                     continue;
                 }
 
-                unit_test_result::reset_current_result_set();
-                unit_test_log::instance().start( 1 );
-                test.run();
-                unit_test_log::instance() << report_progress();
-                unit_test_result::reset_current_result_set();
+                { 
+                    unit_test_result_saver saver;
+                    unit_test_log::instance().start();
+                    unit_test_log::instance().header( 1 );
+                    test.run();
+                    unit_test_log::instance().finish( 1 );
+                }
 
-                unit_test_log::instance().set_log_threshold_level( report_all_errors );
+                unit_test_log::instance().set_log_threshold_level( log_all_errors );
                 BOOST_CHECK( output.match_pattern() );
                 unit_test_log::instance().set_log_threshold_level( level );
             }
@@ -230,18 +233,18 @@ test_main( int argc, char * argv[] )
 //  Revision History :
 //
 //  $Log: errors_handling_test.cpp,v $
-//  Revision 1.7.2.2  2002/10/05 11:11:16  johnmaddock
-//  Updated Borland version checks to the latest version with the problem (0x570).
+//  Revision 1.11  2003/02/15 21:49:57  rogeeff
+//  borland warning fix
 //
-//  Revision 1.7.2.1  2002/10/01 17:45:52  rogeeff
-//  some tests reworked
-//  "parameterized test" test added
+//  Revision 1.10  2003/02/13 08:47:05  rogeeff
+//  *** empty log message ***
 //
-//  Revision 1.7  2002/08/26 09:08:06  rogeeff
-//  cvs kw added
+//  Revision 1.9  2002/12/09 05:14:45  rogeeff
+//  switch to use unit_test_result_saver for internal testing
 //
-//   7 Jul 01  Reworked version (Gennadiy Rozental)
-//  16 Jun 01  Initial  version (Beman Dawes)
+//  Revision 1.8  2002/11/02 20:04:43  rogeeff
+//  release 1.29.0 merged into the main trank
+//
 
 // ***************************************************************************
 

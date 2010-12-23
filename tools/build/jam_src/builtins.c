@@ -18,6 +18,8 @@
 # include "strings.h"
 # include "pwd.h"
 # include "pathsys.h"
+# include "make.h"
+# include <ctype.h>
 
 /*
  * builtins.c - builtin jam rules
@@ -92,9 +94,13 @@ load_builtins()
       bind_builtin( "EXIT" ,
                     builtin_exit, 0, 0 ) ) );
 
-    duplicate_rule( "Glob" ,
-      bind_builtin( "GLOB" ,
-                    builtin_glob, 0, 0 ) );
+    {
+        char * args[] = { "directories", "*", ":", "patterns", "*", ":", "case-insensitive", "?", 0 };
+        duplicate_rule(
+            "Glob" ,
+            bind_builtin( "GLOB" , builtin_glob, 0, args )
+            );
+    }
 
     duplicate_rule( "Includes" ,
       bind_builtin( "INCLUDES" ,
@@ -188,6 +194,12 @@ load_builtins()
           bind_builtin( "PWD" ,
                         builtin_pwd, 0, args );
       }
+
+      {
+          char * args[] = { "target", "*", ":", "path", "*", 0 };
+          bind_builtin( "SEARCH_FOR_TARGET",
+                        builtin_search_for_target, 0, args );
+      }
 }
 
 /*
@@ -277,56 +289,106 @@ builtin_flags(
  */
 
 struct globbing {
-	LIST	*patterns;
-	LIST	*results;
+    LIST    *patterns;
+    LIST    *results;
+    LIST    *case_insensitive;
 } ;
 
+static void downcase_inplace( char* p )
+{
+    for ( ; *p; ++p )
+    {
+        *p = tolower(*p);
+    }
+}
+    
 static void
 builtin_glob_back(
-	void	*closure,
-	char	*file,
-	int	status,
-	time_t	time )
+    void    *closure,
+    char    *file,
+    int status,
+    time_t  time )
 {
-	struct globbing *globbing = (struct globbing *)closure;
-	LIST		*l;
-	PATHNAME	f;
-	string          buf[1];
+    struct globbing *globbing = (struct globbing *)closure;
+    LIST        *l;
+    PATHNAME    f;
+    string          buf[1];
 
-	/* Null out directory for matching. */
-	/* We wish we had file_dirscan() pass up a PATHNAME. */
+    /* Null out directory for matching. */
+    /* We wish we had file_dirscan() pass up a PATHNAME. */
 
-	path_parse( file, &f );
-	f.f_dir.len = 0;
-        string_new( buf );
-	path_build( &f, buf, 0 );
+    path_parse( file, &f );
+    f.f_dir.len = 0;
+    string_new( buf );
+    path_build( &f, buf, 0 );
 
-	for( l = globbing->patterns; l; l = l->next )
-	    if( !glob( l->string, buf->value ) )
-	{
-	    globbing->results = list_new( globbing->results, newstr( file ) );
-	    break;
-	}
-        string_free( buf );
+    if (globbing->case_insensitive)
+        downcase_inplace( buf->value );
+
+    for( l = globbing->patterns; l; l = l->next )
+    {
+        if( !glob( l->string, buf->value ) )
+        {
+            globbing->results = list_new( globbing->results, newstr( file ) );
+            break;
+        }
+    }
+    
+    string_free( buf );
+}
+
+static LIST* downcase_list( LIST *in )
+{
+    LIST* result = 0;
+    
+    string s[1];
+    string_new( s );
+        
+    while (in)
+    {
+        string_copy( s, in->string );
+        downcase_inplace( s->value );
+        result = list_append( result, list_new( 0, newstr( s->value ) ) );
+        in = in->next;
+    }
+    
+    string_free( s );
+    return result;
 }
 
 LIST *
 builtin_glob(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST *l = lol_get( frame->args, 0 );
-	LIST *r = lol_get( frame->args, 1 );
+    LIST *l = lol_get( frame->args, 0 );
+    LIST *r = lol_get( frame->args, 1 );
+    
+    struct globbing globbing;
 
-	struct globbing globbing;
+    globbing.results = L0;
+    globbing.patterns = r;
+    
+    globbing.case_insensitive
+# if defined( OS_NT ) || defined( OS_CYGWIN )
+       = l;  /* always case-insensitive if any files can be found */
+# else 
+       = lol_get( frame->args, 2 );
+# endif
 
-	globbing.results = L0;
-	globbing.patterns = r;
+    if ( globbing.case_insensitive )
+    {
+        globbing.patterns = downcase_list( r );
+    }
+    
+    for( ; l; l = list_next( l ) )
+        file_dirscan( l->string, builtin_glob_back, &globbing );
 
-	for( ; l; l = list_next( l ) )
-	    file_dirscan( l->string, builtin_glob_back, &globbing );
-
-	return globbing.results;
+    if ( globbing.case_insensitive )
+    {
+        list_free( globbing.patterns );
+    }
+    return globbing.results;
 }
 
 /*
@@ -676,10 +738,22 @@ builtin_pwd( PARSE *parse, FRAME *frame )
 LIST* 
 builtin_update( PARSE *parse, FRAME *frame)
 {
+    LIST* result = list_copy( L0, targets_to_update() );
     LIST* arg1 = lol_get( frame->args, 0 );
+    clear_targets_to_update();
     for ( ; arg1; arg1 = list_next( arg1 ) )
         mark_target_for_updating( newstr(arg1->string) );
-    return L0;
+    return result;
+}
+
+LIST*
+builtin_search_for_target( PARSE *parse, FRAME *frame )
+{
+    LIST* arg1 = lol_get( frame->args, 0 );
+    LIST* arg2 = lol_get( frame->args, 1 );
+
+    TARGET* t = search_for_target( arg1->string, arg2 );
+    return list_new( L0, t->name );
 }
 
 static void lol_build( LOL* lol, char** elements )

@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: output_test_stream_test.cpp,v $
 //
-//  Version     : $Id: output_test_stream_test.cpp,v 1.6 2002/08/26 09:08:06 rogeeff Exp $
+//  Version     : $Id: output_test_stream_test.cpp,v 1.9 2003/02/15 21:51:17 rogeeff Exp $
 //
 //  Description : tests output_test_stream test tool functionality
 // ***************************************************************************
@@ -29,7 +29,7 @@ test_constructor()
         BOOST_CHECK( output.is_empty() );
     }
     {
-        output_test_stream output( NULL );
+        output_test_stream output( (char const*)0 );
         BOOST_CHECK( !output.match_pattern() );
         BOOST_CHECK( output.is_empty() );
     }
@@ -121,7 +121,7 @@ test_is_equal()
     BOOST_CHECK( output.is_equal( "" ) );
 
     output << '\0';
-    BOOST_CHECK( output.is_equal( "", (size_t)1 ) );
+    BOOST_CHECK( output.is_equal( "", (std::size_t)1 ) );
 
     output << "qwerty" << '\n';
     BOOST_CHECK( output.is_equal( "qwerty\n" ) );
@@ -139,10 +139,10 @@ test_is_equal()
     std::string substr2( literal_string+5, 4 );
 
     output << substr1;
-    BOOST_CHECK( output.is_equal( literal_string, (size_t)5, false ) );
+    BOOST_CHECK( output.is_equal( literal_string, (std::size_t)5, false ) );
 
     output << substr2;
-    BOOST_CHECK( output.is_equal( literal_string, (size_t)9 ) );
+    BOOST_CHECK( output.is_equal( literal_string, (std::size_t)9 ) );
 }
 
 //____________________________________________________________________________//
@@ -193,7 +193,7 @@ test_match_pattern()
 }
 
 test_suite*
-init_unit_test_suite( int argc, char* argv[] ) {
+init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
     test_suite* test = BOOST_TEST_SUITE("ostream_test_stream test");
 
     test->add( BOOST_TEST_CASE( &test_constructor ) );
@@ -211,10 +211,16 @@ init_unit_test_suite( int argc, char* argv[] ) {
 //  Revision History :
 //  
 //  $Log: output_test_stream_test.cpp,v $
-//  Revision 1.6  2002/08/26 09:08:06  rogeeff
-//  cvs kw added
+//  Revision 1.9  2003/02/15 21:51:17  rogeeff
+//  borland warnings fix
+//  cwpro complains on size_t fix
 //
-//  6 Nov 01  Initial  version (Gennadiy Rozental)
+//  Revision 1.8  2002/12/09 05:15:26  rogeeff
+//  NULL eliminated
+//
+//  Revision 1.7  2002/11/02 20:04:43  rogeeff
+//  release 1.29.0 merged into the main trank
+//
 
 // ***************************************************************************
 

@@ -21,14 +21,16 @@
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/push_front.hpp>
 #include <boost/mpl/iterator_range.hpp>
-#include <boost/mpl/logical/not.hpp>
-#include <boost/mpl/aux_/lambda_support.hpp>
+#include <boost/mpl/not.hpp>
+
+# include <boost/python/detail/mpl_lambda.hpp>
+
 #include <boost/mpl/lambda.hpp>
 #include <boost/mpl/begin_end.hpp>
 #include <boost/mpl/find_if.hpp>
 #include <boost/mpl/fold.hpp>
 #include <boost/mpl/pop_front.hpp>
-#include <boost/mpl/bool_c.hpp>
+#include <boost/mpl/bool.hpp>
 
 #include <boost/type_traits/is_same.hpp>
 
@@ -102,9 +104,9 @@ namespace detail
         BOOST_STATIC_CONSTANT(
             bool, value =
                 sizeof(f(t())) == sizeof(::boost::type_traits::yes_type));
-        typedef mpl::bool_c<value> type;
+        typedef mpl::bool_<value> type;
 
-        BOOST_MPL_AUX_LAMBDA_SUPPORT(1,is_optional,(T))
+        BOOST_PYTHON_MPL_LAMBDA_SUPPORT(1,is_optional,(T))
     };
 
     ///////////////////////////////////////
@@ -125,8 +127,8 @@ namespace detail
     template <class T>
     struct is_optional : is_optional_impl<T>
     {
-        typedef mpl::bool_c<is_optional_impl<T>::value> type;
-        BOOST_MPL_AUX_LAMBDA_SUPPORT(1,is_optional,(T))
+        typedef mpl::bool_<is_optional_impl<T>::value> type;
+        BOOST_PYTHON_MPL_LAMBDA_SUPPORT(1,is_optional,(T))
     };
     #endif // defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 
@@ -208,7 +210,7 @@ class init : public init_base<init<BOOST_PYTHON_OVERLOAD_ARGS> >
         : base(doc_)
     {
     }
-
+    
     template <class Keywords>
     init(char const* doc_, Keywords const& kw)
         : base(doc_, std::make_pair(kw.base(), kw.base() + Keywords::size))
@@ -314,6 +316,9 @@ namespace detail
           >::type args;
 
       typedef typename ClassT::holder_selector holder_selector_t;
+#    if !BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
+      typedef typename holder_selector_t::type selector_t;
+#    endif 
       typedef typename ClassT::held_type held_type_t;
 
       cl.def(
@@ -321,8 +326,12 @@ namespace detail
             detail::make_keyword_range_constructor<args>(
                 policies
                 , keywords_
+#    if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
                 // Using runtime type selection works around a CWPro7 bug.
                 , holder_selector_t::execute((held_type_t*)0).get()
+#    else
+                , selector_t::get()
+#    endif 
                 )
             , doc
             );

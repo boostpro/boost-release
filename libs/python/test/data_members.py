@@ -1,5 +1,6 @@
 '''
 >>> from data_members_ext import *
+
 >>> x = X(42)
 >>> x.x
 42
@@ -9,13 +10,35 @@
 
 >>> x.fair_value
 42.0
-
 >>> y = Y(69)
 >>> y.x
 69
 >>> y.x = 77
 >>> y.x
 77
+
+>>> v = Var("pi")
+>>> v.value = 3.14
+>>> v.name
+'pi'
+>>> v.name2
+'pi'
+
+>>> v.get_name1()
+'pi'
+
+>>> v.get_name2()
+'pi'
+
+>>> v.y.x
+6
+>>> v.y.x = -7
+>>> v.y.x
+-7
+
+>>> v.name3
+'pi'
+
 '''
 
 def run(args = None):

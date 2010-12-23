@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: statistic_tests.hpp,v 1.8 2002/07/13 12:26:19 david_abrahams Exp $
+ * $Id: statistic_tests.hpp,v 1.10 2002/11/01 20:02:24 jmaurer Exp $
  *
  */
 
@@ -131,6 +131,8 @@ public:
     for(unsigned int i = 0; i < classes-1; ++i)
       limit[i] = invert_monotone_inc(probability, (i+1)*0.05, 0, 1000);
     limit[classes-1] = std::numeric_limits<double>::infinity();
+    if(limit[classes-1] < std::numeric_limits<double>::max())
+      limit[classes-1] = std::numeric_limits<double>::max();
 #if 0
     std::cout << __PRETTY_FUNCTION__ << ": ";
     for(unsigned int i = 0; i < classes; ++i)
@@ -341,7 +343,7 @@ public:
       std::generate_n(v.begin(), t, f);
       int x = 0;
       for(int r = t-1; r > 0; r--) {
-        std::vector<result_type>::iterator it = 
+        typename std::vector<result_type>::iterator it = 
           std::max_element(v.begin(), v.begin()+r+1);
         x = (r+1)*x + (it-v.begin());
         std::iter_swap(it, v.begin()+r);

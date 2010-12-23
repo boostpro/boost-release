@@ -6,15 +6,61 @@ import project ;
 import sequence ;
 import modules ;
 import feature ;
+import property-set ;
 import build-request ;
+import errors : error ;
 
 import builtin ;
 import make ;
+import os ;
 
-import site-config ;
-import user-config ;
+import version ;
 
-current-project = [ project.load "."  ] ;
+# Check if we can load 'test-config.jam'. If we can, load it and
+# ignore user configs.
+local test-config = [ GLOB [ modules.peek : BOOST_BUILD_PATH ] : test-config.jam ] ;
+if $(test-config)
+{
+    import test-config ;    
+}
+
+if ! $(test-config) && ! --ignore-config in [ modules.peek : ARGV ] 
+{    
+    module site-config 
+    {
+        import toolset : using ;
+    }
+
+    module user-config 
+    {
+        import toolset : using ;
+    }
+
+    local user-path = [ modules.peek : HOME ] [ modules.peek : BOOST_BUILD_PATH ] ;
+    if [ os.name ] in NT CYGWIN
+    {    
+        modules.load site-config : : [ modules.peek : SystemRoot ] $(user-path) ;
+        modules.load user-config : : $(user-path) ;    
+    }    
+    else
+    {
+        modules.load site-config : : /etc $(user-path) ;
+        modules.load user-config : : $(user-path) ;    
+    }
+}
+
+
+if --version in [ modules.peek : ARGV ]
+{
+    version.print ;
+    EXIT ;
+}
+
+# We always load project in "." so that 'use-project' directives has
+# any chance of been seen. Otherwise, we won't be able to refer to
+# subprojects using target ids.
+project.load "." ;
+
 if [ MATCH (--dump-projects) : [ modules.peek : ARGV ] ]
 {
     project-root.print ;
@@ -22,24 +68,77 @@ if [ MATCH (--dump-projects) : [ modules.peek : ARGV ] ]
 
 build-request = [ build-request.from-command-line [ modules.peek : ARGV ] ] ;
 
-targets = [ $(build-request).get-at 1 ] ;
 properties = [ $(build-request).get-at 2 ] ;
-expanded = [ build-request.expand $(properties) ] ;
+
+if $(properties) 
+{    
+    expanded = [ build-request.expand $(properties) ] ;
+}
 
 
-root-target = [ project.target "." ] ;
+local target-ids = [ $(build-request).get-at 1 ] ;
+local targets
+local clean ;
+
+
+if "--clean" in [ modules.peek : ARGV ]
+{
+    clean = true ;
+}
+
+for local id in $(target-ids)
+{
+    if $(id) = clean
+    {
+        clean = true ;
+    }
+    else
+    {
+        local t = [ project.find-target $(id) : "." ] ;
+        if ! $(t)
+        {
+            error target $(id) does not exist ;
+        }
+        else
+        {
+            targets += $(t) ;
+        }                
+    }    
+}
+
+if ! $(targets)
+{
+    targets += [ project.target "." ] ; 
+}
+
 virtual-targets = ;
 
 if $(expanded) 
 {
     for local p in $(expanded)
     {
-        virtual-targets += [ $(root-target).generate [ feature.split $(p) ] ] ;
+        for local t in $(targets) 
+        {   
+            $(t).direct-build-request 
+              [ property-set.create [ feature.split $(p) ] ] ;
+        }        
+    }
+    
+    for local p in $(expanded)
+    {
+        for local t in $(targets)
+        {            
+            virtual-targets += [ $(t).generate 
+              [ property-set.create [ feature.split $(p) ] ] ] ;
+        }        
     }
 }
 else
 {
-    virtual-targets = [ $(root-target).generate ] ;
+    for local t in $(targets)
+    {        
+        virtual-targets += [ $(t).generate [ property-set.empty ] ] ;
+    }    
 }
 
 
@@ -48,9 +147,17 @@ for t in $(virtual-targets)
 {
     actual-targets += [ $(t).actualize ] ;
 }
+NOTFILE all ;
 DEPENDS all : $(actual-targets) ;
 
-# If there are any targets in the command line, cause them to be updated
-UPDATE $(targets) ;
+if $(clean)
+{
+    UPDATE clean ;
+}
+else
+{
+    UPDATE all ;
+}
+
 
 

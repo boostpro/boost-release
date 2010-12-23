@@ -26,7 +26,9 @@ namespace boost {
 namespace mpl {
 
 // returns sequence size if it's an O(1) operation; otherwise returns -1
-template< typename Sequence >
+template<
+      typename BOOST_MPL_AUX_VOID_SPEC_PARAM(Sequence)
+    >
 struct O1_size
     : O1_size_traits< typename BOOST_MPL_AUX_SEQUENCE_TAG(Sequence) >
         ::template algorithm< Sequence >

@@ -1,4 +1,4 @@
-# Copyright (C) 2002, Rene Rivera. Permission to copy, use, modify, sell and
+# Copyright (C) 2002-2003, Rene Rivera. Permission to copy, use, modify, sell and
 # distribute this software is granted provided this copyright notice appears in
 # all copies. This software is provided "as is" without express or implied
 # warranty, and with no claim as to its suitability for any purpose.
@@ -13,12 +13,13 @@ import print ;
 import set ;
 import container ;
 import class ;
+import sequence ;
 
 # List of possible modules, but which really aren't.
 #
 not-modules = boost-build bootstrap site-config test user-config ;
 
-# The type of output to genetare.
+# The type of output to generate.
 # "console" is formated text echoed to the console (the default);
 # "text" is formated text appended to the output file;
 # "html" is HTLM output to the file.
@@ -31,11 +32,11 @@ help-output = console ;
 #
 help-output-file = help ;
 
-# Wether to include local rules in help output.
+# Whether to include local rules in help output.
 #
 .option.show-locals ?= ;
 
-# When showing documentation for a module, wether to also generate
+# When showing documentation for a module, whether to also generate
 # automatically the detailed docs for each item in the module.
 #
 .option.detailed ?= ;
@@ -107,6 +108,7 @@ rule help ( )
                 {
                     if $(spec-parts[2])
                     {
+                        do-scan $(spec-parts[1]) : print-help-classes $(spec-parts[2]) ;
                         do-scan $(spec-parts[1]) : print-help-rules $(spec-parts[2]) ;
                         do-scan $(spec-parts[1]) : print-help-variables $(spec-parts[2]) ;
                     }
@@ -127,6 +129,10 @@ rule help ( )
             did-help = true ;
         }
         command = [ $(args).front ] ; $(args).pop-front ;
+    }
+    if $(did-help)
+    {
+        UPDATE all ;
     }
     return $(did-help) ;
 }
@@ -239,7 +245,7 @@ local rule set-module-copyright (
 local rule set-rule-doc (
     name # The name of the rule.
     module-name ? # The name of the module to document.
-    is-local ? # Wether the rule is local to the module.
+    is-local ? # Whether the rule is local to the module.
     : docs * # The documentation for the rule.
     )
 {
@@ -253,6 +259,29 @@ local rule set-rule-doc (
     {
         $(module-name).rules += $(name) ;
     }
+}
+
+# Specify a class, will turn a rule into a class.
+#
+local rule set-class-doc (
+    name # The name of the class.
+    module-name ? # The name of the module to document.
+    : super-name ? # The super class name.
+    )
+{
+    module-name ?= * ;
+
+    $(module-name).$(name).is-class = true ;
+    $(module-name).$(name).super-name = $(super-name) ;
+    $(module-name).$(name).class-rules =
+        [ MATCH "^($(name)[.].*)" : $($(module-name).rules) ] ;
+    $(module-name).$($(module-name).$(name).class-rules).is-class-rule = true ;
+
+    $(module-name).classes += $(name) ;
+    $(module-name).class-rules += $($(module-name).$(name).class-rules) ;
+    $(module-name).rules =
+        [ set.difference $($(module-name).rules) :
+            $(name) $($(module-name).$(name).class-rules) ] ;
 }
 
 # Set the argument call signature of a rule.
@@ -280,8 +309,8 @@ local rule set-argument-doc (
 {
     module-name ?= * ;
 
-    $(module-name).$(rule-name).$(name).qualifier = $(qualifier) ;
-    $(module-name).$(rule-name).$(name).docs = $(docs) ;
+    $(module-name).$(rule-name).args.$(name).qualifier = $(qualifier) ;
+    $(module-name).$(rule-name).args.$(name).docs = $(docs) ;
 
     if ! $(name) in $($(module-name).$(rule-name).args)
     {
@@ -320,11 +349,15 @@ local rule print-help-top ( )
     print.section "Available Help"
         These are the available options for obtaining documentation.
         Some options have additional instructions on how to get more
-        detailed information.
+        detailed information. Multiple options are allowed and
+        sometimes required. For example, the options that configure
+        the help system still require a regular help request option
+        for any output to be generated.
         ;
     print.list-start ;
     print.list-item --help; This help message. ;
     print.list-item --help-all; Brief information on available modules. ;
+    print.list-item --help <module-name>; Get information about a module. ;
     print.list-item --help-options; Options for controlling the help display. ;
     print.list-item --help-output <type>; The type of output to genetare.
         '"console" is formated text echoed to the console (the default);'
@@ -352,7 +385,7 @@ local rule print-help-options (
     if $(options-to-list)
     {
         print.list-start ;
-        for local option in $(options-to-list)
+        for local option in [ sequence.insertion-sort $(options-to-list) ]
         {
             local def = disabled ;
             if $($(module-name)..option.$(option).default) != "(empty)"
@@ -380,7 +413,7 @@ local rule print-help-module-section (
     {
         print.section $(section-head) $(section-description) ;
         print.list-start ;
-        for local item in $($(module).$(section))
+        for local item in [ sequence.insertion-sort $($(module).$(section)) ]
         {
             local show = ;
             if ! $($(module).$(item).is-local)
@@ -414,7 +447,7 @@ local rule print-help-all (
     if $(documented-modules)
     {
         print.list-start ;
-        for local module-name in $(documented-modules)
+        for local module-name in [ sequence.insertion-sort $(documented-modules) ]
         {
             # The brief docs for each module.
             print.list-item $(module-name): $($(module-name).brief) ;
@@ -433,6 +466,10 @@ local rule print-help-module (
     # Print the docs.
     print.section "Module '$(module-name)'" $($(module-name).docs) ;
     
+    # Print out the documented classes.
+    print-help-module-section $(module-name) classes : "Module '$(module-name)' classes"
+        Use --help $(module-name).<class-name> to get more information. ;
+    
     # Print out the documented rules.
     print-help-module-section $(module-name) rules : "Module '$(module-name)' rules"
         Use --help $(module-name).<rule-name> to get more information. ;
@@ -444,6 +481,7 @@ local rule print-help-module (
     # Print out all the same information but indetailed form.
     if $(.option.detailed)
     {
+        print-help-classes $(module-name) ;
         print-help-rules $(module-name) ;
         print-help-variables $(module-name) ;
     }
@@ -457,10 +495,10 @@ local rule print-help-rules (
     )
 {
     name ?= $($(module-name).rules) ;
-    if [ set.intersection $(name) : $($(module-name).rules) ]
+    if [ set.intersection $(name) : $($(module-name).rules) $($(module-name).class-rules) ]
     {
         # Print out the given rules.
-        for local rule-name in $(name)
+        for local rule-name in [ sequence.insertion-sort $(name) ]
         {
             if $(.option.show-locals) || ! $($(module-name).$(rule-name).is-local)
             {
@@ -473,11 +511,49 @@ local rule print-help-rules (
                     print.list-start ;
                     for local arg-name in $($(module-name).$(rule-name).args)
                     {
-                        print.list-item $(arg-name): $($(module-name).$(rule-name).$(arg-name).docs) ;
+                        print.list-item $(arg-name): $($(module-name).$(rule-name).args.$(arg-name).docs) ;
                     }
                     print.list-end ;
                 }
             }
+        }
+    }
+}
+
+# Generate documentation for a set of classes in a module.
+#
+local rule print-help-classes (
+    module-name # Module of the classes.
+    : name * # Optional list of classes to describe.
+    )
+{
+    name ?= $($(module-name).classes) ;
+    if [ set.intersection $(name) : $($(module-name).classes) ]
+    {
+        # Print out the given classes.
+        for local class-name in [ sequence.insertion-sort $(name) ]
+        {
+            if $(.option.show-locals) || ! $($(module-name).$(class-name).is-local)
+            {
+                local signature = $($(module-name).$(class-name).signature:J=" ") ;
+                signature ?= "" ;
+                print.section "Class '$(module-name).$(class-name) ( $(signature) )'"
+                    $($(module-name).$(class-name).docs)
+                   "Inherits from '"$($(module-name).$(class-name).super-name)"'." ;
+                if $($(module-name).$(class-name).args)
+                {
+                    print.list-start ;
+                    for local arg-name in $($(module-name).$(class-name).args)
+                    {
+                        print.list-item $(arg-name): $($(module-name).$(class-name).args.$(arg-name).docs) ;
+                    }
+                    print.list-end ;
+                }
+            }
+            
+            # Print out the documented rules of the class.
+            print-help-module-section $(module-name) $(class-name).class-rules : "Class '$(module-name).$(class-name)' rules"
+                Use --help $(module-name).<rule-name> to get more information. ;
         }
     }
 }
@@ -493,7 +569,7 @@ local rule print-help-variables (
     if [ set.intersection $(name) : $($(module-name).variables) ]
     {
         # Print out the given variables.
-        for local variable-name in $(name)
+        for local variable-name in [ sequence.insertion-sort $(name) ]
         {
             print.section "Variable '$(module-name).$(variable-name)'" $($(module-name).$(variable-name).docs) ;
             if $($(module-name).$(variable-name).default) ||
@@ -528,11 +604,14 @@ local rule extract-comment (
 {
     local comment = ;
     local line = $($(var)[1]) ;
-    while [ MATCH "^[$(ws)]*(#)" : $(line) ] && $($(var))
+    local l = [ MATCH "^[$(ws)]*(#)(.*)$" : $(line) ] ;
+    while $(l[1]) && $($(var))
     {
-        comment += [ MATCH "^[$(ws)]*#[$(ws)]*(.*)$" : $(line) ] ;
+        if $(l[2]) { comment += [ MATCH "^[$(ws)](.*)$" : $(l[2]) ] ; }
+        else { comment += "" ; }
         $(var) = $($(var)[2-]) ;
         line = $($(var)[1]) ;
+        l = [ MATCH "^[$(ws)]*(#)(.*)$" : $(line) ] ;
     }
     return $(comment) ;
 }
@@ -727,6 +806,20 @@ local rule scan-variable (
     }
 }
 
+# Scan a class declaration.
+local rule scan-class (
+    syntax ? # The syntax text for the class declaration.
+    )
+{
+    # [1] = class?, [2] = name, [3] = superclass
+    local class-parts =
+        [ MATCH "^[$(ws)]*([^$(ws)]+)[$(ws)]+([^$(ws)]+)[$(ws)]+:*[$(ws)]*([^$(ws);]*)" : $(syntax) ] ;
+    if $(class-parts[1]) = "class" || $(class-parts[1]) = "class.class"
+    {
+        set-class-doc $(class-parts[2]) $(module-name) : $(class-parts[3]) ;
+    }
+}
+
 # Scan a module file for documentation comments. This also
 # invokes any actions assigned to the module. The actions
 # are the rules that do the actual output of the documentation.
@@ -754,12 +847,9 @@ rule scan-module (
             ECHO "HELP:" comment block; '$(comment-block)' ;
             ECHO "HELP:" syntax block; '$(syntax-block)' ;
         }
-        if [ scan-rule $(syntax-block) : text ]
-        {
-        }
-        else if [ scan-variable $(syntax-block) : text ]
-        {
-        }
+        if [ scan-rule $(syntax-block) : text ] { }
+        else if [ scan-variable $(syntax-block) : text ] { }
+        else if [ scan-class $(syntax-block) ] { }
         else if [ MATCH .*([cC]opyright).* : $(comment-block:J=" ") ]
         {
             # mark as the copy for the module.

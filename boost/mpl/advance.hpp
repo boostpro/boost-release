@@ -17,8 +17,8 @@
 #ifndef BOOST_MPL_ADVANCE_HPP_INCLUDED
 #define BOOST_MPL_ADVANCE_HPP_INCLUDED
 
-#include "boost/mpl/arithmetic/negate.hpp"
-#include "boost/mpl/comparison/less.hpp"
+#include "boost/mpl/negate.hpp"
+#include "boost/mpl/less.hpp"
 #include "boost/mpl/integral_c.hpp"
 #include "boost/mpl/if.hpp"
 #include "boost/mpl/iterator_tag.hpp"
@@ -27,12 +27,16 @@
 #include "boost/mpl/aux_/iterator_category.hpp"
 #include "boost/mpl/aux_/iterator_names.hpp"
 #include "boost/mpl/aux_/msvc_never_true.hpp"
+#include "boost/mpl/aux_/common_name_wknd.hpp"
 #include "boost/mpl/aux_/apply.hpp"
 #include "boost/mpl/aux_/void_spec.hpp"
+#include "boost/mpl/aux_/config/nttp.hpp"
 #include "boost/config.hpp"
 
 namespace boost {
 namespace mpl {
+
+BOOST_MPL_AUX_COMMON_NAME_WKND(advance)
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 
@@ -42,10 +46,13 @@ namespace aux {
 template< typename Category, typename Iterator, typename N >
 struct advance_impl
 {
+    typedef typename less< N,integral_c<long,0> >::type backward_;
+    typedef typename if_< backward_, negate<N>, N >::type offset_;
+
     typedef typename if_<
-          typename less< N,integral_c<long,0> >::type
-        , aux::advance_backward< ::boost::mpl::negate<N>::value >
-        , aux::advance_forward< BOOST_MPL_AUX_VALUE_WKND(N)::value >
+          backward_
+        , aux::advance_backward< BOOST_MPL_AUX_VALUE_WKND(offset_)::value >
+        , aux::advance_forward< BOOST_MPL_AUX_VALUE_WKND(offset_)::value >
         >::type algo_;
 
     typedef typename BOOST_MPL_AUX_APPLY1(algo_,Iterator)::type type;
@@ -61,6 +68,8 @@ struct advance_impl<ra_iter_tag_,Iterator,N>
 
 } // namespace aux
 
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_BEGIN
+
 template<
       typename BOOST_MPL_AUX_VOID_SPEC_PARAM(Iterator)
     , typename BOOST_MPL_AUX_VOID_SPEC_PARAM(N)
@@ -74,9 +83,11 @@ struct advance
         >::type type;
 };
 
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_END
+
 template<
       typename Iterator
-    , long N
+    , BOOST_MPL_AUX_NTTP_DECL(long, N)
     >
 struct advance_c
 {
@@ -141,6 +152,8 @@ struct advance_impl<ra_iter_tag_>
 
 } // namespace aux
 
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_BEGIN
+
 template<
       typename BOOST_MPL_AUX_VOID_SPEC_PARAM(Iterator)
     , typename BOOST_MPL_AUX_VOID_SPEC_PARAM(N)
@@ -155,9 +168,11 @@ struct advance
             >::type type;
 };
 
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_END
+
 template<
       typename Iterator
-    , long N
+    , BOOST_MPL_AUX_NTTP_DECL(long, N)
     >
 struct advance_c
 {
@@ -171,7 +186,7 @@ struct advance_c
 
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
-BOOST_MPL_AUX_VOID_SPEC(2, advance)
+BOOST_MPL_AUX_ALGORITHM_VOID_SPEC(2, advance)
 
 } // namespace mpl
 } // namespace boost

@@ -5,8 +5,6 @@
 // to its suitability for any purpose.
 
 
-#include "simple_type.hpp"
-#include "complicated.hpp"
 #include <boost/python/def.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/class.hpp>
@@ -15,7 +13,10 @@
 #include <boost/python/return_value_policy.hpp>
 #include <boost/python/to_python_converter.hpp>
 #include <boost/python/errors.hpp>
+#include <boost/python/manage_new_object.hpp>
 #include <string.h>
+#include "simple_type.hpp"
+#include "complicated.hpp"
 
 // Declare some straightforward extension types
 extern "C" void
@@ -171,10 +172,6 @@ struct B : A
     int x;
 };
 
-#if BOOST_MSVC == 1200
-# define C C_
-#endif
-
 struct C : A
 {
     C() : x(2) {}
@@ -199,6 +196,11 @@ D take_d_shared_ptr(boost::shared_ptr<D> d) { return *d; }
 
 boost::shared_ptr<A> d_factory() { return boost::shared_ptr<B>(new D); }
 
+struct Unregistered {};
+Unregistered make_unregistered(int) { return Unregistered(); }
+
+Unregistered* make_unregistered2(int) { return new Unregistered; }
+
 BOOST_PYTHON_MODULE(m1)
 {
     using namespace boost::python;
@@ -221,6 +223,9 @@ BOOST_PYTHON_MODULE(m1)
     
     def("new_noddy", new_noddy);
     def("new_simple", new_simple);
+
+    def("make_unregistered", make_unregistered);
+    def("make_unregistered2", make_unregistered2, return_value_policy<manage_new_object>());
 
       // Expose f() in all its variations
     def("f", f);
@@ -249,15 +254,15 @@ BOOST_PYTHON_MODULE(m1)
 
     // sequence points don't ensure that "A" is constructed before "B"
     // or "C" below if we make them part of the same chain
-    class_<B,bases<A>, shared_ptr<B> >("B")
+    class_<B,bases<A> >("B")
         .def("name", &B::name)
         ;
         
-    class_<C,bases<A>, shared_ptr<C> >("C")
+    class_<C,bases<A> >("C")
         .def("name", &C::name)
         ;
 
-    class_<D,shared_ptr<D>, bases<B,C> >("D")
+    class_<D, bases<B,C> >("D")
         .def("name", &D::name)
         ;
 

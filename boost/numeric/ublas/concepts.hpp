@@ -263,19 +263,13 @@ namespace boost { namespace numeric { namespace ublas {
     template<class I>
     struct Indexed2DIteratorConcept {
         typedef I iterator_type;
-#ifndef BOOST_UBLAS_USE_CANONICAL_ITERATOR
         typedef typename I::dual_iterator_type dual_iterator_type;
         typedef typename I::dual_reverse_iterator_type dual_reverse_iterator_type;
-#endif
 
         static void constraints () {
             iterator_type it = iterator_type ();
             // Function call
             it ();
-#ifdef BOOST_UBLAS_USE_CANONICAL_ITERATOR
-            // Indices
-            it.index ();
-#else
             // Indices
             it.index1 ();
             it.index2 ();
@@ -289,7 +283,6 @@ namespace boost { namespace numeric { namespace ublas {
             ignore_unused_variable_warning (it_end);
             ignore_unused_variable_warning (it_rbegin);
             ignore_unused_variable_warning (it_rend);
-#endif
         }
     };
 
@@ -879,6 +872,7 @@ namespace boost { namespace numeric { namespace ublas {
     ZeroElement (double) {
         return 0.;
     }
+#ifndef BOOST_MSVC
     template<>
     std::complex<float>
     ZeroElement (std::complex<float>) {
@@ -887,8 +881,9 @@ namespace boost { namespace numeric { namespace ublas {
     template<>
     std::complex<double>
     ZeroElement (std::complex<double>) {
-        return std::complex<float> (0.);
+        return std::complex<double> (0.);
     }
+#endif
     template<>
     vector<float> 
     ZeroElement (vector<float>) {
@@ -899,6 +894,7 @@ namespace boost { namespace numeric { namespace ublas {
     ZeroElement (vector<double>) {
         return zero_vector<double> ();
     }
+#ifndef BOOST_MSVC
     template<>
     vector<std::complex<float> > 
     ZeroElement (vector<std::complex<float> >) {
@@ -909,6 +905,7 @@ namespace boost { namespace numeric { namespace ublas {
     ZeroElement (vector<std::complex<double> >) {
         return zero_vector<std::complex<double> > ();
     }
+#endif
     template<>
     matrix<float> 
     ZeroElement (matrix<float>) {
@@ -919,6 +916,7 @@ namespace boost { namespace numeric { namespace ublas {
     ZeroElement (matrix<double>) {
         return zero_matrix<double> ();
     }
+#ifndef BOOST_MSVC
     template<>
     matrix<std::complex<float> > 
     ZeroElement (matrix<std::complex<float> >) {
@@ -929,6 +927,7 @@ namespace boost { namespace numeric { namespace ublas {
     ZeroElement (matrix<std::complex<double> >) {
         return zero_matrix<std::complex<double> > ();
     }
+#endif
 
     template<class T>
     T 
@@ -943,6 +942,7 @@ namespace boost { namespace numeric { namespace ublas {
     OneElement (double) {
         return 1.;
     }
+#ifndef BOOST_MSVC
     template<>
     std::complex<float>
     OneElement (std::complex<float>) {
@@ -953,6 +953,7 @@ namespace boost { namespace numeric { namespace ublas {
     OneElement (std::complex<double>) {
         return std::complex<double> (1.);
     }
+#endif
     template<>
     matrix<float> 
     OneElement (matrix<float>) {
@@ -963,6 +964,7 @@ namespace boost { namespace numeric { namespace ublas {
     OneElement (matrix<double>) {
         return identity_matrix<double> ();
     }
+#ifndef BOOST_MSVC
     template<>
     matrix<std::complex<float> > 
     OneElement (matrix<std::complex<float> >) {
@@ -973,6 +975,7 @@ namespace boost { namespace numeric { namespace ublas {
     OneElement (matrix<std::complex<double> >) {
         return identity_matrix<std::complex<double> > ();
     }
+#endif
 
     template<class E1, class E2>
     bool 
@@ -1138,19 +1141,11 @@ namespace boost { namespace numeric { namespace ublas {
         RandomAccessIteratorConcept<array_adaptor<double>::const_iterator, std::ptrdiff_t, double>::constraints ();
         MutableRandomAccessIteratorConcept<array_adaptor<double>::iterator, std::ptrdiff_t, double>::constraints ();
 
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-        IndexSetConcept<range<> >::constraints ();
-        RandomAccessIteratorConcept<range<>::const_iterator, std::ptrdiff_t, std::size_t>::constraints ();
-
-        IndexSetConcept<slice<> >::constraints ();
-        RandomAccessIteratorConcept<slice<>::const_iterator, std::ptrdiff_t, std::size_t>::constraints ();
-#else
         IndexSetConcept<range>::constraints ();
         RandomAccessIteratorConcept<range::const_iterator, std::ptrdiff_t, std::size_t>::constraints ();
 
         IndexSetConcept<slice>::constraints ();
         RandomAccessIteratorConcept<slice::const_iterator, std::ptrdiff_t, std::size_t>::constraints ();
-#endif
 
         IndexSetConcept<indirect_array<> >::constraints ();
         RandomAccessIteratorConcept<indirect_array<>::const_iterator, std::ptrdiff_t, std::size_t>::constraints ();
@@ -1627,7 +1622,7 @@ namespace boost { namespace numeric { namespace ublas {
                                              matrix_matrix_binary<matrix<double>, matrix<double>, matrix_matrix_prod<double, double, double> >::const_reverse_iterator2>::constraints ();
 
         ScalarExpressionConcept<matrix_scalar_unary<matrix<double>, matrix_norm_1<double> > >::constraints ();
-        ScalarExpressionConcept<matrix_scalar_unary<matrix<double>, matrix_norm_2<double> > >::constraints ();
+        ScalarExpressionConcept<matrix_scalar_unary<matrix<double>, matrix_norm_frobenius<double> > >::constraints ();
         ScalarExpressionConcept<matrix_scalar_unary<matrix<double>, matrix_norm_inf<double> > >::constraints ();
 #endif
 
@@ -1648,6 +1643,7 @@ namespace boost { namespace numeric { namespace ublas {
         VectorSpaceConcept<double, matrix<double> >::constraints ();
         LinearOperatorConcept<double, vector<double>, matrix<double> >::constraints ();
 
+#ifndef BOOST_MSVC
         AdditiveAbelianGroupConcept<std::complex<float> >::constraints ();
         CommutativeRingWithIdentityConcept<std::complex<float> >::constraints ();
         FieldConcept<std::complex<float> >::constraints ();
@@ -1663,6 +1659,7 @@ namespace boost { namespace numeric { namespace ublas {
         RingWithIdentityConcept<matrix<std::complex<double> > >::constraints (0);
         VectorSpaceConcept<std::complex<double>, matrix<std::complex<double> > >::constraints ();
         LinearOperatorConcept<std::complex<double>, vector<std::complex<double> >, matrix<std::complex<double> > >::constraints ();
+#endif
 #endif
     }
 

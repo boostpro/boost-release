@@ -12,6 +12,8 @@
 #include <boost/python/dict.hpp>
 #include <boost/python/str.hpp>
 #include <boost/python/extract.hpp>
+#include <boost/python/object_protocol.hpp>
+#include <boost/python/detail/api_placeholder.hpp>
 #include <structmember.h>
 #include <cstdio>
 
@@ -146,9 +148,13 @@ namespace
       dict d;
       d["__slots__"] = tuple();
       d["values"] = dict();
-          
+
+      object module_name = module_prefix();
+      if (module_name)
+          module_name += '.';
+      
       object result = (object(metatype))(
-          module_prefix() + name, make_tuple(base), d);
+          module_name + name, make_tuple(base), d);
       
       scope().attr(name) = result;
 
@@ -169,7 +175,7 @@ enum_base::enum_base(
         = const_cast<converter::registration&>(
             converter::registry::lookup(id));
             
-    converters.class_object = downcast<PyTypeObject>(this->ptr());
+    converters.m_class_object = downcast<PyTypeObject>(this->ptr());
     converter::registry::insert(to_python, id);
     converter::registry::insert(convertible, construct, id);
 }
@@ -193,6 +199,18 @@ void enum_base::add_value(char const* name_, long value)
     Py_XDECREF(p->name);
     p->name = incref(name.ptr());
 }
+
+void enum_base::export_values()
+{
+    dict d = extract<dict>(this->attr("values"))();
+    list values = d.values();
+    scope current;
+    
+    for (unsigned i = 0, max = len(values); i < max; ++i)
+    {
+        api::setattr(current, object(values[i].attr("name")), values[i]);
+    }
+ }
 
 PyObject* enum_base::to_python(PyTypeObject* type_, long x)
 {

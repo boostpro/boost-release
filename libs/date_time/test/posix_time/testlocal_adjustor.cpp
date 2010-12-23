@@ -1,6 +1,11 @@
+/* Copyright (c) 2001 CrystalClear Software, Inc.
+ * Disclaimer & Full Copyright at end of file
+ * Author: Jeff Garland 
+ */
 
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/date_time/local_time_adjustor.hpp"
+#include "boost/date_time/local_timezone_defs.hpp"
 #include "boost/date_time/testfrmwk.hpp"
 
 int
@@ -121,6 +126,19 @@ main()
   check("check us_local_adjustor", t7c == t7a);
 
 
+  typedef boost::date_time::us_dst_trait<date> us_dst_traits;
+  typedef boost::date_time::dst_calc_engine<date, time_duration, us_dst_traits>
+    us_dst_calc2;
+
+  typedef boost::date_time::local_adjustor<ptime, -5, us_dst_calc2> us_eastern3;
+  {
+    ptime t7a(date(2002,May,31), hours(17)); 
+    ptime t7b = us_eastern3::local_to_utc(t7a);
+    ptime t7c = us_eastern3::utc_to_local(t7b);
+    //converted to local then back ot utc
+    check("check us_local_adjustor3", t7c == t7a);
+  }
+
 //   std::cout << to_simple_string(t7) << " in Arizona is " 
 //             << to_simple_string(t8) << " UTC time "
 //             << std::endl;
@@ -140,3 +158,20 @@ main()
   printTestStats();
   return 0;
 }
+
+/*
+ * Copyright (c) 2001
+ * CrystalClear Software, Inc.
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  CrystalClear Software makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided as is without express or implied warranty.
+ *
+ *
+ * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
+ *
+ */

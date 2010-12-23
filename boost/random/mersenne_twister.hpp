@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: mersenne_twister.hpp,v 1.6.10.1 2002/09/20 11:56:18 bjorn_karlsson Exp $
+ * $Id: mersenne_twister.hpp,v 1.12 2003/01/15 15:43:36 david_abrahams Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -23,66 +23,62 @@
 
 #include <iostream>
 #include <algorithm>     // std::copy
-#include <iterator>      // std::ostream_iterator
+#include <stdexcept>
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/integer_traits.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/random/linear_congruential.hpp>
+# include <boost/detail/workaround.hpp>
 
 namespace boost {
 namespace random {
 
 // http://www.math.keio.ac.jp/matumoto/emt.html
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
 class mersenne_twister
 {
 public:
-  typedef DataType result_type;
+  typedef UIntType result_type;
+  BOOST_STATIC_CONSTANT(int, word_size = w);
   BOOST_STATIC_CONSTANT(int, state_size = n);
   BOOST_STATIC_CONSTANT(int, shift_size = m);
   BOOST_STATIC_CONSTANT(int, mask_bits = r);
-  BOOST_STATIC_CONSTANT(DataType, parameter_a = a);
+  BOOST_STATIC_CONSTANT(UIntType, parameter_a = a);
   BOOST_STATIC_CONSTANT(int, output_u = u);
   BOOST_STATIC_CONSTANT(int, output_s = s);
-  BOOST_STATIC_CONSTANT(DataType, output_b = b);
+  BOOST_STATIC_CONSTANT(UIntType, output_b = b);
   BOOST_STATIC_CONSTANT(int, output_t = t);
-  BOOST_STATIC_CONSTANT(DataType, output_c = c);
+  BOOST_STATIC_CONSTANT(UIntType, output_c = c);
   BOOST_STATIC_CONSTANT(int, output_l = l);
-#ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
-  static const bool has_fixed_range = true;
-  static const result_type min_value = integer_traits<result_type>::const_min;
-  static const result_type max_value = integer_traits<result_type>::const_max;
-#else
+
   BOOST_STATIC_CONSTANT(bool, has_fixed_range = false);
-#endif
-  result_type min() const { return std::numeric_limits<result_type>::min(); }
-  result_type max() const { return std::numeric_limits<result_type>::max(); }
   
   mersenne_twister() { seed(); }
 
 #if defined(__SUNPRO_CC) && (__SUNPRO_CC <= 0x520)
   // Work around overload resolution problem (Gennadiy E. Rozental)
-  explicit mersenne_twister(const DataType& value)
+  explicit mersenne_twister(const UIntType& value)
 #else
-  explicit mersenne_twister(DataType value)
+  explicit mersenne_twister(UIntType value)
 #endif
   { seed(value); }
+  template<class It> mersenne_twister(It& first, It last) { seed(first,last); }
 
   template<class Generator>
   explicit mersenne_twister(Generator & gen) { seed(gen); }
 
   // compiler-generated copy ctor and assignment operator are fine
 
-  void seed() { seed(DataType(4357)); }
+  void seed() { seed(UIntType(4357)); }
 
 #if defined(__SUNPRO_CC) && (__SUNPRO_CC <= 0x520)
   // Work around overload resolution problem (Gennadiy E. Rozental)
-  void seed(const DataType& value)
+  void seed(const UIntType& value)
 #else
-  void seed(DataType value)
+  void seed(UIntType value)
 #endif
   {
     random::linear_congruential<uint32_t, 69069, 0, 0, /* unknown */ 0> 
@@ -104,124 +100,181 @@ public:
       x[j] = gen();
     i = n;
   }
+
+  template<class It>
+  void seed(It& first, It last)
+  {
+    int j;
+    for(j = 0; j < n && first != last; ++j, ++first)
+      x[j] = *first;
+    i = n;
+    if(first == last && j < n)
+      throw std::invalid_argument("mersenne_twister::seed");
+  }
   
+  result_type min() const { return 0; }
+  result_type max() const
+  {
+    // avoid "left shift count >= with of type" warning
+    result_type res = 0;
+    for(int i = 0; i < w; ++i)
+      res |= (1u << i);
+    return res;
+  }
+
   result_type operator()();
-  bool validation(result_type v) const { return val == v; }
+  static bool validation(result_type v) { return val == v; }
 
 #ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
-  friend std::ostream& operator<<(std::ostream& os, const mersenne_twister& mt)
+
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+  template<class CharT, class Traits>
+  friend std::basic_ostream<CharT,Traits>&
+  operator<<(std::basic_ostream<CharT,Traits>& os, const mersenne_twister& mt)
   {
-    os << mt.i << " ";
-    std::copy(mt.x, mt.x+n, std::ostream_iterator<data_type>(os, " "));
+    for(int j = 0; j < mt.state_size; ++j)
+      os << mt.compute(j) << " ";
     return os;
   }
-  friend std::istream& operator>>(std::istream& is, mersenne_twister& mt)
+
+  template<class CharT, class Traits>
+  friend std::basic_istream<CharT,Traits>&
+  operator>>(std::basic_istream<CharT,Traits>& is, mersenne_twister& mt)
   {
-    is >> mt.i >> std::ws;
-    for(int i = 0; i < mt.state_size; ++i)
-      is >> mt.x[i] >> std::ws;
+    for(int j = 0; j < mt.state_size; ++j)
+      is >> mt.x[j] >> std::ws;
+# if BOOST_WORKAROUND(_MSC_FULL_VER, BOOST_TESTED_AT(13102292)) && BOOST_MSVC > 1300
+    mt.i = mt.state_size;
+# else 
+    mt.i = n;
+# endif 
     return is;
   }
+#endif
+
   friend bool operator==(const mersenne_twister& x, const mersenne_twister& y)
-  { return x.i == y.i && std::equal(x.x, x.x+n, y.x); }
+  {
+    for(int j = 0; j < state_size; ++j)
+      if(x.compute(j) != y.compute(j))
+        return false;
+    return true;
+  }
+
+  friend bool operator!=(const mersenne_twister& x, const mersenne_twister& y)
+  { return !(x == y); }
 #else
   // Use a member function; Streamable concept not supported.
   bool operator==(const mersenne_twister& rhs) const
-  { return i == rhs.i && std::equal(x, x+n, rhs.x); }
+  {
+    for(int j = 0; j < state_size; ++j)
+      if(compute(j) != rhs.compute(j))
+        return false;
+    return true;
+  }
+
+  bool operator!=(const mersenne_twister& rhs) const
+  { return !(*this == rhs); }
 #endif
 
 private:
-  typedef DataType data_type;
-  void twist();
+  // returns x(i-n+index), where index is in 0..n-1
+  UIntType compute(unsigned int index) const
+  {
+    // equivalent to (i-n+index) % 2n, but doesn't produce negative numbers
+    return x[ (i + n + index) % (2*n) ];
+  }
+  void twist(int block);
+
+  // state representation: next output is o(x(i))
+  //   x[0]  ... x[k] x[k+1] ... x[n-1]     x[n]     ... x[2*n-1]   represents
+  //  x(i-k) ... x(i) x(i+1) ... x(i-k+n-1) x(i-k-n) ... x[i(i-k-1)]
+  // The goal is to always have x(i-n) ... x(i-1) available for
+  // operator== and save/restore.
+
+  UIntType x[2*n]; 
   int i;
-  data_type x[n];
 };
 
 #ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
 //  A definition is required even for integral static constants
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const bool mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::has_fixed_range;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const typename mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::result_type mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::min_value;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const typename mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::result_type mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::max_value;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::state_size;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::shift_size;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::mask_bits;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const DataType mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::parameter_a;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_u;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_s;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const DataType mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_b;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_t;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const DataType mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_c;
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-const int mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::output_l;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const bool mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::has_fixed_range;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const int mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::state_size;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const int mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::shift_size;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const int mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::mask_bits;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const UIntType mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::parameter_a;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const int mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::output_u;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const int mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::output_s;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const UIntType mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::output_b;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const int mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::output_t;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const UIntType mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::output_c;
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+const int mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::output_l;
 #endif
 
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-void mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::twist()
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+void mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::twist(int block)
 {
-  const data_type upper_mask = (~0u) << r;
-  const data_type lower_mask = ~upper_mask;
-  /*
-  for(int j = 0; j < n; j++) {
-    // Step 2
-    data_type y = (x[j] & upper_mask) | (x[(j+1)%n] & lower_mask);
-    // Step 3
-    x[j] = x[(j+m)%n] ^ (y >> 1) ^ (y&1 ? a : 0);
-  }
-  */
-  // split loop to avoid costly modulo operations
-  {  // extra scope for MSVC brokenness w.r.t. for scope
-  for(int j = 0; j < n-m; j++) {
-    data_type y = (x[j] & upper_mask) | (x[j+1] & lower_mask);
-    x[j] = x[j+m] ^ (y >> 1) ^ (y&1 ? a : 0);
-  }
-  }
+  const UIntType upper_mask = (~0u) << r;
+  const UIntType lower_mask = ~upper_mask;
 
-  for(int j = n-m; j < n-1; j++) {
-    data_type y = (x[j] & upper_mask) | (x[j+1] & lower_mask);
-    x[j] = x[j+m-n] ^ (y >> 1) ^ (y&1 ? a : 0);
+  if(block == 0) {
+    for(int j = n; j < 2*n; j++) {
+      UIntType y = (x[j-n] & upper_mask) | (x[j-(n-1)] & lower_mask);
+      x[j] = x[j-(n-m)] ^ (y >> 1) ^ (y&1 ? a : 0);
+    }
+  } else if (block == 1) {
+    // split loop to avoid costly modulo operations
+    {  // extra scope for MSVC brokenness w.r.t. for scope
+      for(int j = 0; j < n-m; j++) {
+        UIntType y = (x[j+n] & upper_mask) | (x[j+n+1] & lower_mask);
+        x[j] = x[j+n+m] ^ (y >> 1) ^ (y&1 ? a : 0);
+      }
+    }
+    
+    for(int j = n-m; j < n-1; j++) {
+      UIntType y = (x[j+n] & upper_mask) | (x[j+n+1] & lower_mask);
+      x[j] = x[j-(n-m)] ^ (y >> 1) ^ (y&1 ? a : 0);
+    }
+    // last iteration
+    UIntType y = (x[2*n-1] & upper_mask) | (x[0] & lower_mask);
+    x[n-1] = x[m-1] ^ (y >> 1) ^ (y&1 ? a : 0);
+    i = 0;
   }
-  // last iteration
-  data_type y = (x[n-1] & upper_mask) | (x[0] & lower_mask);
-  x[n-1] = x[n-1+m-n] ^ (y >> 1) ^ (y&1 ? a : 0);
-  
-  i = 0;
 }
 
-template<class DataType, int n, int m, int r, DataType a, int u,
-  int s, DataType b, int t, DataType c, int l, DataType val>
-inline typename mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::result_type
-mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::operator()()
+template<class UIntType, int w, int n, int m, int r, UIntType a, int u,
+  int s, UIntType b, int t, UIntType c, int l, UIntType val>
+inline typename mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::result_type
+mersenne_twister<UIntType,w,n,m,r,a,u,s,b,t,c,l,val>::operator()()
 {
-  if(i >= n)
-    twist();
+  if(i == n)
+    twist(0);
+  else if(i >= 2*n)
+    twist(1);
   // Step 4
-  data_type z = x[i];
+  UIntType z = x[i];
   ++i;
   z ^= (z >> u);
   z ^= ((z << s) & b);
@@ -233,11 +286,11 @@ mersenne_twister<DataType,n,m,r,a,u,s,b,t,c,l,val>::operator()()
 } // namespace random
 
 
-typedef random::mersenne_twister<uint32_t,351,175,19,0xccab8ee7,11,
-  7,0x31b6ab00,15,0xffe50000,17, /* unknown */ 0> mt11213b;
+typedef random::mersenne_twister<uint32_t,32,351,175,19,0xccab8ee7,11,
+  7,0x31b6ab00,15,0xffe50000,17, 0xa37d3c92> mt11213b;
 
 // validation by experiment from mt19937.c
-typedef random::mersenne_twister<uint32_t,624,397,31,0x9908b0df,11,
+typedef random::mersenne_twister<uint32_t,32,624,397,31,0x9908b0df,11,
   7,0x9d2c5680,15,0xefc60000,18, 3346425566U> mt19937;
 
 } // namespace boost

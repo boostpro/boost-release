@@ -1,4 +1,7 @@
-
+/* Copyright (c) 2001 CrystalClear Software, Inc.
+ * Disclaimer & Full Copyright at end of file
+ * Author: Jeff Garland 
+ */
 
 #include "boost/date_time/time_resolution_traits.hpp"
 #include "boost/date_time/testfrmwk.hpp"
@@ -42,8 +45,13 @@ main()
         nano_res::to_tick_count(0,0,0,1) == 1);
   check("nano tick calculations",  
         nano_res::to_tick_count(0,0,1,1) == 1000000001);
+#if ((defined(__GNUC__) && (__GNUC__ < 3)) || defined(__IBMCPP__))
+  check("nano tick calculations",  
+        nano_res::to_tick_count(0,1,0,0) == 60000000000LL);
+#else
   check("nano tick calculations",  
         nano_res::to_tick_count(0,1,0,0) == 60000000000);
+#endif
 
   //skip io on VC6 b/c of lack of operator<< for int64
 #if (defined(BOOST_MSVC) && (_MSC_VER <= 1200))  // 1200 == VC++ 6.0
@@ -62,3 +70,20 @@ main()
   printTestStats();
   return 0;
 }
+
+/*
+ * Copyright (c) 2001
+ * CrystalClear Software, Inc.
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  CrystalClear Software makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided as is without express or implied warranty.
+ *
+ *
+ * Author:  Jeff Garland (jeff@CrystalClearSoftware.com)
+ *
+ */

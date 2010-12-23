@@ -21,6 +21,16 @@ class Trees_difference:
         self.removed_files.extend(other.removed_files)
         self.modified_files.extend(other.modified_files)
         self.touched_files.extend(other.touched_files)
+     
+    def ignore_directories(self):
+        "Removes directories for list of found differences"
+
+        def not_dir(x):
+            return x[-1] != "/"
+        self.added_files = filter(not_dir, self.added_files)
+        self.removed_files = filter(not_dir, self.removed_files)
+        self.modified_files = filter(not_dir, self.modified_files)
+        self.touched_files = filter(not_dir, self.touched_files)
 
     def pprint(self):
         print "Added files   :", self.added_files
@@ -30,7 +40,7 @@ class Trees_difference:
 
     def empty(self):
         return (len(self.added_files) == 0 and len(self.removed_files) == 0)\
-                and len(modified_files) == 0 and len(self.touched_files) == 0
+                and len(self.modified_files) == 0 and len(self.touched_files) == 0
 
 def build_tree(dir):
     return svn_tree.build_tree_from_wc(dir, load_props=0, ignore_svn=1)
@@ -47,7 +57,7 @@ def trees_difference(a, b, current_name=""):
             assert a.name == b.name
             if svn_tree.compare_file_nodes(a, b):
                 result.modified_files.append(current_name)
-            if (a.mtime != b.mtime):
+            elif (a.mtime != b.mtime):
                 result.touched_files.append(current_name)
 
         # One is a file, one is a directory.

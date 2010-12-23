@@ -14,7 +14,11 @@
 #  pragma once
 # endif
 
+#if defined(__ALPHA) && defined(__osf__) && defined(__DECCXX_VER)
+# include <pyconfig.h>
+#endif
 # include <boost/config.hpp>
+# include <boost/mpl/bool.hpp>
 
 namespace boost { namespace python {
 
@@ -39,16 +43,14 @@ inline pointer_wrapper<T> ptr(T t)
 # ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 template<typename T>
 class is_pointer_wrapper
+    : public mpl::false_
 {
- public:
-    BOOST_STATIC_CONSTANT(bool, value = false); 
 };
 
 template<typename T>
 class is_pointer_wrapper<pointer_wrapper<T> >
+    : public mpl::true_
 {
- public:
-    BOOST_STATIC_CONSTANT(bool, value = true);
 };
 
 template<typename T>
@@ -109,8 +111,9 @@ class is_pointer_wrapper
  public:
     BOOST_STATIC_CONSTANT(
         bool, value = (
-            sizeof(detail::is_pointer_wrapper_test(boost::type<T>()))
+        sizeof(detail::is_pointer_wrapper_test(boost::type<T>()))
             == sizeof(detail::yes_pointer_wrapper_t)));
+    typedef mpl::bool_<value> type;
 };
 
 template <typename T>

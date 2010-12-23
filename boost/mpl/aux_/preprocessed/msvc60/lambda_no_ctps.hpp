@@ -6,7 +6,7 @@ namespace mpl {
 
 namespace aux {
 
-template< int arity, bool Protect > struct lambda_impl
+template< nttp_int arity_, bool Protect > struct lambda_impl
 {
     template< typename T > struct result_
     {
@@ -21,7 +21,7 @@ template<> struct lambda_impl<1, false>
         typedef typename F::rebind f_;
         typedef bind1<
               f_
-            , typename lambda< typename f_::arg1, false >::type
+            , typename lambda< typename F::arg1, false >::type
             > type;
     };
 };
@@ -31,9 +31,9 @@ template<> struct lambda_impl<1, true>
     template< typename F > struct result_
     {
         typedef typename F::rebind f_;
-        typedef protect< bind1<
+        typedef mpl::protect< bind1<
               f_
-            , typename lambda< typename f_::arg1, false >::type
+            , typename lambda< typename F::arg1, false >::type
             > > type;
     };
 };
@@ -46,7 +46,7 @@ template<> struct lambda_impl<2, false>
         typedef bind2<
               f_
             
-            ,typename lambda< typename f_::arg1, false >::type, typename lambda< typename f_::arg2, false >::type
+            ,typename lambda< typename F::arg1, false >::type, typename lambda< typename F::arg2, false >::type
             > type;
     };
 };
@@ -56,10 +56,10 @@ template<> struct lambda_impl<2, true>
     template< typename F > struct result_
     {
         typedef typename F::rebind f_;
-        typedef protect< bind2<
+        typedef mpl::protect< bind2<
               f_
             
-            ,typename lambda< typename f_::arg1, false >::type, typename lambda< typename f_::arg2, false >::type
+            ,typename lambda< typename F::arg1, false >::type, typename lambda< typename F::arg2, false >::type
             > > type;
     };
 };
@@ -72,7 +72,7 @@ template<> struct lambda_impl<3, false>
         typedef bind3<
               f_
             
-            ,typename lambda< typename f_::arg1, false >::type, typename lambda< typename f_::arg2, false >::type, typename lambda< typename f_::arg3, false >::type
+            ,typename lambda< typename F::arg1, false >::type, typename lambda< typename F::arg2, false >::type, typename lambda< typename F::arg3, false >::type
             > type;
     };
 };
@@ -82,10 +82,10 @@ template<> struct lambda_impl<3, true>
     template< typename F > struct result_
     {
         typedef typename F::rebind f_;
-        typedef protect< bind3<
+        typedef mpl::protect< bind3<
               f_
             
-            ,typename lambda< typename f_::arg1, false >::type, typename lambda< typename f_::arg2, false >::type, typename lambda< typename f_::arg3, false >::type
+            ,typename lambda< typename F::arg1, false >::type, typename lambda< typename F::arg2, false >::type, typename lambda< typename F::arg3, false >::type
             > > type;
     };
 };
@@ -98,7 +98,7 @@ template<> struct lambda_impl<4, false>
         typedef bind4<
               f_
             
-            ,typename lambda< typename f_::arg1, false >::type, typename lambda< typename f_::arg2, false >::type, typename lambda< typename f_::arg3, false >::type, typename lambda< typename f_::arg4, false >::type
+            ,typename lambda< typename F::arg1, false >::type, typename lambda< typename F::arg2, false >::type, typename lambda< typename F::arg3, false >::type, typename lambda< typename F::arg4, false >::type
             > type;
     };
 };
@@ -108,10 +108,10 @@ template<> struct lambda_impl<4, true>
     template< typename F > struct result_
     {
         typedef typename F::rebind f_;
-        typedef protect< bind4<
+        typedef mpl::protect< bind4<
               f_
             
-            ,typename lambda< typename f_::arg1, false >::type, typename lambda< typename f_::arg2, false >::type, typename lambda< typename f_::arg3, false >::type, typename lambda< typename f_::arg4, false >::type
+            ,typename lambda< typename F::arg1, false >::type, typename lambda< typename F::arg2, false >::type, typename lambda< typename F::arg3, false >::type, typename lambda< typename F::arg4, false >::type
             > > type;
     };
 };
@@ -124,7 +124,7 @@ template<> struct lambda_impl<5, false>
         typedef bind5<
               f_
             
-            ,typename lambda< typename f_::arg1, false >::type, typename lambda< typename f_::arg2, false >::type, typename lambda< typename f_::arg3, false >::type, typename lambda< typename f_::arg4, false >::type, typename lambda< typename f_::arg5, false >::type
+            ,typename lambda< typename F::arg1, false >::type, typename lambda< typename F::arg2, false >::type, typename lambda< typename F::arg3, false >::type, typename lambda< typename F::arg4, false >::type, typename lambda< typename F::arg5, false >::type
             > type;
     };
 };
@@ -134,10 +134,10 @@ template<> struct lambda_impl<5, true>
     template< typename F > struct result_
     {
         typedef typename F::rebind f_;
-        typedef protect< bind5<
+        typedef mpl::protect< bind5<
               f_
             
-            ,typename lambda< typename f_::arg1, false >::type, typename lambda< typename f_::arg2, false >::type, typename lambda< typename f_::arg3, false >::type, typename lambda< typename f_::arg4, false >::type, typename lambda< typename f_::arg5, false >::type
+            ,typename lambda< typename F::arg1, false >::type, typename lambda< typename F::arg2, false >::type, typename lambda< typename F::arg3, false >::type, typename lambda< typename F::arg4, false >::type, typename lambda< typename F::arg5, false >::type
             > > type;
     };
 };
@@ -146,10 +146,12 @@ template<> struct lambda_impl<5, true>
 
 template< typename T, bool Protect = true >
 struct lambda
+    : aux::lambda_impl<
+          ::boost::mpl::aux::template_arity<T>::value
 
-    : aux::lambda_impl< ::boost::mpl::aux::template_arity<T>::value, bool_c<Protect>::value >
+        , bool_<Protect>::value
 
-        ::template result_<T>
+        >::template result_<T>
 {
 };
 

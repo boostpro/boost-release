@@ -1,4 +1,21 @@
-//  bind_tests_simple.cpp  --------------------------------
+//  bind_tests_simple.cpp  -- The Boost Lambda Library ------------------
+//
+// Copyright (C) 2000-2003 Jaakko Järvi (jaakko.jarvi@cs.utu.fi)
+// Copyright (C) 2000-2003 Gary Powell (powellg@amazon.com)
+//
+// Permission to copy, use, sell and distribute this software is granted
+// provided this copyright notice appears in all copies. 
+// Permission to modify the code and to distribute modified code is granted
+// provided this copyright notice appears in all copies, and a notice 
+// that the code was modified is included with the copyright notice.
+//
+// This software is provided "as is" without express or implied warranty, 
+// and with no claim as to its suitability for any purpose.
+//
+// For more information, see www.boost.org
+
+// -----------------------------------------------------------------------
+
 
 #define BOOST_INCLUDE_MAIN  // for testing, include rather than link
 #include <boost/test/test_tools.hpp>    // see "Header Implementation Option"
@@ -31,6 +48,18 @@ class A {
 public:
   A(int n) : i(n) {};
   int add(const int& j) { return i + j; }
+  int add2(int a1, int a2) { return i + a1 + a2; }
+  int add3(int a1, int a2, int a3) { return i + a1 + a2 + a3; }
+  int add4(int a1, int a2, int a3, int a4) { return i + a1 + a2 + a3 + a4; }
+  int add5(int a1, int a2, int a3, int a4, int a5) 
+  { return i + a1 + a2 + a3 + a4 + a5; }
+  int add6(int a1, int a2, int a3, int a4, int a5, int a6) 
+  { return i + a1 + a2 + a3 + a4 + a5 + a6; }
+  int add7(int a1, int a2, int a3, int a4, int a5, int a6, int a7) 
+  { return i + a1 + a2 + a3 + a4 + a5 + a6 + a7; }
+  int add8(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8) 
+  { return i + a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8; }
+
 };
 
 void test_member_functions()
@@ -46,6 +75,14 @@ void test_member_functions()
     BOOST_TEST(bind(&A::add, &a, _1)(i) == 11);
     BOOST_TEST(bind(&A::add, _1, 1)(a) == 11);
     BOOST_TEST(bind(&A::add, _1, 1)(make_const(&a)) == 11);
+
+    BOOST_TEST(bind(&A::add2, _1, 1, 1)(a) == 12);
+    BOOST_TEST(bind(&A::add3, _1, 1, 1, 1)(a) == 13);
+    BOOST_TEST(bind(&A::add4, _1, 1, 1, 1, 1)(a) == 14);
+    BOOST_TEST(bind(&A::add5, _1, 1, 1, 1, 1, 1)(a) == 15);
+    BOOST_TEST(bind(&A::add6, _1, 1, 1, 1, 1, 1, 1)(a) == 16);
+    BOOST_TEST(bind(&A::add7, _1, 1, 1, 1, 1, 1, 1, 1)(a) == 17);
+    BOOST_TEST(bind(&A::add8, _1, 1, 1, 1, 1, 1, 1, 1, 1)(a) == 18);
 
   // This should fail, as lambda functors store arguments as const
   // bind(&A::add, a, _1); 

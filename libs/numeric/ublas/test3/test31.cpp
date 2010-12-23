@@ -1,3 +1,19 @@
+//
+//  Copyright (c) 2000-2002
+//  Joerg Walter, Mathias Koch
+//
+//  Permission to use, copy, modify, distribute and sell this software
+//  and its documentation for any purpose is hereby granted without fee,
+//  provided that the above copyright notice appear in all copies and
+//  that both that copyright notice and this permission notice appear
+//  in supporting documentation.  The authors make no representations
+//  about the suitability of this software for any purpose.
+//  It is provided "as is" without express or implied warranty.
+//
+//  The authors gratefully acknowledge the support of
+//  GeNeSys mbH & Co. KG in producing this work.
+//
+
 #ifdef BOOST_MSVC
 
 #pragma warning (disable: 4355)
@@ -51,6 +67,7 @@ struct test_my_vector {
             // Binary vector operations resulting in a vector
             initialize_vector (v1);
             initialize_vector (v2);
+            initialize_vector (v3);
             v3 = v1 + v2;
             std::cout << "v1 + v2 = " << v3 << std::endl;
 
@@ -117,25 +134,10 @@ struct test_my_vector {
         }
     }
     void operator () () const {
-        try {            
+        try {
             V v1 (N, N), v2 (N, N), v3 (N, N);
             (*this) (v1, v2, v3);
 
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-#ifdef USE_RANGE
-            ublas::vector_range<V> vr1 (v1, ublas::range<> (0, N)),
-                                   vr2 (v2, ublas::range<> (0, N)),
-                                   vr3 (v3, ublas::range<> (0, N));
-            (*this) (vr1, vr2, vr3);
-#endif
-
-#ifdef USE_SLICE
-            ublas::vector_slice<V> vs1 (v1, ublas::slice<> (0, 1, N)),
-                                   vs2 (v2, ublas::slice<> (0, 1, N)),
-                                   vs3 (v3, ublas::slice<> (0, 1, N));
-            (*this) (vs1, vs2, vs3);
-#endif
-#else
 #ifdef USE_RANGE
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N)),
@@ -148,7 +150,6 @@ struct test_my_vector {
                                    vs2 (v2, ublas::slice (0, 1, N)),
                                    vs3 (v3, ublas::slice (0, 1, N));
             (*this) (vs1, vs2, vs3);
-#endif
 #endif
         }
         catch (std::exception &e) {
@@ -166,46 +167,100 @@ void test_vector () {
 
 #ifdef USE_SPARSE_VECTOR
 #ifdef USE_MAP_ARRAY
+#ifdef USE_FLOAT
     std::cout << "float, map_array" << std::endl;
     test_my_vector<ublas::sparse_vector<float, ublas::map_array<std::size_t, float> >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "double, map_array" << std::endl;
     test_my_vector<ublas::sparse_vector<double, ublas::map_array<std::size_t, double> >, 3 > () ();
+#endif
 
+#ifdef USE_STD_COMPLEX
+#ifdef USE_FLOAT
     std::cout << "std::complex<float>, map_array" << std::endl;
     test_my_vector<ublas::sparse_vector<std::complex<float>, ublas::map_array<std::size_t, std::complex<float> > >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "std::complex<double>, map_array" << std::endl;
     test_my_vector<ublas::sparse_vector<std::complex<double>, ublas::map_array<std::size_t, std::complex<double> > >, 3 > () ();
 #endif
+#endif
+#endif
 
 #ifdef USE_STD_MAP
+#ifdef USE_FLOAT
     std::cout << "float, std::map" << std::endl;
     test_my_vector<ublas::sparse_vector<float, std::map<size_t, float> >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "double, std::map" << std::endl;
     test_my_vector<ublas::sparse_vector<double, std::map<size_t, double> >, 3 > () ();
+#endif
 
+#ifdef USE_STD_COMPLEX
+#ifdef USE_FLOAT
     std::cout << "std::complex<float>, std::map" << std::endl;
     test_my_vector<ublas::sparse_vector<std::complex<float>, std::map<size_t, std::complex<float> > >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "std::complex<double>, std::map" << std::endl;
     test_my_vector<ublas::sparse_vector<std::complex<double>, std::map<size_t, std::complex<double> > > , 3 > () ();
 #endif
 #endif
+#endif
+#endif
 
 #ifdef USE_COMPRESSED_VECTOR
+#ifdef USE_FLOAT
     std::cout << "float" << std::endl;
     test_my_vector<ublas::compressed_vector<float>, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "double" << std::endl;
     test_my_vector<ublas::compressed_vector<double>, 3 > () ();
+#endif
 
+#ifdef USE_STD_COMPLEX
+#ifdef USE_FLOAT
     std::cout << "std::complex<float>" << std::endl;
     test_my_vector<ublas::compressed_vector<std::complex<float> >, 3 > () ();
+#endif
 
+#ifdef USE_DOUBLE
     std::cout << "std::complex<double>" << std::endl;
     test_my_vector<ublas::compressed_vector<std::complex<double> >, 3 > () ();
+#endif
+#endif
+#endif
+
+#ifdef USE_COORDINATE_VECTOR
+#ifdef USE_FLOAT
+    std::cout << "float" << std::endl;
+    test_my_vector<ublas::coordinate_vector<float>, 3 > () ();
+#endif
+
+#ifdef USE_DOUBLE
+    std::cout << "double" << std::endl;
+    test_my_vector<ublas::coordinate_vector<double>, 3 > () ();
+#endif
+
+#ifdef USE_STD_COMPLEX
+#ifdef USE_FLOAT
+    std::cout << "std::complex<float>" << std::endl;
+    test_my_vector<ublas::coordinate_vector<std::complex<float> >, 3 > () ();
+#endif
+
+#ifdef USE_DOUBLE
+    std::cout << "std::complex<double>" << std::endl;
+    test_my_vector<ublas::coordinate_vector<std::complex<double> >, 3 > () ();
+#endif
+#endif
 #endif
 }
 

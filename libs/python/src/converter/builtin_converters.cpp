@@ -4,19 +4,36 @@
 // "as is" without express or implied warranty, and with no claim as
 // to its suitability for any purpose.
 
-#include <boost/python/detail/config.hpp>
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python/converter/builtin_converters.hpp>
-#include <boost/python/converter/rvalue_from_python_data.hpp>
-#include <boost/python/converter/registry.hpp>
 #include <boost/python/handle.hpp>
 #include <boost/python/type_id.hpp>
 #include <boost/python/errors.hpp>
+#include <boost/python/refcount.hpp>
+
+#include <boost/python/detail/config.hpp>
+#include <boost/python/detail/wrap_python.hpp>
+
+#include <boost/python/converter/builtin_converters.hpp>
+#include <boost/python/converter/rvalue_from_python_data.hpp>
+#include <boost/python/converter/registry.hpp>
+#include <boost/python/converter/registrations.hpp>
+#include <boost/python/converter/shared_ptr_deleter.hpp>
+
 #include <boost/cast.hpp>
 #include <string>
 #include <complex>
 
 namespace boost { namespace python { namespace converter {
+
+shared_ptr_deleter::shared_ptr_deleter(handle<> owner)
+    : owner(owner)
+{}
+
+shared_ptr_deleter::~shared_ptr_deleter() {}
+
+void shared_ptr_deleter::operator()(void const*)
+{
+    owner.reset();
+}
 
 namespace
 {
@@ -65,8 +82,8 @@ namespace
       }
   };
 
-  // A SlotPolicy for extracting integer types from Python objects
-  struct int_rvalue_from_python_base
+  // A SlotPolicy for extracting signed integer types from Python objects
+  struct signed_int_rvalue_from_python_base
   {
       static unaryfunc* get_slot(PyObject* obj)
       {
@@ -80,11 +97,49 @@ namespace
   };
 
   template <class T>
-  struct int_rvalue_from_python : int_rvalue_from_python_base
+  struct signed_int_rvalue_from_python : signed_int_rvalue_from_python_base
   {
       static T extract(PyObject* intermediate)
       {
-          return numeric_cast<T>(PyInt_AS_LONG(intermediate));
+          long x = PyInt_AsLong(intermediate);
+          if (PyErr_Occurred())
+              throw_error_already_set();
+          return numeric_cast<T>(x);
+      }
+  };
+
+  // identity_unaryfunc/py_object_identity -- manufacture a unaryfunc
+  // "slot" which just returns its argument. 
+  extern "C" PyObject* identity_unaryfunc(PyObject* x)
+  {
+      Py_INCREF(x);
+      return x;
+  }
+  unaryfunc py_object_identity = identity_unaryfunc;
+
+  // A SlotPolicy for extracting unsigned integer types from Python objects
+  struct unsigned_int_rvalue_from_python_base
+  {
+      static unaryfunc* get_slot(PyObject* obj)
+      {
+          PyNumberMethods* number_methods = obj->ob_type->tp_as_number;
+          if (number_methods == 0)
+              return 0;
+
+          return (PyInt_Check(obj) || PyLong_Check(obj))
+              ? &py_object_identity : 0;
+      }
+  };
+
+  template <class T>
+  struct unsigned_int_rvalue_from_python : unsigned_int_rvalue_from_python_base
+  {
+      static T extract(PyObject* intermediate)
+      {
+          return numeric_cast<T>(
+              PyLong_Check(intermediate)
+              ? PyLong_AsUnsignedLong(intermediate)
+              : PyInt_AS_LONG(intermediate));
       }
   };
 
@@ -155,17 +210,6 @@ namespace
   };
 #endif 
 
-  // identity_unaryfunc/py_object_identity -- manufacture a unaryfunc
-  // "slot" which just returns its argument. Used for bool
-  // conversions, since all Python objects are directly convertible to
-  // bool
-  extern "C" PyObject* identity_unaryfunc(PyObject* x)
-  {
-      Py_INCREF(x);
-      return x;
-  }
-  unaryfunc py_object_identity = identity_unaryfunc;
-
   // A SlotPolicy for extracting bool from a Python object
   struct bool_rvalue_from_python
   {
@@ -222,9 +266,9 @@ namespace
       };
 
       // Remember that this will be used to construct the result object 
-      static char const* extract(PyObject* intermediate)
+      static std::string extract(PyObject* intermediate)
       {
-          return PyString_AsString(intermediate);
+          return std::string(PyString_AsString(intermediate),PyString_Size(intermediate));
       }
   };
 
@@ -282,8 +326,15 @@ BOOST_PYTHON_DECL PyObject* do_arg_to_python(PyObject* x)
     return x;
 }
 
-#define REGISTER_INT_CONVERTERS(U) slot_rvalue_from_python<U,int_rvalue_from_python<U> >()
-#define REGISTER_INT_CONVERTERS2(U) REGISTER_INT_CONVERTERS(signed U); REGISTER_INT_CONVERTERS(unsigned U)  
+#define REGISTER_INT_CONVERTERS(signedness, U)                          \
+        slot_rvalue_from_python<                                        \
+                signedness U                                            \
+                ,signedness##_int_rvalue_from_python<signedness U>      \
+         >()
+
+#define REGISTER_INT_CONVERTERS2(U)             \
+        REGISTER_INT_CONVERTERS(signed, U);     \
+        REGISTER_INT_CONVERTERS(unsigned, U)  
 
 void initialize_builtin_converters()
 {

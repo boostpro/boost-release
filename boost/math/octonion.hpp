@@ -22,10 +22,10 @@ namespace boost
         // gcc 2.95.x uses expression templates for valarray calculations, but
         // the result is not conforming. We need BOOST_GET_VALARRAY to get an
         // actual valarray result when we need to call a member function
-#define    BOOST_GET_VALARRAY(T,x)    ::std::valarray<T>(x)
+    #define    BOOST_GET_VALARRAY(T,x)    ::std::valarray<T>(x)
         // gcc 2.95.x has an "std::ios" class that is similar to 
         // "std::ios_base", so we just use a #define
-#define    BOOST_IOS_BASE    ::std::ios
+    #define    BOOST_IOS_BASE    ::std::ios
         // gcc 2.x ignores function scope using declarations,
         // put them in the scope of the enclosing namespace instead:
         using    ::std::valarray;
@@ -34,9 +34,9 @@ namespace boost
         using    ::std::sin;
         using    ::std::exp;
         using    ::std::cosh;
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
     
-    #define    BOOST_OCTONION_ACCESSOR_GENERATOR(type)                  \
+#define    BOOST_OCTONION_ACCESSOR_GENERATOR(type)                      \
             type                        real() const                    \
             {                                                           \
                 return(a);                                              \
@@ -118,77 +118,77 @@ namespace boost
             }
         
     
-    #define    BOOST_OCTONION_MEMBER_ASSIGNMENT_GENERATOR(type)                                      \
-            octonion<type> &        operator = (octonion<type> const & a_affecter)                   \
-            {                                                                                        \
-                a = a_affecter.a;                                                                    \
-                b = a_affecter.b;                                                                    \
-                c = a_affecter.c;                                                                    \
-                d = a_affecter.d;                                                                    \
-                e = a_affecter.e;                                                                    \
-                f = a_affecter.f;                                                                    \
-                g = a_affecter.g;                                                                    \
-                h = a_affecter.h;                                                                    \
-                                                                                                     \
-                return(*this);                                                                       \
-            }                                                                                        \
-                                                                                                     \
-            template<typename X>                                                                     \
-            octonion<type> &        operator = (octonion<X> const & a_affecter)                      \
-            {                                                                                        \
-                a = static_cast<type>(a_affecter.R_component_1());                                   \
-                b = static_cast<type>(a_affecter.R_component_2());                                   \
-                c = static_cast<type>(a_affecter.R_component_3());                                   \
-                d = static_cast<type>(a_affecter.R_component_4());                                   \
-                e = static_cast<type>(a_affecter.R_component_5());                                   \
-                f = static_cast<type>(a_affecter.R_component_6());                                   \
-                g = static_cast<type>(a_affecter.R_component_7());                                   \
-                h = static_cast<type>(a_affecter.R_component_8());                                   \
-                                                                                                     \
-                return(*this);                                                                       \
-            }                                                                                        \
-                                                                                                     \
-            octonion<type> &        operator = (type const & a_affecter)                             \
-            {                                                                                        \
-                a = a_affecter;                                                                      \
-                                                                                                     \
-                b = c = d = e = f= g = h = static_cast<type>(0);                                     \
-                                                                                                     \
-                return(*this);                                                                       \
-            }                                                                                        \
-                                                                                                     \
-            octonion<type> &        operator = (::std::complex<type> const & a_affecter)             \
-            {                                                                                        \
-                a = a_affecter.real();                                                               \
-                b = a_affecter.imag();                                                               \
-                                                                                                     \
-                c = d = e = f = g = h = static_cast<type>(0);                                        \
-                                                                                                     \
-                return(*this);                                                                       \
-            }                                                                                        \
-                                                                                                     \
-            octonion<type> &        operator = (::boost::math::quaternion<type> const & a_affecter)  \
-            {                                                                                        \
-                a = a_affecter.R_component_1();                                                      \
-                b = a_affecter.R_component_2();                                                      \
-                c = a_affecter.R_component_3();                                                      \
-                d = a_affecter.R_component_4();                                                      \
-                                                                                                     \
-                e = f = g = h = static_cast<type>(0);                                                \
-                                                                                                     \
-                return(*this);                                                                       \
+#define    BOOST_OCTONION_MEMBER_ASSIGNMENT_GENERATOR(type)                                         \
+            template<typename X>                                                                    \
+            octonion<type> &        operator = (octonion<X> const & a_affecter)                     \
+            {                                                                                       \
+                a = static_cast<type>(a_affecter.R_component_1());                                  \
+                b = static_cast<type>(a_affecter.R_component_2());                                  \
+                c = static_cast<type>(a_affecter.R_component_3());                                  \
+                d = static_cast<type>(a_affecter.R_component_4());                                  \
+                e = static_cast<type>(a_affecter.R_component_5());                                  \
+                f = static_cast<type>(a_affecter.R_component_6());                                  \
+                g = static_cast<type>(a_affecter.R_component_7());                                  \
+                h = static_cast<type>(a_affecter.R_component_8());                                  \
+                                                                                                    \
+                return(*this);                                                                      \
+            }                                                                                       \
+                                                                                                    \
+            octonion<type> &        operator = (octonion<type> const & a_affecter)                  \
+            {                                                                                       \
+                a = a_affecter.a;                                                                   \
+                b = a_affecter.b;                                                                   \
+                c = a_affecter.c;                                                                   \
+                d = a_affecter.d;                                                                   \
+                e = a_affecter.e;                                                                   \
+                f = a_affecter.f;                                                                   \
+                g = a_affecter.g;                                                                   \
+                h = a_affecter.h;                                                                   \
+                                                                                                    \
+                return(*this);                                                                      \
+            }                                                                                       \
+                                                                                                    \
+            octonion<type> &        operator = (type const & a_affecter)                            \
+            {                                                                                       \
+                a = a_affecter;                                                                     \
+                                                                                                    \
+                b = c = d = e = f= g = h = static_cast<type>(0);                                    \
+                                                                                                    \
+                return(*this);                                                                      \
+            }                                                                                       \
+                                                                                                    \
+            octonion<type> &        operator = (::std::complex<type> const & a_affecter)            \
+            {                                                                                       \
+                a = a_affecter.real();                                                              \
+                b = a_affecter.imag();                                                              \
+                                                                                                    \
+                c = d = e = f = g = h = static_cast<type>(0);                                       \
+                                                                                                    \
+                return(*this);                                                                      \
+            }                                                                                       \
+                                                                                                    \
+            octonion<type> &        operator = (::boost::math::quaternion<type> const & a_affecter) \
+            {                                                                                       \
+                a = a_affecter.R_component_1();                                                     \
+                b = a_affecter.R_component_2();                                                     \
+                c = a_affecter.R_component_3();                                                     \
+                d = a_affecter.R_component_4();                                                     \
+                                                                                                    \
+                e = f = g = h = static_cast<type>(0);                                               \
+                                                                                                    \
+                return(*this);                                                                      \
             }
         
         
-    #define    BOOST_OCTONION_MEMBER_DATA_GENERATOR(type) \
-            type    a;                                    \
-            type    b;                                    \
-            type    c;                                    \
-            type    d;                                    \
-            type    e;                                    \
-            type    f;                                    \
-            type    g;                                    \
-            type    h;                                    \
+#define    BOOST_OCTONION_MEMBER_DATA_GENERATOR(type) \
+            type    a;                                \
+            type    b;                                \
+            type    c;                                \
+            type    d;                                \
+            type    e;                                \
+            type    f;                                \
+            type    g;                                \
+            type    h;                                \
         
         
         template<typename T>
@@ -676,14 +676,39 @@ namespace boost
         };
         
         
-        // octonion specialization
+        // declaration of octonion specialization
         
         template<>    class octonion<float>;
         template<>    class octonion<double>;
         template<>    class octonion<long double>;
         
         
-    #define    BOOST_OCTONION_CONSTRUCTOR_GENERATOR(type)                                                                           \
+        // helper templates for converting copy constructors
+        
+        namespace detail
+        {
+            
+            template<   typename T,
+                        typename U
+                    >
+            octonion<T>    octonion_type_converter(octonion<U> const & rhs)
+            {
+                return(octonion<T>( static_cast<T>(rhs.R_component_1()),
+                                    static_cast<T>(rhs.R_component_2()),
+                                    static_cast<T>(rhs.R_component_3()),
+                                    static_cast<T>(rhs.R_component_4()),
+                                    static_cast<T>(rhs.R_component_5()),
+                                    static_cast<T>(rhs.R_component_6()),
+                                    static_cast<T>(rhs.R_component_7()),
+                                    static_cast<T>(rhs.R_component_8())));
+            }
+        }
+        
+        
+        // implementation of octonion specialization
+        
+        
+#define    BOOST_OCTONION_CONSTRUCTOR_GENERATOR(type)                                                                               \
             explicit                    octonion(   type const & requested_a = static_cast<type>(0),                                \
                                                     type const & requested_b = static_cast<type>(0),                                \
                                                     type const & requested_c = static_cast<type>(0),                                \
@@ -731,16 +756,16 @@ namespace boost
             {                                                                                                                       \
             }
         
-        
-    #define    BOOST_OCTONION_MEMBER_ADD_GENERATOR_1(type)               \
-            octonion<type> &            operator += (type const & rhs)   \
-            {                                                            \
-                a += rhs;                                                \
-                                                                         \
-                return(*this);                                           \
+    
+#define    BOOST_OCTONION_MEMBER_ADD_GENERATOR_1(type)                  \
+            octonion<type> &            operator += (type const & rhs)  \
+            {                                                           \
+                a += rhs;                                               \
+                                                                        \
+                return(*this);                                          \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_ADD_GENERATOR_2(type)                              \
+    
+#define    BOOST_OCTONION_MEMBER_ADD_GENERATOR_2(type)                                  \
             octonion<type> &            operator += (::std::complex<type> const & rhs)  \
             {                                                                           \
                 a += rhs.real();                                                        \
@@ -748,19 +773,19 @@ namespace boost
                                                                                         \
                 return(*this);                                                          \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_ADD_GENERATOR_3(type)                                           \
-            octonion<type> &            operator += (::boost::math::quaternion<type> const & rhs)    \
-            {                                                                                        \
-                a += rhs.R_component_1();                                                            \
-                b += rhs.R_component_2();                                                            \
-                c += rhs.R_component_3();                                                            \
-                d += rhs.R_component_4();                                                            \
-                                                                                                     \
-                return(*this);                                                                       \
+    
+#define    BOOST_OCTONION_MEMBER_ADD_GENERATOR_3(type)                                              \
+            octonion<type> &            operator += (::boost::math::quaternion<type> const & rhs)   \
+            {                                                                                       \
+                a += rhs.R_component_1();                                                           \
+                b += rhs.R_component_2();                                                           \
+                c += rhs.R_component_3();                                                           \
+                d += rhs.R_component_4();                                                           \
+                                                                                                    \
+                return(*this);                                                                      \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_ADD_GENERATOR_4(type)                      \
+    
+#define    BOOST_OCTONION_MEMBER_ADD_GENERATOR_4(type)                          \
             template<typename X>                                                \
             octonion<type> &            operator += (octonion<X> const & rhs)   \
             {                                                                   \
@@ -775,16 +800,16 @@ namespace boost
                                                                                 \
                 return(*this);                                                  \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_SUB_GENERATOR_1(type)               \
-            octonion<type> &            operator -= (type const & rhs)   \
-            {                                                            \
-                a -= rhs;                                                \
-                                                                         \
-                return(*this);                                           \
+    
+#define    BOOST_OCTONION_MEMBER_SUB_GENERATOR_1(type)                  \
+            octonion<type> &            operator -= (type const & rhs)  \
+            {                                                           \
+                a -= rhs;                                               \
+                                                                        \
+                return(*this);                                          \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_SUB_GENERATOR_2(type)                                    \
+    
+#define    BOOST_OCTONION_MEMBER_SUB_GENERATOR_2(type)                                  \
             octonion<type> &            operator -= (::std::complex<type> const & rhs)  \
             {                                                                           \
                 a -= rhs.real();                                                        \
@@ -792,35 +817,35 @@ namespace boost
                                                                                         \
                 return(*this);                                                          \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_SUB_GENERATOR_3(type)                                           \
-            octonion<type> &            operator -= (::boost::math::quaternion<type> const & rhs)    \
-            {                                                                                        \
-                a -= rhs.R_component_1();                                                            \
-                b -= rhs.R_component_2();                                                            \
-                c -= rhs.R_component_3();                                                            \
-                d -= rhs.R_component_4();                                                            \
-                                                                                                     \
-                return(*this);                                                                       \
+    
+#define    BOOST_OCTONION_MEMBER_SUB_GENERATOR_3(type)                                              \
+            octonion<type> &            operator -= (::boost::math::quaternion<type> const & rhs)   \
+            {                                                                                       \
+                a -= rhs.R_component_1();                                                           \
+                b -= rhs.R_component_2();                                                           \
+                c -= rhs.R_component_3();                                                           \
+                d -= rhs.R_component_4();                                                           \
+                                                                                                    \
+                return(*this);                                                                      \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_SUB_GENERATOR_4(type)                      \
-            template<typename X>                                                \
-            octonion<type> &            operator -= (octonion<X> const & rhs)   \
-            {                                                                   \
-                a -= static_cast<type>(rhs.R_component_1());                    \
-                b -= static_cast<type>(rhs.R_component_2());                    \
-                c -= static_cast<type>(rhs.R_component_3());                    \
-                d -= static_cast<type>(rhs.R_component_4());                    \
-                e -= static_cast<type>(rhs.R_component_5());                    \
-                f -= static_cast<type>(rhs.R_component_6());                    \
-                g -= static_cast<type>(rhs.R_component_7());                    \
-                h -= static_cast<type>(rhs.R_component_8());                    \
-                                                                                \
-                return(*this);                                                  \
+    
+#define    BOOST_OCTONION_MEMBER_SUB_GENERATOR_4(type)                        \
+            template<typename X>                                              \
+            octonion<type> &            operator -= (octonion<X> const & rhs) \
+            {                                                                 \
+                a -= static_cast<type>(rhs.R_component_1());                  \
+                b -= static_cast<type>(rhs.R_component_2());                  \
+                c -= static_cast<type>(rhs.R_component_3());                  \
+                d -= static_cast<type>(rhs.R_component_4());                  \
+                e -= static_cast<type>(rhs.R_component_5());                  \
+                f -= static_cast<type>(rhs.R_component_6());                  \
+                g -= static_cast<type>(rhs.R_component_7());                  \
+                h -= static_cast<type>(rhs.R_component_8());                  \
+                                                                              \
+                return(*this);                                                \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_MUL_GENERATOR_1(type)               \
+    
+#define    BOOST_OCTONION_MEMBER_MUL_GENERATOR_1(type)                   \
             octonion<type> &            operator *= (type const & rhs)   \
             {                                                            \
                 a *= rhs;                                                \
@@ -834,8 +859,8 @@ namespace boost
                                                                          \
                 return(*this);                                           \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_MUL_GENERATOR_2(type)                                    \
+    
+#define    BOOST_OCTONION_MEMBER_MUL_GENERATOR_2(type)                                  \
             octonion<type> &            operator *= (::std::complex<type> const & rhs)  \
             {                                                                           \
                 type    ar = rhs.real();                                                \
@@ -861,37 +886,37 @@ namespace boost
                                                                                         \
                 return(*this);                                                          \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_MUL_GENERATOR_3(type)                                           \
-            octonion<type> &            operator *= (::boost::math::quaternion<type> const & rhs)    \
-            {                                                                                        \
-                type    ar = rhs.R_component_1();                                                    \
-                type    br = rhs.R_component_2();                                                    \
-                type    cr = rhs.R_component_2();                                                    \
-                type    dr = rhs.R_component_2();                                                    \
-                                                                                                     \
-                type    at = +a*ar-b*br-c*cr-d*dr;                                                   \
-                type    bt = +a*br+b*ar+c*dr-d*cr;                                                   \
-                type    ct = +a*cr-b*dr+c*ar+d*br;                                                   \
-                type    dt = +a*dr+b*cr-c*br+d*ar;                                                   \
-                type    et = +e*ar+f*br+g*cr+h*dr;                                                   \
-                type    ft = -e*br+f*ar-g*dr+h*cr;                                                   \
-                type    gt = -e*cr+f*dr+g*ar-h*br;                                                   \
-                type    ht = -e*dr-f*cr+g*br+h*ar;                                                   \
-                                                                                                     \
-                a = at;                                                                              \
-                b = bt;                                                                              \
-                c = ct;                                                                              \
-                d = dt;                                                                              \
-                e = et;                                                                              \
-                f = ft;                                                                              \
-                g = gt;                                                                              \
-                h = ht;                                                                              \
-                                                                                                     \
-                return(*this);                                                                       \
+    
+#define    BOOST_OCTONION_MEMBER_MUL_GENERATOR_3(type)                                                    \
+            octonion<type> &            operator *= (::boost::math::quaternion<type> const & rhs)   \
+            {                                                                                       \
+                type    ar = rhs.R_component_1();                                                   \
+                type    br = rhs.R_component_2();                                                   \
+                type    cr = rhs.R_component_2();                                                   \
+                type    dr = rhs.R_component_2();                                                   \
+                                                                                                    \
+                type    at = +a*ar-b*br-c*cr-d*dr;                                                  \
+                type    bt = +a*br+b*ar+c*dr-d*cr;                                                  \
+                type    ct = +a*cr-b*dr+c*ar+d*br;                                                  \
+                type    dt = +a*dr+b*cr-c*br+d*ar;                                                  \
+                type    et = +e*ar+f*br+g*cr+h*dr;                                                  \
+                type    ft = -e*br+f*ar-g*dr+h*cr;                                                  \
+                type    gt = -e*cr+f*dr+g*ar-h*br;                                                  \
+                type    ht = -e*dr-f*cr+g*br+h*ar;                                                  \
+                                                                                                    \
+                a = at;                                                                             \
+                b = bt;                                                                             \
+                c = ct;                                                                             \
+                d = dt;                                                                             \
+                e = et;                                                                             \
+                f = ft;                                                                             \
+                g = gt;                                                                             \
+                h = ht;                                                                             \
+                                                                                                    \
+                return(*this);                                                                      \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_MUL_GENERATOR_4(type)                      \
+    
+#define    BOOST_OCTONION_MEMBER_MUL_GENERATOR_4(type)                          \
             template<typename X>                                                \
             octonion<type> &            operator *= (octonion<X> const & rhs)   \
             {                                                                   \
@@ -924,101 +949,150 @@ namespace boost
                                                                                 \
                 return(*this);                                                  \
             }
-            
-    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_1(type)               \
-            octonion<type> &            operator /= (type const & rhs)   \
-            {                                                            \
-                a /= rhs;                                                \
-                b /= rhs;                                                \
-                c /= rhs;                                                \
-                d /= rhs;                                                \
-                                                                         \
-                return(*this);                                           \
+    
+// There is quite a lot of repetition in the code below. This is intentional.
+// The last conditional block is the normal form, and the others merely
+// consist of workarounds for various compiler deficiencies. Hopefuly, when
+// more compilers are conformant and we can retire support for those that are
+// not, we will be able to remove the clutter. This is makes the situation
+// (painfully) explicit.
+    
+#define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_1(type)                  \
+            octonion<type> &            operator /= (type const & rhs)  \
+            {                                                           \
+                a /= rhs;                                               \
+                b /= rhs;                                               \
+                c /= rhs;                                               \
+                d /= rhs;                                               \
+                                                                        \
+                return(*this);                                          \
             }
     
 #if defined(__GNUC__) && (__GNUC__ < 3)
-    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_2(type)                                    \
-            octonion<type> &            operator /= (::std::complex<type> const & rhs)   \
-            {                                                                            \
-                using    ::std::valarray;                                                \
-                                                                                         \
-                valarray<type>    tr(2);                                                 \
-                                                                                         \
-                tr[0] = rhs.real();                                                      \
-                tr[1] = rhs.imag();                                                      \
-                                                                                         \
-                type            mixam = BOOST_GET_VALARRAY(type,static_cast<type>(1)/abs(tr)).max();              \
-                                                                                         \
-                tr *= mixam;                                                             \
-                                                                                         \
-                valarray<type>    tt(8);                                                 \
-                                                                                         \
-                tt[0] = +a*tr[0]-b*tr[1];                                                \
-                tt[1] = -a*tr[1]+b*tr[0];                                                \
-                tt[2] = +c*tr[0]-d*tr[1];                                                \
-                tt[3] = +c*tr[1]+d*tr[0];                                                \
-                tt[4] = +e*tr[0]-f*tr[1];                                                \
-                tt[5] = +e*tr[1]+f*tr[0];                                                \
-                tt[6] = +g*tr[0]+h*tr[1];                                                \
-                tt[7] = +g*tr[1]+h*tr[0];                                                \
-                                                                                         \
-                tr *= tr;                                                                \
-                                                                                         \
-                tt *= (mixam/tr.sum());                                                  \
-                                                                                         \
-                a = tt[0];                                                               \
-                b = tt[1];                                                               \
-                c = tt[2];                                                               \
-                d = tt[3];                                                               \
-                e = tt[4];                                                               \
-                f = tt[5];                                                               \
-                g = tt[6];                                                               \
-                h = tt[7];                                                               \
-                                                                                         \
-                return(*this);                                                           \
+    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_2(type)                                              \
+            octonion<type> &            operator /= (::std::complex<type> const & rhs)                  \
+            {                                                                                           \
+                using    ::std::valarray;                                                               \
+                                                                                                        \
+                valarray<type>    tr(2);                                                                \
+                                                                                                        \
+                tr[0] = rhs.real();                                                                     \
+                tr[1] = rhs.imag();                                                                     \
+                                                                                                        \
+                type            mixam = BOOST_GET_VALARRAY(type,static_cast<type>(1)/abs(tr)).max();    \
+                                                                                                        \
+                tr *= mixam;                                                                            \
+                                                                                                        \
+                valarray<type>    tt(8);                                                                \
+                                                                                                        \
+                tt[0] = +a*tr[0]-b*tr[1];                                                               \
+                tt[1] = -a*tr[1]+b*tr[0];                                                               \
+                tt[2] = +c*tr[0]-d*tr[1];                                                               \
+                tt[3] = +c*tr[1]+d*tr[0];                                                               \
+                tt[4] = +e*tr[0]-f*tr[1];                                                               \
+                tt[5] = +e*tr[1]+f*tr[0];                                                               \
+                tt[6] = +g*tr[0]+h*tr[1];                                                               \
+                tt[7] = +g*tr[1]+h*tr[0];                                                               \
+                                                                                                        \
+                tr *= tr;                                                                               \
+                                                                                                        \
+                tt *= (mixam/tr.sum());                                                                 \
+                                                                                                        \
+                a = tt[0];                                                                              \
+                b = tt[1];                                                                              \
+                c = tt[2];                                                                              \
+                d = tt[3];                                                                              \
+                e = tt[4];                                                                              \
+                f = tt[5];                                                                              \
+                g = tt[6];                                                                              \
+                h = tt[7];                                                                              \
+                                                                                                        \
+                return(*this);                                                                          \
+            }
+#elif    defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
+    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_2(type)                              \
+            octonion<type> &            operator /= (::std::complex<type> const & rhs)  \
+            {                                                                           \
+                using    ::std::valarray;                                               \
+                using    ::std::abs;                                                    \
+                                                                                        \
+                valarray<type>    tr(2);                                                \
+                                                                                        \
+                tr[0] = rhs.real();                                                     \
+                tr[1] = rhs.imag();                                                     \
+                                                                                        \
+                type            mixam = static_cast<type>(1)/abs(tr).max();             \
+                                                                                        \
+                tr *= mixam;                                                            \
+                                                                                        \
+                valarray<type>    tt(8);                                                \
+                                                                                        \
+                tt[0] = +a*tr[0]-b*tr[1];                                               \
+                tt[1] = -a*tr[1]+b*tr[0];                                               \
+                tt[2] = +c*tr[0]-d*tr[1];                                               \
+                tt[3] = +c*tr[1]+d*tr[0];                                               \
+                tt[4] = +e*tr[0]-f*tr[1];                                               \
+                tt[5] = +e*tr[1]+f*tr[0];                                               \
+                tt[6] = +g*tr[0]+h*tr[1];                                               \
+                tt[7] = +g*tr[1]+h*tr[0];                                               \
+                                                                                        \
+                tr *= tr;                                                               \
+                                                                                        \
+                tt *= (mixam/tr.sum());                                                 \
+                                                                                        \
+                a = tt[0];                                                              \
+                b = tt[1];                                                              \
+                c = tt[2];                                                              \
+                d = tt[3];                                                              \
+                e = tt[4];                                                              \
+                f = tt[5];                                                              \
+                g = tt[6];                                                              \
+                h = tt[7];                                                              \
+                                                                                        \
+                return(*this);                                                          \
             }
 #else
-    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_2(type)                                    \
-            octonion<type> &            operator /= (::std::complex<type> const & rhs)   \
-            {                                                                            \
-                using    ::std::valarray;                                                \
-                                                                                         \
-                valarray<type>    tr(2);                                                 \
-                                                                                         \
-                tr[0] = rhs.real();                                                      \
-                tr[1] = rhs.imag();                                                      \
-                                                                                         \
-                type            mixam = static_cast<type>(1)/abs(tr).max();              \
-                                                                                         \
-                tr *= mixam;                                                             \
-                                                                                         \
-                valarray<type>    tt(8);                                                 \
-                                                                                         \
-                tt[0] = +a*tr[0]-b*tr[1];                                                \
-                tt[1] = -a*tr[1]+b*tr[0];                                                \
-                tt[2] = +c*tr[0]-d*tr[1];                                                \
-                tt[3] = +c*tr[1]+d*tr[0];                                                \
-                tt[4] = +e*tr[0]-f*tr[1];                                                \
-                tt[5] = +e*tr[1]+f*tr[0];                                                \
-                tt[6] = +g*tr[0]+h*tr[1];                                                \
-                tt[7] = +g*tr[1]+h*tr[0];                                                \
-                                                                                         \
-                tr *= tr;                                                                \
-                                                                                         \
-                tt *= (mixam/tr.sum());                                                  \
-                                                                                         \
-                a = tt[0];                                                               \
-                b = tt[1];                                                               \
-                c = tt[2];                                                               \
-                d = tt[3];                                                               \
-                e = tt[4];                                                               \
-                f = tt[5];                                                               \
-                g = tt[6];                                                               \
-                h = tt[7];                                                               \
-                                                                                         \
-                return(*this);                                                           \
+    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_2(type)                              \
+            octonion<type> &            operator /= (::std::complex<type> const & rhs)  \
+            {                                                                           \
+                using    ::std::valarray;                                               \
+                                                                                        \
+                valarray<type>    tr(2);                                                \
+                                                                                        \
+                tr[0] = rhs.real();                                                     \
+                tr[1] = rhs.imag();                                                     \
+                                                                                        \
+                type            mixam = static_cast<type>(1)/abs(tr).max();             \
+                                                                                        \
+                tr *= mixam;                                                            \
+                                                                                        \
+                valarray<type>    tt(8);                                                \
+                                                                                        \
+                tt[0] = +a*tr[0]-b*tr[1];                                               \
+                tt[1] = -a*tr[1]+b*tr[0];                                               \
+                tt[2] = +c*tr[0]-d*tr[1];                                               \
+                tt[3] = +c*tr[1]+d*tr[0];                                               \
+                tt[4] = +e*tr[0]-f*tr[1];                                               \
+                tt[5] = +e*tr[1]+f*tr[0];                                               \
+                tt[6] = +g*tr[0]+h*tr[1];                                               \
+                tt[7] = +g*tr[1]+h*tr[0];                                               \
+                                                                                        \
+                tr *= tr;                                                               \
+                                                                                        \
+                tt *= (mixam/tr.sum());                                                 \
+                                                                                        \
+                a = tt[0];                                                              \
+                b = tt[1];                                                              \
+                c = tt[2];                                                              \
+                d = tt[3];                                                              \
+                e = tt[4];                                                              \
+                f = tt[5];                                                              \
+                g = tt[6];                                                              \
+                h = tt[7];                                                              \
+                                                                                        \
+                return(*this);                                                          \
             }
-#endif
+#endif    /* defined(__GNUC__) && (__GNUC__ < 3) */ /* BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP */
     
 #if defined(__GNUC__) && (__GNUC__ < 3)
     #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_3(type)                                           \
@@ -1034,6 +1108,50 @@ namespace boost
                 tr[3] = static_cast<type>(rhs.R_component_4());                                      \
                                                                                                      \
                 type            mixam = BOOST_GET_VALARRAY(type,static_cast<type>(1)/abs(tr)).max(); \
+                                                                                                     \
+                tr *= mixam;                                                                         \
+                                                                                                     \
+                valarray<type>    tt(8);                                                             \
+                                                                                                     \
+                tt[0] = +a*tr[0]+b*tr[1]+c*tr[2]+d*tr[3];                                            \
+                tt[1] = -a*tr[1]+b*tr[0]-c*tr[3]+d*tr[2];                                            \
+                tt[2] = -a*tr[2]+b*tr[3]+c*tr[0]-d*tr[1];                                            \
+                tt[3] = -a*tr[3]-b*tr[2]+c*tr[1]+d*tr[0];                                            \
+                tt[4] = +e*tr[0]-f*tr[1]-g*tr[2]-h*tr[3];                                            \
+                tt[5] = +e*tr[1]+f*tr[0]+g*tr[3]-h*tr[2];                                            \
+                tt[6] = +e*tr[2]-f*tr[3]+g*tr[0]+h*tr[1];                                            \
+                tt[7] = +e*tr[3]+f*tr[2]-g*tr[1]+h*tr[0];                                            \
+                                                                                                     \
+                tr *= tr;                                                                            \
+                                                                                                     \
+                tt *= (mixam/tr.sum());                                                              \
+                                                                                                     \
+                a = tt[0];                                                                           \
+                b = tt[1];                                                                           \
+                c = tt[2];                                                                           \
+                d = tt[3];                                                                           \
+                e = tt[4];                                                                           \
+                f = tt[5];                                                                           \
+                g = tt[6];                                                                           \
+                h = tt[7];                                                                           \
+                                                                                                     \
+                return(*this);                                                                       \
+            }
+#elif    defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
+    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_3(type)                                           \
+            octonion<type> &            operator /= (::boost::math::quaternion<type> const & rhs)    \
+            {                                                                                        \
+                using    ::std::valarray;                                                            \
+                using    ::std::abs;                                                                 \
+                                                                                                     \
+                valarray<type>    tr(4);                                                             \
+                                                                                                     \
+                tr[0] = static_cast<type>(rhs.R_component_1());                                      \
+                tr[1] = static_cast<type>(rhs.R_component_2());                                      \
+                tr[2] = static_cast<type>(rhs.R_component_3());                                      \
+                tr[3] = static_cast<type>(rhs.R_component_4());                                      \
+                                                                                                     \
+                type            mixam = static_cast<type>(1)/abs(tr).max();                          \
                                                                                                      \
                 tr *= mixam;                                                                         \
                                                                                                      \
@@ -1106,136 +1224,185 @@ namespace boost
                                                                                                      \
                 return(*this);                                                                       \
             }
-#endif
+#endif    /* defined(__GNUC__) && (__GNUC__ < 3) */ /* BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP */
     
 #if defined(__GNUC__) && (__GNUC__ < 3)
-    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_4(type)                                  \
-            template<typename X>                                                            \
-            octonion<type> &            operator /= (octonion<X> const & rhs)               \
-            {                                                                               \
-                using    ::std::valarray;                                                   \
-                                                                                            \
-                valarray<type>    tr(8);                                                    \
-                                                                                            \
-                tr[0] = static_cast<type>(rhs.R_component_1());                             \
-                tr[1] = static_cast<type>(rhs.R_component_2());                             \
-                tr[2] = static_cast<type>(rhs.R_component_3());                             \
-                tr[3] = static_cast<type>(rhs.R_component_4());                             \
-                tr[4] = static_cast<type>(rhs.R_component_5());                             \
-                tr[5] = static_cast<type>(rhs.R_component_6());                             \
-                tr[6] = static_cast<type>(rhs.R_component_7());                             \
-                tr[7] = static_cast<type>(rhs.R_component_8());                             \
-                                                                                            \
+    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_4(type)                                           \
+            template<typename X>                                                                     \
+            octonion<type> &            operator /= (octonion<X> const & rhs)                        \
+            {                                                                                        \
+                using    ::std::valarray;                                                            \
+                                                                                                     \
+                valarray<type>    tr(8);                                                             \
+                                                                                                     \
+                tr[0] = static_cast<type>(rhs.R_component_1());                                      \
+                tr[1] = static_cast<type>(rhs.R_component_2());                                      \
+                tr[2] = static_cast<type>(rhs.R_component_3());                                      \
+                tr[3] = static_cast<type>(rhs.R_component_4());                                      \
+                tr[4] = static_cast<type>(rhs.R_component_5());                                      \
+                tr[5] = static_cast<type>(rhs.R_component_6());                                      \
+                tr[6] = static_cast<type>(rhs.R_component_7());                                      \
+                tr[7] = static_cast<type>(rhs.R_component_8());                                      \
+                                                                                                     \
                 type            mixam = BOOST_GET_VALARRAY(type,static_cast<type>(1)/abs(tr)).max(); \
-                                                                                            \
-                tr *= mixam;                                                                \
-                                                                                            \
-                valarray<type>    tt(8);                                                    \
-                                                                                            \
-                tt[0] = +a*tr[0]+b*tr[1]+c*tr[2]+d*tr[3]+e*tr[4]+f*tr[5]+g*tr[6]+h*tr[7];   \
-                tt[0] = -a*tr[1]+b*tr[0]-c*tr[3]+d*tr[2]-e*tr[5]+f*tr[4]+g*tr[7]-h*tr[6];   \
-                tt[0] = -a*tr[2]+b*tr[3]+c*tr[0]-d*tr[1]-e*tr[6]-f*tr[7]+g*tr[4]+h*tr[5];   \
-                tt[0] = -a*tr[3]-b*tr[2]+c*tr[1]+d*tr[0]-e*tr[7]+f*tr[6]-g*tr[5]+h*tr[4];   \
-                tt[0] = -a*tr[4]+b*tr[5]+c*tr[6]+d*tr[7]+e*tr[0]-f*tr[1]-g*tr[2]-h*tr[3];   \
-                tt[0] = -a*tr[5]-b*tr[4]+c*tr[7]-d*tr[6]+e*tr[1]+f*tr[0]+g*tr[3]-h*tr[2];   \
-                tt[0] = -a*tr[6]-b*tr[7]-c*tr[4]+d*tr[5]+e*tr[2]-f*tr[3]+g*tr[0]+h*tr[1];   \
-                tt[0] = -a*tr[7]+b*tr[6]-c*tr[5]-d*tr[4]+e*tr[3]+f*tr[2]-g*tr[1]+h*tr[0];   \
-                                                                                            \
-                tr *= tr;                                                                   \
-                                                                                            \
-                tt *= (mixam/tr.sum());                                                     \
-                                                                                            \
-                a = tt[0];                                                                  \
-                b = tt[1];                                                                  \
-                c = tt[2];                                                                  \
-                d = tt[3];                                                                  \
-                e = tt[4];                                                                  \
-                f = tt[5];                                                                  \
-                g = tt[6];                                                                  \
-                h = tt[7];                                                                  \
-                                                                                            \
-                return(*this);                                                              \
+                                                                                                     \
+                tr *= mixam;                                                                         \
+                                                                                                     \
+                valarray<type>    tt(8);                                                             \
+                                                                                                     \
+                tt[0] = +a*tr[0]+b*tr[1]+c*tr[2]+d*tr[3]+e*tr[4]+f*tr[5]+g*tr[6]+h*tr[7];            \
+                tt[0] = -a*tr[1]+b*tr[0]-c*tr[3]+d*tr[2]-e*tr[5]+f*tr[4]+g*tr[7]-h*tr[6];            \
+                tt[0] = -a*tr[2]+b*tr[3]+c*tr[0]-d*tr[1]-e*tr[6]-f*tr[7]+g*tr[4]+h*tr[5];            \
+                tt[0] = -a*tr[3]-b*tr[2]+c*tr[1]+d*tr[0]-e*tr[7]+f*tr[6]-g*tr[5]+h*tr[4];            \
+                tt[0] = -a*tr[4]+b*tr[5]+c*tr[6]+d*tr[7]+e*tr[0]-f*tr[1]-g*tr[2]-h*tr[3];            \
+                tt[0] = -a*tr[5]-b*tr[4]+c*tr[7]-d*tr[6]+e*tr[1]+f*tr[0]+g*tr[3]-h*tr[2];            \
+                tt[0] = -a*tr[6]-b*tr[7]-c*tr[4]+d*tr[5]+e*tr[2]-f*tr[3]+g*tr[0]+h*tr[1];            \
+                tt[0] = -a*tr[7]+b*tr[6]-c*tr[5]-d*tr[4]+e*tr[3]+f*tr[2]-g*tr[1]+h*tr[0];            \
+                                                                                                     \
+                tr *= tr;                                                                            \
+                                                                                                     \
+                tt *= (mixam/tr.sum());                                                              \
+                                                                                                     \
+                a = tt[0];                                                                           \
+                b = tt[1];                                                                           \
+                c = tt[2];                                                                           \
+                d = tt[3];                                                                           \
+                e = tt[4];                                                                           \
+                f = tt[5];                                                                           \
+                g = tt[6];                                                                           \
+                h = tt[7];                                                                           \
+                                                                                                     \
+                return(*this);                                                                       \
+            }
+#elif    defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
+    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_4(type)                                           \
+            template<typename X>                                                                     \
+            octonion<type> &            operator /= (octonion<X> const & rhs)                        \
+            {                                                                                        \
+                using    ::std::valarray;                                                            \
+                using    ::std::abs;                                                                 \
+                                                                                                     \
+                valarray<type>    tr(8);                                                             \
+                                                                                                     \
+                tr[0] = static_cast<type>(rhs.R_component_1());                                      \
+                tr[1] = static_cast<type>(rhs.R_component_2());                                      \
+                tr[2] = static_cast<type>(rhs.R_component_3());                                      \
+                tr[3] = static_cast<type>(rhs.R_component_4());                                      \
+                tr[4] = static_cast<type>(rhs.R_component_5());                                      \
+                tr[5] = static_cast<type>(rhs.R_component_6());                                      \
+                tr[6] = static_cast<type>(rhs.R_component_7());                                      \
+                tr[7] = static_cast<type>(rhs.R_component_8());                                      \
+                                                                                                     \
+                type            mixam = static_cast<type>(1)/abs(tr).max();                          \
+                                                                                                     \
+                tr *= mixam;                                                                         \
+                                                                                                     \
+                valarray<type>    tt(8);                                                             \
+                                                                                                     \
+                tt[0] = +a*tr[0]+b*tr[1]+c*tr[2]+d*tr[3]+e*tr[4]+f*tr[5]+g*tr[6]+h*tr[7];            \
+                tt[0] = -a*tr[1]+b*tr[0]-c*tr[3]+d*tr[2]-e*tr[5]+f*tr[4]+g*tr[7]-h*tr[6];            \
+                tt[0] = -a*tr[2]+b*tr[3]+c*tr[0]-d*tr[1]-e*tr[6]-f*tr[7]+g*tr[4]+h*tr[5];            \
+                tt[0] = -a*tr[3]-b*tr[2]+c*tr[1]+d*tr[0]-e*tr[7]+f*tr[6]-g*tr[5]+h*tr[4];            \
+                tt[0] = -a*tr[4]+b*tr[5]+c*tr[6]+d*tr[7]+e*tr[0]-f*tr[1]-g*tr[2]-h*tr[3];            \
+                tt[0] = -a*tr[5]-b*tr[4]+c*tr[7]-d*tr[6]+e*tr[1]+f*tr[0]+g*tr[3]-h*tr[2];            \
+                tt[0] = -a*tr[6]-b*tr[7]-c*tr[4]+d*tr[5]+e*tr[2]-f*tr[3]+g*tr[0]+h*tr[1];            \
+                tt[0] = -a*tr[7]+b*tr[6]-c*tr[5]-d*tr[4]+e*tr[3]+f*tr[2]-g*tr[1]+h*tr[0];            \
+                                                                                                     \
+                tr *= tr;                                                                            \
+                                                                                                     \
+                tt *= (mixam/tr.sum());                                                              \
+                                                                                                     \
+                a = tt[0];                                                                           \
+                b = tt[1];                                                                           \
+                c = tt[2];                                                                           \
+                d = tt[3];                                                                           \
+                e = tt[4];                                                                           \
+                f = tt[5];                                                                           \
+                g = tt[6];                                                                           \
+                h = tt[7];                                                                           \
+                                                                                                     \
+                return(*this);                                                                       \
             }
 #else
-    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_4(type)                                  \
-            template<typename X>                                                            \
-            octonion<type> &            operator /= (octonion<X> const & rhs)               \
-            {                                                                               \
-                using    ::std::valarray;                                                   \
-                                                                                            \
-                valarray<type>    tr(8);                                                    \
-                                                                                            \
-                tr[0] = static_cast<type>(rhs.R_component_1());                             \
-                tr[1] = static_cast<type>(rhs.R_component_2());                             \
-                tr[2] = static_cast<type>(rhs.R_component_3());                             \
-                tr[3] = static_cast<type>(rhs.R_component_4());                             \
-                tr[4] = static_cast<type>(rhs.R_component_5());                             \
-                tr[5] = static_cast<type>(rhs.R_component_6());                             \
-                tr[6] = static_cast<type>(rhs.R_component_7());                             \
-                tr[7] = static_cast<type>(rhs.R_component_8());                             \
-                                                                                            \
-                type            mixam = static_cast<type>(1)/abs(tr).max();                 \
-                                                                                            \
-                tr *= mixam;                                                                \
-                                                                                            \
-                valarray<type>    tt(8);                                                    \
-                                                                                            \
-                tt[0] = +a*tr[0]+b*tr[1]+c*tr[2]+d*tr[3]+e*tr[4]+f*tr[5]+g*tr[6]+h*tr[7];   \
-                tt[0] = -a*tr[1]+b*tr[0]-c*tr[3]+d*tr[2]-e*tr[5]+f*tr[4]+g*tr[7]-h*tr[6];   \
-                tt[0] = -a*tr[2]+b*tr[3]+c*tr[0]-d*tr[1]-e*tr[6]-f*tr[7]+g*tr[4]+h*tr[5];   \
-                tt[0] = -a*tr[3]-b*tr[2]+c*tr[1]+d*tr[0]-e*tr[7]+f*tr[6]-g*tr[5]+h*tr[4];   \
-                tt[0] = -a*tr[4]+b*tr[5]+c*tr[6]+d*tr[7]+e*tr[0]-f*tr[1]-g*tr[2]-h*tr[3];   \
-                tt[0] = -a*tr[5]-b*tr[4]+c*tr[7]-d*tr[6]+e*tr[1]+f*tr[0]+g*tr[3]-h*tr[2];   \
-                tt[0] = -a*tr[6]-b*tr[7]-c*tr[4]+d*tr[5]+e*tr[2]-f*tr[3]+g*tr[0]+h*tr[1];   \
-                tt[0] = -a*tr[7]+b*tr[6]-c*tr[5]-d*tr[4]+e*tr[3]+f*tr[2]-g*tr[1]+h*tr[0];   \
-                                                                                            \
-                tr *= tr;                                                                   \
-                                                                                            \
-                tt *= (mixam/tr.sum());                                                     \
-                                                                                            \
-                a = tt[0];                                                                  \
-                b = tt[1];                                                                  \
-                c = tt[2];                                                                  \
-                d = tt[3];                                                                  \
-                e = tt[4];                                                                  \
-                f = tt[5];                                                                  \
-                g = tt[6];                                                                  \
-                h = tt[7];                                                                  \
-                                                                                            \
-                return(*this);                                                              \
+    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR_4(type)                                           \
+            template<typename X>                                                                     \
+            octonion<type> &            operator /= (octonion<X> const & rhs)                        \
+            {                                                                                        \
+                using    ::std::valarray;                                                            \
+                                                                                                     \
+                valarray<type>    tr(8);                                                             \
+                                                                                                     \
+                tr[0] = static_cast<type>(rhs.R_component_1());                                      \
+                tr[1] = static_cast<type>(rhs.R_component_2());                                      \
+                tr[2] = static_cast<type>(rhs.R_component_3());                                      \
+                tr[3] = static_cast<type>(rhs.R_component_4());                                      \
+                tr[4] = static_cast<type>(rhs.R_component_5());                                      \
+                tr[5] = static_cast<type>(rhs.R_component_6());                                      \
+                tr[6] = static_cast<type>(rhs.R_component_7());                                      \
+                tr[7] = static_cast<type>(rhs.R_component_8());                                      \
+                                                                                                     \
+                type            mixam = static_cast<type>(1)/abs(tr).max();                          \
+                                                                                                     \
+                tr *= mixam;                                                                         \
+                                                                                                     \
+                valarray<type>    tt(8);                                                             \
+                                                                                                     \
+                tt[0] = +a*tr[0]+b*tr[1]+c*tr[2]+d*tr[3]+e*tr[4]+f*tr[5]+g*tr[6]+h*tr[7];            \
+                tt[0] = -a*tr[1]+b*tr[0]-c*tr[3]+d*tr[2]-e*tr[5]+f*tr[4]+g*tr[7]-h*tr[6];            \
+                tt[0] = -a*tr[2]+b*tr[3]+c*tr[0]-d*tr[1]-e*tr[6]-f*tr[7]+g*tr[4]+h*tr[5];            \
+                tt[0] = -a*tr[3]-b*tr[2]+c*tr[1]+d*tr[0]-e*tr[7]+f*tr[6]-g*tr[5]+h*tr[4];            \
+                tt[0] = -a*tr[4]+b*tr[5]+c*tr[6]+d*tr[7]+e*tr[0]-f*tr[1]-g*tr[2]-h*tr[3];            \
+                tt[0] = -a*tr[5]-b*tr[4]+c*tr[7]-d*tr[6]+e*tr[1]+f*tr[0]+g*tr[3]-h*tr[2];            \
+                tt[0] = -a*tr[6]-b*tr[7]-c*tr[4]+d*tr[5]+e*tr[2]-f*tr[3]+g*tr[0]+h*tr[1];            \
+                tt[0] = -a*tr[7]+b*tr[6]-c*tr[5]-d*tr[4]+e*tr[3]+f*tr[2]-g*tr[1]+h*tr[0];            \
+                                                                                                     \
+                tr *= tr;                                                                            \
+                                                                                                     \
+                tt *= (mixam/tr.sum());                                                              \
+                                                                                                     \
+                a = tt[0];                                                                           \
+                b = tt[1];                                                                           \
+                c = tt[2];                                                                           \
+                d = tt[3];                                                                           \
+                e = tt[4];                                                                           \
+                f = tt[5];                                                                           \
+                g = tt[6];                                                                           \
+                h = tt[7];                                                                           \
+                                                                                                     \
+                return(*this);                                                                       \
             }
-#endif
+#endif    /* defined(__GNUC__) && (__GNUC__ < 3) */ /* BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP */
     
+    
+#define    BOOST_OCTONION_MEMBER_ADD_GENERATOR(type)       \
+        BOOST_OCTONION_MEMBER_ADD_GENERATOR_1(type)        \
+        BOOST_OCTONION_MEMBER_ADD_GENERATOR_2(type)        \
+        BOOST_OCTONION_MEMBER_ADD_GENERATOR_3(type)        \
+        BOOST_OCTONION_MEMBER_ADD_GENERATOR_4(type)
         
-    #define    BOOST_OCTONION_MEMBER_ADD_GENERATOR(type)   \
-            BOOST_OCTONION_MEMBER_ADD_GENERATOR_1(type)    \
-            BOOST_OCTONION_MEMBER_ADD_GENERATOR_2(type)    \
-            BOOST_OCTONION_MEMBER_ADD_GENERATOR_3(type)    \
-            BOOST_OCTONION_MEMBER_ADD_GENERATOR_4(type)
-            
-    #define    BOOST_OCTONION_MEMBER_SUB_GENERATOR(type)   \
-            BOOST_OCTONION_MEMBER_SUB_GENERATOR_1(type)    \
-            BOOST_OCTONION_MEMBER_SUB_GENERATOR_2(type)    \
-            BOOST_OCTONION_MEMBER_SUB_GENERATOR_3(type)    \
-            BOOST_OCTONION_MEMBER_SUB_GENERATOR_4(type)
-            
-    #define    BOOST_OCTONION_MEMBER_MUL_GENERATOR(type)   \
-            BOOST_OCTONION_MEMBER_MUL_GENERATOR_1(type)    \
-            BOOST_OCTONION_MEMBER_MUL_GENERATOR_2(type)    \
-            BOOST_OCTONION_MEMBER_MUL_GENERATOR_3(type)    \
-            BOOST_OCTONION_MEMBER_MUL_GENERATOR_4(type)
-            
-    #define    BOOST_OCTONION_MEMBER_DIV_GENERATOR(type)   \
-            BOOST_OCTONION_MEMBER_DIV_GENERATOR_1(type)    \
-            BOOST_OCTONION_MEMBER_DIV_GENERATOR_2(type)    \
-            BOOST_OCTONION_MEMBER_DIV_GENERATOR_3(type)    \
-            BOOST_OCTONION_MEMBER_DIV_GENERATOR_4(type)
-            
-    #define    BOOST_OCTONION_MEMBER_ALGEBRAIC_GENERATOR(type) \
-            BOOST_OCTONION_MEMBER_ADD_GENERATOR(type)          \
-            BOOST_OCTONION_MEMBER_SUB_GENERATOR(type)          \
-            BOOST_OCTONION_MEMBER_MUL_GENERATOR(type)          \
-            BOOST_OCTONION_MEMBER_DIV_GENERATOR(type)
+#define    BOOST_OCTONION_MEMBER_SUB_GENERATOR(type)       \
+        BOOST_OCTONION_MEMBER_SUB_GENERATOR_1(type)        \
+        BOOST_OCTONION_MEMBER_SUB_GENERATOR_2(type)        \
+        BOOST_OCTONION_MEMBER_SUB_GENERATOR_3(type)        \
+        BOOST_OCTONION_MEMBER_SUB_GENERATOR_4(type)
+        
+#define    BOOST_OCTONION_MEMBER_MUL_GENERATOR(type)       \
+        BOOST_OCTONION_MEMBER_MUL_GENERATOR_1(type)        \
+        BOOST_OCTONION_MEMBER_MUL_GENERATOR_2(type)        \
+        BOOST_OCTONION_MEMBER_MUL_GENERATOR_3(type)        \
+        BOOST_OCTONION_MEMBER_MUL_GENERATOR_4(type)
+        
+#define    BOOST_OCTONION_MEMBER_DIV_GENERATOR(type)       \
+        BOOST_OCTONION_MEMBER_DIV_GENERATOR_1(type)        \
+        BOOST_OCTONION_MEMBER_DIV_GENERATOR_2(type)        \
+        BOOST_OCTONION_MEMBER_DIV_GENERATOR_3(type)        \
+        BOOST_OCTONION_MEMBER_DIV_GENERATOR_4(type)
+        
+#define    BOOST_OCTONION_MEMBER_ALGEBRAIC_GENERATOR(type) \
+        BOOST_OCTONION_MEMBER_ADD_GENERATOR(type)          \
+        BOOST_OCTONION_MEMBER_SUB_GENERATOR(type)          \
+        BOOST_OCTONION_MEMBER_MUL_GENERATOR(type)          \
+        BOOST_OCTONION_MEMBER_DIV_GENERATOR(type)
         
         
         template<>
@@ -1250,13 +1417,17 @@ namespace boost
             // UNtemplated copy constructor
             // (this is taken care of by the compiler itself)
             
-            // explicit copy constructors (converters)
+            // explicit copy constructors (precision-loosing converters)
             
-            // (outline implementation necessary)
-            explicit                    octonion(octonion<double> const & a_recopier);
+            explicit                    octonion(octonion<double> const & a_recopier)
+            {
+                *this = detail::octonion_type_converter<float, double>(a_recopier);
+            }
             
-            // (outline implementation necessary)
-            explicit                    octonion(octonion<long double> const & a_recopier);
+            explicit                    octonion(octonion<long double> const & a_recopier)
+            {
+                *this = detail::octonion_type_converter<float, long double>(a_recopier);
+            }
             
             // destructor
             // (this is taken care of by the compiler itself)
@@ -1310,13 +1481,17 @@ namespace boost
             
             // converting copy constructor
             
-            // (outline implementation)
-            explicit                    octonion(octonion<float> const & a_recopier);
+            explicit                    octonion(octonion<float> const & a_recopier)
+            {
+                *this = detail::octonion_type_converter<double, float>(a_recopier);
+            }
             
-            // explicit copy constructors (converters)
+            // explicit copy constructors (precision-loosing converters)
             
-            // (outline implementation necessary)
-            explicit                    octonion(octonion<long double> const & a_recopier);
+            explicit                    octonion(octonion<long double> const & a_recopier)
+            {
+                *this = detail::octonion_type_converter<double, long double>(a_recopier);
+            }
             
             // destructor
             // (this is taken care of by the compiler itself)
@@ -1370,12 +1545,16 @@ namespace boost
             
             // converting copy constructor
             
-            // (outline implementation)
-            explicit                            octonion(octonion<float> const & a_recopier);
+            explicit                            octonion(octonion<float> const & a_recopier)
+            {
+                *this = detail::octonion_type_converter<long double, float>(a_recopier);
+            }
             
             
-            // (outline implementation)
-            explicit                            octonion(octonion<double> const & a_recopier);
+            explicit                            octonion(octonion<double> const & a_recopier)
+            {
+                *this = detail::octonion_type_converter<long double, double>(a_recopier);
+            }
             
             
             // destructor
@@ -1416,127 +1595,92 @@ namespace boost
         };
         
         
-    #undef    BOOST_OCTONION_CONSTRUCTOR_GENERATOR
-            
-    #undef    BOOST_OCTONION_MEMBER_ALGEBRAIC_GENERATOR
+#undef    BOOST_OCTONION_CONSTRUCTOR_GENERATOR
         
-    #undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR
-    #undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR
-    #undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR
-    #undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR
-        
-    #undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR_1
-    #undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR_2
-    #undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR_3
-    #undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR_4
-    #undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR_1
-    #undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR_2
-    #undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR_3
-    #undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR_4
-    #undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR_1
-    #undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR_2
-    #undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR_3
-    #undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR_4
-    #undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR_1
-    #undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR_2
-    #undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR_3
-    #undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR_4
-        
-        
-    #undef    BOOST_OCTONION_MEMBER_DATA_GENERATOR
-        
-    #undef    BOOST_OCTONION_MEMBER_ASSIGNMENT_GENERATOR
-        
-    #undef    BOOST_OCTONION_ACCESSOR_GENERATOR
-        
-        
-        // outline implementations
-        
-    #define    BOOST_OCTONION_COPY_CONSTRUCTOR_BODY(type)        \
-        :    a(static_cast<type>(a_recopier.R_component_1())),   \
-            b(static_cast<type>(a_recopier.R_component_2())),    \
-            c(static_cast<type>(a_recopier.R_component_3())),    \
-            d(static_cast<type>(a_recopier.R_component_4())),    \
-            e(static_cast<type>(a_recopier.R_component_5())),    \
-            f(static_cast<type>(a_recopier.R_component_6())),    \
-            g(static_cast<type>(a_recopier.R_component_7())),    \
-            h(static_cast<type>(a_recopier.R_component_8()))     \
-        {                                                        \
-        }
-        
-        octonion<float>::octonion(octonion<double> const & a_recopier)
-        BOOST_OCTONION_COPY_CONSTRUCTOR_BODY(float)
-        
-        octonion<float>::octonion(octonion<long double> const & a_recopier)
-        BOOST_OCTONION_COPY_CONSTRUCTOR_BODY(float)
-        
-        octonion<double>::octonion(octonion<float> const & a_recopier)
-        BOOST_OCTONION_COPY_CONSTRUCTOR_BODY(double)
-        
-        octonion<double>::octonion(octonion<long double> const & a_recopier)
-        BOOST_OCTONION_COPY_CONSTRUCTOR_BODY(double)
-        
-        octonion<long double>::octonion(octonion<float> const & a_recopier)
-        BOOST_OCTONION_COPY_CONSTRUCTOR_BODY(long double)
-        
-        octonion<long double>::octonion(octonion<double> const & a_recopier)
-        BOOST_OCTONION_COPY_CONSTRUCTOR_BODY(long double)
-        
-    #undef    BOOST_OCTONION_COPY_CONSTRUCTOR_BODY
+#undef    BOOST_OCTONION_MEMBER_ALGEBRAIC_GENERATOR
+    
+#undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR
+#undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR
+#undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR
+#undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR
+    
+#undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR_1
+#undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR_2
+#undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR_3
+#undef    BOOST_OCTONION_MEMBER_ADD_GENERATOR_4
+#undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR_1
+#undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR_2
+#undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR_3
+#undef    BOOST_OCTONION_MEMBER_SUB_GENERATOR_4
+#undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR_1
+#undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR_2
+#undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR_3
+#undef    BOOST_OCTONION_MEMBER_MUL_GENERATOR_4
+#undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR_1
+#undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR_2
+#undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR_3
+#undef    BOOST_OCTONION_MEMBER_DIV_GENERATOR_4
+    
+    
+#undef    BOOST_OCTONION_MEMBER_DATA_GENERATOR
+    
+#undef    BOOST_OCTONION_MEMBER_ASSIGNMENT_GENERATOR
+    
+#undef    BOOST_OCTONION_ACCESSOR_GENERATOR
         
         
         // operators
         
-    #define    BOOST_OCTONION_OPERATOR_GENERATOR_BODY(op) \
-        {                                                 \
-            octonion<T>    res(lhs);                      \
-            res op##= rhs;                                \
-            return(res);                                  \
+#define    BOOST_OCTONION_OPERATOR_GENERATOR_BODY(op) \
+        {                                             \
+            octonion<T>    res(lhs);                  \
+            res op##= rhs;                            \
+            return(res);                              \
         }
         
-    #define    BOOST_OCTONION_OPERATOR_GENERATOR_1_L(op)                                                \
-        template<typename T>                                                                            \
-        inline octonion<T>                        operator op (T const & lhs, octonion<T> const & rhs)  \
+#define    BOOST_OCTONION_OPERATOR_GENERATOR_1_L(op)                                                                              \
+        template<typename T>                                                                                                      \
+        inline octonion<T>                        operator op (T const & lhs, octonion<T> const & rhs)                            \
         BOOST_OCTONION_OPERATOR_GENERATOR_BODY(op)
         
-    #define    BOOST_OCTONION_OPERATOR_GENERATOR_1_R(op)                                                \
-        template<typename T>                                                                            \
-        inline octonion<T>                        operator op (octonion<T> const & lhs, T const & rhs)  \
+#define    BOOST_OCTONION_OPERATOR_GENERATOR_1_R(op)                                                                              \
+        template<typename T>                                                                                                      \
+        inline octonion<T>                        operator op (octonion<T> const & lhs, T const & rhs)                            \
         BOOST_OCTONION_OPERATOR_GENERATOR_BODY(op)
         
-    #define    BOOST_OCTONION_OPERATOR_GENERATOR_2_L(op)                                                                \
-        template<typename T>                                                                                            \
-        inline octonion<T>                        operator op (::std::complex<T> const & lhs, octonion<T> const & rhs)  \
+#define    BOOST_OCTONION_OPERATOR_GENERATOR_2_L(op)                                                                              \
+        template<typename T>                                                                                                      \
+        inline octonion<T>                        operator op (::std::complex<T> const & lhs, octonion<T> const & rhs)            \
         BOOST_OCTONION_OPERATOR_GENERATOR_BODY(op)
         
-    #define    BOOST_OCTONION_OPERATOR_GENERATOR_2_R(op)                                                                \
-        template<typename T>                                                                                            \
-        inline octonion<T>                        operator op (octonion<T> const & lhs, ::std::complex<T> const & rhs)  \
+#define    BOOST_OCTONION_OPERATOR_GENERATOR_2_R(op)                                                                              \
+        template<typename T>                                                                                                      \
+        inline octonion<T>                        operator op (octonion<T> const & lhs, ::std::complex<T> const & rhs)            \
         BOOST_OCTONION_OPERATOR_GENERATOR_BODY(op)
         
-    #define    BOOST_OCTONION_OPERATOR_GENERATOR_3_L(op)                                                                          \
+#define    BOOST_OCTONION_OPERATOR_GENERATOR_3_L(op)                                                                              \
         template<typename T>                                                                                                      \
         inline octonion<T>                        operator op (::boost::math::quaternion<T> const & lhs, octonion<T> const & rhs) \
         BOOST_OCTONION_OPERATOR_GENERATOR_BODY(op)
         
-    #define    BOOST_OCTONION_OPERATOR_GENERATOR_3_R(op)                                                                          \
+#define    BOOST_OCTONION_OPERATOR_GENERATOR_3_R(op)                                                                              \
         template<typename T>                                                                                                      \
         inline octonion<T>                        operator op (octonion<T> const & lhs, ::boost::math::quaternion<T> const & rhs) \
         BOOST_OCTONION_OPERATOR_GENERATOR_BODY(op)
         
-    #define    BOOST_OCTONION_OPERATOR_GENERATOR_4(op)                                                           \
-        template<typename T>                                                                                     \
-        inline octonion<T>                        operator op (octonion<T> const & lhs, octonion<T> const & rhs) \
+#define    BOOST_OCTONION_OPERATOR_GENERATOR_4(op)                                                                                \
+        template<typename T>                                                                                                      \
+        inline octonion<T>                        operator op (octonion<T> const & lhs, octonion<T> const & rhs)                  \
         BOOST_OCTONION_OPERATOR_GENERATOR_BODY(op)
         
-    #define    BOOST_OCTONION_OPERATOR_GENERATOR(op)     \
-            BOOST_OCTONION_OPERATOR_GENERATOR_1_L(op)    \
-            BOOST_OCTONION_OPERATOR_GENERATOR_1_R(op)    \
-            BOOST_OCTONION_OPERATOR_GENERATOR_2_L(op)    \
-            BOOST_OCTONION_OPERATOR_GENERATOR_2_R(op)    \
-            BOOST_OCTONION_OPERATOR_GENERATOR_3_L(op)    \
-            BOOST_OCTONION_OPERATOR_GENERATOR_3_R(op)    \
-            BOOST_OCTONION_OPERATOR_GENERATOR_4(op)
+#define    BOOST_OCTONION_OPERATOR_GENERATOR(op)     \
+        BOOST_OCTONION_OPERATOR_GENERATOR_1_L(op)    \
+        BOOST_OCTONION_OPERATOR_GENERATOR_1_R(op)    \
+        BOOST_OCTONION_OPERATOR_GENERATOR_2_L(op)    \
+        BOOST_OCTONION_OPERATOR_GENERATOR_2_R(op)    \
+        BOOST_OCTONION_OPERATOR_GENERATOR_3_L(op)    \
+        BOOST_OCTONION_OPERATOR_GENERATOR_3_R(op)    \
+        BOOST_OCTONION_OPERATOR_GENERATOR_4(op)
         
         
         BOOST_OCTONION_OPERATOR_GENERATOR(+)
@@ -1545,17 +1689,17 @@ namespace boost
         BOOST_OCTONION_OPERATOR_GENERATOR(/)
         
         
-    #undef    BOOST_OCTONION_OPERATOR_GENERATOR
-            
-    #undef    BOOST_OCTONION_OPERATOR_GENERATOR_1_L
-    #undef    BOOST_OCTONION_OPERATOR_GENERATOR_1_R
-    #undef    BOOST_OCTONION_OPERATOR_GENERATOR_2_L
-    #undef    BOOST_OCTONION_OPERATOR_GENERATOR_2_R
-    #undef    BOOST_OCTONION_OPERATOR_GENERATOR_3_L
-    #undef    BOOST_OCTONION_OPERATOR_GENERATOR_3_R
-    #undef    BOOST_OCTONION_OPERATOR_GENERATOR_4
+#undef    BOOST_OCTONION_OPERATOR_GENERATOR
         
-    #undef    BOOST_OCTONION_OPERATOR_GENERATOR_BODY
+#undef    BOOST_OCTONION_OPERATOR_GENERATOR_1_L
+#undef    BOOST_OCTONION_OPERATOR_GENERATOR_1_R
+#undef    BOOST_OCTONION_OPERATOR_GENERATOR_2_L
+#undef    BOOST_OCTONION_OPERATOR_GENERATOR_2_R
+#undef    BOOST_OCTONION_OPERATOR_GENERATOR_3_L
+#undef    BOOST_OCTONION_OPERATOR_GENERATOR_3_R
+#undef    BOOST_OCTONION_OPERATOR_GENERATOR_4
+    
+#undef    BOOST_OCTONION_OPERATOR_GENERATOR_BODY
         
         
         template<typename T>
@@ -1684,9 +1828,9 @@ namespace boost
         }
         
         
-    #define    BOOST_OCTONION_NOT_EQUAL_GENERATOR \
-        {                                         \
-            return(!(lhs == rhs));                \
+#define    BOOST_OCTONION_NOT_EQUAL_GENERATOR \
+        {                                     \
+            return(!(lhs == rhs));            \
         }
         
         template<typename T>
@@ -1731,16 +1875,16 @@ namespace boost
         template<typename T, typename charT, class traits>
         ::std::basic_istream<charT,traits> &    operator >> (    ::std::basic_istream<charT,traits> & is,
                                                                 octonion<T> & o)
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
         {
+#if defined(__GNUC__) && __GNUC__ < 3
+            typedef    char    charT;
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
+            
 #ifdef     BOOST_NO_STD_LOCALE
 #else
             const ::std::ctype<charT> & ct = ::std::use_facet< ::std::ctype<charT> >(is.getloc());
-#endif
-            
-#if defined(__GNUC__) && __GNUC__ < 3
-            typedef    char    charT;
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
             
             T    a = T();
             T    b = T();
@@ -1766,11 +1910,11 @@ namespace boost
             
             if    (!is.good())    goto finish;
             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
             cc = ch;
 #else
             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
             
             if    (cc == '(')                            // read "("
             {
@@ -1778,11 +1922,11 @@ namespace boost
                 
                 if    (!is.good())    goto finish;
                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                 cc = ch;
 #else
                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                 
                 if    (cc == '(')                                // read "(("
                 {
@@ -1790,11 +1934,11 @@ namespace boost
                     
                     if    (!is.good())    goto finish;
                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                     cc = ch;
 #else
                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                         
                     if    (cc == '(')                                // read "((("
                     {
@@ -1808,11 +1952,11 @@ namespace boost
                         
                         if    (!is.good())    goto finish;
                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                         cc = ch;
 #else
                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                         
                         if        (cc == ')')                        // read "((u)"
                         {
@@ -1820,11 +1964,11 @@ namespace boost
                             
                             if    (!is.good())    goto finish;
                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                             cc = ch;
 #else
                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                             
                             if        (cc == ')')                        // format: (((a))), (((a,b)))
                             {
@@ -1842,11 +1986,11 @@ namespace boost
                                 
                                 if    (!is.good())    goto finish;
                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                 cc = ch;
 #else
                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                 
                                 if        (cc == ')')                        // format: (((a)),q), (((a,b)),q)
                                 {
@@ -1858,7 +2002,7 @@ namespace boost
                                     is.setstate(::std::ios::failbit);
 #else
                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                 }
                             }
                             else                                    // error
@@ -1867,7 +2011,7 @@ namespace boost
                                 is.setstate(::std::ios::failbit);
 #else
                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                             }
                         }
                         else if    (cc ==',')                        // read "((u,"
@@ -1880,11 +2024,11 @@ namespace boost
                             
                             if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                             cc = ch;
 #else
                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                             
                             if        (cc == ')')                        // read "((u,v)"
                             {
@@ -1894,11 +2038,11 @@ namespace boost
                                 
                                 if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                 cc = ch;
 #else
                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                 
                                 if        (cc == ')')                        // format: (((a),v)), (((a,b),v))
                                 {
@@ -1914,11 +2058,11 @@ namespace boost
                                     
                                     if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == ')')                        // format: (((a),v),q), (((a,b),v),q)
                                     {
@@ -1930,7 +2074,7 @@ namespace boost
                                         is.setstate(::std::ios::failbit);
 #else
                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                     }
                                 }
                                 else                                    // error
@@ -1939,7 +2083,7 @@ namespace boost
                                     is.setstate(::std::ios::failbit);
 #else
                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                 }
                             }
                             else                                    // error
@@ -1948,7 +2092,7 @@ namespace boost
                                 is.setstate(::std::ios::failbit);
 #else
                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                             }
                         }
                         else                                    // error
@@ -1957,7 +2101,7 @@ namespace boost
                             is.setstate(::std::ios::failbit);
 #else
                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                         }
                     }
                     else                                        // read "((a"
@@ -1972,11 +2116,11 @@ namespace boost
                         
                         if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                         cc = ch;
 #else
                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                         
                         if        (cc == ')')                            // read "((a)"
                         {
@@ -1984,11 +2128,11 @@ namespace boost
                             
                             if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                             cc = ch;
 #else
                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                             
                             if        (cc == ')')                            // read "((a))"
                             {
@@ -2000,11 +2144,11 @@ namespace boost
                                 
                                 if    (!is.good())    goto finish;
                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                 cc = ch;
 #else
                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                 
                                 if        (cc == '(')                            // read "((a),("
                                 {
@@ -2012,11 +2156,11 @@ namespace boost
                                     
                                     if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == '(')                            // read "((a),(("
                                     {
@@ -2032,11 +2176,11 @@ namespace boost
                                         
                                         if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "((a),q)"
                                         {
@@ -2050,7 +2194,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                     else                                        // read "((a),(c" or "((a),(e"
@@ -2065,11 +2209,11 @@ namespace boost
                                         
                                         if    (!is.good())    goto finish;
                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "((a),(c)" (ambiguity resolution)
                                         {
@@ -2077,11 +2221,11 @@ namespace boost
                                             
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                        // read "((a),(c))"
                                             {
@@ -2101,11 +2245,11 @@ namespace boost
                                                 
                                                 if    (!is.good())    goto finish;
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                        // read "((a),(c),x)"
                                                 {
@@ -2121,11 +2265,11 @@ namespace boost
                                                     
                                                     if    (!is.good())    goto finish;
                                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                     cc = ch;
 #else
                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                     
                                                     if        (cc == ')')                        // read "((a),(c),x,y)"
                                                     {
@@ -2137,7 +2281,7 @@ namespace boost
                                                         is.setstate(::std::ios::failbit);
 #else
                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                     }
                                                 }
                                                 else                                    // error
@@ -2146,7 +2290,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                             else                                    // error
@@ -2155,7 +2299,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                         else if    (cc == ',')                            // read "((a),(c," or "((a),(e,"
@@ -2164,11 +2308,11 @@ namespace boost
                                             
                                             if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == '(')                        // read "((a),(e,(" (ambiguity resolution)
                                             {
@@ -2184,11 +2328,11 @@ namespace boost
                                                 
                                                 is >> ch;                                // get the next lexeme
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                        // read "((a),(e,y)"
                                                 {
@@ -2196,11 +2340,11 @@ namespace boost
                                                     
                                                     is >> ch;                                // get the next lexeme
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                     cc = ch;
 #else
                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                     
                                                     if        (cc == ')')                        // read "((a),(e,y))"
                                                     {
@@ -2212,7 +2356,7 @@ namespace boost
                                                         is.setstate(::std::ios::failbit);
 #else
                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                     }
                                                 }
                                                 else                                    // error
@@ -2221,7 +2365,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                             else                                    // read "((a),(c,d" or "((a),(e,f"
@@ -2236,11 +2380,11 @@ namespace boost
                                                 
                                                 if    (!is.good())    goto finish;
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                        // read "((a),(c,d)" (ambiguity resolution)
                                                 {
@@ -2248,11 +2392,11 @@ namespace boost
                                                     
                                                     if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                     cc = ch;
 #else
                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                     
                                                     if        (cc == ')')                        // read "((a),(c,d))"
                                                     {
@@ -2272,11 +2416,11 @@ namespace boost
                                                         
                                                         if    (!is.good())    goto finish;
                                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                         cc = ch;
 #else
                                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                         
                                                         if        (cc == ')')                        // read "((a),(c,d),x)"
                                                         {
@@ -2292,11 +2436,11 @@ namespace boost
                                                             
                                                             if    (!is.good())    goto finish;
                                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                             cc = ch;
 #else
                                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                             
                                                             if        (cc == ')')                        // read "((a),(c,d),x,y)"
                                                             {
@@ -2308,7 +2452,7 @@ namespace boost
                                                                 is.setstate(::std::ios::failbit);
 #else
                                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                             }
                                                         }
                                                         else                                    // error
@@ -2317,7 +2461,7 @@ namespace boost
                                                             is.setstate(::std::ios::failbit);
 #else
                                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                         }
                                                     }
                                                     else                                    // error
@@ -2326,7 +2470,7 @@ namespace boost
                                                         is.setstate(::std::ios::failbit);
 #else
                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                     }
                                                 }
                                                 else if    (cc == ',')                        // read "((a),(e,f," (ambiguity resolution)
@@ -2341,11 +2485,11 @@ namespace boost
                                                     
                                                     if    (!is.good())    goto finish;
                                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                     cc = ch;
 #else
                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                     
                                                     if        (cc == ')')                        // read "((a),(e,f,g)"
                                                     {
@@ -2355,11 +2499,11 @@ namespace boost
                                                         
                                                         if    (!is.good())    goto finish;
                                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                         cc = ch;
 #else
                                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                         
                                                         if        (cc == ')')                        // read "((a),(e,f,g))"
                                                         {
@@ -2371,7 +2515,7 @@ namespace boost
                                                             is.setstate(::std::ios::failbit);
 #else
                                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                         }
                                                     }
                                                     else if    (cc == ',')                        // read "((a),(e,f,g,"
@@ -2384,11 +2528,11 @@ namespace boost
                                                         
                                                         if    (!is.good())    goto finish;
                                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                         cc = ch;
 #else
                                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                         
                                                         if        (cc == ')')                        // read "((a),(e,f,g,h)"
                                                         {
@@ -2398,11 +2542,11 @@ namespace boost
                                                             
                                                             if    (!is.good())    goto finish;
                                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                             cc = ch;
 #else
                                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                             
                                                             if        (cc == ')')                        // read "((a),(e,f,g,h))"
                                                             {
@@ -2414,7 +2558,7 @@ namespace boost
                                                                 is.setstate(::std::ios::failbit);
 #else
                                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                             }
                                                         }
                                                         else                                    // error
@@ -2423,7 +2567,7 @@ namespace boost
                                                             is.setstate(::std::ios::failbit);
 #else
                                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                         }
                                                     }
                                                     else                                    // error
@@ -2432,7 +2576,7 @@ namespace boost
                                                         is.setstate(::std::ios::failbit);
 #else
                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                     }
                                                 }
                                                 else                                    // error
@@ -2441,7 +2585,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                         }
@@ -2451,7 +2595,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                 }
@@ -2467,11 +2611,11 @@ namespace boost
                                     
                                     if    (!is.good())    goto finish;
                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == ')')                            // read "((a),c)"
                                     {
@@ -2487,11 +2631,11 @@ namespace boost
                                         
                                         if    (!is.good())    goto finish;
                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "((a),c,x)"
                                         {
@@ -2505,11 +2649,11 @@ namespace boost
                                             
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                            // read "((a),c,x,y)"
                                             {
@@ -2521,7 +2665,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                         else                                        // error
@@ -2530,7 +2674,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                     else                                        // error
@@ -2539,7 +2683,7 @@ namespace boost
                                         is.setstate(::std::ios::failbit);
 #else
                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                     }
                                 }
                             }
@@ -2549,7 +2693,7 @@ namespace boost
                                 is.setstate(::std::ios::failbit);
 #else
                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                             }
                         }
                         else if    (cc ==',')                            // read "((a,"
@@ -2558,11 +2702,11 @@ namespace boost
                             
                             if    (!is.good())    goto finish;
                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                             cc = ch;
 #else
                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                             
                             if        (cc == '(')                            // read "((a,("
                             {
@@ -2578,11 +2722,11 @@ namespace boost
                                 
                                 if    (!is.good())    goto finish;
                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                 cc = ch;
 #else
                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                 
                                 if        (cc == ')')                            // read "((a,v)"
                                 {
@@ -2590,11 +2734,11 @@ namespace boost
                                     
                                     if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == ')')                            // read "((a,v))"
                                     {
@@ -2612,11 +2756,11 @@ namespace boost
                                         
                                         if    (!is.good())    goto finish;
                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "((a,v),q)"
                                         {
@@ -2628,7 +2772,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                     else                                        // error
@@ -2637,7 +2781,7 @@ namespace boost
                                         is.setstate(::std::ios::failbit);
 #else
                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                     }
                                 }
                                 else                                        // error
@@ -2646,7 +2790,7 @@ namespace boost
                                     is.setstate(::std::ios::failbit);
 #else
                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                 }
                             }
                             else
@@ -2661,11 +2805,11 @@ namespace boost
                                 
                                 if    (!is.good())    goto finish;
                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                 cc = ch;
 #else
                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                 
                                 if        (cc == ')')                            // read "((a,b)"
                                 {
@@ -2673,11 +2817,11 @@ namespace boost
                                     
                                     if    (!is.good())    goto finish;
                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == ')')                            // read "((a,b))"
                                     {
@@ -2689,11 +2833,11 @@ namespace boost
                                         
                                         if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == '(')                            // read "((a,b),("
                                         {
@@ -2701,11 +2845,11 @@ namespace boost
                                             
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == '(')                            // read "((a,b),(("
                                             {
@@ -2723,11 +2867,11 @@ namespace boost
                                                 
                                                 if    (!is.good())    goto finish;
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                            // read "((a,b),q)"
                                                 {
@@ -2739,7 +2883,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                             else                                        // read "((a,b),(c" or "((a,b),(e"
@@ -2754,11 +2898,11 @@ namespace boost
                                                 
                                                 if    (!is.good())    goto finish;
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                            // read "((a,b),(c)" (ambiguity resolution)
                                                 {
@@ -2766,11 +2910,11 @@ namespace boost
                                                     
                                                     if    (!is.good())    goto finish;
                                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                     cc = ch;
 #else
                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                     
                                                     if        (cc == ')')                            // read "((a,b),(c))"
                                                     {
@@ -2790,11 +2934,11 @@ namespace boost
                                                         
                                                         if    (!is.good())    goto finish;
                                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                         cc = ch;
 #else
                                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                         
                                                         if        (cc == ')')                            // read "((a,b),(c),x)"
                                                         {
@@ -2810,11 +2954,11 @@ namespace boost
                                                             
                                                             if    (!is.good())    goto finish;
                                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                             cc = ch;
 #else
                                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                             
                                                             if        (cc == ')')                            // read "((a,b),(c),x,y)"
                                                             {
@@ -2826,7 +2970,7 @@ namespace boost
                                                                 is.setstate(::std::ios::failbit);
 #else
                                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                             }
                                                         }
                                                         else                                        // error
@@ -2835,7 +2979,7 @@ namespace boost
                                                             is.setstate(::std::ios::failbit);
 #else
                                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                         }
                                                     }
                                                     else                                        // error
@@ -2844,7 +2988,7 @@ namespace boost
                                                         is.setstate(::std::ios::failbit);
 #else
                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                     }
                                                 }
                                                 else if    (cc == ',')                            // read "((a,b),(c," or "((a,b),(e,"
@@ -2853,11 +2997,11 @@ namespace boost
                                                     
                                                     if    (!is.good())    goto finish;
                                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                     cc = ch;
 #else
                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                     
                                                     if        (cc == '(')                            // read "((a,b),(e,(" (ambiguity resolution)
                                                     {
@@ -2875,11 +3019,11 @@ namespace boost
                                                         
                                                         if    (!is.good())    goto finish;
                                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                         cc = ch;
 #else
                                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                         
                                                         if        (cc == ')')                            // read "((a,b),(e,y)"
                                                         {
@@ -2887,11 +3031,11 @@ namespace boost
                                                             
                                                             if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                             cc = ch;
 #else
                                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                             
                                                             if        (cc == ')')                            // read "((a,b),(e,y))"
                                                             {
@@ -2903,7 +3047,7 @@ namespace boost
                                                                 is.setstate(::std::ios::failbit);
 #else
                                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                             }
                                                         }
                                                         else                                        // error
@@ -2912,7 +3056,7 @@ namespace boost
                                                             is.setstate(::std::ios::failbit);
 #else
                                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                         }
                                                     }
                                                     else                                        // read "((a,b),(c,d" or "((a,b),(e,f"
@@ -2927,11 +3071,11 @@ namespace boost
                                                         
                                                         if    (!is.good())    goto finish;
                                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                         cc = ch;
 #else
                                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                         
                                                         if        (cc == ')')                            // read "((a,b),(c,d)" (ambiguity resolution)
                                                         {
@@ -2943,11 +3087,11 @@ namespace boost
                                                             
                                                             if    (!is.good())    goto finish;
                                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                             cc = ch;
 #else
                                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                             
                                                             if        (cc == ')')                            // read "((a,b),(c,d))"
                                                             {
@@ -2963,11 +3107,11 @@ namespace boost
                                                                 
                                                                 if    (!is.good())    goto finish;
                                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                                 cc = ch;
 #else
                                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                                 
                                                                 if        (cc == ')')                            // read "((a,b),(c,d),x)"
                                                                 {
@@ -2983,11 +3127,11 @@ namespace boost
                                                                     
                                                                     if    (!is.good())    goto finish;
                                                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                                     cc = ch;
 #else
                                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                                     
                                                                     if        (cc == ')')                            // read "((a,b),(c,d),x,y)"
                                                                     {
@@ -2999,7 +3143,7 @@ namespace boost
                                                                         is.setstate(::std::ios::failbit);
 #else
                                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                                     }
                                                                 }
                                                                 else                                        // error
@@ -3008,7 +3152,7 @@ namespace boost
                                                                     is.setstate(::std::ios::failbit);
 #else
                                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                                 }
                                                             }
                                                             else                                        // error
@@ -3017,7 +3161,7 @@ namespace boost
                                                                 is.setstate(::std::ios::failbit);
 #else
                                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                             }
                                                         }
                                                         else if    (cc == ',')                            // read "((a,b),(e,f," (ambiguity resolution)
@@ -3032,11 +3176,11 @@ namespace boost
                                                             
                                                             if    (!is.good())    goto finish;
                                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                             cc = ch;
 #else
                                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                             
                                                             if        (cc == ')')                            // read "((a,b),(e,f,g)"
                                                             {
@@ -3044,11 +3188,11 @@ namespace boost
                                                                 
                                                                 if    (!is.good())    goto finish;
                                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                                 cc = ch;
 #else
                                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                                 
                                                                 if        (cc == ')')                            // read "((a,b),(e,f,g))"
                                                                 {
@@ -3062,7 +3206,7 @@ namespace boost
                                                                     is.setstate(::std::ios::failbit);
 #else
                                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                                 }
                                                             }
                                                             else if    (cc == ',')                            // read "((a,b),(e,f,g,"
@@ -3075,11 +3219,11 @@ namespace boost
                                                                 
                                                                 if    (!is.good())    goto finish;
                                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                                 cc = ch;
 #else
                                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                                 
                                                                 if        (cc == ')')                            // read "((a,b),(e,f,g,h)"
                                                                 {
@@ -3087,11 +3231,11 @@ namespace boost
                                                                     
                                                                     if    (!is.good())    goto finish;
                                                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                                     cc = ch;
 #else
                                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                                     
                                                                     if        (cc == ')')                            // read ((a,b),(e,f,g,h))"
                                                                     {
@@ -3105,7 +3249,7 @@ namespace boost
                                                                         is.setstate(::std::ios::failbit);
 #else
                                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                                     }
                                                                 }
                                                                 else                                        // error
@@ -3114,7 +3258,7 @@ namespace boost
                                                                     is.setstate(::std::ios::failbit);
 #else
                                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                                 }
                                                             }
                                                             else                                        // error
@@ -3123,7 +3267,7 @@ namespace boost
                                                                 is.setstate(::std::ios::failbit);
 #else
                                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                             }
                                                         }
                                                         else                                        // error
@@ -3132,7 +3276,7 @@ namespace boost
                                                             is.setstate(::std::ios::failbit);
 #else
                                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                         }
                                                     }
                                                 }
@@ -3142,7 +3286,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                         }
@@ -3152,7 +3296,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                     else                                        // error
@@ -3161,7 +3305,7 @@ namespace boost
                                         is.setstate(::std::ios::failbit);
 #else
                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                     }
                                 }
                                 else if    (cc == ',')                            // read "((a,b,"
@@ -3174,11 +3318,11 @@ namespace boost
                                                                 
                                     if    (!is.good())    goto finish;
                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == ')')                            // read "((a,b,c)"
                                     {
@@ -3186,11 +3330,11 @@ namespace boost
                                                                     
                                         if    (!is.good())    goto finish;
                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "((a,b,c))"
                                         {
@@ -3208,11 +3352,11 @@ namespace boost
                                                                         
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                            // read "((a,b,c),q)"
                                             {
@@ -3224,7 +3368,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                         else                                        // error
@@ -3233,7 +3377,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                     else if    (cc == ',')                            // read "((a,b,c,"
@@ -3246,11 +3390,11 @@ namespace boost
                                                                     
                                         if    (!is.good())    goto finish;
                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "((a,b,c,d)"
                                         {
@@ -3258,11 +3402,11 @@ namespace boost
                                                                         
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                            // read "((a,b,c,d))"
                                             {
@@ -3280,11 +3424,11 @@ namespace boost
                                                                             
                                                 if    (!is.good())    goto finish;
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                            // read "((a,b,c,d),q)"
                                                 {
@@ -3296,7 +3440,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                             else                                        // error
@@ -3305,7 +3449,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                         else                                        // error
@@ -3314,7 +3458,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                     else                                        // error
@@ -3323,7 +3467,7 @@ namespace boost
                                         is.setstate(::std::ios::failbit);
 #else
                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                     }
                                 }
                                 else                                        // error
@@ -3332,7 +3476,7 @@ namespace boost
                                     is.setstate(::std::ios::failbit);
 #else
                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                 }
                             }
                         }
@@ -3342,7 +3486,7 @@ namespace boost
                             is.setstate(::std::ios::failbit);
 #else
                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                         }
                     }
                 }
@@ -3358,11 +3502,11 @@ namespace boost
                                                 
                     if    (!is.good())    goto finish;
                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                     cc = ch;
 #else
                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                     
                     if        (cc == ')')                            // read "(a)"
                     {
@@ -3374,11 +3518,11 @@ namespace boost
                                                     
                         if    (!is.good())    goto finish;
                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                         cc = ch;
 #else
                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                         
                         if        (cc == '(')                            // read "(a,("
                         {
@@ -3386,11 +3530,11 @@ namespace boost
                                                         
                             if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                             cc = ch;
 #else
                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                             
                             if        (cc == '(')                            // read "(a,(("
                             {
@@ -3408,11 +3552,11 @@ namespace boost
                                                             
                                 if    (!is.good())    goto finish;
                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                 cc = ch;
 #else
                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                 
                                 if        (cc == ')')                            // read "(a,q)"
                                 {
@@ -3424,7 +3568,7 @@ namespace boost
                                     is.setstate(::std::ios::failbit);
 #else
                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                 }
                             }
                             else                                        // read "(a,(c" or "(a,(e"
@@ -3439,11 +3583,11 @@ namespace boost
                                                             
                                 if    (!is.good())    goto finish;
                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                 cc = ch;
 #else
                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                 
                                 if        (cc == ')')                            // read "(a,(c)" (ambiguity resolution)
                                 {
@@ -3451,11 +3595,11 @@ namespace boost
                                                                 
                                     if    (!is.good())    goto finish;
                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == ')')                            // read "(a,(c))"
                                     {
@@ -3475,11 +3619,11 @@ namespace boost
                                                                     
                                         if    (!is.good())    goto finish;
 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "(a,(c),x)"
                                         {
@@ -3495,11 +3639,11 @@ namespace boost
                                                                         
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                            // read "(a,(c),x,y)"
                                             {
@@ -3511,7 +3655,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                         else                                        // error
@@ -3520,7 +3664,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                     else                                        // error
@@ -3529,7 +3673,7 @@ namespace boost
                                         is.setstate(::std::ios::failbit);
 #else
                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                     }
                                 }
                                 else if    (cc == ',')                            // read "(a,(c," or "(a,(e,"
@@ -3538,11 +3682,11 @@ namespace boost
                                                                 
                                     if    (!is.good())    goto finish;
                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == '(')                            // read "(a,(e,(" (ambiguity resolution)
                                     {
@@ -3560,11 +3704,11 @@ namespace boost
                                                                     
                                         if    (!is.good())    goto finish;
                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "(a,(e,y)"
                                         {
@@ -3572,11 +3716,11 @@ namespace boost
                                                                         
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                            // read "(a,(e,y))"
                                             {
@@ -3588,7 +3732,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                         else                                        // error
@@ -3597,7 +3741,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                     else                                        // read "(a,(c,d" or "(a,(e,f"
@@ -3612,11 +3756,11 @@ namespace boost
                                                                     
                                         if    (!is.good())    goto finish;
                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "(a,(c,d)" (ambiguity resolution)
                                         {
@@ -3624,11 +3768,11 @@ namespace boost
                                                                         
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                            // read "(a,(c,d))"
                                             {
@@ -3648,11 +3792,11 @@ namespace boost
                                                                             
                                                 if    (!is.good())    goto finish;
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                            // read "(a,(c,d),x)"
                                                 {
@@ -3668,11 +3812,11 @@ namespace boost
                                                                                 
                                                     if    (!is.good())    goto finish;
                                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                     cc = ch;
 #else
                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                     
                                                     if        (cc == ')')                            // read "(a,(c,d),x,y)"
                                                     {
@@ -3684,7 +3828,7 @@ namespace boost
                                                         is.setstate(::std::ios::failbit);
 #else
                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                     }
                                                 }
                                                 else                                        // error
@@ -3693,7 +3837,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                             else                                        // error
@@ -3702,7 +3846,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                         else if    (cc == ',')                            // read "(a,(e,f," (ambiguity resolution)
@@ -3717,11 +3861,11 @@ namespace boost
                                                                         
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                            // read "(a,(e,f,g)"
                                             {
@@ -3729,11 +3873,11 @@ namespace boost
                                                                             
                                                 if    (!is.good())    goto finish;
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                            // read "(a,(e,f,g))"
                                                 {
@@ -3747,7 +3891,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                             else if    (cc == ',')                            // read "(a,(e,f,g,"
@@ -3760,11 +3904,11 @@ namespace boost
                                                                             
                                                 if    (!is.good())    goto finish;
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                            // read "(a,(e,f,g,h)"
                                                 {
@@ -3772,11 +3916,11 @@ namespace boost
                                                                                 
                                                     if    (!is.good())    goto finish;
                                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                     cc = ch;
 #else
                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                     
                                                     if        (cc == ')')                            // read "(a,(e,f,g,h))"
                                                     {
@@ -3790,7 +3934,7 @@ namespace boost
                                                         is.setstate(::std::ios::failbit);
 #else
                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                     }
                                                 }
                                                 else                                        // error
@@ -3799,7 +3943,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                             else                                        // error
@@ -3808,7 +3952,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                         else                                        // error
@@ -3817,7 +3961,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                 }
@@ -3827,7 +3971,7 @@ namespace boost
                                     is.setstate(::std::ios::failbit);
 #else
                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                 }
                             }
                         }
@@ -3843,11 +3987,11 @@ namespace boost
                                                         
                             if    (!is.good())    goto finish;
                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                             cc = ch;
 #else
                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                             
                             if        (cc == ')')                            // read "(a,b)" (ambiguity resolution)
                             {
@@ -3859,11 +4003,11 @@ namespace boost
                                                             
                                 if    (!is.good())    goto finish;
                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                 cc = ch;
 #else
                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                 
                                 if        (cc == '(')                            // read "(a,c,(" (ambiguity resolution)
                                 {
@@ -3881,11 +4025,11 @@ namespace boost
                                                                 
                                     if    (!is.good())    goto finish;
                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == ')')                            // read "(a,c,x)"
                                     {
@@ -3901,11 +4045,11 @@ namespace boost
                                                                     
                                         if    (!is.good())    goto finish;
                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == ')')                            // read "(a,c,x,y)"
                                         {
@@ -3917,7 +4061,7 @@ namespace boost
                                             is.setstate(::std::ios::failbit);
 #else
                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                         }
                                     }
                                     else                                        // error
@@ -3926,7 +4070,7 @@ namespace boost
                                         is.setstate(::std::ios::failbit);
 #else
                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                     }
                                 }
                                 else                                        // read "(a,b,c" or "(a,c,e"
@@ -3941,11 +4085,11 @@ namespace boost
                                                                 
                                     if    (!is.good())    goto finish;
                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                     cc = ch;
 #else
                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                     
                                     if        (cc == ')')                            // read "(a,b,c)" (ambiguity resolution)
                                     {
@@ -3957,11 +4101,11 @@ namespace boost
                                                                     
                                         if    (!is.good())    goto finish;
                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                         cc = ch;
 #else
                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                         
                                         if        (cc == '(')                            // read "(a,c,e,(") (ambiguity resolution)
                                         {
@@ -3981,11 +4125,11 @@ namespace boost
                                                                         
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                            // read "(a,c,e,y)"
                                             {
@@ -3997,7 +4141,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                         else                                        // read "(a,b,c,d" (ambiguity resolution)
@@ -4012,11 +4156,11 @@ namespace boost
                                                                         
                                             if    (!is.good())    goto finish;
                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                             cc = ch;
 #else
                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                             
                                             if        (cc == ')')                            // read "(a,b,c,d)"
                                             {
@@ -4032,11 +4176,11 @@ namespace boost
                                                                             
                                                 if    (!is.good())    goto finish;
                                                 
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                 cc = ch;
 #else
                                                 cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                 
                                                 if        (cc == ')')                            // read "(a,b,c,d,e)"
                                                 {
@@ -4052,11 +4196,11 @@ namespace boost
                                                                                 
                                                     if    (!is.good())    goto finish;
                                                     
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                     cc = ch;
 #else
                                                     cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                     
                                                     if        (cc == ')')                            // read "(a,b,c,d,e,f)"
                                                     {
@@ -4072,11 +4216,11 @@ namespace boost
                                                                                     
                                                         if    (!is.good())    goto finish;
                                                         
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                         cc = ch;
 #else
                                                         cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                         
                                                         if        (cc == ')')                            // read "(a,b,c,d,e,f,g)"
                                                         {
@@ -4092,11 +4236,11 @@ namespace boost
                                                                                         
                                                             if    (!is.good())    goto finish;
                                                             
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef    BOOST_NO_STD_LOCALE
                                                             cc = ch;
 #else
                                                             cc = ct.narrow(ch, char());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
                                                             
                                                             if        (cc == ')')                            // read "(a,b,c,d,e,f,g,h)"
                                                             {
@@ -4108,7 +4252,7 @@ namespace boost
                                                                 is.setstate(::std::ios::failbit);
 #else
                                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                             }
                                                         }
                                                         else                                        // error
@@ -4117,7 +4261,7 @@ namespace boost
                                                             is.setstate(::std::ios::failbit);
 #else
                                                             is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                         }
                                                     }
                                                     else                                        // error
@@ -4126,7 +4270,7 @@ namespace boost
                                                         is.setstate(::std::ios::failbit);
 #else
                                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                     }
                                                 }
                                                 else                                        // error
@@ -4135,7 +4279,7 @@ namespace boost
                                                     is.setstate(::std::ios::failbit);
 #else
                                                     is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                                 }
                                             }
                                             else                                        // error
@@ -4144,7 +4288,7 @@ namespace boost
                                                 is.setstate(::std::ios::failbit);
 #else
                                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                             }
                                         }
                                     }
@@ -4154,7 +4298,7 @@ namespace boost
                                         is.setstate(::std::ios::failbit);
 #else
                                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                                     }
                                 }
                             }
@@ -4164,7 +4308,7 @@ namespace boost
                                 is.setstate(::std::ios::failbit);
 #else
                                 is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                             }
                         }
                     }
@@ -4174,7 +4318,7 @@ namespace boost
                         is.setstate(::std::ios::failbit);
 #else
                         is.setstate(::std::ios_base::failbit);
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
                     }
                 }
             }
@@ -4202,19 +4346,19 @@ namespace boost
         template<typename T, typename charT, class traits>
         ::std::basic_ostream<charT,traits> &    operator << (    ::std::basic_ostream<charT,traits> & os,
                                                                 octonion<T> const & o)
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
         {
 #if defined(__GNUC__) && __GNUC__ < 3
             ::std::ostringstream                        s;
 #else
             ::std::basic_ostringstream<charT,traits>    s;
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
             
             s.flags(os.flags());
 #ifdef    BOOST_NO_STD_LOCALE
 #else
             s.imbue(os.getloc());
-#endif
+#endif /* BOOST_NO_STD_LOCALE */
             s.precision(os.precision());
             
             s << '('    << o.R_component_1() << ','
@@ -4246,50 +4390,62 @@ namespace boost
         }
         
         
-    #define    BOOST_OCTONION_VALARRAY_LOADER  \
-            using    ::std::valarray;          \
-                                               \
-            valarray<T>    temp(8);            \
-                                               \
-            temp[0] = o.R_component_1();       \
-            temp[1] = o.R_component_2();       \
-            temp[2] = o.R_component_3();       \
-            temp[3] = o.R_component_4();       \
-            temp[4] = o.R_component_5();       \
-            temp[5] = o.R_component_6();       \
-            temp[6] = o.R_component_7();       \
+#define    BOOST_OCTONION_VALARRAY_LOADER   \
+            using    ::std::valarray;       \
+                                            \
+            valarray<T>    temp(8);         \
+                                            \
+            temp[0] = o.R_component_1();    \
+            temp[1] = o.R_component_2();    \
+            temp[2] = o.R_component_3();    \
+            temp[3] = o.R_component_4();    \
+            temp[4] = o.R_component_5();    \
+            temp[5] = o.R_component_6();    \
+            temp[6] = o.R_component_7();    \
             temp[7] = o.R_component_8();
         
         
         template<typename T>
         inline T                                sup(octonion<T> const & o)
         {
+#ifdef    BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
+            using    ::std::abs;
+#endif    /* BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP */
+            
             BOOST_OCTONION_VALARRAY_LOADER
             
 #if defined(__GNUC__) && __GNUC__ < 3
             return(BOOST_GET_VALARRAY(T, abs(temp)).max());
 #else
             return(abs(temp).max());
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
         }
         
         
         template<typename T>
         inline T                                l1(octonion<T> const & o)
         {
+#ifdef    BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
+            using    ::std::abs;
+#endif    /* BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP */
+            
             BOOST_OCTONION_VALARRAY_LOADER
             
 #if defined(__GNUC__) && __GNUC__ < 3
             return(BOOST_GET_VALARRAY(T, abs(temp)).sum());
 #else
             return(abs(temp).sum());
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
         }
         
         
         template<typename T>
         inline T                                abs(const octonion<T> & o)
         {
+#ifdef    BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
+            using    ::std::abs;
+#endif    /* BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP */
+            
             using    ::std::sqrt;
             
             BOOST_OCTONION_VALARRAY_LOADER
@@ -4298,7 +4454,7 @@ namespace boost
             T            maxim = BOOST_GET_VALARRAY(T,abs(temp)).max();    // overflow protection
 #else
             T            maxim = abs(temp).max();    // overflow protection
-#endif
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
             
             if    (maxim == static_cast<T>(0))
             {
@@ -4319,7 +4475,7 @@ namespace boost
         }
         
         
-    #undef    BOOST_OCTONION_VALARRAY_LOADER
+#undef    BOOST_OCTONION_VALARRAY_LOADER
         
         
         // Note:    This is the Cayley norm, not the Euclidian norm...
@@ -4462,7 +4618,7 @@ namespace boost
             
             T    z = abs(unreal(o));
             
-            T    w = sinc_pi<T>(z);
+            T    w = sinc_pi(z);
             
             return(u*octonion<T>(cos(z),
                 w*o.R_component_2(), w*o.R_component_3(),
@@ -4544,7 +4700,7 @@ namespace boost
         
         template<typename T>
         octonion<T>                                pow(octonion<T> const & o,
-                                                       int n)
+                                                    int n)
         {
             if        (n > 1)
             {
@@ -4579,8 +4735,8 @@ namespace boost
 
 
 #if defined(__GNUC__) && (__GNUC__ < 3)
-#undef    BOOST_GET_VALARRAY
-#endif
+    #undef    BOOST_GET_VALARRAY
+#endif /* defined(__GNUC__) && (__GNUC__ < 3) */
 
 
 #endif /* BOOST_OCTONION_HPP */

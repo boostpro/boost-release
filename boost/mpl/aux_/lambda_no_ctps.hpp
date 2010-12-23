@@ -25,13 +25,13 @@
 #   include "boost/mpl/lambda_fwd.hpp"
 #   include "boost/mpl/bind.hpp"
 #   include "boost/mpl/protect.hpp"
-#   include "boost/mpl/bool_c.hpp"
+#   include "boost/mpl/bool.hpp"
 #   include "boost/mpl/aux_/template_arity.hpp"
 #endif
 
 #include "boost/mpl/aux_/config/use_preprocessed.hpp"
 
-#if defined(BOOST_MPL_USE_PREPROCESSED_HEADERS) && \
+#if !defined(BOOST_MPL_NO_PREPROCESSED_HEADERS) && \
     !defined(BOOST_MPL_PREPROCESSING_MODE)
 
 #   define BOOST_MPL_PREPROCESSED_HEADER lambda_no_ctps.hpp
@@ -39,6 +39,7 @@
 
 #else
 
+#   include "boost/mpl/aux_/config/nttp.hpp"
 #   include "boost/mpl/limits/arity.hpp"
 #   include "boost/mpl/aux_/preprocessor/params.hpp"
 #   include "boost/mpl/aux_/preprocessor/repeat.hpp"
@@ -59,7 +60,7 @@ namespace mpl {
 
 namespace aux {
 
-template< int arity, bool Protect > struct lambda_impl
+template< BOOST_MPL_AUX_NTTP_DECL(int, arity_), bool Protect > struct lambda_impl
 {
     template< typename T > struct result_
     {
@@ -75,12 +76,14 @@ template< int arity, bool Protect > struct lambda_impl
 
 template< typename T, bool Protect = true >
 struct lambda
+    : aux::lambda_impl<
+          ::boost::mpl::aux::template_arity<T>::value
 #if !defined(BOOST_MSVC) || BOOST_MSVC > 1200
-    : aux::lambda_impl< ::boost::mpl::aux::template_arity<T>::value, Protect >
+        , Protect
 #else
-    : aux::lambda_impl< ::boost::mpl::aux::template_arity<T>::value, bool_c<Protect>::value >
+        , bool_<Protect>::value
 #endif
-        ::template result_<T>
+        >::template result_<T>
 {
 };
 
@@ -99,7 +102,7 @@ struct lambda
 
 #   define AUX_LAMBDA_INVOCATION(unused, i, T) \
     , typename lambda< \
-          typename f_::BOOST_PP_CAT(arg,BOOST_PP_INC(i)) \
+          typename F::BOOST_PP_CAT(arg,BOOST_PP_INC(i)) \
         , false \
         >::type \
     /**/
@@ -121,7 +124,7 @@ template<> struct lambda_impl<i,true>
     template< typename F > struct result_
     {
         typedef typename F::rebind f_;
-        typedef protect< BOOST_PP_CAT(bind,i)<
+        typedef mpl::protect< BOOST_PP_CAT(bind,i)<
               f_
             BOOST_MPL_PP_REPEAT(i, AUX_LAMBDA_INVOCATION, T)
             > > type;

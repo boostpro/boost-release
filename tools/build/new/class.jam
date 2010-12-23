@@ -7,51 +7,51 @@
 #
 # Classes are defined by creating a rule of the same name to act as
 # the "constructor", which in turn sets instance attributes and
-# defines rules:
+# defines rules::
 #
-#    rule myclass ( arg1 )          # constructor
-#    {
-#        self.attribute = $(arg1) ;
+#     rule myclass ( arg1 )          # constructor
+#     {
+#         self.attribute = $(arg1) ;
 #
-#        rule method1 ( )           # method
-#        {
-#            return [ method2 ] ;
-#        }
+#         rule method1 ( )           # method
+#         {
+#             return [ method2 ] ;
+#         }
 #
-#        rule method2 ( )           # method
-#        {
-#            return $(self.attribute) ;
-#        }
-#    }
-#    class myclass ;                # establish myclass as a class
+#         rule method2 ( )           # method
+#         {
+#             return $(self.attribute) ;
+#         }
+#     }
+#     class myclass ;                # establish myclass as a class
 #
-# New instance modules are created by invoking [ new <class> <args...> ]:
+# New instance modules are created by invoking [ new <class> <args...> ]::
 #
-#    local x = [ new myclass foo ] ;        # x is a new myclass object
-#    assert.result foo : [ $(x).method1 ] ; # $(x).method1 returns "foo"
+#     local x = [ new myclass foo ] ;        # x is a new myclass object
+#     assert.result foo : [ $(x).method1 ] ; # $(x).method1 returns "foo"
 #
 # To write a derived class, you must:
 #
 #   1. call the constructors of all base classes as <base>.__init__ from
 #      the derived class' constructor rule
 #
-#   2. add the base classes to the derived class declaration.
+#   2. add the base classes to the derived class declaration. ::
 #
-#    rule derived ( arg )
-#    {
-#         myclass.__init__ $(arg) ;  # call base __init__
-#         rule method2 ( )           # method override
-#         {
-#             return $(self.attribute)XXX ;
-#         }
+#     rule derived ( arg )
+#     {
+#          myclass.__init__ $(arg) ;  # call base __init__
+#          rule method2 ( )           # method override
+#          {
+#              return $(self.attribute)XXX ;
+#          }
 #     }
 #     class derived : myclass ;
 #
 # All methods operate virtually, replacing behavior in the base
-# classes. For example:
+# classes. For example::
 #
-#    local y = [ new derived foo ] ;           # y is a new derived object
-#    assert.result fooXXX : [ $(y).method1 ] ; # $(y).method1 returns "foo"
+#     local y = [ new derived foo ] ;           # y is a new derived object
+#     assert.result fooXXX : [ $(y).method1 ] ; # $(y).method1 returns "foo"
 #
 # Each class instance is its own core Jam module. All instance
 # attributes and methods are accessible without additional
@@ -90,6 +90,9 @@ local rule __init__ (
     
     # The calling module is the instance name
     local instance = [ CALLER_MODULE ] ;
+
+    # __name__ will denote the current class, similar to modules.
+    __name__ = $(instance) ;
     
     # call the class rule that was defined by the user
     # This defines all of the class' member rules
@@ -210,18 +213,17 @@ rule instance ( name : class args * : * )
     }
 }
 
-# Keeps track of the next unique object name to generate
-next-instance = 1 ;
 
 # create a new uniquely-named instance of the given class, returning
 # its name.
 rule new ( class args * : * )
 {
-    local name = object@$(next-instance) ;
+    .next-instance.$(class) ?= 1 ;
+    local name = object($(class))@$(.next-instance.$(class)) ;
     instance $(name) : $(class) $(args) : $(2) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ;
     
     # bump the next unique object name
-    next-instance = [ numbers.increment $(next-instance) ] ;
+    .next-instance.$(class) = [ numbers.increment $(.next-instance.$(class)) ] ;
     
     # Return the name of the new instance.
     return $(name) ;
@@ -272,7 +274,7 @@ rule is-derived ( class : bases + )
 rule is-instance ( value # The value to check 
      )
 {
-    return [ MATCH "(object@).*" : $(value) ] ;        
+    return [ MATCH "(object\\()[^@]+\\)@.*" : $(value) ] ;        
 }
 
 # Check if the given value is of the given type.
@@ -282,7 +284,7 @@ rule is-a (
     : type # The type to test for.
     )
 {
-    if [ MATCH "(object@).*" : $(instance) ]
+    if [ MATCH "(object\\()[^@]+\\)@.*" : $(instance) ]
     {
         return [ class.is-derived [ modules.peek $(instance) : __class__ ] : $(type) ] ;
     }

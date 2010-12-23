@@ -3,7 +3,7 @@
 from BoostBuild import Tester
 import os
 
-t = Tester("--build-system=project-test1", boost_build_path='')
+t = Tester("--build-system=project-test1", boost_build_path='', pass_toolset=0)
 
 # This test does no modifications, so run in in the invocation dir
 
@@ -25,7 +25,7 @@ Projects:
 * Project root: %(root-dir-prefix)sdir2
 * Parent project: (none)
 * Requirements: <include>/home/ghost/build/boost-cvs
-* Default build: debug
+* Default build:
 * Source location: %(root-dir-prefix)sdir2
 * Projects to build:
 
@@ -42,7 +42,7 @@ Projects:
 * Project root: %(root-dir)s
 * Parent project: (none)
 * Requirements: <threading>multi <include>/home/ghost/local/include
-* Default build: debug
+* Default build:
 * Source location: %(root-dir)s
 * Projects to build: dir dir2
 

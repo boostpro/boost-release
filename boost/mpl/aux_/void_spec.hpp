@@ -19,13 +19,16 @@
 
 #include "boost/mpl/lambda_fwd.hpp"
 #include "boost/mpl/void.hpp"
+#include "boost/mpl/int_fwd.hpp"
 #include "boost/mpl/aux_/preprocessor/params.hpp"
 #include "boost/mpl/aux_/preprocessor/enum.hpp"
 #include "boost/mpl/aux_/preprocessor/def_params_tail.hpp"
 #include "boost/mpl/aux_/arity.hpp"
 #include "boost/mpl/aux_/template_arity_fwd.hpp"
 #include "boost/mpl/aux_/lambda_arity_param.hpp"
+#include "boost/mpl/aux_/algorithm_namespace.hpp"
 #include "boost/mpl/aux_/config/dtp.hpp"
+#include "boost/mpl/aux_/config/nttp.hpp"
 #include "boost/mpl/aux_/config/ttp.hpp"
 #include "boost/mpl/aux_/config/lambda.hpp"
 #include "boost/mpl/aux_/config/overload_resolution.hpp"
@@ -39,7 +42,7 @@
 #if defined(BOOST_BROKEN_DEFAULT_TEMPLATE_PARAMETERS_IN_NESTED_TEMPLATES)
 #   define BOOST_MPL_AUX_VOID_SPEC_ARITY(i, name) \
 namespace aux { \
-template< int N > \
+template< BOOST_MPL_AUX_NTTP_DECL(int, N) > \
 struct arity< \
       name< BOOST_MPL_AUX_VOID_SPEC_PARAMS(i) > \
     , N \
@@ -86,7 +89,7 @@ struct lambda< \
 template<> \
 struct lambda< \
       name< BOOST_MPL_AUX_VOID_SPEC_PARAMS(i) > \
-    BOOST_MPL_AUX_LAMBDA_ARITY_PARAM(-1) \
+    BOOST_MPL_AUX_LAMBDA_ARITY_PARAM(int_<-1>) \
     > \
 { \
     typedef name< BOOST_MPL_AUX_VOID_SPEC_PARAMS(i) > type; \
@@ -135,6 +138,15 @@ BOOST_MPL_AUX_VOID_SPEC_MAIN(i, name) \
 BOOST_MPL_AUX_VOID_SPEC_LAMBDA(i, name) \
 BOOST_MPL_AUX_VOID_SPEC_ARITY(i, name) \
 BOOST_MPL_AUX_VOID_SPEC_TEMPLATE_ARITY(i, j, name) \
+/**/
+
+#define BOOST_MPL_AUX_ALGORITHM_VOID_SPEC(i, name) \
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_BEGIN \
+BOOST_MPL_AUX_VOID_SPEC_MAIN(i, name) \
+BOOST_MPL_AUX_AGLORITHM_NAMESPACE_END \
+BOOST_MPL_AUX_VOID_SPEC_LAMBDA(i, BOOST_MPL_AUX_AGLORITHM_NAMESPACE_PREFIX name) \
+BOOST_MPL_AUX_VOID_SPEC_ARITY(i, BOOST_MPL_AUX_AGLORITHM_NAMESPACE_PREFIX name) \
+BOOST_MPL_AUX_VOID_SPEC_TEMPLATE_ARITY(i, i, BOOST_MPL_AUX_AGLORITHM_NAMESPACE_PREFIX name) \
 /**/
 
 #endif // BOOST_MPL_AUX_VOID_SPEC_HPP_INCLUDED

@@ -25,9 +25,12 @@
 
 #include <boost/test/test_tools.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/random.hpp>
 #include <boost/graph/graph_utility.hpp>
 #include <boost/graph/graph_archetypes.hpp>
 #include <boost/graph/breadth_first_search.hpp>
+
+#include <boost/random/mersenne_twister.hpp>
 
 template <typename DistanceMap, typename ParentMap, 
           typename Graph, typename ColorMap>
@@ -124,12 +127,12 @@ struct bfs_test
   typedef typename Traits::vertices_size_type
     vertices_size_type;
   static void go(vertices_size_type max_V) {
-    typedef Traits::vertex_descriptor vertex_descriptor;
+    typedef typename Traits::vertex_descriptor vertex_descriptor;
     typedef boost::color_traits<boost::default_color_type> Color;
 
     vertices_size_type i;
-    Traits::edges_size_type j;
-    Traits::vertex_iterator ui, ui_end;
+    typename Traits::edges_size_type j;
+    typename Traits::vertex_iterator ui, ui_end;
 
     boost::mt19937 gen;
 

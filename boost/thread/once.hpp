@@ -1,4 +1,4 @@
-// Copyright (C) 2001
+// Copyright (C) 2001-2003
 // William E. Kempf
 //
 // Permission to use, copy, modify, distribute and sell this software
@@ -16,6 +16,8 @@
 #ifndef BOOST_HAS_THREADS
 #   error   Thread support is unavailable!
 #endif
+
+#include <boost/thread/detail/config.hpp>
 
 #if defined(BOOST_HAS_PTHREADS)
 #   include <pthread.h>
@@ -35,7 +37,7 @@ typedef long once_flag;
 
 #endif
 
-void call_once(void (*func)(), once_flag& flag);
+void BOOST_THREAD_DECL call_once(void (*func)(), once_flag& flag);
 
 } // namespace boost
 

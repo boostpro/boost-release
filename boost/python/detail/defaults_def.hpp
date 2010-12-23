@@ -38,7 +38,7 @@ namespace objects
 namespace detail
 {
   template <class T, class F> struct member_function_cast;
-
+  
   template <class Func, class CallPolicies, class NameSpaceT>
   static void name_space_def(
       NameSpaceT& name_space
@@ -51,10 +51,10 @@ namespace detail
       )
   {
       typedef typename NameSpaceT::wrapped_type wrapped_type;
-
+      
       objects::add_to_namespace(
           name_space, name,
-          make_keyword_range_function(
+          detail::make_keyword_range_function(
                 // This bit of nastiness casts F to a member function of T if possible.
                 member_function_cast<wrapped_type,Func>::stage1(f).stage2((wrapped_type*)0).stage3(f)
                 , policies, kw)
@@ -102,7 +102,7 @@ namespace detail
   //      template <typename OverloadsT, typename NameSpaceT>
   //      inline void
   //      define_stub_function(
-  //          char const* name, OverloadsT s, NameSpaceT& name_space, mpl::int_c<N>)
+  //          char const* name, OverloadsT s, NameSpaceT& name_space, mpl::int_<N>)
   //      {
   //          name_space.def(name, &OverloadsT::func_N);
   //      }
@@ -162,10 +162,10 @@ namespace detail
         {
             //  define the NTH stub function of stubs
             define_stub_function<N>::define(name, stubs, kw, policies, name_space, doc);
-
+            
             if (kw.second > kw.first)
                 --kw.second;
-
+            
             //  call the next define_with_defaults_helper
             define_with_defaults_helper<N-1>::def(name, stubs, kw, policies, name_space, doc);
         }

@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: discard_block.hpp,v 1.1 2002/09/13 21:30:54 jmaurer Exp $
+ * $Id: discard_block.hpp,v 1.7 2002/12/22 22:03:10 jmaurer Exp $
  *
  * Revision history
  *  2001-03-02  created
@@ -22,43 +22,44 @@
 #define BOOST_RANDOM_DISCARD_BLOCK_HPP
 
 #include <iostream>
-#include <cassert>
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/cstdint.hpp>     // uint32_t
 
 
 namespace boost {
 namespace random {
 
-template<class UniformRandomNumberGenerator, unsigned int p, unsigned int r,
-#ifndef BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS
-  typename UniformRandomNumberGenerator::result_type 
-#else
-  uint32_t
-#endif
-  val = 0>
+template<class UniformRandomNumberGenerator, unsigned int p, unsigned int r>
 class discard_block
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
   typedef typename base_type::result_type result_type;
 
-  BOOST_STATIC_CONSTANT(bool, has_fixed_range = base_type::has_fixed_range);
+  BOOST_STATIC_CONSTANT(bool, has_fixed_range = false);
   BOOST_STATIC_CONSTANT(unsigned int, total_block = p);
   BOOST_STATIC_CONSTANT(unsigned int, returned_block = r);
 
+#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+  BOOST_STATIC_ASSERT(total_block >= returned_block);
+#endif
+
   discard_block() : _rng(), _n(0) { }
   explicit discard_block(const base_type & rng) : _rng(rng), _n(0) { }
-  template<class T>
-  void seed(T s) { _rng.seed(s); _n = 0; }
+  template<class It> discard_block(It& first, It last)
+    : _rng(first, last), _n(0) { }
+  template<class T> void seed(T s) { _rng.seed(s); _n = 0; }
+  template<class It> void seed(It& first, It last)
+  { _n = 0; _rng.seed(first, last); }
+
+  const base_type& base() const { return _rng; }
 
   result_type operator()()
   {
     if(_n >= returned_block) {
+      // discard values of random number generator
       for( ; _n < total_block; ++_n)
-        // discard value of random number generator
         _rng();
       _n = 0;
     }
@@ -68,60 +69,53 @@ public:
 
   result_type min() const { return _rng.min(); }
   result_type max() const { return _rng.max(); }
-  static bool validation(result_type x) { return val == x; }
+  static bool validation(result_type x) { return true; }  // dummy
 
 #ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
-  friend std::ostream& operator<<(std::ostream& os, const discard_block& s)
+
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+  template<class CharT, class Traits>
+  friend std::basic_ostream<CharT,Traits>&
+  operator<<(std::basic_ostream<CharT,Traits>& os, const discard_block& s)
   {
     os << s._rng << " " << s._n << " ";
     return os;
   }
-  friend std::istream& operator>>(std::istream& is, discard_block& s)
+
+  template<class CharT, class Traits>
+  friend std::basic_istream<CharT,Traits>&
+  operator>>(std::basic_istream<CharT,Traits>& is, discard_block& s)
   {
     is >> s._rng >> std::ws >> s._n >> std::ws;
     return is;
   }
+#endif
+
   friend bool operator==(const discard_block& x, const discard_block& y)
   { return x._rng == y._rng && x._n == y._n; }
+  friend bool operator!=(const discard_block& x, const discard_block& y)
+  { return !(x == y); }
 #else
   // Use a member function; Streamable concept not supported.
   bool operator==(const discard_block& rhs) const
   { return _rng == rhs._rng && _n == rhs._n; }
+  bool operator!=(const discard_block& rhs) const
+  { return !(*this == rhs); }
 #endif
 
 private:
   base_type _rng;
-  int _n;
+  unsigned int _n;
 };
 
 #ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
 //  A definition is required even for integral static constants
-template<class UniformRandomNumberGenerator, unsigned int p, unsigned int r, 
-#ifndef BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS
-  typename UniformRandomNumberGenerator::result_type 
-#else
-  uint32_t
-#endif
-  val>
-const bool discard_block<UniformRandomNumberGenerator, p, r, val>::has_fixed_range;
-
-template<class UniformRandomNumberGenerator, unsigned int p, unsigned int r,
-#ifndef BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS
-  typename UniformRandomNumberGenerator::result_type 
-#else
-  uint32_t
-#endif
-  val>
-const unsigned int discard_block<UniformRandomNumberGenerator, p, r, val>::total_block;
-
-template<class UniformRandomNumberGenerator, unsigned int p, unsigned int r,
-#ifndef BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS
-  typename UniformRandomNumberGenerator::result_type 
-#else
-  uint32_t
-#endif
-  val>
-const unsigned int discard_block<UniformRandomNumberGenerator, p, r, val>::returned_block;
+template<class UniformRandomNumberGenerator, unsigned int p, unsigned int r>
+const bool discard_block<UniformRandomNumberGenerator, p, r>::has_fixed_range;
+template<class UniformRandomNumberGenerator, unsigned int p, unsigned int r>
+const unsigned int discard_block<UniformRandomNumberGenerator, p, r>::total_block;
+template<class UniformRandomNumberGenerator, unsigned int p, unsigned int r>
+const unsigned int discard_block<UniformRandomNumberGenerator, p, r>::returned_block;
 #endif
 
 } // namespace random

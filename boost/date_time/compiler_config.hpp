@@ -3,11 +3,19 @@
 /* Copyright (c) 2002 CrystalClear Software, Inc.
  * Disclaimer & Full Copyright at end of file
  * Author: Jeff Garland 
+ * $Date: 2003/02/19 12:25:03 $
  */
 
 // This file performs some local compiler configurations
 
 #include "boost/date_time/locale_config.hpp" //set up locale configurations
+
+//Set up a configuration parameter for platforms that have 
+//GetTimeOfDay
+#ifdef BOOST_HAS_GETTIMEOFDAY
+#define BOOST_DATE_TIME_HAS_GETTIMEOFDAY_HIGH_PRECISION_CLOCK
+#endif
+
 
 #if (defined(BOOST_NO_INCLASS_MEMBER_INITIALIZATION) || (defined(__BORLANDC__)))
 #define BOOST_DATE_TIME_NO_MEMBER_INIT
@@ -18,21 +26,6 @@
 #define INT64_C(value)  long long(value)
 #endif
 
-//Work around compilers that don't have std::abs
-#if (__GNUC__ <= 3)|| (defined(BOOST_MSVC) && _MSC_VER <= 1200)
-#  define BOOST_NO_LONG_LONG_ABS
-#endif
-
-#if defined(BOOST_NO_LONG_LONG_ABS)
-namespace std
-{
-    template <typename T> // JDG [7/6/02 made a template]
-    inline T abs(T x)
-    {
-      return x < 0 ? -x : x;
-    }
-}
-#endif
 
 /* Copyright (c) 2002
  * CrystalClear Software, Inc.

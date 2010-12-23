@@ -1,3 +1,19 @@
+//
+//  Copyright (c) 2000-2002
+//  Joerg Walter, Mathias Koch
+//
+//  Permission to use, copy, modify, distribute and sell this software
+//  and its documentation for any purpose is hereby granted without fee,
+//  provided that the above copyright notice appear in all copies and
+//  that both that copyright notice and this permission notice appear
+//  in supporting documentation.  The authors make no representations
+//  about the suitability of this software for any purpose.
+//  It is provided "as is" without express or implied warranty.
+//
+//  The authors gratefully acknowledge the support of
+//  GeNeSys mbH & Co. KG in producing this work.
+//
+
 #ifdef BOOST_MSVC
 
 #pragma warning (disable: 4355)
@@ -50,15 +66,9 @@ struct bench_my_inner_prod {
 
     void operator () (int runs) const {
         try {
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-            static V v1 (N), v2 (N);
-            ublas::vector_range<V> vr1 (v1, ublas::range<> (0, N)),
-                                   vr2 (v2, ublas::range<> (0, N));
-#else
             static V v1 (N), v2 (N);
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N));
-#endif
             initialize_vector (vr1);
             initialize_vector (vr2);
             boost::timer t;
@@ -135,17 +145,10 @@ struct bench_my_vector_add {
 
     void operator () (int runs, safe_tag) const {
         try {
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-            static V v1 (N), v2 (N), v3 (N);
-            ublas::vector_range<V> vr1 (v1, ublas::range<> (0, N)),
-                                   vr2 (v2, ublas::range<> (0, N)),
-                                   vr3 (v2, ublas::range<> (0, N));
-#else
             static V v1 (N), v2 (N), v3 (N);
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N)),
                                    vr3 (v2, ublas::range (0, N));
-#endif
             initialize_vector (vr1);
             initialize_vector (vr2);
             initialize_vector (vr3);
@@ -165,17 +168,10 @@ struct bench_my_vector_add {
     }
     void operator () (int runs, fast_tag) const {
         try {
-#ifdef BOOST_UBLAS_ENABLE_INDEX_SET_ALL
-            static V v1 (N), v2 (N), v3 (N);
-            ublas::vector_range<V> vr1 (v1, ublas::range<> (0, N)),
-                                   vr2 (v2, ublas::range<> (0, N)),
-                                   vr3 (v2, ublas::range<> (0, N));
-#else
             static V v1 (N), v2 (N), v3 (N);
             ublas::vector_range<V> vr1 (v1, ublas::range (0, N)),
                                    vr2 (v2, ublas::range (0, N)),
                                    vr3 (v2, ublas::range (0, N));
-#endif
             initialize_vector (vr1);
             initialize_vector (vr2);
             boost::timer t;
@@ -309,28 +305,34 @@ void bench_1<T, N>::operator () (int runs) {
 #endif
 }
 
+#ifdef USE_FLOAT
 template struct bench_1<float, 3>;
 template struct bench_1<float, 10>;
 template struct bench_1<float, 30>;
 template struct bench_1<float, 100>;
+#endif
 
+#ifdef USE_DOUBLE
 template struct bench_1<double, 3>;
 template struct bench_1<double, 10>;
 template struct bench_1<double, 30>;
 template struct bench_1<double, 100>;
+#endif
 
 #ifdef USE_STD_COMPLEX
-
+#ifdef USE_FLOAT
 template struct bench_1<std::complex<float>, 3>;
 template struct bench_1<std::complex<float>, 10>;
 template struct bench_1<std::complex<float>, 30>;
 template struct bench_1<std::complex<float>, 100>;
+#endif
 
+#ifdef USE_DOUBLE
 template struct bench_1<std::complex<double>, 3>;
 template struct bench_1<std::complex<double>, 10>;
 template struct bench_1<std::complex<double>, 30>;
 template struct bench_1<std::complex<double>, 100>;
-
+#endif
 #endif
 
 

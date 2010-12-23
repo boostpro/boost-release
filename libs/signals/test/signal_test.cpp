@@ -13,8 +13,9 @@
  
 // For more information, see http://www.boost.org
 
-#include <boost/signal.hpp>
+#define BOOST_INCLUDE_MAIN
 #include <boost/test/test_tools.hpp>
+#include <boost/signal.hpp>
 #include <functional>
 #include <iostream>
 

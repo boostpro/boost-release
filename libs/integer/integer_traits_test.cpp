@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: integer_traits_test.cpp,v 1.10.4.1 2002/09/24 11:40:08 johnmaddock Exp $
+ * $Id: integer_traits_test.cpp,v 1.10 2002/07/27 11:47:04 johnmaddock Exp $
  *
  * Revision history
  *  2000-02-22  Small improvements by Beman Dawes
@@ -83,11 +83,10 @@ int test_main(int, char*[])
   runtest("long", long());
   typedef unsigned long unsigned_long;
   runtest("unsigned long", unsigned_long());
-#if !defined(BOOST_NO_INTEGRAL_INT64_T) && !defined(BOOST_NO_INT64_T)
+#if !defined(BOOST_NO_INT64_T) && (!defined(BOOST_MSVC) || BOOST_MSVC > 1300) && !defined(__BORLANDC__) && !defined(__BEOS__)
   //
-  // Only test for compilers that have 64-bit int's that 
-  // can be used in integral constant expressions:
-  //
+  // MS/Borland compilers can't support 64-bit member constants
+  // BeOS doesn't have specialisations for long long in SGI's <limits> header.
   runtest("int64_t (possibly long long)", boost::int64_t());
   runtest("uint64_t (possibly unsigned long long)", boost::uint64_t());
 #else

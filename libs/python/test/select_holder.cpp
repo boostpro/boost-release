@@ -3,11 +3,11 @@
 // copyright notice appears in all copies. This software is provided
 // "as is" without express or implied warranty, and with no claim as
 // to its suitability for any purpose.
-#include <boost/static_assert.hpp>
-#include <boost/type_traits/same_traits.hpp>
 #include <boost/python/object/select_holder.hpp>
 #include <boost/python/has_back_reference.hpp>
 #include <boost/python/detail/not_specified.hpp>
+#include <boost/static_assert.hpp>
+#include <boost/type_traits/same_traits.hpp>
 #include <boost/function/function0.hpp>
 #include <memory>
 
@@ -40,7 +40,13 @@ void assert_same(U* = 0, T* = 0)
 template <class T, class Held, class Holder>
 void assert_holder(T* = 0, Held* = 0, Holder* = 0)
 {
-    assert_same<Holder>(boost::python::objects::select_holder<T,Held>::execute((Held*)0).get());
+    assert_same<Holder>(
+#if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
+        boost::python::objects::select_holder<T,Held>::execute((Held*)0).get()
+#else
+        boost::python::objects::select_holder<T,Held>::type::get()
+#endif 
+        );
 }
 
 int test_main(int, char * [])

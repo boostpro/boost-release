@@ -10,14 +10,17 @@
 if ! $(IA32ROOT)
 {
     # Compiler version
-    INTEL_LINUX_VERSION ?= "50" ;
+    INTEL_LINUX_VERSION ?= "60" ;
 }
+
+flags intel-linux INTEL_LINUX_VERSION : $(INTEL_LINUX_VERSION) ;
+
 # Root directory
-INTEL_LINUX_ROOT = "/opt/intel/compiler"$(INTEL_LINUX_VERSION) ;
+flags intel-linux INTEL_LINUX_ROOT : "/opt/intel/compiler"$(INTEL_LINUX_VERSION) ;
 # Setup script
-INTEL_LINUX_SETUP = ". "$(INTEL_LINUX_ROOT)"/ia32/bin/iccvars.sh" ;
+flags intel-linux INTEL_LINUX_SETUP : ". "$(INTEL_LINUX_ROOT)"/ia32/bin/iccvars.sh" ;
 # Additional DLL directory
-INTEL_LINUX_RUN_LD_LIBRARY_PATH = $(INTEL_LINUX_ROOT)"/ia32/lib" ;
+flags intel-linux INTEL_LINUX_RUN_LD_LIBRARY_PATH : $(INTEL_LINUX_ROOT)"/ia32/lib" ;
 
 #### compiler and linker switches ####
 
@@ -80,7 +83,7 @@ flags intel-linux DLLVERSION <dllversion> ;
 DLLVERSION = $(DLLVERSION[1]) ;
 DLLVERSION ?= $(BOOST_VERSION) ;
 
-flags inttel-linux TARGET_TYPE <target-type> ;
+flags intel-linux TARGET_TYPE <target-type> ;
 
 #### Cc ####
 
@@ -145,7 +148,7 @@ rule Link-action
 actions intel-linux-Link-action bind NEEDLIBS NEEDIMPS
 {
     $(INTEL_LINUX_SETUP)
-    icc $(LINKFLAGS) -o "$(<[1])$(OUTTAG)" -L$(LIBPATH) -L$(STDLIBPATH) "$(>)" -l$(FINDLIBS) "$(NEEDLIBS)" "$(NEEDLIBS)" "$(IMPLIB_FLAGS)$(NEEDIMPS)" "-Qoption,link,-soname,$(<[1]:D=)$(SOTAG)"
+    icc $(LINKFLAGS) -o "$(<[1])$(OUTTAG)" -L$(LIBPATH) -L$(STDLIBPATH) "$(>)" $(NEEDLIBS) $(NEEDLIBS) -l$(FINDLIBS) "$(IMPLIB_FLAGS)$(NEEDIMPS)" "-Qoption,link,-soname,$(<[1]:D=)$(SOTAG)"
     $(ACTION_1)$(LN)$(SPACE)-fs$(SPACE)"$(<[1]:D=)$(OUTTAG)"$(SPACE)"$(<[1])"
 }
 

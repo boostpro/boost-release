@@ -9,7 +9,7 @@
 //  in all copies. This software is provided "as is" without express or implied
 //  warranty, and with no claim as to its suitability for any purpose.
 
-// ideas taken from Rüdiger Loos's format class
+// ideas taken from Rudiger Loos's format class
 // and Karl Nelson's ofstream (also took its parsing code as basis for printf parsing)
 
 // ------------------------------------------------------------------------------
@@ -21,21 +21,26 @@
 #ifndef BOOST_FORMAT_PARSING_HPP
 #define BOOST_FORMAT_PARSING_HPP
 
-#ifdef BOOST_MSVC
-#ifdef isdigit
-#undef isdigit
-#endif
-#endif // MSVC workaround
 
-#include <locale>
+#include <boost/format/format_class.hpp>
+#include <boost/throw_exception.hpp>
+#include <boost/assert.hpp>
 
-
-
-#include "boost/format/format_class.hpp"
 
 namespace boost {
 namespace io {
 namespace detail {
+
+  template<class Ch, class Stream> inline
+  bool wrap_isdigit(Ch c, Stream &os) 
+  {
+#ifndef BOOST_NO_LOCALE_ISIDIGIT
+    return std::isdigit(c, os.rdbuf()->getloc() );
+# else
+    using namespace std;
+    return isdigit(c); 
+#endif 
+  } //end- wrap_isdigit(..)
 
   template<class Res, class Ch, class Tr> inline
   Res str2int(const std::basic_string<Ch, Tr>& s, 
@@ -43,16 +48,16 @@ namespace detail {
               BOOST_IO_STD basic_ios<Ch,Tr> &os,
               const Res = Res(0)  ) 
     // Input : char string, with starting index
-    //         a stream, so we can use its locale  and call narrow.
+    //         a basic_ios& merely to call its widen/narrow member function in the desired locale.
     // Effects : reads s[start:] and converts digits into an integral n, of type Res
     // Returns : n
   {
     Res n = 0;
-    while(start<s.size() && std::isdigit(s[start], os.rdbuf()->getloc() ) ) {
+    while(start<s.size() && wrap_isdigit(s[start], os) ) {
       char cur_ch = os.narrow( s[start], 0);
-      assert(cur_ch != 0 ); // since we called isdigit, this should not happen.
+      BOOST_ASSERT(cur_ch != 0 ); // since we called isdigit, this should not happen.
       n *= 10;
-      n += cur_ch - '0'; // §22.2.1.1.2 of the C++ standard
+      n += cur_ch - '0'; // 22.2.1.1.2 of the C++ standard
       ++start;
     }
     return n;
@@ -64,15 +69,16 @@ namespace detail {
                      BOOST_IO_STD basic_ios<Ch, Tr> &os)
     // skip printf's "asterisk-fields" directives in the format-string buf
     // Input : char string, with starting index *pos_p
-    //         a stream, so we can use its locale  and call narrow.
+    //         a basic_ios& merely to call its widen/narrow member function in the desired locale.
     // Effects : advance *pos_p by skipping printf's asterisk fields.
     // Returns : nothing
   {
-    assert( pos_p);
+    using namespace std;
+    BOOST_ASSERT( pos_p != 0);
     if(*pos_p >= buf.size() ) return;
     if(buf[ *pos_p]==os.widen('*')) {
       ++ (*pos_p);
-      while (*pos_p < buf.size() && std::isdigit(buf[*pos_p],os.rdbuf()->getloc())) ++(*pos_p);
+      while (*pos_p < buf.size() && wrap_isdigit(buf[*pos_p],os)) ++(*pos_p);
       if(buf[*pos_p]==os.widen('$')) ++(*pos_p);
     }
   }
@@ -84,7 +90,7 @@ namespace detail {
     // it either throws if user sets the corresponding flag, or does nothing.
   {
     if(exceptions & io::bad_format_string_bit)
-          throw io::bad_format_string();
+          boost::throw_exception(io::bad_format_string());
   }
     
 
@@ -96,15 +102,15 @@ namespace detail {
                               BOOST_IO_STD basic_ios<Ch,Tr> &os,
                               unsigned char exceptions)
     // Input   : a 'printf-directive' in the format-string, starting at buf[ *pos_p ]
-    //           a stream merely to call 'widen' member function in the desired locale.
+    //           a basic_ios& merely to call its widen/narrow member function in the desired locale.
     //           a bitset'excpetions' telling whether to throw exceptions on errors.
-    // Returns : true if parse somehow succeded (possibly ignoring errors if exceptions disabled) 
+    // Returns : true if parse somehow succeeded (possibly ignoring errors if exceptions disabled) 
     //           false if it failed so bad that the directive should be printed verbatim
     // Effects : - *pos_p is incremented so that buf[*pos_p] is the first char after the directive
     //           - *fpar is set with the parameters read in the directive
   {
     typedef format_item<Ch, Tr>  format_item_t;
-    assert( pos_p);
+    BOOST_ASSERT( pos_p != 0);
     typename std::basic_string<Ch, Tr>::size_type       &i1 = *pos_p,      
                                                         i0; 
     fpar->argN_ = format_item_t::argN_no_posit;  // if no positional-directive
@@ -125,7 +131,7 @@ namespace detail {
 
     // handle argument order (%2$d)  or possibly width specification: %2d
     i0 = i1;  // save position before digits
-    while (i1 < buf.size() && std::isdigit(buf[i1], os.rdbuf()->getloc()))
+    while (i1 < buf.size() && wrap_isdigit(buf[i1], os))
       ++i1;
     if (i1!=i0) 
       {
@@ -205,7 +211,7 @@ namespace detail {
     // handle width spec
     skip_asterisk(buf, &i1, os); // skips 'asterisk fields' :  *, or *N$
     i0 = i1;  // save position before digits
-    while (i1<buf.size() && std::isdigit(buf[i1], os.rdbuf()->getloc()))
+    while (i1<buf.size() && wrap_isdigit(buf[i1], os))
       i1++;
     
     if (i1!=i0) 
@@ -222,7 +228,7 @@ namespace detail {
         ++i1;
         skip_asterisk(buf, &i1, os);
         i0 = i1;  // save position before digits
-        while (i1<buf.size() && std::isdigit(buf[i1], os.rdbuf()->getloc()))
+        while (i1<buf.size() && wrap_isdigit(buf[i1], os))
           ++i1;
 
         if(i1==i0)
@@ -359,14 +365,14 @@ void basic_format<Ch, Traits> ::parse(const string_t & buf)
     {
       if( i1+1 >= buf.size() ) {
         if(exceptions() & io::bad_format_string_bit)
-          throw io::bad_format_string(); // must not end in "bla bla %"
+          boost::throw_exception(io::bad_format_string()); // must not end in "bla bla %"
         else break; // stop there, ignore last '%'
       }
       if(buf[i1+1] == buf[i1] ) { i1+=2; continue; } // escaped "%%" / "##"
       ++i1;
       
       // in case of %N% directives, dont count it double (wastes allocations..) :
-      while(i1 < buf.size() && std::isdigit(buf[i1],oss_.rdbuf()->getloc())) ++i1;
+      while(i1 < buf.size() && io::detail::wrap_isdigit(buf[i1],oss_)) ++i1;
       if( i1 < buf.size() && buf[i1] == arg_mark ) ++ i1;
 
       ++num_items;
@@ -389,7 +395,7 @@ void basic_format<Ch, Traits> ::parse(const string_t & buf)
         i1+=2; i0=i1;
         continue; 
       }
-      assert(  static_cast<unsigned int>(cur_it) < items_.size() || cur_it==0);
+      BOOST_ASSERT(  static_cast<unsigned int>(cur_it) < items_.size() || cur_it==0);
 
       if(i1!=i0) piece += buf.substr(i0, i1-i0);
       ++i1;
@@ -399,7 +405,8 @@ void basic_format<Ch, Traits> ::parse(const string_t & buf)
       if( ! parse_ok ) continue; // the directive will be printed verbatim
 
       i0=i1;
-      items_[cur_it].compute_states();
+      items_[cur_it].compute_states(); // process complex options, like zeropad, into stream params.
+
       int argN=items_[cur_it].argN_;
       if(argN == format_item_t::argN_ignored)
         continue;
@@ -410,7 +417,7 @@ void basic_format<Ch, Traits> ::parse(const string_t & buf)
       ++num_items;
       ++cur_it;
     } // loop on %'s
-    assert(cur_it == num_items);
+    BOOST_ASSERT(cur_it == num_items);
     
     // store the final piece of string
     string_t & piece = (cur_it==0) ? prefix_ : items_[cur_it-1].appendix_;
@@ -421,7 +428,7 @@ void basic_format<Ch, Traits> ::parse(const string_t & buf)
       if(max_argN >= 0 )  // dont mix positional with non-positionnal directives
         {
           if(exceptions() & io::bad_format_string_bit)
-            throw io::bad_format_string();
+            boost::throw_exception(io::bad_format_string());
           // else do nothing. => positionnal arguments are processed as non-positionnal
         }
       // set things like it would have been with positional directives :

@@ -1,4 +1,4 @@
-#  Copyright (C) 2002, Rene Rivera. Permission to copy, use, modify, sell and
+#  Copyright (C) 2002-2003, Rene Rivera. Permission to copy, use, modify, sell and
 #  distribute this software is granted provided this copyright notice appears in
 #  all copies. This software is provided "as is" without express or implied
 #  warranty, and with no claim as to its suitability for any purpose.
@@ -10,6 +10,7 @@
 import modules ;
 import numbers ;
 import string ;
+import regex ;
 
 # The current output target. Defaults to console.
 output-target = console ;
@@ -45,15 +46,53 @@ rule section (
 {
     if $(output-type) = plain
     {
-        lines $(name): ;
+        lines [ split-at-words $(name): ] ;
         lines ;
+        local pre = ;
         while $(description)
         {
             local paragraph = ;
             while $(description) && $(description[1]) = "" { description = $(description[2-]) ; }
-            while $(description) && $(description[1]) != "" { paragraph += $(description[1]) ; description = $(description[2-]) ; }
-            lines [ split-at-words " " $(paragraph) ] : "  " ;
-            lines ;
+            if $(pre)
+            {
+                pre = ;
+                while $(description) && ( $(description[1]) = "" || [ MATCH "^([ ])" : $(description[1]) ] )
+                    { paragraph += $(description[1]) ; description = $(description[2-]) ; }
+                lines $(paragraph) : "  " "  " ;
+            }
+            else
+            {
+                while $(description) && $(description[1]) != ""
+                    { paragraph += $(description[1]) ; description = $(description[2-]) ; }
+                if $(paragraph[1]) = :: && ! $(paragraph[2])
+                {
+                    pre = yes ;
+                }
+                if $(paragraph[1]) = ::
+                {
+                    lines $(paragraph[2-]) : "  " "  " ;
+                    lines ;
+                }
+                else
+                {
+                    local p = [ MATCH "(.*)(::)$" : $(paragraph[-1]) ] ;
+                    local pws = [ MATCH "([ 	]*)$" : $(p[1]) ] ;
+                    p = [ MATCH "(.*)($(pws))($(p[2]))$" :  $(paragraph[-1]) ] ;
+                    if $(p[3]) = ::
+                    {
+                        pre = yes ;
+                        if ! $(p[2]) || $(p[2]) = "" { paragraph = $(paragraph[1--2]) $(p[1]): ; }
+                        else { paragraph = $(paragraph[1--2]) $(p[1]) ; }
+                        lines [ split-at-words " " $(paragraph) ] : "  " "  " ;
+                        lines ;
+                    }
+                    else
+                    {
+                        lines [ split-at-words " " $(paragraph) ] : "  " "  " ;
+                        lines ;
+                    }
+                }
+            }
         }
     }
 }
@@ -107,6 +146,7 @@ rule split-at-words (
     )
 {
     local lines = ;
+    text = [ string.words $(text:J=" ") ] ;
     text = $(text:J=" ") ;
     margin ?= 78 ;
     local char-match-1 = ".?" ;
@@ -151,13 +191,15 @@ rule split-at-words (
 rule lines (
     text * # The lines of text.
     : indent ? # Optional indentation prepended to each line after the first one.
+    outdent ? # Optional indentation to prepend to the first line.
     )
 {
     text ?= "" ;
     indent ?= "" ;
+    outdent ?= "" ;
     if $(output-type) = plain
     {
-        text $(text[1]) $(indent)$(text[2-]) ;
+        text $(outdent)$(text[1]) $(indent)$(text[2-]) ;
     }
     else if $(output-type) = html
     {
@@ -200,7 +242,9 @@ rule text (
         while $(strings)
         {
             local line-v = $(output-target).line.$($(output-target).line) ;
-            $(line-v) on $(output-target) = $(strings[1]) ;
+            local echo-string = [ regex.split $(strings[1]) "\"" ] ;
+            echo-string = $(echo-string:J="''") ;
+            $(line-v) on $(output-target) = $(echo-string) ;
             NOCARE $(line-v) ;
             NOTFILE $(line-v) ;
             text-action $(output-target) : $(line-v) ;
@@ -222,7 +266,7 @@ rule wrapped-text ( text + )
 #
 actions quietly text-action
 {
-    echo '$($(>))' >> $(<)
+    echo "$($(>))" >> $(<)
 }
 
 local rule __test__ ( )

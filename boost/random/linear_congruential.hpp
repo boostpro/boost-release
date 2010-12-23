@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: linear_congruential.hpp,v 1.3 2002/01/03 22:20:56 jmaurer Exp $
+ * $Id: linear_congruential.hpp,v 1.10 2002/12/22 22:03:10 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -23,7 +23,10 @@
 
 #include <iostream>
 #include <cassert>
+#include <stdexcept>
 #include <boost/config.hpp>
+#include <boost/limits.hpp>
+#include <boost/static_assert.hpp>
 #include <boost/random/detail/const_mod.hpp>
 
 namespace boost {
@@ -46,40 +49,86 @@ public:
   BOOST_STATIC_CONSTANT(IntType, increment = c);
   BOOST_STATIC_CONSTANT(IntType, modulus = m);
 
-  result_type min() const { return c == 0 ? 1 : 0; }
-  result_type max() const { return m-1; }
+  // MSVC 6 and possibly others crash when encountering complicated integral
+  // constant expressions.  Avoid the check for now.
+  // BOOST_STATIC_ASSERT(m == 0 || a < m);
+  // BOOST_STATIC_ASSERT(m == 0 || c < m);
+
   explicit linear_congruential(IntType x0 = 1)
-    : _x(x0)
+    : _modulus(modulus), _x(_modulus ? (x0 % _modulus) : x0)
   { 
     assert(c || x0); /* if c == 0 and x(0) == 0 then x(n) = 0 for all n */
     // overflow check
     // disabled because it gives spurious "divide by zero" gcc warnings
     // assert(m == 0 || (a*(m-1)+c) % m == (c < a ? c-a+m : c-a)); 
+
+    // MSVC fails BOOST_STATIC_ASSERT with std::numeric_limits at class scope
+#ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+    BOOST_STATIC_ASSERT(std::numeric_limits<IntType>::is_integer);
+#endif
   }
+
+  template<class It>
+  linear_congruential(It& first, It last) { seed(first, last); }
+
   // compiler-generated copy constructor and assignment operator are fine
-  void seed(IntType x0) { assert(c || x0); _x = x0; }
+  void seed(IntType x0 = 1)
+  {
+    assert(c || x0);
+    _x = (_modulus ? (x0 % _modulus) : x0);
+  }
+
+  template<class It>
+  void seed(It& first, It last)
+  {
+    if(first == last)
+      throw std::invalid_argument("linear_congruential::seed");
+    IntType value = *first++;
+    _x = (_modulus ? (value % _modulus) : value);
+  }
+
+  result_type min() const { return c == 0 ? 1 : 0; }
+  result_type max() const { return modulus-1; }
+
   IntType operator()()
   {
     _x = const_mod<IntType, m>::mult_add(a, _x, c);
     return _x;
   }
-  bool validation(IntType x) const { return val == x; }
 
-#ifndef  BOOST_NO_OPERATORS_IN_NAMESPACE
-  friend std::ostream& operator<<(std::ostream& os,
-                                  const linear_congruential& lcg)
+  static bool validation(IntType x) { return val == x; }
+
+#ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
+
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+  template<class CharT, class Traits>
+  friend std::basic_ostream<CharT,Traits>&
+  operator<<(std::basic_ostream<CharT,Traits>& os,
+             const linear_congruential& lcg)
   { os << lcg._x; return os; }
-  friend std::istream& operator>>(std::istream& is, linear_congruential& lcg)
+
+  template<class CharT, class Traits>
+  friend std::basic_istream<CharT,Traits>&
+  operator>>(std::basic_istream<CharT,Traits>& is, linear_congruential& lcg)
   { is >> lcg._x; return is; }
+#endif
+
   friend bool operator==(const linear_congruential& x,
                          const linear_congruential& y)
   { return x._x == y._x; }
+  friend bool operator!=(const linear_congruential& x,
+                         const linear_congruential& y)
+  { return !(x == y); }
 #else
   // Use a member function; Streamable concept not supported.
   bool operator==(const linear_congruential& rhs) const
   { return _x == rhs._x; }
+  bool operator!=(const linear_congruential& rhs) const
+  { return !(*this == rhs); }
 #endif
+
 private:
+  IntType _modulus;   // work-around for gcc "divide by zero" warning in ctor
   IntType _x;
 };
 
@@ -120,24 +169,40 @@ public:
   
   explicit rand48(int32_t x0 = 1) : lcf(cnv(x0)) { }
   explicit rand48(uint64_t x0) : lcf(x0) { }
+  template<class It> rand48(It& first, It last) : lcf(first, last) { }
   // compiler-generated copy ctor and assignment operator are fine
   void seed(int32_t x0) { lcf.seed(cnv(x0)); }
   void seed(uint64_t x0) { lcf.seed(x0); }
+  template<class It> void seed(It& first, It last) { lcf.seed(first,last); }
+
   int32_t operator()() { return lcf() >> 17; }
   // by experiment from lrand48()
-  bool validation(int32_t x) const { return x == 1993516219; }
+  static bool validation(int32_t x) { return x == 1993516219; }
 
 #ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
-  friend std::ostream& operator<<(std::ostream& os, const rand48& r)
+
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+  template<class CharT,class Traits>
+  friend std::basic_ostream<CharT,Traits>&
+  operator<<(std::basic_ostream<CharT,Traits>& os, const rand48& r)
   { os << r.lcf; return os; }
-  friend std::istream& operator>>(std::istream& is, rand48& r)
+
+  template<class CharT,class Traits>
+  friend std::basic_istream<CharT,Traits>&
+  operator>>(std::basic_istream<CharT,Traits>& is, rand48& r)
   { is >> r.lcf; return is; }
+#endif
+
   friend bool operator==(const rand48& x, const rand48& y)
   { return x.lcf == y.lcf; }
+  friend bool operator!=(const rand48& x, const rand48& y)
+  { return !(x == y); }
 #else
   // Use a member function; Streamable concept not supported.
   bool operator==(const rand48& rhs) const
   { return lcf == rhs.lcf; }
+  bool operator!=(const rand48& rhs) const
+  { return !(*this == rhs); }
 #endif
 private:
   random::linear_congruential<uint64_t,

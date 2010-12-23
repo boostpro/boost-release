@@ -197,14 +197,21 @@ local rule join-imp ( elements + )
 #
 rule join ( elements + )
 {
-    for local e in $(elements[2-])
+    if ! $(elements[2]) 
     {
-        if [ is-rooted $(e) ]
-        {
-            error only first element may be rooted ;
-        }
+        return $(elements[1]) ;
     }
-    return [ join-imp $(elements) ] ;
+    else
+    {        
+        for local e in $(elements[2-])
+        {
+            if [ is-rooted $(e) ]
+            {
+                error only first element may be rooted ;
+            }
+        }
+        return [ join-imp $(elements) ] ;
+    }    
 }
 
 
@@ -289,6 +296,62 @@ rule glob-in-parents ( dir : patterns + : upper-limit ? )
     return $(result) ;    
 }
 
+#
+# Assuming 'child' is a subdirectory of 'parent', return the relative
+# path from 'parent' to 'child'
+#
+rule relative ( child parent )
+{
+    if $(parent) = "." 
+    {
+        return $(child) ;
+    }
+    else 
+    {       
+        local split1 = [ regex.split $(parent) / ] ;
+        local split2 = [ regex.split $(child) / ] ;
+    
+        while $(split1)
+        {
+            if $(split1[1]) = $(split2[1])
+            {
+                split1 = $(split1[2-]) ;
+                split2 = $(split2[2-]) ;
+            }
+            else
+            {
+                errors.error $(child) is not a subdir of $(parent) ;
+            }                
+        }    
+        return [ join $(split2) ] ;    
+    }    
+}
+
+# Returns the minimal path to path2 that is relative path1.
+#
+rule relative-to ( path1 path2 )
+{
+    local root_1 = [ regex.split [ reverse $(path1) ] / ] ;
+    local split1 = [ regex.split $(path1) / ] ;
+    local split2 = [ regex.split $(path2) / ] ;
+
+    while $(split1) && $(root_1)
+    {
+        if $(split1[1]) = $(split2[1])
+        {
+            root_1 = $(root_1[2-]) ;
+            split1 = $(split1[2-]) ;
+            split2 = $(split2[2-]) ;
+        }
+        else
+        {
+            split1 = ;
+        }
+    }
+    return [ join . $(root_1) $(split2) ] ;
+}
+
+
 
 rule make-NT ( native )
 {
@@ -301,12 +364,18 @@ rule make-NT ( native )
         tokens = $(tokens[1--2]) ; # discard the empty element
     }
 
-    result = [ sequence.join $(tokens) : "/" ] ;
+    result = [ path.join $(tokens) ] ;
 
     if [ regex.match "(^.:)" : $(native)  ]
     {
         result = /$(result) ;
     }
+    
+    if $(native) = ""
+    {
+        result = "." ;
+    }
+        
     return $(result) ;
 }
 
@@ -319,7 +388,15 @@ rule native-NT ( path )
 
 rule make-UNIX ( native )
 {
-    return $(native) ;
+    # VP: I have no idea now 'native' can be empty here! But it can!
+    if $(native) = ""
+    {
+        return "." ;
+    }
+    else
+    {        
+        return [ path.join [ regex.split $(native) "/" ] ] ;
+    }    
 }
 
 rule native-UNIX ( path )
@@ -366,6 +443,7 @@ rule __test__ ( ) {
     assert.result ".." : reverse "foo" ;
     assert.result "../../.." : reverse "foo/bar/giz" ;
 
+    assert.result "foo" : join "foo" ;
     assert.result "/foo" : join "/" "foo" ;
     assert.result "foo/bar" : join "foo" "bar" ;
     assert.result "foo/bar" : join "foo/giz" "../bar" ;
@@ -399,13 +477,18 @@ rule __test__ ( ) {
     local CWD = "/home/ghost" ;
     assert.result . .. : all-parents "Jamfile" : "/home" : $(CWD) ;
     assert.result . : all-parents "Jamfile" : "/home/ghost" : $(CWD) ;
+    
+    assert.result "c/d" : relative "a/b/c/d" "a/b" ;
+    assert.result "foo" : relative "foo" "." ;
 
     local os = NT ;
 
     assert.result "foo/bar/giz" : make "foo/bar/giz" ;
     assert.result "foo/bar/giz" : make "foo\\bar\\giz" ;
+    assert.result "foo" : make "foo/." ;
+    assert.result "foo" : make "foo/bar/.." ;
     assert.result "/D:/My Documents" : make "D:\\My Documents" ;
-    assert.result "/c:/boost/tools/build/test/../new/project.jam" : make "c:\\boost\\tools\\build\\test\\..\\new\\project.jam" ;
+    assert.result "/c:/boost/tools/build/new/project.jam" : make "c:\\boost\\tools\\build\\test\\..\\new\\project.jam" ;
 
     assert.result "foo\\bar\\giz" : native "foo/bar/giz" ;
     assert.result "foo" : native "foo" ;
@@ -414,6 +497,11 @@ rule __test__ ( ) {
     local os = UNIX ;
 
     assert.result "foo/bar/giz" : make "foo/bar/giz" ;
+    assert.result "/sub1" : make "/sub1/." ;
+    assert.result "/sub1" : make "/sub1/sub2/.." ;    
+    assert.result "sub1" : make "sub1/." ;
+    assert.result "sub1" : make "sub1/sub2/.." ;
     assert.result "/foo/bar" : native "/foo/bar" ;
+
 
 }

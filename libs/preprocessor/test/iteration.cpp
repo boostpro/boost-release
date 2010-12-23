@@ -12,7 +12,7 @@
 #
 # if !BOOST_PP_IS_SELFISH
 #
-# include <libs/preprocessor/regression/iteration.h>
+# include <libs/preprocessor/test/iteration.h>
 #
 # define TEST(n) BEGIN n == n END
 #
@@ -24,7 +24,7 @@
 # define BOOST_PP_LOCAL_LIMITS (5, 1)
 # include BOOST_PP_LOCAL_ITERATE()
 #
-# define BOOST_PP_INDIRECT_SELF <libs/preprocessor/regression/iteration.cpp>
+# define BOOST_PP_INDIRECT_SELF <libs/preprocessor/test/iteration.cpp>
 # include BOOST_PP_INCLUDE_SELF()
 #
 # else

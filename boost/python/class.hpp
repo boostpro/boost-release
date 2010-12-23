@@ -8,34 +8,43 @@
 
 # include <boost/python/class_fwd.hpp>
 # include <boost/python/object/class.hpp>
+
 # include <boost/python/bases.hpp>
-
 # include <boost/python/object.hpp>
-
 # include <boost/python/type_id.hpp>
-# include <boost/python/object/class_converters.hpp>
-# include <boost/type_traits/ice.hpp>
-# include <boost/type_traits/same_traits.hpp>
-# include <boost/mpl/size.hpp>
-# include <boost/mpl/for_each.hpp>
-# include <boost/mpl/bool_c.hpp>
-# include <boost/python/object/select_holder.hpp>
-# include <boost/python/object/class_wrapper.hpp>
-# include <boost/python/object/make_instance.hpp>
 # include <boost/python/data_members.hpp>
-# include <boost/utility.hpp>
-# include <boost/python/object/pickle_support.hpp>
 # include <boost/python/make_function.hpp>
-# include <boost/python/object/add_to_namespace.hpp>
 # include <boost/python/signature.hpp>
 # include <boost/python/init.hpp>
 # include <boost/python/args_fwd.hpp>
 
+# include <boost/type_traits/is_same.hpp>
+# include <boost/type_traits/is_convertible.hpp>
+# include <boost/type_traits/is_member_function_pointer.hpp>
+# include <boost/type_traits/is_polymorphic.hpp>
+
+# include <boost/mpl/size.hpp>
+# include <boost/mpl/for_each.hpp>
+# include <boost/mpl/bool.hpp>
+# include <boost/mpl/not.hpp>
+# include <boost/mpl/or.hpp>
+
+# include <boost/python/object/select_holder.hpp>
+# include <boost/python/object/class_wrapper.hpp>
+# include <boost/python/object/make_instance.hpp>
+# include <boost/python/object/pickle_support.hpp>
+# include <boost/python/object/add_to_namespace.hpp>
+# include <boost/python/object/class_converters.hpp>
+
+# include <boost/python/detail/string_literal.hpp>
 # include <boost/python/detail/overloads_fwd.hpp>
 # include <boost/python/detail/operator_id.hpp>
 # include <boost/python/detail/member_function_cast.hpp>
 # include <boost/python/detail/def_helper.hpp>
 # include <boost/python/detail/force_instantiate.hpp>
+
+# include <boost/utility.hpp>
+# include <boost/detail/workaround.hpp>
 
 namespace boost { namespace python {
 
@@ -69,50 +78,72 @@ namespace detail
   template <detail::operator_id, class L, class R>
   struct operator_;
 
-  // Register a to_python converter for a class T, depending on the
-  // type of the first (tag) argument. The 2nd argument is a pointer
-  // to the type of holder that must be created. The 3rd argument is a
+  // Register to_python converters for a class T.  The first argument
+  // will be mpl::true_ unless noncopyable was specified as a
+  // class_<...> template parameter. The 2nd argument is a pointer to
+  // the type of holder that must be created. The 3rd argument is a
   // reference to the Python type object to be created.
   template <class T, class SelectHolder>
-  static inline void register_copy_constructor(mpl::bool_c<true> const&, SelectHolder const& , T* = 0)
+  inline void register_class_to_python(mpl::true_ copyable, SelectHolder selector, T* = 0)
   {
       typedef typename SelectHolder::type holder;
-      force_instantiate(objects::class_wrapper<T,holder, objects::make_instance<T,holder> >());
+      force_instantiate(objects::class_cref_wrapper<T, objects::make_instance<T,holder> >());
       SelectHolder::register_();
   }
 
-  // Tag dispatched to have no effect.
   template <class T, class SelectHolder>
-  static inline void register_copy_constructor(mpl::bool_c<false> const&, SelectHolder const&, T* = 0)
+  inline void register_class_to_python(mpl::false_ copyable, SelectHolder selector, T* = 0)
   {
       SelectHolder::register_();
   }
 
-  // A helpful compile-time assertion which gives a reasonable error
-  // message if T can't be default-constructed.
-  template <class T>
-  class assert_default_constructible
+  namespace error
   {
-      template <class U>
-      static int specify_init_arguments_or_no_init_for_class_(U const&);
-   public:
-      assert_default_constructible()
-      {
-          force_instantiate(
-              sizeof(
-                  specify_init_arguments_or_no_init_for_class_(T())
-                  ));
-                      
-      }
-  };
+    //
+    // A meta-assertion mechanism which prints nice error messages and
+    // backtraces on lots of compilers. Usage:
+    //
+    //      assertion<C>::failed
+    //
+    // where C is an MPL metafunction class
+    //
+    
+    template <class C> struct assertion_failed { };
+    template <class C> struct assertion_ok { typedef C failed; };
+
+    template <class C>
+    struct assertion
+        : mpl::if_<C, assertion_ok<C>, assertion_failed<C> >::type
+    {};
+
+    //
+    // Checks for validity of arguments used to define virtual
+    // functions with default implementations.
+    //
+    
+    template <class Default>
+    void not_a_derived_class_member(Default) {}
+    
+    template <class T, class Fn>
+    struct virtual_function_default
+    {
+        template <class Default>
+        static void
+        must_be_derived_class_member(Default const&)
+        {
+            typedef typename assertion<mpl::not_<is_same<Default,Fn> > >::failed test0;
+# if !BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
+            typedef typename assertion<is_polymorphic<T> >::failed test1;
+# endif 
+            typedef typename assertion<is_member_function_pointer<Fn> >::failed test2;
+            not_a_derived_class_member<Default>(Fn());
+        }
+    };
+  }
 }
 
-//
-// class_<T,Bases,HolderGenerator>
-//
-//      This is the primary mechanism through which users will expose
-//      C++ classes to Python. The three template arguments are:
-//
+// This is the primary mechanism through which users will expose
+// C++ classes to Python.
 template <
     class T // class being wrapped
     , class X1 // = detail::not_specified
@@ -136,7 +167,7 @@ class class_ : public objects::class_base
 
     typedef objects::select_holder<T,held_type> holder_selector;
 
- private:
+ private: // types
 
     typedef typename detail::select_bases<X1
             , typename detail::select_bases<X2
@@ -165,21 +196,18 @@ class class_ : public objects::class_base
     };
     friend struct id_vector;
 
- public:
-    // Automatically derive the class name - only works on some
-    // compilers because type_info::name is sometimes mangled (gcc)
-//    class_();           // With default-constructor init function
-//    class_(no_init_t);  // With no init function
-
-    // Construct with the class name, with or without docstring, and default init() function
+ public: // constructors
+    
+    // Construct with the class name, with or without docstring, and default __init__() function
     class_(char const* name, char const* doc = 0);
 
-    // Construct with class name, no docstring, and no init() function
+    // Construct with class name, no docstring, and an uncallable __init__ function
     class_(char const* name, no_init_t);
 
-    // Construct with class name, docstring, and no init() function
+    // Construct with class name, docstring, and an uncallable __init__ function
     class_(char const* name, char const* doc, no_init_t);
 
+    // Construct with class name and init<> function
     template <class DerivedT>
     inline class_(char const* name, init_base<DerivedT> const& i)
         : base(name, id_vector::size, id_vector().ids)
@@ -189,6 +217,7 @@ class class_ : public objects::class_base
         this->set_instance_size(holder_selector::additional_size());
     }
 
+    // Construct with class name, docstring and init<> function
     template <class DerivedT>
     inline class_(char const* name, char const* doc, init_base<DerivedT> const& i)
         : base(name, id_vector::size, id_vector().ids, doc)
@@ -198,16 +227,9 @@ class class_ : public objects::class_base
         this->set_instance_size(holder_selector::additional_size());
     }
 
-    // Wrap a member function or a non-member function which can take
-    // a T, T cv&, or T cv* as its first parameter, or a callable
-    // python object.
-    template <class F>
-    self& def(char const* name, F f)
-    {
-        this->def_impl(name, f, detail::keywords<>(), default_call_policies(), 0, &f);
-        return *this;
-    }
-
+ public: // member functions
+    
+    // Define additional constructors
     template <class DerivedT>
     self& def(init_base<DerivedT> const& i)
     {
@@ -215,34 +237,46 @@ class class_ : public objects::class_base
         return *this;
     }
 
-    template <class Arg1T, class Arg2T>
-    self& def(char const* name, Arg1T arg1, Arg2T const& arg2)
+    // Wrap a member function or a non-member function which can take
+    // a T, T cv&, or T cv* as its first parameter, or a callable
+    // python object.
+    template <class F>
+    self& def(char const* name, F f)
     {
-        //  The arguments may be:
-        //      def(name, function)
-        //      def(name, function, policy)
-        //      def(name, function, doc_string)
-        //      def(name, signature, overloads)
-
-        dispatch_def(&arg2, name, arg1, arg2);
+        this->def_impl(name, f, detail::def_helper<char const*>(0), &f);
         return *this;
     }
 
-    template <class Arg1T, class Arg2T, class Arg3T>
-    self& def(char const* name, Arg1T arg1, Arg2T const& arg2, Arg3T const& arg3)
+    template <class A1, class A2>
+    self& def(char const* name, A1 a1, A2 const& a2)
+    {
+        this->def_maybe_overloads(name, a1, a2, &a2);
+        return *this;
+    }
+
+    template <class Fn, class A1, class A2>
+    self& def(char const* name, Fn fn, A1 const& a1, A2 const& a2)
     {
         //  The arguments are definitely:
         //      def(name, function, policy, doc_string)
         //      def(name, function, doc_string, policy)
 
-        dispatch_def(&arg2, name, arg1, arg2, arg3);
+        this->def_impl(
+            name, fn
+            , detail::def_helper<A1,A2>(a1,a2)
+            , &fn);
+
         return *this;
     }
 
-    template <class Arg1T, class Arg2T, class Arg3T, class Arg4T>
-    self& def(char const* name, Arg1T arg1, Arg2T const& arg2, Arg3T const& arg3, Arg4T const& arg4)
+    template <class Fn, class A1, class A2, class A3>
+    self& def(char const* name, Fn fn, A1 const& a1, A2 const& a2, A3 const& a3)
     {
-        dispatch_def(&arg2, name, arg1, arg2, arg3, arg4);
+        this->def_impl(
+            name, fn
+            , detail::def_helper<A1,A2,A3>(a1,a2,a3)
+            , &fn);
+
         return *this;
     }
 
@@ -256,34 +290,50 @@ class class_ : public objects::class_base
     //
     // Data member access
     //
-    template <class D>
-    self& def_readonly(char const* name, D T::*pm)
+    template <class D, class B>
+    self& def_readonly(char const* name, D B::*pm_)
     {
+        D T::*pm = pm_;
         this->add_property(name, make_getter(pm));
         return *this;
     }
 
-    template <class D>
-    self& def_readwrite(char const* name, D T::*pm)
+    template <class D, class B>
+    self& def_readwrite(char const* name, D B::*pm_)
     {
+        D T::*pm = pm_;
         return this->add_property(name, make_getter(pm), make_setter(pm));
     }
 
     // Property creation
     template <class Get>
-    self& add_property(char const* name, Get const& fget)
+    self& add_property(char const* name, Get fget)
     {
-        base::add_property(name, object(fget));
+        base::add_property(
+            name
+            , object(
+                detail::member_function_cast<T,Get>::stage1(fget).stage2((T*)0).stage3(fget)
+                )
+            );
+        
         return *this;
     }
 
     template <class Get, class Set>
-    self& add_property(char const* name, Get const& fget, Set const& fset)
+    self& add_property(char const* name, Get fget, Set fset)
     {
-        base::add_property(name, object(fget), object(fset));
+        base::add_property(
+            name
+            , object(
+                detail::member_function_cast<T,Get>::stage1(fget).stage2((T*)0).stage3(fget)
+                )
+            , object(
+                detail::member_function_cast<T,Set>::stage1(fset).stage2((T*)0).stage3(fset)
+                )
+            );
         return *this;
     }
-
+        
     template <class U>
     self& setattr(char const* name, U const& x)
     {
@@ -305,15 +355,41 @@ class class_ : public objects::class_base
       return *this;
     }
 
+    self& staticmethod(char const* name)
+    {
+        this->make_method_static(name);
+        return *this;
+    }
  private: // helper functions
 
-    template <class Fn, class Policies, class Keywords>
+    inline void register_() const;
+
+    //
+    // These two overloads discriminate between def() as applied to
+    // things which are already wrapped into callable python::object
+    // instances and everything else.
+    //
+    template <class F, class A1>
+    inline void def_impl(
+        char const* name
+        , F f
+        , detail::def_helper<A1> const& helper
+        , object const*)
+    {
+        // It's too late to specify anything other than docstrings, if
+        // the callable object is already wrapped.
+        BOOST_STATIC_ASSERT(
+            (is_same<char const*,A1>::value
+             || detail::is_string_literal<A1>::value));
+        
+        objects::add_to_namespace(*this, name, f, helper.doc());
+    }
+
+    template <class Fn, class Helper>
     inline void def_impl(
         char const* name
         , Fn fn
-        , Keywords const& keywords
-        , Policies const& policies
-        , char const* doc
+        , Helper const& helper
         , ...)
     {
         objects::add_to_namespace(
@@ -321,30 +397,51 @@ class class_ : public objects::class_base
             make_function(
                 // This bit of nastiness casts F to a member function of T if possible.
                 detail::member_function_cast<T,Fn>::stage1(fn).stage2((T*)0).stage3(fn)
-                , policies, keywords)
-            , doc);
+                , helper.policies(), helper.keywords())
+            , helper.doc());
+
+        this->def_default(name, fn, helper, mpl::bool_<Helper::has_default_implementation>());
     }
 
-    template <class F>
-    inline void def_impl(
+    //
+    // These two overloads handle the definition of default
+    // implementation overloads for virtual functions. The second one
+    // handles the case where no default implementation was specified.
+    //
+    template <class Fn, class Helper>
+    inline void def_default(
         char const* name
-        , F f
-        , detail::keywords<> const&
-        , default_call_policies const&
-        , char const* doc
-        , object const*)
+        , Fn fn
+        , Helper const& helper
+        , mpl::bool_<true>)
     {
-        objects::add_to_namespace(*this, name, f, doc);
+        detail::error::virtual_function_default<T,Fn>::must_be_derived_class_member(
+            helper.default_implementation());
+            
+        objects::add_to_namespace(
+            *this, name,
+            make_function(
+                helper.default_implementation(), helper.policies(), helper.keywords())
+            );
     }
-
-    inline void register_() const;
-
+    
+    template <class Fn, class Helper>
+    inline void def_default(char const*, Fn, Helper const&, mpl::bool_<false>)
+    { }
+    
+    //
+    // These two overloads discriminate between def() as applied to
+    // regular functions and def() as applied to the result of
+    // BOOST_PYTHON_FUNCTION_OVERLOADS(). The final argument is used to
+    // discriminate.
+    //
     template <class OverloadsT, class SigT>
-    void dispatch_def(
-        detail::overloads_base const*,
-        char const* name,
-        SigT sig,
-        OverloadsT const& overloads)
+    void def_maybe_overloads(
+        char const* name
+        , SigT sig
+        , OverloadsT const& overloads
+        , detail::overloads_base const*)
+
     {
         //  convert sig to a type_list (see detail::get_signature in signature.hpp)
         //  before calling detail::define_with_defaults.
@@ -353,59 +450,17 @@ class class_ : public objects::class_base
     }
 
     template <class Fn, class A1>
-    void dispatch_def(
-        void const*,
-        char const* name,
-        Fn fn,
-        A1 const& a1)
+    void def_maybe_overloads(
+        char const* name
+        , Fn fn
+        , A1 const& a1
+        , ...)
     {
-        detail::def_helper<A1> helper(a1);
-      
         this->def_impl(
             name, fn
-            , helper.keywords()
-            , helper.policies()
-            , helper.doc()
+            , detail::def_helper<A1>(a1)
             , &fn);
 
-    }
-
-    template <class Fn, class A1, class A2>
-    void dispatch_def(
-        void const*,
-        char const* name,
-        Fn fn,
-        A1 const& a1,
-        A2 const& a2)
-    {
-        detail::def_helper<A1,A2> helper(a1,a2);
-      
-        this->def_impl(
-            name, fn
-            , helper.keywords()
-            , helper.policies()
-            , helper.doc()
-            , &fn);
-    }
-
-    template <class Fn, class A1, class A2, class A3>
-    void dispatch_def(
-        void const*,
-        char const* name,
-        Fn fn,
-        A1 const& a1,
-        A2 const& a2,
-        A3 const& a3
-        )
-    {
-        detail::def_helper<A1,A2,A3> helper(a1,a2,a3);
-      
-        this->def_impl(
-            name, fn
-            , helper.keywords()
-            , helper.policies()
-            , helper.doc()
-            , &fn);
     }
 };
 
@@ -413,15 +468,22 @@ class class_ : public objects::class_base
 //
 // implementations
 //
-        // register converters
+
+// register converters
 template <class T, class X1, class X2, class X3>
 inline void class_<T,X1,X2,X3>::register_() const
 {
     objects::register_class_from_python<T,bases>();
 
-    detail::register_copy_constructor<T>(
-        mpl::bool_c<is_copyable>()
+    detail::register_class_to_python<T>(
+        mpl::bool_<is_copyable>()
+# if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
         , holder_selector::execute((held_type*)0)
+# elif BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
+        , holder_selector::type()
+# else 
+        , typename holder_selector::type()
+# endif 
         );
 }
 
@@ -430,9 +492,13 @@ inline class_<T,X1,X2,X3>::class_(char const* name, char const* doc)
     : base(name, id_vector::size, id_vector().ids, doc)
 {
     this->register_();
-    detail::assert_default_constructible<T>();
-    this->def(init<>());
     this->set_instance_size(holder_selector::additional_size());
+# if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
+    holder_selector::execute((held_type*)0).assert_default_constructible();
+# else 
+    holder_selector::type::assert_default_constructible();
+# endif 
+    this->def(init<>());
 }
 
 template <class T, class X1, class X2, class X3>
@@ -455,20 +521,21 @@ namespace detail
 {
   template <class T1, class T2, class T3>
   struct has_noncopyable
-      : type_traits::ice_or<
-        is_same<T1,noncopyable>::value
-      , is_same<T2,noncopyable>::value
-      , is_same<T3,noncopyable>::value>
+      : mpl::or_<
+          is_same<T1,noncopyable>
+        , is_same<T2,noncopyable>
+        , is_same<T3,noncopyable>
+      >
   {};
 
 
     template <class T, class Prev>
     struct select_held_type
-        : mpl::if_c<
-            type_traits::ice_or<
-                 specifies_bases<T>::value
-               , is_same<T,noncopyable>::value
-            >::value
+        : mpl::if_<
+             mpl::or_<
+                 specifies_bases<T>
+               , is_same<T,noncopyable>
+            >
             , Prev
             , T
           >

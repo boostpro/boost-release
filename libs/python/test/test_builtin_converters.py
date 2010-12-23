@@ -1,4 +1,4 @@
-"""
+r"""
 >>> from builtin_converters import *
 
 # Synthesize idendity functions in case long long not supported
@@ -38,6 +38,13 @@
 42
 >>> rewrap_value_unsigned_long(42)
 42
+
+    test unsigned long values which don't fit in a signed long.
+    strip any 'L' characters in case the platform has > 32 bit longs
+        
+>>> hex(rewrap_value_unsigned_long(0x80000001L)).replace('L','')
+'0x80000001'
+
 >>> rewrap_value_long_long(42)
 42L
 >>> rewrap_value_unsigned_long_long(42)
@@ -54,24 +61,25 @@
 ... else: print 'expected an OverflowError!'
 
 
->>> abs(rewrap_value_float(4.2) - 4.2) < .000001
-1
+>>> assert abs(rewrap_value_float(4.2) - 4.2) < .000001
 >>> rewrap_value_double(4.2) - 4.2
 0.0
 >>> rewrap_value_long_double(4.2) - 4.2
 0.0
 
->>> abs(rewrap_value_complex_float(4+.2j) - (4+.2j)) < .000001
-1
->>> abs(rewrap_value_complex_double(4+.2j) - (4+.2j)) < .000001
-1
->>> abs(rewrap_value_complex_long_double(4+.2j) - (4+.2j)) < .000001
-1
+>>> assert abs(rewrap_value_complex_float(4+.2j) - (4+.2j)) < .000001
+>>> assert abs(rewrap_value_complex_double(4+.2j) - (4+.2j)) < .000001
+>>> assert abs(rewrap_value_complex_long_double(4+.2j) - (4+.2j)) < .000001
 
 >>> rewrap_value_cstring('hello, world')
 'hello, world'
 >>> rewrap_value_string('yo, wassup?')
 'yo, wassup?'
+
+   wrap strings with embedded nulls:
+   
+>>> rewrap_value_string('yo,\0wassup?')
+'yo,\x00wassup?'
 
 >>> rewrap_value_handle(1)
 1
@@ -124,19 +132,15 @@
 42L
 
 
->>> abs(rewrap_const_reference_float(4.2) - 4.2) < .000001
-1
+>>> assert abs(rewrap_const_reference_float(4.2) - 4.2) < .000001
 >>> rewrap_const_reference_double(4.2) - 4.2
 0.0
 >>> rewrap_const_reference_long_double(4.2) - 4.2
 0.0
 
->>> abs(rewrap_const_reference_complex_float(4+.2j) - (4+.2j)) < .000001
-1
->>> abs(rewrap_const_reference_complex_double(4+.2j) - (4+.2j)) < .000001
-1
->>> abs(rewrap_const_reference_complex_long_double(4+.2j) - (4+.2j)) < .000001
-1
+>>> assert abs(rewrap_const_reference_complex_float(4+.2j) - (4+.2j)) < .000001
+>>> assert abs(rewrap_const_reference_complex_double(4+.2j) - (4+.2j)) < .000001
+>>> assert abs(rewrap_const_reference_complex_long_double(4+.2j) - (4+.2j)) < .000001
 
 >>> rewrap_const_reference_cstring('hello, world')
 'hello, world'
@@ -209,11 +213,9 @@ Check that classic classes also work
 ... else: print 'expected a TypeError exception'
 
 # show that arbitrary handle<T> instantiations can be returned
->>> get_type(1) is type(1)
-1
+>>> assert get_type(1) is type(1)
 
->>> return_null_handle() is None
-1
+>>> assert return_null_handle() is None
 """
 
 def run(args = None):
