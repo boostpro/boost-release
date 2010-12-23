@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../function.html" title="Chapter 6. Boost.Function">
-<link rel="prev" href="../function.html" title="Chapter 6. Boost.Function">
+<link rel="up" href="../function.html" title="Chapter 7. Boost.Function">
+<link rel="prev" href="../function.html" title="Chapter 7. Boost.Function">
 <link rel="next" href="tutorial.html" title="Tutorial">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -26,6 +26,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="function.history"></a>History &amp; Compatibility Notes</h2></div></div></div>
 <div class="itemizedlist"><ul type="disc" compact>
+<li>
+<p><span class="bold"><strong>Version 1.36.0</strong></span>: </p>
+<div class="itemizedlist"><ul type="circle" compact><li><p>Boost.Function now implements allocator support
+      in the same way that is is provided in C++0x, based on C++
+      committee
+      proposal <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2308.html" target="_top">N2308</a>. This
+      change removes the <code class="computeroutput">Allocator</code>
+      template parameter of <code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code> in
+      favor of a constructor that takes an argument. While this is a
+      backward-incompatible change, it is likely to affect only a few
+      users. This change to Function was contributed by Emil
+      Dotchevski, which also authored the corresponding C++ committee
+      proposal.</p></li></ul></div>
+</li>
 <li>
 <p><span class="bold"><strong>Version 1.34.0</strong></span>: </p>
 <div class="itemizedlist"><ul type="circle" compact><li><p>Boost.Function now implements a small buffer optimization, which can drastically improve the performance when copying or construction Boost.Function objects storing small function objects. For instance, <code class="computeroutput">bind(&amp;X:foo, &amp;x, _1, _2)</code> requires no heap allocation when placed into a Boost.Function object. Note that some exception-safety guarantees have changed: assignment provides the basic exception guarantee and <code class="computeroutput">swap()</code> may throw.</p></li></ul></div>
@@ -38,9 +52,9 @@
 <li><p><code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code>
       and <code class="computeroutput"><a class="link" href="../boost/functionN.html" title="Class template functionN">boost::functionN</a></code> objects
       can be assigned to 0 (semantically equivalent to calling
-      <code class="computeroutput"><a class="link" href="../boost/function.html#id244699-bb">clear</a>()</code>) and
+      <code class="computeroutput"><a class="link" href="../boost/function.html#id2375363-bb">clear</a>()</code>) and
       compared against 0 (semantically equivalent to calling
-      <code class="computeroutput"><a class="link" href="../boost/function.html#id256154-bb">empty</a>()</code>).</p></li>
+      <code class="computeroutput"><a class="link" href="../boost/function.html#id2489350-bb">empty</a>()</code>).</p></li>
 <li><p>The Boost.Function code is now generated
       entirely by the <a href="../../../libs/preprocessor/index.html" target="_top">Preprocessor</a> library,
       so it is now possible to generate
@@ -106,7 +120,7 @@
 </ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: November 03, 2006 at 15:41:10 -0400</small></p></td>
+<td align="left"><p><small>Last revised: July 14, 2008 at 14:32:29 -0400</small></p></td>
 <td align="right"><div class="copyright-footer">Copyright © 2001-2004 Douglas Gregor<p>Use, modification and distribution is subject to the Boost
     Software License, Version 1.0. (See accompanying file
     <code class="filename">LICENSE_1_0.txt</code> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)</p>

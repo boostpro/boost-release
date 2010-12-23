@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="intrusive_vs_nontrusive.html" title="Intrusive and non-intrusive containers">
 <link rel="next" href="usage_when.html" title="When to use?">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -37,15 +37,14 @@
       decisions influencing the class definition itself. Each class that will be
       used in an intrusive container needs some appropriate data members storing
       the information needed by the container. We will take a simple intrusive container,
-      like an intrusive list (<code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">boost::intrusive::list</a></code>)
+      the intrusive list (<code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">boost::intrusive::list</a></code>),
       for the following examples, but all <span class="bold"><strong>Boost.Intrusive</strong></span>
       containers are very similar. To compile the example using <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">boost::intrusive::list</a></code>,
       just include:
     </p>
 <p>
     </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
       Every class to be inserted in an intrusive container, needs to contain a hook
@@ -63,8 +62,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">list_base_hook</span><span class="special">;</span>
 </pre>
 <p>
@@ -110,8 +108,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
@@ -125,8 +122,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">list</span><span class="special">;</span>
 </pre>
 <p>
@@ -149,7 +145,7 @@
           custom ValueTraits</a> section. <span class="bold"><strong>If no option is
           specified, the container will be configured to use the base hook with the
           default tag</strong></span>. Some options configured for the hook (the type
-          of the pointers, link mode...) will be propagated to the container.
+          of the pointers, link mode, etc.) will be propagated to the container.
         </li>
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
@@ -164,7 +160,7 @@
           be the type returned by <code class="computeroutput"><span class="identifier">list</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span></code> and the type stored in the intrusive
           container if <code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span></code> is requested. The user normally will
           not need to change this type, but some containers can have a <code class="computeroutput"><span class="identifier">size_type</span></code> that might be different from
-          <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span></code> (for example, STL-like containers,
+          <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span></code> (for example, STL-like containers
           use the <code class="computeroutput"><span class="identifier">size_type</span></code> defined
           by their allocator). <span class="bold"><strong>Boost.Intrusive</strong></span> can
           be used to implement such containers specifying the the type of the size.
@@ -177,8 +173,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Foo</span><span class="special">&gt;</span> <span class="identifier">FooList</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Foo</span><span class="special">&gt;</span> <span class="identifier">FooList</span><span class="special">;</span>
 </pre>
 <p>
         Example of a intrusive list with non constant-time size that will store Foo
@@ -186,8 +181,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Foo</span><span class="special">,</span> <span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">FooList</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Foo</span><span class="special">,</span> <span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">FooList</span><span class="special">;</span>
 </pre>
 <p>
         Remember that the user must specify the base hook if the base hook has no
@@ -195,8 +189,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
@@ -213,8 +206,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//An object to be inserted in the list
+<pre class="programlisting"><span class="comment">//An object to be inserted in the list
 </span><span class="identifier">Foo</span> <span class="identifier">foo_object</span><span class="special">;</span>
 <span class="identifier">FooList</span> <span class="identifier">list</span><span class="special">;</span>
 
@@ -237,8 +229,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">list_member_hook</span><span class="special">;</span>
 </pre>
 <p>
@@ -246,8 +237,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">class</span> <span class="identifier">Foo</span> 
 <span class="special">{</span>
@@ -262,8 +252,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//This option will configure "list" to use the member hook
+<pre class="programlisting"><span class="comment">//This option will configure "list" to use the member hook
 </span><span class="keyword">typedef</span> <span class="identifier">member_hook</span><span class="special">&lt;</span><span class="identifier">Foo</span><span class="special">,</span> <span class="identifier">list_member_hook</span><span class="special">&lt;&gt;,</span> <span class="special">&amp;</span><span class="identifier">Foo</span><span class="special">::</span><span class="identifier">hook_</span><span class="special">&gt;</span> <span class="identifier">MemberHookOption</span><span class="special">;</span>
 
 <span class="comment">//This list will use the member hook
@@ -274,8 +263,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//An object to be inserted in the list
+<pre class="programlisting"><span class="comment">//An object to be inserted in the list
 </span><span class="identifier">Foo</span> <span class="identifier">foo_object</span><span class="special">;</span>
 <span class="identifier">FooList</span> <span class="identifier">list</span><span class="special">;</span>
 
@@ -290,16 +278,15 @@
 </h3></div></div></div>
 <p>
         You can insert the same object in several intrusive containers at the same
-        time, just using one hook for each container. This is a full example using
-        base and member hooks:
+        time, using one hook per container. This is a full example using base and
+        member hooks:
       </p>
 <p>
         </p>
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>

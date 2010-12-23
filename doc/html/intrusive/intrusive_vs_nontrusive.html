@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
-<link rel="prev" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
+<link rel="prev" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="next" href="usage.html" title="How to use Boost.Intrusive">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -46,8 +46,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">list</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">list</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">assert</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
@@ -70,8 +69,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//A possible implementation of a std::list&lt;MyClass&gt; node
+<pre class="programlisting"><span class="comment">//A possible implementation of a std::list&lt;MyClass&gt; node
 </span><span class="keyword">class</span> <span class="identifier">list_node</span>
 <span class="special">{</span>
    <span class="identifier">list_node</span> <span class="special">*</span><span class="identifier">next</span><span class="special">;</span>
@@ -90,8 +88,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">class</span> <span class="identifier">MyClass</span>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">MyClass</span>
 <span class="special">{</span>
    <span class="identifier">MyClass</span> <span class="special">*</span><span class="identifier">next</span><span class="special">;</span>
    <span class="identifier">MyClass</span> <span class="special">*</span><span class="identifier">previous</span><span class="special">;</span>
@@ -124,7 +121,7 @@
 </h3></div></div></div>
 <p>
         Semantically, a <span class="bold"><strong>Boost.Intrusive</strong></span> container
-        is similar to an STL container holding pointers to objects. That is, if you
+        is similar to a STL container holding pointers to objects. That is, if you
         have an intrusive list holding objects of type <code class="computeroutput"><span class="identifier">T</span></code>,
         then <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">*&gt;</span></code>
         would allow you to do quite the same operations (maintaining and navigating
@@ -142,7 +139,7 @@
 <li>
           The use of dynamic allocation to create copies of passed values can be
           a performance and size bottleneck in some applications. Normally, dynamic
-          allocation imposes a size overhead for each allocation to store bookeeping
+          allocation imposes a size overhead for each allocation to store bookkeeping
           information and a synchronization to protected concurrent allocation from
           different threads.
         </li>
@@ -171,7 +168,7 @@
         </li>
 <li>
           Intrusive containers offer better exception guarantees than non-intrusive
-          containers. In some situation intrusives containers offer a no-throw guarantee
+          containers. In some situations intrusive containers offer a no-throw guarantee
           that can't be achieved with non-intrusive containers.
         </li>
 <li>
@@ -183,8 +180,8 @@
         </li>
 <li>
           Intrusive containers offer predictability when inserting and erasing objects
-          since no memory managed is done with intrusive containers. Memory management
-          usually is not a predicable operation so complexity guarantees from non-intrusive
+          since no memory management is done with intrusive containers. Memory management
+          usually is not a predictable operation so complexity guarantees from non-intrusive
           containers are looser than the guarantees offered by intrusive containers.
         </li>
 </ul></div>
@@ -195,13 +192,13 @@
 <li>
           Each type stored in an intrusive container needs additional memory holding
           the maintenance information needed by the container. Hence, whenever a
-          certain type shall be stored in an intrusive container <span class="bold"><strong>you
+          certain type will be stored in an intrusive container <span class="bold"><strong>you
           have to change the definition of that type</strong></span> appropriately. Although
           this task is easy with <span class="bold"><strong>Boost.Intrusive</strong></span>,
           touching the definition of a type is sometimes a crucial issue.
         </li>
 <li>
-          In intrusive containers you don't store a copy of an object, <span class="bold"><strong>but they rather the original object is linked with other objects
+          In intrusive containers you don't store a copy of an object, <span class="bold"><strong>but rather the original object is linked with other objects
           in the container</strong></span>. Objects don't need copy-constructors or assignment
           operators to be stored in intrusive containers. But you have to take care
           of possible side effects, whenever you change the contents of an object
@@ -219,8 +216,8 @@
         </li>
 <li>
 <span class="bold"><strong>Boost.Intrusive</strong></span> containers are <span class="bold"><strong>non-copyable and non-assignable</strong></span>. Since intrusive
-          containers don't have allocation capabilities, these operations have no
-          sense. However, swapping can be used to implement move-capabilities. To
+          containers don't have allocation capabilities, these operations make no
+          sense. However, swapping can be used to implement move capabilities. To
           ease the implementation of copy constructors and assignment operators of
           classes storing <span class="bold"><strong>Boost.Intrusive</strong></span> containers,
           <span class="bold"><strong>Boost.Intrusive</strong></span> offers special cloning
@@ -228,13 +225,13 @@
           containers</a> section for more information.
         </li>
 <li>
-          Analyzing thread-safety of a program that uses containers is harder with
-          intrusive containers, becuase the container might be modified indirectly
-          without an explicitly call to a container member.
+          Analyzing the thread safety of a program that uses containers is harder
+          with intrusive containers, because the container might be modified indirectly
+          without an explicit call to a container member.
         </li>
 </ul></div>
 <div class="table">
-<a name="id932302"></a><p class="title"><b>Table 9.1. Summay of intrusive containers advantages and disadvantages</b></p>
+<a name="id3161913"></a><p class="title"><b>Table 10.1. Summay of intrusive containers advantages and disadvantages</b></p>
 <div class="table-contents"><table class="table" summary="Summay of intrusive containers advantages and disadvantages">
 <colgroup>
 <col>

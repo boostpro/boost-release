@@ -15,6 +15,8 @@
 #include <boost/utility.hpp>
 #include <boost/thread/thread_time.hpp>
 
+#include <boost/config/abi_prefix.hpp>
+
 namespace boost
 {
     class shared_mutex:
@@ -23,12 +25,12 @@ namespace boost
     private:
         struct state_data
         {
-            unsigned shared_count:11;
-            unsigned shared_waiting:11;
-            unsigned exclusive:1;
-            unsigned upgrade:1;
-            unsigned exclusive_waiting:7;
-            unsigned exclusive_waiting_blocked:1;
+            unsigned shared_count:11,
+                shared_waiting:11,
+                exclusive:1,
+                upgrade:1,
+                exclusive_waiting:7,
+                exclusive_waiting_blocked:1;
 
             friend bool operator==(state_data const& lhs,state_data const& rhs)
             {
@@ -89,7 +91,7 @@ namespace boost
         bool try_lock_shared()
         {
             state_data old_state=state;
-            do
+            for(;;)
             {
                 state_data new_state=old_state;
                 if(!new_state.exclusive && !new_state.exclusive_waiting_blocked)
@@ -104,14 +106,6 @@ namespace boost
                 }
                 old_state=current_state;
             }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
             return !(old_state.exclusive| old_state.exclusive_waiting_blocked);
         }
 
@@ -120,19 +114,18 @@ namespace boost
             BOOST_VERIFY(timed_lock_shared(::boost::detail::get_system_time_sentinel()));
         }
 
+        template<typename TimeDuration>
+        bool timed_lock_shared(TimeDuration const & relative_time)
+        {
+            return timed_lock_shared(get_system_time()+relative_time);
+        }
+
         bool timed_lock_shared(boost::system_time const& wait_until)
         {
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true)
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
+            for(;;)
             {
                 state_data old_state=state;
-                do
+                for(;;)
                 {
                     state_data new_state=old_state;
                     if(new_state.exclusive || new_state.exclusive_waiting_blocked)
@@ -151,14 +144,6 @@ namespace boost
                     }
                     old_state=current_state;
                 }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-                while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
 
                 if(!(old_state.exclusive| old_state.exclusive_waiting_blocked))
                 {
@@ -168,7 +153,7 @@ namespace boost
                 unsigned long const res=detail::win32::WaitForSingleObject(unlock_sem,::boost::detail::get_milliseconds_until(wait_until));
                 if(res==detail::win32::timeout)
                 {
-                    do
+                    for(;;)
                     {
                         state_data new_state=old_state;
                         if(new_state.exclusive || new_state.exclusive_waiting_blocked)
@@ -190,14 +175,6 @@ namespace boost
                         }
                         old_state=current_state;
                     }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-                    while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
 
                     if(!(old_state.exclusive| old_state.exclusive_waiting_blocked))
                     {
@@ -213,7 +190,7 @@ namespace boost
         void unlock_shared()
         {
             state_data old_state=state;
-            do
+            for(;;)
             {
                 state_data new_state=old_state;
                 bool const last_reader=!--new_state.shared_count;
@@ -254,14 +231,6 @@ namespace boost
                 }
                 old_state=current_state;
             }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
         }
 
         void lock()
@@ -269,20 +238,45 @@ namespace boost
             BOOST_VERIFY(timed_lock(::boost::detail::get_system_time_sentinel()));
         }
 
+        template<typename TimeDuration>
+        bool timed_lock(TimeDuration const & relative_time)
+        {
+            return timed_lock(get_system_time()+relative_time);
+        }
+
+        bool try_lock()
+        {
+            state_data old_state=state;
+            for(;;)
+            {
+                state_data new_state=old_state;
+                if(new_state.shared_count || new_state.exclusive)
+                {
+                    return false;
+                }
+                else
+                {
+                    new_state.exclusive=true;
+                }
+                
+                state_data const current_state=interlocked_compare_exchange(&state,new_state,old_state);
+                if(current_state==old_state)
+                {
+                    break;
+                }
+                old_state=current_state;
+            }
+            return true;
+        }
+
+
         bool timed_lock(boost::system_time const& wait_until)
         {
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true)
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
+            for(;;)
             {
                 state_data old_state=state;
 
-                do
+                for(;;)
                 {
                     state_data new_state=old_state;
                     if(new_state.shared_count || new_state.exclusive)
@@ -302,14 +296,6 @@ namespace boost
                     }
                     old_state=current_state;
                 }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-                while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
 
                 if(!old_state.shared_count && !old_state.exclusive)
                 {
@@ -318,14 +304,17 @@ namespace boost
                 unsigned long const wait_res=detail::win32::WaitForMultipleObjects(2,semaphores,true,::boost::detail::get_milliseconds_until(wait_until));
                 if(wait_res==detail::win32::timeout)
                 {
-                    do
+                    for(;;)
                     {
                         state_data new_state=old_state;
                         if(new_state.shared_count || new_state.exclusive)
                         {
                             if(new_state.exclusive_waiting)
                             {
-                                --new_state.exclusive_waiting;
+                                if(!--new_state.exclusive_waiting)
+                                {
+                                    new_state.exclusive_waiting_blocked=false;
+                                }
                             }
                         }
                         else
@@ -340,14 +329,6 @@ namespace boost
                         }
                         old_state=current_state;
                     }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-                    while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
                     if(!old_state.shared_count && !old_state.exclusive)
                     {
                         return true;
@@ -361,7 +342,7 @@ namespace boost
         void unlock()
         {
             state_data old_state=state;
-            do
+            for(;;)
             {
                 state_data new_state=old_state;
                 new_state.exclusive=false;
@@ -379,30 +360,15 @@ namespace boost
                 }
                 old_state=current_state;
             }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
             release_waiters(old_state);
         }
 
         void lock_upgrade()
         {
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true)
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
+            for(;;)
             {
                 state_data old_state=state;
-                do
+                for(;;)
                 {
                     state_data new_state=old_state;
                     if(new_state.exclusive || new_state.exclusive_waiting_blocked || new_state.upgrade)
@@ -422,14 +388,6 @@ namespace boost
                     }
                     old_state=current_state;
                 }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-                while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
 
                 if(!(old_state.exclusive|| old_state.exclusive_waiting_blocked|| old_state.upgrade))
                 {
@@ -440,10 +398,36 @@ namespace boost
             }
         }
 
+        bool try_lock_upgrade()
+        {
+            state_data old_state=state;
+            for(;;)
+            {
+                state_data new_state=old_state;
+                if(new_state.exclusive || new_state.exclusive_waiting_blocked || new_state.upgrade)
+                {
+                    return false;
+                }
+                else
+                {
+                    ++new_state.shared_count;
+                    new_state.upgrade=true;
+                }
+                
+                state_data const current_state=interlocked_compare_exchange(&state,new_state,old_state);
+                if(current_state==old_state)
+                {
+                    break;
+                }
+                old_state=current_state;
+            }
+            return true;
+        }
+
         void unlock_upgrade()
         {
             state_data old_state=state;
-            do
+            for(;;)
             {
                 state_data new_state=old_state;
                 new_state.upgrade=false;
@@ -470,20 +454,12 @@ namespace boost
                 }
                 old_state=current_state;
             }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
         }
 
         void unlock_upgrade_and_lock()
         {
             state_data old_state=state;
-            do
+            for(;;)
             {
                 state_data new_state=old_state;
                 bool const last_reader=!--new_state.shared_count;
@@ -505,20 +481,12 @@ namespace boost
                 }
                 old_state=current_state;
             }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
         }
 
         void unlock_and_lock_upgrade()
         {
             state_data old_state=state;
-            do
+            for(;;)
             {
                 state_data new_state=old_state;
                 new_state.exclusive=false;
@@ -538,21 +506,13 @@ namespace boost
                 }
                 old_state=current_state;
             }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
             release_waiters(old_state);
         }
         
         void unlock_and_lock_shared()
         {
             state_data old_state=state;
-            do
+            for(;;)
             {
                 state_data new_state=old_state;
                 new_state.exclusive=false;
@@ -571,21 +531,13 @@ namespace boost
                 }
                 old_state=current_state;
             }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
             release_waiters(old_state);
         }
         
         void unlock_upgrade_and_lock_shared()
         {
             state_data old_state=state;
-            do
+            for(;;)
             {
                 state_data new_state=old_state;
                 new_state.upgrade=false;
@@ -603,19 +555,12 @@ namespace boost
                 }
                 old_state=current_state;
             }
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable:4127)
-#endif
-            while(true);
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
             release_waiters(old_state);
         }
         
     };
 }
 
+#include <boost/config/abi_suffix.hpp>
 
 #endif

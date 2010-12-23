@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
 <td align="center"><a href="../../../../index.html">Home</a></td>
 <td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -39,31 +39,31 @@
   <span class="bold"><strong>typedef</strong></span> std::vector&lt; string_type &gt; <a name="boost.date_time.special_values_formatter.collection_type"></a>collection_type;
 
   <span class="emphasis"><em>// <a class="link" href="special_values_formatter.html#boost.date_time.special_values_formatterconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="special_values_formatter.html#id348578-bb">special_values_formatter</a>();
-  <a class="link" href="special_values_formatter.html#id280495-bb">special_values_formatter</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> *, <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> *);
-  <a class="link" href="special_values_formatter.html#id363185-bb">special_values_formatter</a>(<span class="bold"><strong>typename</strong></span> collection_type::iterator, 
+  <a class="link" href="special_values_formatter.html#id2401536-bb">special_values_formatter</a>();
+  <a class="link" href="special_values_formatter.html#id2641697-bb">special_values_formatter</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> *, <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> *);
+  <a class="link" href="special_values_formatter.html#id2639525-bb">special_values_formatter</a>(<span class="bold"><strong>typename</strong></span> collection_type::iterator, 
                            <span class="bold"><strong>typename</strong></span> collection_type::iterator);
 
-  <span class="emphasis"><em>// <a class="link" href="special_values_formatter.html#id333803-bb">public member functions</a></em></span>
-  <span class="type">OutItrT</span> <a class="link" href="special_values_formatter.html#id333806-bb">put_special</a>(OutItrT, <span class="bold"><strong>const</strong></span> boost::date_time::special_values &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="special_values_formatter.html#id2413172-bb">public member functions</a></em></span>
+  <span class="type">OutItrT</span> <a class="link" href="special_values_formatter.html#id2413175-bb">put_special</a>(OutItrT, <span class="bold"><strong>const</strong></span> boost::date_time::special_values &amp;) <span class="bold"><strong>const</strong></span>;
   <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> default_special_value_names;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id622357"></a><h2>Description</h2>
+<a name="id2854975"></a><h2>Description</h2>
 <p>This class provides for the formmating of special values to an output stream. In particular, it produces strings for the values of negative and positive infinity as well as not_a_date_time.</p>
 <p>While not a facet, this class is used by the date and time facets for formatting special value types. </p>
 <div class="refsect2" lang="en">
-<a name="id622371"></a><h3>
+<a name="id2854988"></a><h3>
 <a name="boost.date_time.special_values_formatterconstruct-copy-destruct"></a><code class="computeroutput">special_values_formatter</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id348578-bb"></a>special_values_formatter();</pre>
+<pre class="literallayout"><a name="id2401536-bb"></a>special_values_formatter();</pre>
 <p>Default strings are not-a-date-time -infinity +infinity </p>
 </li>
 <li>
-<pre class="literallayout"><a name="id280495-bb"></a>special_values_formatter(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> * begin, 
+<pre class="literallayout"><a name="id2641697-bb"></a>special_values_formatter(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> * begin, 
                          <span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> * end);</pre>
 <p>This constructor will take pair of iterators from an array of strings that represent the special values and copy them for use in formatting special values. </p>
 <pre class="programlisting">  const char* const special_value_names[]={"nadt","-inf","+inf" };
@@ -73,14 +73,14 @@
 </pre>
 <p> </p>
 </li>
-<li><pre class="literallayout"><a name="id363185-bb"></a>special_values_formatter(<span class="bold"><strong>typename</strong></span> collection_type::iterator beg, 
+<li><pre class="literallayout"><a name="id2639525-bb"></a>special_values_formatter(<span class="bold"><strong>typename</strong></span> collection_type::iterator beg, 
                          <span class="bold"><strong>typename</strong></span> collection_type::iterator end);</pre></li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id622500"></a><h3>
-<a name="id333803-bb"></a><code class="computeroutput">special_values_formatter</code> public member functions</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="type">OutItrT</span> <a name="id333806-bb"></a>put_special(OutItrT next, 
+<a name="id2855107"></a><h3>
+<a name="id2413172-bb"></a><code class="computeroutput">special_values_formatter</code> public member functions</h3>
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="type">OutItrT</span> <a name="id2413175-bb"></a>put_special(OutItrT next, 
                     <span class="bold"><strong>const</strong></span> boost::date_time::special_values &amp; value) <span class="bold"><strong>const</strong></span>;</pre></li></ol></div>
 </div>
 </div>

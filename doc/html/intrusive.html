@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 9. Boost.Intrusive</title>
+<title>Chapter 10. Boost.Intrusive</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../boost.png"></td>
 <td align="center"><a href="../../index.html">Home</a></td>
 <td align="center"><a href="../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -25,7 +25,7 @@
 <div class="chapter" lang="en">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="intrusive"></a>Chapter 9. Boost.Intrusive</h2></div>
+<a name="intrusive"></a>Chapter 10. Boost.Intrusive</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Olaf</span> <span class="surname">Krzikalla</span>
 </h3></div></div>
@@ -34,7 +34,7 @@
 </h3></div></div>
 <div><p class="copyright">Copyright © 2005 Olaf Krzikalla, 2006-2007 Ion Gaztañaga</p></div>
 <div><div class="legalnotice">
-<a name="id930952"></a><p>
+<a name="id3160688"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -105,7 +105,7 @@
       multiset and rbtree containers</a></span></dt>
 <dt><span class="section"><a href="intrusive/set_multiset.html#intrusive.set_multiset.set_multiset_example"> Example</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="intrusive/unordered_set_unordered_multiset.html"> Pseudo-Intrusive
+<dt><span class="section"><a href="intrusive/unordered_set_unordered_multiset.html"> Semi-Intrusive
     unordered associative containers: unordered_set, unordered_multiset</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="intrusive/unordered_set_unordered_multiset.html#intrusive.unordered_set_unordered_multiset.unordered_set_unordered_multiset_performance">
@@ -170,6 +170,8 @@
       Requirements for smart pointers compatible with Boost.Intrusive</a></span></dt></dl></dd>
 <dt><span class="section"><a href="intrusive/obtaining_iterators_from_values.html"> Obtaining iterators
     from values</a></span></dt>
+<dt><span class="section"><a href="intrusive/any_hooks.html"> Any Hooks: A single hook for any
+    Intrusive container</a></span></dt>
 <dt><span class="section"><a href="intrusive/concepts.html"> Concepts explained</a></span></dt>
 <dt><span class="section"><a href="intrusive/node_algorithms.html"> Node algorithms with custom
     NodeTraits</a></span></dt>
@@ -207,8 +209,8 @@
       Boost.Intrusive in performance sensitive environments</a></span></dt>
 <dt><span class="section"><a href="intrusive/design_notes.html#intrusive.design_notes._boost_intrusive_in_space_constrained_environments">
       Boost.Intrusive in space constrained environments</a></span></dt>
-<dt><span class="section"><a href="intrusive/design_notes.html#intrusive.design_notes._boost_intrusive_as_basic_building_block">
-      Boost.Intrusive as basic building block</a></span></dt>
+<dt><span class="section"><a href="intrusive/design_notes.html#intrusive.design_notes._boost_intrusive_as_a_basic_building_block">
+      Boost.Intrusive as a basic building block</a></span></dt>
 <dt><span class="section"><a href="intrusive/design_notes.html#intrusive.design_notes._extending_boost_intrusive"> Extending
       Boost.Intrusive</a></span></dt>
 </dl></dd>
@@ -224,12 +226,15 @@
 <dt><span class="section"><a href="intrusive/performance.html#intrusive.performance.performance_results_conclusions">
       Conclusions</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="intrusive/disabling_exceptions.html"> Disabling exceptions support</a></span></dt>
+<dt><span class="section"><a href="intrusive/release_notes.html"> Release Notes</a></span></dt>
+<dd><dl><dt><span class="section"><a href="intrusive/release_notes.html#intrusive.release_notes.release_notes_boost_1_36_00">
+      Boost 1.36 Release</a></span></dt></dl></dd>
 <dt><span class="section"><a href="intrusive/tested_compilers.html"> Tested compilers</a></span></dt>
 <dt><span class="section"><a href="intrusive/references.html"> References</a></span></dt>
 <dt><span class="section"><a href="intrusive/acknowledgments.html"> Acknowledgements</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html">Reference</a></span></dt>
 <dd><dl>
+<dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.any_hook.hpp">Header &lt;boost/intrusive/any_hook.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.avl_set.hpp">Header &lt;boost/intrusive/avl_set.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.avl_set_hook.hpp">Header &lt;boost/intrusive/avl_set_hook.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.avltree.hpp">Header &lt;boost/intrusive/avltree.hpp&gt;</a></span></dt>
@@ -245,8 +250,7 @@
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.list_hook.hpp">Header &lt;boost/intrusive/list_hook.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.member_value_traits.hpp">Header &lt;boost/intrusive/member_value_traits.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.options.hpp">Header &lt;boost/intrusive/options.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.pointer_plus_2_bits.hpp">Header &lt;boost/intrusive/pointer_plus_2_bits.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.pointer_plus_bit.hpp">Header &lt;boost/intrusive/pointer_plus_bit.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.pointer_plus_bits.hpp">Header &lt;boost/intrusive/pointer_plus_bits.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.rbtree.hpp">Header &lt;boost/intrusive/rbtree.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.rbtree_algorithms.hpp">Header &lt;boost/intrusive/rbtree_algorithms.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="intrusive/reference.html#header.boost.intrusive.set.hpp">Header &lt;boost/intrusive/set.hpp&gt;</a></span></dt>
@@ -316,7 +320,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: March 28, 2008 at 09:08:53 GMT</small></p></td>
+<td align="left"><p><small>Last revised: August 14, 2008 at 12:21:55 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

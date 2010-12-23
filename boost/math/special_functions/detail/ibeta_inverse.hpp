@@ -7,6 +7,10 @@
 #ifndef BOOST_MATH_SPECIAL_FUNCTIONS_IBETA_INVERSE_HPP
 #define BOOST_MATH_SPECIAL_FUNCTIONS_IBETA_INVERSE_HPP
 
+#ifdef _MSC_VER
+#pragma once
+#endif
+
 #include <boost/math/special_functions/beta.hpp>
 #include <boost/math/special_functions/erf.hpp>
 #include <boost/math/tools/roots.hpp>
@@ -230,10 +234,10 @@ T temme_method_2_ibeta_inverse(T /*a*/, T /*b*/, T z, T r, T theta, const Policy
       workspace[0] = s * s;
       workspace[1] = s * c;
       workspace[2] = (1 - 2 * workspace[0]) / 3;
-      static const BOOST_MATH_INT_TABLE_TYPE(T, int) co3[] = { 1, -13, 13 };
-      workspace[3] = tools::evaluate_polynomial(co3, workspace[0], 3) / (36 * s * c);
-      static const BOOST_MATH_INT_TABLE_TYPE(T, int) co4[] = { 1, 21, -69, 46 };
-      workspace[4] = tools::evaluate_polynomial(co4, workspace[0], 4) / (270 * workspace[0] * c * c);
+      static const BOOST_MATH_INT_TABLE_TYPE(T, int) co12[] = { 1, -13, 13 };
+      workspace[3] = tools::evaluate_polynomial(co12, workspace[0], 3) / (36 * s * c);
+      static const BOOST_MATH_INT_TABLE_TYPE(T, int) co13[] = { 1, 21, -69, 46 };
+      workspace[4] = tools::evaluate_polynomial(co13, workspace[0], 4) / (270 * workspace[0] * c * c);
       x = tools::evaluate_polynomial(workspace, eta, 5);
 #ifdef BOOST_INSTRUMENT
       std::cout << "Estimating x with Temme method 2 (small eta): " << x << std::endl;
@@ -929,6 +933,7 @@ inline typename tools::promote_args<RT1, RT2, RT3>::type
 } // namespace boost
 
 #endif // BOOST_MATH_SPECIAL_FUNCTIONS_IGAMMA_INVERSE_HPP
+
 
 
 

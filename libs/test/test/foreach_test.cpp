@@ -7,7 +7,7 @@
 //
 //  File        : $RCSfile$
 //
-//  Version     : $Revision: 43798 $
+//  Version     : $Revision: 48086 $
 //
 //  Description : BOOST_TEST_FOREACH compile only test
 // *****************************************************************************

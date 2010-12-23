@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
 <td align="center"><a href="../../../../index.html">Home</a></td>
 <td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -33,13 +33,13 @@
 <span class="bold"><strong>class</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a> {
 <span class="bold"><strong>public</strong></span>:
   <span class="emphasis"><em>// <a class="link" href="trackable.html#boost.signals.trackableconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="trackable.html#id713994-bb">trackable</a>();
-  <a class="link" href="trackable.html#id287547-bb">trackable</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp;);
-  trackable&amp; <a class="link" href="trackable.html#id238174-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp;);
-  <a class="link" href="trackable.html#id357597-bb">~trackable</a>();
+  <a class="link" href="trackable.html#id2422068-bb">trackable</a>();
+  <a class="link" href="trackable.html#id2403627-bb">trackable</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp;);
+  trackable&amp; <a class="link" href="trackable.html#id2930103-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp;);
+  <a class="link" href="trackable.html#id2950507-bb">~trackable</a>();
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id1281979"></a><h2>Description</h2>
+<a name="id3475214"></a><h2>Description</h2>
 <p>The <code class="computeroutput">trackable</code> class provides automatic
           disconnection of signals and slots when objects bound in
           slots (via pointer or reference) are destroyed. The
@@ -51,17 +51,17 @@
           unspecified.</p>
 <p>The actual use of <code class="computeroutput">trackable</code> is contingent
           on the presence of appropriate
-          <a class="link" href="../visit_each_id221796.html" title="Function template visit_each">visit_each</a> overloads for any
+          <a class="link" href="../visit_each.html" title="Function template visit_each">visit_each</a> overloads for any
           type that may contain pointers or references to trackable
           objects.</p>
 <div class="refsect2" lang="en">
-<a name="id1282037"></a><h3>
+<a name="id3475268"></a><h3>
 <a name="boost.signals.trackableconstruct-copy-destruct"></a><code class="computeroutput">trackable</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id713994-bb"></a>trackable();</pre>
+<pre class="literallayout"><a name="id2422068-bb"></a>trackable();</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -77,7 +77,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id287547-bb"></a>trackable(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp; other);</pre>
+<pre class="literallayout"><a name="id2403627-bb"></a>trackable(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp; other);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -97,7 +97,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout">trackable&amp; <a name="id238174-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp; other);</pre>
+<pre class="literallayout">trackable&amp; <a name="id2930103-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a class="link" href="trackable.html" title="Class trackable">trackable</a>&amp; other);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -121,7 +121,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id357597-bb"></a>~trackable();</pre>
+<pre class="literallayout"><a name="id2950507-bb"></a>~trackable();</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -129,7 +129,7 @@
 <td><p>Disconnects all signal/slot connections that
           contain a pointer or reference to this trackable object that
           can be found by
-          <a class="link" href="../visit_each_id221796.html" title="Function template visit_each">visit_each</a>.</p></td>
+          <a class="link" href="../visit_each.html" title="Function template visit_each">visit_each</a>.</p></td>
 </tr></tbody>
 </table></div>
 </li>

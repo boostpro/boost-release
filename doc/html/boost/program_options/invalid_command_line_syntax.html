@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
 <td align="center"><a href="../../../../index.html">Home</a></td>
 <td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -30,39 +30,41 @@
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis">
-<span class="bold"><strong>class</strong></span> <a class="link" href="invalid_command_line_syntax.html" title="Class invalid_command_line_syntax">invalid_command_line_syntax</a> {
+<span class="bold"><strong>class</strong></span> <a class="link" href="invalid_command_line_syntax.html" title="Class invalid_command_line_syntax">invalid_command_line_syntax</a> :
+  <span class="bold"><strong>public</strong></span> boost::program_options::invalid_syntax
+{
 <span class="bold"><strong>public</strong></span>:
 
   <span class="bold"><strong>enum</strong></span> <a name="boost.program_options.invalid_command_line_syntax.kind_t"></a>kind_t { long_not_allowed =  30, long_adjacent_not_allowed, 
                 short_adjacent_not_allowed, empty_adjacent_parameter, 
                 missing_parameter, extra_parameter };
   <span class="emphasis"><em>// <a class="link" href="invalid_command_line_syntax.html#boost.program_options.invalid_command_line_syntaxconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="invalid_command_line_syntax.html#id395591-bb">invalid_command_line_syntax</a>(<span class="bold"><strong>const</strong></span> std::string &amp;, kind_t);
+  <a class="link" href="invalid_command_line_syntax.html#id2474947-bb">invalid_command_line_syntax</a>(<span class="bold"><strong>const</strong></span> std::string &amp;, kind_t);
 
-  <span class="emphasis"><em>// <a class="link" href="invalid_command_line_syntax.html#id247062-bb">public member functions</a></em></span>
-  <span class="type">kind_t</span> <a class="link" href="invalid_command_line_syntax.html#id247064-bb">kind</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="invalid_command_line_syntax.html#id2474936-bb">public member functions</a></em></span>
+  <span class="type">kind_t</span> <a class="link" href="invalid_command_line_syntax.html#id2474939-bb">kind</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="invalid_command_line_syntax.html#id365314-bb">protected static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> std::string</span> <a class="link" href="invalid_command_line_syntax.html#id365316-bb">error_message</a>(kind_t) ;
+  <span class="emphasis"><em>// <a class="link" href="invalid_command_line_syntax.html#id2436749-bb">protected static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> std::string</span> <a class="link" href="invalid_command_line_syntax.html#id2436752-bb">error_message</a>(kind_t) ;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id1262636"></a><h2>Description</h2>
+<a name="id3457664"></a><h2>Description</h2>
 <div class="refsect2" lang="en">
-<a name="id1262640"></a><h3>
+<a name="id3457668"></a><h3>
 <a name="boost.program_options.invalid_command_line_syntaxconstruct-copy-destruct"></a><code class="computeroutput">invalid_command_line_syntax</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id395591-bb"></a>invalid_command_line_syntax(<span class="bold"><strong>const</strong></span> std::string &amp; tokens, kind_t kind);</pre></li></ol></div>
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id2474947-bb"></a>invalid_command_line_syntax(<span class="bold"><strong>const</strong></span> std::string &amp; tokens, kind_t kind);</pre></li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id1262686"></a><h3>
-<a name="id247062-bb"></a><code class="computeroutput">invalid_command_line_syntax</code> public member functions</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="type">kind_t</span> <a name="id247064-bb"></a>kind() <span class="bold"><strong>const</strong></span>;</pre></li></ol></div>
+<a name="id3457711"></a><h3>
+<a name="id2474936-bb"></a><code class="computeroutput">invalid_command_line_syntax</code> public member functions</h3>
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="type">kind_t</span> <a name="id2474939-bb"></a>kind() <span class="bold"><strong>const</strong></span>;</pre></li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id1262732"></a><h3>
-<a name="id365314-bb"></a><code class="computeroutput">invalid_command_line_syntax</code> protected static functions</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::string</span> <a name="id365316-bb"></a>error_message(kind_t kind) ;</pre></li></ol></div>
+<a name="id3457753"></a><h3>
+<a name="id2436749-bb"></a><code class="computeroutput">invalid_command_line_syntax</code> protected static functions</h3>
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::string</span> <a name="id2436752-bb"></a>error_message(kind_t kind) ;</pre></li></ol></div>
 </div>
 </div>
 </div>

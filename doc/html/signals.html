@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 14. Boost.Signals</title>
+<title>Chapter 15. Boost.Signals</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../boost.png"></td>
 <td align="center"><a href="../../index.html">Home</a></td>
 <td align="center"><a href="../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -25,13 +25,13 @@
 <div class="chapter" lang="en">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="signals"></a>Chapter 14. Boost.Signals</h2></div>
+<a name="signals"></a>Chapter 15. Boost.Signals</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Douglas</span> <span class="surname">Gregor</span>
 </h3></div></div>
 <div><p class="copyright">Copyright © 2001-2004 Douglas Gregor</p></div>
 <div><div class="legalnotice">
-<a name="id1276159"></a><p>Use, modification and distribution is subject to the Boost
+<a name="id3469897"></a><p>Use, modification and distribution is subject to the Boost
     Software License, Version 1.0. (See accompanying file
     <code class="filename">LICENSE_1_0.txt</code> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)</p>
 </div></div>
@@ -39,17 +39,17 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="section"><a href="signals.html#id1276185">Introduction</a></span></dt>
+<dt><span class="section"><a href="signals.html#id3469921">Introduction</a></span></dt>
 <dt><span class="section"><a href="signals/tutorial.html">Tutorial</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="signals/tutorial.html#id1276240">How to Read this Tutorial</a></span></dt>
-<dt><span class="section"><a href="signals/tutorial.html#id1276308">Compatibility Note</a></span></dt>
-<dt><span class="section"><a href="signals/tutorial.html#id1276446">Hello, World! (Beginner)</a></span></dt>
-<dt><span class="section"><a href="signals/tutorial.html#id1276618">Calling multiple slots</a></span></dt>
-<dt><span class="section"><a href="signals/tutorial.html#id1277083">Passing values to and from slots</a></span></dt>
-<dt><span class="section"><a href="signals/tutorial.html#id1278159">Connection Management</a></span></dt>
-<dt><span class="section"><a href="signals/tutorial.html#id1279040">Example: Document-View</a></span></dt>
-<dt><span class="section"><a href="signals/tutorial.html#id1279204">Linking against the Signals library</a></span></dt>
+<dt><span class="section"><a href="signals/tutorial.html#id3469972">How to Read this Tutorial</a></span></dt>
+<dt><span class="section"><a href="signals/tutorial.html#id3470035">Compatibility Note</a></span></dt>
+<dt><span class="section"><a href="signals/tutorial.html#id3470159">Hello, World! (Beginner)</a></span></dt>
+<dt><span class="section"><a href="signals/tutorial.html#id3470317">Calling multiple slots</a></span></dt>
+<dt><span class="section"><a href="signals/tutorial.html#id3470741">Passing values to and from slots</a></span></dt>
+<dt><span class="section"><a href="signals/tutorial.html#id3471740">Connection Management</a></span></dt>
+<dt><span class="section"><a href="signals/tutorial.html#id3472541">Example: Document-View</a></span></dt>
+<dt><span class="section"><a href="signals/tutorial.html#id3472703">Linking against the Signals library</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="signals/reference.html">Reference</a></span></dt>
 <dd><dl>
@@ -60,29 +60,30 @@
 <dt><span class="section"><a href="signals/reference.html#header.boost.visit_each.hpp">Header &lt;boost/visit_each.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="signals/reference.html#header.boost.last_value.hpp">Header &lt;boost/last_value.hpp&gt;</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="signals/s04.html">Design Overview</a></span></dt>
+<dt><span class="section"><a href="signals/s04.html">Frequently Asked Questions</a></span></dt>
+<dt><span class="section"><a href="signals/s05.html">Design Overview</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="signals/s04.html#id1285242">Type Erasure</a></span></dt>
-<dt><span class="section"><a href="signals/s04.html#id1285312"><code class="computeroutput">connection</code> class</a></span></dt>
-<dt><span class="section"><a href="signals/s04.html#id1285445">Slot Call Iterator</a></span></dt>
-<dt><span class="section"><a href="signals/s04.html#id1285658"><code class="computeroutput">visit_each</code> function template</a></span></dt>
+<dt><span class="section"><a href="signals/s05.html#id3478369">Type Erasure</a></span></dt>
+<dt><span class="section"><a href="signals/s05.html#id3478441"><code class="computeroutput">connection</code> class</a></span></dt>
+<dt><span class="section"><a href="signals/s05.html#id3478560">Slot Call Iterator</a></span></dt>
+<dt><span class="section"><a href="signals/s05.html#id3478760"><code class="computeroutput">visit_each</code> function template</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="signals/s05.html">Design Rationale</a></span></dt>
+<dt><span class="section"><a href="signals/s06.html">Design Rationale</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="signals/s05.html#id1285832">Choice of Slot Definitions</a></span></dt>
-<dt><span class="section"><a href="signals/s05.html#id1285939">User-level Connection Management</a></span></dt>
-<dt><span class="section"><a href="signals/s05.html#id1286130">Combiner Interface</a></span></dt>
-<dt><span class="section"><a href="signals/s05.html#id1286315">Connection Interfaces: +=  operator</a></span></dt>
-<dt><span class="section"><a href="signals/s05.html#id1286510"><code class="computeroutput">trackable</code> rationale</a></span></dt>
-<dt><span class="section"><a href="signals/s05.html#id1286714">Comparison with other Signal/Slot implementations</a></span></dt>
+<dt><span class="section"><a href="signals/s06.html#id3478917">Choice of Slot Definitions</a></span></dt>
+<dt><span class="section"><a href="signals/s06.html#id3479016">User-level Connection Management</a></span></dt>
+<dt><span class="section"><a href="signals/s06.html#id3479192">Combiner Interface</a></span></dt>
+<dt><span class="section"><a href="signals/s06.html#id2786850">Connection Interfaces: +=  operator</a></span></dt>
+<dt><span class="section"><a href="signals/s06.html#id3479818"><code class="computeroutput">trackable</code> rationale</a></span></dt>
+<dt><span class="section"><a href="signals/s06.html#id3480002">Comparison with other Signal/Slot implementations</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="signals/tests.html">Testsuite</a></span></dt>
-<dd><dl><dt><span class="section"><a href="signals/tests.html#id1286868">Acceptance tests</a></span></dt></dl></dd>
+<dd><dl><dt><span class="section"><a href="signals/tests.html#id3480144">Acceptance tests</a></span></dt></dl></dd>
 </dl>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id1276185"></a>Introduction</h2></div></div></div>
+<a name="id3469921"></a>Introduction</h2></div></div></div>
 <p>The Boost.Signals library is an implementation of a managed
 signals and slots system. Signals represent callbacks with multiple
 targets, and are also called publishers or events in similar
@@ -102,7 +103,6 @@ slots and the return value of the signals. Boost.Signals allows the
 user to specify the manner in which multiple return values are
 combined.</p>
 </div>
-<span style="color: red">&lt;xi:include&gt;&lt;/xi:include&gt;</span>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"><p><small>Last revised: May 04, 2004 at 14:17:23 -0400</small></p></td>

@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
-<link rel="prev" href="unordered_set_unordered_multiset.html" title="Pseudo-Intrusive unordered associative containers: unordered_set, unordered_multiset">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
+<link rel="prev" href="unordered_set_unordered_multiset.html" title="Semi-Intrusive unordered associative containers: unordered_set, unordered_multiset">
 <link rel="next" href="avl_set_multiset.html" title="Intrusive avl tree based associative containers: avl_set, avl_multiset and avltree">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -45,9 +45,9 @@
       interesting data structures that offer some advantages (and also disadvantages).
     </p>
 <p>
-      Splay trees are self-adjusting binary search trees used tipically in caches,
+      Splay trees are self-adjusting binary search trees used typically in caches,
       memory allocators and other applications, because splay trees have a "caching
-      effect": recently accessed elements have better access times that elements
+      effect": recently accessed elements have better access times than elements
       accessed less frequently. For more information on splay trees see <a href="http://en.wikipedia.org/wiki/Splay_tree" target="_top">Wikipedia
       entry</a>.
     </p>
@@ -63,7 +63,7 @@
     </p>
 <p>
       The memory overhead of these containers with Boost.Intrusive hooks is usually
-      3 pointers. An empty, non constant-time size splay container has also the size
+      3 pointers. An empty, non constant-time size splay container has also a size
       of 3 pointers.
     </p>
 <div class="section" lang="en">
@@ -73,19 +73,19 @@
 </h3></div></div></div>
 <p>
         Splay tree based intrusive containers have logarithmic complexity in many
-        operations like searches, insertions, erasures, etc... but if some elements
+        operations like searches, insertions, erasures, etc., but if some elements
         are more frequently accessed than others, splay trees perform faster searches
         than equivalent balanced binary trees (such as red-black trees).
       </p>
 <p>
         The caching effect offered by splay trees comes with a cost: the tree must
-        be rebalanced when a element is searched. This disallows const versions of
-        search functions like <code class="computeroutput"><span class="identifier">find</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">lower_bound</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">upper_bound</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">equal_range</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">count</span><span class="special">()</span></code>...
+        be rebalanced when an element is searched. This disallows const versions
+        of search functions like <code class="computeroutput"><span class="identifier">find</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">lower_bound</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">upper_bound</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">equal_range</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">count</span><span class="special">()</span></code>, etc.
       </p>
 <p>
         Because of this, splay-tree based associative containers are not drop-in
         replacements of <code class="computeroutput"><a class="link" href="../boost/intrusive/set.html" title="Class template set">set</a></code>/
-        <code class="computeroutput"><a class="link" href="../boost/intrusive/splay_set.html" title="Class template splay_set">splay_set</a></code>.
+        <code class="computeroutput"><a class="link" href="../boost/intrusive/multiset.html" title="Class template multiset">multiset</a></code>.
       </p>
 <p>
         Apart from this, if element searches are randomized, the tree will be rebalanced
@@ -103,8 +103,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">splay_set_base_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
@@ -114,8 +113,7 @@
         </li></ul></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">splay_set_member_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
@@ -154,8 +152,7 @@
 </h3></div></div></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">splay_set</span><span class="special">;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
@@ -173,9 +170,9 @@
           / <span class="bold"><strong><code class="computeroutput"><span class="identifier">member_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span>
           <span class="identifier">Hook</span><span class="special">,</span>
           <span class="identifier">Hook</span> <span class="identifier">T</span><span class="special">::*</span> <span class="identifier">PtrToMember</span><span class="special">&gt;</span></code></strong></span> / <span class="bold"><strong><code class="computeroutput"><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ValueTraits</span><span class="special">&gt;</span></code></strong></span>: To specify the hook type
-          or value traits used to configure the container (to know about value traits
-          go to the section titled <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
-          with custom ValueTraits</a>.
+          or value traits used to configure the container. (To learn about value
+          traits go to the section <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
+          with custom ValueTraits</a>.)
         </li>
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
@@ -206,11 +203,11 @@
         <code class="computeroutput"><a class="link" href="../boost/intrusive/bs_set_base_hook.html" title="Class template bs_set_base_hook">bs_set_base_hook</a></code>.
         These hooks can be used by other intrusive containers like intrusive scapegoat
         containers <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_set.html" title="Class template sg_set">sg_set</a></code> and
-        <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_multiset.html" title="Class template sg_multiset">sg_multiset</a></code> so
-        a programmer might prefer using a binary search tree hook so that the same
-        type can be introduced in some situations in an splay container but that
-        can also be introduced in other compatible containers as well when the hook
-        is not being used in an splay container.
+        <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_multiset.html" title="Class template sg_multiset">sg_multiset</a></code>. A
+        programmer might prefer using a binary search tree hook so that the same
+        type can be inserted in some situations in a splay container but also inserted
+        in other compatible containers when the hook is not being used in a splay
+        container.
       </p>
 <p>
         <code class="computeroutput"><a class="link" href="../boost/intrusive/bs_set_base_hook.html" title="Class template bs_set_base_hook">bs_set_base_hook</a></code>
@@ -224,7 +221,7 @@
       Example</a>
 </h3></div></div></div>
 <p>
-        Now let's see an small example using both splay hooks, binary search tree
+        Now let's see a small example using both splay hooks, binary search tree
         hooks and <code class="computeroutput"><a class="link" href="../boost/intrusive/splay_set.html" title="Class template splay_set">splay_set</a></code>/
         <code class="computeroutput"><a class="link" href="../boost/intrusive/splay_multiset.html" title="Class template splay_multiset">splay_multiset</a></code>
         containers:
@@ -234,8 +231,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">splay_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">splay_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">bs_set_hook</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>

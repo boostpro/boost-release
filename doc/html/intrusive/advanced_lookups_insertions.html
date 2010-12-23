@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="sg_set_multiset.html" title="Intrusive scapegoat tree based associative containers: sg_set, sg_multiset and sgtree">
 <link rel="next" href="erasing_and_disposing.html" title="Erasing and disposing values from Boost.Intrusive containers">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -48,18 +48,17 @@
         <span class="identifier">find</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">value_type</span>
         <span class="special">&amp;</span><span class="identifier">value</span><span class="special">)</span></code> to find a value. The same happens in other
         functions like <code class="computeroutput"><span class="identifier">equal_range</span></code>,
-        <code class="computeroutput"><span class="identifier">lower_bound</span></code>, <code class="computeroutput"><span class="identifier">upper_bound</span></code>...
+        <code class="computeroutput"><span class="identifier">lower_bound</span></code>, <code class="computeroutput"><span class="identifier">upper_bound</span></code>, etc.
       </p>
 <p>
-        However, sometimes the object to be searched it's quite expensive to construct:
+        However, sometimes the object to be searched is quite expensive to construct:
       </p>
 <p>
         </p>
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">unordered_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstring</span><span class="special">&gt;</span>
 
@@ -140,7 +139,7 @@
         Sometimes this interface limitation is severe, because we <span class="bold"><strong>might
         not have enough information to construct the object</strong></span> but we might
         <span class="bold"><strong>have enough information to find the object</strong></span>.
-        In this case, a name it's enough to search <code class="computeroutput"><span class="identifier">Expensive</span></code>
+        In this case, a name is enough to search <code class="computeroutput"><span class="identifier">Expensive</span></code>
         in the container but constructing an <code class="computeroutput"><span class="identifier">Expensive</span></code>
         might require more information that the user might not have.
       </p>
@@ -156,8 +155,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="comment">// These compare Expensive and a c-string
+<pre class="programlisting"><span class="comment">// These compare Expensive and a c-string
 </span><span class="keyword">struct</span> <span class="identifier">StrExpComp</span>
 <span class="special">{</span>
    <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">str</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Expensive</span> <span class="special">&amp;</span><span class="identifier">c</span><span class="special">)</span> <span class="keyword">const</span>
@@ -249,8 +247,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="comment">// Insertion functions
+<pre class="programlisting"><span class="comment">// Insertion functions
 </span><span class="keyword">bool</span> <span class="identifier">insert_to_set</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
 <span class="special">{</span>
    <span class="identifier">Expensive</span> <span class="special">*</span><span class="identifier">pobject</span> <span class="special">=</span> <span class="keyword">new</span> <span class="identifier">Expensive</span><span class="special">(</span><span class="identifier">key</span><span class="special">);</span>
@@ -282,8 +279,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="comment">// Optimized insertion functions
+<pre class="programlisting"><span class="comment">// Optimized insertion functions
 </span><span class="keyword">bool</span> <span class="identifier">insert_to_set_optimized</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
 <span class="special">{</span>
    <span class="identifier">Set</span><span class="special">::</span><span class="identifier">insert_commit_data</span> <span class="identifier">insert_data</span><span class="special">;</span>
@@ -315,8 +311,8 @@
           with arbitrary keys
         </li>
 <li>
-          if the insertion is possible (there is no equivalent value) collects all
-          the needed information in an <code class="computeroutput"><span class="identifier">insert_commit_data</span></code>
+          if the insertion is possible (there is no equivalent value) <code class="computeroutput"><span class="identifier">insert_check</span></code> collects all the needed
+          information in an <code class="computeroutput"><span class="identifier">insert_commit_data</span></code>
           structure, so that <code class="computeroutput"><span class="identifier">insert_commit</span></code>:
           <div class="itemizedlist"><ul type="circle">
 <li>
@@ -337,7 +333,7 @@
         and an <code class="computeroutput"><span class="identifier">insert_commit</span></code> pair.
         Otherwise, the behaviour is undefined. <code class="computeroutput"><span class="identifier">insert_check</span></code>
         and <code class="computeroutput"><span class="identifier">insert_commit</span></code> will come
-        handy for developers programming efficient non-intrusive associative containers.
+        in handy for developers programming efficient non-intrusive associative containers.
         See <code class="computeroutput"><a class="link" href="../boost/intrusive/set.html" title="Class template set">set</a></code> and <code class="computeroutput"><a class="link" href="../boost/intrusive/unordered_set.html" title="Class template unordered_set">unordered_set</a></code> reference
         for more information about <code class="computeroutput"><span class="identifier">insert_check</span></code>
         and <code class="computeroutput"><span class="identifier">insert_commit</span></code>.

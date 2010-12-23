@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="advanced_lookups_insertions.html" title="Advanced lookup and insertion functions for associative containers">
 <link rel="next" href="clone_from.html" title="Cloning Boost.Intrusive containers">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -37,8 +37,7 @@
     </p>
 <p>
     </p>
-<pre class="programlisting">
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Pred</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Pred</span><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">remove_if</span><span class="special">(</span><span class="identifier">Pred</span> <span class="identifier">pred</span><span class="special">);</span>
 </pre>
 <p>
@@ -50,30 +49,28 @@
     </p>
 <p>
     </p>
-<pre class="programlisting">
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Disposer</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Disposer</span><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">remove_and_dispose_if</span><span class="special">(</span><span class="identifier">Pred</span> <span class="identifier">pred</span><span class="special">,</span> <span class="identifier">Disposer</span> <span class="identifier">disposer</span><span class="special">)</span>
 </pre>
 <p>
       With this function the user can efficiently remove and destroy elements if
       the disposer function destroys an object: <code class="computeroutput"><span class="identifier">remove_and_dispose_if</span></code>
-      will call "disposer" function object for every removed element.
+      will call the "disposer" function object for every removed element.
       <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code> offers more functions
       taking a disposer function object as argument, like <code class="computeroutput"><span class="identifier">erase_and_dispose</span></code>,
-      <code class="computeroutput"><span class="identifier">clear_and_dispose</span></code>, <code class="computeroutput"><span class="identifier">remove_and_dispose</span></code>...
+      <code class="computeroutput"><span class="identifier">clear_and_dispose</span></code>, <code class="computeroutput"><span class="identifier">remove_and_dispose</span></code>, etc.
     </p>
 <p>
       Note that the disposing function does not need to just destroy the object.
       It can implement any other operation like inserting the remove object in another
-      container. Let's see an small example:
+      container. Let's see a small example:
     </p>
 <p>
       </p>
 <p>
         
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 

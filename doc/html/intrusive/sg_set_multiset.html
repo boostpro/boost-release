@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="avl_set_multiset.html" title="Intrusive avl tree based associative containers: avl_set, avl_multiset and avltree">
 <link rel="next" href="advanced_lookups_insertions.html" title="Advanced lookup and insertion functions for associative containers">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -43,34 +43,35 @@
     </p>
 <p>
       A binary search tree is said to be weight balanced if half the nodes are on
-      the left of the root, and half on the right. An &#945;-height-balanced tree is
-      defined with defined with the following equation:
+      the left of the root, and half on the right. An a-height-balanced tree is defined
+      with defined with the following equation:
     </p>
 <p>
-      <span class="bold"><strong><span class="emphasis"><em>height(tree) &lt;= log1/&#945;(tree.size())</em></span></strong></span>
+      <span class="bold"><strong><span class="emphasis"><em>height(tree) &lt;= log1/a(tree.size())</em></span></strong></span>
     </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<span class="bold"><strong><span class="emphasis"><em>&#945; == 1</em></span></strong></span>: A tree forming
+<span class="bold"><strong><span class="emphasis"><em>a == 1</em></span></strong></span>: A tree forming
         a linked list is considered balanced.
       </li>
 <li>
-<span class="bold"><strong><span class="emphasis"><em>&#945; == 0.5</em></span></strong></span>: Only a perfectly
+<span class="bold"><strong><span class="emphasis"><em>a == 0.5</em></span></strong></span>: Only a perfectly
         balanced binary is considered balanced.
       </li>
 </ul></div>
 <p>
-      Scapegoat trees are loosely <span class="emphasis"><em>&#945;-height-balanced</em></span> so:
+      Scapegoat trees are loosely <span class="emphasis"><em>a-height-balanced</em></span> so:
     </p>
 <p>
-      <span class="bold"><strong><span class="emphasis"><em>height(tree) &lt;= log1/&#945;(tree.size()) + 1</em></span></strong></span>
+      <span class="bold"><strong><span class="emphasis"><em>height(tree) &lt;= log1/a(tree.size()) + 1</em></span></strong></span>
     </p>
 <p>
-      Scapegoat trees support any &#945; between 0.5 and 1. If &#945; is higher, the tree
-      is rebalanced less often, obtaining quicker insertions but slower searches.
-      Lower &#945; values improve search times. Scapegoat-trees implemented in <span class="bold"><strong>Boost.Intrusive</strong></span> offer the possibility of <span class="bold"><strong>changing
-      &#945; at run-time</strong></span> taking advantage of the flexibility of scapegoat
-      trees. For more information on scapegoat trees see <a href="http://en.wikipedia.org/wiki/Scapegoat_tree" target="_top">Wikipedia
+      Scapegoat trees support any a between 0.5 and 1. If a is higher, the tree is
+      rebalanced less often, obtaining quicker insertions but slower searches. Lower
+      a values improve search times. Scapegoat-trees implemented in <span class="bold"><strong>Boost.Intrusive</strong></span>
+      offer the possibility of <span class="bold"><strong>changing a at run-time</strong></span>
+      taking advantage of the flexibility of scapegoat trees. For more information
+      on scapegoat trees see <a href="http://en.wikipedia.org/wiki/Scapegoat_tree" target="_top">Wikipedia
       entry</a>.
     </p>
 <p>
@@ -85,7 +86,7 @@
       </li>
 <li>
         The operations needed to determine if the tree is unbalanced require floating-point
-        operations like <span class="emphasis"><em>log1/&#945;</em></span>. If the system has no floating
+        operations like <span class="emphasis"><em>log1/a</em></span>. If the system has no floating
         point operations (like some embedded systems), scapegoat tree operations
         might become slow.
       </li>
@@ -118,8 +119,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">bs_set_base_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
@@ -129,8 +129,7 @@
         </li></ul></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">bs_set_member_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
@@ -170,8 +169,7 @@
 </h3></div></div></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">sg_set</span><span class="special">;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
@@ -189,9 +187,9 @@
           / <span class="bold"><strong><code class="computeroutput"><span class="identifier">member_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span>
           <span class="identifier">Hook</span><span class="special">,</span>
           <span class="identifier">Hook</span> <span class="identifier">T</span><span class="special">::*</span> <span class="identifier">PtrToMember</span><span class="special">&gt;</span></code></strong></span> / <span class="bold"><strong><code class="computeroutput"><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ValueTraits</span><span class="special">&gt;</span></code></strong></span>: To specify the hook type
-          or value traits used to configure the container (to know about value traits
-          go to the section titled <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
-          with custom ValueTraits</a>.
+          or value traits used to configure the container. (To learn about value
+          traits go to the section <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
+          with custom ValueTraits</a>.)
         </li>
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
@@ -211,9 +209,9 @@
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">floating_point</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enable</span><span class="special">&gt;</span></code></strong></span>:
           When this option is deactivated, the scapegoat tree loses the ability to
-          change the balance factor &#945; at run-time, but the size of an empty container
+          change the balance factor a at run-time, but the size of an empty container
           is reduced and no floating point operations are performed, normally increasing
-          container performance. The fixed &#945; factor that is used when this option
+          container performance. The fixed a factor that is used when this option
           is activated is <span class="emphasis"><em>1/sqrt(2) ~ 0,70711</em></span>. Default: <code class="computeroutput"><span class="identifier">floating_point</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span></code>
 </li>
 </ul></div>
@@ -223,7 +221,7 @@
 <a name="intrusive.sg_set_multiset.sg_set_multiset_example"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_example" title="Example"> Example</a>
 </h3></div></div></div>
 <p>
-        Now let's see an small example using both hooks and <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_set.html" title="Class template sg_set">sg_set</a></code>/
+        Now let's see a small example using both hooks and <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_set.html" title="Class template sg_set">sg_set</a></code>/
         <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_multiset.html" title="Class template sg_multiset">sg_multiset</a></code> containers:
       </p>
 <p>
@@ -231,8 +229,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">sg_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">sg_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>

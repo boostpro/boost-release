@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../typeof.html" title="Chapter 20. Boost.Typeof">
-<link rel="prev" href="../typeof.html" title="Chapter 20. Boost.Typeof">
+<link rel="up" href="../typeof.html" title="Chapter 21. Boost.Typeof">
+<link rel="prev" href="../typeof.html" title="Chapter 21. Boost.Typeof">
 <link rel="next" href="refe.html" title="Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -28,15 +28,13 @@
 <p>
       To start using typeof include the typeof header:
     </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
       To deduce the type of an expression at compile time use the <code class="computeroutput"><span class="identifier">BOOST_TYPEOF</span></code>
       macro:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">ex1</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">ex1</span>
 <span class="special">{</span>
     <span class="keyword">typedef</span> <span class="identifier">BOOST_TYPEOF</span><span class="special">(</span><span class="number">1</span> <span class="special">+</span> <span class="number">0.5</span><span class="special">)</span> <span class="identifier">type</span><span class="special">;</span>
 
@@ -47,8 +45,7 @@
       In the dependent context use <code class="computeroutput"><span class="identifier">BOOST_TYPEOF_TPL</span></code>
       instead of <code class="computeroutput"><span class="identifier">BOOST_TYPEOF</span></code>:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">ex2</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">ex2</span>
 <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span>
     <span class="identifier">BOOST_TYPEOF_TPL</span><span class="special">(</span><span class="identifier">T</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">U</span><span class="special">())</span> <span class="identifier">add</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">t</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">U</span><span class="special">&amp;</span> <span class="identifier">u</span><span class="special">)</span>
@@ -68,8 +65,7 @@
       the Standard C++ Library, but the appropriate headers need to be included to
       take advantage of this:
     </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">utility</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">utility</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">namespace</span> <span class="identifier">ex3</span>
 <span class="special">{</span>
@@ -92,8 +88,7 @@
       (or <code class="computeroutput"><span class="identifier">BOOST_AUTO_TPL</span></code> in a dependent
       context:
     </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">string</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">string</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">namespace</span> <span class="identifier">ex4</span>
 <span class="special">{</span>
@@ -106,8 +101,7 @@
       Both <code class="computeroutput"><span class="identifier">BOOST_TYPEOF</span></code> and <code class="computeroutput"><span class="identifier">BOOST_AUTO</span></code> strip top-level qualifiers. Therefore,
       to allocate for example a reference, it has to be specified explicitly:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">ex5</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">ex5</span>
 <span class="special">{</span>
     <span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">hello</span><span class="special">()</span>
     <span class="special">{</span>
@@ -121,8 +115,7 @@
 <p>
       To better understand this syntax, note that this gets expanded into:
     </p>
-<pre class="programlisting">
-<span class="identifier">BOOST_TYPEOF</span><span class="special">(</span><span class="identifier">hello</span><span class="special">())</span> <span class="special">&amp;</span><span class="identifier">s</span> <span class="special">=</span> <span class="identifier">hello</span><span class="special">();</span>
+<pre class="programlisting"><span class="identifier">BOOST_TYPEOF</span><span class="special">(</span><span class="identifier">hello</span><span class="special">())</span> <span class="special">&amp;</span><span class="identifier">s</span> <span class="special">=</span> <span class="identifier">hello</span><span class="special">();</span>
 </pre>
 <p>
       If your define your own type, the Typeof Library cannot handle it unless you
@@ -133,14 +126,12 @@
       Any source or header file where types/templates are registered has to contain
       the following line before any registration is done:
     </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="identifier">BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP</span><span class="special">()</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="identifier">BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP</span><span class="special">()</span>
 </pre>
 <p>
       After this a type can be registered:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">ex6</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">ex6</span>
 <span class="special">{</span>
     <span class="keyword">struct</span> <span class="identifier">MyType</span>
     <span class="special">{};</span>
@@ -158,8 +149,7 @@
 <p>
       Once your type is registered, the Typeof Library can handle it in any context:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">ex6</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">ex6</span>
 <span class="special">{</span>
     <span class="keyword">typedef</span> <span class="identifier">BOOST_TYPEOF</span><span class="special">(</span><span class="identifier">make_pair</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="identifier">MyType</span><span class="special">()))</span> <span class="identifier">type</span><span class="special">;</span>
 
@@ -171,8 +161,7 @@
       its parameters. In the simplest case, when all parameters are type parameters,
       only their number needs to be specified:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">ex7</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">ex7</span>
 <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span>
     <span class="keyword">struct</span> <span class="identifier">MyTemplate</span>
@@ -194,8 +183,7 @@
       When a template has integral template parameters, all parameters need to be
       described in the preprocessor sequence:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">ex8</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">ex8</span>
 <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">n</span><span class="special">&gt;</span>
     <span class="keyword">struct</span> <span class="identifier">MyTemplate</span>

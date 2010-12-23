@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile$
 //
-//  Version     : $Revision: 41370 $
+//  Version     : $Revision: 48086 $
 //
 //  Description : tests an ability of Program Execution Monitor to catch 
 //  uncatched exceptions. Should fail during run.

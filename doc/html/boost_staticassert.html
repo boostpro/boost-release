@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 15. Boost.StaticAssert</title>
+<title>Chapter 16. Boost.StaticAssert</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../boost.png"></td>
 <td align="center"><a href="../../index.html">Home</a></td>
 <td align="center"><a href="../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -25,7 +25,7 @@
 <div class="chapter" lang="en">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="boost_staticassert"></a>Chapter 15. Boost.StaticAssert</h2></div>
+<a name="boost_staticassert"></a>Chapter 16. Boost.StaticAssert</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">John</span> <span class="surname">Maddock</span>
 </h3></div></div>
@@ -34,7 +34,7 @@
 </h3></div></div>
 <div><p class="copyright">Copyright © 2000, 2005 Steve Cleary and John Maddock</p></div>
 <div><div class="legalnotice">
-<a name="id1287129"></a><p>
+<a name="id3480377"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">
         http://www.boost.org/LICENSE_1_0.txt </a>)
@@ -56,7 +56,7 @@
 </dl>
 </div>
 <p>
-    This manual is also available in <a href="http:svn.boost.org/svn/boost/sandbox/pdf/static_assert/release/static_assert.pdf" target="_top">printer
+    This manual is also available in <a href="http://svn.boost.org/svn/boost/sandbox/pdf/static_assert/release/static_assert.pdf" target="_top">printer
     friendly PDF format</a>.
   </p>
 <div class="section" lang="en">
@@ -87,8 +87,7 @@
       a library is being used in a manner that is not supported. While error messages
       obviously differ from compiler to compiler, but you should see something like:
     </p>
-<pre class="programlisting">
-<span class="identifier">Illegal</span> <span class="identifier">use</span> <span class="identifier">of</span> <span class="identifier">STATIC_ASSERTION_FAILURE</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="identifier">Illegal</span> <span class="identifier">use</span> <span class="identifier">of</span> <span class="identifier">STATIC_ASSERTION_FAILURE</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
 </pre>
 <p>
       Which is intended to at least catch the eye!
@@ -108,8 +107,7 @@
         be at least a 32-bit integral type, and that <code class="computeroutput"><span class="keyword">wchar_t</span></code>
         be an unsigned type. We can verify this at compile time as follows:
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">climits</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">climits</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cwchar</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">static_assert</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -154,8 +152,7 @@
         is not met, then an error will be generated in a way that makes it reasonably
         obvious to the user that the template is being misused.
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">static_assert</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -195,8 +192,7 @@
         16-bits of precision as a template argument, we can achieve this using something
         like this:
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">climits</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">climits</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">static_assert</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UnsignedInt</span><span class="special">&gt;</span>
@@ -223,8 +219,7 @@
         is permitted to evaluate the static assertion at the point it is first seen,
         irrespective of whether the template is ever instantiated, for example:
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">must_not_be_instantiated</span>
 <span class="special">{</span>   
    <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="keyword">false</span><span class="special">);</span>
@@ -236,8 +231,7 @@
         in cases like this is to force the assertion to be dependent upon a template
         parameter:
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">must_not_be_instantiated</span>
 <span class="special">{</span>   
    <span class="comment">// this will be triggered if this type is instantiated
@@ -248,7 +242,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: February 21, 2008 at 11:51:41 -0500</small></p></td>
+<td align="left"><p><small>Last revised: July 13, 2008 at 17:08:33 -0400</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

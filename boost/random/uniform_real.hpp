@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_real.hpp 41369 2007-11-25 18:07:19Z bemandawes $
+ * $Id: uniform_real.hpp 47233 2008-07-08 16:22:46Z steven_watanabe $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -40,7 +40,7 @@ public:
 #ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
     BOOST_STATIC_ASSERT(!std::numeric_limits<RealType>::is_integer);
 #endif
-    assert(min_arg < max_arg);
+    assert(min_arg <= max_arg);
   }
 
   // compiler-generated copy ctor and assignment operator are fine

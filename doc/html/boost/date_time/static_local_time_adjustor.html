@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
 <td align="center"><a href="../../../../index.html">Home</a></td>
 <td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -36,20 +36,20 @@
   <span class="bold"><strong>typedef</strong></span> time_type::time_duration_type <a name="boost.date_time.static_local_time_adjustor.time_duration_type"></a>time_duration_type;
   <span class="bold"><strong>typedef</strong></span> time_type::date_type          <a name="boost.date_time.static_local_time_adjustor.date_type"></a>date_type;         
 
-  <span class="emphasis"><em>// <a class="link" href="static_local_time_adjustor.html#id352148-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> time_duration_type</span> <a class="link" href="static_local_time_adjustor.html#id352151-bb">utc_to_local_offset</a>(<span class="bold"><strong>const</strong></span> time_type &amp;) ;
+  <span class="emphasis"><em>// <a class="link" href="static_local_time_adjustor.html#id2416298-bb">public static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> time_duration_type</span> <a class="link" href="static_local_time_adjustor.html#id2416301-bb">utc_to_local_offset</a>(<span class="bold"><strong>const</strong></span> time_type &amp;) ;
   <span class="type"><span class="bold"><strong>static</strong></span> time_duration_type</span> 
-  <a class="link" href="static_local_time_adjustor.html#id276332-bb">local_to_utc_offset</a>(<span class="bold"><strong>const</strong></span> time_type &amp;, 
+  <a class="link" href="static_local_time_adjustor.html#id2629800-bb">local_to_utc_offset</a>(<span class="bold"><strong>const</strong></span> time_type &amp;, 
                       date_time::dst_flags = date_time::calculate) ;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id614588"></a><h2>Description</h2>
+<a name="id2847899"></a><h2>Description</h2>
 <div class="refsect2" lang="en">
-<a name="id614592"></a><h3>
-<a name="id352148-bb"></a><code class="computeroutput">static_local_time_adjustor</code> public static functions</h3>
+<a name="id2847902"></a><h3>
+<a name="id2416298-bb"></a><code class="computeroutput">static_local_time_adjustor</code> public static functions</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_duration_type</span> <a name="id352151-bb"></a>utc_to_local_offset(<span class="bold"><strong>const</strong></span> time_type &amp; t) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_duration_type</span> <a name="id2416301-bb"></a>utc_to_local_offset(<span class="bold"><strong>const</strong></span> time_type &amp; t) ;</pre>
 <p>
 The logic is as follows. Starting with UTC time use the offset to create a label for an non-dst adjusted local time. Then call dst_rules::local_is_dst with the non adjust local time. The results of this function will either unabiguously decide that the initial local time is in dst or return an illegal or ambiguous result. An illegal result only occurs at the end of dst (where labels are skipped) and indicates that dst has ended. An ambiguous result means that we need to recheck by making a dst adjustment and then rechecking. If the dst offset is added to the utc time and the recheck proves non-ambiguous then we are past the boundary. If it is still ambiguous then we are ahead of the boundary and dst is still in effect.</p>
 <p>TODO -- check if all dst offsets are positive. If not then the algorithm needs to check for this and reverse the illegal/ambiguous logic. </p>
@@ -68,7 +68,7 @@ The logic is as follows. Starting with UTC time use the offset to create a label
 </table></div>
 </li>
 <li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_duration_type</span> 
-<a name="id276332-bb"></a>local_to_utc_offset(<span class="bold"><strong>const</strong></span> time_type &amp; t, 
+<a name="id2629800-bb"></a>local_to_utc_offset(<span class="bold"><strong>const</strong></span> time_type &amp; t, 
                     date_time::dst_flags dst = date_time::calculate) ;</pre></li>
 </ol></div>
 </div>

@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
 <td align="center"><a href="../../../../index.html">Home</a></td>
 <td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -56,138 +56,141 @@
   <span class="bold"><strong>typedef</strong></span> node_algorithms::insert_commit_data                   <a name="boost.intrusive.splaytree.insert_commit_data"></a>insert_commit_data;    
 
   <span class="emphasis"><em>// <a class="link" href="splaytree.html#boost.intrusive.splaytreeconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="splaytree.html#id870372-bb">splaytree</a>(value_compare = value_compare(), 
+  <a class="link" href="splaytree.html#id3065175-bb">splaytree</a>(value_compare = value_compare(), 
             <span class="bold"><strong>const</strong></span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> &amp; = value_traits());
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; 
-    <a class="link" href="splaytree.html#id870422-bb">splaytree</a>(<span class="bold"><strong>bool</strong></span>, Iterator, Iterator, value_compare = value_compare(), 
+    <a class="link" href="splaytree.html#id3065221-bb">splaytree</a>(<span class="bold"><strong>bool</strong></span>, Iterator, Iterator, value_compare = value_compare(), 
               <span class="bold"><strong>const</strong></span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> &amp; = value_traits());
-  <a class="link" href="splaytree.html#id870512-bb">~splaytree</a>();
+  <a class="link" href="splaytree.html#id3065302-bb">~splaytree</a>();
 
-  <span class="emphasis"><em>// <a class="link" href="splaytree.html#id866907-bb">public member functions</a></em></span>
-  <span class="type"><span class="bold"><strong>const</strong></span> real_value_traits &amp;</span> <a class="link" href="splaytree.html#id866911-bb">get_real_value_traits</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">real_value_traits &amp;</span> <a class="link" href="splaytree.html#id866920-bb">get_real_value_traits</a>() ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id866929-bb">begin</a>() ;
-  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id866964-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id866998-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id867033-bb">end</a>() ;
-  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id867068-bb">end</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id867102-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a class="link" href="splaytree.html#id867137-bb">rbegin</a>() ;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="splaytree.html#id867172-bb">rbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="splaytree.html#id867207-bb">crbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a class="link" href="splaytree.html#id867242-bb">rend</a>() ;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="splaytree.html#id867277-bb">rend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a class="link" href="splaytree.html#id867312-bb">crend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">value_compare</span> <a class="link" href="splaytree.html#id867346-bb">value_comp</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="splaytree.html#id867382-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id867416-bb">size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id867452-bb">swap</a>(<a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;) ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id867496-bb">insert_equal</a>(reference) ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id867555-bb">insert_equal</a>(const_iterator, reference) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id867624-bb">insert_equal</a>(Iterator, Iterator) ;
-  <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> <a class="link" href="splaytree.html#id867698-bb">insert_unique</a>(reference) ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id867757-bb">insert_unique</a>(const_iterator, reference) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id867826-bb">insert_unique</a>(Iterator, Iterator) ;
+  <span class="emphasis"><em>// <a class="link" href="splaytree.html#id3062022-bb">public member functions</a></em></span>
+  <span class="type"><span class="bold"><strong>const</strong></span> real_value_traits &amp;</span> <a class="link" href="splaytree.html#id3062026-bb">get_real_value_traits</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">real_value_traits &amp;</span> <a class="link" href="splaytree.html#id3062034-bb">get_real_value_traits</a>() ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3062042-bb">begin</a>() ;
+  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id3062074-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id3062105-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3062136-bb">end</a>() ;
+  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id3062167-bb">end</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id3062199-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">reverse_iterator</span> <a class="link" href="splaytree.html#id3062230-bb">rbegin</a>() ;
+  <span class="type">const_reverse_iterator</span> <a class="link" href="splaytree.html#id3062261-bb">rbegin</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_reverse_iterator</span> <a class="link" href="splaytree.html#id3062293-bb">crbegin</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">reverse_iterator</span> <a class="link" href="splaytree.html#id3062325-bb">rend</a>() ;
+  <span class="type">const_reverse_iterator</span> <a class="link" href="splaytree.html#id3062356-bb">rend</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_reverse_iterator</span> <a class="link" href="splaytree.html#id3062388-bb">crend</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">value_compare</span> <a class="link" href="splaytree.html#id3062420-bb">value_comp</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="splaytree.html#id3062452-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id3062482-bb">size</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3062515-bb">swap</a>(<a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;) ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3062555-bb">insert_equal</a>(reference) ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3062608-bb">insert_equal</a>(const_iterator, reference) ;
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3062672-bb">insert_equal</a>(Iterator, Iterator) ;
+  <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> <a class="link" href="splaytree.html#id3062741-bb">insert_unique</a>(reference) ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3062795-bb">insert_unique</a>(const_iterator, reference) ;
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3062857-bb">insert_unique</a>(Iterator, Iterator) ;
   <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-  <a class="link" href="splaytree.html#id867899-bb">insert_unique_check</a>(const_reference, insert_commit_data &amp;) ;
+  <a class="link" href="splaytree.html#id3062926-bb">insert_unique_check</a>(const_reference, insert_commit_data &amp;) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
     <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-    <a class="link" href="splaytree.html#id867921-bb">insert_unique_check</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare, 
+    <a class="link" href="splaytree.html#id3062946-bb">insert_unique_check</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare, 
                         insert_commit_data &amp;) ;
   <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-  <a class="link" href="splaytree.html#id867963-bb">insert_unique_check</a>(const_iterator, const_reference, insert_commit_data &amp;) ;
+  <a class="link" href="splaytree.html#id3062984-bb">insert_unique_check</a>(const_iterator, const_reference, insert_commit_data &amp;) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
     <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-    <a class="link" href="splaytree.html#id867992-bb">insert_unique_check</a>(const_iterator, <span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare, 
+    <a class="link" href="splaytree.html#id3063010-bb">insert_unique_check</a>(const_iterator, <span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare, 
                         insert_commit_data &amp;) ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id868041-bb">insert_unique_commit</a>(reference, <span class="bold"><strong>const</strong></span> insert_commit_data &amp;) ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id868063-bb">erase</a>(iterator) ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id868114-bb">erase</a>(iterator, iterator) ;
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id868172-bb">erase</a>(const_reference) ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3063054-bb">insert_unique_commit</a>(reference, <span class="bold"><strong>const</strong></span> insert_commit_data &amp;) ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3063074-bb">erase</a>(iterator) ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3063120-bb">erase</a>(iterator, iterator) ;
+  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id3063173-bb">erase</a>(const_reference) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id868232-bb">erase</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; <span class="type">iterator</span> <a class="link" href="splaytree.html#id868312-bb">erase_and_dispose</a>(iterator, Disposer) ;
+    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id3063227-bb">erase</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; <span class="type">iterator</span> <a class="link" href="splaytree.html#id3063300-bb">erase_and_dispose</a>(iterator, Disposer) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-    <span class="type">iterator</span> <a class="link" href="splaytree.html#id868387-bb">erase_and_dispose</a>(iterator, iterator, Disposer) ;
+    <span class="type">iterator</span> <a class="link" href="splaytree.html#id3063367-bb">erase_and_dispose</a>(iterator, iterator, Disposer) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id868469-bb">erase_and_dispose</a>(const_reference, Disposer) ;
+    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id3063441-bb">erase_and_dispose</a>(const_reference, Disposer) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare, <span class="bold"><strong>typename</strong></span> Disposer&gt; 
-    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id868554-bb">erase_and_dispose</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare, Disposer) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id868655-bb">clear</a>() ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id868700-bb">clear_and_dispose</a>(Disposer) ;
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id868760-bb">count</a>(const_reference) ;
+    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id3063517-bb">erase_and_dispose</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare, Disposer) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3063608-bb">clear</a>() ;
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3063650-bb">clear_and_dispose</a>(Disposer) ;
+  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id3063703-bb">count</a>(const_reference) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id868804-bb">count</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id868867-bb">count_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
+    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id3063743-bb">count</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
+  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id3063800-bb">count_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id868911-bb">count_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id868975-bb">lower_bound</a>(const_reference) ;
-  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id869017-bb">lower_bound_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
+    <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a class="link" href="splaytree.html#id3063840-bb">count_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3063898-bb">lower_bound</a>(const_reference) ;
+  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id3063936-bb">lower_bound_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">iterator</span> <a class="link" href="splaytree.html#id869060-bb">lower_bound</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">const_iterator</span> 
-    <a class="link" href="splaytree.html#id869121-bb">lower_bound_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id869183-bb">upper_bound</a>(const_reference) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">iterator</span> <a class="link" href="splaytree.html#id869225-bb">upper_bound</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id869288-bb">upper_bound_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
+    <span class="type">iterator</span> <a class="link" href="splaytree.html#id3063975-bb">lower_bound</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
     <span class="type">const_iterator</span> 
-    <a class="link" href="splaytree.html#id869330-bb">upper_bound_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id869392-bb">find</a>(const_reference) ;
+    <a class="link" href="splaytree.html#id3064030-bb">lower_bound_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3064087-bb">upper_bound</a>(const_reference) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">iterator</span> <a class="link" href="splaytree.html#id869434-bb">find</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id869495-bb">find_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
+    <span class="type">iterator</span> <a class="link" href="splaytree.html#id3064125-bb">upper_bound</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
+  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id3064181-bb">upper_bound_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id869537-bb">find_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
-  <span class="type">std::pair&lt; iterator, iterator &gt;</span> <a class="link" href="splaytree.html#id869598-bb">equal_range</a>(const_reference) ;
+    <span class="type">const_iterator</span> 
+    <a class="link" href="splaytree.html#id3064219-bb">upper_bound_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3064276-bb">find</a>(const_reference) ;
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
+    <span class="type">iterator</span> <a class="link" href="splaytree.html#id3064314-bb">find</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
+  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id3064369-bb">find_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
+    <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id3064407-bb">find_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
+  <span class="type">std::pair&lt; iterator, iterator &gt;</span> <a class="link" href="splaytree.html#id3064463-bb">equal_range</a>(const_reference) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
     <span class="type">std::pair&lt; iterator, iterator &gt;</span> 
-    <a class="link" href="splaytree.html#id869639-bb">equal_range</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
+    <a class="link" href="splaytree.html#id3064503-bb">equal_range</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
   <span class="type">std::pair&lt; const_iterator, const_iterator &gt;</span> 
-  <a class="link" href="splaytree.html#id869699-bb">equal_range_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
+  <a class="link" href="splaytree.html#id3064560-bb">equal_range_dont_splay</a>(const_reference) <span class="bold"><strong>const</strong></span>;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
     <span class="type">std::pair&lt; const_iterator, const_iterator &gt;</span> 
-    <a class="link" href="splaytree.html#id869739-bb">equal_range_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
+    <a class="link" href="splaytree.html#id3064600-bb">equal_range_dont_splay</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) <span class="bold"><strong>const</strong></span>;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Cloner, <span class="bold"><strong>typename</strong></span> Disposer&gt; 
-    <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id869800-bb">clone_from</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;, Cloner, Disposer) ;
-  <span class="type">pointer</span> <a class="link" href="splaytree.html#id869886-bb">unlink_leftmost_without_rebalance</a>() ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id869933-bb">splay_up</a>(iterator) ;
+    <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3064657-bb">clone_from</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;, Cloner, Disposer) ;
+  <span class="type">pointer</span> <a class="link" href="splaytree.html#id3064735-bb">unlink_leftmost_without_rebalance</a>() ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3064778-bb">splay_up</a>(iterator) ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-    <span class="type">iterator</span> <a class="link" href="splaytree.html#id869983-bb">splay_down</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id870057-bb">splay_down</a>(<span class="bold"><strong>const</strong></span> value_type &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id870109-bb">replace_node</a>(iterator, reference) ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id870178-bb">iterator_to</a>(reference) ;
-  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id870229-bb">iterator_to</a>(const_reference) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id870280-bb">rebalance</a>() ;
-  <span class="type">iterator</span> <a class="link" href="splaytree.html#id870314-bb">rebalance_subtree</a>(iterator) ;
+    <span class="type">iterator</span> <a class="link" href="splaytree.html#id3064824-bb">splay_down</a>(<span class="bold"><strong>const</strong></span> KeyType &amp;, KeyValueCompare) ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3064890-bb">splay_down</a>(<span class="bold"><strong>const</strong></span> value_type &amp;) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3064937-bb">replace_node</a>(iterator, reference) ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3065001-bb">iterator_to</a>(reference) ;
+  <span class="type">const_iterator</span> <a class="link" href="splaytree.html#id3065046-bb">iterator_to</a>(const_reference) <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3065093-bb">rebalance</a>() ;
+  <span class="type">iterator</span> <a class="link" href="splaytree.html#id3065123-bb">rebalance_subtree</a>(iterator) ;
 
-  <span class="emphasis"><em>// <a class="link" href="splaytree.html#id870544-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a class="link" href="splaytree.html#id870548-bb">container_from_end_iterator</a>(iterator) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a class="link" href="splaytree.html#id870602-bb">container_from_end_iterator</a>(const_iterator) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> iterator</span> <a class="link" href="splaytree.html#id870657-bb">s_iterator_to</a>(reference) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> const_iterator</span> <a class="link" href="splaytree.html#id870717-bb">s_iterator_to</a>(const_reference) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id870777-bb">init_node</a>(reference) ;
+  <span class="emphasis"><em>// <a class="link" href="splaytree.html#id3065331-bb">public static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a class="link" href="splaytree.html#id3065334-bb">container_from_end_iterator</a>(iterator) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a class="link" href="splaytree.html#id3065384-bb">container_from_end_iterator</a>(const_iterator) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a class="link" href="splaytree.html#id3065434-bb">container_from_iterator</a>(iterator) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a class="link" href="splaytree.html#id3065482-bb">container_from_iterator</a>(const_iterator) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> iterator</span> <a class="link" href="splaytree.html#id3065532-bb">s_iterator_to</a>(reference) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> const_iterator</span> <a class="link" href="splaytree.html#id3065586-bb">s_iterator_to</a>(const_reference) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>void</strong></span></span> <a class="link" href="splaytree.html#id3065640-bb">init_node</a>(reference) ;
 
-  <span class="emphasis"><em>// <a class="link" href="splaytree.html#id870836-bb">private static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a class="link" href="splaytree.html#id870840-bb">priv_container_from_end_iterator</a>(<span class="bold"><strong>const</strong></span> const_iterator &amp;) ;
+  <span class="emphasis"><em>// <a class="link" href="splaytree.html#id3065693-bb">private static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a class="link" href="splaytree.html#id3065697-bb">priv_container_from_end_iterator</a>(<span class="bold"><strong>const</strong></span> const_iterator &amp;) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a class="link" href="splaytree.html#id3065715-bb">priv_container_from_iterator</a>(<span class="bold"><strong>const</strong></span> const_iterator &amp;) ;
   <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> <span class="bold"><strong>bool</strong></span></span> constant_time_size;
   <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> <span class="bold"><strong>bool</strong></span></span> stateful_value_traits;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id1155555"></a><h2>Description</h2>
+<a name="id3369886"></a><h2>Description</h2>
 <p>The class template splaytree is an intrusive splay tree container that is used to construct intrusive splay_set and splay_multiset containers. The no-throw guarantee holds only, if the value_compare object doesn't throw.</p>
 <p>The template parameter <code class="computeroutput">T</code> is the type to be managed by the container. The user can specify additional options and if no options are provided default options are used.</p>
 <p>The container supports the following options: <code class="computeroutput">base_hook&lt;&gt;/member_hook&lt;&gt;/value_traits&lt;&gt;</code>, <code class="computeroutput">constant_time_size&lt;&gt;</code>, <code class="computeroutput">size_type&lt;&gt;</code> and <code class="computeroutput">compare&lt;&gt;</code>. </p>
 <div class="refsect2" lang="en">
-<a name="id1155607"></a><h3>
+<a name="id3369934"></a><h3>
 <a name="boost.intrusive.splaytreeconstruct-copy-destruct"></a><code class="computeroutput">splaytree</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id870372-bb"></a>splaytree(value_compare cmp = value_compare(), 
+<pre class="literallayout"><a name="id3065175-bb"></a>splaytree(value_compare cmp = value_compare(), 
           <span class="bold"><strong>const</strong></span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> &amp; v_traits = value_traits());</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Constructs an empty tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
@@ -195,7 +198,7 @@
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; 
-  <a name="id870422-bb"></a>splaytree(<span class="bold"><strong>bool</strong></span> unique, Iterator b, Iterator e, 
+  <a name="id3065221-bb"></a>splaytree(<span class="bold"><strong>bool</strong></span> unique, Iterator b, Iterator e, 
             value_compare cmp = value_compare(), 
             <span class="bold"><strong>const</strong></span> <a class="link" href="value_traits.html" title="Struct template value_traits">value_traits</a> &amp; v_traits = value_traits());</pre>
 <p><span class="bold"><strong>Requires</strong></span>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</p>
@@ -204,7 +207,7 @@
 <p><span class="bold"><strong>Throws</strong></span>: Nothing unless the copy constructor of the value_compare object throws. </p>
 </li>
 <li>
-<pre class="literallayout"><a name="id870512-bb"></a>~splaytree();</pre>
+<pre class="literallayout"><a name="id3065302-bb"></a>~splaytree();</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the value_traits template parameter are reinitialized and thus can be reused.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements on the container. if it's a safe-mode or auto-unlink value_type. Constant time otherwise.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
@@ -212,109 +215,109 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id1155821"></a><h3>
-<a name="id866907-bb"></a><code class="computeroutput">splaytree</code> public member functions</h3>
+<a name="id3370129"></a><h3>
+<a name="id3062022-bb"></a><code class="computeroutput">splaytree</code> public member functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> real_value_traits &amp;</span> <a name="id866911-bb"></a>get_real_value_traits() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">real_value_traits &amp;</span> <a name="id866920-bb"></a>get_real_value_traits() ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> real_value_traits &amp;</span> <a name="id3062026-bb"></a>get_real_value_traits() <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">real_value_traits &amp;</span> <a name="id3062034-bb"></a>get_real_value_traits() ;</pre></li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id866929-bb"></a>begin() ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3062042-bb"></a>begin() ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator pointing to the beginning of the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id866964-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3062074-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the beginning of the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id866998-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3062105-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the beginning of the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id867033-bb"></a>end() ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3062136-bb"></a>end() ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator pointing to the end of the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id867068-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3062167-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the end of the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id867102-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3062199-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator pointing to the end of the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id867137-bb"></a>rbegin() ;</pre>
+<pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id3062230-bb"></a>rbegin() ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the beginning of the reversed tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id867172-bb"></a>rbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id3062261-bb"></a>rbegin() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the beginning of the reversed tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id867207-bb"></a>crbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id3062293-bb"></a>crbegin() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the beginning of the reversed tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id867242-bb"></a>rend() ;</pre>
+<pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id3062325-bb"></a>rend() ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the end of the reversed tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id867277-bb"></a>rend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id3062356-bb"></a>rend() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the end of the reversed tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id867312-bb"></a>crend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id3062388-bb"></a>crend() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the end of the reversed tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">value_compare</span> <a name="id867346-bb"></a>value_comp() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">value_compare</span> <a name="id3062420-bb"></a>value_comp() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the value_compare object used by the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If value_compare copy-constructor throws. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id867382-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id3062452-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns true is the container is empty.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id867416-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id3062482-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of elements stored in the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to elements contained in *this.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id867452-bb"></a>swap(<a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp; other) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3062515-bb"></a>swap(<a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp; other) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Swaps the contents of two multisets.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If the comparison functor's swap call throws. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id867496-bb"></a>insert_equal(reference value) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3062555-bb"></a>insert_equal(reference value) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts value into the tree before the lower bound.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for insert element is amortized logarithmic.</p>
@@ -322,7 +325,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id867555-bb"></a>insert_equal(const_iterator hint, reference value) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3062608-bb"></a>insert_equal(const_iterator hint, reference value) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue, and "hint" must be a valid iterator.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts x into the tree, using "hint" as a hint to where it will be inserted. If "hint" is the upper_bound the insertion takes constant time (two comparisons in the worst case)</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic in general, but it is amortized constant time if t is inserted immediately before hint.</p>
@@ -330,7 +333,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id867624-bb"></a>insert_equal(Iterator b, Iterator e) ;</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3062672-bb"></a>insert_equal(Iterator b, Iterator e) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: Dereferencing iterator must yield an lvalue of type value_type.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts a each element of a range into the tree before the upper bound of the key of each element.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Insert range is in general amortized O(N * log(N)), where N is the size of the range. However, it is linear in N if the range is already sorted by value_comp().</p>
@@ -338,7 +341,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> <a name="id867698-bb"></a>insert_unique(reference value) ;</pre>
+<pre class="literallayout"><span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> <a name="id3062741-bb"></a>insert_unique(reference value) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts value into the tree if the value is not already present.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
@@ -346,7 +349,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id867757-bb"></a>insert_unique(const_iterator hint, reference value) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3062795-bb"></a>insert_unique(const_iterator hint, reference value) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue, and "hint" must be a valid iterator</p>
 <p><span class="bold"><strong>Effects</strong></span>: Tries to insert x into the tree, using "hint" as a hint to where it will be inserted.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic in general, but it is amortized constant time (two comparisons in the worst case) if t is inserted immediately before hint.</p>
@@ -354,7 +357,7 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id867826-bb"></a>insert_unique(Iterator b, Iterator e) ;</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Iterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3062857-bb"></a>insert_unique(Iterator b, Iterator e) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: Dereferencing iterator must yield an lvalue of type value_type.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Tries to insert each element of a range into the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Insert range is in general amortized O(N * log(N)), where N is the size of the range. However, it is linear in N if the range is already sorted by value_comp().</p>
@@ -362,37 +365,37 @@
 <p><span class="bold"><strong>Note</strong></span>: Does not affect the validity of iterators and references. No copy-constructors are called. </p>
 </li>
 <li><pre class="literallayout"><span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-<a name="id867899-bb"></a>insert_unique_check(const_reference value, insert_commit_data &amp; commit_data) ;</pre></li>
+<a name="id3062926-bb"></a>insert_unique_check(const_reference value, insert_commit_data &amp; commit_data) ;</pre></li>
 <li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
   <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-  <a name="id867921-bb"></a>insert_unique_check(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare key_value_comp, 
+  <a name="id3062946-bb"></a>insert_unique_check(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare key_value_comp, 
                       insert_commit_data &amp; commit_data) ;</pre></li>
 <li><pre class="literallayout"><span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-<a name="id867963-bb"></a>insert_unique_check(const_iterator hint, const_reference value, 
+<a name="id3062984-bb"></a>insert_unique_check(const_iterator hint, const_reference value, 
                     insert_commit_data &amp; commit_data) ;</pre></li>
 <li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
   <span class="type">std::pair&lt; iterator, <span class="bold"><strong>bool</strong></span> &gt;</span> 
-  <a name="id867992-bb"></a>insert_unique_check(const_iterator hint, <span class="bold"><strong>const</strong></span> KeyType &amp; key, 
+  <a name="id3063010-bb"></a>insert_unique_check(const_iterator hint, <span class="bold"><strong>const</strong></span> KeyType &amp; key, 
                       KeyValueCompare key_value_comp, 
                       insert_commit_data &amp; commit_data) ;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id868041-bb"></a>insert_unique_commit(reference value, 
+<li><pre class="literallayout"><span class="type">iterator</span> <a name="id3063054-bb"></a>insert_unique_commit(reference value, 
                               <span class="bold"><strong>const</strong></span> insert_commit_data &amp; commit_data) ;</pre></li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id868063-bb"></a>erase(iterator i) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3063074-bb"></a>erase(iterator i) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases the element pointed to by pos.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for erase element is constant time.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. No destructors are called. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id868114-bb"></a>erase(iterator b, iterator e) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3063120-bb"></a>erase(iterator b, iterator e) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases the range pointed to by b end e.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for erase range is amortized O(log(size() + N)), where N is the number of elements in the range.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. No destructors are called. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id868172-bb"></a>erase(const_reference value) ;</pre>
+<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id3063173-bb"></a>erase(const_reference value) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements with the given value.</p>
 <p><span class="bold"><strong>Returns</strong></span>: The number of erased elements.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized O(log(size() + N).</p>
@@ -401,7 +404,7 @@
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id868232-bb"></a>erase(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id3063227-bb"></a>erase(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements with the given key. according to the comparison functor "comp".</p>
 <p><span class="bold"><strong>Returns</strong></span>: The number of erased elements.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized O(log(size() + N).</p>
@@ -410,7 +413,7 @@
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type">iterator</span> <a name="id868312-bb"></a>erase_and_dispose(iterator i, Disposer disposer) ;</pre>
+  <span class="type">iterator</span> <a name="id3063300-bb"></a>erase_and_dispose(iterator i, Disposer disposer) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases the element pointed to by pos. Disposer::operator()(pointer) is called for the removed element.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for erase element is constant time.</p>
@@ -419,7 +422,7 @@
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type">iterator</span> <a name="id868387-bb"></a>erase_and_dispose(iterator b, iterator e, Disposer disposer) ;</pre>
+  <span class="type">iterator</span> <a name="id3063367-bb"></a>erase_and_dispose(iterator b, iterator e, Disposer disposer) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases the range pointed to by b end e. Disposer::operator()(pointer) is called for the removed elements.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity for erase range is amortized O(log(size() + N)), where N is the number of elements in the range.</p>
@@ -428,7 +431,7 @@
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id868469-bb"></a>erase_and_dispose(const_reference value, Disposer disposer) ;</pre>
+  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id3063441-bb"></a>erase_and_dispose(const_reference value, Disposer disposer) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements with the given value. Disposer::operator()(pointer) is called for the removed elements.</p>
 <p><span class="bold"><strong>Returns</strong></span>: The number of erased elements.</p>
@@ -438,7 +441,7 @@
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare, <span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id868554-bb"></a>erase_and_dispose(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp, 
+  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id3063517-bb"></a>erase_and_dispose(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp, 
                               Disposer disposer) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements with the given key. according to the comparison functor "comp". Disposer::operator()(pointer) is called for the removed elements.</p>
@@ -448,59 +451,59 @@
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators to the erased elements. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id868655-bb"></a>clear() ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3063608-bb"></a>clear() ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all of the elements.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements on the container. if it's a safe-mode or auto-unlink value_type. Constant time otherwise.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. No destructors are called. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id868700-bb"></a>clear_and_dispose(Disposer disposer) ;</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Disposer&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3063650-bb"></a>clear_and_dispose(Disposer disposer) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all of the elements calling disposer(p) for each node to be erased. <span class="bold"><strong>Complexity</strong></span>: Amortized O(log(size() + N)), where N is the number of elements in the container.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Note</strong></span>: Invalidates the iterators (but not the references) to the erased elements. Calls N times to disposer functor. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id868760-bb"></a>count(const_reference value) ;</pre>
+<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id3063703-bb"></a>count(const_reference value) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of contained elements with the given value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic to the number of elements contained plus lineal to number of objects with the given value.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id868804-bb"></a>count(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id3063743-bb"></a>count(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of contained elements with the given key</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic to the number of elements contained plus lineal to number of objects with the given key.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id868867-bb"></a>count_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id3063800-bb"></a>count_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of contained elements with the given value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic to the number of elements contained plus lineal to number of objects with the given value.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id868911-bb"></a>count_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+  <span class="type"><a class="link" href="size_type.html" title="Struct template size_type">size_type</a></span> <a name="id3063840-bb"></a>count_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of contained elements with the given key</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic to the number of elements contained plus lineal to number of objects with the given key.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id868975-bb"></a>lower_bound(const_reference value) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3063898-bb"></a>lower_bound(const_reference value) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is not less than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id869017-bb"></a>lower_bound_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3063936-bb"></a>lower_bound_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is not less than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">iterator</span> <a name="id869060-bb"></a>lower_bound(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+  <span class="type">iterator</span> <a name="id3063975-bb"></a>lower_bound(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is not less than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
@@ -508,26 +511,26 @@
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
   <span class="type">const_iterator</span> 
-  <a name="id869121-bb"></a>lower_bound_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+  <a name="id3064030-bb"></a>lower_bound_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const iterator to the first element whose key is not less than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id869183-bb"></a>upper_bound(const_reference value) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3064087-bb"></a>upper_bound(const_reference value) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is greater than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">iterator</span> <a name="id869225-bb"></a>upper_bound(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+  <span class="type">iterator</span> <a name="id3064125-bb"></a>upper_bound(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is greater than k according to comp or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id869288-bb"></a>upper_bound_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3064181-bb"></a>upper_bound_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is greater than k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
@@ -535,26 +538,26 @@
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
   <span class="type">const_iterator</span> 
-  <a name="id869330-bb"></a>upper_bound_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+  <a name="id3064219-bb"></a>upper_bound_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element whose key is greater than k according to comp or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id869392-bb"></a>find(const_reference value) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3064276-bb"></a>find(const_reference value) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds an iterator to the first element whose key is k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">iterator</span> <a name="id869434-bb"></a>find(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+  <span class="type">iterator</span> <a name="id3064314-bb"></a>find(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds an iterator to the first element whose key is k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id869495-bb"></a>find_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3064369-bb"></a>find_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a const_iterator to the first element whose key is k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
@@ -562,13 +565,13 @@
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
   <span class="type">const_iterator</span> 
-  <a name="id869537-bb"></a>find_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+  <a name="id3064407-bb"></a>find_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a const_iterator to the first element whose key is k or end() if that element does not exist.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">std::pair&lt; iterator, iterator &gt;</span> <a name="id869598-bb"></a>equal_range(const_reference value) ;</pre>
+<pre class="literallayout"><span class="type">std::pair&lt; iterator, iterator &gt;</span> <a name="id3064463-bb"></a>equal_range(const_reference value) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a range containing all elements whose key is k or an empty range that indicates the position where those elements would be if they there is no elements with key k.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
@@ -576,14 +579,14 @@
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
   <span class="type">std::pair&lt; iterator, iterator &gt;</span> 
-  <a name="id869639-bb"></a>equal_range(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+  <a name="id3064503-bb"></a>equal_range(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a range containing all elements whose key is k or an empty range that indicates the position where those elements would be if they there is no elements with key k.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
 <pre class="literallayout"><span class="type">std::pair&lt; const_iterator, const_iterator &gt;</span> 
-<a name="id869699-bb"></a>equal_range_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<a name="id3064560-bb"></a>equal_range_dont_splay(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a range containing all elements whose key is k or an empty range that indicates the position where those elements would be if they there is no elements with key k.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
@@ -591,14 +594,14 @@
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
   <span class="type">std::pair&lt; const_iterator, const_iterator &gt;</span> 
-  <a name="id869739-bb"></a>equal_range_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
+  <a name="id3064600-bb"></a>equal_range_dont_splay(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Finds a range containing all elements whose key is k or an empty range that indicates the position where those elements would be if they there is no elements with key k.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Logarithmic.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Cloner, <span class="bold"><strong>typename</strong></span> Disposer&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id869800-bb"></a>clone_from(<span class="bold"><strong>const</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp; src, Cloner cloner, Disposer disposer) ;</pre>
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3064657-bb"></a>clone_from(<span class="bold"><strong>const</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp; src, Cloner cloner, Disposer disposer) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: Disposer::operator()(pointer) shouldn't throw.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements from *this calling Disposer::operator()(pointer), clones all the elements from src calling Cloner::operator()(const_reference ) and inserts them on *this.</p>
 <p>If cloner throws, all cloned elements are unlinked and disposed calling Disposer::operator()(pointer).</p>
@@ -606,14 +609,14 @@
 <p><span class="bold"><strong>Throws</strong></span>: If cloner throws. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">pointer</span> <a name="id869886-bb"></a>unlink_leftmost_without_rebalance() ;</pre>
+<pre class="literallayout"><span class="type">pointer</span> <a name="id3064735-bb"></a>unlink_leftmost_without_rebalance() ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Unlinks the leftmost node from the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Average complexity is constant time.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Notes</strong></span>: This function breaks the tree and the tree can only be used for more unlink_leftmost_without_rebalance calls. This function is normally used to achieve a step by step controlled destruction of the tree. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id869933-bb"></a>splay_up(iterator i) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3064778-bb"></a>splay_up(iterator i) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: i must be a valid iterator of *this.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Rearranges the splay set so that the element pointed by i is placed as the root of the tree, improving future searches of this value.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
@@ -621,21 +624,21 @@
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> KeyType, <span class="bold"><strong>typename</strong></span> KeyValueCompare&gt; 
-  <span class="type">iterator</span> <a name="id869983-bb"></a>splay_down(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
+  <span class="type">iterator</span> <a name="id3064824-bb"></a>splay_down(<span class="bold"><strong>const</strong></span> KeyType &amp; key, KeyValueCompare comp) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Rearranges the splay set so that if *this stores an element with a key equivalent to value the element is placed as the root of the tree. If the element is not present returns the last node compared with the key. If the tree is empty, end() is returned.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
 <p><span class="bold"><strong>Returns</strong></span>: An iterator to the new root of the tree, end() if the tree is empty.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If the comparison functor throws. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id870057-bb"></a>splay_down(<span class="bold"><strong>const</strong></span> value_type &amp; value) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3064890-bb"></a>splay_down(<span class="bold"><strong>const</strong></span> value_type &amp; value) ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Rearranges the splay set so that if *this stores an element with a key equivalent to value the element is placed as the root of the tree.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized logarithmic.</p>
 <p><span class="bold"><strong>Returns</strong></span>: An iterator to the new root of the tree, end() if the tree is empty.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If the predicate throws. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id870109-bb"></a>replace_node(iterator replace_this, reference with_this) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3064937-bb"></a>replace_node(iterator replace_this, reference with_this) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: replace_this must be a valid iterator of *this and with_this must not be inserted in any tree.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Replaces replace_this in its position in the tree with with_this. The tree does not need to be rebalanced.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
@@ -643,27 +646,27 @@
 <p><span class="bold"><strong>Note</strong></span>: This function will break container ordering invariants if with_this is not equivalent to *replace_this according to the ordering rules. This function is faster than erasing and inserting the node, since no rebalancing or comparison is needed. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id870178-bb"></a>iterator_to(reference value) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3065001-bb"></a>iterator_to(reference value) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue and shall be in a set of appropriate type. Otherwise the behavior is undefined.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns: a valid iterator i belonging to the set that points to the value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id870229-bb"></a>iterator_to(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id3065046-bb"></a>iterator_to(const_reference value) <span class="bold"><strong>const</strong></span>;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue and shall be in a set of appropriate type. Otherwise the behavior is undefined.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns: a valid const_iterator i belonging to the set that points to the value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id870280-bb"></a>rebalance() ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3065093-bb"></a>rebalance() ;</pre>
 <p><span class="bold"><strong>Effects</strong></span>: Rebalances the tree.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id870314-bb"></a>rebalance_subtree(iterator root) ;</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id3065123-bb"></a>rebalance_subtree(iterator root) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: old_root is a node of a tree.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Rebalances the subtree rooted at old_root.</p>
 <p><span class="bold"><strong>Returns</strong></span>: The new root of the subtree.</p>
@@ -673,11 +676,11 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id1160023"></a><h3>
-<a name="id870544-bb"></a><code class="computeroutput">splaytree</code> public static functions</h3>
+<a name="id3373926"></a><h3>
+<a name="id3065331-bb"></a><code class="computeroutput">splaytree</code> public static functions</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a name="id870548-bb"></a>container_from_end_iterator(iterator end_iterator) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a name="id3065334-bb"></a>container_from_end_iterator(iterator end_iterator) ;</pre>
 <p><span class="bold"><strong>Precondition</strong></span>: end_iterator must be a valid end iterator of splaytree.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the splaytree associated to the end iterator</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
@@ -685,14 +688,28 @@
 </li>
 <li>
 <pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> 
-<a name="id870602-bb"></a>container_from_end_iterator(const_iterator end_iterator) ;</pre>
+<a name="id3065384-bb"></a>container_from_end_iterator(const_iterator end_iterator) ;</pre>
 <p><span class="bold"><strong>Precondition</strong></span>: end_iterator must be a valid end const_iterator of splaytree.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the splaytree associated to the end iterator</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> iterator</span> <a name="id870657-bb"></a>s_iterator_to(reference value) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a name="id3065434-bb"></a>container_from_iterator(iterator it) ;</pre>
+<p><span class="bold"><strong>Precondition</strong></span>: it must be a valid iterator of rbtree.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the tree associated to the iterator</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Logarithmic. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a name="id3065482-bb"></a>container_from_iterator(const_iterator it) ;</pre>
+<p><span class="bold"><strong>Precondition</strong></span>: it must be a valid end const_iterator of rbtree.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the tree associated to the iterator</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Logarithmic. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> iterator</span> <a name="id3065532-bb"></a>s_iterator_to(reference value) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue and shall be in a set of appropriate type. Otherwise the behavior is undefined.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns: a valid iterator i belonging to the set that points to the value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
@@ -700,7 +717,7 @@
 <p><span class="bold"><strong>Note</strong></span>: This static function is available only if the value traits is stateless. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> const_iterator</span> <a name="id870717-bb"></a>s_iterator_to(const_reference value) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> const_iterator</span> <a name="id3065586-bb"></a>s_iterator_to(const_reference value) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: value must be an lvalue and shall be in a set of appropriate type. Otherwise the behavior is undefined.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns: a valid const_iterator i belonging to the set that points to the value</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant.</p>
@@ -708,7 +725,7 @@
 <p><span class="bold"><strong>Note</strong></span>: This static function is available only if the value traits is stateless. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>void</strong></span></span> <a name="id870777-bb"></a>init_node(reference value) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <span class="bold"><strong>void</strong></span></span> <a name="id3065640-bb"></a>init_node(reference value) ;</pre>
 <p><span class="bold"><strong>Requires</strong></span>: value shall not be in a tree.</p>
 <p><span class="bold"><strong>Effects</strong></span>: init_node puts the hook of a value in a well-known default state.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
@@ -718,10 +735,13 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id1160393"></a><h3>
-<a name="id870836-bb"></a><code class="computeroutput">splaytree</code> private static functions</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> 
-<a name="id870840-bb"></a>priv_container_from_end_iterator(<span class="bold"><strong>const</strong></span> const_iterator &amp; end_iterator) ;</pre></li></ol></div>
+<a name="id3374385"></a><h3>
+<a name="id3065693-bb"></a><code class="computeroutput">splaytree</code> private static functions</h3>
+<div class="orderedlist"><ol type="1">
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> 
+<a name="id3065697-bb"></a>priv_container_from_end_iterator(<span class="bold"><strong>const</strong></span> const_iterator &amp; end_iterator) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> <a class="link" href="splaytree.html" title="Class template splaytree">splaytree</a> &amp;</span> <a name="id3065715-bb"></a>priv_container_from_iterator(<span class="bold"><strong>const</strong></span> const_iterator &amp; it) ;</pre></li>
+</ol></div>
 </div>
 </div>
 </div>

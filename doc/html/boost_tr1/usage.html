@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_tr1.html" title="Chapter 18. Boost.TR1">
-<link rel="prev" href="../boost_tr1.html" title="Chapter 18. Boost.TR1">
+<link rel="up" href="../boost_tr1.html" title="Chapter 19. Boost.TR1">
+<link rel="prev" href="../boost_tr1.html" title="Chapter 19. Boost.TR1">
 <link rel="next" href="config.html" title="Configuration">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -64,14 +64,12 @@
         There are two ways you can include the Boost.TR1 headers, for example if
         you are interested in shared_ptr then you can either use:
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">tr1</span><span class="special">/</span><span class="identifier">memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">tr1</span><span class="special">/</span><span class="identifier">memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
         or:
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">memory</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">memory</span><span class="special">&gt;</span>
 </pre>
 <p>
         The first option is the preferred method for other Boost libraries to use.
@@ -105,8 +103,7 @@
 <p>
         
 </p>
-<pre class="programlisting">
-<span class="identifier">In</span> <span class="identifier">file</span> <span class="identifier">included</span> <span class="identifier">from</span> <span class="special">/</span><span class="identifier">usr</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">tr1</span><span class="special">/</span><span class="identifier">tuple</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">:</span><span class="number">5</span><span class="special">,</span>
+<pre class="programlisting"><span class="identifier">In</span> <span class="identifier">file</span> <span class="identifier">included</span> <span class="identifier">from</span> <span class="special">/</span><span class="identifier">usr</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">tr1</span><span class="special">/</span><span class="identifier">tuple</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">:</span><span class="number">5</span><span class="special">,</span>
                  <span class="identifier">from</span> <span class="identifier">boost</span><span class="special">-</span><span class="identifier">failure</span><span class="special">.</span><span class="identifier">cxx</span><span class="special">:</span><span class="number">1</span><span class="special">:</span>
 <span class="special">/</span><span class="identifier">usr</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">tr1</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">config</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">:</span><span class="number">60</span><span class="special">:</span><span class="number">26</span><span class="special">:</span> <span class="identifier">error</span><span class="special">:</span> <span class="identifier">no</span> <span class="identifier">include</span> <span class="identifier">path</span> <span class="identifier">in</span> <span class="identifier">which</span> <span class="identifier">to</span> <span class="identifier">search</span> <span class="keyword">for</span> <span class="identifier">utility</span></pre>
 <p>
@@ -167,14 +164,12 @@
         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span></code> namespace or a <code class="computeroutput"><span class="keyword">using</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span></code> statement. For example,
       </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">t</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">make_tuple</span><span class="special">(</span><span class="number">10</span><span class="special">,</span> <span class="string">"hello"</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">t</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">make_tuple</span><span class="special">(</span><span class="number">10</span><span class="special">,</span> <span class="string">"hello"</span><span class="special">);</span>
 </pre>
 <p>
         or
       </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">;</span>
 <span class="identifier">tuple</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">t</span> <span class="special">=</span> <span class="identifier">make_tuple</span><span class="special">(</span><span class="number">10</span><span class="special">,</span> <span class="string">"hello"</span><span class="special">);</span>
 </pre>
 </div>
@@ -183,8 +178,7 @@
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright © 2005 John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
-        file LICENSE_1_0.txt or copy at &lt;ulink url="http://www.boost.org<span class="emphasis"><em>LICENSE_1_0.txt"&gt;
-        http:</em></span>/www.boost.org/LICENSE_1_0.txt&lt;/ulink&gt;)
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></td>
 </tr></table>

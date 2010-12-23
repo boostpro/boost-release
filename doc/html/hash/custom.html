@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../hash.html" title="Chapter 7. Boost.Functional/Hash">
+<link rel="up" href="../hash.html" title="Chapter 8. Boost.Functional/Hash">
 <link rel="prev" href="tutorial.html" title="Tutorial">
 <link rel="next" href="combine.html" title="Combining hash values">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -28,7 +28,7 @@
 </h2></div></div></div>
 <p>
       <code class="computeroutput"><a class="link" href="../boost/hash.html" title="Struct template hash">boost::hash</a></code> is implemented by calling
-      the function <code class="computeroutput"><a class="link" href="../boost/hash_value_id225840.html" title="Function hash_value">hash_value</a></code>.
+      the function <code class="computeroutput"><a class="link" href="reference.html#boost.hash_value_id2311406">hash_value</a></code>.
       The namespace isn't specified so that it can detect overloads via argument
       dependant lookup. So if there is a free function <code class="computeroutput"><span class="identifier">hash_value</span></code>
       in the same namespace as a custom type, it will get called.
@@ -38,8 +38,7 @@
       each <code class="computeroutput"><span class="identifier">book</span></code> is uniquely defined
       by it's member <code class="computeroutput"><span class="identifier">id</span></code>:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">library</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">library</span>
 <span class="special">{</span>
     <span class="keyword">struct</span> <span class="identifier">book</span>
     <span class="special">{</span>
@@ -59,8 +58,7 @@
 <p>
       Then all you would need to do is write the function <code class="computeroutput"><span class="identifier">library</span><span class="special">::</span><span class="identifier">hash_value</span></code>:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">library</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">library</span>
 <span class="special">{</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">hash_value</span><span class="special">(</span><span class="identifier">book</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">)</span>
     <span class="special">{</span>
@@ -73,8 +71,7 @@
       And you can now use <code class="computeroutput"><a class="link" href="../boost/hash.html" title="Struct template hash">boost::hash</a></code> with
       book:
     </p>
-<pre class="programlisting">
-<span class="identifier">library</span><span class="special">::</span><span class="identifier">book</span> <span class="identifier">knife</span><span class="special">(</span><span class="number">3458</span><span class="special">,</span> <span class="string">"Zane Grey"</span><span class="special">,</span> <span class="string">"The Hash Knife Outfit"</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">library</span><span class="special">::</span><span class="identifier">book</span> <span class="identifier">knife</span><span class="special">(</span><span class="number">3458</span><span class="special">,</span> <span class="string">"Zane Grey"</span><span class="special">,</span> <span class="string">"The Hash Knife Outfit"</span><span class="special">);</span>
 <span class="identifier">library</span><span class="special">::</span><span class="identifier">book</span> <span class="identifier">dandelion</span><span class="special">(</span><span class="number">1354</span><span class="special">,</span> <span class="string">"Paul J. Shanley"</span><span class="special">,</span>
     <span class="string">"Hash &amp; Dandelion Greens"</span><span class="special">);</span>
 
@@ -112,7 +109,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2005-2007 Daniel James<p>
+<td align="right"><div class="copyright-footer">Copyright © 2005-2008 Daniel
+      James<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

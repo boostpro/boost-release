@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../interprocess.html" title="Chapter 8. Boost.Interprocess">
+<link rel="up" href="../interprocess.html" title="Chapter 9. Boost.Interprocess">
 <link rel="prev" href="architecture.html" title="Architecture and internals">
 <link rel="next" href="acknowledgements_notes.html" title="Acknowledgements, notes and links">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -52,8 +52,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">class</span> <span class="identifier">my_algorithm</span>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">my_algorithm</span>
 <span class="special">{</span>
    <span class="keyword">public</span><span class="special">:</span>
 
@@ -90,8 +89,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">typedef</span> <span class="comment">/* . . . */</span> <span class="identifier">void_pointer</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="comment">/* . . . */</span> <span class="identifier">void_pointer</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="comment">/* . . . */</span> <span class="identifier">mutex_family</span><span class="special">;</span>
 </pre>
 <p>
@@ -101,8 +99,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">typedef</span> <span class="keyword">void</span> <span class="special">*</span> <span class="identifier">void_pointer</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="keyword">void</span> <span class="special">*</span> <span class="identifier">void_pointer</span><span class="special">;</span>
 </pre>
 <p>
         all <span class="bold"><strong>Boost.Interprocess</strong></span> framework using this
@@ -110,8 +107,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">typedef</span> <span class="identifier">offset_ptr</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span> <span class="identifier">void_pointer</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">offset_ptr</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span> <span class="identifier">void_pointer</span><span class="special">;</span>
 </pre>
 <p>
         then all <span class="bold"><strong>Boost.Interprocess</strong></span> framework will
@@ -125,8 +121,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">struct</span> <span class="identifier">mutex_family</span>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">mutex_family</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">interprocess_mutex</span>             <span class="identifier">mutex_type</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">interprocess_recursive_mutex</span>   <span class="identifier">recursive_mutex_type</span><span class="special">;</span>
@@ -138,8 +133,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">typedef</span> <span class="identifier">mutex_family</span> <span class="identifier">mutex_family</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">mutex_family</span> <span class="identifier">mutex_family</span><span class="special">;</span>
 </pre>
 <p>
         The new algorithm (let's call it <span class="bold"><strong>my_algorithm</strong></span>)
@@ -212,8 +206,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//Managed memory segment to allocate named (c-string) objects
+<pre class="programlisting"><span class="comment">//Managed memory segment to allocate named (c-string) objects
 </span><span class="comment">//using a user-defined memory allocation algorithm
 </span><span class="identifier">basic_managed_shared_memory</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> 
                          <span class="special">,</span><span class="identifier">my_algorithm</span>
@@ -241,8 +234,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//Create the managed shared memory and initialize resources
+<pre class="programlisting"><span class="comment">//Create the managed shared memory and initialize resources
 </span><span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span>
    <span class="special">(</span><span class="identifier">create_only</span>
    <span class="special">,</span><span class="string">"/MySharedMemory"</span>   <span class="comment">//segment name
@@ -306,16 +298,14 @@
         </li></ul></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">key_type</span><span class="special">,</span> <span class="identifier">mapped_type</span><span class="special">&gt;</span> 
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">key_type</span><span class="special">,</span> <span class="identifier">mapped_type</span><span class="special">&gt;</span> 
 </pre>
 <p>
         or
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">key_type</span><span class="special">,</span> <span class="identifier">mapped_type</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">key_type</span><span class="special">,</span> <span class="identifier">mapped_type</span><span class="special">&gt;</span>
 </pre>
 <p>
         so that ordered arrays or deques can be used as index types. Some known classes
@@ -328,8 +318,7 @@
         </li></ul></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">struct</span> <span class="identifier">index_traits</span>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">index_traits</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="comment">/*...*/</span>   <span class="identifier">key_type</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="comment">/*...*/</span>   <span class="identifier">mapped_type</span><span class="special">;</span>
@@ -338,8 +327,7 @@
 </pre>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IndexTraits</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IndexTraits</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">my_index_type</span><span class="special">;</span>
 </pre>
 <p>
@@ -349,8 +337,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//!The key of the the named allocation information index. Stores a to
+<pre class="programlisting"><span class="comment">//!The key of the the named allocation information index. Stores a to
 </span><span class="comment">//!a null string and the length of the string to speed up sorting
 </span><span class="keyword">template</span><span class="special">&lt;...&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">index_key</span>
@@ -388,8 +375,7 @@
         </li></ul></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="identifier">constructor</span><span class="special">(</span><span class="identifier">segment_manager</span> <span class="special">*</span><span class="identifier">segment_mngr</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">constructor</span><span class="special">(</span><span class="identifier">segment_manager</span> <span class="special">*</span><span class="identifier">segment_mngr</span><span class="special">);</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
           The index must provide a memory reservation function, that optimizes the
@@ -397,8 +383,7 @@
         </li></ul></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">void</span> <span class="identifier">reserve</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">n</span><span class="special">);</span>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">reserve</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">n</span><span class="special">);</span>
 </pre>
 <p>
         For example, the index type <code class="computeroutput"><span class="identifier">flat_map_index</span></code>
@@ -409,8 +394,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">interprocess</span> <span class="special">{</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">interprocess</span> <span class="special">{</span>
 
 <span class="comment">//!Helper class to define typedefs from IndexTraits
 </span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">MapConfig</span><span class="special">&gt;</span>
@@ -475,8 +459,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//!Trait classes to detect if an index is a node
+<pre class="programlisting"><span class="comment">//!Trait classes to detect if an index is a node
 </span><span class="comment">//!index. This allows more efficient operations
 </span><span class="comment">//!when deallocating named objects.
 </span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">MapConfig</span><span class="special">&gt;</span>
@@ -506,8 +489,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//!Defines a managed shared memory with a c-strings as 
+<pre class="programlisting"><span class="comment">//!Defines a managed shared memory with a c-strings as 
 </span><span class="comment">//!a keys, the red-black tree best fit algorithm (with process-shared mutexes
 </span><span class="comment">//!and offset_ptr pointers) as raw shared memory management algorithm
 </span><span class="comment">//!and a custom index

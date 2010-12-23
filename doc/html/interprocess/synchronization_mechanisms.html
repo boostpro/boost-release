@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../interprocess.html" title="Chapter 8. Boost.Interprocess">
+<link rel="up" href="../interprocess.html" title="Chapter 9. Boost.Interprocess">
 <link rel="prev" href="offset_ptr.html" title="Mapping Address Independent Pointer: offset_ptr">
 <link rel="next" href="managed_memory_segments.html" title="Managed Memory Segments">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -127,8 +127,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 
 <span class="comment">//Create the synchronization utility. If it previously
 </span><span class="comment">//exists, throws an error
@@ -149,8 +148,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 
 <span class="comment">//Create the synchronization utility.
 </span><span class="identifier">AnonymousUtility</span><span class="special">(...)</span>
@@ -218,8 +216,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="comment">//The mutex has been previously constructed
+<pre class="programlisting"><span class="comment">//The mutex has been previously constructed
 </span>
 <span class="identifier">lock_the_mutex</span><span class="special">();</span>
 
@@ -263,7 +260,7 @@
           <span class="bold"><strong>Effects:</strong></span> The calling thread tries to obtain
           ownership of the mutex, and if another thread has ownership of the mutex,
           it waits until it can obtain the ownership. If a thread takes ownership
-          of the mutex the mutex must be unlocked by the same mutex. If the mutex
+          of the mutex the mutex must be unlocked by the same thread. If the mutex
           supports recursive locking, the mutex must be unlocked the same number
           of times it is locked.
         </p>
@@ -342,8 +339,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_mutex.html" title="Class interprocess_mutex">boost::interprocess::interprocess_mutex</a></code>:
@@ -352,8 +348,7 @@
           </li></ul></div>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_recursive_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_recursive_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_recursive_mutex.html" title="Class interprocess_recursive_mutex">boost::interprocess::interprocess_recursive_mutex</a></code>:
@@ -362,8 +357,7 @@
           </li></ul></div>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/named_mutex.html" title="Class named_mutex">named_mutex</a></code>:
@@ -371,8 +365,7 @@
           </li></ul></div>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_recursive_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_recursive_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/named_recursive_mutex.html" title="Class named_recursive_mutex">named_recursive_mutex</a></code>:
@@ -393,8 +386,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">scoped_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">scoped_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
           Basically, a scoped lock calls <span class="bold"><strong>unlock()</strong></span>
@@ -404,8 +396,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 
 <span class="comment">//Let's create any mutex type:
 </span><span class="identifier">MutexType</span> <span class="identifier">mutex</span><span class="special">;</span>
@@ -471,8 +462,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">struct</span> <span class="identifier">shared_memory_log</span>
 <span class="special">{</span>
@@ -508,8 +498,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">mapped_region</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">scoped_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="string">"doc_anonymous_mutex_shared_data.hpp"</span>
@@ -587,8 +576,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">mapped_region</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">scoped_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="string">"doc_anonymous_mutex_shared_data.hpp"</span>
@@ -674,8 +662,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">scoped_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">scoped_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">fstream</span><span class="special">&gt;</span>
 
@@ -770,8 +757,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_condition</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_condition</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_condition.html" title="Class interprocess_condition">boost::interprocess::interprocess_condition</a></code>:
@@ -780,8 +766,7 @@
           </li></ul></div>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_condition</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_condition</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/named_condition.html" title="Class named_condition">boost::interprocess::named_condition</a></code>:
@@ -826,8 +811,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_condition</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">struct</span> <span class="identifier">trace_queue</span>
@@ -868,8 +852,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">mapped_region</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">scoped_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -949,8 +932,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">mapped_region</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">scoped_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -1078,8 +1060,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_semaphore</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_semaphore</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_semaphore.html" title="Class interprocess_semaphore">boost::interprocess::interprocess_semaphore</a></code>:
@@ -1088,8 +1069,7 @@
           </li></ul></div>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_semaphore</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_semaphore</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/named_condition.html" title="Class named_condition">boost::interprocess::named_condition</a></code>:
@@ -1124,8 +1104,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_semaphore</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_semaphore</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">struct</span> <span class="identifier">shared_memory_buffer</span>
 <span class="special">{</span>
@@ -1157,8 +1136,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">mapped_region</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="string">"doc_anonymous_semaphore_shared_data.hpp"</span>
@@ -1229,8 +1207,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">mapped_region</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="string">"doc_anonymous_semaphore_shared_data.hpp"</span>
@@ -1371,7 +1348,7 @@
           To sum up:
         </p>
 <div class="table">
-<a name="id736212"></a><p class="title"><b>Table 8.5. Locking Possibilities</b></p>
+<a name="id2957287"></a><p class="title"><b>Table 9.5. Locking Possibilities</b></p>
 <div class="table-contents"><table class="table" summary="Locking Possibilities">
 <colgroup>
 <col>
@@ -1438,7 +1415,7 @@
           data is guaranteed to remain unchanged</strong></span>:
         </p>
 <div class="table">
-<a name="id736334"></a><p class="title"><b>Table 8.6. Transition Possibilities</b></p>
+<a name="id2957399"></a><p class="title"><b>Table 9.6. Transition Possibilities</b></p>
 <div class="table-contents"><table class="table" summary="Transition Possibilities">
 <colgroup>
 <col>
@@ -1989,8 +1966,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_upgradable_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_upgradable_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_upgradable_mutex.html" title="Class interprocess_upgradable_mutex">boost::interprocess::interprocess_upgradable_mutex</a></code>:
@@ -1999,8 +1975,7 @@
           </li></ul></div>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_upgradable_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">named_upgradable_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
 <code class="computeroutput"><a class="link" href="../boost/interprocess/named_upgradable_mutex.html" title="Class named_upgradable_mutex">named_upgradable_mutex</a></code>:
@@ -2043,13 +2018,11 @@
 </h5></div></div></div>
 <p>
           </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">sharable_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">sharable_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
           </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">upgradable_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">upgradable_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 </div>
 <p>
@@ -2060,8 +2033,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 
 <span class="comment">//Let's create any mutex type:
 </span><span class="identifier">MutexType</span> <span class="identifier">mutex</span><span class="special">;</span>
@@ -2182,8 +2154,8 @@
 <p class="title"><b></b></p>
 <p>
         <span class="bold"><strong>Interprocess uses its own move semantics emulation
-        code. This is a temporary solution until a Boost move semantics library is
-        accepted.</strong></span>
+        code for compilers that don't support rvalues references. This is a temporary
+        solution until a Boost move semantics library is accepted.</strong></span>
       </p>
 </div>
 <p>
@@ -2214,8 +2186,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 <span class="identifier">interprocess_upgradable_mutex</span> <span class="identifier">mutex</span><span class="special">;</span>
 
 <span class="comment">//Acquire exclusive lock
@@ -2239,8 +2210,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">try</span><span class="special">{</span>
+<pre class="programlisting"><span class="keyword">try</span><span class="special">{</span>
    <span class="comment">//Mutex operations
 </span><span class="special">}</span>
 <span class="keyword">catch</span><span class="special">(...){</span>
@@ -2254,8 +2224,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 <span class="identifier">interprocess_upgradable_mutex</span> <span class="identifier">mutex</span><span class="special">;</span>
 
 <span class="comment">//Acquire exclusive lock
@@ -2333,8 +2302,7 @@
           </p>
 <p>
           </p>
-<pre class="programlisting">
-<span class="comment">//Conversions to scoped_lock
+<pre class="programlisting"><span class="comment">//Conversions to scoped_lock
 </span><span class="special">{</span>
    <span class="identifier">upgradable_lock</span><span class="special">&lt;</span><span class="identifier">Mutex</span><span class="special">&gt;</span>  <span class="identifier">u_lock</span><span class="special">(</span><span class="identifier">mut</span><span class="special">);</span>
    <span class="comment">//This calls unlock_upgradable_and_lock()
@@ -2375,8 +2343,7 @@
           </p>
 <p>
           </p>
-<pre class="programlisting">
-<span class="comment">//Conversions to upgradable
+<pre class="programlisting"><span class="comment">//Conversions to upgradable
 </span><span class="special">{</span>
    <span class="identifier">sharable_lock</span><span class="special">&lt;</span><span class="identifier">Mutex</span><span class="special">&gt;</span>    <span class="identifier">s_lock</span><span class="special">(</span><span class="identifier">mut</span><span class="special">);</span>
    <span class="comment">//This calls try_unlock_sharable_and_lock_upgradable()
@@ -2403,8 +2370,7 @@
           </p>
 <p>
           </p>
-<pre class="programlisting">
-<span class="comment">//Conversions to sharable_lock
+<pre class="programlisting"><span class="comment">//Conversions to sharable_lock
 </span><span class="special">{</span>
    <span class="identifier">upgradable_lock</span><span class="special">&lt;</span><span class="identifier">Mutex</span><span class="special">&gt;</span>  <span class="identifier">u_lock</span><span class="special">(</span><span class="identifier">mut</span><span class="special">);</span>
    <span class="comment">//This calls unlock_upgradable_and_lock_sharable()
@@ -2429,8 +2395,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-   <span class="identifier">Mutex</span> <span class="identifier">mut</span><span class="special">;</span>
+<pre class="programlisting">   <span class="identifier">Mutex</span> <span class="identifier">mut</span><span class="special">;</span>
 
    <span class="comment">//This calls mut.lock()
 </span>   <span class="identifier">scoped_lock</span><span class="special">&lt;</span><span class="identifier">Mutex</span><span class="special">&gt;</span>      <span class="identifier">e_lock</span><span class="special">(</span><span class="identifier">mut</span><span class="special">);</span>
@@ -2446,8 +2411,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="comment">//These operations can left the mutex unlocked!
+<pre class="programlisting"><span class="comment">//These operations can left the mutex unlocked!
 </span>
 <span class="special">{</span>
    <span class="comment">//Try might fail
@@ -2490,8 +2454,7 @@
 </ul></div>
 <p>
         </p>
-<pre class="programlisting">
-<span class="special">{</span>
+<pre class="programlisting"><span class="special">{</span>
    <span class="identifier">scoped_lock</span><span class="special">&lt;</span><span class="identifier">Mutex</span><span class="special">&gt;</span>      <span class="identifier">e_lock</span><span class="special">(</span><span class="identifier">mut</span><span class="special">,</span> <span class="identifier">defer_lock</span><span class="special">);</span>
    <span class="identifier">sharable_lock</span><span class="special">&lt;</span><span class="identifier">Mutex</span><span class="special">&gt;</span>    <span class="identifier">s_lock</span><span class="special">(</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">e_lock</span><span class="special">));</span>
 
@@ -2525,8 +2488,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="special">{</span>
+<pre class="programlisting"><span class="special">{</span>
    <span class="identifier">scoped_lock</span><span class="special">&lt;</span><span class="identifier">Mutex</span><span class="special">&gt;</span>      <span class="identifier">e_lock</span><span class="special">(</span><span class="identifier">mut</span><span class="special">,</span> <span class="identifier">defer_lock</span><span class="special">);</span>
 
    <span class="comment">//This operations throws because
@@ -2546,8 +2508,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="special">{</span>
+<pre class="programlisting"><span class="special">{</span>
    <span class="identifier">sharable_lock</span><span class="special">&lt;</span><span class="identifier">Mutex</span><span class="special">&gt;</span>    <span class="identifier">s_lock</span><span class="special">(</span><span class="identifier">mut</span><span class="special">);</span>
 
    <span class="comment">//Internal "try_unlock_sharable_and_lock_upgradable()" returns false
@@ -2631,8 +2592,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">file_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">file_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
           A file locking is a class that has <span class="bold"><strong>process lifetime</strong></span>.
@@ -2644,8 +2604,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">file_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">file_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
@@ -2833,8 +2792,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">file_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">file_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">sharable_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="comment">//...
 </span>
@@ -2857,8 +2815,7 @@
 </pre>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">file_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">file_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">scoped_lock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="comment">//...
@@ -2889,8 +2846,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="comment">//Open the file lock
+<pre class="programlisting"><span class="comment">//Open the file lock
 </span><span class="identifier">file_lock</span> <span class="identifier">f_lock</span><span class="special">(</span><span class="string">"my_file"</span><span class="special">);</span>
 
 <span class="identifier">scoped_lock</span><span class="special">&lt;</span><span class="identifier">file_lock</span><span class="special">&gt;</span> <span class="identifier">e_lock</span><span class="special">(</span><span class="identifier">f_lock</span><span class="special">);</span>
@@ -2974,8 +2930,7 @@
             functions or the <code class="computeroutput"><span class="identifier">flush</span><span class="special">()</span></code> member function when using C++ iostreams.
           </li>
 </ul></div>
-<pre class="programlisting">
-<span class="comment">//...
+<pre class="programlisting"><span class="comment">//...
 </span>
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 <span class="comment">//This process writes the file
@@ -3071,8 +3026,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 <span class="comment">//Create a message_queue. If the queue
 </span><span class="comment">//exists throws an exception
 </span><span class="identifier">message_queue</span> <span class="identifier">mq</span>
@@ -3084,8 +3038,7 @@
 </pre>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 <span class="comment">//Creates or opens a message_queue. If the queue
 </span><span class="comment">//does not exist creates it, otherwise opens it.
 </span><span class="comment">//Message number and size are ignored if the queue
@@ -3099,8 +3052,7 @@
 </pre>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 <span class="comment">//Opens a message_queue. If the queue
 </span><span class="comment">//does not exist throws an exception.
 </span><span class="identifier">message_queue</span> <span class="identifier">mq</span>
@@ -3113,8 +3065,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 <span class="identifier">message_queue</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"message_queue"</span><span class="special">);</span>
 </pre>
 <p>
@@ -3131,8 +3082,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">ipc</span><span class="special">/</span><span class="identifier">message_queue</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">ipc</span><span class="special">/</span><span class="identifier">message_queue</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
           In the following example, the first process creates the message queue,
@@ -3145,8 +3095,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">ipc</span><span class="special">/</span><span class="identifier">message_queue</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">ipc</span><span class="special">/</span><span class="identifier">message_queue</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 
@@ -3172,11 +3121,9 @@
       <span class="special">}</span>
    <span class="special">}</span>
    <span class="keyword">catch</span><span class="special">(</span><span class="identifier">interprocess_exception</span> <span class="special">&amp;</span><span class="identifier">ex</span><span class="special">){</span>
-      <span class="identifier">message_queue</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"message_queue"</span><span class="special">);</span>
       <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">ex</span><span class="special">.</span><span class="identifier">what</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
       <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
    <span class="special">}</span>
-   <span class="identifier">message_queue</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"message_queue"</span><span class="special">);</span>
 
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
@@ -3193,8 +3140,7 @@
 <p>
             
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">ipc</span><span class="special">/</span><span class="identifier">message_queue</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">ipc</span><span class="special">/</span><span class="identifier">message_queue</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 

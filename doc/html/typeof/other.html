@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../typeof.html" title="Chapter 20. Boost.Typeof">
+<link rel="up" href="../typeof.html" title="Chapter 21. Boost.Typeof">
 <link rel="prev" href="refe.html" title="Reference">
 <link rel="next" href="cont.html" title="Contributed By:">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -43,8 +43,7 @@
         uses a bug in the Microsoft compiler that allows a nested class of base to
         be defined in a class derived from base:
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">ID</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">typeof_access</span>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">ID</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">typeof_access</span>
 <span class="special">{</span>
     <span class="keyword">struct</span> <span class="identifier">id2type</span><span class="special">;</span> <span class="comment">//not defined
 </span><span class="special">};</span>
@@ -113,8 +112,7 @@
         by defining the <code class="computeroutput"><span class="identifier">BOOST_TYPEOF_COMPLIANT</span></code>
         symbol:
       </p>
-<pre class="programlisting">
-<span class="identifier">g</span><span class="special">++</span> <span class="special">-</span><span class="identifier">D</span> <span class="identifier">BOOST_TYPEOF_COMPLIANT</span> <span class="special">-</span><span class="identifier">I</span> <span class="special">\</span><span class="identifier">boost</span><span class="special">\</span><span class="identifier">boost_1_32_0</span> <span class="identifier">main</span><span class="special">.</span><span class="identifier">cpp</span>
+<pre class="programlisting"><span class="identifier">g</span><span class="special">++</span> <span class="special">-</span><span class="identifier">D</span> <span class="identifier">BOOST_TYPEOF_COMPLIANT</span> <span class="special">-</span><span class="identifier">I</span> <span class="special">\</span><span class="identifier">boost</span><span class="special">\</span><span class="identifier">boost_1_32_0</span> <span class="identifier">main</span><span class="special">.</span><span class="identifier">cpp</span>
 </pre>
 </div>
 <div class="section" lang="en">
@@ -123,8 +121,7 @@
 <p>
         The Lambda example from the Motivation section requires the following registration:
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="identifier">BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP</span><span class="special">()</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="identifier">BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP</span><span class="special">()</span>
  
 <span class="identifier">BOOST_TYPEOF_REGISTER_TEMPLATE</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">tuples</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">,</span> <span class="number">2</span><span class="special">);</span>
 <span class="identifier">BOOST_TYPEOF_REGISTER_TEMPLATE</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lambda</span><span class="special">::</span><span class="identifier">lambda_functor</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
@@ -201,14 +198,12 @@
 <p>
         For example the following type:
       </p>
-<pre class="programlisting">
-<span class="keyword">int</span><span class="special">&amp;</span> <span class="special">(*)(</span><span class="keyword">const</span> <span class="keyword">volatile</span> <span class="keyword">char</span><span class="special">*,</span> <span class="keyword">double</span><span class="special">[</span><span class="number">5</span><span class="special">],</span> <span class="keyword">void</span><span class="special">(*)(</span><span class="keyword">short</span><span class="special">))</span>
+<pre class="programlisting"><span class="keyword">int</span><span class="special">&amp;</span> <span class="special">(*)(</span><span class="keyword">const</span> <span class="keyword">volatile</span> <span class="keyword">char</span><span class="special">*,</span> <span class="keyword">double</span><span class="special">[</span><span class="number">5</span><span class="special">],</span> <span class="keyword">void</span><span class="special">(*)(</span><span class="keyword">short</span><span class="special">))</span>
 </pre>
 <p>
         is supported right away, and something like:
       </p>
-<pre class="programlisting">
-<span class="keyword">void</span> <span class="special">(</span><span class="identifier">MyClass</span><span class="special">::*)(</span><span class="keyword">int</span> <span class="identifier">MyClass</span><span class="special">::*,</span> <span class="identifier">MyClass</span><span class="special">[</span><span class="number">10</span><span class="special">])</span> <span class="keyword">const</span>
+<pre class="programlisting"><span class="keyword">void</span> <span class="special">(</span><span class="identifier">MyClass</span><span class="special">::*)(</span><span class="keyword">int</span> <span class="identifier">MyClass</span><span class="special">::*,</span> <span class="identifier">MyClass</span><span class="special">[</span><span class="number">10</span><span class="special">])</span> <span class="keyword">const</span>
 </pre>
 <p>
         is supported provided <code class="computeroutput"><span class="identifier">MyClass</span></code>
@@ -220,8 +215,7 @@
         STL headers. These files are not included by the typeof system and have to
         be explicitly included by the user, as needed:
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">functional</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">functional</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="identifier">BOOST_AUTO</span><span class="special">(</span><span class="identifier">fun</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">bind2nd</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">less</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(),</span> <span class="number">21</span><span class="special">));</span> <span class="comment">//create named function object for future use.
 </span></pre>
 </div>
@@ -238,8 +232,7 @@
         registered with the Typeof Library in order for <code class="computeroutput"><span class="identifier">BOOST_TYPEOF</span></code>
         to work.
       </p>
-<pre class="programlisting">
-<span class="keyword">struct</span> <span class="identifier">X</span> <span class="special">{};</span>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">X</span> <span class="special">{};</span>
  
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">A</span><span class="special">,</span><span class="keyword">bool</span> <span class="identifier">B</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">Y</span> <span class="special">{};</span>
@@ -263,8 +256,7 @@
         Inspecting this error message, we see that the compiler complains about
         <code class="computeroutput"><span class="identifier">X</span></code>
       </p>
-<pre class="programlisting">
-<span class="identifier">BOOST_TYPEOF_REGISTER_TYPE</span><span class="special">(</span><span class="identifier">X</span><span class="special">);</span> <span class="comment">//register X with the typeof system
+<pre class="programlisting"><span class="identifier">BOOST_TYPEOF_REGISTER_TYPE</span><span class="special">(</span><span class="identifier">X</span><span class="special">);</span> <span class="comment">//register X with the typeof system
 </span></pre>
 <p>
         Recompiling, we get a new error message from VC7.1
@@ -283,8 +275,7 @@
         is a template, and contains integral constants, we need to take more care
         when registering:
       </p>
-<pre class="programlisting">
-<span class="identifier">BOOST_TYPEOF_REGISTER_TEMPLATE</span><span class="special">(</span><span class="identifier">Y</span><span class="special">,(</span><span class="keyword">typename</span><span class="special">)(</span><span class="keyword">bool</span><span class="special">));</span> <span class="comment">//register template class Y
+<pre class="programlisting"><span class="identifier">BOOST_TYPEOF_REGISTER_TEMPLATE</span><span class="special">(</span><span class="identifier">Y</span><span class="special">,(</span><span class="keyword">typename</span><span class="special">)(</span><span class="keyword">bool</span><span class="special">));</span> <span class="comment">//register template class Y
 </span></pre>
 <p>
         It is a good idea to look up the exact definition of <code class="computeroutput"><span class="identifier">Y</span></code>
@@ -305,8 +296,7 @@
 <p>
         Nested template template parameters are not supported, like:
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">&gt;</span> <span class="keyword">class</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">Tpl</span><span class="special">&gt;</span> 
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">&gt;</span> <span class="keyword">class</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">Tpl</span><span class="special">&gt;</span> 
 <span class="keyword">class</span> <span class="identifier">A</span><span class="special">;</span> <span class="comment">// can't register!
 </span></pre>
 <p>
@@ -315,8 +305,7 @@
         with regards to standard iterators in Dinkumware STL, which are implemented
         as nested classes. Instead, instantiations can be registered:
       </p>
-<pre class="programlisting">
-<span class="identifier">BOOST_TYPEOF_REGISTER_TYPE</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span><span class="special">)</span>
+<pre class="programlisting"><span class="identifier">BOOST_TYPEOF_REGISTER_TYPE</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span><span class="special">)</span>
 </pre>
 </div>
 </div>

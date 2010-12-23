@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../foreach.html" title="Chapter 5. Boost.Foreach">
+<link rel="up" href="../foreach.html" title="Chapter 6. Boost.Foreach">
 <link rel="prev" href="portability.html" title="Portability">
 <link rel="next" href="history_and_acknowledgements.html" title="History and Acknowledgements">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -30,7 +30,7 @@
       This section describes some common pitfalls with <code class="literal">BOOST_FOREACH</code>.
     </p>
 <a name="foreach.pitfalls.types_with_commas"></a><h3>
-<a name="id673805"></a>
+<a name="id2901472"></a>
       <a class="link" href="pitfalls.html#foreach.pitfalls.types_with_commas">Types With Commas</a>
     </h3>
 <p>
@@ -39,8 +39,7 @@
       especially when the type of the loop variable is a template. Consider trying
       to iterate over a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span></code>:
     </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">m</span><span class="special">;</span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">m</span><span class="special">;</span>
 
 <span class="comment">// ERROR! Too many arguments to BOOST_FOREACH macro.
 </span><span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">m</span><span class="special">)</span> <span class="comment">// ...
@@ -48,8 +47,7 @@
 <p>
       One way to fix this is with a typedef.
     </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">m</span><span class="special">;</span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">m</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">pair_t</span><span class="special">;</span>
 
 <span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="identifier">pair_t</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">m</span><span class="special">)</span> <span class="comment">// ...
@@ -57,14 +55,13 @@
 <p>
       Another way to fix it is to predeclare the loop variable:
     </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">m</span><span class="special">;</span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">m</span><span class="special">;</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">;</span>
 
 <span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="identifier">p</span><span class="special">,</span> <span class="identifier">m</span><span class="special">)</span> <span class="comment">// ...
 </span></pre>
 <a name="foreach.pitfalls.hoisting_and_iterator_invalidation"></a><h3>
-<a name="id674320"></a>
+<a name="id2901936"></a>
       <a class="link" href="pitfalls.html#foreach.pitfalls.hoisting_and_iterator_invalidation">Hoisting
       and Iterator Invalidation</a>
     </h3>
@@ -80,8 +77,7 @@
 <p>
       Consider the following code:
     </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">vect</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="number">4</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">vect</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="number">4</span><span class="special">);</span>
 <span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span><span class="special">,</span> <span class="identifier">vect</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="identifier">vect</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">i</span> <span class="special">+</span> <span class="number">1</span><span class="special">);</span>
@@ -91,8 +87,7 @@
       This code will compile, but it has undefined behavior. That is because it is
       logically equivalent to the following:
     </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">vect</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="number">4</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">vect</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="number">4</span><span class="special">);</span>
 <span class="keyword">for</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;::</span><span class="identifier">iterator</span> <span class="identifier">it1</span> <span class="special">=</span> <span class="identifier">vect</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">it2</span> <span class="special">=</span> <span class="identifier">vect</span><span class="special">.</span><span class="identifier">end</span><span class="special">();</span>
     <span class="identifier">it1</span> <span class="special">!=</span> <span class="identifier">it2</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it1</span><span class="special">)</span>
 <span class="special">{</span>

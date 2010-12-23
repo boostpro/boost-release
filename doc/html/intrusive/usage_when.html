@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="usage.html" title="How to use Boost.Intrusive">
 <link rel="next" href="concepts_summary.html" title="Concept summary">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -28,7 +28,7 @@
 </h2></div></div></div>
 <p>
       Intrusive containers can be used for highly optimized algorithms, where speed
-      is a crucial issue and...
+      is a crucial issue and:
     </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -55,9 +55,9 @@
 </ul></div>
 <p>
       The last point is important if you have a lot of containers over a set of elements.
-      E.g. if you have a vector of objects (say, <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">Object</span><span class="special">&gt;</span></code>) and you also have a list storing a subset
+      E.g. if you have a vector of objects (say, <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">Object</span><span class="special">&gt;</span></code>), and you also have a list storing a subset
       of those objects (<code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Object</span><span class="special">*&gt;</span></code>),
-      then operating on an Object from the list iterator (<code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Object</span><span class="special">*&gt;::</span><span class="identifier">iterator</span></code>) needs two steps:
+      then operating on an Object from the list iterator (<code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Object</span><span class="special">*&gt;::</span><span class="identifier">iterator</span></code>) requires two steps:
     </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -71,10 +71,10 @@
 </ul></div>
 <p>
       While the objects themselves are tightly packed in the memory of the vector
-      (vector's memory is guaranteed to be contiguous), and form something like a
-      data block, list nodes can stay dispersed in the heap memory. Hence depending
-      on your system you can get a lot of cache misses. The same doesn't hold for
-      an intrusive list. Indeed, dereferencing an an iterator from an intrusive list
+      (a vector's memory is guaranteed to be contiguous), and form something like
+      a data block, list nodes may be dispersed in the heap memory. Hence depending
+      on your system you might get a lot of cache misses. The same doesn't hold for
+      an intrusive list. Indeed, dereferencing an iterator from an intrusive list
       is performed in the same two steps as described above. But the list node is
       already embedded in the Object, so the memory is directly tracked from the
       iterator to the Object.
@@ -82,15 +82,14 @@
 <p>
       It's also possible to use intrusive containers when the objects to be stored
       can have different or unknown size. This allows storing base and derived objects
-      in the same container as shown in the following example:
+      in the same container, as shown in the following example:
     </p>
 <p>
       </p>
 <p>
         
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
@@ -169,7 +168,7 @@
       Due to certain properties of intrusive containers they are often more difficult
       to use than their STL-counterparts. That's why you should avoid them in public
       interfaces of libraries. Classes to be stored in intrusive containers must
-      change their implementation to store the hook and this is not always posible
+      change their implementation to store the hook and this is not always possible
       or desirable.
     </p>
 </div>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="node_algorithms.html" title="Node algorithms with custom NodeTraits">
 <link rel="next" href="thread_safety.html" title="Thread safety guarantees">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -48,12 +48,12 @@
       all the information to glue the <code class="computeroutput"><span class="identifier">value_type</span></code>
       of the containers and the node to be used in node algorithms, since these types
       can be different. Apart from this, <code class="computeroutput"><span class="identifier">ValueTraits</span></code>
-      also store information about the link policy of the values to be inserted.
+      also stores information about the link policy of the values to be inserted.
     </p>
 <p>
       Instead of using <span class="bold"><strong>Boost.Intrusive</strong></span> predefined
       hooks a user might want to develop customized containers, for example, using
-      nodes that are optimized for an specific application or that are compatible
+      nodes that are optimized for a specific application or that are compatible
       with a a legacy ABI. A user might want to have only two additional pointers
       in his class and insert the class in a doubly linked list sometimes and in
       a singly linked list in other situations. You can't achieve this using <span class="bold"><strong>Boost.Intrusive</strong></span> predefined hooks. Now, instead of using
@@ -68,13 +68,12 @@
       interface</a>
 </h3></div></div></div>
 <p>
-        <code class="computeroutput"><span class="identifier">ValueTraits</span></code> have the following
+        <code class="computeroutput"><span class="identifier">ValueTraits</span></code> has the following
         interface:
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">pointer_to_other</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">pointer_to_other</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">link_mode</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">struct</span> <span class="identifier">my_value_traits</span>
@@ -100,8 +99,8 @@
 <div class="itemizedlist"><ul type="disc">
 <li>
 <span class="bold"><strong><span class="emphasis"><em>node_traits</em></span></strong></span>: The
-          node configuration that it's needed by node algorithms. These node traits
-          and algorithms are described in the previous chapter: <a class="link" href="node_algorithms.html" title="Node algorithms with custom NodeTraits">Nodes
+          node configuration that is needed by node algorithms. These node traits
+          and algorithms are described in the previous chapter: <a class="link" href="node_algorithms.html" title="Node algorithms with custom NodeTraits">Node
           Algorithms</a>.
           <div class="itemizedlist"><ul type="circle">
 <li>
@@ -146,7 +145,8 @@
 <span class="bold"><strong><span class="emphasis"><em>pointer</em></span></strong></span>: The type
           of a pointer to a <code class="computeroutput"><span class="identifier">value_type</span></code>.
           It must be the same pointer type as <code class="computeroutput"><span class="identifier">node_ptr</span></code>:
-          If <code class="computeroutput"><span class="identifier">node_ptr</span></code> is <code class="computeroutput"><span class="identifier">node</span> <span class="special">*</span></code><code class="computeroutput"><span class="identifier">pointer</span></code> must be <code class="computeroutput"><span class="identifier">value_type</span><span class="special">*</span></code>.
+          If <code class="computeroutput"><span class="identifier">node_ptr</span></code> is <code class="computeroutput"><span class="identifier">node</span><span class="special">*</span></code>,
+          <code class="computeroutput"><span class="identifier">pointer</span></code> must be <code class="computeroutput"><span class="identifier">value_type</span><span class="special">*</span></code>.
           If <code class="computeroutput"><span class="identifier">node_ptr</span></code> is <code class="computeroutput"><span class="identifier">smart_ptr</span><span class="special">&lt;</span><span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">node</span><span class="special">&gt;</span></code>,
           <code class="computeroutput"><span class="identifier">pointer</span></code> must be <code class="computeroutput"><span class="identifier">smart_ptr</span><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">&gt;</span></code>.
           This can be generically achieved using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">pointer_to_other</span></code>
@@ -156,8 +156,7 @@
 <li>
 <span class="bold"><strong><span class="emphasis"><em>const_pointer</em></span></strong></span>: The
           type of a pointer to a <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">value_type</span></code>. It must be the same pointer
-          type as <code class="computeroutput"><span class="identifier">node_ptr</span></code>: If <code class="computeroutput"><span class="identifier">node_ptr</span></code> is <code class="computeroutput"><span class="identifier">node</span>
-          <span class="special">*</span></code><code class="computeroutput"><span class="identifier">const_pointer</span></code>
+          type as <code class="computeroutput"><span class="identifier">node_ptr</span></code>: If <code class="computeroutput"><span class="identifier">node_ptr</span></code> is <code class="computeroutput"><span class="identifier">node</span><span class="special">*</span></code>, <code class="computeroutput"><span class="identifier">const_pointer</span></code>
           must be <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">value_type</span><span class="special">*</span></code>. If <code class="computeroutput"><span class="identifier">node_ptr</span></code>
           is <code class="computeroutput"><span class="identifier">smart_ptr</span><span class="special">&lt;</span><span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">node</span><span class="special">&gt;</span></code>,
           <code class="computeroutput"><span class="identifier">const_pointer</span></code> must be
@@ -174,15 +173,14 @@
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">normal_link</span></code></strong></span>:
               If this linking policy is specified in a <code class="computeroutput"><span class="identifier">ValueTraits</span></code>
-              class as the link, containers configured with such <code class="computeroutput"><span class="identifier">ValueTraits</span></code>
-              won't set the hooks of the erased values to a default state. Containers
-              also won't check that the hooks of the new values are default initialized.
-              normal_link,
+              class as the link mode, containers configured with such <code class="computeroutput"><span class="identifier">ValueTraits</span></code> won't set the hooks of
+              the erased values to a default state. Containers also won't check that
+              the hooks of the new values are default initialized.
             </li>
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">safe_link</span></code></strong></span>:
-              If this linking policy is specified in a <code class="computeroutput"><span class="identifier">ValueTraits</span></code>
-              class as the link, containers configured with such <code class="computeroutput"><span class="identifier">ValueTraits</span></code>
+              If this linking policy is specified as the link mode in a <code class="computeroutput"><span class="identifier">ValueTraits</span></code> class, containers configured
+              with this <code class="computeroutput"><span class="identifier">ValueTraits</span></code>
               will set the hooks of the erased values to a default state. Containers
               also will check that the hooks of the new values are default initialized.
             </li>
@@ -190,9 +188,9 @@
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">auto_unlink</span></code></strong></span>:
               Same as "safe_link" but containers with constant-time size
               features won't be compatible with <code class="computeroutput"><span class="identifier">ValueTraits</span></code>
-              configured with this policy. Containers also know that the a value
-              can be silently erased from the container without using any function
-              provided by the containers.
+              configured with this policy. Containers also know that a value can
+              be silently erased from the container without using any function provided
+              by the containers.
             </li>
 </ul></div>
 </li>
@@ -200,14 +198,14 @@
 <span class="bold"><strong><span class="emphasis"><em>static node_ptr to_node_ptr (value_type
           &amp;value)</em></span></strong></span> and <span class="bold"><strong><span class="emphasis"><em>static
           const_node_ptr to_node_ptr (const value_type &amp;value)</em></span></strong></span>:
-          These function take a reference to a value_type and return a pointer to
+          These functions take a reference to a value_type and return a pointer to
           the node to be used with node algorithms.
         </li>
 <li>
 <span class="bold"><strong><span class="emphasis"><em>static pointer to_value_ptr (node_ptr n)</em></span></strong></span>
           and <span class="bold"><strong><span class="emphasis"><em>static const_pointer to_value_ptr (const_node_ptr
-          n)</em></span></strong></span>: These function take a pointer to a node and return
-          a pointer to the value that contains the node.
+          n)</em></span></strong></span>: These functions take a pointer to a node and
+          return a pointer to the value that contains the node.
         </li>
 </ul></div>
 </div>
@@ -223,16 +221,15 @@
         legacy type has two pointers that can be used to build singly and doubly
         linked lists: in singly linked lists we only need a pointer, whereas in doubly
         linked lists, we need two pointers. Since we only have two pointers, we can't
-        insert the object in a singly and doubly linked list at the same time. This
-        is the definition of the old node:
+        insert the object in both a singly and a doubly linked list at the same time.
+        This is the definition of the old node:
       </p>
 <p>
         </p>
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">link_mode</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">link_mode</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">slist</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
@@ -262,8 +259,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="comment">//Define our own NodeTraits that will configure singly and doubly linked
+<pre class="programlisting"><span class="comment">//Define our own NodeTraits that will configure singly and doubly linked
 </span><span class="comment">//list algorithms. Note that this node traits is compatible with
 </span><span class="comment">//circular_slist_algorithms and circular_list_algorithms.
 </span>
@@ -306,7 +302,7 @@
 <p>
       </p>
 <p>
-        Defining a value traits class that just defines <code class="computeroutput"><span class="identifier">value_type</span></code>
+        Defining a value traits class that simply defines <code class="computeroutput"><span class="identifier">value_type</span></code>
         as <code class="computeroutput"><span class="identifier">legacy_node_traits</span><span class="special">::</span><span class="identifier">node</span></code> is a common approach when defining
         customized intrusive containers, so <span class="bold"><strong>Boost.Intrusive</strong></span>
         offers a templatized <code class="computeroutput"><a class="link" href="../boost/intrusive/trivial_value_traits.html" title="Struct template trivial_value_traits">trivial_value_traits</a></code>
@@ -314,8 +310,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">trivial_value_traits</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">trivial_value_traits</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="comment">//Now we can define legacy_value_traits just with a single line
 </span><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
@@ -330,8 +325,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="comment">//Now define an intrusive list and slist that will store legacy_value objects
+<pre class="programlisting"><span class="comment">//Now define an intrusive list and slist that will store legacy_value objects
 </span><span class="keyword">typedef</span> <span class="identifier">bi</span><span class="special">::</span><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="identifier">legacy_value_traits</span><span class="special">&gt;</span>      <span class="identifier">ValueTraitsOption</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">bi</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">legacy_value</span><span class="special">,</span> <span class="identifier">ValueTraitsOption</span><span class="special">&gt;</span>  <span class="identifier">LegacyAbiList</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">bi</span><span class="special">::</span><span class="identifier">slist</span><span class="special">&lt;</span><span class="identifier">legacy_value</span><span class="special">,</span> <span class="identifier">ValueTraitsOption</span><span class="special">&gt;</span> <span class="identifier">LegacyAbiSlist</span><span class="special">;</span>
@@ -371,8 +365,8 @@
       </p>
 <p>
         As seen, several key elements of <span class="bold"><strong>Boost.Intrusive</strong></span>
-        can be reused with custom user types, if the user does not want to use provided
-        <span class="bold"><strong>Boost.Intrusive</strong></span> facilities.
+        can be reused with custom user types, if the user does not want to use the
+        provided <span class="bold"><strong>Boost.Intrusive</strong></span> facilities.
       </p>
 </div>
 <div class="section" lang="en">
@@ -388,7 +382,7 @@
         same <code class="computeroutput"><span class="identifier">node_traits</span></code> type (and
         thus, the same <code class="computeroutput"><span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">node</span></code>).
         This reduces the number of node algorithm instantiations, but now <code class="computeroutput"><span class="identifier">ValueTraits</span><span class="special">::</span><span class="identifier">to_node_ptr</span></code> and <code class="computeroutput"><span class="identifier">ValueTraits</span><span class="special">::</span><span class="identifier">to_value_ptr</span></code>
-        functions need to offer conversions between both types. Let's see an small
+        functions need to offer conversions between both types. Let's see a small
         example:
       </p>
 <p>
@@ -400,8 +394,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">link_mode</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">link_mode</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 
@@ -418,7 +411,7 @@
       </p>
 <p>
         Now we'll define two different types that will be inserted in intrusive lists
-        and we'll define a templatized <code class="computeroutput"><span class="identifier">ValueTraits</span></code>
+        and a templatized <code class="computeroutput"><span class="identifier">ValueTraits</span></code>
         that will work for both types:
       </p>
 <p>
@@ -426,8 +419,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="keyword">class</span> <span class="identifier">base_1</span><span class="special">{};</span>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">base_1</span><span class="special">{};</span>
 <span class="keyword">class</span> <span class="identifier">base_2</span><span class="special">{};</span>
 
 <span class="keyword">struct</span> <span class="identifier">value_1</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">base_1</span><span class="special">,</span> <span class="keyword">public</span> <span class="identifier">simple_node</span>   
@@ -480,8 +472,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="comment">//Now define two intrusive lists. Both lists will use the same algorithms:
+<pre class="programlisting"><span class="comment">//Now define two intrusive lists. Both lists will use the same algorithms:
 </span><span class="comment">// circular_list_algorithms&lt;simple_node_traits&gt;
 </span>
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
@@ -494,9 +485,8 @@
       </p>
 <p>
         All <span class="bold"><strong>Boost.Intrusive</strong></span> containers using predefined
-        hooks use this technique to minimize code size: all the possible <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code> containers created with predefined
-        hooks that define the same <code class="computeroutput"><span class="identifier">VoidPointer</span></code>
-        type share the same list algorithms.
+        hooks use this technique to minimize code size: all possible <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code>
+        containers created with predefined hooks that define the same <code class="computeroutput"><span class="identifier">VoidPointer</span></code> type share the same list algorithms.
       </p>
 </div>
 <div class="section" lang="en">
@@ -505,13 +495,12 @@
       value traits definition</a>
 </h3></div></div></div>
 <p>
-        The previous example can be further simplified using <code class="computeroutput"><a class="link" href="../boost/intrusive/derivation_value_traits.html" title="Struct template derivation_value_traits">derivation_value_traits</a></code>
+        The previous example can be further simplified using the <code class="computeroutput"><a class="link" href="../boost/intrusive/derivation_value_traits.html" title="Struct template derivation_value_traits">derivation_value_traits</a></code>
         class to define a value traits class with a value that stores the <code class="computeroutput"><span class="identifier">simple_node</span></code> as a base class:
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">derivation_value_traits</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">derivation_value_traits</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="comment">//value_1, value_2, simple_node and simple_node_traits are defined
 </span><span class="comment">//as in the previous example...
@@ -539,8 +528,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="keyword">class</span> <span class="identifier">base_1</span><span class="special">{};</span>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">base_1</span><span class="special">{};</span>
 <span class="keyword">class</span> <span class="identifier">base_2</span><span class="special">{};</span>
 
 <span class="keyword">struct</span> <span class="identifier">value_1</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">base_1</span><span class="special">,</span> <span class="keyword">public</span> <span class="identifier">simple_node</span>   
@@ -580,9 +568,10 @@
 <p>
         Until now all shown custom value traits are stateless, that is, <span class="bold"><strong>the transformation between nodes and values is implemented in
         terms of static functions</strong></span>. It's possible to use <span class="bold"><strong>stateful</strong></span>
-        value traits so that we can even separate nodes and values and <span class="bold"><strong>avoid modifying types to insert nodes</strong></span>. <span class="bold"><strong>Boost.Intrusive</strong></span>
-        differentiates between stateful and stateless value traits checking if the
-        ValueTraits class is empty:
+        value traits so that we can separate nodes and values and <span class="bold"><strong>avoid
+        modifying types to insert nodes</strong></span>. <span class="bold"><strong>Boost.Intrusive</strong></span>
+        differentiates between stateful and stateless value traits by checking if
+        the ValueTraits class is empty:
       </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -601,21 +590,21 @@
         objects <span class="bold"><strong>without modifying</strong></span> the definition
         of the class to be inserted. This interesting property is achieved without
         using global variables (stateless value traits could use global variables
-        to achieve the same property), so:
+        to achieve the same goal), so:
       </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <span class="bold"><strong>Thread-safety guarantees</strong></span>: Better thread-safety
           guarantees can be achieved with stateful value traits, since accessing
-          to global resources might require syncronization primitives that can be
-          avoided when using the internal state.
+          global resources might require syncronization primitives that can be avoided
+          when using internal state.
         </li>
 <li>
 <span class="bold"><strong>Flexibility</strong></span>: A stateful value traits type
           can be configured at run-time.
         </li>
 <li>
-<span class="bold"><strong>Run-time polimorphism</strong></span>: A value traits
+<span class="bold"><strong>Run-time polymorphism</strong></span>: A value traits
           might implement node &lt;-&gt; value transformations as virtual functions.
           A single container type could be configured at run-time to use different
           node &lt;-&gt; value relatioships.
@@ -628,8 +617,8 @@
 <li>
 <span class="bold"><strong>Performance</strong></span>: Value traits operations should
           be very efficient since they are basic operations used by containers.
-          <span class="bold"><strong>A heavy node &lt;-&gt; value transformation can downgrade
-          intrusive containers' performance</strong></span>.
+          <span class="bold"><strong>A heavy node &lt;-&gt; value transformation will
+          hurt intrusive containers' performance</strong></span>.
         </li>
 <li>
 <span class="bold"><strong>Exception guarantees</strong></span>: The stateful ValueTraits
@@ -658,8 +647,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 

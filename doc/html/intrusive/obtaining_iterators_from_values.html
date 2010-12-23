@@ -5,22 +5,22 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="using_smart_pointers.html" title="Using smart pointers with Boost.Intrusive containers">
-<link rel="next" href="concepts.html" title="Concepts explained">
+<link rel="next" href="any_hooks.html" title="Any Hooks: A single hook for any Intrusive container">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="using_smart_pointers.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="concepts.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="using_smart_pointers.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="any_hooks.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -35,8 +35,7 @@
     </p>
 <p>
     </p>
-<pre class="programlisting">
-<span class="identifier">iterator</span> <span class="identifier">iterator_to</span><span class="special">(</span><span class="identifier">reference</span> <span class="identifier">value</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">iterator</span> <span class="identifier">iterator_to</span><span class="special">(</span><span class="identifier">reference</span> <span class="identifier">value</span><span class="special">);</span>
 <span class="identifier">const_iterator</span> <span class="identifier">iterator_to</span><span class="special">(</span><span class="identifier">const_reference</span> <span class="identifier">value</span><span class="special">);</span>
 </pre>
 <p>
@@ -46,8 +45,7 @@
     </p>
 <p>
     </p>
-<pre class="programlisting">
-<span class="identifier">local_iterator</span> <span class="identifier">local_iterator_to</span><span class="special">(</span><span class="identifier">reference</span> <span class="identifier">value</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">local_iterator</span> <span class="identifier">local_iterator_to</span><span class="special">(</span><span class="identifier">reference</span> <span class="identifier">value</span><span class="special">);</span>
 <span class="identifier">const_local_iterator</span> <span class="identifier">local_iterator_to</span><span class="special">(</span><span class="identifier">const_reference</span> <span class="identifier">value</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 </pre>
 <p>
@@ -66,10 +64,10 @@
 <p>
       Alternative static functions are available under certain circunstances explained
       in the <a class="link" href="value_traits.html#intrusive.value_traits.stateful_value_traits" title="Stateful value traits">Stateful
-      value traits</a> section, but the programmer uses hooks provided by <span class="bold"><strong>Boost.Intrusive</strong></span>, those functions will be available.
+      value traits</a> section; if the programmer uses hooks provided by <span class="bold"><strong>Boost.Intrusive</strong></span>, those functions will be available.
     </p>
 <p>
-      Let's see an small function that shows the use of <code class="computeroutput"><span class="identifier">iterator_to</span></code>
+      Let's see a small function that shows the use of <code class="computeroutput"><span class="identifier">iterator_to</span></code>
       and <code class="computeroutput"><span class="identifier">local_iterator_to</span></code>:
     </p>
 <p>
@@ -77,8 +75,7 @@
 <p>
         
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">unordered_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">functional</span><span class="special">/</span><span class="identifier">hash</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
@@ -178,7 +175,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="using_smart_pointers.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="concepts.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="using_smart_pointers.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="any_hooks.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

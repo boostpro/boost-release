@@ -7,7 +7,7 @@
 //
 //  File        : $RCSfile$
 //
-//  Version     : $Revision: 41370 $
+//  Version     : $Revision: 48086 $
 //
 //  Description : string_token_iterator unit test
 // *****************************************************************************

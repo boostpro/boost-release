@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../hash.html" title="Chapter 7. Boost.Functional/Hash">
+<link rel="up" href="../hash.html" title="Chapter 8. Boost.Functional/Hash">
 <link rel="prev" href="combine.html" title="Combining hash values">
 <link rel="next" href="disable.html" title="Disabling The Extensions">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -42,8 +42,7 @@
 <p>
       Let's say we have a simple custom type:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">foo</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">foo</span>
 <span class="special">{</span>
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
     <span class="keyword">class</span> <span class="identifier">custom_type</span>
@@ -71,8 +70,7 @@
 <p>
       So first move the member function out of the class:
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">foo</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">foo</span>
 <span class="special">{</span>
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
     <span class="keyword">class</span> <span class="identifier">custom_type</span>
@@ -104,8 +102,7 @@
       For compilers which don't support ADL, hash_value needs to be defined in the
       boost namespace:
     </p>
-<pre class="programlisting">
-<span class="preprocessor">#ifdef</span> <span class="identifier">BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP</span>
+<pre class="programlisting"><span class="preprocessor">#ifdef</span> <span class="identifier">BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP</span>
 <span class="keyword">namespace</span> <span class="identifier">boost</span>
 <span class="preprocessor">#else</span>
 <span class="keyword">namespace</span> <span class="identifier">foo</span>
@@ -122,14 +119,14 @@
       Full code for this example is at <a href="../../../libs/functional/hash/examples/portable.cpp" target="_top">/libs/functional/hash/examples/portable.cpp</a>.
     </p>
 <a name="hash.portability.other_issues"></a><h3>
-<a name="id696273"></a>
+<a name="id2919952"></a>
       <a class="link" href="portability.html#hash.portability.other_issues">Other Issues</a>
     </h3>
 <p>
       On Visual C++ versions 6.5 and 7.0, <code class="computeroutput"><span class="identifier">hash_value</span></code>
       isn't overloaded for built in arrays. <code class="computeroutput"><a class="link" href="../boost/hash.html" title="Struct template hash">boost::hash</a></code>,
-      <code class="computeroutput"><a class="link" href="../boost/hash_combine_id358324.html" title="Function template hash_combine">boost::hash_combine</a></code>
-      and <code class="computeroutput"><a class="link" href="../boost/hash_range_id237956.html" title="Function hash_range">boost::hash_range</a></code>
+      <code class="computeroutput"><a class="link" href="reference.html#boost.hash_combine">boost::hash_combine</a></code>
+      and <code class="computeroutput"><a class="link" href="reference.html#boost.hash_range">boost::hash_range</a></code>
       all use a workaround to support built in arrays so this shouldn't be a problem
       in most cases.
     </p>
@@ -144,7 +141,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2005-2007 Daniel James<p>
+<td align="right"><div class="copyright-footer">Copyright © 2005-2008 Daniel
+      James<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

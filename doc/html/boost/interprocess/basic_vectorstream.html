@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
 <td align="center"><a href="../../../../index.html">Home</a></td>
 <td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -41,60 +41,60 @@
   <span class="bold"><strong>typedef</strong></span> std::basic_ios&lt; char_type, CharTraits &gt;::traits_type                     <a name="boost.interprocess.basic_vectorstream.traits_type"></a>traits_type;
 
   <span class="emphasis"><em>// <a class="link" href="basic_vectorstream.html#boost.interprocess.basic_vectorstreamconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="basic_vectorstream.html#id682835-bb">basic_vectorstream</a>(std::ios_base::openmode = std::ios_base::in|std::ios_base::out);
+  <a class="link" href="basic_vectorstream.html#id2907286-bb">basic_vectorstream</a>(std::ios_base::openmode = std::ios_base::in|std::ios_base::out);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> VectorParameter&gt; 
-    <a class="link" href="basic_vectorstream.html#id682851-bb">basic_vectorstream</a>(<span class="bold"><strong>const</strong></span> VectorParameter &amp;, 
+    <a class="link" href="basic_vectorstream.html#id2907300-bb">basic_vectorstream</a>(<span class="bold"><strong>const</strong></span> VectorParameter &amp;, 
                        std::ios_base::openmode = std::ios_base::in|std::ios_base::out);
-  <a class="link" href="basic_vectorstream.html#id682882-bb">~basic_vectorstream</a>();
+  <a class="link" href="basic_vectorstream.html#id2907328-bb">~basic_vectorstream</a>();
 
-  <span class="emphasis"><em>// <a class="link" href="basic_vectorstream.html#id682749-bb">public member functions</a></em></span>
-  <span class="type"><a class="link" href="basic_vectorbuf.html" title="Class template basic_vectorbuf">basic_vectorbuf</a>&lt; CharVector, CharTraits &gt; *</span> <a class="link" href="basic_vectorstream.html#id682753-bb">rdbuf</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="basic_vectorstream.html#id682765-bb">swap_vector</a>(vector_type &amp;) ;
-  <span class="type"><span class="bold"><strong>const</strong></span> vector_type &amp;</span> <a class="link" href="basic_vectorstream.html#id682786-bb">vector</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="basic_vectorstream.html#id682800-bb">reserve</a>(<span class="bold"><strong>typename</strong></span> vector_type::size_type) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="basic_vectorstream.html#id682821-bb">clear</a>() ;
+  <span class="emphasis"><em>// <a class="link" href="basic_vectorstream.html#id2907207-bb">public member functions</a></em></span>
+  <span class="type"><a class="link" href="basic_vectorbuf.html" title="Class template basic_vectorbuf">basic_vectorbuf</a>&lt; CharVector, CharTraits &gt; *</span> <a class="link" href="basic_vectorstream.html#id2907210-bb">rdbuf</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="basic_vectorstream.html#id2907221-bb">swap_vector</a>(vector_type &amp;) ;
+  <span class="type"><span class="bold"><strong>const</strong></span> vector_type &amp;</span> <a class="link" href="basic_vectorstream.html#id2907241-bb">vector</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="basic_vectorstream.html#id2907253-bb">reserve</a>(<span class="bold"><strong>typename</strong></span> vector_type::size_type) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="basic_vectorstream.html#id2907273-bb">clear</a>() ;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id914905"></a><h2>Description</h2>
+<a name="id3146130"></a><h2>Description</h2>
 <p>A basic_iostream class that holds a character vector specified by CharVector template parameter as its formatting buffer. The vector must have contiguous storage, like std::vector, boost::interprocess::vector or boost::interprocess::basic_string </p>
 <div class="refsect2" lang="en">
-<a name="id914915"></a><h3>
+<a name="id3146140"></a><h3>
 <a name="boost.interprocess.basic_vectorstreamconstruct-copy-destruct"></a><code class="computeroutput">basic_vectorstream</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id682835-bb"></a>basic_vectorstream(std::ios_base::openmode mode = std::ios_base::in|std::ios_base::out);</pre>
+<pre class="literallayout"><a name="id2907286-bb"></a>basic_vectorstream(std::ios_base::openmode mode = std::ios_base::in|std::ios_base::out);</pre>
 <p>Constructor. Throws if vector_type default constructor throws. </p>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> VectorParameter&gt; 
-  <a name="id682851-bb"></a>basic_vectorstream(<span class="bold"><strong>const</strong></span> VectorParameter &amp; param, 
+  <a name="id2907300-bb"></a>basic_vectorstream(<span class="bold"><strong>const</strong></span> VectorParameter &amp; param, 
                      std::ios_base::openmode mode = std::ios_base::in|std::ios_base::out);</pre>
 <p>Constructor. Throws if vector_type(const VectorParameter &amp;param) throws. </p>
 </li>
-<li><pre class="literallayout"><a name="id682882-bb"></a>~basic_vectorstream();</pre></li>
+<li><pre class="literallayout"><a name="id2907328-bb"></a>~basic_vectorstream();</pre></li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id915019"></a><h3>
-<a name="id682749-bb"></a><code class="computeroutput">basic_vectorstream</code> public member functions</h3>
+<a name="id3146232"></a><h3>
+<a name="id2907207-bb"></a><code class="computeroutput">basic_vectorstream</code> public member functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><a class="link" href="basic_vectorbuf.html" title="Class template basic_vectorbuf">basic_vectorbuf</a>&lt; CharVector, CharTraits &gt; *</span> <a name="id682753-bb"></a>rdbuf() <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type"><a class="link" href="basic_vectorbuf.html" title="Class template basic_vectorbuf">basic_vectorbuf</a>&lt; CharVector, CharTraits &gt; *</span> <a name="id2907210-bb"></a>rdbuf() <span class="bold"><strong>const</strong></span>;</pre></li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id682765-bb"></a>swap_vector(vector_type &amp; vect) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2907221-bb"></a>swap_vector(vector_type &amp; vect) ;</pre>
 <p>Swaps the underlying vector with the passed vector. This function resets the read/write position in the stream. Does not throw. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> vector_type &amp;</span> <a name="id682786-bb"></a>vector() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> vector_type &amp;</span> <a name="id2907241-bb"></a>vector() <span class="bold"><strong>const</strong></span>;</pre>
 <p>Returns a const reference to the internal vector. Does not throw. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id682800-bb"></a>reserve(<span class="bold"><strong>typename</strong></span> vector_type::size_type size) ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2907253-bb"></a>reserve(<span class="bold"><strong>typename</strong></span> vector_type::size_type size) ;</pre>
 <p>Calls reserve() method of the internal vector. Resets the stream to the first position. Throws if the internals vector's reserve throws. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id682821-bb"></a>clear() ;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2907273-bb"></a>clear() ;</pre>
 <p>Calls clear() method of the internal vector. Resets the stream to the first position. </p>
 </li>
 </ol></div>

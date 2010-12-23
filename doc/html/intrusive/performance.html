@@ -5,22 +5,22 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="design_notes.html" title="Design Notes">
-<link rel="next" href="disabling_exceptions.html" title="Disabling exceptions support">
+<link rel="next" href="release_notes.html" title="Release Notes">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="design_notes.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="disabling_exceptions.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="design_notes.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="release_notes.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -39,19 +39,19 @@
 </dl></div>
 <p>
       <span class="bold"><strong>Boost.Intrusive</strong></span> containers offer speed improvements
-      comparing to non-intrusive containers, basically because:
+      compared to non-intrusive containers primarily because:
     </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-        We can minimize memory allocation/deallocation calls.
+        They minimize memory allocation/deallocation calls.
       </li>
 <li>
-        We obtain better memory locality.
+        They obtain better memory locality.
       </li>
 </ul></div>
 <p>
-      This section will show some performance tests comparing some operations on
-      <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">list</span></code> and <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span></code>:
+      This section will show performance tests comparing some operations on <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">list</span></code> and
+      <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span></code>:
     </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -59,15 +59,14 @@
         and container destruction will show the overhead associated with memory allocation/deallocation.
       </li>
 <li>
-<code class="computeroutput"><span class="identifier">reverse</span></code> member function will
-        show the advantages of the compact memory representation that can be achieved
-        with intrusive containers.
+        The <code class="computeroutput"><span class="identifier">reverse</span></code> member function
+        will show the advantages of the compact memory representation that can be
+        achieved with intrusive containers.
       </li>
 <li>
-<code class="computeroutput"><span class="identifier">sort</span></code> and <code class="computeroutput"><span class="identifier">write</span>
-        <span class="identifier">access</span></code> tests will show the advantage
-        of intrusive containers minimizing the memory accesses when comparing them
-        with containers of pointers.
+        The <code class="computeroutput"><span class="identifier">sort</span></code> and <code class="computeroutput"><span class="identifier">write</span> <span class="identifier">access</span></code>
+        tests will show the advantage of intrusive containers minimizing memory accesses
+        compared to containers of pointers.
       </li>
 </ul></div>
 <p>
@@ -75,9 +74,9 @@
       <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">boost::intrusive::list&lt;T&gt;</a></code>
       can replace <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code> to
       avoid memory allocation overhead, or it can replace <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">*&gt;</span></code> when
-      the user wants to obtain containers with polymorphic values or wants to share
-      values between several containers. Because of this versatility, the performance
-      tests will be executed for 6 different list types:
+      the user wants containers with polymorphic values or wants to share values
+      between several containers. Because of this versatility, the performance tests
+      will be executed for 6 different list types:
     </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -118,10 +117,9 @@
 <p>
         
 </p>
-<pre class="programlisting">
-<span class="comment">//Iteration and element count defines
+<pre class="programlisting"><span class="comment">//Iteration and element count defines
 </span><span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">NumIter</span> <span class="special">=</span> <span class="number">100</span><span class="special">;</span>
-<span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">NumElements</span>   <span class="special">=</span> <span class="number">100000</span><span class="special">;</span>
+<span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">NumElements</span>   <span class="special">=</span> <span class="number">50000</span><span class="special">;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
@@ -170,10 +168,10 @@
 <p>
       <code class="computeroutput"><span class="identifier">func_ptr_adaptor</span></code> is just a
       functor adaptor to convert function objects taking <code class="computeroutput"><span class="identifier">test_list</span></code>
-      objects to funtion objects taking pointers to them.
+      objects to function objects taking pointers to them.
     </p>
 <p>
-      You can find the full test code code in the <a href="../../../perf/perf_list.cpp" target="_top">perf_list.cpp</a>
+      You can find the full test code code in the <a href="../../../libs/intrusive/perf/perf_list.cpp" target="_top">perf_list.cpp</a>
       source file.
     </p>
 <div class="section" lang="en">
@@ -183,10 +181,10 @@
 </h3></div></div></div>
 <p>
         The first test will measure the benefits we can obtain with intrusive containers
-        avoiding memory allocations and deallocations . All the objects to be inserted
+        avoiding memory allocations and deallocations. All the objects to be inserted
         in intrusive containers are allocated in a single allocation call, whereas
-        <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span></code> will need to allocate memory for every
-        and deallocate it for every erasure (or container destruction).
+        <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span></code> will need to allocate memory for each
+        object and deallocate it for every erasure (or container destruction).
       </p>
 <p>
         Let's compare the code to be executed for each container type for different
@@ -197,8 +195,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ilist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ilist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
 <span class="identifier">ilist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">objects</span><span class="special">[</span><span class="identifier">i</span><span class="special">]);</span>
@@ -218,8 +215,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="identifier">stdlist</span> <span class="identifier">l</span><span class="special">;</span>
+<pre class="programlisting"><span class="identifier">stdlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
 <span class="comment">//Elements unlinked and destroyed in stdlist's destructor
@@ -236,8 +232,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
 <span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(&amp;</span><span class="identifier">objects</span><span class="special">[</span><span class="identifier">i</span><span class="special">]);</span>
@@ -257,8 +252,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="identifier">stdlist</span> <span class="identifier">objects</span><span class="special">;</span>  <span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
+<pre class="programlisting"><span class="identifier">stdlist</span> <span class="identifier">objects</span><span class="special">;</span>  <span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
    <span class="identifier">objects</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(&amp;</span><span class="identifier">objects</span><span class="special">.</span><span class="identifier">back</span><span class="special">());</span>
@@ -278,7 +272,7 @@
         These are the times in microseconds for each case, and the normalized time:
       </p>
 <div class="table">
-<a name="id1010427"></a><p class="title"><b>Table 9.2. Back insertion + destruction times for Visual C++
+<a name="id3235144"></a><p class="title"><b>Table 10.2. Back insertion + destruction times for Visual C++
       7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for Visual C++
       7.1 / Windows XP">
@@ -414,7 +408,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1010661"></a><p class="title"><b>Table 9.3. Back insertion + destruction times for
+<a name="id3235353"></a><p class="title"><b>Table 10.3. Back insertion + destruction times for
       GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for
       GCC 4.1.1 / MinGW over Windows XP">
@@ -550,7 +544,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1010895"></a><p class="title"><b>Table 9.4. Back insertion + destruction times for
+<a name="id3235562"></a><p class="title"><b>Table 10.4. Back insertion + destruction times for
       GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for
       GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
@@ -690,20 +684,19 @@
         time of the <code class="computeroutput"><span class="identifier">normal_link</span></code> intrusive
         container is trivial (complexity: <code class="computeroutput"><span class="identifier">O</span><span class="special">(</span><span class="number">1</span><span class="special">)</span></code>),
         whereas <code class="computeroutput"><span class="identifier">safe_link</span></code> and <code class="computeroutput"><span class="identifier">auto_unlink</span></code> intrusive containers need to
-        put the hook of erased values' in the default state (complexity: <code class="computeroutput"><span class="identifier">O</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">)</span></code>). That's why <code class="computeroutput"><span class="identifier">normal_link</span></code>
+        put the hooks of erased values in the default state (complexity: <code class="computeroutput"><span class="identifier">O</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">)</span></code>). That's why <code class="computeroutput"><span class="identifier">normal_link</span></code>
         intrusive list shines in this test.
       </p>
 <p>
-        Non-intrusive containers need to make much more allocations and that's why
-        they are lagging behind. The <code class="computeroutput"><span class="identifier">disperse</span>
-        <span class="identifier">pointer</span> <span class="identifier">list</span></code>
+        Non-intrusive containers need to make many more allocations and that's why
+        they lag behind. The <code class="computeroutput"><span class="identifier">disperse</span> <span class="identifier">pointer</span> <span class="identifier">list</span></code>
         needs to make <code class="computeroutput"><span class="identifier">NumElements</span><span class="special">*</span><span class="number">2</span></code> allocations,
         so the result is not surprising.
       </p>
 <p>
-        Linux test shows that standard containers perform very well against intrusive
+        The Linux test shows that standard containers perform very well against intrusive
         containers with big objects. Nearly the same GCC version in MinGW performs
-        worse, so maybe the a good memory allocator is the reason for these excelent
+        worse, so maybe a good memory allocator is the reason for these excellent
         results.
       </p>
 </div>
@@ -715,21 +708,21 @@
 <p>
         The next test measures the time needed to complete calls to the member function
         <code class="computeroutput"><span class="identifier">reverse</span><span class="special">()</span></code>.
-        Values (<code class="computeroutput"><span class="identifier">test_class</span></code> and <code class="computeroutput"><span class="identifier">itest_class</span></code>) and lists are created like
-        explained in the previous section.
+        Values (<code class="computeroutput"><span class="identifier">test_class</span></code> and <code class="computeroutput"><span class="identifier">itest_class</span></code>) and lists are created as explained
+        in the previous section.
       </p>
 <p>
         Note that for pointer lists, <code class="computeroutput"><span class="identifier">reverse</span></code>
         <span class="bold"><strong>does not need to access <code class="computeroutput"><span class="identifier">test_class</span></code>
         values stored in another list or vector</strong></span>, since this function just
-        needs to adjust internal pointers, so in theory, all tested lists need to
+        needs to adjust internal pointers, so in theory all tested lists need to
         perform the same operations.
       </p>
 <p>
         These are the results:
       </p>
 <div class="table">
-<a name="id1011392"></a><p class="title"><b>Table 9.5. Reverse times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="id3236008"></a><p class="title"><b>Table 10.5. Reverse times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -749,7 +742,7 @@
             </th>
 <th>
             <p>
-              Normalized time (small object / big object) (small object / big object)
+              Normalized time (small object / big object)
             </p>
             </th>
 </tr></thead>
@@ -863,7 +856,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1011626"></a><p class="title"><b>Table 9.6. Reverse times for GCC 4.1.1 / MinGW over
+<a name="id3236216"></a><p class="title"><b>Table 10.6. Reverse times for GCC 4.1.1 / MinGW over
       Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for GCC 4.1.1 / MinGW over
       Windows XP">
@@ -999,7 +992,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1011859"></a><p class="title"><b>Table 9.7. Reverse times for GCC 4.1.2 / Linux Kernel
+<a name="id3236425"></a><p class="title"><b>Table 10.7. Reverse times for GCC 4.1.2 / Linux Kernel
       2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for GCC 4.1.2 / Linux Kernel
       2.6.18 (OpenSuse 10.2)">
@@ -1145,8 +1138,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//Object list (holding `test_class`)
+<pre class="programlisting"><span class="comment">//Object list (holding `test_class`)
 </span><span class="identifier">stdlist</span> <span class="identifier">objects</span><span class="special">;</span>
 
 <span class="comment">//Pointer list (holding `test_class` pointers)
@@ -1160,12 +1152,12 @@
 <span class="special">}</span>
 </pre>
 <p>
-        For big values the compact pointer list wins because when reversing doesn't
-        need access to the values stored in another container. Since all the allocations
-        for nodes of this pointer list are likely to be near (since there is no other
-        allocation in the process until the pointer list is created) locality is
-        better than with intrusive containers. The dispersed pointer list, like with
-        small values, has poor locality.
+        For big objects the compact pointer list wins because the reversal test doesn't
+        need access to values stored in another container. Since all the allocations
+        for nodes of this pointer list are likely to be close (since there is no
+        other allocation in the process until the pointer list is created) locality
+        is better than with intrusive containers. The dispersed pointer list, as
+        with small values, has poor locality.
       </p>
 </div>
 <div class="section" lang="en">
@@ -1173,17 +1165,16 @@
 <a name="intrusive.performance.performance_results_sorting"></a><a class="link" href="performance.html#intrusive.performance.performance_results_sorting" title="Sorting"> Sorting</a>
 </h3></div></div></div>
 <p>
-        The next test measures the time needed to complete calls the member function
+        The next test measures the time needed to complete calls to the member function
         <code class="computeroutput"><span class="identifier">sort</span><span class="special">(</span><span class="identifier">Pred</span> <span class="identifier">pred</span><span class="special">)</span></code>. Values (<code class="computeroutput"><span class="identifier">test_class</span></code>
         and <code class="computeroutput"><span class="identifier">itest_class</span></code>) and lists
-        are created like explained in the first section. The values will be sorted
+        are created as explained in the first section. The values will be sorted
         in ascending and descenting order each iteration. For example, if <span class="emphasis"><em>l</em></span>
         is a list:
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumIter</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
+<pre class="programlisting"><span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumIter</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
    <span class="keyword">if</span><span class="special">(!(</span><span class="identifier">i</span> <span class="special">%</span> <span class="number">2</span><span class="special">))</span>
       <span class="identifier">l</span><span class="special">.</span><span class="identifier">sort</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">greater</span><span class="special">&lt;</span><span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;());</span>
    <span class="keyword">else</span>
@@ -1195,8 +1186,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumIter</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
+<pre class="programlisting"><span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumIter</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
    <span class="keyword">if</span><span class="special">(!(</span><span class="identifier">i</span> <span class="special">%</span> <span class="number">2</span><span class="special">))</span>
       <span class="identifier">l</span><span class="special">.</span><span class="identifier">sort</span><span class="special">(</span><span class="identifier">func_ptr_adaptor</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">greater</span><span class="special">&lt;</span><span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="special">&gt;());</span>
    <span class="keyword">else</span>
@@ -1208,13 +1198,13 @@
         will take a function object that <span class="bold"><strong>will access <code class="computeroutput"><span class="identifier">test_class</span></code> values stored in another list
         or vector</strong></span>, so pointer lists will suffer an extra indirection:
         they will need to access the <code class="computeroutput"><span class="identifier">test_class</span></code>
-        values stored in another container to compare to elements.
+        values stored in another container to compare two elements.
       </p>
 <p>
         These are the results:
       </p>
 <div class="table">
-<a name="id1013052"></a><p class="title"><b>Table 9.8. Sort times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="id3237506"></a><p class="title"><b>Table 10.8. Sort times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -1348,7 +1338,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1013286"></a><p class="title"><b>Table 9.9. Sort times for GCC 4.1.1 / MinGW over Windows
+<a name="id3237714"></a><p class="title"><b>Table 10.9. Sort times for GCC 4.1.1 / MinGW over Windows
       XP</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for GCC 4.1.1 / MinGW over Windows
       XP">
@@ -1484,7 +1474,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1013519"></a><p class="title"><b>Table 9.10. Sort times for GCC 4.1.2 / Linux Kernel
+<a name="id3237923"></a><p class="title"><b>Table 10.10. Sort times for GCC 4.1.2 / Linux Kernel
       2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for GCC 4.1.2 / Linux Kernel
       2.6.18 (OpenSuse 10.2)">
@@ -1622,10 +1612,10 @@
 <br class="table-break"><p>
         The results show that intrusive containers are faster than standard containers.
         We can see that the pointer list holding pointers to values stored in a vector
-        is quite fast, so the extra indirection that needs to access the value is
-        minimized because all the values are tightly stored, improving cache. The
-        disperse list, on the other hand, is slower because the indirection to access
-        to values stored in the object list is more expensive than the access to
+        is quite fast, so the extra indirection that is needed to access the value
+        is minimized because all the values are tightly stored, improving caching.
+        The disperse list, on the other hand, is slower because the indirection to
+        access values stored in the object list is more expensive than accessing
         values stored in a vector.
       </p>
 </div>
@@ -1635,26 +1625,25 @@
       Write access</a>
 </h3></div></div></div>
 <p>
-        The next test measures the time needed to iterate all the elements of a list,
-        and increment the value of the internal <code class="computeroutput"><span class="identifier">i_</span></code>
+        The next test measures the time needed to iterate through all the elements
+        of a list, and increment the value of the internal <code class="computeroutput"><span class="identifier">i_</span></code>
         member:
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<pre class="programlisting"><span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
 <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">end</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
    <span class="special">++(</span><span class="identifier">it</span><span class="special">-&gt;</span><span class="identifier">i_</span><span class="special">);</span>
 </pre>
 <p>
-        Values (<code class="computeroutput"><span class="identifier">test_class</span></code> and <code class="computeroutput"><span class="identifier">itest_class</span></code>) and lists are created like
-        explained in the first section. Note that for pointer lists, the iteration
-        will suffer an extra indirection: they will need to access the <code class="computeroutput"><span class="identifier">test_class</span></code> values stored in another container:
+        Values (<code class="computeroutput"><span class="identifier">test_class</span></code> and <code class="computeroutput"><span class="identifier">itest_class</span></code>) and lists are created as explained
+        in the first section. Note that for pointer lists, the iteration will suffer
+        an extra indirection: they will need to access the <code class="computeroutput"><span class="identifier">test_class</span></code>
+        values stored in another container:
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="identifier">stdptrlist</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<pre class="programlisting"><span class="identifier">stdptrlist</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
 <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">end</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
    <span class="special">++((*</span><span class="identifier">it</span><span class="special">)-&gt;</span><span class="identifier">i_</span><span class="special">);</span>
 </pre>
@@ -1662,7 +1651,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1014175"></a><p class="title"><b>Table 9.11. Write access times for Visual C++ 7.1 / Windows
+<a name="id3238511"></a><p class="title"><b>Table 10.11. Write access times for Visual C++ 7.1 / Windows
       XP</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for Visual C++ 7.1 / Windows
       XP">
@@ -1798,7 +1787,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1014408"></a><p class="title"><b>Table 9.12. Write access times for GCC 4.1.1 / MinGW
+<a name="id3238720"></a><p class="title"><b>Table 10.12. Write access times for GCC 4.1.1 / MinGW
       over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for GCC 4.1.1 / MinGW
       over Windows XP">
@@ -1934,7 +1923,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1014641"></a><p class="title"><b>Table 9.13. Write access times for GCC 4.1.2 / Linux
+<a name="id3238928"></a><p class="title"><b>Table 10.13. Write access times for GCC 4.1.2 / Linux
       Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for GCC 4.1.2 / Linux
       Kernel 2.6.18 (OpenSuse 10.2)">
@@ -2070,9 +2059,9 @@
 </table></div>
 </div>
 <br class="table-break"><p>
-        Like with the read access test, the results show that intrusive containers
+        As with the read access test, the results show that intrusive containers
         outperform all other containers if the values are tightly packed in a vector.
-        The disperse list is again the slowest one.
+        The disperse list is again the slowest.
       </p>
 </div>
 <div class="section" lang="en">
@@ -2083,7 +2072,7 @@
 <p>
         Intrusive containers can offer performance benefits that can not be achieved
         with equivalent non-intrusive containers. Memory locality improvements are
-        noticeable when objects to be inserted are small. Minimizing memory allocation/deallocation
+        noticeable when the objects to be inserted are small. Minimizing memory allocation/deallocation
         calls is also an important factor and intrusive containers make this simple
         if the user allocates all the objects to be inserted in intrusive containers
         in containers like <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span></code> or <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">deque</span></code>.
@@ -2100,7 +2089,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="design_notes.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="disabling_exceptions.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="design_notes.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="release_notes.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

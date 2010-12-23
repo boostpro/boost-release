@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../foreach.html" title="Chapter 5. Boost.Foreach">
-<link rel="prev" href="../foreach.html" title="Chapter 5. Boost.Foreach">
+<link rel="up" href="../foreach.html" title="Chapter 6. Boost.Foreach">
+<link rel="prev" href="../foreach.html" title="Chapter 6. Boost.Foreach">
 <link rel="next" href="portability.html" title="Portability">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -39,8 +39,7 @@
       Below is an example for extending <code class="literal">BOOST_FOREACH</code> to iterate
       over a sub-string type, which contains two iterators into a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>.
     </p>
-<pre class="programlisting">
-<span class="keyword">namespace</span> <span class="identifier">my</span>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">my</span>
 <span class="special">{</span>
     <span class="comment">// sub_string: part of a string, as delimited by a pair
 </span>    <span class="comment">// of iterators
@@ -100,8 +99,7 @@
       (and hence <code class="literal">BOOST_FOREACH</code>) about our type, we can now use
       <code class="literal">BOOST_FOREACH</code> to iterate over our sub_string type.
     </p>
-<pre class="programlisting">
-<span class="identifier">my</span><span class="special">::</span><span class="identifier">sub_string</span> <span class="identifier">substr</span><span class="special">;</span>
+<pre class="programlisting"><span class="identifier">my</span><span class="special">::</span><span class="identifier">sub_string</span> <span class="identifier">substr</span><span class="special">;</span>
 <span class="identifier">BOOST_FOREACH</span><span class="special">(</span> <span class="keyword">char</span> <span class="identifier">ch</span><span class="special">,</span> <span class="identifier">substr</span> <span class="special">)</span>
 <span class="special">{</span>
     <span class="comment">// Woo-hoo!
@@ -115,7 +113,7 @@
       Portability</a> section offers some suggested work-arounds.
     </p>
 <a name="foreach.extensibility.making__literal_boost_foreach__literal__work_with_non_copyable_sequence_types"></a><h3>
-<a name="id672027"></a>
+<a name="id2899869"></a>
       <a class="link" href="extensibility.html#foreach.extensibility.making__literal_boost_foreach__literal__work_with_non_copyable_sequence_types">Making
       <code class="literal">BOOST_FOREACH</code> Work with Non-Copyable Sequence Types</a>
     </h3>
@@ -124,8 +122,7 @@
       to not try to make copies. If our type inherits from <a href="../../../libs/utility/utility.htm#Class_noncopyable" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span></code></a>,
       no further action is required. If not, we must specialize the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">foreach</span><span class="special">::</span><span class="identifier">is_noncopyable</span><span class="special">&lt;&gt;</span></code> template, as follows:
     </p>
-<pre class="programlisting">
-<span class="keyword">class</span> <span class="identifier">noncopy_vector</span>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">noncopy_vector</span>
 <span class="special">{</span>
     <span class="comment">// ...
 </span><span class="keyword">private</span><span class="special">:</span>
@@ -145,8 +142,7 @@
       Another way to achieve the same effect is to override the global <code class="computeroutput"><span class="identifier">boost_foreach_is_noncopyable</span><span class="special">()</span></code>
       function. Doing it this way has the advantage of being portable to older compilers.
     </p>
-<pre class="programlisting">
-<span class="comment">// At global scope...
+<pre class="programlisting"><span class="comment">// At global scope...
 </span><span class="keyword">inline</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">*</span>
 <span class="identifier">boost_foreach_is_noncopyable</span><span class="special">(</span> <span class="identifier">noncopy_vector</span> <span class="special">*&amp;,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">foreach</span><span class="special">::</span><span class="identifier">tag</span> <span class="special">)</span>
 <span class="special">{</span>
@@ -168,7 +164,7 @@
       </p></td></tr>
 </table></div>
 <a name="foreach.extensibility.optimizing__literal_boost_foreach__literal__for_lightweight_proxy_sequence_types"></a><h3>
-<a name="id672553"></a>
+<a name="id2900344"></a>
       <a class="link" href="extensibility.html#foreach.extensibility.optimizing__literal_boost_foreach__literal__for_lightweight_proxy_sequence_types">Optimizing
       <code class="literal">BOOST_FOREACH</code> for Lightweight Proxy Sequence Types</a>
     </h3>
@@ -189,8 +185,7 @@
       a hook that lets us tell it not to worry about the expense of making a copy.
       This can result in slightly faster loop execution. Simply specialize the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">foreach</span><span class="special">::</span><span class="identifier">is_lightweight_proxy</span><span class="special">&lt;&gt;</span></code> trait, as follows:
     </p>
-<pre class="programlisting">
-<span class="keyword">struct</span> <span class="identifier">sub_string</span>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">sub_string</span>
   <span class="special">:</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">iterator_range</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">::</span><span class="identifier">iterator</span> <span class="special">&gt;</span>
 <span class="special">{</span>
     <span class="comment">// ...
@@ -209,8 +204,7 @@
       Alternately, we could achieve the same effect by overriding the global <code class="computeroutput"><span class="identifier">boost_foreach_is_lightweight_proxy</span><span class="special">()</span></code>
       function, as follows:
     </p>
-<pre class="programlisting">
-<span class="comment">// At global scope...
+<pre class="programlisting"><span class="comment">// At global scope...
 </span><span class="keyword">inline</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">*</span>
 <span class="identifier">boost_foreach_is_lightweight_proxy</span><span class="special">(</span> <span class="identifier">sub_string</span> <span class="special">*&amp;,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">foreach</span><span class="special">::</span><span class="identifier">tag</span> <span class="special">)</span>
 <span class="special">{</span>

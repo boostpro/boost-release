@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../interprocess.html" title="Chapter 8. Boost.Interprocess">
+<link rel="up" href="../interprocess.html" title="Chapter 9. Boost.Interprocess">
 <link rel="prev" href="interprocess_smart_ptr.html" title="Ownership smart pointers">
 <link rel="next" href="customizing_interprocess.html" title="Customizing Boost.Interprocess">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -124,8 +124,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="identifier">Layout</span> <span class="identifier">of</span> <span class="identifier">the</span> <span class="identifier">memory</span> <span class="identifier">segment</span><span class="special">:</span>
+<pre class="programlisting"><span class="identifier">Layout</span> <span class="identifier">of</span> <span class="identifier">the</span> <span class="identifier">memory</span> <span class="identifier">segment</span><span class="special">:</span>
  <span class="identifier">____________</span> <span class="identifier">__________</span> <span class="identifier">____________________________________________</span>  
 <span class="special">|</span>            <span class="special">|</span>          <span class="special">|</span>                                            <span class="special">|</span> 
 <span class="special">|</span>   <span class="identifier">memory</span>   <span class="special">|</span> <span class="identifier">reserved</span> <span class="special">|</span>  <span class="identifier">The</span> <span class="identifier">memory</span> <span class="identifier">algorithm</span> <span class="identifier">will</span> <span class="keyword">return</span> <span class="identifier">portions</span> <span class="special">|</span> 
@@ -148,8 +147,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">typedef</span> <span class="comment">/*implementation dependent*/</span> <span class="identifier">void_pointer</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="comment">/*implementation dependent*/</span> <span class="identifier">void_pointer</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="comment">/*implementation dependent*/</span> <span class="identifier">mutex_family</span><span class="special">;</span>
 </pre>
 <p>
@@ -188,8 +186,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="identifier">The</span> <span class="identifier">layout</span> <span class="identifier">of</span> <span class="identifier">managed</span> <span class="identifier">memory</span> <span class="identifier">segment</span><span class="special">:</span>
+<pre class="programlisting"><span class="identifier">The</span> <span class="identifier">layout</span> <span class="identifier">of</span> <span class="identifier">managed</span> <span class="identifier">memory</span> <span class="identifier">segment</span><span class="special">:</span>
  <span class="identifier">_______</span> <span class="identifier">_________________</span>
 <span class="special">|</span>       <span class="special">|</span>         <span class="special">|</span>       <span class="special">|</span>
 <span class="special">|</span> <span class="identifier">some</span>  <span class="special">|</span> <span class="identifier">memory</span>  <span class="special">|</span> <span class="identifier">other</span> <span class="special">|&lt;-</span> <span class="identifier">The</span> <span class="identifier">memory</span> <span class="identifier">algorithm</span> <span class="identifier">considers</span> 
@@ -251,8 +248,7 @@
         </p>
 <p>
         </p>
-<pre class="programlisting">
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">CharType</span> 
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">CharType</span> 
         <span class="special">,</span><span class="keyword">class</span> <span class="identifier">MemoryAlgorithm</span>
         <span class="special">,</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IndexConfig</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">IndexType</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">segment_manager</span><span class="special">;</span>
@@ -302,7 +298,7 @@
           since many times they just forward the functions to the segment manager.
           Because of this, in <span class="bold"><strong>Boost.Interprocess</strong></span>
           all managed memory segments derive from a common class that implements
-          memory-independent (shared memory, memory mapped files) functions: <a href="../../../../../boost/interprocess/detail/managed_memory_impl.hpp" target="_top">boost::interprocess::detail::basic_managed_memory_impl</a>
+          memory-independent (shared memory, memory mapped files) functions: <a href="../../../boost/interprocess/detail/managed_memory_impl.hpp" target="_top">boost::interprocess::detail::basic_managed_memory_impl</a>
         </p>
 <p>
           Deriving from this class, <span class="bold"><strong>Boost.Interprocess</strong></span>
@@ -421,7 +417,7 @@
           </li>
 </ul></div>
 <p>
-          The pool is implemented by the <a href="../../../../../boost/interprocess/allocators/detail/node_pool.hpp" target="_top">private_node_pool
+          The pool is implemented by the <a href="../../../boost/interprocess/allocators/detail/node_pool.hpp" target="_top">private_node_pool
           and shared_node_pool</a> classes.
         </p>
 </div>
@@ -481,7 +477,7 @@
           </li>
 </ul></div>
 <p>
-          The adaptive pool is implemented by the <a href="../../../../../boost/interprocess/allocators/detail/adaptive_node_pool.hpp" target="_top">private_adaptive_node_pool
+          The adaptive pool is implemented by the <a href="../../../boost/interprocess/allocators/detail/adaptive_node_pool.hpp" target="_top">private_adaptive_node_pool
           and adaptive_node_pool</a> classes.
         </p>
 </div>

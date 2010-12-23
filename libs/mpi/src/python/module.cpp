@@ -27,6 +27,7 @@ extern void export_datatypes();
 extern void export_request();
 extern void export_status();
 extern void export_timer();
+extern void export_nonblocking();
 
 extern const char* module_docstring;
 
@@ -35,8 +36,8 @@ BOOST_PYTHON_MODULE(mpi)
   // Setup module documentation
   scope().attr("__doc__") = module_docstring;
   scope().attr("__author__") = "Douglas Gregor <doug.gregor@gmail.com>";
-  scope().attr("__date__") = "$LastChangedDate: 2007-11-25 13:38:02 -0500 (Sun, 25 Nov 2007) $";
-  scope().attr("__version__") = "$Revision: 41370 $";
+  scope().attr("__date__") = "$LastChangedDate: 2008-06-26 15:25:44 -0400 (Thu, 26 Jun 2008) $";
+  scope().attr("__version__") = "$Revision: 46743 $";
   scope().attr("__copyright__") = "Copyright (C) 2006 Douglas Gregor";
   scope().attr("__license__") = "http://www.boost.org/LICENSE_1_0.txt";
 
@@ -48,6 +49,7 @@ BOOST_PYTHON_MODULE(mpi)
   export_request();
   export_status();
   export_timer();
+  export_nonblocking();
 }
 
 } } } // end namespace boost::mpi::python

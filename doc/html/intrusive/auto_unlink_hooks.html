@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="safe_hook.html" title="Safe hooks">
 <link rel="next" href="slist.html" title="Intrusive singly linked list: slist">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -50,12 +50,12 @@
         </li>
 <li>
           The hook has a member function called <code class="computeroutput"><span class="identifier">unlink</span><span class="special">()</span></code> that can be used to unlink the node from
-          the container at any moment, without having any reference to the container,
-          if the user want to do so.
+          the container at any time, without having any reference to the container,
+          if the user wants to do so.
         </li>
 </ul></div>
 <p>
-        These hooks have exactly the same size overhead as their analogue non auto-unlinking
+        These hooks have exactly the same size overhead as their analog non auto-unlinking
         hooks, but they have a restriction: they can only be used with <a class="link" href="presenting_containers.html" title="Presenting Boost.Intrusive containers">non-constant
         time containers</a>. There is a reason for this:
       </p>
@@ -66,7 +66,7 @@
         </li>
 <li>
           Only containers with non constant-time <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code> allow removing an object from the container
-          without using any reference to the container.
+          without referring to the container.
         </li>
 </ul></div>
 <p>
@@ -92,13 +92,13 @@
           Hooks' constructors put the hook in a well-known default state.
         </li>
 <li>
-          Every time an object is being inserted in the intrusive container, the
-          container checks if the hook is the well-known default state. If not, an
-          assertion is raised.
+          Every time an object is inserted in the intrusive container, the container
+          checks if the hook is in the well-known default state. If not, an assertion
+          is raised.
         </li>
 <li>
-          Every time an object is being erased from the intrusive container, the
-          container puts the erased object in the well-known default state.
+          Every time an object is erased from an intrusive container, the container
+          puts the erased object in the well-known default state.
         </li>
 </ul></div>
 </div>
@@ -115,8 +115,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
@@ -200,12 +199,11 @@
         As explained, <span class="bold"><strong>Boost.Intrusive</strong></span> auto-unlink
         hooks are incompatible with containers that have constant-time <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code>,
         so if you try to define such container with an auto-unlink hook's value_traits,
-        you will get an static assertion:
+        you will get a static assertion:
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
@@ -232,8 +230,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="comment">//Constant-time size is incompatible with auto-unlink hooks!
+<pre class="programlisting"><span class="comment">//Constant-time size is incompatible with auto-unlink hooks!
 </span><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(!(</span><span class="identifier">constant_time_size</span> <span class="special">&amp;&amp;</span> <span class="special">((</span><span class="keyword">int</span><span class="special">)</span><span class="identifier">value_traits</span><span class="special">::</span><span class="identifier">link_mode</span> <span class="special">==</span> <span class="special">(</span><span class="keyword">int</span><span class="special">)</span><span class="identifier">auto_unlink</span><span class="special">)));</span>
 </pre>
 <p>

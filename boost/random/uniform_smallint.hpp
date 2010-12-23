@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_smallint.hpp 41369 2007-11-25 18:07:19Z bemandawes $
+ * $Id: uniform_smallint.hpp 47233 2008-07-08 16:22:46Z steven_watanabe $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -81,7 +81,7 @@ set(result_type min_arg, result_type max_arg)
 {
   _min = min_arg;
   _max = max_arg;
-  assert(min_arg < max_arg);
+  assert(min_arg <= max_arg);
 
   _range = static_cast<base_result>(_max-_min)+1;
   _factor = 1;
@@ -122,7 +122,7 @@ public:
     BOOST_STATIC_ASSERT(!std::numeric_limits<typename base_type::result_type>::is_integer);
 #endif
 
-    assert(min_arg < max_arg);
+    assert(min_arg <= max_arg);
     set(min_arg, max_arg);
   }
 

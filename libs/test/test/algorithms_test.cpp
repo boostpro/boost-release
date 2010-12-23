@@ -7,7 +7,7 @@
 //
 //  File        : $RCSfile$
 //
-//  Version     : $Revision: 43798 $
+//  Version     : $Revision: 48086 $
 //
 //  Description : unit test for class properties facility
 // ***************************************************************************

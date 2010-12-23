@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../variant.html" title="Chapter 21. Boost.Variant">
+<link rel="up" href="../variant.html" title="Chapter 24. Boost.Variant">
 <link rel="prev" href="tutorial.html" title="Tutorial">
 <link rel="next" href="../BOOST_VARIANT_LIMIT_TYPES.html" title="Macro BOOST_VARIANT_LIMIT_TYPES">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -111,7 +111,7 @@
         <code class="computeroutput">operator()</code>, unambiguously accepting any value of type
         <code class="computeroutput">T</code>.</li>
 <li>Must expose inner type <code class="computeroutput">result_type</code>. (See 
-        <code class="computeroutput"><a class="link" href="../boost/visitor_ptr_id975193.html" title="Function template visitor_ptr">boost::visitor_ptr</a></code> for a
+        <code class="computeroutput"><a class="link" href="../boost/visitor_ptr.html" title="Function template visitor_ptr">boost::visitor_ptr</a></code> for a
         solution to using functions as visitors.)</li>
 <li>If <code class="computeroutput">result_type</code> is not <code class="computeroutput">void</code>, then
         each operation of the function object must return a value implicitly
@@ -206,11 +206,11 @@ public:
 
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Sequence&gt; <span class="bold"><strong>class</strong></span> <a class="link" href="../boost/make_variant_over.html" title="Class template make_variant_over">make_variant_over</a>;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T1, <span class="bold"><strong>typename</strong></span> T2, ..., <span class="bold"><strong>typename</strong></span> TN&gt; 
-    <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="../boost/swap_id916556.html" title="Function template swap">swap</a>(<a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; &amp;, <a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; &amp;);
+    <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="../boost/swap_id3116671.html" title="Function template swap">swap</a>(<a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; &amp;, <a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; &amp;);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> ElemType, <span class="bold"><strong>typename</strong></span> Traits, <span class="bold"><strong>typename</strong></span> T1, <span class="bold"><strong>typename</strong></span> T2, ..., 
            <span class="bold"><strong>typename</strong></span> TN&gt; 
     <span class="type">std::basic_ostream&lt;ElemType,Traits&gt; &amp;</span> 
-    <a class="link" href="../boost/operator___id287104.html" title="Function template operator&lt;&lt;"><span class="bold"><strong>operator</strong></span>&lt;&lt;</a>(std::basic_ostream&lt;ElemType,Traits&gt; &amp;, 
+    <a class="link" href="../boost/operator__id2660181.html" title="Function template operator&lt;&lt;"><span class="bold"><strong>operator</strong></span>&lt;&lt;</a>(std::basic_ostream&lt;ElemType,Traits&gt; &amp;, 
                <span class="bold"><strong>const</strong></span> <a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; &amp;);
 }</pre>
 </div>
@@ -241,17 +241,17 @@ public:
 <pre class="synopsis"><span class="bold"><strong>namespace</strong></span> boost {
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Visitor&gt; <span class="bold"><strong>class</strong></span> <a class="link" href="../boost/apply_visitor_delayed_t.html" title="Class template apply_visitor_delayed_t">apply_visitor_delayed_t</a>;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Visitor, <span class="bold"><strong>typename</strong></span> Variant&gt; 
-    <span class="type"><span class="bold"><strong>typename</strong></span> Visitor::result_type</span> <a class="link" href="../boost/apply_visitor_id971226.html" title="Function apply_visitor">apply_visitor</a>(Visitor &amp;, Variant &amp;);
+    <span class="type"><span class="bold"><strong>typename</strong></span> Visitor::result_type</span> <a class="link" href="../boost/apply_visitor.html" title="Function apply_visitor">apply_visitor</a>(Visitor &amp;, Variant &amp;);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Visitor, <span class="bold"><strong>typename</strong></span> Variant&gt; 
-    <span class="type"><span class="bold"><strong>typename</strong></span> Visitor::result_type</span> <a class="link" href="../boost/apply_visitor_id971226.html" title="Function apply_visitor">apply_visitor</a>(<span class="bold"><strong>const</strong></span> Visitor &amp;, Variant &amp;);
+    <span class="type"><span class="bold"><strong>typename</strong></span> Visitor::result_type</span> <a class="link" href="../boost/apply_visitor.html" title="Function apply_visitor">apply_visitor</a>(<span class="bold"><strong>const</strong></span> Visitor &amp;, Variant &amp;);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> BinaryVisitor, <span class="bold"><strong>typename</strong></span> Variant1, <span class="bold"><strong>typename</strong></span> Variant2&gt; 
     <span class="type"><span class="bold"><strong>typename</strong></span> BinaryVisitor::result_type</span> 
-    <a class="link" href="../boost/apply_visitor_id971226.html" title="Function apply_visitor">apply_visitor</a>(BinaryVisitor &amp;, Variant1 &amp;, Variant2 &amp;);
+    <a class="link" href="../boost/apply_visitor.html" title="Function apply_visitor">apply_visitor</a>(BinaryVisitor &amp;, Variant1 &amp;, Variant2 &amp;);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> BinaryVisitor, <span class="bold"><strong>typename</strong></span> Variant1, <span class="bold"><strong>typename</strong></span> Variant2&gt; 
     <span class="type"><span class="bold"><strong>typename</strong></span> BinaryVisitor::result_type</span> 
-    <a class="link" href="../boost/apply_visitor_id971226.html" title="Function apply_visitor">apply_visitor</a>(<span class="bold"><strong>const</strong></span> BinaryVisitor &amp;, Variant1 &amp;, Variant2 &amp;);
+    <a class="link" href="../boost/apply_visitor.html" title="Function apply_visitor">apply_visitor</a>(<span class="bold"><strong>const</strong></span> BinaryVisitor &amp;, Variant1 &amp;, Variant2 &amp;);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Visitor&gt; 
-    <span class="type"><a class="link" href="../boost/apply_visitor_delayed_t.html" title="Class template apply_visitor_delayed_t">apply_visitor_delayed_t</a>&lt;Visitor&gt;</span> <a class="link" href="../boost/apply_visitor_id971226.html" title="Function apply_visitor">apply_visitor</a>(Visitor &amp;);
+    <span class="type"><a class="link" href="../boost/apply_visitor_delayed_t.html" title="Class template apply_visitor_delayed_t">apply_visitor_delayed_t</a>&lt;Visitor&gt;</span> <a class="link" href="../boost/apply_visitor.html" title="Function apply_visitor">apply_visitor</a>(Visitor &amp;);
 }</pre>
 </div>
 <div class="section" lang="en">
@@ -260,13 +260,13 @@ public:
 <pre class="synopsis"><span class="bold"><strong>namespace</strong></span> boost {
   <span class="bold"><strong>class</strong></span> <a class="link" href="../boost/bad_get.html" title="Class bad_get">bad_get</a>;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> U, <span class="bold"><strong>typename</strong></span> T1, <span class="bold"><strong>typename</strong></span> T2, ..., <span class="bold"><strong>typename</strong></span> TN&gt; 
-    <span class="type">U *</span> <a class="link" href="../boost/get_id941590.html" title="Function get">get</a>(<a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; *);
+    <span class="type">U *</span> <a class="link" href="../boost/get_id3262373.html" title="Function get">get</a>(<a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; *);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> U, <span class="bold"><strong>typename</strong></span> T1, <span class="bold"><strong>typename</strong></span> T2, ..., <span class="bold"><strong>typename</strong></span> TN&gt; 
-    <span class="type"><span class="bold"><strong>const</strong></span> U *</span> <a class="link" href="../boost/get_id941590.html" title="Function get">get</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; *);
+    <span class="type"><span class="bold"><strong>const</strong></span> U *</span> <a class="link" href="../boost/get_id3262373.html" title="Function get">get</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; *);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> U, <span class="bold"><strong>typename</strong></span> T1, <span class="bold"><strong>typename</strong></span> T2, ..., <span class="bold"><strong>typename</strong></span> TN&gt; 
-    <span class="type">U &amp;</span> <a class="link" href="../boost/get_id941590.html" title="Function get">get</a>(<a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; &amp;);
+    <span class="type">U &amp;</span> <a class="link" href="../boost/get_id3262373.html" title="Function get">get</a>(<a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; &amp;);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> U, <span class="bold"><strong>typename</strong></span> T1, <span class="bold"><strong>typename</strong></span> T2, ..., <span class="bold"><strong>typename</strong></span> TN&gt; 
-    <span class="type"><span class="bold"><strong>const</strong></span> U &amp;</span> <a class="link" href="../boost/get_id941590.html" title="Function get">get</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; &amp;);
+    <span class="type"><span class="bold"><strong>const</strong></span> U &amp;</span> <a class="link" href="../boost/get_id3262373.html" title="Function get">get</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1, T2, ..., TN&gt; &amp;);
 }</pre>
 </div>
 <div class="section" lang="en">
@@ -288,7 +288,7 @@ public:
 <a name="header.boost.variant.visitor_ptr.hpp"></a>Header &lt;<a href="../../../boost/variant/visitor_ptr.hpp" target="_top">boost/variant/visitor_ptr.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis"><span class="bold"><strong>namespace</strong></span> boost {
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T, <span class="bold"><strong>typename</strong></span> R&gt; <span class="bold"><strong>class</strong></span> <a class="link" href="../boost/visitor_ptr_t.html" title="Class template visitor_ptr_t">visitor_ptr_t</a>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> R, <span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><a class="link" href="../boost/visitor_ptr_t.html" title="Class template visitor_ptr_t">visitor_ptr_t</a>&lt;T,R&gt;</span> <a class="link" href="../boost/visitor_ptr_id975193.html" title="Function template visitor_ptr">visitor_ptr</a>(R (*)(T));
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> R, <span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><a class="link" href="../boost/visitor_ptr_t.html" title="Class template visitor_ptr_t">visitor_ptr_t</a>&lt;T,R&gt;</span> <a class="link" href="../boost/visitor_ptr.html" title="Function template visitor_ptr">visitor_ptr</a>(R (*)(T));
 }</pre>
 </div>
 </div>

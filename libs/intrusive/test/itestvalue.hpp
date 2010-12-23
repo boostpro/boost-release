@@ -126,20 +126,30 @@ template<class VoidPointer>
 struct uset_auto_base_hook_type
 {
    typedef unordered_set_base_hook
-      < link_mode<auto_unlink>, void_pointer<VoidPointer>
-      , tag<my_tag>, store_hash<true> > type;
+      < link_mode<auto_unlink>
+      , void_pointer<VoidPointer>
+      , tag<my_tag>
+      , store_hash<true>
+      > type;
 };
 
 template<class VoidPointer>
 struct uset_member_hook_type
-{  typedef unordered_set_member_hook<void_pointer<VoidPointer> > type;  };
+{
+   typedef unordered_set_member_hook
+      < void_pointer<VoidPointer>
+      , optimize_multikey<true>
+      > type;
+};
 
 template<class VoidPointer>
 struct uset_auto_member_hook_type
 {
    typedef unordered_set_member_hook
       < link_mode<auto_unlink>, void_pointer<VoidPointer>
-      , store_hash<true>  > type;
+      , store_hash<true>
+      , optimize_multikey<true>
+      > type;
 };
 
 template<class VoidPointer, bool ConstantTimeSize>
@@ -318,6 +328,49 @@ struct testvalue
       slist_auto_node_.swap_nodes(other.slist_auto_node_);
    }
 
+   bool is_linked() const
+   {
+      //Set 
+      return set_base_hook_t::is_linked() ||
+      set_auto_base_hook_t::is_linked() ||
+      set_node_.is_linked() ||
+      set_auto_node_.is_linked() ||
+
+      //SplaySet 
+      splay_set_base_hook_t::is_linked() ||
+      splay_set_auto_base_hook_t::is_linked() ||
+      splay_set_node_.is_linked() ||
+      splay_set_auto_node_.is_linked() ||
+
+      //ScapeoatSet 
+      bs_set_base_hook_t::is_linked() ||
+      sg_set_node_.is_linked() ||
+
+      //AvlSet 
+      avl_set_base_hook_t::is_linked() ||
+      avl_set_auto_base_hook_t::is_linked() ||
+      avl_set_node_.is_linked() ||
+      avl_set_auto_node_.is_linked() ||
+
+      //Unordered set 
+      unordered_set_base_hook_t::is_linked() ||
+      unordered_set_auto_base_hook_t::is_linked() ||
+      unordered_set_node_.is_linked() ||
+      unordered_set_auto_node_.is_linked() ||
+
+      //List
+      list_base_hook_t::is_linked() ||
+      list_auto_base_hook_t::is_linked() ||
+      list_node_.is_linked() ||
+      list_auto_node_.is_linked() ||
+
+      //Slist
+      slist_base_hook_t::is_linked() ||
+      slist_auto_base_hook_t::is_linked() ||
+      slist_node_.is_linked() ||
+      slist_auto_node_.is_linked();
+   }
+
    ~testvalue()
    {}
 
@@ -326,6 +379,9 @@ struct testvalue
 
    bool operator==(const testvalue &other) const
    {  return value_ == other.value_;  }
+
+   bool operator!=(const testvalue &other) const
+   {  return value_ != other.value_;  }
 
    friend bool operator< (int other1, const testvalue &other2)
    {  return other1 < other2.value_;  }
@@ -338,6 +394,12 @@ struct testvalue
 
    friend bool operator== (const testvalue &other1, int other2)
    {  return other1.value_ == other2;  }
+
+   friend bool operator!= (int other1, const testvalue &other2)
+   {  return other1 != other2.value_;  }
+
+   friend bool operator!= (const testvalue &other1, int other2)
+   {  return other1.value_ != other2;  }
 };
 
 template<class VoidPointer, bool ConstantTimeSize>

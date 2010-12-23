@@ -6,6 +6,10 @@
 #ifndef BOOST_MATH_TOOLS_RATIONAL_HPP
 #define BOOST_MATH_TOOLS_RATIONAL_HPP
 
+#ifdef _MSC_VER
+#pragma once
+#endif
+
 #include <boost/array.hpp>
 #include <boost/math/tools/config.hpp>
 #include <boost/mpl/int.hpp>
@@ -36,6 +40,128 @@
 #  include BOOST_HEADER()
 #  undef BOOST_HEADER
 #endif
+
+#if 0
+//
+// This just allows dependency trackers to find the headers
+// used in the above PP-magic.
+//
+#include <boost/math/tools/detail/polynomial_horner1_2.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_3.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_4.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_5.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_6.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_7.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_8.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_9.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_10.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_11.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_12.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_13.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_14.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_15.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_16.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_17.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_18.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_19.hpp>
+#include <boost/math/tools/detail/polynomial_horner1_20.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_2.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_3.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_4.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_5.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_6.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_7.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_8.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_9.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_10.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_11.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_12.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_13.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_14.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_15.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_16.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_17.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_18.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_19.hpp>
+#include <boost/math/tools/detail/polynomial_horner2_20.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_2.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_3.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_4.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_5.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_6.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_7.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_8.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_9.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_10.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_11.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_12.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_13.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_14.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_15.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_16.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_17.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_18.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_19.hpp>
+#include <boost/math/tools/detail/polynomial_horner3_20.hpp>
+#include <boost/math/tools/detail/rational_horner1_2.hpp>
+#include <boost/math/tools/detail/rational_horner1_3.hpp>
+#include <boost/math/tools/detail/rational_horner1_4.hpp>
+#include <boost/math/tools/detail/rational_horner1_5.hpp>
+#include <boost/math/tools/detail/rational_horner1_6.hpp>
+#include <boost/math/tools/detail/rational_horner1_7.hpp>
+#include <boost/math/tools/detail/rational_horner1_8.hpp>
+#include <boost/math/tools/detail/rational_horner1_9.hpp>
+#include <boost/math/tools/detail/rational_horner1_10.hpp>
+#include <boost/math/tools/detail/rational_horner1_11.hpp>
+#include <boost/math/tools/detail/rational_horner1_12.hpp>
+#include <boost/math/tools/detail/rational_horner1_13.hpp>
+#include <boost/math/tools/detail/rational_horner1_14.hpp>
+#include <boost/math/tools/detail/rational_horner1_15.hpp>
+#include <boost/math/tools/detail/rational_horner1_16.hpp>
+#include <boost/math/tools/detail/rational_horner1_17.hpp>
+#include <boost/math/tools/detail/rational_horner1_18.hpp>
+#include <boost/math/tools/detail/rational_horner1_19.hpp>
+#include <boost/math/tools/detail/rational_horner1_20.hpp>
+#include <boost/math/tools/detail/rational_horner2_2.hpp>
+#include <boost/math/tools/detail/rational_horner2_3.hpp>
+#include <boost/math/tools/detail/rational_horner2_4.hpp>
+#include <boost/math/tools/detail/rational_horner2_5.hpp>
+#include <boost/math/tools/detail/rational_horner2_6.hpp>
+#include <boost/math/tools/detail/rational_horner2_7.hpp>
+#include <boost/math/tools/detail/rational_horner2_8.hpp>
+#include <boost/math/tools/detail/rational_horner2_9.hpp>
+#include <boost/math/tools/detail/rational_horner2_10.hpp>
+#include <boost/math/tools/detail/rational_horner2_11.hpp>
+#include <boost/math/tools/detail/rational_horner2_12.hpp>
+#include <boost/math/tools/detail/rational_horner2_13.hpp>
+#include <boost/math/tools/detail/rational_horner2_14.hpp>
+#include <boost/math/tools/detail/rational_horner2_15.hpp>
+#include <boost/math/tools/detail/rational_horner2_16.hpp>
+#include <boost/math/tools/detail/rational_horner2_17.hpp>
+#include <boost/math/tools/detail/rational_horner2_18.hpp>
+#include <boost/math/tools/detail/rational_horner2_19.hpp>
+#include <boost/math/tools/detail/rational_horner2_20.hpp>
+#include <boost/math/tools/detail/rational_horner3_2.hpp>
+#include <boost/math/tools/detail/rational_horner3_3.hpp>
+#include <boost/math/tools/detail/rational_horner3_4.hpp>
+#include <boost/math/tools/detail/rational_horner3_5.hpp>
+#include <boost/math/tools/detail/rational_horner3_6.hpp>
+#include <boost/math/tools/detail/rational_horner3_7.hpp>
+#include <boost/math/tools/detail/rational_horner3_8.hpp>
+#include <boost/math/tools/detail/rational_horner3_9.hpp>
+#include <boost/math/tools/detail/rational_horner3_10.hpp>
+#include <boost/math/tools/detail/rational_horner3_11.hpp>
+#include <boost/math/tools/detail/rational_horner3_12.hpp>
+#include <boost/math/tools/detail/rational_horner3_13.hpp>
+#include <boost/math/tools/detail/rational_horner3_14.hpp>
+#include <boost/math/tools/detail/rational_horner3_15.hpp>
+#include <boost/math/tools/detail/rational_horner3_16.hpp>
+#include <boost/math/tools/detail/rational_horner3_17.hpp>
+#include <boost/math/tools/detail/rational_horner3_18.hpp>
+#include <boost/math/tools/detail/rational_horner3_19.hpp>
+#include <boost/math/tools/detail/rational_horner3_20.hpp>
+#endif
+
 namespace boost{ namespace math{ namespace tools{
 
 //
@@ -201,6 +327,7 @@ inline V evaluate_rational(const boost::array<T,N>& a, const boost::array<U,N>& 
 } // namespace boost
 
 #endif // BOOST_MATH_TOOLS_RATIONAL_HPP
+
 
 
 

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="auto_unlink_hooks.html" title="Auto-unlink hooks">
 <link rel="next" href="list.html" title="Intrusive doubly linked list: list">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -34,9 +34,9 @@
 <p>
       <code class="computeroutput"><a class="link" href="../boost/intrusive/slist.html" title="Class template slist">slist</a></code> is the simplest
       intrusive container of <span class="bold"><strong>Boost.Intrusive</strong></span>: a
-      singly linked list. The memory overhead that imposes is 1 pointer per node.
-      The size of an empty, non constant-time size <code class="computeroutput"><a class="link" href="../boost/intrusive/slist.html" title="Class template slist">slist</a></code>,
-      is the size of 1 pointer. This lightweight memory overhead comes with its drawbacks,
+      singly linked list. The memory overhead it imposes is 1 pointer per node. The
+      size of an empty, non constant-time size <code class="computeroutput"><a class="link" href="../boost/intrusive/slist.html" title="Class template slist">slist</a></code>
+      is the size of 1 pointer. This lightweight memory overhead comes with drawbacks,
       though: many operations have linear time complexity, even some that usually
       are constant time, like <code class="computeroutput">swap</code>.
       <code class="computeroutput"><a class="link" href="../boost/intrusive/slist.html" title="Class template slist">slist</a></code> only provides forward
@@ -44,9 +44,9 @@
     </p>
 <p>
       For most cases, a doubly linked list is preferrable because it offers more
-      constant-time functions with a slightly bigger overhead. However, for some
-      applications like constructing more elaborated containers, singly linked lists
-      are essential because of their low size overhead.
+      constant-time functions with a slightly bigger size overhead. However, for
+      some applications like constructing more elaborate containers, singly linked
+      lists are essential because of their low size overhead.
     </p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
@@ -58,8 +58,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">slist_base_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
@@ -69,8 +68,7 @@
         </li></ul></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">slist_member_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
@@ -108,14 +106,12 @@
 </h3></div></div></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">slist</span><span class="special">;</span>
 </pre>
 <p>
-        <code class="computeroutput"><a class="link" href="../boost/intrusive/slist.html" title="Class template slist">slist</a></code> receives the same
-        options explained in the section <a class="link" href="usage.html" title="How to use Boost.Intrusive">How to use
-        Boost.Intrusive</a>:
+        <code class="computeroutput"><a class="link" href="../boost/intrusive/slist.html" title="Class template slist">slist</a></code> receives the options
+        explained in the section <a class="link" href="usage.html" title="How to use Boost.Intrusive">How to use Boost.Intrusive</a>:
       </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -123,9 +119,9 @@
           / <span class="bold"><strong><code class="computeroutput"><span class="identifier">member_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span>
           <span class="identifier">Hook</span><span class="special">,</span>
           <span class="identifier">Hook</span> <span class="identifier">T</span><span class="special">::*</span> <span class="identifier">PtrToMember</span><span class="special">&gt;</span></code></strong></span> / <span class="bold"><strong><code class="computeroutput"><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ValueTraits</span><span class="special">&gt;</span></code></strong></span>: To specify the hook type
-          or value traits used to configure the container (to know about value traits
-          go to the section titled <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
-          with custom ValueTraits</a>.
+          or value traits used to configure the container. (To learn about value
+          traits go to the section <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
+          with custom ValueTraits</a>.)
         </li>
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
@@ -134,24 +130,53 @@
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
           To specify the type that will be used to store the size of the container.
-          Default: <code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span></code>
-</li>
+          Default: <code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span></code>.
+        </li>
 </ul></div>
+<p>
+        <code class="computeroutput"><a class="link" href="../boost/intrusive/slist.html" title="Class template slist">slist</a></code> can receive additional
+        options:
+      </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<span class="bold"><strong><code class="computeroutput"><span class="identifier">linear</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enable</span><span class="special">&gt;</span></code></strong></span>:
+          the singly linked list is implemented as a null-terminated list instead
+          of a circular list. This allows <code class="computeroutput"><span class="identifier">O</span><span class="special">(</span><span class="number">1</span><span class="special">)</span></code>
+          swap, but losses some operations like <code class="computeroutput"><span class="identifier">container_from_end_iterator</span></code>.
+        </li>
+<li>
+<span class="bold"><strong><code class="computeroutput"><span class="identifier">cache_last</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enable</span><span class="special">&gt;</span></code></strong></span>:
+          the singly linked also stores a pointer to the last element of the singly
+          linked list. This allows <code class="computeroutput"><span class="identifier">O</span><span class="special">(</span><span class="number">1</span><span class="special">)</span></code>
+          swap, <code class="computeroutput"><span class="identifier">splice_after</span><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">slist</span> <span class="special">&amp;)</span></code>
+          and makes the list offer new functions like <code class="computeroutput"><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span></code> and <code class="computeroutput"><span class="identifier">back</span><span class="special">()</span></code>. Logically, the size an empty list is
+          increased in <code class="computeroutput"><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">void_pointer</span><span class="special">)</span></code>
+          and the the cached last node pointer must be updated in every operation,
+          and that might incur in a slight performance impact.
+        </li>
+</ul></div>
+<p>
+        <code class="computeroutput"><span class="identifier">auto_unlink</span></code> hooks are not
+        usable if <code class="computeroutput"><span class="identifier">linear</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span></code> and/or
+        <code class="computeroutput"><span class="identifier">cache_last</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span></code> options
+        are used. If <code class="computeroutput"><span class="identifier">auto_unlink</span></code>
+        hooks are used and those options are specified, a static assertion will be
+        raised.
+      </p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.slist.slist_example"></a><a class="link" href="slist.html#intrusive.slist.slist_example" title="Example"> Example</a>
 </h3></div></div></div>
 <p>
-        Now let's see an small example using both hooks:
+        Now let's see a small example using both hooks:
       </p>
 <p>
         </p>
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">slist</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">slist</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>

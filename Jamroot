@@ -47,8 +47,8 @@
 #                               "release" version of the libraries. This
 #                               release corresponds to specifying:
 #                               "release <threading>multi <link>shared
-#                               <runtime-link>shared" as the Boost.Build
-#                               variant to build.
+#                               <link>static <runtime-link>shared" as the
+#                               Boost.Build variant to build.
 #
 #                               complete - Attempts to build all possible
 #                               variations.
@@ -98,6 +98,7 @@
 #  - handle boost version
 #  - handle python options such as pydebug
 
+import generate ;
 import modules ;
 import set ;
 import stage ;
@@ -110,9 +111,10 @@ import errors ;
 import "class" : new ;
 import common ;
 import sequence ;
+import symlink ;
 
 path-constant BOOST_ROOT : . ;
-constant BOOST_VERSION : 1.35.0 ;
+constant BOOST_VERSION : 1.36.0 ;
 constant BOOST_JAMROOT_MODULE : $(__name__) ;
 
 local version-tag = [ MATCH "^([^.]+)[.]([^.]+)[.]([^.]+)" : $(BOOST_VERSION) ] ;
@@ -136,7 +138,7 @@ if ! ( $(build-type) in minimal complete )
 local default-build,minimal =
     release
     <threading>multi
-    <link>shared
+    <link>shared <link>static
     <runtime-link>shared
     ;
 local default-build,complete =
@@ -406,7 +408,7 @@ if $(layout-versioned)
             }
             else
             {
-                m = [ MATCH "(.*[.]so[.0-9]+)" "(.*[.]a)" : [ $(s).name ] ] ;
+                m = [ MATCH "(.*[.]so[.0-9]+)" "(.*[.]dylib)" "(.*[.]a)" : [ $(s).name ] ] ;
             }            
             if $(m)
             {
@@ -414,14 +416,14 @@ if $(layout-versioned)
             }
         }
         
-        # Create hardlinks without version.
+        # Create links without version.
         for local s in $(filtered)
         {
             local name = [ $(s).name ] ;
             local ea = [ $(s).action ] ;
             local ep = [ $(ea).properties ] ;
             local a  = [
-              new non-scanning-action $(s) : common.hard-link : $(ep) ] ;
+              new non-scanning-action $(s) : symlink.ln : $(ep) ] ;
             
             local noversion-file ;
             if $(nt)
@@ -432,6 +434,7 @@ if $(layout-versioned)
             {
                 noversion-file = 
                   [ MATCH "(.*)-[0-9_]+([.]so)[.0-9]*" : $(name) ] 
+                  [ MATCH "(.*)-[0-9_]+([.]dylib)" : $(name) ] 
                   [ MATCH "(.*)-[0-9_]+([.]a)" : $(name) ] 
                   [ MATCH "(.*)-[0-9_]+([.]dll[.]a)" : $(name) ] ;
             }
@@ -457,7 +460,9 @@ else
 {
     # Create do-nothing aliases
     alias stage-unversioned ;
+    explicit stage-unversioned ;
     alias install-unversioned ;
+    explicit install-unversioned ;
 }
 
 alias install : install-proper install-unversioned ;
@@ -497,7 +502,7 @@ rule boost-install ( libraries * )
 }
 
 # Make project ids of all libraries known.
-for local l in $(libraries)
+for local l in $(all-libraries)
 {
     use-project /boost/$(l) : libs/$(l)/build ;
 }

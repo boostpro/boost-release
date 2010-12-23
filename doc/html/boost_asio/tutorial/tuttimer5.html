@@ -13,9 +13,9 @@
 <table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
 <td align="center"><a href="../../../../index.html">Home</a></td>
-<td align="center"><a href="../../libraries.html">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -58,8 +58,7 @@
         as this allows handlers to execute concurrently, we need a method of synchronisation
         when handlers might be accessing a shared, thread-unsafe resource.
       </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">asio</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">thread</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">bind</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -70,8 +69,7 @@
         similar to the class in the previous tutorial. This class will extend the
         previous tutorial by running two timers in parallel.
       </p>
-<pre class="programlisting">
-<span class="keyword">class</span> <span class="identifier">printer</span>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">printer</span>
 <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
 </pre>
@@ -89,8 +87,7 @@
         through an boost::asio::strand, or were dispatched through a different boost::asio::strand
         object.
       </p>
-<pre class="programlisting">
-  <span class="identifier">printer</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">&amp;</span> <span class="identifier">io</span><span class="special">)</span>
+<pre class="programlisting">  <span class="identifier">printer</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">&amp;</span> <span class="identifier">io</span><span class="special">)</span>
     <span class="special">:</span> <span class="identifier">strand_</span><span class="special">(</span><span class="identifier">io</span><span class="special">),</span>
       <span class="identifier">timer1_</span><span class="special">(</span><span class="identifier">io</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">seconds</span><span class="special">(</span><span class="number">1</span><span class="special">)),</span>
       <span class="identifier">timer2_</span><span class="special">(</span><span class="identifier">io</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">seconds</span><span class="special">(</span><span class="number">1</span><span class="special">)),</span>
@@ -104,8 +101,7 @@
         through the boost::asio::strand object. By wrapping the handlers using the
         same boost::asio::strand, we are ensuring that they cannot execute concurrently.
       </p>
-<pre class="programlisting">
-    <span class="identifier">timer1_</span><span class="special">.</span><span class="identifier">async_wait</span><span class="special">(</span><span class="identifier">strand_</span><span class="special">.</span><span class="identifier">wrap</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">printer</span><span class="special">::</span><span class="identifier">print1</span><span class="special">,</span> <span class="keyword">this</span><span class="special">)));</span>
+<pre class="programlisting">    <span class="identifier">timer1_</span><span class="special">.</span><span class="identifier">async_wait</span><span class="special">(</span><span class="identifier">strand_</span><span class="special">.</span><span class="identifier">wrap</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">printer</span><span class="special">::</span><span class="identifier">print1</span><span class="special">,</span> <span class="keyword">this</span><span class="special">)));</span>
     <span class="identifier">timer2_</span><span class="special">.</span><span class="identifier">async_wait</span><span class="special">(</span><span class="identifier">strand_</span><span class="special">.</span><span class="identifier">wrap</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">printer</span><span class="special">::</span><span class="identifier">print2</span><span class="special">,</span> <span class="keyword">this</span><span class="special">)));</span>
   <span class="special">}</span>
 
@@ -121,8 +117,7 @@
         and <code class="computeroutput"><span class="identifier">print2</span></code>) are <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span></code>
         and the <code class="computeroutput"><span class="identifier">count_</span></code> data member.
       </p>
-<pre class="programlisting">
-  <span class="keyword">void</span> <span class="identifier">print1</span><span class="special">()</span>
+<pre class="programlisting">  <span class="keyword">void</span> <span class="identifier">print1</span><span class="special">()</span>
   <span class="special">{</span>
     <span class="keyword">if</span> <span class="special">(</span><span class="identifier">count_</span> <span class="special">&lt;</span> <span class="number">10</span><span class="special">)</span>
     <span class="special">{</span>
@@ -163,8 +158,7 @@
         will continue to execute while there is "work" left to do. The
         background thread will not exit until all asynchronous operations have completed.
       </p>
-<pre class="programlisting">
-<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="identifier">io</span><span class="special">;</span>
   <span class="identifier">printer</span> <span class="identifier">p</span><span class="special">(</span><span class="identifier">io</span><span class="special">);</span>

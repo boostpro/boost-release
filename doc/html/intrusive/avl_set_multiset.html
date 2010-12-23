@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="splay_set_multiset.html" title="Intrusive splay tree based associative containers: splay_set, splay_multiset and , splay_tree">
 <link rel="next" href="sg_set_multiset.html" title="Intrusive scapegoat tree based associative containers: sg_set, sg_multiset and sgtree">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -38,10 +38,10 @@
 <p>
       Similar to red-black trees, AVL trees are balanced binary trees. AVL trees
       are often compared with red-black trees because they support the same set of
-      operations and because red-black trees also take O(log n) time for the basic
-      operations. AVL trees are more rigidly balanced than Red-Black trees, leading
-      to slower insertion and removal but faster retrieval, so AVL trees perform
-      better than red-black trees for lookup-intensive applications.
+      operations and because both take O(log n) time for basic operations. AVL trees
+      are more rigidly balanced than Red-Black trees, leading to slower insertion
+      and removal but faster retrieval, so AVL trees perform better than red-black
+      trees for lookup-intensive applications.
     </p>
 <p>
       <span class="bold"><strong>Boost.Intrusive</strong></span> offers 3 containers based
@@ -60,8 +60,8 @@
 <p>
       An empty, non constant-time size <code class="computeroutput"><a class="link" href="../boost/intrusive/avl_set.html" title="Class template avl_set">avl_set</a></code>,
       <code class="computeroutput"><a class="link" href="../boost/intrusive/avl_multiset.html" title="Class template avl_multiset">avl_multiset</a></code> or
-      <code class="computeroutput"><a class="link" href="../boost/intrusive/avltree.html" title="Class template avltree">avltree</a></code> has also the
-      size of 3 pointers and an integer (3 pointers when optimized for size).
+      <code class="computeroutput"><a class="link" href="../boost/intrusive/avltree.html" title="Class template avltree">avltree</a></code> also has a size
+      of 3 pointers and an integer (3 pointers when optimized for size).
     </p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
@@ -73,8 +73,7 @@
       </p>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">avl_set_base_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
@@ -84,8 +83,7 @@
         </li></ul></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">avl_set_member_hook</span><span class="special">;</span>
 </pre>
 <div class="itemizedlist"><ul type="disc"><li>
@@ -133,8 +131,7 @@
 </h3></div></div></div>
 <p>
       </p>
-<pre class="programlisting">
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">avl_set</span><span class="special">;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
@@ -152,9 +149,9 @@
           / <span class="bold"><strong><code class="computeroutput"><span class="identifier">member_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span>
           <span class="identifier">Hook</span><span class="special">,</span>
           <span class="identifier">Hook</span> <span class="identifier">T</span><span class="special">::*</span> <span class="identifier">PtrToMember</span><span class="special">&gt;</span></code></strong></span> / <span class="bold"><strong><code class="computeroutput"><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ValueTraits</span><span class="special">&gt;</span></code></strong></span>: To specify the hook type
-          or value traits used to configure the container (to know about value traits
-          go to the section titled <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
-          with custom ValueTraits</a>.
+          or value traits used to configure the container. (To learn about value
+          traits go to the section <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
+          with custom ValueTraits</a>.)
         </li>
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
@@ -181,7 +178,7 @@
       Example</a>
 </h3></div></div></div>
 <p>
-        Now let's see an small example using both hooks and <code class="computeroutput"><a class="link" href="../boost/intrusive/avl_set.html" title="Class template avl_set">avl_set</a></code>/
+        Now let's see a small example using both hooks and <code class="computeroutput"><a class="link" href="../boost/intrusive/avl_set.html" title="Class template avl_set">avl_set</a></code>/
         <code class="computeroutput"><a class="link" href="../boost/intrusive/avl_multiset.html" title="Class template avl_multiset">avl_multiset</a></code>
         containers:
       </p>
@@ -190,8 +187,7 @@
 <p>
           
 </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">avl_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">avl_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter 9. Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="thread_safety.html" title="Thread safety guarantees">
 <link rel="next" href="design_notes.html" title="Design Notes">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -29,19 +29,18 @@
 </h2></div></div></div>
 <p>
       The flexible option specification mechanism used by <span class="bold"><strong>Boost.Intrusive</strong></span>
-      for hooks and containers has also a couple of downsides:
+      for hooks and containers has a couple of downsides:
     </p>
 <div class="itemizedlist"><ul type="disc"><li>
         If a user specifies the same options in different order or specifies some
-        options and lefts the rest as defaults the type of the created container/hook
+        options and leaves the rest as defaults, the type of the created container/hook
         will be different. Sometimes this is annoying, because two programmers specifying
-        the same options might end with incompatible types. For example, the following
-        two lists, although they're using the same options, have not the same type:
+        the same options might end up with incompatible types. For example, the following
+        two lists, although using the same options, do not have the same type:
       </li></ul></div>
 <p>
     </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
@@ -55,21 +54,20 @@
         Option specifiers lead to long template symbols for classes and functions.
         Option specifiers themselves are verbose and without variadic templates,
         several default template parameters are assigned for non-specified options.
-        Object and debugging information files can grow and compilation times might
-        suffer a bit if long names are produced.
+        Object and debugging information files can grow and compilation times may
+        suffer if long names are produced.
       </li></ul></div>
 <p>
       To solve these issues <span class="bold"><strong>Boost.Intrusive</strong></span> offers
-      some helper metafunctions that that reduce symbol lengths and create the same
-      type if the same options (either explicitly or implicitly) are used. This also
-      improves compilation times. All containers and hooks have their respective
-      <code class="computeroutput"><span class="identifier">make_xxx</span></code> versions. Previous
+      some helper metafunctions that reduce symbol lengths and create the same type
+      if the same options (either explicitly or implicitly) are used. These also
+      improve compilation times. All containers and hooks have their respective
+      <code class="computeroutput"><span class="identifier">make_xxx</span></code> versions. The previously
       shown example can be rewritten like this to obtain the same list type:
     </p>
 <p>
     </p>
-<pre class="programlisting">
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
@@ -84,9 +82,9 @@
 </span> <span class="keyword">typedef</span> <span class="identifier">make_list</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">List2</span><span class="special">;</span>
 </pre>
 <p>
-      Produced symbol lengths and compilation times are usually shorter and object/debug
-      files are smaller. If you are a programmer concerned with file sizes and compilation
-      times, this option is your choice.
+      Produced symbol lengths and compilation times will usually be shorter and object/debug
+      files smaller. If you are concerned with file sizes and compilation times,
+      this option is your best choice.
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../interprocess.html" title="Chapter 8. Boost.Interprocess">
+<link rel="up" href="../interprocess.html" title="Chapter 9. Boost.Interprocess">
 <link rel="prev" href="customizing_interprocess.html" title="Customizing Boost.Interprocess">
 <link rel="next" href="../boost_interprocess_reference.html" title="Boost.Interprocess Reference">
 </head>
@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -149,8 +149,46 @@
 <a name="interprocess.acknowledgements_notes.release_notes"></a><a class="link" href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes" title="Release Notes"> Release
       Notes</a>
 </h3></div></div></div>
-<div class="toc"><dl><dt><span class="section"><a href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_35_00">
-        Boost 1.35 Release</a></span></dt></dl></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_36_00">
+        Boost 1.36 Release</a></span></dt>
+<dt><span class="section"><a href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_35_00">
+        Boost 1.35 Release</a></span></dt>
+</dl></div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_36_00"></a><a class="link" href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_36_00" title="Boost 1.36 Release">
+        Boost 1.36 Release</a>
+</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+            Added anonymous shared memory for UNIX systems.
+          </li>
+<li>
+            Fixed erroneous <code class="computeroutput"><span class="keyword">void</span></code> return
+            types from <code class="computeroutput"><span class="identifier">flat_map</span><span class="special">::</span><span class="identifier">erase</span><span class="special">()</span></code>
+            functions.
+          </li>
+<li>
+            Fixed missing move semantics on managed memory classes.
+          </li>
+<li>
+            Added copy_on_write and open_read_only options for shared memory and
+            mapped file managed classes.
+          </li>
+<li>
+<span class="bold"><strong>ABI breaking</strong></span>: Added to <code class="computeroutput"><span class="identifier">mapped_region</span></code> the mode used to create
+            it.
+          </li>
+<li>
+            Corrected instantiation errors in void allocators.
+          </li>
+<li>
+<code class="computeroutput"><span class="identifier">shared_ptr</span></code> is movable
+            and supports aliasing.
+          </li>
+</ul></div>
+</div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_35_00"></a><a class="link" href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_35_00" title="Boost 1.35 Release">
@@ -161,7 +199,7 @@
             Added auxiliary utilities to ease the definition and construction of
             <code class="computeroutput"><a class="link" href="../boost/interprocess/shared_ptr.html" title="Class template shared_ptr">shared_ptr</a></code>,
             <code class="computeroutput"><a class="link" href="../boost/interprocess/weak_ptr.html" title="Class template weak_ptr">weak_ptr</a></code> and
-            <code class="computeroutput">unique_ptr</code>.
+            <code class="computeroutput"><a class="link" href="../boost/interprocess/unique_ptr.html" title="Class template unique_ptr">unique_ptr</a></code>.
             Added explanations and examples of these smart pointers in the documenation.
           </li>
 <li>
@@ -363,7 +401,7 @@
           </li>
 <li>
             Implemented N1780 proposal to LWG issue 233: <span class="emphasis"><em>Insertion hints
-            in associative containers</em></span> in interprocess <code class="computeroutput">multiset</code>
+            in associative containers</em></span> in interprocess <code class="computeroutput"><a class="link" href="../boost/interprocess/multiset.html" title="Class template multiset">multiset</a></code>
             and <code class="computeroutput"><a class="link" href="../boost/interprocess/multimap.html" title="Class template multimap">multimap</a></code>
             classes.
           </li>
@@ -505,8 +543,6 @@
         Security attributes</a></span></dt>
 <dt><span class="section"><a href="acknowledgements_notes.html#interprocess.acknowledgements_notes.future_improvements.future_ipc">
         Future inter-process communications</a></span></dt>
-<dt><span class="section"><a href="acknowledgements_notes.html#interprocess.acknowledgements_notes.future_improvements.future_containers">
-        Unordered associative containers and other containers</a></span></dt>
 </dl></div>
 <p>
         There are some Interprocess features that I would like to implement and some
@@ -579,26 +615,6 @@
           to implement for C++. But the work to implement PF_UNIX-like sockets and
           doors would be huge (and it might be difficult in a user-level library).
           Any network expert volunteer?
-        </p>
-</div>
-<div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="interprocess.acknowledgements_notes.future_improvements.future_containers"></a><a class="link" href="acknowledgements_notes.html#interprocess.acknowledgements_notes.future_improvements.future_containers" title="Unordered associative containers and other containers">
-        Unordered associative containers and other containers</a>
-</h4></div></div></div>
-<p>
-          We should be able to construct boost::unordered_xxx family in managed memory
-          segments, so that there is no code duplication in boost. So <span class="bold"><strong>Boost.Interprocess</strong></span>
-          should cooperate with boost container developers instead of duplicating
-          effort writing it's own containers.
-        </p>
-<p>
-          A very interesting project is making <span class="bold"><strong>boost::multi_index</strong></span>
-          compatible with <span class="bold"><strong>Boost.Interprocess</strong></span> ready
-          for shared memory. This could be a good basis for memory mapped data-bases.
-          The work to achieve this, however, can be huge. It would be interesting
-          a collaboration with <span class="bold"><strong>Intrusive</strong></span> library
-          to achieve shared memory intrusive containers.
         </p>
 </div>
 </div>

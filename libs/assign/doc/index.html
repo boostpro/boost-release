@@ -23,7 +23,7 @@
   </p>
   <p>
   Use, modification and distribution is subject to the Boost Software License, Version 1.0
-  (see <a href=http://www.boost.org/LICENSE_1_0.txt>
+  (see <a href="http://www.boost.org/LICENSE_1_0.txt">
    http://www.boost.org/LICENSE_1_0.txt</a>).
   </p>
   <h3>Table of Contents</h3>
@@ -37,7 +37,7 @@
             <li>Function <a href="#list_of"><code>list_of()</code></a>    
             <li>Function <a href="#map_list_of"><code>map_list_of()</code></a> 
             <li>Function <a href="#tuple_list_of"><code>tuple_list_of()</code></a>
-			<li>Functions <a href="#repeat"><code>repeat()</code>, <code>repeat_fun()</code> and <code>range()</code> </a>
+            <li>Functions <a href="#repeat"><code>repeat()</code>, <code>repeat_fun()</code> and <code>range()</code> </a>
             <li>Functions <a href="#ref_list_of"><code>ref_list_of()</code> and <code>cref_list_of()</code></a>    
             <li>A <a href="#complicated">"complicated"</a> example    
             <li>Functions <a href="#ptr_push_back"><code>ptr_push_back(), ptr_push_front()</code>, 
@@ -51,7 +51,7 @@
         <li><a href="#std">Standard containers</a> </li>
         <li>Functions <a href="#list_of_ref"><code>list_of()</code> and <code>map_list_of()</code></a></li>
         <li>Functions <a href="#repeat_ref"><code>repeat()</code>, 
-			<code>repeat_fun()</code> and <code>range()</code> </a> </li> 
+            <code>repeat_fun()</code> and <code>range()</code> </a> </li> 
         <li>Class <a href="#list_inserter"><code>list_inserter</code></a></li>
         <li>Function <a href="#make_list_inserter"><code>make_list_inserter()</code></a></li>
         <li><a href="#limit"> Customizing</a> argument list sizes</li>   
@@ -285,7 +285,15 @@ list with <code>list_of()</code> if we add parenthesis around the
  Please notice that <code>list_of()</code> can even convert to a 
  <code>boost::<a 
 href="../../array/index.html">array</a>&lt;T,sz></code> and see also the list 
-of <a href="#boost_libs">supported libraries </a>.
+of <a href="#boost_libs">supported libraries </a>. </p>
+           <p>
+               Note that the type returned by 
+               <code>list_of()</code> (and its variants) has overloaded comparison operators. This allows you to
+               write test code such as 
+                   <code>
+                       BOOST_CHECK_EQUAL( my_container, list_of(2)(3)(4)(5) );.
+                   </code>
+               </p>
  
  <h3>Function <code>map_list_of()</code> <a name="map_list_of"></h3>
  This function is defined for pure convenience when working with
@@ -706,7 +714,7 @@ object does the insertion or assignment by overloading <code>operator,()</code>
   All forwarding is done by passing objects by <code>const</code> reference. 
 Originally arguments were passed by value (and still is in 
 <code>tuple_list_of()</code>). One thing to remember is that references
-  can be passed by using <code>boost::<a href=http://www.boost.org/doc/html/ref.html>ref</a></code>.
+  can be passed by using <code>boost::<a href="http://www.boost.org/doc/html/ref.html">ref</a></code>.
   </p>
   
   <p>
@@ -720,8 +728,8 @@ Originally arguments were passed by value (and still is in
         <li><a href="#std">Standard containers</a> </li>
         <li>Functions <a href="#list_of_ref"><code>list_of()</code> and <code>map_list_of()</code></a></li>
         <li>Functions <a href="#repeat_ref"><code>repeat()</code>,<code>repeat_fun()</code> and 
-																	  <code>range()</code>
-																	  </a></li>
+                                                                      <code>range()</code>
+                                                                      </a></li>
         <li>Class <a href="#list_inserter"><code>list_inserter</code></a></li>
         <li>Function <a href="#make_list_inserter"><code>make_list_inserter()</code></a></li>
         <li><a href="#limit">Customizing</a> argument list sizes </li>
@@ -871,7 +879,7 @@ be thrown by the proxy returned by <code>list_of()</code>
     <p>  
   These two functions are used to construct anonymous    
   list which can be converted to any standard container
-  and <code>boost::<a href=../../array/index.html>array</a>&lt;T,sz>.</code> 
+  and <code>boost::<a href="../../array/index.html">array</a>&lt;T,sz>.</code> 
 The object returned by the two
   functions is guaranteed to have the interface described below. 
   </p>
@@ -926,9 +934,17 @@ The object returned by the two
         //
         </span><span class=keyword>template</span><span class=special>&lt; </span><span class=keyword>template </span><span class=special>&lt;</span><span class=keyword>class</span><span class=special>,</span><span class=identifier>std</span><span class=special>::</span><span class=identifier>size_t</span><span class=special>&gt; </span><span class=keyword>class </span><span class=identifier>Array</span><span class=special>, </span><span class=keyword>class </span><span class=identifier>U</span><span class=special>, </span><span class=identifier>std</span><span class=special>::</span><span class=identifier>size_t </span><span class=identifier>sz </span><span class=special>&gt; 
         </span><span class=keyword>operator </span><span class=identifier>Array</span><span class=special>&lt;</span><span class=identifier>U</span><span class=special>,</span><span class=identifier>sz</span><span class=special>&gt;() </span><span class=keyword>const</span><span class=special>;
-    </span><span class=special>};
+    </span><span class=special>};</span>
     
-    </span><span class=keyword>template</span><span class=special>&lt; </span><span class=keyword>class </span><span class=identifier>T </span><span class=special>&gt;
+    <span class=comment>//
+    // Comparison operators. 'op' can be &lt;,&gt;,&lt;=,&gt;=,==,!=
+    //</span>
+    <span class=keyword>template</span><span class=special>&lt;</span> <span class=keyword>class</span> <span class=identifier>Range</span> <span class=special>&gt;</span>
+    <span class=keyword>bool</span> <span class=identifier>op</span><span class=special>(</span> <span class=keyword>const</span> <span class=identifier>Implementation</span><span class=special>-</span><span class=identifier>defined</span><span class=special>&amp;,</span> <span class=keyword>const</span> <span class=identifier>Range</span><span class=special>&amp;</span> <span class=special>);</span>
+    <span class=keyword>template</span><span class=special>&lt;</span> <span class=keyword>class</span> <span class=identifier>Range</span> <span class=special>&gt;</span>
+    <span class=keyword>bool</span> <span class=identifier>op</span><span class=special>(</span> <span class=keyword>const</span> <span class=identifier>Range</span><span class=special>&amp;,</span> <span class=keyword>const</span> <span class=identifier>Implementation</span><span class=special>-</span><span class=identifier>defined</span><span class=special>&amp;</span> <span class=special>);</span>
+    
+    <span class=keyword>template</span><span class=special>&lt; </span><span class=keyword>class </span><span class=identifier>T </span><span class=special>&gt;
     </span><span class=identifier>Implementation</span><span class=special>-</span><span class=identifier>defined</span>   </span><span class=identifier>list_of</span><span class=special>(</span><span class=special>);
 
     </span><span class=keyword>template</span><span class=special>&lt; </span><span class=keyword>class </span><span class=identifier>T </span><span class=special>&gt;
@@ -969,7 +985,7 @@ The object returned by the two
           <li> the argument list of <code>repeat_fun()</code> is <code>(std::size_t,Nullary_function)</code>    
       </ul>
       
-	    </p>
+        </p>
   <p>
   The function <code>range()</code> only exists as a member function. The following two overloads are provided:
   <blockquote>
@@ -1292,9 +1308,9 @@ where <code>call_push_back</code> is defined as
   Here is a list libraries has been tested with Boost.Assign:
   
   <ol>
-      <li> <code>boost::<a href=../../array/index.html>array</a></code>
-      <li> <code>boost::<a href=../../multi_index/index.html>multi_index_container</a></code>
-      <li> <code>Boost.<a href=../../ptr_container/index.html>Pointer Container</code> </ol> <p>
+      <li> <code>boost::<a href="../../array/index.html">array</a></code>
+      <li> <code>boost::<a href="../../multi_index/index.html">multi_index_container</a></code>
+      <li> <code>Boost.<a href="../../ptr_container/index.html">Pointer Container</code> </ol> <p>
 
   </p>
   
@@ -1357,9 +1373,9 @@ The solution is to use <code>map_list_of()</code> instead:
   library is non-intrusive and puts only a minimum of requirements 
   on its supported classes.
  Overloading operator comma is sometimes viewed as a bad practice <a 
-href=#meyers>[1]</A>. However, it has been done
+href="#meyers">[1]</A>. However, it has been done
   with success in eg. the Generative Matrix Computation Library  and Blitz to initialize matrices 
-      (see <a href=#gmcl>[2]</A>) and <a href=#blitz>[3]</A>). The 
+      (see <a href="#gmcl">[2]</A>) and <a href="#blitz">[3]</A>). The 
 Initialization Library overloads
       the comma operator in a safe manner by letting free standing functions
  return an object that is responsible for the initialization. Therefore it takes 
@@ -1388,10 +1404,10 @@ support better initialization (see <a href="#initializer">[4]</a>).
   <ol>
       <li> <a name="meyers">     Scott. Meyers, "More Effective C++", Item 7, Addison Wesley, 1996       
       <li> <a name="gmcl">       K. Czarnecki and U.W. Eisenecker, "Generative programming", Addison-Wesley, 2000        
-      <li> <a name="blitz">      <a href=http://www.oonumerics.org/blitz/> http://www.oonumerics.org/blitz/ </A>     
+      <li> <a name="blitz">      <a href="http://www.oonumerics.org/blitz/"> http://www.oonumerics.org/blitz/ </A>     
       <li> <a name="initializer"> 
           Gabriel Dos Reis and Bjarne Stroustrup, 
-          <a href=http://anubis.dkuug.dk/jtc1/sc22/wg21/docs/papers/2003/n1509.pdf> "Generalized Initializer
+          <a href="http://anubis.dkuug.dk/jtc1/sc22/wg21/docs/papers/2003/n1509.pdf"> "Generalized Initializer
             Lists"</a>, 2003  </a>
  </OL> 
  </p>

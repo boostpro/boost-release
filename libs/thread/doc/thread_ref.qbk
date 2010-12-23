@@ -1,3 +1,10 @@
+[/
+  (C) Copyright 2007-8 Anthony Williams.
+  Distributed under the Boost Software License, Version 1.0.
+  (See accompanying file LICENSE_1_0.txt or copy at
+  http://www.boost.org/LICENSE_1_0.txt).
+]
+
 [section:thread_management Thread Management]
 
 [heading Synopsis]
@@ -16,6 +23,13 @@ allows the details of thread creation to be wrapped in a function.
         boost::thread some_thread=make_thread();
         some_thread.join();
     }
+
+[Note: On compilers that support rvalue references, __thread__ provides a proper move constructor and move-assignment operator, and
+therefore meets the C++0x ['MoveConstructible] and ['MoveAssignable] concepts. With such compilers, __thread__ can therefore be used
+with containers that support those concepts.
+
+For other compilers, move support is provided with a move emulation layer, so containers must explicitly detect that move emulation
+layer. See <boost/thread/detail/move.hpp> for details.]
 
 [heading Launching threads]
 
@@ -43,11 +57,21 @@ __boost_thread__ must ensure that the referred-to object outlives the newly-crea
       // this leads to undefined behaviour
 
 If you wish to construct an instance of __thread__ with a function or callable object that requires arguments to be supplied,
-this can be done using `boost::bind`:
+this can be done by passing additional arguments to the __thread__ constructor:
 
     void find_the_question(int the_answer);
 
-    boost::thread deep_thought_2(boost::bind(find_the_question,42));
+    boost::thread deep_thought_2(find_the_question,42);
+
+The arguments are ['copied] into the internal thread structure: if a reference is required, use `boost::ref`, just as for references
+to callable functions.
+
+There is an unspecified limit on the number of additional arguments that can be passed.
+
+[heading Exceptions in thread functions]
+
+If the function or callable object passed to the __thread__ constructor propagates an exception when invoked that is not of type
+__thread_interrupted__, `std::terminate()` is called. 
 
 [heading Joining and detaching]
 
@@ -141,6 +165,8 @@ __thread_id__ yield a total order for every non-equal thread ID.
 
 [section:thread Class `thread`]
 
+    #include <boost/thread/thread.hpp>
+
     class thread
     {
     public:
@@ -149,6 +175,9 @@ __thread_id__ yield a total order for every non-equal thread ID.
 
         template <class F>
         explicit thread(F f);
+
+        template <class F,class A1,class A2,...>
+        thread(F f,A1 a1,A2 a2,...);
 
         template <class F>
         thread(detail::thread_move_t<F> f);
@@ -189,6 +218,8 @@ __thread_id__ yield a total order for every non-equal thread ID.
         static void sleep(const system_time& xt);
     };
 
+    void swap(thread& lhs,thread& rhs);
+
 [section:default_constructor Default Constructor]
 
     thread();
@@ -212,11 +243,37 @@ __thread_id__ yield a total order for every non-equal thread ID.
 
 [[Preconditions:] [`Callable` must by copyable.]]
 
-[[Effects:] [`func` is copied into storage managed internally by the thread library, and that copy is invoked on a newly-created thread of execution.]]
+[[Effects:] [`func` is copied into storage managed internally by the thread library, and that copy is invoked on a newly-created
+thread of execution. If this invocation results in an exception being propagated into the internals of the thread library that is
+not of type __thread_interrupted__, then `std::terminate()` will be called.]]
 
 [[Postconditions:] [`*this` refers to the newly created thread of execution.]]
 
 [[Throws:] [__thread_resource_error__ if an error occurs.]]
+
+]
+
+[endsect]
+
+[section:multiple_argument_constructor Thread Constructor with arguments]
+
+    template <class F,class A1,class A2,...>
+    thread(F f,A1 a1,A2 a2,...);
+
+[variablelist
+
+[[Preconditions:] [`F` and each `A`n must by copyable or movable.]]
+
+[[Effects:] [As if [link
+thread.thread_management.thread.callable_constructor
+`thread(boost::bind(f,a1,a2,...))`. Consequently, `f` and each `a`n
+are copied into internal storage for access by the new thread.]]]
+
+[[Postconditions:] [`*this` refers to the newly created thread of execution.]]
+
+[[Throws:] [__thread_resource_error__ if an error occurs.]]
+
+[[Note:] [Currently up to nine additional arguments `a1` to `a9` can be specified in addition to the function `f`.]]
 
 ]
 
@@ -306,7 +363,7 @@ unchanged.]]
 
 [variablelist
 
-[[Effects:] [If `*this` refers to a thread of execution, that thread of execution becomes detached, and longer has an associated __thread__ object.]]
+[[Effects:] [If `*this` refers to a thread of execution, that thread of execution becomes detached, and no longer has an associated __thread__ object.]]
 
 [[Postconditions:] [`*this` no longer refers to any thread of execution.]]
 
@@ -364,6 +421,22 @@ or 0 if this information is not available.]]
 
 [endsect]
 
+[section:nativehandle Member function `native_handle()`]
+
+    typedef platform-specific-type native_handle_type;
+    native_handle_type native_handle();
+
+[variablelist
+
+[[Effects:] [Returns an instance of `native_handle_type` that can be used with platform-specific APIs to manipulate the underlying
+implementation. If no such instance exists, `native_handle()` and `native_handle_type` are not present.]]
+
+[[Throws:] [Nothing.]]
+
+]
+
+[endsect]
+
 [section:equals `operator==`]
 
     bool operator==(const thread& other) const;
@@ -416,8 +489,42 @@ or 0 if this information is not available.]]
 
 [endsect]
 
+[section:swap Member function `swap()`]
+
+    void swap(thread& other);
+
+[variablelist
+
+[[Effects:] [Exchanges the threads of execution associated with `*this` and `other`, so `*this` is associated with the thread of
+execution associated with `other` prior to the call, and vice-versa.]]
+
+[[Postconditions:] [`this->get_id()` returns the same value as `other.get_id()` prior to the call. `other.get_id()` returns the same
+value as `this->get_id()` prior to the call.]]
+
+[[Throws:] [Nothing.]]
+
+]
+
+[endsect]
+
+[section:non_member_swap Non-member function `swap()`]
+
+    #include <boost/thread/thread.hpp>
+
+    void swap(thread& lhs,thread& rhs);
+
+[variablelist
+
+[[Effects:] [[link thread.thread_management.thread.swap `lhs.swap(rhs)`].]]
+
+]
+
+[endsect]
+
 
 [section:id Class `boost::thread::id`]
+
+    #include <boost/thread/thread.hpp>
 
     class thread::id
     {
@@ -471,7 +578,7 @@ otherwise.]]
 
 [variablelist
 
-[[Returns:] [`true` if `*this` and `y` represent the different threads of execution, or one represents a thread of execution, and
+[[Returns:] [`true` if `*this` and `y` represent different threads of execution, or one represents a thread of execution, and
 the other represent __not_a_thread__, `false` otherwise.]]
 
 [[Throws:] [Nothing]]
@@ -567,6 +674,8 @@ instances of __thread_id__ `a` and `b` is the same if `a==b`, and different if `
 
 [section:get_id Non-member function `get_id()`]
 
+    #include <boost/thread/thread.hpp>
+
     namespace this_thread
     {
         thread::id get_id();
@@ -583,6 +692,8 @@ instances of __thread_id__ `a` and `b` is the same if `a==b`, and different if `
 [endsect]
 
 [section:interruption_point Non-member function `interruption_point()`]
+
+    #include <boost/thread/thread.hpp>
 
     namespace this_thread
     {
@@ -601,6 +712,8 @@ instances of __thread_id__ `a` and `b` is the same if `a==b`, and different if `
 
 [section:interruption_requested Non-member function `interruption_requested()`]
 
+    #include <boost/thread/thread.hpp>
+
     namespace this_thread
     {
         bool interruption_requested();
@@ -618,6 +731,8 @@ instances of __thread_id__ `a` and `b` is the same if `a==b`, and different if `
 
 [section:interruption_enabled Non-member function `interruption_enabled()`]
 
+    #include <boost/thread/thread.hpp>
+
     namespace this_thread
     {
         bool interruption_enabled();
@@ -634,6 +749,8 @@ instances of __thread_id__ `a` and `b` is the same if `a==b`, and different if `
 [endsect]
 
 [section:sleep Non-member function `sleep()`]
+
+    #include <boost/thread/thread.hpp>
 
     namespace this_thread
     {
@@ -655,6 +772,8 @@ instances of __thread_id__ `a` and `b` is the same if `a==b`, and different if `
 
 [section:yield Non-member function `yield()`]
 
+    #include <boost/thread/thread.hpp>
+
     namespace this_thread
     {
         void yield();
@@ -671,6 +790,8 @@ instances of __thread_id__ `a` and `b` is the same if `a==b`, and different if `
 [endsect]
 
 [section:disable_interruption Class `disable_interruption`]
+
+    #include <boost/thread/thread.hpp>
 
     namespace this_thread
     {
@@ -722,6 +843,8 @@ interruption state on destruction. Instances of `disable_interruption` cannot be
 [endsect]
 
 [section:restore_interruption Class `restore_interruption`]
+
+    #include <boost/thread/thread.hpp>
 
     namespace this_thread
     {
@@ -777,12 +900,16 @@ is destroyed, interruption is again disabled. Instances of `restore_interruption
 
 [section:atthreadexit Non-member function template `at_thread_exit()`]
 
+    #include <boost/thread/thread.hpp>
+
     template<typename Callable>
     void at_thread_exit(Callable func);
 
 [variablelist
 
-[[Effects:] [A copy of `func` is taken and stored to in thread-specific storage. This copy is invoked when the current thread exits.]]
+[[Effects:] [A copy of `func` is placed in
+thread-specific storage. This copy is invoked when the current thread
+exits (even if the thread has been interrupted).]]
 
 [[Postconditions:] [A copy of `func` has been saved for invocation on thread exit.]]
 
@@ -797,6 +924,8 @@ error occurs within the thread library. Any exception thrown whilst copying `fun
 
 [section:threadgroup Class `thread_group`]
 
+    #include <boost/thread/thread.hpp>
+
     class thread_group:
         private noncopyable
     {
@@ -804,7 +933,8 @@ error occurs within the thread library. Any exception thrown whilst copying `fun
         thread_group();
         ~thread_group();
 
-        thread* create_thread(const function0<void>& threadfunc);
+        template<typename F>
+        thread* create_thread(F threadfunc);
         void add_thread(thread* thrd);
         void remove_thread(thread* thrd);
         void join_all();
@@ -841,7 +971,8 @@ error occurs within the thread library. Any exception thrown whilst copying `fun
 
 [section:create_thread Member function `create_thread()`]
 
-    thread* create_thread(const function0<void>& threadfunc);
+    template<typename F>
+    thread* create_thread(F threadfunc);
 
 [variablelist
 

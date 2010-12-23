@@ -14,8 +14,8 @@
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
-<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
@@ -30,95 +30,87 @@
     callbacks or wrapping function objects.</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="emphasis"><em>  // Function type R (T1, T2, ..., TN)</em></span>
-         <span class="bold"><strong>typename</strong></span> Allocator = std::allocator&lt;<span class="bold"><strong>void</strong></span>&gt; &gt; 
-<span class="bold"><strong>class</strong></span> <a class="link" href="function.html" title="Class template function">function</a> : <span class="bold"><strong>public</strong></span> <a class="link" href="functionN.html" title="Class template functionN">functionN</a>&lt;R, T1, T2, ..., TN, Allocator&gt; {
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature<span class="emphasis"><em>  // Function type R (T1, T2, ..., TN)</em></span>
+         &gt; 
+<span class="bold"><strong>class</strong></span> <a class="link" href="function.html" title="Class template function">function</a> : <span class="bold"><strong>public</strong></span> <a class="link" href="functionN.html" title="Class template functionN">functionN</a>&lt;R, T1, T2, ..., TN&gt; {
 <span class="bold"><strong>public</strong></span>:
   <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> R         <a name="boost.function.result_type"></a>result_type;         
-  <span class="bold"><strong>typedef</strong></span> Allocator <a name="boost.function.allocator_type"></a>allocator_type;      
-  <span class="bold"><strong>typedef</strong></span> T1        <a name="boost.function.argument_type"></a>argument_type;         <span class="emphasis"><em>// If N == 1</em></span>
-  <span class="bold"><strong>typedef</strong></span> T1        <a name="boost.function.first_argument_type"></a>first_argument_type;   <span class="emphasis"><em>// If N == 2</em></span>
-  <span class="bold"><strong>typedef</strong></span> T2        <a name="boost.function.second_argument_type"></a>second_argument_type;  <span class="emphasis"><em>// If N == 2</em></span>
-  <span class="bold"><strong>typedef</strong></span> T1        <a name="boost.function.arg1_type"></a>arg1_type;           
-  <span class="bold"><strong>typedef</strong></span> T2        <a name="boost.function.arg2_type"></a>arg2_type;           
+  <span class="bold"><strong>typedef</strong></span> R  <a name="boost.function.result_type"></a>result_type;         
+  <span class="bold"><strong>typedef</strong></span> T1 <a name="boost.function.argument_type"></a>argument_type;         <span class="emphasis"><em>// If N == 1</em></span>
+  <span class="bold"><strong>typedef</strong></span> T1 <a name="boost.function.first_argument_type"></a>first_argument_type;   <span class="emphasis"><em>// If N == 2</em></span>
+  <span class="bold"><strong>typedef</strong></span> T2 <a name="boost.function.second_argument_type"></a>second_argument_type;  <span class="emphasis"><em>// If N == 2</em></span>
+  <span class="bold"><strong>typedef</strong></span> T1 <a name="boost.function.arg1_type"></a>arg1_type;           
+  <span class="bold"><strong>typedef</strong></span> T2 <a name="boost.function.arg2_type"></a>arg2_type;           
      .
      .
      .
-  <span class="bold"><strong>typedef</strong></span> TN        <a name="boost.function.argN_type"></a>argN_type;           
+  <span class="bold"><strong>typedef</strong></span> TN <a name="boost.function.argN_type"></a>argN_type;           
 
   <span class="emphasis"><em>// static constants</em></span>
   <span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <span class="type"><span class="bold"><strong>int</strong></span></span> arity = N;
 
-  <span class="emphasis"><em>// <a class="link" href="../lambda.html" title="Chapter 10. Boost.Lambda">Lambda</a> library support</em></span>  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; 
+  <span class="emphasis"><em>// <a class="link" href="../lambda.html" title="Chapter 11. Boost.Lambda">Lambda</a> library support</em></span>  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Args&gt; 
   <span class="bold"><strong>struct</strong></span> <a class="link" href="function/sig.html" title="Struct template sig">sig</a> {
     <span class="emphasis"><em>// types</em></span>
     <span class="bold"><strong>typedef</strong></span> result_type <a class="link" href="function/sig.html#boost.function.sig.type">type</a>;
   };
 
   <span class="emphasis"><em>// <a class="link" href="function.html#boost.functionconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="function.html#id374532-bb">function</a>();
-  <a class="link" href="function.html#id259496-bb">function</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="functionN.html" title="Class template functionN">functionN</a>&amp;);
-  <a class="link" href="function.html#id220395-bb">function</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp;);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> F&gt; <a class="link" href="function.html#id297273-bb">function</a>(F);
-  function&amp; <a class="link" href="function.html#id211860-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp;);
-  function&amp; <a class="link" href="function.html#id233053-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp;);
-  <a class="link" href="function.html#id394155-bb">~function</a>();
+  <a class="link" href="function.html#id2357296-bb">function</a>();
+  <a class="link" href="function.html#id2377601-bb">function</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="functionN.html" title="Class template functionN">functionN</a>&amp;);
+  <a class="link" href="function.html#id2420926-bb">function</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp;);
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> F&gt; <a class="link" href="function.html#id2370515-bb">function</a>(F);
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> F, <span class="bold"><strong>typename</strong></span> Allocator&gt; <a class="link" href="function.html#id2445111-bb">function</a>(F, Allocator);
+  function&amp; <a class="link" href="function.html#id2495879-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp;);
+  function&amp; <a class="link" href="function.html#id2468100-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp;);
+  <a class="link" href="function.html#id2366294-bb">~function</a>();
 
-  <span class="emphasis"><em>// <a class="link" href="function.html#id401967-bb">modifiers</a></em></span>
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#id401970-bb">swap</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp;);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#id244699-bb">clear</a>();
+  <span class="emphasis"><em>// <a class="link" href="function.html#id2380189-bb">modifiers</a></em></span>
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#id2380193-bb">swap</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp;);
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#id2375363-bb">clear</a>();
 
-  <span class="emphasis"><em>// <a class="link" href="function.html#id256150-bb">capacity</a></em></span>
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id256154-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <a class="link" href="function.html#id256895-bb"><span class="bold"><strong>operator</strong></span> safe_bool</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id290331-bb"><span class="bold"><strong>operator</strong></span>!</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="function.html#id2489345-bb">capacity</a></em></span>
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2489350-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
+  <a class="link" href="function.html#id2632734-bb"><span class="bold"><strong>operator</strong></span> safe_bool</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2368620-bb"><span class="bold"><strong>operator</strong></span>!</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="function.html#id286086-bb">target access</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type">Functor*</span> <a class="link" href="function.html#id240458-bb">target</a>();
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type"><span class="bold"><strong>const</strong></span> Functor*</span> <a class="link" href="function.html#id238510-bb">target</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id368325-bb">contains</a>(<span class="bold"><strong>const</strong></span> Functor&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>const</strong></span> std::type_info&amp;</span> <a class="link" href="function.html#id215357-bb">target_type</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="function.html#id2445376-bb">target access</a></em></span>
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type">Functor*</span> <a class="link" href="function.html#id2415818-bb">target</a>();
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type"><span class="bold"><strong>const</strong></span> Functor*</span> <a class="link" href="function.html#id2311922-bb">target</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2409689-bb">contains</a>(<span class="bold"><strong>const</strong></span> Functor&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>const</strong></span> std::type_info&amp;</span> <a class="link" href="function.html#id2597240-bb">target_type</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="function.html#id218182-bb">invocation</a></em></span>
-  <span class="type">result_type</span> <a class="link" href="function.html#id257055-bb"><span class="bold"><strong>operator</strong></span>()</a>(arg1_type, arg2_type, ..., argN_type) <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="function.html#id2372944-bb">invocation</a></em></span>
+  <span class="type">result_type</span> <a class="link" href="function.html#id2381036-bb"><span class="bold"><strong>operator</strong></span>()</a>(arg1_type, arg2_type, ..., argN_type) <span class="bold"><strong>const</strong></span>;
 };
 
-<span class="emphasis"><em>// <a class="link" href="function.html#id330844-bb">specialized algorithms</a></em></span>
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#boost.swap_id244372">swap</a>(<a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;, <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;);
+<span class="emphasis"><em>// <a class="link" href="function.html#id2358880-bb">specialized algorithms</a></em></span>
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature&gt; 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#boost.swap_id2405664">swap</a>(<a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;, <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;);
 
-<span class="emphasis"><em>// <a class="link" href="function.html#id308789-bb">comparison operators</a></em></span>
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id309800-bb"><span class="bold"><strong>operator</strong></span>==</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;, Functor);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id261139-bb"><span class="bold"><strong>operator</strong></span>==</a>(Functor, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id331666-bb"><span class="bold"><strong>operator</strong></span>==</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;, 
-                  <a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id211844-bb"><span class="bold"><strong>operator</strong></span>==</a>(<a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;, 
-                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature1, <span class="bold"><strong>typename</strong></span> Allocator1, <span class="bold"><strong>typename</strong></span> Signature2, 
-         <span class="bold"><strong>typename</strong></span> Allocator2&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#id309873-bb"><span class="bold"><strong>operator</strong></span>==</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature1, Allocator1&gt;&amp;, 
-                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature2, Allocator2&gt;&amp;);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id259455-bb"><span class="bold"><strong>operator</strong></span>!=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;, Functor);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id341970-bb"><span class="bold"><strong>operator</strong></span>!=</a>(Functor, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id402150-bb"><span class="bold"><strong>operator</strong></span>!=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;, 
-                  <a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id272673-bb"><span class="bold"><strong>operator</strong></span>!=</a>(<a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;, 
-                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp;);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature1, <span class="bold"><strong>typename</strong></span> Allocator1, <span class="bold"><strong>typename</strong></span> Signature2, 
-         <span class="bold"><strong>typename</strong></span> Allocator2&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#id397760-bb"><span class="bold"><strong>operator</strong></span>!=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature1, Allocator1&gt;&amp;, 
-                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature2, Allocator2&gt;&amp;);</pre></div>
+<span class="emphasis"><em>// <a class="link" href="function.html#id2312726-bb">comparison operators</a></em></span>
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2445505-bb"><span class="bold"><strong>operator</strong></span>==</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;, Functor);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2379945-bb"><span class="bold"><strong>operator</strong></span>==</a>(Functor, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2435698-bb"><span class="bold"><strong>operator</strong></span>==</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;, <a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2414789-bb"><span class="bold"><strong>operator</strong></span>==</a>(<a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature1, <span class="bold"><strong>typename</strong></span> Signature2&gt; 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#id2384209-bb"><span class="bold"><strong>operator</strong></span>==</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature1&gt;&amp;, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature2&gt;&amp;);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2427115-bb"><span class="bold"><strong>operator</strong></span>!=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;, Functor);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2367743-bb"><span class="bold"><strong>operator</strong></span>!=</a>(Functor, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2287368-bb"><span class="bold"><strong>operator</strong></span>!=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;, <a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="function.html#id2345376-bb"><span class="bold"><strong>operator</strong></span>!=</a>(<a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp;);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature1, <span class="bold"><strong>typename</strong></span> Signature2&gt; 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="function.html#id2438208-bb"><span class="bold"><strong>operator</strong></span>!=</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature1&gt;&amp;, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature2&gt;&amp;);</pre></div>
 <div class="refsect1" lang="en">
-<a name="id686713"></a><h2>Description</h2>
+<a name="id2911957"></a><h2>Description</h2>
 <p>Class template <a class="link" href="function.html" title="Class template function">function</a> is a thin
       wrapper around the numbered class templates <a class="link" href="functionN.html" title="Class template functionN">function0</a>, <a class="link" href="functionN.html" title="Class template functionN">function1</a>, etc. It accepts a
       function type with N arguments and will will derive from
@@ -130,19 +122,19 @@
       additional member functions are required to allow proper copy
       construction and copy assignment of function objects.</p>
 <div class="refsect2" lang="en">
-<a name="id686782"></a><h3>
+<a name="id2912018"></a><h3>
 <a name="boost.functionconstruct-copy-destruct"></a><code class="computeroutput">function</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id374532-bb"></a>function();</pre>
+<pre class="literallayout"><a name="id2357296-bb"></a>function();</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><code class="computeroutput">this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code></td>
+<td><code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -152,13 +144,13 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id259496-bb"></a>function(<span class="bold"><strong>const</strong></span> <a class="link" href="functionN.html" title="Class template functionN">functionN</a>&amp; f);</pre>
+<pre class="literallayout"><a name="id2377601-bb"></a>function(<span class="bold"><strong>const</strong></span> <a class="link" href="functionN.html" title="Class template functionN">functionN</a>&amp; f);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td>Contains a copy of the <code class="computeroutput">f</code>'s target, if it has one, or is empty if <code class="computeroutput">f.<a class="link" href="function.html#id256154-bb">empty</a>()</code>.</td>
+<td>Contains a copy of the <code class="computeroutput">f</code>'s target, if it has one, or is empty if <code class="computeroutput">f.<a class="link" href="function.html#id2489350-bb">empty</a>()</code>.</td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -168,13 +160,13 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id220395-bb"></a>function(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp; f);</pre>
+<pre class="literallayout"><a name="id2420926-bb"></a>function(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp; f);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td>Contains a copy of the <code class="computeroutput">f</code>'s target, if it has one, or is empty if <code class="computeroutput">f.<a class="link" href="function.html#id256154-bb">empty</a>()</code>.</td>
+<td>Contains a copy of the <code class="computeroutput">f</code>'s target, if it has one, or is empty if <code class="computeroutput">f.<a class="link" href="function.html#id2489350-bb">empty</a>()</code>.</td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -184,7 +176,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> F&gt; <a name="id297273-bb"></a>function(F f);</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> F&gt; <a name="id2370515-bb"></a>function(F f);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -195,55 +187,76 @@
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
 <td>
-<code class="computeroutput">*this</code> targets a copy of <code class="computeroutput">f</code> if <code class="computeroutput">f</code> is nonempty, or <code class="computeroutput">this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code> if <code class="computeroutput">f</code> is empty.</td>
+<code class="computeroutput">*this</code> targets a copy of <code class="computeroutput">f</code> if <code class="computeroutput">f</code> is nonempty, or <code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code> if <code class="computeroutput">f</code> is empty.</td>
 </tr>
 </tbody>
 </table></div>
 </li>
 <li>
-<pre class="literallayout">function&amp; <a name="id211860-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp; f);</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> F, <span class="bold"><strong>typename</strong></span> Allocator&gt; <a name="id2445111-bb"></a>function(F f, Allocator alloc);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td>F is a function object Callable from <code class="computeroutput">this</code>, Allocator is an allocator. The copy constructor and destructor of Allocator shall not throw.</td>
+</tr>
+<tr>
+<td><p><span class="term">Postconditions:</span></p></td>
+<td>
+<code class="computeroutput">*this</code> targets a copy of <code class="computeroutput">f</code> if <code class="computeroutput">f</code> is nonempty, or <code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code> if <code class="computeroutput">f</code> is empty.</td>
+</tr>
+<tr>
+<td><p><span class="term">Effects:</span></p></td>
+<td>If memory allocation is required, the given allocator (or a copy of it) will be used to allocate that memory.</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li>
+<pre class="literallayout">function&amp; <a name="id2495879-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp; f);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td>If copy construction does not throw, <code class="computeroutput">*this</code> targets a copy of <code class="computeroutput">f</code>'s target, if it has one, or is empty if <code class="computeroutput">f.<a class="link" href="function.html#id256154-bb">empty</a>()</code>. If copy construction does throw, <code class="computeroutput">this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code>.</td>
+<td>If copy construction does not throw, <code class="computeroutput">*this</code> targets a copy of <code class="computeroutput">f</code>'s target, if it has one, or is empty if <code class="computeroutput">f.<a class="link" href="function.html#id2489350-bb">empty</a>()</code>. If copy construction does throw, <code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code>.</td>
 </tr></tbody>
 </table></div>
 </li>
 <li>
-<pre class="literallayout">function&amp; <a name="id233053-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp; f);</pre>
+<pre class="literallayout">function&amp; <a name="id2468100-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp; f);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td>If copy construction of the target of <code class="computeroutput">f</code> does not throw, <code class="computeroutput">*this</code> targets a copy of <code class="computeroutput">f</code>'s target, if it has one, or is empty if <code class="computeroutput">f.<a class="link" href="function.html#id256154-bb">empty</a>()</code>. </td>
+<td>If copy construction of the target of <code class="computeroutput">f</code> does not throw, <code class="computeroutput">*this</code> targets a copy of <code class="computeroutput">f</code>'s target, if it has one, or is empty if <code class="computeroutput">f.<a class="link" href="function.html#id2489350-bb">empty</a>()</code>. </td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
-<td>Will not throw when the target of <code class="computeroutput">f</code> is a stateless function object or a reference to the function object. If copy construction does throw, <code class="computeroutput">this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code>.</td>
+<td>Will not throw when the target of <code class="computeroutput">f</code> is a stateless function object or a reference to the function object. If copy construction does throw, <code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code>.</td>
 </tr>
 </tbody>
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id394155-bb"></a>~function();</pre>
+<pre class="literallayout"><a name="id2366294-bb"></a>~function();</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Effects:</span></p></td>
-<td>If <code class="computeroutput">!this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code>, destroys the target of <code class="computeroutput">this</code>.</td>
+<td>If <code class="computeroutput">!this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code>, destroys the target of <code class="computeroutput">this</code>.</td>
 </tr></tbody>
 </table></div>
 </li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id687364"></a><h3>
-<a name="id401967-bb"></a><code class="computeroutput">function</code> modifiers</h3>
+<a name="id2912647"></a><h3>
+<a name="id2380189-bb"></a><code class="computeroutput">function</code> modifiers</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id401970-bb"></a>swap(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp; f);</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2380193-bb"></a>swap(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&amp; f);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -253,13 +266,13 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id244699-bb"></a>clear();</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2375363-bb"></a>clear();</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><code class="computeroutput">this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code></td>
+<td><code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -271,11 +284,11 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id687504"></a><h3>
-<a name="id256150-bb"></a><code class="computeroutput">function</code> capacity</h3>
+<a name="id2912774"></a><h3>
+<a name="id2489345-bb"></a><code class="computeroutput">function</code> capacity</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id256154-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2489350-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -292,13 +305,13 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id256895-bb"></a><span class="bold"><strong>operator</strong></span> safe_bool() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id2632734-bb"></a><span class="bold"><strong>operator</strong></span> safe_bool() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
-<td>A <code class="computeroutput">safe_bool</code> that evaluates <code class="computeroutput">false</code> in a boolean context when <code class="computeroutput">this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code>, and <code class="computeroutput">true</code> otherwise.</td>
+<td>A <code class="computeroutput">safe_bool</code> that evaluates <code class="computeroutput">false</code> in a boolean context when <code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code>, and <code class="computeroutput">true</code> otherwise.</td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -308,13 +321,13 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id290331-bb"></a><span class="bold"><strong>operator</strong></span>!() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2368620-bb"></a><span class="bold"><strong>operator</strong></span>!() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
-<td><code class="computeroutput">this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code></td>
+<td><code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -326,12 +339,12 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id687743"></a><h3>
-<a name="id286086-bb"></a><code class="computeroutput">function</code> target access</h3>
+<a name="id2912990"></a><h3>
+<a name="id2445376-bb"></a><code class="computeroutput">function</code> target access</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id215813-bb"></a><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type">Functor*</span> <a name="id240458-bb"></a>target();
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type"><span class="bold"><strong>const</strong></span> Functor*</span> <a name="id238510-bb"></a>target() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id2445380-bb"></a><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type">Functor*</span> <a name="id2415818-bb"></a>target();
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type"><span class="bold"><strong>const</strong></span> Functor*</span> <a name="id2311922-bb"></a>target() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -350,26 +363,26 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id368325-bb"></a>contains(<span class="bold"><strong>const</strong></span> Functor&amp; f) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Functor&gt; <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2409689-bb"></a>contains(<span class="bold"><strong>const</strong></span> Functor&amp; f) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
 <td>
-<code class="computeroutput">true</code> if <code class="computeroutput">this-&gt;<a class="link" href="function.html#id215813-bb">target</a>&lt;Functor&gt;()</code> is non-NULL and <code class="computeroutput"><a class="link" href="function_equal_id250660.html" title="Function template function_equal">function_equal</a>(*(this-&gt;target&lt;Functor&gt;()), f)</code>
+<code class="computeroutput">true</code> if <code class="computeroutput">this-&gt;<a class="link" href="function.html#id2445380-bb">target</a>&lt;Functor&gt;()</code> is non-NULL and <code class="computeroutput"><a class="link" href="function_equal.html" title="Function template function_equal">function_equal</a>(*(this-&gt;target&lt;Functor&gt;()), f)</code>
 </td>
 </tr></tbody>
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> std::type_info&amp;</span> <a name="id215357-bb"></a>target_type() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> std::type_info&amp;</span> <a name="id2597240-bb"></a>target_type() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
 <td>
-<code class="computeroutput">typeid</code> of the target function object, or <code class="computeroutput">typeid(void)</code> if <code class="computeroutput">this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code>.</td>
+<code class="computeroutput">typeid</code> of the target function object, or <code class="computeroutput">typeid(void)</code> if <code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code>.</td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -381,10 +394,10 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id688050"></a><h3>
-<a name="id218182-bb"></a><code class="computeroutput">function</code> invocation</h3>
+<a name="id2913269"></a><h3>
+<a name="id2372944-bb"></a><code class="computeroutput">function</code> invocation</h3>
 <div class="orderedlist"><ol type="1"><li>
-<pre class="literallayout"><span class="type">result_type</span> <a name="id257055-bb"></a><span class="bold"><strong>operator</strong></span>()(arg1_type a1, arg2_type a2, ..., argN_type aN) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">result_type</span> <a name="id2381036-bb"></a><span class="bold"><strong>operator</strong></span>()(arg1_type a1, arg2_type a2, ..., argN_type aN) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -400,48 +413,44 @@
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
 <td>
-<code class="computeroutput"><a class="link" href="bad_function_call.html" title="Class bad_function_call">bad_function_call</a></code> if <code class="computeroutput">this-&gt;<a class="link" href="function.html#id256154-bb">empty</a>()</code>. Otherwise, may through any exception thrown by the target function <code class="computeroutput">f</code>.</td>
+<code class="computeroutput"><a class="link" href="bad_function_call.html" title="Class bad_function_call">bad_function_call</a></code> if <code class="computeroutput">this-&gt;<a class="link" href="function.html#id2489350-bb">empty</a>()</code>. Otherwise, may through any exception thrown by the target function <code class="computeroutput">f</code>.</td>
 </tr>
 </tbody>
 </table></div>
 </li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id689071"></a><h3>
-<a name="id330844-bb"></a><code class="computeroutput">function</code> specialized algorithms</h3>
+<a name="id2913483"></a><h3>
+<a name="id2358880-bb"></a><code class="computeroutput">function</code> specialized algorithms</h3>
 <div class="orderedlist"><ol type="1"><li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="boost.swap_id244372"></a>swap(<a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f1, 
-            <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f2);</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature&gt; 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="boost.swap_id2405664"></a>swap(<a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f1, <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f2);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Effects:</span></p></td>
-<td><code class="computeroutput">f1.<a class="link" href="function.html#id401970-bb">swap</a>(f2)</code></td>
+<td><code class="computeroutput">f1.<a class="link" href="function.html#id2380193-bb">swap</a>(f2)</code></td>
 </tr></tbody>
 </table></div>
 </li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id689178"></a><h3>
-<a name="id308789-bb"></a><code class="computeroutput">function</code> comparison operators</h3>
+<a name="id2913574"></a><h3>
+<a name="id2312726-bb"></a><code class="computeroutput">function</code> comparison operators</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<p><a name="boost.operator==_id308793"></a></p>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id309800-bb"></a><span class="bold"><strong>operator</strong></span>==(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f, Functor g);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id261139-bb"></a><span class="bold"><strong>operator</strong></span>==(Functor g, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id331666-bb"></a><span class="bold"><strong>operator</strong></span>==(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f, 
-                  <a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt; g);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id211844-bb"></a><span class="bold"><strong>operator</strong></span>==(<a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt; g, 
-                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature1, <span class="bold"><strong>typename</strong></span> Allocator1, <span class="bold"><strong>typename</strong></span> Signature2, 
-         <span class="bold"><strong>typename</strong></span> Allocator2&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id309873-bb"></a><span class="bold"><strong>operator</strong></span>==(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature1, Allocator1&gt;&amp; f1, 
-                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature2, Allocator2&gt;&amp; f2);</pre>
+<p><a name="boost.operator==_id2445500"></a></p>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2445505-bb"></a><span class="bold"><strong>operator</strong></span>==(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f, Functor g);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2379945-bb"></a><span class="bold"><strong>operator</strong></span>==(Functor g, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2435698-bb"></a><span class="bold"><strong>operator</strong></span>==(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f, <a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt; g);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2414789-bb"></a><span class="bold"><strong>operator</strong></span>==(<a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt; g, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature1, <span class="bold"><strong>typename</strong></span> Signature2&gt; 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2384209-bb"></a><span class="bold"><strong>operator</strong></span>==(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature1&gt;&amp; f1, 
+                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature2&gt;&amp; f2);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -453,7 +462,7 @@
 <li>
 <code class="computeroutput">g</code> is of type
             <code class="computeroutput"><a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;</code>
-            and <code class="computeroutput">f.target&lt;Functor&gt;() == g.<a class="link" href="reference_wrapper.html#id324736-bb">get_pointer</a>()</code>.</li>
+            and <code class="computeroutput">f.target&lt;Functor&gt;() == g.<a class="link" href="reference_wrapper.html#id2427860-bb">get_pointer</a>()</code>.</li>
 <li>
 <code class="computeroutput">g</code> is not of type
             <code class="computeroutput"><a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;</code>
@@ -481,21 +490,18 @@
 </table></div>
 </li>
 <li>
-<p><a name="boost.operator!=_id287384"></a></p>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id259455-bb"></a><span class="bold"><strong>operator</strong></span>!=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f, Functor g);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id341970-bb"></a><span class="bold"><strong>operator</strong></span>!=(Functor g, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id402150-bb"></a><span class="bold"><strong>operator</strong></span>!=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f, 
-                  <a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt; g);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Allocator, <span class="bold"><strong>typename</strong></span> Functor&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id272673-bb"></a><span class="bold"><strong>operator</strong></span>!=(<a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt; g, 
-                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature, Allocator&gt;&amp; f);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature1, <span class="bold"><strong>typename</strong></span> Allocator1, <span class="bold"><strong>typename</strong></span> Signature2, 
-         <span class="bold"><strong>typename</strong></span> Allocator2&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id397760-bb"></a><span class="bold"><strong>operator</strong></span>!=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature1, Allocator1&gt;&amp; f1, 
-                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature2, Allocator2&gt;&amp; f2);</pre>
+<p><a name="boost.operator!=_id2427111"></a></p>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2427115-bb"></a><span class="bold"><strong>operator</strong></span>!=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f, Functor g);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2367743-bb"></a><span class="bold"><strong>operator</strong></span>!=(Functor g, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2287368-bb"></a><span class="bold"><strong>operator</strong></span>!=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f, <a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt; g);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature, <span class="bold"><strong>typename</strong></span> Functor&gt; 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id2345376-bb"></a><span class="bold"><strong>operator</strong></span>!=(<a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt; g, <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature&gt;&amp; f);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Signature1, <span class="bold"><strong>typename</strong></span> Signature2&gt; 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id2438208-bb"></a><span class="bold"><strong>operator</strong></span>!=(<span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature1&gt;&amp; f1, 
+                  <span class="bold"><strong>const</strong></span> <a class="link" href="function.html" title="Class template function">function</a>&lt;Signature2&gt;&amp; f2);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -509,7 +515,7 @@
 <li>
 <code class="computeroutput">g</code> is of type
             <code class="computeroutput"><a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;</code>
-            and <code class="computeroutput">f.target&lt;Functor&gt;() != g.<a class="link" href="reference_wrapper.html#id324736-bb">get_pointer</a>()</code>.</li>
+            and <code class="computeroutput">f.target&lt;Functor&gt;() != g.<a class="link" href="reference_wrapper.html#id2427860-bb">get_pointer</a>()</code>.</li>
 <li>
 <code class="computeroutput">g</code> is not of type
             <code class="computeroutput"><a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a>&lt;Functor&gt;</code>
