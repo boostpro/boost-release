@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_int.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: uniform_int.hpp,v 1.5 2001/11/29 04:03:52 dgregor Exp $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -27,7 +27,6 @@
 #include <boost/limits.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/random/uniform_smallint.hpp>
-#include <boost/random/detail/iterator_mixin.hpp>
 #include <boost/random/detail/signed_unsigned_compare.hpp>
 
 namespace boost {
@@ -35,8 +34,6 @@ namespace boost {
 // uniform integer distribution on [min, max]
 template<class UniformRandomNumberGenerator, class IntType = int>
 class uniform_int
-  : public generator_iterator_mixin_adapter<
-        uniform_int<UniformRandomNumberGenerator, IntType>, IntType >
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
@@ -51,7 +48,6 @@ public:
     BOOST_STATIC_ASSERT(std::numeric_limits<IntType>::is_integer);
 #endif
     assert(min < max);
-    this->iterator_init();
   }
   result_type operator()();
   result_type min() const { return _min; }
@@ -80,15 +76,30 @@ inline IntType uniform_int<UniformRandomNumberGenerator, IntType>::operator()()
     return static_cast<result_type>(_rng() - _bmin) + _min;
   } else if(random::lessthan_signed_unsigned(_brange, _range)) {
     // use rejection method to handle things like 0..3 --> 0..4
-    // note: this still does not have perfect efficiency
     for(;;) {
-      // we have to concatenate several invocations of the base RNG
-      result_type result = 0;
-      for(result_type mult = 1;
-          mult-1 <= _range;
-          mult *= static_cast<result_type>(_brange)+1) {
-        result += (_rng() - _bmin) * mult;
+      // concatenate several invocations of the base RNG
+      // take extra care to avoid overflows
+      int limit;
+      if(_range == std::numeric_limits<result_type>::max()) {
+        limit = _range/(static_cast<result_type>(_brange)+1);
+        if(_range % static_cast<result_type>(_brange)+1 == _brange)
+          ++limit;
+      } else {
+        limit = (_range+1)/(static_cast<result_type>(_brange)+1);
       }
+      // we consider "result" as expressed to base (_brange+1)
+      // for every power of (_brange+1), we determine a random factor
+      result_type result = 0;
+      result_type mult = 1;
+      while(mult <= limit) {
+        result += (_rng() - _bmin) * mult;
+        mult *= static_cast<result_type>(_brange)+1;
+      }
+      if(mult == limit)
+        // _range+1 is an integer power of _brange+1: no rejections required
+        return result;
+      // _range/mult < _brange+1  -> no endless loop
+      result += uniform_int<base_type,result_type>(_rng, 0, _range/mult)() * mult;
       if(result <= _range)
         return result + _min;
     }

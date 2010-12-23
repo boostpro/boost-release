@@ -12,6 +12,14 @@
  * ALL WARRANTIES ARE HEREBY DISCLAIMED.
  */
 
+/*  This file is ALSO:
+ *  (C) Copyright David Abrahams 2001. Permission to copy, use,
+ *  modify, sell and distribute this software is granted provided this
+ *  copyright notice appears in all copies. This software is provided
+ *  "as is" without express or implied warranty, and with no claim as
+ *  to its suitability for any purpose.
+ */
+
 /*
  * jam.c - make redux
  *
@@ -107,6 +115,7 @@
 # include "scan.h"
 # include "timestamp.h"
 # include "make.h"
+# include "strings.h"
 
 /* Macintosh is "special" */
 
@@ -160,11 +169,14 @@ extern char **environ;
 # endif
 # endif
 
+# if YYDEBUG != 0
 extern int yydebug;
+# endif
 
 #ifndef NDEBUG
 static void run_unit_tests()
 {
+    string_unit_test();
     var_expand_unit_test();
 }
 #endif
@@ -258,8 +270,10 @@ int  main( int argc, char **argv, char **arg_environ )
 #ifndef NDEBUG
     run_unit_tests();
 #endif // NDEBUG
+#if YYDEBUG != 0
     if ( DEBUG_PARSE )
         yydebug = 1;
+#endif
 
     /* Set JAMDATE first */
 

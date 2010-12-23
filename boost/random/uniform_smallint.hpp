@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_smallint.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: uniform_smallint.hpp,v 1.4 2001/11/16 19:12:58 jmaurer Exp $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -25,15 +25,12 @@
 #include <cassert>
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
-#include <boost/random/detail/iterator_mixin.hpp>
 
 namespace boost {
 
 // uniform integer distribution on a small range [min, max]
 template<class UniformRandomNumberGenerator, class IntType = int>
 class uniform_smallint
-  : public generator_iterator_mixin_adapter<
-        uniform_smallint<UniformRandomNumberGenerator, IntType>, IntType >
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
@@ -75,8 +72,10 @@ uniform_smallint(base_type & rng, IntType min, IntType max)
 #endif
   assert(min < max);
   
-  // check how many low bits we can ignore before we get too much
-  // quantization error
+  // LCGs get bad when only taking the low bits.
+  // (probably put this logic into a partial template specialization)
+  // Check how many low bits we can ignore before we get too much
+  // quantization error.
   base_result r_base = _rng.max() - _rng.min();
   if(r_base == std::numeric_limits<base_result>::max()) {
     _factor = 2;
@@ -84,14 +83,13 @@ uniform_smallint(base_type & rng, IntType min, IntType max)
   }
   r_base += 1;
   if(r_base % _range == 0) {
-    // no quantization effects, good
+    // No quantization effects, good
     _factor = r_base / _range;
   } else {
     const base_result r = 32*_range*_range;
     for(; r_base >= r; _factor *= 2)
       r_base /= 2;
   }
-  this->iterator_init();  // initialize iterator interface
 }
 
 } // namespace boost

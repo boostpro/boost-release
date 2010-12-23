@@ -157,7 +157,7 @@ int IntPairPythonClass::getattr(const IntPair& p, const std::string& s)
         PyErr_SetString(PyExc_AttributeError, s.c_str());
         throw boost::python::error_already_set();
     }
-#if defined(__MWERKS__) && __MWERKS__ <= 0x2400
+#if defined(__MWERKS__) && __MWERKS__ <= 0x2406
     return 0;
 #endif
 }
@@ -1128,23 +1128,13 @@ PyObject* raw(const boost::python::tuple& args, const boost::python::dictionary&
     return BOOST_PYTHON_CONVERSION::to_python(first->i_ + second + third + fourth);
 }
 
-void init_module()
+BOOST_PYTHON_MODULE_INIT(boost_python_test)
 {
     boost::python::module_builder boost_python_test("boost_python_test");
     init_module(boost_python_test);
 
     // Just for giggles, add a raw metaclass.
     boost_python_test.add(new boost::python::meta_class<boost::python::instance>);
-}
-
-BOOST_PYTHON_MODULE_INIT(boost_python_test)
-{
-    try {
-        bpl_test::init_module();
-    }
-    catch(...) {
-        boost::python::handle_exception();
-    } // Need a way to report other errors here
 }
 
 CompareIntPairPythonClass::CompareIntPairPythonClass(boost::python::module_builder& m)

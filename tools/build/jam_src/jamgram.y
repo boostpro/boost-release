@@ -45,6 +45,14 @@
  * This file is part of Jam - see jam.c for Copyright information.
  */
 
+/*  This file is ALSO:
+ *  (C) Copyright David Abrahams 2001. Permission to copy, use,
+ *  modify, sell and distribute this software is granted provided this
+ *  copyright notice appears in all copies. This software is provided
+ *  "as is" without express or implied warranty, and with no claim as
+ *  to its suitability for any purpose.
+ */
+
 /*
  * jamgram.yy - jam grammar
  *
@@ -107,10 +115,9 @@
 # define prule( s,p )     	parse_make( compile_rule,p,P0,P0,s,S0,0 )
 # define prules( l,r )	  	parse_make( compile_rules,l,r,P0,S0,S0,0 )
 # define pset( l,r,a )          parse_make( compile_set,l,r,P0,S0,S0,a )
-# define psetmodule( l,r ) 	parse_make( compile_set_module,l,r,P0,S0,S0,0 )
+# define psetmodule( l,r,a ) 	parse_make( compile_set_module,l,r,P0,S0,S0,a )
 # define pset1( l,r,t,a )	parse_make( compile_settings,l,r,t,S0,S0,a )
-# define psetc( s,p )     	parse_make( compile_setcomp,p,P0,P0,s,S0,0 )
-# define psetc_args( s,p,a )    parse_make( compile_setcomp,p,a,P0,s,S0,0 )
+# define psetc( s,p,a,l )     	parse_make( compile_setcomp,p,a,P0,s,S0,l )
 # define psete( s,l,s1,f ) 	parse_make( compile_setexec,l,P0,P0,s,s1,f )
 # define pswitch( l,r )   	parse_make( compile_switch,l,r,P0,S0,S0,0 )
 
@@ -135,8 +142,8 @@ run	: /* empty */
  * right-recursive so rules execute in order.
  */
 
-block	: /* empty */
-		{ $$.parse = pnull(); }
+block	: null
+                { $$.parse = $1.parse; }
 	| rules
 		{ $$.parse = $1.parse; }
 	;
@@ -149,11 +156,27 @@ rules	: rule
 		{ $$.parse = plocal( $2.parse, $3.parse, $5.parse ); }
 	;
 
-assign_list_opt : /* empty */
-                { $$.parse = pnull(); }
-        | _EQUALS list
-                { $$.parse = $2.parse; }
+null    : /* empty */
+        { $$.parse = pnull(); }
         ;
+
+assign_list_opt : _EQUALS list
+                { $$.parse = $2.parse; $$.number = ASSIGN_SET; }
+        | null
+		{ $$.parse = $1.parse; $$.number = ASSIGN_APPEND; }
+        ;
+
+arglist_opt : _LPAREN lol _RPAREN
+                { $$.parse = $2.parse; }
+        |
+                { $$.parse = P0; }
+        ;
+
+local_opt : LOCAL
+                { $$.number = 1; }
+          | /* empty */
+                { $$.number = 0; }
+          ;
 
 rule	: _LBRACE block _RBRACE
 		{ $$.parse = $2.parse; }
@@ -164,15 +187,13 @@ rule	: _LBRACE block _RBRACE
 	| arg assign list _SEMIC
 		{ $$.parse = pset( $1.parse, $3.parse, $2.number ); }
 	| MODULE LOCAL list assign_list_opt _SEMIC
-		{ $$.parse = psetmodule( $3.parse, $4.parse ); }
+		{ $$.parse = psetmodule( $3.parse, $4.parse, $4.number ); }
 	| arg ON list assign list _SEMIC
 		{ $$.parse = pset1( $1.parse, $3.parse, $5.parse, $4.number ); }
 	| RETURN list _SEMIC
 		{ $$.parse = $2.parse; }
-	| FOR ARG IN list _LBRACE block _RBRACE
-		{ $$.parse = pfor( $2.string, $4.parse, $6.parse, 0 ); }
-	| FOR LOCAL ARG IN list _LBRACE block _RBRACE
-		{ $$.parse = pfor( $3.string, $5.parse, $7.parse, 1 ); }
+	| FOR local_opt ARG IN list _LBRACE block _RBRACE
+		{ $$.parse = pfor( $3.string, $5.parse, $7.parse, $2.number ); }
 	| SWITCH list _LBRACE cases _RBRACE
 		{ $$.parse = pswitch( $2.parse, $4.parse ); }
 	| IF cond _LBRACE block _RBRACE 
@@ -183,10 +204,8 @@ rule	: _LBRACE block _RBRACE
 		{ $$.parse = pwhile( $2.parse, $4.parse ); }
 	| IF cond _LBRACE block _RBRACE ELSE rule
 		{ $$.parse = pif( $2.parse, $4.parse, $7.parse ); }
-        | RULE ARG _LPAREN lol _RPAREN rule
-		{ $$.parse = psetc_args( $2.string, $6.parse, $4.parse ); }
-	| RULE ARG rule
-		{ $$.parse = psetc( $2.string, $3.parse ); }
+        | local_opt RULE ARG arglist_opt rule
+		{ $$.parse = psetc( $3.string, $5.parse, $4.parse, $1.number ); }
 	| ACTIONS eflags ARG bindlist _LBRACE
 		{ yymode( SCAN_STRING ); }
 	  STRING 

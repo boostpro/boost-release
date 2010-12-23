@@ -449,6 +449,8 @@ YACCFLAGS       ?= ;
 
 HDRPATTERN = 
         "^[     ]*#[    ]*include[      ]*([<\"][^\">]*[\">]).*$" ;
+          
+#" My Jam mode gets its syntax highlighting confused without this comment
 
 OSFULL = $(OS)$(OSVER)$(OSPLAT) $(OS)$(OSPLAT) $(OS)$(OSVER) $(OS) ;
 #
@@ -1492,6 +1494,7 @@ rule simplify-path-tokens
     local reverse-path = [ reverse $(<) ] ;
     local dotdots ;
     local result ;
+    local token ;
     for token in $(reverse-path)
     {
         if $(token) = $(DOT)
@@ -1772,9 +1775,17 @@ rule join-path
     }
     else
     {
-        _s = $(<[1]) ; 
+        _s = $(<[1]) ;
+        local _r = $(<[2-]) ;
 
-        for _i in $(<[2-])
+        # Jam doesn't handle the root directory properly
+        if $(_s) in / $(SLASH)
+        {
+            _s = $(_s)$(_r[1]) ;
+            _r = $(_r[2-]) ;
+        }
+        
+        for _i in $(_r)
         {
             _s = $(_i:R=$(_s)) ;
         }

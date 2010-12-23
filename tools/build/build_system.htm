@@ -16,8 +16,9 @@
     <h2><a name="synopsis">Synopsis</a></h2>
 
     <p>Boost.Build is a system for large project software construction built on
-        <a href="http://freetype.sourceforge.net/jam/index.html">FTJam</a>,
-        an open-source make replacement<a href="#1">[1]</a>. Key features are:
+        Boost Jam, a descendant of &quot;<a
+        href="http://www.perforce.com/jam/jam.html">Perforce Jam</a>&quot;, an
+        open-source make replacement<a href="#1">[1]</a>. Key features are:
 
     <ul>
       <li>A simple target description language
@@ -126,6 +127,7 @@
             <a href="#core_extensions">Core Jam Extensions</a> 
 
             <ul>
+              <li><a href="#variable_quoting">Command-line and Environment Variable Quoting</a>
               <li><a href="#jambase_replacement">Jambase Replacement</a>
               <li><a href="#rule_indirection">Rule Indirection</a>
               <li><a href="#argument_lists">Argument Lists</a>
@@ -136,7 +138,10 @@
                 <ul>
                   <li><a href="#module_declaration">Declaration</a>
                   <li><a href="#module_locals">Local Variables</a>
+                  <li><a href="#local_rules">Local Rules</a>
+                  <li><a href="#RULENAMES_rule">The <tt>RULENAMES</tt> rule</a>
                   <li><a href="#IMPORT_rule">The <tt>IMPORT</tt> rule</a>
+                  <li><a href="#EXPORT_rule">The <tt>EXPORT</tt> rule</a>
                   <li><a href="#CALLER_MODULE_rule">The <tt>CALLER_MODULE</tt> rule</a>
                 </ul>
 
@@ -152,8 +157,10 @@
                 <a href="#debugging_support">Debugging Support</a> 
 
                 <ul>
+                  <li><a href="#BACKTRACE_rule">The BACKTRACE rule</a>
                   <li><a href="#profiling">Profiling</a>
                   <li><a href="#parse_debugging">Parser Debugging</a>
+                  <li><a href="#dependency_graph">Dependency Graph Output</a>
                 </ul>
             </ul>
 
@@ -176,23 +183,20 @@
 
     <h2><a name="getting_started">Getting Started</a></h2>
 
-    <h3><a name="installing_jam">Installing FTJam</a></h3>
+    <h3><a name="installing_jam">Installing Boost Jam</a></h3>
 
     <ul>
-      <li><a href="http://freetype.sourceforge.net/jam/index.html#where">This
-      page</a> describes how and where to get FTJam sources.
+      <li>The Boost Jam sources are located in the <tt>tools/build/jam_src</tt>
+      subdirectory of the Boost installation.
 
       <li>The <a href="http://public.perforce.com/public/jam/src/README">Jam
       README</a> contains basic installation instructions.
 
-      <li>If you are installing on Windows NT, please read <a href=
-      "http://frankenrouter.perforce.com/lists/jamming/msg00474.html">this
-      note</a>. You may need to use the ``<tt>SUBST</tt> hack'' described at
-      the bottom of the message to bootstrap Jam. Also, when defining the
-      <tt>MSVCNT</tt>, <tt>BCCROOT</tt>, etc. environment variables as
-      described in the <a href=
-      "http://public.perforce.com/public/jam/src/README">Jam README</a>, please
-      remember that they are case-sensitive.
+      <li>If you are installing on Windows, the make process may prompt you to
+      set some environment variables, and stop. Don't be alarmed; just follow
+      the instructions and start over. Please keep in mind that thses variable
+      settings are case-sensitive. The variable settings necessary for
+      bootstrapping Jam are not needed once it has been built.
 
       <li>Note that the supplied Makefile may require editing for your
       platform; see the <a href=
@@ -203,14 +207,14 @@
 
     <h3><a name="initiating">Initiating a Build</a></h3>
 
-    <p>Currently, the build system must be invoked with the
-    <tt>-f<i>allyourbase-path</i></tt> option, where <i>allyourbase-path</i> is
-    the path to the <tt><a href="allyourbase.jam">allyourbase.jam</a></tt> file
-    supplied in this directory. When the system matures, this file may be
-    compiled directly into Jam as the <tt>Jambase</tt> or we will find another
-    way to make sure the <tt>-f</tt> option is no longer needed. The
-    environment variables necessary for bootstrapping Jam are not needed once
-    it has been built.
+    <p>The easiest way to get going is to set the <tt>BOOST_ROOT</tt>
+    environment variable to point at the Boost installation directory, though
+    you can also set <tt>BOOST_ROOT</tt> on the command-line, using
+    <tt>-s...</tt>. You can use the <tt>TOOLS</tt> variable to indicate which
+    toolset(s) to build with, and the <tt>BUILD</tt> variable to describe how
+    you want things built. In most cases it should be sufficient to invoke Jam
+    with no variable settings. The following examples all assume that
+    <tt>BOOST_ROOT</tt> has been set in the environment.
 
     <p>Here are some sample Boost Jam invocations:
 
@@ -223,7 +227,7 @@
       <tr>
         <td>
 <pre>
-jam -f<i>allyourbase-path</i> -sTOOLS=gcc my_target
+jam -sTOOLS=gcc my_target
 </pre>
 
         <td>default (debug) <tt><a href="#build">BUILD</a></tt> of
@@ -238,7 +242,7 @@ jam -f<i>allyourbase-path</i> -sTOOLS=gcc my_target
         <td>
 <pre>
 set TOOLS=msvc
-jam -f<i>allyourbase-path</i>
+jam
 </pre>
 
         <td>Set an NT environment variable to always build with MSVC<br>
@@ -247,7 +251,7 @@ jam -f<i>allyourbase-path</i>
       <tr>
         <td>
 <pre>
-jam -f<i>allyourbase-path</i> -sBUILD=release
+jam -sBUILD=release
 </pre>
 
         <td>release build <tt>all</tt> with default <tt><a href=
@@ -255,7 +259,7 @@ jam -f<i>allyourbase-path</i> -sBUILD=release
          
 
       <tr>
-        <td><pre>jam -f<i>allyourbase-path</i> -sBUILD=&quot;debug release&quot;</pre> 
+        <td><pre>jam -sBUILD=&quot;debug release&quot;</pre> 
 
         <td>debug and release build <tt>all</tt>.
     </table>
@@ -1050,6 +1054,7 @@ flags msvc HDRS &lt;include&gt; ;
     <p>
 
     <ul>
+
       <li>
         Jam ``<b>rules</b>'' are actually simple procedural entities. Think of
         them as functions. Arguments are separated by colons. 
@@ -1065,9 +1070,14 @@ flags msvc HDRS &lt;include&gt; ;
 
       <li>
         Note that the documentation for the built-in <tt>INCLUDES</tt> rule is
-        incorrect: <tt>INCLUDES targets1 : targets2 </tt> causes everything
-        that depends on a member of <i>targets1</i> to depend on all members of
-        <i>targets2</i>. 
+        incorrect: <tt>INCLUDES&nbsp;targets1&nbsp;:&nbsp;targets2</tt> causes
+        everything that depends on a member of <i>targets1</i> to depend on all
+        members of <i>targets2</i>. It does this in an odd way, by tacking
+        <i>targets2</i> onto a special tail section in the dependency list of
+        everything in <i>targets1</i>. It seems to be OK to create circular
+        dependencies this way; in fact, it appears to be the ``right thing to
+        do'' when a single build action produces both <i>targets1</i> and
+        <i>targets2</i>.
 
         <p>
 
@@ -1176,6 +1186,39 @@ flags msvc HDRS &lt;include&gt; ;
         <tt>&lt;</tt>s and trailing <tt>&gt;</tt>s are added if neccessary to
         form an expression of the form <tt>&lt;</tt><i>expr2</i><tt>&gt;</tt>;
         <tt>&lt;</tt><i>expr2</i><tt>&gt;</tt> is then prepended.
+
+        <p>
+
+      <li>
+        <a name="variable_splitting">When Jam</a> is invoked it imports all
+        environment variable settings into corresponding Jam variables, followed
+        by all command-line (<tt>-s...</tt>) variable settings. Variables whose
+        name ends in <tt>PATH</tt>, <tt>Path</tt>, or <tt>path</tt> are split
+        into string lists on OS-specific path-list separator boundaries
+        (e.g. &quot;<tt>:</tt>&quot; for Unix and &quot;<tt>;</tt>&quot; for
+        Windows). All other variables are split on space
+        (&quot;<tt>&nbsp;</tt>&quot;) boundaries. Boost Jam modifies that
+        behavior by allowing variables to be <a
+        href="#variable_quoting">quoted</a>.
+
+        <p>
+
+      <li>
+        A variable whose value is an empty list <i>or</i> which consists
+        entirely of empty strings has a negative logical value. Thus, for
+        example, code like the following allows a sensible non-empty default
+        which can easily be overridden by the user:
+<blockquote><pre>
+MESSAGE ?= starting jam... ;
+if $(MESSAGE) { ECHO The message is: $(MESSAGE) ; }
+</pre></blockquote>
+        If the user wants a specific message, he invokes jam with
+        <tt>&quot;-sMESSAGE=</tt><i>message&nbsp;text</i><tt>&quot;</tt>. If he
+        wants no message, he invokes jam with <tt>-sMESSAGE=</tt> and nothing at
+        all is printed.
+
+        <p>
+
     </ul>
 
     <p>Please also read <a href=
@@ -1194,6 +1237,21 @@ flags msvc HDRS &lt;include&gt; ;
     complexity of a large system such as Boost.Build.
 
     <blockquote>
+
+      <h4><a name="variable_quoting">Command-line and Environment Variable Quoting</h4>
+
+      <p>Classic Jam had an <a href="#variable_splitting">odd behavior</a> with
+      respect to command-line variable ( <tt>-s...</tt>) and environment
+      variable settings which made it impossible to define an arbitrary variable
+      with spaces in the value. Boost Jam remedies that by treating all such
+      settings as a single string if they are surrounded by double-quotes. Uses
+      of this feature can look interesting, since shells require quotes to keep
+      characters separated by whitespace from being treated as separate
+      arguments:
+<blockquote><pre>
+jam -sMSVCNT=&quot;\&quot;C:\Program Files\Microsoft Visual C++\VC98\&quot;&quot; ...
+</pre></blockquote>
+
       <h4><a name="jambase_replacement">Jambase Replacement</a></h4>
 
       <p>New logic has been added to allow the built-in Jambase to be replaced
@@ -1259,8 +1317,35 @@ rule foobar { ECHO foobar ; }   # a trivial rule
 $(x)bar ;                       # invokes foobar
 
 </pre></blockquote>
+      
+      Furthermore, if the first expression expands to more than one
+      list item, everything after the first item becomes part of the
+      first argument. This allows a crude form of argument binding:
 
-      <h4><a name="argument_lists">Argument lists</a></h4>
+<blockquote><pre>
+# return the elements of sequence for which predicate returns non-nil
+rule filter ( sequence * : predicate + )
+{
+    local result ;
+    for local x in $(sequence)
+    {
+        if [ $(predicate) $(x) ] { result += $(x); }
+    }
+    return $(result);
+}
+
+# true iff x == y
+rule equal ( x y )
+{
+    if $(x) = $(y) { return true; }
+}
+
+# bind 3 to the first argument of equal
+ECHO [ filter 1 2 3 4 5 4 3 : equal 3 ] ; # prints "3 3"
+
+</pre></blockquote>
+
+<h4><a name="argument_lists">Argument lists</a></h4>
 
       <p>You can now describe the arguments accepted by a rule, and refer to
       them by name within the rule. For example, the following prints ``I'm
@@ -1297,7 +1382,11 @@ report I 2 : sorry : Joe Dave Pete ;
         <tr>
           <td><tt>*</tt> 
 
-          <td>Bind to zero or more unbound elements of the actual argument.
+          <td>Bind to zero or more unbound elements of the actual
+          argument. When ``<tt>*</tt>'' appears where an argument name
+          is expected, any number of additional arguments are
+          accepted. This feature can be used to implement
+          &quot;varargs&quot; rules.
 
         <tr>
           <td><tt>+</tt> 
@@ -1305,7 +1394,7 @@ report I 2 : sorry : Joe Dave Pete ;
           <td>Bind to one or more unbound elements of the actual argument.
       </table>
 
-      <p>The acutal and formal arguments are checked for inconsistencies, which
+      <p>The actual and formal arguments are checked for inconsistencies, which
       cause Jam to exit with an error code:
 
       <blockquote>
@@ -1329,8 +1418,11 @@ report I 2 : sorry : Joe Dave Pete ;
       <h4><a name="module_support">Module Support</a></h4>
 
       <p>Boost Jam introduces support for modules, which provide some
-      rudimentary namespace protection for rules and variables. A new keyword, 
-      ``<tt>module</tt>'' was also introduced.
+      rudimentary namespace protection for rules and variables. A new
+      keyword, ``<tt>module</tt>'' was also introduced. The features
+      described in this section are <i>primitives</i>, meaning that
+      they are meant to provide the operations needed to write Jam
+      rules which provide a more elegant module interface.
 
       <p>
 
@@ -1369,13 +1461,6 @@ module your_module
 }
 </pre>
         </blockquote>
-
-        <p>Note that, like the <a
-        href="#IMPORT_rule"><tt>IMPORT</tt></a> and <a
-        href="#CALLER_MODULE_rule"><tt>CALLER_MODULE</tt></a> rules, module
-        declaration is really a <i>primitive</i>, and is best used through a
-        wrapper interface which implements a system of module files using the
-        built-in <tt>INCLUDE</tt> rule.
 
         <p>
 
@@ -1440,63 +1525,114 @@ ECHO [ <b>M.get</b> x ] ;  # prints "a b c"
 </pre>
         </blockquote>
 
+        <h5><a name="local_rules">Local Rules</a></h5>
+
+        <blockquote>
+              <tt>local&nbsp;rule</tt>&nbsp;<i>rulename...</i>
+        </blockquote>
+
+        <p>The rule is declared locally to the current module. It is
+        not entered in the global module with qualification, and its
+        name will not appear in the result of
+        <blockquote>
+        <tt>[&nbsp;RULENAMES</tt>&nbsp;<i>module-name</i><tt>&nbsp;]</tt>.
+        </blockquote>
+                
+        <h5><a name="RULENAMES_rule">The <tt>RULENAMES</tt> Rule</a></h5>
+        
+        <blockquote>
+<pre>
+rule RULENAMES ( module ? )
+</pre>
+        </blockquote>
+        Returns a list of the names of all non-local rules in the
+        given module. If <tt>module</tt> is ommitted, the names of all
+        non-local rules in the global module are returned.
+
         <h5><a name="IMPORT_rule">The <tt>IMPORT</tt> Rule</a></h5>
         
         <tt>IMPORT</tt> allows rule name aliasing across modules:
 
         <blockquote>
 <pre>
-rule IMPORT ( target_module ? : source_module ?
-                : rule_names * : target_names * )
+rule IMPORT (  source_module ? : source_rules *
+                : target_module ? : target_rules * )
 </pre>
         </blockquote>
-        Rules are copied from the <tt>source_module</tt> into the
-        <tt>target_module</tt>. If either module name is missing, the global
-        module is used in its place. If any <tt>rule_names</tt> are supplied,
-        they specify which rules from the <tt>source_module</tt> to import;
-        otherwise all rules are imported. The rules are given the names in
-        <tt>target_names</tt>; if not enough <tt>target_names</tt> are supplied,
-        the excess rules are given the same names as they had in
-        <tt>source_module</tt>. For example,
+ The <tt>IMPORT</tt> rule copies rules from the <tt>source_module</tt> into the
+ <tt>target_module</tt> as <tt>local</tt> rules. If either <tt>source_module</tt> or
+ <tt>target_module</tt> is not supplied, it refers to the global
+ module. <tt>source_rules</tt> specifies which rules from the <tt>source_module</tt> to
+ import; <tt>TARGET_RULES</tt> specifies the names to give those rules in
+ <tt>target_module</tt>. If <tt>source_rules</tt> contains a name which doesn't
+ correspond to a rule in <tt>source_module</tt>, or if it contains a different
+ number of items than <tt>target_rules</tt>, an error is issued. For example,
 
         <blockquote>
 <pre>
-IMPORT m1 : m2 ;               # imports all rules from m2 into m1
-IMPORT    : m2 : my-rule ;     # imports m2.my-rule into the global module
-IMPORT m1 : m2 : r1 x : r2 y ; # imports m2.r1 as r2 and m2.x as y into m1
+# import m1.rule1 into m2 as local rule m1-rule1.
+IMPORT m1 : rule1 : m2 : m1-rule1 ;
+
+# import all non-local rules from m1 into m2
+IMPORT m1 : [ RULENAMES m1 ] : m2 : [ RULENAMES m1 ] ;
 </pre>
         </blockquote>
-        Like the <a href="#module_declaration">module declaration syntax</a> and
-        the <a href="#CALLER_MODULE_rule"><tt>CALLER_MODULE</tt></a> rule, this
-        rule is a <i>primitive</i>, and is probably best wrapped in a Jam rule.
+
+        <h5><a name="EXPORT_rule">The <tt>EXPORT</tt> Rule</a></h5>
+        
+        <tt>EXPORT</tt> allows rule name aliasing across modules:
+
+        <blockquote>
+<pre>
+rule EXPORT ( module ? : rules * )
+</pre>
+        </blockquote>
+ The <tt>EXPORT</tt> rule marks <tt>rules</tt> from the <tt>source_module</tt> as non-local
+ (and thus exportable). If an element of <tt>rules</tt> does not name a
+ rule in <tt>module</tt>, an error is issued. For example,
+        <blockquote>
+<pre>
+module X {
+  local rule r { ECHO X.r ; }
+}
+IMPORT X : r : : r ; # error - r is local in X
+EXPORT X : r ;
+IMPORT X : r : : r ; # OK.
+</pre>
+        </blockquote>
 
         <h5><a name="CALLER_MODULE_rule">The <tt>CALLER_MODULE</tt> Rule</a></h5>
         
         <blockquote>
 <pre>
-rule CALLER_MODULE ( )
+rule CALLER_MODULE ( levels ? )
 </pre>
         </blockquote>
         <tt>CALLER_MODULE</tt> returns the name of the module scope
-        enclosing the call to its caller. If the scope belongs to the global
+        enclosing the call to its caller (if levels is supplied, it is
+        interpreted as an integer number of additional levels of call stack to
+        traverse to locate the module). If the scope belongs to the global
         module, or if no such module exists, returns the empty list. For
-        example, the following prints &quot;{Y}&quot;:
+        example, the following prints &quot;{Y} {X}&quot;:
 
         <blockquote>
 <pre>
 module X {
     rule get-caller { return [ CALLER_MODULE ] ; }
+    rule get-caller's-caller { return [ CALLER_MODULE 1 ] ; }
+
+    rule call-Y { return Y.call-X2 ; }
+
 }
 module Y {
-    rule call-X { X.get-caller ; }
+    rule call-X { return X.get-caller ; }
+    rule call-X2 { return X.get-caller's-caller ; }
 }
-callers = [ X.get-caller ] [ Y.call-X ] ;
-ECHO {$(callers)} ;
-</pre>
-        Like the <a href="#module_declaration">module declaration syntax</a> and
-        the <a href="#IMPORT_rule"><tt>IMPORT</tt></a> rule, this rule is a
-        <i>primitive</i>, and is probably best wrapped in a Jam rule.
 
+callers = [ X.get-caller ] [ Y.call-X ] [ X.call-Y ] ;
+ECHO {$(callers)} ;
+
+</pre>
         </blockquote>
 
       </blockquote>
@@ -1655,6 +1791,17 @@ ECHO [ SUBST xyz (.)(.)(.) [$1] ($2) {$3} ] ;
 
     <h4><a name="debugging_support">Debugging Support</a></h4>
 
+    <h5><a name="BACKTRACE_rule">The BACKTRACE rule</a></h5>
+
+<blockquote><pre>
+rule BACKTRACE ( )
+</pre></blockquote>
+
+        Returns a list of quadruples: <i>filename line module
+        rulename</i>..., describing each shallower level of the call
+        stack. This rule can be used to generate useful diagnostic
+        messages from Jam rules.
+
     <p>The <tt>-d</tt> command-line option admits new arguments:
 
     <ul>
@@ -1666,6 +1813,13 @@ ECHO [ SUBST xyz (.)(.)(.) [$1] ($2) {$3} ] ;
          <li> <tt>-d+11</tt> - enables <a name="parse_debugging"><b>parser
         debugging</b></a>, if Jam has been compiled with the &quot;--debug&quot;
         option to the parser generator named by $(YACC).
+
+         <li> <tt>-d+12</tt> - enables <a
+        name="dependency_graph"><b>dependency graph output
+        </b></a>. This feature was ``stolen'' from a version of Jam
+        modified by <a href="mailto:cmcpheeters@aw.sgi.com">Craig
+        McPheeters</a>.
+
     </ul>
 
     </blockquote>
@@ -1813,13 +1967,15 @@ ECHO [ SUBST xyz (.)(.)(.) [$1] ($2) {$3} ] ;
       the source directories (they may be read-only)
     </ul>
 
-    <h2><a name="footnotes">Footnotes</a></h2>
-    <a name="1">[1]</a> FTJam is a variant of <a href=
+    <h2><a name="footnotes">Footnotes</a></h2> <a name="1">[1]</a> Boost Jam is
+    actually descended directly from <a
+    href="http://freetype.sourceforge.net/jam/index.html">FTJam</a>, which was
+    itself a variant of <a href=
     "http://www.perforce.com/jam/jam.html">Jam/MR</a>. It is hoped that crucial
-    features we rely on from FTJam will eventually be incorportated into the
-    official Jam release. 
+    features we rely on will eventually be incorportated back into the Jam/MR
+    release.
 
-    <p><a name="2">[2]</a>Note: right now, a dependency feature of a main
+    <p><a name="2">[2]</a> Note: right now, a dependency feature of a main
     target makes <b>all</b> resulting built targets dependent, including
     intermediate targets. That means that if an executable is dependent on an
     external library, and that library changes, all the sources comprising the
@@ -1834,7 +1990,8 @@ ECHO [ SUBST xyz (.)(.)(.) [$1] ($2) {$3} ] ;
 
     <p>Revised 
     <!--webbot bot="Timestamp" s-type="EDITED" s-format="%d %B, %Y" startspan
-                        -->06 November, 2001<!--webbot bot="Timestamp" endspan i-checksum="39361"
+                        -->11 November, 2001 
+    <!--webbot bot="Timestamp" endspan i-checksum="21080"
                         -->
 </body>
 

@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: cauchy_distribution.hpp,v 1.3 2001/09/26 21:45:25 jmaurer Exp $
+ * $Id: cauchy_distribution.hpp,v 1.4 2001/11/14 21:53:38 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -23,7 +23,6 @@
 
 #include <cmath>
 #include <boost/random/uniform_01.hpp>
-#include <boost/random/detail/iterator_mixin.hpp>
 
 namespace boost {
 
@@ -36,8 +35,6 @@ namespace boost {
 // Cauchy distribution: p(x) = sigma/(pi*(sigma**2 + (x-median)**2))
 template<class UniformRandomNumberGenerator, class RealType = double>
 class cauchy_distribution
-  : public generator_iterator_mixin_adapter<
-      cauchy_distribution<UniformRandomNumberGenerator, RealType>, RealType>
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
@@ -45,7 +42,7 @@ public:
 
   cauchy_distribution(base_type & rng, result_type median = 0, 
                       result_type sigma = 1)
-    : _rng(rng), _median(median), _sigma(sigma) { this->iterator_init(); }
+    : _rng(rng), _median(median), _sigma(sigma) { }
   // compiler-generated copy constructor is fine
   // uniform_01 cannot be assigned, neither can this class
   result_type operator()()

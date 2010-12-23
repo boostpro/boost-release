@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: integer_traits.hpp,v 1.16 2001/10/30 20:55:18 jmaurer Exp $
+ * $Id: integer_traits.hpp,v 1.17 2001/11/18 17:37:21 jmaurer Exp $
  *
  * Idea by Beman Dawes, Ed Brey, Steve Cleary, and Nathan Myers
  */
@@ -47,7 +47,10 @@ public:
 };
 
 #ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
-//  The definition is required even for integral static constants
+//  A definition is required even for integral static constants
+template<class T, T min_val, T max_val>
+const bool integer_traits_base<T, min_val, max_val>::is_integral;
+
 template<class T, T min_val, T max_val>
 const T integer_traits_base<T, min_val, max_val>::const_min;
 

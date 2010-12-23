@@ -105,7 +105,11 @@ rule dll-files
     type-DEPENDS dll : $(<) ;
     
     # Set up the import library dependency on Windows
-    INCLUDES $(<[1]) : $(<[2-]) ;
+    if $(<[2])
+    {
+        INCLUDES $(<[1]) : $(<[2-]) ;
+        INCLUDES $(<[2-]) : $(<[1]) ;
+    }
     main-from-objects $(<) : [ Objects $(>) ] : DLL ;
 }
 
@@ -559,7 +563,7 @@ rule include-tools
 
     # clear any lingering target variables that may have been declared
     $(gTARGET_VARIABLES) = ;
-    gTARGET_VARIABLES = ; # start over from the beginning
+    gTARGET_VARIABLES = NEEDLIBS ; # start over from the beginning
     
     gRELEVANT_FEATURES($(<)) = ; # clear relevant feature set
     gDEPENDENCY_VARIABLES($(<)) = ;
@@ -701,8 +705,9 @@ rule set-target-variables # file-target
     for s in $(gTARGET_VARIABLES)
     {
         $(s) on $(<) = $($(s)) ;
-        
-        if $(s) in $(gDEPENDENCY_VARIABLES($(gCURRENT_TOOLSET)))
+
+        # set up dependencies if the target is a "top-level" target
+        if ( $(s) in $(gDEPENDENCY_VARIABLES($(gCURRENT_TOOLSET))) ) && $(gTARGET_TYPE($(<)))
         {
             DEPENDS $(<) : $($(s)) ;
         }
@@ -884,7 +889,7 @@ rule expand-build-request
     # described.
     return [ make-path-property-sets $(toolset)$(SLASH)$(variant)
                 : [ fixup-path-properties $(base-properties) $(free-properties) 
-    	    $(defaulted-free-properties) ]
+                  $(defaulted-free-properties) ]
                 : $(override-sets) ] ;
 }
 
@@ -1167,7 +1172,7 @@ rule declare-fake-targets
     # The following checks that we're in the subdirectory of Jam's invocation
     # so that we can arrange for ungristed target names to be built from the
     # command-line.
-    if [ in-invocation-subdir ]
+    if $(<:G) && [ in-invocation-subdir ]
     {
         DEPENDS $(<:G=) : $(<) ; # allows $(<:G=) to be used to build all variants
         NOTFILE $(<:G=) ;
@@ -1197,6 +1202,7 @@ else
 # depend-on-libraries target-files : library-targets
 rule depend-on-libraries
 {
+    NEEDLIBS += $(>) ;
     NEEDLIBS on $(<) += $(>) ;
     DEPENDS $(<) : $(>) ;
     # To run these targets, we need everything needed to run the libraries
@@ -1260,16 +1266,19 @@ rule subvariant-target
 
     if $(gTARGET_LIBS($(<)))
     {
-        # Protect target variables against modification while lib dependencies
-        # are built. They will be made empty here, and restored when this scope exits
-        local $(gTARGET_VARIABLES) ;
-        
-        # extract the simple properties from dependent-properties
-        local simple-properties = $(gBUILD_PROPERTIES) ;
-        segregate-free-properties simple-properties ;
-        
-        # generate library build instructions
-        local libs = [ link-libraries $(gTARGET_LIBS($(<))) : $(3) : $(simple-properties) ] ;
+        local libs ;
+        {
+            # Protect target variables against modification while lib dependencies
+            # are built. They will be made empty here, and restored when this scope exits
+            local $(gTARGET_VARIABLES) ;
+
+            # extract the simple properties from dependent-properties
+            local simple-properties = $(gBUILD_PROPERTIES) ;
+            segregate-free-properties simple-properties ;
+
+            # generate library build instructionsn
+            libs = [ link-libraries $(gTARGET_LIBS($(<))) : $(3) : $(simple-properties) ] ;
+        }
         depend-on-libraries $(target-files) : $(libs) ;
     }
 
@@ -1358,23 +1367,66 @@ rule unit-test
     }
 }
 
-rule list-files
+# Used to build command files from a list of sources.
+rule build-command-file ( command : sources * )
 {
-    DEPENDS $(<) : $(>) ;
+    DEPENDS $(command) : $(sources) ;
+    # First empty the file
+    command-file-clear $(command) : $(sources) ;
+    # Then fill it up piecemeal
+    command-file-dump $(command) : $(sources) ;
+}
 
-    list-files-aux1 $(<) : $(>[1]) ;
-    if $(>[2])
+# command-file-clear: silently remove the target if it exists
+if $(NT)
+{
+    # NT needs special handling because DEL always barks if the file isn't found
+    actions quietly command-file-clear
     {
-        list-files-aux2 $(<) : $(>[2-]) ;
+        IF EXIST "$(<)" $(RM) "$(<)"
+    }
+}
+else
+{
+    actions quietly command-file-clear
+    {
+        $(RM) "$(<)"
     }
 }
 
-actions quietly piecemeal list-files-aux1
+# command-file-dump: dump the source paths into the target
+actions quietly piecemeal command-file-dump
 {
-    echo "$(>)" > $(<)
+    echo "$(>)" >> "$(<)"
 }
 
-actions quietly piecemeal list-files-aux2
+# Clean up the temporary COMMAND-FILE used to build TARGETS.
+rule remove-command-file ( targets + : command-file )
 {
-    echo "$(>)" >> $(<)
+    TEMPORARY $(command-file) ;
+    Clean clean : $(command-file) ; # Mark the file for removal via clean
+}
+actions quietly piecemeal together remove-command-file
+{
+    $(RM) $(>)
+}
+
+# build TARGETS from SOURCES using a command-file, where RULE-NAME is
+# used to generate the build instructions from the command-file to
+# TARGETS
+rule with-command-file ( rule-name targets * : sources * )
+{
+    # create a command-file target and place it where the first target
+    # will be built
+    local command-file = $(<[2]:S=.CMD) ;
+    LOCATE on $(command-file) = $(gLOCATE($(targets[1]))) ;
+    build-command-file $(command-file) : $(sources) ;
+
+    # Build the targets from the command-file instead of the sources
+    DEPENDS $(targets) : $(command-file) ;
+    local result = [ $(rule-name) $(targets) : $(command-file) ] ;
+
+    # clean up afterwards
+    remove-command-file $(targets) : $(command-file) ;
+    return result ;
 }

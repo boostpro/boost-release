@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_01.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: uniform_01.hpp,v 1.3 2001/11/14 21:53:38 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -24,7 +24,6 @@
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/random/detail/iterator_mixin.hpp>
 
 namespace boost {
 
@@ -32,8 +31,6 @@ namespace boost {
 // range.  This allows for specializations to avoid a costly FP division
 template<class UniformRandomNumberGenerator, class RealType = double>
 class uniform_01
-  : public generator_iterator_mixin_adapter<
-        uniform_01<UniformRandomNumberGenerator, RealType>, RealType >
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
@@ -45,7 +42,6 @@ public:
 #ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
     BOOST_STATIC_ASSERT(!std::numeric_limits<RealType>::is_integer);
 #endif
-    this->iterator_init();
   }
   // compiler-generated copy ctor is fine
   // assignment is disallowed because there is a reference member

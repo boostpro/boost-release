@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: exponential_distribution.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: exponential_distribution.hpp,v 1.3 2001/11/14 21:53:38 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -30,15 +30,13 @@ namespace boost {
 // exponential distribution: p(x) = lambda * exp(-lambda * x)
 template<class UniformRandomNumberGenerator, class RealType = double>
 class exponential_distribution
-  : public generator_iterator_mixin_adapter<
-    exponential_distribution<UniformRandomNumberGenerator, RealType>, RealType>
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
   typedef RealType result_type;
 
   exponential_distribution(base_type& rng, result_type lambda)
-    : _rng(rng), _lambda(lambda) { assert(lambda > 0); this->iterator_init(); }
+    : _rng(rng), _lambda(lambda) { assert(lambda > 0); }
   // compiler-generated copy ctor is fine
   // uniform_01 cannot be assigned, neither can this class
   result_type operator()()

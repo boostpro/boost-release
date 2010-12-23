@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_on_sphere.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: uniform_on_sphere.hpp,v 1.3 2001/11/14 21:53:38 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -25,23 +25,19 @@
 #include <algorithm>     // std::transform
 #include <functional>    // std::bind2nd, std::divides
 #include <boost/random/normal_distribution.hpp>
-#include <boost/random/detail/iterator_mixin.hpp>
 
 namespace boost {
 
 template<class UniformRandomNumberGenerator, class RealType = double,
    class Cont = std::vector<RealType> >
 class uniform_on_sphere
-  : public generator_iterator_mixin_adapter<
-      uniform_on_sphere<UniformRandomNumberGenerator, RealType, Cont>,
-      std::vector<RealType> >
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
   typedef Cont result_type;
 
   explicit uniform_on_sphere(base_type & rng, int dim = 2)
-    : _rng(rng), _container(dim), _dim(dim) { this->iterator_init(); }
+    : _rng(rng), _container(dim), _dim(dim) { }
   // compiler-generated copy ctor is fine
   // normal_distribution cannot be assigned, neither can this class
   const result_type & operator()()

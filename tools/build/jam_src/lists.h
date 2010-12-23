@@ -4,6 +4,14 @@
  * This file is part of Jam - see jam.c for Copyright information.
  */
 
+/*  This file is ALSO:
+ *  (C) Copyright David Abrahams 2001. Permission to copy, use,
+ *  modify, sell and distribute this software is granted provided this
+ *  copyright notice appears in all copies. This software is provided
+ *  "as is" without express or implied warranty, and with no claim as
+ *  to its suitability for any purpose.
+ */
+
 /*
  * lists.h - the LIST structure and routines to manipulate them
  *
@@ -71,6 +79,7 @@ LIST *	list_new( LIST *head, char *string );
 void	list_print( LIST *l );
 int	list_length( LIST *l );
 LIST *	list_sublist( LIST *l, int start, int count );
+LIST *  list_pop_front( LIST *l );
 
 # define list_next( l ) ((l)->next)
 

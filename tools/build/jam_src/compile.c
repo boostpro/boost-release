@@ -36,41 +36,41 @@
  *
  * External routines:
  *
- *	compile_append() - append list results of two statements
- *	compile_foreach() - compile the "for x in y" statement
- *	compile_if() - compile 'if' rule
- *	compile_while() - compile 'while' rule
- *	compile_include() - support for 'include' - call include() on file
- *	compile_list() - expand and return a list 
- *	compile_local() - declare (and set) local variables
- *	compile_null() - do nothing -- a stub for parsing
- *	compile_rule() - compile a single user defined rule
- *	compile_rules() - compile a chain of rules
- *	compile_set() - compile the "set variable" statement
- *	compile_setcomp() - support for `rule` - save parse tree 
- *	compile_setexec() - support for `actions` - save execution string 
- *	compile_settings() - compile the "on =" (set variable on exec) statement
- *	compile_switch() - compile 'switch' rule
+ *  compile_append() - append list results of two statements
+ *  compile_foreach() - compile the "for x in y" statement
+ *  compile_if() - compile 'if' rule
+ *  compile_while() - compile 'while' rule
+ *  compile_include() - support for 'include' - call include() on file
+ *  compile_list() - expand and return a list 
+ *  compile_local() - declare (and set) local variables
+ *  compile_null() - do nothing -- a stub for parsing
+ *  compile_rule() - compile a single user defined rule
+ *  compile_rules() - compile a chain of rules
+ *  compile_set() - compile the "set variable" statement
+ *  compile_setcomp() - support for `rule` - save parse tree 
+ *  compile_setexec() - support for `actions` - save execution string 
+ *  compile_settings() - compile the "on =" (set variable on exec) statement
+ *  compile_switch() - compile 'switch' rule
  *
  * Internal routines:
  *
- *	debug_compile() - printf with indent to show rule expansion.
+ *  debug_compile() - printf with indent to show rule expansion.
  *
- *	evaluate_if() - evaluate if to determine which leg to compile
- *	evaluate_rule() - execute a rule invocation
+ *  evaluate_if() - evaluate if to determine which leg to compile
+ *  evaluate_rule() - execute a rule invocation
  *
- *	builtin_depends() - DEPENDS/INCLUDES rule
- *	builtin_echo() - ECHO rule
- *	builtin_exit() - EXIT rule
- *	builtin_flags() - NOCARE, NOTFILE, TEMPORARY rule
+ *  builtin_depends() - DEPENDS/INCLUDES rule
+ *  builtin_echo() - ECHO rule
+ *  builtin_exit() - EXIT rule
+ *  builtin_flags() - NOCARE, NOTFILE, TEMPORARY rule
  *
- * 02/03/94 (seiwald) -	Changed trace output to read "setting" instead of 
- *			the awkward sounding "settings".
+ * 02/03/94 (seiwald) - Changed trace output to read "setting" instead of 
+ *          the awkward sounding "settings".
  * 04/12/94 (seiwald) - Combined build_depends() with build_includes().
  * 04/12/94 (seiwald) - actionlist() now just appends a single action.
  * 04/13/94 (seiwald) - added shorthand L0 for null list pointer
  * 05/13/94 (seiwald) - include files are now bound as targets, and thus
- *			can make use of $(SEARCH)
+ *          can make use of $(SEARCH)
  * 06/01/94 (seiwald) - new 'actions existing' does existing sources
  * 08/23/94 (seiwald) - Support for '+=' (append to variable)
  * 12/20/94 (seiwald) - NOTIME renamed NOTFILE.
@@ -79,22 +79,31 @@
  * 02/14/95 (seiwald) - NoUpdate rule.
  * 09/11/00 (seiwald) - new evaluate_rule() for headers().
  * 09/11/00 (seiwald) - compile_xxx() now return LIST *.
- *			New compile_append() and compile_list() in
- *			support of building lists here, rather than
- *			in jamgram.yy.
+ *          New compile_append() and compile_list() in
+ *          support of building lists here, rather than
+ *          in jamgram.yy.
  */
 
-static void debug_compile( int which, char *s );
+static void debug_compile( int which, char *s, FRAME* frame );
 
 static int evaluate_if( PARSE *parse, FRAME *frame );
+
+static void backtrace_line( FRAME* frame );
+static void backtrace( FRAME* frame );
+static void frame_info( FRAME* frame, char** file, int* line );
 
 static LIST *builtin_depends( PARSE *parse, FRAME *frame );
 static LIST *builtin_echo( PARSE *parse, FRAME *frame );
 static LIST *builtin_exit( PARSE *parse, FRAME *frame );
 static LIST *builtin_flags( PARSE *parse, FRAME *frame );
 static LIST *builtin_hdrmacro( PARSE *parse, FRAME *frame );
+static LIST *builtin_rulenames( PARSE *parse, FRAME *frame );
 static LIST *builtin_import( PARSE *parse, FRAME *frame );
+static LIST *builtin_export( PARSE *parse, FRAME *frame );
 static LIST *builtin_caller_module( PARSE *parse, FRAME *frame );
+static LIST *builtin_backtrace( PARSE *parse, FRAME *frame );
+
+
 LIST *builtin_subst( PARSE  *parse, FRAME *frame );
 
 int glob( char *s, char *c );
@@ -105,6 +114,8 @@ void frame_init( FRAME* frame )
     frame->prev = 0;
     lol_init(frame->args);
     frame->module = root_module();
+    frame->rulename = "module scope";
+    frame->procedure = 0;
 }
 
 void frame_free( FRAME* frame )
@@ -145,7 +156,6 @@ static void lol_build( LOL* lol, char** elements )
 static RULE* bind_builtin( char* name, LIST*(*f)(PARSE*, FRAME*), int flags, char** args )
 {
     argument_list* arg_list = 0;
-    RULE* builtin_rule;
     
     if ( args )
     {
@@ -154,7 +164,7 @@ static RULE* bind_builtin( char* name, LIST*(*f)(PARSE*, FRAME*), int flags, cha
     }
 
     return new_rule_body( root_module(), name, arg_list,
-                                  parse_make( f, P0, P0, P0, C0, C0, flags ) );
+                          parse_make( f, P0, P0, P0, C0, C0, flags ), 0 );
 }
 
 static RULE* duplicate_rule( char* name, RULE* other )
@@ -195,38 +205,61 @@ compile_builtins()
     
     {
         char* args[] = {
-            "target_module", "?"
-            , ":", "source_module", "?"
-            , ":", "rule_names", "*"
-            , ":", "target_names", "*", 0
+            "module", "?", 0
+        };
+        
+        bind_builtin( "RULENAMES", builtin_rulenames, 0, args );
+    }
+
+    {
+        char* args[] = {
+            "source_module", "?"
+            , ":", "source_rules", "*"
+            , ":", "target_module", "?"
+            , ":", "target_rules", "*", 0
         };
         
         bind_builtin( "IMPORT", builtin_import, 0, args );
     }
 
+
+    {
+        char* args[] = {
+            "module", "?"
+            , ":", "rules", "*", 0
+        };
+        
+        bind_builtin( "EXPORT", builtin_export, 0, args );
+    }
+    
+    {
+        char* args[] = { "levels", "?", 0 };
+        bind_builtin( "CALLER_MODULE", builtin_caller_module, 0, args );
+    }
+
     {
         char* args[] = { 0 };
-        bind_builtin( "CALLER_MODULE", builtin_caller_module, 0, args );
+        bind_builtin( "BACKTRACE", builtin_backtrace, 0, args );
     }
 }
 
 /*
  * compile_append() - append list results of two statements
  *
- *	parse->left	more compile_append() by left-recursion
- *	parse->right	single rule
+ *  parse->left more compile_append() by left-recursion
+ *  parse->right    single rule
  */
 
 LIST *
 compile_append(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	/* Append right to left. */
+    /* Append right to left. */
 
-	return list_append( 
-		(*parse->left->func)( parse->left, frame ),
-		(*parse->right->func)( parse->right, frame ) );
+    return list_append( 
+        parse_evaluate( parse->left, frame ),
+        parse_evaluate( parse->right, frame ) );
 }
 
 /*
@@ -235,19 +268,19 @@ compile_append(
  * Compile_foreach() resets the given variable name to each specified
  * value, executing the commands enclosed in braces for each iteration.
  *
- *	parse->string	index variable
- *	parse->left	variable values
- *	parse->right	rule to compile
+ *  parse->string   index variable
+ *  parse->left variable values
+ *  parse->right    rule to compile
  */
 
 LIST *
 compile_foreach(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST	*nv = (*parse->left->func)( parse->left, frame );
-	LIST	*l;
-	SETTINGS *s = 0;
+    LIST    *nv = parse_evaluate( parse->left, frame );
+    LIST    *l;
+    SETTINGS *s = 0;
         
         if ( parse->num )
         {
@@ -255,56 +288,56 @@ compile_foreach(
             pushsettings( s );
         }
 
-	/* Call var_set to reset $(parse->string) for each val. */
+    /* Call var_set to reset $(parse->string) for each val. */
 
-	for( l = nv; l; l = list_next( l ) )
-	{
-	    LIST *val = list_new( L0, copystr( l->string ) );
+    for( l = nv; l; l = list_next( l ) )
+    {
+        LIST *val = list_new( L0, copystr( l->string ) );
 
-	    var_set( parse->string, val, VAR_SET );
+        var_set( parse->string, val, VAR_SET );
 
-	    list_free( (*parse->right->func)( parse->right, frame ) );
-	}
+        list_free( parse_evaluate( parse->right, frame ) );
+    }
 
         if ( parse->num )
             popsettings( s );
 
-	list_free( nv );
+    list_free( nv );
 
-	return L0;
+    return L0;
 }
 
 /*
  * compile_if() - compile 'if' rule
  *
- *	parse->left		condition tree
- *	parse->right		then tree
- *	parse->third		else tree
+ *  parse->left     condition tree
+ *  parse->right        then tree
+ *  parse->third        else tree
  */
 
 LIST *
 compile_if(
-	PARSE	*p,
-	FRAME *frame )
+    PARSE   *p,
+    FRAME *frame )
 {
-	if( evaluate_if( p->left, frame ) )
-	{
-	    return (*p->right->func)( p->right, frame );
-	}
-	else
-	{
-	    return (*p->third->func)( p->third, frame );
-	}
+    if( evaluate_if( p->left, frame ) )
+    {
+        return parse_evaluate( p->right, frame );
+    }
+    else
+    {
+        return parse_evaluate( p->third, frame );
+    }
 }
 
 LIST *
 compile_while(
-	PARSE	*p,
-	FRAME *frame )
+    PARSE   *p,
+    FRAME *frame )
 {
     while ( evaluate_if( p->left, frame ) )
     {
-        list_free( (*p->right->func)( p->right, frame ) );
+        list_free( parse_evaluate( p->right, frame ) );
     }
     return L0;
 }
@@ -313,140 +346,140 @@ compile_while(
  * evaluate_if() - evaluate if to determine which leg to compile
  *
  * Returns:
- *	!0	if expression true - compile 'then' clause
- *	0	if expression false - compile 'else' clause
+ *  !0  if expression true - compile 'then' clause
+ *  0   if expression false - compile 'else' clause
  */
 
 static int
 evaluate_if(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	int	status;
+    int status;
 
-	if( parse->num <= COND_OR )
-	{
-	    /* Handle one of the logical operators */
+    if( parse->num <= COND_OR )
+    {
+        /* Handle one of the logical operators */
 
-	    switch( parse->num )
-	    {
-	    case COND_NOT:
-		status = !evaluate_if( parse->left, frame );
-		break;
+        switch( parse->num )
+        {
+        case COND_NOT:
+        status = !evaluate_if( parse->left, frame );
+        break;
 
-	    case COND_AND:
-		status = evaluate_if( parse->left, frame ) &&
-			 evaluate_if( parse->right, frame );
-		break;
+        case COND_AND:
+        status = evaluate_if( parse->left, frame ) &&
+             evaluate_if( parse->right, frame );
+        break;
 
-	    case COND_OR:
-		status = evaluate_if( parse->left, frame ) ||
-			 evaluate_if( parse->right, frame );
-		break;
+        case COND_OR:
+        status = evaluate_if( parse->left, frame ) ||
+             evaluate_if( parse->right, frame );
+        break;
 
-	    default:
-		status = 0;	/* can't happen */
-	    }
-	}
-	else
-	{
-	    /* Handle one of the comparison operators */
-	    /* Expand targets and sources */
+        default:
+        status = 0; /* can't happen */
+        }
+    }
+    else
+    {
+        /* Handle one of the comparison operators */
+        /* Expand targets and sources */
 
-	    LIST *nt = (*parse->left->func)( parse->left, frame );
-	    LIST *ns = (*parse->right->func)( parse->right, frame );
+        LIST *nt = parse_evaluate( parse->left, frame );
+        LIST *ns = parse_evaluate( parse->right, frame );
 
-	    /* "a in b" make sure each of a is equal to something in b. */
-	    /* Otherwise, step through pairwise comparison. */
+        /* "a in b" make sure each of a is equal to something in b. */
+        /* Otherwise, step through pairwise comparison. */
 
-	    if( parse->num == COND_IN )
-	    {
-		LIST *s, *t;
+        if( parse->num == COND_IN )
+        {
+        LIST *s, *t;
 
-		/* Try each t until failure. */
+        /* Try each t until failure. */
 
-		for( status = 1, t = nt; status && t; t = list_next( t ) )
-		{
-		    int stat1;
+        for( status = 1, t = nt; status && t; t = list_next( t ) )
+        {
+            int stat1;
 
-		    /* Try each s until success */
+            /* Try each s until success */
 
-		    for( stat1 = 0, s = ns; !stat1 && s; s = list_next( s ) )
-			stat1 = !strcmp( t->string, s->string );
+            for( stat1 = 0, s = ns; !stat1 && s; s = list_next( s ) )
+            stat1 = !strcmp( t->string, s->string );
 
-		    status = stat1;
-		}
-	    }
-	    else
-	    {
-		LIST *s = ns, *t = nt;
+            status = stat1;
+        }
+        }
+        else
+        {
+        LIST *s = ns, *t = nt;
 
-		status = 0;
+        status = 0;
 
-		while( !status && ( t || s ) )
-		{
-		    char *st = t ? t->string : "";
-		    char *ss = s ? s->string : "";
+        while( !status && ( t || s ) )
+        {
+            char *st = t ? t->string : "";
+            char *ss = s ? s->string : "";
 
-		    status = strcmp( st, ss );
+            status = strcmp( st, ss );
 
-		    t = t ? list_next( t ) : t;
-		    s = s ? list_next( s ) : s;
-		}
-	    }
+            t = t ? list_next( t ) : t;
+            s = s ? list_next( s ) : s;
+        }
+        }
 
-	    switch( parse->num )
-	    {
-	    case COND_EXISTS:	status = status > 0 ; break;
-	    case COND_EQUALS:	status = !status; break;
-	    case COND_NOTEQ:	status = status != 0; break;
-	    case COND_LESS:	status = status < 0; break;
-	    case COND_LESSEQ:	status = status <= 0; break;
-	    case COND_MORE:	status = status > 0; break;
-	    case COND_MOREEQ:	status = status >= 0; break;
-	    case COND_IN:	/* status = status */ break;
-	    }
+        switch( parse->num )
+        {
+        case COND_EXISTS:   status = status > 0 ; break;
+        case COND_EQUALS:   status = !status; break;
+        case COND_NOTEQ:    status = status != 0; break;
+        case COND_LESS: status = status < 0; break;
+        case COND_LESSEQ:   status = status <= 0; break;
+        case COND_MORE: status = status > 0; break;
+        case COND_MOREEQ:   status = status >= 0; break;
+        case COND_IN:   /* status = status */ break;
+        }
 
-	    if( DEBUG_IF )
-	    {
-		debug_compile( 0, "if" );
-		list_print( nt );
-		printf( "(%d)", status );
-		list_print( ns );
-		printf( "\n" );
-	    }
+        if( DEBUG_IF )
+        {
+        debug_compile( 0, "if", frame);
+        list_print( nt );
+        printf( "(%d)", status );
+        list_print( ns );
+        printf( "\n" );
+        }
 
-	    list_free( nt );
-	    list_free( ns );
+        list_free( nt );
+        list_free( ns );
 
-	}
+    }
 
-	return status;
+    return status;
 }
 
 /*
  * compile_include() - support for 'include' - call include() on file
  *
- * 	parse->left	list of files to include (can only do 1)
+ *  parse->left list of files to include (can only do 1)
  */
 
 LIST *
 compile_include(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST	*nt = (*parse->left->func)( parse->left, frame );
+    LIST    *nt = parse_evaluate( parse->left, frame );
 
-	if( DEBUG_COMPILE )
-	{
-	    debug_compile( 0, "include" );
-	    list_print( nt );
-	    printf( "\n" );
-	}
+    if( DEBUG_COMPILE )
+    {
+        debug_compile( 0, "include", frame);
+        list_print( nt );
+        printf( "\n" );
+    }
 
-	if( nt )
-	{
-	    TARGET *t = bindtarget( nt->string );
+    if( nt )
+    {
+        TARGET *t = bindtarget( nt->string );
 
             /* DWA 2001/10/22 - Perforce Jam clears the arguments here, which
              * prevents an included file from being treated as part of the body
@@ -454,30 +487,30 @@ compile_include(
              * restriction.
              */
                
-	    /* Bind the include file under the influence of */
-	    /* "on-target" variables.  Though they are targets, */
-	    /* include files are not built with make(). */
+        /* Bind the include file under the influence of */
+        /* "on-target" variables.  Though they are targets, */
+        /* include files are not built with make(). */
 
-	    pushsettings( t->settings );
-	    t->boundname = search( t->name, &t->time );
-	    popsettings( t->settings );
+        pushsettings( t->settings );
+        t->boundname = search( t->name, &t->time );
+        popsettings( t->settings );
 
-	    parse_file( t->boundname, frame );
-	}
+        parse_file( t->boundname, frame );
+    }
 
-	list_free( nt );
+    list_free( nt );
 
-	return L0;
+    return L0;
 }
 
 LIST *
 compile_module(
-	PARSE	*p,
-	FRAME *frame )
+    PARSE   *p,
+    FRAME *frame )
 {
     /* Here we are entering a module declaration block. 
      */
-    LIST* module_name = (*p->left->func)( p->left, frame );
+    LIST* module_name = parse_evaluate( p->left, frame );
     LIST* result;
 
     module* outer_module = frame->module;
@@ -489,7 +522,7 @@ compile_module(
         enter_module( frame->module );
     }
     
-    result = (*p->right->func)( p->right, frame );
+    result = parse_evaluate( p->right, frame );
     
     if ( outer_module != frame->module )
     {
@@ -506,65 +539,65 @@ compile_module(
 /*
  * compile_list() - expand and return a list 
  *
- * 	parse->string - character string to expand
+ *  parse->string - character string to expand
  */
 
 LIST *
 compile_list(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	/* voodoo 1 means: s is a copyable string */
-	char *s = parse->string;
-	return var_expand( L0, s, s + strlen( s ), frame->args, 1 );
+    /* voodoo 1 means: s is a copyable string */
+    char *s = parse->string;
+    return var_expand( L0, s, s + strlen( s ), frame->args, 1 );
 }
 
 /*
  * compile_local() - declare (and set) local variables
  *
- *	parse->left	list of variables
- *	parse->right	list of values
- *	parse->third	rules to execute
+ *  parse->left list of variables
+ *  parse->right    list of values
+ *  parse->third    rules to execute
  */
 
 LIST *
 compile_local(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST *l;
-	SETTINGS *s = 0;
-	LIST	*nt = (*parse->left->func)( parse->left, frame );
-	LIST	*ns = (*parse->right->func)( parse->right, frame );
-	LIST	*result;
+    LIST *l;
+    SETTINGS *s = 0;
+    LIST    *nt = parse_evaluate( parse->left, frame );
+    LIST    *ns = parse_evaluate( parse->right, frame );
+    LIST    *result;
 
-	if( DEBUG_COMPILE )
-	{
-	    debug_compile( 0, "local" );
-	    list_print( nt );
-	    printf( " = " );
-	    list_print( ns );
-	    printf( "\n" );
-	}
+    if( DEBUG_COMPILE )
+    {
+        debug_compile( 0, "local", frame);
+        list_print( nt );
+        printf( " = " );
+        list_print( ns );
+        printf( "\n" );
+    }
 
-	/* Initial value is ns */
+    /* Initial value is ns */
 
-	for( l = nt; l; l = list_next( l ) )
-	    s = addsettings( s, 0, l->string, list_copy( (LIST*)0, ns ) );
+    for( l = nt; l; l = list_next( l ) )
+        s = addsettings( s, 0, l->string, list_copy( (LIST*)0, ns ) );
 
-	list_free( ns );
-	list_free( nt );
+    list_free( ns );
+    list_free( nt );
 
-	/* Note that callees of the current context get this "local" */
-	/* variable, making it not so much local as layered. */
+    /* Note that callees of the current context get this "local" */
+    /* variable, making it not so much local as layered. */
 
-	pushsettings( s );
-	result = (*parse->third->func)( parse->third, frame );
-	popsettings( s );
+    pushsettings( s );
+    result = parse_evaluate( parse->third, frame );
+    popsettings( s );
 
-	freesettings( s );
+    freesettings( s );
 
-	return result;
+    return result;
 }
 
 /*
@@ -573,29 +606,29 @@ compile_local(
 
 LIST *
 compile_null(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	return L0;
+    return L0;
 }
 
 /*
  * compile_rule() - compile a single user defined rule
  *
- *	parse->string	name of user defined rule
- *	parse->left	parameters (list of lists) to rule, recursing left
+ *  parse->string   name of user defined rule
+ *  parse->left parameters (list of lists) to rule, recursing left
  *
  * Wrapped around evaluate_rule() so that headers() can share it.
  */
 
 LIST *
 compile_rule(
-    PARSE	*parse,
+    PARSE   *parse,
     FRAME *frame )
 {
     FRAME       inner[1];
-    LIST	*result;
-    PARSE	*p;
+    LIST    *result;
+    PARSE   *p;
     
 
     /* Build up the list of arg lists */
@@ -603,9 +636,10 @@ compile_rule(
     frame_init( inner );
     inner->prev = frame;
     inner->module = frame->module; /* This gets fixed up in evaluate_rule(), below */
+    inner->procedure = parse;
 
     for( p = parse->left; p; p = p->left )
-        lol_add( inner->args, (*p->right->func)( p->right, frame ) );
+        lol_add( inner->args, parse_evaluate( p->right, frame ) );
 
     /* And invoke rule */
 
@@ -616,14 +650,17 @@ compile_rule(
     return result;
 }
 
-static void argument_error( char* message, RULE* rule, LOL* actual, LIST* arg )
+static void argument_error( char* message, RULE* rule, FRAME* frame, LIST* arg )
 {
-    printf( "### argument error\n# rule %s ( ", rule->name );
+    LOL* actual = frame->args;
+    assert( frame->procedure != 0 );
+    backtrace_line( frame->prev );
+    printf( "*** argument error\n* rule %s ( ", frame->rulename );
     lol_print( rule->arguments->data );
-    printf( ")\n# called with: ( " );
+    printf( ")\n* called with: ( " );
     lol_print( actual );
-    printf( ")\n# %s %s", message, arg ? arg->string : "" );
-    printf("\n");
+    printf( ")\n* %s %s\n", message, arg ? arg->string : "" );
+    backtrace( frame->prev );
     exit(1);
 }
 
@@ -632,10 +669,11 @@ static void argument_error( char* message, RULE* rule, LOL* actual, LIST* arg )
  * collect_arguments() - local argument checking and collection
  */
 static SETTINGS *
-collect_arguments( RULE* rule, LOL* all_actual )
+collect_arguments( RULE* rule, FRAME* frame )
 {
     SETTINGS *locals = 0;
     
+    LOL* all_actual = frame->args;
     LOL *all_formal = rule->arguments ? rule->arguments->data : 0;
     if ( all_formal ) /* Nothing to set; nothing to check */
     {
@@ -648,11 +686,17 @@ collect_arguments( RULE* rule, LOL* all_actual )
         {
             LIST *formal = lol_get( all_formal, n );
             LIST *actual = lol_get( all_actual, n );
+            
             while ( formal )
             {
                 char* name = formal->string;
                 char modifier = 0;
                 LIST* value = 0;
+
+                /* Stop now if a variable number of arguments are specified */
+                if ( name[0] == '*' && name[1] == 0 )
+                    return locals;
+                
                 if ( formal->next )
                 {
                     char *next = formal->next->string;
@@ -662,7 +706,7 @@ collect_arguments( RULE* rule, LOL* all_actual )
                 
                 if ( !actual && modifier != '?' && modifier != '*' )
                 {
-                    argument_error( "missing argument", rule, all_actual, formal );
+                    argument_error( "missing argument", rule, frame, formal );
                 }
 
                 switch ( modifier )
@@ -692,7 +736,7 @@ collect_arguments( RULE* rule, LOL* all_actual )
             
             if ( actual )
             {
-                argument_error( "extra argument", rule, all_actual, actual );
+                argument_error( "extra argument", rule, frame, actual );
             }
         }
     }
@@ -786,15 +830,16 @@ void profile_dump()
 
 LIST *
 evaluate_rule(
-	char	*rulename,
-	FRAME *frame )
+    char    *rulename,
+    FRAME *frame )
 {
-    LIST	  *result = L0;
+    LIST      *result = L0;
     RULE          *rule;
     profile_frame prof[1];
     module    *prev_module = frame->module;
     
     LIST*  l = var_expand( L0, rulename, rulename+strlen(rulename), frame->args, 0 );
+    LIST*  more_args = L0;
 
     if ( !l )
     {
@@ -804,7 +849,7 @@ evaluate_rule(
 
     if ( DEBUG_COMPILE )
     {
-        debug_compile( 1, l->string );
+        debug_compile( 1, l->string, frame);
         lol_print( frame->args );
         printf( "\n" );
     }
@@ -821,23 +866,37 @@ evaluate_rule(
         enter_module( rule->procedure->module );
     }
 
-    list_free( l );
+    /* drop the rule name */
+    l = list_pop_front( l );
     
-    if ( DEBUG_PROFILE && rule->procedure )
-        profile_enter( rule->procedure->rulename, prof );
+    /* tack the rest of the expansion onto the front of the first argument */
+    frame->args->list[0] = list_append( l, lol_get( frame->args, 0 ) );
+    
+    /* record current rule name in frame */
+    if ( rule->procedure )
+    {
+        frame->rulename = rule->procedure->rulename;
+        /* and enter record profile info */
+        if ( DEBUG_PROFILE )
+            profile_enter( rule->procedure->rulename, prof );
+    }
 
     /* Check traditional targets $(<) and sources $(>) */
 
     if( !rule->actions && !rule->procedure )
+    {
+        backtrace_line( frame->prev );
         printf( "warning: unknown rule %s\n", rule->name );
+        backtrace( frame->prev );
+    }
 
     /* If this rule will be executed for updating the targets */
     /* then construct the action for make(). */
 
     if( rule->actions )
     {
-        TARGETS	*t;
-        ACTION	*action;
+        TARGETS *t;
+        ACTION  *action;
 
         /* The action is associated with this instance of this rule */
 
@@ -859,12 +918,12 @@ evaluate_rule(
 
     if( rule->procedure )
     {
-        SETTINGS *local_args = collect_arguments( rule, frame->args );
+        SETTINGS *local_args = collect_arguments( rule, frame );
         PARSE *parse = rule->procedure;
         parse_refer( parse );
         
         pushsettings( local_args );
-        result = (*parse->func)( parse, frame );
+        result = parse_evaluate( parse, frame );
         popsettings( local_args );
         
         parse_free( parse );
@@ -880,7 +939,7 @@ evaluate_rule(
         profile_exit( prof );
 
     if( DEBUG_COMPILE )
-        debug_compile( -1, 0 );
+        debug_compile( -1, 0, frame);
 
     return result;
 }
@@ -888,120 +947,128 @@ evaluate_rule(
 /*
  * compile_rules() - compile a chain of rules
  *
- *	parse->left	more compile_rules() by left-recursion
- *	parse->right	single rule
+ *  parse->left more compile_rules() by left-recursion
+ *  parse->right    single rule
  */
 
 LIST *
 compile_rules(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	/* Ignore result from first statement; return the 2nd. */
+    /* Ignore result from first statement; return the 2nd. */
 
-	list_free( (*parse->left->func)( parse->left, frame ) );
-	return (*parse->right->func)( parse->right, frame );
+    list_free( parse_evaluate( parse->left, frame ) );
+    return parse_evaluate( parse->right, frame );
 }
 
 /*
  * compile_set() - compile the "set variable" statement
  *
- *	parse->left	variable names
- *	parse->right	variable values 
- *	parse->num	ASSIGN_SET/APPEND/DEFAULT
+ *  parse->left variable names
+ *  parse->right    variable values 
+ *  parse->num  ASSIGN_SET/APPEND/DEFAULT
  */
 
 LIST *
 compile_set(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST	*nt = (*parse->left->func)( parse->left, frame );
-	LIST	*ns = (*parse->right->func)( parse->right, frame );
-	LIST	*l;
-	int	setflag;
-	char	*trace;
+    LIST    *nt = parse_evaluate( parse->left, frame );
+    LIST    *ns = parse_evaluate( parse->right, frame );
+    LIST    *l;
+    int setflag;
+    char    *trace;
 
-	switch( parse->num )
-	{
-	case ASSIGN_SET:	setflag = VAR_SET; trace = "="; break;
-	case ASSIGN_APPEND:	setflag = VAR_APPEND; trace = "+="; break;
-	case ASSIGN_DEFAULT:	setflag = VAR_DEFAULT; trace = "?="; break;
-	default:		setflag = VAR_SET; trace = ""; break;
-	}
+    switch( parse->num )
+    {
+    case ASSIGN_SET:    setflag = VAR_SET; trace = "="; break;
+    case ASSIGN_APPEND: setflag = VAR_APPEND; trace = "+="; break;
+    case ASSIGN_DEFAULT:    setflag = VAR_DEFAULT; trace = "?="; break;
+    default:        setflag = VAR_SET; trace = ""; break;
+    }
 
-	if( DEBUG_COMPILE )
-	{
-	    debug_compile( 0, "set" );
-	    list_print( nt );
-	    printf( " %s ", trace );
-	    list_print( ns );
-	    printf( "\n" );
-	}
+    if( DEBUG_COMPILE )
+    {
+        debug_compile( 0, "set", frame);
+        list_print( nt );
+        printf( " %s ", trace );
+        list_print( ns );
+        printf( "\n" );
+    }
 
-	/* Call var_set to set variable */
-	/* var_set keeps ns, so need to copy it */
+    /* Call var_set to set variable */
+    /* var_set keeps ns, so need to copy it */
 
-	for( l = nt; l; l = list_next( l ) )
-	    var_set( l->string, list_copy( L0, ns ), setflag );
+    for( l = nt; l; l = list_next( l ) )
+        var_set( l->string, list_copy( L0, ns ), setflag );
 
-	list_free( nt );
+    list_free( nt );
 
-	return ns;
+    return ns;
 }
 
 /*
  * compile_set_module() - compile the "module local set variable" statement
  *
- *	parse->left     variable names
- *	parse->right	variable values 
+ *  parse->left     variable names
+ *  parse->right    variable values 
  */
 LIST *
 compile_set_module(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST	*nt = (*parse->left->func)( parse->left, frame );
-	LIST	*ns = (*parse->right->func)( parse->right, frame );
-	LIST	*l;
+    LIST    *nt = parse_evaluate( parse->left, frame );
+    LIST    *ns = parse_evaluate( parse->right, frame );
+    LIST    *l;
+    int setflag;
+    char    *trace;
 
-	if( DEBUG_COMPILE )
-	{
-	    debug_compile( 0, "set module" );
-        printf( "(%s)", frame->module->name );
-	    list_print( nt );
-	    printf( " = " );
-	    list_print( ns );
-	    printf( "\n" );
-	}
-
-	/* Call var_set to set variable */
-	/* var_set keeps ns, so need to copy it */
-
-	for( l = nt; l; l = list_next( l ) )
+    switch( parse->num )
     {
-        bind_module_var( frame->module, l->string );
-	    var_set( l->string, list_copy( L0, ns ), VAR_SET );
+    case ASSIGN_SET:    setflag = VAR_SET; trace = "="; break;
+    default:        setflag = VAR_APPEND; trace = ""; break;
+    }
+    
+    if( DEBUG_COMPILE )
+    {
+        debug_compile( 0, "set module", frame);
+        printf( "(%s)", frame->module->name );
+        list_print( nt );
+        printf( " %s ", trace );
+        list_print( ns );
+        printf( "\n" );
     }
 
-	list_free( nt );
+    /* Call var_set to set variable */
+    /* var_set keeps ns, so need to copy it */
 
-	return ns;
+    for( l = nt; l; l = list_next( l ) )
+    {
+        bind_module_var( frame->module, l->string );
+        var_set( l->string, list_copy( L0, ns ), setflag );
+    }
+
+    list_free( nt );
+
+    return ns;
 }
 
 
 /*
  * compile_setcomp() - support for `rule` - save parse tree 
  *
- *	parse->string	rule name
- *	parse->left	rules for rule
+ *  parse->string   rule name
+ *  parse->left rules for rule
  *  parse->right optional list-of-lists describing arguments
  */
 
 LIST *
 compile_setcomp(
-	PARSE	*parse,
-	FRAME *frame)
+    PARSE   *parse,
+    FRAME *frame)
 {
     argument_list* arg_list = 0;
     
@@ -1011,20 +1078,20 @@ compile_setcomp(
         PARSE *p;
         arg_list = args_new();
         for( p = parse->right; p; p = p->left )
-            lol_add( arg_list->data, (*p->right->func)( p->right, frame ) );
+            lol_add( arg_list->data, parse_evaluate( p->right, frame ) );
     }
     
-    new_rule_body( frame->module, parse->string, arg_list, parse->left );
-	return L0;
+    new_rule_body( frame->module, parse->string, arg_list, parse->left, parse->num );
+    return L0;
 }
 
 /*
  * compile_setexec() - support for `actions` - save execution string 
  *
- *	parse->string	rule name
- *	parse->string1	OS command string
- *	parse->num	flags
- *	parse->left	`bind` variables
+ *  parse->string   rule name
+ *  parse->string1  OS command string
+ *  parse->num  flags
+ *  parse->left `bind` variables
  *
  * Note that the parse flags (as defined in compile.h) are transfered
  * directly to the rule flags (as defined in rules.h).
@@ -1032,111 +1099,111 @@ compile_setcomp(
 
 LIST *
 compile_setexec(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST* bindlist = (*parse->left->func)( parse->left, frame );
+    LIST* bindlist = parse_evaluate( parse->left, frame );
 
     new_rule_actions( frame->module, parse->string, parse->string1, bindlist, parse->num );
 
-	return L0;
+    return L0;
 }
 
 /*
  * compile_settings() - compile the "on =" (set variable on exec) statement
  *
- *	parse->left	variable names
- *	parse->right	target name 
- *	parse->third	variable value 
- *	parse->num	ASSIGN_SET/APPEND	
+ *  parse->left variable names
+ *  parse->right    target name 
+ *  parse->third    variable value 
+ *  parse->num  ASSIGN_SET/APPEND   
  */
 
 LIST *
 compile_settings(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST	*nt = (*parse->left->func)( parse->left, frame );
-	LIST	*ns = (*parse->third->func)( parse->third, frame );
-	LIST	*targets = (*parse->right->func)( parse->right, frame );
-	LIST	*ts;
-	int	append = parse->num == ASSIGN_APPEND;
+    LIST    *nt = parse_evaluate( parse->left, frame );
+    LIST    *ns = parse_evaluate( parse->third, frame );
+    LIST    *targets = parse_evaluate( parse->right, frame );
+    LIST    *ts;
+    int append = parse->num == ASSIGN_APPEND;
 
-	if( DEBUG_COMPILE )
-	{
-	    debug_compile( 0, "set" );
-	    list_print( nt );
-	    printf( "on " );
-	    list_print( targets );
-	    printf( " %s ", append ? "+=" : "=" );
-	    list_print( ns );
-	    printf( "\n" );
-	}
+    if( DEBUG_COMPILE )
+    {
+        debug_compile( 0, "set", frame);
+        list_print( nt );
+        printf( "on " );
+        list_print( targets );
+        printf( " %s ", append ? "+=" : "=" );
+        list_print( ns );
+        printf( "\n" );
+    }
 
-	/* Call addsettings to save variable setting */
-	/* addsettings keeps ns, so need to copy it */
-	/* Pass append flag to addsettings() */
+    /* Call addsettings to save variable setting */
+    /* addsettings keeps ns, so need to copy it */
+    /* Pass append flag to addsettings() */
 
-	for( ts = targets; ts; ts = list_next( ts ) )
-	{
-	    TARGET 	*t = bindtarget( ts->string );
-	    LIST	*l;
+    for( ts = targets; ts; ts = list_next( ts ) )
+    {
+        TARGET  *t = bindtarget( ts->string );
+        LIST    *l;
 
-	    for( l = nt; l; l = list_next( l ) )
-		t->settings = addsettings( t->settings, append, 
-				l->string, list_copy( (LIST*)0, ns ) );
-	}
+        for( l = nt; l; l = list_next( l ) )
+        t->settings = addsettings( t->settings, append, 
+                l->string, list_copy( (LIST*)0, ns ) );
+    }
 
-	list_free( nt );
-	list_free( targets );
+    list_free( nt );
+    list_free( targets );
 
-	return ns;
+    return ns;
 }
 
 /*
  * compile_switch() - compile 'switch' rule
  *
- *	parse->left	switch value (only 1st used)
- *	parse->right	cases
+ *  parse->left switch value (only 1st used)
+ *  parse->right    cases
  *
- *	cases->left	1st case
- *	cases->right	next cases
+ *  cases->left 1st case
+ *  cases->right    next cases
  *
- *	case->string	argument to match
- *	case->left	parse tree to execute
+ *  case->string    argument to match
+ *  case->left  parse tree to execute
  */
 
 LIST *
 compile_switch(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST	*nt = (*parse->left->func)( parse->left, frame );
-	LIST	*result = 0;
+    LIST    *nt = parse_evaluate( parse->left, frame );
+    LIST    *result = 0;
 
-	if( DEBUG_COMPILE )
-	{
-	    debug_compile( 0, "switch" );
-	    list_print( nt );
-	    printf( "\n" );
-	}
+    if( DEBUG_COMPILE )
+    {
+        debug_compile( 0, "switch", frame);
+        list_print( nt );
+        printf( "\n" );
+    }
 
-	/* Step through cases */
+    /* Step through cases */
 
-	for( parse = parse->right; parse; parse = parse->right )
-	{
-	    if( !glob( parse->left->string, nt ? nt->string : "" ) )
-	    {
-		/* Get & exec parse tree for this case */
-		parse = parse->left->left;
-		result = (*parse->func)( parse, frame );
-		break;
-	    }
-	}
+    for( parse = parse->right; parse; parse = parse->right )
+    {
+        if( !glob( parse->left->string, nt ? nt->string : "" ) )
+        {
+        /* Get & exec parse tree for this case */
+        parse = parse->left->left;
+        result = parse_evaluate( parse, frame );
+        break;
+        }
+    }
 
-	list_free( nt );
+    list_free( nt );
 
-	return result;
+    return result;
 }
 
 
@@ -1151,21 +1218,21 @@ compile_switch(
 
 static LIST *
 builtin_depends(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST *targets = lol_get( frame->args, 0 );
-	LIST *sources = lol_get( frame->args, 1 );
-	int which = parse->num;
-	LIST *l;
+    LIST *targets = lol_get( frame->args, 0 );
+    LIST *sources = lol_get( frame->args, 1 );
+    int which = parse->num;
+    LIST *l;
 
-	for( l = targets; l; l = list_next( l ) )
-	{
-	    TARGET *t = bindtarget( l->string );
-	    t->deps[ which ] = targetlist( t->deps[ which ], sources );
-	}
+    for( l = targets; l; l = list_next( l ) )
+    {
+        TARGET *t = bindtarget( l->string );
+        t->deps[ which ] = targetlist( t->deps[ which ], sources );
+    }
 
-	return L0;
+    return L0;
 }
 
 /*
@@ -1177,12 +1244,12 @@ builtin_depends(
 
 static LIST *
 builtin_echo(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	list_print( lol_get( frame->args, 0 ) );
-	printf( "\n" );
-	return L0;
+    list_print( lol_get( frame->args, 0 ) );
+    printf( "\n" );
+    return L0;
 }
 
 /*
@@ -1194,13 +1261,13 @@ builtin_echo(
 
 static LIST *
 builtin_exit(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	list_print( lol_get( frame->args, 0 ) );
-	printf( "\n" );
-	exit( EXITBAD ); /* yeech */
-	return L0;
+    list_print( lol_get( frame->args, 0 ) );
+    printf( "\n" );
+    exit( EXITBAD ); /* yeech */
+    return L0;
 }
 
 /*
@@ -1212,15 +1279,15 @@ builtin_exit(
 
 static LIST *
 builtin_flags(
-	PARSE	*parse,
-	FRAME *frame )
+    PARSE   *parse,
+    FRAME *frame )
 {
-	LIST *l = lol_get( frame->args, 0 );
+    LIST *l = lol_get( frame->args, 0 );
 
-	for( ; l; l = list_next( l ) )
-	    bindtarget( l->string )->flags |= parse->num;
+    for( ; l; l = list_next( l ) )
+        bindtarget( l->string )->flags |= parse->num;
 
-	return L0;
+    return L0;
 }
 
 
@@ -1246,98 +1313,220 @@ builtin_hdrmacro(
   return L0;
 }
 
-
-/*
- * builtin_import() - IMPORT ( TARGET_MODULE ? : SOURCE_MODULE ? : RULE_NAMES * : TARGET_NAMES * )
+/*  builtin_rulenames() - RULENAMES ( MODULE ? )
  *
- * The IMPORT rule imports rules from the SOURCE_MODULE into the
- * TARGET_MODULE. If either SOURCE_MODULE or TARGET_MODULE is not supplied, it
- * refers to the root module. If any RULE_NAMES are supplied, they specify which
- * rules from the SOURCE_MODULE to import, otherwise all rules are imported. The
- * rules are given the names in TARGET_NAMES; if not enough TARGET_NAMES are
- * supplied, the excess rules are given the names in RULE_NAMES. If RULE_NAMES
- * is not supplied, TARGET_NAMES is ignored.
+ *  Returns a list of the non-local rule names in the given MODULE. If
+ *  MODULE is not supplied, returns the list of rule names in the
+ *  global module.
  */
 
-struct import_data
-{
-    module* target_module;
-    LIST* target_names;
-};
-typedef struct import_data import_data;
-
-static void import_rule1( void* r_, void* data_ )
+/* helper function for builtin_rulenames(), below */
+static void add_rule_name( void* r_, void* result_ )
 {
     RULE* r = r_;
-    import_data* data = data_;
-    
-    char* target_name = data->target_names ? data->target_names->string : r->name;
-    if (data->target_names)
-        data->target_names = list_next(data->target_names);
-    
-    import_rule( r, data->target_module, target_name );
+    LIST** result = result_;
+
+    if ( !r->local_only )
+        *result = list_new( *result, copystr( r->name ) );
 }
 
 static LIST *
-builtin_import(
-	PARSE	*parse,
-	FRAME *frame )
+builtin_rulenames(
+    PARSE   *parse,
+    FRAME *frame )
 {
-    LIST *target_module_name = lol_get( frame->args, 0 );
-    LIST *source_module_name = lol_get( frame->args, 1 );
-    LIST *rule_names = lol_get( frame->args, 2 );
-    LIST *target_names = lol_get( frame->args, 3 );
+    LIST *arg0 = lol_get( frame->args, 0 );
+    LIST *result = L0;
+    module* source_module = bindmodule( arg0 ? arg0->string : 0 );
 
-    module* target_module = bindmodule( target_module_name ? target_module_name->string : 0 );
-    module* source_module = bindmodule( source_module_name ? source_module_name->string : 0 );
+    hashenumerate( source_module->rules, add_rule_name, &result );
+    return result;
+}
+
+static void unknown_rule( FRAME *frame, char* key, char *module_name, char *rule_name )
+{
+    backtrace_line( frame->prev );
+    printf( "%s error: rule \"%s\" unknown in module \"%s\"\n", key, rule_name, module_name );
+    backtrace( frame->prev );
+    exit(1);
     
-    if ( rule_names == 0 )
-    {
-        import_data data;
-        data.target_module = target_module;
-        data.target_names = target_names;
-        hashenumerate( source_module->rules, import_rule1, &data );
-    }
-    else
-    {
-        LIST *old_name, *target_name;
-            
-        for ( old_name = rule_names, target_name = target_names;
-              old_name;
-              old_name = list_next( old_name )
-                  , target_name = list_next( target_name ) )
-        {
-            RULE r_, *r = &r_;
-            r_.name = old_name->string;
-                
-            if ( !target_name )
-                target_name = old_name;
+}
 
-            if ( hashcheck( source_module->rules, (HASHDATA**)&r ) )
-            {
-                import_rule( r, target_module, target_name->string );
-            }
-        }
+/*
+ * builtin_import() - IMPORT ( SOURCE_MODULE ? : SOURCE_RULES * : TARGET_MODULE ? : TARGET_RULES * )
+ *
+ * The IMPORT rule imports rules from the SOURCE_MODULE into the
+ * TARGET_MODULE as local rules. If either SOURCE_MODULE or
+ * TARGET_MODULE is not supplied, it refers to the global
+ * module. SOURCE_RULES specifies which rules from the SOURCE_MODULE
+ * to import; TARGET_RULES specifies the names to give those rules in
+ * TARGET_MODULE. If SOURCE_RULES contains a name which doesn't
+ * correspond to a rule in SOURCE_MODULE, or if it contains a
+ * different number of items than TARGET_RULES, an error is issued.
+ * 
+ */
+static LIST *
+builtin_import(
+    PARSE *parse,
+    FRAME *frame )
+{
+    LIST *source_module_list = lol_get( frame->args, 0 );
+    LIST *source_rules = lol_get( frame->args, 1 );
+    LIST *target_module_list = lol_get( frame->args, 2 );
+    LIST *target_rules = lol_get( frame->args, 3 );
+
+    module* target_module = bindmodule( target_module_list ? target_module_list->string : 0 );
+    module* source_module = bindmodule( source_module_list ? source_module_list->string : 0 );
+    
+    LIST *source_name, *target_name;
+            
+    for ( source_name = source_rules, target_name = target_rules;
+          source_name && target_name;
+          source_name = list_next( source_name )
+          , target_name = list_next( target_name ) )
+    {
+        RULE r_, *r = &r_, *imported;
+        r_.name = source_name->string;
+                
+        if ( !hashcheck( source_module->rules, (HASHDATA**)&r ) )
+            unknown_rule( frame, "IMPORT", source_module->name, r_.name );
+        
+        imported = import_rule( r, target_module, target_name->string );
+        imported->local_only = 1;
+    }
+    
+    if ( source_name || target_name )
+    {
+        backtrace_line( frame->prev );
+        printf( "import error: length of source and target rule name lists don't match" );
+        backtrace( frame->prev );
+        exit(1);
     }
 
     return L0;
 }
 
+
 /*
- * builtin_caller_module() - CALLER_MODULE ( )
+ * builtin_export() - EXPORT ( MODULE ? : RULES * )
  *
- * Returns the name of the module of the rule which called the one calling this
- * one, or, if no such module exists, returns the empty list. Also returns the
- * empty list when the module in question is the global module. This rule is
- * needed for implementing module import behavior.
+ * The EXPORT rule marks RULES from the SOURCE_MODULE as non-local
+ * (and thus exportable). If an element of RULES does not name a rule
+ * in MODULE, an error is issued.
+ */
+static LIST *
+builtin_export(
+    PARSE *parse,
+    FRAME *frame )
+{
+    LIST *module_list = lol_get( frame->args, 0 );
+    LIST *rules = lol_get( frame->args, 1 );
+
+    module* m = bindmodule( module_list ? module_list->string : 0 );
+    
+            
+    for ( ; rules; rules = list_next( rules ) )
+    {
+        RULE r_, *r = &r_;
+        r_.name = rules->string;
+                
+        if ( !hashcheck( m->rules, (HASHDATA**)&r ) )
+            unknown_rule( frame, "EXPORT", m->name, r_.name );
+        
+        r->local_only = 0;
+    }
+    return L0;
+}
+
+/*  Retrieve the file and line number that should be indicated for a
+ *  given frame in debug output or an error backtrace
+ */
+static void frame_info( FRAME* frame, char** file, int* line )
+{
+    if ( frame->procedure )
+    {
+        char* f = frame->procedure->file;
+        int l = frame->procedure->line;
+        if ( !strcmp( f, "+" ) )
+        {
+            f = "jambase.c";
+            l += 3;
+        }
+        *file = f;
+        *line = l;
+    }
+    else
+    {
+        *file = "(builtin)";
+        *line = -1;
+    }
+}
+
+/* Print a single line of error backtrace for the given frame */
+static void backtrace_line( FRAME *frame )
+{
+    char* file;
+    int line;
+
+    frame_info( frame, &file, &line );
+    if ( line < 0 )
+        printf( "(builtin): in %s\n", frame->rulename );
+    else
+        printf( "%s:%d: in %s\n", file, line, frame->rulename );
+}
+
+/*  Print the entire backtrace from the given frame to the Jambase
+ *  which invoked it.
+ */
+static void backtrace( FRAME *frame )
+{
+    while ( frame = frame->prev )
+    {
+        backtrace_line( frame );
+    }
+}
+
+/*  A Jam version of the backtrace function, taking no arguments and
+ *  returning a list of quadruples: FILENAME LINE MODULE. RULENAME
+ *  describing each frame. Note that the module-name is always
+ *  followed by a period.
+ */
+static LIST *builtin_backtrace( PARSE *parse, FRAME *frame )
+{
+    LIST* result = L0;
+    while ( frame = frame->prev )
+    {
+        char* file;
+        int line;
+        char buf[32];
+        frame_info( frame, &file, &line );
+        sprintf( buf, "%d", line );
+        result = list_new( result, newstr( file ) );
+        result = list_new( result, newstr( buf ) );
+        result = list_new( result, newstr( frame->module->name ) );
+        result = list_new( result, newstr( frame->rulename ) );
+    }
+    return result;
+}
+
+/*
+ * builtin_caller_module() - CALLER_MODULE ( levels ? )
+ *
+ * If levels is not supplied, returns the name of the module of the rule which
+ * called the one calling this one. If levels is supplied, it is interpreted as
+ * an integer specifying a number of additional levels of call stack to traverse
+ * in order to locate the module in question. If no such module exists,
+ * returns the empty list. Also returns the empty list when the module in
+ * question is the global module. This rule is needed for implementing module
+ * import behavior.
  */
 static LIST *builtin_caller_module( PARSE *parse, FRAME *frame )
 {
-    char buffer[4096] = "";
-    int len;
-    
+    LIST* levels_arg = lol_get( frame->args, 0 );
+    int levels = levels_arg ? atoi( levels_arg->string ) : 0 ;
+
     int i;
-    for (i = 0; i < 2 && frame->prev; ++i)
+    for (i = 0; i < levels + 2 && frame->prev; ++i)
         frame = frame->prev;
 
     if ( frame->module == root_module() )
@@ -1365,11 +1554,14 @@ static LIST *builtin_caller_module( PARSE *parse, FRAME *frame )
  */
 
 static void
-debug_compile( int which, char *s )
+debug_compile( int which, char *s, FRAME* frame )
 {
-	static int level = 0;
-	static char indent[36] = ">>>>|>>>>|>>>>|>>>>|>>>>|>>>>|>>>>|";
-	
+    static int level = 0;
+    static char indent[36] = ">>>>|>>>>|>>>>|>>>>|>>>>|>>>>|>>>>|";
+
+    char* file;
+    int line;
+    
     if ( which >= 0 )
     {
       int i;
@@ -1380,11 +1572,16 @@ debug_compile( int which, char *s )
         printf( indent );
         i -= 35;
       }
-      printf( "%*.*s ", i, i, indent );
+
+      frame_info( frame, &file, &line );
+      if ( line >= 0 )
+          printf( "%s:%d:%*.*s ", file, line, i, i, indent );
+      else
+          printf( "(builtin)%*.*s ", i, i, indent );
     }
 
-	if( s )
-	    printf( "%s ", s );
+    if( s )
+        printf( "%s ", s );
 
-	level += which;
+    level += which;
 }

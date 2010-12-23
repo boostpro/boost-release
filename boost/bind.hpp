@@ -8,9 +8,8 @@
 //
 //  bind.hpp - binds function objects to arguments
 //
-//  Version 1.02.0001 (2001-10-18)
-//
 //  Copyright (c) 2001 Peter Dimov and Multi Media Ltd.
+//  Copyright (c) 2001 David Abrahams
 //
 //  Permission to copy, use, modify, sell and distribute this software
 //  is granted provided this copyright notice appears in all copies.
@@ -24,11 +23,39 @@
 #include <boost/ref.hpp>
 #include <boost/mem_fn.hpp>
 
+// Borland-specific bug, visit_each() silently fails to produce code
+
+#if defined(__BORLANDC__)
+#  define BOOST_BIND_VISIT_EACH boost::visit_each
+#else
+#  define BOOST_BIND_VISIT_EACH visit_each
+#endif
+
 namespace boost
 {
 
 namespace _bi // implementation details
 {
+
+// result_traits
+
+template<class R, class F> struct result_traits
+{
+    typedef R type;
+};
+
+#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
+
+struct unspecified {};
+
+template<class F> struct result_traits<unspecified, F>
+{
+    typedef typename F::result_type type;
+};
+
+#endif
+
+// bind_t forward declaration for listN
 
 template<class R, class F, class L> class bind_t;
 
@@ -59,6 +86,21 @@ template<class T> class type {};
 
 // listN
 
+#ifdef BOOST_NO_VOID_RETURNS
+
+template <class R> struct evaluator0;
+template <class R> struct evaluator1;
+template <class R> struct evaluator2;
+template <class R> struct evaluator3;
+template <class R> struct evaluator4;
+template <class R> struct evaluator5;
+template <class R> struct evaluator6;
+template <class R> struct evaluator7;
+template <class R> struct evaluator8;
+template <class R> struct evaluator9;
+
+#endif
+
 class list0
 {
 public:
@@ -71,11 +113,11 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
-    template<class R, class F, class A> R operator()(type<R>, F f, A & /* a */) const
+    template<class R, class F, class A> R operator()(type<R>, F f, A &) const
     {
         return f();
     }
@@ -83,6 +125,15 @@ public:
     template<class V> void accept(V &) const
     {
     }
+
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator0<R> type;
+    };
+
+#endif
 
 private:
 
@@ -103,9 +154,9 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
@@ -114,12 +165,25 @@ public:
 
     template<class V> void accept(V & v) const
     {
-        v(a1_);
+        BOOST_BIND_VISIT_EACH(v, a1_, 0);
     }
+
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator1<R> type;
+    };
+
+#else
 
 private:
 
+#endif
+
     A1 a1_;
+
+private:
 
     list1 & operator= (list1 const &);
 };
@@ -139,9 +203,9 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
@@ -150,14 +214,27 @@ public:
 
     template<class V> void accept(V & v) const
     {
-        v(a1_);
-        v(a2_);
+        BOOST_BIND_VISIT_EACH(v, a1_, 0);
+        BOOST_BIND_VISIT_EACH(v, a2_, 0);
     }
+
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator2<R> type;
+    };
+
+#else
 
 private:
 
+#endif
+
     A1 a1_;
     A2 a2_;
+
+private:
 
     list2 & operator= (list2 const &);
 };
@@ -178,9 +255,9 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
@@ -189,16 +266,29 @@ public:
 
     template<class V> void accept(V & v) const
     {
-        v(a1_);
-        v(a2_);
-        v(a3_);
+        BOOST_BIND_VISIT_EACH(v, a1_, 0);
+        BOOST_BIND_VISIT_EACH(v, a2_, 0);
+        BOOST_BIND_VISIT_EACH(v, a3_, 0);
     }
 
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator3<R> type;
+    };
+
+#else
+
 private:
+
+#endif
 
     A1 a1_;
     A2 a2_;
     A3 a3_;
+
+private:
 
     list3 & operator= (list3 const &);
 };
@@ -220,9 +310,9 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
@@ -231,18 +321,31 @@ public:
 
     template<class V> void accept(V & v) const
     {
-        v(a1_);
-        v(a2_);
-        v(a3_);
-        v(a4_);
+        BOOST_BIND_VISIT_EACH(v, a1_, 0);
+        BOOST_BIND_VISIT_EACH(v, a2_, 0);
+        BOOST_BIND_VISIT_EACH(v, a3_, 0);
+        BOOST_BIND_VISIT_EACH(v, a4_, 0);
     }
 
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator4<R> type;
+    };
+
+#else
+
 private:
+
+#endif
 
     A1 a1_;
     A2 a2_;
     A3 a3_;
     A4 a4_;
+
+private:
 
     list4 & operator= (list4 const &);
 };
@@ -265,9 +368,9 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
@@ -276,20 +379,33 @@ public:
 
     template<class V> void accept(V & v) const
     {
-        v(a1_);
-        v(a2_);
-        v(a3_);
-        v(a4_);
-        v(a5_);
+        BOOST_BIND_VISIT_EACH(v, a1_, 0);
+        BOOST_BIND_VISIT_EACH(v, a2_, 0);
+        BOOST_BIND_VISIT_EACH(v, a3_, 0);
+        BOOST_BIND_VISIT_EACH(v, a4_, 0);
+        BOOST_BIND_VISIT_EACH(v, a5_, 0);
     }
 
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator5<R> type;
+    };
+
+#else
+
 private:
+
+#endif
 
     A1 a1_;
     A2 a2_;
     A3 a3_;
     A4 a4_;
     A5 a5_;
+
+private:
 
     list5 & operator= (list5 const &);
 };
@@ -313,9 +429,9 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
@@ -324,15 +440,26 @@ public:
 
     template<class V> void accept(V & v) const
     {
-        v(a1_);
-        v(a2_);
-        v(a3_);
-        v(a4_);
-        v(a5_);
-        v(a6_);
+        BOOST_BIND_VISIT_EACH(v, a1_, 0);
+        BOOST_BIND_VISIT_EACH(v, a2_, 0);
+        BOOST_BIND_VISIT_EACH(v, a3_, 0);
+        BOOST_BIND_VISIT_EACH(v, a4_, 0);
+        BOOST_BIND_VISIT_EACH(v, a5_, 0);
+        BOOST_BIND_VISIT_EACH(v, a6_, 0);
     }
 
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator6<R> type;
+    };
+
+#else
+
 private:
+
+#endif
 
     A1 a1_;
     A2 a2_;
@@ -340,6 +467,8 @@ private:
     A4 a4_;
     A5 a5_;
     A6 a6_;
+
+private:
 
     list6 & operator= (list6 const &);
 };
@@ -364,9 +493,9 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
@@ -375,16 +504,27 @@ public:
 
     template<class V> void accept(V & v) const
     {
-        v(a1_);
-        v(a2_);
-        v(a3_);
-        v(a4_);
-        v(a5_);
-        v(a6_);
-        v(a7_);
+        BOOST_BIND_VISIT_EACH(v, a1_, 0);
+        BOOST_BIND_VISIT_EACH(v, a2_, 0);
+        BOOST_BIND_VISIT_EACH(v, a3_, 0);
+        BOOST_BIND_VISIT_EACH(v, a4_, 0);
+        BOOST_BIND_VISIT_EACH(v, a5_, 0);
+        BOOST_BIND_VISIT_EACH(v, a6_, 0);
+        BOOST_BIND_VISIT_EACH(v, a7_, 0);
     }
 
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator7<R> type;
+    };
+
+#else
+
 private:
+
+#endif
 
     A1 a1_;
     A2 a2_;
@@ -393,6 +533,8 @@ private:
     A5 a5_;
     A6 a6_;
     A7 a7_;
+
+private:
 
     list7 & operator= (list7 const &);
 };
@@ -418,9 +560,9 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
@@ -429,17 +571,28 @@ public:
 
     template<class V> void accept(V & v) const
     {
-        v(a1_);
-        v(a2_);
-        v(a3_);
-        v(a4_);
-        v(a5_);
-        v(a6_);
-        v(a7_);
-        v(a8_);
+        BOOST_BIND_VISIT_EACH(v, a1_, 0);
+        BOOST_BIND_VISIT_EACH(v, a2_, 0);
+        BOOST_BIND_VISIT_EACH(v, a3_, 0);
+        BOOST_BIND_VISIT_EACH(v, a4_, 0);
+        BOOST_BIND_VISIT_EACH(v, a5_, 0);
+        BOOST_BIND_VISIT_EACH(v, a6_, 0);
+        BOOST_BIND_VISIT_EACH(v, a7_, 0);
+        BOOST_BIND_VISIT_EACH(v, a8_, 0);
     }
 
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator8<R> type;
+    };
+
+#else
+
 private:
+
+#endif
 
     A1 a1_;
     A2 a2_;
@@ -449,6 +602,8 @@ private:
     A6 a6_;
     A7 a7_;
     A8 a8_;
+
+private:
 
     list8 & operator= (list8 const &);
 };
@@ -475,9 +630,9 @@ public:
 
     template<class T> T & operator[] (reference_wrapper<T> const & v) const { return v.get(); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> & b) const { return b.eval(*this); }
 
-    template<class R, class F, class L> R operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
+    template<class R, class F, class L> typename result_traits<R, F>::type operator[] (bind_t<R, F, L> const & b) const { return b.eval(*this); }
 
     template<class R, class F, class A> R operator()(type<R>, F f, A & a) const
     {
@@ -486,18 +641,29 @@ public:
 
     template<class V> void accept(V & v) const
     {
-        v(a1_);
-        v(a2_);
-        v(a3_);
-        v(a4_);
-        v(a5_);
-        v(a6_);
-        v(a7_);
-        v(a8_);
-        v(a9_);
+        BOOST_BIND_VISIT_EACH(v, a1_, 0);
+        BOOST_BIND_VISIT_EACH(v, a2_, 0);
+        BOOST_BIND_VISIT_EACH(v, a3_, 0);
+        BOOST_BIND_VISIT_EACH(v, a4_, 0);
+        BOOST_BIND_VISIT_EACH(v, a5_, 0);
+        BOOST_BIND_VISIT_EACH(v, a6_, 0);
+        BOOST_BIND_VISIT_EACH(v, a7_, 0);
+        BOOST_BIND_VISIT_EACH(v, a8_, 0);
+        BOOST_BIND_VISIT_EACH(v, a9_, 0);
     }
 
+#ifdef BOOST_NO_VOID_RETURNS
+
+    template<class R> struct evaluator
+    {
+        typedef evaluator9<R> type;
+    };
+
+#else
+
 private:
+
+#endif
 
     A1 a1_;
     A2 a2_;
@@ -509,192 +675,289 @@ private:
     A8 a8_;
     A9 a9_;
 
+private:
+
     list9 & operator= (list9 const &);
 };
 
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
+#ifdef BOOST_NO_VOID_RETURNS
 
-// unspecified
-
-struct unspecified {};
-
-template<class R, class F> struct result_traits
+template <class R> struct evaluator0
 {
-    typedef R type;
+    template<class L, class F, class A>
+    static R eval(L const&, F f, A &)
+    {
+        return f();
+    }
 };
 
-template<class F> struct result_traits<unspecified, F>
+template <> struct evaluator0<void>
 {
-    typedef typename F::result_type type;
+    template<class L, class F, class A>
+    static void eval(L const&, F f, A &)
+    {
+        f();
+    }
+};
+
+template <class R> struct evaluator1
+{
+    template<class L, class F, class A>
+    static R eval(L const& l, F f, A & a)
+    {
+        return f(a[l.a1_]);
+    }
+};
+
+template <> struct evaluator1<void>
+{
+    template<class L, class F, class A>
+    static void eval(L const& l, F f, A & a)
+    {
+        f(a[l.a1_]);
+    }
+};
+
+template <class R> struct evaluator2
+{
+    template<class L, class F, class A>
+    static R eval(L const& l, F f, A & a)
+    {
+        return f(a[l.a1_], a[l.a2_]);
+    }
+};
+
+template <> struct evaluator2<void>
+{
+    template<class L, class F, class A>
+    static void eval(L const& l, F f, A & a)
+    {
+        f(a[l.a1_], a[l.a2_]);
+    }
+};
+
+template <class R> struct evaluator3
+{
+    template<class L, class F, class A>
+    static R eval(L const& l, F f, A & a)
+    {
+        return f(a[l.a1_], a[l.a2_], a[l.a3_]);
+    }
+};
+
+template <> struct evaluator3<void>
+{
+    template<class L, class F, class A>
+    static void eval(L const& l, F f, A & a)
+    {
+        f(a[l.a1_], a[l.a2_], a[l.a3_]);
+    }
+};
+
+template <class R> struct evaluator4
+{
+    template<class L, class F, class A>
+    static R eval(L const& l, F f, A & a)
+    {
+        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_]);
+    }
+};
+
+template <> struct evaluator4<void>
+{
+    template<class L, class F, class A>
+    static void eval(L const& l, F f, A & a)
+    {
+        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_]);
+    }
+};
+
+template <class R> struct evaluator5
+{
+    template<class L, class F, class A>
+    static R eval(L const& l, F f, A & a)
+    {
+        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_]);
+    }
+};
+
+template <> struct evaluator5<void>
+{
+    template<class L, class F, class A>
+    static void eval(L const& l, F f, A & a)
+    {
+        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_]);
+    }
+};
+
+template <class R> struct evaluator6
+{
+    template<class L, class F, class A>
+    static R eval(L const& l, F f, A & a)
+    {
+        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_]);
+    }
+};
+
+template <> struct evaluator6<void>
+{
+    template<class L, class F, class A>
+    static void eval(L const& l, F f, A & a)
+    {
+        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_]);
+    }
+};
+
+template <class R> struct evaluator7
+{
+    template<class L, class F, class A>
+    static R eval(L const& l, F f, A & a)
+    {
+        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_]);
+    }
+};
+
+template <> struct evaluator7<void>
+{
+    template<class L, class F, class A>
+    static void eval(L const& l, F f, A & a)
+    {
+        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_]);
+    }
+};
+
+template <class R> struct evaluator8
+{
+    template<class L, class F, class A>
+    static R eval(L const& l, F f, A & a)
+    {
+        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_]);
+    }
+};
+
+template <> struct evaluator8<void>
+{
+    template<class L, class F, class A>
+    static void eval(L const& l, F f, A & a)
+    {
+        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_]);
+    }
+};
+
+template <class R> struct evaluator9
+{
+    template<class L, class F, class A>
+    static R eval(L const& l, F f, A & a)
+    {
+        return f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_], a[l.a9_]);
+    }
+};
+
+template <> struct evaluator9<void>
+{
+    template<class L, class F, class A>
+    static void eval(L const& l, F f, A & a)
+    {
+        f(a[l.a1_], a[l.a2_], a[l.a3_], a[l.a4_], a[l.a5_], a[l.a6_], a[l.a7_], a[l.a8_], a[l.a9_]);
+    }
 };
 
 #endif
 
 // bind_t
 
+#ifndef BOOST_NO_VOID_RETURNS
+
 template<class R, class F, class L> class bind_t
 {
 public:
 
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
-
-    typedef typename result_traits<R, F>::type result_type;
-
-#else
-
-    typedef R result_type;
-
-#endif
-
     bind_t(F f, L const & l): f_(f), l_(l) {}
 
-    result_type operator()()
-    {
-        list0 a;
-        return l_(type<result_type>(), f_, a);
-    }
-
-    result_type operator()() const
-    {
-        list0 a;
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1> result_type operator()(A1 & a1)
-    {
-        list1<A1 &> a(a1);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1> result_type operator()(A1 & a1) const
-    {
-        list1<A1 &> a(a1);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2> result_type operator()(A1 & a1, A2 & a2)
-    {
-        list2<A1 &, A2 &> a(a1, a2);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2> result_type operator()(A1 & a1, A2 & a2) const
-    {
-        list2<A1 &, A2 &> a(a1, a2);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3> result_type operator()(A1 & a1, A2 & a2, A3 & a3)
-    {
-        list3<A1 &, A2 &, A3 &> a(a1, a2, a3);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3> result_type operator()(A1 & a1, A2 & a2, A3 & a3) const
-    {
-        list3<A1 &, A2 &, A3 &> a(a1, a2, a3);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4)
-    {
-        list4<A1 &, A2 &, A3 &, A4 &> a(a1, a2, a3, a4);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4) const
-    {
-        list4<A1 &, A2 &, A3 &, A4 &> a(a1, a2, a3, a4);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5)
-    {
-        list5<A1 &, A2 &, A3 &, A4 &, A5 &> a(a1, a2, a3, a4, a5);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5) const
-    {
-        list5<A1 &, A2 &, A3 &, A4 &, A5 &> a(a1, a2, a3, a4, a5);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5, class A6> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5, A6 & a6)
-    {
-        list6<A1 &, A2 &, A3 &, A4 &, A5 &, A6 &> a(a1, a2, a3, a4, a5, a6);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5, class A6> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5, A6 & a6) const
-    {
-        list6<A1 &, A2 &, A3 &, A4 &, A5 &, A6 &> a(a1, a2, a3, a4, a5, a6);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5, class A6, class A7> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5, A6 & a6, A7 & a7)
-    {
-        list7<A1 &, A2 &, A3 &, A4 &, A5 &, A6 &, A7 &> a(a1, a2, a3, a4, a5, a6, a7);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5, class A6, class A7> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5, A6 & a6, A7 & a7) const
-    {
-        list7<A1 &, A2 &, A3 &, A4 &, A5 &, A6 &, A7 &> a(a1, a2, a3, a4, a5, a6, a7);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5, A6 & a6, A7 & a7, A8 & a8)
-    {
-        list8<A1 &, A2 &, A3 &, A4 &, A5 &, A6 &, A7 &, A8 &> a(a1, a2, a3, a4, a5, a6, a7, a8);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5, A6 & a6, A7 & a7, A8 & a8) const
-    {
-        list8<A1 &, A2 &, A3 &, A4 &, A5 &, A6 &, A7 &, A8 &> a(a1, a2, a3, a4, a5, a6, a7, a8);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5, A6 & a6, A7 & a7, A8 & a8, A9 & a9)
-    {
-        list9<A1 &, A2 &, A3 &, A4 &, A5 &, A6 &, A7 &, A8 &, A9 &> a(a1, a2, a3, a4, a5, a6, a7, a8, a9);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4, A5 & a5, A6 & a6, A7 & a7, A8 & a8, A9 & a9) const
-    {
-        list9<A1 &, A2 &, A3 &, A4 &, A5 &, A6 &, A7 &, A8 &, A9 &> a(a1, a2, a3, a4, a5, a6, a7, a8, a9);
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A> result_type eval(A & a)
-    {
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class A> result_type eval(A & a) const
-    {
-        return l_(type<result_type>(), f_, a);
-    }
-
-    template<class V> void accept(V & v) const
-    {
-        v(f_);
-        l_.accept(v);
-    }
+#define BOOST_BIND_EVALUATE return l_(type<result_type>(), f_, a)
+#include <boost/bind/bind_template.hpp>
+#undef BOOST_BIND_EVALUATE
 
 private:
-
-    F f_;
-    L l_;
 
     bind_t & operator= (bind_t const &);
 };
 
+#else
+
+template <class R> struct bind_t_generator
+{
+
+template<class F, class L> class implementation
+{
+public:
+
+    implementation(F f, L const & l): f_(f), l_(l) {}
+
+#define BOOST_BIND_EVALUATE return L::BOOST_NESTED_TEMPLATE evaluator<result_type>::type::eval(l_, f_, a);
+#include <boost/bind/bind_template.hpp>
+#undef BOOST_BIND_EVALUATE
+
+private:
+
+    implementation & operator= (implementation const &);
+};
+
+};
+
+template<> struct bind_t_generator<void>
+{
+
+template<class F, class L> class implementation
+{
+private:
+
+    typedef void R;
+
+public:
+
+    implementation(F f, L const & l): f_(f), l_(l) {}
+
+#define BOOST_BIND_EVALUATE L::BOOST_NESTED_TEMPLATE evaluator<result_type>::type::eval(l_, f_, a);
+#include <boost/bind/bind_template.hpp>
+#undef BOOST_BIND_EVALUATE
+
+private:
+
+    implementation & operator= (implementation const &);
+};
+
+};
+
+#if defined(BOOST_MSVC) && (BOOST_MSVC < 1300)
+#pragma warning(push)
+#pragma warning(disable: 4097) // typedef name 'base' used as a synonym for class
+#endif
+
+template<class R, class F, class L> class bind_t: public bind_t_generator<R>::BOOST_NESTED_TEMPLATE implementation<F, L>
+{
+private:
+
+    typedef typename bind_t_generator<R>::template implementation<F, L> base;
+
+public:
+
+    bind_t(F f, L const & l): base(f, l) {}
+
+private:
+
+    bind_t & operator= (bind_t const &);
+};
+
+#if defined(BOOST_MSVC) && (BOOST_MSVC < 1300)
+#pragma warning(pop)
+#endif
+
+#endif
+
 // add_value
 
-#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) || (__SUNPRO_CC >= 0x530)
 
 template<class T> struct add_value
 {
@@ -852,6 +1115,18 @@ template<class A1, class A2, class A3, class A4, class A5, class A6, class A7, c
 };
 
 } // namespace _bi
+
+// visit_each
+
+template<class V, class T> void visit_each(V & v, _bi::value<T> const & t, int)
+{
+    BOOST_BIND_VISIT_EACH(v, t.get(), 0);
+}
+
+template<class V, class R, class F, class L> void visit_each(V & v, _bi::bind_t<R, F, L> const & t, int)
+{
+    t.accept(v);
+}
 
 // bind
 
@@ -1025,329 +1300,63 @@ template<class F, class A1, class A2, class A3, class A4, class A5, class A6, cl
     return _bi::bind_t<_bi::unspecified, F, list_type>(f, list_type(a1, a2, a3, a4, a5, a6, a7, a8, a9));
 }
 
-#endif
+#endif // !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
 
 // function pointers
 
-template<class R>
-    _bi::bind_t<R, R (*) (), _bi::list0>
-    BOOST_BIND(R (*f) ())
-{
-    typedef R (*F) ();
-    typedef _bi::list0 list_type;
-    return _bi::bind_t<R, F, list_type> (f, list_type());
-}
+#define BOOST_BIND_CC
+#define BOOST_BIND_ST
 
-template<class R, class B1, class A1>
-    _bi::bind_t<R, R (*) (B1), typename _bi::list_av_1<A1>::type>
-    BOOST_BIND(R (*f) (B1), A1 a1)
-{
-    typedef R (*F) (B1);
-    typedef typename _bi::list_av_1<A1>::type list_type;
-    return _bi::bind_t<R, F, list_type> (f, list_type(a1));
-}
+#include <boost/bind/bind_cc.hpp>
 
-template<class R, class B1, class B2, class A1, class A2>
-    _bi::bind_t<R, R (*) (B1, B2), typename _bi::list_av_2<A1, A2>::type>
-    BOOST_BIND(R (*f) (B1, B2), A1 a1, A2 a2)
-{
-    typedef R (*F) (B1, B2);
-    typedef typename _bi::list_av_2<A1, A2>::type list_type;
-    return _bi::bind_t<R, F, list_type> (f, list_type(a1, a2));
-}
+#undef BOOST_BIND_CC
+#undef BOOST_BIND_ST
 
-template<class R,
-    class B1, class B2, class B3,
-    class A1, class A2, class A3>
-    _bi::bind_t<R, R (*) (B1, B2, B3), typename _bi::list_av_3<A1, A2, A3>::type>
-    BOOST_BIND(R (*f) (B1, B2, B3), A1 a1, A2 a2, A3 a3)
-{
-    typedef R (*F) (B1, B2, B3);
-    typedef typename _bi::list_av_3<A1, A2, A3>::type list_type;
-    return _bi::bind_t<R, F, list_type>(f, list_type(a1, a2, a3));
-}
+#ifdef BOOST_BIND_ENABLE_STDCALL
 
-template<class R,
-    class B1, class B2, class B3, class B4,
-    class A1, class A2, class A3, class A4>
-    _bi::bind_t<R, R (*) (B1, B2, B3, B4), typename _bi::list_av_4<A1, A2, A3, A4>::type>
-    BOOST_BIND(R (*f) (B1, B2, B3, B4), A1 a1, A2 a2, A3 a3, A4 a4)
-{
-    typedef R (*F) (B1, B2, B3, B4);
-    typedef typename _bi::list_av_4<A1, A2, A3, A4>::type list_type;
-    return _bi::bind_t<R, F, list_type>(f, list_type(a1, a2, a3, a4));
-}
+#define BOOST_BIND_CC __stdcall
+#define BOOST_BIND_ST
 
-template<class R,
-    class B1, class B2, class B3, class B4, class B5,
-    class A1, class A2, class A3, class A4, class A5>
-    _bi::bind_t<R, R (*) (B1, B2, B3, B4, B5), typename _bi::list_av_5<A1, A2, A3, A4, A5>::type>
-    BOOST_BIND(R (*f) (B1, B2, B3, B4, B5), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
-{
-    typedef R (*F) (B1, B2, B3, B4, B5);
-    typedef typename _bi::list_av_5<A1, A2, A3, A4, A5>::type list_type;
-    return _bi::bind_t<R, F, list_type>(f, list_type(a1, a2, a3, a4, a5));
-}
+#include <boost/bind/bind_cc.hpp>
 
-template<class R,
-    class B1, class B2, class B3, class B4, class B5, class B6,
-    class A1, class A2, class A3, class A4, class A5, class A6>
-    _bi::bind_t<R, R (*) (B1, B2, B3, B4, B5, B6), typename _bi::list_av_6<A1, A2, A3, A4, A5, A6>::type>
-    BOOST_BIND(R (*f) (B1, B2, B3, B4, B5, B6), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
-{
-    typedef R (*F) (B1, B2, B3, B4, B5, B6);
-    typedef typename _bi::list_av_6<A1, A2, A3, A4, A5, A6>::type list_type;
-    return _bi::bind_t<R, F, list_type>(f, list_type(a1, a2, a3, a4, a5, a6));
-}
+#undef BOOST_BIND_CC
+#undef BOOST_BIND_ST
 
-template<class R,
-    class B1, class B2, class B3, class B4, class B5, class B6, class B7,
-    class A1, class A2, class A3, class A4, class A5, class A6, class A7>
-    _bi::bind_t<R, R (*) (B1, B2, B3, B4, B5, B6, B7), typename _bi::list_av_7<A1, A2, A3, A4, A5, A6, A7>::type>
-    BOOST_BIND(R (*f) (B1, B2, B3, B4, B5, B6, B7), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7)
-{
-    typedef R (*F) (B1, B2, B3, B4, B5, B6, B7);
-    typedef typename _bi::list_av_7<A1, A2, A3, A4, A5, A6, A7>::type list_type;
-    return _bi::bind_t<R, F, list_type>(f, list_type(a1, a2, a3, a4, a5, a6, a7));
-}
+#endif
 
-template<class R,
-    class B1, class B2, class B3, class B4, class B5, class B6, class B7, class B8,
-    class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
-    _bi::bind_t<R, R (*) (B1, B2, B3, B4, B5, B6, B7, B8), typename _bi::list_av_8<A1, A2, A3, A4, A5, A6, A7, A8>::type>
-    BOOST_BIND(R (*f) (B1, B2, B3, B4, B5, B6, B7, B8), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8)
-{
-    typedef R (*F) (B1, B2, B3, B4, B5, B6, B7, B8);
-    typedef typename _bi::list_av_8<A1, A2, A3, A4, A5, A6, A7, A8>::type list_type;
-    return _bi::bind_t<R, F, list_type>(f, list_type(a1, a2, a3, a4, a5, a6, a7, a8));
-}
+#ifdef BOOST_BIND_ENABLE_PASCAL
 
-template<class R,
-    class B1, class B2, class B3, class B4, class B5, class B6, class B7, class B8, class B9,
-    class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
-    _bi::bind_t<R, R (*) (B1, B2, B3, B4, B5, B6, B7, B8, B9), typename _bi::list_av_9<A1, A2, A3, A4, A5, A6, A7, A8, A9>::type>
-    BOOST_BIND(R (*f) (B1, B2, B3, B4, B5, B6, B7, B8, B9), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
-{
-    typedef R (*F) (B1, B2, B3, B4, B5, B6, B7, B8, B9);
-    typedef typename _bi::list_av_9<A1, A2, A3, A4, A5, A6, A7, A8, A9>::type list_type;
-    return _bi::bind_t<R, F, list_type>(f, list_type(a1, a2, a3, a4, a5, a6, a7, a8, a9));
-}
+#define BOOST_BIND_ST pascal
+#define BOOST_BIND_CC
+
+#include <boost/bind/bind_cc.hpp>
+
+#undef BOOST_BIND_ST
+#undef BOOST_BIND_CC
+
+#endif
 
 // member function pointers
 
-// 0
+#define BOOST_BIND_MF_NAME(X) X
+#define BOOST_BIND_MF_CC
 
-template<class R, class T,
-    class A1>
-    _bi::bind_t<R, _mfi::mf0<R, T>, typename _bi::list_av_1<A1>::type>
-    BOOST_BIND(R (T::*f) (), A1 a1)
-{
-    typedef _mfi::mf0<R, T> F;
-    typedef typename _bi::list_av_1<A1>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1));
-}
+#include <boost/bind/bind_mf_cc.hpp>
 
-template<class R, class T,
-    class A1>
-    _bi::bind_t<R, _mfi::cmf0<R, T>, typename _bi::list_av_1<A1>::type>
-    BOOST_BIND(R (T::*f) () const, A1 a1)
-{
-    typedef _mfi::cmf0<R, T> F;
-    typedef typename _bi::list_av_1<A1>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1));
-}
+#undef BOOST_BIND_MF_NAME
+#undef BOOST_BIND_MF_CC
 
-// 1
+#ifdef BOOST_MEM_FN_ENABLE_STDCALL
 
-template<class R, class T,
-    class B1,
-    class A1, class A2>
-    _bi::bind_t<R, _mfi::mf1<R, T, B1>, typename _bi::list_av_2<A1, A2>::type>
-    BOOST_BIND(R (T::*f) (B1), A1 a1, A2 a2)
-{
-    typedef _mfi::mf1<R, T, B1> F;
-    typedef typename _bi::list_av_2<A1, A2>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2));
-}
+#define BOOST_BIND_MF_NAME(X) X##_stdcall
+#define BOOST_BIND_MF_CC __stdcall
 
-template<class R, class T,
-    class B1,
-    class A1, class A2>
-    _bi::bind_t<R, _mfi::cmf1<R, T, B1>, typename _bi::list_av_2<A1, A2>::type>
-    BOOST_BIND(R (T::*f) (B1) const, A1 a1, A2 a2)
-{
-    typedef _mfi::cmf1<R, T, B1> F;
-    typedef typename _bi::list_av_2<A1, A2>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2));
-}
+#include <boost/bind/bind_mf_cc.hpp>
 
-// 2
+#undef BOOST_BIND_MF_NAME
+#undef BOOST_BIND_MF_CC
 
-template<class R, class T,
-    class B1, class B2,
-    class A1, class A2, class A3>
-    _bi::bind_t<R, _mfi::mf2<R, T, B1, B2>, typename _bi::list_av_3<A1, A2, A3>::type>
-    BOOST_BIND(R (T::*f) (B1, B2), A1 a1, A2 a2, A3 a3)
-{
-    typedef _mfi::mf2<R, T, B1, B2> F;
-    typedef typename _bi::list_av_3<A1, A2, A3>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3));
-}
-
-template<class R, class T,
-    class B1, class B2,
-    class A1, class A2, class A3>
-    _bi::bind_t<R, _mfi::cmf2<R, T, B1, B2>, typename _bi::list_av_3<A1, A2, A3>::type>
-    BOOST_BIND(R (T::*f) (B1, B2) const, A1 a1, A2 a2, A3 a3)
-{
-    typedef _mfi::cmf2<R, T, B1, B2> F;
-    typedef typename _bi::list_av_3<A1, A2, A3>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3));
-}
-
-// 3
-
-template<class R, class T,
-    class B1, class B2, class B3,
-    class A1, class A2, class A3, class A4>
-    _bi::bind_t<R, _mfi::mf3<R, T, B1, B2, B3>, typename _bi::list_av_4<A1, A2, A3, A4>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3), A1 a1, A2 a2, A3 a3, A4 a4)
-{
-    typedef _mfi::mf3<R, T, B1, B2, B3> F;
-    typedef typename _bi::list_av_4<A1, A2, A3, A4>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4));
-}
-
-template<class R, class T,
-    class B1, class B2, class B3,
-    class A1, class A2, class A3, class A4>
-    _bi::bind_t<R, _mfi::cmf3<R, T, B1, B2, B3>, typename _bi::list_av_4<A1, A2, A3, A4>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3) const, A1 a1, A2 a2, A3 a3, A4 a4)
-{
-    typedef _mfi::cmf3<R, T, B1, B2, B3> F;
-    typedef typename _bi::list_av_4<A1, A2, A3, A4>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4));
-}
-
-// 4
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4,
-    class A1, class A2, class A3, class A4, class A5>
-    _bi::bind_t<R, _mfi::mf4<R, T, B1, B2, B3, B4>, typename _bi::list_av_5<A1, A2, A3, A4, A5>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
-{
-    typedef _mfi::mf4<R, T, B1, B2, B3, B4> F;
-    typedef typename _bi::list_av_5<A1, A2, A3, A4, A5>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5));
-}
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4,
-    class A1, class A2, class A3, class A4, class A5>
-    _bi::bind_t<R, _mfi::cmf4<R, T, B1, B2, B3, B4>, typename _bi::list_av_5<A1, A2, A3, A4, A5>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4) const, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
-{
-    typedef _mfi::cmf4<R, T, B1, B2, B3, B4> F;
-    typedef typename _bi::list_av_5<A1, A2, A3, A4, A5>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5));
-}
-
-// 5
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4, class B5,
-    class A1, class A2, class A3, class A4, class A5, class A6>
-    _bi::bind_t<R, _mfi::mf5<R, T, B1, B2, B3, B4, B5>, typename _bi::list_av_6<A1, A2, A3, A4, A5, A6>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4, B5), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
-{
-    typedef _mfi::mf5<R, T, B1, B2, B3, B4, B5> F;
-    typedef typename _bi::list_av_6<A1, A2, A3, A4, A5, A6>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5, a6));
-}
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4, class B5,
-    class A1, class A2, class A3, class A4, class A5, class A6>
-    _bi::bind_t<R, _mfi::cmf5<R, T, B1, B2, B3, B4, B5>, typename _bi::list_av_6<A1, A2, A3, A4, A5, A6>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4, B5) const, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
-{
-    typedef _mfi::cmf5<R, T, B1, B2, B3, B4, B5> F;
-    typedef typename _bi::list_av_6<A1, A2, A3, A4, A5, A6>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5, a6));
-}
-
-// 6
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4, class B5, class B6,
-    class A1, class A2, class A3, class A4, class A5, class A6, class A7>
-    _bi::bind_t<R, _mfi::mf6<R, T, B1, B2, B3, B4, B5, B6>, typename _bi::list_av_7<A1, A2, A3, A4, A5, A6, A7>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4, B5, B6), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7)
-{
-    typedef _mfi::mf6<R, T, B1, B2, B3, B4, B5, B6> F;
-    typedef typename _bi::list_av_7<A1, A2, A3, A4, A5, A6, A7>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5, a6, a7));
-}
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4, class B5, class B6,
-    class A1, class A2, class A3, class A4, class A5, class A6, class A7>
-    _bi::bind_t<R, _mfi::cmf6<R, T, B1, B2, B3, B4, B5, B6>, typename _bi::list_av_7<A1, A2, A3, A4, A5, A6, A7>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4, B5, B6) const, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7)
-{
-    typedef _mfi::cmf6<R, T, B1, B2, B3, B4, B5, B6> F;
-    typedef typename _bi::list_av_7<A1, A2, A3, A4, A5, A6, A7>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5, a6, a7));
-}
-
-// 7
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4, class B5, class B6, class B7,
-    class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
-    _bi::bind_t<R, _mfi::mf7<R, T, B1, B2, B3, B4, B5, B6, B7>, typename _bi::list_av_8<A1, A2, A3, A4, A5, A6, A7, A8>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4, B5, B6, B7), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8)
-{
-    typedef _mfi::mf7<R, T, B1, B2, B3, B4, B5, B6, B7> F;
-    typedef typename _bi::list_av_8<A1, A2, A3, A4, A5, A6, A7, A8>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5, a6, a7, a8));
-}
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4, class B5, class B6, class B7,
-    class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
-    _bi::bind_t<R, _mfi::cmf7<R, T, B1, B2, B3, B4, B5, B6, B7>, typename _bi::list_av_8<A1, A2, A3, A4, A5, A6, A7, A8>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4, B5, B6, B7) const, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8)
-{
-    typedef _mfi::cmf7<R, T, B1, B2, B3, B4, B5, B6, B7> F;
-    typedef typename _bi::list_av_8<A1, A2, A3, A4, A5, A6, A7, A8>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5, a6, a7, a8));
-}
-
-// 8
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4, class B5, class B6, class B7, class B8,
-    class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
-    _bi::bind_t<R, _mfi::mf8<R, T, B1, B2, B3, B4, B5, B6, B7, B8>, typename _bi::list_av_9<A1, A2, A3, A4, A5, A6, A7, A8, A9>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4, B5, B6, B7, B8), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
-{
-    typedef _mfi::mf8<R, T, B1, B2, B3, B4, B5, B6, B7, B8> F;
-    typedef typename _bi::list_av_9<A1, A2, A3, A4, A5, A6, A7, A8, A9>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5, a6, a7, a8, a9));
-}
-
-template<class R, class T,
-    class B1, class B2, class B3, class B4, class B5, class B6, class B7, class B8,
-    class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
-    _bi::bind_t<R, _mfi::cmf8<R, T, B1, B2, B3, B4, B5, B6, B7, B8>, typename _bi::list_av_9<A1, A2, A3, A4, A5, A6, A7, A8, A9>::type>
-    BOOST_BIND(R (T::*f) (B1, B2, B3, B4, B5, B6, B7, B8) const, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
-{
-    typedef _mfi::cmf8<R, T, B1, B2, B3, B4, B5, B6, B7, B8> F;
-    typedef typename _bi::list_av_9<A1, A2, A3, A4, A5, A6, A7, A8, A9>::type list_type;
-    return _bi::bind_t<R, F, list_type>(F(f), list_type(a1, a2, a3, a4, a5, a6, a7, a8, a9));
-}
+#endif
 
 } // namespace boost
 

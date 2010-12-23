@@ -23,7 +23,6 @@
 #include <typeinfo>
 #include <boost/config.hpp>
 #include <boost/type_traits.hpp>
-#include <boost/mem_fn.hpp>
 
 namespace boost {
   namespace detail {
@@ -115,9 +114,8 @@ namespace boost {
 
       // The operation type to perform on the given functor/function pointer
       enum functor_manager_operation_type { 
-        clone_functor, 
-        destroy_functor,
-        retrieve_type_info
+        clone_functor_tag, 
+        destroy_functor_tag
       };
 
       // Tags used to decide between different types of functions
@@ -138,7 +136,6 @@ namespace boost {
 			    ptr_or_obj_tag>::type type;
       };
 
-#ifndef BOOST_FUNCTION_USE_VIRTUAL_FUNCTIONS
       /**
        * The functor_manager class contains a static function "manage" which
        * can clone or destroy the given function/function object pointer. 
@@ -148,25 +145,16 @@ namespace boost {
       {
       private:
         typedef Functor functor_type;
-#  ifndef BOOST_NO_STD_ALLOCATOR
-        typedef typename Allocator::template rebind<functor_type>::other 
-          allocator_type;
-        typedef typename allocator_type::pointer pointer_type;
-#  else
-        typedef functor_type* pointer_type;
-#  endif // BOOST_NO_STD_ALLOCATOR
 
         // For function pointers, the manager is trivial
         static inline any_pointer
         manager(any_pointer function_ptr, functor_manager_operation_type op,
                 function_ptr_tag)
         {
-          if (op == clone_functor)
+          if (op == clone_functor_tag)
             return function_ptr;
-          else if (op == destroy_functor)
-            return any_pointer(static_cast<void (*)()>(0));
           else
-            return any_pointer(&typeid(Functor));
+            return any_pointer(static_cast<void (*)()>(0));
         }
 
         // For function object pointers, we clone the pointer to each 
@@ -176,11 +164,19 @@ namespace boost {
                 functor_manager_operation_type op,
                 function_obj_tag)
         {
+#ifndef BOOST_NO_STD_ALLOCATOR
+        typedef typename Allocator::template rebind<functor_type>::other 
+          allocator_type;
+        typedef typename allocator_type::pointer pointer_type;
+#else
+        typedef functor_type* pointer_type;
+#endif // BOOST_NO_STD_ALLOCATOR
+
 #  ifndef BOOST_NO_STD_ALLOCATOR
           allocator_type allocator;
 #  endif // BOOST_NO_STD_ALLOCATOR
 
-          if (op == clone_functor) {
+          if (op == clone_functor_tag) {
             functor_type* f = 
               static_cast<functor_type*>(function_obj_ptr.obj_ptr);
 
@@ -196,7 +192,7 @@ namespace boost {
 #  endif // BOOST_NO_STD_ALLOCATOR
             return any_pointer(static_cast<void*>(new_f));
           }
-          else if (op == destroy_functor) {
+          else {
             /* Cast from the void pointer to the functor pointer type */
             functor_type* f = 
               reinterpret_cast<functor_type*>(function_obj_ptr.obj_ptr);
@@ -215,9 +211,6 @@ namespace boost {
 
             return any_pointer(static_cast<void*>(0));
           }
-          else {
-            return any_pointer(&typeid(Functor));
-          }
         }
       public:
         /* Dispatch to an appropriate manager based on whether we have a
@@ -225,14 +218,10 @@ namespace boost {
         static any_pointer
         manage(any_pointer functor_ptr, functor_manager_operation_type op)
         {
-          typedef typename IF<(is_pointer<functor_type>::value),
-                              function_ptr_tag,
-                              function_obj_tag>::type tag_type;
-
+          typedef typename get_function_tag<functor_type>::type tag_type;
           return manager(functor_ptr, op, tag_type());
         }
       };
-#endif // BOOST_FUNCTION_USE_VIRTUAL_FUNCTIONS
 
       // value=1 if the given type is not "unusable"
       template<typename T>
@@ -278,16 +267,6 @@ namespace boost {
    */
   class function_base 
   {
-#ifdef BOOST_FUNCTION_USE_VIRTUAL_FUNCTIONS
-  public:
-    function_base() : impl(0) {}
-
-    bool empty() const { return impl == 0; }
-
-    
-  protected:
-    void* impl; // Derived class is responsible for knowing the real type
-#else
   public:
     function_base() : manager(0), functor(static_cast<void*>(0)) {}
     
@@ -299,7 +278,6 @@ namespace boost {
                            detail::function::any_pointer, 
                            detail::function::functor_manager_operation_type);
     detail::function::any_pointer functor;
-#endif // BOOST_FUNCTION_USE_VIRTUAL_FUNCTIONS
 
   private:
     struct dummy {

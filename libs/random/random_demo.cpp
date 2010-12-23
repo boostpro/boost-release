@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_demo.cpp,v 1.5 2001/05/31 17:19:14 jmaurer Exp $
+ * $Id: random_demo.cpp,v 1.10 2001/11/23 20:50:29 jmaurer Exp $
  *
  * A short demo program how to use the random number library.
  */
@@ -23,40 +23,68 @@
 #include <boost/random/uniform_smallint.hpp>
 #include <boost/random/uniform_01.hpp>
 
+// Sun CC doesn't handle boost::iterator_adaptor yet
+#if !defined(__SUNPRO_CC) || (__SUNPRO_CC > 0x530)
+#include <boost/generator_iterator.hpp>
+#endif
+
+#ifdef BOOST_NO_STDC_NAMESPACE
+namespace std {
+  using ::time;
+}
+#endif
+
 // try boost::mt19937 or boost::ecuyer1988 instead of boost::minstd_rand
 typedef boost::minstd_rand base_generator_type;
 
 // This is a reproducible simulation experiment.
 void experiment(base_generator_type & generator)
 {
-  boost::uniform_smallint<base_generator_type> die(generator, 1, 6);
+  typedef boost::uniform_smallint<base_generator_type> generator_type;
+  generator_type die_gen(generator, 1, 6);
 
-  // you can use a STL Iterator interface
+#if !defined(__SUNPRO_CC) || (__SUNPRO_CC > 0x530)
+  // For an STL iterator interface, use iterator_adaptors.hpp
+  boost::generator_iterator_generator<generator_type>::type
+    die = boost::make_generator_iterator(die_gen);
   for(int i = 0; i < 10; i++)
     std::cout << *die++ << " ";
   std::cout << '\n';
+#endif
 }
 
 int main()
 {
   // initialize by reproducible seed
-  base_generator_type generator(42);
+  // Make sure it's unsigned, otherwise the wrong overload may be selected
+  // with mt19937.
+  base_generator_type generator(42u);
 
   std::cout << "10 samples of a uniform distribution in [0..1):\n";
   boost::uniform_01<base_generator_type> uni(generator);
   std::cout.setf(std::ios::fixed);
 
-  // you can also use a STL Generator interface
+  // Random number generators have an STL Generator interface
   for(int i = 0; i < 10; i++)
     std::cout << uni() << '\n';
 
-  // change seed to something else
-  // Note: this is not the preferred way of hacking around missing std::
-  generator.seed(
-#ifndef BOOST_NO_STDC_NAMESPACE
-		 std::
-#endif
-		 time(0));
+  /*
+   * Change seed to something else
+   * Make sure the seed is unsigned, otherwise the wrong overload may be
+   * selected with mt19937.
+   *
+   * Caveat: std::time(0) is not a very good truly-random seed.  When
+   * called in rapid succession, it could return the same values, and
+   * thus the same random number sequences could ensue.  If not the same
+   * values are returned, the values differ only slightly in the
+   * lowest bits.  A linear congruential generator with a small factor
+   * wrapped in a uniform_smallint (see experiment) will produce the same
+   * values for the first few iterations.   This is because uniform_smallint
+   * takes only the highest bits of the generator, and the generator itself
+   * needs a few iterations to spread the initial entropy from the lowest bits
+   * to the whole state.
+   */
+  generator.seed(static_cast<unsigned int>(std::time(0)));
 
   std::cout << "\nexperiment: roll a die 10 times:\n";
   base_generator_type saved_generator = generator;

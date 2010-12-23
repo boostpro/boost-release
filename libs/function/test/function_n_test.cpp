@@ -584,6 +584,7 @@ struct X {
 static void
 test_member_functions()
 {
+
   boost::function1<int, X*> f1(&X::twice);
   
   X one(1);
@@ -603,8 +604,7 @@ test_member_functions()
   BOOST_TEST(f2(five, 4) == 9);
 }
 
-int
-test_main(int, char* [])
+int test_main(int, char* [])
 {
   test_zero_args();
   test_one_arg();

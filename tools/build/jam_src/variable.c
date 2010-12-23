@@ -4,6 +4,14 @@
  * This file is part of Jam - see jam.c for Copyright information.
  */
 
+/*  This file is ALSO:
+ *  (C) Copyright David Abrahams 2001. Permission to copy, use,
+ *  modify, sell and distribute this software is granted provided this
+ *  copyright notice appears in all copies. This software is provided
+ *  "as is" without express or implied warranty, and with no claim as
+ *  to its suitability for any purpose.
+ */
+
 # include "jam.h"
 # include "lists.h"
 # include "parse.h"
@@ -94,28 +102,38 @@ var_defines( char **e )
 # ifdef OS_MAC
 		char split = ',';
 # else
-		char split = ' ';	
+		char split = ' ';
 # endif
-		/* Split *PATH at :'s, not spaces */
-
-		if( val - 4 >= *e )
-		{
-		    if( !strncmp( val - 4, "PATH", 4 ) ||
-		        !strncmp( val - 4, "Path", 4 ) ||
-		        !strncmp( val - 4, "path", 4 ) )
-			    split = SPLITPATH;
-		}
-
-		/* Do the split */
-
-		for( pp = val + 1; p = strchr( pp, split ); pp = p + 1 )
-		{
-                    string_append_range( buf, pp, p );
-		    l = list_new( l, newstr( buf->value ) );
+                size_t len = strlen(val + 1);
+                if ( val[1] == '"' && val[len] == '"')
+                {
+                    string_append_range( buf, val + 2, val + len );
+                    l = list_new( l, newstr( buf->value ) );
                     string_truncate( buf, 0 );
-		}
+                }
+                else
+                {
+                    /* Split *PATH at :'s, not spaces */
 
-		l = list_new( l, newstr( pp ) );
+                    if( val - 4 >= *e )
+                    {
+                        if( !strncmp( val - 4, "PATH", 4 ) ||
+                            !strncmp( val - 4, "Path", 4 ) ||
+                            !strncmp( val - 4, "path", 4 ) )
+			    split = SPLITPATH;
+                    }
+
+                    /* Do the split */
+
+                    for( pp = val + 1; p = strchr( pp, split ); pp = p + 1 )
+                    {
+                        string_append_range( buf, pp, p );
+                        l = list_new( l, newstr( buf->value ) );
+                        string_truncate( buf, 0 );
+                    }
+
+                    l = list_new( l, newstr( pp ) );
+                }
 
 		/* Get name */
                 string_append_range( buf, *e, val );

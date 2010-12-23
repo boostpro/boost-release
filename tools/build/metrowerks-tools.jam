@@ -39,8 +39,10 @@ flags metrowerks CFLAGS <user-interface>console/<runtime-link>dynamic : -prefix 
 
 if $(BOOST_CODEWARRIOR_7)
 {
-  flags metrowerks STDLIBS <runtime-link>static : MSL_C_x86.lib;MSL_Runtime_x86.lib;msl_c++_x86.lib;gdi32.lib;user32.lib;kernel32.lib ;
-  flags metrowerks STDLIBS <runtime-link>dynamic : MSL_All-DLL_x86.lib;gdi32.lib;user32.lib;kernel32.lib ;
+  flags metrowerks STDLIBS <runtime-link>static/<runtime-build>release : MSL_C_x86.lib;MSL_Runtime_x86.lib;msl_c++_x86.lib;gdi32.lib;user32.lib;kernel32.lib ;
+  flags metrowerks STDLIBS <runtime-link>dynamic/<runtime-build>release : MSL_All-DLL_x86.lib;gdi32.lib;user32.lib;kernel32.lib ;
+  flags metrowerks STDLIBS <runtime-link>static/<runtime-build>debug : MSL_C_x86_D.lib;MSL_Runtime_x86_D.lib;msl_c++_x86_D.lib;gdi32.lib;user32.lib;kernel32.lib ;
+  flags metrowerks STDLIBS <runtime-link>dynamic/<runtime-build>debug : MSL_All-DLL_x86_D.lib;gdi32.lib;user32.lib;kernel32.lib ;
 }
 else
 {
@@ -70,19 +72,20 @@ flags metrowerks STDHDRS : $(METROWERKS_INCLUDE_ROOT)$(SLASH)$(gMETROWERKS_STD_I
 
 rule Link-action
 {
-    metrowerks-Link-action $(<) : $(>) ;
-    IMPLIB_COMMAND on $(<) = "-implib " ; # will be "multiplied away" if not needed.
+    IMPLIB_COMMAND on $(<) = "-implib " ; # will be "multiplied away" if not
+                                        # needed.
+    with-command-file metrowerks-Link-action $(<) : $(>) $(NEEDLIBS) ;
 }
 
 # Here we set the environment variable MWWinx86LibraryFiles (customize for other
 # platforms) because the alternatives for getting the right libraries on the
 # command-line would produce enormous paths in the command-line, obscuring what
 # really happens.
-actions metrowerks-Link-action bind NEEDLIBS
+actions metrowerks-Link-action
 {
     $(METROWERKS_SETUP)
     $(METROWERKS_LINK_SETUP)$(STDLIBS)
-    mwld -export dllexport -nowraplines $(LINKFLAGS) -L$(LIBPATH) -L$(STDLIBPATH) $(IMPLIB_COMMAND)"$(<[2])" -o "$(<[1])" "$(NEEDLIBS)" "$(>)" -l$(FINDLIBS)
+    mwld  -maxerrors 20 -maxwarnings 20 -export dllexport -nowraplines $(LINKFLAGS) -L$(LIBPATH) -L$(STDLIBPATH) $(IMPLIB_COMMAND)"$(<[2])" -o "$(<[1])" @"$(>)" -l$(FINDLIBS)
 }
 
 #### Cc #####
@@ -95,7 +98,7 @@ rule Cc-action
 actions metrowerks-Cc-action
 {
     $(METROWERKS_SETUP)
-    mwcc -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -nowraplines $(CFLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    mwcc -maxerrors 20 -maxwarnings 20 -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -nowraplines $(CFLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -107,7 +110,7 @@ rule C++-action
 actions metrowerks-C++-action
 {
     $(METROWERKS_SETUP)
-    mwcc -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -DNOMINMAX -nowraplines -lang c++ $(CFLAGS) $(C++FLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    mwcc  -maxerrors 20 -maxwarnings 20 -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -DNOMINMAX -nowraplines -lang c++ $(CFLAGS) $(C++FLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### Archive ####
@@ -116,7 +119,7 @@ rule Archive-action
     metrowerks-Archive-action $(<) : $(>) ;
 }
 
-actions updated together metrowerks-Archive-action
+    actions together metrowerks-Archive-action
 {
     $(METROWERKS_SETUP)
     mwld -library -o "$(<)" "$(>)"

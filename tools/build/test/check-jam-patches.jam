@@ -14,6 +14,36 @@ if $(NT)
     Jam "include test_nt_line_length.jam ;" ;
 }
 
+# a little utility for assertions
+rule identity ( list * )
+{
+    return $(list) ;
+}
+
+#
+# test rule indirection
+#
+rule select ( n list * )
+{
+    return $(list[$(n)]) ;
+}
+
+rule indirect1 ( rule + : args * )
+{
+    return [ $(rule) $(args) ] ;
+}
+
+assert-equal a : indirect1 select 1 : a b c d e ;
+assert-equal b : indirect1 select 2 : a b c d e ;
+
+x = reset ;
+rule reset-x ( new-value )
+{
+    x = $(new-value) ; 
+}
+$(x)-x bar ;                       # invokes reset-x...
+assert-equal bar : identity $(x) ; # which changes x
+
 # Check that unmatched subst returns an empty list
 assert-equal # nothing
     : SUBST "abc" "d+" x ;
@@ -92,12 +122,6 @@ assert-equal x y x-y
     assert-index -3--2 : c d ;
 }
 
-# a little utility for assertions
-rule identity ( list * )
-{
-    return $(list) ;
-}
-
 #
 # test module primitives
 #
@@ -107,12 +131,24 @@ rule identity ( list * )
 
     rule shift1 ( dummy ) { }
 
+    rule my_module.not_really ( ) { return something ; }
+
+    # import the identity rule into my_module as "id"
+    IMPORT  : identity : my_module : id ;
     module my_module
     {
+        # assert-equal operates in its own module, so call id in here and use
+        # identity later.
+        local f = [ id x y z ] ;
+        assert-equal x y z : identity $(f) ;
+        
         module local w y ;
         module local x2 x3 z = 1 2 3 ;
 
-        module local x3 ; # should reset x3
+        module local x3 ; # should not affect x3
+        assert-equal 1 2 3 : identity $(x3) ;
+        
+        module local x3 = ; # should reset x3
         
         rule shift1 ( )
         {
@@ -133,6 +169,29 @@ rule identity ( list * )
         {
             return $($(symbol)) ;
         }
+        local rule not_really ( ) { return nothing ; }
+    }
+    
+    local expected = shift1 shift2 get ;
+    if ! ( $(expected) in [ RULENAMES my_module ] )
+      || ! ( [ RULENAMES my_module ] in $(expected) )
+    {
+        EXIT "[ RULENAMES my_module ] =" [ RULENAMES my_module ] "!=" shift1 shift2 get ;
+    }        
+    
+          
+    # show that not_really was actually a local definition
+    assert-equal something : my_module.not_really ;
+
+    if not_really in [ RULENAMES my_module ]
+    {
+        EXIT unexpectedly found local rule "not_really" in "my_module" ;
+    }
+    EXPORT my_module : not_really ;
+    
+    if ! ( not_really in [ RULENAMES my_module ] )
+    {
+        EXIT unexpectedly failed to find exported rule "not_really" in "my_module" ;
     }
     
     my_module.shift1 ;
@@ -155,7 +214,9 @@ rule identity ( list * )
     shift1 nothing ;
     assert-equal $(x) : identity $(y) ;
 
-    IMPORT : my_module : shift1 shift2 : shifty ;
+    # import my_module.shift1 into the global module as "shifty", and
+    # my_module.shift2 into the global module as "shift2".
+    IMPORT my_module : shift1 shift2 : : shifty shift2 ;
 
     shifty ;
     y = $(y[2-]) ;
@@ -165,8 +226,9 @@ rule identity ( list * )
     y = $(y[2-]) ;
     assert-equal $(x) : identity $(y) ;
 
-
-    IMPORT : my_module ;
+    # import everything from my_module into the global module using
+    # the same names.
+    IMPORT my_module : [ RULENAMES my_module ] : : [ RULENAMES my_module ] ;
 
     shift1 ;
     y = $(y[2-]) ;
@@ -178,9 +240,19 @@ rule identity ( list * )
 }
 
 #
-# test CALLER_MODULE
+# test CALLER_MODULE and backtrace
 #
 {
+    rule backtrace ( )
+    {
+        local bt = [ BACKTRACE ] ;
+        bt = $(bt[5-]) ;
+        while $(bt)
+        {
+            ECHO $(bt[1]):$(bt[2]): "in" $(bt[4]) ;
+            bt = $(bt[5-]) ;
+        }
+    }
     module module1
     {
         rule f ( )
@@ -197,6 +269,7 @@ rule identity ( list * )
         {
             local m = [ CALLER_MODULE ] ;
             assert-equal module1 : identity $(m) ;
+            backtrace ;
         }
     }
     module1.f ;

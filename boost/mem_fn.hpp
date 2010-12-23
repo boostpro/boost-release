@@ -1,16 +1,15 @@
 #ifndef BOOST_MEM_FN_HPP_INCLUDED
 #define BOOST_MEM_FN_HPP_INCLUDED
 
-#if _MSC_VER >= 1020
+#if _MSC_VER+0 >= 1020
 #pragma once
 #endif
 
 //
 //  mem_fn.hpp - a generalization of std::mem_fun[_ref]
 //
-//  Version 1.02.0001 (2001-08-30)
-//
 //  Copyright (c) 2001 Peter Dimov and Multi Media Ltd.
+//  Copyright (c) 2001 David Abrahams
 //
 //  Permission to copy, use, modify, sell and distribute this software
 //  is granted provided this copyright notice appears in all copies.
@@ -19,6 +18,8 @@
 //
 //  See http://www.boost.org/libs/bind/mem_fn.html for documentation.
 //
+
+#include <boost/config.hpp>
 
 namespace boost
 {
@@ -40,664 +41,150 @@ template<class T> T * get_pointer(shared_ptr<T> const & p)
     return p.get();
 }
 
-//
+// Void return workaround temporarily disabled on MSVC 6
+// causes internal compiler errors with debug info enabled
+
+#if defined(BOOST_NO_VOID_RETURNS) && !defined(BOOST_MSVC)
 
 namespace _mfi // mem_fun_impl
 {
 
-// mf0
-
-template<class R, class T> class mf0
+template<class V> struct mf
 {
-public:
 
-    typedef R result_type;
-    typedef T * first_argument_type;
+#define BOOST_MEM_FN_RETURN return
 
-private:
-    
-    typedef R (T::*F) ();
-    F f_;
+#define BOOST_MEM_FN_NAME(X) inner_##X
+#define BOOST_MEM_FN_CC
 
-public:
-    
-    explicit mf0(F f): f_(f) {}
+#include <boost/bind/mem_fn_template.hpp>
 
-    R operator()(T * p) const
-    {
-        return (p->*f_)();
-    }
+#undef BOOST_MEM_FN_CC
+#undef BOOST_MEM_FN_NAME
 
-    template<class U> R operator()(U & u) const
-    {
-        return (get_pointer(u)->*f_)();
-    }
+#ifdef BOOST_MEM_FN_ENABLE_STDCALL
 
-    R operator()(T & t) const
-    {
-        return (t.*f_)();
-    }
-};
+#define BOOST_MEM_FN_NAME(X) inner_##X##_stdcall
+#define BOOST_MEM_FN_CC __stdcall
 
-// cmf0
+#include <boost/bind/mem_fn_template.hpp>
 
-template<class R, class T> class cmf0
+#undef BOOST_MEM_FN_CC
+#undef BOOST_MEM_FN_NAME
+
+#endif
+
+#undef BOOST_MEM_FN_RETURN
+
+}; // struct mf<V>
+
+template<> struct mf<void>
 {
-public:
 
-    typedef R result_type;
-    typedef T const * first_argument_type;
+#define BOOST_MEM_FN_RETURN
 
-private:
-    
-    typedef R (T::*F) () const;
-    F f_;
+#define BOOST_MEM_FN_NAME(X) inner_##X
+#define BOOST_MEM_FN_CC
 
-public:
-    
-    explicit cmf0(F f): f_(f) {}
+#include <boost/bind/mem_fn_template.hpp>
 
-    template<class U> R operator()(U const & u) const
-    {
-        return (get_pointer(u)->*f_)();
-    }
+#undef BOOST_MEM_FN_CC
+#undef BOOST_MEM_FN_NAME
 
-    R operator()(T const & t) const
-    {
-        return (t.*f_)();
-    }
-};
+#ifdef BOOST_MEM_FN_ENABLE_STDCALL
 
-// mf1
+#define BOOST_MEM_FN_NAME(X) inner_##X##_stdcall
+#define BOOST_MEM_FN_CC __stdcall
 
-template<class R, class T, class A1> class mf1
-{
-public:
+#include <boost/bind/mem_fn_template.hpp>
 
-    typedef R result_type;
-    typedef T * first_argument_type;
-    typedef A1 second_argument_type;
+#undef BOOST_MEM_FN_CC
+#undef BOOST_MEM_FN_NAME
 
-private:
-    
-    typedef R (T::*F) (A1);
-    F f_;
+#endif
 
-public:
-    
-    explicit mf1(F f): f_(f) {}
+#undef BOOST_MEM_FN_RETURN
 
-    R operator()(T * p, A1 a1) const
-    {
-        return (p->*f_)(a1);
-    }
+}; // struct mf<void>
 
-    template<class U> R operator()(U & u, A1 a1) const
-    {
-        return (get_pointer(u)->*f_)(a1);
-    }
+#define BOOST_MEM_FN_NAME(X) X
+#define BOOST_MEM_FN_NAME2(X) inner_##X
+#define BOOST_MEM_FN_CC
 
-    R operator()(T & t, A1 a1) const
-    {
-        return (t.*f_)(a1);
-    }
-};
+#include <boost/bind/mem_fn_vw.hpp>
 
-// cmf1
+#undef BOOST_MEM_FN_NAME
+#undef BOOST_MEM_FN_NAME2
+#undef BOOST_MEM_FN_CC
 
-template<class R, class T, class A1> class cmf1
-{
-public:
+#ifdef BOOST_MEM_FN_ENABLE_STDCALL
 
-    typedef R result_type;
-    typedef T const * first_argument_type;
-    typedef A1 second_argument_type;
+#define BOOST_MEM_FN_NAME(X) X##_stdcall
+#define BOOST_MEM_FN_NAME2(X) inner_##X##_stdcall
+#define BOOST_MEM_FN_CC __stdcall
 
-private:
-    
-    typedef R (T::*F) (A1) const;
-    F f_;
+#include <boost/bind/mem_fn_vw.hpp>
 
-public:
-    
-    explicit cmf1(F f): f_(f) {}
+#undef BOOST_MEM_FN_NAME
+#undef BOOST_MEM_FN_NAME2
+#undef BOOST_MEM_FN_CC
 
-    template<class U> R operator()(U const & u, A1 a1) const
-    {
-        return (get_pointer(u)->*f_)(a1);
-    }
-
-    R operator()(T const & t, A1 a1) const
-    {
-        return (t.*f_)(a1);
-    }
-};
-
-// mf2
-
-template<class R, class T, class A1, class A2> class mf2
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2);
-    F f_;
-
-public:
-    
-    explicit mf2(F f): f_(f) {}
-
-    R operator()(T * p, A1 a1, A2 a2) const
-    {
-        return (p->*f_)(a1, a2);
-    }
-
-    template<class U> R operator()(U & u, A1 a1, A2 a2) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2);
-    }
-
-    R operator()(T & t, A1 a1, A2 a2) const
-    {
-        return (t.*f_)(a1, a2);
-    }
-};
-
-// cmf2
-
-template<class R, class T, class A1, class A2> class cmf2
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2) const;
-    F f_;
-
-public:
-    
-    explicit cmf2(F f): f_(f) {}
-
-    template<class U> R operator()(U const & u, A1 a1, A2 a2) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2);
-    }
-
-    R operator()(T const & t, A1 a1, A2 a2) const
-    {
-        return (t.*f_)(a1, a2);
-    }
-};
-
-// mf3
-
-template<class R, class T, class A1, class A2, class A3> class mf3
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3);
-    F f_;
-
-public:
-    
-    explicit mf3(F f): f_(f) {}
-
-    R operator()(T * p, A1 a1, A2 a2, A3 a3) const
-    {
-        return (p->*f_)(a1, a2, a3);
-    }
-
-    template<class U> R operator()(U & u, A1 a1, A2 a2, A3 a3) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3);
-    }
-
-    R operator()(T & t, A1 a1, A2 a2, A3 a3) const
-    {
-        return (t.*f_)(a1, a2, a3);
-    }
-};
-
-// cmf3
-
-template<class R, class T, class A1, class A2, class A3> class cmf3
-{
-public:
-
-    typedef R result_type;
-
-private:
-
-    typedef R (T::*F) (A1, A2, A3) const;
-    F f_;
-
-public:
-
-    explicit cmf3(F f): f_(f) {}
-
-    template<class U> R operator()(U const & u, A1 a1, A2 a2, A3 a3) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3);
-    }
-
-    R operator()(T const & t, A1 a1, A2 a2, A3 a3) const
-    {
-        return (t.*f_)(a1, a2, a3);
-    }
-};
-
-// mf4
-
-template<class R, class T, class A1, class A2, class A3, class A4> class mf4
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3, A4);
-    F f_;
-
-public:
-    
-    explicit mf4(F f): f_(f) {}
-
-    R operator()(T * p, A1 a1, A2 a2, A3 a3, A4 a4) const
-    {
-        return (p->*f_)(a1, a2, a3, a4);
-    }
-
-    template<class U> R operator()(U & u, A1 a1, A2 a2, A3 a3, A4 a4) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4);
-    }
-
-    R operator()(T & t, A1 a1, A2 a2, A3 a3, A4 a4) const
-    {
-        return (t.*f_)(a1, a2, a3, a4);
-    }
-};
-
-// cmf4
-
-template<class R, class T, class A1, class A2, class A3, class A4> class cmf4
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3, A4) const;
-    F f_;
-
-public:
-    
-    explicit cmf4(F f): f_(f) {}
-
-    template<class U> R operator()(U const & u, A1 a1, A2 a2, A3 a3, A4 a4) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4);
-    }
-
-    R operator()(T const & t, A1 a1, A2 a2, A3 a3, A4 a4) const
-    {
-        return (t.*f_)(a1, a2, a3, a4);
-    }
-};
-
-// mf5
-
-template<class R, class T, class A1, class A2, class A3, class A4, class A5> class mf5
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3, A4, A5);
-    F f_;
-
-public:
-    
-    explicit mf5(F f): f_(f) {}
-
-    R operator()(T * p, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5) const
-    {
-        return (p->*f_)(a1, a2, a3, a4, a5);
-    }
-
-    template<class U> R operator()(U & u, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4, a5);
-    }
-
-    R operator()(T & t, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5) const
-    {
-        return (t.*f_)(a1, a2, a3, a4, a5);
-    }
-};
-
-// cmf5
-
-template<class R, class T, class A1, class A2, class A3, class A4, class A5> class cmf5
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3, A4, A5) const;
-    F f_;
-
-public:
-    
-    explicit cmf5(F f): f_(f) {}
-
-    template<class U> R operator()(U const & u, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4, a5);
-    }
-
-    R operator()(T const & t, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5) const
-    {
-        return (t.*f_)(a1, a2, a3, a4, a5);
-    }
-};
-
-// mf6
-
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6> class mf6
-{
-public:
-
-    typedef R result_type;
-
-private:
-
-    typedef R (T::*F) (A1, A2, A3, A4, A5, A6);
-    F f_;
-
-public:
-
-    explicit mf6(F f): f_(f) {}
-
-    R operator()(T * p, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6) const
-    {
-        return (p->*f_)(a1, a2, a3, a4, a5, a6);
-    }
-
-    template<class U> R operator()(U & u, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4, a5, a6);
-    }
-
-    R operator()(T & t, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6) const
-    {
-        return (t.*f_)(a1, a2, a3, a4, a5, a6);
-    }
-};
-
-// cmf6
-
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6> class cmf6
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3, A4, A5, A6) const;
-    F f_;
-
-public:
-    
-    explicit cmf6(F f): f_(f) {}
-
-    template<class U> R operator()(U const & u, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4, a5, a6);
-    }
-
-    R operator()(T const & t, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6) const
-    {
-        return (t.*f_)(a1, a2, a3, a4, a5, a6);
-    }
-};
-
-// mf7
-
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6, class A7> class mf7
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3, A4, A5, A6, A7);
-    F f_;
-
-public:
-    
-    explicit mf7(F f): f_(f) {}
-
-    R operator()(T * p, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7) const
-    {
-        return (p->*f_)(a1, a2, a3, a4, a5, a6, a7);
-    }
-
-    template<class U> R operator()(U & u, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4, a5, a6, a7);
-    }
-
-    R operator()(T & t, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7) const
-    {
-        return (t.*f_)(a1, a2, a3, a4, a5, a6, a7);
-    }
-};
-
-// cmf7
-
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6, class A7> class cmf7
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3, A4, A5, A6, A7) const;
-    F f_;
-
-public:
-    
-    explicit cmf7(F f): f_(f) {}
-
-    template<class U> R operator()(U const & u, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4, a5, a6, a7);
-    }
-
-    R operator()(T const & t, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7) const
-    {
-        return (t.*f_)(a1, a2, a3, a4, a5, a6, a7);
-    }
-};
-
-// mf8
-
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8> class mf8
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3, A4, A5, A6, A7, A8);
-    F f_;
-
-public:
-    
-    explicit mf8(F f): f_(f) {}
-
-    R operator()(T * p, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8) const
-    {
-        return (p->*f_)(a1, a2, a3, a4, a5, a6, a7, a8);
-    }
-
-    template<class U> R operator()(U & u, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4, a5, a6, a7, a8);
-    }
-
-    R operator()(T & t, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8) const
-    {
-        return (t.*f_)(a1, a2, a3, a4, a5, a6, a7, a8);
-    }
-};
-
-// cmf8
-
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8> class cmf8
-{
-public:
-
-    typedef R result_type;
-
-private:
-    
-    typedef R (T::*F) (A1, A2, A3, A4, A5, A6, A7, A8) const;
-    F f_;
-
-public:
-    
-    explicit cmf8(F f): f_(f) {}
-
-    R operator()(T const * p, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8) const
-    {
-        return (p->*f_)(a1, a2, a3, a4, a5, a6, a7, a8);
-    }
-
-    template<class U> R operator()(U const & u, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8) const
-    {
-        return (get_pointer(u)->*f_)(a1, a2, a3, a4, a5, a6, a7, a8);
-    }
-
-    R operator()(T const & t, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8) const
-    {
-        return (t.*f_)(a1, a2, a3, a4, a5, a6, a7, a8);
-    }
-};
+#endif
 
 } // namespace _mfi
 
-// mem_fn
+#else // #ifdef BOOST_NO_VOID_RETURNS
 
-template<class R, class T> _mfi::mf0<R, T> mem_fn(R (T::*f) ())
+namespace _mfi
 {
-    return _mfi::mf0<R, T>(f);
-}
 
-template<class R, class T> _mfi::cmf0<R, T> mem_fn(R (T::*f) () const)
-{
-    return _mfi::cmf0<R, T>(f);
-}
+#define BOOST_MEM_FN_RETURN return
 
-template<class R, class T, class A1> _mfi::mf1<R, T, A1> mem_fn(R (T::*f) (A1))
-{
-    return _mfi::mf1<R, T, A1>(f);
-}
+#define BOOST_MEM_FN_NAME(X) X
+#define BOOST_MEM_FN_CC
 
-template<class R, class T, class A1> _mfi::cmf1<R, T, A1> mem_fn(R (T::*f) (A1) const)
-{
-    return _mfi::cmf1<R, T, A1>(f);
-}
+#include <boost/bind/mem_fn_template.hpp>
 
-template<class R, class T, class A1, class A2> _mfi::mf2<R, T, A1, A2> mem_fn(R (T::*f) (A1, A2))
-{
-    return _mfi::mf2<R, T, A1, A2>(f);
-}
+#undef BOOST_MEM_FN_CC
+#undef BOOST_MEM_FN_NAME
 
-template<class R, class T, class A1, class A2> _mfi::cmf2<R, T, A1, A2> mem_fn(R (T::*f) (A1, A2) const)
-{
-    return _mfi::cmf2<R, T, A1, A2>(f);
-}
+#ifdef BOOST_MEM_FN_ENABLE_STDCALL
 
-template<class R, class T, class A1, class A2, class A3> _mfi::mf3<R, T, A1, A2, A3> mem_fn(R (T::*f) (A1, A2, A3))
-{
-    return _mfi::mf3<R, T, A1, A2, A3>(f);
-}
+#define BOOST_MEM_FN_NAME(X) X##_stdcall
+#define BOOST_MEM_FN_CC __stdcall
 
-template<class R, class T, class A1, class A2, class A3> _mfi::cmf3<R, T, A1, A2, A3> mem_fn(R (T::*f) (A1, A2, A3) const)
-{
-    return _mfi::cmf3<R, T, A1, A2, A3>(f);
-}
+#include <boost/bind/mem_fn_template.hpp>
 
-template<class R, class T, class A1, class A2, class A3, class A4> _mfi::mf4<R, T, A1, A2, A3, A4> mem_fn(R (T::*f) (A1, A2, A3, A4))
-{
-    return _mfi::mf4<R, T, A1, A2, A3, A4>(f);
-}
+#undef BOOST_MEM_FN_CC
+#undef BOOST_MEM_FN_NAME
 
-template<class R, class T, class A1, class A2, class A3, class A4> _mfi::cmf4<R, T, A1, A2, A3, A4> mem_fn(R (T::*f) (A1, A2, A3, A4) const)
-{
-    return _mfi::cmf4<R, T, A1, A2, A3, A4>(f);
-}
+#endif
 
-template<class R, class T, class A1, class A2, class A3, class A4, class A5> _mfi::mf5<R, T, A1, A2, A3, A4, A5> mem_fn(R (T::*f) (A1, A2, A3, A4, A5))
-{
-    return _mfi::mf5<R, T, A1, A2, A3, A4, A5>(f);
-}
+#undef BOOST_MEM_FN_RETURN
 
-template<class R, class T, class A1, class A2, class A3, class A4, class A5> _mfi::cmf5<R, T, A1, A2, A3, A4, A5> mem_fn(R (T::*f) (A1, A2, A3, A4, A5) const)
-{
-    return _mfi::cmf5<R, T, A1, A2, A3, A4, A5>(f);
-}
+} // namespace _mfi
 
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6> _mfi::mf6<R, T, A1, A2, A3, A4, A5, A6> mem_fn(R (T::*f) (A1, A2, A3, A4, A5, A6))
-{
-    return _mfi::mf6<R, T, A1, A2, A3, A4, A5, A6>(f);
-}
+#endif // #ifdef BOOST_NO_VOID_RETURNS
 
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6> _mfi::cmf6<R, T, A1, A2, A3, A4, A5, A6> mem_fn(R (T::*f) (A1, A2, A3, A4, A5, A6) const)
-{
-    return _mfi::cmf6<R, T, A1, A2, A3, A4, A5, A6>(f);
-}
+#define BOOST_MEM_FN_NAME(X) X
+#define BOOST_MEM_FN_CC
 
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6, class A7> _mfi::mf7<R, T, A1, A2, A3, A4, A5, A6, A7> mem_fn(R (T::*f) (A1, A2, A3, A4, A5, A6, A7))
-{
-    return _mfi::mf7<R, T, A1, A2, A3, A4, A5, A6, A7>(f);
-}
+#include <boost/bind/mem_fn_cc.hpp>
 
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6, class A7> _mfi::cmf7<R, T, A1, A2, A3, A4, A5, A6, A7> mem_fn(R (T::*f) (A1, A2, A3, A4, A5, A6, A7) const)
-{
-    return _mfi::cmf7<R, T, A1, A2, A3, A4, A5, A6, A7>(f);
-}
+#undef BOOST_MEM_FN_NAME
+#undef BOOST_MEM_FN_CC
 
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8> _mfi::mf8<R, T, A1, A2, A3, A4, A5, A6, A7, A8> mem_fn(R (T::*f) (A1, A2, A3, A4, A5, A6, A7, A8))
-{
-    return _mfi::mf8<R, T, A1, A2, A3, A4, A5, A6, A7, A8>(f);
-}
+#ifdef BOOST_MEM_FN_ENABLE_STDCALL
 
-template<class R, class T, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8> _mfi::cmf8<R, T, A1, A2, A3, A4, A5, A6, A7, A8> mem_fn(R (T::*f) (A1, A2, A3, A4, A5, A6, A7, A8) const)
-{
-    return _mfi::cmf8<R, T, A1, A2, A3, A4, A5, A6, A7, A8>(f);
-}
+#define BOOST_MEM_FN_NAME(X) X##_stdcall
+#define BOOST_MEM_FN_CC __stdcall
+
+#include <boost/bind/mem_fn_cc.hpp>
+
+#undef BOOST_MEM_FN_NAME
+#undef BOOST_MEM_FN_CC
+
+#endif
 
 } // namespace boost
 

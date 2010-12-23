@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: nondet_random_speed.cpp,v 1.3 2001/03/01 18:54:36 beman_dawes Exp $
+ * $Id: nondet_random_speed.cpp,v 1.4 2001/11/19 22:13:04 jmaurer Exp $
  *
  */
 
@@ -27,9 +27,9 @@ static void show_elapsed(double end, int iter, const std::string & name)
   double usec = end/iter*1e6;
   double cycles = usec * cpu_frequency/1e6;
   std::cout << name << ": " 
-	    << usec*1e3 << " nsec/loop = " 
-	    << cycles << " CPU cycles"
-	    << std::endl;
+            << usec*1e3 << " nsec/loop = " 
+            << cycles << " CPU cycles"
+            << std::endl;
 }
 
 template<class Result, class RNG>

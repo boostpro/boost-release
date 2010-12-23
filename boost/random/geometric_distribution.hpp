@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: geometric_distribution.hpp,v 1.3 2001/09/26 21:45:25 jmaurer Exp $
+ * $Id: geometric_distribution.hpp,v 1.4 2001/11/14 21:53:38 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -36,8 +36,6 @@ namespace boost {
 // geometric distribution: p(i) = (1-p) * pow(p, i-1)   (integer)
 template<class UniformRandomNumberGenerator, class IntType = int>
 class geometric_distribution
-  : public generator_iterator_mixin_adapter<
-      geometric_distribution<UniformRandomNumberGenerator, IntType>, IntType>
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
@@ -51,7 +49,6 @@ public:
     using std::log;
 #endif
     _log_p = log(p);
-    this->iterator_init();
   }
   // compiler-generated copy ctor is fine
   // uniform_01 cannot be assigned, neither can this class

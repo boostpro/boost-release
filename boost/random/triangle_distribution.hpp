@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: triangle_distribution.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: triangle_distribution.hpp,v 1.3 2001/11/14 21:53:38 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -31,8 +31,6 @@ namespace boost {
 // value.
 template<class UniformRandomNumberGenerator, class RealType = double>
 class triangle_distribution
-  : public generator_iterator_mixin_adapter<
-      triangle_distribution<UniformRandomNumberGenerator, RealType>, RealType>
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
@@ -48,7 +46,6 @@ public:
     d3 = sqrt(d3);
     p1 = sqrt(p1);
     assert(_a <= _b && _b <= _c);
-    this->iterator_init();
   }
   // compiler-generated copy ctor is fine
   // uniform_01 cannot be assigned, neither can this class

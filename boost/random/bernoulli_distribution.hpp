@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: bernoulli_distribution.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: bernoulli_distribution.hpp,v 1.3 2001/11/14 21:53:38 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -22,15 +22,12 @@
 #define BOOST_RANDOM_BERNOULLI_DISTRIBUTION_HPP
 
 #include <cassert>
-#include <boost/random/detail/iterator_mixin.hpp>
 
 namespace boost {
 
 // Bernoulli distribution: p(true) = p, p(false) = 1-p   (boolean)
 template<class UniformRandomNumberGenerator>
 class bernoulli_distribution
-  : public generator_iterator_mixin_adapter<
-        bernoulli_distribution<UniformRandomNumberGenerator>, bool>
 {
 public:
   typedef UniformRandomNumberGenerator base_type;

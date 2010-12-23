@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_device.cpp,v 1.2 2001/03/01 18:54:36 beman_dawes Exp $
+ * $Id: random_device.cpp,v 1.3 2001/11/19 22:13:04 jmaurer Exp $
  *
  */
 
@@ -79,8 +79,8 @@ public:
 private:
   void error(const std::string & msg) {
     throw std::invalid_argument("boost::random_device: " + msg + 
-				" random-number pseudo-device " + path + 
-				": " + strerror(errno));
+                                " random-number pseudo-device " + path + 
+                                ": " + strerror(errno));
   }
   const std::string path;
   int fd;

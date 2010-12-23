@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_real.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: uniform_real.hpp,v 1.3 2001/11/14 21:53:38 jmaurer Exp $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -33,8 +33,6 @@ namespace boost {
 // uniform distribution on a real range
 template<class UniformRandomNumberGenerator, class RealType = double>
 class uniform_real
-  : public generator_iterator_mixin_adapter<
-        uniform_real<UniformRandomNumberGenerator, RealType>, RealType>
 {
 public:
   typedef UniformRandomNumberGenerator base_type;
@@ -48,7 +46,6 @@ public:
     BOOST_STATIC_ASSERT(!std::numeric_limits<RealType>::is_integer);
 #endif
     assert(min < max);
-    this->iterator_init();
   }
   // compiler-generated copy ctor is fine
   // uniform_01 cannot be assigned, neither can this class

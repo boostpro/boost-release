@@ -146,16 +146,14 @@ the order
 </ul>
 
 <p>
-All distribution functions satisfy the input iterator requirements
-(std:24.1.1 [lib.input.iterators]) in addition to the NumberGenerator
-requirements.  After an invocation of <code>operator()</code>, the
-effects of invocations of <code>operator*</code> are undefined until
-the next call to <code>operator++</code>.  <em>Providing the input
-iterator interface incurs a run-time overhead which should not be
-imposed on all users.  This feature is therefore deprecated and will
-be removed at a later time.  Use an
+<em>The distribution functions no longer satisfy the input iterator
+requirements (std:24.1.1 [lib.input.iterators]), because this is
+redundant given the Generator interface and imposes a run-time
+overhead on all users.  Moreover, a Generator interface appeals to
+random number generation as being more "natural".  Use an
 <a href="../utility/iterator_adaptors.htm">iterator adaptor</a>
-instead.</em>
+if you need to wrap any of the generators in an input iterator
+interface.</em>
 <p>
 
 All of the distribution functions described below store a non-const
@@ -702,21 +700,29 @@ lognormal one.
 
 <h3>Members</h3>
 
-<pre>lognormal_distribution(base_type& rng, const result_type& mean = 0,
-	   	       const result_type& sigma = 1)</pre>
+<pre>lognormal_distribution(base_type& rng, const result_type& mean,
+	   	       const result_type& sigma)</pre>
 
 <strong>Effects:</strong> Constructs a
 <code>lognormal_distribution</code> functor with the uniform random
 number generator <code>rng</code> as the underlying source of random
-numbers. <code>mean</code> and <code>sigma</code> are the parameters for
-the distribution.
+numbers. <code>mean</code> and <code>sigma</code> are the mean and
+standard deviation of the lognormal distribution.
 <p>
 
 <pre>result_type operator()()</pre>
 
-<strong>Returns:</strong> A random floating-point value <em>x</em>
-with p(x) = 1/(x * sigma * sqrt(2*pi*sigma)) * exp(-
+<!-- <strong>Returns:</strong> A random floating-point value <em>x</em>
+with p(x) = 1/(x * sigma * sqrt(2*pi)) * exp(-
 (log(x)-mean)<sup>2</sup> / (2*sigma<sup>2</sup>) ) for x > 0.
+<p> -->
+<strong>Returns:</strong> A random floating-point value <em>x</em>
+with p(x) = 1/(x * normal_sigma * sqrt(2*pi)) * exp(
+-(log(x)-normal_mean)<sup>2</sup> / (2*normal_sigma<sup>2</sup>) )
+for x > 0,
+where normal_mean = log(mean<sup>2</sup>/sqrt(sigma<sup>2</sup>
++ mean<sup>2</sup>))
+and normal_sigma = sqrt(log(1 + sigma<sup>2</sup>/mean<sup>2</sup>)).
 
 
 <h2><a name="uniform_on_sphere">Class template
