@@ -6,7 +6,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2005/06/21 03:33:15 $
+ * $Date: 2005/11/28 13:02:19 $
  */
 
 #include "boost/date_time/gregorian/gregorian_types.hpp"
@@ -23,7 +23,7 @@ namespace gregorian {
   /*! Return special_value from string argument. If argument is 
    * not one of the special value names (defined in src/gregorian/names.hpp), 
    * return 'not_special' */
-  special_values special_value_from_string(const std::string& s);
+  BOOST_DATE_TIME_DECL special_values special_value_from_string(const std::string& s);
 
   //! Deprecated: Use from_simple_string
   inline date from_string(std::string s) {

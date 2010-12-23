@@ -31,9 +31,22 @@ flags borland LINKFLAGS <debug-symbols>on : -v ;
 flags borland CFLAGS <optimization>off : -Od ;
 flags borland CFLAGS <optimization>speed : -O2 ;
 flags borland CFLAGS <optimization>space : -O1 ;
-flags borland CFLAGS <inlining>off : -vi- ;
-flags borland CFLAGS <inlining>on : -vi -w-inl ;
-flags borland CFLAGS <inlining>full : -vi -w-inl ;
+
+# Borland has inlining bugs that affect destructors
+# (http://lists.boost.org/boost-testing/2005/10/2079.php).  Define
+# this variable to force inlining for Borland to always be shut off.
+# We decided it was a bad idea to do it by default, because it would
+# hide bugs that users would see.
+if ! $(.BORLAND_INLINING_BUG_BRUTE_FORCE_WORKAROUND)
+{
+    flags borland CFLAGS <inlining>off : -vi- ;
+    flags borland CFLAGS <inlining>on : -vi -w-inl ;
+    flags borland CFLAGS <inlining>full : -vi -w-inl ;
+}
+else
+{
+    flags borland CFLAGS : -vi- ;
+}
 
 # build the options common to the link and C/C++ command-lines
 {

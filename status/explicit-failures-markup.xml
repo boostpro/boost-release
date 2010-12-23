@@ -29,6 +29,7 @@
     <mark-toolset name="vc-6_5-stlport" status="required"/>
     <mark-toolset name="vc-7_0" status="required"/>
     <mark-toolset name="vc-7_1" status="required"/>
+    <mark-toolset name="vc-8_0" status="required"/>
     <mark-toolset name="mingw-3_4_2" status="required"/>
     <mark-toolset name="gcc-2.95.3-linux" status="required"/>
     <mark-toolset name="gcc-2.95.3-stlport-4.5.3-linux" status="required"/>
@@ -38,11 +39,15 @@
     <mark-toolset name="gcc-3.4.4-linux" status="required"/>
     <mark-toolset name="gcc-4.0.0-linux" status="required"/>
     <mark-toolset name="gcc-4.0.1-linux" status="required"/>
+    <mark-toolset name="gcc-4.0.2-linux" status="required"/>
     <mark-toolset name="gcc-3_3-darwin" status="required"/>
+    <mark-toolset name="gcc-4_0-darwin" status="required"/>
     <mark-toolset name="gcc-3_4_3-sunos" status="required"/>
     <mark-toolset name="intel-win32-8_1" status="required"/>
     <mark-toolset name="intel-win32-9_0" status="required"/>
     <mark-toolset name="intel-8.1-linux" status="required"/>
+    <mark-toolset name="intel-9.0-linux" status="required"/>
+    <mark-toolset name="tru64cxx71-006" status="required"/>
 
     <!-- /////////////// Libraries /////////////// -->
 
@@ -295,6 +300,13 @@
 
     <!-- concept_check -->
     <library name="concept_check">
+        <test name="stl_concept_covering">
+          <mark-failure>
+            <toolset name="*"/>
+            <note author="D. Gregor" refid="28"/>
+          </mark-failure>
+        </test>
+
         <test name="class_concept_fail_expected">
             <mark-failure>
                 <toolset name="cw-8_3*"/>
@@ -453,7 +465,6 @@
                 <toolset name="gcc-2.95.3-linux"/>
                 <toolset name="gcc-3.1-darwin"/>
                 <toolset name="*como-4_3_3*"/>
-                <toolset name="tru64cxx65-042"/>
                 <note author="B. Garst" refid="19,21"/>
             </mark-failure>
         </test>
@@ -589,16 +600,6 @@
             </mark-failure>
         </test>
 
-        <test name="testfacet*">
-            <mark-failure>
-            <toolset name="tru64cxx65-042"/>
-                <note author="J. Garland">
-                   There something non-standard about the tru64 standard library which
-                   is preventing these tests from compiling.
-                </note>
-            </mark-failure>
-        </test>
-
         <test name="testtz_database">
             <mark-failure>
                 <toolset name="borland-5_6_4"/>
@@ -611,6 +612,13 @@
                    These are new features to date-time in 1.33 and there is no
                    plan to backport to these non-compliant compilers.
                 </note>
+            </mark-failure>
+        </test>
+
+        <test name="testtz_database">
+            <mark-failure>
+                <toolset name="intel-win32-8_1"/>
+                <note author="Stefan Slapeta" refid="31"/>
             </mark-failure>
         </test>
 
@@ -699,7 +707,6 @@
                 <toolset name="msvc"/>
                 <toolset name="vc-6_5"/>
                 <toolset name="mingw*"/>
-                <toolset name="tru64cxx65-042"/>
                 <note author="B. Garst" refid="18,19"/>
             </mark-failure>
         </test>
@@ -711,7 +718,6 @@
                 <toolset name="vc-6_5"/>
                 <toolset name="mingw*"/>
                 <toolset name="*como-4_3_3*"/>
-                <toolset name="tru64cxx65-042"/>
                 <note author="B. Garst" refid="18,19"/>
             </mark-failure>
         </test>
@@ -726,7 +732,6 @@
                 <toolset name="msvc"/>
                 <toolset name="vc-6_5"/>
                 <toolset name="vc-7_0"/>
-                <toolset name="tru64cxx65-042"/>
                 <note author="B. Garst" refid="18,20"/>
             </mark-failure>
         </test>
@@ -749,7 +754,6 @@
                 <toolset name="mingw-3*"/>
                 <toolset name="mingw"/>
                 <toolset name="*como-4_3_3*"/>
-                <toolset name="tru64cxx65-042"/>
                 <note author="B. Garst" refid="18,19,20"/>
             </mark-failure>
         </test>
@@ -813,6 +817,29 @@
             </note>
         </mark-expected-failures>
 
+        <mark-expected-failures>
+            <test name="testfacet"/>
+            <test name="testfacet_dll"/>
+            <toolset name="tru64cxx*"/>
+            <note author="Markus Schoepflin">
+            The failure is caused by a standard library bug. It doesn't
+            support used defined facets which are not default
+            constructible. This has been reported to the compiler vendor.
+            </note>
+        </mark-expected-failures>
+
+        <mark-expected-failures>
+            <test name="testgreg_wstream"/>
+            <test name="testparse_date"/>
+            <test name="teststreams"/>
+            <toolset name="tru64cxx*"/>
+            <note author="Markus Schoepflin">
+            The failure is caused by a standard library bug. The end-of-stream
+            istream iterator can only be constructed when the istream iterator
+            has been instantiated with char as the character type. This has
+            been reported to the compiler vendor.
+            </note>
+        </mark-expected-failures>
 
     </library>
 
@@ -847,10 +874,20 @@
             </note>
         </mark-unusable>
         <mark-expected-failures>
+            <test name="operations_test"/>
+            <test name="operations_test_dll"/>
+            <toolset name="gcc-*-osf1"/>
+            <toolset name="tru64*"/>
+            <note author="Markus Schoepflin">
+                The library is mostly working, the test failure observed might
+                be due to a bug in the C library of this platform.
+            </note>
+        </mark-expected-failures>
+        <mark-expected-failures>
             <test name="operations_test_dll"/>
             <test name="path_test_dll"/>
             <toolset name="borland-5_6_4"/>
-            <toolset name="mingw-3_4_2"/>
+            <toolset name="mingw-3_4_*"/>
             <note author="Beman Dawes" refid="35"/>
         </mark-expected-failures>
     </library>
@@ -957,15 +994,14 @@
           <toolset name="gcc-2.95.3-stlport-4.5.3-linux"/>
           <toolset name="gcc-2.95.3-stlport-4.6.2-linux"/>
           <toolset name="como-4_3_3-vc7_1"/>
-          <toolset name="cw-8_3"/>
-          <toolset name="cw-9_3-darwin"/>
-          <toolset name="cw-9_4-darwin"/>
-          <toolset name="cw-9_4"/>
-          <toolset name="cw-9_4-darwin"/>
-          <toolset name="cw-9_5-darwin"/>
           <toolset name="iw-7_1-vc6"/>
           <toolset name="iw-7_1-vc6-stlp-4_5_3"/>
           <note refid="3" author="Doug Gregor"/>
+        </mark-expected-failures>
+        <mark-expected-failures>
+            <test name="graphviz_test"/>
+            <toolset name="cw-9_4"/>
+            <note refid="29" author="Rene Rivera"/>
         </mark-expected-failures>
         <mark-expected-failures>
           <test name="layout_test"/>
@@ -997,7 +1033,7 @@
         </mark-expected-failures>
         <mark-expected-failures>
             <test name="ios_state_unit_test"/>
-            <toolset name="intel-win32-*"/>
+            <toolset name="intel-win32-8*"/>
             <note refid="3" author="Stefan Slapeta"/>
         </mark-expected-failures>
     </library>
@@ -1044,17 +1080,12 @@
             <toolset name="como-4_3_3-vc7_1"/>
             <note author="Jonathan Turkanis">
                 The failure reflects a problem with the build system: the zlib 
-				object files are generated in the wrong directory.
+                object files are generated in the wrong directory.
             </note>
         </mark-expected-failures>
         <mark-expected-failures>
             <test name="stdio_filter_test"/>
             <toolset name="*como-4_3_3*"/>
-            <note author="Jonathan Turkanis" refid="0"/>
-        </mark-expected-failures>
-        <mark-expected-failures>
-            <test name="mapped_file_test"/>
-            <toolset name="intel-win32-9_0"/>
             <note author="Jonathan Turkanis" refid="0"/>
         </mark-expected-failures>
         <mark-expected-failures reason="?">
@@ -1739,19 +1770,20 @@ for more information.
         </mark-expected-failures>
 
         <mark-expected-failures>
-          <test name="test_shared_ptr_132_xml_archive_dll"/>
-          <toolset name="intel-win32-8_1"/>
-          <note author="Doug Gregor" refid="29"/>
-        </mark-expected-failures>
-
-        <mark-expected-failures>
-          <test name="test_demo_dll"/>
-          <test name="test_demo_exception_dll"/>
-          <test name="test_demo_shared_ptr_dll"/>
+          <test name="test_demo_xml_load"/>
           <test name="test_demo_xml_load_dll"/>
-          <test name="test_demo_xml_save_dll"/>
+          <test name="test_shared_ptr_132_text_warchive"/>
           <toolset name="intel-win32-8_1"/>
-          <note author="Doug Gregor" refid="35"/>
+          <note author="Stefan Slapeta" refid="29"/>
+        </mark-expected-failures>
+        
+        <mark-expected-failures>
+            <test name="test_variant_*"/>
+            <toolset name="tru64cxx65*"/>
+            <note author="Markus Schoepflin">
+                The variant library is not supported for this compiler version.
+                Therefore serialization of variants doesn't work.
+            </note>
         </mark-expected-failures>
     </library>
 
@@ -1763,6 +1795,11 @@ for more information.
             <toolset name="gcc-2.9*"/>
             <toolset name="sunpro-5_3-sunos"/>
             <note refid="32" author="Peter Dimov"/>
+        </mark-expected-failures>
+        <mark-expected-failures>
+            <test name="weak_ptr_test"/>
+            <toolset name="tru64cxx71-006"/>
+            <note author="Markus Schoepflin" refid="3"/>
         </mark-expected-failures>
     </library>
 
@@ -2093,6 +2130,14 @@ for more information.
             <toolset name="vc-6_5*"/>
             <toolset name="vc-7_0"/>
         </mark-unusable>
+        <mark-unusable>
+            <toolset name="tru64cxx*"/>
+            <toolset name="gcc-*-osf1"/>
+            <note author="Markus Schoepflin">
+                The library has not (yet) been ported to this
+                compiler/platform combination.
+            </note>
+        </mark-unusable>
         <test name="test_float">
             <mark-failure>
                 <toolset name="borland-5_5_1"/>
@@ -2294,6 +2339,15 @@ for more information.
             <note refid="2"/>
             <note refid="17"/>
         </mark-unusable>
+        <mark-unusable>
+            <toolset name="tru64cxx65*"/>
+            <note author="Markus Schoepflin">
+            The library fails to compile because of an error in the C++
+            standard library implementation on this platform. It incorrectly
+            assumes that fpos_t is of an integral type, which is not always
+            the case. This is fixed in a later release.
+            </note>
+        </mark-unusable>
         <mark-expected-failures>
             <test name="args"/>
             <test name="auto_ptr"/>
@@ -2412,6 +2466,21 @@ for more information.
                 the particular testing environment these tests have been run in.
             </note>
         </mark-expected-failures>
+        <mark-expected-failures>
+            <test name="pointer_vector"/>
+            <test name="polymorphism"/>
+            <toolset name="tru64cxx7*"/>
+            <note author="Markus Schoepflin" refid="29"/>
+        </mark-expected-failures>
+
+        <mark-expected-failures>
+          <test name="map_indexing_suite"/>
+          <toolset name="vc-8_0"/>
+          <note author="Doug Gregor">
+            Test fails for unknown reasons within the testing harness,
+            but seems to work elsewhere.
+          </note>
+        </mark-expected-failures>
     </library>
 
     <!-- random -->
@@ -2446,6 +2515,18 @@ for more information.
             <toolset name="gcc-2.95.3*"/>
             <toolset name="sunpro-5_3-sunos"/>
         </mark-unusable>
+
+        <mark-expected-failures>
+            <test name="extension_mechanism"/>
+            <toolset name="vc-6_5*"/>
+            <toolset name="vc-7_0*"/>
+            <note author="Thorsten Ottosen">
+            The extension mechanism based on ADL does not work
+            on this compiler. Consider therefore to make your
+            container standard complient instead. 
+            </note>
+        </mark-expected-failures>
+        
         <mark-expected-failures>
             <test name="array"/>
             <toolset name="como-4_3_3*"/>
@@ -2557,8 +2638,11 @@ for more information.
             <mark-failure>
                 <toolset name="vc-8_0"/>
                 <toolset name="sunpro-5_3-sunos"/>
-                <toolset name="tru64cxx65-042"/>
                 <note author="John Maddock" refid="2"/>
+            </mark-failure>
+            <mark-failure>
+                <toolset name="tru64cxx*"/>
+                <note author="Markus Schoepflin" refid="3"/>
             </mark-failure>
         </test>
         <test name="grep">
@@ -2593,6 +2677,15 @@ for more information.
                Test fails due to unresilved externals from STLport: appears to be
                an STLport bug. </note>
         </mark-expected-failures>
+
+        <mark-expected-failures>
+          <test name="regex_grep_example_2"/>
+          <toolset name="vc-8_0"/>
+          <note author="Doug Gregor">
+            Test occassionally fails due to linking problems. This
+            appears to be an intermittent linker bug.
+          </note>
+        </mark-expected-failures>
     </library>
 
     <!-- signals -->
@@ -2600,12 +2693,13 @@ for more information.
         <mark-unusable>
             <toolset name="sunpro-5_3-sunos"/>
         </mark-unusable>
-        <test name="dead_slot_test">
-            <mark-failure>
-                <toolset name="*como-4_3_3*"/>
-                <note refid="3" author="D. Gregor"/>
-            </mark-failure>
-        </test>
+        <mark-expected-failures>
+            <test name="dead_slot_test"/>
+            <test name="trackable_test"/>
+            <toolset name="*como-4_3_3*"/>
+            <toolset name="tru64cxx*"/>
+            <note author="Markus Schoepflin" refid="2"/>
+        </mark-expected-failures>
         <test name="signal_test">
             <mark-failure>
                 <toolset name="cw-8_3*"/>
@@ -2618,12 +2712,6 @@ for more information.
                 <toolset name="vc-6_5"/>
                 <toolset name="vc-7_0"/>
                 <note author="B. Dawes" refid="3"/>
-            </mark-failure>
-        </test>
-        <test name="trackable_test">
-            <mark-failure>
-                <toolset name="*como-4_3_3*"/>
-                <note refid="3" author="D. Gregor"/>
             </mark-failure>
         </test>
     </library>
@@ -2770,16 +2858,6 @@ for more information.
             <toolset name="gcc-2.95.3-stlport-4.5.3-linux"/>
             <toolset name="gcc-2.95.3-stlport-4.6.2-linux"/>
             <note author="Aleksey Gurtovoy" refid="29"/>
-        </mark-expected-failures>
-
-        <mark-expected-failures>
-            <test name="*_lib"/>
-            <toolset name="gcc-*-sunos"/>
-            <note author="Caleb Epstein">
-                SunOS does not provide static versions of -lrt or
-                -lpthread, and gcc -static refuses to link with any
-                shared objects, so these tests don't compile.
-            </note>
         </mark-expected-failures>
     </library>
 
@@ -2954,8 +3032,15 @@ for more information.
             <toolset name="msvc*"/>
             <toolset name="vc-6_5*"/>
             <toolset name="vc-7_0"/>
+            <toolset name="gcc-2.95.3-*"/>
             <note refid="3"/>
         </mark-unusable>
+
+        <mark-expected-failures>
+          <test name="no_disambiguation"/>
+          <toolset name="gcc-3.2.*"/>
+          <note refid="3"/>
+        </mark-expected-failures>
     </library>
 
 
@@ -3053,9 +3138,11 @@ for more information.
             <toolset name="gcc-2.95.3-linux"/>
             <toolset name="gcc-2.95.3-stlport-4.5.3-linux"/>
             <toolset name="gcc-2.95.3-stlport-4.6.2-linux"/>
+            <toolset name="tru64cxx*"/>
+            <toolset name="cw-9_4"/>
             <note refid="29"/>
         </mark-unusable>
-       <mark-unusable>
+        <mark-unusable>
             <toolset name="vc-7_0"/>
             <note>
                This toolset isn't supported because of the used Spirit V1.8.x, which in turn is
@@ -3073,7 +3160,7 @@ for more information.
         <mark-expected-failures>
             <test name="testwave"/>
             <toolset name="gcc-3.2.3-linux"/>
-            <!-- toolset name="gcc-3.3.6-linux"/ -->
+            <toolset name="gcc-3.3.6-linux"/>
             <note author="Hartmut Kaiser" refid="29"/>
         </mark-expected-failures>
 

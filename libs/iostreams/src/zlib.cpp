@@ -4,6 +4,10 @@
 
 // See http://www.boost.org/libs/iostreams for documentation.
 
+// To configure Boost to work with zlib, see the 
+// installation instructions here:
+// http://boost.org/libs/iostreams/doc/index.html?path=7
+
 // Define BOOST_IOSTREAMS_SOURCE so that <boost/iostreams/detail/config.hpp> 
 // knows that we are building the library (possibly exporting code), rather 
 // than using it (possibly importing code).
@@ -11,7 +15,10 @@
 
 #include <boost/iostreams/detail/config/dyn_link.hpp>
 #include <boost/iostreams/filter/zlib.hpp> 
-#include "zlib.h"  // Jean-loup Gailly's and Mark Adler's header.
+#include "zlib.h"   // Jean-loup Gailly's and Mark Adler's "zlib.h" header.
+                    // To configure Boost to work with zlib, see the 
+                    // installation instructions here:
+                    // http://boost.org/libs/iostreams/doc/index.html?path=7
 
 namespace boost { namespace iostreams {
 
@@ -73,6 +80,7 @@ void zlib_error::check(int error)
         throw std::bad_alloc();
     default:
         throw zlib_error(error);
+        ;
     }
 }
 
@@ -99,8 +107,8 @@ void zlib_base::before( const char*& src_begin, const char* src_end,
 void zlib_base::after(const char*& src_begin, char*& dest_begin, bool compress)
 {
     z_stream* s = static_cast<z_stream*>(stream_);
-    char*& next_in = reinterpret_cast<char*&>(s->next_in);
-    char*& next_out = reinterpret_cast<char*&>(s->next_out);
+    char* next_in = reinterpret_cast<char*>(s->next_in);
+    char* next_out = reinterpret_cast<char*>(s->next_out);
     if (calculate_crc_) {
         const zlib::byte* buf = compress ?
             reinterpret_cast<const zlib::byte*>(src_begin) :
@@ -115,7 +123,7 @@ void zlib_base::after(const char*& src_begin, char*& dest_begin, bool compress)
     }
     total_in_ = s->total_in;
     total_out_ = s->total_out;
-    src_begin = const_cast<const char*&>(next_in);
+    src_begin = const_cast<const char*>(next_in);
     dest_begin = next_out;
 }
 
@@ -132,11 +140,14 @@ int zlib_base::inflate(int flush)
 void zlib_base::reset(bool compress, bool realloc)
 {
     z_stream* s = static_cast<z_stream*>(stream_);
-    zlib_error::check(
+    // Undiagnosed bug:
+    // deflateReset(), etc., return Z_DATA_ERROR
+    //zlib_error::check(
         realloc ?
             (compress ? deflateReset(s) : inflateReset(s)) :
             (compress ? deflateEnd(s) : inflateEnd(s))
-    );
+                ;
+    //);
 }
 
 void zlib_base::do_init

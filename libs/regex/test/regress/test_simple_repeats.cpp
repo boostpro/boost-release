@@ -15,6 +15,8 @@
 #pragma warning(disable:4127)
 #endif
 
+void test_simple_repeats2();
+
 void test_simple_repeats()
 {
    using namespace boost::regex_constants;
@@ -36,6 +38,65 @@ void test_simple_repeats()
    TEST_REGEX_SEARCH("\\**", perl, "**", match_default, make_array(0, 2, -2, 2, 2, -2, -2));
    TEST_REGEX_SEARCH("\\*", perl, "*", match_default, make_array(0, 1, -2, -2));
    TEST_REGEX_SEARCH("(ab)*", perl, "abab", match_default, make_array(0, 4, 2, 4, -2, 4, 4, -2, -2));
+
+   TEST_INVALID_REGEX("(*)", perl);
+   TEST_INVALID_REGEX("(*)", extended);
+   TEST_INVALID_REGEX("\\(*\\)", basic);
+   TEST_INVALID_REGEX("^*", perl);
+   TEST_INVALID_REGEX("^*", extended);
+   TEST_INVALID_REGEX("$*", perl);
+   TEST_INVALID_REGEX("$*", extended);
+   TEST_INVALID_REGEX("$*", basic);
+   TEST_INVALID_REGEX("\\b*", perl);
+   TEST_INVALID_REGEX("\\B*", perl);
+   TEST_INVALID_REGEX("\\A*", perl);
+   TEST_INVALID_REGEX("\\z*", perl);
+   TEST_INVALID_REGEX("\\Z*", perl);
+   TEST_INVALID_REGEX("\\A*", perl);
+   TEST_INVALID_REGEX("a|*", perl);
+   TEST_INVALID_REGEX("a|*", extended);
+   TEST_INVALID_REGEX("(+)", perl);
+   TEST_INVALID_REGEX("(+)", extended);
+   TEST_INVALID_REGEX("^+", perl);
+   TEST_INVALID_REGEX("^+", extended);
+   TEST_INVALID_REGEX("$+", perl);
+   TEST_INVALID_REGEX("$+", extended);
+   TEST_INVALID_REGEX("\\b+", perl);
+   TEST_INVALID_REGEX("\\B+", perl);
+   TEST_INVALID_REGEX("\\A+", perl);
+   TEST_INVALID_REGEX("\\z+", perl);
+   TEST_INVALID_REGEX("\\Z+", perl);
+   TEST_INVALID_REGEX("\\A+", perl);
+   TEST_INVALID_REGEX("a|+", perl);
+   TEST_INVALID_REGEX("a|+", extended);
+   TEST_INVALID_REGEX("(?)", perl);
+   TEST_INVALID_REGEX("(?)", extended);
+   TEST_INVALID_REGEX("^?", perl);
+   TEST_INVALID_REGEX("^?", extended);
+   TEST_INVALID_REGEX("$?", perl);
+   TEST_INVALID_REGEX("$?", extended);
+   TEST_INVALID_REGEX("\\b?", perl);
+   TEST_INVALID_REGEX("\\B?", perl);
+   TEST_INVALID_REGEX("\\A?", perl);
+   TEST_INVALID_REGEX("\\z?", perl);
+   TEST_INVALID_REGEX("\\Z?", perl);
+   TEST_INVALID_REGEX("\\A?", perl);
+   TEST_INVALID_REGEX("a|?", perl);
+   TEST_INVALID_REGEX("a|?", extended);
+   TEST_INVALID_REGEX("({1,2})", perl);
+   TEST_INVALID_REGEX("({1,2})", extended);
+   TEST_INVALID_REGEX("^{1,2}", perl);
+   TEST_INVALID_REGEX("^{1,2}", extended);
+   TEST_INVALID_REGEX("${1,2}", perl);
+   TEST_INVALID_REGEX("${1,2}", extended);
+   TEST_INVALID_REGEX("\\b{1,2}", perl);
+   TEST_INVALID_REGEX("\\B{1,2}", perl);
+   TEST_INVALID_REGEX("\\A{1,2}", perl);
+   TEST_INVALID_REGEX("\\z{1,2}", perl);
+   TEST_INVALID_REGEX("\\Z{1,2}", perl);
+   TEST_INVALID_REGEX("\\A{1,2}", perl);
+   TEST_INVALID_REGEX("a|{1,2}", perl);
+   TEST_INVALID_REGEX("a|{1,2}", extended);
 
    // now try operator + :
    TEST_REGEX_SEARCH("ab+", perl, "a", match_default, make_array(-2, -2));
@@ -98,6 +159,25 @@ void test_simple_repeats()
    TEST_REGEX_SEARCH("a{ 2 , }", perl, "aaaaa", match_default, make_array(0, 5, -2, -2));
    TEST_REGEX_SEARCH("a{ 2 }", perl, "aaa", match_default, make_array(0, 2, -2, -2));
    TEST_REGEX_SEARCH("a\\{\\}", perl, "a{}", match_default, make_array(0, 3, -2, -2));
+   
+   TEST_REGEX_SEARCH("a{2,4}?", perl, "a", match_default, make_array(-2, -2));
+   TEST_REGEX_SEARCH("a{2,4}?", perl, "aa", match_default, make_array(0, 2, -2, -2));
+   TEST_REGEX_SEARCH("a{2,4}?", perl, "aaa", match_default, make_array(0, 2, -2, -2));
+   TEST_REGEX_SEARCH("a{2,4}?", perl, "aaaa", match_default, make_array(0, 2, -2, 2, 4, -2, -2));
+   TEST_REGEX_SEARCH("a{2,4}?", perl, "aaaaa", match_default, make_array(0, 2, -2, 2, 4, -2, -2));
+   TEST_REGEX_SEARCH("a{2,4}?$", perl, "aa", match_default, make_array(0, 2, -2, -2));
+   TEST_REGEX_SEARCH("a{2,4}?$", perl, "aaa", match_default, make_array(0, 3, -2, -2));
+   TEST_REGEX_SEARCH("a{2,4}?$", perl, "aaaa", match_default, make_array(0, 4, -2, -2));
+   TEST_REGEX_SEARCH("a{2,4}?$", perl, "aaaaa", match_default, make_array(1, 5, -2, -2));
+   TEST_REGEX_SEARCH("^a{0,1}?$", perl, "aaaaa", match_default, make_array(-2, -2));
+   TEST_REGEX_SEARCH("^(?:a){0,1}?$", perl, "aaaaa", match_default, make_array(-2, -2));
+   TEST_REGEX_SEARCH("^a(?:bc)?", perl, "abcbc", match_any|match_all, make_array(-2, -2));
+}
+
+void test_simple_repeats2()
+{
+   using namespace boost::regex_constants;
+
    TEST_INVALID_REGEX("a{}", perl);
    TEST_INVALID_REGEX("a{", perl);
    TEST_INVALID_REGEX("a{1", perl);

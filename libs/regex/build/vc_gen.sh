@@ -116,7 +116,7 @@ EOF
 #
 #	 now for the main target for this library:
 	echo ./$subdir$stlport_suffix/$libname.lib : $all_obj >> $tout
-	echo "	link kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:\"$subdir$stlport_suffix/$libname.pdb\" /debug /machine:I386 /out:\"$subdir$stlport_suffix/$libname.dll\" /implib:\"$subdir$stlport_suffix/$libname.lib\" /LIBPATH:\$(STLPORT_PATH)\\lib \$(XLFLAGS) \$(ICU_LINK_OPTS) $all_obj" >> $tout
+	echo "	link kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:\"$subdir$stlport_suffix/$libname.pdb\" /debug /machine:I386 /out:\"$subdir$stlport_suffix/$libname.dll\" /implib:\"$subdir$stlport_suffix/$libname.lib\" /LIBPATH:\"\$(STLPORT_PATH)\\lib\" \$(XLFLAGS) \$(ICU_LINK_OPTS) $all_obj" >> $tout
 	echo "" >> $tout
 }
 
@@ -134,7 +134,7 @@ function vc6_gen()
 	rm -f $iout
 	stlport_suffix=""
 	
-	if test ${subdir} != "vc8" ; then
+	if test ${subdir} != "vc80" ; then
 	libname="libboost_regex-${subdir}-s-${boost_version}"
 	opts='/c /nologo /ML /W3 '$EH_OPTS' /O2 '$PROC_OPTS' /GF /Gy /I..\..\..\ /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD '"$release_extra"' '
 	vc6_gen_lib
@@ -144,7 +144,7 @@ function vc6_gen()
 	opts='/nologo /MT /W3 '$EH_OPTS' /O2 '$PROC_OPTS' /GF /Gy /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB /FD '"$release_extra"' /c'
 	vc6_gen_lib
 	
-	if test ${subdir} != "vc8" ; then
+	if test ${subdir} != "vc80" ; then
 	debug="yes"
 	libname="libboost_regex-${subdir}-sgd-${boost_version}"
 	opts='/nologo /MLd /W3 /Gm '$EH_OPTS' /Zi /Od /I..\..\..\ /DWIN32 /D_DEBUG /D_MBCS /D_LIB /FD '"$debug_extra"' /c '
@@ -173,10 +173,18 @@ function vc6_gen()
 	libname="libboost_regex-${subdir}-mt-gd-${boost_version}"
 	opts='/nologo /MDd /W3 /Gm '$EH_OPTS' /Zi /Od /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL /FD '"$debug_extra"' /c'
 	vc6_gen_lib
-
-	if test ${subdir} != "vc8" ; then
-	   VC8_CHECK="MSVCDIR=\$(VS80COMNTOOLS)..\\..\\VC"
-   fi
+	
+	VC8_CHECK=""
+	echo ${subdir}
+	if test ${subdir} = "vc80" ; then
+	   VC8_CHECK='MSVCDIR=$(VS80COMNTOOLS)..\..\VC'
+	   echo setting VC8 setup to: ${VC8_CHECK}
+    else
+	 if test ${subdir} = "vc71" ; then
+	   VC8_CHECK='MSVCDIR=$(VS71COMNTOOLS)..\..\VC7'
+	   echo setting VC71 setup to: ${VC8_CHECK}
+     fi
+    fi
    	
 	cat > $out << EOF
 #
@@ -216,7 +224,9 @@ NULL=
 NULL=nul
 !ENDIF 
 
+!IF "\$(MSVCDIR)" == ""
 $VC8_CHECK
+!ENDIF
 
 !IF "\$(MSVCDIR)" == ""
 !ERROR Variable MSVCDIR not set.
@@ -229,8 +239,8 @@ ICU_LINK_OPTS=
 !MESSAGE Hint: set ICU_PATH on the nmake command line to point 
 !MESSAGE to your ICU installation if you have one.
 !ELSE
-ICU_COMPILE_OPTS= -DBOOST_HAS_ICU=1 -I\$(ICU_PATH)\\include
-ICU_LINK_OPTS= /LIBPATH:\$(ICU_PATH)\\lib icuin.lib icuuc.lib
+ICU_COMPILE_OPTS= -DBOOST_HAS_ICU=1 -I"\$(ICU_PATH)\\include"
+ICU_LINK_OPTS= /LIBPATH:"\$(ICU_PATH)\\lib" icuin.lib icuuc.lib
 !MESSAGE Building Boost.Regex with ICU in \$(ICU_PATH)
 !ENDIF
 
@@ -265,42 +275,42 @@ function vc6_stlp_gen()
 	stlport_suffix="-stlport"
 	
 	libname="libboost_regex-${subdir}-mt-sp-${boost_version}"
-	opts='/nologo /MT /W3 '$EH_OPTS' /O2 '$PROC_OPTS' /GF /Gy /I$(STLPORT_PATH)\stlport /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB '"$release_extra"' /c'
+	opts='/nologo /MT /W3 '$EH_OPTS' /O2 '$PROC_OPTS' /GF /Gy /I"$(STLPORT_PATH)\stlport" /I..\..\..\ /D_MT /DWIN32 /DNDEBUG /D_MBCS /D_LIB '"$release_extra"' /c'
 	vc6_gen_lib
 	
 	debug="true"
 	libname="libboost_regex-${subdir}-mt-sgdp-${boost_version}"
-	opts='/nologo /MTd /W3 /Gm '$EH_OPTS' /Zi /Od /I$(STLPORT_PATH)\stlport /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB '"$debug_extra"' /c'
+	opts='/nologo /MTd /W3 /Gm '$EH_OPTS' /Zi /Od /I"$(STLPORT_PATH)\stlport" /I..\..\..\ /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB '"$debug_extra"' /c'
 	#vc6_gen_lib
 	
 	libname="boost_regex-${subdir}-mt-gdp-${boost_version}"
-	opts='/nologo /MDd /W3 /Gm '$EH_OPTS' /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_DYN_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
+	opts='/nologo /MDd /W3 /Gm '$EH_OPTS' /Zi /Od /I"$(STLPORT_PATH)\stlport" /I../../../ /DBOOST_REGEX_DYN_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
 	#vc6_gen_dll
 	
 	debug="no"
-	opts='/nologo /MD /W3 '$EH_OPTS' /O2 '$PROC_OPTS' /GF /I$(STLPORT_PATH)\stlport /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL '"$release_extra"' /c'
+	opts='/nologo /MD /W3 '$EH_OPTS' /O2 '$PROC_OPTS' /GF /I"$(STLPORT_PATH)\stlport" /Gy /I../../../ /DBOOST_REGEX_DYN_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL '"$release_extra"' /c'
 	libname="boost_regex-${subdir}-mt-p-${boost_version}"
 	vc6_gen_dll
 	
 	debug="no"
-	opts='/nologo /MD /W3 '$EH_OPTS' /O2 '$PROC_OPTS' /GF /Gy /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL '"$release_extra"' /c'
+	opts='/nologo /MD /W3 '$EH_OPTS' /O2 '$PROC_OPTS' /GF /Gy /I"$(STLPORT_PATH)\stlport" /I../../../ /DBOOST_REGEX_STATIC_LINK /DNDEBUG /DWIN32 /D_WINDOWS /D_MBCS /D_USRDLL '"$release_extra"' /c'
 	libname="libboost_regex-${subdir}-mt-p-${boost_version}"
 	vc6_gen_lib
 	
 	debug="true"
 	libname="libboost_regex-${subdir}-mt-gdp-${boost_version}"
-	opts='/nologo /MDd /W3 /Gm '$EH_OPTS' /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
+	opts='/nologo /MDd /W3 /Gm '$EH_OPTS' /Zi /Od /I"$(STLPORT_PATH)\stlport" /I../../../ /DBOOST_REGEX_STATIC_LINK /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
 	#vc6_gen_lib
 
 #  debug STLPort mode:
 	debug="yes"
-	opts='/nologo /MDd /W3 /Gm '$EH_OPTS' /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_DYN_LINK /D__STL_DEBUG /D_STLP_DEBUG /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
+	opts='/nologo /MDd /W3 /Gm '$EH_OPTS' /Zi /Od /I"$(STLPORT_PATH)\stlport" /I../../../ /DBOOST_REGEX_DYN_LINK /D__STL_DEBUG /D_STLP_DEBUG /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
 	libname="boost_regex-${subdir}-mt-gdp-${boost_version}"
 	vc6_gen_dll
 	libname="libboost_regex-${subdir}-mt-sgdp-${boost_version}"
-	opts='/nologo /MTd /W3 /Gm '$EH_OPTS' /Zi /Od /I$(STLPORT_PATH)\stlport /I..\..\..\ /D__STL_DEBUG /D_STLP_DEBUG /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB '"$debug_extra"' /c'
+	opts='/nologo /MTd /W3 /Gm '$EH_OPTS' /Zi /Od /I"$(STLPORT_PATH)\stlport" /I..\..\..\ /D__STL_DEBUG /D_STLP_DEBUG /DWIN32 /D_MT /D_DEBUG /D_MBCS /D_LIB '"$debug_extra"' /c'
 	vc6_gen_lib
-	opts='/nologo /MDd /W3 /Gm '$EH_OPTS' /Zi /Od /I$(STLPORT_PATH)\stlport /I../../../ /DBOOST_REGEX_STATIC_LINK /D__STL_DEBUG /D_STLP_DEBUG /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
+	opts='/nologo /MDd /W3 /Gm '$EH_OPTS' /Zi /Od /I"$(STLPORT_PATH)\stlport" /I../../../ /DBOOST_REGEX_STATIC_LINK /D__STL_DEBUG /D_STLP_DEBUG /D_DEBUG /DWIN32 /D_WINDOWS /D_MBCS /DUSRDLL '"$debug_extra"' /c'
 	libname="libboost_regex-${subdir}-mt-gdp-${boost_version}"
 	vc6_gen_lib
 	
@@ -357,8 +367,8 @@ ICU_LINK_OPTS=
 !MESSAGE Hint: set ICU_PATH on the nmake command line to point 
 !MESSAGE to your ICU installation if you have one.
 !ELSE
-ICU_COMPILE_OPTS= -DBOOST_HAS_ICU=1 -I\$(ICU_PATH)\\include
-ICU_LINK_OPTS= /LIBPATH:\$(ICU_PATH)\\lib icuin.lib icuuc.lib
+ICU_COMPILE_OPTS= -DBOOST_HAS_ICU=1 -I"\$(ICU_PATH)\\include"
+ICU_LINK_OPTS= /LIBPATH:"\$(ICU_PATH)\\lib" icuin.lib icuuc.lib
 !MESSAGE Building Boost.Regex with ICU in \$(ICU_PATH)
 !ENDIF
 
@@ -376,7 +386,7 @@ EOF
 	echo main_dir : >> $out
 	echo "	@if not exist \"$subdir$stlport_suffix\\\$(NULL)\" mkdir $subdir$stlport_suffix" >> $out
 	echo "" >> $out
-	echo 'stlport_check : $(STLPORT_PATH)\stlport\string' >> $out
+	echo 'stlport_check : "$(STLPORT_PATH)\stlport\string"' >> $out
 	echo "	echo" >> $out
 	echo "" >> $out
 
@@ -450,6 +460,12 @@ vc6_gen
 #
 # remove tmep files;
 rm -f $tout $iout
+
+
+
+
+
+
 
 
 

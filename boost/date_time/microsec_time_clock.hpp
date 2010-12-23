@@ -6,7 +6,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2005/06/01 15:05:06 $
+ * $Date: 2005/10/28 13:32:38 $
  */
 
 
@@ -84,7 +84,7 @@ namespace date_time {
     static time_type create_time(TZ_FOR_CREATE tz) {
       timeval tv;
       gettimeofday(&tv, 0); //gettimeofday does not support TZ adjust on Linux.
-      time_t t = tv.tv_sec;
+      std::time_t t = tv.tv_sec;
       boost::uint32_t fs = tv.tv_usec;
       std::tm curr, *curr_ptr = 0;
       if (tz == LOCAL) {
@@ -155,7 +155,7 @@ namespace date_time {
 
       boost::uint32_t sub_sec = (filetime % 10000000) / 10; // microseconds
 
-      time_t t = static_cast<time_t>(filetime / 10000000); // seconds since epoch
+      std::time_t t = static_cast<time_t>(filetime / 10000000); // seconds since epoch
       
       std::tm curr, *curr_ptr = 0;
       if (tz == LOCAL) {

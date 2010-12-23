@@ -7,7 +7,7 @@
 //
 //  File        : $RCSfile: plain_report_formatter.ipp,v $
 //
-//  Version     : $Revision: 1.1 $
+//  Version     : $Revision: 1.1.2.2 $
 //
 //  Description : plain report formatter definition
 // ***************************************************************************
@@ -26,6 +26,7 @@
 // STL
 #include <iomanip>
 #include <cmath>
+#include <iostream>
 
 #include <boost/test/detail/suppress_warnings.hpp>
 
@@ -195,6 +196,12 @@ plain_report_formatter::do_confirmation_report( test_unit const& tu, std::ostrea
 //  Revision History :
 //
 //  $Log: plain_report_formatter.ipp,v $
+//  Revision 1.1.2.2  2005/11/28 11:57:07  dgregor
+//  Make that.... iostream
+//
+//  Revision 1.1.2.1  2005/11/28 00:02:36  dgregor
+//  Include ostream
+//
 //  Revision 1.1  2005/02/20 08:27:07  rogeeff
 //  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
 //

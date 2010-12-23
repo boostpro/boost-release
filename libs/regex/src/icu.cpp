@@ -19,31 +19,63 @@
 
 #include <boost/regex/config.hpp>
 #ifdef BOOST_HAS_ICU
+#define BOOST_REGEX_ICU_INSTANTIATE
 #include <boost/regex/icu.hpp>
 
 namespace boost{
 
 namespace re_detail{
 
-icu_regex_traits_implementation::string_type icu_regex_traits_implementation::do_transform(const char_type* p1, const char_type* p2, const ::Collator* pcoll) const
+icu_regex_traits_implementation::string_type icu_regex_traits_implementation::do_transform(const char_type* p1, const char_type* p2, const U_NAMESPACE_QUALIFIER Collator* pcoll) const
 {
    // TODO make thread safe!!!! :
    typedef u32_to_u16_iterator<const char_type*, ::UChar> itt;
    itt i(p1), j(p2);
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
    std::vector< ::UChar> t(i, j);
+#else
+   std::vector< ::UChar> t;
+   while(i != j)
+      t.push_back(*i++);
+#endif
    ::uint8_t result[100];
-   ::int32_t len = pcoll->getSortKey(&*t.begin(), static_cast< ::int32_t>(t.size()), result, sizeof(result));
+   ::int32_t len;
+   if(t.size())
+      len = pcoll->getSortKey(&*t.begin(), static_cast< ::int32_t>(t.size()), result, sizeof(result));
+   else
+      len = pcoll->getSortKey(static_cast<UChar const*>(0), static_cast< ::int32_t>(0), result, sizeof(result));
    if(std::size_t(len) > sizeof(result))
    {
       scoped_array< ::uint8_t> presult(new ::uint8_t[len+1]);
-      len = pcoll->getSortKey(&*t.begin(), static_cast< ::int32_t>(t.size()), presult.get(), len+1);
+      if(t.size())
+         len = pcoll->getSortKey(&*t.begin(), static_cast< ::int32_t>(t.size()), presult.get(), len+1);
+      else
+         len = pcoll->getSortKey(static_cast<UChar const*>(0), static_cast< ::int32_t>(0), presult.get(), len+1);
       if((0 == presult[len-1]) && (len > 1))
          --len;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
       return string_type(presult.get(), presult.get()+len);
+#else
+      string_type sresult;
+      ::uint8_t const* ia = presult.get();
+      ::uint8_t const* ib = presult.get()+len;
+      while(ia != ib)
+         sresult.push_back(*ia++);
+      return sresult;
+#endif
    }
    if((0 == result[len-1]) && (len > 1))
       --len;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
    return string_type(result, result+len);
+#else
+   string_type sresult;
+   ::uint8_t const* ia = result;
+   ::uint8_t const* ib = result+len;
+   while(ia != ib)
+      sresult.push_back(*ia++);
+   return sresult;
+#endif
 }
 
 }
@@ -374,10 +406,12 @@ icu_regex_traits::char_class_type icu_regex_traits::lookup_classname(const char_
             ++i;
          }
       }
-      id = ::boost::re_detail::get_default_class_id(&*s.begin(), &*s.begin() + s.size());
+      if(s.size())
+         id = ::boost::re_detail::get_default_class_id(&*s.begin(), &*s.begin() + s.size());
       if(id >= 0)
          return masks[id+1];
-      result = lookup_icu_mask(&*s.begin(), &*s.begin() + s.size());
+      if(s.size())
+         result = lookup_icu_mask(&*s.begin(), &*s.begin() + s.size());
       if(result != 0)
          return result;
    }
@@ -390,7 +424,14 @@ icu_regex_traits::string_type icu_regex_traits::lookup_collatename(const char_ty
    string_type result;
    if(std::find_if(p1, p2, std::bind2nd(std::greater< ::UChar32>(), 0x7f)) == p2)
    {
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
       std::string s(p1, p2);
+#else
+      std::string s;
+      const char_type* p3 = p1;
+      while(p3 != p2)
+         s.append(1, *p3++);
+#endif
       // Try Unicode name:
       UErrorCode err = U_ZERO_ERROR;
       UChar32 c = ::u_charFromName(U_UNICODE_CHAR_NAME, s.c_str(), &err);
@@ -409,7 +450,16 @@ icu_regex_traits::string_type icu_regex_traits::lookup_collatename(const char_ty
       }
       // try POSIX name:
       s = ::boost::re_detail::lookup_default_collate_name(s);
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
       result.assign(s.begin(), s.end());
+#else
+      result.clear();
+      std::string::const_iterator si, sj;
+      si = s.begin();
+      sj = s.end();
+      while(si != sj)
+         result.push_back(*si++);
+#endif
    }
    if(result.empty() && (p2-p1 == 1))
       result.push_back(*p1);

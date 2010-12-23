@@ -25,6 +25,44 @@
 #include <boost/regex/icu.hpp>
 #include "test.hpp"
 
+namespace unnecessary_fix{
+//
+// Some outrageously broken std lib's don't have a conforming
+// back_insert_iterator, which means we can't use the std version
+// as an argument to regex_replace, sigh... use our own:
+//
+template <class Seq>
+class back_insert_iterator 
+#ifndef BOOST_NO_STD_ITERATOR
+   : public std::iterator<std::output_iterator_tag,void,void,void,void>
+#endif
+{
+private:
+   Seq* container;
+   typedef const typename Seq::value_type value_type;
+public:
+   typedef Seq                  container_type;
+   typedef std::output_iterator_tag  iterator_category;
+
+   explicit back_insert_iterator(Seq& x) : container(&x) {}
+   back_insert_iterator& operator=(const value_type& val) 
+   { 
+      container->push_back(val);
+      return *this;
+   }
+   back_insert_iterator& operator*() { return *this; }
+   back_insert_iterator& operator++() { return *this; }
+   back_insert_iterator  operator++(int) { return *this; }
+};
+
+template <class Seq>
+inline back_insert_iterator<Seq> back_inserter(Seq& x) 
+{
+   return back_insert_iterator<Seq>(x);
+}
+
+}
+
 //
 // compare two match_results struct's for equality,
 // converting the iterator as needed:
@@ -32,7 +70,9 @@
 template <class MR1, class MR2>
 void compare_result(const MR1& w1, const MR2& w2, boost::mpl::int_<2> const*)
 {
-   typedef boost::u16_to_u32_iterator<typename MR2::value_type::const_iterator> iterator_type;
+   typedef typename MR2::value_type MR2_value_type;
+   typedef typename MR2_value_type::const_iterator MR2_iterator_type;
+   typedef boost::u16_to_u32_iterator<MR2_iterator_type> iterator_type;
    typedef typename MR1::size_type size_type;
    if(w1.size() != w2.size())
    {
@@ -60,7 +100,9 @@ void compare_result(const MR1& w1, const MR2& w2, boost::mpl::int_<2> const*)
 template <class MR1, class MR2>
 void compare_result(const MR1& w1, const MR2& w2, boost::mpl::int_<1> const*)
 {
-   typedef boost::u8_to_u32_iterator<typename MR2::value_type::const_iterator> iterator_type;
+   typedef typename MR2::value_type MR2_value_type;
+   typedef typename MR2_value_type::const_iterator MR2_iterator_type;
+   typedef boost::u8_to_u32_iterator<MR2_iterator_type> iterator_type;
    typedef typename MR1::size_type size_type;
    if(w1.size() != w2.size())
    {
@@ -150,23 +192,38 @@ void test_icu(const wchar_t&, const test_regex_search_tag& )
    boost::u32regex r;
    if(*test_locale::c_str())
    {
-      ::Locale l(test_locale::c_str());
+      U_NAMESPACE_QUALIFIER Locale l(test_locale::c_str());
       if(l.isBogus())
          return;
       r.imbue(l);
    }
 
    std::vector< ::UChar32> expression;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
    expression.assign(test_info<wchar_t>::expression().begin(), test_info<wchar_t>::expression().end());
+#else
+   std::copy(test_info<wchar_t>::expression().begin(), test_info<wchar_t>::expression().end(), std::back_inserter(expression));
+#endif
    boost::regex_constants::syntax_option_type syntax_options = test_info<UChar32>::syntax_options();
    try{
+#if !defined(BOOST_NO_MEMBER_TEMPLATES) && !defined(__IBMCPP__)
       r.assign(expression.begin(), expression.end(), syntax_options);
+#else
+      if(expression.size())
+         r.assign(&*expression.begin(), expression.size(), syntax_options);
+      else
+         r.assign(static_cast<UChar32 const*>(0), expression.size(), syntax_options);
+#endif
       if(r.status())
       {
          BOOST_REGEX_TEST_ERROR("Expression did not compile when it should have done, error code = " << r.status(), UChar32);
       }
       std::vector< ::UChar32> search_text;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
       search_text.assign(test_info<wchar_t>::search_text().begin(), test_info<wchar_t>::search_text().end());
+#else
+      std::copy(test_info<wchar_t>::search_text().begin(), test_info<wchar_t>::search_text().end(), std::back_inserter(search_text));
+#endif
       boost::regex_constants::match_flag_type opts = test_info<wchar_t>::match_options();
       const int* answer_table = test_info<wchar_t>::answer_table();
       boost::match_results<std::vector< ::UChar32>::const_iterator> what;
@@ -194,8 +251,15 @@ void test_icu(const wchar_t&, const test_regex_search_tag& )
          std::vector<UChar> expression16, text16;
          boost::match_results<std::vector<UChar>::const_iterator> what16;
          boost::match_results<const UChar*> what16c;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
          expression16.assign(u16_conv(expression.begin()), u16_conv(expression.end()));
          text16.assign(u16_conv(search_text.begin()), u16_conv(search_text.end()));
+#else
+         expression16.clear();
+         std::copy(u16_conv(expression.begin()), u16_conv(expression.end()), std::back_inserter(expression16));
+         text16.clear();
+         std::copy(u16_conv(search_text.begin()), u16_conv(search_text.end()), std::back_inserter(text16));
+#endif
          r = boost::make_u32regex(expression16.begin(), expression16.end(), syntax_options);
          if(boost::u32regex_search(const_cast<const std::vector<UChar>&>(text16).begin(), const_cast<const std::vector<UChar>&>(text16).end(), what16, r, opts))
          {
@@ -231,8 +295,15 @@ void test_icu(const wchar_t&, const test_regex_search_tag& )
          std::vector<unsigned char> expression8, text8;
          boost::match_results<std::vector<unsigned char>::const_iterator> what8;
          boost::match_results<const unsigned char*> what8c;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
          expression8.assign(u8_conv(expression.begin()), u8_conv(expression.end()));
          text8.assign(u8_conv(search_text.begin()), u8_conv(search_text.end()));
+#else
+         expression8.clear();
+         std::copy(u8_conv(expression.begin()), u8_conv(expression.end()), std::back_inserter(expression8));
+         text8.clear();
+         std::copy(u8_conv(search_text.begin()), u8_conv(search_text.end()), std::back_inserter(text8));
+#endif
          r = boost::make_u32regex(expression8.begin(), expression8.end(), syntax_options);
          if(boost::u32regex_search(const_cast<const std::vector<unsigned char>&>(text8).begin(), const_cast<const std::vector<unsigned char>&>(text8).end(), what8, r, opts))
          {
@@ -289,12 +360,16 @@ void test_icu(const wchar_t&, const test_invalid_regex_tag&)
 {
    typedef boost::u16_to_u32_iterator<std::wstring::const_iterator, ::UChar32> conv_iterator;
    std::vector< ::UChar32> expression;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
    expression.assign(test_info<wchar_t>::expression().begin(), test_info<wchar_t>::expression().end());
+#else
+   std::copy(test_info<wchar_t>::expression().begin(), test_info<wchar_t>::expression().end(), std::back_inserter(expression));
+#endif
    boost::regex_constants::syntax_option_type syntax_options = test_info<wchar_t>::syntax_options();
    boost::u32regex r;
    if(*test_locale::c_str())
    {
-      ::Locale l(test_locale::c_str());
+      U_NAMESPACE_QUALIFIER Locale l(test_locale::c_str());
       if(l.isBogus())
          return;
       r.imbue(l);
@@ -304,7 +379,15 @@ void test_icu(const wchar_t&, const test_invalid_regex_tag&)
    //
    try
    {
+#if !defined(BOOST_NO_MEMBER_TEMPLATES) && !defined(__IBMCPP__)
       if(0 == r.assign(expression.begin(), expression.end(), syntax_options | boost::regex_constants::no_except).status())
+#else
+      if(expression.size())
+         r.assign(&*expression.begin(), expression.size(), syntax_options | boost::regex_constants::no_except);
+      else
+         r.assign(static_cast<UChar32 const*>(0), static_cast<boost::u32regex::size_type>(0), syntax_options | boost::regex_constants::no_except);
+      if(0 == r.status())
+#endif
       {
          BOOST_REGEX_TEST_ERROR("Expression compiled when it should not have done so.", wchar_t);
       }
@@ -318,7 +401,14 @@ void test_icu(const wchar_t&, const test_invalid_regex_tag&)
    //
    bool have_catch = false;
    try{
+#if !defined(BOOST_NO_MEMBER_TEMPLATES) && !defined(__IBMCPP__)
       r.assign(expression.begin(), expression.end(), syntax_options);
+#else
+      if(expression.size())
+         r.assign(&*expression.begin(), expression.size(), syntax_options);
+      else
+         r.assign(static_cast<UChar32 const*>(0), static_cast<boost::u32regex::size_type>(0), syntax_options);
+#endif
 #ifdef BOOST_NO_EXCEPTIONS
       if(r.status())
          have_catch = true;
@@ -356,7 +446,11 @@ void test_icu(const wchar_t&, const test_invalid_regex_tag&)
       //
       typedef boost::u32_to_u16_iterator<std::vector<UChar32>::const_iterator> u16_conv;
       std::vector<UChar> expression16;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
       expression16.assign(u16_conv(expression.begin()), u16_conv(expression.end()));
+#else
+      std::copy(u16_conv(expression.begin()), u16_conv(expression.end()), std::back_inserter(expression16));
+#endif
       if(0 == boost::make_u32regex(expression16.begin(), expression16.end(), syntax_options | boost::regex_constants::no_except).status())
       {
          BOOST_REGEX_TEST_ERROR("Expression compiled when it should not have done so.", wchar_t);
@@ -374,7 +468,11 @@ void test_icu(const wchar_t&, const test_invalid_regex_tag&)
       //
       typedef boost::u32_to_u8_iterator<std::vector<UChar32>::const_iterator> u8_conv;
       std::vector<unsigned char> expression8;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
       expression8.assign(u8_conv(expression.begin()), u8_conv(expression.end()));
+#else
+      std::copy(u8_conv(expression.begin()), u8_conv(expression.end()), std::back_inserter(expression8));
+#endif
       if(0 == boost::make_u32regex(expression8.begin(), expression8.end(), syntax_options | boost::regex_constants::no_except).status())
       {
          BOOST_REGEX_TEST_ERROR("Expression compiled when it should not have done so.", wchar_t);
@@ -393,27 +491,45 @@ void test_icu(const wchar_t&, const test_invalid_regex_tag&)
 void test_icu(const wchar_t&, const test_regex_replace_tag&)
 {
    std::vector< ::UChar32> expression;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
    expression.assign(test_info<wchar_t>::expression().begin(), test_info<wchar_t>::expression().end());
+#else
+   std::copy(test_info<wchar_t>::expression().begin(), test_info<wchar_t>::expression().end(), std::back_inserter(expression));
+#endif
    boost::regex_constants::syntax_option_type syntax_options = test_info<UChar32>::syntax_options();
    boost::u32regex r;
    try{
+#if !defined(BOOST_NO_MEMBER_TEMPLATES) && !defined(__IBMCPP__)
       r.assign(expression.begin(), expression.end(), syntax_options);
+#else
+      if(expression.size())
+         r.assign(&*expression.begin(), expression.size(), syntax_options);
+      else
+         r.assign(static_cast<UChar32 const*>(0), static_cast<boost::u32regex::size_type>(0), syntax_options);
+#endif
       if(r.status())
       {
          BOOST_REGEX_TEST_ERROR("Expression did not compile when it should have done, error code = " << r.status(), UChar32);
       }
       typedef std::vector<UChar32> string_type;
       string_type search_text;
-      search_text.assign(test_info<UChar32>::search_text().begin(), test_info<UChar32>::search_text().end());
       boost::regex_constants::match_flag_type opts = test_info<UChar32>::match_options();
       string_type format_string;
+      string_type result_string;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
+      search_text.assign(test_info<UChar32>::search_text().begin(), test_info<UChar32>::search_text().end());
       format_string.assign(test_info<UChar32>::format_string().begin(), test_info<UChar32>::format_string().end());
       format_string.push_back(0);
-      string_type result_string;
       result_string.assign(test_info<UChar32>::result_string().begin(), test_info<UChar32>::result_string().end());
+#else
+      std::copy(test_info<UChar32>::search_text().begin(), test_info<UChar32>::search_text().end(), std::back_inserter(search_text));
+      std::copy(test_info<UChar32>::format_string().begin(), test_info<UChar32>::format_string().end(), std::back_inserter(format_string));
+      format_string.push_back(0);
+      std::copy(test_info<UChar32>::result_string().begin(), test_info<UChar32>::result_string().end(), std::back_inserter(result_string));
+#endif
       string_type result;
 
-      boost::u32regex_replace(std::back_inserter(result), search_text.begin(), search_text.end(), r, &*format_string.begin(), opts);
+      boost::u32regex_replace(unnecessary_fix::back_inserter(result), search_text.begin(), search_text.end(), r, &*format_string.begin(), opts);
       if(result != result_string)
       {
          BOOST_REGEX_TEST_ERROR("regex_replace generated an incorrect string result", UChar32);
@@ -428,12 +544,19 @@ void test_icu(const wchar_t&, const test_regex_replace_tag&)
          //
          typedef boost::u32_to_u16_iterator<std::vector<UChar32>::const_iterator> u16_conv;
          std::vector<UChar> expression16, text16, format16, result16, found16;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
          expression16.assign(u16_conv(expression.begin()), u16_conv(expression.end()));
          text16.assign(u16_conv(search_text.begin()), u16_conv(search_text.end()));
          format16.assign(u16_conv(format_string.begin()), u16_conv(format_string.end()));
          result16.assign(u16_conv(result_string.begin()), u16_conv(result_string.end()));
+#else
+         std::copy(u16_conv(expression.begin()), u16_conv(expression.end()), std::back_inserter(expression16));
+         std::copy(u16_conv(search_text.begin()), u16_conv(search_text.end()), std::back_inserter(text16));
+         std::copy(u16_conv(format_string.begin()), u16_conv(format_string.end()), std::back_inserter(format16));
+         std::copy(u16_conv(result_string.begin()), u16_conv(result_string.end()), std::back_inserter(result16));
+#endif
          r = boost::make_u32regex(expression16.begin(), expression16.end(), syntax_options);
-         boost::u32regex_replace(std::back_inserter(found16), text16.begin(), text16.end(), r, &*format16.begin(), opts);
+         boost::u32regex_replace(unnecessary_fix::back_inserter(found16), text16.begin(), text16.end(), r, &*format16.begin(), opts);
          if(result16 != found16)
          {
             BOOST_REGEX_TEST_ERROR("u32regex_replace with UTF-16 string returned incorrect result", UChar32);
@@ -442,10 +565,13 @@ void test_icu(const wchar_t&, const test_regex_replace_tag&)
          // Now with UnicodeString:
          //
          UnicodeString expression16u, text16u, format16u, result16u, found16u;
-         expression16u.setTo(&*expression16.begin(), expression16.size());
-         text16u.setTo(&*text16.begin(), text16.size());
+         if(expression16.size())
+            expression16u.setTo(&*expression16.begin(), expression16.size());
+         if(text16.size())
+            text16u.setTo(&*text16.begin(), text16.size());
          format16u.setTo(&*format16.begin(), format16.size()-1);
-         result16u.setTo(&*result16.begin(), result16.size());
+         if(result16.size())
+            result16u.setTo(&*result16.begin(), result16.size());
          r = boost::make_u32regex(expression16.begin(), expression16.end(), syntax_options);
          found16u = boost::u32regex_replace(text16u, r, format16u, opts);
          if(result16u != found16u)
@@ -458,12 +584,19 @@ void test_icu(const wchar_t&, const test_regex_replace_tag&)
          //
          typedef boost::u32_to_u8_iterator<std::vector<UChar32>::const_iterator, unsigned char> u8_conv;
          std::vector<char> expression8, text8, format8, result8, found8;
+#ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
          expression8.assign(u8_conv(expression.begin()), u8_conv(expression.end()));
          text8.assign(u8_conv(search_text.begin()), u8_conv(search_text.end()));
          format8.assign(u8_conv(format_string.begin()), u8_conv(format_string.end()));
          result8.assign(u8_conv(result_string.begin()), u8_conv(result_string.end()));
+#else
+         std::copy(u8_conv(expression.begin()), u8_conv(expression.end()), std::back_inserter(expression8));
+         std::copy(u8_conv(search_text.begin()), u8_conv(search_text.end()), std::back_inserter(text8));
+         std::copy(u8_conv(format_string.begin()), u8_conv(format_string.end()), std::back_inserter(format8));
+         std::copy(u8_conv(result_string.begin()), u8_conv(result_string.end()), std::back_inserter(result8));
+#endif
          r = boost::make_u32regex(expression8.begin(), expression8.end(), syntax_options);
-         boost::u32regex_replace(std::back_inserter(found8), text8.begin(), text8.end(), r, &*format8.begin(), opts);
+         boost::u32regex_replace(unnecessary_fix::back_inserter(found8), text8.begin(), text8.end(), r, &*format8.begin(), opts);
          if(result8 != found8)
          {
             BOOST_REGEX_TEST_ERROR("u32regex_replace with UTF-8 string returned incorrect result", UChar32);
@@ -472,10 +605,13 @@ void test_icu(const wchar_t&, const test_regex_replace_tag&)
          // Now with std::string and UTF-8:
          //
          std::string expression8s, text8s, format8s, result8s, found8s;
-         expression8s.assign(&*expression8.begin(), expression8.size());
-         text8s.assign(&*text8.begin(), text8.size());
+         if(expression8.size())
+            expression8s.assign(&*expression8.begin(), expression8.size());
+         if(text8.size())
+            text8s.assign(&*text8.begin(), text8.size());
          format8s.assign(&*format8.begin(), format8.size()-1);
-         result8s.assign(&*result8.begin(), result8.size());
+         if(result8.size())
+            result8s.assign(&*result8.begin(), result8.size());
          r = boost::make_u32regex(expression8.begin(), expression8.end(), syntax_options);
          found8s = boost::u32regex_replace(text8s, r, format8s, opts);
          if(result8s != found8s)

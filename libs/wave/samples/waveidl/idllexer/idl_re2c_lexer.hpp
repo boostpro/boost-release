@@ -71,13 +71,14 @@ public:
     boost::wave::cpplexer::lex_token<PositionT> get();
     void set_position(PositionT const &pos)
     {
+        // set position has to change the file name and line number only
         filename = pos.get_file();
         scanner.line = pos.get_line();
         scanner.file_name = filename.c_str();
     }
 
 // error reporting from the re2c generated lexer
-    static int report_error(scanner_t *s, char *, ...);
+    static int report_error(scanner_t const *s, char const *, ...);
 
 private:
     static char const *tok_names[];
@@ -165,7 +166,7 @@ lexer<IteratorT, PositionT>::get()
 
 template <typename IteratorT, typename PositionT>
 inline int 
-lexer<IteratorT, PositionT>::report_error(scanner_t *s, char *msg, ...)
+lexer<IteratorT, PositionT>::report_error(scanner_t const *s, char const* msg, ...)
 {
     BOOST_ASSERT(0 != s);
     BOOST_ASSERT(0 != msg);

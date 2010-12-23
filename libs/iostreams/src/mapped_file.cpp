@@ -181,7 +181,9 @@ void mapped_file_source::open_impl(mapped_file_params p)
                        (p.new_file_size != 0 && !readonly) ? 
                            CREATE_ALWAYS : 
                            OPEN_EXISTING,
-                       FILE_ATTRIBUTE_TEMPORARY,
+                       readonly ?
+                           FILE_ATTRIBUTE_READONLY :
+                           FILE_ATTRIBUTE_TEMPORARY,
                        NULL );
 
     if (pimpl_->handle_ == INVALID_HANDLE_VALUE)
@@ -204,7 +206,7 @@ void mapped_file_source::open_impl(mapped_file_params p)
     pimpl_->mapped_handle_ =
         ::CreateFileMappingA( pimpl_->handle_, NULL,
                               readonly ? PAGE_READONLY : PAGE_READWRITE,
-                              0, 0, p.path.c_str() );
+                              0, 0, NULL );
     if (pimpl_->mapped_handle_ == NULL) {
         detail::cleanup_and_throw(*pimpl_, "couldn't create mapping");
     }
@@ -289,7 +291,7 @@ void cleanup_and_throw(detail::mapped_file_impl& impl, const char* msg)
     if (impl.handle_ != 0)
         ::close(impl.handle_);
     impl.clear(true);
-    throw_system_failure("failed getting file size");
+    throw_system_failure(msg);
 }
 
 } // End namespace detail.

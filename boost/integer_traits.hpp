@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: integer_traits.hpp,v 1.27 2005/05/07 13:14:07 dgregor Exp $
+ * $Id: integer_traits.hpp,v 1.27.2.1 2005/08/24 15:45:17 johnmaddock Exp $
  *
  * Idea by Beman Dawes, Ed Brey, Steve Cleary, and Nathan Myers
  */
@@ -100,6 +100,7 @@ class integer_traits<wchar_t>
     || (defined(__OpenBSD__) && defined(__GNUC__))\
     || (defined(__NetBSD__) && defined(__GNUC__))\
     || (defined(__FreeBSD__) && defined(__GNUC__))\
+    || (defined(__DragonFly__) && defined(__GNUC__))\
     || (defined(__hpux) && defined(__GNUC__) && (__GNUC__ == 3) && !defined(__SGI_STL_PORT))
     // No WCHAR_MIN and WCHAR_MAX, wchar_t has the same range as int.
     //  - SGI MIPSpro with native library

@@ -14,7 +14,7 @@ else if $(UNIX)
     CATENATE = cat ;
 }
 
-PYTHON_VERSION ?= 2.2 ;
+PYTHON_VERSION ?= 2.4 ;
 
 # Strip the dot from the Python version in order to be able to name
 # libraries
@@ -59,7 +59,7 @@ if $(PYTHON_WINDOWS)
     CYGWIN_PYTHON_LIB_PATH ?= $(CYGWIN_PYTHON_ROOT)/lib/python$(CYGWIN_PYTHON_VERSION)/config ;
       
     CYGWIN_PYTHON_DEBUG_VERSION ?= $(CYGWIN_PYTHON_VERSION) ;
-    CYGWIN_PYTHON_DEBUG_ROOT ?= /usr/local/pydebug ;
+    CYGWIN_PYTHON_DEBUG_ROOT ?= $(PYTHON_ROOT) ;
     CYGWIN_PYTHON_DEBUG_DLL_PATH ?= $(CYGWIN_PYTHON_DEBUG_ROOT)/bin ;
     CYGWIN_PYTHON_DEBUG_LIB_PATH ?= $(CYGWIN_PYTHON_DEBUG_ROOT)/lib/python$(CYGWIN_PYTHON_DEBUG_VERSION)/config ;
 }
@@ -82,6 +82,10 @@ else if $(UNIX)
 	{
 		PYTHON_EMBEDDED_LIBRARY = python$(PYTHON_VERSION) dl ;
 	}
+	else if $(OS) = OSF
+	{
+		PYTHON_EMBEDDED_LIBRARY = python$(PYTHON_VERSION) ;
+	}
 	else
 	{
 		PYTHON_EMBEDDED_LIBRARY = python$(PYTHON_VERSION) dl util ;
@@ -91,7 +95,7 @@ else if $(UNIX)
 
 if $(NT)
 {
-    PYTHON_ROOT ?= c:/tools/python ;
+    PYTHON_ROOT ?= c:/Python$(PYTHON_VERSION_NODOT) ;
     
     # Reconstitute any paths split due to embedded spaces.
     PYTHON_ROOT = $(PYTHON_ROOT:J=" ") ;
@@ -100,8 +104,8 @@ if $(NT)
 
     PYTHON_INCLUDES ?= $(PYTHON_ROOT)/include ;
     
-    PYTHON_DLL ?= [ GLOB $(PATH) $(Path) : python$(PYTHON_VERSION_NODOT).dll ] ;
-    PYTHON_DEBUG_DLL ?= [ GLOB $(PATH) $(Path) : python$(PYTHON_VERSION_NODOT)_d.dll ] ;
+    PYTHON_DLL ?= [ GLOB $(PYTHON_ROOT) $(PATH) $(Path) : python$(PYTHON_VERSION_NODOT).dll ] ;
+    PYTHON_DEBUG_DLL ?= [ GLOB $(PYTHON_ROOT) $(PATH) $(Path) : python$(PYTHON_VERSION_NODOT)_d.dll ] ;
     PYTHON_IMPORT_LIB ?= [ GLOB $(PYTHON_LIB_PATH) : libpython$(PYTHON_VERSION_NODOT).* ] ;
     PYTHON_DEBUG_IMPORT_LIB ?= [ GLOB $(PYTHON_LIB_PATH) : libpython$(PYTHON_VERSION_NODOT).* ] ;
 }
@@ -133,7 +137,7 @@ else if $(UNIX) && $(OS) = MACOSX
 }
 else if $(UNIX)
 {
-    PYTHON_ROOT ?= /usr/local ;
+    PYTHON_ROOT ?= /usr ;
     PYTHON_ROOT = $(PYTHON_ROOT:J=" ") ;
     PYTHON_INCLUDES ?= $(PYTHON_ROOT)/include/python$(PYTHON_VERSION) ;
     PYTHON_LIB_PATH ?= $(PYTHON_ROOT)/lib/python$(PYTHON_VERSION)/config ;
@@ -579,9 +583,18 @@ rule check-python-config ( )
             ECHO "couldn't find Python.h in"  \"$(dir:J=" ")\" ;
             ECHO ;
             ECHO You can configure the location of your python installation by setting: ;
-            ECHO "PYTHON_ROOT    - currently" \"$(PYTHON_ROOT:J=" ")\" ;
             ECHO "PYTHON_VERSION - The 2-part python Major.Minor version number (e.g." ;
             ECHO "                 \"2.2\", NOT \"2.2.1\")  - currently" \"$(PYTHON_VERSION)\" ;
+            ECHO ;
+            if $(NT)
+            {
+                ECHO "PYTHON_ROOT    - automatically configured from PYTHON_VERSION if not" ;
+                ECHO "                 otherwise set ; currently" \"$(PYTHON_ROOT:J=" ")\" ;
+            }
+            else
+            {
+                ECHO "PYTHON_ROOT    - currently" \"$(PYTHON_ROOT:J=" ")\" ;
+            }
             ECHO ;
             ECHO "The following are automatically configured from PYTHON_ROOT if not" ;
             ECHO "otherwise set:" ;
