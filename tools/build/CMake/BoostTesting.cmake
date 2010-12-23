@@ -37,28 +37,24 @@
 # want or need to perform regression testing on Boost. The Boost build
 # is significantly faster when we aren't also building regression
 # tests.
-option(BUILD_TESTING "Enable testing" OFF)
+option(BUILD_REGRESSION_TESTS "Enable regression testing" OFF)
 
-if (BUILD_TESTING)
-  add_custom_target(test COMMENT "Running all tests")
+if (BUILD_REGRESSION_TESTS)
+  enable_testing()
+  mark_as_advanced(BUILD_TESTING)
 
   option(TEST_INSTALLED_TREE "Enable testing of an already-installed tree" OFF)
 
+  set(BOOST_TEST_LIBRARIES ""
+    CACHE STRING "Semicolon-separated list of Boost libraries to test")
+  
   if (TEST_INSTALLED_TREE)
     include("${CMAKE_INSTALL_PREFIX}/lib/Boost${BOOST_VERSION}/boost-targets.cmake")
   endif (TEST_INSTALLED_TREE)
-endif (BUILD_TESTING)
 
-option(BOOST_BUILD_SANITY_TEST
-  "Don't build regular boost libraries, build libraries that test the boost cmake build system itself" OFF)
+  set(DART_TESTING_TIMEOUT=15 CACHE INTEGER "Timeout after this much madness")
 
-if(BOOST_BUILD_SANITY_TEST)
-  set(BOOST_LIBS_DIR ${CMAKE_SOURCE_DIR}/tools/build/CMake/sanity)
-  configure_file(${CMAKE_SOURCE_DIR}/libs/CMakeLists.txt ${BOOST_LIBS_DIR}/CMakeLists.txt COPYONLY)
-else(BOOST_BUILD_SANITY_TEST)
-  set(BOOST_LIBS_DIR ${CMAKE_SOURCE_DIR}/libs)
-endif(BOOST_BUILD_SANITY_TEST)
-
+endif (BUILD_REGRESSION_TESTS)
 
 #-------------------------------------------------------------------------------
 # This macro adds additional include directories based on the dependencies of 
@@ -129,9 +125,9 @@ macro(boost_additional_test_dependencies libname)
     endwhile()
   endforeach()
   
-    foreach (include ${THIS_TEST_DEPENDS_ALL})
-        include_directories("${Boost_SOURCE_DIR}/libs/${include}/include")
-    endforeach (include ${includes})
+  foreach (include ${THIS_TEST_DEPENDS_ALL})
+    include_directories("${Boost_SOURCE_DIR}/libs/${include}/include")
+  endforeach (include ${includes})
   
 endmacro(boost_additional_test_dependencies libname)
 #-------------------------------------------------------------------------------
@@ -148,6 +144,7 @@ endmacro(boost_additional_test_dependencies libname)
 #                         [LINK_FLAGS linkflags]
 #                         [LINK_LIBS linklibs]
 #                         [DEPENDS libdepend1 libdepend2 ...]
+#                         [KNOWN_FAILURES string1 string2 ...]
 #                         [COMPILE] [RUN] [FAIL])
 #
 # testname is the name of the test. The remaining arguments passed to
@@ -164,9 +161,6 @@ endmacro(boost_additional_test_dependencies libname)
 #   source files, BOOST_TEST_SOURCES will contain those; otherwise,
 #   BOOST_TEST_SOURCES will only contain "testname.cpp".
 #
-#   BOOST_TEST_TAG:  compile, compile_fail, run, or run_fail.
-#   Used in test-reporting systems.
-#
 #   BOOST_TEST_TESTNAME: A (hopefully) globally unique target name
 #   for the test, constructed from PROJECT-testname-TAG
 #
@@ -180,7 +174,7 @@ macro(boost_test_parse_args testname)
   set(BOOST_TEST_OKAY TRUE)
   set(BOOST_TEST_COMPILE_FLAGS "")
   parse_arguments(BOOST_TEST 
-    "BOOST_LIB;LINK_LIBS;LINK_FLAGS;DEPENDS;COMPILE_FLAGS;ARGS;EXTRA_OPTIONS"
+    "BOOST_LIB;LINK_LIBS;LINK_FLAGS;DEPENDS;COMPILE_FLAGS;ARGS;EXTRA_OPTIONS;KNOWN_FAILURES"
     "COMPILE;RUN;LINK;FAIL;RELEASE;DEBUG"
     ${ARGN}
     )
@@ -211,27 +205,26 @@ macro(boost_test_parse_args testname)
     set(BOOST_TEST_SOURCES "${testname}.cpp")
   endif (BOOST_TEST_DEFAULT_ARGS)
 
-  #message("Sources: ${BOOST_TEST_SOURCES}")
-  if (BOOST_TEST_RUN)
-    set(BOOST_TEST_TAG "run")
-  elseif(BOOST_TEST_COMPILE)
-    set(BOOST_TEST_TAG "compile")
-  elseif(BOOST_TEST_LINK)
-    set(BOOST_TEST_TAG "link")
-  endif(BOOST_TEST_RUN)
-
-  if (BOOST_TEST_FAIL)
-    set(BOOST_TEST_TAG ${BOOST_TEST_TAG}-fail)
-  endif(BOOST_TEST_FAIL)
-
-  set(BOOST_TEST_TESTNAME "${PROJECT_NAME}-${testname}-${BOOST_TEST_TAG}")
+  set(BOOST_TEST_TESTNAME "${PROJECT_NAME}-${testname}")
   #message("testname: ${BOOST_TEST_TESTNAME}")
   # If testing is turned off, this test is not okay
-  if (NOT BUILD_TESTING)
+  if (NOT BUILD_REGRESSION_TESTS)
     set(BOOST_TEST_OKAY FALSE)
-  endif(NOT BUILD_TESTING)
-
+  endif(NOT BUILD_REGRESSION_TESTS)
 endmacro(boost_test_parse_args)
+
+# This macro attaches a the "known-failure" label to the given test
+# target if the build name matches any of the declared, known
+# failures.
+macro(boost_test_known_failures TEST)
+  foreach(PATTERN ${ARGN})
+    if (${BUILDNAME} MATCHES ${PATTERN})
+      set_tests_properties("${PROJECT_NAME}-${TEST}"
+        PROPERTIES LABELS "${PROJECT_NAME};known-failure")
+    endif()
+  endforeach()
+endmacro(boost_test_known_failures)
+
 
 # This macro creates a Boost regression test that will be executed. If
 # the test can be built, executed, and exits with a return code of
@@ -295,33 +288,25 @@ macro(boost_test_run testname)
       ${BOOST_TEST_EXTRA_OPTIONS})
 
     if (THIS_EXE_OKAY)
-      # This target builds and runs the test
-      add_custom_target(${BOOST_TEST_TESTNAME})
+      get_target_property(THIS_TEST_OUTPUT_DIRECTORY ${testname} 
+        RUNTIME_OUTPUT_DIRECTORY)
+      add_test (${BOOST_TEST_TESTNAME} 
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/tests/${PROJECT_NAME}/${testname}
+        ${BOOST_TEST_ARGS})
 
-      file( TO_NATIVE_PATH "${BOOST_TEST_DRIVER}" NATIVE_BOOST_TEST_DRIVER )
+      set_tests_properties(${BOOST_TEST_TESTNAME}
+        PROPERTIES
+        LABELS "${PROJECT_NAME}"
+        )
+      boost_test_known_failures(${testname} ${BOOST_TEST_KNOWN_FAILURES})
 
-      set(THIS_TEST_PREFIX_ARGS
-          ${PYTHON_EXECUTABLE} ${NATIVE_BOOST_TEST_DRIVER} 
-          ${CMAKE_CURRENT_BINARY_DIR} ${BOOST_TEST_TAG} ${testname} 
-	       )
+      # Make sure that the -test target that corresponds to this
+      # library or tool depends on this test executable.
+      add_dependencies(${PROJECT_NAME}-test ${THIS_EXE_NAME})
 
-      add_custom_command(TARGET ${BOOST_TEST_TESTNAME}
-                        POST_BUILD
-                        COMMAND 
-                        ${THIS_TEST_PREFIX_ARGS} 
-                        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/tests/${PROJECT_NAME}/${testname}
-                        ${BOOST_TEST_ARGS}
-                        COMMENT "${PROJECT_NAME} => Running '${testname}'"
-                        )
-
-      add_dependencies(${BOOST_TEST_TESTNAME}
-    	${PROJECT_NAME}-${testname}
-    	)
-
-      add_dependencies(${PROJECT_NAME}-test
-    	${BOOST_TEST_TESTNAME}
-    	)
-
+      if (BOOST_TEST_FAIL)
+        set_tests_properties(${BOOST_TEST_TESTNAME} PROPERTIES WILL_FAIL ON)
+      endif ()
     endif(THIS_EXE_OKAY)
   endif (BOOST_TEST_OKAY)
 endmacro(boost_test_run)
@@ -334,7 +319,6 @@ endmacro(boost_test_run)
 macro(boost_test_run_fail testname)
   boost_test_run(${testname} ${ARGN} FAIL)
 endmacro(boost_test_run_fail)
-
 
 # This macro creates a Boost regression test that will be compiled,
 # but not linked or executed. If the test can be compiled with no
@@ -368,34 +352,33 @@ macro(boost_test_compile testname)
     get_directory_property(BOOST_TEST_INCLUDE_DIRS INCLUDE_DIRECTORIES)
     set(BOOST_TEST_INCLUDES "")
     foreach(DIR ${BOOST_TEST_INCLUDE_DIRS})
-      set(BOOST_TEST_INCLUDES "${BOOST_TEST_INCLUDES};-I${DIR}")
+      set(BOOST_TEST_INCLUDES "${BOOST_TEST_INCLUDES};${DIR}")
     endforeach(DIR ${BOOST_TEST_INCLUDE_DIRS})
 
-    set(THIS_TEST_PREFIX_ARGS
-      ${PYTHON_EXECUTABLE} ${BOOST_TEST_DRIVER} ${CMAKE_CURRENT_BINARY_DIR} ${BOOST_TEST_TAG} ${testname} 
-      )
-  
-    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${BOOST_TEST_TESTNAME}.${CMAKE_CXX_OUTPUT_EXTENSION}
-      COMMAND 
-      ${THIS_TEST_PREFIX_ARGS}
-      ${CMAKE_CXX_COMPILER} 
-      ${BOOST_TEST_COMPILE_FLAGS} 
-      ${BOOST_TEST_INCLUDES}
-      -c ${BOOST_TEST_SOURCES}
-      -o ${CMAKE_CURRENT_BINARY_DIR}/${BOOST_TEST_TESTNAME}${CMAKE_CXX_OUTPUT_EXTENSION}
-      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-      DEPENDS ${BOOST_TEST_SOURCES}
-      COMMENT "${PROJECT_NAME} => Running Compile ${test_pass} Test '${BOOST_TEST_SOURCES}'"
+    add_test(${BOOST_TEST_TESTNAME}
+      ${CMAKE_CTEST_COMMAND}
+      --build-and-test
+      ${Boost_SOURCE_DIR}/tools/build/CMake/CompileTest
+      ${Boost_BINARY_DIR}/tools/build/CMake/CompileTest
+      --build-generator ${CMAKE_GENERATOR}
+      --build-makeprogram ${CMAKE_MAKE_PROGRAM}
+      --build-project CompileTest
+      --build-options 
+      "-DSOURCE:STRING=${CMAKE_CURRENT_SOURCE_DIR}/${BOOST_TEST_SOURCES}"
+      "-DINCLUDES:STRING=${BOOST_TEST_INCLUDES}"
+      "-DCOMPILE_FLAGS:STRING=${BOOST_TEST_COMPILE_FLAGS}"
       )
 
-    add_custom_target(${BOOST_TEST_TESTNAME}
-      DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${BOOST_TEST_TESTNAME}.${CMAKE_CXX_OUTPUT_EXTENSION}
+    set_tests_properties(${BOOST_TEST_TESTNAME}
+      PROPERTIES
+      LABELS "${PROJECT_NAME}"
       )
 
-    add_dependencies(${PROJECT_NAME}-test
-      ${BOOST_TEST_TESTNAME}
-      )
+    boost_test_known_failures(${testname} ${BOOST_TEST_KNOWN_FAILURES})
 
+    if (BOOST_TEST_FAIL)
+      set_tests_properties(${BOOST_TEST_TESTNAME} PROPERTIES WILL_FAIL ON)      
+    endif ()
   endif(BOOST_TEST_OKAY)
 endmacro(boost_test_compile)
 
@@ -413,42 +396,58 @@ endmacro(boost_test_compile_fail)
 #
 # boost_test_link:
 #
-# Under construction.
+#
+# Each library "exports" itself to
+# ${CMAKE_BINARY_DIR}/exports/<variantname>.cmake
+#
+# The list of 'depends' for these libraries has to match one of those
+# files, this way the export mechanism works.  The generated
+# cmakelists will include() those exported .cmake files, for each
+# DEPENDS.
+#
 #
 macro(boost_test_link testname)
   boost_test_parse_args(${testname} ${ARGN} LINK)
   if(BOOST_TEST_OKAY)
+    # Determine the include directories to pass along to the underlying
+    # project.
+    # works but not great
+    get_directory_property(BOOST_TEST_INCLUDE_DIRS INCLUDE_DIRECTORIES)
+    set(BOOST_TEST_INCLUDES "")
+    foreach(DIR ${BOOST_TEST_INCLUDE_DIRS})
+      set(BOOST_TEST_INCLUDES "${BOOST_TEST_INCLUDES};${DIR}")
+    endforeach(DIR ${BOOST_TEST_INCLUDE_DIRS})
 
-    set(THIS_TEST_PREFIX_ARGS
-      ${PYTHON_EXECUTABLE} ${BOOST_TEST_DRIVER} ${CMAKE_CURRENT_BINARY_DIR} test_link ${testname} 
-      )
-    
-    #
-    #  FIXME:  no ctest.
-    #
-    add_custom_target(TARGET ${BOOST_TEST_TESTNAME}
-      COMMAND /link/tests/are/failing/at/the/moment
-      COMMENT "${PROJECT_NAME} => Link test '${testname}' is failing."
+    add_test(${BOOST_TEST_TESTNAME}
+      ${CMAKE_CTEST_COMMAND}
+      -VV
+      --build-and-test
+      ${Boost_SOURCE_DIR}/tools/build/CMake/LinkTest
+      ${Boost_BINARY_DIR}/tools/build/CMake/LinkTest
+      --build-generator ${CMAKE_GENERATOR}
+      --build-makeprogram ${CMAKE_MAKE_PROGRAM}
+      --build-project LinkTest
+      --build-options 
+      "-DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}"
+      "-DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}"
+      "-DBOOST_EXPORTS_DIR:FILEPATH=${CMAKE_BINARY_DIR}/exports"
+      "-DSOURCE:STRING=${CMAKE_CURRENT_SOURCE_DIR}/${BOOST_TEST_SOURCES}"
+      "-DINCLUDES:STRING=${BOOST_TEST_INCLUDES}"
+      "-DCOMPILE_FLAGS:STRING=${BOOST_TEST_COMPILE_FLAGS}"
+      "-DLINK_LIBS:STRING=${BOOST_TEST_LINK_LIBS}"
+      "-DDEPENDS:STRING=${BOOST_TEST_DEPENDS}"
       )
 
-    # POST_BUILD
-    # COMMAND 
-    # ${THIS_TEST_PREFIX_ARGS}
-    # ${CMAKE_CTEST_COMMAND}
-    # --build-and-test
-    # ${Boost_SOURCE_DIR}/tools/build/CMake/LinkTest
-    # ${Boost_BINARY_DIR}/tools/build/CMake/LinkTest
-    # --build-generator \\"${CMAKE_GENERATOR}\\"
-    # --build-makeprogram \\"${MAKEPROGRAM}\\"
-    # --build-project LinkTest
-    # --build-options -DSOURCE=${CMAKE_CURRENT_SOURCE_DIR}/${BOOST_TEST_SOURCES} -DINCLUDES=${Boost_SOURCE_DIR} -DCOMPILE_FLAGS=\\"${BOOST_TEST_COMPILE_FLAGS}\\"
-    # COMMENT "Running ${testname} (link) in project ${PROJECT_NAME}"
-    # )
-
-    add_dependencies(${PROJECT_NAME}-test
-      ${BOOST_TEST_TESTNAME}
+    set_tests_properties(${BOOST_TEST_TESTNAME}
+      PROPERTIES
+      LABELS "${PROJECT_NAME}"
       )
-    
+
+    boost_test_known_failures(${testname} ${BOOST_TEST_KNOWN_FAILURES})
+
+    if (BOOST_TEST_FAIL)
+      set_tests_properties(${BOOST_TEST_TESTNAME} PROPERTIES WILL_FAIL ON)      
+    endif ()
   endif(BOOST_TEST_OKAY)
 endmacro(boost_test_link)
 

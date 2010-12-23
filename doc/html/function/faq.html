@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Frequently Asked Questions</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../function.html" title="Chapter 7. Boost.Function">
 <link rel="prev" href="../boost/function_equal.html" title="Function template function_equal">
@@ -22,31 +22,32 @@
 <div class="spirit-nav">
 <a accesskey="p" href="../boost/function_equal.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../function.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="misc.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Frequently Asked Questions">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="function.faq"></a>Frequently Asked Questions</h2></div></div></div>
-<div class="qandaset">
-<dl>
-<dt>1. <a href="faq.html#id1877737">Why can't I compare
+<div class="qandaset" title="Frequently Asked Questions">
+<a name="id876763"></a><dl>
+<dt>1. <a href="faq.html#id876765">Why can't I compare
     boost::function objects with
     operator== or
     operator!=?</a>
 </dt>
-<dt>2. <a href="faq.html#id1878091">I see void pointers; is this [mess] type safe?</a>
+<dt>2. <a href="faq.html#id877119">I see void pointers; is this [mess] type safe?</a>
 </dt>
-<dt>3. <a href="faq.html#id1878111">Why are there workarounds for void returns? C++ allows them!</a>
+<dt>3. <a href="faq.html#id877139">Why are there workarounds for void returns? C++ allows them!</a>
 </dt>
-<dt>4. <a href="faq.html#id1878163">Why (function) cloning?</a>
+<dt>4. <a href="faq.html#id877191">Why (function) cloning?</a>
 </dt>
-<dt>5. <a href="faq.html#id1878183">How much overhead does a call through boost::function incur?</a>
+<dt>5. <a href="faq.html#id877211">How much overhead does a call through boost::function incur?</a>
 </dt>
 </dl>
-<table border="0" summary="Q and A Set">
+<table border="0" width="100%" summary="Q and A Set">
 <col align="left" width="1%">
+<col>
 <tbody>
-<tr class="question">
+<tr class="question" title="1.">
 <td align="left" valign="top">
-<a name="id1877737"></a><a name="id1877739"></a><p><b>1.</b></p>
+<a name="id876765"></a><a name="id876767"></a><p><b>1.</b></p>
 </td>
 <td align="left" valign="top"><p>Why can't I compare
     <code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code> objects with
@@ -61,12 +62,12 @@
       implemented. The typical semantics requested for <code class="computeroutput">f ==
       g</code> given <code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code> objects
       <code class="computeroutput">f</code> and <code class="computeroutput">g</code> are:</p>
-<div class="itemizedlist"><ul type="disc">
-<li>If <code class="computeroutput">f</code> and <code class="computeroutput">g</code>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">If <code class="computeroutput">f</code> and <code class="computeroutput">g</code>
           store function objects of the same type, use that type's
           <code class="computeroutput">operator==</code> to compare
           them.</li>
-<li>If <code class="computeroutput">f</code> and <code class="computeroutput">g</code>
+<li class="listitem">If <code class="computeroutput">f</code> and <code class="computeroutput">g</code>
           store function objects of different types, return
           <code class="computeroutput">false</code>.</li>
 </ul></div>
@@ -94,13 +95,13 @@
       arbitrary operator expression <code class="computeroutput">f == g</code> is suitably
       defined. The best solution known has the following undesirable
       qualities:</p>
-<div class="orderedlist"><ol type="1">
-<li>Fails at compile-time for objects where
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">Fails at compile-time for objects where
         <code class="computeroutput">operator==</code> is not accessible (e.g., because it is
         <code class="computeroutput">private</code>).</li>
-<li>Fails at compile-time if calling
+<li class="listitem">Fails at compile-time if calling
         <code class="computeroutput">operator==</code> is ambiguous.</li>
-<li>Appears to be correct if the
+<li class="listitem">Appears to be correct if the
         <code class="computeroutput">operator==</code> declaration is correct, even though
         <code class="computeroutput">operator==</code> may not compile.</li>
 </ol></div>
@@ -122,9 +123,9 @@
       this.</p>
 </td>
 </tr>
-<tr class="question">
+<tr class="question" title="2.">
 <td align="left" valign="top">
-<a name="id1878091"></a><a name="id1878093"></a><p><b>2.</b></p>
+<a name="id877119"></a><a name="id877121"></a><p><b>2.</b></p>
 </td>
 <td align="left" valign="top"><p>I see void pointers; is this [mess] type safe?</p></td>
 </tr>
@@ -141,9 +142,9 @@ is that one may cast between void pointers and object pointers safely
 or between different types of function pointers (provided you don't
 invoke a function pointer with the wrong type).  </p></td>
 </tr>
-<tr class="question">
+<tr class="question" title="3.">
 <td align="left" valign="top">
-<a name="id1878111"></a><a name="id1878113"></a><p><b>3.</b></p>
+<a name="id877139"></a><a name="id877141"></a><p><b>3.</b></p>
 </td>
 <td align="left" valign="top"><p>Why are there workarounds for void returns? C++ allows them!</p></td>
 </tr>
@@ -168,9 +169,9 @@ consistent with allowing the user to assign and invoke functions and
 function objects with parameters that don't exactly match.</p>
 </td>
 </tr>
-<tr class="question">
+<tr class="question" title="4.">
 <td align="left" valign="top">
-<a name="id1878163"></a><a name="id1878165"></a><p><b>4.</b></p>
+<a name="id877191"></a><a name="id877193"></a><p><b>4.</b></p>
 </td>
 <td align="left" valign="top"><p>Why (function) cloning?</p></td>
 </tr>
@@ -182,9 +183,9 @@ function objects with parameters that don't exactly match.</p>
       discussion here, but if it cloning is incorrect for a particular
       application a reference-counting allocator could be used.</p></td>
 </tr>
-<tr class="question">
+<tr class="question" title="5.">
 <td align="left" valign="top">
-<a name="id1878183"></a><a name="id1878185"></a><p><b>5.</b></p>
+<a name="id877211"></a><a name="id877213"></a><p><b>5.</b></p>
 </td>
 <td align="left" valign="top"><p>How much overhead does a call through <code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code> incur?</p></td>
 </tr>

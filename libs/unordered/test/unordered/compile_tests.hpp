@@ -87,10 +87,10 @@ void container_test(X& r, T const&)
     // I'm not sure about either of these tests...
     size_type max_diff((std::numeric_limits<difference_type>::max)());
     difference_type converted_diff(max_diff);
-    BOOST_CHECK((std::numeric_limits<difference_type>::max)()
+    BOOST_TEST((std::numeric_limits<difference_type>::max)()
             == converted_diff);
 
-    BOOST_CHECK(
+    BOOST_TEST(
         static_cast<comparison_type>(
             (std::numeric_limits<size_type>::max)()) >
         static_cast<comparison_type>(
@@ -98,8 +98,8 @@ void container_test(X& r, T const&)
 
     // I don't test the runtime post-conditions here.
     X u;
-    BOOST_CHECK(u.size() == 0);
-    BOOST_CHECK(X().size() == 0);
+    BOOST_TEST(u.size() == 0);
+    BOOST_TEST(X().size() == 0);
 
     X a,b;
 
@@ -151,14 +151,12 @@ void unordered_map_test(X& r, Key const& k, T const& v)
 
     r.insert(std::pair<Key const, T>(k, v));
 
-#if defined(BOOST_HAS_RVALUE_REFS) && defined(BOOST_HAS_VARIADIC_TMPL)
     Key k_lvalue(k);
     T v_lvalue(v);
 
     r.emplace(k, v);
     r.emplace(k_lvalue, v_lvalue);
     r.emplace(rvalue(k), rvalue(v));
-#endif
 }
 
 template <class X>
@@ -175,9 +173,7 @@ void unordered_unique_test(X& r, T const& t)
 {
     typedef BOOST_DEDUCED_TYPENAME X::iterator iterator;
     test::check_return_type<std::pair<iterator, bool> >::equals(r.insert(t));
-#if defined(BOOST_HAS_RVALUE_REFS) && defined(BOOST_HAS_VARIADIC_TMPL)
     test::check_return_type<std::pair<iterator, bool> >::equals(r.emplace(t));
-#endif
 }
 
 template <class X, class T>
@@ -185,9 +181,7 @@ void unordered_equivalent_test(X& r, T const& t)
 {
     typedef BOOST_DEDUCED_TYPENAME X::iterator iterator;
     test::check_return_type<iterator>::equals(r.insert(t));
-#if defined(BOOST_HAS_RVALUE_REFS) && defined(BOOST_HAS_VARIADIC_TMPL)
     test::check_return_type<iterator>::equals(r.emplace(t));
-#endif
 }
 
 template <class X, class Key, class T>
@@ -289,14 +283,12 @@ void unordered_test(X&, Key& k, T& t, Hash& hf, Pred& eq)
 
     const_iterator q = a.cbegin();
     test::check_return_type<iterator>::equals(a.insert(q, t));
-#if defined(BOOST_HAS_RVALUE_REFS) && defined(BOOST_HAS_VARIADIC_TMPL)
     test::check_return_type<iterator>::equals(a.emplace_hint(q, t));
-#endif
 
     a.insert(i, j);
     test::check_return_type<size_type>::equals(a.erase(k));
 
-    BOOST_CHECK(a.empty());
+    BOOST_TEST(a.empty());
     if(a.empty()) {
         a.insert(t);
         q = a.cbegin();

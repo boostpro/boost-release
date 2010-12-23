@@ -1,12 +1,18 @@
+#
+# Copyright Troy D. Straszheim
+#
+# Distributed under the Boost Software License, Version 1.0.
+# See http://www.boost.org/LICENSE_1_0.txt
+#
 macro(statechart_example TESTNAME)
   set(SOURCES)
   foreach(ARG ${ARGN})
     set(SOURCES ${SOURCES} "${TESTNAME}/${ARG}.cpp")
   endforeach(ARG ${ARGN})
 
-  if (NOT)
+  if (NOT SOURCES)
     set(SOURCES "${TESTNAME}/${TESTNAME}.cpp")
-  endif (NOT)
+  endif ()
 
   boost_test_link("${TESTNAME}Example"
     ${SOURCES}

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Frequently Asked Questions</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../bbv2.html" title="Chapter 31. Boost.Build V2 User Manual">
 <link rel="prev" href="extender.html" title="Extender Manual">
@@ -22,45 +22,45 @@
 <div class="spirit-nav">
 <a accesskey="p" href="extender.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="vs_v1.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Frequently Asked Questions">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.faq"></a>Frequently Asked Questions</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="faq.html#id4298204">
+<dt><span class="section"><a href="faq.html#id2146385">
       How do I get the current value of feature in Jamfile?
     </a></span></dt>
-<dt><span class="section"><a href="faq.html#id4298266">
+<dt><span class="section"><a href="faq.html#id2146448">
       I am getting a "Duplicate name of actual target" error. What does that
       mean?
     </a></span></dt>
 <dt><span class="section"><a href="faq.html#bbv2.faq.envar">
       Accessing environment variables
     </a></span></dt>
-<dt><span class="section"><a href="faq.html#id4298533">
+<dt><span class="section"><a href="faq.html#id2146715">
       How to control properties order?
     </a></span></dt>
-<dt><span class="section"><a href="faq.html#id4298588">
+<dt><span class="section"><a href="faq.html#id2146770">
       How to control the library linking order on Unix?
     </a></span></dt>
 <dt><span class="section"><a href="faq.html#bbv2.faq.external">
       Can I get capture external program output using a Boost.Jam variable?
     </a></span></dt>
-<dt><span class="section"><a href="faq.html#id4298732">
+<dt><span class="section"><a href="faq.html#id2146906">
       How to get the project root (a.k.a. Jamroot) location?
     </a></span></dt>
-<dt><span class="section"><a href="faq.html#id4298758">
+<dt><span class="section"><a href="faq.html#id2146932">
       How to change compilation flags for one file?
     </a></span></dt>
 <dt><span class="section"><a href="faq.html#bbv2.faq.dll-path">
-      Why are the dll-path and hardcode-dll-paths
-       properties useful?
+      Why are the <code class="literal">dll-path</code> and <code class="literal">hardcode-dll-paths
+      </code> properties useful?
     </a></span></dt>
 <dt><span class="section"><a href="faq.html#bbv2.recipies.site-config">Targets in site-config.jam</a></span></dt>
 <dt><span class="section"><a href="faq.html#bbv2.faq.header-only-libraries">Header-only libraries</a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="How do I get the current value of feature in Jamfile?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id4298204"></a>
+<a name="id2146385"></a>
       How do I get the current value of feature in Jamfile?
     </h3></div></div></div>
 <p>
@@ -77,20 +77,20 @@
       A feature has a specific value only when building a target, and there are
       two ways you can use that value:
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
           Use conditional requirements or indirect conditional requirements. See
           <a class="xref" href="advanced.html#bbv2.advanced.targets.requirements.conditional">the section called &#8220;Requirements&#8221;</a>.
         </li>
-<li>
+<li class="listitem">
         Define a custom generator and a custom main target type. The custom
         generator can do arbitrary processing or properties. See the <a class="xref" href="extender.html" title="Extender Manual">the section called &#8220;Extender Manual&#8221;</a>.
       </li>
 </ul></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title='I am getting a "Duplicate name of actual target" error. What does that mean?'>
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id4298266"></a>
+<a name="id2146448"></a>
       I am getting a "Duplicate name of actual target" error. What does that
       mean?
     </h3></div></div></div>
@@ -118,8 +118,8 @@ exe b : a.cpp ;
       To solve this issue, you need to decide if the file should be compiled
       once or twice.
     </p>
-<div class="orderedlist"><ol type="1">
-<li>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
 <p>
           To compile the file only once, make sure that properties are the same
           for both target requests:
@@ -155,7 +155,7 @@ exe b : a-obj ;
           <code class="computeroutput">b</code>.
         </p>
 </li>
-<li>
+<li class="listitem">
 <p>
           To compile the file twice, you can tell Boost.Build to compile it to
           two separate object files like so:
@@ -193,7 +193,7 @@ exe b : a-obj ;
       intention in such cases.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Accessing environment variables">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.faq.envar"></a>
       Accessing environment variables
@@ -229,9 +229,9 @@ exe a : a.cpp : &lt;include&gt;$(SOME_LIBRARY_PATH) ;
 <p>
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="How to control properties order?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id4298533"></a>
+<a name="id2146715"></a>
       How to control properties order?
     </h3></div></div></div>
 <p>
@@ -260,9 +260,9 @@ exe a : a.cpp : &lt;include&gt;a&amp;&amp;b ;
       shortcut. Using it everywhere might negatively affect performance.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="How to control the library linking order on Unix?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id4298588"></a>
+<a name="id2146770"></a>
       How to control the library linking order on Unix?
     </h3></div></div></div>
 <p>
@@ -302,7 +302,7 @@ exe viewer : viewer png z ;
 <p>
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Can I get capture external program output using a Boost.Jam variable?">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.faq.external"></a>
       Can I get capture external program output using a Boost.Jam variable?
@@ -316,9 +316,9 @@ local gtk_includes = [ SHELL "gtk-config --cflags" ] ;
 <p>
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="How to get the project root (a.k.a. Jamroot) location?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id4298732"></a>
+<a name="id2146906"></a>
       How to get the project root (a.k.a. Jamroot) location?
     </h3></div></div></div>
 <p>
@@ -332,9 +332,9 @@ path-constant TOP : . ;
       After that, the <code class="computeroutput">TOP</code> variable can be used in every Jamfile.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="How to change compilation flags for one file?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id4298758"></a>
+<a name="id2146932"></a>
       How to change compilation flags for one file?
     </h3></div></div></div>
 <p>
@@ -365,13 +365,13 @@ obj b : b.cpp : &lt;variant&gt;release:&lt;optimization&gt;off ;
 <p>
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Why are the dll-path and hardcode-dll-paths properties useful?">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.faq.dll-path"></a>
       Why are the <code class="literal">dll-path</code> and <code class="literal">hardcode-dll-paths
       </code> properties useful?
     </h3></div></div></div>
-<div class="note"><table border="0" summary="Note">
+<div class="note" title="Note"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
 <th align="left">Note</th>
@@ -441,7 +441,7 @@ install installed : application : &lt;dll-path&gt;/usr/lib/snake
       always be used.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Targets in site-config.jam">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.recipies.site-config"></a>Targets in site-config.jam</h3></div></div></div>
 <p>
@@ -471,7 +471,7 @@ exe hello : hello.cpp /site-config//zlib ;
       in any Jamfile.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Header-only libraries">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.faq.header-only-libraries"></a>Header-only libraries</h3></div></div></div>
 <p>

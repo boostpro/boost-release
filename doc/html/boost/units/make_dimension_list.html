@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Struct template make_dimension_list</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../boost_units/Reference.html#header.boost.units.dimension_hpp" title="Header &lt;boost/units/dimension.hpp&gt;">
 <link rel="prev" href="dim.html" title="Struct template dim">
@@ -22,7 +22,7 @@
 <div class="spirit-nav">
 <a accesskey="p" href="dim.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_units/Reference.html#header.boost.units.dimension_hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="static_power.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" lang="en">
+<div class="refentry" title="Struct template make_dimension_list">
 <a name="boost.units.make_dimension_list"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Struct template make_dimension_list</span></h2>
@@ -36,19 +36,19 @@
   <span class="emphasis"><em>// types</em></span>
   <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>unspecified</em></span> <a name="boost.units.make_dimension_list.type"></a>type;
 };</pre></div>
-<div class="refsect1" lang="en">
-<a name="id3794286"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id1882108"></a><h2>Description</h2>
 <p>Reduce dimension list to cardinal form. This algorithm collapses duplicate base dimension tags and sorts the resulting list by the tag ordinal value. Dimension lists that resolve to the same dimension are guaranteed to be represented by an identical type.</p>
 <p>The argument should be an MPL forward sequence containing instances of the <code class="computeroutput">dim</code> template.</p>
 <p>The result is also an MPL forward sequence. It also supports the following metafunctions to allow use as a dimension.</p>
-<div class="itemizedlist"><ul type="disc">
-<li><p><code class="computeroutput">mpl::plus</code> is defined only on two equal dimensions and returns the argument unchanged.</p></li>
-<li><p><code class="computeroutput">mpl::minus</code> is defined only for two equal dimensions and returns the argument unchanged.</p></li>
-<li><p><code class="computeroutput">mpl::negate</code> will return its argument unchanged.</p></li>
-<li><p><code class="computeroutput">mpl::times</code> is defined for any dimensions and adds corresponding exponents.</p></li>
-<li><p><code class="computeroutput">mpl::divides</code> is defined for any dimensions and subtracts the exponents of the right had argument from the corresponding exponents of the left had argument. Missing base dimension tags are assumed to have an exponent of zero.</p></li>
-<li><p><code class="computeroutput">static_power</code> takes a dimension and a static_rational and multiplies all the exponents of the dimension by the static_rational.</p></li>
-<li><p><code class="computeroutput">static_root</code> takes a dimension and a static_rational and divides all the exponents of the dimension by the static_rational. </p></li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p><code class="computeroutput">mpl::plus</code> is defined only on two equal dimensions and returns the argument unchanged.</p></li>
+<li class="listitem"><p><code class="computeroutput">mpl::minus</code> is defined only for two equal dimensions and returns the argument unchanged.</p></li>
+<li class="listitem"><p><code class="computeroutput">mpl::negate</code> will return its argument unchanged.</p></li>
+<li class="listitem"><p><code class="computeroutput">mpl::times</code> is defined for any dimensions and adds corresponding exponents.</p></li>
+<li class="listitem"><p><code class="computeroutput">mpl::divides</code> is defined for any dimensions and subtracts the exponents of the right had argument from the corresponding exponents of the left had argument. Missing base dimension tags are assumed to have an exponent of zero.</p></li>
+<li class="listitem"><p><code class="computeroutput">static_power</code> takes a dimension and a static_rational and multiplies all the exponents of the dimension by the static_rational.</p></li>
+<li class="listitem"><p><code class="computeroutput">static_root</code> takes a dimension and a static_rational and divides all the exponents of the dimension by the static_rational. </p></li>
 </ul></div>
 <p>
 </p>

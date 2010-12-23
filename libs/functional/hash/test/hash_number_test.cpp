@@ -15,7 +15,7 @@
 #include <boost/detail/lightweight_test.hpp>
 
 #include <boost/preprocessor/cat.hpp>
-#include <boost/limits.hpp>
+#include <boost/functional/hash/detail/limits.hpp>
 #include <boost/mpl/assert.hpp>
 #include <boost/type_traits/is_base_and_derived.hpp>
 
@@ -156,6 +156,9 @@ int main()
 
     NUMERIC_TEST(float, float)
     NUMERIC_TEST(double, double)
+
+    NUMERIC_TEST(std::size_t, size_t)
+    NUMERIC_TEST(std::ptrdiff_t, ptrdiff_t)
 
     bool_test();
 

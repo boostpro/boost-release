@@ -153,7 +153,7 @@ bool large_file_exists()
 
     // Fetch last mod date of this file ("large_file_test.cpp")
     string timestamp = 
-        "$Date: 2008-03-22 17:45:55 -0400 (Sat, 22 Mar 2008) $";
+        "$Date: 2009-05-20 15:41:20 -0400 (Wed, 20 May 2009) $";
     if (timestamp.size() != 53) { // Length of auto-generated SVN timestamp
         remove_large_file();
         return false;
@@ -292,7 +292,7 @@ bool create_large_file()
 
     // Close file
     CloseHandle(hnd);
-	return true;
+    return true;
 
 # endif // Borland workaround
 #else // #ifdef BOOST_IOSTREAMS_WINDOWS
@@ -343,7 +343,7 @@ bool create_large_file()
 
     // Close file
     BOOST_IOSTREAMS_FD_CLOSE(fd);
-	return true;
+    return true;
 
 # else // Cygwin
 

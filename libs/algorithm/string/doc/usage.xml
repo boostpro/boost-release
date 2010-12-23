@@ -9,7 +9,7 @@
 -->
 
 
-<section id="string_algo.usage" last-revision="$Date: 2008-02-27 15:00:24 -0500 (Wed, 27 Feb 2008) $">
+<section id="string_algo.usage" last-revision="$Date: 2009-06-14 18:56:08 -0400 (Sun, 14 Jun 2009) $">
     <title>Usage</title>
 
     <using-namespace name="boost"/>
@@ -130,7 +130,7 @@
     string str1("command.com");
     cout 
         &lt;&lt; str1
-        &lt;&lt; is_executable("command.com")? "is": "is not" 
+        &lt;&lt; (is_executable("command.com")? "is": "is not") 
         &lt;&lt; "an executable" 
         &lt;&lt; endl; // prints "command.com is an executable"
     
@@ -138,7 +138,7 @@
     char text1[]="hello world!";
     cout 
         &lt;&lt; text1 
-        &lt;&lt; all( text1, is_lower() )? "is": "is not"
+        &lt;&lt; (all( text1, is_lower() )? "is": "is not")
         &lt;&lt; " written in the lower case" 
         &lt;&lt; endl; // prints "hello world! is written in the lower case"
         </programlisting>

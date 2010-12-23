@@ -90,6 +90,8 @@ class clear_on_destroy
    }
 
    private:
+   clear_on_destroy(const clear_on_destroy &);
+   clear_on_destroy &operator=(const clear_on_destroy &);
    C &c_;
    bool do_clear_;
 };
@@ -263,12 +265,12 @@ class iterator
    friend class iterator<T, const T, typename boost::pointer_to_other<Pointer, T>::type>;
 
    public:
-	typedef std::random_access_iterator_tag   iterator_category;
-	typedef Value                             value_type;
-	typedef typename std::iterator_traits
+   typedef std::random_access_iterator_tag   iterator_category;
+   typedef Value                             value_type;
+   typedef typename std::iterator_traits
       <Pointer>::difference_type             difference_type;
-	typedef Pointer                           pointer;
-	typedef Value &                           reference;
+   typedef Pointer                           pointer;
+   typedef Value &                           reference;
 
    iterator()
    {}
@@ -528,6 +530,15 @@ class stable_vector
    : internal_data(al),impl(al)
    {
       STABLE_VECTOR_CHECK_INVARIANT;
+   }
+
+   explicit stable_vector(size_type n)
+   : internal_data(Allocator()),impl(Allocator())
+   {
+      stable_vector_detail::clear_on_destroy<stable_vector> cod(*this);
+      this->resize(n);
+      STABLE_VECTOR_CHECK_INVARIANT;
+      cod.release();
    }
 
    stable_vector(size_type n,const T& t=T(),const Allocator& al=Allocator())

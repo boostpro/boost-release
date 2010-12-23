@@ -7,7 +7,7 @@
 //
 //  File        : $RCSfile$
 //
-//  Version     : $Revision: 49313 $
+//  Version     : $Revision: 54633 $
 //
 //  Description : tests all Test Tools but output_test_stream
 // ***************************************************************************
@@ -30,6 +30,11 @@
 // STL
 #include <iostream>
 #include <iomanip>
+
+#ifdef BOOST_MSVC
+# pragma warning(push)
+# pragma warning(disable: 4702) // unreachable code
+#endif
 
 using namespace boost::unit_test;
 using namespace boost::test_tools;

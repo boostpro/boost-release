@@ -8,9 +8,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Id: map.cpp 49268 2008-10-11 06:26:17Z agurtovoy $
-// $Date: 2008-10-11 02:26:17 -0400 (Sat, 11 Oct 2008) $
-// $Revision: 49268 $
+// $Id: map.cpp 55752 2009-08-24 04:17:30Z agurtovoy $
+// $Date: 2009-08-24 00:17:30 -0400 (Mon, 24 Aug 2009) $
+// $Revision: 55752 $
 
 #include <boost/mpl/map.hpp>
 #include <boost/mpl/insert.hpp>
@@ -193,4 +193,27 @@ MPL_TEST_CASE()
     
     test<mymap>();
     test<mymap::type>();
+}
+
+MPL_TEST_CASE()
+{
+    typedef mpl::erase_key<
+        mpl::map<
+            mpl::pair<char, double>
+          , mpl::pair<int, float>
+        >
+      , char
+    >::type int_to_float_map;
+
+    typedef mpl::insert<
+        int_to_float_map
+      , mpl::pair<char, long>
+    >::type with_char_too;
+
+    BOOST_MPL_ASSERT((
+        boost::is_same<
+            mpl::at<with_char_too, char>::type
+          , long
+        >
+    ));
 }

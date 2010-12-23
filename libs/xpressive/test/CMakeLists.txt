@@ -1,3 +1,9 @@
+#
+# Copyright Troy D. Straszheim
+#
+# Distributed under the Boost Software License, Version 1.0.
+# See http://www.boost.org/LICENSE_1_0.txt
+#
 #  : requirements
 #        <toolset>intel:<debug-symbols>off
 #       <toolset>msvc,<stdlib>stlport:<define>_STLP_EXPOSE_GLOBALS_IMPLEMENTATION
@@ -45,6 +51,9 @@ SET(runtests
   test_cycles
   test_non_char
   test_static
+  test_actions
+  test_assert
+  test_symbols
   test_dynamic
   test_dynamic_grammar
   test_skip
@@ -53,6 +62,8 @@ SET(runtests
 foreach(runtest ${runtests})
   boost_test_run(${runtest} DEPENDS boost_unit_test_framework )
 endforeach(runtest ${runtests})
+
+boost_test_link(multiple_defs multiple_defs1.cpp multiple_defs2.cpp)
 
 set(compiletests
   test_basic_regex

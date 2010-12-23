@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Thread Management</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../thread.html" title="Chapter 20. Thread">
 <link rel="prev" href="changes.html" title="Changes since boost 1.35">
@@ -22,7 +22,7 @@
 <div class="spirit-nav">
 <a accesskey="p" href="changes.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="synchronization.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Thread Management">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="thread.thread_management"></a><a class="link" href="thread_management.html" title="Thread Management"> Thread Management</a>
 </h2></div></div></div>
@@ -32,7 +32,7 @@
 <dt><span class="section"><a href="thread_management.html#thread.thread_management.threadgroup"> Class <code class="computeroutput"><span class="identifier">thread_group</span></code></a></span></dt>
 </dl></div>
 <a name="thread.thread_management.synopsis"></a><h4>
-<a name="id3483257"></a>
+<a name="id1725988"></a>
       <a class="link" href="thread_management.html#thread.thread_management.synopsis">Synopsis</a>
     </h4>
 <p>
@@ -70,7 +70,7 @@
       for details.]
     </p>
 <a name="thread.thread_management.launching_threads"></a><h4>
-<a name="id3483571"></a>
+<a name="id1726302"></a>
       <a class="link" href="thread_management.html#thread.thread_management.launching_threads">Launching threads</a>
     </h4>
 <p>
@@ -120,7 +120,7 @@
       be passed.
     </p>
 <a name="thread.thread_management.exceptions_in_thread_functions"></a><h4>
-<a name="id3484043"></a>
+<a name="id1726775"></a>
       <a class="link" href="thread_management.html#thread.thread_management.exceptions_in_thread_functions">Exceptions
       in thread functions</a>
     </h4>
@@ -131,7 +131,7 @@
       is called.
     </p>
 <a name="thread.thread_management.joining_and_detaching"></a><h4>
-<a name="id3484134"></a>
+<a name="id1726866"></a>
       <a class="link" href="thread_management.html#thread.thread_management.joining_and_detaching">Joining and
       detaching</a>
     </h4>
@@ -162,7 +162,7 @@
       specified time has elapsed.
     </p>
 <a name="thread.thread_management.interruption"></a><h4>
-<a name="id3484482"></a>
+<a name="id1727215"></a>
       <a class="link" href="thread_management.html#thread.thread_management.interruption">Interruption</a>
     </h4>
 <p>
@@ -228,7 +228,7 @@
 <a name="interruption_points"></a><p>
     </p>
 <a name="thread.thread_management.predefined_interruption_points"></a><h4>
-<a name="id3485181"></a>
+<a name="id1727911"></a>
       <a class="link" href="thread_management.html#thread.thread_management.predefined_interruption_points">Predefined
       Interruption Points</a>
     </h4>
@@ -237,19 +237,19 @@
       will throw <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if interruption is enabled
       for the current thread, and interruption is requested for the current thread:
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><a class="link" href="thread_management.html#thread.thread_management.thread.join" title="Member function join()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">join</span><span class="special">()</span></code></a></li>
-<li><a class="link" href="thread_management.html#thread.thread_management.thread.timed_join" title="Member function timed_join()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">timed_join</span><span class="special">()</span></code></a></li>
-<li><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.wait" title="void wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock)"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">condition_variable</span><span class="special">::</span><span class="identifier">wait</span><span class="special">()</span></code></a></li>
-<li><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.timed_wait" title="bool timed_wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock,boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">condition_variable</span><span class="special">::</span><span class="identifier">timed_wait</span><span class="special">()</span></code></a></li>
-<li><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.wait" title="template&lt;typename lock_type&gt; void wait(lock_type&amp; lock)"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">condition_variable_any</span><span class="special">::</span><span class="identifier">wait</span><span class="special">()</span></code></a></li>
-<li><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.timed_wait" title="template&lt;typename lock_type&gt; bool timed_wait(lock_type&amp; lock,boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">condition_variable_any</span><span class="special">::</span><span class="identifier">timed_wait</span><span class="special">()</span></code></a></li>
-<li><a class="link" href="thread_management.html#thread.thread_management.thread.sleep" title="Static member function sleep()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">sleep</span><span class="special">()</span></code></a></li>
-<li><a class="link" href="thread_management.html#thread.thread_management.this_thread.sleep" title="Non-member function sleep()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">sleep</span><span class="special">()</span></code></a></li>
-<li><a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_point" title="Non-member function interruption_point()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_point</span><span class="special">()</span></code></a></li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><a class="link" href="thread_management.html#thread.thread_management.thread.join" title="Member function join()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">join</span><span class="special">()</span></code></a></li>
+<li class="listitem"><a class="link" href="thread_management.html#thread.thread_management.thread.timed_join" title="Member function timed_join()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">timed_join</span><span class="special">()</span></code></a></li>
+<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.wait" title="void wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock)"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">condition_variable</span><span class="special">::</span><span class="identifier">wait</span><span class="special">()</span></code></a></li>
+<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable.timed_wait" title="bool timed_wait(boost::unique_lock&lt;boost::mutex&gt;&amp; lock,boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">condition_variable</span><span class="special">::</span><span class="identifier">timed_wait</span><span class="special">()</span></code></a></li>
+<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.wait" title="template&lt;typename lock_type&gt; void wait(lock_type&amp; lock)"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">condition_variable_any</span><span class="special">::</span><span class="identifier">wait</span><span class="special">()</span></code></a></li>
+<li class="listitem"><a class="link" href="synchronization.html#thread.synchronization.condvar_ref.condition_variable_any.timed_wait" title="template&lt;typename lock_type&gt; bool timed_wait(lock_type&amp; lock,boost::system_time const&amp; abs_time)"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">condition_variable_any</span><span class="special">::</span><span class="identifier">timed_wait</span><span class="special">()</span></code></a></li>
+<li class="listitem"><a class="link" href="thread_management.html#thread.thread_management.thread.sleep" title="Static member function sleep()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">sleep</span><span class="special">()</span></code></a></li>
+<li class="listitem"><a class="link" href="thread_management.html#thread.thread_management.this_thread.sleep" title="Non-member function sleep()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">sleep</span><span class="special">()</span></code></a></li>
+<li class="listitem"><a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_point" title="Non-member function interruption_point()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_point</span><span class="special">()</span></code></a></li>
 </ul></div>
 <a name="thread.thread_management.thread_ids"></a><h4>
-<a name="id3485600"></a>
+<a name="id1728331"></a>
       <a class="link" href="thread_management.html#thread.thread_management.thread_ids">Thread IDs</a>
     </h4>
 <p>
@@ -271,7 +271,7 @@
       The comparison operators on <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a>
       yield a total order for every non-equal thread ID.
     </p>
-<div class="section" lang="en">
+<div class="section" title="Class thread">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.thread_management.thread"></a><a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"> Class <code class="computeroutput"><span class="identifier">thread</span></code></a>
 </h3></div></div></div>
@@ -367,7 +367,7 @@
 
 <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">thread</span><span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span><span class="identifier">thread</span><span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">);</span>
 </pre>
-<div class="section" lang="en">
+<div class="section" title="Default Constructor">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.default_constructor"></a><a class="link" href="thread_management.html#thread.thread_management.thread.default_constructor" title="Default Constructor">
         Default Constructor</a>
@@ -389,7 +389,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Thread Constructor">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.callable_constructor"></a><a class="link" href="thread_management.html#thread.thread_management.thread.callable_constructor" title="Thread Constructor">
         Thread Constructor</a>
@@ -427,7 +427,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Thread Constructor with arguments">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.multiple_argument_constructor"></a><a class="link" href="thread_management.html#thread.thread_management.thread.multiple_argument_constructor" title="Thread Constructor with arguments">
         Thread Constructor with arguments</a>
@@ -468,7 +468,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Thread Destructor">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.destructor"></a><a class="link" href="thread_management.html#thread.thread_management.thread.destructor" title="Thread Destructor"> Thread
         Destructor</a>
@@ -491,7 +491,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function joinable()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.joinable"></a><a class="link" href="thread_management.html#thread.thread_management.thread.joinable" title="Member function joinable()"> Member function
         <code class="computeroutput"><span class="identifier">joinable</span><span class="special">()</span></code></a>
@@ -514,7 +514,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function join()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.join"></a><a class="link" href="thread_management.html#thread.thread_management.thread.join" title="Member function join()"> Member function
         <code class="computeroutput"><span class="identifier">join</span><span class="special">()</span></code></a>
@@ -555,7 +555,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function timed_join()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.timed_join"></a><a class="link" href="thread_management.html#thread.thread_management.thread.timed_join" title="Member function timed_join()"> Member
         function <code class="computeroutput"><span class="identifier">timed_join</span><span class="special">()</span></code></a>
@@ -612,7 +612,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function detach()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.detach"></a><a class="link" href="thread_management.html#thread.thread_management.thread.detach" title="Member function detach()"> Member function
         <code class="computeroutput"><span class="identifier">detach</span><span class="special">()</span></code></a>
@@ -640,7 +640,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function get_id()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.get_id"></a><a class="link" href="thread_management.html#thread.thread_management.thread.get_id" title="Member function get_id()"> Member function
         <code class="computeroutput"><span class="identifier">get_id</span><span class="special">()</span></code></a>
@@ -663,7 +663,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function interrupt()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.interrupt"></a><a class="link" href="thread_management.html#thread.thread_management.thread.interrupt" title="Member function interrupt()"> Member
         function <code class="computeroutput"><span class="identifier">interrupt</span><span class="special">()</span></code></a>
@@ -689,7 +689,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Static member function hardware_concurrency()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.hardware_concurrency"></a><a class="link" href="thread_management.html#thread.thread_management.thread.hardware_concurrency" title="Static member function hardware_concurrency()">
         Static member function <code class="computeroutput"><span class="identifier">hardware_concurrency</span><span class="special">()</span></code></a>
@@ -712,7 +712,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function native_handle()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.nativehandle"></a><a class="link" href="thread_management.html#thread.thread_management.thread.nativehandle" title="Member function native_handle()"> Member
         function <code class="computeroutput"><span class="identifier">native_handle</span><span class="special">()</span></code></a>
@@ -737,7 +737,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="operator==">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.equals"></a><a class="link" href="thread_management.html#thread.thread_management.thread.equals" title="operator=="> <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code></a>
 </h4></div></div></div>
@@ -753,7 +753,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="operator!=">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.not_equals"></a><a class="link" href="thread_management.html#thread.thread_management.thread.not_equals" title="operator!="> <code class="computeroutput"><span class="keyword">operator</span><span class="special">!=</span></code></a>
 </h4></div></div></div>
@@ -769,7 +769,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Static member function sleep()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.sleep"></a><a class="link" href="thread_management.html#thread.thread_management.thread.sleep" title="Static member function sleep()"> Static member
         function <code class="computeroutput"><span class="identifier">sleep</span><span class="special">()</span></code></a>
@@ -797,7 +797,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Static member function yield()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.yield"></a><a class="link" href="thread_management.html#thread.thread_management.thread.yield" title="Static member function yield()"> Static member
         function <code class="computeroutput"><span class="identifier">yield</span><span class="special">()</span></code></a>
@@ -814,7 +814,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function swap()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.swap"></a><a class="link" href="thread_management.html#thread.thread_management.thread.swap" title="Member function swap()"> Member function
         <code class="computeroutput"><span class="identifier">swap</span><span class="special">()</span></code></a>
@@ -843,7 +843,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Non-member function swap()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.non_member_swap"></a><a class="link" href="thread_management.html#thread.thread_management.thread.non_member_swap" title="Non-member function swap()"> Non-member
         function <code class="computeroutput"><span class="identifier">swap</span><span class="special">()</span></code></a>
@@ -862,7 +862,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Class boost::thread::id">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.thread.id"></a><a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"> Class <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a>
 </h4></div></div></div>
@@ -900,7 +900,7 @@
     <span class="keyword">operator</span><span class="special">&lt;&lt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">,</span> <span class="identifier">traits</span><span class="special">&gt;&amp;</span> <span class="identifier">os</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">id</span><span class="special">&amp;</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="special">};</span>
 </pre>
-<div class="section" lang="en">
+<div class="section" title="Default constructor">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.thread.id.constructor"></a><a class="link" href="thread_management.html#thread.thread_management.thread.id.constructor" title="Default constructor">
           Default constructor</a>
@@ -922,7 +922,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="operator==">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.thread.id.is_equal"></a><a class="link" href="thread_management.html#thread.thread_management.thread.id.is_equal" title="operator=="> <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code></a>
 </h5></div></div></div>
@@ -945,7 +945,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="operator!=">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.thread.id.not_equal"></a><a class="link" href="thread_management.html#thread.thread_management.thread.id.not_equal" title="operator!="> <code class="computeroutput"><span class="keyword">operator</span><span class="special">!=</span></code></a>
 </h5></div></div></div>
@@ -968,7 +968,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="operator&lt;">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.thread.id.less_than"></a><a class="link" href="thread_management.html#thread.thread_management.thread.id.less_than" title="operator&lt;"> <code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;</span></code></a>
 </h5></div></div></div>
@@ -997,7 +997,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="operator&gt;">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.thread.id.greater_than"></a><a class="link" href="thread_management.html#thread.thread_management.thread.id.greater_than" title="operator&gt;">
           <code class="computeroutput"><span class="keyword">operator</span><span class="special">&gt;</span></code></a>
@@ -1018,7 +1018,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="operator&gt;=">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.thread.id.less_than_or_equal"></a><a class="link" href="thread_management.html#thread.thread_management.thread.id.less_than_or_equal" title="operator&gt;=">
           <code class="computeroutput"><span class="keyword">operator</span><span class="special">&gt;=</span></code></a>
@@ -1039,7 +1039,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="operator&gt;=">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.thread.id.greater_than_or_equal"></a><a class="link" href="thread_management.html#thread.thread_management.thread.id.greater_than_or_equal" title="operator&gt;=">
           <code class="computeroutput"><span class="keyword">operator</span><span class="special">&gt;=</span></code></a>
@@ -1060,7 +1060,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Friend operator&lt;&lt;">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.thread.id.stream_out"></a><a class="link" href="thread_management.html#thread.thread_management.thread.id.stream_out" title="Friend operator&lt;&lt;"> Friend
           <code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></code></a>
@@ -1088,7 +1088,7 @@
 </div>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Namespace this_thread">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.thread_management.this_thread"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread" title="Namespace this_thread"> Namespace <code class="computeroutput"><span class="identifier">this_thread</span></code></a>
 </h3></div></div></div>
@@ -1112,7 +1112,7 @@
 <dt><span class="section"><a href="thread_management.html#thread.thread_management.this_thread.atthreadexit">
         Non-member function template <code class="computeroutput"><span class="identifier">at_thread_exit</span><span class="special">()</span></code></a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="Non-member function get_id()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.this_thread.get_id"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.get_id" title="Non-member function get_id()"> Non-member
         function <code class="computeroutput"><span class="identifier">get_id</span><span class="special">()</span></code></a>
@@ -1140,7 +1140,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Non-member function interruption_point()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.this_thread.interruption_point"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_point" title="Non-member function interruption_point()">
         Non-member function <code class="computeroutput"><span class="identifier">interruption_point</span><span class="special">()</span></code></a>
@@ -1168,7 +1168,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Non-member function interruption_requested()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.this_thread.interruption_requested"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_requested" title="Non-member function interruption_requested()">
         Non-member function <code class="computeroutput"><span class="identifier">interruption_requested</span><span class="special">()</span></code></a>
@@ -1196,7 +1196,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Non-member function interruption_enabled()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.this_thread.interruption_enabled"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()">
         Non-member function <code class="computeroutput"><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
@@ -1224,7 +1224,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Non-member function sleep()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.this_thread.sleep"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.sleep" title="Non-member function sleep()"> Non-member
         function <code class="computeroutput"><span class="identifier">sleep</span><span class="special">()</span></code></a>
@@ -1258,7 +1258,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Non-member function yield()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.this_thread.yield"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.yield" title="Non-member function yield()"> Non-member
         function <code class="computeroutput"><span class="identifier">yield</span><span class="special">()</span></code></a>
@@ -1285,7 +1285,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Class disable_interruption">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.this_thread.disable_interruption"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.disable_interruption" title="Class disable_interruption">
         Class <code class="computeroutput"><span class="identifier">disable_interruption</span></code></a>
@@ -1314,7 +1314,7 @@
           state on destruction. Instances of <code class="computeroutput"><span class="identifier">disable_interruption</span></code>
           cannot be copied or moved.
         </p>
-<div class="section" lang="en">
+<div class="section" title="Constructor">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.this_thread.disable_interruption.constructor"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.disable_interruption.constructor" title="Constructor">
           Constructor</a>
@@ -1342,7 +1342,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Destructor">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.this_thread.disable_interruption.destructor"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.disable_interruption.destructor" title="Destructor">
           Destructor</a>
@@ -1375,7 +1375,7 @@
 </div>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Class restore_interruption">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.this_thread.restore_interruption"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.restore_interruption" title="Class restore_interruption">
         Class <code class="computeroutput"><span class="identifier">restore_interruption</span></code></a>
@@ -1405,7 +1405,7 @@
           instance is destroyed, interruption is again disabled. Instances of <code class="computeroutput"><span class="identifier">restore_interruption</span></code> cannot be copied
           or moved.
         </p>
-<div class="section" lang="en">
+<div class="section" title="Constructor">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.this_thread.restore_interruption.constructor"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.restore_interruption.constructor" title="Constructor">
           Constructor</a>
@@ -1438,7 +1438,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Destructor">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="thread.thread_management.this_thread.restore_interruption.destructor"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.restore_interruption.destructor" title="Destructor">
           Destructor</a>
@@ -1469,7 +1469,7 @@
 </div>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Non-member function template at_thread_exit()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.this_thread.atthreadexit"></a><a class="link" href="thread_management.html#thread.thread_management.this_thread.atthreadexit" title="Non-member function template at_thread_exit()">
         Non-member function template <code class="computeroutput"><span class="identifier">at_thread_exit</span><span class="special">()</span></code></a>
@@ -1505,7 +1505,7 @@
 </div>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Class thread_group">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="thread.thread_management.threadgroup"></a><a class="link" href="thread_management.html#thread.thread_management.threadgroup" title="Class thread_group"> Class <code class="computeroutput"><span class="identifier">thread_group</span></code></a>
 </h3></div></div></div>
@@ -1552,7 +1552,7 @@
         functions. <code class="computeroutput"><span class="identifier">thread_group</span></code> is
         not copyable or movable.
       </p>
-<div class="section" lang="en">
+<div class="section" title="Constructor">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.threadgroup.constructor"></a><a class="link" href="thread_management.html#thread.thread_management.threadgroup.constructor" title="Constructor">
         Constructor</a>
@@ -1569,7 +1569,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Destructor">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.threadgroup.destructor"></a><a class="link" href="thread_management.html#thread.thread_management.threadgroup.destructor" title="Destructor"> Destructor</a>
 </h4></div></div></div>
@@ -1586,7 +1586,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function create_thread()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.threadgroup.create_thread"></a><a class="link" href="thread_management.html#thread.thread_management.threadgroup.create_thread" title="Member function create_thread()">
         Member function <code class="computeroutput"><span class="identifier">create_thread</span><span class="special">()</span></code></a>
@@ -1613,7 +1613,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function add_thread()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.threadgroup.add_thread"></a><a class="link" href="thread_management.html#thread.thread_management.threadgroup.add_thread" title="Member function add_thread()"> Member
         function <code class="computeroutput"><span class="identifier">add_thread</span><span class="special">()</span></code></a>
@@ -1642,7 +1642,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function remove_thread()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.threadgroup.remove_thread"></a><a class="link" href="thread_management.html#thread.thread_management.threadgroup.remove_thread" title="Member function remove_thread()">
         Member function <code class="computeroutput"><span class="identifier">remove_thread</span><span class="special">()</span></code></a>
@@ -1666,7 +1666,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function join_all()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.threadgroup.join_all"></a><a class="link" href="thread_management.html#thread.thread_management.threadgroup.join_all" title="Member function join_all()"> Member
         function <code class="computeroutput"><span class="identifier">join_all</span><span class="special">()</span></code></a>
@@ -1694,7 +1694,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function interrupt_all()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.threadgroup.interrupt_all"></a><a class="link" href="thread_management.html#thread.thread_management.threadgroup.interrupt_all" title="Member function interrupt_all()">
         Member function <code class="computeroutput"><span class="identifier">interrupt_all</span><span class="special">()</span></code></a>
@@ -1712,7 +1712,7 @@
 </dl>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Member function size()">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.thread_management.threadgroup.size"></a><a class="link" href="thread_management.html#thread.thread_management.threadgroup.size" title="Member function size()"> Member
         function <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code></a>

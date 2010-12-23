@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Struct template impl</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../make.html#id3312476" title="Description">
+<link rel="up" href="../make.html#id1641715" title="Description">
 <link rel="prev" href="../protect/impl.html" title="Struct template impl">
 <link rel="next" href="../pass_through.html" title="Struct template pass_through">
 </head>
@@ -20,9 +20,9 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../protect/impl.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../make.html#id3312476"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../pass_through.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../protect/impl.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../make.html#id1641715"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../pass_through.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" lang="en">
+<div class="refentry" title="Struct template impl">
 <a name="boost.proto.make.impl"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Struct template impl</span></h2>
@@ -37,19 +37,19 @@
   <span class="emphasis"><em>// <a class="link" href="impl.html#boost.proto.make.impltypes">types</a></em></span>
   <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>see-below</em></span> <a class="link" href="impl.html#boost.proto.make.impl.result_type">result_type</a>;
 
-  <span class="emphasis"><em>// <a class="link" href="impl.html#id2617261-bb">public member functions</a></em></span>
-  <span class="type">result_type</span> <a class="link" href="impl.html#id2617266-bb"><span class="bold"><strong>operator</strong></span>()</a>(<span class="bold"><strong>typename</strong></span> impl::expr_param, 
+  <span class="emphasis"><em>// <a class="link" href="impl.html#id1252498-bb">public member functions</a></em></span>
+  <span class="type">result_type</span> <a class="link" href="impl.html#id1252503-bb"><span class="bold"><strong>operator</strong></span>()</a>(<span class="bold"><strong>typename</strong></span> impl::expr_param, 
                          <span class="bold"><strong>typename</strong></span> impl::state_param, 
                          <span class="bold"><strong>typename</strong></span> impl::data_param) <span class="bold"><strong>const</strong></span>;
 };</pre></div>
-<div class="refsect1" lang="en">
-<a name="id3312695"></a><h2>Description</h2>
-<div class="refsect2" lang="en">
-<a name="id3312699"></a><h3>
+<div class="refsect1" title="Description">
+<a name="id1641934"></a><h2>Description</h2>
+<div class="refsect2" title="impl public types">
+<a name="id1641937"></a><h3>
 <a name="boost.proto.make.impltypes"></a><code class="computeroutput">impl</code> 
         public
        types</h3>
-<div class="orderedlist"><ol type="1"><li>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
 <p>
 <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>see-below</em></span> <a name="boost.proto.make.impl.result_type"></a>result_type;</p>
 <p>
@@ -66,8 +66,8 @@
               </p>
 <p>
                 </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>
                       If <code class="computeroutput">O</code> is a <a class="link" href="../../../Transform.html" title="Concept Transform">Transform</a>, then let
                       the result type be
                       <code class="computeroutput">
@@ -75,12 +75,12 @@
                       </code>.
                       Note that a substitution took place.
                     </p></li>
-<li>
+<li class="listitem">
                     If <code class="computeroutput">O</code> is a template like
                     <code class="computeroutput"><a class="link" href="../noinvoke.html" title="Struct template noinvoke">proto::noinvoke</a>&lt;S&lt;X<sub>0</sub>,...X<sub>n</sub>&gt; &gt;</code>,
                     then the result type is calculated as follows:
-                    <div class="itemizedlist"><ul type="circle">
-<li><p>
+                    <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>
                           For each <code class="computeroutput">i</code> in
                           <code class="computeroutput">[0,n]</code>, let <code class="computeroutput">
                             X<sub>i</sub>'
@@ -93,7 +93,7 @@
                           would be no reason to use <code class="computeroutput"><a class="link" href="../noinvoke.html" title="Struct template noinvoke">proto::noinvoke&lt;&gt;</a></code>
                           otherwise.)
                         </p></li>
-<li><p>
+<li class="listitem"><p>
                           The result type is
                           <code class="computeroutput">
                             S&lt;X<sub>0</sub>',...X<sub>n</sub>'&gt;
@@ -101,12 +101,12 @@
                         </p></li>
 </ul></div>
 </li>
-<li>
+<li class="listitem">
                     If <code class="computeroutput">O</code> is a template like
                     <code class="computeroutput">S&lt;X<sub>0</sub>,...X<sub>n</sub>&gt;</code>,
                     then the result type is calculated as follows:
-                    <div class="itemizedlist"><ul type="circle">
-<li><p>
+                    <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>
                           For each <code class="computeroutput">i</code> in
                           <code class="computeroutput">[0,n]</code>, let <code class="computeroutput">
                             X<sub>i</sub>'
@@ -117,7 +117,7 @@
                           (which evaluates this procedure recursively). Note whether any substitutions took place during
                           this operation.
                         </p></li>
-<li><p>
+<li class="listitem"><p>
                           If any substitutions took place in the above step and
                           <code class="computeroutput">
                             S&lt;X<sub>0</sub>',...X<sub>n</sub>'&gt;
@@ -127,7 +127,7 @@
                             S&lt;X<sub>0</sub>',...X<sub>n</sub>'&gt;::type
                           </code>.
                         </p></li>
-<li><p>
+<li class="listitem"><p>
                           Otherwise, the result type is
                           <code class="computeroutput">
                             S&lt;X<sub>0</sub>',...X<sub>n</sub>'&gt;
@@ -135,7 +135,7 @@
                         </p></li>
 </ul></div>
 </li>
-<li>
+<li class="listitem">
                     Otherwise, the result type is <code class="computeroutput">O</code>, and note that no
                     substitution took place.
                   </li>
@@ -150,11 +150,11 @@
               </p>
 </li></ol></div>
 </div>
-<div class="refsect2" lang="en">
-<a name="id3313186"></a><h3>
-<a name="id2617261-bb"></a><code class="computeroutput">impl</code> public member functions</h3>
-<div class="orderedlist"><ol type="1"><li>
-<pre class="literallayout"><span class="type">result_type</span> <a name="id2617266-bb"></a><span class="bold"><strong>operator</strong></span>()(<span class="bold"><strong>typename</strong></span> impl::expr_param expr, 
+<div class="refsect2" title="impl public member functions">
+<a name="id1642425"></a><h3>
+<a name="id1252498-bb"></a><code class="computeroutput">impl</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="type">result_type</span> <a name="id1252503-bb"></a><span class="bold"><strong>operator</strong></span>()(<span class="bold"><strong>typename</strong></span> impl::expr_param expr, 
                        <span class="bold"><strong>typename</strong></span> impl::state_param state, 
                        <span class="bold"><strong>typename</strong></span> impl::data_param data) <span class="bold"><strong>const</strong></span>;</pre>
 <p>
@@ -165,14 +165,14 @@
                 </p>
 <p>
                   </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>
                         If <code class="computeroutput">T</code> is of the form
                         <code class="computeroutput">O(A<sub>0</sub>,...A<sub>n</sub>)</code>, then:
                       </p>
-<div class="itemizedlist"><ul type="circle">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
 <p>
                             If <code class="computeroutput">
                               <code class="computeroutput"><a class="link" href="../is_aggregate.html" title="Struct template is_aggregate">proto::is_aggregate</a></code>&lt;result_type&gt;::value
@@ -187,7 +187,7 @@
 <p>
                           </p>
 </li>
-<li>
+<li class="listitem">
 <p>
                             Otherwise, construct
                             and return an object <code class="computeroutput">that</code> as follows:
@@ -202,7 +202,7 @@
 </li>
 </ul></div>
 </li>
-<li>
+<li class="listitem">
 <p>
                         Otherwise, construct
                         and return an object <code class="computeroutput">that</code> as follows:
@@ -228,7 +228,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../protect/impl.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../make.html#id3312476"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../pass_through.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../protect/impl.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../make.html#id1641715"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../pass_through.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

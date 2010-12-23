@@ -1,3 +1,9 @@
+#
+# Copyright Troy D. Straszheim
+#
+# Distributed under the Boost Software License, Version 1.0.
+# See http://www.boost.org/LICENSE_1_0.txt
+#
 if (PYTHON_LIBRARIES)
   include_directories(${PYTHON_INCLUDE_PATH})
 
@@ -40,27 +46,13 @@ if (PYTHON_LIBRARIES)
       "" 
       ${ARGN})
       
-    #TODO: The target properties are NOT being set correctly for the test libraries  
-    if (FALSE)
-        # Create the library target itself
-        add_library(${MODULE_NAME} MODULE ${BPL_EXT_DEFAULT_ARGS} )
-    
-        # Miscellaneous target properties
-        set_target_properties(${MODULE_NAME} PROPERTIES PREFIX "")
-    
-        # Link against Boost.Python library
-        target_link_libraries(${MODULE_NAME} boost_python-static)
-    
-        # Link against Python libraries
-        target_link_libraries(${MODULE_NAME} ${PYTHON_LIBRARIES})
-    endif(FALSE)
-
-    boost_add_library(
+    boost_add_single_library(
       ${MODULE_NAME}
       ${BPL_EXT_DEFAULT_ARGS}
       MODULE
       LINK_LIBS ${PYTHON_LIBRARIES}
       DEPENDS boost_python
+      SHARED
     )
        
   endmacro(boost_python_extension)

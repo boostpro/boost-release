@@ -7,13 +7,14 @@
 //
 //  File        : $RCSfile$
 //
-//  Version     : $Revision: 49313 $
+//  Version     : $Revision: 54633 $
 //
 //  Description : basic_cstring unit test
 // *****************************************************************************
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4996)
+#pragma warning(disable: 4267)
 #endif
 
 // Boost.Test

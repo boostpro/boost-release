@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Frequently Asked Questions</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../signals2.html" title="Chapter 17. Boost.Signals2">
 <link rel="prev" href="thread-safety.html" title="Thread-Safety">
@@ -22,23 +22,24 @@
 <div class="spirit-nav">
 <a accesskey="p" href="thread-safety.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="rationale.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Frequently Asked Questions">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="signals2.faq"></a>Frequently Asked Questions</h2></div></div></div>
-<div class="qandaset">
-<dl>
-<dt>1. <a href="faq.html#id3385844">Don't noncopyable signal semantics mean that a class
+<div class="qandaset" title="Frequently Asked Questions">
+<a name="id1680314"></a><dl>
+<dt>1. <a href="faq.html#id1680317">Don't noncopyable signal semantics mean that a class
         with a signal member will be noncopyable as well?</a>
 </dt>
-<dt>2. <a href="faq.html#id3385867">Is Boost.Signals2 thread-safe?</a>
+<dt>2. <a href="faq.html#id1680340">Is Boost.Signals2 thread-safe?</a>
 </dt>
 </dl>
-<table border="0" summary="Q and A Set">
+<table border="0" width="100%" summary="Q and A Set">
 <col align="left" width="1%">
+<col>
 <tbody>
-<tr class="question">
+<tr class="question" title="1.">
 <td align="left" valign="top">
-<a name="id3385844"></a><a name="id3385846"></a><p><b>1.</b></p>
+<a name="id1680317"></a><a name="id1680319"></a><p><b>1.</b></p>
 </td>
 <td align="left" valign="top"><p>Don't noncopyable signal semantics mean that a class
         with a signal member will be noncopyable as well?</p></td>
@@ -51,9 +52,9 @@
         copy constructor and/or copy assignment operator. Just don't
         try to copy the signal.</p></td>
 </tr>
-<tr class="question">
+<tr class="question" title="2.">
 <td align="left" valign="top">
-<a name="id3385867"></a><a name="id3385869"></a><p><b>2.</b></p>
+<a name="id1680340"></a><a name="id1680342"></a><p><b>2.</b></p>
 </td>
 <td align="left" valign="top"><p>Is Boost.Signals2 thread-safe?</p></td>
 </tr>
@@ -67,8 +68,8 @@
           with signal invocation, you will need to use automatic connection management.
           That is, the objects will need to be owned by
           <code class="computeroutput">shared_ptr</code> and passed to the slot's
-          <code class="computeroutput"><a class="link" href="../boost/signals2/slotN.html#id1187184-bb">track</a></code>() method before the slot is connected.
-          The <code class="computeroutput"><a class="link" href="../boost/signals2/trackable.html" title="Class trackable">trackable</a></code> scheme of automatic connection management
+          <code class="computeroutput"><a class="link" href="../boost/signals2/slot.html#id614690-bb">track</a></code>() method before the slot is connected.
+          The <code class="computeroutput"><a class="link" href="../boost/signals2/trackable.html" title="Class trackable">signals2::trackable</a></code> scheme of automatic connection management
           is NOT thread-safe, and is only provided to ease porting of single-threaded
           code from Boost.Signals to Boost.Signals2.
         </p>

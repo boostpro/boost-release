@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Class template reference_wrapper</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../ref/reference.html#header.boost.ref_hpp" title="Header &lt;boost/ref.hpp&gt;">
 <link rel="prev" href="../ref/reference.html" title="Reference">
@@ -22,7 +22,7 @@
 <div class="spirit-nav">
 <a accesskey="p" href="../ref/reference.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../ref/reference.html#header.boost.ref_hpp"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="is_reference_wrapper.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="refentry" lang="en">
+<div class="refentry" title="Class template reference_wrapper">
 <a name="boost.reference_wrapper"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class template reference_wrapper</span></h2>
@@ -41,19 +41,22 @@
   <span class="bold"><strong>typedef</strong></span> T <a name="boost.reference_wrapper.type"></a>type;
 
   <span class="emphasis"><em>// <a class="link" href="reference_wrapper.html#boost.reference_wrapperconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <span class="bold"><strong>explicit</strong></span> <a class="link" href="reference_wrapper.html#id2365957-bb">reference_wrapper</a>(T&amp;);
+  <span class="bold"><strong>explicit</strong></span> <a class="link" href="reference_wrapper.html#id1127790-bb">reference_wrapper</a>(T&amp;);
 
-  <span class="emphasis"><em>// <a class="link" href="reference_wrapper.html#id2365988-bb">access</a></em></span>
-  <a class="link" href="reference_wrapper.html#id2365991-bb"><span class="bold"><strong>operator</strong></span> T&amp;</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">T&amp;</span> <a class="link" href="reference_wrapper.html#id2366008-bb">get</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">T*</span> <a class="link" href="reference_wrapper.html#id2366025-bb">get_pointer</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="reference_wrapper.html#id1127821-bb">access</a></em></span>
+  <a class="link" href="reference_wrapper.html#id1127824-bb"><span class="bold"><strong>operator</strong></span> T&amp;</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">T&amp;</span> <a class="link" href="reference_wrapper.html#id1127841-bb">get</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">T*</span> <a class="link" href="reference_wrapper.html#id1127858-bb">get_pointer</a>() <span class="bold"><strong>const</strong></span>;
 };
 
-<span class="emphasis"><em>// <a class="link" href="reference_wrapper.html#id2366044-bb">constructors</a></em></span>
-<span class="type">reference_wrapper&lt;T&gt;</span> <a class="link" href="reference_wrapper.html#boost.ref_id2366048">ref</a>(T&amp;);
-<span class="type">reference_wrapper&lt;T <span class="bold"><strong>const</strong></span>&gt;</span> <a class="link" href="reference_wrapper.html#boost.cref_id2366077">cref</a>(T <span class="bold"><strong>const</strong></span>&amp;);</pre></div>
-<div class="refsect1" lang="en">
-<a name="id3340674"></a><h2>Description</h2>
+<span class="emphasis"><em>// <a class="link" href="reference_wrapper.html#id1127879-bb">constructors</a></em></span>
+<span class="type">reference_wrapper&lt;T&gt;</span> <a class="link" href="reference_wrapper.html#boost.ref_id1127883">ref</a>(T&amp;);
+<span class="type">reference_wrapper&lt;T <span class="bold"><strong>const</strong></span>&gt;</span> <a class="link" href="reference_wrapper.html#boost.cref_id1127913">cref</a>(T <span class="bold"><strong>const</strong></span>&amp;);
+
+<span class="emphasis"><em>// <a class="link" href="reference_wrapper.html#id1127945-bb">access</a></em></span>
+<span class="type">unwrap_reference&lt;T&gt;::type&amp;</span> <a class="link" href="reference_wrapper.html#boost.unwrap_ref">unwrap_ref</a>(T&amp;);</pre></div>
+<div class="refsect1" title="Description">
+<a name="id1652809"></a><h2>Description</h2>
 <p><code class="computeroutput"><a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a></code>
         is primarily used to "feed" references to function templates
         (algorithms) that take their parameter by value.  It provides
@@ -61,13 +64,13 @@
         <code class="computeroutput">T&amp;</code>, which usually allows
         the function templates to work on references
         unmodified.</p>
-<div class="refsect2" lang="en">
-<a name="id3340701"></a><h3>
+<div class="refsect2" title="reference_wrapper public construct/copy/destruct">
+<a name="id1652836"></a><h3>
 <a name="boost.reference_wrapperconstruct-copy-destruct"></a><code class="computeroutput">reference_wrapper</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol type="1"><li>
-<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id2365957-bb"></a>reference_wrapper(T&amp; t);</pre>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id1127790-bb"></a>reference_wrapper(T&amp; t);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -86,12 +89,12 @@
 </table></div>
 </li></ol></div>
 </div>
-<div class="refsect2" lang="en">
-<a name="id3340776"></a><h3>
-<a name="id2365988-bb"></a><code class="computeroutput">reference_wrapper</code> access</h3>
-<div class="orderedlist"><ol type="1">
-<li>
-<pre class="literallayout"><a name="id2365991-bb"></a><span class="bold"><strong>operator</strong></span> T&amp;() <span class="bold"><strong>const</strong></span>;</pre>
+<div class="refsect2" title="reference_wrapper access">
+<a name="id1652911"></a><h3>
+<a name="id1127821-bb"></a><code class="computeroutput">reference_wrapper</code> access</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="id1127824-bb"></a><span class="bold"><strong>operator</strong></span> T&amp;() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -106,8 +109,8 @@
 </tbody>
 </table></div>
 </li>
-<li>
-<pre class="literallayout"><span class="type">T&amp;</span> <a name="id2366008-bb"></a>get() <span class="bold"><strong>const</strong></span>;</pre>
+<li class="listitem">
+<pre class="literallayout"><span class="type">T&amp;</span> <a name="id1127841-bb"></a>get() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -122,8 +125,8 @@
 </tbody>
 </table></div>
 </li>
-<li>
-<pre class="literallayout"><span class="type">T*</span> <a name="id2366025-bb"></a>get_pointer() <span class="bold"><strong>const</strong></span>;</pre>
+<li class="listitem">
+<pre class="literallayout"><span class="type">T*</span> <a name="id1127858-bb"></a>get_pointer() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -140,12 +143,12 @@
 </li>
 </ol></div>
 </div>
-<div class="refsect2" lang="en">
-<a name="id3340921"></a><h3>
-<a name="id2366044-bb"></a><code class="computeroutput">reference_wrapper</code> constructors</h3>
-<div class="orderedlist"><ol type="1">
-<li>
-<pre class="literallayout"><span class="type">reference_wrapper&lt;T&gt;</span> <a name="boost.ref_id2366048"></a>ref(T&amp; t);</pre>
+<div class="refsect2" title="reference_wrapper constructors">
+<a name="id1653056"></a><h3>
+<a name="id1127879-bb"></a><code class="computeroutput">reference_wrapper</code> constructors</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="type">reference_wrapper&lt;T&gt;</span> <a name="boost.ref_id1127883"></a>ref(T&amp; t);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -160,8 +163,8 @@
 </tbody>
 </table></div>
 </li>
-<li>
-<pre class="literallayout"><span class="type">reference_wrapper&lt;T <span class="bold"><strong>const</strong></span>&gt;</span> <a name="boost.cref_id2366077"></a>cref(T <span class="bold"><strong>const</strong></span>&amp; t);</pre>
+<li class="listitem">
+<pre class="literallayout"><span class="type">reference_wrapper&lt;T <span class="bold"><strong>const</strong></span>&gt;</span> <a name="boost.cref_id1127913"></a>cref(T <span class="bold"><strong>const</strong></span>&amp; t);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -177,6 +180,26 @@
 </table></div>
 </li>
 </ol></div>
+</div>
+<div class="refsect2" title="reference_wrapper access">
+<a name="id1653177"></a><h3>
+<a name="id1127945-bb"></a><code class="computeroutput">reference_wrapper</code> access</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="type">unwrap_reference&lt;T&gt;::type&amp;</span> <a name="boost.unwrap_ref"></a>unwrap_ref(T&amp; t);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><code class="computeroutput"><a class="link" href="unwrap_reference.html" title="Class template unwrap_reference">unwrap_reference</a>&lt;T&gt;::type&amp;(t)</code></td>
+</tr>
+<tr>
+<td><p><span class="term">Throws:</span></p></td>
+<td>Does not throw.</td>
+</tr>
+</tbody>
+</table></div>
+</li></ol></div>
 </div>
 </div>
 </div>

@@ -572,7 +572,7 @@ class Tester(TestCmd.TestCmd):
             try:
                 glob_remove(self.unexpected_difference.added_files, name)
             except:
-                print "File %s not added as expected" % name
+                annotation("failure", "File %s not added as expected" % name)
                 self.fail_test(1)
 
     def ignore_addition(self, wildcard):
@@ -583,7 +583,7 @@ class Tester(TestCmd.TestCmd):
             try:
                 glob_remove(self.unexpected_difference.removed_files, name)
             except:
-                print "File %s not removed as expected" % name
+                annotation("failure", "File %s not removed as expected" % name)
                 self.fail_test(1)
 
     def ignore_removal(self, wildcard):
@@ -594,7 +594,7 @@ class Tester(TestCmd.TestCmd):
             try:
                 glob_remove(self.unexpected_difference.modified_files, name)
             except:
-                print "File %s not modified as expected" % name
+                annotation("failure", "File %s not modified as expected" % name)
                 self.fail_test(1)
 
     def ignore_modification(self, wildcard):
@@ -667,9 +667,10 @@ class Tester(TestCmd.TestCmd):
         self.ignore('*/gmon.out')
 
         if not self.unexpected_difference.empty():
-            print 'FAILED'
-            print '------- The following changes were unexpected -------'
-            self.unexpected_difference.pprint()
+            annotation('failure', 'Unexpected changes found')
+            output = StringIO.StringIO()
+            self.unexpected_difference.pprint(output)
+            annotation("unexpected changes", output.getvalue())
             self.fail_test(1)
 
     def __expect_line(self, content, expected, expected_to_exist):

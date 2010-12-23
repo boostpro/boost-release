@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Introduction</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../lambda.html" title="Chapter 11. Boost.Lambda">
 <link rel="prev" href="getting_started.html" title="Getting Started">
@@ -22,16 +22,16 @@
 <div class="spirit-nav">
 <a accesskey="p" href="getting_started.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../lambda.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="using_library.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Introduction">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id2780813"></a>Introduction</h2></div></div></div>
+<a name="id1333471"></a>Introduction</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="s03.html#id2780818">Motivation</a></span></dt>
-<dt><span class="section"><a href="s03.html#id2781059">Introduction to lambda expressions</a></span></dt>
+<dt><span class="section"><a href="s03.html#id1333477">Motivation</a></span></dt>
+<dt><span class="section"><a href="s03.html#id1333740">Introduction to lambda expressions</a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="Motivation">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2780818"></a>Motivation</h3></div></div></div>
+<a name="id1333477"></a>Motivation</h3></div></div></div>
 <p>The Standard Template Library (STL)
 	<a class="xref" href="../lambda.html#cit:stepanov:94" title="The Standard Template Library">[<abbr class="abbrev">STL94</abbr>]</a>, now part of the C++ Standard Library <a class="xref" href="../lambda.html#cit:c++:98" title="International Standard, Programming Languages &#8211; C++">[<abbr class="abbrev">C++98</abbr>]</a>, is a generic container and algorithm library.
 Typically STL algorithms operate on container elements via <span class="emphasis"><em>function objects</em></span>. These function objects are passed as arguments to the algorithms.
@@ -122,8 +122,8 @@ of a binary function to be bound; there are no binders for
 The Boost Lambda Library provides solutions for the problems described above:
 
 </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>
 Unnamed functions can be created easily with an intuitive syntax. 
 
@@ -145,11 +145,11 @@ for_each(a.begin(), a.end(), cout &lt;&lt; (1 + _1));
 <p>
 </p>
 </li>
-<li><p>
+<li class="listitem"><p>
 Most of the restrictions in argument binding are removed, 
 arbitrary arguments of practically any C++ function can be bound.
 </p></li>
-<li><p>
+<li class="listitem"><p>
 Separate function composition operations are not needed, 
 as function composition is supported implicitly.
 
@@ -159,9 +159,9 @@ as function composition is supported implicitly.
 
 </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Introduction to lambda expressions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2781059"></a>Introduction to lambda expressions</h3></div></div></div>
+<a name="id1333740"></a>Introduction to lambda expressions</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="s03.html#lambda.partial_function_application">Partial function application</a></span></dt>
 <dt><span class="section"><a href="s03.html#lambda.terminology">Terminology</a></span></dt>
@@ -180,12 +180,12 @@ lambda x<sub>1</sub> ... x<sub>n</sub>.e
 
 	A lambda expression defines an unnamed function and consists of:
 	</p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>
 	      the parameters of this function: <code class="literal">x<sub>1</sub> ... x<sub>n</sub></code>.
 	      
 	    </p></li>
-<li><p>the expression e which computes the value of the function in terms of the parameters <code class="literal">x<sub>1</sub> ... x<sub>n</sub></code>.
+<li class="listitem"><p>the expression e which computes the value of the function in terms of the parameters <code class="literal">x<sub>1</sub> ... x<sub>n</sub></code>.
 	    </p></li>
 </ul></div>
 <p>
@@ -248,7 +248,7 @@ Hence, there is no syntactic keyword for C++ lambda expressions.
 
 
       </p>
-<div class="section" lang="en">
+<div class="section" title="Partial function application">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="lambda.partial_function_application"></a>Partial function application</h4></div></div></div>
 <p>
@@ -258,7 +258,7 @@ In partial function application, some of the arguments of a function are bound t
 	  When called with the unbound arguments, this new function invokes the original function with the merged argument list of bound and unbound arguments.
 	</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Terminology">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="lambda.terminology"></a>Terminology</h4></div></div></div>
 <p>

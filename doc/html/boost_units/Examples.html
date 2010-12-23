@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Examples</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../boost_units.html" title="Chapter 24. Boost.Units 1.0.0">
 <link rel="prev" href="Quantities.html" title="Quantities">
@@ -22,7 +22,7 @@
 <div class="spirit-nav">
 <a accesskey="p" href="Quantities.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_units.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="Utilities.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Examples">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_units.Examples"></a><a class="link" href="Examples.html" title="Examples"> Examples</a>
 </h2></div></div></div>
@@ -53,7 +53,7 @@
 <dt><span class="section"><a href="Examples.html#boost_units.Examples.RuntimeUnits"> Runtime Units</a></span></dt>
 <dt><span class="section"><a href="Examples.html#boost_units.Examples.lambda"> Interoperability with Boost.Lambda</a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="Dimension Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.DimensionExample"></a><a class="link" href="Examples.html#boost_units.Examples.DimensionExample" title="Dimension Example"> Dimension Example</a>
 </h3></div></div></div>
@@ -104,7 +104,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Unit Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.UnitExample"></a><a class="link" href="Examples.html#boost_units.Examples.UnitExample" title="Unit Example"> Unit Example</a>
 </h3></div></div></div>
@@ -157,7 +157,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Quantity Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.QuantityExample"></a><a class="link" href="Examples.html#boost_units.Examples.QuantityExample" title="Quantity Example"> Quantity Example</a>
 </h3></div></div></div>
@@ -249,7 +249,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Kitchen Sink Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.KitchenSinkExample"></a><a class="link" href="Examples.html#boost_units.Examples.KitchenSinkExample" title="Kitchen Sink Example"> Kitchen Sink
       Example</a>
@@ -530,13 +530,9 @@
 <span class="special">{</span>
     <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">si</span><span class="special">;</span>
     
-    <span class="preprocessor">#if</span> <span class="identifier">BOOST_UNITS_HAS_TYPEOF</span> 
     <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">constants</span><span class="special">::</span><span class="identifier">codata</span><span class="special">;</span>
     <span class="keyword">return</span> <span class="special">(</span><span class="identifier">P</span><span class="special">*</span><span class="identifier">V</span><span class="special">/(</span><span class="identifier">R</span><span class="special">*</span><span class="identifier">T</span><span class="special">));</span>
-    <span class="preprocessor">#else</span>
-    <span class="keyword">return</span> <span class="identifier">P</span><span class="special">*</span><span class="identifier">V</span><span class="special">/(</span><span class="number">8.314472</span><span class="special">*(</span><span class="identifier">joules</span><span class="special">/(</span><span class="identifier">kelvin</span><span class="special">*</span><span class="identifier">mole</span><span class="special">))*</span><span class="identifier">T</span><span class="special">);</span>
-    <span class="preprocessor">#endif</span> <span class="comment">// BOOST_UNITS_HAS_TYPEOF
-</span><span class="special">}</span>
+<span class="special">}</span>
 </pre>
 <p>
         </p>
@@ -652,7 +648,7 @@
         </p>
 <p>
       </p>
-<div class="section" lang="en">
+<div class="section" title="User-defined value types">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="boost_units.Examples.KitchenSinkExample.UDT_Quantities"></a><a class="link" href="Examples.html#boost_units.Examples.KitchenSinkExample.UDT_Quantities" title="User-defined value types">
         User-defined value types</a>
@@ -724,7 +720,7 @@
         </p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Conversion Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.ConversionExample"></a><a class="link" href="Examples.html#boost_units.Examples.ConversionExample" title="Conversion Example"> Conversion Example</a>
 </h3></div></div></div>
@@ -754,7 +750,7 @@
         no way to emulate the exact behavior of the built-in conversion. Explicit
         constructors allow conversions for two cases:
       </p>
-<div class="itemizedlist"><ul type="disc"><li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           explicit casting of a <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/quantity.html" title="Class template quantity">quantity</a></code></span>
           to a different <code class="computeroutput"><span class="identifier">value_type</span></code>
           :
@@ -770,7 +766,7 @@
         </p>
 <p>
       </p>
-<div class="itemizedlist"><ul type="disc"><li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           and explicit casting of a <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/quantity.html" title="Class template quantity">quantity</a></code></span>
           to a different unit :
         </li></ul></div>
@@ -852,7 +848,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="User Defined Types">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.UDTExample"></a><a class="link" href="Examples.html#boost_units.Examples.UDTExample" title="User Defined Types"> User Defined Types</a>
 </h3></div></div></div>
@@ -1097,7 +1093,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Complex Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.ComplexExample"></a><a class="link" href="Examples.html#boost_units.Examples.ComplexExample" title="Complex Example"> Complex Example</a>
 </h3></div></div></div>
@@ -1515,7 +1511,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Performance Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.PerformanceExample"></a><a class="link" href="Examples.html#boost_units.Examples.PerformanceExample" title="Performance Example"> Performance
       Example</a>
@@ -1535,7 +1531,7 @@
         msvc 8.0 on Windows XP.
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Radar Beam Height">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.RadarBeamHeightExample"></a><a class="link" href="Examples.html#boost_units.Examples.RadarBeamHeightExample" title="Radar Beam Height"> Radar Beam
       Height</a>
@@ -1729,7 +1725,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Heterogeneous Unit Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.HeterogeneousUnitExample"></a><a class="link" href="Examples.html#boost_units.Examples.HeterogeneousUnitExample" title="Heterogeneous Unit Example"> Heterogeneous
       Unit Example</a>
@@ -1826,7 +1822,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Absolute and Relative Temperature Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.AbsoluteRelativeTemperatureExample"></a><a class="link" href="Examples.html#boost_units.Examples.AbsoluteRelativeTemperatureExample" title="Absolute and Relative Temperature Example">
       Absolute and Relative Temperature Example</a>
@@ -1904,7 +1900,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Runtime Conversion Factor Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.RuntimeConversionFactorExample"></a><a class="link" href="Examples.html#boost_units.Examples.RuntimeConversionFactorExample" title="Runtime Conversion Factor Example">
       Runtime Conversion Factor Example</a>
@@ -1966,7 +1962,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Units with Non-base Dimensions">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.UnitsWithNonbaseDimensions"></a><a class="link" href="Examples.html#boost_units.Examples.UnitsWithNonbaseDimensions" title="Units with Non-base Dimensions"> Units
       with Non-base Dimensions</a>
@@ -2002,7 +1998,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Output for Composite Units">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.OutputForCompositeUnits"></a><a class="link" href="Examples.html#boost_units.Examples.OutputForCompositeUnits" title="Output for Composite Units"> Output
       for Composite Units</a>
@@ -2056,7 +2052,7 @@
         Formatting of scaled unit is also done correctly.
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Conversion Factor">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.ConversionFactor"></a><a class="link" href="Examples.html#boost_units.Examples.ConversionFactor" title="Conversion Factor"> Conversion Factor</a>
 </h3></div></div></div>
@@ -2116,7 +2112,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Runtime Units">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.RuntimeUnits"></a><a class="link" href="Examples.html#boost_units.Examples.RuntimeUnits" title="Runtime Units"> Runtime Units</a>
 </h3></div></div></div>
@@ -2233,7 +2229,7 @@
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Interoperability with Boost.Lambda">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_units.Examples.lambda"></a><a class="link" href="Examples.html#boost_units.Examples.lambda" title="Interoperability with Boost.Lambda"> Interoperability with Boost.Lambda</a>
 </h3></div></div></div>

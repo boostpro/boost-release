@@ -43,15 +43,14 @@
 #                           of the libraries. Note, that which variants get
 #                           built depends on what each library supports.
 #
-#                               minimal (default) - Builds the single
-#                               "release" version of the libraries. This
-#                               release corresponds to specifying:
-#                               "release <threading>multi <link>shared
-#                               <link>static <runtime-link>shared" as the
-#                               Boost.Build variant to build.
+#                               minimal (default) - Builds a minimal set of 
+#                               variants. On Windows, these are static 
+#                               multithreaded libraries in debug and release
+#                               modes, using shared runtime. On Linux, these
+#                               are static and shared multithreaded libraries
+#                               in release mode.
 #
-#                               complete - Attempts to build all possible
-#                               variations.
+#                               complete - Build all possible variations.
 #
 #   --build-dir=DIR         Build in this location instead of building
 #                           within the distribution tree. Recommended!
@@ -64,21 +63,26 @@
 #                           versions of Boost or multiple compilers can
 #                           be used on the same system.
 #
-#                               versioned (default) - Names of boost
-#                               binaries include the Boost version
-#                               number and the name and version of the
-#                               compiler.  Boost headers are installed
-#                               in a subdirectory of <HDRDIR> whose
-#                               name contains the Boost version
-#                               number.
+#                               versioned (default) - Names of boost binaries
+#                               include the Boost version number, name and
+#                               version of the compiler and encoded build
+#                               properties.  Boost headers are installed in a
+#                               subdirectory of <HDRDIR> whose name contains
+#                               the Boost version number.
 #
-#                               system - Binaries names do not include
-#                               the Boost version number or the name
-#                               and version number of the compiler.
-#                               Boost headers are installed directly
-#                               into <HDRDIR>.  This option is
-#                               intended for system integrators who
-#                               are building distribution packages.
+#                               tagged -- Names of boost binaries include the
+#                               encoded build properties such as variant and
+#                               threading, but do not including compiler name
+#                               and version, or Boost version. This option is
+#                               useful if you build several variants of Boost,
+#                               using the same compiler.
+#
+#                               system - Binaries names do not include the
+#                               Boost version number or the name and version
+#                               number of the compiler.  Boost headers are
+#                               installed directly into <HDRDIR>.  This option
+#                               is intended for system integrators who are
+#                               building distribution packages.
 #
 #   --buildid=ID            Adds the specified ID to the name of built
 #                           libraries.  The default is to not add anything.
@@ -126,9 +130,10 @@ import sequence ;
 import symlink ;
 import targets ;
 import project ;
+import option ;
 
 path-constant BOOST_ROOT : . ;
-constant BOOST_VERSION : 1.39.0 ;
+constant BOOST_VERSION : 1.40.0 ;
 constant BOOST_JAMROOT_MODULE : $(__name__) ;
 
 local version-tag = [ MATCH "^([^.]+)[.]([^.]+)[.]([^.]+)" : $(BOOST_VERSION) ]
@@ -272,10 +277,35 @@ rule libraries-to-install ( existing-libraries * )
 
 
 # What kind of layout are we doing?
-layout = [ MATCH "^--layout=(.*)" : [ modules.peek : ARGV ] ] ;
-layout ?= versioned ;
+layout = [ option.get layout : "" ] ;
+# On Windows, we used versioned layout by default in order to
+# be compatible with autolink. On other systems, we use system
+# layout which is what every other program uses. Note that windows
+# check is static, and won't 
+if ! $(layout)
+{
+    if [ modules.peek : NT ]
+    {
+        layout = versioned ;
+    }
+    else
+    {
+        layout = system ;
+    }
+}
 layout-$(layout) = true ;
 
+if $(layout) = system && $(build-type) = complete
+{
+    ECHO "error: Cannot use --layout=system with --build-type complete." ;
+    ECHO "error: Please used either --layout=versioned or --layout=tagged " ;
+    ECHO "error: if you wish to build multiple variants." ;
+    if ! [ modules.peek : NT ] 
+    {        
+        ECHO "error: Note that --layout=system is default on Unix starting with Boost 1.40." ;
+    }    
+    EXIT ;
+}
 
 # Possible stage only location.
 local stage-locate = [ MATCH "^--stagedir=(.*)" : [ modules.peek : ARGV ] ] ;
@@ -318,53 +348,50 @@ rule tag ( name : type ? : property-set )
 {
     if $(type) in STATIC_LIB SHARED_LIB IMPORT_LIB
     {
+        local result ;
         if $(layout) = versioned
         {
-            local result = [ common.format-name
+            result = [ common.format-name
                 <base> <toolset> <threading> <runtime> -$(BOOST_VERSION_TAG)
                 -$(BUILD_ID)
                 : $(name) : $(type) : $(property-set) ] ;
-
-            # Optionally add version suffix. On NT, library with version suffix
-            # will not be recognized by linkers. On CYGWIN, we get strage
-            # duplicate symbol errors when library is generated with version
-            # suffix. On OSX, version suffix is not needed -- the linker expects
-            # the libFoo.1.2.3.dylib format. AIX linkers do not accept version
-            # suffixes either. Pgi compilers can not accept library with version
-            # suffix.
-            if $(type) = SHARED_LIB &&
-              ( ! ( [ $(property-set).get <target-os> ] in windows cygwin darwin aix ) &&
-                ! ( [ $(property-set).get <toolset> ] in pgi ) )
-            {
-                result = $(result).$(BOOST_VERSION)  ;
-            }
-
-            return $(result) ;
-        }
-        else
+        }        
+        else if $(layout) = tagged
         {
-            local result = [ common.format-name
+            result = [ common.format-name
+                <base> <threading> <runtime>
+                -$(BUILD_ID)
+                : $(name) : $(type) : $(property-set) ] ;            
+        }
+        else if $(layout) = system
+        {
+            result = [ common.format-name
                 <base> 
                 -$(BUILD_ID)
                 : $(name) : $(type) : $(property-set) ] ;
-
-            # Optionally add version suffix. On NT, library with version suffix
-            # will not be recognized by linkers. On CYGWIN, we get strage
-            # duplicate symbol errors when library is generated with version
-            # suffix. On OSX, version suffix is not needed -- the linker expects
-            # the libFoo.1.2.3.dylib format. AIX linkers do not accept version
-            # suffixes either. Pgi compilers can not accept library with version
-            # suffix.
-            if $(type) = SHARED_LIB &&
-              ( ! ( [ $(property-set).get <target-os> ] in windows cygwin darwin aix ) &&
-                ! ( [ $(property-set).get <toolset> ] in pgi ) )
-            {
-                result = $(result).$(BOOST_VERSION)  ;
-            }
-
-            return $(result) ;
         }
-    }
+        else
+        {
+            ECHO "error: invalid layout '$(layout)'" ;
+            EXIT ;               
+        }
+                
+        # Optionally add version suffix. On NT, library with version suffix
+        # will not be recognized by linkers. On CYGWIN, we get strage
+        # duplicate symbol errors when library is generated with version
+        # suffix. On OSX, version suffix is not needed -- the linker expects
+        # the libFoo.1.2.3.dylib format. AIX linkers do not accept version
+        # suffixes either. Pgi compilers can not accept library with version
+        # suffix.
+        if $(type) = SHARED_LIB &&
+          ( ! ( [ $(property-set).get <target-os> ] in windows cygwin darwin aix ) &&
+            ! ( [ $(property-set).get <toolset> ] in pgi ) )
+        {
+            result = $(result).$(BOOST_VERSION)  ;
+        }
+            
+        return $(result) ;
+    }    
 }
 
 
@@ -625,7 +652,7 @@ targets.create-metatarget top-level-target : [ project.current ]
 
 
 message explain :
-"\nBuilding C++ Boost.
+"\nBuilding the Boost C++ Libraries.
 
 After the build, the headers will be located at
   
@@ -638,12 +665,6 @@ The libraries will be located at
 Use 'bjam install --prefix=<path>' if you wish to install headers and 
 libraries to a different location and remove the source tree.\n\n"
   ;
-
-
-# Just build the libraries, don't install them anywhere. This is what happens
-# with just "bjam --v2".
-alias build_all : libs/$(libraries)/build ;
-
 
 # This rule should be called from libraries' Jamfiles and will create two
 # targets, "install" and "stage", that will install or stage that library. The

@@ -1,3 +1,9 @@
+#
+# Copyright Troy D. Straszheim
+#
+# Distributed under the Boost Software License, Version 1.0.
+# See http://www.boost.org/LICENSE_1_0.txt
+#
 # The set of archives that we will use for testing the Serialization
 # library
 set(BOOST_ARCHIVE_LIST 
@@ -111,7 +117,8 @@ serialization_test_allarchives(test_list_ptrs test_list_ptrs.cpp A.cpp)
 serialization_test_allarchives(test_map test_map.cpp A.cpp)
 serialization_test_allarchives(test_mi)
 serialization_test_allarchives(test_multiple_ptrs test_multiple_ptrs.cpp A.cpp)
-serialization_test_allarchives(test_no_rtti)
+serialization_test_allarchives(test_no_rtti test_no_rtti.cpp
+  polymorphic_base.cpp polymorphic_derived1.cpp polymorphic_derived2.cpp)
 serialization_test_allarchives(test_non_intrusive)
 serialization_test_allarchives(test_non_default_ctor)
 serialization_test_allarchives(test_non_default_ctor2)

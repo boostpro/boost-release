@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Extender Manual</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../bbv2.html" title="Chapter 31. Boost.Build V2 User Manual">
 <link rel="prev" href="reference.html" title="Reference">
@@ -22,7 +22,7 @@
 <div class="spirit-nav">
 <a accesskey="p" href="reference.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Extender Manual">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.extender"></a>Extender Manual</h2></div></div></div>
 <div class="toc"><dl>
@@ -33,7 +33,7 @@
 <dt><span class="section"><a href="extender.html#bbv2.extending.rules">Main target rules</a></span></dt>
 <dt><span class="section"><a href="extender.html#bbv2.extending.toolset_modules">Toolset modules</a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="Introduction">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extender.intro"></a>Introduction</h3></div></div></div>
 <p>This document explains how to extend Boost.Build to accomodate
@@ -43,16 +43,16 @@
   you ever did this, you know that it's not nice. Embedding large
   portions of C++ code in string literals is very awkward. A much
   better solution is:</p>
-<div class="orderedlist"><ol type="1">
-<li>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
         Write the template of the code to be generated, leaving
     placeholders at the points that will change
       </li>
-<li>
+<li class="listitem">
         Access the template in your application and replace
     placeholders with appropriate text.
       </li>
-<li>Write the result.</li>
+<li class="listitem">Write the result.</li>
 </ol></div>
 <p>It's quite easy to achieve. You write special verbatim files that are
   just C++, except that the very first line of the file contains the name of a
@@ -122,7 +122,7 @@ exe codegen : codegen.cpp class_template.verbatim usage.verbatim ;
     <code class="filename">example/customization</code> directory.
   </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Target types">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.targets"></a>Target types</h3></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="extender.html#bbv2.extending.scanners">Scanners</a></span></dt></dl></div>
@@ -177,7 +177,7 @@ type.register PLUGIN : : SHARED_LIB ;
       automatically declare a main target rule for building targets of that
       type. More details can be found <a class="link" href="extender.html#bbv2.extending.rules.main-type">later</a>.
     </p>
-<div class="section" lang="en">
+<div class="section" title="Scanners">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.extending.scanners"></a>Scanners</h4></div></div></div>
 <p>
@@ -229,7 +229,7 @@ type.set-scanner VERBATIM : verbatim-scanner ;
         </p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Tools and generators">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.tools"></a>Tools and generators</h3></div></div></div>
 <p>
@@ -305,7 +305,7 @@ generators.register-composing mex.mex : CPP LIB : MEX ;
       </p>
 <p>(Need a note about UNIX)</p>
 <h4>
-<a name="id4297335"></a>Custom generator classes</h4>
+<a name="id2145518"></a>Custom generator classes</h4>
 <p>The standard generators allows you to specify source and target
         types, an action, and a set of flags. If you need anything more complex,
         
@@ -435,7 +435,7 @@ rule run ( project name ? : property-set : sources * )
         if necessary.
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Features">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.features"></a>Features</h3></div></div></div>
 <p>
@@ -496,8 +496,8 @@ actions inline-file
 <p>
       Using portable features is a good idea because:
       </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>When a portable feature is given a fixed set of
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>When a portable feature is given a fixed set of
           values, you can build your project with two different
           settings of the feature and Boost.Build will automatically
           use two different directories for generated files.
@@ -505,7 +505,7 @@ actions inline-file
           different raw options.
             
           </p></li>
-<li><p>Unlike with &#8220;raw&#8221; features, you don't need to use
+<li class="listitem"><p>Unlike with &#8220;raw&#8221; features, you don't need to use
           specific command-line flags in your Jamfile, and it will be
           more likely to work with other tools.
           </p></li>
@@ -513,48 +513,48 @@ actions inline-file
 <p>
     </p>
 <h4>
-<a name="id4297616"></a>Steps for adding a feauture</h4>
+<a name="id2145799"></a>Steps for adding a feauture</h4>
 <p>Adding a feature requires three steps:
 
         </p>
-<div class="orderedlist"><ol type="1">
-<li>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
 <p>Declaring a feature. For that, the "feature.feature"
               rule is used. You have to decide on the set of <a class="link" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">feature
               attributes</a>:
 
               </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>if you want a feature value set for one target
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>if you want a feature value set for one target
                 to automaticaly propagate to its dependant targets then make it
                 &#8220;propagated&#8221;. </p></li>
-<li><p>if a feature does not have a fixed list of
+<li class="listitem"><p>if a feature does not have a fixed list of
                 values, it must be &#8220;free.&#8221;  For example, the <code class="computeroutput">include
                 </code> feature is a free feature.</p></li>
-<li><p>if a feature is used to refer to a path relative
+<li class="listitem"><p>if a feature is used to refer to a path relative
                 to the Jamfile, it must be a &#8220;path&#8221; feature. Such features will
                 also get their values automatically converted to Boost Build's
                 internal path representation. For example, <code class="computeroutput">include</code>
                 is a path feature.</p></li>
-<li><p>if feature is used to refer to some target, it
+<li class="listitem"><p>if feature is used to refer to some target, it
                 must be a &#8220;dependency&#8221; feature. </p></li>
 </ul></div>
 <p>
               </p>
 </li>
-<li><p>Representing the feature value in a
+<li class="listitem"><p>Representing the feature value in a
           target-specific variable. Build actions are command
           templates modified by Boost.Jam variable expansions.  The
           <code class="computeroutput">toolset.flags</code> rule sets a target-specific
           variable to the value of a feature.</p></li>
-<li><p>Using the variable. The variable set in step 2 can
+<li class="listitem"><p>Using the variable. The variable set in step 2 can
               be used in a build action to form command parameters or
               files.</p></li>
 </ol></div>
 <p>
       </p>
 <h4>
-<a name="id4297716"></a>Another example</h4>
+<a name="id2145899"></a>Another example</h4>
 <p>Here's another example.
         Let's see how we can make a feature that refers to a target. For example,
         when linking dynamic libraries on Windows, one sometimes needs to
@@ -569,8 +569,8 @@ actions inline-file
         Actually, this feature is already supported, but anyway...
         
       </p>
-<div class="orderedlist"><ol type="1">
-<li>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
 <p>Since the feature refers to a target, it must be "dependency".
 </p>
 <pre class="programlisting">
@@ -579,7 +579,7 @@ feature def-file : : free dependency ;
 <p>
             </p>
 </li>
-<li>
+<li class="listitem">
 <p>One of the toolsets that cares about
         
         DEF files is msvc. The following line should be added to it.
@@ -593,7 +593,7 @@ flags msvc.link DEF_FILE &lt;def-file&gt; ;
             
             </p>
 </li>
-<li>
+<li class="listitem">
 <p>Since the DEF_FILE variable is not used by the
 msvc.link action,
 
@@ -636,7 +636,7 @@ rule link
 </li>
 </ol></div>
 <h4>
-<a name="id4297827"></a>Variants and composite features.</h4>
+<a name="id2146010"></a>Variants and composite features.</h4>
 <p>Sometimes you want to create a shortcut for some set of
         features. For example, <code class="computeroutput">release</code> is a value of
         <code class="computeroutput">&lt;variant&gt;</code> and is a shortcut for a set of features.
@@ -675,7 +675,7 @@ feature.compose &lt;parallelism&gt;fake : &lt;library&gt;/mpi//fake/&lt;parallel
         library.
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Main target rules">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.rules"></a>Main target rules</h3></div></div></div>
 <p>
@@ -742,7 +742,7 @@ glib codegen ;
       use that as example if your main target rule is non-trivial.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Toolset modules">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.toolset_modules"></a>Toolset modules</h3></div></div></div>
 <p>
@@ -764,14 +764,14 @@ glib codegen ;
 <p>Here are some guidelines that help to make Boost.Build more
       consistent:
       </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>The <code class="computeroutput">init</code> rule should never fail. Even if
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>The <code class="computeroutput">init</code> rule should never fail. Even if
           the user provided an incorrect path, you should emit a warning and go
           on. Configuration may be shared between different machines, and
           wrong values on one machine can be OK on another.
           
           </p></li>
-<li>
+<li class="listitem">
 <p>Prefer specifying the command to be executed
         to specifying the tool's installation path. First of all, this
         gives more control: it's possible to specify
@@ -788,7 +788,7 @@ time g++
             
           </p>
 </li>
-<li>
+<li class="listitem">
 <p>Check for multiple initialization. A user can try to
             initialize the module several times. You need to check for this
             and decide what to do. Typically, unless you support several
@@ -811,7 +811,7 @@ using yfc : 3.4 ;
             
             </p>
 </li>
-<li>
+<li class="listitem">
 <p>If possible, <code class="computeroutput">init</code> must be callable
           with no parameters. In which case, it should try to autodetect all
           the necessary information, for example, by looking for a tool in
@@ -824,7 +824,7 @@ using yfc ;
 <p>
           </p>
 </li>
-<li><p>Consider using facilities in the
+<li class="listitem"><p>Consider using facilities in the
           <code class="computeroutput">tools/common</code> module. You can take a look at how
           <code class="computeroutput">tools/gcc.jam</code> uses that module in the <code class="computeroutput">init</code> rule.
           </p></li>

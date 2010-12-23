@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Library Overview</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../program_options.html" title="Chapter 13. Boost.Program_options">
 <link rel="prev" href="tutorial.html" title="Tutorial">
@@ -22,15 +22,15 @@
 <div class="spirit-nav">
 <a accesskey="p" href="tutorial.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../program_options.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="howto.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Library Overview">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="program_options.overview"></a>Library Overview</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="overview.html#id2892473">Options Description Component</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2893056">Parsers Component</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2893164">Storage Component</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2893267">Specific parsers</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2893561">Annotated List of Symbols</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1394756">Options Description Component</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1395340">Parsers Component</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1395449">Storage Component</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1395552">Specific parsers</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1395846">Annotated List of Symbols</a></span></dt>
 </dl></div>
 <p>In the tutorial section, we saw several examples of library usage.
     Here we will describe the overall library design including the primary
@@ -38,14 +38,14 @@
   </p>
 <p>The library has three main components:
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>The options description component, which describes the allowed options
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>The options description component, which describes the allowed options
           and what to do with the values of the options.
         </p></li>
-<li><p>The parsers component, which uses this information to find option names
+<li class="listitem"><p>The parsers component, which uses this information to find option names
           and values in the input sources and return them. 
         </p></li>
-<li><p>The storage component, which provides the
+<li class="listitem"><p>The storage component, which provides the
           interface to access the value of an option. It also converts the string
           representation of values that parsers return into desired C++ types.
         </p></li>
@@ -72,13 +72,13 @@
     important when the number of options is large and declaring them in one
     place becomes troublesome.
   </p>
-<div class="section" lang="en">
+<div class="section" title="Options Description Component">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2892473"></a>Options Description Component</h3></div></div></div>
+<a name="id1394756"></a>Options Description Component</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="overview.html#id2892727">Syntactic Information</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2892890">Semantic Information</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2892937">Positional Options</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1395011">Syntactic Information</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1395174">Semantic Information</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1395221">Positional Options</a></span></dt>
 </dl></div>
 <p>The options description component has three main classes:
       <code class="computeroutput"><a class="link" href="../boost/program_options/option_description.html" title="Class option_description">option_description</a></code>, <code class="computeroutput"><a class="link" href="../boost/program_options/value_semantic.html" title="Class value_semantic">value_semantic</a></code> and <code class="computeroutput"><a class="link" href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code>. The
@@ -144,25 +144,25 @@ desc.add_options()
 <pre class="screen">calc --expression="1 + 2/3"</pre>
 <p>
     </p>
-<div class="section" lang="en">
+<div class="section" title="Syntactic Information">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2892727"></a>Syntactic Information</h4></div></div></div>
-<div class="toc"><dl><dt><span class="section"><a href="overview.html#id2892818">Description formatting</a></span></dt></dl></div>
+<a name="id1395011"></a>Syntactic Information</h4></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="overview.html#id1395102">Description formatting</a></span></dt></dl></div>
 <p>The syntactic information is provided by the
         <code class="computeroutput"><a class="link" href="../boost/program_options/options_description.html" title="Class options_description">boost::program_options::options_description</a></code> class
         and some methods of the
         <code class="computeroutput"><a class="link" href="../boost/program_options/value_semantic.html" title="Class value_semantic">boost::program_options::value_semantic</a></code> class
         and includes:        
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>
               name of the option, used to identify the option inside the
               program,
             </p></li>
-<li><p>
+<li class="listitem"><p>
               description of the option, which can be presented to the user,
             </p></li>
-<li><p>
+<li class="listitem"><p>
               the allowed number of source tokens that comprise options's
               value, which is used during parsing.
             </p></li>
@@ -193,9 +193,9 @@ desc.add_options()
       </pre>
 <p>      
       </p>
-<div class="section" lang="en">
+<div class="section" title="Description formatting">
 <div class="titlepage"><div><div><h5 class="title">
-<a name="id2892818"></a>Description formatting</h5></div></div></div>
+<a name="id1395102"></a>Description formatting</h5></div></div></div>
 <p>
           Sometimes the description can get rather long, for example, when
           several option's values need separate documentation. Below we
@@ -289,9 +289,9 @@ bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla");
         </p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Semantic Information">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2892890"></a>Semantic Information</h4></div></div></div>
+<a name="id1395174"></a>Semantic Information</h4></div></div></div>
 <p>The semantic information is completely provided by the 
         <code class="computeroutput"><a class="link" href="../boost/program_options/value_semantic.html" title="Class value_semantic">boost::program_options::value_semantic</a></code> class. For
         example:
@@ -312,9 +312,9 @@ desc.add_options()
         "email" option as argument.      
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Positional Options">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2892937"></a>Positional Options</h4></div></div></div>
+<a name="id1395221"></a>Positional Options</h4></div></div></div>
 <p>Our definition of option as (name, value) pairs is simple and
         useful, but in one special case of the command line, there's a
         problem. A command line can include a <em class="firstterm">positional option</em>,
@@ -337,7 +337,7 @@ desc.add_options()
         </pre>
 <p>
       </p>
-<p>The <code class="computeroutput"><a class="link" href="../boost/program_options/positional_options_desc_id1942440.html" title="Class positional_options_description">positional_options_description</a></code> class allows the command line
+<p>The <code class="computeroutput"><a class="link" href="../boost/program_options/positional_options_desc_id889053.html" title="Class positional_options_description">positional_options_description</a></code> class allows the command line
         parser to assign the names. The class specifies how many positional options
         are allowed, and for each allowed option, specifies the name. For example:
 </p>
@@ -358,20 +358,20 @@ pd.add("output-file", 2).add("input-file", -1);
         In the above example, the first two positional options will be associated
         with name "output-file", and any others with the name "input-file".
       </p>
-<div class="warning"><table border="0" summary="Warning">
+<div class="warning" title="Warning"><table border="0" summary="Warning">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
-<tr><td align="left" valign="top"><p>The <code class="computeroutput"><a class="link" href="../boost/program_options/positional_options_desc_id1942440.html" title="Class positional_options_description">positional_options_description</a></code> class only specifies translation from
+<tr><td align="left" valign="top"><p>The <code class="computeroutput"><a class="link" href="../boost/program_options/positional_options_desc_id889053.html" title="Class positional_options_description">positional_options_description</a></code> class only specifies translation from
       position to name, and the option name should still be registered with
       an instance of the <code class="computeroutput"><a class="link" href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code> class.</p></td></tr>
 </table></div>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Parsers Component">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2893056"></a>Parsers Component</h3></div></div></div>
+<a name="id1395340"></a>Parsers Component</h3></div></div></div>
 <p>The parsers component splits input sources into (name, value) pairs.
       Each parser looks for possible options and consults the options
       description component to determine if the option is known and how its value
@@ -399,19 +399,19 @@ pd.add("output-file", 2).add("input-file", -1);
       from the options description component, the additional complexity is
       tolerable.
       </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>The name specified on the command line may be
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>The name specified on the command line may be
             different from the option name -- it's common to provide a "short option
             name" alias to a longer name. It's also common to allow an abbreviated name
             to be specified on the command line.
           </p></li>
-<li><p>Sometimes it's desirable to specify value as several
+<li class="listitem"><p>Sometimes it's desirable to specify value as several
           tokens. For example, an option "--email-recipient" may be followed
           by several emails, each as a separate command line token. This
           behaviour is supported, though it can lead to parsing ambiguities
           and is not enabled by default.
           </p></li>
-<li><p>The command line may contain positional options -- elements
+<li class="listitem"><p>The command line may contain positional options -- elements
             which don't have any name. The command line parser provides a
             mechanism to guess names for such options, as we've seen in the
             tutorial.
@@ -420,16 +420,16 @@ pd.add("output-file", 2).add("input-file", -1);
 <p>
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Storage Component">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2893164"></a>Storage Component</h3></div></div></div>
+<a name="id1395449"></a>Storage Component</h3></div></div></div>
 <p>The storage component is responsible for:
       </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>Storing the final values of an option into a special class and in
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>Storing the final values of an option into a special class and in
             regular variables</p></li>
-<li><p>Handling priorities among different sources.</p></li>
-<li><p>Calling user-specified <code class="computeroutput">notify</code> functions with the final
+<li class="listitem"><p>Handling priorities among different sources.</p></li>
+<li class="listitem"><p>Calling user-specified <code class="computeroutput">notify</code> functions with the final
          values of options.</p></li>
 </ul></div>
 <p>
@@ -454,7 +454,7 @@ notify(vm);
       assigned. In this case, if the command line specifies the value for an
       option, any value in the config file is ignored.
     </p>
-<div class="warning"><table border="0" summary="Warning">
+<div class="warning" title="Warning"><table border="0" summary="Warning">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
 <th align="left">Warning</th>
@@ -463,36 +463,36 @@ notify(vm);
       stored all parsed values.</p></td></tr>
 </table></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Specific parsers">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2893267"></a>Specific parsers</h3></div></div></div>
+<a name="id1395552"></a>Specific parsers</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="overview.html#id2893273">Configuration file parser</a></span></dt>
-<dt><span class="section"><a href="overview.html#id2893377">Environment variables parser</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1395558">Configuration file parser</a></span></dt>
+<dt><span class="section"><a href="overview.html#id1395662">Environment variables parser</a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="Configuration file parser">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2893273"></a>Configuration file parser</h4></div></div></div>
+<a name="id1395558"></a>Configuration file parser</h4></div></div></div>
 <p>The <code class="computeroutput"><a class="link" href="../boost/program_options/parse_config_file.html" title="Function template parse_config_file">parse_config_file</a></code> function implements parsing
       of simple INI-like configuration files. Configuration file
       syntax is line based:
       </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>A line in the form:</p>
 <pre class="screen">
 <em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em>
         </pre>
 <p>gives a value to an option.</p>
 </li>
-<li>
+<li class="listitem">
 <p>A line in the form:</p>
 <pre class="screen">
 [<em class="replaceable"><code>section name</code></em>]
         </pre>
 <p>introduces a new section in the configuration file.</p>
 </li>
-<li><p>The <code class="literal">#</code> character introduces a
+<li class="listitem"><p>The <code class="literal">#</code> character introduces a
         comment that spans until the end of the line.</p></li>
 </ul></div>
 <p>The option names are relative to the section names, so
@@ -506,9 +506,9 @@ visual_bell=yes
 gui.accessibility.visual_bell=yes
       </pre>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Environment variables parser">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2893377"></a>Environment variables parser</h4></div></div></div>
+<a name="id1395662"></a>Environment variables parser</h4></div></div></div>
 <p><em class="firstterm">Environment variables</em> are string variables
       which are available to all programs via the <code class="computeroutput">getenv</code> function
       of C runtime library. The operating system allows to set initial values
@@ -522,7 +522,7 @@ gui.accessibility.visual_bell=yes
       they are particularly suitable for options which apply to all programs.
       </p>
 <p>The environment variables can be parsed with the
-      <code class="computeroutput"><a class="link" href="../boost/program_options/parse_environment_id1943953.html" title="Function parse_environment">parse_environment</a></code> function. The function have several overloaded
+      <code class="computeroutput"><a class="link" href="../boost/program_options/parse_environment_id914437.html" title="Function parse_environment">parse_environment</a></code> function. The function have several overloaded
       versions. The first parameter is always an <code class="computeroutput"><a class="link" href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code>
       instance, and the second specifies what variables must be processed, and
       what option names must correspond to it. To describe the second
@@ -536,14 +536,14 @@ gui.accessibility.visual_bell=yes
       name <code class="literal">proxy</code> the environment variable might be called
       <code class="envar">BOOST_PROXY</code>. During parsing, we need to perform reverse
       conversion of the names. This is accomplished by passing the choosen
-      prefix as the second parameter of the <code class="computeroutput"><a class="link" href="../boost/program_options/parse_environment_id1943953.html" title="Function parse_environment">parse_environment</a></code> function.
+      prefix as the second parameter of the <code class="computeroutput"><a class="link" href="../boost/program_options/parse_environment_id914437.html" title="Function parse_environment">parse_environment</a></code> function.
       Say, if you pass <code class="literal">BOOST_</code> as the prefix, and there are
       two variables, <code class="envar">CVSROOT</code> and <code class="envar">BOOST_PROXY</code>, the
       first variable will be ignored, and the second one will be converted to
       option <code class="literal">proxy</code>. 
       </p>
 <p>The above logic is sufficient in many cases, but it is also
-      possible to pass, as the second parameter of the <code class="computeroutput"><a class="link" href="../boost/program_options/parse_environment_id1943953.html" title="Function parse_environment">parse_environment</a></code>
+      possible to pass, as the second parameter of the <code class="computeroutput"><a class="link" href="../boost/program_options/parse_environment_id914437.html" title="Function parse_environment">parse_environment</a></code>
       function, any function taking a <code class="computeroutput">std::string</code> and returning
       <code class="computeroutput">std::string</code>. That function will be called for each
       environment variable and should return either the name of the option, or
@@ -551,9 +551,9 @@ gui.accessibility.visual_bell=yes
       </p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Annotated List of Symbols">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2893561"></a>Annotated List of Symbols</h3></div></div></div>
+<a name="id1395846"></a>Annotated List of Symbols</h3></div></div></div>
 <p>The following table describes all the important symbols in the
       library, for quick access.</p>
 <div class="informaltable"><table class="table" width="100%">
@@ -572,7 +572,7 @@ gui.accessibility.visual_bell=yes
 <td>describes a number of options</td>
 </tr>
 <tr>
-<td><code class="computeroutput"><a class="link" href="../boost/program_options/value_id1882065.html" title="Function value">value</a></code></td>
+<td><code class="computeroutput"><a class="link" href="../boost/program_options/value_id973686.html" title="Function value">value</a></code></td>
 <td>defines the option's value</td>
 </tr>
 <tr><td colspan="2">Parsers component</td></tr>
@@ -589,7 +589,7 @@ gui.accessibility.visual_bell=yes
 <td>parses config file</td>
 </tr>
 <tr>
-<td><code class="computeroutput"><a class="link" href="../boost/program_options/parse_environment_id1943953.html" title="Function parse_environment">parse_environment</a></code></td>
+<td><code class="computeroutput"><a class="link" href="../boost/program_options/parse_environment_id914437.html" title="Function parse_environment">parse_environment</a></code></td>
 <td>parses environment</td>
 </tr>
 <tr><td colspan="2">Storage component</td></tr>

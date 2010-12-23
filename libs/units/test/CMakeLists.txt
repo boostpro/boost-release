@@ -1,3 +1,9 @@
+#
+# Copyright Troy D. Straszheim
+#
+# Distributed under the Boost Software License, Version 1.0.
+# See http://www.boost.org/LICENSE_1_0.txt
+#
 boost_additional_test_dependencies(typeof BOOST_DEPENDS test)
 
 set(COMPILE_TESTS 
@@ -18,7 +24,6 @@ set(RUN_TESTS
   test_implicit_conversion
   test_quantity
   test_unit
-  test_conversion
   test_base_dimension
   test_absolute
   test_default_conversion
@@ -33,6 +38,7 @@ foreach(R ${RUN_TESTS})
   boost_test_run(${R})
 endforeach(R ${RUN_TESTS})
 
+boost_test_run(test_conversion DEPENDS boost_unit_test_framework)
 boost_test_run(test_scaled_unit DEPENDS boost_unit_test_framework)
 
 

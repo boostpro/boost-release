@@ -464,6 +464,19 @@
         </mark-expected-failures>
     </library>
 
+    <!-- build -->
+    <library name="build">
+        <test name="timedata">
+            <mark-failure>
+                <toolset name="msvc-7.1"/>
+                <toolset name="msvc-8.0"/>
+                <toolset name="msvc-9.0"/>
+                <note author="Vladimir Prus">
+                  See https://zigzag.lvk.cs.msu.su:7813/boost.build/ticket/218
+                </note>
+            </mark-failure>
+        </test>
+    </library>
 
     <!-- circular_buffer -->
     <library name="circular_buffer">
@@ -1716,9 +1729,7 @@
 
         <mark-expected-failures>
             <test name="point" />
-            <toolset name="borland-5.6*"/>
-            <toolset name="borland-5.8*"/>
-            <toolset name="borland-5.9*"/>
+            <toolset name="borland-*"/>
             <note author="Daniel James">
                 It appears that Borland doesn't find friend functions defined
                 in a class by ADL. This is easily fixed but this example is
@@ -1729,9 +1740,7 @@
 
         <mark-expected-failures>
             <test name="hash_global_namespace_test" />
-            <toolset name="borland-5.6*"/>
-            <toolset name="borland-5.8*"/>
-            <toolset name="borland-5.9*"/>
+            <toolset name="borland-*"/>
             <note author="Daniel James">
                 The test demonstrates a Borland bug - functions that aren't
                 in a namespace don't appear to be found by ADL.
@@ -1794,32 +1803,17 @@
     <!-- graph -->
     <library name="graph">
         <mark-unusable>
-            <toolset name="borland-5.6*"/>
-            <toolset name="borland-5.8*"/>
-            <toolset name="msvc-6.5*"/>
-            <toolset name="sunpro-5_3-sunos"/>
+            <toolset name="borland-5.*"/>
+            <toolset name="borland-6.*"/>
+            <!-- Open64 and Pathscale ICE on almost all test cases, often
+            because of http://gcc.gnu.org/bugzilla/show_bug.cgi?id=17327;
+            property type detection fails because it uses enum types as tags.
+            -->
+            <toolset name="gcc-open64"/>
+            <toolset name="pathscale-3.1"/>
+            <!-- vacpp ICEs on many of the tests -->
+            <toolset name="vacpp"/>
         </mark-unusable>
-        <mark-expected-failures>
-            <test name="adj_matrix_cc"/>
-            <test name="biconnected_components_test"/>
-            <test name="bidir_remove_edge"/>
-            <test name="bfs_cc"/>
-            <test name="bundled_properties"/>
-            <test name="csr_graph_test"/>
-            <test name="dfs_cc"/>
-            <test name="dijkstra_cc"/>
-            <test name="dominator_tree_test"/>
-            <test name="floyd_warshall_test"/>
-            <test name="gursoy_atun_layout_test"/>
-            <test name="graphviz_test"/>
-            <test name="matching_test"/>
-            <test name="serialize"/>
-            <test name="subgraph"/>
-            <test name="transitive_closure_test"/>
-            <test name="vector_graph_cc"/>
-            <toolset name="msvc-7.0"/>
-            <note refid="3" author="Doug Gregor"/>
-        </mark-expected-failures>
         <mark-expected-failures>
           <test name="graphviz_test"/>
           <toolset name="vc-8_0"/>
@@ -1828,36 +1822,9 @@
           <note refid="1" author="Doug Gregor"/>
         </mark-expected-failures>
         <mark-expected-failures>
-          <test name="serialize"/>
-          <toolset name="sun-5.8"/>
-          <note refid="2" author="Doug Gregor"/>
-        </mark-expected-failures>
-        <mark-expected-failures>
-            <test name="betweenness_centrality_test"/>
-            <toolset name="iw-7_1-vc6*"/>
-            <toolset name="msvc-7.0"/>
-            <note refid="3" author="Aleksey Gurtovoy"/>
-        </mark-expected-failures>
-        <mark-expected-failures>
           <test name="graphviz_test"/>
-          <toolset name="gcc-2.95.3-linux"/>
-          <toolset name="gcc-2.95.3-stlport-4.5.3-linux"/>
-          <toolset name="gcc-2.95.3-stlport-4.6.2-linux"/>
           <toolset name="como-4_3_3-vc7_1"/>
-          <toolset name="cw-8.3"/>
-          <toolset name="cw-9.3-darwin"/>
-          <toolset name="cw-9.4-darwin"/>
-          <toolset name="cw-9.5-darwin"/>
-          <toolset name="iw-7_1-vc6"/>
-          <toolset name="iw-7_1-vc6-stlp-4_5_3"/>
           <note refid="3" author="Doug Gregor"/>
-        </mark-expected-failures>
-        <mark-expected-failures>
-          <test name="csr_graph_test"/>
-          <toolset name="gcc-2.95.3-linux"/>
-          <toolset name="gcc-2.95.3-stlport-4.5.3-linux"/>
-          <toolset name="gcc-2.95.3-stlport-4.6.2-linux"/>
-          <note refid="28" author="Vladimir Prus"/>
         </mark-expected-failures>
         <mark-expected-failures>
             <test name="bundled_properties"/>
@@ -1865,39 +1832,8 @@
             <note author="Jim Douglas" date="18 Feb 06" refid="27"/>
         </mark-expected-failures>
         <mark-expected-failures>
-            <test name="csr_graph_test"/>
-            <toolset name="msvc-8.0"/>
-            <toolset name="msvc-8.0_64"/>
-            <toolset name="msvc-8.0_x86_64"/>
-            <toolset name="msvc-9.0"/>
-            <note author="Doug Gregor">
-              This failure is due to a problem with partial ordering
-              of class template partial specializations.
-            </note>
-        </mark-expected-failures>
-        <mark-expected-failures>
-            <test name="dijkstra_heap_performance"/>
-            <test name="layout_test"/>
-            <test name="relaxed_heap_test"/>
-            <toolset name="msvc-7.0"/>
-            <note author="Vladimir Prus">
-              The test fails due to compile error in relaxed_heap.hpp.
-              The compile error is likely caused by a compiler bug.
-            </note>
-        </mark-expected-failures>
-        <mark-expected-failures>
-          <test name="graphviz_test"/>
-          <toolset name="msvc-7.1_stlport4"/>
-          <note author="Vladimir Prus">
-            The test fails from completely unknown reason -- it might
-            be compiler bug, or compiler misconfiguration or testing
-            system bug.
-          </note>
-        </mark-expected-failures>
-        <mark-expected-failures>
           <test name="kolmogorov_max_flow_test"/>
           <test name="max_flow_test"/>
-          <toolset name="hp_cxx-*"/>
           <toolset name="acc*"/>
           <note author="Markus Schoepflin" refid="45"/>
         </mark-expected-failures>
@@ -3256,6 +3192,14 @@ for more information.
               many issues to stand a chance of porting to this compiler.
            </note>
         </mark-unusable>
+       <mark-expected-failures>
+          <test name="mpfr_concept_check"/>
+          <test name="ntl_concept_check"/>
+          <toolset name="*"/>
+          <note author="John Maddock">
+             This test relies on external software being installed in order to pass.
+          </note>
+       </mark-expected-failures>
        <mark-expected-failures>
           <test name="test_traits"/>
           <toolset name="gcc-3.3.6"/>
@@ -5018,6 +4962,16 @@ With aC++, the tests compile cleanly in strict ansi mode and succeed.
             <toolset name="borland-5.9*"/>
             <note author="AlisdairM" refid="2"/>
         </mark-expected-failures>
+        <mark-expected-failures>
+            <test name="promote_enum_msvc_bug_test"/>
+            <toolset name="msvc-7.1"/>
+            <toolset name="msvc-8.0"/>
+            <toolset name="msvc-9.0"/>
+            <note author="Alexander Nasonov">
+                See bug 99776 'enum UIntEnum { value = UINT_MAX } is promoted to int'
+                http://lab.msdn.microsoft.com/ProductFeedback/viewfeedback.aspx?feedbackid=22b0a6b7-120f-4ca0-9136-fa1b25b26efe
+	    </note>
+        </mark-expected-failures>
         <test name="tricky_is_enum_test">
             <mark-failure>
                 <toolset name="borland-5.6*"/>
@@ -5754,7 +5708,12 @@ With aC++, the tests compile cleanly in strict ansi mode and succeed.
     <library name="unordered">
       <mark-expected-failures>
         <test name="move_tests"/>
-        <toolset name="msvc-*"/>
+        <toolset name="msvc-6*"/>
+        <toolset name="msvc-7*"/>
+        <toolset name="msvc-8*"/>
+        <toolset name="msvc-9.0"/>
+        <toolset name="msvc-9.0express"/>
+        <toolset name="msvc-10.0"/>
         <toolset name="intel-win-10.1"/>
         <toolset name="borland-*"/>
         <toolset name="sun-*"/>

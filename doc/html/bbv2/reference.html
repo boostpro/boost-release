@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Reference</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../bbv2.html" title="Chapter 31. Boost.Build V2 User Manual">
 <link rel="prev" href="tasks.html" title="Common tasks">
@@ -22,7 +22,7 @@
 <div class="spirit-nav">
 <a accesskey="p" href="tasks.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="extender.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Reference">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.reference"></a>Reference</h2></div></div></div>
 <div class="toc"><dl>
@@ -34,11 +34,11 @@
 <dt><span class="section"><a href="reference.html#bbv2.reference.definitions">Definitions</a></span></dt>
 <dt><span class="section"><a href="reference.html#bbv2.reference.generators">Generators</a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="General information">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.general"></a>General information</h3></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="reference.html#bbv2.reference.init">Initialization</a></span></dt></dl></div>
-<div class="section" lang="en">
+<div class="section" title="Initialization">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.init"></a>Initialization</h4></div></div></div>
 <p>bjam's first job upon startup is to load the Jam code that
@@ -75,7 +75,7 @@ boost-build build-system ;
         definitions, loads two <code class="filename">site-config.jam</code> and <code class="filename">user-config.jam</code>.</p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Builtin rules">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.rules"></a>Builtin rules</h3></div></div></div>
 <p>This section contains the list of all rules that
@@ -203,13 +203,13 @@ path-constant DATA : data/a.txt ;
         <code class="computeroutput">alias</code>.</p></dd>
 </dl></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Builtin features">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.advanced.builtins.features"></a>Builtin features</h3></div></div></div>
 <p>This section documents the features that are built-in into
     Boost.Build. For features with a fixed set of values, that set is
     provided, with the default value listed first.</p>
-<a class="indexterm" name="id4291599"></a><div class="variablelist"><dl>
+<a class="indexterm" name="id2139736"></a><div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">variant</code></span></dt>
 <dd>
 <p>
@@ -257,7 +257,7 @@ path-constant DATA : data/a.txt ;
 <dd>
 <p><span class="bold"><strong>Allowed values:</strong></span> <code class="literal">shared</code>,
             <code class="literal">static</code></p>
-<p>
+<p class="simpara">
             A feature controling how libraries are built.
           </p>
 </dd>
@@ -267,7 +267,7 @@ path-constant DATA : data/a.txt ;
 <dd>
 <p><span class="bold"><strong>Allowed values:</strong></span> <code class="literal">shared</code>,
             <code class="literal">static</code></p>
-<p>
+<p class="simpara">
             Controls if a static or shared C/C++ runtime should be used. There
             are some restrictions how this feature can be used, for example
             on some compilers an application using static runtime should
@@ -280,7 +280,7 @@ path-constant DATA : data/a.txt ;
 <dd>
 <p><span class="bold"><strong>Allowed values:</strong></span> <code class="literal">single</code>,
             <code class="literal">multi</code></p>
-<p>
+<p class="simpara">
             Controls if the project should be built in multi-threaded mode.  This feature does not
             necessary change code generation in the compiler, but it causes the compiler to link
             to additional or different runtime libraries, and define additional preprocessor 
@@ -336,14 +336,14 @@ path-constant DATA : data/a.txt ;
             look for shared libraries when the executable or shared
             library is run. This feature only affects Unix
             compilers. Plase see <a class="xref" href="faq.html#bbv2.faq.dll-path" title="Why are the dll-path and hardcode-dll-paths properties useful?">the section called &#8220;
-      Why are the dll-path and hardcode-dll-paths
-       properties useful?
+      Why are the <code class="literal">dll-path</code> and <code class="literal">hardcode-dll-paths
+      </code> properties useful?
     &#8221;</a>
             in <a class="xref" href="faq.html" title="Frequently Asked Questions">the section called &#8220;Frequently Asked Questions&#8221;</a> for details.
           </dd>
 <dt><span class="term"><code class="literal">hardcode-dll-paths</code></span></dt>
 <dd>
-<p>
+<p class="simpara">
             Controls automatic generation of dll-path properties.
           </p>
 <p><span class="bold"><strong>Allowed values:</strong></span>
@@ -378,10 +378,10 @@ path-constant DATA : data/a.txt ;
 <dd>
             The <code class="computeroutput">&lt;warnings&gt;</code> feature controls the warning level
             of compilers. It has the following values:
-            <div class="itemizedlist"><ul type="disc">
-<li><p><code class="computeroutput">off</code> - disables all warnings.</p></li>
-<li><p><code class="computeroutput">on</code> - enables default warning level for the tool.</p></li>
-<li><p><code class="computeroutput">all</code> - enables all warnings.</p></li>
+            <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p><code class="computeroutput">off</code> - disables all warnings.</p></li>
+<li class="listitem"><p><code class="computeroutput">on</code> - enables default warning level for the tool.</p></li>
+<li class="listitem"><p><code class="computeroutput">all</code> - enables all warnings.</p></li>
 </ul></div>
             Default value is <code class="computeroutput">all</code>.
           </dd>
@@ -508,7 +508,7 @@ path-constant DATA : data/a.txt ;
 </dd>
 <dt><span class="term"><code class="literal">embed-manifest</code></span></dt>
 <dd>
-<a class="indexterm" name="id4292698"></a><a class="indexterm" name="id4292707"></a><p>
+<a class="indexterm" name="id2140826"></a><a class="indexterm" name="id2140836"></a><p>
             <span class="bold"><strong>Allowed values:</strong></span> on, off.
           </p>
 <p>This feature is specific to the msvc toolset (see
@@ -521,12 +521,12 @@ path-constant DATA : data/a.txt ;
 </dd>
 </dl></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Builtin tools">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.tools"></a>Builtin tools</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compilers">C++ Compilers</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4295321">Third-party libraries</a></span></dt>
+<dt><span class="section"><a href="reference.html#id2143506">Third-party libraries</a></span></dt>
 </dl></div>
 <p>Boost.Build comes with support for a large number of C++ compilers,
       and other tools. This section documents how to use those tools.</p>
@@ -543,11 +543,12 @@ using gcc : 4.0 : g++-4.0 ;
 </pre>
 <p>The options that can be passed to each tool are documented in the
       subsequent sections.</p>
-<div class="section" lang="en">
+<div class="section" title="C++ Compilers">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.tools.compilers"></a>C++ Compilers</h4></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compiler.gcc">GNU C++</a></span></dt>
+<dt><span class="section"><a href="reference.html#bbv2.reference.tools.compiler.darwin">Apple Darwin gcc</a></span></dt>
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compiler.msvc">Microsoft Visual C++</a></span></dt>
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compiler.intel">Intel C++</a></span></dt>
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compiler.acc">HP aC++ compiler</a></span></dt>
@@ -564,14 +565,15 @@ using gcc : 4.0 : g++-4.0 ;
           of support module for compiler is also the value for
           the <code class="computeroutput">toolset</code> feature that can be used to explicitly
           request that compiler. </p>
-<div class="section" lang="en">
+<div class="section" title="GNU C++">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.gcc"></a>GNU C++</h5></div></div></div>
 <p>The <code class="computeroutput">gcc</code> module supports the
           <a href="http://gcc.gnu.org" target="_top">GNU C++ compiler</a>
-          on Linux, a number of Unix-like system including MacOS X, SunOS and
-          BeOS, and on Windows (either <a href="http://www.cygwin.com" target="_top">Cygwin</a>
-          or <a href="http://www.mingw.org" target="_top">MinGW</a>).
+          on Linux, a number of Unix-like system including SunOS and on Windows 
+          (either <a href="http://www.cygwin.com" target="_top">Cygwin</a> or 
+          <a href="http://www.mingw.org" target="_top">MinGW</a>). On Mac OSX, it is recommended
+          to use system gcc, see <a class="xref" href="reference.html#bbv2.reference.tools.compiler.darwin" title="Apple Darwin gcc">the section called &#8220;Apple Darwin gcc&#8221;</a>.
           </p>
 <p>The <code class="computeroutput">gcc</code> module is initialized using the following
           syntax:</p>
@@ -613,7 +615,7 @@ using gcc : [<span class="optional"><em class="replaceable"><code>version</code>
                 be either <code class="computeroutput">windres</code> for msvc resource compiler,
                 or <code class="computeroutput">rc</code> for borland's resource compiler.</p></dd>
 </dl></div>
-<a class="indexterm" name="id4293111"></a>
+<a class="indexterm" name="id2141249"></a>
 
           In order to compile 64-bit applications, you have to specify
           <code class="computeroutput">address-model=64</code>, and the <code class="computeroutput">instruction-set</code>
@@ -622,19 +624,38 @@ using gcc : [<span class="optional"><em class="replaceable"><code>version</code>
           <code class="literal">athlon64</code> and <code class="literal">athlon-fx</code>.
 
         </div>
-<div class="section" lang="en">
+<div class="section" title="Apple Darwin gcc">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="bbv2.reference.tools.compiler.darwin"></a>Apple Darwin gcc</h5></div></div></div>
+<p>The <code class="computeroutput">darwin</code> module supports the version of gcc that is
+          modified and provided by Apple. The configuration is essentially identical
+          to that of the gcc module.
+          </p>
+<p>
+          <a class="indexterm" name="id2141320"></a>
+          The darwin toolset can generate so called "fat"
+          binaries&#8212;binaries that can run support more than one
+          architecture, or address mode. To build a binary that can run both
+          on Intel and PowerPC processors, specify
+          <code class="computeroutput">architecture=combined</code>. To build a binary that can run
+          both in 32-bit and 64-bit modes, specify
+          <code class="computeroutput">address-model=32_64</code>. If you specify both of those
+          properties, a "4-way" fat binary will be generated.
+          </p>
+</div>
+<div class="section" title="Microsoft Visual C++">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.msvc"></a>Microsoft Visual C++</h5></div></div></div>
 <p>The <code class="computeroutput">msvc</code> module supports the
           <a href="http://msdn.microsoft.com/visualc/" target="_top">Microsoft Visual
           C++</a> command-line tools on Microsoft Windows. The supported
           products and versions of command line tools are listed below:</p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>Visual Studio 2008&#8212;9.0</p></li>
-<li><p>Visual Studio 2005&#8212;8.0</p></li>
-<li><p>Visual Studio .NET 2003&#8212;7.1</p></li>
-<li><p>Visual Studio .NET&#8212;7.0</p></li>
-<li><p>Visual Studio 6.0, Service Pack 5&#8212;6.5</p></li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>Visual Studio 2008&#8212;9.0</p></li>
+<li class="listitem"><p>Visual Studio 2005&#8212;8.0</p></li>
+<li class="listitem"><p>Visual Studio .NET 2003&#8212;7.1</p></li>
+<li class="listitem"><p>Visual Studio .NET&#8212;7.0</p></li>
+<li class="listitem"><p>Visual Studio 6.0, Service Pack 5&#8212;6.5</p></li>
 </ul></div>
 <p>The <code class="computeroutput">msvc</code> module is initialized using the following
           syntax:</p>
@@ -717,22 +738,22 @@ using msvc : [<span class="optional"><em class="replaceable"><code>version</code
               defined in this toolset. If not specified the global environment
               setup script is used.</p></dd>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="64-bit support">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="v2.reference.tools.compiler.msvc.64"></a>64-bit support</h6></div></div></div>
-<a class="indexterm" name="id4293606"></a><p>Starting with version 8.0, Microsoft Visual Studio can
+<a class="indexterm" name="id2141792"></a><p>Starting with version 8.0, Microsoft Visual Studio can
             generate binaries for 64-bit processor, both 64-bit flavours of x86
             (codenamed AMD64/EM64T), and Itanium (codenamed IA64). In addition,
             compilers that are itself run in 64-bit mode, for better
             performance, are provided. The complete list of compiler
             configurations are as follows (we abbreviate AMD64/EM64T to just
             AMD64):</p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>32-bit x86 host, 32-bit x86 target</p></li>
-<li><p>32-bit x86 host, 64-bit AMD64 target</p></li>
-<li><p>32-bit x86 host, 64-bit IA64 target</p></li>
-<li><p>64-bit AMD64 host, 64-bit AMD64 target</p></li>
-<li><p>64-bit IA64 host, 64-bit IA64 target</p></li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>32-bit x86 host, 32-bit x86 target</p></li>
+<li class="listitem"><p>32-bit x86 host, 64-bit AMD64 target</p></li>
+<li class="listitem"><p>32-bit x86 host, 64-bit IA64 target</p></li>
+<li class="listitem"><p>64-bit AMD64 host, 64-bit AMD64 target</p></li>
+<li class="listitem"><p>64-bit IA64 host, 64-bit IA64 target</p></li>
 </ul></div>
 <p>
             The 32-bit host compilers can be always used, even on 64-bit
@@ -742,14 +763,14 @@ using msvc : [<span class="optional"><em class="replaceable"><code>version</code
             additional compilers need to be installed explicitly.
             </p>
 <p>To use 64-bit compilation you should:</p>
-<div class="orderedlist"><ol type="1">
-<li><p>Configure you compiler as usual. If you provide a
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>Configure you compiler as usual. If you provide a
               path to the compiler explicitly, provide the path to the 32-bit
               compiler. If you try to specify the path to any of 64-bit
               compilers, configuration will not work.</p></li>
-<li><p>When compiling, use <code class="computeroutput">address-model=64</code>,
+<li class="listitem"><p>When compiling, use <code class="computeroutput">address-model=64</code>,
               to generate AMD64 code.</p></li>
-<li><p>To generate IA64 code, use
+<li class="listitem"><p>To generate IA64 code, use
               <code class="computeroutput">architecture=ia64</code></p></li>
 </ol></div>
 <p>The (AMD64 host, AMD64 target) compiler will be used
@@ -765,7 +786,7 @@ using msvc : [<span class="optional"><em class="replaceable"><code>version</code
             feature.</p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Intel C++">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.intel"></a>Intel C++</h5></div></div></div>
 <p>The <code class="computeroutput">intel-linux</code> and <code class="computeroutput">intel-win</code> modules
@@ -809,7 +830,7 @@ using intel-win : [<span class="optional"><em class="replaceable"><code>version<
       compiler command is a user script.</p></dd>
 </dl></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="HP aC++ compiler">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.acc"></a>HP aC++ compiler</h5></div></div></div>
 <p>The <code class="computeroutput">acc</code> module supports the
@@ -839,7 +860,7 @@ using acc : [<span class="optional"><em class="replaceable"><code>version</code>
       passed to the linker.</p></dd>
 </dl></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Borland C++ Compiler">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.borland"></a>Borland C++ Compiler</h5></div></div></div>
 <p>The <code class="computeroutput">borland</code> module supports the command line
@@ -848,11 +869,11 @@ using acc : [<span class="optional"><em class="replaceable"><code>version</code>
           product and earlier version of it, running on Microsoft Windows.</p>
 <p>The supported products are listed below. The version reported
           by the command lines tools is also listed for reference.:</p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>C++ Builder 2006&#8212;5.8.2</p></li>
-<li><p>CBuilderX&#8212;5.6.5, 5.6.4 (depending on release)</p></li>
-<li><p>CBuilder6&#8212;5.6.4</p></li>
-<li><p>Free command line tools&#8212;5.5.1</p></li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>C++ Builder 2006&#8212;5.8.2</p></li>
+<li class="listitem"><p>CBuilderX&#8212;5.6.5, 5.6.4 (depending on release)</p></li>
+<li class="listitem"><p>CBuilder6&#8212;5.6.4</p></li>
+<li class="listitem"><p>Free command line tools&#8212;5.5.1</p></li>
 </ul></div>
 <p>The module is initialized using the following syntax:</p>
 <pre class="programlisting">
@@ -876,7 +897,7 @@ using borland : [<span class="optional"><em class="replaceable"><code>version</c
       passed to the linker.</p></dd>
 </dl></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Comeau C/C++ Compiler">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.como"></a>Comeau C/C++ Compiler</h5></div></div></div>
 <p>The <code class="computeroutput">como-linux</code> and the <code class="computeroutput">como-win</code>
@@ -911,7 +932,7 @@ using como-linux : [<span class="optional"><em class="replaceable"><code>version
           set, where <code class="envar">XXX</code> corresponds to the used backend C
           compiler.</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Code Warrior">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.cw"></a>Code Warrior</h5></div></div></div>
 <p>The <code class="computeroutput">cw</code> module support CodeWarrior compiler,
@@ -964,7 +985,7 @@ using cw : [<span class="optional"><em class="replaceable"><code>version</code><
               executed and adjusted the <code class="envar">PATH</code> variable.</p></dd>
 </dl></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Digital Mars C/C++ Compiler">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.dmc"></a>Digital Mars C/C++ Compiler</h5></div></div></div>
 <p>The <code class="computeroutput">dmc</code> module supports the
@@ -993,7 +1014,7 @@ using dmc : [<span class="optional"><em class="replaceable"><code>version</code>
       passed to the linker.</p></dd>
 </dl></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="HP C++ Compiler for Tru64 Unix">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.hp_cxx"></a>HP C++ Compiler for Tru64 Unix</h5></div></div></div>
 <p>The <code class="computeroutput">hp_cxx</code> modules supports the
@@ -1021,7 +1042,7 @@ using hp_cxx : [<span class="optional"><em class="replaceable"><code>version</co
       passed to the linker.</p></dd>
 </dl></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Sun Studio">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.sun"></a>Sun Studio</h5></div></div></div>
 <p>The <code class="computeroutput">sun</code> module supports the
@@ -1060,12 +1081,12 @@ using sun : [<span class="optional"><em class="replaceable"><code>version</code>
 <dd><p>Specifies additional command line options that will be
       passed to the linker.</p></dd>
 </dl></div>
-<a class="indexterm" name="id4295238"></a>
+<a class="indexterm" name="id2143424"></a>
           Starting with Sun Studio 12, you can create 64-bit applications
           by using the <code class="computeroutput">address-model=64</code> property.
 
         </div>
-<div class="section" lang="en">
+<div class="section" title="IBM Visual Age">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.vacpp"></a>IBM Visual Age</h5></div></div></div>
 <p>The <code class="computeroutput">vacpp</code> module supports the
@@ -1083,16 +1104,16 @@ using vacpp ;</pre>
           were not tested with the the <code class="computeroutput">vacpp</code> module.</p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Third-party libraries">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4295321"></a>Third-party libraries</h4></div></div></div>
+<a name="id2143506"></a>Third-party libraries</h4></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="reference.html#bbv2.reference.tools.libraries.stlport">STLport library</a></span></dt></dl></div>
 <p>Boost.Build provides special support for some
         third-party C++ libraries, documented below.</p>
-<div class="section" lang="en">
+<div class="section" title="STLport library">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.libraries.stlport"></a>STLport library</h5></div></div></div>
-<a class="indexterm" name="id4295343"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
+<a class="indexterm" name="id2143528"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
           is an alternative implementation of C++ runtime library. Boost.Build
           supports using that library on Windows platfrom.  Linux is
           hampered by different naming of libraries in each STLport
@@ -1120,7 +1141,7 @@ using stlport : [<span class="optional"><em class="replaceable"><code>version</c
 </div>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Build process">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.buildprocess"></a>Build process</h3></div></div></div>
 <div class="toc"><dl>
@@ -1134,37 +1155,37 @@ using stlport : [<span class="optional"><em class="replaceable"><code>version</c
 <p>To recap, building a target with specific properties includes the
       following steps:
       </p>
-<div class="orderedlist"><ol type="1">
-<li><p>applying default build,</p></li>
-<li><p>selecting the main target alternative to use,
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>applying default build,</p></li>
+<li class="listitem"><p>selecting the main target alternative to use,
           </p></li>
-<li><p>determining "common" properties,</p></li>
-<li><p>building targets referred by the sources list and
+<li class="listitem"><p>determining "common" properties,</p></li>
+<li class="listitem"><p>building targets referred by the sources list and
             dependency properties,</p></li>
-<li><p>adding the usage requirements produces when building
+<li class="listitem"><p>adding the usage requirements produces when building
             dependencies to the "common" properties,</p></li>
-<li><p>building the target using generators,</p></li>
-<li><p>computing the usage requirements to be returned.</p></li>
+<li class="listitem"><p>building the target using generators,</p></li>
+<li class="listitem"><p>computing the usage requirements to be returned.</p></li>
 </ol></div>
 <p>
     </p>
-<div class="section" lang="en">
+<div class="section" title="Alternative selection">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.buildprocess.alternatives"></a>Alternative selection</h4></div></div></div>
 <p>When there are several alternatives, one of them must be
         selected. The process is as follows:</p>
-<div class="orderedlist"><ol type="1">
-<li>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
             For each alternative <span class="emphasis"><em>condition</em></span> is defined as
             the set of base properties in requirements. [Note: it might be
             better to specify the condition explicitly, as in conditional
             requirements].
           </li>
-<li>
+<li class="listitem">
             An alternative is viable only if all properties in condition
             are present in build request.
           </li>
-<li>
+<li class="listitem">
             If there's one viable alternative, it's choosen. Otherwise,
             an attempt is made to find one best alternative. An alternative
             a is better than another alternative b, iff the set of properties
@@ -1175,7 +1196,7 @@ using stlport : [<span class="optional"><em class="replaceable"><code>version</c
           </li>
 </ol></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Determining common properties">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.buildprocess.common"></a>Determining common properties</h4></div></div></div>
 <p>The "common" properties is a somewhat artificial term. Those are
@@ -1186,23 +1207,23 @@ using stlport : [<span class="optional"><em class="replaceable"><code>version</c
         only two inputs: build requests and requirements. Here are the rules
         about common properties.
       </p>
-<div class="orderedlist"><ol type="1">
-<li><p>Non-free feature can have only one
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>Non-free feature can have only one
             value</p></li>
-<li><p>A non-conditional property in requirement in always
+<li class="listitem"><p>A non-conditional property in requirement in always
             present in common properties.</p></li>
-<li><p>A property in build request is present in
+<li class="listitem"><p>A property in build request is present in
             common properties, unless (2) tells otherwise.</p></li>
-<li><p>If either build request, or requirements (non-conditional
+<li class="listitem"><p>If either build request, or requirements (non-conditional
             or conditional) include an expandable property (either composite,
             or property with specified subfeature value), the behaviour is
             equivalent to explicitly adding all expanded properties to build
             request or requirements.</p></li>
-<li><p>If requirements include a conditional property, and
+<li class="listitem"><p>If requirements include a conditional property, and
             condiiton of this property is true in context of common
             properties, then the conditional property should be in common
             properties as well.</p></li>
-<li><p>If no value for a feature is given by other rules
+<li class="listitem"><p>If no value for a feature is given by other rules
             here, it has default value in common properties.</p></li>
 </ol></div>
 <p>Those rules are declarative, they don't specify how to compute the
@@ -1222,7 +1243,7 @@ exe a : a.cpp
       </p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Definitions">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.definitions"></a>Definitions</h3></div></div></div>
 <div class="toc"><dl>
@@ -1232,7 +1253,7 @@ exe a : a.cpp
 <dt><span class="section"><a href="reference.html#bbv2.reference.variants.propcond">Conditional properties</a></span></dt>
 <dt><span class="section"><a href="reference.html#bbv2.reference.ids">Target identifiers and references</a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="Features and properties">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.features"></a>Features and properties</h4></div></div></div>
 <div class="toc"><dl>
@@ -1274,7 +1295,7 @@ exe a : a.cpp
         <code class="literal">&lt;toolset&gt;gcc/&lt;runtime-link&gt;static</code>.</p>
 <p>A <span class="emphasis"><em>build specification</em></span> is a property set that fully
         describes the set of features used to build a target.</p>
-<div class="section" lang="en">
+<div class="section" title="Property Validity">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.features.validity"></a>Property Validity</h5></div></div></div>
 <p>
@@ -1290,7 +1311,7 @@ exe a : a.cpp
           <code class="computeroutput">&lt;gcc-version&gt;2.95.2</code>.
         </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Feature Attributes">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.features.attributes"></a>Feature Attributes</h5></div></div></div>
 <p>Each feature has a collection of zero or more of the following
@@ -1300,8 +1321,8 @@ exe a : a.cpp
           that an <span class="emphasis"><em>incidental</em></span> property, for example, is
           one whose feature has the <span class="emphasis"><em>incidental</em></span>
           attribute.</p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p><span class="emphasis"><em>incidental</em></span></p>
 <p>Incidental features are assumed not to affect build
               products at all. As a consequence, the build system may use
@@ -1315,7 +1336,7 @@ exe a : a.cpp
               directories as described in "target paths" below. [ where? ]
             </p>
 </li>
-<li>
+<li class="listitem">
 <p>
               <a name="bbv2.reference.features.attributes.propagated"></a>
               <span class="emphasis"><em>propagated</em></span>
@@ -1330,7 +1351,7 @@ exe a : a.cpp
               libraries. Thus, the <code class="literal">&lt;optimization&gt;</code> feature is
               propagated.</p>
 </li>
-<li>
+<li class="listitem">
 <p>
               <a name="bbv2.reference.features.attributes.free"></a>
               <span class="emphasis"><em>free</em></span>
@@ -1345,7 +1366,7 @@ exe a : a.cpp
 &lt;define&gt;NDEBUG=1 &lt;define&gt;HAS_CONFIG_H=1
 </pre>
 </li>
-<li>
+<li class="listitem">
 <p><span class="emphasis"><em>optional</em></span></p>
 <p>An optional feature is a feature that is not required to
               appear in a build specification. Every non-optional non-free
@@ -1355,7 +1376,7 @@ exe a : a.cpp
               default value is given by the first value listed in the
               feature's declaration. -- move this elsewhere - dwa]</p>
 </li>
-<li>
+<li class="listitem">
 <p><span class="emphasis"><em>symmetric</em></span></p>
 <p>A symmetric feature's default value is not automatically
               included in <a class="link" href="reference.html#bbv2.reference.variants" title="Build Variants">build variants</a>.  Normally
@@ -1366,7 +1387,7 @@ exe a : a.cpp
               relevant to the toolset, always generates a corresponding
               subvariant directory.</p>
 </li>
-<li>
+<li class="listitem">
 <p><span class="emphasis"><em>path</em></span></p>
 <p>The value of a path feature specifies a path. The path is
               treated as relative to the directory of Jamfile where path
@@ -1374,7 +1395,7 @@ exe a : a.cpp
               system when the build is invoked from a different
               directory</p>
 </li>
-<li>
+<li class="listitem">
 <p><span class="emphasis"><em>implicit</em></span></p>
 <p>Values of implicit features alone identify the feature.
               For example, a user is not required to write
@@ -1384,7 +1405,7 @@ exe a : a.cpp
               bin/toolset-gcc/.... There should typically be only a few
               such features, to avoid possible name clashes.</p>
 </li>
-<li>
+<li class="listitem">
 <p><span class="emphasis"><em>composite</em></span></p>
 <p>Composite features actually correspond to groups of
               properties. For example, a build variant is a composite
@@ -1394,7 +1415,7 @@ exe a : a.cpp
               them if necessary. Non-composite non-free features override
               components of composite features in a build property set.</p>
 </li>
-<li>
+<li class="listitem">
 <p><span class="emphasis"><em>dependency</em></span></p>
 <p>The value of dependency feature if a target reference.
               When used for building of a main target, the value of
@@ -1409,7 +1430,7 @@ exe a : a.cpp
 <p>Features that are neither free nor incidental are called
           <span class="emphasis"><em>base</em></span> features.</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Feature Declaration">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.features.declaration"></a>Feature Declaration</h5></div></div></div>
 <p>The low-level feature declaration interface is the
@@ -1427,7 +1448,7 @@ rule feature ( name : allowed-values * : attributes * )
         </p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Build Variants">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.variants"></a>Build Variants</h4></div></div></div>
 <p>
@@ -1443,25 +1464,25 @@ rule feature ( name : allowed-values * : attributes * )
         V1, so can't document this for V2.". Will clean up soon -DWA ]
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Property refinement">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.variants.proprefine"></a>Property refinement</h4></div></div></div>
 <p>When a target with certain properties is requested, and that
         target requires some set of properties, it is needed to find the
         set of properties to use for building. This process is called
         <span class="emphasis"><em>property refinement</em></span> and is performed by these rules</p>
-<div class="orderedlist"><ol type="1">
-<li>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
             Each property in the required set is added to the original
             property set
           </li>
-<li>
+<li class="listitem">
             If the original property set includes property with a different
             value of non free feature, that property is removed.
           </li>
 </ol></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Conditional properties">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.variants.propcond"></a>Conditional properties</h4></div></div></div>
 <p>Sometime it's desirable to apply certain requirements only for
@@ -1491,7 +1512,7 @@ exe hello : hello.cpp : &lt;os&gt;NT,&lt;toolset&gt;gcc:&lt;link&gt;static ;
 <p>
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Target identifiers and references">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.ids"></a>Target identifiers and references</h4></div></div></div>
 <p><span class="emphasis"><em>Target identifier</em></span> is used to denote a
@@ -1508,15 +1529,15 @@ directory-name -&gt; path
         This grammar allows some elements to be recognized as either
 
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
               project id (at this point, all project ids start with slash).
             </li>
-<li>
+<li class="listitem">
               name of target declared in current Jamfile (note that target
               names may include slash).
             </li>
-<li>
+<li class="listitem">
               a regular file, denoted by absolute name or name relative to
               project's sources location.
             </li>
@@ -1539,11 +1560,11 @@ lib/b.cpp                            -- regular file
       </p>
 <p><span class="bold"><strong>Rationale:</strong></span>Target is separated from project by special
         separator (not just slash), because:</p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
             It emphasises that projects and targets are different things.
           </li>
-<li>
+<li class="listitem">
             It allows to have main target names with slashes.
 
             
@@ -1573,17 +1594,17 @@ requested-properties -&gt; property-path
       </p>
 </div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Generators">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.generators"></a>Generators</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="reference.html#id4296517">Selecting and ranking viable generators</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4296573">Running generators</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4296604">Selecting dependency graph</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4296619">Property adjustment</a></span></dt>
-<dt><span class="section"><a href="reference.html#id4296677">Transformations cache</a></span></dt>
+<dt><span class="section"><a href="reference.html#id2144702">Selecting and ranking viable generators</a></span></dt>
+<dt><span class="section"><a href="reference.html#id2144757">Running generators</a></span></dt>
+<dt><span class="section"><a href="reference.html#id2144788">Selecting dependency graph</a></span></dt>
+<dt><span class="section"><a href="reference.html#id2144804">Property adjustment</a></span></dt>
+<dt><span class="section"><a href="reference.html#id2144862">Transformations cache</a></span></dt>
 </dl></div>
-<div class="warning"><table border="0" summary="Warning">
+<div class="warning" title="Warning"><table border="0" summary="Warning">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
 <th align="left">Warning</th>
@@ -1610,20 +1631,20 @@ requested-properties -&gt; property-path
       set of targets. That operation is performed by rule
       <code class="literal">generators.construct</code> and the used algorithm is described
       below.</p>
-<div class="section" lang="en">
+<div class="section" title="Selecting and ranking viable generators">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4296517"></a>Selecting and ranking viable generators</h4></div></div></div>
+<a name="id2144702"></a>Selecting and ranking viable generators</h4></div></div></div>
 <p>Each generator, in addition to target types that it can
         produce, have attribute that affects its applicability in
         particular sitiation. Those attributes are:</p>
-<div class="orderedlist"><ol type="1">
-<li>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
             Required properties, which are properties absolutely
             necessary for the generator to work. For example, generator
             encapsulating the gcc compiler would have &lt;toolset&gt;gcc as
             required property.
           </li>
-<li>
+<li class="listitem">
             Optional properties, which increase the generators
             suitability for a particual build.
           </li>
@@ -1644,9 +1665,9 @@ requested-properties -&gt; property-path
         present in requested properties. Finally, generators with highest
         rank are selected for futher processing.</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Running generators">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4296573"></a>Running generators</h4></div></div></div>
+<a name="id2144757"></a>Running generators</h4></div></div></div>
 <p>When generators are selected, each is run to produce a list of
         created targets. This list might include targets that are not of
         requested types, because generators create the same targets as
@@ -1666,9 +1687,9 @@ requested-properties -&gt; property-path
         several later. See <a href="http://groups.yahoo.com/group/jamboost/message/1667" target="_top">this
           message</a> for details.</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Selecting dependency graph">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4296604"></a>Selecting dependency graph</h4></div></div></div>
+<a name="id2144788"></a>Selecting dependency graph</h4></div></div></div>
 <p>
         After all generators are run,
         it is necessary to decide which of successfull invocation will be
@@ -1677,9 +1698,9 @@ requested-properties -&gt; property-path
         returned the same target list. Error is issued otherwise.
       </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Property adjustment">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4296619"></a>Property adjustment</h4></div></div></div>
+<a name="id2144804"></a>Property adjustment</h4></div></div></div>
 <p>Because target location is determined by the build system, it
         is sometimes necessary to adjust properties, in order to not
         break actions. For example, if there's an action that generates
@@ -1689,12 +1710,12 @@ requested-properties -&gt; property-path
         without any subvariants.</p>
 <p>Correct property adjustment can be done only after all targets
         are created, so the approach taken is:</p>
-<div class="orderedlist"><ol type="1">
-<li><p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>
             When dependency graph is constructed, each action can be
             assigned a rule for property adjustment.
           </p></li>
-<li><p>
+<li class="listitem"><p>
             When virtual target is actualized, that rule is run and
             return the final set of properties. At this stage it can use
             information of all created virtual targets.
@@ -1716,9 +1737,9 @@ requested-properties -&gt; property-path
         compiler option. In all other case, Boost.Build will convert "." into
         directory where it occurs.</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Transformations cache">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id4296677"></a>Transformations cache</h4></div></div></div>
+<a name="id2144862"></a>Transformations cache</h4></div></div></div>
 <p>
         Under certain conditions, an
         attempt is made to cache results of transformation search. First,

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Intrusive avl tree based associative containers: avl_set, avl_multiset and avltree</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="splay_set_multiset.html" title="Intrusive splay tree based associative containers: splay_set, splay_multiset and , splay_tree">
@@ -22,7 +22,7 @@
 <div class="spirit-nav">
 <a accesskey="p" href="splay_set_multiset.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="sg_set_multiset.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Intrusive avl tree based associative containers: avl_set, avl_multiset and avltree">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="intrusive.avl_set_multiset"></a><a class="link" href="avl_set_multiset.html" title="Intrusive avl tree based associative containers: avl_set, avl_multiset and avltree"> Intrusive avl tree based associative
     containers: avl_set, avl_multiset and avltree</a>
@@ -63,7 +63,7 @@
       <code class="computeroutput"><a class="link" href="../boost/intrusive/avltree.html" title="Class template avltree">avltree</a></code> also has a size
       of 3 pointers and an integer (3 pointers when optimized for size).
     </p>
-<div class="section" lang="en">
+<div class="section" title="avl_set, avl_multiset and avltree hooks">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.avl_set_multiset.avl_set_multiset_hooks"></a><a class="link" href="avl_set_multiset.html#intrusive.avl_set_multiset.avl_set_multiset_hooks" title="avl_set, avl_multiset and avltree hooks"> avl_set,
       avl_multiset and avltree hooks</a>
@@ -76,7 +76,7 @@
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">avl_set_base_hook</span><span class="special">;</span>
 </pre>
-<div class="itemizedlist"><ul type="disc"><li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
 <code class="computeroutput"><a class="link" href="../boost/intrusive/avl_set_base_hook.html" title="Class template avl_set_base_hook">avl_set_base_hook</a></code>:
           the user class derives publicly from this class to make it compatible with
           avl tree based containers.
@@ -86,7 +86,7 @@
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">avl_set_member_hook</span><span class="special">;</span>
 </pre>
-<div class="itemizedlist"><ul type="disc"><li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
 <code class="computeroutput"><a class="link" href="../boost/intrusive/set_member_hook.html" title="Class template set_member_hook">set_member_hook</a></code>:
           the user class contains a public member of this class to make it compatible
           with avl tree based containers.
@@ -98,23 +98,23 @@
         to use Boost.Intrusive</a> plus an option to optimize the size of the
         node:
       </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Tag</span><span class="special">&gt;</span></code></strong></span>
           (for base hooks only): This argument serves as a tag, so you can derive
           from more than one base hook. Default: <code class="computeroutput"><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">default_tag</span><span class="special">&gt;</span></code>.
         </li>
-<li>
+<li class="listitem">
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">link_mode_type</span>
           <span class="identifier">LinkMode</span><span class="special">&gt;</span></code></strong></span>:
           The linking policy. Default: <code class="computeroutput"><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">safe_link</span><span class="special">&gt;</span></code>.
         </li>
-<li>
+<li class="listitem">
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">VoidPointer</span><span class="special">&gt;</span></code></strong></span>:
           The pointer type to be used internally in the hook and propagated to the
           container. Default: <code class="computeroutput"><span class="identifier">void_pointer</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span></code>.
         </li>
-<li>
+<li class="listitem">
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">optimize_size</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enable</span><span class="special">&gt;</span></code></strong></span>:
           The hook will be optimized for size instead of speed. The hook will embed
           the balance bits of the AVL tree node in the parent pointer if pointer
@@ -126,7 +126,7 @@
         </li>
 </ul></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="avl_set, avl_multiset and avltree containers">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.avl_set_multiset.set_multiset_containers"></a><a class="link" href="avl_set_multiset.html#intrusive.avl_set_multiset.set_multiset_containers" title="avl_set, avl_multiset and avltree containers">
       avl_set, avl_multiset and avltree containers</a>
@@ -145,8 +145,8 @@
 <p>
         These containers receive the same options explained in the section <a class="link" href="usage.html" title="How to use Boost.Intrusive">How to use Boost.Intrusive</a>:
       </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">base_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Hook</span><span class="special">&gt;</span></code></strong></span>
           / <span class="bold"><strong><code class="computeroutput"><span class="identifier">member_hook</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span>
           <span class="identifier">Hook</span><span class="special">,</span>
@@ -155,11 +155,11 @@
           traits go to the section <a class="link" href="value_traits.html" title="Containers with custom ValueTraits">Containers
           with custom ValueTraits</a>.)
         </li>
-<li>
+<li class="listitem">
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
           To activate the constant-time <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code> operation. Default: <code class="computeroutput"><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span></code>
 </li>
-<li>
+<li class="listitem">
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
           To specify the type that will be used to store the size of the container.
           Default: <code class="computeroutput"><span class="identifier">size_type</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span></code>
@@ -168,13 +168,13 @@
 <p>
         And they also can receive an additional option:
       </p>
-<div class="itemizedlist"><ul type="disc"><li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">compare</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Compare</span><span class="special">&gt;</span></code></strong></span>:
           Comparison function for the objects to be inserted in containers. The comparison
           functor must induce a strict weak ordering. Default: <code class="computeroutput"><span class="identifier">compare</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">less</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;</span></code>
 </li></ul></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="intrusive.avl_set_multiset.avl_set_multiset_example"></a><a class="link" href="avl_set_multiset.html#intrusive.avl_set_multiset.avl_set_multiset_example" title="Example">
       Example</a>
@@ -213,7 +213,7 @@
    <span class="keyword">friend</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&gt;</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">MyClass</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">MyClass</span> <span class="special">&amp;</span><span class="identifier">b</span><span class="special">)</span>
       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">a</span><span class="special">.</span><span class="identifier">int_</span> <span class="special">&gt;</span> <span class="identifier">b</span><span class="special">.</span><span class="identifier">int_</span><span class="special">;</span>  <span class="special">}</span>
    <span class="keyword">friend</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">MyClass</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">MyClass</span> <span class="special">&amp;</span><span class="identifier">b</span><span class="special">)</span>
-      <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">a</span><span class="special">.</span><span class="identifier">int_</span> <span class="special">&lt;</span> <span class="identifier">b</span><span class="special">.</span><span class="identifier">int_</span><span class="special">;</span>  <span class="special">}</span>
+      <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">a</span><span class="special">.</span><span class="identifier">int_</span> <span class="special">==</span> <span class="identifier">b</span><span class="special">.</span><span class="identifier">int_</span><span class="special">;</span>  <span class="special">}</span>
 <span class="special">};</span>
 
 <span class="comment">//Define an avl_set using the base hook that will store values in reverse order
@@ -271,7 +271,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2005 Olaf Krzikalla, 2006-2008 Ion Gaztañaga<p>
+<td align="right"><div class="copyright-footer">Copyright © 2005 Olaf Krzikalla, 2006-2008 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

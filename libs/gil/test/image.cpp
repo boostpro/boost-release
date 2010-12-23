@@ -294,20 +294,20 @@ void image_test::virtual_view_test() {
 
 // Test alignment and packed images
 void image_test::packed_image_test() {
-	typedef bit_aligned_image3_type<1,3,1, bgr_layout_t>::type bgr131_image_t;
-	typedef bgr131_image_t::value_type bgr131_pixel_t;
-	bgr131_pixel_t fill_val(1,3,1);
+    typedef bit_aligned_image3_type<1,3,1, bgr_layout_t>::type bgr131_image_t;
+    typedef bgr131_image_t::value_type bgr131_pixel_t;
+    bgr131_pixel_t fill_val(1,3,1);
 
-	bgr131_image_t bgr131_img(3,10);
-	fill_pixels(view(bgr131_img), fill_val);
+    bgr131_image_t bgr131_img(3,10);
+    fill_pixels(view(bgr131_img), fill_val);
 
-	bgr131_image_t bgr131a_img(3,10,1);
-	copy_pixels(const_view(bgr131_img), view(bgr131a_img));
+    bgr131_image_t bgr131a_img(3,10,1);
+    copy_pixels(const_view(bgr131_img), view(bgr131a_img));
 
-	bgr131_image_t bgr131b_img(3,10,4);
-	copy_pixels(const_view(bgr131_img), view(bgr131b_img));
+    bgr131_image_t bgr131b_img(3,10,4);
+    copy_pixels(const_view(bgr131_img), view(bgr131b_img));
 
-	error_if(bgr131_img!=bgr131a_img || bgr131a_img!=bgr131b_img);
+    error_if(bgr131_img!=bgr131a_img || bgr131a_img!=bgr131b_img);
 }
 
 void image_test::dynamic_image_test() {
@@ -348,7 +348,7 @@ void image_test::run() {
     image_all_test<rgb8_planar_image_t>("planarrgb8_");
     image_all_test<gray8_image_t>("gray8_");
 
-	typedef const bit_aligned_pixel_reference<boost::uint8_t, mpl::vector3_c<int,1,2,1>, bgr_layout_t, true>  bgr121_ref_t;
+    typedef const bit_aligned_pixel_reference<boost::uint8_t, mpl::vector3_c<int,1,2,1>, bgr_layout_t, true>  bgr121_ref_t;
     typedef image<bgr121_ref_t,false> bgr121_image_t;
     image_all_test<bgr121_image_t>("bgr121_");
 
@@ -572,6 +572,8 @@ int main(int argc, char* argv[]) {
     const char* local_name = "gil_reference_checksums.txt";
     const char* name_from_status = "../libs/gil/test/gil_reference_checksums.txt";
 
+    if (argc > 1)
+      local_name = argv[1];
     std::ifstream file_is_there(local_name);
     if (file_is_there) {
         test_image(local_name);

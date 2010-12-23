@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Concepts</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../string_algo.html" title="Chapter 19. Boost String Algorithms Library">
 <link rel="prev" href="design.html" title="Design Topics">
@@ -22,19 +22,19 @@
 <div class="spirit-nav">
 <a accesskey="p" href="design.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../string_algo.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Concepts">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="string_algo.concept"></a>Concepts</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="concept.html#id3412408">Definitions</a></span></dt>
+<dt><span class="section"><a href="concept.html#id1689553">Definitions</a></span></dt>
 <dt><span class="section"><a href="concept.html#string_algo.finder_concept">Finder Concept</a></span></dt>
 <dt><span class="section"><a href="concept.html#string_algo.formatter_concept">Formatter concept</a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="Definitions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id3412408"></a>Definitions</h3></div></div></div>
+<a name="id1689553"></a>Definitions</h3></div></div></div>
 <div class="table">
-<a name="id3412414"></a><p class="title"><b>Table 19.13. Notation</b></p>
+<a name="id1689558"></a><p class="title"><b>Table 19.13. Notation</b></p>
 <div class="table-contents"><table class="table" summary="Notation">
 <colgroup>
 <col>
@@ -75,7 +75,7 @@
 </div>
 <br class="table-break">
 </div>
-<div class="section" lang="en">
+<div class="section" title="Finder Concept">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="string_algo.finder_concept"></a>Finder Concept</h3></div></div></div>
 <p>
@@ -84,7 +84,7 @@
             delimiting the selected part.
         </p>
 <div class="table">
-<a name="id3412549"></a><p class="title"><b>Table 19.14. Valid Expressions</b></p>
+<a name="id1689693"></a><p class="title"><b>Table 19.14. Valid Expressions</b></p>
 <div class="table-contents"><table class="table" summary="Valid Expressions">
 <colgroup>
 <col>
@@ -118,8 +118,8 @@
         </p>
 <p> 
             </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
                     Finder implemented as a class. This Finder always returns the whole input as a match. <code class="computeroutput">operator()</code>
                     is templated, so that the finder can be used on any iterator type.
                     
@@ -136,7 +136,7 @@ struct simple_finder
 };
         </pre>
 </li>
-<li>
+<li class="listitem">
                     Function Finder. Finder can be any function object. That is, any ordinary function with the
                     required signature can be used as well. However, such a function can be used only for
                     a specific iterator type. 
@@ -154,7 +154,7 @@ boost::iterator_range&lt;std::string&gt; simple_finder(
 <p>
         </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Formatter concept">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="string_algo.formatter_concept"></a>Formatter concept</h3></div></div></div>
 <p>
@@ -166,7 +166,7 @@ boost::iterator_range&lt;std::string&gt; simple_finder(
             <code class="computeroutput"><a class="link" href="../boost/algorithm/regex_finder.html" title="Function template regex_finder">regex_finder()</a></code> to format the result of formatter operation.
         </p>
 <div class="table">
-<a name="id3412727"></a><p class="title"><b>Table 19.15. Valid Expressions</b></p>
+<a name="id1689872"></a><p class="title"><b>Table 19.15. Valid Expressions</b></p>
 <div class="table-contents"><table class="table" summary="Valid Expressions">
 <colgroup>
 <col>
@@ -195,8 +195,8 @@ boost::iterator_range&lt;std::string&gt; simple_finder(
         </p>
 <p> 
             </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
                     Formatter implemented as a class. This Formatter does not perform any formating and 
                     returns the match, repackaged. <code class="computeroutput">operator()</code>
                     is templated, so that the Formatter can be used on any Finder type.
@@ -213,7 +213,7 @@ struct simple_formatter
 };
                 </pre>
 </li>
-<li>
+<li class="listitem">
                     Function Formatter. Similarly to Finder, Formatter can be any function object. 
                     However, as a function, it can be used only with a specific Finder type. 
                   

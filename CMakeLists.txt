@@ -27,47 +27,28 @@
 cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
 project(Boost)
 
-
-##########################################################################
-# Post a warning to those attempting to use the CMake Build system. When #
-# the build system stabilizes this can be removed.                       #
-##########################################################################
-if (NOT CMAKE_IS_EXPERIMENTAL)
-message(STATUS "##########################################################################")
-message(STATUS "")
-message(STATUS "              Only Boost.Build is officially supported.")
-message(STATUS "")
-message(STATUS "                      This is not Boost.Build.")
-message(STATUS "")
-message(STATUS " This is an alternate, cmake-based build system that is currently under development.")
-message(STATUS " To try it out, invoke CMake with the argument")
-message(STATUS "        -DCMAKE_IS_EXPERIMENTAL=YES_I_KNOW")
-message(STATUS " Or use the gui to set the variable CMAKE_IS_EXPERIMENTAL to some value.")
-message(STATUS " This will only be necessary the first time.")
-message(STATUS " ")
-message(STATUS " For more information on boost-cmake see the wiki:")
-message(STATUS "     https://svn.boost.org/trac/boost/wiki/CMake")
-message(STATUS "")
-message(STATUS " Subscribe to the mailing list:")
-message(STATUS "     http://lists.boost.org/mailman/listinfo.cgi/boost-cmake")
-message(STATUS "")
-message(STATUS " NOTE:  Please ask questions about this build system on the boost-cmake list,")
-message(STATUS "        not on other boost lists.")
-message(STATUS "")
-message(STATUS " And/or check the archives:")
-message(STATUS "     http://news.gmane.org/gmane.comp.lib.boost.cmake")
-message(STATUS "")
-message(STATUS "##########################################################################")
-message(FATAL_ERROR "Magic variable CMAKE_IS_EXPERIMENTAL unset.")
-endif (NOT CMAKE_IS_EXPERIMENTAL)
-
 ##########################################################################
 # Version information                                                    #
 ##########################################################################
-set(BOOST_VERSION_MAJOR 1)
-set(BOOST_VERSION_MINOR 38)
-set(BOOST_VERSION_SUBMINOR 0)
-set(BOOST_VERSION "${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.${BOOST_VERSION_SUBMINOR}")
+
+# We parse the version information from the boost/version.hpp header.
+file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/boost/version.hpp BOOST_VERSIONSTR
+  REGEX "#define[ ]+BOOST_VERSION[ ]+[0-9]+")
+string(REGEX MATCH "[0-9]+" BOOST_VERSIONSTR ${BOOST_VERSIONSTR})
+if (BOOST_VERSIONSTR)
+  math(EXPR BOOST_VERSION_MAJOR "${BOOST_VERSIONSTR} / 100000")
+  math(EXPR BOOST_VERSION_MINOR "${BOOST_VERSIONSTR} / 100 % 1000")
+  math(EXPR BOOST_VERSION_SUBMINOR "${BOOST_VERSIONSTR} % 100")
+  set(BOOST_VERSION "${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.${BOOST_VERSION_SUBMINOR}")
+  message(STATUS "Boost version ${BOOST_VERSION}")
+else()
+  message(FATAL_ERROR 
+    "Unable to parse Boost version from ${CMAKE_CURRENT_SOURCE_DIR}/boost/version.hpp")
+endif()
+
+# Make sure that we reconfigure when boost/version.hpp changes.
+configure_file(boost/version.hpp
+   ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/version.stamp)
 ##########################################################################
 
 # Put the libaries and binaries that get built into directories at the
@@ -84,10 +65,11 @@ SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 list(APPEND CMAKE_MODULE_PATH ${Boost_SOURCE_DIR}/tools/build/CMake)
 include(BoostUtils)
 include(BoostConfig)
-include(BoostBuildSlave)
 include(BoostCore)
 include(BoostDocs)
+include(CTest)
 include(BoostTesting)
+message(STATUS "Build name: ${BUILDNAME}")
 ##########################################################################
 
 ##########################################################################
@@ -234,11 +216,17 @@ if(WIN32 AND NOT UNIX)
 endif(WIN32 AND NOT UNIX)
 include(CPack)
 
-if(COMMAND cpack_configure_downloads)
-  cpack_configure_downloads(
-  "http://www.osl.iu.edu/~dgregor/Boost-CMake/${BOOST_VERSION}/"
-    ALL ADD_REMOVE)
+option(BOOST_INSTALLER_ON_THE_FLY
+       "Whether to build installers that download components on-the-fly" OFF)
+
+if (BOOST_INSTALLER_ON_THE_FLY)
+  if(COMMAND cpack_configure_downloads)
+    cpack_configure_downloads(
+    "http://www.osl.iu.edu/~dgregor/Boost-CMake/${BOOST_VERSION}/"
+      ALL ADD_REMOVE)
+  endif()
 endif()
+
 ##########################################################################
 
 ##########################################################################
@@ -262,7 +250,7 @@ add_definitions(-DBOOST_ALL_NO_LIB=1)
 add_subdirectory(doc)
 
 # Add build rules for all of the Boost libraries
-add_subdirectory(${BOOST_LIBS_DIR})
+add_subdirectory(libs)
 
 # Add build rules for all of the Boost tools
 # TODO: On hold while I work on the modularity code

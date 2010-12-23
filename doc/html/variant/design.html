@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Design Overview</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../variant.html" title="Chapter 26. Boost.Variant">
 <link rel="prev" href="../boost/visitor_ptr.html" title="Function template visitor_ptr">
@@ -22,11 +22,11 @@
 <div class="spirit-nav">
 <a accesskey="p" href="../boost/visitor_ptr.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../variant.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="misc.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Design Overview">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="variant.design"></a>Design Overview</h2></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="design.html#variant.design.never-empty">"Never-Empty" Guarantee</a></span></dt></dl></div>
-<div class="section" lang="en">
+<div class="section" title='"Never-Empty" Guarantee'>
 <div class="titlepage"><div><div><h3 class="title">
 <a name="variant.design.never-empty"></a>"Never-Empty" Guarantee</h3></div></div></div>
 <div class="toc"><dl>
@@ -38,7 +38,7 @@
 <dt><span class="section"><a href="design.html#variant.design.never-empty.optimizations">Enabling Optimizations</a></span></dt>
 <dt><span class="section"><a href="design.html#variant.design.never-empty.roadmap">Future Direction: Policy-based Implementation</a></span></dt>
 </dl></div>
-<div class="section" lang="en">
+<div class="section" title="The Guarantee">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.design.never-empty.guarantee"></a>The Guarantee</h4></div></div></div>
 <p>All instances <code class="computeroutput">v</code> of type
@@ -53,7 +53,7 @@
         significant additional complexity-of-use attendant with such a
         possibility.</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="The Implementation Problem">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.design.never-empty.problem"></a>The Implementation Problem</h4></div></div></div>
 <p>While the
@@ -87,32 +87,32 @@
         By the time copy-construction from <code class="computeroutput">v2</code> is attempted,
         <code class="computeroutput">v1</code> has already destroyed its content!</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title='The "Ideal" Solution: False Hopes'>
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.design.never-empty.memcpy-solution"></a>The "Ideal" Solution: False Hopes</h4></div></div></div>
 <p>Upon learning of this dilemma, clever individuals may propose the
         following scheme hoping to solve the problem:
 
         </p>
-<div class="orderedlist"><ol type="1">
-<li>Provide some "backup" storage, appropriately
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">Provide some "backup" storage, appropriately
             aligned, capable of holding values of the contained type of the
             left-hand side.</li>
-<li>Copy the memory (e.g., using <code class="computeroutput">memcpy</code>) of the
+<li class="listitem">Copy the memory (e.g., using <code class="computeroutput">memcpy</code>) of the
             storage of the left-hand side to the backup storage.</li>
-<li>Attempt a copy of the right-hand side content to the
+<li class="listitem">Attempt a copy of the right-hand side content to the
             (now-replicated) left-hand side storage.</li>
-<li>In the event of an exception from the copy, restore the
+<li class="listitem">In the event of an exception from the copy, restore the
             backup (i.e., copy the memory from the backup storage back into
             the left-hand side storage).</li>
-<li>Otherwise, in the event of success, now copy the memory
+<li class="listitem">Otherwise, in the event of success, now copy the memory
             of the left-hand side storage to another "temporary"
             aligned storage.</li>
-<li>Now restore the backup (i.e., again copying the memory)
+<li class="listitem">Now restore the backup (i.e., again copying the memory)
             to the left-hand side storage; with the "old" content
             now restored, invoke the destructor of the contained type on the
             storage of the left-hand side.</li>
-<li>Finally, copy the memory of the temporary storage to the
+<li class="listitem">Finally, copy the memory of the temporary storage to the
             (now-empty) storage of the left-hand side.</li>
 </ol></div>
 <p>
@@ -144,7 +144,7 @@
         certain platforms with particular compilers, it is still necessary to
         find a portable solution.</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="An Initial Solution: Double Storage">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.design.never-empty.double-storage-solution"></a>An Initial Solution: Double Storage</h4></div></div></div>
 <p>Upon learning of the infeasibility of the above scheme, Anthony
@@ -174,7 +174,7 @@
         assignment to <code class="computeroutput">variant</code> never occurred. For this reason
         and others, a new approach was developed.</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Current Approach: Temporary Heap Backup">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.design.never-empty.heap-backup-solution"></a>Current Approach: Temporary Heap Backup</h4></div></div></div>
 <p>Despite the many objections to the double storage solution, it was
@@ -191,11 +191,11 @@
 <p>The algorithm for assignment would proceed as follows:
 
         </p>
-<div class="orderedlist"><ol type="1">
-<li>Copy-construct the content of the right-hand side to the
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">Copy-construct the content of the right-hand side to the
             heap; call the pointer to this data <code class="computeroutput">p</code>.</li>
-<li>Destroy the content of the left-hand side.</li>
-<li>Copy <code class="computeroutput">p</code> to the left-hand side
+<li class="listitem">Destroy the content of the left-hand side.</li>
+<li class="listitem">Copy <code class="computeroutput">p</code> to the left-hand side
             storage.</li>
 </ol></div>
 <p>
@@ -212,16 +212,16 @@
         with the following "temporary heap backup" technique:
 
         </p>
-<div class="orderedlist"><ol type="1">
-<li>Copy-construct the content of the
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">Copy-construct the content of the
             <span class="emphasis"><em>left</em></span>-hand side to the heap; call the pointer to
             this data <code class="computeroutput">backup</code>.</li>
-<li>Destroy the content of the left-hand side.</li>
-<li>Copy-construct the content of the right-hand side in the
+<li class="listitem">Destroy the content of the left-hand side.</li>
+<li class="listitem">Copy-construct the content of the right-hand side in the
             (now-empty) storage of the left-hand side.</li>
-<li>In the event of failure, copy <code class="computeroutput">backup</code> to the
+<li class="listitem">In the event of failure, copy <code class="computeroutput">backup</code> to the
             left-hand side storage.</li>
-<li>In the event of success, deallocate the data pointed to
+<li class="listitem">In the event of success, deallocate the data pointed to
             by <code class="computeroutput">backup</code>.</li>
 </ol></div>
 <p>
@@ -244,7 +244,7 @@
         <a class="xref" href="design.html#variant.design.never-empty.optimizations" title="Enabling Optimizations">the section called &#8220;Enabling Optimizations&#8221;</a> for
         details).</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Enabling Optimizations">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.design.never-empty.optimizations"></a>Enabling Optimizations</h4></div></div></div>
 <p>As described in
@@ -261,13 +261,13 @@
         types are met:
 
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li>For each bounded type <code class="computeroutput">T</code> that is nothrow
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">For each bounded type <code class="computeroutput">T</code> that is nothrow
             copy-constructible (as indicated by
             <code class="computeroutput">boost::has_nothrow_copy</code>), the
             library guarantees <code class="computeroutput">variant</code> will use only single
             storage and in-place construction for <code class="computeroutput">T</code>.</li>
-<li>If <span class="emphasis"><em>any</em></span> bounded type is nothrow
+<li class="listitem">If <span class="emphasis"><em>any</em></span> bounded type is nothrow
             default-constructible (as indicated by
             <code class="computeroutput">boost::has_nothrow_constructor</code>),
             the library guarantees <code class="computeroutput">variant</code> will use only single
@@ -314,7 +314,7 @@ namespace boost {
         of the specification for <code class="computeroutput">variant</code>; otherwise, it may be
         obsoleted. Please provide feedback to the Boost mailing list.)</p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Future Direction: Policy-based Implementation">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.design.never-empty.roadmap"></a>Future Direction: Policy-based Implementation</h4></div></div></div>
 <p>As the previous sections have demonstrated, much effort has been
@@ -335,15 +335,10 @@ namespace boost {
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2002, 2003 Eric Friedman, Itay Maman<p>Permission to copy, use, sell and distribute this software
-    is granted provided this copyright notice appears in all copies.
-    Permission to modify the code and to distribute modified code is
-    granted provided this copyright notice appears in all copies, and
-    a notice that the code was modified is included with the copyright
-    notice.</p>
-<p> This software is provided "as is" without express or
-    implied warranty, and with no claim as to its suitability for any
-    purpose.</p>
+<td align="right"><div class="copyright-footer">Copyright © 2002, 2003 Eric Friedman, Itay Maman<p>Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file <code class="filename">LICENSE_1_0.txt</code> or copy at 
+    <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+    </p>
 </div></td>
 </tr></table>
 <hr>

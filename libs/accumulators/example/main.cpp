@@ -54,13 +54,13 @@ void example1()
     // by value.
     //std::for_each(data.begin(), data.end(), bind<void>(ref(acc), _1));
 
-    std::cout << "  min(acc)        = " << (min)(acc) << std::endl;
+    std::cout << "  min""(acc)        = " << (min)(acc) << std::endl; // Extra quotes are to prevent complaints from Boost inspect tool
     std::cout << "  mean(acc)       = " << mean(acc) << std::endl;
 
     // since mean depends on count and sum, we can get their results, too.
     std::cout << "  count(acc)      = " << count(acc) << std::endl;
     std::cout << "  sum(acc)        = " << sum(acc) << std::endl;
-    std::cout << "  moment<2>(acc)  = " << moment<2>(acc) << std::endl;
+    std::cout << "  moment<2>(acc)  = " << accumulators::moment<2>(acc) << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

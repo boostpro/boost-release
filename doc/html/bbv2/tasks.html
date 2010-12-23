@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Common tasks</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../bbv2.html" title="Chapter 31. Boost.Build V2 User Manual">
 <link rel="prev" href="advanced.html" title="Overview">
@@ -22,7 +22,7 @@
 <div class="spirit-nav">
 <a accesskey="p" href="advanced.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Common tasks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.tasks"></a>Common tasks</h2></div></div></div>
 <div class="toc"><dl>
@@ -41,10 +41,10 @@
     out-of-the-box. Unless otherwise noted, all mentioned main target rules have
     the common signature, described in <a class="xref" href="advanced.html#bbv2.advanced.targets" title="Declaring Targets">the section called &#8220;Declaring Targets&#8221;</a>.
   </p>
-<div class="section" lang="en">
+<div class="section" title="Programs">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.programs"></a>Programs</h3></div></div></div>
-<a class="indexterm" name="id4289127"></a><p>
+<a class="indexterm" name="id2137264"></a><p>
       Programs are created using the <code class="computeroutput">exe</code> rule, which follows the
       <a class="link" href="advanced.html#bbv2.main-target-rule-syntax">common syntax</a>. For
       example:
@@ -61,7 +61,7 @@ exe hello : hello.cpp some_library.lib /some_project//library
       and C++ files, object files and libraries. Boost.Build will automatically
       try to convert targets of other types.
     </p>
-<div class="tip"><table border="0" summary="Tip">
+<div class="tip" title="Tip"><table border="0" summary="Tip">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
 <th align="left">Tip</th>
@@ -77,7 +77,7 @@ exe hello : hello.cpp some_library.lib /some_project//library
       </p></td></tr>
 </table></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Libraries">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.libraries"></a>Libraries</h3></div></div></div>
 <p>
@@ -99,12 +99,12 @@ lib helpers : helpers.cpp ;
 <p>
       Library targets may be used to represent:
       </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>
             <code class="computeroutput">Built libraries</code> that get built from specified sources,
             as is the one in the example above. 
           </p></li>
-<li><p>
+<li class="listitem"><p>
             <code class="computeroutput">Prebuilt libraries</code> which already exist on the system
             and are just supposed to be used by the build system. Such
             libraries may be searched for by the tools using them (typically
@@ -183,7 +183,7 @@ lib png : z : &lt;name&gt;png ;
 </pre>
 <p>
     </p>
-<div class="note"><table border="0" summary="Note">
+<div class="note" title="Note"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
 <th align="left">Note</th>
@@ -235,7 +235,7 @@ lib helpers : helpers.cpp : : : &lt;include&gt;. ;
       feature greatly simplifies Jamfiles.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Alias">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.alias"></a>Alias</h3></div></div></div>
 <p>
@@ -285,7 +285,7 @@ exe main : main.cpp static_libraries ;
       required for using the specified static libraries.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Installing">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.installing"></a>Installing</h3></div></div></div>
 <p>
@@ -293,7 +293,7 @@ exe main : main.cpp static_libraries ;
       files.
     </p>
 <h4>
-<a name="id4289685"></a>Basic install</h4>
+<a name="id2137823"></a>Basic install</h4>
 <p>
       For installing a built target you should use the <code class="computeroutput">install</code>
       rule, which follows the <a class="link" href="advanced.html#bbv2.main-target-rule-syntax">
@@ -332,7 +332,7 @@ install dist2 : hello helpers : &lt;location&gt;$(DIST) ;
       variables</a>
     </p>
 <h4>
-<a name="id4289798"></a>Installing with all dependencies</h4>
+<a name="id2137935"></a>Installing with all dependencies</h4>
 <p>
       Specifying the names of all libraries to install can be boring. The
       <code class="computeroutput">install</code> allows you to specify only the top-level executable
@@ -356,8 +356,8 @@ install dist : hello
       otherwise, all found target will be installed.
     </p>
 <h4>
-<a name="id4289851"></a>Preserving Directory Hierarchy</h4>
-<a class="indexterm" name="id4289854"></a><p>
+<a name="id2137988"></a>Preserving Directory Hierarchy</h4>
+<a class="indexterm" name="id2137991"></a><p>
       By default, the <code class="computeroutput">install</code> rule will strip paths from its
       sources. So, if sources include <code class="filename">a/b/c.hpp</code>, the
       <code class="filename">a/b</code> part will be ignored. To make the
@@ -381,7 +381,7 @@ install headers
       an entire directory tree.
     </p>
 <h4>
-<a name="id4289930"></a>Installing into Several Directories</h4>
+<a name="id2138066"></a>Installing into Several Directories</h4>
 <p>
       The <a class="link" href="tasks.html#bbv2.tasks.alias" title="Alias"><code class="computeroutput">alias</code></a> rule can be
       used when targets need to be installed into several directories:
@@ -395,13 +395,13 @@ install install-lib : helper : /usr/lib ;
     </p>
 <p>
       Because the <code class="computeroutput">install</code> rule just copies targets, most free
-      features <sup>[<a name="id4289966" href="#ftn.id4289966" class="footnote">13</a>]</sup> have no
+      features <sup>[<a name="id2138102" href="#ftn.id2138102" class="footnote">13</a>]</sup> have no
       effect when used in requirements of the <code class="computeroutput">install</code> rule. The
       only two that matter are <a class="link" href="reference.html#bbv2.builtin.features.dependency">
       <code class="varname">dependency</code></a> and, on Unix, <a class="link" href="reference.html#bbv2.reference.features.dll-path"><code class="varname">dll-path</code>
       </a>.
     </p>
-<div class="note"><table border="0" summary="Note">
+<div class="note" title="Note"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
 <th align="left">Note</th>
@@ -415,7 +415,7 @@ install install-lib : helper : /usr/lib ;
       </p></td></tr>
 </table></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Testing">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.builtins.testing"></a>Testing</h3></div></div></div>
 <p>
@@ -504,7 +504,7 @@ rule run ( sources + : args * : input-files * : requirements * : target-name ?
       target-name</code></em>.output</code>.
     </p>
 <p>
-      <a class="indexterm" name="id4290286"></a>
+      <a class="indexterm" name="id2138423"></a>
       If the <code class="literal">preserve-test-targets</code> feature has the value
       <code class="literal">off</code>, then <code class="computeroutput">run</code> and the <code class="computeroutput">run-fail</code>
       rules will remove the executable after running it.  This somewhat decreases
@@ -529,7 +529,7 @@ boost-test(<em class="replaceable"><code>test-type</code></em>) <em class="repla
       Such processing utilities are not included in Boost.Build.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Custom commands">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.builtins.raw"></a>Custom commands</h3></div></div></div>
 <p>
@@ -620,7 +620,7 @@ rule generating-rule ( project name : property-set : sources * )
       rule can be used.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Precompiled Headers">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.precompiled_headers"></a>Precompiled Headers</h3></div></div></div>
 <p>
@@ -633,8 +633,8 @@ rule generating-rule ( project name : property-set : sources * )
 <p>
       To use precompiled headers, follow the following steps:
     </p>
-<div class="orderedlist"><ol type="1">
-<li><p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>
           Create a header that includes headers used by your project that you
           want precompiled. It is better to include only headers that are
           sufficiently stable &#8212; like headers from the compiler and
@@ -643,7 +643,7 @@ rule generating-rule ( project name : property-set : sources * )
           inclusion of headers is not done when PCH is not enabled. Include the
           new header at the top of your source files.
         </p></li>
-<li>
+<li class="listitem">
 <p>
           Declare a new Boost.Build target for the precompiled header and add
           that precompiled header to the sources of the target whose compilation
@@ -666,17 +666,17 @@ exe main : main.cpp pch ;
 <p>
       Please note the following:
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>
           The inclusion of the precompiled header must be the first thing in a
           source file, before any code or preprocessor directives.
         </p></li>
-<li><p>
+<li class="listitem"><p>
           The build properties used to compile the source files and the
           precompiled header must be the same. Consider using project
           requirements to assure this.
         </p></li>
-<li><p>
+<li class="listitem"><p>
           Precompiled headers must be used purely as a way to improve
           compilation time, not to save the number of <code class="computeroutput">#include</code>
           statements. If a source file needs to include some header, explicitly
@@ -684,12 +684,12 @@ exe main : main.cpp pch ;
           from the precompiled header. This makes sure that your project will
           build even if precompiled headers are not supported.
         </p></li>
-<li><p>
+<li class="listitem"><p>
           On the gcc compiler, the name of the header being precompiled must be
           equal to the name of the <code class="computeroutput">cpp-pch</code> target. This is a gcc
           requirement.
         </p></li>
-<li><p>
+<li class="listitem"><p>
           Prior to version 4.2, the gcc compiler did not allow anonymous
           namespaces in precompiled headers, which limits their utility. See the
           <a href="http://gcc.gnu.org/bugzilla/show_bug.cgi?id=29085" target="_top"> bug
@@ -697,7 +697,7 @@ exe main : main.cpp pch ;
         </p></li>
 </ul></div>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Generated headers">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.generated_headers"></a>Generated headers</h3></div></div></div>
 <p>
@@ -731,10 +731,10 @@ exe app : app.cpp : &lt;implicit-dependency&gt;parser ;
       as potential dependencies.
     </p>
 </div>
-<div class="section" lang="en">
+<div class="section" title="Cross-compilation">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.crosscompile"></a>Cross-compilation</h3></div></div></div>
-<a class="indexterm" name="id4290876"></a><p>Boost.Build supports cross compilation with the gcc and msvc
+<a class="indexterm" name="id2139013"></a><p>Boost.Build supports cross compilation with the gcc and msvc
     toolsets.</p>
 <p>
       When using gcc, you first need to specify your cross compiler
@@ -773,7 +773,7 @@ bjam toolset=gcc-mingw <span class="bold"><strong>target-os=windows</strong></sp
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id4289966" href="#id4289966" class="para">13</a>] </sup>see the definition of "free" in <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2138102" href="#id2138102" class="para">13</a>] </sup>see the definition of "free" in <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

@@ -1,5 +1,6 @@
 
 // Copyright Aleksey Gurtovoy 2000-2004
+// Copyright Steven Watanabe 2009
 //
 // Distributed under the Boost Software License, Version 1.0. 
 // (See accompanying file LICENSE_1_0.txt or copy at 
@@ -7,9 +8,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Id: push_front.cpp 49268 2008-10-11 06:26:17Z agurtovoy $
-// $Date: 2008-10-11 02:26:17 -0400 (Sat, 11 Oct 2008) $
-// $Revision: 49268 $
+// $Id: push_front.cpp 55647 2009-08-18 05:00:17Z agurtovoy $
+// $Date: 2009-08-18 01:00:17 -0400 (Tue, 18 Aug 2009) $
+// $Revision: 55647 $
 
 #include <boost/mpl/push_front.hpp>
 #include <boost/mpl/push_back.hpp>
@@ -18,6 +19,13 @@
 #include <boost/mpl/front.hpp>
 
 #include <boost/mpl/aux_/test.hpp>
+
+struct no_push_front_tag {};
+
+struct no_push_front
+{
+    typedef no_push_front_tag tag;
+};
 
 MPL_TEST_CASE()
 {
@@ -37,4 +45,6 @@ MPL_TEST_CASE()
     MPL_ASSERT(( has_push_front< list1<long> > ));
 
     MPL_ASSERT_NOT(( has_push_back< list0<> > ));
+
+    MPL_ASSERT_NOT(( has_push_front< no_push_front > ));
 }
