@@ -1,13 +1,8 @@
 // Copyright (C) 2001-2003
 // William E. Kempf
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee,
-// provided that the above copyright notice appear in all copies and
-// that both that copyright notice and this permission notice appear
-// in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.
-// It is provided "as is" without express or implied warranty.
+//  Distributed under the Boost Software License, Version 1.0. (See accompanying 
+//  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/thread/detail/config.hpp>
 
@@ -31,6 +26,12 @@
 #   include "mac/init.hpp"
 #   include "mac/safe.hpp"
 #endif
+
+// The following include can be removed after the bug on QNX
+// has been tracked down. I need this only for debugging
+//#if !defined(NDEBUG) && defined(BOOST_HAS_PTHREADS)
+#include <iostream>
+//#endif
 
 namespace boost {
 
@@ -378,6 +379,20 @@ bool condition_impl::do_timed_wait(const xtime& xt, pthread_mutex_t* pmutex)
 
     int res = 0;
     res = pthread_cond_timedwait(&m_condition, pmutex, &ts);
+// Test code for QNX debugging, to get information during regressions
+#ifndef NDEBUG
+    if (res == EINVAL) {
+        boost::xtime now;
+        boost::xtime_get(&now, boost::TIME_UTC);
+        std::cerr << "now: " << now.sec << " " << now.nsec << std::endl;
+        std::cerr << "time: " << time(0) << std::endl;
+        std::cerr << "xtime: " << xt.sec << " " << xt.nsec << std::endl;
+        std::cerr << "ts: " << ts.tv_sec << " " << ts.tv_nsec << std::endl;
+        std::cerr << "pmutex: " << pmutex << std::endl;
+        std::cerr << "condition: " << &m_condition << std::endl;
+        assert(res != EINVAL);
+    }
+#endif    
     assert(res == 0 || res == ETIMEDOUT);
 
     return res != ETIMEDOUT;

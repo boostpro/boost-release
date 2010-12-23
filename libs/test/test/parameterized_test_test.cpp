@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2002-2005.
+//  (C) Copyright Gennadiy Rozental 2002-2006.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,17 +7,15 @@
 //
 //  File        : $RCSfile: parameterized_test_test.cpp,v $
 //
-//  Version     : $Revision: 1.20 $
+//  Version     : $Revision: 1.23 $
 //
 //  Description : tests parameterized tests
 // ***************************************************************************
 
 // Boost.Test
-#define BOOST_AUTO_TEST_MAIN
-#include <boost/test/auto_unit_test.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 #include <boost/test/parameterized_test.hpp>
-#include <boost/test/test_tools.hpp>
-#include <boost/test/framework.hpp>
 #include <boost/test/unit_test_log.hpp>
 #include <boost/test/results_collector.hpp>
 #if BOOST_WORKAROUND(  __GNUC__, < 3 )
@@ -145,7 +143,7 @@ BOOST_AUTO_TEST_CASE( test_case5 )
     ut::test_results const& tr = ut::results_collector.results( test->p_id );
 
     ut::unit_test_log.set_stream( std::cout );
-    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)0 );
+    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)3 );
     BOOST_CHECK( !tr.p_aborted );
     BOOST_CHECK( !tr.passed() );
 }
@@ -165,7 +163,7 @@ BOOST_AUTO_TEST_CASE( test_case6 )
     ut::test_results const& tr = ut::results_collector.results( test->p_id );
 
     ut::unit_test_log.set_stream( std::cout );
-    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)2 );
+    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)5 );
     BOOST_CHECK( !tr.p_aborted );
 }
 
@@ -184,7 +182,7 @@ BOOST_AUTO_TEST_CASE( test_case7 )
     ut::test_results const& tr = ut::results_collector.results( test->p_id );
 
     ut::unit_test_log.set_stream( std::cout );
-    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)2 );
+    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)4 );
     BOOST_CHECK( !tr.p_aborted );
 }
 
@@ -203,7 +201,7 @@ BOOST_AUTO_TEST_CASE( test_case8 )
     ut::test_results const& tr = ut::results_collector.results( test->p_id );
 
     ut::unit_test_log.set_stream( std::cout );
-    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)1 );
+    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)3 );
     BOOST_CHECK( !tr.p_aborted );
 }
 
@@ -213,6 +211,15 @@ BOOST_AUTO_TEST_CASE( test_case8 )
 //  Revision History :
 //  
 //  $Log: parameterized_test_test.cpp,v $
+//  Revision 1.23  2006/03/19 11:49:04  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.22  2006/02/01 08:00:15  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.21  2005/12/14 06:01:02  rogeeff
+//  *** empty log message ***
+//
 //  Revision 1.20  2005/05/11 05:07:57  rogeeff
 //  licence update
 //

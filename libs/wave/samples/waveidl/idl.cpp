@@ -5,7 +5,7 @@
     
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost 
+    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost 
     Software License, Version 1.0. (See accompanying file 
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -91,7 +91,7 @@ int print_copyright()
         "Based on: Wave, A Standard conformant C++ preprocessor library",
         "It is hosted by http://www.boost.org/.", 
         "",
-        "Copyright (c) 2001-2005 Hartmut Kaiser, Distributed under the Boost",
+        "Copyright (c) 2001-2006 Hartmut Kaiser, Distributed under the Boost",
         "Software License, Version 1.0. (See accompanying file",
         "LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)",
         0
@@ -381,21 +381,21 @@ boost::wave::util::file_position_type current_position;
             ++first;        // advance to the next token
         }
     }
-    catch (boost::wave::cpp_exception &e) {
+    catch (boost::wave::cpp_exception const& e) {
     // some preprocessing error
         cerr 
             << e.file_name() << "(" << e.line_no() << "): "
             << e.description() << endl;
         return 1;
     }
-    catch (boost::wave::cpplexer::lexing_exception &e) {
+    catch (boost::wave::cpplexer::lexing_exception const& e) {
     // some lexing error
         cerr 
             << e.file_name() << "(" << e.line_no() << "): "
             << e.description() << endl;
         return 2;
     }
-    catch (std::exception &e) {
+    catch (std::exception const& e) {
     // use last recognized token to retrieve the error position
         cerr 
             << current_position.get_file() 
@@ -525,7 +525,7 @@ main (int argc, char *argv[])
     // preprocess the given input file
         return do_actual_work(arguments[0].value[0], vm);
     }
-    catch (std::exception &e) {
+    catch (std::exception const& e) {
         cout << "waveidl: exception caught: " << e.what() << endl;
         return 6;
     }

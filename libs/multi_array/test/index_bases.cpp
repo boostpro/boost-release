@@ -62,7 +62,7 @@ test_main(int,char*[])
     boost::array<int,3> bases = { { 1, 2, 3 } };
     for (size_type a = 0; a < A.shape()[0]; ++a)
       for (size_type b = 0; b < A.shape()[1]; ++b)
-        for (size_type c = 0; c < A[b].size(); ++c) {
+        for (size_type c = 0; c < A.shape()[2]; ++c) {
           BOOST_CHECK(A[a+bases[0]][b+bases[1]][c+bases[2]] == B[a][b][c]);
           BOOST_CHECK(C[a+bases[0]][b+bases[1]][c+bases[2]] == B[a][b][c]);
           BOOST_CHECK(D[a+bases[0]][b+bases[1]][c+bases[2]] == B[a][b][c]);
@@ -126,10 +126,18 @@ test_main(int,char*[])
     B.assign(vals.begin(),vals.end());
     C.assign(vals.begin(),vals.end());
 
+#ifdef BOOST_NO_SFINAE
+    typedef boost::multi_array_types::index index;
+    A.reindex(index(1));
+    C.reindex(index(1));
+    D.reindex(index(1));
+    E.reindex(index(1));
+#else
     A.reindex(1);
     C.reindex(1);
     D.reindex(1);
     E.reindex(1);
+#endif
 
     for (size_type a = 0; a < A.shape()[0]; ++a)
       for (size_type b = 0; b < A.shape()[1]; ++b)

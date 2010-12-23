@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 
-Copyright MetaCommunications, Inc. 2003-2005.
+Copyright MetaCommunications, Inc. 2003-2007.
 
 Distributed under the Boost Software License, Version 1.0. (See
 accompanying file LICENSE_1_0.txt or copy at
@@ -11,8 +11,10 @@ http://www.boost.org/LICENSE_1_0.txt)
 
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+    xmlns:func="http://exslt.org/functions"
     xmlns:meta="http://www.meta-comm.com"
-    exclude-result-prefixes="meta"
+    extension-element-prefixes="func"
+    exclude-result-prefixes="func meta"
     version="1.0">
 
     <xsl:import href="common.xsl"/>
@@ -23,7 +25,31 @@ http://www.boost.org/LICENSE_1_0.txt)
     <xsl:param name="failures_markup_file"/>
     <xsl:variable name="expected_results" select="document( $expected_results_file )" />
 
+    <func:function name="meta:is_test_log_complete">
+        <xsl:param name="test_log"/>
+        <xsl:variable name="type" select="$test_log/@test-type"/>
+        <func:result>
+            <xsl:choose>
+                <xsl:when test="$type='compile' or $type='compile_fail'  or $test_log/compile/@result='fail' ">
+                    <xsl:value-of select="count( $test_log/compile ) = 1 and count( $test_log/link) = 0 and count( $test_log/run) = 0"/>
+                </xsl:when>
+                <xsl:when test="$type='link' or $type='link_fail' or $type='' or $type='lib' or $test_log/link/@result='fail'">
+                    <xsl:value-of select="count( $test_log/compile) = 1  and count( $test_log/link) = 1 and count( $test_log/run) = 0"/></xsl:when>
+                <xsl:when test="$type='run' or $type='run_fail' or $type='run_pyd'">
+                    <xsl:value-of select="count( $test_log/compile) = 1  and count( $test_log/link)  = 1 and count($test_log/run) = 1 "/>
+                </xsl:when>
+                <xsl:otherwise> 
+                    <xsl:message terminate="yes">
+                        Unknown test type "<xsl:value-of select="$type"/>"
+                    </xsl:message>
+                </xsl:otherwise>
+            </xsl:choose>
+        </func:result>            
+    </func:function>
+
+
     <xsl:key name = "trk" match = "test-result" use = "concat( ../../@name, '-', ../@name, '-', @test-name )" />
+    <xsl:key name = "tak" match = "toolset-alias" use = "@name" />
 
     <xsl:variable name="failures_markup" select="document( $failures_markup_file )" />
     <xsl:template match="/">
@@ -36,23 +62,21 @@ http://www.boost.org/LICENSE_1_0.txt)
         <xsl:variable name="test-name" select="@test-name"/>
         <xsl:variable name="toolset" select="@toolset"/>
 
+        <xsl:variable name="is_complete" select="meta:is_test_log_complete( $test_log )"/>
+
         <xsl:element name="{local-name()}">
             <xsl:apply-templates select="@*"/>
 
-
+            <xsl:variable name="has_failures" select="./*/@result = 'fail'"/>
             <xsl:variable name="actual_result">
                 <xsl:choose>
-                    <!-- Hack: needs to be researched (and removed). See M.Wille's incident. -->
-                    <xsl:when test="run/@result='succeed' and lib/@result='fail'">
-                        <xsl:text>success</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="./*/@result = 'fail'" >
+                    <xsl:when test="$has_failures or not( $is_complete )" >
                         <xsl:text>fail</xsl:text>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:text>success</xsl:text>
                     </xsl:otherwise>
-                </xsl:choose>                     
+                </xsl:choose>
             </xsl:variable>
             
             <!-- 
@@ -64,11 +88,19 @@ http://www.boost.org/LICENSE_1_0.txt)
                  -->
 
             <xsl:for-each select="$expected_results">
-                
-                <xsl:variable name="expected_results_test_case" select="key( 'trk', concat( $toolset, '-', $library, '-', $test-name ) )"/>
-                <xsl:variable name="test_case_markup"      select="$failures_markup//library[@name=$library]/test[ meta:re_match( @name, $test-name ) ]"/>
-                <xsl:variable name="test_failures_markup"  select="$test_case_markup/mark-failure/toolset[ meta:re_match( @name, $toolset ) ]/.."/>
-                <xsl:variable name="test_failures_markup2" select="$failures_markup//library[@name=$library]/mark-expected-failures/test[ meta:re_match( @name, $test-name ) ]/../toolset[ meta:re_match( @name, $toolset ) ]/.."/>
+
+                <xsl:variable name="main_toolset" select="key( 'tak', $toolset )/../@name" />
+                <xsl:variable name="toolset_name">
+                    <xsl:choose>
+                        <xsl:when test="$main_toolset"><xsl:value-of select="$main_toolset"/></xsl:when>
+                        <xsl:otherwise><xsl:value-of select="$toolset"/></xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+
+                <xsl:variable name="expected_results_test_case" select="key( 'trk', concat( $toolset_name, '-', $library, '-', $test-name ) )"/>
+                <xsl:variable name="test_case_markup"           select="$failures_markup//library[@name=$library]/test[ meta:re_match( @name, $test-name ) ]"/>
+                <xsl:variable name="test_failures_markup"       select="$test_case_markup/mark-failure/toolset[ meta:re_match( @name, $toolset ) ]/.."/>
+                <xsl:variable name="test_failures_markup2"      select="$failures_markup//library[@name=$library]/mark-expected-failures/test[ meta:re_match( @name, $test-name ) ]/../toolset[ meta:re_match( @name, $toolset ) ]/.."/>
 
                 <xsl:variable name="category">
                     <xsl:choose>
@@ -197,8 +229,18 @@ http://www.boost.org/LICENSE_1_0.txt)
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:if>
+
+                    <xsl:if test="not( $is_complete ) and not( $has_failures )">
+                        <note>
+                            <span class="internal-error-note">
+                                <b>[Reporting Tools Internal Error]</b> This test case's XML is missing one or more log entries
+                                of the regression run's steps associated with the test case's type ("<xsl:value-of select="$test_log/@test-type"/>").
+                                Please <a href="mailto:mailto:boost-testing@lists.boost.org">contact reporting tools 
+                                maintainers</a> about this problem.
+                            </span>
+                        </note>
+                    </xsl:if>
                 </xsl:variable>
-                
                 
                 <xsl:attribute name="result"><xsl:value-of select="$actual_result"/></xsl:attribute>
                 <xsl:attribute name="expected-result"><xsl:value-of select="$expected_result"/></xsl:attribute>

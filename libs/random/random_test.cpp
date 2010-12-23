@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: random_test.cpp,v 1.57 2005/06/16 09:56:21 johnmaddock Exp $
+ * $Id: random_test.cpp,v 1.58 2005/08/25 16:27:27 johnmaddock Exp $
  */
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
@@ -448,7 +448,7 @@ void test_uniform_int(Generator & gen)
   check_uniform_int(uint1_4, 100000);
 }
 
-#if defined(BOOST_MSVC) && _MSC_VER <= 1200
+#if defined(BOOST_MSVC) && _MSC_VER < 1300
 
 // These explicit instantiations are necessary, otherwise MSVC does
 // not find the <boost/operators.hpp> inline friends.

@@ -2,7 +2,7 @@
 # Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 r"""
->>> from builtin_converters import *
+>>> from builtin_converters_ext import *
 
 # Synthesize idendity functions in case long long not supported
 >>> if not 'rewrap_value_long_long' in dir():
@@ -10,6 +10,14 @@ r"""
 ...     def rewrap_value_unsigned_long_long(x): return long(x)
 ...     def rewrap_const_reference_long_long(x): return long(x)
 ...     def rewrap_const_reference_unsigned_long_long(x): return long(x)
+
+>>> try: bool_exists = bool
+... except: pass
+... else:
+...     rewrap_value_bool(True)
+...     rewrap_value_bool(False)
+True
+False
 
 >>> rewrap_value_bool(None)
 0
@@ -242,9 +250,9 @@ Check that classic classes also work
 def run(args = None):
     import sys
     import doctest
-    import builtin_converters
+    import builtin_converters_ext
     
-    if 'rewrap_value_long_long' in dir(builtin_converters):
+    if 'rewrap_value_long_long' in dir(builtin_converters_ext):
         print 'LONG_LONG supported, testing...'
     else:
         print 'LONG_LONG not supported, skipping those tests...'

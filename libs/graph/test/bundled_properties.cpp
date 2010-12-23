@@ -12,6 +12,11 @@
 #include <boost/graph/subgraph.hpp>
 #include <string>
 #include <vector>
+#include <boost/graph/adjacency_list_io.hpp>
+#include <sstream>
+#include <boost/graph/iteration_macros.hpp>
+#include <algorithm>
+#include <iterator>
 
 using namespace std;
 using namespace boost;
@@ -29,6 +34,32 @@ struct City
   vector<int> zipcodes;
 };
 
+std::ostream& operator<<(std::ostream& out, const City& city)
+{
+  out << city.name << ' ' << city.population << ' ';
+  copy(city.zipcodes.begin(), city.zipcodes.end(),
+       ostream_iterator<int>(out, " "));
+  out << -1;
+  return out;
+}
+
+std::istream& operator>>(std::istream& in, City& city)
+{
+  if (in >> city.name >> city.population) {
+    int zip;
+    city.zipcodes.clear();
+    while (in >> zip && zip != -1)
+      city.zipcodes.push_back(zip);
+  }
+  return in;
+}
+
+bool operator==(const City& c1, const City& c2)
+{
+  return (c1.name == c2.name && c1.population == c2.population
+          && c1.zipcodes == c2.zipcodes);
+}
+
 struct Highway
 {
   Highway() {}
@@ -41,6 +72,27 @@ struct Highway
   int lanes;
   bool divided;
 };
+
+std::ostream& operator<<(std::ostream& out, const Highway& highway)
+{
+  return out << highway.name << ' ' << highway.miles << ' ' << highway.miles
+             << ' ' << highway.speed_limit << ' ' << highway.lanes
+             << ' ' << highway.divided;
+}
+
+std::istream& operator>>(std::istream& in, Highway& highway)
+{
+  return in >> highway.name >> highway.miles >> highway.miles
+            >> highway.speed_limit  >> highway.lanes
+            >> highway.divided;
+}
+
+bool operator==(const Highway& h1, const Highway& h2)
+{
+  return (h1.name == h2.name && h1.miles == h2.miles 
+          && h1.speed_limit == h2.speed_limit && h1.lanes == h2.lanes
+          && h1.divided == h2.divided);
+}
 
 template<bool> struct truth {};
 
@@ -59,6 +111,37 @@ do_add_vertex(Map& map, VertexIterator& vi, const Bundle& bundle, truth<false>)
   return *vi++;
 }
 
+template<class EL, class VL, class D, class VP, class EP, class GP>
+void test_io(adjacency_list<EL,VL,D,VP,EP,GP>& map, int)
+{
+  typedef adjacency_list<EL,VL,D,VP,EP,GP> Map;
+
+  ostringstream out;
+  cout << write(map);
+  out << write(map);
+  
+  istringstream in(out.str());
+  adjacency_list<EL,VL,D,VP,EP,GP> map2;
+  in >> read(map2);
+  typename graph_traits<adjacency_list<EL,VL,D,VP,EP,GP> >::vertex_iterator
+    v2 = vertices(map2).first;
+  BGL_FORALL_VERTICES_T(v, map, Map) {
+    BOOST_CHECK(map[v] == map2[*v2]);
+    typename graph_traits<adjacency_list<EL,VL,D,VP,EP,GP> >::out_edge_iterator
+      e2 = out_edges(*v2, map2).first;
+    BGL_FORALL_OUTEDGES_T(v, e, map, Map) {
+      BOOST_CHECK(map[e] == map[*e2]);
+      ++e2;
+    }
+    ++v2;
+  }
+}
+
+template<typename Map>
+void test_io(const Map&, long)
+{
+  // Nothing to test
+}
 
 template<typename Map, bool CanAddVertex>
 void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
@@ -67,7 +150,7 @@ void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
   typedef typename boost::graph_traits<Map>::vertex_descriptor vertex_descriptor;
   typedef typename boost::graph_traits<Map>::edge_descriptor   edge_descriptor;
 
-  Map map(3);
+  Map map(CanAddVertex? 2 : 3);
 
   vertex_iterator vi = vertices(map).first;
   vertex_descriptor v = *vi;
@@ -93,7 +176,7 @@ void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
   map[e].lanes = 4;
   map[e].divided = true;
 
-  edge_descriptor our_trip = add_edge(v, bloomington, Highway("Long haul", 1000), map).first;
+  edge_descriptor our_trip = add_edge(v, bloomington, Highway("Long", 1000), map).first;
   BOOST_CHECK(get(boost::edge_bundle, map, our_trip).miles == 1000);
   
   BOOST_CHECK(get(get(&City::name, map), v) == "Troy");
@@ -113,6 +196,7 @@ void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
   put(&City::population, fmap, v, 49169);
   BOOST_CHECK(get(&City::population, fmap)[v] == 49169);
 
+  test_io(map, 0);
 }
 
 void test_subgraph_bundled_properties()

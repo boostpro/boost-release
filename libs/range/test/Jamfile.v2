@@ -11,7 +11,7 @@
 rule range-test ( name : includes * )
 {
     return [
-        run $(name).cpp /boost/test//boost_unit_test_framework
+        run $(name).cpp /boost/test//boost_unit_test_framework/<link>static
         : 
         : 
         : $(includes)
@@ -29,6 +29,7 @@ test-suite range :
     [ range-test algorithm_example ]
     [ range-test reversible_range ]
     [ range-test const_ranges ]
-    [ range-test mfc : <include>$(VC71_ROOT)/atlmfc/include ] 
+    [ range-test extension_mechanism ]
+#    [ range-test mfc : <include>$(VC71_ROOT)/atlmfc/include ] 
     ;
 

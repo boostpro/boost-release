@@ -90,6 +90,13 @@ void check_partial_workaround()
 
 }
 
+#else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+void check_partial_workaround()
+{
+}
+
+#endif
 
 #include <boost/test/unit_test.hpp>
 using boost::unit_test::test_suite;
@@ -102,18 +109,3 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 
     return test;
 }
-
-#else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-
-#include <boost/test/unit_test.hpp>
-using boost::unit_test::test_suite;
-
-test_suite* init_unit_test_suite( int, char** )
-{
-    test_suite* test = BOOST_TEST_SUITE( "Range Test Suite" );
-    
-    return test;
-}
-
-#endif
-

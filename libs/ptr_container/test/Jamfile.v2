@@ -1,8 +1,8 @@
 
-rule sc-test ( name )
+rule sc-test ( name : extra-sources * )
 {
     return [ 
-      run $(name).cpp /boost/test//boost_unit_test_framework ]
+      run $(name).cpp /boost/test//boost_unit_test_framework/<link>static $(extra-sources) ]
     ;
 }
 
@@ -14,16 +14,12 @@ test-suite ptr_container :
     [ sc-test ptr_set ]  
     [ sc-test ptr_map ]
     [ sc-test ptr_array ]
-#    [ sc-test simple_test ] 
     [ sc-test tree_test ]   
-#    [ sc-test pointainer_speed ]
     [ sc-test incomplete_type_test ]
-
-#    [ sc-test ptr_container_adapter ]
-#    [ sc-test ptr_map_adapter ]
-    [ sc-test iterator_test ]
-    [ sc-test indirect_fun ]    
-    [ run tut1.cpp ]   
     [ run view_example.cpp ]
-    
+    [ sc-test iterator_test ]
+    [ run tut1.cpp ]   
+    [ sc-test indirect_fun ]  
+    [ sc-test serialization : /boost/serialization//boost_serialization ]  
+    [ sc-test no_exceptions ]    
     ;

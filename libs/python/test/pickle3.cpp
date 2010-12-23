@@ -23,8 +23,11 @@
 #include <boost/python/tuple.hpp>
 #include <boost/python/dict.hpp>
 #include <boost/python/extract.hpp>
-#include <boost/python/detail/api_placeholder.hpp>
 #include <boost/python/back_reference.hpp>
+
+#if BOOST_WORKAROUND(__SUNPRO_CC, BOOST_TESTED_AT(0x580))
+# define make_tuple boost::python::make_tuple
+#endif 
 
 namespace { // Avoid cluttering the global namespace.
 

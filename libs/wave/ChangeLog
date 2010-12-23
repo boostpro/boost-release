@@ -1,7 +1,7 @@
 Boost.Wave: A Standard compliant C++ preprocessor library
 http://www.boost.org/
 
-Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost
 Software License, Version 1.0. (See accompanying file
 LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 -------------------------------------------------------------------------------
@@ -22,6 +22,266 @@ TODO (known issues):
 
 CHANGELOG
 
+Boost V1.34.0
+- Wave Version 1.2.4
+- Added the possibility to explicitly enable/disable the generation of #line 
+  directives. Added a corresponding commandline argument to the Wave driver 
+  tool (--line/-L) which takes either 0 or 1 as its parameter.
+- Added support for #pragma wave option(command: value) directives, which 
+  supports the following commands:
+   . #pragma wave option(line: [0|1])  
+        Enable/disable generation of #line directives
+   . #pragma wave option(preserve: [0|1|2])  
+        Control whitespace preservation
+   . #pragma wave option(output: ["filename" | null | default])
+        Redirect output to the given file (or no output, if 'null' is specified,
+        or output to the file as given on the command line, if 'default' is 
+        specified).
+        The filename is resolved relative to the directory of the processed
+        file.
+  These new #pragma directives are implemented in the Wave driver tool only.
+  It is possible to combine several options in one #pragma directive, i.e.
+  #pragma wave option(line: 0, preserve: 2).
+- Changed the signature of the may_skip_whitespace() preprocessing hook to 
+  additionally take the preprocessing context as its first parameter.
+- Added the possibility to the Wave tool to disable initial output by 
+  specifying a '-' as the output file. This is useful for syntax checks only or
+  in conjunction with the #pragma wave option(output: ...) to restrict the
+  generated output.
+- Improved error reporting in the Wave tool on bad output file stream state.
+- Switched to Re2C V0.10.0
+- Fixed some of the VC7.1 /W4 warnings.
+- The Wave tool now creates the directory hierarchy of output files as needed.
+- Applied some optimization, which causes skipping of the parsing for almost 
+  all preprocessor directives when the if block status is false. This gains
+  upto 10-20% in speed for average applications.
+- Added error diagnostic for #elif without matching #if, which was missing 
+  under certain circumstances.
+- Avoided the evaluation of #elif expressions if one of the previous #if/#elif
+  blocks of the same level was true. This gains upto another 5% of speed for
+  average applications.
+- The MS specific integer suffix 'i64' is now correctly supported by the Re2C
+  and SLex lexer components (only when BOOST_WAVE_SUPPORT_MS_EXTENSIONS is 
+  defined during compilation).
+- Changed the Wave tool to print the column number of an error/warning along
+  with the line number. The new format is: 'filename:line:column: error text'.
+- It is now possible to recover from the unbalanced #if/#endif statement 
+  warning in a proper way.
+- The Wave library now automaticaly recognizes include guards in headers files
+  and uses this information to avoid opening these header files more than once.
+  This speeds up things by upto 10-20% depending on the concrete include files.
+- Fixed the failing test t_6_023.cpp. Error reporting for illformed #else 
+  directives was broken (because of some recent changes).
+- Fixed the failing test t_5_007.cpp. This was caused by the automatic include 
+  guard detection, which prevented the second inclusion of the specified
+  include file the test was relying on.
+- Added the possibility to switch off the automatic include guard detection.
+- Added a new command line option to the Wave tool: --noguard/-G, which
+  disables the automatic include guard detection.
+- Now a header with include guards will be included correctly for a second time
+  after its include guard symbol gets undefined.
+- Added the generating platform to Wave's full version string.
+- Made the Wave tool fully interactive when started with input from stdin and
+  and output to stdout. In this mode the Wave tool preprocesses the input 
+  line by line and not only after receiving the full input as normally.
+- Added serialization support for the wave::context object, which stores 
+  all information about defined macros and all #pragma once header information.
+- Added the command line option --state (-s) to the Wave tool, which tries to 
+  load the serialized information from the file given as the argument to 
+  --state and save the state information at the end to the same file. 
+  This option is available in interactive mode only. 
+- Added possibility to verify the compatibility of the configuration used 
+  during compilation of the Wave library with the config info used for the 
+  application. Added a corresponding test to the Wave tool.
+- Added a new predefined macro __WAVE_CONFIG__ which expands to an integer
+  literal containg the configuration information the library was compiled
+  with.
+- Added proper versioning support to the serialization of state.
+- Fixed the macro tracing information to contain the column numbers of the macro
+  definitions as well (the format used is the same as for error messages).
+- Fixed a memory leak in the flex_string copy on write code (thanks to Tobias 
+  Schwinger for reporting this bug).
+- Fixed a memory corruption bug in the Re2C scanner buffer management code
+  (thanks to Andreas Sæbjørnsen for spotting the bug).
+- Fixed a major performance bottleneck in the lex_token class. This speeds up 
+  Wave for upto another 20-40% depending on the amount of macro expansions to 
+  perform.
+- Added the BOOST_SPIRIT_USE_BOOST_ALLOCATOR_FOR_TREES and the
+  BOOST_SPIRIT_USE_LIST_FOR_TREES Spirit configration constants to the 
+  wave_config.hpp to allow to fine tune the generated Spirit tree code. VC7.1
+  gives best results when both are defined.
+- Fixed a memory corruption bug triggered by a possible dangling reference.
+- Fixed Wave tools startup crash when compiled with VC8.
+- Added the name of the generating compiler (BOOST_COMPILER) to the full 
+  Wave version info.
+- Fixed all Jamfile.v2 to correctly disable RTTI for VC7.1.
+- Added #pragma message("...") to be optionally supported by the Wave library.
+  This may be enabled by defining the BOOST_WAVE_SUPPORT_PRAGMA_MESSAGE pp
+  constant to some value different from zero.
+- Fixed a couple of typos in the file cpp.cpp preventing it to compile on 
+  gcc 4.1.0 (thanks to Richard Guenther for reporting these).
+- Richard Guenther fixed another buffer overrun problem in the Re2C scanner.
+- Fixed Jamfile.v2 files for all sample applications.
+- Fixed a bug which lead to reporting of an illegal preprocessing directive
+  inside not-evaluated conditional blocks under certain circumstances (thanks
+  to Tobias Schwinger for reporting).
+- Fixed '#define true ...', '#define false ...' and other constructs, i.e. the 
+  usage of the boolean keywords as identifiers during the preprocessing. Added
+  a corresponding test case (t_9_017.cpp). Thanks to Andreas Sæbjørnsen for
+  reporting.
+- Corrected the Jamfile[.v2] of the waveidl sample to refer to correct file 
+  names (thanks to Juergen Hunold for submitting a patch).
+- Fixed a bug which prevented the main iterator from returning a T_EOF token 
+  at the overall end of the input. 
+- Fixed a problem, where non-evaluated #elif directives never got passed to the 
+  skippen_token() pp hook (thanks to Andreas Sæbjørnsen for reporting).
+- Fixed a problem in the get_tokenname() function.
+- Added a missing #define BOOST_WAVE_SOURCE 1 to the wave_config_constant.cpp
+  file.
+- Fixed exception specifications to catch all exceptions by const&.
+- Fixed predefined macros to appear to be defined at a position referring to 
+  a file named "<built-in>". Thanks to Andreas Sæbjørnsen for reporting.
+- Fixed the Re2C lexer not to segfault on empty files anymore.
+- Stripped leading and trailing whitespace for all lines in a config file (Wave
+  driver tool).
+- Fixed RTTI build issue for VC7.1/bjam --v2 (thanks to Rene Rivera for 
+  submitting a patch for the Wave Jamfile.v2).
+- Fixed certain problems reported by the Boost inspection tool.
+- Fixed a couple of SunPro5.8 warnings.
+- Fixed a bug resulting in a crash if a macro was redefined with a shorter
+  expansion list as it was defined initially. Added a corresponding test case.
+- Fixed a bug causing an infinite loop when there was a missing endif in the 
+  main preprocessed file.
+- Improved error recovery for illegal preprocessing directive errors.
+- Improved error handling and error recovery for conditional expressions 
+  (#if/#elif expressions).
+- Wave now passes 160 out of 161 tests from the MCPP V2.6.1 validation 
+  testsuite!
+- Added new warning for invalid #line number and filename arguments
+- Improved error diagnostics for invalid #line directives containing arbitrary
+  tokens after at the end of the line.
+- Improved error handling wrt the misuse of the __VA_ARG__ token in macro 
+  definitions.
+- The warning, that a file is not terminated by a newline is now issued for all
+  files, not only for the main file (as previous).
+- Added a couple of new test cases to verify various diagnostics.
+- Fixed wave applet not to report missing #endif's when in interactive mode.
+- Cleaned up the Re2C lexer code.
+- Fixed a bug, where a empty line followed by an arbitrary token and followed 
+  by a preprocessing directive interpreted the preprcessing directive as if it
+  were the first non-whitespace token on the line. This error occured only
+  if the #line directive generation was suppressed. Thanks to Joan Grant for
+  reporting this problem.
+- Fixed a problem in the Wave applet which prevented the correct recognition of 
+  Windows file paths in a configuration file, if this path was enclosed in 
+  quotes.
+- Extended the copyright notice to include the year 2007.
+- Fixed a problem in preserve=1 mode, when a C style comment triggered the 
+  generation of a #line directive.
+- Worked around a linker issue for the True64/CXX compiler, complaining about
+  multiple defined symbols when using the flex_string class.
+  
+Sat Feb 18 2005
+- Version 1.2.3
+- Added a missing throw() specification to the function 
+  cpp_exception::get_related_name().
+- Fix Boost bug ([ boost-Bugs-1395857 ] wave redefines BSIZE).
+- Added missing calls to the skipped_token() preprocessing hook which wasn't
+  called for pp directives inside disabled #if blocks.
+- Made the context<> type noncopyable.
+- Introduced the --extended/-x command line option to the wave driver 
+  executable, which enables the #pragma wave system() directive. This directive
+  is now disabled by default because it may cause a potential security threat.
+- Changed the what() function of the macro_handling_exception class, which now
+  correctly returns the name of the exception type itself.
+- Added a diagnostic message to the wave driver executable, which is issued 
+  whenever a #pragma wave system() directive is found, but the -x (--extended) 
+  command line argument was not given.
+- Fixed long integer suffix to be allowed to be mixed case (1Ll or 2lL).
+- Fixed the BOOST_PP_CAT(1e, -1) pp-token bug. Wave now correctly recognizes
+  pp-number tokens, which are converted to C++ tokens right before they are 
+  returned from the library.
+- Moved the implementation of the token_id query functions (get_token_name(), 
+  get_token_value()) to a separate source file.
+- Fixed a bug, which prevented to prefer pp-numbers in files preprocessed as
+  a result of #include directives.
+- Fixed a bug, which prevented to open #include'd files specified by an 
+  absolute path.
+- Fixed a problem in the expression parser value type.
+- Fixed a dynaload compilation problem with VC7.1 of the re2c lexer tests.
+
+Sat Dec 24 13:33:53 CST 2005
+- Version 1.2.2
+- Added three new preprocessing hooks: 'found_directive', 'skipped_token' and 
+  'evaluated_conditional_expression' (thanks to Andreas Sæbjørnsen for the 
+  suggestions).
+- Removed hook forwarding functions in the context_type.
+- Added missing include_next case branches for get_directivename() function.
+- Added new sample: advanced_hooks.
+- Fixed a possible buffer overflow in the cpplexer and cpp exception classes.
+- Made the cpp_grammar thread safe.
+- Removed the need for the get_directivename() function. Fixed typos in the 
+  predefined token table.
+- Removed assertions from get_token_name() and get_token_value() and replaced 
+  these with more meaningful code.
+- Added the BOOST_WAVE_USE_STRICT_LEXER configuration constant which allows to
+  decide, whether the '$' character will be recognized as a part of identifiers
+  or not (the default is BOOST_WAVE_USE_STRICT_LEXER == 0, i.e. '$' will be
+  recognized as part of identifiers).
+- Added the possibility to testwave to extract a tagged comment based on a
+  preprocessor constant (testwave V0.4.0).
+- Made the predefined_macros_grammar thread safe.
+- Added dll support for the generated Wave libraries.
+- Added the const_iterator based exlicit instantiations for the Re2C lexer to 
+  the built Wave library and dll.
+- Added the whitespace handling policy to the context object. This actually is 
+  no separate policy, it's a new preprocessing hook allowing to decide, whether
+  a concrete token has to be skipped.
+- Changed the --preserve option of the wave tool to take a single integer 
+  argument (0: no whitespace is preserved, 1: only comments are preserved, 
+  2: all whitespace is preserved)
+- Edited the command line option descriptions of the wave driver.
+- Fixed broken tags in documentation (magically inserted by DreamWeaver).
+- Merged the new whitespace_handling policy with the existing preprocessing 
+  hooks. The name of the new preprocessing hook ist may_skip_whitespace().
+- Fixed compatibility issues for CW9.4 in the Wave test aplication.
+- Added get_errorcode() member to the wave exception classes allowing to 
+  get back the reason for the exception.
+- Added boost::wave::is_recoverable(cpp_exception const&) alowing to decide,
+  whether it is possible to continue after a cpp_exception has been thrown.
+  This is a temporary hack to overcome the current limitation of the library
+  not allowing to do generic error recovery. It allows to recover from 75% of
+  the generated errors types.
+- The --timer command line option for the Wave driver now prints the elapsed 
+  time correctly even if a preprcessing error occured.
+- Fixed an error recovery problem which skipped one token after continuing in
+  case this was a pp directive.
+- Added the --autooutput (-E) option to the Wave driver applet which redirects 
+  the generated output to a file named after the input file changing the file 
+  extension to '.i'.
+- Changed all throw's to boost::throw_exception.
+- Added the possibility to configure the command keyword for the wave specific 
+  #pragma directives. It is now possible to define a string literal via
+  BOOST_WAVE_PRAGMA_COMMAND, which will be recognized and all corresponding
+  #pragma's are dispatched to the interpret_pragma() preprocessing hook.
+  The default value for BOOST_WAVE_PRAGMA_COMMAND is "wave", just to ensure 
+  complete backward compatibility.
+- Added missing #pragma warning(pop) directives.
+- Fixed a bug wrt error propagation in the expression parser.
+- Fixed an assertion fired when cpp_token is used to process the quick_start 
+  sample.
+- Fixed a (Windows specific) bug which triggered a boost::file_system exception
+  under certain conditions.
+- Switched to Re2C V0.9.11
+- Fixed a problem with the new '-E' (--autooutput) option.
+- Added better error reporting for duplicate macro definitions to the Wave 
+  tool. Added the macro_handling_exception type containing the corresponding 
+  macro name via the new (virtual) get_related_name() function.
+- Added the get_severity() function to the exceptions thrown by the Wave
+  library.
+- Extended the copyright notice to include the year 2006.
+  
+Mon Dec  5 22:05:22 CST 2005
 Boost V1.33.1
 - Version 1.2.1
 - Fixed bug reported as Sourceforge bug 1274584.
@@ -57,7 +317,7 @@ Version 1.2
 - Fixed compilation if BOOST_WAVE_DUMP_PARSE_TREE is defined.
 - Fixed lexer error message wrt long_long mode.
 - Stefan Seefeld fixed a bug in the lexer, where include_next was assumed for
-  includeed files containg a "include_" in their name.
+  included files containg a "include_" in their name.
 - Fixed some trigraph token id's in the lexers.
 - Added column information to the re2c generated lexer.
 - Added tests for the different lexers.
@@ -150,7 +410,7 @@ Version 1.1.16
   for this compiler.
 - Renamed files to comply with the Boost rules.
 - Added the first part of the MCPP validation suite to the Wave unit tests.
-- Added even more missing "using namespace std;" staements for functions from
+- Added even more missing "using namespace std;" statements for functions from
   the C runtime library. The Wave test suite now contains more than 100 unit
   tests.
 - Added the $P/$P(basename) replacement string to the testwave application 

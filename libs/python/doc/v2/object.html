@@ -1,5 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
+<!-- Copyright David Abrahams 2006. Distributed under the Boost -->
+<!-- Software License, Version 1.0. (See accompanying -->
+<!-- file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt) -->
 <html>
   <head>
     <meta name="generator" content=
@@ -183,10 +186,15 @@
           <dt><a href="#binary-spec">binary operations</a></dt>
 
           <dt><a href="#assignment-spec">assignment operations</a></dt>
+
         </dl>
 
         <dl class="page-index">
           <dt><a href="#object_operators-spec">operators</a></dt>
+        </dl>
+
+        <dl class="page-index">
+          <dt><a href="#len-spec">len()</a></dt>
         </dl>
       </dd>
 
@@ -846,12 +854,12 @@ void del(proxy&lt;T&gt; const&amp; x);
     </dl>
 <pre>
 <a name="comparisons-spec"></a>
-template&lt;class L,class R&gt; bool operator&gt;(L const&amp;l,R const&amp;r);
-template&lt;class L,class R&gt; bool operator&gt;=(L const&amp;l,R const&amp;r);
-template&lt;class L,class R&gt; bool operator&lt;(L const&amp;l,R const&amp;r);
-template&lt;class L,class R&gt; bool operator&lt;=(L const&amp;l,R const&amp;r);
-template&lt;class L,class R&gt; bool operator==(L const&amp;l,R const&amp;r);
-template&lt;class L,class R&gt; bool operator!=(L const&amp;l,R const&amp;r);
+template&lt;class L,class R&gt; object operator&gt;(L const&amp;l,R const&amp;r);
+template&lt;class L,class R&gt; object operator&gt;=(L const&amp;l,R const&amp;r);
+template&lt;class L,class R&gt; object operator&lt;(L const&amp;l,R const&amp;r);
+template&lt;class L,class R&gt; object operator&lt;=(L const&amp;l,R const&amp;r);
+template&lt;class L,class R&gt; object operator==(L const&amp;l,R const&amp;r);
+template&lt;class L,class R&gt; object operator!=(L const&amp;l,R const&amp;r);
 </pre>
 
     <dl class="function-semantics">
@@ -900,7 +908,16 @@ template&lt;class R&gt; object&amp; operator|=(object&amp;l,R const&amp;r);
       <dt><b>Returns:</b> <code>l</code>.</dt>
     </dl>
 
-    <h2><a name="examples"></a>Example</h2>
+<pre>
+inline long len(object const&amp; obj);
+</pre>
+
+    <dl class="function-semantics">
+      <dt><b>Effects:</b> PyObject_Length(obj.ptr()) </dt>
+      <dt><b>Returns:</b> len() of object.</dt>
+    </dl>
+
+<h2><a name="examples"></a>Example</h2>
     Python code: 
 <pre>
 def sum_items(seq):
@@ -914,20 +931,18 @@ def sum_items(seq):
 object sum_items(object seq)
 {
    object result = object(0);
-   for (int i = 0; i &lt; seq.attr("__len__")(); ++i)
+   for (int i = 0; i &lt; len(seq); ++i)
       result += seq[i];
    return result;
 }
 </pre>
-
     <p>Revised 
     <!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->
-  13 November, 2002
+  13 January, 2006
   <!--webbot bot="Timestamp" endspan i-checksum="39359" -->
     </p>
 
     <p><i>&copy; Copyright <a href=
-    "../../../../people/dave_abrahams.htm">Dave Abrahams</a> 2002.</i></p>
+    "../../../../people/dave_abrahams.htm">Dave Abrahams</a> 2006.</i></p>
   </body>
 </html>
-

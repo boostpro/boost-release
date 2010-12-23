@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2006.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,7 +7,7 @@
 //
 //  File        : $RCSfile: basic_cstring_test.cpp,v $
 //
-//  Version     : $Revision: 1.13.2.1 $
+//  Version     : $Revision: 1.15 $
 //
 //  Description : basic_cstring unit test
 // *****************************************************************************
@@ -469,8 +469,8 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] )
 // History :
 //
 // $Log: basic_cstring_test.cpp,v $
-// Revision 1.13.2.1  2005/09/07 08:16:45  schoepflin
-// Merged fix for dependent name lookup problem to RC branch.
+// Revision 1.15  2006/03/19 11:49:04  rogeeff
+// *** empty log message ***
 //
 // Revision 1.14  2005/08/12 14:15:13  schoepflin
 // Fixed dependent name lookup issue.

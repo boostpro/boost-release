@@ -24,11 +24,15 @@ void test_list()
     reversible_container_test< ptr_list< nullable<Base> >, Base, Derived_class >();
     reversible_container_test< ptr_list< nullable<Value> >, Value, Value >();
 
+    test_transfer< ptr_list<Derived_class>, ptr_list<Base>, Derived_class>();
+      
     random_access_algorithms_test< ptr_list<int> >();
     ptr_list<int> list;
     list.push_back( new int(0) );
     list.push_back( new int(2) );
     list.push_back( new int(1) );
+    list.push_front( new int(3) );
+    list.push_front( std::auto_ptr<int>( new int(42) ) );
     list.reverse();
 
 }

@@ -1,13 +1,8 @@
 // Copyright (C) 2001-2003
 // William E. Kempf
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee,
-// provided that the above copyright notice appear in all copies and
-// that both that copyright notice and this permission notice appear
-// in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.
-// It is provided "as is" without express or implied warranty.
+//  Distributed under the Boost Software License, Version 1.0. (See accompanying 
+//  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/thread/detail/config.hpp>
 
@@ -149,7 +144,11 @@ void do_test_tss()
             << "\n";
         std::cout.flush();
 
-        BOOST_CHECK_EQUAL(tss_instances, 0);
+        // The following is not really an error. TSS cleanup support still is available for boost threads.
+        // Also this usually will be triggered only when bound to the static version of thread lib.
+        // 2006-10-02 Roland Schwarz
+        //BOOST_CHECK_EQUAL(tss_instances, 0);
+        BOOST_CHECK_MESSAGE(tss_instances == 0, "Support of automatic tss cleanup for native threading API not available");
         BOOST_CHECK_EQUAL(tss_total, 5);
     #endif
 }

@@ -5,18 +5,19 @@ Running Boost Regression Tests
 Requirements
 ------------
 
-* Python 2.3
+* Python 2.3 or higher
+* Some spare disk space (~5 Gb per each tested compiler)
 
 That's it! You don't even need a CVS client installed.
 
 Installation
 ------------
 
-* Download regression driver ``regression.py`` from here__ (http://tinyurl.com/4fp4g)
+* Download regression driver ``regression.py`` from here__ (http://tinyurl.com/uufav)
   and put it in the directory where you want all the regression 
   test files to be placed.
 
-__ http://cvs.sourceforge.net/viewcvs.py/*checkout*/boost/boost/tools/regression/xsl_reports/runner/regression.py
+__ http://boost.cvs.sourceforge.net/*checkout*/boost/boost/tools/regression/xsl_reports/runner/regression.py
 
 
 * **Optional**: If you already have ``bjam`` and/or ``process_jam_log`` executables
@@ -185,6 +186,24 @@ operations:
 
 
 __ http://www.boost.org/regression-logs/developer/
+
+
+Patching Boost sources
+......................
+
+You might encounter an occasional need to make local modifications to
+the Boost codebase before running the tests, without disturbing the
+automatic nature of the regression process. To implement this under
+``regression.py``:
+
+1. Codify applying the desired modifications to the sources
+   located in the ``./boost`` subdirectory in a single executable
+   script named ``patch_boost`` (``patch_boost.bat`` on Windows).
+
+2. Place the script in the ``regression.py`` directory.
+
+The driver will check for the existence of the ``patch_boost`` script,
+and, if found, execute it after obtaining the Boost sources.
 
 
 Feedback

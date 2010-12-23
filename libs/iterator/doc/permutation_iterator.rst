@@ -1,3 +1,7 @@
+.. Distributed under the Boost
+.. Software License, Version 1.0. (See accompanying
+.. file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
 ++++++++++++++++++++++
  Permutation Iterator
 ++++++++++++++++++++++
@@ -6,7 +10,7 @@
 :Contact: dave@boost-consulting.com, jsiek@osl.iu.edu
 :organization: `Boost Consulting`_, Indiana University `Open Systems
                Lab`_
-:date: $Date: 2004/11/01 21:23:47 $
+:date: $Date: 2006/09/11 22:27:27 $
 :copyright: Copyright Toon Knapen, David Abrahams, Roland Richter, and Jeremy Siek 2003. 
 
 .. _`Boost Consulting`: http://www.boost-consulting.com

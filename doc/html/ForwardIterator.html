@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Concept ForwardIterator</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="The Boost C++ Libraries">
-<link rel="up" href="concepts/reference.html" title="Concept reference">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="id620092-bb.html#concepts.reference" title="Concept reference">
 <link rel="prev" href="OutputIterator.html" title="Concept OutputIterator">
 <link rel="next" href="BidirectionalIterator.html" title="Concept BidirectionalIterator">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../boost.png"></td>
 <td align="center"><a href="../../index.htm">Home</a></td>
 <td align="center"><a href="../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../people/people.htm">People</a></td>
@@ -20,7 +20,7 @@
 </table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="OutputIterator.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="concepts/reference.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="BidirectionalIterator.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="OutputIterator.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="id620092-bb.html#concepts.reference"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="BidirectionalIterator.html"><img src="images/next.png" alt="Next"></a>
 </div>
 <div class="refentry" lang="en">
 <a name="ForwardIterator"></a><div class="titlepage"></div>
@@ -29,7 +29,7 @@
 <p>ForwardIterator</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577006"></a><h2>Description</h2>
+<a name="id943468"></a><h2>Description</h2>
 <p>A forward iterator is an iterator that can read through a sequence of
   values.  It is multi-pass (old values of the iterator can be
   re-used), and can be either mutable (data pointed to by it can be
@@ -40,14 +40,14 @@
   incrementable).</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577021"></a><h2>Refinement of</h2>
+<a name="id943487"></a><h2>Refinement of</h2>
 <div class="itemizedlist"><ul type="disc">
 <li><p><a href="InputIterator.html" title="Concept InputIterator">InputIterator</a></p></li>
 <li><p><a href="OutputIterator.html" title="Concept OutputIterator">OutputIterator</a></p></li>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577042"></a><h2>Associated types</h2>
+<a name="id943507"></a><h2>Associated types</h2>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><span class="bold"><strong>value_type</strong></span></p>
@@ -62,7 +62,7 @@
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577083"></a><h2>Notation</h2>
+<a name="id943547"></a><h2>Notation</h2>
 <div class="variablelist"><dl>
 <dt><span class="term">Iter</span></dt>
 <dd>A type playing the role of iterator-type in the <a href="ForwardIterator.html" title="Concept ForwardIterator">ForwardIterator</a> concept.</dd>
@@ -75,7 +75,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577121"></a><h2>Type expressions</h2>
+<a name="id943585"></a><h2>Type expressions</h2>
 <div class="variablelist"><dl>
 <dt><span class="term">Category tag</span></dt>
 <dd><p><span class="type">category</span> must be 
@@ -84,7 +84,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577140"></a><h2>Valid expressions</h2>
+<a name="id943604"></a><h2>Valid expressions</h2>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -144,29 +144,33 @@
 </table></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577276"></a><h2>Complexity</h2>
+<a name="id961214"></a><h2>Complexity</h2>
 <p>
   All iterator operations must take amortized constant time.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577283"></a><h2>Invariants</h2>
+<a name="id961221"></a><h2>Invariants</h2>
 <div class="variablelist"><dl>
 <dt><span class="term">Predecrement must return object</span></dt>
-<dd><p><code class="computeroutput">&amp;i = &amp;(++i)</code></p></dd>
+<dd><p>
+  <code class="computeroutput">&amp;i = &amp;(++i)</code>
+  </p></dd>
 <dt><span class="term">Unique path through sequence</span></dt>
-<dd><p><code class="computeroutput">i == j</code> implies <code class="computeroutput">++i == ++j</code></p></dd>
+<dd><p>
+  <code class="computeroutput">i == j</code> implies <code class="computeroutput">++i == ++j</code>
+  </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577315"></a><h2>Models</h2>
+<a name="id961257"></a><h2>Models</h2>
 <div class="itemizedlist"><ul type="disc">
 <li><span class="simplelist"><span class="type">T *</span></span></li>
 <li><span class="simplelist"><span class="type">std::hash_set&lt;T&gt;::iterator</span></span></li>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577335"></a><h2>See also</h2>
+<a name="id961277"></a><h2>See also</h2>
 <div class="itemizedlist"><ul type="disc"><li><p><a href="BidirectionalIterator.html" title="Concept BidirectionalIterator">BidirectionalIterator</a></p></li></ul></div>
 </div>
 </div>
@@ -176,7 +180,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="OutputIterator.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="concepts/reference.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="BidirectionalIterator.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="OutputIterator.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="id620092-bb.html#concepts.reference"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="BidirectionalIterator.html"><img src="images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

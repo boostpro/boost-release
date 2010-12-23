@@ -19,6 +19,11 @@
 #pragma option -w-8008 -w-8066
 #endif
 
+#ifdef _MSC_VER
+// We have to turn off warnings that occur within the test suite:
+#pragma warning(disable:4127)
+#endif
+
 //
 // basic configuration:
 //
@@ -53,7 +58,7 @@ boost::unit_test_framework::test_suite* get_master_unit(const char* name = 0);
 class unit_initialiser
 {
 public:
-   unit_initialiser(void (*f)(), const char* name)
+   unit_initialiser(void (*f)(), const char* /*name*/)
    {
       get_master_unit("Type Traits")->add( BOOST_TEST_CASE(f) );
    }
@@ -324,6 +329,7 @@ struct non_empty : private boost::noncopyable
 struct test_abc1
 {
    test_abc1();
+   virtual ~test_abc1();
    test_abc1(const test_abc1&);
    test_abc1& operator=(const test_abc1&);
    virtual void foo() = 0;
@@ -332,6 +338,7 @@ struct test_abc1
 
 struct test_abc2
 {
+   virtual ~test_abc2();
    virtual void foo() = 0;
    virtual void foo2() = 0;
 };
@@ -345,6 +352,7 @@ struct incomplete_type;
 
 struct polymorphic_base
 {
+   virtual ~polymorphic_base();
    virtual void method();
 };
 
@@ -367,6 +375,37 @@ typedef void foo1_t(int);
 typedef void foo2_t(int&, double);
 typedef void foo3_t(int&, bool, int, int);
 typedef void foo4_t(int, bool, int*, int[], int, int, int, int, int);
+
+struct trivial_except_construct
+{
+   trivial_except_construct();
+   int i;
+};
+
+struct trivial_except_destroy
+{
+   ~trivial_except_destroy();
+   int i;
+};
+
+struct trivial_except_copy
+{
+   trivial_except_copy(trivial_except_copy const&);
+   int i;
+};
+
+struct trivial_except_assign
+{
+   trivial_except_assign& operator=(trivial_except_assign const&);
+   int i;
+};
+
+template <class T>
+struct wrap
+{
+   T t;
+   int j;
+};
 
 
 #endif

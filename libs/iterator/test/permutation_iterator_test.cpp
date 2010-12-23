@@ -9,12 +9,31 @@
 
 #include <boost/iterator/permutation_iterator.hpp>
 #include <boost/static_assert.hpp>
+#include <boost/iterator/iterator_concepts.hpp>
+#include <boost/concept_check.hpp>
 
 #include <vector>
 #include <list>
 
 #include <algorithm>
 
+
+// This test checks for convertibility/interoperability among similar
+// permutation iterators.  We're not using container iterators
+// underneath, as in permutation_test, because of bugs in GCC-3.3's
+// __normal_iterator that make is_convertible choke when testing
+// convertibility.
+void iterop_test()
+{
+    typedef boost::permutation_iterator< double*, int const* > permutation_type;
+    typedef boost::permutation_iterator< double const*, int const* > permutation_const_type;
+  
+  boost::function_requires<
+      boost_concepts::InteroperableIteratorConcept<
+           permutation_type
+         , permutation_const_type
+               > >();
+}
 
 void permutation_test()
 {
@@ -39,7 +58,7 @@ void permutation_test()
   permutation_type begin = boost::make_permutation_iterator( elements.begin(), indices.begin() );
   permutation_type it = begin;
   permutation_type end = boost::make_permutation_iterator( elements.begin(), indices.end() );
-
+  
   BOOST_CHECK( it == begin );
   BOOST_CHECK( it != end );
 

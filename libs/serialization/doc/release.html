@@ -7,7 +7,7 @@ License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt)
 -->
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="../../../boost.css">
 <link rel="stylesheet" type="text/css" href="style.css">
 <title>Serialization - Release Notes</title>
@@ -41,11 +41,17 @@ We have found that all tests pass using spirit 1.6x. Spirit 1.8 and higher does 
 older compilers - specificallly MSVC 6, Borland and GCC < 3.0.
 If you are using one of these compilers, you may download a version
 of spirit 1.6 <a href="http://spirit.sourceforge.net/index.php?doc=download/index.html">here</a>.
+Choose the latest 1.6.x Spirit only version available.
 To use this downloaded version rather than the one included with boost,
-set an environmental variable SPIRIT_ROOT to be equal to the root 
-directory where the downloaded copy of spirit has been placed. E. G.
+you have two options: either replace the <code style="white-space: normal">boost/spirit</code> and
+<code style="white-space: normal">libs/spirit</code> directories, as well as the
+<code style="white-space: normal">boost/spirit.hpp</code> header, with those in the downloaded version,
+or extract Spirit 1.6 to a different directory and add the corresponding include directive to your
+<code style="white-space: normal">tools/build/v2/user-config.jam</code> file for all the
+compilers that need it, as in the following example:
 <pre><code>
-set SPIRIT_ROOT=c:/spirit16
+using borland : 5.6.4 : "C:/Program Files/Borland/CBuilder6/Bin/bcc32" : 
+        &lt;cxxflags&gt;-IC:/spirit1.6 ;
 </code></pre>
 If you're not using bjam and the Jamfile to build the library, be sure that
 the directory which contains the version of spirit you plan to use is placed
@@ -78,6 +84,11 @@ at the front of the list of include paths.
     <li>More compilers tested and supported.
     <li>Miscelleanous bug fixes.
 </ul>
+<h2><a name="recent_improvements"></a>Differences from Boost 1.33</h2>
+<ul>
+    <li>Native Binary archives use the <code style="white-space: normal">std::streambuf</code> interface.
+    This should result in noticible faster execution in some cases.
+</ul>
 
 <h2><a name="todo"></a>Pending issues</h2>
 <ul>
@@ -94,6 +105,7 @@ at the front of the list of include paths.
     is fixed in this version.  Unfortunately, the fix breaks serialization of
     <code style="white-space: normal">std::map</code> for those compilers which do not support
     partial template specialization.
+    <li>Floating point values which are number cannot be serialized to text base archives.
 </ul>
 <p>
 Aside from the above, there are a number of issus related to specific platforms.  

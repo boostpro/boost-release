@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2006.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,20 +7,22 @@
 //
 //  File        : $RCSfile: test_tools_test.cpp,v $
 //
-//  Version     : $Revision: 1.43 $
+//  Version     : $Revision: 1.47 $
 //
 //  Description : tests all Test Tools but output_test_stream
 // ***************************************************************************
 
 // Boost.Test
-#define BOOST_AUTO_TEST_MAIN
-#include <boost/test/auto_unit_test.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_log.hpp>
 #include <boost/test/output_test_stream.hpp>
 #include <boost/test/execution_monitor.hpp>
 #include <boost/test/detail/unit_test_parameters.hpp>
 #include <boost/test/output/compiler_log_formatter.hpp>
 #include <boost/test/framework.hpp>
+
+#include <boost/test/detail/suppress_warnings.hpp>
 
 // Boost
 #include <boost/bind.hpp>
@@ -77,9 +79,9 @@ output_test_stream& ots()
 
     if( !inst ) {
         inst.reset( 
-            auto_unit_test_suite()->argc <= 1
+            framework::master_test_suite().argc <= 1
                 ? new output_test_stream( runtime_config::save_pattern() ? save_file_name : match_file_name, !runtime_config::save_pattern() )
-                : new output_test_stream( auto_unit_test_suite()->argv[1], !runtime_config::save_pattern() ) );
+                : new output_test_stream( framework::master_test_suite().argv[1], !runtime_config::save_pattern() ) );
     }
 
     return *inst;
@@ -136,7 +138,15 @@ TEST_CASE( test_BOOST_WARN )
 
 TEST_CASE( test_BOOST_CHECK )
 {
-    BOOST_CHECK( true );
+    // check correct behavior in if clause
+    if( true )
+        BOOST_CHECK( true );
+
+    // check correct behavior in else clause
+    if( false )
+    {}
+    else
+        BOOST_CHECK( true );
 
     bool_convertible bc;
     BOOST_CHECK( bc );
@@ -249,17 +259,17 @@ TEST_CASE( test_BOOST_CHECK_THROW )
     CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE_THROW( i++, my_exception ) );
 
     unit_test_log.set_threshold_level( log_successful_tests );
-    BOOST_CHECK_THROW( throw my_exception(), my_exception );
+    BOOST_CHECK_THROW( throw my_exception(), my_exception ); // unreachable code warning is expected
 }
 
 //____________________________________________________________________________//
 
 TEST_CASE( test_BOOST_CHECK_EXCEPTION )
 {
-    BOOST_CHECK_EXCEPTION( throw my_exception( 1 ), my_exception, is_critical );
+    BOOST_CHECK_EXCEPTION( throw my_exception( 1 ), my_exception, is_critical ); // unreachable code warning is expected
 
     unit_test_log.set_threshold_level( log_successful_tests );
-    BOOST_CHECK_EXCEPTION( throw my_exception( -1 ), my_exception, is_critical );
+    BOOST_CHECK_EXCEPTION( throw my_exception( -1 ), my_exception, is_critical ); // unreachable code warning is expected
 }
 
 //____________________________________________________________________________//
@@ -269,7 +279,7 @@ TEST_CASE( test_BOOST_CHECK_NO_THROW )
     int i=0;
     BOOST_CHECK_NO_THROW( i++ );
 
-    BOOST_CHECK_NO_THROW( throw my_exception() );
+    BOOST_CHECK_NO_THROW( throw my_exception() ); // unreachable code warning is expected
 }
 
 //____________________________________________________________________________//
@@ -455,35 +465,44 @@ struct A {
     friend std::ostream& operator<<( std::ostream& str, A const& a ) { str << "struct A"; return str;}
 };
 
-TEST_CASE( test_BOOST_MESSAGE )
+TEST_CASE( test_BOOST_TEST_MESSAGE )
 {
     unit_test_log.set_threshold_level( log_messages );
 
-    BOOST_MESSAGE( "still testing" );
-    BOOST_MESSAGE( "1+1=" << 2 );
+    BOOST_TEST_MESSAGE( "still testing" );
+    BOOST_TEST_MESSAGE( "1+1=" << 2 );
 
     int i = 2;
-    BOOST_MESSAGE( i << "+" << i << "=" << (i+i) );
+    BOOST_TEST_MESSAGE( i << "+" << i << "=" << (i+i) );
 
     A a = A();
-    BOOST_MESSAGE( a );
+    BOOST_TEST_MESSAGE( a );
 
 #if !defined(BOOST_NO_STD_LOCALE) && ( !defined(BOOST_MSVC) || BOOST_WORKAROUND(BOOST_MSVC, >= 1310))
-    BOOST_MESSAGE( std::hex << std::showbase << 20 );
+    BOOST_TEST_MESSAGE( std::hex << std::showbase << 20 );
 #else
-    BOOST_MESSAGE( "0x14" );
+    BOOST_TEST_MESSAGE( "0x14" );
 #endif
 
-    BOOST_MESSAGE( std::setw( 4 ) << 20 );
+    BOOST_TEST_MESSAGE( std::setw( 4 ) << 20 );
 }
 
 //____________________________________________________________________________//
 
-TEST_CASE( test_BOOST_CHECKPOINT )
+TEST_CASE( test_BOOST_TEST_CHECKPOINT )
 {
-    BOOST_CHECKPOINT( "Going to do a silly things" );
+    BOOST_TEST_CHECKPOINT( "Going to do a silly things" );
 
     throw "some error";
+}
+
+//____________________________________________________________________________//
+
+bool foo() { throw 1; return true; }
+
+TEST_CASE( test_BOOST_TEST_PASSPOINT )
+{
+    BOOST_CHECK( foo() );
 }
 
 //____________________________________________________________________________//
@@ -506,10 +525,24 @@ TEST_CASE( test_BOOST_IS_DEFINED )
 
 //____________________________________________________________________________//
 
+// !! CHECK_SMALL
+
 // ***************************************************************************
 //  Revision History :
 //
 //  $Log: test_tools_test.cpp,v $
+//  Revision 1.47  2006/03/19 11:49:04  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.46  2006/01/28 07:05:27  rogeeff
+//  mark unreachable intentionally statements
+//
+//  Revision 1.45  2006/01/21 07:09:25  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.44  2005/12/14 06:01:02  rogeeff
+//  *** empty log message ***
+//
 //  Revision 1.43  2005/05/11 05:07:57  rogeeff
 //  licence update
 //

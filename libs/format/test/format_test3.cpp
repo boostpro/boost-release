@@ -92,6 +92,22 @@ int test_main(int, char* [])
       cerr << s ;
       BOOST_ERROR("nesting did not work");
     }
-   
+
+    // testcase for bug reported at 
+    // http://lists.boost.org/boost-users/2006/05/19723.php
+    format f("%40t%1%");
+    int x = 0;
+    f.bind_arg(1, x);
+    f.clear();
+
+    // testcase for bug reported at
+    // http://lists.boost.org/boost-users/2005/11/15454.php
+    std::string l_param;
+    std::string l_str = (boost::format("here is an empty string: %1%") % l_param).str(); 
+
+    // testcase for SourceForge bug #1506914
+    std::string arg; // empty string  
+    s = str(format("%=8s") % arg);
+
     return 0;
 }

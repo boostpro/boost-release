@@ -1,8 +1,7 @@
 
-//  (C) Copyright Daniel James 2005.
-//  Use, modification and distribution are subject to the
-//  Boost Software License, Version 1.0. (See accompanying file
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  Copyright Daniel James 2005-2006. Use, modification, and distribution are
+//  subject to the Boost Software License, Version 1.0. (See accompanying
+//  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/config.hpp>
 #include <cstddef>
@@ -45,12 +44,11 @@ namespace boost
 #  ifdef TEST_STD_INCLUDES
 #    include <functional>
 #  else
-#    include <boost/functional/hash/hash.hpp>
+#    include <boost/functional/hash.hpp>
 #  endif
 #endif
 
-#define BOOST_AUTO_TEST_MAIN
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/detail/lightweight_test.hpp>
 
 #ifdef TEST_EXTENSIONS
 
@@ -58,16 +56,16 @@ namespace boost
 #include <string>
 #include <cctype>
 
-BOOST_AUTO_UNIT_TEST(custom_tests)
+void custom_tests()
 {
     HASH_NAMESPACE::hash<test::custom> custom_hasher;
-    BOOST_CHECK(custom_hasher(10) == 100u);
+    BOOST_TEST(custom_hasher(10) == 100u);
     test::custom x(55);
-    BOOST_CHECK(custom_hasher(x) == 550u);
+    BOOST_TEST(custom_hasher(x) == 550u);
 
     {
         using namespace HASH_NAMESPACE;
-        BOOST_CHECK(custom_hasher(x) == hash_value(x));
+        BOOST_TEST(custom_hasher(x) == hash_value(x));
     }
 
     std::vector<test::custom> custom_vector;
@@ -85,9 +83,17 @@ BOOST_AUTO_UNIT_TEST(custom_tests)
     HASH_NAMESPACE::hash_combine(seed2, 250u);
     HASH_NAMESPACE::hash_combine(seed2, 350u);
 
-    BOOST_CHECK(seed ==
+    BOOST_TEST(seed ==
             HASH_NAMESPACE::hash_range(custom_vector.begin(), custom_vector.end()));
-    BOOST_CHECK(seed == seed2);
+    BOOST_TEST(seed == seed2);
 }
 
 #endif // TEST_EXTENSIONS
+
+int main()
+{
+#ifdef TEST_EXTENSIONS
+    custom_tests();
+#endif
+    return boost::report_errors();
+}

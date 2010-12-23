@@ -6,6 +6,7 @@
 
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/options_description.hpp>
+#include <boost/program_options/variables_map.hpp>
 using namespace boost::program_options;
 // We'll use po::value everywhere to workaround vc6 bug.
 namespace po = boost::program_options;
@@ -132,6 +133,16 @@ void test_command_line()
     check_value(a4[0], "foo", "4");
     check_value(a4[1], "bar", "11");
 
+    // Check that we don't crash on empty values of type 'string'
+    char* cmdline4[] = {"", "--open", ""};
+    options_description desc2;
+    desc2.add_options()
+        ("open", po::value<string>())
+        ;
+    variables_map vm;
+    po::store(po::parse_command_line(3, cmdline4, desc2), vm);
+
+
 
 }
 
@@ -219,9 +230,14 @@ void test_unregistered()
     BOOST_CHECK(a2[1] == "--bar");
     BOOST_CHECK(a2[2] == "1");
 
-
-
+    // Test that storing unregisted options has no effect
+    variables_map vm;
     
+    store(command_line_parser(cmdline1).options(desc).
+          allow_unregistered().run(),
+          vm);
+
+    BOOST_CHECK_EQUAL(vm.size(), 0u);   
 }
 
 int test_main(int, char* [])

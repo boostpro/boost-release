@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2006.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,14 +7,14 @@
 //
 //  File        : $RCSfile: fixed_mapping_test.cpp,v $
 //
-//  Version     : $Revision: 1.7 $
+//  Version     : $Revision: 1.9 $
 //
 //  Description : basic_cstring unit test
 // *****************************************************************************
 
 // Boost.Test
-#define BOOST_AUTO_TEST_MAIN
-#include <boost/test/auto_unit_test.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 
 #include <boost/test/utils/basic_cstring/basic_cstring.hpp>
 #include <boost/test/utils/basic_cstring/compare.hpp>
@@ -82,6 +82,12 @@ BOOST_AUTO_TEST_CASE( test_custom_compare )
 // History :
 //
 // $Log: fixed_mapping_test.cpp,v $
+// Revision 1.9  2006/03/19 11:49:04  rogeeff
+// *** empty log message ***
+//
+// Revision 1.8  2005/12/14 06:01:02  rogeeff
+// *** empty log message ***
+//
 // Revision 1.7  2005/05/11 05:07:56  rogeeff
 // licence update
 //

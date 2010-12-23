@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -59,7 +59,7 @@ main(int argc, char *argv[])
             ("copyright,c", "print out the copyright statement")
             ("config-file", po::value<std::vector<std::string> >()->composing(), 
                 "specify a config file (alternatively: @arg)")
-            ("debug,d", po::value<int>(), "set the debug level (0...2)")
+            ("debug,d", po::value<int>(), "set the debug level (0...9)")
         ;
 
     // Hidden options, will be used in in config file analysis to allow to
@@ -275,7 +275,7 @@ main(int argc, char *argv[])
             std::cout << "." << std::endl;
         }
     }
-    catch (std::exception const &e) {
+    catch (std::exception const& e) {
         std::cerr << "testwave: exception caught: " << e.what() << std::endl;
         return (std::numeric_limits<int>::max)() - 1;
     }

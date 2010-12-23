@@ -10,13 +10,16 @@ Class ``ptr_deque``
 A ``ptr_deque<T>`` is a pointer container that uses an underlying ``std:deque<void*>``
 to store the pointers. 
 
-**See also:**
+**Hierarchy:**
 
-- reversible_ptr_container_
-- ptr_sequence_adapter_
+- `reversible_ptr_container <reversible_ptr_container.html>`_
 
-.. _reversible_ptr_container: reversible_ptr_container.html 
-.. _ptr_map: ptr_map.html
+  - `ptr_sequence_adapter <ptr_sequence_adapter.html>`_
+
+    - `ptr_vector <ptr_vector.html>`_
+    - `ptr_list <ptr_list.html>`_ 
+    - ``ptr_deque``
+    - `ptr_array <ptr_array.html>`_
 
 **Navigate:**
 
@@ -53,10 +56,14 @@ to store the pointers.
     
             public: // modifiers_
                 void      push_front( T* x );
+		template< class U >
+		void      push_front( std::auto_ptr<U> x );
                 auto_type pop_front();
 
             public: // `pointer container requirements`_
-               auto_type replace( size_type idx, T* x );    
+               auto_type replace( size_type idx, T* x );
+	       template< class U >
+	       auto_type replace( size_type idx, std::auto_ptr<U> x );    
                bool      is_null( size_type idx ) const;   
     
             };
@@ -86,6 +93,9 @@ Semantics: modifiers
 
     - Exception safety: Strong guarantee
 
+- ``template< class U > void push_front( std::auto_ptr<U> x );``
+
+    - Effects: ``push_front( x.release() );``
 
 .. 
         - ``void push_front( const T& x );``
@@ -145,6 +155,10 @@ Semantics: pointer container requirements
     - Throws: ``bad_index`` if ``idx >= size()`` and ``bad_pointer`` if ``x == 0``.
 
     - Exception safety: Strong guarantee
+    
+- ``template< class U > auto_type replace( size_type idx, std::auto_ptr<U> x );``
+
+    - Effects: ``return replace( idx, x.release() );``
 
 - ``bool is_null( size_type idx ) const;``
 
@@ -154,6 +168,12 @@ Semantics: pointer container requirements
 
     - Exception safety: Nothrow guarantee
 
+.. raw:: html 
 
-:copyright:     Thorsten Ottosen 2004-2005. 
+        <hr>
+
+:Copyright:     Thorsten Ottosen 2004-2006. Use, modification and distribution is subject to the Boost Software License, Version 1.0 (see LICENSE_1_0.txt__).
+
+__ http://www.boost.org/LICENSE_1_0.txt
+
 

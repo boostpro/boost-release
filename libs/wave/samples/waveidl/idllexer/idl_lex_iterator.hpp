@@ -6,7 +6,7 @@
     
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -148,6 +148,11 @@ public:
         // set the new position for future tokens as well
         base_type::get_functor().set_position(pos);
     }
+
+#if BOOST_WAVE_SUPPORT_PRAGMA_ONCE != 0
+    // this sample does no include guard detection
+    bool has_include_guards(std::string&) const { return false; }
+#endif    
 };
 
 ///////////////////////////////////////////////////////////////////////////////

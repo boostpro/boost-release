@@ -15,10 +15,6 @@
 #include <cstdio> // remove
 #include <boost/config.hpp>
 
-#if defined (__LIBCOMO__)
-#error - this test fails on comeau with disatrous results
-#endif
-
 #include <boost/detail/workaround.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std{ 
@@ -33,28 +29,19 @@ namespace std{
 #include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/serialization/set.hpp>
-#ifdef BOOST_HAS_HASH
-#include <boost/serialization/hash_set.hpp>
-#endif
+
 #include "A.hpp"
 
-#if defined(__LIBCOMO__) || (defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION))
+#ifdef BOOST_HAS_HASH
+#include <boost/serialization/hash_set.hpp>
 
-namespace std {
-    template<>
-    struct less<A> {
-        bool operator()(const A & lhs, const A & rhs) const {
-            return lhs < rhs;
-        }
-    };
-    template<>
-    struct equal_to<A> {
-        bool operator()(const A & lhs, const A & rhs) const {
-            return lhs == rhs;
-        }
-    };
-}   // namespace std
-
+/*
+#if defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION)
+#define STD _STLP_STD
+#else
+#define STD BOOST_STD_EXTENSION_NAMESPACE
+#endif
+*/
 namespace BOOST_STD_EXTENSION_NAMESPACE {
     template<>
     struct hash<A> {
@@ -62,7 +49,7 @@ namespace BOOST_STD_EXTENSION_NAMESPACE {
             return (std::size_t)a;
         }
     };
-}   // BOOST_STD_EXTENSION_NAMESPACE
+}
 
 #endif
 
@@ -104,20 +91,13 @@ int test_main( int /* argc */, char* /* argv */[] )
     }
     BOOST_CHECK(amultiset == amultiset1);
     
-    #if defined(BOOST_HAS_HASH)
-    #if defined(_STLPORT_VERSION) \
-    && _STLPORT_VERSION \
-    && (__SGI_STL_PORT <= 0x453)
-        BOOST_FAIL( 
-            "Hash sets known to fail in a catastrophic way with STLPort 4.5.3,\n"
-            "test skipped" 
-        );
-    #else
+    #ifdef BOOST_HAS_HASH
 
     // test array of objects
     BOOST_STD_EXTENSION_NAMESPACE::hash_set<A> ahash_set;
-    ahash_set.insert(A());
-    ahash_set.insert(A());
+    A a, a1;
+    ahash_set.insert(a);
+    ahash_set.insert(a1);
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os);
@@ -129,18 +109,8 @@ int test_main( int /* argc */, char* /* argv */[] )
         test_iarchive ia(is);
         ia >> boost::serialization::make_nvp("ahash_set", ahash_set1);
     }
-    // at least one library - MSL notes: it doesn't make much sense
-    // to implement the == operator for hash collections - but goes ahead
-    // does it anyway even though it doesn't seem to work.  So sort into
-    // vectors and then compare.
-    std::vector<A> tvec, tvec1;
-    std::copy(ahash_set.begin(), ahash_set.end(), std::back_inserter(tvec));
-    std::sort(tvec.begin(), tvec.end());
-    tvec1.reserve(ahash_set1.size());
-    std::copy(ahash_set1.begin(), ahash_set1.end(), std::back_inserter(tvec1));
-    std::sort(tvec1.begin(), tvec1.end());
-    BOOST_CHECK(tvec == tvec1);
-    
+    BOOST_CHECK(ahash_set == ahash_set1);
+
     BOOST_STD_EXTENSION_NAMESPACE::hash_multiset<A> ahash_multiset;
     ahash_multiset.insert(A());
     ahash_multiset.insert(A());
@@ -155,19 +125,8 @@ int test_main( int /* argc */, char* /* argv */[] )
         test_iarchive ia(is);
         ia >> boost::serialization::make_nvp("ahash_multiset", ahash_multiset1);
     }
-    // at least one library - MSL notes: it doesn't make much sense
-    // to implement the == operator for hash collections - but goes ahead
-    // does it anyway even though it doesn't seem to work.  So sort into
-    // vectors and then compare.
-    tvec.clear();
-    std::copy(ahash_multiset.begin(), ahash_multiset.end(), std::back_inserter(tvec));
-    std::sort(tvec.begin(), tvec.end());
-    tvec1.clear();
-    tvec1.reserve(ahash_multiset1.size());
-    std::copy(ahash_multiset1.begin(), ahash_multiset1.end(), std::back_inserter(tvec1));
-    std::sort(tvec1.begin(), tvec1.end());
-    BOOST_CHECK(tvec == tvec1);
-    #endif // STLPort 4.5.3
+    BOOST_CHECK(ahash_multiset == ahash_multiset1);
+
     #endif
 
     std::remove(testfile);

@@ -1,3 +1,4 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
 <HEAD>
 <TITLE>The Test Tools</TITLE>
@@ -18,7 +19,7 @@ H4
   BOOST_CHECK_NO_THROW( statement )<BR>
   BOOST_REQUIRE_NO_THROW( statement )</H3>
   <P class="first-line-indented">These tools are used to perform a &quot;no throw&quot;
-    check. Ttool execute the supplied statement and check that it does not
+    check. Tool execute the supplied statement and check that it does not
     throw any exceptions. Error would be reported by the framework even if test
     statement appear directly in test case body and throw any exception. But
     these tools allow to proceed further with test case in case of failure.</P>
@@ -30,14 +31,19 @@ H4
     while checking for exception. Use block statement if you want to execute
     more than one statement.</P>
   <H4>Example: test.cpp</H4>
-  <PRE class="code"><SPAN class="reserv-word">class</SPAN> my_exception{};
-<SPAN class="cpp-type">int</SPAN> test_main( <SPAN class="cpp-type">int</SPAN>, <SPAN class="cpp-type">char</SPAN>* [] ) {
+  <PRE class="code">#<SPAN class="reserv-word">define</SPAN> BOOST_TEST_MAIN<BR>#<SPAN class="reserv-word">include</SPAN> &lt;<SPAN class="literal">boost/test/unit_test.hpp</SPAN>&gt;<BR>
+<SPAN class="reserv-word">class</SPAN> my_exception{};
+
+BOOST_AUTO_TEST_CASE( test )
+{
     BOOST_CHECK_NO_THROW( <SPAN class="reserv-word">throw</SPAN> my_exception() );
-  
-    <SPAN class="reserv-word">return</SPAN> <SPAN class="literal">0</SPAN>;
 }</PRE>
   <H4>Output:</H4>
-  <P class="test-output">test.cpp(4) : error in test_main: exception was thrown by throw my_exception()</P>
+  <P class="test-output">Running 1 test case...<BR>
+  test.cpp(8): error in &quot;test&quot;: exception thrown by throw my_exception()<BR>
+  <BR>
+  ***
+  1 failure detected in test suite &quot;Master Test Suite&quot;</P>
   <DIV class="see_also"> 
     <H4>See Also</H4>
     <P class="see-also-content"><A href="BOOST_CHECK_THROW.html" target="descr">BOOST_CHECK_THROW</A></P>
@@ -45,6 +51,6 @@ H4
 </DIV>
 </BODY>
 </HTML>
-<!-- Copyright Gennadiy Rozental 2001-2005. 
+<!-- Copyright Gennadiy Rozental 2001-2006. 
 Distributed under the Boost Software License, Version 1.0. 
 (See accompanying file LICENSE_1_0.txt or copy at www.boost.org/LICENSE_1_0.txt) -->

@@ -1,9 +1,8 @@
 #!/usr/bin/python
 
-#  Copyright (C) Vladimir Prus 2004. Permission to copy, use, modify, sell and
-#  distribute this software is granted provided this copyright notice appears in
-#  all copies. This software is provided "as is" without express or implied
-#  warranty, and with no claim as to its suitability for any purpose.
+# Copyright 2004, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
 
 from BoostBuild import Tester, List
 
@@ -12,11 +11,11 @@ t = Tester()
 
 t.set_tree("boostbook")
 # For some reason, the messages are sent to stderr.
-t.run_build_system(stderr="""Writing A.html for refentry(A)
+t.run_build_system(stderr="""Writing boost/A.html for refentry(boost.A)
 Writing library/reference.html for section(library.reference)
 Writing index.html for chapter(library)
 Writing HTML.manifest
 """)
-t.expect_addition(["html/A.html", "html/index.html"])
+t.expect_addition(["html/boost/A.html", "html/index.html"])
 
 t.cleanup()

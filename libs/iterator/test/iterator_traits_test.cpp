@@ -27,7 +27,7 @@
 #include <iterator>
 #include <vector>
 #include <list>
-#include <cassert>
+#include <boost/detail/lightweight_test.hpp>
 #include <iostream>
 
 // A UDT for which we can specialize std::iterator_traits<element*> on
@@ -153,7 +153,7 @@ struct maybe_pointer_test
 input_iterator_test<std::istream_iterator<int>, int, std::ptrdiff_t, int*, int&, std::input_iterator_tag>
         istream_iterator_test;
 
-#if defined(__BORLANDC__) && !defined(__SGI_STL_PORT)
+#if BOOST_WORKAROUND(__BORLANDC__, <= 0x564) && !defined(__SGI_STL_PORT)
 typedef ::std::char_traits<char>::off_type distance;
 non_pointer_test<std::ostream_iterator<int>,int,
     distance,int*,int&,std::output_iterator_tag> ostream_iterator_test;
@@ -204,15 +204,15 @@ int main()
     for (int length = 3; length < 100; length += length / 3)
     {
         std::list<int> l(length);
-        assert(boost::detail::distance(l.begin(), l.end()) == length);
+        BOOST_TEST(boost::detail::distance(l.begin(), l.end()) == length);
         
         std::vector<int> v(length);
-        assert(boost::detail::distance(v.begin(), v.end()) == length);
+        BOOST_TEST(boost::detail::distance(v.begin(), v.end()) == length);
 
-        assert(boost::detail::distance(&ints[0], ints + length) == length);
-        assert(boost::detail::distance(my_iterator1(chars), my_iterator1(chars + length)) == length);
-        assert(boost::detail::distance(my_iterator2(chars), my_iterator2(chars + length)) == length);
-        assert(boost::detail::distance(my_iterator3(chars), my_iterator3(chars + length)) == length);
+        BOOST_TEST(boost::detail::distance(&ints[0], ints + length) == length);
+        BOOST_TEST(boost::detail::distance(my_iterator1(chars), my_iterator1(chars + length)) == length);
+        BOOST_TEST(boost::detail::distance(my_iterator2(chars), my_iterator2(chars + length)) == length);
+        BOOST_TEST(boost::detail::distance(my_iterator3(chars), my_iterator3(chars + length)) == length);
     }
-    return 0;
+    return boost::report_errors();
 }

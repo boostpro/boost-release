@@ -1,12 +1,13 @@
 <HTML>
 <!--
-  -- Copyright (c) The Trustees of Indiana University
+  -- Copyright (c) 2004, 2005 The Trustees of Indiana University
   --
   -- Use, modification and distribution is subject to the Boost Software
   -- License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
   -- http://www.boost.org/LICENSE_1_0.txt)
   --
   --  Authors: Douglas Gregor
+  --           Jeremiah Willcock
   --           Andrew Lumsdaine
   -->
 <Head>
@@ -45,7 +46,10 @@ public:
 
   erdos_renyi_iterator();
   erdos_renyi_iterator(RandomGenerator&amp; gen, vertices_size_type n,
-                       double probability = 0.0, bool allow_self_loops = false);
+                       double fraction = 0.0, bool allow_self_loops = false);
+  erdos_renyi_iterator(RandomGenerator&amp; gen, vertices_size_type n,
+                       edges_size_type m, bool allow_self_loops = false);
+
   // Iterator operations
   reference operator*() const;
   pointer operator-&gt;() const;
@@ -56,20 +60,27 @@ public:
 }; 
 </PRE>
 
-<p> This class template implements a generator for Erd&ouml;os-Renyi
+<p> This class template implements a generator for Erd&ouml;s-Renyi
 graphs, suitable for initializing an <a
 href="adjacency_list.html"><tt>adjacency_list</tt></a> or other graph
-structure with iterator-based initialization. An Erd&ouml;os-Renyi
+structure with iterator-based initialization. An Erd&ouml;s-Renyi
 graph <em>G = (n, p)</em> is a graph with <em>n</em> vertices
 that. The probability of having an edge <em>(u, v)</em> in <em>G</em>
 is <em>p</em> for any vertices <em>u</em> and <em>v</em>. Typically,
 there are no self-loops, but the generator can optionally introduce
-self-loops with probability <em>p</em>.</p>
+self-loops with probability <em>p</em>. This generator will not
+produce any parallel edges and will produce edges in sorted order (as
+required by, e.g., the <a
+href="compressed_sparse_row.html"><tt>compressed_sparse_row_graph</tt></a>).</p>
 
 <p>Erd&ouml;s-Renyi graphs typically exhibit very little
 structure. For this reason, they are rarely useful in modeling
 real-world problems. However, they are often used when determining
 the theoretical complexity of complex graph algorithms.</p>
+
+<p>If you want the possibility of generating parallel edges and don't
+care about sorted order, use the <a
+href="erdos_renyi_generator.html"><tt>erdos_renyi_iterator</tt></a>.</p>
 
 <h3>Where Defined</h3>
 
@@ -85,14 +96,26 @@ Constructs a past-the-end iterator.
 
 <pre>
 erdos_renyi_iterator(RandomGenerator&amp; gen, vertices_size_type n,
-                     double probability = 0.0, bool allow_self_loops =
-                     false);
+                     double fraction = 0.0, bool allow_self_loops = false);
 </pre>
 <blockquote>
 Constructs an Erd&ouml;s-Renyi generator iterator that creates a
-graph with <tt>n</tt> vertices and edges with probability
-<tt>probability</tt>. Probabilities are drawn from the random number
-generator <tt>gen</tt>. Self-loops are permitted only when
+graph with <tt>n</tt> vertices and a given <tt>fraction</tt> of the
+total number of edges that a simple graph may have.
+<tt>probability</tt>. Random vertices and edges are selected using the
+random number generator <tt>gen</tt>. Self-loops are permitted only when
+<tt>allow_self_loops</tt> is <tt>true</tt>.
+</blockquote>
+
+<pre>
+erdos_renyi_iterator(RandomGenerator&amp; gen, vertices_size_type n,
+                     edges_size_type m, bool allow_self_loops = false);
+</pre>
+<blockquote>
+Constructs an Erd&ouml;s-Renyi generator iterator that creates a
+graph with <tt>n</tt> vertices and <tt>m</tt> edges.
+<tt>probability</tt>. Random vertices and edges are selected using the
+random number generator <tt>gen</tt>. Self-loops are permitted only when
 <tt>allow_self_loops</tt> is <tt>true</tt>.
 </blockquote>
 

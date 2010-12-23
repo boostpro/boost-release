@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+# Copyright 2003 Dave Abrahams 
+# Copyright 2003, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
+
 # Test main target alternatives.
 
 from BoostBuild import Tester
@@ -85,8 +90,8 @@ t.write("Jamfile", """
 exe a : a_empty.cpp ;
 exe a : a.cpp ;
 """)
-t.run_build_system("--no-error-backtrace", status=1)
-t.fail_test(find(t.stdout(), "because no best-matching alternative could be found") == -1)
+t.run_build_system("--no-error-backtrace", status=None)
+t.fail_test(find(t.stdout(), "No best alternative") == -1)
 
 # Another ambiguity test: two matches properties in one alternative are
 # neither better nor worse than a single one in another alternative.
@@ -95,8 +100,8 @@ exe a : a_empty.cpp : <optimization>off <profiling>off ;
 exe a : a.cpp : <debug-symbols>on ;
 """)
 
-t.run_build_system("--no-error-backtrace", status=1)
-t.fail_test(find(t.stdout(), "because no best-matching alternative could be found") == -1)
+t.run_build_system("--no-error-backtrace", status=None)
+t.fail_test(find(t.stdout(), "No best alternative") == -1)
 
 
 

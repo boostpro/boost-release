@@ -11,7 +11,7 @@
 rule assign-test ( name )
 {
     return [
-        run $(name).cpp /boost/test//boost_unit_test_framework ]
+        run $(name).cpp /boost/test//boost_unit_test_framework/<link>static ]
         ;
 }
 
@@ -19,9 +19,12 @@ test-suite assign :
     [ assign-test basic ]
     [ assign-test std ]
     [ assign-test list_of ]
+    [ assign-test ptr_list_of ]
     [ assign-test static_list_of ]
     [ assign-test tuple_list_of ]
     [ assign-test list_inserter ]
+    [ assign-test ptr_list_inserter ]
+    [ assign-test ptr_map_inserter ]
     [ assign-test list_of_workaround ]
     [ assign-test email_example ]
     [ assign-test my_vector_example ]

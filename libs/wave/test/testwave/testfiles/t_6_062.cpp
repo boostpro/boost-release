@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -17,7 +17,7 @@
 
 // 7.4: string literal in #line directive shall be a character string
 //      literal.
-//E t_6_062.cpp(21): warning: ill formed #line directive: 123 L"wide"
+//E t_6_062.cpp(21): warning: filename argument of #line directive should be a narrow string literal: 123 L"wide"
 #line 123 L"wide"
 
 /*-

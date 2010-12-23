@@ -5,7 +5,7 @@
     
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost 
+    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost 
     Software License, Version 1.0. (See accompanying file 
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -22,6 +22,12 @@ namespace wave {
 namespace cpplexer {
 namespace slex {
 
+#if BOOST_WAVE_SEPARATE_LEXER_INSTANTIATION != 0
+#define BOOST_WAVE_NEW_LEXER_DECL BOOST_WAVE_DECL
+#else
+#define BOOST_WAVE_NEW_LEXER_DECL
+#endif 
+
 ///////////////////////////////////////////////////////////////////////////////
 //  
 //  new_lexer_gen: generates a new instance of the required C++ lexer
@@ -33,7 +39,7 @@ template <
     typename IteratorT, 
     typename PositionT = boost::wave::util::file_position_type
 >
-struct new_lexer_gen
+struct BOOST_WAVE_NEW_LEXER_DECL new_lexer_gen
 {
 //  The NewLexer function allows the opaque generation of a new lexer object.
 //  It is coupled to the token type to allow to decouple the lexer/token 
@@ -42,6 +48,8 @@ struct new_lexer_gen
     new_lexer(IteratorT const &first, IteratorT const &last, 
         PositionT const &pos, boost::wave::language_support language);
 };
+
+#undef BOOST_WAVE_NEW_LEXER_DECL
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -61,6 +69,10 @@ struct slex_input_interface
 
     virtual ~slex_input_interface() {}
     
+#if BOOST_WAVE_SUPPORT_PRAGMA_ONCE != 0
+    virtual bool has_include_guards(std::string& guard_name) const = 0;
+#endif    
+
 //  The new_lexer function allows the opaque generation of a new lexer object.
 //  It is coupled to the token type to allow to distinguish different 
 //  lexer/token configurations at compile time.

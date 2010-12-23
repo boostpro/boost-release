@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -5,41 +6,41 @@
 </head>
 <body>
 <h1><img src="../../boost.png" alt="boost.png (6897 bytes)"
-     align="center" WIDTH="277" HEIGHT="86">
+     align="middle" width="277" height="86">
 Rational Numbers</h1>
 
-<h2><a name="Contents">Contents</h2>
+<h2><a name="Contents">Contents</a></h2>
 
 <ol>
-    <li><a href="#Class rational synopsis">Class rational synopsis</a></li>
+    <li><a href="#Class%20rational%20synopsis">Class rational synopsis</a></li>
     <li><a href="#Rationale">Rationale</a></li>
     <li><a href="#Background">Background</a></li>
-    <li><a href="#Integer Type Requirements">Integer Type Requirements</a></li>
-    <li><a href="#Interface">Interface</a></li>
+    <li><a href="#Integer%20Type%20Requirements">Integer Type Requirements</a></li>
+    <li><a href="#Interface">Interface</a>
     <ul>
-	<li><a href="#Utility functions">Utility functions</a></li>
+	<li><a href="#Utility%20functions">Utility functions</a></li>
 	<li><a href="#Constructors">Constructors</a></li>
-	<li><a href="#Arithmetic operations">Arithmetic operations</a></li>
-	<li><a href="#Input and Output">Input and Output</a></li>
-	<li><a href="#In-place assignment">In-place assignment</a></li>
+	<li><a href="#Arithmetic%20operations">Arithmetic operations</a></li>
+	<li><a href="#Input%20and%20Output">Input and Output</a></li>
+	<li><a href="#In-place%20assignment">In-place assignment</a></li>
 	<li><a href="#Conversions">Conversions</a></li>
-	<li><a href="#Numerator and Denominator">Numerator and Denominator</a></li>
-    </ul>
+	<li><a href="#Numerator%20and%20Denominator">Numerator and Denominator</a></li>
+    </ul></li>
     <li><a href="#Performance">Performance</a></li>
     <li><a href="#Exceptions">Exceptions</a></li>
-    <li><a href="#Internal representation">Internal representation</a></li>
-    <li><a href="#Design notes">Design notes</a></li>
+    <li><a href="#Internal%20representation">Internal representation</a></li>
+    <li><a href="#Design%20notes">Design notes</a>
     <ul>
-	<li><a href="#Minimal Implementation">Minimal Implementation</a></li>
-	<li><a href="#Limited-range integer types">Limited-range integer types</a></li>
-	<li><a href="#Conversion from floating point">Conversion from floating point</a></li>
-	<li><a href="#Absolute Value">Absolute Value</a></li>
-    </ul>
+	<li><a href="#Minimal%20Implementation">Minimal Implementation</a></li>
+	<li><a href="#Limited-range%20integer%20types">Limited-range integer types</a></li>
+	<li><a href="#Conversion%20from%20floating%20point">Conversion from floating point</a></li>
+	<li><a href="#Absolute%20Value">Absolute Value</a></li>
+    </ul></li>
     <li><a href="#References">References</a></li>
-    <li><a href="#History and Acknowledgements">History and Acknowledgements</a></li>
+    <li><a href="#History%20and%20Acknowledgements">History and Acknowledgements</a></li>
 </ol>
 
-<h2><a name="Class rational synopsis">Class rational synopsis</h2>
+<h2><a name="Class rational synopsis">Class rational synopsis</a></h2>
 <pre>
 #include &lt;boost/rational.hpp&gt;
 
@@ -51,6 +52,9 @@ template &lt;typename I&gt; I lcm(I n, I m);
 class bad_rational;
 
 template&lt;typename I&gt; class rational {
+    typedef <em>implementation-defined</em> bool_type;
+
+public:
     typedef I int_type;
 
     // Constructors
@@ -92,6 +96,9 @@ template&lt;typename I&gt; class rational {
     // Operator not
     bool operator!() const;
 
+    // Boolean conversion
+    operator bool_type() const;
+
     // Comparison operators
     bool operator&lt; (const rational&amp; r) const;
     bool operator== (const rational&amp; r) const;
@@ -100,7 +107,7 @@ template&lt;typename I&gt; class rational {
     bool operator&lt; (I i) const;
     bool operator&gt; (I i) const;
     bool operator== (I i) const;
-}
+};
 
 // Unary operators
 template &lt;typename I&gt; rational&lt;I&gt; operator+ (const rational&lt;I&gt;&amp; r);
@@ -121,7 +128,7 @@ template &lt;typename I&gt; std::ostream&amp; operator&lt;&lt; (std::ostream&amp
 template &lt;typename T, typename I&gt; T rational_cast (const rational&lt;I&gt;&amp; r);
 </pre>
 
-<h2><a name="Rationale">Rationale</h2>
+<h2><a name="Rationale">Rationale</a></h2>
 
 Numbers come in many different forms. The most basic forms are natural numbers
 (non-negative "whole" numbers), integers and real numbers.  These types are
@@ -136,7 +143,7 @@ providing the <b>complex</b> type.
 <p>The <b>rational</b> class is actually a implemented as a template, in a
 similar manner to the standard <b>complex</b> class.
 
-<h2><a name="Background">Background</h2>
+<h2><a name="Background">Background</a></h2>
 
 The mathematical concept of a rational number is what is commonly thought of
 as a fraction - that is, a number which can be represented as the ratio of two
@@ -166,7 +173,7 @@ overflow behaviour somewhat. If an unlimited precision integer type is
 available, rational numbers based on it will never overflow and will provide
 exact calculations in all circumstances.
 
-<h2><a name="Integer Type Requirements">Integer Type Requirements</h2>
+<h2><a name="Integer Type Requirements">Integer Type Requirements</a></h2>
 
 <p> The rational type takes a single template type parameter I. This is the
 <em>underlying integer type</em> for the rational type. Any of the built-in
@@ -185,7 +192,6 @@ A user-defined integer type which is to be used as the underlying integer type
 for the rational type must be a model of the following concepts.
 </p>
 
-<p>
 <ul>
 <li>Assignable
 <li>Default Constructible
@@ -198,17 +204,18 @@ Furthermore, I must be an <em>integer-like</em> type, that is the following
 expressions must be valid for any two values n and m of type I, with the
 "expected" semantics.
 
-<tt>
 <ul>
-<li>n + m
-<li>n - m
-<li>n * m
-<li>n / m (must truncate, and n/m must be positive if n and m are positive)
-<li>n % m (n%m must be positive if n and m are positive)
+<li><code>n + m</code>
+<li><code>n - m</code>
+<li><code>n * m</code>
+<li><code>n / m</code> (must truncate; must be nonnegative if <var>n</var> and
+    <var>m</var> are positive)
+<li><code>n % m</code> (must be nonnegative if <var>n</var> and <var>m</var>
+    are positive)
 <li>Assignment versions of the above
-<li>+n, -n
+<li><code>+n</code>, <code>-n</code>
+<li><code>!n</code> (must be <code>true</code> iff <var>n</var> is zero)
 </ul>
-</tt>
 
 <p>
 There must be <em>zero</em> and <em>one</em> values available for I. It should
@@ -232,14 +239,14 @@ The input and output operators rely on the existence of corresponding input
 and output operators for type I.
 </ul>
 
-<h2><a name="Interface">Interface</h2>
+<h2><a name="Interface">Interface</a></h2>
 
-<h3><a name="Utility functions">Utility functions</h3>
+<h3><a name="Utility functions">Utility functions</a></h3>
 Two utility functions are provided, which work on any type I for which the
 following operations are defined: <tt>=, +=, *=, /=, %, &lt;</tt>, and a zero
 value accessible as I(0)
 <br><br>
-<table>
+<table summary="Common-factor utility functions">
 <tr>
 <td width=5%></td>
 <td><tt>gcd(n, m)</tt></td>
@@ -257,10 +264,14 @@ value accessible as I(0)
 <p><em>Note:</em> In the future, these functions may be moved into a separate
 boost utility library.
 
-<h3><a name="Constructors">Constructors</h3>
-Rationals can be constructed from a pair (numerator, denominator) of
-integers, or a single integer. There is also a default constructor, which
-initialises the rational to a value of zero.
+<h3><a name="Constructors">Constructors</a></h3>
+<p>Rationals can be constructed from zero, one, or two integer arguments;
+representing default construction as zero, conversion from an integer posing as
+the numerator with an implicit denominator of one, or a numerator and
+denominator pair in that order, respectively.  An integer argument should be of
+the rational's integer type, or implicitly convertible to that type.  (For the
+two-argument constructor, any needed conversions are evaluated independently,
+of course.)  The components are stored in normalized form.
 
 <p>This implies that the following statements are valid:
 
@@ -275,7 +286,7 @@ initialises the rational to a value of zero.
 there is an implicit conversion from the underlying integer type to the
 rational type.
 
-<h3><a name="Arithmetic operations">Arithmetic operations</h3>
+<h3><a name="Arithmetic operations">Arithmetic operations</a></h3>
 All of the standard numeric operators are defined for the <b>rational</b>
 class. These include:
 <br>
@@ -291,7 +302,7 @@ class. These include:
     &lt;=   &gt;=
 </pre>
 
-<h3><a name="Input and Output">Input and Output</h3>
+<h3><a name="Input and Output">Input and Output</a></h3>
 Input and output operators <tt>&lt;&lt;</tt> and <tt>&gt;&gt;</tt>
 are provided. The external representation of a rational is
 two integers, separated by a slash (<tt>/</tt>). On input, the format must be
@@ -300,15 +311,27 @@ followed (again with no intervening whitespace) by a second integer. The
 external representation of an integer is defined by the undelying integer
 type.
 
-<h3><a name="In-place assignment">In-place assignment</h3>
+<h3><a name="In-place assignment">In-place assignment</a></h3>
 For any <tt>rational&lt;I&gt; r</tt>, <tt>r.assign(n, m)</tt> provides a
 fast equivalent of <tt>r = rational&lt;I&gt;(n, m);</tt>, without the
 construction of a temporary. While this is probably unnecessary for rationals
 based on machine integer types, it could offer a saving for rationals based on
 unlimited-precision integers, for example.
 
-<h3><a name="Conversions">Conversions</h3>
-There are <em>no</em> implicit conversions from rationals to any other
+<h3><a name="Conversions">Conversions</a></h3>
+<p>There is a conversion operator to an unspecified Boolean type (most likely a
+member pointer).  This operator converts a rational to <code>false</code> if it
+represents zero, and <code>true</code> otherwise.  This conversion allows a
+rational for use as the first argument of operator <code>?:</code>; as either
+argument of operators <code>&amp;&amp;</code> or <code>||</code> without
+forfeiting short-circuit evaluation; as a condition for a <code>do</code>,
+<code>if</code>, <code>while</code>, or <code>for</code> statement; and as a
+conditional declaration for <code>if</code>, <code>while</code>, or
+<code>for</code> statements.  The nature of the type used, and that any names
+for that nature are kept private, should prevent any inappropriate non-Boolean
+use like numeric or pointer operations or as a <code>switch</code> condition.
+
+<p>There are <em>no other</em> implicit conversions from a rational
 type. However, there is an explicit type-conversion function,
 <tt>rational_cast&lt;T&gt;(r)</tt>. This can be used as follows:
 
@@ -317,12 +340,12 @@ type. However, there is an explicit type-conversion function,
     double nearly_pi = boost::rational_cast&lt;double&gt;(r);
 </pre>
 
-The <tt>rational_cast&lt;T&gt;</tt> function's behaviour is undefined if the
+<p>The <tt>rational_cast&lt;T&gt;</tt> function's behaviour is undefined if the
 source rational's numerator or denominator cannot be safely cast to the
 appropriate floating point type, or if the division of the numerator and
 denominator (in the target floating point type) does not evaluate correctly.
 
-In essence, all required conversions should be value-preserving, and all
+<p>In essence, all required conversions should be value-preserving, and all
 operations should behave "sensibly". If these constraints cannot be met, a
 separate user-defined conversion will be more appropriate.
 
@@ -340,7 +363,7 @@ separate user-defined conversion will be more appropriate.
 
 Programs should not be written to depend upon this implementation, however.
 
-<h3><a name="Numerator and Denominator">Numerator and Denominator</h3>
+<h3><a name="Numerator and Denominator">Numerator and Denominator</a></h3>
 Finally, access to the internal representation of rationals is provided by
 the two member functions <tt>numerator()</tt> and <tt>denominator()</tt>.
 
@@ -351,11 +374,11 @@ where the rational type is based on an unlimited-precision integer type. In
 this case, a specially-written user-defined conversion to floating point will
 be more appropriate.
 
-<h2><a name="Performance">Performance</h2>
+<h2><a name="Performance">Performance</a></h2>
 The rational class has been designed with the implicit assumption that the
 underlying integer type will act "like" the built in integer types. The
 behavioural aspects of this assumption have been explicitly described above,
-in the <a href="#Integer Type Requirements">Integer Type Requirements</a>
+in the <a href="#Integer%20Type%20Requirements">Integer Type Requirements</a>
 section. However, in addition to behavioural assumptions, there are implicit
 performance assumptions.
 
@@ -428,7 +451,7 @@ cheap.
 particularly effective as the underlying integer type for the rational class.
 Specifically, it is likely that performance will be severely sub-optimal.
 
-<h2><a name="Exceptions">Exceptions</h2>
+<h2><a name="Exceptions">Exceptions</a></h2>
 Rationals can never have a denominator of zero. (This library does not support
 representations for infinity or NaN). Should a rational result ever generate a
 denominator of zero, the exception <tt>boost::bad_rational</tt> (a subclass of
@@ -446,7 +469,7 @@ step.  The only exception to this rule is that the rational destructor will
 only throw exceptions which can be thrown by the destructor of the underlying
 integer type (usually none).
 
-<h2><a name="Internal representation">Internal representation</h2>
+<h2><a name="Internal representation">Internal representation</a></h2>
 <em>Note:</em> This information is for information only. Programs should not
 be written in such a way as to rely on these implementation details.
 
@@ -455,8 +478,8 @@ of integers (whose type is specified as the template parameter for the
 rational type). Rationals are always stored in fully normalized form (ie,
 gcd(numerator,denominator) = 1, and the denominator is always positive).
 
-<h2><a name="Design notes">Design notes</h2>
-<h3><a name="Minimal Implementation">Minimal Implementation</h3>
+<h2><a name="Design notes">Design notes</a></h2>
+<h3><a name="Minimal Implementation">Minimal Implementation</a></h3>
 The rational number class is designed to keep to the basics. The minimal
 operations required of a numeric class are provided, along with access to the
 underlying representation in the form of the numerator() and denominator()
@@ -473,7 +496,7 @@ for such an operation to be named rational_cast, and so the rational_cast
 function does <em>not</em> provide the necessary infrastructure to allow for
 specialisation/overloading.
 
-<h3><a name="Limited-range integer types">Limited-range integer types</h3>
+<h3><a name="Limited-range integer types">Limited-range integer types</a></h3>
 The rational number class is designed for use in conjunction with an
 unlimited precision integer class. With such a class, rationals are always
 exact, and no problems arise with precision loss, overflow or underflow.
@@ -503,7 +526,7 @@ However, it does not "feel" natural when using a rational number class.
 <p>It is up to the user of a rational type based on a limited-precision integer
 type to be aware of, and code in anticipation of, such issues.
 
-<h3><a name="Conversion from floating point">Conversion from floating point</h3>
+<h3><a name="Conversion from floating point">Conversion from floating point</a></h3>
 The library does not offer a conversion function from floating point to
 rational. A number of requests were received for such a conversion, but
 extensive discussions on the boost list reached the conclusion that there was
@@ -557,7 +580,7 @@ relatively complex and specialised, and are best implemented with a good
 understanding of the application requirements. All of these factors make such
 a function unsuitable for a general-purpose library such as this.
 
-<h3><a name="Absolute Value">Absolute Value</h3>
+<h3><a name="Absolute Value">Absolute Value</a></h3>
 In the first instance, it seems logical to implement
 abs(rational&lt;IntType&gt;) in terms of abs(IntType).
 However, there are a number of issues which arise with doing so.
@@ -594,14 +617,14 @@ implementation with an inline implementation of abs() is used:
 <p>The same arguments imply that where the absolute value of an IntType is
 required elsewhere, the calculation is performed inline.
 
-<h2><a name="References">References</h2>
+<h2><a name="References">References</a></h2>
 <ul>
 <li>The rational number header itself: <a href="../../boost/rational.hpp">rational.hpp</a>
 <li>Some example code: <a href="rational_example.cpp">rational_example.cpp</a>
 <li>The regression test: <a href="rational_test.cpp">rational_test.cpp</a>
 </ul>
 
-<h2><a name="History and Acknowledgements">History and Acknowledgements</h2>
+<h2><a name="History and Acknowledgements">History and Acknowledgements</a></h2>
 
 In December, 1999, I implemented the initial version of the rational number
 class, and submitted it to the <A HREF="http://www.boost.org/">boost.org</A>
@@ -627,15 +650,19 @@ with a user-defined integer type.
 <p>Nickolay Mladenov provided the current implementation of operator+= and
 operator-=.
 
-<p>Discussion of the issues surrounding Koenig lookup and std::swap took place on the boost list in
-January 2001. 
+<p>Discussion of the issues surrounding Koenig lookup and std::swap took place
+on the boost list in January 2001.
 
-<p>Revised&nbsp; February 5, 2001</p>
+<p>Daryle Walker provided a Boolean conversion operator, so that a rational can
+be used in the same Boolean contexts as the built-in numeric types, in December
+2005.
 
-<p>© Copyright Paul Moore 1999-2001. Permission to copy, use, modify, sell
-and distribute this document is granted provided this copyright notice
-appears in all copies. This document is provided &quot;as is&quot; without
-express or implied warranty, and with no claim as to its suitability for
-any purpose.</p>
+<p>Revised December 27, 2005</p>
+
+<p>© Copyright Paul Moore 1999-2001; &copy; Daryle Walker 2005. Permission to
+copy, use, modify, sell and distribute this document is granted provided this
+copyright notice appears in all copies. This document is provided &quot;as
+is&quot; without express or implied warranty, and with no claim as to its
+suitability for any purpose.</p>
 </body>
 </html>

@@ -3,7 +3,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2005/07/01 03:00:34 $
+ * $Date: 2005/09/05 21:10:09 $
  */
 
 #include "boost/date_time/gregorian/gregorian.hpp"
@@ -160,6 +160,14 @@ int main(){
   check("Full format weekday", gw == greg_weekday(2));
   iss >> gy;
   check("2 digit format year", gy == greg_year(2002));
+
+  date_input_facet* f1 = new date_input_facet();
+  date_input_facet* f2 = new date_input_facet();
+  f1->set_iso_format();
+  f2->set_iso_format();
+  check("Missing digit(s) in ISO string", failure_test(d,"2005071", f1));
+  check("Missing digit(s) in ISO string", 
+        failure_test(d,"2005071", e_bad_day_of_month, f2));
 
   { // literal % in format tests
     date d(not_a_date_time);

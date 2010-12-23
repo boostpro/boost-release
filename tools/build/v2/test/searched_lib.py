@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+# Copyright 2003 Dave Abrahams 
+# Copyright 2003, 2004, 2005, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
+
 # Test usage of searched-libs: one which are found via -l
 # switch to the linker/compiler. 
 
@@ -26,6 +31,7 @@ t.expect_addition("lib/bin/$toolset/debug/test_lib.dll")
 # 
 if (os.name == 'nt' or os.uname()[0].lower().startswith('cygwin')) and get_toolset() != 'gcc':
     t.copy("lib/bin/$toolset/debug/test_lib.lib", "lib/test_lib.lib")
+    t.copy("lib/bin/$toolset/debug/test_lib.dll", "lib/test_lib.dll")
 else:
     t.copy("lib/bin/$toolset/debug/test_lib.dll", "lib/test_lib.dll")
 
@@ -41,7 +47,7 @@ local here = [ project.attribute $(__name__) location ] ;
 here = [ path.root $(here) [ path.pwd ] ] ;
 
 exe main : main.cpp helper ;
-lib helper : helper.cpp test_lib : <dll-path>$(here)/lib ;
+lib helper : helper.cpp test_lib ;
 lib test_lib : : <name>test_lib <search>lib ;
 """)
 t.write("main.cpp", """
@@ -57,9 +63,31 @@ __declspec(dllexport)
 #endif
 helper() { foo(); }
 """)
-t.run_build_system(stderr=None) # gcc warns about libraries which are not in -rpath.
+t.run_build_system()
 t.expect_addition("bin/$toolset/debug/main.exe")
 t.rm("bin/$toolset/debug/main.exe")
+
+# Test that 'unit-test' will correctly add runtime paths
+# to searched libraries.
+t.write('Jamfile', """
+
+import path ;
+import project ;
+import testing ;
+
+project : requirements <hardcode-dll-paths>false ;
+
+local here = [ project.attribute $(__name__) location ] ;
+here = [ path.root $(here) [ path.pwd ] ] ;
+
+unit-test main : main.cpp helper ;
+lib helper : helper.cpp test_lib ;
+lib test_lib : : <name>test_lib <search>lib ;
+""")
+t.run_build_system()
+t.expect_addition("bin/$toolset/debug/main.passed")
+t.rm("bin/$toolset/debug/main.exe")
+
 
 # Now try using searched lib from static lib. Request shared version
 # of searched lib, since we don't have static one handy.
@@ -139,5 +167,23 @@ lib l : : <name>l_f ;
 """)
 
 t.run_build_system("-n")
+
+
+# Make sure that plain "lib foobar ; " works.
+t.write("Jamfile", """
+exe a : a.cpp foobar ;
+lib foobar ;
+""")
+t.run_build_system("-n -d2")
+t.fail_test(string.find(t.stdout(), "foobar") == -1)
+
+# Make sure that plain "lib foo bar ; " works.
+t.write("Jamfile", """
+exe a : a.cpp foo bar ;
+lib foo bar ;
+""")
+t.run_build_system("-n -d2")
+t.fail_test(string.find(t.stdout(), "foo") == -1)
+t.fail_test(string.find(t.stdout(), "bar") == -1)
 
 t.cleanup()

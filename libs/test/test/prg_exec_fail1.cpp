@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2006.
 //  (C) Copyright Beman Dawes 2001. 
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
@@ -8,7 +8,7 @@
 //
 //  File        : $RCSfile: prg_exec_fail1.cpp,v $
 //
-//  Version     : $Revision: 1.14 $
+//  Version     : $Revision: 1.16 $
 //
 //  Description : tests an ability of Program Execution Monitor to catch 
 //  uncatched exceptions. Should fail during run.
@@ -26,6 +26,8 @@
 #include <cstddef> //Metrowerks linker needs at least one standard library
 #endif
 
+#include <boost/test/included/prg_exec_monitor.hpp>
+
 int
 cpp_main( int argc, char *[] )  // note the name
 {
@@ -41,6 +43,12 @@ cpp_main( int argc, char *[] )  // note the name
 //  Revision History :
 //  
 //  $Log: prg_exec_fail1.cpp,v $
+//  Revision 1.16  2006/03/19 11:49:04  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.15  2005/12/14 06:01:02  rogeeff
+//  *** empty log message ***
+//
 //  Revision 1.14  2005/05/11 05:07:57  rogeeff
 //  licence update
 //

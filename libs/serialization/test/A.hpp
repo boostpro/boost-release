@@ -128,17 +128,12 @@ public:
     bool operator!=(const A &rhs) const;
     bool operator<(const A &rhs) const; // used by less
     // hash function for class A
-    operator std::size_t () const {
-        std::size_t retval = 0;
-        //const char * tptr = static_cast<const A * const>(this);
-        const void * v = this;
-        const char * tptr = static_cast<const char *>(v);
-        const char * tend = tptr + sizeof(A);
-        while(tptr < tend)
-            retval += *tptr++;
-        return retval;
-    }
+    operator std::size_t () const;
+    friend std::ostream & operator<<(std::ostream & os, A const & a);
+    friend std::istream & operator>>(std::istream & is, A & a);
 };
+
+BOOST_TEST_DONT_PRINT_LOG_VALUE(A)
 
 template<class S>
 void randomize(S &x)
@@ -150,6 +145,39 @@ void randomize(S &x)
             break;
         x += static_cast<typename S::value_type>('a' - 1 + i);
     }
+}
+
+template<class T>
+void accumulate(std::size_t & s, const T & t){
+    const char * tptr = (const char *)(& t);
+    unsigned int count = sizeof(t);
+    while(count-- > 0){
+        s += *tptr++;
+    }
+}
+
+A::operator std::size_t () const {
+    std::size_t retval = 0;
+    accumulate(retval, b);
+    #ifndef BOOST_NO_INT64_T
+    accumulate(retval, f);
+    accumulate(retval, g);
+    #endif
+    accumulate(retval, l);
+    accumulate(retval, m);
+    accumulate(retval, n);
+    accumulate(retval, o);
+    accumulate(retval, p);
+    accumulate(retval, q);
+    #ifndef BOOST_NO_CWCHAR
+    accumulate(retval, r);
+    #endif
+    accumulate(retval, c);
+    accumulate(retval, s);
+    accumulate(retval, t);
+    accumulate(retval, u);
+    accumulate(retval, v);
+    return retval;
 }
 
 inline A::A() :
@@ -172,8 +200,8 @@ inline A::A() :
     t(std::rand()),
     u(std::rand()),
     v(std::rand()),
-    w((float)std::rand() / std::rand()),
-    x((double)std::rand() / std::rand())
+    w((float)std::rand()),
+    x((double)std::rand())
 {
     randomize(y);
     #ifndef BOOST_NO_STD_WSTRING
@@ -183,32 +211,6 @@ inline A::A() :
 
 inline bool A::operator==(const A &rhs) const
 {
-    BOOST_CHECK(b == b);
-    BOOST_CHECK(l == l);
-    #ifndef BOOST_NO_INT64_T
-    BOOST_CHECK(f == f);
-    BOOST_CHECK(g == g);
-    #endif
-    BOOST_CHECK(m == m);
-    BOOST_CHECK(n == n);
-    BOOST_CHECK(o == o);
-    BOOST_CHECK(p == p);
-    BOOST_CHECK(q == q);
-    #ifndef BOOST_NO_CWCHAR
-    BOOST_CHECK(r == r);
-    #endif
-    BOOST_CHECK(c == c);
-    BOOST_CHECK(s == s);
-    BOOST_CHECK(t == t);
-    BOOST_CHECK(u == u);
-    BOOST_CHECK(v == v);
-    BOOST_CHECK(std::fabs(w - w) < std::numeric_limits<float>::round_error());
-    BOOST_CHECK(std::fabs(x - x) < std::numeric_limits<float>::round_error());
-    BOOST_CHECK(0 == y.compare(y));
-    #ifndef BOOST_NO_STD_WSTRING
-    BOOST_CHECK(0 == z.compare(z));
-    #endif
-
     if(b != rhs.b)
         return false;
     if(l != rhs.l)
@@ -243,9 +245,13 @@ inline bool A::operator==(const A &rhs) const
         return false; 
     if(v != rhs.v)
         return false; 
-    if(std::fabs(w - rhs.w) > std::numeric_limits<float>::round_error())
+    if(w == 0 && std::fabs(rhs.w) > std::numeric_limits<float>::epsilon())
         return false;
-    if(std::fabs(x - rhs.x) > std::numeric_limits<float>::round_error())
+    if(std::fabs(rhs.w/w - 1.0) > std::numeric_limits<float>::epsilon())
+        return false;
+    if(x == 0 && std::fabs(rhs.x - x) > std::numeric_limits<float>::epsilon())
+        return false;
+    if(std::fabs(rhs.x/x - 1.0) > std::numeric_limits<float>::epsilon())
         return false;
     if(0 != y.compare(rhs.y))
         return false;

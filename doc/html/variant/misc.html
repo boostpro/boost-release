@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Miscellaneous Notes</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../variant.html" title="Chapter 15. Boost.Variant">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../variant.html" title="Chapter 20. Boost.Variant">
 <link rel="prev" href="design.html" title="Design Overview">
 <link rel="next" href="refs.html" title="References">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.htm">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../../people/people.htm">People</a></td>
@@ -23,17 +23,17 @@
 <a accesskey="p" href="design.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../variant.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="refs.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="variant.misc"></a>Miscellaneous Notes</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="variant.misc"></a>Miscellaneous Notes</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="misc.html#variant.versus-any">Boost.Variant vs. Boost.Any</a></span></dt>
-<dt><span class="section"><a href="misc.html#id2841449">Portability</a></span></dt>
+<dt><span class="section"><a href="misc.html#id1952154">Portability</a></span></dt>
 <dt><span class="section"><a href="misc.html#variant.troubleshooting">Troubleshooting</a></span></dt>
 <dt><span class="section"><a href="misc.html#variant.ack">Acknowledgments</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="variant.versus-any"></a>Boost.Variant vs. Boost.Any</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="variant.versus-any"></a>Boost.Variant vs. Boost.Any</h3></div></div></div>
 <p>As a discriminated union container, the Variant library shares many
     of the same features of the <a href="../any.html" title="Chapter 1. Boost.Any">Any</a> library.
     However, since neither library wholly encapsulates the features of the
@@ -56,6 +56,9 @@
 <li>Boost.Variant offers an efficient, stack-based storage scheme
         (avoiding the overhead of dynamic allocation).</li>
 </ul></div>
+<p>
+
+  </p>
 <p>Of course, Boost.Any has several advantages over Boost.Variant,
     such as:
 
@@ -69,10 +72,13 @@
         techniques (avoiding potentially hard-to-read error messages and
         significant compile-time processor and memory demands).</li>
 </ul></div>
+<p>
+
+  </p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2841449"></a>Portability</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id1952154"></a>Portability</h3></div></div></div>
 <p>The library aims for 100% ANSI/ISO C++ conformance. However, this is
     strictly impossible due to the inherently non-portable nature of the
     Type Traits library's
@@ -97,9 +103,19 @@
 <thead><tr>
 <th> </th>
 <th>Basic</th>
-<th><code class="computeroutput">variant&lt;T&amp;&gt;</code></th>
-<th><a href="tutorial.html#variant.tutorial.over-sequence" title="Using a type sequence to specify bounded types"><code class="computeroutput">make_variant_over</code></a></th>
-<th><a href="tutorial.html#variant.tutorial.recursive.recursive-variant" title="Recursive types with make_recursive_variant"><code class="computeroutput">make_recursive_variant</code></a></th>
+<th>
+              <code class="computeroutput">variant&lt;T&amp;&gt;</code>
+            </th>
+<th>
+              <a href="tutorial.html#variant.tutorial.over-sequence" title="Using a type sequence to specify bounded types">
+                <code class="computeroutput">make_variant_over</code>
+              </a>
+            </th>
+<th>
+              <a href="tutorial.html#variant.tutorial.recursive.recursive-variant" title="Recursive types with make_recursive_variant">
+                <code class="computeroutput">make_recursive_variant</code>
+              </a>
+            </th>
 </tr></thead>
 <tbody>
 <tr>
@@ -160,6 +176,9 @@
 </tr>
 </tbody>
 </table></div>
+<p>
+
+  </p>
 <p>Finally, the current state of the testsuite in CVS may be found on the
     <a href="http://boost.sourceforge.net/regression-logs" target="_top">Test Summary</a>
     page. Please note, however, that this page reports on day-to-day changes
@@ -167,8 +186,8 @@
     match the state of code found in Boost releases.</p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="variant.troubleshooting"></a>Troubleshooting</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="variant.troubleshooting"></a>Troubleshooting</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="misc.html#variant.troubleshooting.template-depth">"Template instantiation depth exceeds maximum"</a></span></dt>
 <dt><span class="section"><a href="misc.html#variant.troubleshooting.compiler-memory">"Internal heap limit reached"</a></span></dt>
@@ -182,12 +201,12 @@
   welcome. Please post to the Boost-Users list with any useful experiences you
   may have.)</p>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h5 class="title">
-<a name="variant.troubleshooting.template-depth"></a>"Template instantiation depth exceeds maximum"</h5></div></div></div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="variant.troubleshooting.template-depth"></a>"Template instantiation depth exceeds maximum"</h4></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="misc.html#variant.troubleshooting.template-depth.gcc">GNU GCC</a></span></dt></dl></div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h6 class="title">
-<a name="variant.troubleshooting.template-depth.gcc"></a>GNU GCC</h6></div></div></div>
+<div class="titlepage"><div><div><h5 class="title">
+<a name="variant.troubleshooting.template-depth.gcc"></a>GNU GCC</h5></div></div></div>
 <p>The compiler option
         <code class="computeroutput">-ftemplate-depth-<span class="emphasis"><em>NN</em></span></code> can increase the
         maximum allowed instantiation depth. (Try
@@ -195,12 +214,12 @@
 </div>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h5 class="title">
-<a name="variant.troubleshooting.compiler-memory"></a>"Internal heap limit reached"</h5></div></div></div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="variant.troubleshooting.compiler-memory"></a>"Internal heap limit reached"</h4></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="misc.html#variant.troubleshooting.compiler-memory.msvc">Microsoft Visual C++</a></span></dt></dl></div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h6 class="title">
-<a name="variant.troubleshooting.compiler-memory.msvc"></a>Microsoft Visual C++</h6></div></div></div>
+<div class="titlepage"><div><div><h5 class="title">
+<a name="variant.troubleshooting.compiler-memory.msvc"></a>Microsoft Visual C++</h5></div></div></div>
 <p>The compiler option <code class="computeroutput">/Zm<span class="emphasis"><em>NNN</em></span></code> can
         increase the memory allocation limit. The <code class="computeroutput">NNN</code> is a
         scaling percentage (i.e., <code class="computeroutput">100</code> denotes the default limit).
@@ -209,14 +228,14 @@
 </div>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="variant.ack"></a>Acknowledgments</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="variant.ack"></a>Acknowledgments</h3></div></div></div>
 <p>Eric Friedman and Itay Maman designed the initial submission; Eric was
   the primary implementer.</p>
 <p>Eric is also the library maintainer and has expanded upon the initial
   submission -- adding
-  <code class="computeroutput"><a href="../make_recursive_variant.html" title="Class template make_recursive_variant">make_recursive_variant</a></code>,
-  <code class="computeroutput"><a href="../make_variant_over.html" title="Class template make_variant_over">make_variant_over</a></code>, support for
+  <code class="computeroutput"><a href="../boost/make_recursive_variant.html" title="Class template make_recursive_variant">make_recursive_variant</a></code>,
+  <code class="computeroutput"><a href="../boost/make_variant_over.html" title="Class template make_variant_over">make_variant_over</a></code>, support for
   reference content, etc.</p>
 <p>Andrei Alexandrescu's work in
     [<a href="refs.html#variant.refs.ale01a">Ale01a</a>]

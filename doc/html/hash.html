@@ -1,17 +1,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 5. Boost.Functional/Hash</title>
+<title>Chapter 7. Boost.Functional/Hash</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="The Boost C++ Libraries">
-<link rel="up" href="libraries.html" title="Part I. The Boost C++ Libraries">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="libraries.html" title="Part I. The Boost C++ Libraries (BoostBook Subset)">
 <link rel="prev" href="function/testsuite.html" title="Testsuite">
 <link rel="next" href="hash/tutorial.html" title=" Tutorial">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../boost.png"></td>
 <td align="center"><a href="../../index.htm">Home</a></td>
 <td align="center"><a href="../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../people/people.htm">People</a></td>
@@ -25,19 +25,15 @@
 <div class="chapter" lang="en">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="hash"></a>Chapter 5. Boost.Functional/Hash</h2></div>
+<a name="hash"></a>Chapter 7. Boost.Functional/Hash</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Daniel</span> <span class="surname">James</span>
 </h3></div></div>
-<div><p class="copyright">Copyright © 2005 Daniel James</p></div>
+<div><p class="copyright">Copyright © 2005, 2006 Daniel James</p></div>
 <div><div class="legalnotice">
-<a name="id2700245"></a><p>
-        Distributed under the Boost Software License, Version 1.0.
-        (See accompanying file LICENSE_1_0.txt or copy at
-        <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">
-            http://www.boost.org/LICENSE_1_0.txt
-        </a>)
-    
+<a name="id1216346"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>
       </p>
 </div></div>
 </div></div>
@@ -49,52 +45,70 @@
 <dt><span class="section"><a href="hash/custom.html"> Extending boost::hash for a custom data type</a></span></dt>
 <dt><span class="section"><a href="hash/combine.html"> Combining hash values</a></span></dt>
 <dt><span class="section"><a href="hash/portability.html"> Portability</a></span></dt>
-<dt><span class="section"><a href="hash/reference_.html"> Reference</a></span></dt>
+<dt><span class="section"><a href="hash/disable.html"> Disabling The Extensions</a></span></dt>
+<dt><span class="section"><a href="hash/changes.html"> Change Log</a></span></dt>
+<dt><span class="section"><a href="hash/reference.html">Reference</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="hash/reference.html#hash.reference.specification"></a></span></dt>
+<dt><span class="section"><a href="hash/reference.html#header.boost.functional.hash.hpp">Header &lt;boost/functional/hash.hpp&gt;</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="hash/links.html"> Links</a></span></dt>
 <dt><span class="section"><a href="hash/acknowledgements.html"> Acknowledgements</a></span></dt>
 </dl>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="hash.intro"></a> Introduction</h3></div></div></div>
-<p><code class="computeroutput"><a href="boost/hash.html" title="Struct template hash">boost::hash</a></code> is an implementation of the <a href="http://en.wikipedia.org/wiki/Hash_function" target="_top">hash function</a> object
-specified by the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1745.pdf" target="_top">Technical Report</a>. It is intended for use as the default hash function
-for unordered associative containers, and the <a href="../../libs/multi_index/doc/index.html" target="_top">Boost Multi-Index Containers Library</a>'s hash indexes.</p>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="hash.intro"></a> Introduction</h2></div></div></div>
 <p>
-As it is compliant with the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1745.pdf" target="_top">Technical Report</a>, it will work with:</p>
+      <code class="computeroutput"><a href="boost/hash.html" title="Struct template hash">boost::hash</a></code> is an implementation of
+      the <a href="http://en.wikipedia.org/wiki/Hash_function" target="_top">hash function</a>
+      object specified by the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1836.pdf" target="_top">Draft
+      Technical Report on C++ Library Extensions</a> (TR1). It is intended for
+      use as the default hash function for unordered associative containers, and
+      the <a href="../../libs/multi_index/doc/index.html" target="_top">Boost Multi-Index Containers
+      Library</a>'s hash indexes.
+    </p>
+<p>
+      As it is compliant with <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1836.pdf" target="_top">TR1</a>,
+      it will work with:
+    </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-integers
-</li>
+        integers
+      </li>
 <li>
-floats
-</li>
+        floats
+      </li>
 <li>
-pointers
-</li>
+        pointers
+      </li>
 <li>
-strings
-</li>
+        strings
+      </li>
 </ul></div>
 <p>
-It also implements the extension proposed by Peter Dimov in issue 6.18 of the
-<a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1756.pdf" target="_top">Library Extension Technical Report Issues List</a>, this adds support for:</p>
+      It also implements the extension proposed by Peter Dimov in issue 6.18 of the
+      <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1837.pdf" target="_top">Library
+      Extension Technical Report Issues List</a> (page 63), this adds support
+      for:
+    </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-arrays
-</li>
+        arrays
+      </li>
 <li><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span></code></li>
 <li>
-the standard containers.
-</li>
+        the standard containers.
+      </li>
 <li>
-extending <code class="computeroutput"><a href="boost/hash.html" title="Struct template hash">boost::hash</a></code> for custom types.
-</li>
+        extending <code class="computeroutput"><a href="boost/hash.html" title="Struct template hash">boost::hash</a></code> for custom
+        types.
+      </li>
 </ul></div>
 </div>
 </div>
 <table width="100%"><tr>
-<td align="left"><small><p>Last revised: December 03, 2005 at 16:18:04 GMT</p></small></td>
+<td align="left"><small><p>Last revised: May 11, 2007 at 06:43:01 GMT</p></small></td>
 <td align="right"><small></small></td>
 </tr></table>
 <hr>

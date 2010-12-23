@@ -5,7 +5,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2005/06/16 13:23:38 $
+ * $Date: 2006/06/12 14:44:27 $
  */
 
 #include "boost/date_time/gregorian/gregorian.hpp"
@@ -112,8 +112,10 @@ int main() {
     {
       date_facet* datefacet = new date_facet();
       datefacet->format(date_facet::standard_format_specifier);
+      std::cout.imbue(std::locale(std::locale::classic(), datefacet));
       teststreaming("default classic date", d, std::string("10/13/04"),
                     std::locale(std::locale::classic(), datefacet));
+      std::cout << "default classic date output: " << d << std::endl;
     }
     {
       date_facet* datefacet = new date_facet();

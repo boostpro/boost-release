@@ -1,7 +1,8 @@
-#  Copyright (C) Vladimir Prus 2002. Permission to copy, use, modify, sell and
-#  distribute this software is granted provided this copyright notice appears in
-#  all copies. This software is provided "as is" without express or implied
-#  warranty, and with no claim as to its suitability for any purpose.
+# Copyright 2003 Dave Abrahams 
+# Copyright 2005, 2006 Rene Rivera 
+# Copyright 2002, 2003, 2004, 2005, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
 
 #  This module defines the 'install' rule, used to copy a set of targets to
 #  a single location
@@ -23,6 +24,9 @@ import path ;
 feature.feature <install-dependencies> : off on : incidental ;
 feature.feature <install-type> : : free incidental ;
 feature.feature <install-source-root> : : free path  ;
+# If 'on', version symblinks for shared libraries won't be created
+# This feature has effect only on Unix.
+feature.feature <install-no-version-symlinks> : on : optional incidental ;
 feature.feature <so-version> : : free incidental ;
 
 class install-target-class : basic-target
@@ -73,6 +77,11 @@ class install-target-class : basic-target
             # add them.
             local l = [ $(build-property-set).get <dll-path> ] ;
             ps-raw += $(l:G=<dll-path>) ;
+            
+            # Also copy <linkflags> feature from current build
+            # set, to be used for relinking.
+            local l = [ $(build-property-set).get <linkflags> ] ;
+            ps-raw += $(l:G=<linkflags>) ;            
         }
         
         # Remove the <tag> feature on original targets.
@@ -88,6 +97,9 @@ class install-target-class : basic-target
         
         local d = [ $(build-property-set).get <location> ] ;
         ps-raw += $(d:G=<location>) ;
+        
+        local ns = [ $(build-property-set).get <install-no-version-symlinks> ] ;
+        ps-raw += $(ns:G=<install-no-version-symlinks>) ;
         
         local d = [ $(build-property-set).get <install-source-root> ] ;
         # Make the path absolute: we'll use it to compute relative
@@ -110,11 +122,20 @@ class install-target-class : basic-target
     
         
     rule construct ( name : source-targets * : property-set )
-    {        
+    {                
         source-targets = [ 
           targets-to-stage $(source-targets) : $(property-set) ] ;
         
         property-set = [ update-location $(property-set) ] ;          
+        
+        local ename = [ $(property-set).get <name> ] ;              
+                
+        if $(ename) && $(source-targets[2])
+        {
+            errors.error 
+              "When <name> property is used in 'install', only one source is allowed" ;
+        }
+        
                                        
         local result ;
         for local i in $(source-targets)
@@ -129,13 +150,20 @@ class install-target-class : basic-target
             local t = [ $(i).type ] ;            
             if $(t) && [ type.registered INSTALLED_$(t) ]
             {
-                local targets = [ generators.construct $(self.project) $(name) : 
-                  INSTALLED_$(t) : $(new-properties) : $(i) : * ] ;
-                staged-targets += $(targets[2-]) ;                                
+                if $(ename)
+                {
+                    error.error "In 'install': <name> property specified with target that requires relinking" ;
+                }
+                else
+                {
+                    local targets = [ generators.construct $(self.project) $(name) : 
+                      INSTALLED_$(t) : $(new-properties) : $(i) ] ;
+                    staged-targets += $(targets[2-]) ;                                
+                }                                                
             }
             else             
             {                
-                staged-targets = [ stage.copy-file $(self.project) 
+                staged-targets = [ stage.copy-file $(self.project) $(ename)
                   : $(i) : $(new-properties) ] ;
             }
             
@@ -159,7 +187,7 @@ class install-target-class : basic-target
     rule targets-to-stage ( source-targets * : property-set )
     {   
         local result ;
-        
+               
         # Traverse the dependencies, if needed.
         if [ $(property-set).get <install-dependencies> ] = "on"
         {
@@ -187,12 +215,14 @@ class install-target-class : basic-target
                     {
                         result += $(r) ;                        
                     }   
-                }                
+                }                                
             }
-            else
+            else if ! $(included-types)
             {
+                # Don't install typeless target if there's
+                # explicit list of allowed types.
                 result += $(r) ;
-            }
+            }                
         }
                 
         return $(result) ;
@@ -245,12 +275,13 @@ class install-target-class : basic-target
 # Creates a copy of target 'source'. The 'properties' object should
 # have a <location> property which specifies where the target must
 # be placed.
-rule copy-file ( project : source : properties )
+rule copy-file ( project name ? : source : properties )
 {   
     local targets ;
-    local name = [ $(source).name ] ;
-               
-    new-a = [ new action $(source) : common.copy : $(properties) ] ;    
+    name ?= [ $(source).name ] ;
+
+    new-a = [ 
+      new non-scanning-action $(source) : common.copy : $(properties) ] ;    
     local source-root = [ $(properties).get <install-source-root> ] ;
     if $(source-root) 
     {        
@@ -262,11 +293,19 @@ rule copy-file ( project : source : properties )
         # path. The 'source-root' is already absolute, see the
         # 'adjust-properties' method above.
         path = [ path.root $(path) [ path.pwd ] ] ;
-
-        relative = [ path.relative-to $(source-root) $(path) ] ;
         
-        targets = [ new file-target $(name:D=$(relative)) exact : [ $(source).type ] 
+        relative = [ path.relative-to $(source-root) $(path) ] ;        
+        # Note: using $(name:D=$(relative)) might be faster
+        # here, but then we need to explicitly check that
+        # relative is not ".", otherwise we might get paths like
+        #
+        #   <prefix>/boost/.
+        #
+        # try to create it, and mkdir will obviously fail.
+        name = [ path.root $(name:D=) $(relative) ] ;                      
+        targets = [ new file-target $(name) exact : [ $(source).type ] 
           : $(project) : $(new-a) ] ;
+                
     }        
     else
     {
@@ -343,16 +382,47 @@ class installed-shared-lib-generator : generator
     }
     
     rule run ( project name ? : property-set : source : multiple ? )
-    {
-        local copied = [ stage.copy-file $(project) 
-          : $(source) : $(property-set) ] ; 
-        
+    {                        
         if [ $(property-set).get <os> ] = NT
         {
+            local copied = [ stage.copy-file $(project) 
+              : $(source) : $(property-set) ] ; 
+        
+            copied = [ virtual-target.register $(copied) ] ;
+            
             return $(copied) ;
         }
         else 
         {
+            local a = [ $(source).action ] ;            
+            local copied ;
+            if ! $(a)
+            {
+                # Non-derived file, just copy.
+                copied = [ stage.copy-file $(project) 
+                  : $(source) : $(property-set) ] ; 
+            }
+            else
+            {                            
+                local cp = [ $(a).properties ] ;
+                local current-dll-path = [ $(cp).get <dll-path> ] ;
+                local new-dll-path = [ $(property-set).get <dll-path> ] ;
+                                    
+                if $(current-dll-path) != $(new-dll-path)
+                {
+                    # Rpath changed, need to relink.
+                    copied = [ stage.relink-file 
+                        $(project) : $(source) : $(property-set) ] ;
+                }
+                else
+                {                                        
+                    copied = [ stage.copy-file $(project) 
+                      : $(source) : $(property-set) ] ; 
+                }
+            }
+                                
+            copied = [ virtual-target.register $(copied) ] ;
+                                    
             local result = $(copied) ;
             # If the name is in the form NNN.XXX.YYY.ZZZ, where all
             # 'X', 'Y' and 'Z' are numbers, we need to create
@@ -361,12 +431,28 @@ class installed-shared-lib-generator : generator
               : [ $(copied).name ] ] ;
             if $(m)
             {
-                result += [ stage.symlink $(m[1]).$(m[2]) : $(project)
-                  : $(copied) : $(property-set) ] ;
-                result += [ stage.symlink $(m[1]).$(m[2]).$(m[3])  : $(project)
-                  : $(copied) : $(property-set) ] ;
+                # Symlink without version at all is used to make
+                # -lsome_library work.
+                result += [ stage.symlink $(m[1]) : $(project)
+                  : $(copied) : $(property-set) ] ;                
+                
+                # Symlinks of some libfoo.N and libfoo.N.M are used
+                # so that library can found at runtime, if libfoo.N.M.X
+                # has soname of libfoo.N. That happens when the library
+                # makes some binary compatibility guarantees. If not,
+                # it's possible to skip those symlinks.
+                local suppress = 
+                  [ $(property-set).get <install-no-version-symlinks> ] ;
+                
+                if $(suppress) != "on"
+                {                    
+                    result += [ stage.symlink $(m[1]).$(m[2]) : $(project)
+                      : $(copied) : $(property-set) ] ;
+                    result += [ stage.symlink $(m[1]).$(m[2]).$(m[3])  : $(project)
+                      : $(copied) : $(property-set) ] ;
+                }                
             }
-                                    
+                                                
             return $(result) ;
         }                
     }    
@@ -388,12 +474,7 @@ rule install ( name : sources * : requirements * : default-build * )
     {
         requirements += <hardcode-dll-paths>false ;
     }        
-    
-    if <name> in $(requirements:G)
-    {
-        errors.user-error 
-          "The <name> property is not allowed for the 'install' rule" ;
-    }
+        
     if <tag> in $(requirements:G)
     {
         errors.user-error 
@@ -410,95 +491,3 @@ rule install ( name : sources * : requirements * : default-build * )
 
 IMPORT $(__name__) : install : : install ;
 IMPORT $(__name__) : install : : stage ;
-
-rule add-variant-and-compiler ( name : type ? : property-set )
-{
-    return [ rename $(name) : $(type) : $(property-set) ] ;
-}
-
-rule add-variant ( name : type ? : property-set )
-{
-    return [ rename $(name) : $(type) : $(property-set) : unversioned ] ;
-}
-
-rule rename ( name : type ? : property-set : unversioned ? )
-{    
-    if [ type.is-derived $(type) LIB ]
-    {            
-        local properties = [ $(property-set).raw ] ;
-    
-        local tags = ;
-    
-        local thread-tag ;
-        if <threading>multi in $(properties) { thread-tag = mt ; }
-        
-        local runtime-tag = ;
-        if <runtime-link>static in $(properties) { runtime-tag += s ; }
-        if <runtime-build>debug in $(properties) { runtime-tag += g ; }
-        
-        if <variant>debug-python in $(properties) { runtime-tag += y ; }
-        if <variant>debug in $(properties) { runtime-tag += d ; }
-        if <stdlib>stlport in $(properties) { runtime-tag += p ; }
-        if <stdlib-stlport:iostream>hostios in $(properties) { runtime-tag += n ; }
-        
-        local toolset-tag = ;
-        # 'unversioned' should be a parameter.
-        if ! $(unversioned)
-        {
-            switch [ $(property-set).get <toolset> ]
-            {
-                case borland* : toolset-tag += bcb ;
-                case como* : toolset-tag += como ;
-                case cw : toolset-tag += cw ;
-                case darwin* : toolset-tag += ;
-                case edg* : toolset-tag += edg ;
-                case gcc* : toolset-tag += gcc ;
-                case intel-linux* : toolset-tag += il ;
-                case intel-win* : toolset-tag += iw ;
-                case kcc* : toolset-tag += kcc ;
-                case kylix* : toolset-tag += bck ;
-                #case metrowerks* : toolset-tag += cw ;
-                #case mingw* : toolset-tag += mgw ;
-                case mipspro* : toolset-tag += mp ;
-                case msvc* : toolset-tag += vc ;
-                case sun* : toolset-tag += sw ;
-                case tru64cxx* : toolset-tag += tru ;
-                case vacpp* : toolset-tag += xlc ;
-            }
-            local version = [ MATCH "<toolset.*version>([0123456789]+)[.]([0123456789]*)" : $(properties) ] ;
-            toolset-tag += $(version) ;
-        }
-
-        # Note yet clear if this should be added on Linux (where we have
-        # version in soname) and how it should be done on Windows.
-        #local version-tag = ;
-        #if ! $(gUNVERSIONED_VARIANT_TAG)
-        #{
-        #    local version-number = [ get-values <version> : $(properties) ] ;
-        #    version-number ?= $(BOOST_VERSION) ;
-        #    version-tag = [ MATCH "^([^.]+)[.]([^.]+)" : $(version-number[1]) ] ;
-        #    version-tag = $(version-tag:J="_") ;
-        #}
-    
-        tags += $(toolset-tag:J=) ;
-        tags += $(thread-tag:J=) ;
-        tags += $(runtime-tag:J=) ;
-        #tags += $(version-tag) ;
-    
-        local result ;
-        
-        if $(tags)
-        {
-            result = $(name)-$(tags:J=-) ;
-        }
-        else
-        {
-            result = $(name) ;
-        }
-        return [ virtual-target.add-prefix-and-suffix $(result) : $(type) 
-          : $(property-set) ] ;
-    }    
-}
-
-
-

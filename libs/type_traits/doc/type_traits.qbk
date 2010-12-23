@@ -13,7 +13,7 @@
     [authors [authors, various]]
     [category template]
     [category generic]
-    [last-revision $Date: 2005/08/24 16:49:32 $]
+    [last-revision $Date: 2007/05/09 17:20:56 $]
 ]
 
 [def __boost_root ../../../../]
@@ -94,6 +94,10 @@
 [def __function_traits [link boost_typetraits.function_traits function_traits]]
 
 [section:intro Introduction]
+
+This documentation is 
+[@http://boost-consulting.com/vault/index.php?action=downloadfile&filename=boost_type_traits-1.34.pdf&directory=PDF%20Documentation& 
+also available in printer-friendly PDF format].
 
 The Boost type-traits library contains a 
 set of very specific traits classes, each of which encapsulate a single trait 
@@ -669,7 +673,7 @@ The first part guarantees the successful compilation of something like this:
    
 and the second part provides the library's users with a mechanism to make the 
 above code work not only for `char`, `int` or other built-in type, 
-but for they own types as well:
+but for their own types as well:
 
    namespace myspace{
       struct MyClass {};
@@ -1251,7 +1255,7 @@ __header ` #include <boost/type_traits/extent.hpp>` or ` #include <boost/type_tr
 
 __examples
 
-[:`extent<int[1]>` inherits from `__integral_constant<std::size_t, 0>`.]
+[:`extent<int[1]>` inherits from `__integral_constant<std::size_t, 1>`.]
 
 [:`extent<double[2][3][4], 1>::type` is the type `__integral_constant<std::size_t, 3>`.]
 
@@ -1305,9 +1309,9 @@ the same thing as a /pointer to a function/.
 [[`function_traits<long (int, long, double, void*)>::arity`] [An integral constant expression that has the value 4.]]
 [[`function_traits<void (void)>::result_type`] [The type `void`.]]
 [[`function_traits<long (int)>::result_type`] [The type `long`.]]
-[[`function_traits<long (int)>::arg0_type`] [The type `int`.]]
-[[`function_traits<long (int, long, double, void*)>::arg3_type`] [The type `void*`.]]
-[[`function_traits<long (int, long, double, void*)>::arg4_type`] [A compiler error: there is no `arg4_type` since there are only three arguments.]]
+[[`function_traits<long (int)>::arg1_type`] [The type `int`.]]
+[[`function_traits<long (int, long, double, void*)>::arg4_type`] [The type `void*`.]]
+[[`function_traits<long (int, long, double, void*)>::arg5_type`] [A compiler error: there is no `arg4_type` since there are only three arguments.]]
 [[`function_traits<long (*)(void)>::arity`] [A compiler error: argument type is a /function pointer/, and not a /function type/.]]
 
 ]
@@ -1673,14 +1677,15 @@ expression that evaluates to /true/.]
    template <class Base, class Derived>
    struct is_base_of : public __tof {};
   
-__inherit If Base is base class of type Derived then inherits from __true_type, 
+__inherit If Base is base class of type Derived or if both types are the same
+then inherits from __true_type, 
 otherwise inherits from __false_type.
 
 This template will detect non-public base classes, and ambiguous base classes.
 
-Note that a class is not considered to be it's own base class, 
-likewise, if either `Base` or `Derived` are non-class types, 
-then the class will always inherit from __false_type.
+Note that `is_base_of<X,X>` will always inherit from __true_type.  [*This is the
+case even if `X` is not a class type].  This is a change in behaviour 
+from Boost-1.33 in order to track the Technical Report on C++ Library Extensions.
 
 Types `Base` and `Derived` must not be incomplete types.
 
@@ -1706,7 +1711,7 @@ __examples
 expression that evaluates to /true/.]
 
 [:`is_base_of<Base, Base>::value` is an integral constant 
-expression that evaluates to /false/: a class is not it's own base.]
+expression that evaluates to /true/: a class is regarded as it's own base.]
 
 [:`is_base_of<Derived, Base>::value` is an integral constant 
 expression that evaluates to /false/: the arguments are the wrong way round.]
@@ -1978,6 +1983,7 @@ expression that evaluates to /true/.]
 [endsect]
 
 [section:is_function is_function]
+
    template <class T>
    struct is_function : public __tof {};
   
@@ -2016,6 +2022,18 @@ expression that evaluates to /false/: the argument in this case is a pointer
 to a member function.]
 
 [:`is_function<T>::value_type` is the type `bool`.]
+
+[tip Don't confuse function-types with pointers to functions:\n\n
+`typedef int f(double);`\n\n
+defines a function type,\n\n
+`f foo;`\n\n
+declares a prototype for a function of type `f`,\n\n
+`f* pf = foo;`\n
+`f& fr = foo;`\n\n
+declares a pointer and a reference to the function `foo`.\n\n
+If you want to detect whether some type is a pointer-to-function then use:\n\n
+`__is_function<__remove_pointer<T>::type>::value && __is_pointer<T>::value`\n\n
+or for pointers to member functions you can just use __is_member_function_pointer directly.]
 
 [endsect]
 
@@ -2199,7 +2217,16 @@ expression that evaluates to /false/: void is not an object type]
 __inherit If T is a (possibly cv-qualified) POD type then inherits from __true_type, 
 otherwise inherits from __false_type.
 
-__std_ref 3.9p10 and 9p4.
+POD stands for "Plain old data".  
+Arithmetic types, and enumeration types, 
+a pointers and pointer to members are all PODs.  Classes and unions can also
+be POD's if they have no non-static data members that are of reference or
+non-POD type, no user defined constructors, no user defined assignment
+operators, no private or protected non-static data members, 
+no virtual functions and no base classes.  Finally, a cv-qualified POD is 
+still a POD, as is an array of PODs.
+
+__std_ref 3.9p10 and 9p4 (Note that POD's are also aggregates, see 8.5.1).
 
 __compat If the compiler does not support partial-specialization 
 of class templates, then this template can not be used with function types.
@@ -2228,6 +2255,7 @@ expression that evaluates to /false/.]
 [endsect]
 
 [section:is_pointer is_pointer]
+
    template <class T>
    struct is_pointer : public __tof {};
   
@@ -2255,6 +2283,13 @@ expression that evaluates to /false/.]
 expression that evaluates to /false/.]
 
 [:`is_pointer<T>::value_type` is the type `bool`.]
+
+[important `is_pointer` detects "real" pointer types only, and /not/ smart pointers.
+Users should not specialise `is_pointer` for smart pointer types, as doing so may cause
+Boost (and other third party) code to fail to function correctly.
+Users wanting a trait to detect smart pointers should create their own. 
+However, note that there is no way in general to auto-magically detect smart pointer types, 
+so such a trait would have to be partially specialised for each supported smart pointer type.]
 
 [endsect]
 
@@ -2842,4 +2877,7 @@ should be directed to boost@lists.boost.org
 www.boost.org/more/mailing_lists.htm#main] for subscription details).
 
 [endsect]
+
+
+
 

@@ -54,12 +54,14 @@ double boost_total = 0;
 double locale_boost_total = 0;
 double posix_total = 0;
 double pcre_total = 0;
+double xpressive_total = 0;
 unsigned greta_test_count = 0;
 unsigned safe_greta_test_count = 0;
 unsigned boost_test_count = 0;
 unsigned locale_boost_test_count = 0;
 unsigned posix_test_count = 0;
 unsigned pcre_test_count = 0;
+unsigned xpressive_test_count = 0;
 
 int handle_argument(const std::string& what)
 {
@@ -82,7 +84,7 @@ int handle_argument(const std::string& what)
       time_pcre = true;
 #endif
 #ifdef BOOST_HAS_XPRESSIVE
-   else if(what == "-xpressive")
+   else if(what == "-xpressive" || what == "-dxpr")
       time_xpressive = true;
 #endif
    else if(what == "-all")
@@ -158,6 +160,9 @@ int show_usage()
 #endif
 #ifdef BOOST_HAS_PCRE
       "      -pcre  Apply tests to PCRE library\n"
+#endif
+#ifdef BOOST_HAS_XPRESSIVE
+      "      -dxpr  Apply tests to dynamic xpressive library\n"
 #endif
       "      -all   Apply tests to all libraries\n\n"
       "   test options:\n"
@@ -262,6 +267,10 @@ void output_html_results(bool show_description, const std::string& tagname)
       if(time_pcre == true)
          os << "<td><strong>PCRE</strong></td>";
 #endif
+#ifdef BOOST_HAS_XPRESSIVE
+      if(time_xpressive == true)
+         os << "<td><strong>Dynamic Xpressive</strong></td>";
+#endif
       os << "</tr>\n";
 
       //
@@ -305,6 +314,7 @@ void output_html_results(bool show_description, const std::string& tagname)
                ++boost_test_count;
             }
          }
+#endif
          if(time_localised_boost == true)
          {
             print_result(os, first->localised_boost_time, first->factor);
@@ -314,7 +324,6 @@ void output_html_results(bool show_description, const std::string& tagname)
                ++locale_boost_test_count;
             }
          }
-#endif
          if(time_posix == true)
          {
             print_result(os, first->posix_time, first->factor);
@@ -332,6 +341,17 @@ void output_html_results(bool show_description, const std::string& tagname)
             {
                pcre_total += first->pcre_time / first->factor;
                ++pcre_test_count;
+            }
+         }
+#endif
+#if defined(BOOST_HAS_XPRESSIVE)
+         if(time_xpressive == true)
+         {
+            print_result(os, first->xpressive_time, first->factor);
+            if(first->xpressive_time > 0)
+            {
+               xpressive_total += first->xpressive_time / first->factor;
+               ++xpressive_test_count;
             }
          }
 #endif
@@ -401,6 +421,12 @@ std::string get_averages_table()
       os << "<td><strong>PCRE</strong></td>";
    }
 #endif
+#ifdef BOOST_HAS_XPRESSIVE
+   if(time_xpressive == true)
+   {
+      os << "<td><strong>Dynamic Xpressive</strong></td>";
+   }
+#endif
    os << "</tr>\n";
 
    //
@@ -416,14 +442,18 @@ std::string get_averages_table()
 #if defined(BOOST_HAS_POSIX)
    if(time_boost == true)
       os << "<td>" << (boost_total / boost_test_count) << "</td>\n";
+#endif
    if(time_localised_boost == true)
       os << "<td>" << (locale_boost_total / locale_boost_test_count) << "</td>\n";
-#endif
    if(time_posix == true)
       os << "<td>" << (posix_total / posix_test_count) << "</td>\n";
 #if defined(BOOST_HAS_PCRE)
    if(time_pcre == true)
       os << "<td>" << (pcre_total / pcre_test_count) << "</td>\n";
+#endif
+#if defined(BOOST_HAS_XPRESSIVE)
+   if(time_xpressive == true)
+      os << "<td>" << (xpressive_total / xpressive_test_count) << "</td>\n";
 #endif
    os << "</tr>\n";
    os << "</table>\n";

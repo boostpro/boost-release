@@ -1,7 +1,12 @@
 #!/bin/sh
+#   Copyright (c) 2002 Douglas Gregor <doug.gregor -at- gmail.com>
+# 
+#   Distributed under the Boost Software License, Version 1.0.
+#   (See accompanying file LICENSE_1_0.txt or copy at
+#   http://www.boost.org/LICENSE_1_0.txt)
 
 # User configuration
-DOCBOOK_XSL_VERSION=1.67.2
+DOCBOOK_XSL_VERSION=1.68.1
 DOCBOOK_DTD_VERSION=4.2
 FOP_VERSION=0.20.5
 FOP_MIRROR=http://mirrors.ibiblio.org/pub/mirrors/apache/xml/fop/
@@ -167,10 +172,6 @@ EOF
 awk -f setup_boostbook.awk $JAM_CONFIG_IN > $JAM_CONFIG_OUT
 rm -f setup_boostbook.awk
 echo "done."
-
-if test x"$JAM_CONFIG_IN_TEMP" = "xyes"; then
-  rm -f $JAM_CONFIG_IN
-fi
 
 echo "Done! Execute \"bjam --v2\" in a documentation directory to generate"
 echo "documentation with BoostBook. If you have not already, you will need"

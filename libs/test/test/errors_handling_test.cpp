@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2006.
 //  (C) Copyright Beman Dawes 2001.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at
@@ -9,16 +9,18 @@
 //
 //  File        : $RCSfile: errors_handling_test.cpp,v $
 //
-//  Version     : $Revision: 1.35 $
+//  Version     : $Revision: 1.38 $
 //
 //  Description : tests an ability of Unit Test Framework to catch all kinds
 //  of test errors in a user code and properly report it.
 // ***************************************************************************
 
 // Boost.Test
+#define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
 #include <boost/test/output_test_stream.hpp>
 #include <boost/test/unit_test_log.hpp>
+#include <boost/test/unit_test_suite.hpp>
 #include <boost/test/framework.hpp>
 #include <boost/test/detail/unit_test_parameters.hpp>
 #include <boost/test/output/compiler_log_formatter.hpp>
@@ -98,7 +100,7 @@ void error_on_demand()
         break;
 
     case et_message:
-        BOOST_MESSAGE( "message" );
+        BOOST_TEST_MESSAGE( "message" );
         break;
 
     case et_warning:
@@ -116,17 +118,17 @@ void error_on_demand()
         break;
 
     case et_cpp_exception:
-        BOOST_CHECKPOINT( "error_on_demand() throw runtime_error" );
+        BOOST_TEST_CHECKPOINT( "error_on_demand() throw runtime_error" );
         throw std::runtime_error( "test std::runtime error what() message" );
 
 #ifndef LIMITED_TEST
     case et_system:
-        BOOST_CHECKPOINT( "error_on_demand() divide by zero" );
+        BOOST_TEST_CHECKPOINT( "error_on_demand() divide by zero" );
         divide_by_zero = 1 / divide_by_zero;
         break;
 
     case et_fatal_system:
-        BOOST_CHECKPOINT( "write to an invalid address" );
+        BOOST_TEST_CHECKPOINT( "write to an invalid address" );
         {
             int* p = 0;
             *p = 0;
@@ -145,13 +147,13 @@ void error_on_demand()
 
 //____________________________________________________________________________//
 
-int
-test_main( int argc, char * argv[] )
+BOOST_AUTO_TEST_CASE( test_errors_handling )
 {
 #define PATTERN_FILE_NAME "errors_handling_test.pattern"
     std::string pattern_file_name(
-        argc <= 1 ? (runtime_config::save_pattern() ? PATTERN_FILE_NAME : "./test_files/" PATTERN_FILE_NAME )
-                  : argv[1] );
+        framework::master_test_suite().argc <= 1 
+            ? (runtime_config::save_pattern() ? PATTERN_FILE_NAME : "./test_files/" PATTERN_FILE_NAME)
+            : framework::master_test_suite().argv[1] );
 
 #ifdef LIMITED_TEST
     pattern_file_name += "2";
@@ -188,9 +190,7 @@ test_main( int argc, char * argv[] )
             BOOST_CHECK( test_output.match_pattern() );
         }
     }
-
-    return 0;
-} // main
+}
 
 //____________________________________________________________________________//
 
@@ -198,6 +198,15 @@ test_main( int argc, char * argv[] )
 //  Revision History :
 //
 //  $Log: errors_handling_test.cpp,v $
+//  Revision 1.38  2006/03/19 11:49:04  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.37  2006/02/01 08:00:15  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.36  2005/12/14 06:01:02  rogeeff
+//  *** empty log message ***
+//
 //  Revision 1.35  2005/06/13 11:46:26  schoepflin
 //  Use limited tests with Tru64/CXX.
 //

@@ -1,3 +1,7 @@
+.. Distributed under the Boost
+.. Software License, Version 1.0. (See accompanying
+.. file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
 ++++++++++++++++++++++++++++++++++++++++
  ``pointee`` and ``indirect_reference`` 
 ++++++++++++++++++++++++++++++++++++++++
@@ -5,7 +9,7 @@
 :Author: David Abrahams
 :Contact: dave@boost-consulting.com
 :organization: `Boost Consulting`_
-:date: $Date: 2005/02/27 17:28:11 $
+:date: $Date: 2006/09/11 22:27:27 $
 :copyright: Copyright David Abrahams 2004. 
 
 .. _`Boost Consulting`: http://www.boost-consulting.com

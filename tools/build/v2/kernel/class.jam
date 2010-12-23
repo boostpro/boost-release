@@ -1,7 +1,8 @@
-#  (C) Copyright David Abrahams 2002. Permission to copy, use, modify, sell and
-#  distribute this software is granted provided this copyright notice appears in
-#  all copies. This software is provided "as is" without express or implied
-#  warranty, and with no claim as to its suitability for any purpose.
+# Copyright 2001, 2002, 2003 Dave Abrahams 
+# Copyright 2002, 2005 Rene Rivera 
+# Copyright 2002, 2003 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
 
 # Polymorphic class system built on top of core Jam facilities.
 #
@@ -82,17 +83,17 @@ rule xinit ( instance : class )
 
 rule new ( class args * : * )
 {
-    .next-instance.$(class) ?= 1 ;
-    local id = object($(class))@$(.next-instance.$(class)) ;
+    .next-instance ?= 1 ;
+    local id = object($(class))@$(.next-instance) ;
     
-    xinit $(id) : $(class) ;    
-       
+    xinit $(id) : $(class) ;
+    
     INSTANCE $(id) : class@$(class) ;
     IMPORT_MODULE $(id) : ;
     $(id).__init__ $(args) : $(2) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ;
-          
+    
     # bump the next unique object name
-    .next-instance.$(class) = [ numbers.increment $(.next-instance.$(class)) ] ;
+    .next-instance = [ numbers.increment $(.next-instance) ] ;
     
     # Return the name of the new instance.
     return $(id) ;

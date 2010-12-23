@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright (c) 2002 Douglas Gregor <doug.gregor -at- gmail.com>
+  
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file LICENSE_1_0.txt or copy at
+   http://www.boost.org/LICENSE_1_0.txt)
+  -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision"
                 version="1.0">
@@ -14,6 +21,8 @@
   <xsl:import href="xref.xsl"/>
   <xsl:import href="relative-href.xsl"/>
 
+  <xsl:param name="admon.style"/>
+  <xsl:param name="admon.graphics">1</xsl:param>
   <xsl:param name="html.stylesheet" select="'boostbook.css'"/>
   <xsl:param name="navig.graphics" select="1"/>
   <xsl:param name="navig.graphics.extension" select="'.png'"/>
@@ -27,6 +36,13 @@
   <xsl:param name="doc.standalone">false</xsl:param>
   <xsl:param name="chunker.output.indent">yes</xsl:param>
   <xsl:param name="toc.max.depth">2</xsl:param>
+  
+<xsl:param name="admon.style">
+    <!-- Remove the style. Let the CSS do the styling -->
+</xsl:param>
+
+<!-- Always have graphics -->
+<xsl:param name="admon.graphics" select="1"/>
 
   <xsl:param name="generate.toc">
 appendix  toc,title
@@ -95,6 +111,59 @@ set       toc,title
                                  $time, ' GMT')"/>
   </xsl:template>
 
+
+  <xsl:template name="format.svn.revision">
+    <xsl:param name="text"/>
+
+    <!-- Remove the "$Date: " -->
+    <xsl:variable name="text.noprefix" 
+      select="substring-after($text, '$Date: ')"/>
+
+    <!-- Grab the year -->
+    <xsl:variable name="year" select="substring-before($text.noprefix, '-')"/>
+    <xsl:variable name="text.noyear" 
+      select="substring-after($text.noprefix, '-')"/>
+
+    <!-- Grab the month -->
+    <xsl:variable name="month" select="substring-before($text.noyear, '-')"/>
+    <xsl:variable name="text.nomonth" 
+      select="substring-after($text.noyear, '-')"/>
+
+    <!-- Grab the year -->
+    <xsl:variable name="day" select="substring-before($text.nomonth, ' ')"/>
+    <xsl:variable name="text.noday" 
+      select="substring-after($text.nomonth, ' ')"/>
+
+    <!-- Get the time -->
+    <xsl:variable name="time" select="substring-before($text.noday, ' ')"/>
+    <xsl:variable name="text.notime" 
+      select="substring-after($text.noday, ' ')"/>
+
+    <!-- Get the timezone -->
+    <xsl:variable name="timezone" select="substring-before($text.notime, ' ')"/>
+
+    <xsl:variable name="month.name">
+      <xsl:choose>
+        <xsl:when test="$month=1">January</xsl:when>
+        <xsl:when test="$month=2">February</xsl:when>
+        <xsl:when test="$month=3">March</xsl:when>
+        <xsl:when test="$month=4">April</xsl:when>
+        <xsl:when test="$month=5">May</xsl:when>
+        <xsl:when test="$month=6">June</xsl:when>
+        <xsl:when test="$month=7">July</xsl:when>
+        <xsl:when test="$month=8">August</xsl:when>
+        <xsl:when test="$month=9">September</xsl:when>
+        <xsl:when test="$month=10">October</xsl:when>
+        <xsl:when test="$month=11">November</xsl:when>
+        <xsl:when test="$month=12">December</xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:value-of select="concat($month.name, ' ', $day, ', ', $year, ' at ',
+                                 $time, ' ', $timezone)"/>
+  </xsl:template>
+
+
   <xsl:template match="copyright" mode="boost.footer">
     <xsl:if test="position() &gt; 1">
       <br/>
@@ -135,9 +204,18 @@ set       toc,title
               <small>
                 <p>
                   <xsl:text>Last revised: </xsl:text>
-                  <xsl:call-template name="format.cvs.revision">
-                    <xsl:with-param name="text" select="$revision-text"/>
-                  </xsl:call-template>
+                  <xsl:choose>
+                    <xsl:when test="contains($revision-text, '/')">
+                      <xsl:call-template name="format.cvs.revision">
+                        <xsl:with-param name="text" select="$revision-text"/>
+                      </xsl:call-template>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:call-template name="format.svn.revision">
+                        <xsl:with-param name="text" select="$revision-text"/>
+                      </xsl:call-template>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </p>
               </small>
             </xsl:if>
@@ -153,36 +231,6 @@ set       toc,title
     </table>
   </xsl:template>
 
-  <xsl:template match="variablelist">
-    <xsl:choose>
-      <xsl:when test="@spacing='boost'">
-        <p><xsl:apply-templates mode="boost.variablelist"/></p>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-imports />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="varlistentry" mode="boost.variablelist">
-    <xsl:if test="position() &gt; 1">
-      <br/>
-    </xsl:if>
-    <b><xsl:apply-templates select="term"/></b>:
-
-    <xsl:choose>
-      <xsl:when test="local-name(listitem/*[1])='simpara' or
-                      local-name(listitem/*[1])='para'">
-        <xsl:apply-templates 
-          select="listitem/*[1]/*|listitem/*[1]/text()"/>
-        <xsl:apply-templates select="(listitem/*|listitem/text())[position() &gt; 1]"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="listitem/*|listitem/text()"/>        
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  
   <!-- We don't want refentry's to show up in the TOC because they
        will merely be redundant with the synopsis. -->
   <xsl:template match="refentry" mode="toc"/>

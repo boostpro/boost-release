@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Local Time</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../date_time.html" title="Chapter 3. Boost.Date_Time">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../date_time.html" title="Chapter 4. Boost.Date_Time">
 <link rel="prev" href="posix_time.html" title="Posix Time">
 <link rel="next" href="date_time_io.html" title="Date Time Input/Output">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.htm">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../../people/people.htm">People</a></td>
@@ -23,8 +23,8 @@
 <a accesskey="p" href="posix_time.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../date_time.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="date_time_io.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="date_time.local_time"></a>Local Time</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="date_time.local_time"></a>Local Time</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="local_time.html#date_time.local_time.time_zone_base">Time Zone (abstract)</a></span></dt>
 <dt><span class="section"><a href="local_time.html#date_time.local_time.posix_time_zone">Posix Time Zone</a></span></dt>
@@ -34,11 +34,13 @@
 <dt><span class="section"><a href="local_time.html#date_time.local_time.local_time_period">Local Time Period</a></span></dt>
 </dl></div>
 <h2>
-<a name="id2588373"></a>Local Time System</h2>
-<p><a href="local_time.html#local_intro">Introduction</a> -- 
-    <a href="local_time.html#local_ex">Usage Examples</a></p>
+<a name="id974837"></a>Local Time System</h2>
+<p>
+    <a href="local_time.html#local_intro">Introduction</a> -- 
+    <a href="local_time.html#local_ex">Usage Examples</a>
+  </p>
 <a name="local_intro"></a><h3>
-<a name="id2588399"></a>Introduction</h3>
+<a name="id974867"></a>Introduction</h3>
 <p>
     The library supports 4 main extensions for the management of local times. This includes 
     </p>
@@ -49,13 +51,17 @@
 <tr><td>time_zone -- abstract time zone interface</td></tr>
 </table>
 <p>
+  </p>
+<p>
     Together, these extensions define a time system adjusted for recording times related to a specific earth location. This time system utilizes all the features and benefits of the posix_time system (see <a href="posix_time.html" title="Posix Time">posix_time</a> for full details). It uses a time_zone object which contains all the necessary data/rules to enable adjustments to and from various time zones. The time_zone objects used in date_time are handled via a boost::shared_ptr&lt;boost::local_time::time_zone&gt;.
   </p>
 <p>
     The phrase "wall-clock" refers to the time that would be shown on a wall clock in a particular time zone at any point in time. Local_time uses a time zone object to account for differences in time zones and daylight savings adjustments. For example: While 5:00 pm, October 10, 2004 in Sydney Australia occurs at exactly the same instant as 3:00 am, October 10, 2004 in New York USA, it is a 14 hour difference in wall-clock times. However, a point in time just one day later will result in a 16 hour difference in wall-clock time due to daylight savings adjustments in both time zones. The local_time system tracks these by means of a time point, stored as UTC, and time_zone objects that contain all the necessary data to correctly calculate wall-clock times.
   </p>
 <a name="local_ex"></a><h3>
-<a name="id2588463"></a>Usage Examples</h3>
+<a name="id974915"></a>Usage Examples</h3>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -80,14 +86,16 @@
 </tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="date_time.local_time.time_zone_base"></a>Time Zone (abstract)</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="date_time.local_time.time_zone_base"></a>Time Zone (abstract)</h3></div></div></div>
 <a href="local_time.html#time_zone_base_intro">Introduction</a> --
   <a href="local_time.html#time_zone_base_header">Header</a> --
   <a href="local_time.html#time_zone_base_constr">Construction</a> --
   <a href="local_time.html#time_zone_base_accessors">Accessors</a><a name="time_zone_base_intro"></a><h3>
-<a name="id2588585"></a>Introduction</h3>
+<a name="id975083"></a>Introduction</h3>
 <p>
     The time_zone_base class is an abstract base class template for representing time zones. Time zones are a set of data and rules that provide information about a time zone. The date_time library handles time_zones by means of a boost::shared_ptr&lt;time_zone_base&gt;. A user's custom time zone class will work in the date_time library by means of this shared_ptr.
   </p>
@@ -95,14 +103,16 @@
     For convienience, the time_zone_base class is typedef'd as time_zone. All references in the documentation to time_zone, are referring to this typedef.
   </p>
 <a name="time_zone_base_header"></a><h3>
-<a name="id2588610"></a>Header</h3>
+<a name="id975104"></a>Header</h3>
 <p>
     The time_zone_base class is defined in the header:
     </p>
 <pre class="programlisting">#include "boost/date_time/time_zone_base.hpp"
     </pre>
+<p>
+  </p>
 <a name="time_zone_base_constr"></a><h3>
-<a name="id2588629"></a>Construction</h3>
+<a name="id975126"></a>Construction</h3>
 <p>
     A default constructor is provided in the time_zone_base class. There are no private data members in this base class to initialize.
   </p>
@@ -110,10 +120,12 @@
     Template parameters are time_type (typically posix_time::ptime) and CharT (defaults to char).
   </p>
 <a name="time_zone_base_accessors"></a><h3>
-<a name="id2588648"></a>Accessors</h3>
+<a name="id975149"></a>Accessors</h3>
 <p>
     All of the accessors listed here are pure virtual functions.
   </p>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -175,16 +187,18 @@ std::string to_posix_string();</pre></td>
 </tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="date_time.local_time.posix_time_zone"></a>Posix Time Zone</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="date_time.local_time.posix_time_zone"></a>Posix Time Zone</h3></div></div></div>
 <a href="local_time.html#posix_time_zone_intro">Introduction</a> --
   <a href="local_time.html#posix_time_zone_notes">Important Notes</a> --
   <a href="local_time.html#posix_time_zone_header">Header</a> --
   <a href="local_time.html#posix_time_zone_constr">Construction</a> --
   <a href="local_time.html#posix_time_zone_accessors">Accessors</a><a name="posix_time_zone_intro"></a><h3>
-<a name="id2588864"></a>Introduction</h3>
+<a name="id975424"></a>Introduction</h3>
 <p>
     A posix_time_zone object is a set of data and rules that provide information about a time zone. Information such as the offset from UTC, it's name and abbreviation, as well as daylight savings rules, called <a href="local_time.html#date_time.local_time.dst_calc_rules">dst_calc_rules</a>. These rules are stored as a boost::shared_ptr&lt;dst_calc_rules&gt;.
   </p>
@@ -192,6 +206,8 @@ std::string to_posix_string();</pre></td>
     As a convenience, a typedef for shared_ptr&lt;dst_calc_rules&gt; is provided.
     </p>
 <pre class="programlisting">typedef boost::shared_ptr&lt;dst_calc_rules&gt; local_time::dst_calc_rule_ptr;</pre>
+<p>
+  </p>
 <p>
     A posix_time_zone is unique in that the object is created from a Posix time zone string (IEEE Std 1003.1). A POSIX time zone string takes the form of:
     </p>
@@ -208,6 +224,8 @@ std::string to_posix_string();</pre></td>
       Jn {n=1-365 Feb29 is never counted} <br>
       n {n=0-365 Feb29 is counted in leap years}</p></div>
 <p>
+  </p>
+<p>
     Exceptions will be thrown under the following conditions: 
     </p>
 <div class="itemizedlist"><ul type="disc">
@@ -217,6 +235,8 @@ std::string to_posix_string();</pre></td>
 <li>A UTC zone that is greater than +12 or less than -12 hours.</li>
 <li>A boost::local_time::bad_adjustment exception will be thrown for a DST adjustment that is 24 hours or more (positive or negative)</li>
 </ul></div>
+<p>
+  </p>
 <p>As stated above, the 'offset' and '/time' portions of the string are not required. If they are not given they default to 01:00 for 'offset', and 02:00 for both occurrences of '/time'.
   </p>
 <p>
@@ -247,27 +267,35 @@ std::string to_posix_string();</pre></td>
 leap_day.dst_local_start_time(2004); // ok
 leap_day.dst_local_start_time(2003); // Exception thrown</pre>
 <p>
+  </p>
+<p>
     The posix_time_zone objects are used via a boost::shared_ptr&lt;local_time::time_zone_base&gt;. As a convenience, a typedef for boost::shared_ptr&lt;local_time::time_zone_base&gt; is provided: 
     </p>
 <pre class="programlisting">typedef boost::shared_ptr&lt;time_zone_base&gt; local_time::time_zone_ptr;</pre>
 <p>
+  </p>
+<p>
     See <a href="examples.html#date_time.examples.simple_time_zone" title="Simple Time Zones">Simple time zone</a> for a side by side example of time_zone and posix_time_zone usage.
   </p>
 <a name="posix_time_zone_notes"></a><h3>
-<a name="id2589083"></a>Important Notes</h3>
+<a name="id975661"></a>Important Notes</h3>
 <div class="itemizedlist"><ul type="disc">
 <li>posix_time_zone objects use the standard and daylight savings abbreviations in place of the full names (see <a href="local_time.html#posix_time_zone_accessors">Accessors</a> below).</li>
 <li>'Jn' and 'n' date specifications can not be mixed in a specification string. Ex: "FST+3FDT,59,J304" </li>
 <li>'n' date specification of 59 represents Feb-29. Do not attempt to access in a non-leap year or an exception will be thrown.</li>
 </ul></div>
 <a name="posix_time_zone_header"></a><h3>
-<a name="id2589113"></a>Header</h3>
+<a name="id975698"></a>Header</h3>
 <p>
     The inclusion of a single header will bring in all boost::local_time types, functions, and IO operators.
     </p>
 <pre class="programlisting">#include "boost/date_time/local_time/local_time.hpp"</pre>
+<p>
+  </p>
 <a name="posix_time_zone_constr"></a><h3>
-<a name="id2589132"></a>Construction</h3>
+<a name="id975721"></a>Construction</h3>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -279,12 +307,18 @@ leap_day.dst_local_start_time(2003); // Exception thrown</pre>
 </tr></thead>
 <tbody><tr>
 <td valign="top"><pre class="screen">posix_time_zone(std::string)</pre></td>
-<td><pre class="screen">std::string nyc("EST-5EDT,M4.1.0,M10.5.0");
-time_zone_ptr zone(new posix_time_zone(nyc));</pre></td>
+<td>
+<pre class="screen">std::string nyc("EST-5EDT,M4.1.0,M10.5.0");
+time_zone_ptr zone(new posix_time_zone(nyc));</pre>
+            </td>
 </tr></tbody>
 </table></div>
+<p>
+  </p>
 <a name="posix_time_zone_accessors"></a><h3>
-<a name="id2589173"></a>Accessors</h3>
+<a name="id975784"></a>Accessors</h3>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -322,8 +356,10 @@ time_zone_ptr zone(new posix_time_zone(nyc));</pre></td>
 <td rowspan="2" valign="top"><pre class="screen">bool has_dst()</pre></td>
 <td>Returns true when time_zone's shared_ptr to dst_calc_rules is not NULL.</td>
 </tr>
-<tr><td><pre class="screen">nyc_zone_sh_ptr-&gt;has_dst(); // true
-phx_zone_sh_ptr-&gt;has_dst(); // false</pre></td></tr>
+<tr><td>
+<pre class="screen">nyc_zone_sh_ptr-&gt;has_dst(); // true
+phx_zone_sh_ptr-&gt;has_dst(); // false</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">
 ptime dst_local_start_time(greg_year)</pre></td>
@@ -360,33 +396,39 @@ phx_zone_sh_ptr-&gt;to_posix_string();
             </pre></td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="date_time.local_time.tz_database"></a>Time Zone Database</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="date_time.local_time.tz_database"></a>Time Zone Database</h3></div></div></div>
 <a href="local_time.html#tz_database_intro">Introduction</a> --
   <a href="local_time.html#tz_database_header">Header</a> --
   <a href="local_time.html#tz_database_constr">Construction</a> --
   <a href="local_time.html#tz_database_accessors">Accessors</a> --
   <a href="local_time.html#tz_database_datafile">Data File Details</a><a name="tz_database_intro"></a><h3>
-<a name="id2589511"></a>Introduction</h3>
+<a name="id976209"></a>Introduction</h3>
 <p>
     The local_time system depends on the ability to store time zone information. Our Time Zone Database (tz_database) is a means of permanently storing that data. The specifications for many time zones (377 at this time) are provided. These specifications are based on data found in the <a href="http://www.twinsun.com/tz/tz-link.htm" target="_top">zoneinfo datebase</a>. The specifications are stored in the file:</p>
 <pre class="screen">libs/date_time/data/date_time_zonespec.csv</pre>
 <p>. While this file already contains specifications for many time zones, it's real intent is for the user to modify it by adding (or removing) time zones to fit their application. See <a href="local_time.html#tz_database_datafile">Data File Details</a> to learn how this is accomplished.
   </p>
 <a name="tz_database_header"></a><h3>
-<a name="id2589551"></a>Header</h3>
+<a name="id976254"></a>Header</h3>
 <p>
     The inclusion of a single header will bring in all boost::local_time types, functions, and IO operators.
     </p>
 <pre class="programlisting">#include "boost/date_time/local_time/local_time.hpp"
     </pre>
+<p>
+  </p>
 <a name="tz_database_constr"></a><h3>
-<a name="id2589570"></a>Construction</h3>
+<a name="id976277"></a>Construction</h3>
 <p>
     The only constructor takes no arguments and creates an empty database. It is up to the user to populate the database. This is typically achieved by loading the desired datafile, but can also be accomplished by means of the <code class="computeroutput">add_record(...)</code> function (see the <a href="local_time.html#tz_database_accessors">Accessors table</a>). A <code class="computeroutput">local_time::data_not_accessible</code> exception will be thrown if given zonespec file cannot be found. <code class="computeroutput">local_time::bad_field_count</code> exception will be thrown if the number of fields in given zonespec file is incorrect.
   </p>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -406,12 +448,18 @@ phx_zone_sh_ptr-&gt;to_posix_string();
 <td rowspan="2" valign="top"><pre class="screen">bool load_from_file(std::string)</pre></td>
 <td>Parameter is path to a time zone spec csv file (see <a href="local_time.html#tz_database_datafile">Data File Details</a> for details on the contents of this file). This function populates the database with time zone records found in the zone spec file. A <code class="computeroutput">local_time::data_not_accessible</code> exception will be thrown if given zonespec file cannot be found. <code class="computeroutput">local_time::bad_field_count</code> exception will be thrown if the number of fields in given zonespec file is incorrect.</td>
 </tr>
-<tr><td><pre class="screen">tz_database tz_db;
-tz_db.load_from_file("./date_time_zonespec.csv");</pre></td></tr>
+<tr><td>
+<pre class="screen">tz_database tz_db;
+tz_db.load_from_file("./date_time_zonespec.csv");</pre>
+            </td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="tz_database_accessors"></a><h3>
-<a name="id2589701"></a>Accessors</h3>
+<a name="id976440"></a>Accessors</h3>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -430,29 +478,37 @@ tz_db.load_from_file("./date_time_zonespec.csv");</pre></td></tr>
                       <a href="local_time.html#date_time.local_time.custom_time_zone_ptr">time_zone_ptr</a> tz);</pre></td>
 <td>Adds a time_zone, or a posix_time_zone, to the database. ID is the region name for this zone (Ex: "America/Phoenix").</td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr zone(
+<tr><td>
+<pre class="screen">time_zone_ptr zone(
   new posix_time_zone("PST-8PDT,M4.1.0,M10.1.0")
 );
 std::string id("America/West_Coast");
-tz_db.add_record(id, zone);</pre></td></tr>
+tz_db.add_record(id, zone);</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">time_zone_ptr 
   tz_db.time_zone_from_region(string id);</pre></td>
 <td>Returns a time_zone, via a time_zone_ptr, that matches the region listed in the data file. A null pointer is returned if no match is found.
             </td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr nyc =
-  tz_db.time_zone_from_region("America/New_York");</pre></td></tr>
+<tr><td>
+<pre class="screen">time_zone_ptr nyc =
+  tz_db.time_zone_from_region("America/New_York");</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">vector&lt;string&gt; tz_db.region_list();</pre></td>
 <td>Returns a vector of strings that holds all the region ID strings from the database.</td>
 </tr>
-<tr><td><pre class="screen">std::vector&lt;std::string&gt; regions;
-regions = tz_db.region_list();</pre></td></tr>
+<tr><td>
+<pre class="screen">std::vector&lt;std::string&gt; regions;
+regions = tz_db.region_list();</pre>
+            </td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="tz_database_datafile"></a><h3>
-<a name="id2589818"></a>Data File Details</h3>
+<a name="id976598"></a>Data File Details</h3>
 <a href="local_time.html#tz_database_fields">Field Description/Details</a><p>
     The csv file containing the zone_specs used by the boost::local_time::tz_database is intended to be customized by the library user. When customizing this file (or creating your own) the file must follow a specific format.
   </p>
@@ -469,6 +525,8 @@ not processed by the tz_database.
       ""                &lt;- empty field<br>
     </p></div>
 <p>
+  </p>
+<p>
     Some fields represent a length of time. The format of these fields must be:
     </p>
 <div class="literallayout"><p><br>
@@ -481,7 +539,9 @@ not processed by the tz_database.
     Since some time zones do not use daylight savings it is not always necessary for every field in a zone_spec to contain a value. All zone_specs must have at least ID and GMT offset. Zones that use daylight savings must have all fields filled except: STD ABBR, STD NAME, DST NAME. You should take note that DST ABBR is mandatory for zones that use daylight savings (see field descriptions for further details).
   </p>
 <a name="tz_database_fields"></a><h3>
-<a name="id2589885"></a>Field Description/Details</h3>
+<a name="id976674"></a>Field Description/Details</h3>
+<p>
+    </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
         ID
@@ -558,16 +618,18 @@ not processed by the tz_database.
         </p>
 </li>
 </ul></div>
+<p>
+  </p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="date_time.local_time.custom_time_zone"></a>Custom Time Zone</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="date_time.local_time.custom_time_zone"></a>Custom Time Zone</h3></div></div></div>
 <a href="local_time.html#custom_time_zone_intro">Introduction</a> --
   <a href="local_time.html#custom_time_zone_header">Header</a> --
   <a href="local_time.html#custom_time_zone_constr">Construction</a> --
   <a href="local_time.html#custom_time_zone_accessors">Accessors</a> --
   <a href="local_time.html#custom_time_zone_dependents">Dependent Types</a><a name="custom_time_zone_intro"></a><h3>
-<a name="id2590047"></a>Introduction</h3>
+<a name="id976870"></a>Introduction</h3>
 <p>
     A custom_time_zone object is a set of data and rules that provide information about a time zone. Information such as the offset from UTC, it's name and abbreviation, as well as daylight savings rules, called <a href="local_time.html#date_time.local_time.dst_calc_rules">dst_calc_rules</a>. These rules are handled via a boost::shared_ptr&lt;dst_calc_rules&gt;. Not all time zones utilize daylight savings, therefore, time_zone objects can be used with a NULL-assigned shared_ptr.
   </p>
@@ -575,22 +637,30 @@ not processed by the tz_database.
     As a convenience, a typedef for shared_ptr&lt;dst_calc_rules&gt; is provided.
     </p>
 <pre class="programlisting">typedef boost::shared_ptr&lt;dst_calc_rules&gt; local_time::dst_calc_rule_ptr;</pre>
+<p>
+  </p>
 <a name="date_time.local_time.custom_time_zone_ptr"></a><p>
     The time_zone objects are used via a boost::shared_ptr&lt;local_time::time_zone&gt;. As a convenience, a typedef for boost::shared_ptr&lt;local_time::time_zone&gt; is provided: 
     </p>
 <pre class="programlisting">typedef boost::shared_ptr&lt;time_zone&gt; local_time::time_zone_ptr;</pre>
+<p>
+  </p>
 <a name="custom_time_zone_header"></a><h3>
-<a name="id2590110"></a>Header</h3>
+<a name="id976941"></a>Header</h3>
 <p>
     The inclusion of a single header will bring in all boost::local_time types, functions, and IO operators.
     </p>
 <pre class="programlisting">#include "boost/date_time/local_time/local_time.hpp"</pre>
+<p>
+  </p>
 <a name="custom_time_zone_constr"></a><h3>
-<a name="id2590130"></a>Construction</h3>
+<a name="id976964"></a>Construction</h3>
 <p>
     Construction of a custom_time_zone is dependent on four objects: a 
     <a href="posix_time.html#date_time.posix_time.time_duration" title="Time Duration">time_duration</a>, a <a href="local_time.html#time_zone_names">time_zone_names</a>, a <a href="local_time.html#dst_adjustment_offsets">dst_adjustment_offsets</a>, and a shared_ptr to a <a href="local_time.html#date_time.local_time.dst_calc_rules">dst_calc_rule</a>.
   </p>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -606,12 +676,16 @@ not processed by the tz_database.
     <a href="local_time.html#time_zone_names">names</a>, 
     <a href="posix_time.html#date_time.posix_time.time_duration" title="Time Duration">gmt_offset</a>, 
     <a href="local_time.html#dst_adjustment_offsets">dst_offsets</a>, 
-    <a href="local_time.html#date_time.local_time.dst_calc_rules">dst_rules</a></pre></td>
+    <a href="local_time.html#date_time.local_time.dst_calc_rules">dst_rules</a> </pre></td>
 <td>See <a href="examples.html#date_time.examples.simple_time_zone" title="Simple Time Zones">simple_time_zone</a> example for time_zone usage</td>
 </tr></tbody>
 </table></div>
+<p>
+  </p>
 <a name="custom_time_zone_accessors"></a><h3>
-<a name="id2590239"></a>Accessors</h3>
+<a name="id977098"></a>Accessors</h3>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -653,10 +727,12 @@ not processed by the tz_database.
 <td rowspan="2" valign="top"><pre class="screen">bool has_dst()</pre></td>
 <td>Returns true when custom_time_zone's shared_ptr to dst_calc_rules is not NULL.</td>
 </tr>
-<tr><td><pre class="screen">nyc_zone_sh_ptr-&gt;has_dst();
+<tr><td>
+<pre class="screen">nyc_zone_sh_ptr-&gt;has_dst();
 // true
 phx_zone_sh_ptr-&gt;has_dst();
-// false</pre></td></tr>
+// false</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">dst_local_start_time(...)
   Return Type:
@@ -700,15 +776,19 @@ phx_ptr-&gt;to_posix_string();
             </pre></td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="custom_time_zone_dependents"></a><h3>
-<a name="id2590526"></a>Dependent Types</h3>
+<a name="id977471"></a>Dependent Types</h3>
 <a href="local_time.html#time_zone_names">Time Zone Names</a> --
   <a href="local_time.html#dst_adjustment_offsets">Dst Adjustment Offsets</a> --
   <a href="local_time.html#date_time.local_time.dst_calc_rules">Daylight Savings Calc Rules</a><a name="time_zone_names"></a><h3>
-<a name="id2590558"></a>Time Zone Names</h3>
+<a name="id977504"></a>Time Zone Names</h3>
 <p>
     The time_zone_names_base type is an immutable template class of four strings. One each for the name and abbreviation in standard time and daylight savings time. The time_zone_names type is a typedef of time_zone_names_base&lt;char&gt;.
   </p>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -731,12 +811,14 @@ phx_ptr-&gt;to_posix_string();
     string dst_abbrev</pre></td>
 <td>The only constructor, all four strings must be provided.</td>
 </tr>
-<tr><td><pre class="screen">string sn("Eastern Standard Time");
+<tr><td>
+<pre class="screen">string sn("Eastern Standard Time");
 string sa("EST");
 string dn("Eastern Daylight Time");
 string da("EDT");
 time_zone_names nyc_names(sn, sa, 
-                          dn, da);</pre></td></tr>
+                          dn, da);</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">std::string std_zone_name()</pre></td>
 <td>Returns the standard zone name</td>
@@ -763,11 +845,15 @@ time_zone_names nyc_names(sn, sa,
 // "EDT"</pre></td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="dst_adjustment_offsets"></a><h3>
-<a name="id2590712"></a>Dst Adjustment Offsets</h3>
+<a name="id977513"></a>Dst Adjustment Offsets</h3>
 <p>
     The dst_adjustment_offsets type is a collection of three <a href="posix_time.html#date_time.posix_time.time_duration" title="Time Duration">time_duration</a> objects.
   </p>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -795,14 +881,18 @@ dst_adjustment_offsets(hours(1),
                        hours(2));</pre></td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="date_time.local_time.dst_calc_rules"></a><h3>
-<a name="id2590783"></a>Daylight Savings Calc Rules</h3>
+<a name="id977813"></a>Daylight Savings Calc Rules</h3>
 <p>
     Daylight savings calc rules, named dst_calc_rules, are a series of objects that group appropriate <a href="gregorian.html#date_time.gregorian.date_algorithms" title="Date Generators/Algorithms">date_generators</a> together to form rule sets. The individual rules objects are used via dst_calc_rule_ptr.
   </p>
 <p>
     For a complete example of all five dst_calc_rule types, see: <a href="examples.html#date_time.examples.calc_rules" title="Daylight Savings Calc Rules">calc_rules example</a>.
   </p>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -842,22 +932,28 @@ dst_adjustment_offsets(hours(1),
 <td>The DST start rule is of type gregorian::nth_day_of_the_week_in_month and the end rule is of type gregorian::last_day_of_the_week_in_month.</td>
 </tr>
 <tr>
-<td valign="top"><pre class="screen">nth_kday_dst_rule(...)
+<td valign="top">
+<pre class="screen">nth_kday_dst_rule(...)
   Parameters:
     start_rule
     end_rule)
-(see note* below)</pre></td>
+(see note* below)</pre>
+            </td>
 <td>Both rules are of type gregorian::nth_day_of_the_week_in_month.</td>
 </tr>
 </tbody>
 </table></div>
 <p>
+    </p>
+<p>
       * Note: The name "nth_kday_dst_rule" is a bit cryptic. Therefore, a more descriptive name, "nth_day_of_the_week_in_month_dst_rule", is also provided.
     </p>
+<p>
+  </p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="date_time.local_time.local_date_time"></a>Local Date Time</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="date_time.local_time.local_date_time"></a>Local Date Time</h3></div></div></div>
 <a href="local_time.html#local_date_time_intro">Introduction</a> --
   <a href="local_time.html#local_date_time_header">Header</a> --
   <a href="local_time.html#local_date_time_clock_constr">Construct From Clock</a> --
@@ -865,12 +961,12 @@ dst_adjustment_offsets(hours(1),
   <a href="local_time.html#local_date_time_accessors">Accessors</a> --
   <a href="local_time.html#local_date_time_operators">Operators</a> --
   <a href="local_time.html#local_date_time_tm_func">Struct tm Functions</a><a name="local_date_time_intro"></a><h3>
-<a name="id2590976"></a>Introduction</h3>
+<a name="id978048"></a>Introduction</h3>
 <p>
     A local_date_time object is a point in time and an associated time zone. The time is represented internally as UTC.
   </p>
 <a name="local_date_time_header"></a><h3>
-<a name="id2590991"></a>Header</h3>
+<a name="id978065"></a>Header</h3>
 <p>
     The inclusion of a single header will bring in all boost::local_time types,
 functions, and IO operators.
@@ -878,11 +974,15 @@ functions, and IO operators.
 <pre class="programlisting">
       #include "boost/date_time/local_time/local_time.hpp"
     </pre>
+<p>
+  </p>
 <a name="local_date_time_clock_constr"></a><h3>
-<a name="id2591010"></a>Construct From Clock</h3>
+<a name="id978089"></a>Construct From Clock</h3>
 <p>
     Creation of a local_date_time object from clock is possible with either second, or sub second resolution.
   </p>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -899,12 +999,14 @@ functions, and IO operators.
     local_date_time
   Parameter:
     time_zone_ptr</pre></td>
-<td><pre class="screen">time_zone_ptr zone(
+<td>
+<pre class="screen">time_zone_ptr zone(
   new posix_time_zone("MST-07")
 );
 local_date_time ldt = 
   local_microsec_clock::local_time(
-    zone);</pre></td>
+    zone);</pre>
+            </td>
 </tr>
 <tr>
 <td valign="top"><pre class="screen">local_sec_clock(...)
@@ -912,16 +1014,20 @@ local_date_time ldt =
     local_date_time 
   Parameter:
     time_zone_ptr</pre></td>
-<td><pre class="screen">time_zone_ptr zone(
+<td>
+<pre class="screen">time_zone_ptr zone(
   new posix_time_zone("MST-07")
 );
 local_date_time ldt = 
-  local_sec_clock::local_time(zone);</pre></td>
+  local_sec_clock::local_time(zone);</pre>
+            </td>
 </tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="local_date_time_constr"></a><h3>
-<a name="id2591076"></a>Construction</h3>
+<a name="id978181"></a>Construction</h3>
 <p>
     Construction of a local_date_time object can be done with a ptime and a time_zone_ptr where the ptime represents UTC time. Construction with a wall-clock representation takes the form of a date, a time_duration, a time_zone_ptr, and a fourth parameter that addresses the following complication.
   </p>
@@ -934,6 +1040,8 @@ local_date_time ldt =
 <p>
     There are two elements in the <code class="computeroutput">local_date_time::DST_CALC_OPTIONS</code> enum: <code class="computeroutput">EXCEPTION_ON_ERROR</code> and <code class="computeroutput">NOT_DATE_TIME_ON_ERROR</code>. The possible exceptions thrown are a <code class="computeroutput">local_time::ambiguous_result</code> or a <code class="computeroutput">local_time::time_label_invalid</code>. The <code class="computeroutput">NOT_DATE_TIME_ON_ERROR</code> sets the time value to the special value <code class="computeroutput">local_time::not_a_date_time</code> in the event of either a invalid or an ambiguous time label.
   </p>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -954,13 +1062,15 @@ local_date_time ldt =
     time_zone_ptr</pre></td>
 <td>The given time is expected to be UTC. Therefore, the given time will be adjusted according to the offset described in the time zone.</td>
 </tr>
-<tr><td><pre class="screen">
+<tr><td>
+<pre class="screen">
 // 3am, 2004-Nov-05 local time
 ptime pt(date(2004,Nov,5), 
          hours(10));
 time_zone_ptr zone(
   new posix_time_zone("MST-07"));
-local_date_time az(pt, zone);</pre></td></tr>
+local_date_time az(pt, zone);</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">local_date_time(...)
   Parameters:
@@ -970,13 +1080,15 @@ local_date_time az(pt, zone);</pre></td></tr>
     bool</pre></td>
 <td>The passed time information understood to be in the passed tz. The DST flag must be passed to indicate whether the time is in daylight savings or not. May throw a <code class="computeroutput">dst_not_valid</code> or <code class="computeroutput">time_label_invalid</code> exception.</td>
 </tr>
-<tr><td><pre class="screen">date d(2004,Nov,5);
+<tr><td>
+<pre class="screen">date d(2004,Nov,5);
 time_duration td(5,0,0,0);
 string z("PST-8PDT,M4.1.0,M10.1.0")
 time_zone_ptr zone(
   new posix_time_zone(z));
 local_date_time nyc(d, td, 
-                    zone, false);</pre></td></tr>
+                    zone, false);</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">local_date_time(...)
   Parameters:
@@ -986,13 +1098,15 @@ local_date_time nyc(d, td,
     DST_CALC_OPTIONS</pre></td>
 <td>The passed time information understood to be in the passed tz. The DST flag is calculated according to the specified rule. May throw a <code class="computeroutput">ambiguous_result</code> or <code class="computeroutput">time_label_invalid</code> exception.</td>
 </tr>
-<tr><td><pre class="screen">date d(2004,Nov,5);
+<tr><td>
+<pre class="screen">date d(2004,Nov,5);
 time_duration td(5,0,0,0);
 string z("PST-8PDT,M4.1.0,M10.1.0")
 time_zone_ptr zone(
   new posix_time_zone(z));
 local_date_time nyc(d, td, zone, 
-  NOT_DATE_TIME_ON_ERROR);</pre></td></tr>
+  NOT_DATE_TIME_ON_ERROR);</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">local_date_time(local_date_time);</pre></td>
 <td>Copy Constructor.</td>
@@ -1005,17 +1119,23 @@ local_date_time nyc(d, td, zone,
     time_zone_ptr</pre></td>
 <td>Special Values constructor.</td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr zone(
+<tr><td>
+<pre class="screen">time_zone_ptr zone(
   new posix_time_zone("MST-07")
 );
 local_date_time nadt(not_a_date_time, 
                      zone);
 // default NULL time_zone_ptr
-local_date_time nadt(pos_infin);</pre></td></tr>
+local_date_time nadt(pos_infin);</pre>
+            </td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="local_date_time_accessors"></a><h3>
-<a name="id2591344"></a>Accessors</h3>
+<a name="id978500"></a>Accessors</h3>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -1043,12 +1163,14 @@ local_date_time nadt(pos_infin);</pre></td></tr>
 <td rowspan="2" valign="top"><pre class="screen">ptime utc_time()</pre></td>
 <td>Converts the local time value to a UTC value.</td>
 </tr>
-<tr><td><pre class="screen">ptime pt(date(2004,Nov,5), 
+<tr><td>
+<pre class="screen">ptime pt(date(2004,Nov,5), 
          hours(10));
 time_zone_ptr zone(
   new posix_time_zone("MST-07"));
 local_date_time az(pt, zone);
-az.utc_time(); // 10am 2004-Nov-5</pre></td></tr>
+az.utc_time(); // 10am 2004-Nov-5</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">ptime local_time()</pre></td>
 <td>Returns the local time for this object (Wall-clock).</td>
@@ -1069,8 +1191,10 @@ az.local_time(); // 3am 2004-Nov-5</pre></td></tr>
     time_duration</pre></td>
 <td>Returns a local_date_time representing the same UTC time as calling object, plus optional time_duration, with given time zone.</td>
 </tr>
-<tr><td><pre class="screen">local_date_time nyc = az.local_time_in(nyc_zone);
-// nyc == 7am 2004-Nov-5</pre></td></tr>
+<tr><td>
+<pre class="screen">local_date_time nyc = az.local_time_in(nyc_zone);
+// nyc == 7am 2004-Nov-5</pre>
+            </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">bool is_infinity() const</pre></td>
 <td>Returns true if local_date_time is either positive or negative infinity</td>
@@ -1111,8 +1235,10 @@ ldt2.is_special(); // --&gt; true
 ldt3.is_special(); // --&gt; false</pre></td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="local_date_time_operators"></a><h3>
-<a name="id2591612"></a>Operators</h3>
+<a name="id996315"></a>Operators</h3>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -1168,7 +1294,7 @@ operator-, operator-=</pre></td>
 </tbody>
 </table></div>
 <a name="local_date_time_tm_func"></a><h3>
-<a name="id2591830"></a>Struct tm Functions</h3>
+<a name="id996601"></a>Struct tm Functions</h3>
 <p>Function for converting a <code class="computeroutput">local_date_time</code> object to a <code class="computeroutput">tm</code> struct is provided.</p>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -1187,7 +1313,8 @@ operator-, operator-=</pre></td>
 <td rowspan="2" valign="top"><pre class="screen">tm to_tm(local_date_time)</pre></td>
 <td>A function for converting a <code class="computeroutput">local_date_time</code> object to a <code class="computeroutput">tm</code> struct.</td>
 </tr>
-<tr><td><pre class="screen">
+<tr><td>
+<pre class="screen">
 // 6am, 2005-Jul-05 local time
 std::string z("EST-05EDT,M4.1.0,M10.1.0");
 ptime pt(date(2005,Jul,5), 
@@ -1203,19 +1330,20 @@ tm ldt_tm = to_tm(ldt);
    tm_hour =&gt; 6
    tm_min  =&gt; 0
    tm_sec  =&gt; 0
-   tm_isddst =&gt; 1 */</pre></td></tr>
+   tm_isddst =&gt; 1 */</pre>
+	  </td></tr>
 </tbody>
 </table></div>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="date_time.local_time.local_time_period"></a>Local Time Period</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="date_time.local_time.local_time_period"></a>Local Time Period</h3></div></div></div>
 <a href="local_time.html#local_time_period_intro">Introduction</a> --
   <a href="local_time.html#local_time_period_header">Header</a> --
   <a href="local_time.html#local_time_period_constr">Construction</a> --
   <a href="local_time.html#local_time_period_accessors">Accessors</a> --
   <a href="local_time.html#local_time_period_operators">Operators</a><a name="local_time_period_intro"></a><h3>
-<a name="id2591967"></a>Introduction</h3>
+<a name="id996767"></a>Introduction</h3>
 <p>
     The class <code class="computeroutput">boost::local_time::local_time_period</code> provides direct representation for ranges between two local times. Periods provide the ability to simplify some types of calculations by simplifying the conditional logic of the program. 
   </p>
@@ -1223,12 +1351,18 @@ tm ldt_tm = to_tm(ldt);
     A period that is created with beginning and end points being equal, or with a duration of zero, is known as a zero length period. Zero length periods are considered invalid (it is perfectly legal to construct an invalid period). For these periods, the <code class="computeroutput">last</code> point will always be one unit less that the <code class="computeroutput">begin</code> point.
   </p>
 <a name="local_time_period_header"></a><h3>
-<a name="id2592008"></a>Header</h3>
+<a name="id996812"></a>Header</h3>
+<p>
+    </p>
 <pre class="programlisting">#include "boost/date_time/local_time/local_time.hpp" //include all types plus i/o
 or
 #include "boost/date_time/local_time/local_time_types.hpp" //no i/o just types</pre>
+<p>
+  </p>
 <a name="local_time_period_constr"></a><h3>
-<a name="id2592026"></a>Construction</h3>
+<a name="id996834"></a>Construction</h3>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -1249,14 +1383,16 @@ or
     local_date_time end</pre></td>
 <td> Create a period as [begin, end). If end is &lt;= begin then the period will be defined as invalid.</td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr 
+<tr><td>
+<pre class="screen">time_zone_ptr 
   zone(new posix_time_zone("MST-07"));
 local_date_time 
   beg(ptime(date(2005,Jan,1),hours(0)), zone);
 local_date_time 
   end(ptime(date(2005,Feb,1),hours(0)), zone);
 // period for the entire month of Jan 2005
-local_time_period ltp(beg, end);</pre></td></tr>
+local_time_period ltp(beg, end);</pre>
+	    </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">local_time_period(...)
   Parameters:
@@ -1264,12 +1400,14 @@ local_time_period ltp(beg, end);</pre></td></tr>
     time_duration length</pre></td>
 <td>Create a period as [begin, begin+len) where end would be begin+len. If len is &lt;= zero then the period will be defined as invalid.</td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr 
+<tr><td>
+<pre class="screen">time_zone_ptr 
   zone(new posix_time_zone("MST-07"));
 local_date_time 
   beg(ptime(date(2005,Jan,1),hours(0)), zone);
 // period for the whole day of 2005-Jan-01
-local_time_period ltp(beg, hours(24));</pre></td></tr>
+local_time_period ltp(beg, hours(24));</pre>
+	    </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">local_time_period(local_time_period rhs)</pre></td>
 <td>Copy constructor</td>
@@ -1277,8 +1415,12 @@ local_time_period ltp(beg, hours(24));</pre></td></tr>
 <tr><td><pre class="screen">local_time_period ltp1(ltp);</pre></td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="local_time_period_accessors"></a><h3>
-<a name="id2592137"></a>Accessors</h3>
+<a name="id996988"></a>Accessors</h3>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -1296,54 +1438,64 @@ local_time_period ltp(beg, hours(24));</pre></td></tr>
 <td rowspan="2" valign="top"><pre class="screen">local_date_time begin()</pre></td>
 <td>Return first local_date_time of the period.</td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr 
+<tr><td>
+<pre class="screen">time_zone_ptr 
   zone(new posix_time_zone("MST-07"));
 local_date_time 
   ldt((ptime(date(2005,Jan,1)),hours(0)), zone);
 local_time_period ltp(ldt, hours(2));
-ltp.begin(); // =&gt; 2005-Jan-01 00:00:00</pre></td></tr>
+ltp.begin(); // =&gt; 2005-Jan-01 00:00:00</pre>
+	    </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">local_date_time last()</pre></td>
 <td>Return last local_date_time in the period</td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr 
+<tr><td>
+<pre class="screen">time_zone_ptr 
   zone(new posix_time_zone("MST-07"));
 local_date_time 
   ldt((ptime(date(2005,Jan,1),hours(0))), zone);
 local_time_period ltp(ldt, hours(2));
-ltp.last(); // =&gt; 2005-Jan-01 01:59:59.999999999</pre></td></tr>
+ltp.last(); // =&gt; 2005-Jan-01 01:59:59.999999999</pre>
+	    </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">local_date_time end()</pre></td>
 <td>Return one past the last in period</td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr 
+<tr><td>
+<pre class="screen">time_zone_ptr 
   zone(new posix_time_zone("MST-07"));
 local_date_time 
   ldt((ptime(date(2005,Jan,1),hours(0))), zone);
 local_time_period ltp(ldt, hours(2));
-ltp.end(); // =&gt; 2005-Jan-01 02:00:00</pre></td></tr>
+ltp.end(); // =&gt; 2005-Jan-01 02:00:00</pre>
+	    </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">time_duration length()</pre></td>
 <td>Return the length of the local_time period.</td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr 
+<tr><td>
+<pre class="screen">time_zone_ptr 
   zone(new posix_time_zone("MST-07"));
 local_date_time 
   ldt((ptime(date(2005,Jan,1),hours(0))), zone);
 local_time_period ltp(ldt, hours(2));
-ltp.length(); // =&gt; 02:00:00</pre></td></tr>
+ltp.length(); // =&gt; 02:00:00</pre>
+	    </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">bool is_null()</pre></td>
 <td>True if period is not well formed. eg: end less than or equal to begin.</td>
 </tr>
-<tr><td><pre class="screen">time_zone_ptr 
+<tr><td>
+<pre class="screen">time_zone_ptr 
   zone(new posix_time_zone("MST-07"));
 local_date_time 
   beg((ptime(date(2005,Feb,1),hours(0))), zone);
 local_date_time 
   end((ptime(date(2005,Jan,1),hours(0))), zone);
 local_time_period ltp(beg, end);
-ltp.is_null(); // =&gt; true</pre></td></tr>
+ltp.is_null(); // =&gt; true</pre>
+	    </td></tr>
 <tr>
 <td rowspan="2" valign="top"><pre class="screen">bool contains(local_date_time)</pre></td>
 <td>True if local_date_time is within the period. Zero length periods cannot contain any points</td>
@@ -1446,8 +1598,12 @@ mar_mst.shift(hours(48));
 // 2005-Apr-02 23:59:59.999999999 (inclusive)</pre></td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 <a name="local_time_period_operators"></a><h3>
-<a name="id2592515"></a>Operators</h3>
+<a name="id997417"></a>Operators</h3>
+<p>
+    </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -1483,6 +1639,8 @@ mar_mst.shift(hours(48));
 <tr><td> </td></tr>
 </tbody>
 </table></div>
+<p>
+  </p>
 </div>
 </div>
 <table width="100%"><tr>

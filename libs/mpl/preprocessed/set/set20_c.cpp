@@ -1,5 +1,5 @@
 
-// Copyright Aleksey Gurtovoy 2003-4004
+// Copyright Aleksey Gurtovoy 2003-2004
 //
 // Distributed under the Boost Software License, Version 1.0. 
 // (See accompanying file LICENSE_1_0.txt or copy at 
@@ -8,8 +8,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/set/set20_c.cpp,v $
-// $Date: 2004/11/28 03:35:12 $
-// $Revision: 1.2 $
+// $Date: 2006/06/12 05:11:54 $
+// $Revision: 1.2.6.1 $
 
 #define BOOST_MPL_PREPROCESSING_MODE
 #include <boost/config.hpp>

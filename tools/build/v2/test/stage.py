@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+# Copyright 2003 Dave Abrahams 
+# Copyright 2002, 2003, 2004, 2005, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
+
 # Test staging
 
 from BoostBuild import Tester
@@ -210,9 +215,33 @@ alias h : ..//dist2 ;
 t.run_build_system(subdir="sub")
 t.expect_addition("dist2/b/c.h")
 
+# Test that when installing .cpp files, we don't scan
+# include dependencies.
+t.rm(".")
+t.write("Jamroot", """
+install dist : a.cpp ;
+""")
+t.write("a.cpp", """
+#include "a.h"
+""")
+t.write("a.h", "")
+t.run_build_system()
+t.expect_addition("dist/a.cpp")
 
+t.touch("a.h")
+t.run_build_system()
+t.expect_nothing("dist/a.cpp")
 
+# Test that <name> property works, when there's just
+# one file in sources.
+t.rm(".")
+t.write("Jamroot", """
+install dist : a.cpp : <name>b.cpp ;
+""")
+t.write("a.cpp", "test file")
+t.run_build_system()
 
+t.expect_addition("dist/b.cpp")
 
 t.cleanup()
 

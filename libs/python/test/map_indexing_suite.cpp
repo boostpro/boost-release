@@ -54,9 +54,9 @@ BOOST_PYTHON_MODULE(map_indexing_suite_ext)
     ;
 #endif 
 
-    // Compile check only...
+    // Some more..
     class_<std::map<std::string, boost::shared_ptr<X> > >("TestMap")
-        .def(map_indexing_suite<std::map<std::string, boost::shared_ptr<X> > >())
+        .def(map_indexing_suite<std::map<std::string, boost::shared_ptr<X> >, true>())
     ;
 }
 

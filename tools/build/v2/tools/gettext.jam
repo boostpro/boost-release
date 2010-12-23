@@ -1,7 +1,6 @@
-#  Copyright (C) Vladimir Prus 2003. Permission to copy, use, modify, sell and
-#  distribute this software is granted provided this copyright notice appears in
-#  all copies. This software is provided "as is" without express or implied
-#  warranty, and with no claim as to its suitability for any purpose.
+# Copyright 2003, 2004, 2005, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
 
 #  This module support GNU gettext internationalization utilities.
 # 
@@ -136,7 +135,9 @@ class update-translations-generator : generator
         local types = [ $(property-set).get <gettext.types> ] ;
         types ?= "C CPP" ;
         types = [ regex.split $(types) " " ] ;
-        property-set = [ property-set.empty ] ;
+        
+        local keywords = [ $(property-set).get <gettext.keyword> ] ;
+        property-set = [ property-set.create $(keywords:G=<gettext.keyword>) ] ;
 
         # First deterime the list of sources that must be scanned for 
         # messages.
@@ -162,15 +163,15 @@ class update-translations-generator : generator
             # Create the POT file, which will contain list of messages extracted
             # from the sources.
             local extract = 
-              [ new action $(right-sources) : gettext.extract ] ;
+              [ new action $(right-sources) : gettext.extract : $(property-set) ] ;
             local new-messages = [ new file-target $(name) : gettext.POT 
               : $(project) : $(extract) ] ;
                 
             # Create a notfile target which will update the existing translation file
-            # with new messages.
-            local a = [ new action $(r) : $(sources[1]) $(new-messages) 
+            # with new messages.         
+            local a = [ new action $(sources[1]) $(new-messages) 
               : gettext.update-po-dispatch ] ;
-            local r = [ new notfile-target $(name) : $(project) : $(a) ] ;            
+            local r = [ new notfile-target $(name) : $(project) : $(a) ] ;
             .constructed = [ virtual-target.register $(r) ] ;
         }
         else

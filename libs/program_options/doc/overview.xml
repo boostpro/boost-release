@@ -181,7 +181,7 @@ options_description desc;
 desc.add_options()
     ("help", "produce help message")
     ("compression", value&lt;string&gt;(), "compression level")
-    ("verbose", value&lt;string&gt;()->implicit(), "verbosity level")
+    ("verbose", value&lt;string&gt;()->zero_token(), "verbosity level")
     ("email", value&lt;string&gt;()->multitoken(), "email to send to")
     ;
       </programlisting>
@@ -348,11 +348,18 @@ positional_options_description pd; pd.add("input-file", 1);
         given the same name.
 <programlisting>
 positional_options_description pd;
-pd.add("output-file", 2).add_optional("input-file", -1);
+pd.add("output-file", 2).add("input-file", -1);
 </programlisting>
         In the above example, the first two positional options will be associated
         with name "output-file", and any others with the name "input-file".
       </para>
+
+    <warning>
+      <para>The &positional_options_desc; class only specifies translation from
+      position to name, and the option name should still be registered with
+      an instance of the &options_description; class.</para>
+    </warning>
+
       
     </section>
               
@@ -481,7 +488,7 @@ notify(vm);
       <filename>autoexec.bat</filename> file or (on recent versions) the
       <filename>Control Panel/System/Advanced/Environment Variables</filename>
       dialog, and on Unix &#x2014;, the <filename>/etc/profile</filename>,
-      <filename>~/profile</filename> and <filename>~/bash_profile</filename>
+      <filename>~/.profile</filename> and <filename>~/.bash_profile</filename>
       files. Because environment variables can be set for the entire system,
       they are particularly suitable for options which apply to all programs.
       </para>
@@ -560,8 +567,15 @@ notify(vm);
           
           <row>
             <entry>&parse_command_line;</entry>
-            <entry>parses command line</entry>
+            <entry>parses command line (simpified interface)</entry>
           </row>
+
+          <row>
+            <entry>&basic_command_line_parser;</entry>
+            <entry>parses command line (extended interface)</entry>
+          </row>
+
+
           <row>
             <entry>&parse_config_file;</entry>
             <entry>parses config file</entry>

@@ -1,4 +1,11 @@
 <HTML>
+<!--
+  -- Copyright (c) 2004 Trustees of Indiana University
+  --
+  -- Distributed under the Boost Software License, Version 1.0.
+  -- (See accompanying file LICENSE_1_0.txt or copy at
+  -- http://www.boost.org/LICENSE_1_0.txt)
+  -->
 <Head>
 <Title>Boost Graph Library: G&uuml;rsoy-Atun Layout</Title>
 <script language="JavaScript" type="text/JavaScript">
@@ -81,7 +88,7 @@ Maps</a>.
 
 <p> <a href="#topologies">Various topologies</a> are provided that
 produce different, interesting results. The <a
-href="#square_topology">square toplogy</a> can be used for normal
+href="#square_topology">square topology</a> can be used for normal
 display of graphs or distributing vertices for parallel computation on
 a process array, for instance. Other topologies, such as the <a
 href="#sphere_topology">sphere topology</a> (or N-dimensional <a
@@ -178,6 +185,10 @@ IN: <tt>VertexIndexMap vertex_index_map</tt>
   vertex descriptor type of the graph needs to be usable as the key
   type of the map.<br>
 <b>Default:</b> <tt>get(vertex_index, g)</tt>
+    Note: if you use this default, make sure your graph has
+    an internal <tt>vertex_index</tt> property. For example,
+    <tt>adjacenty_list</tt> with <tt>VertexList=listS</tt> does
+    not have an internal <tt>vertex_index</tt> property.
 </blockquote>
 
 IN: <tt>EdgeWeightMap weight</tt> 
@@ -225,6 +236,10 @@ IN: <tt>vertex_index_map(VertexIndexMap i_map)</tt>
 <blockquote>
 Equivalent to the non-named <tt>vertex_index_map</tt> parameter.<br>
 <b>Default:</b> <tt>get(vertex_index, g)</tt>
+    Note: if you use this default, make sure your graph has
+    an internal <tt>vertex_index</tt> property. For example,
+    <tt>adjacenty_list</tt> with <tt>VertexList=listS</tt> does
+    not have an internal <tt>vertex_index</tt> property.
 </blockquote>
 
 <a name="topologies"><h3>Topologies</h3></a>
@@ -234,7 +249,7 @@ are provided, or you may create your own so long as it meets the
 requirements of the <a href="#topology-concept">Topology concept</a>.
 
 <a name="topology-concept"><h4>Topology Concept</h4></a> Let
-<tt>Topology</tt> be a model of the Toplogy concept and let
+<tt>Topology</tt> be a model of the Topology concept and let
 <tt>space</tt> be an object of type <tt>Topology</tt>. <tt>p1</tt> and
 <tt>p2</tt> are objects of associated type <tt>point_type</tt> (see
 below). The following expressions must be valid:

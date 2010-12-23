@@ -9,10 +9,9 @@
 #ifndef BOOST_LINK_CHECK_HPP
 #define BOOST_LINK_CHECK_HPP
 
-#include "inspector.hpp"
-
 #include <map>
-#include <utility> // for make_pair()
+
+#include "inspector.hpp"
 
 namespace boost
 {
@@ -36,7 +35,7 @@ namespace boost
     public:
 
       link_check();
-      virtual const char * name() const { return "link-check"; }
+      virtual const char * name() const { return "*A*"; }
       virtual const char * desc() const { return "invalid bookmarks, invalid urls, broken links, unlinked files"; }
 
       virtual void inspect(

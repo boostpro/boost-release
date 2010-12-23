@@ -1,12 +1,13 @@
-#  Copyright (C) Vladimir Prus 2002. Permission to copy, use, modify, sell and
-#  distribute this software is granted provided this copyright notice appears in
-#  all copies. This software is provided "as is" without express or implied
-#  warranty, and with no claim as to its suitability for any purpose.
+# Copyright 2003 Dave Abrahams 
+# Copyright 2003, 2004, 2005, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
 
 import "class" : new ;
 import feature ;
 import property ;
 import sequence ;
+import set ;
 
 # Class for storing a set of properties.
 # - there's 1<->1 correspondence between identity and value. No
@@ -98,6 +99,11 @@ class property-set
     rule raw ( )
     {
         return $(self.raw) ;
+    }
+    
+    rule str ( )
+    {
+        return "[" $(self.raw) "]" ;
     }
     
     # Returns properties that are neither incidental nor free
@@ -270,6 +276,10 @@ class property-set
                 else
                 {
                     self.target-path = $(p) ;
+                }   
+                if ! $(self.target-path)
+                {
+                    self.target-path = . ;
                 }                
                 # The path is relative to build dir.
                 self.target-path += true ;
@@ -380,6 +390,64 @@ rule create-from-user-input ( raw-properties * : jamfile-module location )
     specification = [ property.make $(specification) ] ;            
     result = [ property-set.create $(specification) ] ;            
     return $(result) ;
+}
+
+# Refines requirements with requirements provided by the user.
+# Specially handles "-<property>value" syntax in specification
+# to remove given requirements.
+# - parent-requirements -- property-set object with requirements
+#   to refine
+# - specification -- string list of requirements provided by the use
+# - project-module -- the module to which context indirect features
+#   will be bound.
+# - location -- the path to which path features are relative.
+#
+#
+rule refine-from-user-input ( parent-requirements : specification * 
+    : project-module : location )
+{
+    if ! $(specification)
+    {
+        return $(parent-requirements) ;
+    }
+    else
+    {
+        local add-requirements ;
+        local remove-requirements ;
+        
+        for local r in $(specification)
+        {
+            local m = [ MATCH "^-(.*)" : $(r) ] ;
+            if $(m)
+            {
+                remove-requirements += $(m) ;
+            }
+            else
+            {
+                add-requirements += $(r) ;
+            }
+        }
+        
+        if $(remove-requirements)
+        {
+            # Need to create property set, so that path features
+            # and indirect features are translated just like they
+            # are in project requirements.
+            local ps = [ property-set.create-from-user-input 
+                $(remove-requirements) : $(project-module) $(location) ] ;
+            
+            parent-requirements = [ property-set.create 
+                [ set.difference [ $(parent-requirements).raw ] 
+                  : [ $(ps).raw ] ] ] ;
+            specification = $(add-requirements) ;
+        }
+
+        local requirements = [ property-set.create-from-user-input 
+            $(specification) : $(project-module) $(location) ] ;
+        
+        requirements = [ $(parent-requirements).refine $(requirements) ] ;    
+        return $(requirements) ;
+    }
 }
 
 

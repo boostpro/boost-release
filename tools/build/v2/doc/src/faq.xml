@@ -7,6 +7,34 @@
 
     <section>
       <title>
+        How do I get the current value of feature in Jamfile?
+      </title>
+
+      <para>
+        This is not possible, since Jamfile does not have "current" value of any 
+        feature, be it toolset, build variant or anything else. For a single invocation of
+        <filename>bjam</filename>, any given main target can be built with several property sets.
+        For example, user can request two build variants on the command line. Or one library
+        is built as shared when used from one application, and as static when used from another.
+        Obviously, Jamfile is read only once, so generally, there's no single value of a feature
+        you can access in Jamfile.               
+      </para>
+
+      <para>A feature has a specific value only when building a target, and there are two ways how you
+      can use that value:</para>
+      <itemizedlist>
+        <listitem><simpara>Use conditional requirements or indirect conditional requirements. See 
+        <xref linkend="bbv2.advanced.targets.requirements.conditional"/>.</simpara>
+        </listitem>
+        <listitem>Define a custom generator and a custom main target type. The custom generator can do arbitrary processing
+        or properties. See the <xref linkend="bbv2.extender">extender manual</xref>.
+        </listitem>                
+      </itemizedlist>
+
+    </section>
+
+    <section>
+      <title>
         I'm getting "Duplicate name of actual target" error. What
         does it mean?
       </title>
@@ -99,8 +127,8 @@ exe a : a_obj ;
     namespace. Therefore, to access environment variable from Jamfile, you'd
     need the following code:
 <programlisting>
-import modules ;
-local SOME_LIBRARY_PATH = [ modules.peek : SOME_LIBRARY_PATH ] ;
+import os ;
+local SOME_LIBRARY_PATH = [ os.environ SOME_LIBRARY_PATH ] ;
 exe a : a.cpp : &lt;include&gt;$(SOME_LIBRARY_PATH) ;
 </programlisting>
     </para>
@@ -180,28 +208,11 @@ exe viewer : viewer png z ;
     <title>Can I get output of external program as a variable in a Jamfile?
     </title>
 
-    <para>From time to time users ask how to run an external program and save
-    the result in Jamfile variable, something like:
+    <para>The <code>SHELL</code> builtin can be used for the purpose:
 <programlisting>
-local gtk_includes = [ RUN_COMMAND gtk-config ] ;
+local gtk_includes = [ SHELL "gtk-config --cflags" ] ;
 </programlisting>
-      Unfortunately, this is not possible at the moment. However, if the
-      result of command invocation is to be used in a command to some tool,
-      and you're working on Unix, the following workaround is possible.
-<programlisting>
- alias gtk+-2.0 : : : :
-         &lt;cflags&gt;"`pkg-config --cflags gtk+-2.0`"
-         &lt;inkflags&gt;"`pkg-config --libs gtk+-2.0`"
-     ;
-</programlisting>
-      If you use the "gtk+-2.0" target in sources, then the properties
-      specified above will be added to the build properties and eventually
-      will appear in the command line. Unix command line shell processes
-      the backticks quoting by running the tool and using its output --
-      which is what's desired in that case. Thanks to Daniel James for
-      sharing this approach.
     </para>
-
   </section>
 
   <section>
@@ -338,11 +349,52 @@ exe hello : hello.cpp /site-config//zlib ;
       in any Jamfile.</para>
 
   </section>
+
+  <section id="bbv2.faq.header-only-libraries">
+    <title>Header-only libraries</title>
+
+    <para>In modern C++, libraries often consist of just header files, without
+    any source files to compile. To use such libraries, you need to add proper
+    includes and, maybe, defines, to your project. But with large number of
+    external libraries it becomes problematic to remember which libraries are
+    header only, and which are "real" ones. However, with Boost.Build a 
+    header-only library can be declared as Boost.Build target and all 
+    dependents can use such library without remebering if it's header-only or not.
+    </para>
+
+    <para>Header-only libraries are declared using the <code>alias</code> rule,
+    that specifies only usage requirements, for example:
+<programlisting>
+alias mylib 
+    : # no sources
+    : # no build requirements
+    : # no default build
+    : &lt;include&gt;whatever
+    ;
+</programlisting>
+    The includes specified in usage requirements of <code>mylib</code> are
+    automatically added to build properties of all dependents. The dependents
+    need not care if <code>mylib</code> is header-only or not, and it's possible
+    to later make <code>mylib</code> into a regular compiled library.
+    </para>
+
+    <para>
+      If you already have proper usage requirements declared for project where
+      header-only library is defined, you don't need to duplicate them for
+      the <code>alias</code> target:
+<programlisting>
+project my : usage-requirements &lt;include&gt;whatever ;
+alias mylib ;
+</programlisting>      
+    </para>
+
+  </section>
+
     
   </chapter>
 <!--
      Local Variables:
-     mode: xml
+     mode: nxml
      sgml-indent-data: t     
      sgml-parent-document: ("userman.xml" "chapter")
      sgml-set-face: t

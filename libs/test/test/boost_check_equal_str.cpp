@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2006.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,14 +7,15 @@
 //
 //  File        : $RCSfile: boost_check_equal_str.cpp,v $
 //
-//  Version     : $Revision: 1.2 $
+//  Version     : $Revision: 1.5 $
 //
 //  Description : basic_cstring unit test
 // *****************************************************************************
 
-#include <boost/test/test_tools.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 
-int test_main( int, char *[] )
+BOOST_AUTO_TEST_CASE( check_string_compare )
 {
     char const* buf_ptr_cch     = "abc";
     char const  buf_array_cch[] = "abc";
@@ -51,8 +52,6 @@ int test_main( int, char *[] )
     BOOST_CHECK_EQUAL(buf_str, buf_ptr_ch);
     BOOST_CHECK_EQUAL(buf_str, buf_array_ch);
     BOOST_CHECK_EQUAL(buf_str, buf_str);
-
-    return 0;
 }
 
 // EOF

@@ -5,7 +5,7 @@
     
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -113,7 +113,6 @@ lexer<IteratorT, PositionT>::lexer(IteratorT const &first,
 // not used by the lexer
     scanner.enable_ms_extensions = 0;
     scanner.act_in_c99_mode = 0;
-    scanner.act_in_cpp0x_mode = 0;
 
     boost::ignore_unused_variable_warning(language);
 }
@@ -181,6 +180,7 @@ lexer<IteratorT, PositionT>::report_error(scanner_t const *s, char const* msg, .
     
     BOOST_WAVE_LEXER_THROW(boost::wave::cpplexer::lexing_exception, 
         generic_lexing_error, buffer, s->line, -1, s->file_name);
+    return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -210,6 +210,9 @@ public:
     token_type get() { return lexer.get(); }
     void set_position(PositionT const &pos) 
     { lexer.set_position(pos); }
+#if BOOST_WAVE_SUPPORT_PRAGMA_ONCE != 0
+    bool has_include_guards(std::string&) const { return false; }
+#endif    
 
 private:
     lexer<IteratorT, PositionT> lexer;

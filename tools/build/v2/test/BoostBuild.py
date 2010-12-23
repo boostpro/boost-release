@@ -1,16 +1,23 @@
+# Copyright 2002-2005 Vladimir Prus.
+# Copyright 2002-2003 Dave Abrahams.
+# Copyright 2006 Rene Rivera.
+# Distributed under the Boost Software License, Version 1.0.
+#    (See accompanying file LICENSE_1_0.txt or copy at
+#         http://www.boost.org/LICENSE_1_0.txt)
 
 import TestCmd
 from tree import build_tree, trees_difference
 import copy
 import fnmatch
+import glob
 import os
+import re
 import shutil
 import string
 import types
 import time
 import tempfile
 import sys
-import re
 
 def get_toolset():
     toolset = None;
@@ -38,6 +45,17 @@ def prepare_suffix_map(toolset):
             suffixes['.obj'] = '.o'
     if os.__dict__.has_key('uname') and os.uname()[0] == 'Darwin':
         suffixes['.dll'] = '.dylib'
+
+def re_remove(sequence,regex):
+    me = re.compile(regex)
+    result = filter( lambda x: me.match(x), sequence )
+    for r in result:
+        sequence.remove(r)
+
+def glob_remove(sequence,pattern):
+    result = fnmatch.filter(sequence,pattern)
+    for r in result:
+        sequence.remove(r)
 
 lib_prefix = 1
 if windows:
@@ -92,69 +110,77 @@ class Tester(TestCmd.TestCmd):
 
         self.toolset = get_toolset()
         self.pass_toolset = pass_toolset
-        
+
         prepare_suffix_map(pass_toolset and self.toolset or 'gcc')
 
-        jam_build_dir = ""
-        if os.name == 'nt':
-            jam_build_dir = "bin.ntx86"
-        elif os.name == 'posix' and os.__dict__.has_key('uname'):
-            if os.uname()[0].lower().startswith('cygwin'):
-                jam_build_dir = "bin.cygwinx86"
-                if 'TMP' in os.environ and os.environ['TMP'].find('~') != -1:
-                    print 'Setting $TMP to /tmp to get around problem with short path names'
-                    os.environ['TMP'] = '/tmp'
-            elif os.uname()[0] == 'Linux':
-                cpu = os.uname()[4]
-                if re.match("i.86", cpu):
-                    jam_build_dir = "bin.linuxx86";
+        if not '--default-bjam' in sys.argv:
+            jam_build_dir = ""
+            if os.name == 'nt':
+                jam_build_dir = "bin.ntx86"
+            elif os.name == 'posix' and os.__dict__.has_key('uname'):
+                if os.uname()[0].lower().startswith('cygwin'):
+                    jam_build_dir = "bin.cygwinx86"
+                    if 'TMP' in os.environ and os.environ['TMP'].find('~') != -1:
+                        print 'Setting $TMP to /tmp to get around problem with short path names'
+                        os.environ['TMP'] = '/tmp'
+                elif os.uname()[0] == 'Linux':
+                    cpu = os.uname()[4]
+                    if re.match("i.86", cpu):
+                        jam_build_dir = "bin.linuxx86";
+                    else:
+                        jam_build_dir = "bin.linux" + os.uname()[4]
+                elif os.uname()[0] == 'SunOS':
+                    jam_build_dir = "bin.solaris"
+                elif os.uname()[0] == 'Darwin':
+                    jam_build_dir = "bin.macosxppc"
+                elif os.uname()[0] == "AIX":
+                    jam_build_dir = "bin.aix"
+                elif os.uname()[0] == "IRIX64":
+                    jam_build_dir = "bin.irix"
+                elif os.uname()[0] == "FreeBSD":
+                    jam_build_dir = "bin.freebsd"
+                elif os.uname()[0] == "OSF1":
+                    jam_build_dir = "bin.osf"
                 else:
-                    jam_build_dir = "bin.linux" + os.uname()[4]
-            elif os.uname()[0] == 'SunOS':
-                jam_build_dir = "bin.solaris"
-            elif os.uname()[0] == 'Darwin':
-                jam_build_dir = "bin.macosxppc"
-            elif os.uname()[0] == "AIX":
-                jam_build_dir = "bin.aix"
-            elif os.uname()[0] == "IRIX64":
-                jam_build_dir = "bin.irix"
-            elif os.uname()[0] == "FreeBSD":
-                jam_build_dir = "bin.freebsd"
+                    raise "Don't know directory where jam is build for this system: " + os.name + "/" + os.uname()[0]
             else:
-                raise "Don't know directory where jam is build for this system: " + os.name + "/" + os.uname()[0]
-        else:
-            raise "Don't know directory where jam is build for this system: " + os.name
+                raise "Don't know directory where jam is build for this system: " + os.name
 
-        if boost_build_path is None:
-            boost_build_path = self.original_workdir
-            
+            # Find there jam_src is located.
+            # try for the debug version if it's lying around
+
+            dirs = [os.path.join('../../../jam/src', jam_build_dir + '.debug'),
+                    os.path.join('../../../jam/src', jam_build_dir),
+                    os.path.join('../../jam_src', jam_build_dir + '.debug'),
+                    os.path.join('../../jam_src', jam_build_dir),
+                    os.path.join('../jam_src', jam_build_dir + '.debug'),
+                    os.path.join('../jam_src', jam_build_dir),
+                    ]
+
+            for d in dirs:
+                if os.path.exists(d):
+                    jam_build_dir = d
+                    break
+            else:
+                print "Cannot find built Boost.Jam"
+                os.exit(1)
 
         verbosity = ['-d0', '--quiet']
         if '--verbose' in sys.argv:
             keywords['verbose'] = 1
             verbosity = ['-d+2']
 
+        if boost_build_path is None:
+            boost_build_path = self.original_workdir
+
         program_list = []
-
-        # Find there jam_src is located.
-        # try for the debug version if it's lying around
-
-        dirs = [os.path.join('../../jam_src', jam_build_dir + '.debug'),
-                os.path.join('../../jam_src', jam_build_dir),
-                os.path.join('../jam_src', jam_build_dir + '.debug'),
-                os.path.join('../jam_src', jam_build_dir),
-                ]
-
-        for d in dirs:
-            if os.path.exists(d):
-                jam_build_dir = d
-                break
-        else:
-            print "Cannot find built Boost.Jam"
-            os.exit(1)                                    
         
-            
-        program_list.append(os.path.join(jam_build_dir, executable))
+        if '--default-bjam' in sys.argv:
+            program_list.append(executable)
+            inpath_bjam = True
+        else:
+            program_list.append(os.path.join(jam_build_dir, executable))
+            inpath_bjam = None
         program_list.append('-sBOOST_BUILD_PATH=' + boost_build_path)
         if verbosity:
             program_list += verbosity
@@ -166,6 +192,7 @@ class Tester(TestCmd.TestCmd):
             , program=program_list
             , match=match
             , workdir = workdir
+            , inpath = inpath_bjam
             , **keywords)
 
         os.chdir(self.workdir)
@@ -230,6 +257,13 @@ class Tester(TestCmd.TestCmd):
         self.wait_for_time_change()
         self.write(dst, self.read(src))
 
+    def copy_preserving_timestamp(self, src, dst):
+        src_name = self.native_file_name(src)
+        dst_name = self.native_file_name(dst)
+        stats = os.stat(src_name)        
+        self.write(dst, self.read(src))
+        os.utime(dst_name, (stats.st_atime, stats.st_mtime))
+        
     def touch(self, names):
         self.wait_for_time_change()
         for name in self.adjust_names(names):
@@ -244,10 +278,13 @@ class Tester(TestCmd.TestCmd):
         os.chdir(self.original_workdir)
         for name in names:
             n = self.native_file_name(name)
-            if os.path.isdir(n):
-                shutil.rmtree(n, ignore_errors=0)
-            else:
-                os.unlink(n)
+            n = glob.glob(n)
+            if n:
+                n = n[0]
+                if os.path.isdir(n):
+                    shutil.rmtree(n, ignore_errors=0)
+                else:
+                    os.unlink(n)
 
         # Create working dir root again, in case
         # we've removed it
@@ -347,10 +384,10 @@ class Tester(TestCmd.TestCmd):
         self.last_build_time = time.time()
 
     def read(self, name):
-        return open(self.native_file_name(name), "rb").read()
+        return open(glob.glob(self.native_file_name(name))[0], "rb").read()
 
     def read_and_strip(self, name):
-        lines = open(self.native_file_name(name), "rb").readlines()
+        lines = open(glob.glob(self.native_file_name(name))[0], "rb").readlines()
         result = string.join(map(string.rstrip, lines), "\n")
         if lines and lines[-1][-1] == '\n':
             return result + '\n'
@@ -366,7 +403,7 @@ class Tester(TestCmd.TestCmd):
         if condition and dump_stdio:
             self.dump_stdio()
 
-        if '--preserve' in sys.argv:
+        if condition and '--preserve' in sys.argv:
             print 
             print "*** Copying the state of working dir into 'failed_test' ***"
             print 
@@ -388,7 +425,7 @@ class Tester(TestCmd.TestCmd):
     def expect_addition(self, names):        
         for name in self.adjust_names(names):
                 try:
-                        self.unexpected_difference.added_files.remove(name)
+                        glob_remove(self.unexpected_difference.added_files,name)
                 except:
                         print "File %s not added as expected" % (name,)
                         self.fail_test(1)
@@ -399,7 +436,7 @@ class Tester(TestCmd.TestCmd):
     def expect_removal(self, names):
         for name in self.adjust_names(names):
                 try:
-                        self.unexpected_difference.removed_files.remove(name)
+                        glob_remove(self.unexpected_difference.removed_files,name)
                 except:
                         print "File %s not removed as expected" % (name,)
                         self.fail_test(1)
@@ -432,7 +469,7 @@ class Tester(TestCmd.TestCmd):
 
             while filesets:
                 try:
-                    filesets[-1].remove(name)
+                    glob_remove(filesets[-1],name)
                     break
                 except ValueError:
                     filesets.pop()
@@ -475,6 +512,7 @@ class Tester(TestCmd.TestCmd):
             self.ignore('*.pdb') # msvc program database files
             self.ignore('*.rsp') # response files
             self.ignore('*.tds') # borland debug symbols
+            self.ignore('*.manifest') # msvc DLL manifests
 
         # debug builds of bjam built with gcc produce this profiling data
         self.ignore('gmon.out')
@@ -484,22 +522,67 @@ class Tester(TestCmd.TestCmd):
            print 'FAILED'
            print '------- The following changes were unexpected ------- '
            self.unexpected_difference.pprint()
-           self.fail_test(1)       
+           self.fail_test(1)
 
-    def expect_content(self, name, content, exact=0):
+    def _expect_line(self, content, expected):
+        expected = expected.strip()
+        lines = content.splitlines()
+        found = 0
+        for line in lines:
+            line = line.strip()
+            if fnmatch.fnmatch(line, expected):
+                found = 1
+                break
+
+        if not found:
+            print "Did not found expected line in output:"
+            print expected
+            print "The output was:"
+            print content
+            self.fail_test(1)
+
+    def expect_output_line(self, expected):
+        self._expect_line(self.stdout(), expected)
+
+    def expect_content_line(self, name, expected):
+        content = self._read_file(name)
+        self._expect_line(content, expected)
+
+    def _read_file(self, name, exact=0):
         name = self.adjust_names(name)[0]
+        result = ""
         try:
             if exact:
-                actual = self.read(name)
+                result = self.read(name)
             else:
-                actual = string.replace(self.read_and_strip(name), "\\", "/")
+                result = string.replace(self.read_and_strip(name), "\\", "/")
         except IOError:
             print "Note: could not open file", name
             self.fail_test(1)
+        return result
+            
 
-        content = string.replace(content, "$toolset", self.toolset)
+    def expect_content(self, name, content, exact=0):
+        actual = self._read_file(name, exact)
+        content = string.replace(content, "$toolset", self.toolset+"*")
 
-        if actual != content:
+        matched = 0
+        if exact:
+            matched = fnmatch.fnmatch(actual,content)
+        else:
+            actual_ = map(lambda x: sorted(x.split()),actual.splitlines())
+            content_ = map(lambda x: sorted(x.split()),content.splitlines())
+            if len(actual_) == len(content_):
+                matched = map(
+                    lambda x,y: map(lambda n,p: fnmatch.fnmatch(n,p),x,y),
+                    actual_, content_ )
+                matched = reduce(
+                    lambda x,y: x and reduce(
+                        lambda a,b: a and b,
+                    y ),
+                    matched )
+
+        if not matched:
             print "Expected:\n"
             print content
             print "Got:\n"
@@ -584,7 +667,7 @@ class Tester(TestCmd.TestCmd):
                 names = [names]
         r = map(self.adjust_lib_name, names)
         r = map(self.adjust_suffix, r)
-        r = map(lambda x, t=self.toolset: string.replace(x, "$toolset", t), r)
+        r = map(lambda x, t=self.toolset: string.replace(x, "$toolset", t+"*"), r)
         return r
 
     def native_file_name(self, name):

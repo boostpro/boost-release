@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -49,14 +49,14 @@ GLUE(MACRO_, 1)                   //R 1
 
 // 27.4: 'SUB' as an argument of math() is not pre-expanded, since '('
 //       missing.
-// R #line 54 "t_5_030.cpp"
-//#define SUB(x, y)       (x - y)
-//#define HEAD            SUB(
-//#define MATH(op, a, b)  op( (a), (b))
-//MATH(SUB, a, b)                   // R 
+//R #line 55 "t_5_030.cpp"
+#define SUB(x, y)       (x - y)
+#define MATH(op, a, b)  op( (a), (b))
+MATH(SUB, a, b)                   //R ((a) - (b)) 
 
 // 27.5: Queer thing.
 // R #line 28 "t_5_030.cpp"
+//#define HEAD            SUB(
 //HEAD a,b )                        // R 
 
 // 27.6: Recursive macro.

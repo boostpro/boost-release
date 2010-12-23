@@ -1,5 +1,5 @@
 
-# Copyright Aleksey Gurtovoy 2001-2004
+# Copyright Aleksey Gurtovoy 2001-2006
 #
 # Distributed under the Boost Software License, Version 1.0. 
 # (See accompanying file LICENSE_1_0.txt or copy at 
@@ -8,13 +8,14 @@
 # See http://www.boost.org/libs/mpl for documentation.
 
 # $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/preprocess_map.py,v $
-# $Date: 2004/12/14 12:57:14 $
-# $Revision: 1.3 $
+# $Date: 2006/11/23 19:57:11 $
+# $Revision: 1.3.4.1 $
 
 import preprocess
+import os.path
 
 preprocess.main(
       [ "plain", "typeof_based", "no_ctps" ]
     , "map"
-    , "boost\\mpl\\map\\aux_\\preprocessed"
+    , os.path.join( "boost", "mpl", "map", "aux_", "preprocessed" )
     )

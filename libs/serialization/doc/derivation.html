@@ -7,7 +7,7 @@ License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt)
 -->
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="../../../boost.css">
 <link rel="stylesheet" type="text/css" href="style.css">
 <title>Serialization - Derivation from an Existing Archive</title>
@@ -73,7 +73,11 @@ the base classes.
     typedef portable_binary_oarchive derived_t;
     friend class detail::common_oarchive&lt;derived_t&gt;;
     friend class basic_binary_oarchive&lt;derived_t&gt;;
-    friend class basic_binary_oprimitive&lt;derived_t, std::ostream&gt;;
+    friend class basic_binary_oprimitive&lt;
+        derived_t, 
+        std::ostream::char_type, 
+        std::ostream::traits_type
+    &gt;;
     friend class boost::serialization::save_access;
 </code></pre>
     <li><i>Base class functions will usually need to be explicitly invoked</i>

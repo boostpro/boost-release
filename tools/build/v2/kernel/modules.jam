@@ -1,7 +1,7 @@
-#  (C) Copyright David Abrahams 2001. Permission to copy, use, modify, sell and
-#  distribute this software is granted provided this copyright notice appears in
-#  all copies. This software is provided "as is" without express or implied
-#  warranty, and with no claim as to its suitability for any purpose.
+# Copyright 2003 Dave Abrahams 
+# Copyright 2003, 2005 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
 
 # Essentially an include guard; ensures that no module is loaded multiple times
 .loaded ?= ;
@@ -205,6 +205,9 @@ local rule normalize-raw-paths ( paths * )
     return $(result) ;
 }
 
+.cwd = [ PWD ] ;
+
+
 # load the indicated module and import rule names into the current
 # module. Any members of rules-opt will be available without
 # qualification in the caller's module. Any members of rename-opt will
@@ -238,18 +241,17 @@ rule import ( module-names + : rules-opt * : rename-opt * )
             # if the importing module isn't already in the BOOST_BUILD_PATH,
             # prepend it to the path.  We don't want to invert the search
             # order of modules that are already there.
-            local cwd = [ PWD ] ;
-            
+                        
             local caller-location ; 
             if $(caller)
             {
                 caller-location = [ binding $(caller) ] ;
                 caller-location = $(caller-location:D) ;
-                caller-location = [ normalize-raw-paths $(caller-location:R=$(cwd)) ] ;
+                caller-location = [ normalize-raw-paths $(caller-location:R=$(.cwd)) ] ;
             }
             
             local search = [ peek : BOOST_BUILD_PATH ] ;
-            search = [ normalize-raw-paths $(search:R=$(cwd)) ] ;
+            search = [ normalize-raw-paths $(search:R=$(.cwd)) ] ;
             
             if $(caller-location) && ! $(caller-location) in $(search)
             {

@@ -1,3 +1,7 @@
+.. Distributed under the Boost
+.. Software License, Version 1.0. (See accompanying
+.. file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
 +++++++++++++++++++++++++++++++++++++++++++++++++
  The Boost.Iterator Library |(logo)|__
 +++++++++++++++++++++++++++++++++++++++++++++++++
@@ -15,7 +19,7 @@ __ ../../../index.htm
 :Contact:       dave@boost-consulting.com, jsiek@osl.iu.edu, witt@styleadvisor.com
 :organizations: `Boost Consulting`_, Indiana University `Open Systems
                 Lab`_, `Zephyr Associates, Inc.`_
-:date:          $Date: 2004/11/02 14:31:23 $
+:date:          $Date: 2006/09/11 22:27:28 $
 
 :copyright:     Copyright David Abrahams, Jeremy Siek, Thomas Witt 2003.
 

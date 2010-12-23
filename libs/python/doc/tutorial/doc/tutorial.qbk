@@ -252,9 +252,10 @@ if you are on Windows, and
 if you are on Unix.
 
 [^boost_python.dll] and [^hello.pyd] can be found somewhere in your project's
-[^bin] directory. After a successful build, you can just link in these DLLs with 
-the Python interpreter. In Windows for example, you can simply put these libraries 
-inside the directory where the Python executable is.
+[^bin] directory. After a successful build, you make it possible for the system 
+to find boost_python.dll or libboost_python.so (usually done with LD_LIBRARY_PATH, 
+DYLD_LIBRARY_PATH, or some other variable on *nix and with PATH on Windows) and 
+for Python to find the hello module (Done with PYTHONPATH on all systems.)
 
 You may now fire up Python and run our hello module:
 
@@ -1099,7 +1100,7 @@ overloaded functions in one-shot:
 
 Then...
 
-    .def("foo", foo, foo_overloads());
+    .def("foo", (void(*)(bool, int, char))0, foo_overloads());
 
 Notice though that we have a situation now where we have a minimum of zero
 (0) arguments and a maximum of 3 arguments.
@@ -1249,7 +1250,7 @@ Python:
 [python]
 
     >>> d = dict(x.__dict__)     # copies x.__dict__
-    >>> d['whatever']            # modifies the copy
+    >>> d['whatever'] = 3        # modifies the copy
 
 C++:
 [c++]
@@ -1307,7 +1308,7 @@ __tip__ The astute reader might have noticed that the [^extract<T>]
 facility in fact solves the mutable copying problem:
 
     dict d = extract<dict>(x.attr("__dict__"));
-    d['whatever'] = 3;          # modifies x.__dict__ !
+    d["whatever"] = 3;          // modifies x.__dict__ !
 
 
 [endsect]
@@ -1753,6 +1754,38 @@ Now, our C++ Wrapper:
     class_<F>("Field")
         .property("pions", range(&F::p_begin, &F::p_end))
         .property("bogons", range(&F::b_begin, &F::b_end));
+
+[*stl_input_iterator]
+
+So far, we have seen how to expose C++ iterators and ranges to Python.
+Sometimes we wish to go the other way, though: we'd like to pass a
+Python sequence to an STL algorithm or use it to initialize an STL
+container. We need to make a Python iterator look like an STL iterator.
+For that, we use `stl_input_iterator<>`. Consider how we might 
+implement a function that exposes `std::list<int>::assign()` to
+Python:
+
+[c++]
+
+    template<typename T>
+    void list_assign(std::list<T>& l, object o) {
+        // Turn a Python sequence into an STL input range
+        stl_input_iterator<T> begin(o), end;
+        l.assign(begin, end);
+    }
+
+    // Part of the wrapper for list<int>
+    class_<std::list<int> >("list_int")
+        .def("assign", &list_assign<int>)
+        // ...
+        ;
+
+Now in Python, we can assign any integer sequence to `list_int` objects:
+
+[python]
+
+    x = list_int();
+    x.assign([1,2,3,4,5])
 
 [endsect]
 [section:exception Exception Translation]

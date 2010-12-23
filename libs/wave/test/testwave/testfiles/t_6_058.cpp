@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -17,7 +17,7 @@
 
 // 32.5: Value of a numerical escape sequence in character constant should
 //       be in the range of char.
-//E t_6_058.cpp(21): warning: character literal out of range: '\x123'
+//E t_6_058.cpp(21): warning: expression contains out of range character literal: '\x123' == 0x123
 #if '\x123' == 0x123
 false
 #else

@@ -1,14 +1,14 @@
 //  link_check implementation  -----------------------------------------------//
 
 //  Copyright Beman Dawes 2002.
+//
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 #include "link_check.hpp"
-#include <boost/regex.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
+#include "boost/regex.hpp"
+#include "boost/filesystem/operations.hpp"
 
 namespace fs = boost::filesystem;
 
@@ -27,17 +27,17 @@ namespace boost
   {
 
 //  link_check constructor  --------------------------------------------------//
-    
+
    link_check::link_check()
      : m_broken_errors(0), m_unlinked_errors(0), m_invalid_errors(0),
        m_bookmark_errors(0)
    {
    }
-     
+
 //  inspect (all)  -----------------------------------------------------------//
 
    void link_check::inspect(
-      const string & library_name,
+      const string & /*library_name*/,
       const path & full_path )
     {
       // keep track of paths already encountered to reduce disk activity
@@ -52,22 +52,24 @@ namespace boost
       const path & full_path,   // example: c:/foo/boost/filesystem/path.hpp
       const string & contents )     // contents of file to be inspected
     {
+      if (contents.find( "boostinspect:" "nolink" ) != string::npos) return;
+
       string::const_iterator start( contents.begin() );
       string::const_iterator end( contents.end() );
-      boost::match_results< string::const_iterator > what; 
-      boost::match_flag_type flags = boost::match_default; 
+      boost::match_results< string::const_iterator > what;
+      boost::match_flag_type flags = boost::match_default;
 
-      while( boost::regex_search( start, end, what, url_regex, flags) ) 
-      { 
+      while( boost::regex_search( start, end, what, url_regex, flags) )
+      {
         // what[0] contains the whole string iterators.
-        // what[1] contains the URL iterators. 
+        // what[1] contains the URL iterators.
         do_url( string( what[1].first, what[1].second ),
           library_name, full_path );
 
         start = what[0].second; // update search position
         flags |= boost::match_prev_avail; // update flags
-        flags |= boost::match_not_bob; 
-      } 
+        flags |= boost::match_not_bob;
+      }
     }
 
 //  do_url  ------------------------------------------------------------------//
@@ -87,7 +89,7 @@ namespace boost
       if ( url.find( "file:" ) == 0 )
       {
         ++m_invalid_errors;
-        error( library_name, source_path, "invalid URL (hardwired file): " + url );
+        error( library_name, source_path, string(name()) + " invalid URL (hardwired file): " + url );
         return;
       }
 
@@ -95,9 +97,9 @@ namespace boost
       if ( url.find_first_of( " <>\"{}|\\^[]'" ) != string::npos )
       {
         ++m_invalid_errors;
-        error( library_name, source_path, "invalid character in URL: " + url );
+        error( library_name, source_path, string(name()) + " invalid character in URL: " + url );
       }
-      
+
       // strip url of bookmarks
       string plain_url( url );
       string::size_type pos( plain_url.find( '#' ) );
@@ -108,7 +110,7 @@ namespace boost
         if ( url.find( '#', pos+1 ) != string::npos )
         {
           ++m_bookmark_errors;
-          error( library_name, source_path, "invalid bookmark: " + url );
+          error( library_name, source_path, string(name()) + " invalid bookmark: " + url );
         }
       }
 
@@ -116,13 +118,13 @@ namespace boost
       if ( plain_url[0]=='.' && plain_url[1]=='/' ) plain_url.erase( 0, 2 );
 
       // url is relative source_path.branch()
-      // convert to target_path, which is_complete() 
+      // convert to target_path, which is_complete()
       path target_path;
       try { target_path = source_path.branch_path() /= path( plain_url, fs::no_check ); }
       catch ( const fs::filesystem_error & )
       {
         ++m_invalid_errors;
-        error( library_name, source_path, "invalid URL: " + url );
+        error( library_name, source_path, string(name()) + " invalid URL: " + url );
         return;
       }
 
@@ -143,7 +145,7 @@ namespace boost
       if ( (itr->second & m_present) == 0 )
       {
         ++m_broken_errors;
-        error( library_name, source_path, "broken link: " + url );
+        error( library_name, source_path, string(name()) + " broken link: " + url );
       }
     }
 
@@ -164,7 +166,7 @@ namespace boost
        {
          ++m_unlinked_errors;
          path full_path( fs::initial_path() / path(itr->first, fs::no_check) );
-         error( impute_library( full_path ), full_path, "unlinked file" );
+         error( impute_library( full_path ), full_path, string(name()) + " unlinked file" );
        }
      }
    }

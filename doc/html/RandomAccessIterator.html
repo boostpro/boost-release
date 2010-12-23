@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Concept RandomAccessIterator</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="The Boost C++ Libraries">
-<link rel="up" href="concepts/reference.html" title="Concept reference">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="id620092-bb.html#concepts.reference" title="Concept reference">
 <link rel="prev" href="BidirectionalIterator.html" title="Concept BidirectionalIterator">
 <link rel="next" href="DefaultConstructible.html" title="Concept DefaultConstructible">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../boost.png"></td>
 <td align="center"><a href="../../index.htm">Home</a></td>
 <td align="center"><a href="../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../people/people.htm">People</a></td>
@@ -20,7 +20,7 @@
 </table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="BidirectionalIterator.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="concepts/reference.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="DefaultConstructible.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="BidirectionalIterator.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="id620092-bb.html#concepts.reference"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="DefaultConstructible.html"><img src="images/next.png" alt="Next"></a>
 </div>
 <div class="refentry" lang="en">
 <a name="RandomAccessIterator"></a><div class="titlepage"></div>
@@ -29,7 +29,7 @@
 <p>RandomAccessIterator</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577701"></a><h2>Description</h2>
+<a name="id961649"></a><h2>Description</h2>
 <p>A random access iterator is an iterator that can read through
   a sequence of values.  It can move in either direction through the
   sequence (by any amount in constant time), and can be either mutable
@@ -40,14 +40,14 @@
   dereferenceable or incrementable).</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577717"></a><h2>Refinement of</h2>
+<a name="id961668"></a><h2>Refinement of</h2>
 <div class="itemizedlist"><ul type="disc">
 <li><p><a href="BidirectionalIterator.html" title="Concept BidirectionalIterator">BidirectionalIterator</a></p></li>
 <li><p><a href="LessThanComparable.html" title="Concept LessThanComparable">LessThanComparable</a></p></li>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577739"></a><h2>Associated types</h2>
+<a name="id961690"></a><h2>Associated types</h2>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><span class="bold"><strong>value_type</strong></span></p>
@@ -68,7 +68,7 @@
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577798"></a><h2>Notation</h2>
+<a name="id961747"></a><h2>Notation</h2>
 <div class="variablelist"><dl>
 <dt><span class="term">Iter</span></dt>
 <dd>A type playing the role of iterator-type in the <a href="RandomAccessIterator.html" title="Concept RandomAccessIterator">RandomAccessIterator</a> concept.</dd>
@@ -85,7 +85,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577853"></a><h2>Type expressions</h2>
+<a name="id961802"></a><h2>Type expressions</h2>
 <div class="variablelist"><dl>
 <dt><span class="term">Category tag</span></dt>
 <dd><p><span class="type">category</span> must be 
@@ -94,7 +94,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577872"></a><h2>Valid expressions</h2>
+<a name="id961821"></a><h2>Valid expressions</h2>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -113,16 +113,18 @@
 <td><p>Motion</p></td>
 <td><p>i += n</p></td>
 <td><p><span class="type">Iter &amp;</span></p></td>
-<td><p>Equivalent to applying <code class="computeroutput">i++</code><code class="computeroutput">n</code> times
-    if <code class="computeroutput">n</code> is positive, applying <code class="computeroutput">i--</code><code class="computeroutput">-n</code> times if <code class="computeroutput">n</code> is negative, and to a null
+<td><p>Equivalent to applying <code class="computeroutput">i++</code> <code class="computeroutput">n</code> times
+    if <code class="computeroutput">n</code> is positive, applying <code class="computeroutput">i--</code>
+    <code class="computeroutput">-n</code> times if <code class="computeroutput">n</code> is negative, and to a null
     operation if <code class="computeroutput">n</code> is zero.</p></td>
 </tr>
 <tr>
 <td><p>Motion (with integer offset)</p></td>
 <td><p>i += int_off</p></td>
 <td><p><span class="type">Iter &amp;</span></p></td>
-<td><p>Equivalent to applying <code class="computeroutput">i++</code><code class="computeroutput">n</code> times
-    if <code class="computeroutput">n</code> is positive, applying <code class="computeroutput">i--</code><code class="computeroutput">-n</code> times if <code class="computeroutput">n</code> is negative, and to a null
+<td><p>Equivalent to applying <code class="computeroutput">i++</code> <code class="computeroutput">n</code> times
+    if <code class="computeroutput">n</code> is positive, applying <code class="computeroutput">i--</code>
+    <code class="computeroutput">-n</code> times if <code class="computeroutput">n</code> is negative, and to a null
     operation if <code class="computeroutput">n</code> is zero.</p></td>
 </tr>
 <tr>
@@ -198,13 +200,13 @@
 </table></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578257"></a><h2>Complexity</h2>
+<a name="id962204"></a><h2>Complexity</h2>
 <p>
   All iterator operations must take amortized constant time.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578264"></a><h2>Models</h2>
+<a name="id962211"></a><h2>Models</h2>
 <div class="itemizedlist"><ul type="disc">
 <li><span class="simplelist"><span class="type">T *</span></span></li>
 <li><span class="simplelist"><span class="type">std::vector&lt;T&gt;::iterator</span></span></li>
@@ -214,7 +216,7 @@
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578310"></a><h2>See also</h2>
+<a name="id962258"></a><h2>See also</h2>
 <div class="itemizedlist"><ul type="disc"><li><p><a href="LessThanComparable.html" title="Concept LessThanComparable">LessThanComparable</a></p></li></ul></div>
 </div>
 </div>
@@ -224,7 +226,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="BidirectionalIterator.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="concepts/reference.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="DefaultConstructible.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="BidirectionalIterator.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="id620092-bb.html#concepts.reference"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="DefaultConstructible.html"><img src="images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 //  Copyright Beman Dawes 2002, 2003.
 //  Copyright Rene Rivera 2004.
+//
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -21,8 +22,8 @@ namespace boost
     public:
 
       license_check();
-      virtual const char * name() const { return "license-check"; }
-      virtual const char * desc() const { return "missing Boost license info"; }
+      virtual const char * name() const { return "*L*"; }
+      virtual const char * desc() const { return "missing Boost license info, or wrong reference text"; }
 
       virtual void inspect(
         const std::string & library_name,
@@ -31,7 +32,7 @@ namespace boost
 
       virtual ~license_check()
         { std::cout << "  "
-            << m_files_with_errors << " files missing Boost license info\n"; }
+            << m_files_with_errors << " files missing Boost license info or having wrong reference text\n"; }
     };
   }
 }

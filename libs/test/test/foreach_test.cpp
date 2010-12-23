@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2006.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,7 +7,7 @@
 //
 //  File        : $RCSfile: foreach_test.cpp,v $
 //
-//  Version     : $Revision: 1.1 $
+//  Version     : $Revision: 1.2 $
 //
 //  Description : BOOST_TEST_FOREACH compile only test
 // *****************************************************************************

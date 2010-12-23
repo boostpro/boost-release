@@ -1,3 +1,7 @@
+# Copyright 2002, 2003, 2005 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
+
 
 project 
     # This is needed to supress gcc warning on flex output, which otherwise
@@ -5,7 +9,7 @@ project
     : requirements <define>YY_NO_UNPUT
     ;
 
-exe a : a.cpp b.cxx obj_1 obj_2 c.ui d.wd x.l y.x_pro lib//auxilliary ;
+exe a : a.cpp b.cxx obj_1 obj_2 c.tui d.wd x.l y.x_pro lib//auxilliary ;
 # This should not cause second compilation of a.cpp 
 exe f : a.cpp b.cxx obj_1 obj_2 lib//auxilliary ;
 

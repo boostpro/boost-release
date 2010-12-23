@@ -1,11 +1,14 @@
 # copyright John Maddock 2003
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or copy at 
+# http://www.boost.org/LICENSE_1_0.txt.
 
 project
     : requirements <threading>multi <link>shared:<define>BOOST_REGEX_DYN_LINK=1
     ;
 
 
-rule regex-test-run ( sources + : input * )
+rule regex-test-run ( sources + : input * : name * )
 {
         return [ 
            run
@@ -18,13 +21,14 @@ rule regex-test-run ( sources + : input * )
          :  # test-files
          :  # requirements
          :  # test name
+            $(name)
         ] ;
 }
 
 test-suite regex-examples :
 
 [ regex-test-run timer/regex_timer.cpp : $(BOOST_ROOT)/libs/regex/example/timer/input_script.txt ]
-[ regex-test-run grep/grep.cpp ../../program_options/build//boost_program_options : -n -b $(BOOST_ROOT)/boost/regex.hpp $(BOOST_ROOT)/boost/type_traits.hpp ]
+[ regex-test-run grep/grep.cpp ../../program_options/build//boost_program_options/<link>static : -n -b $(BOOST_ROOT)/boost/regex.hpp $(BOOST_ROOT)/boost/type_traits.hpp : test_grep ]
 [ regex-test-run snippets/credit_card_example.cpp ]
 [ regex-test-run snippets/mfc_example.cpp ]
 [ regex-test-run snippets/icu_example.cpp ]
@@ -48,6 +52,8 @@ test-suite regex-examples :
   : : :  <threading>multi <define>BOOST_REGEX_MATCH_EXTRA=1 ]
 
 ;
+
+
 
 
 

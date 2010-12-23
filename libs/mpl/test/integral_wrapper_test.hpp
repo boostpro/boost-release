@@ -1,5 +1,5 @@
 
-// Copyright Aleksey Gurtovoy 2001-2004
+// Copyright Aleksey Gurtovoy 2001-2006
 //
 // Distributed under the Boost Software License, Version 1.0. 
 // (See accompanying file LICENSE_1_0.txt or copy at 
@@ -8,8 +8,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/libs/mpl/test/integral_wrapper_test.hpp,v $
-// $Date: 2004/10/13 14:27:35 $
-// $Revision: 1.3 $
+// $Date: 2006/11/20 17:59:29 $
+// $Revision: 1.4.2.1 $
 
 #include <boost/mpl/next_prior.hpp>
 #include <boost/mpl/aux_/test.hpp>
@@ -19,15 +19,30 @@
 
 #if !BOOST_WORKAROUND(__BORLANDC__, < 0x600)
 #   define INTEGRAL_WRAPPER_RUNTIME_TEST(i, T) \
-    assert(( WRAPPER(T,i)() == i )); \
-    assert(( WRAPPER(T,i)::value == i )); \
+    BOOST_TEST(( WRAPPER(T,i)() == i )); \
+    BOOST_TEST(( WRAPPER(T,i)::value == i )); \
     /**/
 #else
 #   define INTEGRAL_WRAPPER_RUNTIME_TEST(i, T) \
-    assert(( WRAPPER(T,i)::value == i )); \
+    BOOST_TEST(( WRAPPER(T,i)::value == i )); \
     /**/
 #endif
 
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x582))
+// agurt 20/nov/06: see http://article.gmane.org/gmane.comp.lib.boost.devel/151065
+#define INTEGRAL_WRAPPER_TEST(unused1, i, T) \
+    { \
+      typedef WRAPPER(T,i) borland_tested_type; \
+    { typedef is_same< borland_tested_type::value_type, T > borland_test_type; \
+      MPL_ASSERT(( borland_test_type )); } \
+    { MPL_ASSERT(( is_same< borland_tested_type::type, WRAPPER(T,i) > )); } \
+    { MPL_ASSERT(( is_same< next< borland_tested_type >::type, WRAPPER(T,i+1) > )); } \
+    { MPL_ASSERT(( is_same< prior< borland_tested_type >::type, WRAPPER(T,i-1) > )); } \
+    { MPL_ASSERT_RELATION( (borland_tested_type::value), ==, i ); } \
+    INTEGRAL_WRAPPER_RUNTIME_TEST(i, T) \
+    } \
+/**/
+#else
 #define INTEGRAL_WRAPPER_TEST(unused1, i, T) \
     { MPL_ASSERT(( is_same< WRAPPER(T,i)::value_type, T > )); } \
     { MPL_ASSERT(( is_same< WRAPPER(T,i)::type, WRAPPER(T,i) > )); } \
@@ -36,3 +51,5 @@
     { MPL_ASSERT_RELATION( (WRAPPER(T,i)::value), ==, i ); } \
     INTEGRAL_WRAPPER_RUNTIME_TEST(i, T) \
 /**/
+#endif
+

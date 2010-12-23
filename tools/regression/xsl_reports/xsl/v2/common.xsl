@@ -23,6 +23,23 @@ http://www.boost.org/LICENSE_1_0.txt)
 
     <xsl:variable name="output_directory" select="'output'"/>
 
+    <!-- general -->
+
+    <func:function name="meta:iif">
+        <xsl:param name="condition"/>
+        <xsl:param name="if_true"/>
+        <xsl:param name="if_false"/>
+
+        <xsl:choose>
+            <xsl:when test="$condition">
+                <func:result select="$if_true"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <func:result select="$if_false"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </func:function>
+
     <!-- structural -->
 
     <func:function name="meta:test_structure">
@@ -91,8 +108,8 @@ http://www.boost.org/LICENSE_1_0.txt)
 
 
     <func:function name="meta:test_case_status">
+        <xsl:param name="explicit_markup"/>
         <xsl:param name="test_log"/>
-        <xsl:param name="$explicit_markup"/>
 
         <xsl:variable name="status">
             <xsl:choose> 
@@ -130,8 +147,10 @@ http://www.boost.org/LICENSE_1_0.txt)
     </func:function>
 
     <func:function name="meta:is_test_log_a_test_case">
-        <xsl:param name="test_log"/>      
-        <func:result select="$test_log/@test-type='compile' or $test_log/@test-type='compile_fail' or $test_log/@test-type='run' or $test_log/@test-type='run_pyd'"/>
+        <xsl:param name="test_log"/>       
+        <xsl:variable name="type" select="$test_log/@test-type"/>
+        <func:result select="$type='compile' or $type='compile_fail' or $type='link' or $type='link_fail' 
+                             or $type='run' or $type='run_fail' or $type='run_pyd'"/>
     </func:function>
 
 
@@ -446,7 +465,8 @@ http://www.boost.org/LICENSE_1_0.txt)
         <tr>
             <td colspan="{$colspan}">&#160;</td>
             <xsl:for-each select="$run_toolsets//runs/run[ count(toolset) > 0 ]">
-                <xsl:variable name="age" select="meta:timestamp_difference( @timestamp, $run_date )"/>
+                <xsl:variable name="timestamp_diff" select="meta:timestamp_difference( @timestamp, $run_date )"/>
+                <xsl:variable name="age" select="meta:iif( $timestamp_diff &lt; 30, $timestamp_diff, 30 )"/>
                 <td colspan="{count(toolset)}" class="timestamp">
                     <span class="timestamp-{$age}"><xsl:value-of select="meta:format_timestamp( @timestamp )"/></span>
                     <xsl:if test="@run-type != 'full'">

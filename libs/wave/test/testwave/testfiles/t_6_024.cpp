@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -16,7 +16,7 @@
 // Tests error reporting: Trailing junk of #else, #endif.
 
 // 16.2: Trailing junk of #endif.
-//E t_6_024.cpp(23): error: ill formed preprocessor directive: #endif
+//E t_6_024.cpp(23): error: ill formed preprocessor directive: #endif  MACRO_0
 #define MACRO_0     0
 #if     MACRO_0
 #else

@@ -5,8 +5,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	</head>
 	<body text="#000000" bgColor="#ffffff">
-		<h1><IMG height="86" alt="boost.png (6897 bytes)" src="../../boost.png" width="277" align="middle">Smart 
-			Pointer Programming Techniques</h1>
+		<h1><A href="../../index.htm"><IMG height="86" alt="boost.png (6897 bytes)" src="../../boost.png" width="277" align="middle"
+					border="0"></A>Smart Pointer Programming Techniques</h1>
 		<p><A href="#incomplete">Using incomplete classes for implementation hiding</A><br>
 			<A href="#pimpl">The "Pimpl" idiom</A><br>
 			<A href="#abstract">Using abstract classes for implementation hiding</A><br>
@@ -519,6 +519,9 @@ public:
     }
 }
 </pre>
+		<p>Note that you no longer need to manually initialize the <code>weak_ptr</code> member 
+			in <code><A href="enable_shared_from_this.html">enable_shared_from_this</A></code>. 
+			Constructing a <code>shared_ptr</code> to <code>impl</code> takes care of that.</p>
 		<h2><A name="handle">Using <code>shared_ptr</code> as a smart counted handle</A></h2>
 		<p>Some library interfaces use opaque handles, a variation of the <A href="#incomplete">
 				incomplete class technique</A> described above. An example:</p>
@@ -754,10 +757,9 @@ public:
 		<p>When the object's lifetime ends, <code>X::this_</code> will be destroyed, and 
 			all weak pointers will automatically expire.</p>
 		<hr>
-		<p>$Date: 2005/01/13 13:45:59 $</p>
-		<p><small>Copyright © 2003 Peter Dimov. Permission to copy, use, modify, sell and 
-				distribute this document is granted provided this copyright notice appears in 
-				all copies. This document is provided "as is" without express or implied 
-				warranty, and with no claim as to its suitability for any purpose.</small></p>
+		<p>$Date: 2006/11/09 20:22:24 $</p>
+		<p><small>Copyright © 2003 Peter Dimov. Distributed under the Boost Software License, Version 
+				1.0. See accompanying file <A href="../../LICENSE_1_0.txt">LICENSE_1_0.txt</A> or 
+				copy at <A href="http://www.boost.org/LICENSE_1_0.txt">http://www.boost.org/LICENSE_1_0.txt</A>.</small></p>
 	</body>
 </html>

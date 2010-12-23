@@ -1,3 +1,7 @@
+.. Distributed under the Boost
+.. Software License, Version 1.0. (See accompanying
+.. file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
 +++++++++++++++++++++++++++++
  Iterator Facade and Adaptor
 +++++++++++++++++++++++++++++
@@ -6,7 +10,7 @@
 :Contact: dave@boost-consulting.com, jsiek@osl.iu.edu, witt@styleadvisor.com
 :organization: `Boost Consulting`_, Indiana University `Open Systems
                Lab`_, `Zephyr Associates, Inc.`_
-:date: $Date: 2004/11/01 21:23:47 $
+:date: $Date: 2006/09/11 22:27:28 $
 
 :Number: This is a revised version of N1530_\ =03-0113, which was
          accepted for Technical Report 1 by the C++ standard

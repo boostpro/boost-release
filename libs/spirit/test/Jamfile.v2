@@ -52,6 +52,7 @@ local multi-threading = <library>/boost/thread//boost_thread
 
     test-suite "spirit.core.scanner"
         : [ spirit-run scanner_tests.cpp ]
+          [ spirit-run scanner_value_type_tests.cpp ]
         ;
 
     test-suite "spirit.core.primitive"
@@ -84,7 +85,7 @@ local multi-threading = <library>/boost/thread//boost_thread
     test-suite "spirit.meta"
         : [ spirit-run fundamental_tests.cpp ]
           [ spirit-run parser_traits_tests.cpp ]
-          [ spirit-run traverse_tests.cpp ]
+          [ spirit-run traverse_tests.cpp : : : <toolset>intel:<debug-symbols>off ]
         ;
 
     test-suite "spirit.attribute"
@@ -101,6 +102,7 @@ local multi-threading = <library>/boost/thread//boost_thread
         : [ spirit-run ast_calc_tests.cpp ]
           [ spirit-run group_match_bug.cpp ]
           [ spirit-run repeat_ast_tests.cpp ]
+          [ compile mix_and_match_trees.cpp ]
         ;
 
 # temporarily removed from the test suite. tree_tests are not finished, yet.
@@ -172,4 +174,18 @@ local multi-threading = <library>/boost/thread//boost_thread
     test-suite "spirit.utility.actors"
         : [ spirit-run actor/$(actor_test_sources).cpp ]
         ;
+
+    test-suite "spirit.typeof-support"
+        : [ compile typeof_support/typeof_actor.cpp ]
+          [ compile typeof_support/typeof_attribute.cpp ]
+          [ compile typeof_support/typeof_core.cpp ]
+          [ compile typeof_support/typeof_debug.cpp ]
+          [ compile typeof_support/typeof_dynamic.cpp ]
+          [ compile typeof_support/typeof_error_handling.cpp ]
+          [ compile typeof_support/typeof_iterator.cpp ]
+          [ compile typeof_support/typeof_symbols.cpp ]
+          [ compile typeof_support/typeof_tree.cpp ]
+          [ compile typeof_support/typeof_utility.cpp ]
+        ; 
+
 

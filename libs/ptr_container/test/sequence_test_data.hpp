@@ -30,13 +30,13 @@ void reversible_container_test()
     BOOST_CHECK( c.size() == 0 );
     c.push_back( new T );
     BOOST_CHECK( c.size() == 1 );
-    
+
     const C c2( c.clone() );
     BOOST_CHECK( c2.size() == c.size() );
     
     C  c3( c.begin(), c.end() );
     BOOST_CHECK( c.size() == c3.size() );
-    
+
     c.assign( c3.begin(), c3.end() );
     BOOST_CHECK( c.size() == c3.size() );
         
@@ -53,14 +53,21 @@ void reversible_container_test()
     BOOST_DEDUCED_TYPENAME C::const_reverse_iterator cri  = c2.rbegin();
     BOOST_DEDUCED_TYPENAME C::reverse_iterator rv2        = c.rend();
     BOOST_DEDUCED_TYPENAME C::const_reverse_iterator cvr2 = c2.rend();
+    i  = c.rbegin().base();
+    ci = c2.rbegin().base();
+    i  = c.rend().base();
+    ci = c2.rend().base();
+    BOOST_CHECK_EQUAL( std::distance( c.rbegin(), c.rend() ),
+                       std::distance( c.begin(), c.end() ) );
                          
     BOOST_MESSAGE( "finished iterator test" ); 
-    
+
     BOOST_DEDUCED_TYPENAME C::size_type s                 = c.size();
     hide_warning(s);
     BOOST_DEDUCED_TYPENAME C::size_type s2                = c.max_size();
     hide_warning(s2);
     c.push_back( new T );
+    c.push_back( std::auto_ptr<T>( new T ) );
     bool b                                                = c.empty();
     BOOST_CHECK( !c.empty() );
     b                                                     = is_null( c.begin() );
@@ -79,8 +86,9 @@ void reversible_container_test()
 
     c.pop_back(); 
     c.insert( c.end(), new T );
+    c.insert( c.end(), std::auto_ptr<T>( new T ) );
 
-#ifdef BOOST_NO_SFINAE
+#if defined(BOOST_NO_SFINAE) || defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
 #else
     c.insert( c.end(), c3 );
 #endif    
@@ -110,26 +118,41 @@ void reversible_container_test()
     std::auto_ptr<C> ap = c.release();
     c                   = c2.clone();
     BOOST_CHECK( !c.empty() );
-    auto_type ptr2      = c.replace(c.begin(), new T );
+    auto_type ptr2      = c.replace( c.begin(), new T );
+    ptr2                = c.replace( c.begin(), std::auto_ptr<T>( new T ) );
     BOOST_MESSAGE( "finished release/clone/replace test" ); 
                      
     c3.push_back( new T );
     c3.push_back( new T );
     c3.push_back( new T );
-    c.transfer( c.begin(), c3.begin(), c3 );
-    c.transfer( c.end(), c3.begin(), c3.end(), c3 );
+    c. BOOST_NESTED_TEMPLATE transfer<C>( c.begin(), c3.begin(), c3 );
+    c. BOOST_NESTED_TEMPLATE transfer<C>( c.end(), c3.begin(), c3.end(), c3 );
 #ifdef BOOST_NO_SFINAE
 #else    
-    c.transfer( c.end(), boost::make_iterator_range( c3 ), c3 );    
+    c. BOOST_NESTED_TEMPLATE transfer<C>( c.end(), boost::make_iterator_range( c3 ), c3 );    
     BOOST_CHECK( c3.empty() );
     BOOST_CHECK( !c.empty() );
 #endif    
-    c3.transfer( c3.begin(), c );
+    c3. BOOST_NESTED_TEMPLATE transfer<C>( c3.begin(), c );
     BOOST_CHECK( !c3.empty() );
     BOOST_CHECK( c.empty() );
-    BOOST_MESSAGE( "finished transfer test" ); 
 
+    BOOST_MESSAGE( "finished transfer test" );  
 }
+
+
+
+template< class CDerived, class CBase, class T >
+void test_transfer()
+{
+    CDerived from;
+    CBase    to;
+
+    from.push_back( new T );
+    from.push_back( new T );
+    to. BOOST_NESTED_TEMPLATE transfer<CDerived>( to.end(), from );
+}
+
 
 
 #include <boost/assign/list_inserter.hpp>
@@ -234,7 +257,6 @@ void random_access_algorithms_test()
     c.merge( c2 );
     BOOST_CHECK( c2.empty() );
     BOOST_CHECK( c.size() == 9u );
-    BOOST_CHECK( is_sorted< std::less_equal<int> >( c ) );
- 
+    BOOST_CHECK( is_sorted< std::less_equal<int> >( c ) ); 
 }
 

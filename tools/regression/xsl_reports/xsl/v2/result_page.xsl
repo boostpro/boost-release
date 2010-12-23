@@ -102,6 +102,8 @@ http://www.boost.org/LICENSE_1_0.txt)
             <xsl:when test="$test_type='run_fail'">     <xsl:text>rf</xsl:text> </xsl:when>
             <xsl:when test="$test_type='compile'">      <xsl:text>c</xsl:text>  </xsl:when>
             <xsl:when test="$test_type='compile_fail'"> <xsl:text>cf</xsl:text> </xsl:when>
+            <xsl:when test="$test_type='link'">         <xsl:text>l</xsl:text> </xsl:when>
+            <xsl:when test="$test_type='link_fail'">    <xsl:text>lf</xsl:text> </xsl:when>
             <xsl:otherwise>
                 <xsl:message terminate="yes">Incorrect test type "<xsl:value-of select="$test_type"/>"</xsl:message>
             </xsl:otherwise>
@@ -468,7 +470,7 @@ http://www.boost.org/LICENSE_1_0.txt)
                 <xsl:text>&#160;&#160;&#160;&#160;</xsl:text>
             </xsl:when> 
  
-            <xsl:when test="$test_log/@result != 'success' and $test_log/@status = 'expected'">
+            <xsl:when test="count( $test_log[ @result != 'success' and @status = 'expected' ] ) &gt; 0">
                 <xsl:call-template name="insert_test_result">
                     <xsl:with-param name="result">
                         <xsl:choose>

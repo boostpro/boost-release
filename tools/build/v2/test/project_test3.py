@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+# Copyright 2002, 2003 Dave Abrahams 
+# Copyright 2002, 2003, 2004, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
+
 from BoostBuild import Tester, List
 import os
 from string import strip
@@ -89,7 +94,7 @@ t.expect_addition(["bin/$toolset/release/a.exe",
                   "bin/$toolset/release/optimization-off/a.exe", 
                   "bin/$toolset/release/optimization-off/a.obj"])
 
-t.run_build_system(extra_args='clean')
+t.run_build_system(extra_args='--clean-all')
 t.expect_removal(["bin/$toolset/debug/a.obj",
                  "bin/$toolset/debug/a.exe",
                  "lib/bin/$toolset/debug/b.obj",
@@ -106,7 +111,7 @@ t.run_build_system("lib//b.obj")
 t.expect_addition("lib/bin/$toolset/debug/b.obj")
 t.expect_nothing_more()
 
-t.run_build_system("clean lib//b.obj")
+t.run_build_system("--clean lib//b.obj")
 t.expect_removal("lib/bin/$toolset/debug/b.obj")
 t.expect_nothing_more()
 

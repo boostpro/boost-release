@@ -103,7 +103,7 @@ int Base::objects = 0;
 
 
 
-ostream& operator<<( ostream& out, Base& b )
+ostream& operator<<( ostream& out, const Base& b )
 {
     b.print( out );
     return out;
@@ -242,4 +242,16 @@ inline ostream& operator<<( ostream& out, const Value& v )
 template< class T >
 inline void hide_warning( T& r )
 { }
+
+//
+//  transfer() test
+// 
+
+template< class Cont1, class Cont2 >
+void transfer_test( Cont1& from, Cont2& to )
+{
+    BOOST_CHECK( !from.empty() );
+    to. BOOST_NESTED_TEMPLATE transfer<Cont1>( from );
+    BOOST_CHECK( !to.empty() );
+}
 

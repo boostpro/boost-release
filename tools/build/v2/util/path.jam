@@ -1,7 +1,10 @@
-#  Copyright (C) Vladimir Prus 2002. Permission to copy, use, modify, sell and
-#  distribute this software is granted provided this copyright notice appears in
-#  all copies. This software is provided "as is" without express or implied
-#  warranty, and with no claim as to its suitability for any purpose.
+# Copyright Vladimir Prus 2002-2006.
+# Copyright Dave Abrahams 2003-2004.
+# Copyright Rene Rivera 2003-2006.
+#
+# Distributed under the Boost Software License, Version 1.0.
+#    (See accompanying file LICENSE_1_0.txt or copy at
+#          http://www.boost.org/LICENSE_1_0.txt)
 
 #  Performs various path manipulations. Path are always in a 'normilized' 
 #  representation. In it, a path may be either:
@@ -18,6 +21,7 @@ import modules ;
 import sequence ;
 import regex ;
 import errors : error ;
+import set ;
 
 
 os = [ modules.peek : OS ] ;
@@ -140,7 +144,16 @@ rule reverse ( path )
 #
 local rule join-imp ( elements + )
 {
-    return [ NORMALIZE_PATH $(elements:J="/") ] ;
+    local result = ;
+    if ! $(elements[1])
+    {
+        result = [ NORMALIZE_PATH "/" "$(elements[2-])" ] ;
+    }
+    else
+    {
+        result = [ NORMALIZE_PATH "$(elements)" ] ;
+    }
+    return $(result) ;
 }
 
 #
@@ -184,7 +197,15 @@ rule root ( path root )
 #
 rule pwd ( )
 {
-    return [ make [ PWD ] ] ;
+    if $(.pwd)
+    {
+        return $(.pwd) ;
+    }
+    else
+    {
+        .pwd = [ make [ PWD ] ] ;
+        return $(.pwd) ;
+    }    
 }
 
 #
@@ -201,10 +222,11 @@ rule pwd ( )
 #    For example: 
 #        [ glob . : *.cpp ] 
 #        [ glob . : */build/Jamfile ] 
-rule glob ( dirs * : patterns + )
+rule glob ( dirs * : patterns + : exclude-patterns * )
 {
     local result ;
     local real-patterns ;
+    local real-exclude-patterns ;
     for local d in $(dirs)
     {
         for local p in $(patterns)
@@ -212,12 +234,58 @@ rule glob ( dirs * : patterns + )
             local pattern = [ path.root $(p) $(d) ] ;
             real-patterns += [ path.native $(pattern) ] ;
         }        
+        
+        for local p in $(exclude-patterns)
+        {
+            local pattern = [ path.root $(p) $(d) ] ;
+            real-exclude-patterns += [ path.native $(pattern) ] ;
+        }        
     }        
+
+    local inc = [ GLOB-RECURSIVELY $(real-patterns) ] ;
+    local exc = [ GLOB-RECURSIVELY $(real-exclude-patterns) ] ;
     
     return [ sequence.transform path.make : 
-        [ GLOB-RECURSIVELY $(real-patterns) ] ] ;
-
+        [ set.difference $(inc) : $(exc) ] ] ;
 }    
+
+# Recursive version of GLOB. Builds the glob of files while
+# also searching in the subdirectories of the given roots. An
+# optional set of exclusion patterns will filter out the
+# matching entries from the result. The exclusions also apply
+# to the subdirectory scanning, such that directories that
+# match the exclusion patterns will not be searched.
+#
+rule glob-tree ( roots * : patterns + : exclude-patterns * )
+{
+    return [ sequence.transform path.make : [ .glob-tree
+        [ sequence.transform path.native : $(roots) ]
+        : $(patterns)
+        : $(exclude-patterns)
+        ] ] ;
+}
+
+local rule .glob-tree ( roots * : patterns * : exclude-patterns * )
+{
+    local excluded ;
+    if $(exclude-patterns)
+    {
+        excluded = [ GLOB $(roots) : $(exclude-patterns) ] ;
+    }
+    local result = [ set.difference
+        [ GLOB $(roots) : $(patterns) ] : $(excluded) ] ;
+    local subdirs ;
+    for local d in [ set.difference
+        [ GLOB $(roots) : * ] : $(excluded) ]
+    {
+        if ! ( $(d:D=) in . .. ) && ! [ CHECK_IF_FILE $(d) ] { subdirs += $(d) ; }
+    }
+    if $(subdirs)
+    {
+        result += [ .glob-tree $(subdirs) : $(patterns) : $(exclude-patterns) ] ;
+    }
+    return $(result) ;
+}
 
 
 #

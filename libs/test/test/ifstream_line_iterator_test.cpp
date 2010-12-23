@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2006.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,28 +7,28 @@
 //
 //  File        : $RCSfile: ifstream_line_iterator_test.cpp,v $
 //
-//  Version     : $Revision: 1.7 $
+//  Version     : $Revision: 1.9 $
 //
 //  Description : ifstream_line_iterator unit test
 // *****************************************************************************
 
 // Boost.Test
-#define BOOST_AUTO_TEST_MAIN
-#include <boost/test/auto_unit_test.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 
 #include <boost/test/utils/iterator/ifstream_line_iterator.hpp>
 
-namespace utf = boost::unit_test;
+namespace ut = boost::unit_test;
 
-static utf::ifstream_line_iterator eoi;
+static ut::ifstream_line_iterator eoi;
 
 //____________________________________________________________________________//
 
 BOOST_AUTO_TEST_CASE( test_default_delimeter )
 {
-    utf::ifstream_line_iterator it( utf::auto_unit_test_suite()->argc <= 1
+    ut::ifstream_line_iterator it( ut::framework::master_test_suite().argc <= 1
                                         ? "./test_files/ifstream_line_iterator.tst1"
-                                        : utf::auto_unit_test_suite()->argv[1] );
+                                        : ut::framework::master_test_suite().argv[1] );
 
     BOOST_CHECK( it != eoi ); 
 
@@ -51,9 +51,9 @@ BOOST_AUTO_TEST_CASE( test_default_delimeter )
 
 BOOST_AUTO_TEST_CASE( test_custom_delimeter )
 {
-    utf::ifstream_line_iterator it( utf::auto_unit_test_suite()->argc <= 2 
+    ut::ifstream_line_iterator it( ut::framework::master_test_suite().argc <= 2 
                                         ? "./test_files/ifstream_line_iterator.tst2"
-                                        : utf::auto_unit_test_suite()->argv[2], '}' );
+                                        : ut::framework::master_test_suite().argv[2], '}' );
 
     BOOST_CHECK( it != eoi ); 
 
@@ -76,6 +76,12 @@ BOOST_AUTO_TEST_CASE( test_custom_delimeter )
 // History :
 //
 // $Log: ifstream_line_iterator_test.cpp,v $
+// Revision 1.9  2006/03/19 11:49:04  rogeeff
+// *** empty log message ***
+//
+// Revision 1.8  2005/12/14 06:01:02  rogeeff
+// *** empty log message ***
+//
 // Revision 1.7  2005/06/11 07:20:45  rogeeff
 // portability fix
 //

@@ -1,79 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE boostbook PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
   "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd">
-<boostbook xmlns:xi="http://www.w3.org/2001/XInclude"
-           last-revision="$Date: 2005/12/01 13:42:02 $">
-  <title>The Boost C++ Libraries</title>
+<!-- Copyright (C) 2002 Douglas Gregor
 
-  <part id="libraries">
-    <title>The Boost C++ Libraries</title>
-    <para>
-      Documentation for some libraries is available in alternative formats at <ulink url="http://sourceforge.net/project/showfiles.php?group_id=7586">the SourceForge download site</ulink>.
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt) -->
+<boostbook xmlns:xi="http://www.w3.org/2001/XInclude"
+           last-revision="$Date: 2006/11/03 19:57:40 $">
+  <title>The Boost C++ Libraries BoostBook Documentation Subset</title>
+
+  <preface id="about">
+    <title>What's Included in This Document</title>
+
+    <para>This document represents only a subset of the full Boost
+    documentation: that part which is generated from BoostBook or
+    QuickBook sources.  Eventually all Boost libraries may use these
+    formats, but in the meantime, much of Boost's documentation is not
+    available here.  Please
+    see <ulink
+    url="http://www.boost.org/libs">http://www.boost.org/libs</ulink>
+    for complete documentation.
     </para>
 
-    <section>
-      <title>Libraries Listed Alphabetically</title>
-      <librarylist/>
-    </section>
-    <section>
-      <title>Libraries Listed by Category</title>
-      <librarycategorylist>
-        <librarycategorydef name="category:string-text">
-          String and text processing
-        </librarycategorydef>
-        <librarycategorydef name="category:containers">
-          Containers
-        </librarycategorydef>
-        <librarycategorydef name="category:iterators">
-          Iterators
-        </librarycategorydef>
-        <librarycategorydef name="category:algorithms">
-          Algorithms
-        </librarycategorydef>
-        <librarycategorydef name="category:higher-order">
-          Function objects and higher-order programming
-        </librarycategorydef>
-        <librarycategorydef name="category:generic"> 
-          Generic programming
-        </librarycategorydef>
-        <librarycategorydef name="category:template"> 
-          Template metaprogramming
-        </librarycategorydef>
-        <librarycategorydef name="category:preprocessor"> 
-          Preprocessor metaprogramming
-        </librarycategorydef>
-        <librarycategorydef name="category:concurrent"> 
-          Concurrent programming
-        </librarycategorydef>
-        <librarycategorydef name="category:math">
-          Math and numerics
-        </librarycategorydef>
-        <librarycategorydef name="category:testing">
-          Correctness and testing
-        </librarycategorydef>
-        <librarycategorydef name="category:data-structures">
-          Data structures
-        </librarycategorydef>
-        <librarycategorydef name="category:io">
-          Input/Output
-        </librarycategorydef>
-        <librarycategorydef name="category:lang">
-          Inter-language support
-        </librarycategorydef>
-        <librarycategorydef name="category:memory">
-          Memory
-        </librarycategorydef>
-        <librarycategorydef name="category:parsing">
-          Parsing
-        </librarycategorydef>
-        <librarycategorydef name="category:misc"> 
-          Miscellaneous
-        </librarycategorydef>
-        <librarycategorydef name="category:broken"> 
-          Broken compiler workarounds
-        </librarycategorydef>
-      </librarycategorylist>  
-    </section>
+    <para>
+      Documentation for some of the libraries described in this document is
+      available in alternative formats:
+       <itemizedlist>
+         <listitem>
+           <simpara><ulink url="http://www.boost.org/doc/boost-doc-html.tar.gz">HTML (tarred, gzipped)</ulink></simpara>
+         </listitem>
+         <listitem>
+           <simpara><ulink url="http://www.boost.org/doc/boost.pdf">PDF</ulink></simpara>
+         </listitem>
+         <listitem>
+           <simpara>
+             <ulink url="http://www.boost.org/doc/boost-doc-man.tar.gz">Unix man pages</ulink>
+           </simpara>
+         </listitem>
+         <listitem>
+           <simpara><ulink url="../boost.docbook">DocBook</ulink></simpara>
+         </listitem>
+         <listitem>
+           <simpara>
+             <ulink url="../boost.fo">XSL Formatting Objects</ulink>
+           </simpara>
+         </listitem>
+       </itemizedlist>
+    </para>
+
+  </preface>
+
+  <part id="libraries">
+    <title>The Boost C++ Libraries (BoostBook Subset)</title>
 
     <xi:include href="../../libs/any/doc/any.xml"/>
     <xi:include href="../../libs/array/doc/array.xml"/>
@@ -162,7 +141,7 @@
      </libraryinfo>
    </library>
 
-   <library name="Concept Check" dirname="concept_check" html-only="1">
+   <library name="Concept Check" dirname="concept_check">
      <libraryinfo>
        <author>
          <firstname>Jeremy</firstname>
@@ -172,9 +151,9 @@
        <librarycategory name="category:generic"/>
        <librarycategory name="category:testing"/>
      </libraryinfo>
+     <title>Boost.Concept_Check</title>
+     <xi:include href="../../libs/concept_check/doc/reference/concepts.xml"/>
    </library>
-
-   <xi:include href="../../libs/concept_check/doc/reference/concepts.xml"/>
 
    <library name="Config" dirname="config" html-only="1">
      <libraryinfo>
@@ -267,6 +246,8 @@
        <librarycategory name="category:misc"/>
      </libraryinfo>
    </library>
+
+   <xi:include href="foreach.xml"/>
 
    <xi:include href="../../libs/function/doc/function.xml"/>
 
@@ -381,6 +362,8 @@
      </libraryinfo>
    </library>
 
+   <xi:include href="math.xml"/>
+   
    <library name="Math/Common Factor" dirname="math/common_factor" html-only="1"
             url="../../libs/math/doc/common_factor.html">
      <libraryinfo>
@@ -671,6 +654,7 @@
      </libraryinfo>
    </library>
 
+   <xi:include href="tr1.xml"/>
    <xi:include href="../../libs/logic/doc/tribool.boostbook"/>
 
    <library name="Tuple" dirname="tuple" html-only="1">
@@ -685,8 +669,10 @@
    </library>
 
    <xi:include href="type_traits.xml"/>
+ 
+   <xi:include href="typeof.xml"/>
 
-      <library name="uBLAS" dirname="numeric/ublas" html-only="1">
+   <library name="uBLAS" dirname="numeric/ublas" html-only="1">
      <libraryinfo>
        <author>
          <firstname>Joerg</firstname>
@@ -718,10 +704,29 @@
      </libraryinfo>
    </library>
    <xi:include href="../../libs/variant/doc/variant.xml"/>
+
+   <xi:include href="xpressive.xml"/>
+
   </part>
 
-  <xi:include href="../../tools/boostbook/doc/boostbook.xml"/>
-  <xi:include href="../../tools/build/v2/doc/src/userman.xml"/>
+  <part id="tools">
+    <title>Boost Tools</title>
+    <para>
+      Boost developers, testers, and maintainers have developed various programs to 
+      help with the administration of the Boost Libraries. Like everything else about 
+      Boost, these tools are available in source form, and are part of the regular 
+      Boost distribution.
+    </para>
+    <para>
+      Users may find these tools useful when porting Boost libraries to a new platform, 
+      or for use with their own applications.
+    </para>
+
+    <xi:include href="../../tools/boostbook/doc/boostbook.xml"/>
+    <xi:include href="quickbook.xml"/>
+    <xi:include href="bjam.xml"/>
+    <xi:include href="../../tools/build/v2/doc/src/userman.xml"/>
+  </part>
+  
   <xi:include href="using.xml"/>
 </boostbook>
-

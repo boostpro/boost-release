@@ -8,8 +8,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/libs/mpl/test/size_t.cpp,v $
-// $Date: 2005/09/15 02:26:13 $
-// $Revision: 1.2.2.1 $
+// $Date: 2005/12/08 03:17:47 $
+// $Revision: 1.3 $
 
 // Necessary to overcome a strange name lookup bug in GCC 3.3 and 4.0 for Mac OS X
 #if defined(__APPLE_CC__) && defined(__GNUC__) && (__GNUC__ <= 4)

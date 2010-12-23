@@ -8,7 +8,7 @@
 =============================================================================*/
 #include <iostream>
 #include <cstring>
-#include <cassert>
+#include <boost/detail/lightweight_test.hpp>
 
 // This test program only includes the epsilon.hpp header from Spirit
 #include <boost/spirit/core/composite/epsilon.hpp>
@@ -33,7 +33,7 @@ static void
 parse(char const *s, ParserT const &p, bool match)
 {
     
-    pi = boost::spirit::parse(s, s+string_length(s), p);
+    pi = boost::spirit::parse(s, s + test_impl::string_length(s), p);
     if (match)
     {
         BOOST_TEST(matches);

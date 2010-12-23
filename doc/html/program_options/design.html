@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Design Discussion</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../program_options.html" title="Chapter 7. Boost.Program_options">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../program_options.html" title="Chapter 10. Boost.Program_options">
 <link rel="prev" href="howto.html" title="How To">
 <link rel="next" href="s06.html" title="Acknowledgements">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.htm">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../../people/people.htm">People</a></td>
@@ -23,14 +23,14 @@
 <a accesskey="p" href="howto.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../program_options.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s06.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="program_options.design"></a>Design Discussion</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="program_options.design"></a>Design Discussion</h2></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="design.html#program_options.design.unicode">Unicode Support</a></span></dt></dl></div>
 <p>This section focuses on some of the design questions.
   </p>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="program_options.design.unicode"></a>Unicode Support</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="program_options.design.unicode"></a>Unicode Support</h3></div></div></div>
 <p>Unicode support was one of the features specifically requested
       during the formal review. Throughout this document "Unicode support" is
       a synonym for "wchar_t" support, assuming that "wchar_t" always uses
@@ -60,12 +60,15 @@
 <li><p>Unicode input is passed to a Unicode value without change</p></li>
 <li><p>ascii input passed to a Unicode value, and Unicode input
                   passed to an ascii value will be converted using a codecvt
-                  facet (which may be specified by the user(which can be
-                  specified by the user)
+                  facet (which may be specified by the user).
                 </p></li>
 </ul></div>
+<p>
+          </p>
 </li>
 </ul></div>
+<p>
+    </p>
 <p>The important point is that it's possible to have some "ascii
       options" together with "Unicode options". There are two reasons for
       this. First, for a given type you might not have the code to extract the
@@ -85,7 +88,7 @@
       not work with 8-bit input without additional setup.
     </p>
 <p>The Unicode support outlined above is not complete. For example, we
-      don't plan allow Unicode in option names. Unicode support is hard and
+      don't support Unicode option names. Unicode support is hard and
       requires a Boost-wide solution. Even comparing two arbitrary Unicode
       strings is non-trivial. Finally, using Unicode in option names is
       related to internationalization, which has it's own
@@ -124,6 +127,8 @@
             but can be also dangerous or confusing for a user.
           </p></li>
 </ul></div>
+<p>
+    </p>
 <p>The second solution appears to be the best -- it does not increase
     the code size much and is cleaner than the third. To avoid extra
     conversions, the Unicode version of <code class="computeroutput">parsed_options</code> can also store
@@ -132,14 +137,14 @@
 <p>For the options descriptions component, we don't have much
       choice. Since it's not desirable to have either all options use ascii or all
       of them use Unicode, but rather have some ascii and some Unicode options, the
-      interface of the <code class="computeroutput"><a href="../value_semantic.html" title="Class value_semantic">value_semantic</a></code> must work with both. The only way is
+      interface of the <code class="computeroutput"><a href="../boost/program_options/value_semantic.html" title="Class value_semantic">value_semantic</a></code> must work with both. The only way is
       to pass an additional flag telling if strings use ascii or internal encoding.
-      The instance of <code class="computeroutput"><a href="../value_semantic.html" title="Class value_semantic">value_semantic</a></code> can then convert into some
+      The instance of <code class="computeroutput"><a href="../boost/program_options/value_semantic.html" title="Class value_semantic">value_semantic</a></code> can then convert into some
       other encoding if needed.
     </p>
-<p>For the storage component, the only affected function is <code class="computeroutput"><a href="../id2349650.html" title="Function store">store</a></code>.
-      For Unicode input, the <code class="computeroutput"><a href="../id2349650.html" title="Function store">store</a></code> function should convert the value to the
-      internal encoding.  It should also inform the <code class="computeroutput"><a href="../value_semantic.html" title="Class value_semantic">value_semantic</a></code> class
+<p>For the storage component, the only affected function is <code class="computeroutput"><a href="../id1009524-bb.html" title="Function store">store</a></code>.
+      For Unicode input, the <code class="computeroutput"><a href="../id1009524-bb.html" title="Function store">store</a></code> function should convert the value to the
+      internal encoding.  It should also inform the <code class="computeroutput"><a href="../boost/program_options/value_semantic.html" title="Class value_semantic">value_semantic</a></code> class
       about the used encoding.
     </p>
 <p>Finally, what internal encoding should we use? The

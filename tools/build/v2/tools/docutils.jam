@@ -19,11 +19,19 @@ type.register ReST : rst ;
 
 class rst-scanner : common-scanner
 {
+    rule __init__ ( paths * )
+    {
+        common-scanner.__init__ . $(paths) ;
+    }
+    
     rule pattern ( )
     {
-         return "^\\w*\\.\\.\\w+include::\w+(.*)"
-        "^\\w*\\.\\.\\w+image::\w+(.*)"
-        "^\\w*\\.\\.\\w+figure::\w+(.*)"
+         return "^[ 	]*\\.\\.[ 	]+include::[ 	]+([^
+]+)"
+        "^[ 	]*\\.\\.[ 	]+image::[ 	]+([^
+]+)"
+        "^[ 	]*\\.\\.[ 	]+figure::[ 	]+([^
+]+)"
         ;
     }
 }
@@ -33,7 +41,7 @@ type.set-scanner ReST : rst-scanner ;
 
 generators.register-standard docutils.html : ReST : HTML ;
 
-rule init ( docutils-dir )
+rule init ( docutils-dir ? )
 {
     docutils-dir ?= [ modules.peek : DOCUTILS_DIR ] ;
 
@@ -50,18 +58,24 @@ rule init ( docutils-dir )
 
 rule html ( target : source : properties *  )
 {
-    docutils-dir on $(target) = $(.docutils-dir) ;
+    local command-prefix = "python "$(.docutils-dir)/tools/ ;
+    if ! [ on $(target) return $(RST2XXX) ]
+    {
+        RST2XXX on $(target) = $(command-prefix:E="")rst2html.py ;
+    }
 }
 
 
 feature docutils : : free ;
 feature docutils-html : : free ;
+feature docutils-cmd : : free ;
 toolset.flags docutils COMMON-FLAGS : <docutils> ;
 toolset.flags docutils HTML-FLAGS : <docutils-html> ;
+toolset.flags docutils RST2XXX : <docutils-cmd> ;
   
 actions html
 {
     $(.setup)
-    python $(docutils-dir)/tools/rst2html.py $(COMMON-FLAGS) $(HTML-FLAGS) $(>) $(<)
+    $(RST2XXX) $(COMMON-FLAGS) $(HTML-FLAGS) $(>) $(<)
 }
 

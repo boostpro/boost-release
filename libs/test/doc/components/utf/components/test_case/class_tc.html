@@ -1,3 +1,4 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
 <HEAD>
 <TITLE>The class test case</TITLE>
@@ -7,14 +8,14 @@
 <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </HEAD>
 <BODY>
-<DIV class="header"> <A href="../../../../index.html">Boost.Test</A> > <A href="../../../index.html">Components</A> 
-  > <A href="../../index.html">The Unit Test Framework</A> > <A href="../index.html">Components</A> > 
-  <A href="index.html">The Test Case</A> > <SPAN class="current_article">The class member function based 
-  test case</SPAN> </DIV>
-<DIV class="body"> <IMG src='../../../../btl1.gif' width='252' height='43' alt="Boost Test logo"> 
+<DIV class="header"> <A href="../../../../index.html">Boost.Test</A> &gt; <A href="../../../index.html">Components</A> &gt; <A href="../../index.html">The
+    Unit Test Framework</A> &gt; <A href="../index.html">Components</A> &gt; <A href="index.html">The
+    Test Case</A> &gt; <SPAN class="current_article">The
+  class member function based  test case</SPAN> </DIV>
+<DIV class="body"> <IMG src="../../../btl1.gif" width="252" height="43" alt="Boost Test logo"> 
   <H1 class="subtitle">The class member function based test cases</H1>
   <H5>Definition</H5>
-  <P class="first-line-indented"> defined in <A href="../../../../../../../boost/test/unit_test_suite.hpp">unit_test_suite.hpp</A> 
+  <P class="first-line-indented"> defined in <A href="../../../../../../../boost/test/unit_test_suite.hpp">unit_test_suite.hpp</A></P>
   <H5>Synopsis</H5>
   <PRE class="code"><SPAN class="reserv-word">template</SPAN>&lt;<SPAN class="reserv-word">class</SPAN> UserTestClass&gt;
 <SPAN class="reserv-word">class</SPAN> <SPAN class="new-term">class_test_case</SPAN> : <SPAN class="reserv-word">public</SPAN> test_case
@@ -32,7 +33,7 @@
     void (UserTestClass::*fct)(). To allow sharing on the same instance, so that one test case could use 
     results of another, class_test_case is constructed based on boost::shared_ptr to the user test case 
     class instance. Note, though, that we could achieve similar effect with use of free function like 
-    this: 
+    this:</P>
   <PRE class="code"><SPAN class="cpp-type">void</SPAN> compound_test() {
     UserTestCase instance;
 
@@ -91,7 +92,7 @@ ts-&gt;add( BOOST_CLASS_TEST_CASE( &amp;my_complex_test::test_feature1, instance
     }
 
     <SPAN class="cpp-type">void</SPAN> test_access_methods() {
-        BOOST_CHECK_EQUAL( v->get_value(), <SPAN class="literal">1</SPAN> );
+        BOOST_CHECK_EQUAL( v-&gt;get_value(), <SPAN class="literal">1</SPAN> );
         ...
     }
 <SPAN class="reserv-word">private</SPAN>:
@@ -105,11 +106,11 @@ Ts&gt;add( BOOST_CLASS_TEST_CASE( &amp;compound_test::test_access_methods, insta
 </DIV>
 <DIV class="footer"> 
   <DIV class="footer-body"> 
-    <P> &copy <A name="Copyright">Copyright</A> <A href='mailto:boost-test at emailaccount dot com (please unobscure)'>Gennadiy Rozental</A> 2001-2005. <BR>
+    <P> &copy; <A name="Copyright">Copyright</A> <A href="mailto:boost-test%20at%20emailaccount%20dot%20com%20%28please%20unobscure%29">Gennadiy Rozental</A> 2001-2006. <BR>
       Distributed under the Boost Software License, Version 1.0.
       (See accompanying file <A href="../../../../../../../LICENSE_1_0.txt">LICENSE_1_0.txt</A> or copy at 
       <A href="http://www.boost.org/LICENSE_1_0.txt">www.boost.org/LICENSE_1_0.txt</A>)</P>
-        <P>Revised:        <!-- #BeginDate format:Sw1 -->17 July, 2004<!-- #EndDate -->     </P>
+        <P>Revised:        <!-- #BeginDate format:Sw1 -->28 February, 2006<!-- #EndDate -->     </P>
   </DIV>
 </DIV>
 </BODY>

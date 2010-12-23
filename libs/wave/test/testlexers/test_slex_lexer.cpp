@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -13,6 +13,8 @@
 #include <limits>
 
 #include <boost/wave/wave_config.hpp>
+#undef BOOST_WAVE_SEPARATE_LEXER_INSTANTIATION
+
 #include <boost/detail/lightweight_test.hpp>
 #if defined(TESTLEXERS_TIMING)
 #include "high_resolution_timer.hpp"
@@ -52,7 +54,7 @@ main(int argc, char *argv[])
         token_type::string_type instr(data->token);
 
         lexer_type it = lexer_type(instr.begin(), instr.end(), pos, 
-            boost::wave::support_long_long);
+            boost::wave::support_option_long_long);
         lexer_type end = lexer_type();
 
         // verify the correct outcome of the tokenisation
@@ -62,14 +64,19 @@ main(int argc, char *argv[])
 
             if (data->id != boost::wave::token_id(*it)) {
                 BOOST_TEST(data->id == boost::wave::token_id(*it));
-                std::cerr << "Expected: " 
+                std::cerr << data->token << ": expected: " 
                     << boost::wave::get_token_name(data->id);
                 std::cerr << ", found: " 
                     << boost::wave::get_token_name(boost::wave::token_id(*it)) 
                     << std::endl;
             }
             BOOST_TEST(++it != end);
-            BOOST_TEST(boost::wave::T_EOF == boost::wave::token_id(*it));
+            if (boost::wave::T_EOF != boost::wave::token_id(*it)) {
+                BOOST_TEST(boost::wave::T_EOF == boost::wave::token_id(*it));
+                std::cerr << data->token << ": not fully matched, " 
+                    << "first non-matched token was: " << (*it).get_value()
+                    << std::endl;
+            }
         }
 
 #if defined(TESTLEXERS_TIMING)

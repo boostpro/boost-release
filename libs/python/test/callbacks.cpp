@@ -2,6 +2,7 @@
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
+
 #include <boost/python/module.hpp>
 #include <boost/python/def.hpp>
 #include <boost/python/class.hpp>
@@ -11,6 +12,7 @@
 #include <boost/python/reference_existing_object.hpp>
 #include <boost/python/call.hpp>
 #include <boost/python/object.hpp>
+#include <boost/assert.hpp>
 
 using namespace boost::python;
 BOOST_STATIC_ASSERT(converter::is_object_manager<handle<> >::value);
@@ -29,10 +31,10 @@ struct X
 {
     explicit X(int x) : x(x), magic(7654321) { ++counter; }
     X(X const& rhs) : x(rhs.x), magic(7654321) { ++counter; }
-    ~X() { assert(magic == 7654321); magic = 6666666; x = 9999; --counter; }
+    ~X() { BOOST_ASSERT(magic == 7654321); magic = 6666666; x = 9999; --counter; }
 
-    void set(int x) { assert(magic == 7654321); this->x = x; }
-    int value() const { assert(magic == 7654321); return x; }
+    void set(int x) { BOOST_ASSERT(magic == 7654321); this->x = x; }
+    int value() const { BOOST_ASSERT(magic == 7654321); return x; }
     static int count() { return counter; }
  private:
     void operator=(X const&);

@@ -11,8 +11,19 @@
 exe quickbook
     :
     detail/quickbook.cpp
-    /boost/program_options//boost_program_options
-    :
+    detail/actions.cpp
+    detail/utils.cpp
+    detail/post_process.cpp
+    /boost//program_options
+    /boost//filesystem
+    : #<define>QUICKBOOK_NO_DATES
+      <toolset>msvc:<cxxflags>/wd4511
+      <toolset>msvc:<cxxflags>/wd4512
+      <toolset>msvc:<cxxflags>/wd4701
+      <toolset>msvc:<cxxflags>/wd4702
+      <toolset>msvc:<cxxflags>/wd4244
+      <toolset>msvc:<cxxflags>/wd4267
+      <toolset>msvc:<cxxflags>/wd4800
     ;
 
 install dist-bin

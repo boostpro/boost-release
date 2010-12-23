@@ -5,7 +5,7 @@
     
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost 
+    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost 
     Software License, Version 1.0. (See accompanying file 
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -62,6 +62,10 @@ struct lex_input_interface
 
     virtual ~lex_input_interface() {}
     
+#if BOOST_WAVE_SUPPORT_PRAGMA_ONCE != 0
+    virtual bool has_include_guards(std::string& guard_name) const = 0;
+#endif    
+
 //  The new_lexer function allows the opaque generation of a new lexer object.
 //  It is coupled to the token type to allow to distinguish different 
 //  lexer/token configurations at compile time.

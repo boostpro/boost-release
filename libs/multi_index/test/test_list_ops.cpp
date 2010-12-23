@@ -1,6 +1,6 @@
 /* Boost.MultiIndex test for standard list operations.
  *
- * Copyright 2003-2004 Joaquín M López Muñoz.
+ * Copyright 2003-2007 Joaquín M López Muñoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -18,6 +18,7 @@
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
+#include <boost/multi_index/random_access_index.hpp>
 #include <boost/test/test_tools.hpp>
 
 using namespace boost::multi_index;
@@ -31,7 +32,7 @@ using namespace boost::multi_index;
   int v[]=check_range;\
   std::size_t size_v=sizeof(v)/sizeof(int);\
   BOOST_CHECK(std::size_t(std::distance((p).begin(),(p).end()))==size_v);\
-  BOOST_CHECK(std::equal((p).begin(),(p).end(),v));\
+  BOOST_CHECK(std::equal((p).begin(),(p).end(),&v[0]));\
 }
 
 #undef CHECK_VOID_RANGE
@@ -64,19 +65,22 @@ bool is_sorted(
   }
 }
 
-void test_list_ops()
-{
-  typedef multi_index_container<
-    int,
-    indexed_by<
-      ordered_unique<identity<int> >,
-      sequenced<>
-    >
-  > sequenced_set;
-  typedef nth_index<sequenced_set,1>::type sequenced_index;
+#if BOOST_WORKAROUND(__MWERKS__,<=0x3003)
+/* The "ISO C++ Template Parser" option makes CW8.3 incorrectly fail at
+ * expressions of the form sizeof(x) where x is an array local to a
+ * template function.
+ */
 
-  sequenced_set     ss,ss2;
-  sequenced_index  &si=get<1>(ss),&si2=get<1>(ss2);
+#pragma parse_func_templ off
+#endif
+
+template<typename Sequence>
+static void test_list_ops_unique_seq(BOOST_EXPLICIT_TEMPLATE_TYPE(Sequence))
+{
+  typedef typename nth_index<Sequence,1>::type sequenced_index;
+
+  Sequence         ss,ss2;
+  sequenced_index &si=get<1>(ss),&si2=get<1>(ss2);
 
   si.push_front(0);                       /* 0        */
   si.push_front(4);                       /* 40       */
@@ -130,8 +134,8 @@ void test_list_ops()
   BOOST_CHECK(si2.empty());
 
   {
-    sequenced_set     ss3(ss);
-    sequenced_index  &si3=get<1>(ss3);
+    Sequence         ss3(ss);
+    sequenced_index &si3=get<1>(ss3);
 
     si3.sort(std::greater<int>());
     si.reverse();
@@ -144,6 +148,115 @@ void test_list_ops()
   si.merge(si2,std::greater<int>());
   BOOST_CHECK(is_sorted(si,std::greater<int>()));
   BOOST_CHECK(si2.empty());
+}
+
+template<typename Sequence>
+static void test_list_ops_non_unique_seq(
+  BOOST_EXPLICIT_TEMPLATE_TYPE(Sequence))
+{
+  typedef typename Sequence::iterator iterator;
+
+  Sequence ss;
+  for(int i=0;i<10;++i){
+    ss.push_back(i);
+    ss.push_back(i);
+    ss.push_front(i);
+    ss.push_front(i);
+  } /* 9988776655443322110000112233445566778899 */
+
+  ss.unique();
+  CHECK_EQUAL(
+    ss,
+    {9 _ 8 _ 7 _ 6 _ 5 _ 4 _ 3 _ 2 _ 1 _ 0 _
+     1 _ 2 _ 3 _ 4 _ 5 _ 6 _ 7 _ 8 _ 9});
+
+  iterator it=ss.begin();
+  for(int j=0;j<9;++j,++it){} /* it points to o */
+
+  Sequence ss2;
+  ss2.splice(ss2.end(),ss,ss.begin(),it);
+  ss2.reverse();
+  ss.merge(ss2);
+  CHECK_EQUAL(
+    ss,
+    {0 _ 1 _ 1 _ 2 _ 2 _ 3 _ 3 _ 4 _ 4 _ 5 _ 5 _
+     6 _ 6 _ 7 _ 7 _ 8 _ 8 _ 9 _ 9});
+
+  ss.unique(same_integral_div<3>());
+  CHECK_EQUAL(ss,{0 _ 3 _ 6 _ 9});
+
+  ss.unique(same_integral_div<1>());
+  CHECK_EQUAL(ss,{0 _ 3 _ 6 _ 9});
+
+  /* testcases for bugs reported at
+   * http://lists.boost.org/boost-users/2006/09/22604.php
+   */
+  {
+    Sequence ss,ss2;
+    ss.push_back(0);
+    ss2.push_back(0);
+    ss.splice(ss.end(),ss2,ss2.begin());
+    CHECK_EQUAL(ss,{0 _ 0});
+    BOOST_CHECK(ss2.empty());
+
+    ss.clear();
+    ss2.clear();
+    ss.push_back(0);
+    ss2.push_back(0);
+    ss.splice(ss.end(),ss2,ss2.begin(),ss2.end());
+    CHECK_EQUAL(ss,{0 _ 0});
+    BOOST_CHECK(ss2.empty());
+
+    ss.clear();
+    ss2.clear();
+    ss.push_back(0);
+    ss2.push_back(0);
+    ss.merge(ss2);
+    CHECK_EQUAL(ss,{0 _ 0});
+    BOOST_CHECK(ss2.empty());
+
+    typedef typename Sequence::value_type value_type;
+    ss.clear();
+    ss2.clear();
+    ss.push_back(0);
+    ss2.push_back(0);
+    ss.merge(ss2,std::less<value_type>());
+    CHECK_EQUAL(ss,{0 _ 0});
+    BOOST_CHECK(ss2.empty());
+  }
+}
+
+#if BOOST_WORKAROUND(__MWERKS__,<=0x3003)
+#pragma parse_func_templ reset
+#endif
+
+void test_list_ops()
+{
+  typedef multi_index_container<
+    int,
+    indexed_by<
+      ordered_unique<identity<int> >,
+      sequenced<>
+    >
+  > sequenced_set;
+  
+  /* MSVC++ 6.0 chokes on test_list_ops_unique_seq without this
+   * explicit instantiation
+   */
+  sequenced_set ss;
+  test_list_ops_unique_seq<sequenced_set>();
+
+
+  typedef multi_index_container<
+    int,
+    indexed_by<
+      ordered_unique<identity<int> >,
+      random_access<>
+    >
+  > random_access_set;
+  
+  random_access_set rs;
+  test_list_ops_unique_seq<random_access_set>();
 
   typedef multi_index_container<
     int,
@@ -151,34 +264,13 @@ void test_list_ops()
   > int_list;
 
   int_list il;
-  for(int i=0;i<10;++i){
-    il.push_back(i);
-    il.push_back(i);
-    il.push_front(i);
-    il.push_front(i);
-  } /* 9988776655443322110000112233445566778899 */
+  test_list_ops_non_unique_seq<int_list>();
 
-  il.unique();
-  CHECK_EQUAL(
-    il,
-    {9 _ 8 _ 7 _ 6 _ 5 _ 4 _ 3 _ 2 _ 1 _ 0 _
-     1 _ 2 _ 3 _ 4 _ 5 _ 6 _ 7 _ 8 _ 9});
+  typedef multi_index_container<
+    int,
+    indexed_by<random_access<> >
+  > int_vector;
 
-  int_list::iterator it=il.begin();
-  for(int j=0;j<9;++j,++it){} /* it points to o */
-
-  int_list il2;
-  il2.splice(il2.end(),il,il.begin(),it);
-  il2.reverse();
-  il.merge(il2);
-  CHECK_EQUAL(
-    il,
-    {0 _ 1 _ 1 _ 2 _ 2 _ 3 _ 3 _ 4 _ 4 _ 5 _ 5 _
-     6 _ 6 _ 7 _ 7 _ 8 _ 8 _ 9 _ 9});
-
-  il.unique(same_integral_div<3>());
-  CHECK_EQUAL(il,{0 _ 3 _ 6 _ 9});
-
-  il.unique(same_integral_div<1>());
-  CHECK_EQUAL(il,{0 _ 3 _ 6 _ 9});
+  int_vector iv;
+  test_list_ops_non_unique_seq<int_vector>();
 }

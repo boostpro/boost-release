@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Design Rationale</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../array.html" title="Chapter 2. Boost.Array">
 <link rel="prev" href="../boost/array.html" title="Class template array">
 <link rel="next" href="more/info.html" title="For more information...">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.htm">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../../people/people.htm">People</a></td>
@@ -23,8 +23,8 @@
 <a accesskey="p" href="../boost/array.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../array.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="more/info.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="array.rationale"></a>Design Rationale</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="array.rationale"></a>Design Rationale</h2></div></div></div>
 <p>There was an important design tradeoff regarding the
   constructors: We could implement array as an "aggregate" (see
   Section 8.5.1, [dcl.init.aggr], of the C++ Standard). This would
@@ -50,11 +50,14 @@
 <li>No base classes.</li>
 <li>No virtual functions.</li>
 </ul></div>
+<p>
+  </p>
 <p>Nevertheless, The current implementation uses this approach.</p>
 <p>Note that for standard conforming compilers it is possible to
   use fewer braces (according to 8.5.1 (11) of the Standard). That is,
   you can initialize an array as follows:</p>
-<pre class="programlisting"><code class="computeroutput"><a href="../boost/array.html" title="Class template array">boost::array</a></code>&lt;int,4&gt; a = { 1, 2, 3 };
+<pre class="programlisting">
+<code class="computeroutput"><a href="../boost/array.html" title="Class template array">boost::array</a></code>&lt;int,4&gt; a = { 1, 2, 3 };
 </pre>
 <p>I'd appreciate any constructive feedback. <span class="bold"><strong>Please note: I don't have time to read all boost
   mails. Thus, to make sure that feedback arrives to me, please send

@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Frequently Asked Questions</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../signals.html" title="Chapter 9. Boost.Signals">
-<link rel="prev" href="../id2591657-bb.html" title="Class last_value&lt;void&gt;">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../signals.html" title="Chapter 12. Boost.Signals">
+<link rel="prev" href="../id1010153-bb.html" title="Class last_value&lt;void&gt;">
 <link rel="next" href="s05.html" title="Design Overview">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.htm">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../../people/people.htm">People</a></td>
@@ -20,19 +20,19 @@
 </table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../id2591657-bb.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s05.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../id1010153-bb.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s05.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2738844"></a>Frequently Asked Questions</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="id1633680"></a>Frequently Asked Questions</h2></div></div></div>
 <div class="qandaset">
 <dl>
-<dt>1. <a href="s04.html#id2738852">Don't noncopyable signal semantics mean that a class
+<dt>1. <a href="s04.html#id1633688">Don't noncopyable signal semantics mean that a class
         with a signal member will be noncopyable as well?</a>
 </dt>
-<dt>2. <a href="s04.html#id2738867">Is Boost.Signals thread-safe?</a>
+<dt>2. <a href="s04.html#id1633711">Is Boost.Signals thread-safe?</a>
 </dt>
-<dt>3. <a href="s04.html#id2738878">How do I get Boost.Signals to work with Qt?</a>
+<dt>3. <a href="s04.html#id1633734">How do I get Boost.Signals to work with Qt?</a>
 </dt>
 </dl>
 <table border="0" summary="Q and A Set">
@@ -40,7 +40,7 @@
 <tbody>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2738852"></a><a name="id2738853"></a><b>1.</b>
+<a name="id1633688"></a><a name="id1633690"></a><b>1.</b>
 </td>
 <td align="left" valign="top"><p>Don't noncopyable signal semantics mean that a class
         with a signal member will be noncopyable as well?</p></td>
@@ -55,7 +55,7 @@
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2738867"></a><a name="id2738868"></a><b>2.</b>
+<a name="id1633711"></a><a name="id1633713"></a><b>2.</b>
 </td>
 <td align="left" valign="top"><p>Is Boost.Signals thread-safe?</p></td>
 </tr>
@@ -63,12 +63,14 @@
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p>No. Using Boost.Signals in a multithreaded concept is
         very dangerous, and it is very likely that the results will be
-        less than satisfying. Boost.Signals will support thread safety
-        in the future.</p></td>
+        less than satisfying. Even trying to invoke the same signal from
+        two different threads is dangerous. Although we would like to
+        make Signals thread-safe, it is unlikely to happen without
+        help from other developers.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2738878"></a><a name="id2738880"></a><b>3.</b>
+<a name="id1633734"></a><a name="id1633736"></a><b>3.</b>
 </td>
 <td align="left" valign="top"><p>How do I get Boost.Signals to work with Qt?</p></td>
 </tr>
@@ -78,10 +80,33 @@
 <p>When building with Qt, the Moc keywords
         <code class="computeroutput">signals</code> and <code class="computeroutput">slots</code> are defined using
         preprocessor macros, causing programs using Boost.Signals and
-        Qt together to fail to compile. Although this is a problem
-        with Qt and not Boost.Signals, a user can use the two systems
-        together with a little extra effort. There are two ways to do
-        this:</p>
+        Qt together to fail to compile.</p>
+<p><span class="emphasis"><em>For Qt 4.1 and later</em></span>, This behavior
+        can be turned off in Qt on a per-project or per-file basis
+        with the <code class="computeroutput">no_keywords</code> option.  This works with
+        out-of-the-box builds of Boost and Qt. You do not need to
+        re-configure, re-build, or duplicate existing libraries. For a
+        project where you want to use both Boost.Signals and Qt
+        Signals and Slots, the relevant part of your .pro file might
+        look like this:</p>
+<pre class="programlisting">
+CONFIG      += no_keywords # so Qt won't #define any non-all-caps `keywords'
+INCLUDEPATH += . /usr/local/include/boost-1_33_1/
+macx:LIBS   += /usr/local/lib/libboost_signals-1_33_1.a  # ...your exact paths may vary
+</pre>
+<p>Now you can mix Boost.Signals and Qt Signals and Slots
+        in the same files, and even within the same class or function.
+        You will have to use the upper-case versions of Qt macros in
+        your own code.  See the article <a href="http://scottcollins.net/articles/a-deeper-look-at-signals-and-slots.html" target="_top">A
+        Deeper Look at Signals and Slots</a> [off-site] for more
+        complete examples and a survey of the strengths of the two
+        systems.</p>
+<p><span class="emphasis"><em>Older versions of Qt</em></span> did not
+        provide a reliable mechanism for avoiding these unfriendly,
+        all lower-case `keyword'-like macros.  Although this is a
+        problem with Qt and not Boost.Signals, a user can use the two
+        systems together with a little extra effort. There are two
+        ways to do this:</p>
 <p>The first way involves defining
         the <code class="computeroutput">BOOST_SIGNALS_NAMESPACE</code> 
         macro to some other identifier (e.g., <code class="computeroutput">signalslib</code>)
@@ -120,12 +145,12 @@ namespace boost
 </div>
 </div>
 <table width="100%"><tr>
-<td align="left"><small><p>Last revised: September 23, 2005 at 11:45:10 GMT</p></small></td>
+<td align="left"><small><p>Last revised: November 03, 2006 at 19:45:40 GMT</p></small></td>
 <td align="right"><small>Copyright © 2001-2004 Douglas Gregor</small></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../id2591657-bb.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s05.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../id1010153-bb.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s05.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

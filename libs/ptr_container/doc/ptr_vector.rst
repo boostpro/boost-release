@@ -10,15 +10,16 @@ Class ``ptr_vector``
 A ``ptr_vector<T>`` is a pointer container that uses an underlying ``std::vector<void*>``
 to store the pointers. 
 
-**See also:**
+**Hierarchy:**
 
-- reversible_ptr_container_
-- ptr_sequence_adapter_
-- ptr_array_
+- `reversible_ptr_container <reversible_ptr_container.html>`_
 
-.. _reversible_ptr_container: reversible_ptr_container.html 
-.. _ptr_sequence_adapter: ptr_sequence_adapter.html
-.. _ptr_array: ptr_array.html
+  - `ptr_sequence_adapter <ptr_sequence_adapter.html>`_
+
+    - ``ptr_vector``
+    - `ptr_list <ptr_list.html>`_
+    - `ptr_deque <ptr_deque.html>`_
+    - `ptr_array <ptr_array.html>`_
 
 **Navigate:**
 
@@ -59,7 +60,9 @@ to store the pointers.
                 const T&  at( size_type n ) const;
 
             public: // `pointer container requirements`_
-               auto_type replace( size_type idx, T* x );    
+               auto_type replace( size_type idx, T* x );  
+	       template< class U >
+	       auto_type replace( size_type idx, std::auto_ptr<U> x );  
                bool      is_null( size_type idx ) const;
             };
            
@@ -122,7 +125,7 @@ Semantics: element access
 
     - Effects: Returns a reference to the ``n``'th element
 
-    - Throws: ``bad_index`` if ``n >=size()``
+    - Throws: ``bad_index`` if ``n >= size()``
 
 
 .. _`pointer container requirements`:
@@ -140,6 +143,10 @@ Semantics: pointer container requirements
 
     - Exception safety: Strong guarantee
 
+- ``template< class U > auto_type replace( size_type idx, std::auto_ptr<U> x );``
+
+    - Effects: ``return replace( idx, x.release() );``  
+
 - ``bool is_null( size_type idx ) const;``
 
     - Requirements: ``idx < size()``
@@ -148,6 +155,12 @@ Semantics: pointer container requirements
 
     - Exception safety: Nothrow guarantee
 
+.. raw:: html 
 
-:copyright:     Thorsten Ottosen 2004-2005. 
+        <hr>
+
+:Copyright:     Thorsten Ottosen 2004-2006. Use, modification and distribution is subject to the Boost Software License, Version 1.0 (see LICENSE_1_0.txt__).
+
+__ http://www.boost.org/LICENSE_1_0.txt
+
 

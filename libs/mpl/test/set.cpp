@@ -9,8 +9,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/libs/mpl/test/set.cpp,v $
-// $Date: 2005/06/18 20:51:18 $
-// $Revision: 1.10 $
+// $Date: 2006/06/12 05:11:55 $
+// $Revision: 1.11.2.1 $
 
 #include <boost/mpl/set.hpp>
 #include <boost/mpl/deref.hpp>
@@ -68,9 +68,9 @@ MPL_TEST_CASE()
     typedef begin<s2>::type first2;
     typedef end<s2>::type last2;
 
-    MPL_ASSERT(( is_same< first2::type, int > ));
+    MPL_ASSERT(( is_same< deref<first2>::type, int > ));
     typedef next<first2>::type iter;
-    MPL_ASSERT(( is_same< iter::type, char > ));
+    MPL_ASSERT(( is_same< deref<iter>::type, char > ));
     MPL_ASSERT(( is_same< next<iter>::type, last2 > ));
 
     typedef insert<s2,int>::type s2_1;
@@ -166,16 +166,16 @@ MPL_TEST_CASE()
 
 // Use a template for testing so that GCC will show us the actual types involved
 template <class S>
-struct test
+void test()
 {
     MPL_ASSERT_RELATION( size<S>::value, ==, 3 );
 
     typedef typename end<S>::type not_found;
-    BOOST_MPL_ASSERT_NOT(( is_same<typename find<S,int>::type,not_found> ));
-    BOOST_MPL_ASSERT_NOT(( is_same<typename find<S,long>::type,not_found> ));
-    BOOST_MPL_ASSERT_NOT(( is_same<typename find<S,char>::type,not_found> ));
-    BOOST_MPL_ASSERT(( is_same<typename find<S,char*>::type,not_found> ));
-};
+    BOOST_MPL_ASSERT_NOT(( is_same<BOOST_DEDUCED_TYPENAME find<S,int>::type,not_found> ));
+    BOOST_MPL_ASSERT_NOT(( is_same<BOOST_DEDUCED_TYPENAME find<S,long>::type,not_found> ));
+    BOOST_MPL_ASSERT_NOT(( is_same<BOOST_DEDUCED_TYPENAME find<S,char>::type,not_found> ));
+    BOOST_MPL_ASSERT(( is_same<BOOST_DEDUCED_TYPENAME find<S,char*>::type,not_found> ));
+}
 
 MPL_TEST_CASE()
 {
@@ -185,6 +185,6 @@ MPL_TEST_CASE()
     
     typedef mpl::set<int,long,char> myset;
     
-    test<myset> x;
-    test<myset::type> y;
+    test<myset>();
+    test<myset::type>();
 }

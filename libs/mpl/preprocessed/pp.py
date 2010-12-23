@@ -8,8 +8,8 @@
 # See http://www.boost.org/libs/mpl for documentation.
 
 # $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/pp.py,v $
-# $Date: 2004/09/07 08:53:20 $
-# $Revision: 1.9 $
+# $Date: 2005/10/04 08:35:29 $
+# $Revision: 1.10 $
 
 import fileinput
 import os
@@ -247,9 +247,10 @@ class pretty:
         self.output.write(line)
         self.prev_line = line
 
-def main():
-    p = pretty(os.path.basename(sys.argv[2]))
-    for line in fileinput.input(sys.argv[1]):
+def main( src, dest ):
+    p = pretty( os.path.basename( dest ) )
+    for line in fileinput.input( src ):
         p.process(line)
 
-main()
+if __name__ == '__main__':    
+    main( sys.argv[1], sys.argv[2] )

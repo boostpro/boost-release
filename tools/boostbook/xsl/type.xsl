@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright (c) 2002 Douglas Gregor <doug.gregor -at- gmail.com>
+  
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file LICENSE_1_0.txt or copy at
+   http://www.boost.org/LICENSE_1_0.txt)
+  -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 version="1.0">
 
+  <xsl:include href="global.xsl"/>
   <xsl:strip-space elements="inherit purpose"/>
 
   <!-- When true, the stylesheet will emit compact definitions of
@@ -13,25 +21,26 @@
   <xsl:param name="boost.compact.enum">1</xsl:param>
 
   <xsl:template match="class|struct|union" mode="generate.id">
-    <xsl:choose>
-      <xsl:when test="count(key('named-entities', @name))=1">
-        <xsl:value-of select="@name"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="fully-qualified-name">
-          <xsl:with-param name="node" select="."/>
-          <xsl:with-param name="separator" select="'.'"/>
-        </xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="enum" mode="generate.id">
-    <xsl:text>enum.</xsl:text>
     <xsl:call-template name="fully-qualified-name">
       <xsl:with-param name="node" select="."/>
       <xsl:with-param name="separator" select="'.'"/>
     </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="enum" mode="generate.id">
+    <xsl:call-template name="fully-qualified-name">
+      <xsl:with-param name="node" select="."/>
+      <xsl:with-param name="separator" select="'.'"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="enumvalue" mode="generate.id">
+    <xsl:call-template name="fully-qualified-name">
+      <xsl:with-param name="node" select="parent::enum"/>
+      <xsl:with-param name="separator" select="'.'"/>
+    </xsl:call-template>
+    <xsl:text>.</xsl:text>
+    <xsl:value-of select="@name"/>
   </xsl:template>
 
   <!-- Display the full name of the current node, e.g., "Class
@@ -844,6 +853,11 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
   <xsl:template match="data-member" mode="synopsis">
     <xsl:param name="indentation"/>
 
+    <xsl:choose>
+      <xsl:when test="ancestor::class|ancestor::class-specialization|
+                      ancestor::struct|ancestor::struct-specialization|
+                      ancestor::union|ancestor::union-specialization">
+
     <!-- Spacing -->
     <xsl:if 
       test="not(local-name(preceding-sibling::*[position()=1])=local-name(.))">
@@ -867,6 +881,26 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
     <xsl:text> </xsl:text>
     <xsl:value-of select="@name"/>
     <xsl:text>;</xsl:text>
+
+      </xsl:when>
+      <xsl:otherwise>
+       <xsl:call-template name="global-synopsis">
+         <xsl:with-param name="indentation" select="$indentation"/>
+       </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Data member reference -->
+  <xsl:template match="data-member" mode="reference">
+    <xsl:choose>
+      <xsl:when test="ancestor::class|ancestor::class-specialization|
+                      ancestor::struct|ancestor::struct-specialization|
+                      ancestor::union|ancestor::union-specialization"/>
+      <xsl:otherwise>
+        <xsl:call-template name="global-reference"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Enumeration synopsis -->
@@ -918,7 +952,7 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
           <xsl:call-template name="highlight-comment">
             <xsl:with-param name="text">
               <xsl:text>// </xsl:text>
-              <xsl:apply-templates select="purpose/*" mode="annotation"/>
+              <xsl:apply-templates select="purpose/*|purpose/text()" mode="annotation"/>
             </xsl:with-param>
           </xsl:call-template>
 
@@ -948,6 +982,7 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
         <xsl:call-template name="type.enum.list.compact">
           <xsl:with-param name="indentation"
             select="$indentation + string-length(@name) + 8"/>
+          <xsl:with-param name="compact" select="true()"/>
         </xsl:call-template>
         <xsl:text> }</xsl:text>
       </xsl:otherwise>
@@ -976,9 +1011,22 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
         <xsl:with-param name="synopsis">
           <xsl:call-template name="type.enum.display"/>
         </xsl:with-param>
+
         <xsl:with-param name="text">
-          <xsl:apply-templates select="para"/>
+          <!-- Paragraphs go into the top of the "Description" section. -->
+          <xsl:if test="para">
+            <xsl:message>
+              <xsl:text>Warning: Use of 'para' elements in 'enum' element is deprecated.&#10;Wrap them in a 'description' element.</xsl:text>
+            </xsl:message>
+            <xsl:call-template name="print.warning.context"/>
+            <xsl:apply-templates select="para" mode="annotation"/>
+          </xsl:if>
+          <xsl:apply-templates select="description"/>
+          <variablelist spacing="compact">
+            <xsl:apply-templates select="enumvalue" mode="reference"/>
+          </variablelist>
         </xsl:with-param>
+
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
@@ -1015,29 +1063,30 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
        (inclusive). -->
   <xsl:template name="type.enum.list.compact">
     <xsl:param name="indentation"/>
+    <xsl:param name="compact" select="false()"/>
 
     <!-- Internal: The column we are on -->
     <xsl:param name="column" select="$indentation"/>
 
-    <!-- Internal: The list of enumeration values -->
-    <xsl:param name="values" select="enumvalue"/>
+    <!-- Internal: The index of the current enumvalue
+         we're processing -->
+    <xsl:param name="pos" select="1"/>
 
     <!-- Internal: a prefix that we need to print prior to printing
          this value. -->
     <xsl:param name="prefix" select="''"/>
 
-    <xsl:if test="$values">
-      <xsl:variable name="value" select="$values[position()=1]"/>
-      <xsl:variable name="rest" select="$values[position() &gt; 1]"/>
-
+    <xsl:if test="not($pos &gt; count(enumvalue))">
+      <xsl:variable name="value" select="enumvalue[position()=$pos]"/>
+      
       <!-- Compute the string to be printed for this value -->
       <xsl:variable name="result">
         <xsl:value-of select="$prefix"/>
         <xsl:value-of select="$value/attribute::name"/>
 
-        <xsl:if test="$values/attribute">
+        <xsl:if test="$value/default">
           <xsl:text> = </xsl:text>
-          <xsl:value-of select="string($values/attribute)"/>
+          <xsl:value-of select="$value/default/*|$value/default/text()"/>
         </xsl:if>
       </xsl:variable>
 
@@ -1045,53 +1094,93 @@ Unknown type element "<xsl:value-of select="local-name(.)"/>" in type.display.na
            this line -->
       <xsl:variable name="end" select="$column + string-length($result)"/>
 
-      <xsl:choose>
-        <!-- If the enumeration value fits on this line, put it there -->
-        <xsl:when test="$end &lt; $max-columns">
-          <xsl:value-of select="$prefix"/>
-          <xsl:value-of select="$value/attribute::name"/>
-          <xsl:if test="$value/default">
-            <xsl:text> = </xsl:text>
-            <xsl:apply-templates 
-              select="$value/default/*|$value/default/text()"/>
-          </xsl:if>
+      <!-- The column we will actually end on -->
+      <xsl:variable name="end2">
+        <xsl:choose>
+          <!-- If the enumeration value fits on this line, put it there -->
+          <xsl:when test="$end &lt; $max-columns">
+            <xsl:value-of select="$end"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$indentation 
+                                + string-length($result) 
+                                - string-length($prefix)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-          <xsl:call-template name="type.enum.list.compact">
-            <xsl:with-param name="indentation" select="$indentation"/>
-            <xsl:with-param name="column" select="$end"/>
-            <xsl:with-param name="values" select="$rest"/>
-            <xsl:with-param name="prefix" select="', '"/>
+      <xsl:value-of select="$prefix"/>
+
+      <!-- If the enumeration value doesn't fit on this line,
+           put it on a new line -->
+      <xsl:if test="not($end &lt; $max-columns)">
+        <xsl:text>&#10;</xsl:text>
+        <xsl:call-template name="indent">
+          <xsl:with-param name="indentation" select="$indentation"/>
+        </xsl:call-template>
+      </xsl:if>
+
+      <!-- If the enumeration value has a description, link it
+           to its description. -->
+      <xsl:choose>
+        <xsl:when test="($value/purpose or $value/description) and not($compact)">
+          <xsl:call-template name="internal-link">
+            <xsl:with-param name="to">
+              <xsl:call-template name="generate.id">
+                <xsl:with-param name="node" select="$value"/>
+              </xsl:call-template>
+            </xsl:with-param>
+            <xsl:with-param name="text" select="$value/attribute::name"/>
           </xsl:call-template>
         </xsl:when>
-        <!-- This enumeration value doesn't fit on this line, so print
-             it on the next line -->
         <xsl:otherwise>
-          <xsl:value-of select="$prefix"/>
-          <xsl:text>&#10;</xsl:text>
-
-          <xsl:call-template name="indent">
-            <xsl:with-param name="indentation" select="$indentation"/>
-          </xsl:call-template>
-
           <xsl:value-of select="$value/attribute::name"/>
-          <xsl:if test="$value/default">
-            <xsl:text> = </xsl:text>
-            <xsl:apply-templates 
-              select="$value/default/*|$value/default/text()"/>
-          </xsl:if>
-
-          <xsl:variable name="end2" select="$indentation 
-                                           + string-length($result) 
-                                           - string-length($prefix)"/>
-
-          <xsl:call-template name="type.enum.list.compact">
-            <xsl:with-param name="indentation" select="$indentation"/>
-            <xsl:with-param name="column" select="$end2"/>
-            <xsl:with-param name="values" select="$rest"/>
-            <xsl:with-param name="prefix" select="', '"/>
-          </xsl:call-template>
         </xsl:otherwise>
       </xsl:choose>
+
+      <!-- If the enumeration value has a default,
+           print it. -->
+      <xsl:if test="$value/default">
+        <xsl:text> = </xsl:text>
+        <xsl:apply-templates 
+          select="$value/default/*|$value/default/text()"/>
+      </xsl:if>
+
+      <!-- Recursively generate the rest of the enumeration list -->
+      <xsl:call-template name="type.enum.list.compact">
+        <xsl:with-param name="indentation" select="$indentation"/>
+        <xsl:with-param name="compact" select="$compact"/>
+        <xsl:with-param name="column" select="$end2"/>
+        <xsl:with-param name="pos" select="$pos + 1"/>
+        <xsl:with-param name="prefix" select="', '"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- Enumeration reference at namespace level -->
+  <xsl:template match="enumvalue" mode="reference">
+    <xsl:if test="purpose or description">
+      <varlistentry>
+        <term>
+          <xsl:call-template name="monospaced">
+            <xsl:with-param name="text" select="@name"/>
+          </xsl:call-template>
+          <!-- Note: the anchor must come after the text here, and not
+               before it; otherwise, FOP goes into an infinite loop. -->
+          <xsl:call-template name="anchor">
+            <xsl:with-param name="to">
+              <xsl:call-template name="generate.id"/>
+            </xsl:with-param>
+            <xsl:with-param name="text" select="''"/>
+          </xsl:call-template>
+        </term>
+        <listitem>
+          <xsl:apply-templates
+            select="purpose/*|purpose/text()|
+                    description/*|description/text()"
+            mode="annotation"/>
+        </listitem>
+      </varlistentry>
     </xsl:if>
   </xsl:template>
 

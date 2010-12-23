@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Tutorial</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../program_options.html" title="Chapter 7. Boost.Program_options">
-<link rel="prev" href="../program_options.html" title="Chapter 7. Boost.Program_options">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../program_options.html" title="Chapter 10. Boost.Program_options">
+<link rel="prev" href="../program_options.html" title="Chapter 10. Boost.Program_options">
 <link rel="next" href="overview.html" title="Library Overview">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.htm">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../../people/people.htm">People</a></td>
@@ -23,12 +23,12 @@
 <a accesskey="p" href="../program_options.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../program_options.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="overview.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="program_options.tutorial"></a>Tutorial</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="program_options.tutorial"></a>Tutorial</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="tutorial.html#id2714212">Getting Started</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id2714372">Option Details</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id2714557">Multiple Sources</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id1590784">Getting Started</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id1590940">Option Details</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id1591176">Multiple Sources</a></span></dt>
 </dl></div>
 <p>In this section, we'll take a look at the most common usage scenarios
   of the program_options library, starting with the simplest one. The examples
@@ -37,9 +37,11 @@
   examples, we'll assume that the following namespace alias is in effect:
 </p>
 <pre class="programlisting">namespace po = boost::program_options;</pre>
+<p>
+  </p>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2714212"></a>Getting Started</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id1590784"></a>Getting Started</h3></div></div></div>
 <p>The first example is the simplest possible: it only handles two
     options. Here's the source code (the full program is in
     "example/first.cpp"):
@@ -69,8 +71,10 @@ if (vm.count("compression")) {
     cout &lt;&lt; "Compression level was not set.\n";
 }
 </pre>
+<p>
+  </p>
 <p>We start by declaring all allowed options using the
-    <code class="computeroutput"><a href="../options_description.html" title="Class options_description">options_description</a></code> class. The <code class="computeroutput">add_options</code> method of that
+    <code class="computeroutput"><a href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code> class. The <code class="computeroutput">add_options</code> method of that
     class returns a special proxy object that defines
     <code class="computeroutput">operator()</code>. Calls to that operator actually declare
     options. The parameters are option name, information about value, and option
@@ -103,14 +107,16 @@ Allowed options:
 $<strong class="userinput"><code>bin/gcc/debug/first --compression 10</code></strong>
 Compression level was set to 10.
     </pre>
+<p>
+  </p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2714372"></a>Option Details</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id1590940"></a>Option Details</h3></div></div></div>
 <p>An option value, surely, can have other types than <code class="computeroutput">int</code>, and
   can have other interesting properties, which we'll discuss right now. The
   complete version of the code snipped below can be found in
-  "example/options_description.cpp".</p>
+  <code class="filename">example/options_description.cpp</code>.</p>
 <p>Imagine we're writing a compiler. It should take the optimization
     level, a number of include paths, and a number of input files, and perform some
     interesting work. Let's describe the options:
@@ -127,27 +133,40 @@ desc.add_options()
     ("input-file", po::value&lt; vector&lt;string&gt; &gt;(), "input file")
 ;
 </pre>
-<p>The "--help" option should be familiar from the previous example. 
-    It's a good idea to have this option in all cases.</p>
-<p>The "optimization" option shows two new features. First, we specify
+<p>
+  </p>
+<p>The <code class="literal">"help"</code> option should be familiar from 
+  the previous example. It's a good idea to have this option in all cases.
+  </p>
+<p>The <code class="literal">"optimization"</code> option shows two new features. First, we specify
     the address of the variable(<code class="computeroutput">&amp;opt</code>). After storing values, that
     variable will have the value of the option. Second, we specify a default
     value of 10, which will be used if no value is specified by the user.
   </p>
-<p>The "include-path" option is an example of the only case where
-    the interface of the <code class="computeroutput">options_description</code> class serves only one
+<p>The <code class="literal">"include-path"</code> option is an example of the 
+  only case where the interface of the <code class="computeroutput">options_description</code> 
+  class serves only one
     source -- the command line. Users typically like to use short option names
     for common options, and the "include-path,I" name specifies that short
     option name is "I". So, both "--include-path" and "-I" can be used.
   </p>
+<p>Note also that the type of the <code class="literal">"include-path"</code>
+  option is <span class="type">std::vector</span>. The library provides special 
+  support for vectors -- it will be possible to specify the option several 
+  times, and all specified values will be collected in one vector.  
+  </p>
 <p>The "input-file" option specifies the list of files to
     process. That's okay for a start, but, of course, writing something like:
     </p>
-<pre class="screen"><strong class="userinput"><code>compiler --input-file=a.cpp</code></strong></pre>
+<pre class="screen">
+<strong class="userinput"><code>compiler --input-file=a.cpp</code></strong>
+    </pre>
 <p>
     is a little non-standard, compared with
     </p>
-<pre class="screen"><strong class="userinput"><code>compiler a.cpp</code></strong></pre>
+<pre class="screen">
+<strong class="userinput"><code>compiler a.cpp</code></strong>
+    </pre>
 <p>
     We'll address this in a moment.
   </p>
@@ -167,11 +186,13 @@ po::store(po::command_line_parser(ac, av).
           options(desc).positional(p).run(), vm);
 po::notify(vm);
     </pre>
+<p>    
+  </p>
 <p>
     The first two lines say that all positional options should be translated
     into "input-file" options. Also note that we use the
     <code class="computeroutput">command_line_parser</code> class to parse the command
-    line, not the <code class="computeroutput"><a href="../parse_command_line.html" title="Function template parse_command_line">parse_command_line</a></code>
+    line, not the <code class="computeroutput"><a href="../boost/program_options/parse_command_line.html" title="Function template parse_command_line">parse_command_line</a></code>
     function. The latter is a convenient wrapper for simple cases, but now we
     need to pass additional information.
   </p>
@@ -194,6 +215,8 @@ if (vm.count("input-file"))
 
 cout &lt;&lt; "Optimization level is " &lt;&lt; opt &lt;&lt; "\n";                
 </pre>
+<p>
+  </p>
 <p>Here's an example session:
     </p>
 <pre class="screen">
@@ -212,6 +235,8 @@ Input files are: a.cpp
 Optimization level is 4
 </pre>
 <p>
+  </p>
+<p>
     Oops, there's a slight problem. It's still possible to specify the
     "--input-file" option, and usage message says so, which can be confusing
     for the user. It would be nice to hide this information, but let's wait
@@ -219,8 +244,8 @@ Optimization level is 4
   </p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2714557"></a>Multiple Sources</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id1591176"></a>Multiple Sources</h3></div></div></div>
 <p>It's quite likely that specifying all options to our compiler on the
     command line will annoy users. What if a user installs a new library and
     wants to always pass an additional command line element? What if he has
@@ -289,9 +314,11 @@ config_file_options.add(config).add(hidden);
 po::options_description visible("Allowed options");
 visible.add(generic).add(config);
       </pre>
+<p>
+    </p>
 <p>The parsing and storing of values follows the usual pattern, except that
       we additionally call <code class="computeroutput">parse_config_file</code>, and
-      call the <code class="computeroutput"><a href="../id2349650.html" title="Function store">store</a></code> function twice. But what
+      call the <code class="computeroutput"><a href="../id1009524-bb.html" title="Function store">store</a></code> function twice. But what
       happens if the same value is specified both on the command line and in
       config file? Usually, the value stored first is preferred. This is what
       happens for the "--optimization" option. For "composing" options, like

@@ -4,10 +4,10 @@
 // http://www.boost.org/LICENSE_1_0.txt
 
 #include <boost/parameter.hpp>
-#include <cassert>
+#include <boost/parameter/match.hpp>
+#include <boost/detail/lightweight_test.hpp>
 #include <string>
 #include <boost/type_traits/is_convertible.hpp>
-#include <iostream>
 
 #ifndef BOOST_NO_SFINAE
 # include <boost/utility/enable_if.hpp>
@@ -34,16 +34,19 @@ namespace test
       >
   {};
 
-  template <class T> struct not_implemented;
+  // The use of assert_equal_string is just a nasty workaround for a
+  // vc++ 6 ICE.
+  void assert_equal_string(std::string x, std::string y)
+  {
+        BOOST_TEST(x == y);
+  }
   
   template<class P>
   void f_impl(P const& p)
   {
-      std::string s = p[name | "bar"];
       float v = p[value | 3.f];
-
-      assert(s == "foo");
-      assert(v == 3.f);
+      BOOST_TEST(v == 3.f);
+      assert_equal_string(p[name | "bar"], "foo");
   }
 
   void f()
@@ -51,8 +54,6 @@ namespace test
       f_impl(f_parameters()());
   }
 
-  using boost::parameter::aux::void_;
-  
   template<class A0>
   void f(
       A0 const& a0
@@ -96,9 +97,8 @@ int main()
     f(value = 3.f, name = "foo");
 
 #ifndef BOOST_NO_SFINAE
-    return f(3, 4);
-#else 
-    return 0;
-#endif 
+    BOOST_TEST(f(3, 4) == 0);
+#endif
+    return boost::report_errors();
 }
 

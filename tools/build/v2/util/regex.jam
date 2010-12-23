@@ -1,7 +1,9 @@
-#  (C) Copyright David Abrahams 2001. Permission to copy, use, modify, sell and
-#  distribute this software is granted provided this copyright notice appears in
-#  all copies. This software is provided "as is" without express or implied
-#  warranty, and with no claim as to its suitability for any purpose.
+# Copyright 2001, 2002 Dave Abrahams 
+# Copyright 2003 Douglas Gregor 
+# Copyright 2003 Rene Rivera 
+# Copyright 2002, 2003, 2004, 2005 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
 
 #
 #   Returns a list of the following substrings:
@@ -32,6 +34,18 @@ rule split ( string separator )
     return $(s) $(result) ;
 }
 
+# Returns the concatenated results of Applying regex.split to every
+# element of list using the separator pattern.
+rule split-list ( list * : separator )
+{
+    local result ;
+    for s in $(list)
+    {
+        result += [ split $(s) $(separator) ] ;
+    }
+    return $(result) ;
+}
+  
 # Match string against pattern, and return the elements indicated by
 # indices.
 rule match ( pattern : string : indices * )
@@ -62,9 +76,7 @@ rule transform ( list * : pattern : indices * )
     return $(result) ;
 }
 
-# Commented out because of 'indices' parameter of 'transform' rule.
-#
-#NATIVE_RULE regex : transform ;
+NATIVE_RULE regex : transform ;
 
 # Escapes all of the characters in symbols using the escape symbol
 # escape-symbol for the given string, and returns the escaped string
@@ -154,7 +166,7 @@ rule __test__ ( )
     assert.result a.h c.h 
       : transform <a.h> \"b.h\" <c.h> :  <(.*)> ;
 
-    assert.result a.h "" b.h c.h 
+    assert.result a.h b.h c.h 
       : transform <a.h> \"b.h\" <c.h> :  <([^>]*)>|\"([^\"]*)\" : 1 2 ;
 
     assert.result "^<?xml version=\"1.0\"^>"

@@ -1,13 +1,8 @@
 // Copyright (C) 2001-2003
 // William E. Kempf
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee,
-// provided that the above copyright notice appear in all copies and
-// that both that copyright notice and this permission notice appear
-// in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.
-// It is provided "as is" without express or implied warranty.
+//  Distributed under the Boost Software License, Version 1.0. (See accompanying 
+//  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/thread/detail/config.hpp>
 
@@ -118,7 +113,14 @@ inline LONG ice_wrapper(LPVOID (__stdcall *ice)(LPVOID*, LPVOID, LPVOID),
 // according to the above function type wrappers.
 inline LONG compare_exchange(volatile LPLONG dest, LONG exch, LONG cmp)
 {
+#ifdef _WIN64
+    // Original patch from Anthony Williams.
+    // I (Roland Schwarz) am trying this for RC_1_34_0, since x64 regressions are
+    // currently not run on x64 platforms for HEAD
+    return InterlockedCompareExchange(dest, exch,cmp);
+#else    
     return ice_wrapper(&InterlockedCompareExchange, dest, exch, cmp);
+#endif
 }
 }
 #endif

@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+# Copyright 2005 Dave Abrahams 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
+
 # This tests the typechecking facilities.
 
 import BoostBuild
@@ -15,7 +19,7 @@ rule make
 actions make
 {
     echo "******" making $(<) from $(>) "******"
-    echo made from $(>) >> $(<)
+    echo made from $(>) > $(<)
 }
 
 make aux1 : bar ;

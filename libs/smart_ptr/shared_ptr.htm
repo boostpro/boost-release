@@ -5,8 +5,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	</head>
 	<body text="#000000" bgColor="#ffffff">
-		<h1><IMG height="86" alt="boost.png (6897 bytes)" src="../../boost.png" width="277" align="middle">shared_ptr 
-			class template</h1>
+		<h1><A href="../../index.htm"><IMG height="86" alt="boost.png (6897 bytes)" src="../../boost.png" width="277" align="middle"
+					border="0"></A>shared_ptr class template</h1>
 		<p><A href="#Introduction">Introduction</A><br>
 			<A href="#BestPractices">Best Practices</A><br>
 			<A href="#Synopsis">Synopsis</A><br>
@@ -106,6 +106,7 @@ void bad()
       <A href="#constructors" >shared_ptr</A>(); // never throws
       template&lt;class Y&gt; explicit <A href="#constructors" >shared_ptr</A>(Y * p);
       template&lt;class Y, class D&gt; <A href="#constructors" >shared_ptr</A>(Y * p, D d);
+      template&lt;class Y, class D, class A&gt; <A href="#allocator_constructor" >shared_ptr</A>(Y * p, D d, A a);
       <A href="#destructor" >~shared_ptr</A>(); // never throws
 
       <A href="#constructors" >shared_ptr</A>(shared_ptr const &amp; r); // never throws
@@ -120,6 +121,7 @@ void bad()
       void <A href="#reset" >reset</A>(); // never throws
       template&lt;class Y&gt; void <A href="#reset" >reset</A>(Y * p);
       template&lt;class Y, class D&gt; void <A href="#reset" >reset</A>(Y * p, D d);
+      template&lt;class Y, class D, class A&gt; void <A href="#reset" >reset</A>(Y * p, D d, A a);
 
       T &amp; <A href="#indirection" >operator*</A>() const; // never throws
       T * <A href="#indirection" >operator-&gt;</A>() const; // never throws
@@ -203,15 +205,20 @@ void bad()
 				The current implementation uses a different mechanism, <A href="enable_shared_from_this.html">
 					enable_shared_from_this</A>, to solve the "<STRONG>shared_ptr</STRONG> from <STRONG>
 					this</STRONG>" problem.</EM><EM>]</EM></P>
-		<pre>template&lt;class Y, class D&gt; shared_ptr(Y * p, D d);</pre>
+		<a name="allocator_constructor"></a>
+		<pre>template&lt;class Y, class D&gt; shared_ptr(Y * p, D d);
+template&lt;class Y, class D, class A&gt; shared_ptr(Y * p, D d, A a);</pre>
 		<blockquote>
 			<p><b>Requirements:</b> <B>p</B> must be convertible to <B>T *</B>. <STRONG>D</STRONG>
 				must be <STRONG>CopyConstructible</STRONG>. The copy constructor and destructor 
 				of <b>D</b> must not throw. The expression <code>d(p)</code> must be 
-				well-formed, must not invoke undefined behavior, and must not throw exceptions.
+				well-formed, must not invoke undefined behavior, and must not throw exceptions. <STRONG>
+					A</STRONG> must be an <EM>Allocator</EM>, as described in section 20.1.5 (<STRONG>Allocator 
+					requirements</STRONG>) of the C++ Standard.
 			</p>
 			<p><b>Effects:</b> Constructs a <b>shared_ptr</b> that <EM>owns</EM> the pointer <STRONG>
-					p</STRONG> and the deleter <b>d</b>.</p>
+					p</STRONG> and the deleter <b>d</b>. The second constructor allocates 
+				memory using a copy of <STRONG>a</STRONG>.</p>
 			<p><b>Postconditions:</b> <code>use_count() == 1 &amp;&amp; get() == p</code>.</p>
 			<p><b>Throws:</b> <STRONG>std::bad_alloc</STRONG>, or an implementation-defined 
 				exception when a resource other than memory could not be obtained.</p>
@@ -316,6 +323,10 @@ q = p;
 		<pre>template&lt;class Y, class D&gt; void reset(Y * p, D d);</pre>
 		<BLOCKQUOTE>
 			<P><B>Effects:</B> Equivalent to <code>shared_ptr(p, d).swap(*this)</code>.</P>
+		</BLOCKQUOTE>
+		<pre>template&lt;class Y, class D, class A&gt; void reset(Y * p, D d, A a);</pre>
+		<BLOCKQUOTE>
+			<P><B>Effects:</B> Equivalent to <code>shared_ptr(p, d, a).swap(*this)</code>.</P>
 		</BLOCKQUOTE>
 		<h3><a name="indirection">indirection</a></h3>
 		<pre>T &amp; operator*() const; // never throws</pre>
@@ -621,7 +632,7 @@ p3.reset(new int(2)); // undefined, multiple writes
 			day a highly configurable smart pointer may be invented that is also very easy 
 			to use and very hard to misuse. Until then, <B>shared_ptr</B> is the smart 
 			pointer of choice for a wide range of applications. (Those interested in policy 
-			based smart pointers should read <A href="http://www.awprofessional.com/bookstore/product.asp?isbn=0201704315&rl=1">
+			based smart pointers should read <A href="http://www.awprofessional.com/bookstore/product.asp?isbn=0201704315&amp;rl=1">
 				Modern C++ Design</A> by Andrei Alexandrescu.)<BR>
 		</P>
 		<P><B>Q.</B> I am not convinced. Default parameters can be used where appropriate 
@@ -683,7 +694,7 @@ int * p = a.release();
 		</P>
 		<hr>
 		<p>
-			$Date: 2005/08/03 21:42:34 $</p>
+			$Date: 2006/03/19 19:52:00 $</p>
 		<p><small>Copyright 1999 Greg Colvin and Beman Dawes. Copyright 2002 Darin Adler. 
 				Copyright 2002-2005 Peter Dimov. Permission to copy, use, modify, sell and 
 				distribute this document is granted provided this copyright notice appears in 

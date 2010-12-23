@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright (c) 2002 Douglas Gregor <doug.gregor -at- gmail.com>
+  
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file LICENSE_1_0.txt or copy at
+   http://www.boost.org/LICENSE_1_0.txt)
+  -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 version="1.0">
 
@@ -7,17 +14,7 @@
   <!-- Generate an ID for the entity referenced -->
   <xsl:template name="generate.id">
     <xsl:param name="node" select="."/>
-    <xsl:variable name="id">
-      <xsl:apply-templates select="$node" mode="generate.id"/>
-    </xsl:variable>
-    <xsl:choose>
-      <xsl:when test="string-length($id) &gt; $boost.max.id.length">
-        <xsl:value-of select="generate-id($node)"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="string($id)"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:apply-templates select="$node" mode="generate.id"/>
   </xsl:template>
 
   <xsl:template match="*" mode="generate.id">
@@ -31,7 +28,7 @@
   <xsl:template name="strip-qualifiers">
     <xsl:param name="name"/>
     <xsl:choose>
-      <xsl:when test="contains($name, '::')">
+      <xsl:when test="contains($name, '::') and not(contains(substring-before($name, '::'), '&lt;'))">
         <xsl:call-template name="strip-qualifiers">
           <xsl:with-param name="name" select="substring-after($name, '::')"/>
         </xsl:call-template>
@@ -70,7 +67,7 @@
 
     <!-- Determine the set of ancestor namespaces -->
     <xsl:variable name="ancestors" 
-      select="ancestor::namespace|ancestor::class"/>
+      select="ancestor::namespace|ancestor::class|ancestor::struct|ancestor::union"/>
 
     <xsl:choose>
       <xsl:when test="$depth &gt; count($ancestors)">
@@ -270,7 +267,7 @@
     <xsl:param name="display-name"/>
 
     <!-- The name we are looking for (unqualified)-->
-    <xsl:param name="unqualified name"/> 
+    <xsl:param name="unqualified-name"/> 
 
     <!-- The list of nodes that match the lookup node in both name and type -->
     <xsl:param name="nodes"/>

@@ -4,7 +4,7 @@
 
 <?psgml nofill screen programlisting literallayout?>
 
-<chapter id="bbv2.tutorial" status="draft">
+<chapter id="bbv2.tutorial">
   <title>Tutorial</title>
 
 <!--   You can't launch into this stuff without describing how to configure -->
@@ -15,6 +15,11 @@
     VP: need also mention the examples which correspond to specific
     sections.
 -->
+
+  <para>This section will guide you though the most basic features of
+  Boost.Build V2. We will start with the &#x201C;Hello, world&#x201D; example,
+  learn how to use libraries, and finish with testing and installing features.  
+  </para>
 
   <section id="bbv2.tutorial.hello">
     <title>Hello, world</title>
@@ -219,7 +224,7 @@ exe hello2 : hello.cpp ;
     <title>Project Hierarchies</title>
 
     <para>So far we've only considered examples with one project
-    (i.e. with one user-written Boost.Jam file,
+    &#x2014;a. with one user-written Boost.Jam file,
     <filename>Jamroot</filename>). A typical large codebase would be
     composed of many projects organized into a tree. The top of the
     tree is called the <firstterm>project root</firstterm>.  Every
@@ -248,9 +253,7 @@ top/
        .    `-- bar.cpp
 </screen>
 
-      the project root is <filename>top/</filename>.  Because there is
-      no <filename>Jamfile</filename> in
-      <filename>top/util/</filename>, the projects in
+      the project root is <filename>top/</filename>.  The projects in
       <filename>top/app/</filename> and
       <filename>top/util/foo/</filename> are immediate children of the
       root project.
@@ -271,19 +274,19 @@ top/
     <para>
       Projects inherit all attributes (such as requirements)
       from their parents.  Inherited requirements are combined with
-      any requirements specified by the sub-project.  
+      any requirements specified by the subproject.  
       For example, if <filename>top/Jamroot</filename> has
 
 <programlisting>
 &lt;include&gt;/home/ghost/local
 </programlisting>
 
-      in its requirements, then all of its sub-projects will have it
+      in its requirements, then all of its subprojects will have it
       in their requirements, too.  Of course, any project can add
       include paths to those specified by its parents. <footnote>
       <para>Many
       features will be overridden,
-      rather than added-to, in sub-projects.  See <xref
+      rather than added-to, in subprojects.  See <xref
       linkend="bbv2.reference.features.attributes"/> for more
       information</para>
     </footnote> 
@@ -293,9 +296,9 @@ top/
 
     <para>
       Invoking <command>bjam</command> without explicitly specifying
-      any targets on the command-line builds the project rooted in the
+      any targets on the command line builds the project rooted in the
       current directory.  Building a project does not automatically
-      cause its sub-projects to be built unless the parent project's
+      cause its subprojects to be built unless the parent project's
       Jamfile explicitly requests it. In our example,
       <filename>top/Jamroot</filename> might contain:
 
@@ -315,10 +318,13 @@ build-project app ;
     <title>Dependent Targets</title>
 
     <para>
-      Targets that are &#x201C;needed&#x201D; by other targets are called
-      <firstterm>dependencies</firstterm> of those other targets.  The
-      targets that need the other targets are called
-      <firstterm>dependent</firstterm> targets.
+      When a building a target <filename>X</filename> depends on first
+      building another target <filename>Y</filename> (such as a
+      library that must be linked with <firstterm>X</firstterm>),
+      <filename>Y</filename> is called a
+      <firstterm>dependency</firstterm> of <filename>X</filename> and
+      <filename>X</filename> is termed a
+      <firstterm>dependent</firstterm> of <filename>Y</filename>.
     </para>
 
     <para>To get a feeling of target dependencies, let's continue the
@@ -436,6 +442,12 @@ project
     
   </section>
 
+  <section id="bbv2.tutorial.testing">
+    <title>Testing</title>
+
+
+  </section>
+
   <section id="bbv2.tutorial.linkage">
     <title>Static and shared libaries</title>
 
@@ -483,7 +495,7 @@ lib l : l.cpp : &lt;link&gt;static ;
 exe important : main.cpp helpers/&lt;link&gt;static ;</programlisting>
 
     No matter what arguments are specified on the <command>bjam</command>
-    command-line, <filename>important</filename> will only be linked with
+    command line, <filename>important</filename> will only be linked with
     the static version of <filename>helpers</filename>.
     </para>
 
@@ -509,7 +521,7 @@ alias foo : /other_project//bar/&lt;link&gt;static ;
 exe e1 : e1.cpp foo ;
 exe e10 : e10.cpp foo ;</programlisting>
 
-        The <link linkend="bbv2.builtins.alias"><functionname>alias</functionname></link> 
+        The <link linkend="bbv2.tasks.alias"><functionname>alias</functionname></link> 
         rule is specifically used to rename a reference to a target and possibly
         change the properties.
         
@@ -525,7 +537,7 @@ exe e10 : e10.cpp foo ;</programlisting>
 
       <tip>
         <para>
-          When one library uses another, you put the second library is
+          When one library uses another, you put the second library in
           the source list of the first. For example:
           <programlisting>
 lib utils : utils.cpp /boost/filesystem//fs ;   
@@ -538,7 +550,7 @@ exe app : app.cpp core ;</programlisting>
           as a static library, its dependency on <filename>utils</filename> is passed along to
           <filename>core</filename>'s dependents, causing
           <filename>app</filename> to be linked with both
-          <filename>core</filename> and <filename>utils</filename>."
+          <filename>core</filename> and <filename>utils</filename>.
         </para>
       </tip>
 
@@ -561,12 +573,11 @@ exe app : app.cpp core ;</programlisting>
     <title>Conditions and alternatives</title>
 
     <para>Sometimes, particular relationships need to be maintained
-    among a target's build properties. This can be achieved with 
-    <firstterm>conditional
-    requirement</firstterm>. For example, you might want to set
-    specific <code>#defines</code> when a library is built as shared,
-    or when a target's <code>release</code> variant is built in
-    release mode.
+    among a target's build properties. For example, you might want to set
+    specific <code>#define</code> when a library is built as shared,
+    or when a target's <code>release</code> variant is built. 
+    This can be achieved with <firstterm>conditional requirements</firstterm>. 
+
     <programlisting>
 lib network : network.cpp 
     : <emphasis role="bold">&lt;link&gt;shared:&lt;define&gt;NEWORK_LIB_SHARED</emphasis>
@@ -577,7 +588,8 @@ lib network : network.cpp
       In the example above, whenever <filename>network</filename> is
       built with <code>&lt;link&gt;shared</code>,
       <code>&lt;define&gt;NEWORK_LIB_SHARED</code> will be in its
-      properties, too.
+      properties, too. Also, whenever its release variant is built, 
+      <code>&lt;define&gt;EXTRA_FAST</code> will appear in its properties.
     </para>
 
     <para>
@@ -592,11 +604,12 @@ lib demangler : dummy_demangler.cpp ;                      # alternative 1
 lib demangler : demangler_gcc.cpp : &lt;toolset&gt;gcc ;   # alternative 2
 lib demangler : demangler_msvc.cpp : &lt;toolset&gt;msvc ; # alternative 3
 </programlisting>
-        In the example above, when built with <literal>gcc</literal>
-        or <literal>msvc</literal>, <filename>demangler</filename>
-        will use a source file specific to the toolset.  Otherwise, it
-        will use a generic source file,
-        <filename>dummy_demangler.cpp</filename>.
+      When building <filename>demangler</filename>, Boost.Build will compare
+      requirements for each alternative with build properties to find the best match.
+      For example, when building with with <code>&lt;toolset&gt;gcc</code> 
+      alternative 2, will be selected, and when building with 
+      <code>&lt;toolset&gt;msvc</code> alternative 3 will be selected. In all other
+      cases, the most generic alternative 1 will be built.
     </para>
     
   </section>

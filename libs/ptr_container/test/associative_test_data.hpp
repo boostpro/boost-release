@@ -55,7 +55,9 @@ void ptr_set_test()
     
     T* t = new T;
     c.insert( c.end(), t );    
+    c.insert( c.end(), std::auto_ptr<T>( new T ) );
     c.insert( new T ); 
+    c.insert( std::auto_ptr<T>( new T ) );
     c3.insert( c.begin(), c.end() ); 
     c.erase( c.begin() );
     c3.erase( c3.begin(), c3.end() );
@@ -76,25 +78,26 @@ void ptr_set_test()
     c3.insert( new T );
     c3.insert( new T );
     BOOST_CHECK_EQUAL( c3.size(), 2u );
-#ifdef BOOST_NO_SFINAE
+#if defined(BOOST_NO_SFINAE) || defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
 #else            
     c3.insert( make_iterator_range( c ) );
 //    BOOST_CHECK_EQUAL( c3.size(), 4u );
 #endif    
-    c.transfer( c3.begin(), c3 );
+    c. BOOST_NESTED_TEMPLATE transfer<C>( c3.begin(), c3 );
     BOOST_CHECK( c3.empty() == false );
-    c.transfer( c3.begin(), c3.end(), c3 );
+    c. BOOST_NESTED_TEMPLATE transfer<C>( c3.begin(), c3.end(), c3 );
     BOOST_CHECK( c3.empty() );
     BOOST_CHECK( !c.empty() );
-    c3.transfer( c );
+    c3. BOOST_NESTED_TEMPLATE transfer<C>( c );
     BOOST_CHECK( !c3.empty() );
     BOOST_CHECK( c.empty() );
 #ifdef BOOST_NO_SFINAE
 #else        
-    c.transfer( make_iterator_range( c3 ), c3 );
+    c.  BOOST_NESTED_TEMPLATE transfer<C>( make_iterator_range( c3 ), c3 );
     BOOST_CHECK( !c.empty() );
     BOOST_CHECK( c3.empty() );
 #endif    
+
     BOOST_MESSAGE( "finished transfer test" );         
   
     C c4;

@@ -1,17 +1,21 @@
 #!/bin/bash
 
+# Copyright 2004 Aleksey Gurtovoy
+# Copyright 2006 Rene Rivera 
+# Copyright 2003, 2004, 2005, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
+
 set -e
 # Do some renames/rearrangments
 
 cp -r ../v2 ../boost-build
 # Grab jam_src
-cp -r ../jam_src ../boost-build
+cp -r ../../jam/src ../boost-build/jam_src
 cd ../boost-build
 
 # This one is not fully finished
 rm -rf example/versioned
-# This one is too low-level and misleading
-rm -rf example/make
 
 # Remove unnecessary top-level files
 find . -maxdepth 1 -type f | egrep -v "roll.sh|bootstrap.jam|build-system.jam|boost_build_v2.html|boost.png|index.html|hacking.txt|site-config.jam|user-config.jam" | xargs rm -f
@@ -21,16 +25,17 @@ echo -e "boost-build kernel ;\n" > boost-build.jam
 
 # Build the documentation
 touch doc/project-root.jam
-export BOOST_ROOT=/home/ghost/Work/boost-rc
+export BOOST_BUILD_PATH=/home/ghost/Work/boost-rc/tools/build/v2
 cd doc
-/home/ghost/Work/boost/tools/build/jam_src/bin.linuxx86/bjam --v2
-/home/ghost/Work/boost/tools/build/jam_src/bin.linuxx86/bjam --v2 pdf
+/home/ghost/Work/boost-rc/tools/jam/src/bin.linuxx86/bjam --v2
+/home/ghost/Work/boost-rc/tools/jam/src/bin.linuxx86/bjam --v2 pdf
 cp `find bin -name "*.pdf"` ../..
+mv ../../standalone.pdf ../../userman.pdf
 rm -rf bin
 cd ..
 
 # Get the boost logo.
-wget http://boost.org/boost-build2/boost.png
+wget http://boost.sf.net/boost-build2/boost.png
 
 # Adjust the links, so they work with the standalone package
 perl -pi -e 's%../../../boost.png%boost.png%' index.html
@@ -41,6 +46,7 @@ perl -pi -e 's%../../../doc/html/bbv2.installation.html%doc/html/bbv2.installati
 find . -name CVS | xargs rm -rf
 rm roll.sh
 chmod a+x jam_src/build.bat
+date >> timestamp.txt
 cd .. && zip -r boost-build.zip boost-build && tar --bzip2 -cf boost-build.tar.bz2 boost-build
 cd boost-build
 

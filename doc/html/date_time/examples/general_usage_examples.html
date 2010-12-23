@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>General Usage Examples</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="../../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../../date_time.html" title="Chapter 3. Boost.Date_Time">
-<link rel="prev" href="../../date_time.html" title="Chapter 3. Boost.Date_Time">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../date_time.html" title="Chapter 4. Boost.Date_Time">
+<link rel="prev" href="../../date_time.html" title="Chapter 4. Boost.Date_Time">
 <link rel="next" href="../gregorian.html" title="Gregorian">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
 <td align="center"><a href="../../../../index.htm">Home</a></td>
 <td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../../../people/people.htm">People</a></td>
@@ -23,8 +23,8 @@
 <a accesskey="p" href="../../date_time.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../gregorian.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="date_time.examples.general_usage_examples"></a>General Usage Examples</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="date_time.examples.general_usage_examples"></a>General Usage Examples</h2></div></div></div>
 <p>
     The following provides some sample usage of dates.
     See <a href="../gregorian.html" title="Gregorian">Date Programming</a> 
@@ -32,8 +32,8 @@
 
     </p>
 <pre class="programlisting"><span class="keyword">using namespace</span> boost::gregorian;
-    date weekstart(<span class="number">2002</span>,Feb,<span class="number">1</span>);
-    date weekend  = weekstart + week(<span class="number">1</span>);
+    date week_start(<span class="number">2002</span>,Feb,<span class="number">1</span>);
+    date week_finish  = week_start + week(<span class="number">1</span>);
     date d2 = d1 + days(<span class="number">5</span>);
     date today = day_clock::local_day();
     if (d2 &gt;= today) {} <span class="comment">//date comparison operators</span> 
@@ -42,8 +42,8 @@
     <span class="keyword">if</span> (thisWeek.contains(today)) {}<span class="comment">//do something 
 
     //iterate and print the week</span>
-    day_iterator itr(weekstart);
-    <span class="keyword">while</span> (itr &lt;= weekend) {
+    day_iterator itr(week_start);
+    <span class="keyword">while</span> (itr &lt;= week_finish) {
      std::cout &lt;&lt; (*itr) &lt;&lt; std::endl;
      ++itr;
     }  
@@ -85,13 +85,16 @@
      std::cout &lt;&lt; (*titr) &lt;&lt; std::endl;
     }
     </pre>
+<p>    
+  </p>
 <p>
       The following provides some example code using times.
       See <a href="../local_time.html" title="Local Time">Local Time Programming</a> 
       for more details.
 
     </p>
-<pre class="programlisting"><span class="keyword">using namespace</span> boost::local_time; 
+<pre class="programlisting">
+    <span class="keyword">using namespace</span> boost::local_time; 
     <span class="comment">//setup some timezones for creating and adjusting times
     //first time zone uses the time zone file for regional timezone definitions</span>
     tz_database tz_db;
@@ -113,6 +116,8 @@
     <span class="comment">//2005-Apr-03 06:30:00 EDT</span>
     std::cout &lt;&lt; nyc_arrival &lt;&lt; std::endl;
     </pre>
+<p>    
+  </p>
 </div>
 <table width="100%"><tr>
 <td align="left"></td>

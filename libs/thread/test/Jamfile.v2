@@ -1,7 +1,6 @@
-#  (C) Copyright William E. Kempf 2001. Permission to copy, use, modify, sell
-#  and distribute this software is granted provided this copyright notice
-#  appears in all copies. This software is provided "as is" without express or
-#  implied warranty, and with no claim as to its suitability for any purpose.
+#  (C) Copyright William E. Kempf 2001. 
+#  Distributed under the Boost Software License, Version 1.0. (See accompanying 
+#  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
 # Boost.Threads test Jamfile
 #
@@ -19,7 +18,7 @@
 import testing ;
 
 project
-    : requirements <library>../../test/build//boost_unit_test_framework
+    : requirements <library>/boost/test//boost_unit_test_framework/<link>static
                    <threading>multi
     ;
     
@@ -27,7 +26,7 @@ rule thread-run ( sources )
 {
     return 
 	[ run $(sources) ../build//boost_thread ]
-	[ run $(sources) ../build//boost_thread/<link>static 
+	[ run $(sources) ../src/tss_null.cpp ../build//boost_thread/<link>static 
 	    : : : : $(sources[1]:B)_lib ]
 	;
 }    
@@ -41,5 +40,6 @@ rule thread-run ( sources )
           [ thread-run test_once.cpp ]
           [ thread-run test_xtime.cpp ]
           [ thread-run test_barrier.cpp ]		   
+#          [ thread-run test_read_write_mutex.cpp ]
     ;
 }

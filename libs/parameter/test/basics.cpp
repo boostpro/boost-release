@@ -11,7 +11,6 @@
 
 #include "basics.hpp"
 
-
 namespace test
 {
   // A separate function for getting the "value" key, so we can deduce
@@ -107,6 +106,7 @@ int main()
 #endif
    
    //f(index = 56, name = 55); // won't compile
+
    return 0;
 }
 

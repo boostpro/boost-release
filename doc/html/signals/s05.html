@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Design Overview</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../signals.html" title="Chapter 9. Boost.Signals">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../signals.html" title="Chapter 12. Boost.Signals">
 <link rel="prev" href="s04.html" title="Frequently Asked Questions">
 <link rel="next" href="s06.html" title="Design Rationale">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.htm">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../../people/people.htm">People</a></td>
@@ -23,17 +23,17 @@
 <a accesskey="p" href="s04.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s06.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2738974"></a>Design Overview</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="id1633898"></a>Design Overview</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="s05.html#id2738981">Type Erasure</a></span></dt>
-<dt><span class="section"><a href="s05.html#id2739046"><code class="computeroutput">connection</code> class</a></span></dt>
-<dt><span class="section"><a href="s05.html#id2739157">Slot Call Iterator</a></span></dt>
-<dt><span class="section"><a href="s05.html#id2739308"><code class="computeroutput">visit_each</code> function template</a></span></dt>
+<dt><span class="section"><a href="s05.html#id1633905">Type Erasure</a></span></dt>
+<dt><span class="section"><a href="s05.html#id1633975"><code class="computeroutput">connection</code> class</a></span></dt>
+<dt><span class="section"><a href="s05.html#id1634092">Slot Call Iterator</a></span></dt>
+<dt><span class="section"><a href="s05.html#id1634290"><code class="computeroutput">visit_each</code> function template</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2738981"></a>Type Erasure</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id1633905"></a>Type Erasure</h3></div></div></div>
 <p>"Type erasure", where static type information is eliminated
     by the use of dynamically dispatched interfaces, is used
     extensively within the Boost.Signals library to reduce the amount
@@ -52,30 +52,30 @@
     that deals exclusively with the <code class="computeroutput">any</code> and
     <code class="computeroutput"><a href="../boost/function.html" title="Class template function">function</a></code> objects, hiding the
     actual implementations using the well-known pimpl idiom. The
-    actual <code class="computeroutput"><a href="../signalN.html" title="Class template signalN">signalN</a></code> class templates
+    actual <code class="computeroutput"><a href="../boost/signalN.html" title="Class template signalN">signalN</a></code> class templates
     deal only with code that will change depending on the number of
     arguments or which is inherently template-dependent (such as
     connection).</p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2739046"></a><code class="computeroutput">connection</code> class</h4></div></div></div>
-<p> The <code class="computeroutput"><a href="../connection.html" title="Class connection">connection</a></code> class is
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id1633975"></a><code class="computeroutput">connection</code> class</h3></div></div></div>
+<p> The <code class="computeroutput"><a href="../boost/signals/connection.html" title="Class connection">connection</a></code> class is
     central to the behavior of the Boost.Signals library. It is the
     only entity within the Boost.Signals system that has knowledge of
     all objects that are associated by a given connection. To be
-    specific, the <code class="computeroutput"><a href="../connection.html" title="Class connection">connection</a></code> class
+    specific, the <code class="computeroutput"><a href="../boost/signals/connection.html" title="Class connection">connection</a></code> class
     itself is merely a thin wrapper over a
     <code class="computeroutput">shared_ptr</code> to a
     <code class="computeroutput">basic_connection</code> object.</p>
-<p><code class="computeroutput"><a href="../connection.html" title="Class connection">connection</a></code> objects are
+<p> <code class="computeroutput"><a href="../boost/signals/connection.html" title="Class connection">connection</a></code> objects are
     stored by all participants in the Signals system: each
-    <code class="computeroutput"><a href="../trackable.html" title="Class trackable">trackable</a></code> object contains a
-    list of <code class="computeroutput"><a href="../connection.html" title="Class connection">connection</a></code> objects
+    <code class="computeroutput"><a href="../boost/signals/trackable.html" title="Class trackable">trackable</a></code> object contains a
+    list of <code class="computeroutput"><a href="../boost/signals/connection.html" title="Class connection">connection</a></code> objects
     describing all connections it is a part of; similarly, all signals
     contain a set of pairs that define a slot. The pairs consist of a
     slot function object (generally a Boost.Function object) and a
-    <code class="computeroutput"><a href="../connection.html" title="Class connection">connection</a></code> object (that will
+    <code class="computeroutput"><a href="../boost/signals/connection.html" title="Class connection">connection</a></code> object (that will
     disconnect on destruction). Finally, the mapping from slot groups
     to slots is based on the key value in a
     <code class="computeroutput">std::multimap</code> (the stored data
@@ -83,8 +83,8 @@
     slot pair).</p>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2739157"></a>Slot Call Iterator</h4></div></div></div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id1634092"></a>Slot Call Iterator</h3></div></div></div>
 <p> The slot call iterator is conceptually a stack of iterator
     adaptors that modify the behavior of the underlying iterator
     through the list of slots. The following table describes the type
@@ -130,7 +130,7 @@
 <tr>
 <td align="left"><p>Transform Iterator Adaptor</p></td>
 <td align="left"><p>This transform iterator adaptor performs an
-            <code class="computeroutput"><a href="../any_cast.html" title="Function any_cast">any_cast</a></code> to
+            <code class="computeroutput"><a href="../boost/any_cast.html" title="Function any_cast">any_cast</a></code> to
             extract a reference to the slot function with the
             appropriate slot function type.</p></td>
 </tr>
@@ -159,17 +159,17 @@
 </table></div>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2739308"></a><code class="computeroutput">visit_each</code> function template</h4></div></div></div>
-<p> The <code class="computeroutput"><a href="../visit_each.html" title="Function template visit_each">visit_each</a></code>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id1634290"></a><code class="computeroutput">visit_each</code> function template</h3></div></div></div>
+<p> The <code class="computeroutput"><a href="../boost/visit_each.html" title="Function template visit_each">visit_each</a></code>
     function template is a mechanism for discovering objects that are
     stored within another object. Function template
-    <code class="computeroutput"><a href="../visit_each.html" title="Function template visit_each">visit_each</a></code> takes three
+    <code class="computeroutput"><a href="../boost/visit_each.html" title="Function template visit_each">visit_each</a></code> takes three
     arguments: an object to explore, a visitor function object that is
     invoked with each subobject, and the <code class="computeroutput">int</code> 0. </p>
 <p> The third parameter is merely a temporary solution to the
     widespread lack of proper function template partial ordering. The
-    primary <code class="computeroutput"><a href="../visit_each.html" title="Function template visit_each">visit_each</a></code>
+    primary <code class="computeroutput"><a href="../boost/visit_each.html" title="Function template visit_each">visit_each</a></code>
     function template specifies this third parameter type to be
     <code class="computeroutput">long</code>, whereas any user specializations must specify
     their third parameter to be of type <code class="computeroutput">int</code>. Thus, even
@@ -198,7 +198,7 @@ foo(at, 0);
 </div>
 </div>
 <table width="100%"><tr>
-<td align="left"><small><p>Last revised: March 12, 2003 at 23:27:22 GMT</p></small></td>
+<td align="left"><small><p>Last revised: November 03, 2006 at 19:45:40 GMT</p></small></td>
 <td align="right"><small>Copyright © 2001-2004 Douglas Gregor</small></td>
 </tr></table>
 <hr>

@@ -2,7 +2,7 @@
 <!DOCTYPE library PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN" 
 "../../../tools/boostbook/dtd/boostbook.dtd">
 
-<!-- Copyright (c) 2001-2005 CrystalClear Software, Inc.
+<!-- Copyright (c) 2001-2006 CrystalClear Software, Inc.
      Subject to the Boost Software License, Version 1.0. 
      (See accompanying file LICENSE-1.0 or  http://www.boost.org/LICENSE-1.0)
 -->
@@ -11,6 +11,109 @@
   <title>Change History</title>
   
   <!-- if each new change tgroup has a "Bug Fix" as the first "Type", the columns will line up nicely -->
+
+  <bridgehead renderas="sect3">Changes from Boost 1.33 to 1.34 (date_time 1.04 to 1.05)</bridgehead>
+  <informaltable frame="all">
+    <tgroup cols="2">
+      <thead>
+	<row>
+	  <entry>Type</entry>
+	  <entry>Description</entry>
+	</row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>Feature</entry>
+          <entry>
+             Updated the data in the date_time_zonespec.csv file to reflect new US/Canada 
+             daylight savings time rules for 2007.  If you upgrade to the new file, be aware
+             that the library will only give correct answers for current/future date
+             conversions.  So if you are converting dates from earlier years the answers 
+             will reflect current time zone rules not past rules.  The library doesn't support 
+             historic timezone rules presently. 
+          </entry>
+        </row>
+        <row>
+          <entry>Feature</entry>
+          <entry>
+              Two other dst calculation features have also been update to reflect the new
+              US/Canada timzone rules. This is the boost::date_time::us_dst_rules and
+              dst_calc_engine.  While the us_dst_rules is officially deprecated, a patch
+              by Graham Bennett has been applied which allows this class to work correctly
+              for both historical and future dates.  The dst_calc_engine was updated to also
+              work for historical and future times.  This allows the various local_adjustor
+              classes to work correctly.  There was an interface change for classes using the
+              dst_calc_engine with custom dst traits classes.  The traits classes signatures
+              changed to take a 'year' parameter on most of the methods such as end_month.
+              In addition,  2 new functions are needed on the traits classes:
+                   <code>static date_type local_dst_start_day(year_type year)</code> and
+                   <code>static date_type local_dst_end_day(year_type year)</code>.
+              Implementers should see <code>date_time/local_timezone_defs.hpp</code> for
+              examples.
+          </entry>
+        </row>
+
+        <row>
+          <entry>Bug Fix</entry>
+          <entry>Fix DST traits for Austrialia (sf# 1672139) to set end of DST at 3:00 am instead of 2:00 am.
+                
+          </entry>
+        </row>
+
+        <row>
+          <entry>Bug Fix</entry>
+          <entry>Fix a problem with potential linking error with multiple definitions due
+                 to I/O code.
+          </entry>
+        </row>
+        <row>
+          <entry>Bug Fix</entry>
+          <entry>Changed serialization code in both greg_serialize.hpp and time_serialize.hpp
+                 to eliminate warnings due to unused variables for version and file_version.
+                 Thanks to Caleb Epstein for the patch suggestion.
+          </entry>
+        </row>
+        <row>
+          <entry>Bug Fix</entry>
+          <entry>Fix regression errors that showed up under FreeBSD with GCC and the 
+                 LANG environment set to russian -- changed parser to use classic 
+                 locale instead of blank locale.
+          </entry>
+        </row>
+
+        <row>
+          <entry>Bug Fix</entry>
+          <entry>Changes for tracker issue 1178092 -- change in convert_to_lower to make 
+                 local a const static and speed up parsing.
+          </entry>
+        </row>
+
+        <row>
+          <entry>Bug Fix</entry>
+          <entry>Patches from Ulrich Eckhardt to fix support for EVC++ 4.
+          </entry>
+        </row>
+
+        <row>
+          <entry>Feature</entry>
+          <entry>Reduce the usage of basic_stringstream as much a possible to work around 
+                 a bug in the VC8 standard library. See 
+                 <ulink url="http://lists.boost.org/Archives/boost/2006/02/101122.php">mailing list archive</ulink> 
+                 for more information.
+          </entry>
+        </row>
+
+
+        <row>
+          <entry>Bug Fix</entry>
+          <entry>
+          </entry>
+        </row>
+
+      </tbody>
+    </tgroup>
+  </informaltable>
+
 
   <bridgehead renderas="sect3">Changes from Boost 1.32 to 1.33 (date_time 1.03 to 1.04)</bridgehead>
   <informaltable frame="all">

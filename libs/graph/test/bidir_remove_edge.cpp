@@ -6,14 +6,15 @@
 #include <iostream>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/cstdlib.hpp>
-#include <boost/test/test_tools.hpp>
+#include <boost/test/minimal.hpp>
+using namespace boost;
 
 struct edge_prop {
   int weight;
 };
 
 int
-main()
+test_main(int, char*[])
 {
   {
     typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS,

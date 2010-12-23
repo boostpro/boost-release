@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2006.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,18 +7,19 @@
 //
 //  File        : $RCSfile: result_report_test.cpp,v $
 //
-//  Version     : $Revision: 1.22 $
+//  Version     : $Revision: 1.25 $
 //
 //  Description : tests Unit Test Framework reporting facilities against
 //  pattern file
 // ***************************************************************************
 
 // Boost.Test
-#include <boost/test/test_tools.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 #include <boost/test/results_reporter.hpp>
-#include <boost/test/unit_test_suite.hpp>
 #include <boost/test/output_test_stream.hpp>
 #include <boost/test/unit_test_log.hpp>
+#include <boost/test/unit_test_suite.hpp>
 #include <boost/test/framework.hpp>
 #include <boost/test/detail/unit_test_parameters.hpp>
 #if BOOST_WORKAROUND(  __GNUC__, < 3 )
@@ -101,16 +102,16 @@ struct guard {
 
 //____________________________________________________________________________//
 
-int 
-test_main( int argc, char* argv[] ) 
+BOOST_AUTO_TEST_CASE( test_result_reports ) 
 {
     guard G;
 
 #define PATTERN_FILE_NAME "result_report_test.pattern"
 
     std::string pattern_file_name(
-        argc == 1 ? (runtime_config::save_pattern() ? PATTERN_FILE_NAME : "./test_files/" PATTERN_FILE_NAME )
-        : argv[1] );
+        framework::master_test_suite().argc == 1 
+            ? (runtime_config::save_pattern() ? PATTERN_FILE_NAME : "./test_files/" PATTERN_FILE_NAME )
+            : framework::master_test_suite().argv[1] );
 
     output_test_stream test_output( pattern_file_name, !runtime_config::save_pattern() );
     results_reporter::set_stream( test_output );
@@ -120,7 +121,7 @@ test_main( int argc, char* argv[] )
     test_suite* ts_1 = BOOST_TEST_SUITE( "1 test cases inside" );
         ts_1->add( BOOST_TEST_CASE( good_foo ) );
 
-    test_suite* ts_1b = BOOST_TEST_SUITE( "1 bad test cases inside" );
+    test_suite* ts_1b = BOOST_TEST_SUITE( "1 bad test case inside" );
         ts_1b->add( BOOST_TEST_CASE( bad_foo ), 1 );
 
     test_suite* ts_2 = BOOST_TEST_SUITE( "2 test cases inside" );
@@ -141,9 +142,6 @@ test_main( int argc, char* argv[] )
         ts_main->add( ts_2 );
         ts_main->add( ts_3 );
 
-    framework::run( ts_0 );
-    check( test_output, ts_0->p_id );
-
     framework::run( ts_1 );
     check( test_output, ts_1->p_id );
 
@@ -162,8 +160,6 @@ test_main( int argc, char* argv[] )
     check( test_output, ts_main->p_id );
 
     results_reporter::set_stream( std::cout );
-
-    return 0;
 }
 
 //____________________________________________________________________________//
@@ -172,6 +168,15 @@ test_main( int argc, char* argv[] )
 //  Revision History :
 //  
 //  $Log: result_report_test.cpp,v $
+//  Revision 1.25  2006/03/19 11:49:04  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.24  2006/02/01 08:00:15  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.23  2005/12/14 06:01:02  rogeeff
+//  *** empty log message ***
+//
 //  Revision 1.22  2005/05/11 05:07:57  rogeeff
 //  licence update
 //

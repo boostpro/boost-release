@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Extending return type deduction system</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../lambda.html" title="Chapter 6. Boost.Lambda">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../lambda.html" title="Chapter 8. Boost.Lambda">
 <link rel="prev" href="le_in_details.html" title="Lambda expressions in details">
 <link rel="next" href="s07.html" title="Practical considerations">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
-<td valign="top"><img alt="boost.png (6897 bytes)" width="277" height="86" src="../../../boost.png"></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
 <td align="center"><a href="../../../index.htm">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="../../../people/people.htm">People</a></td>
@@ -23,9 +23,10 @@
 <a accesskey="p" href="le_in_details.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../lambda.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s07.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="lambda.extending"></a>Extending return type deduction system</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="lambda.extending"></a>Extending return type deduction system</h2></div></div></div>
 <p>
+
 
 In this section, we explain  how to extend the return type deduction system 
 to cover user defined operators. 
@@ -89,7 +90,7 @@ As an example, the action type
 <code class="literal">operator+</code>. 
 
 The complete listing of different action types is shown in 
-<a href="extending.html#table:actions" title="Table 6.2. Action types">Table 6.2, &#8220;Action types&#8221;</a>. 
+<a href="extending.html#table:actions" title="Table 8.2. Action types">Table 8.2, &#8220;Action types&#8221;</a>. 
 </p>
 <p>
 The latter parameters, <code class="literal">A</code> in the unary case, 
@@ -183,6 +184,8 @@ struct plain_return_type_2&lt;arithmetic_action&lt;multiply_action&gt;, X, Y&gt;
 };
 </pre>
 <p>
+</p>
+<p>
 The specializations can define arbitrary mappings from the argument types 
 to the return type. 
 
@@ -222,6 +225,8 @@ operator+(const my_vector&lt;A&gt;&amp; a, const my_vector&lt;B&gt;&amp; b)
 }
 </pre>
 <p>
+</p>
+<p>
 To allow BLL to deduce the type of <code class="literal">my_vector</code> 
 additions correctly, we can define:
 
@@ -242,7 +247,7 @@ BLL <code class="literal">return_type_2</code> template,
 which require that the argument types are references. 
 </p>
 <div class="table">
-<a name="table:actions"></a><p class="title"><b>Table 6.2. Action types</b></p>
+<a name="table:actions"></a><p class="title"><b>Table 8.2. Action types</b></p>
 <table class="table" summary="Action types">
 <colgroup>
 <col>
@@ -404,6 +409,10 @@ which require that the argument types are references.
 <tr>
 <td><code class="literal">,</code></td>
 <td><code class="literal">other_action&lt;comma_action&gt;</code></td>
+</tr>
+<tr>
+<td><code class="literal">-&gt;*</code></td>
+<td><code class="literal">other_action&lt;member_pointer_action&gt;</code></td>
 </tr>
 </tbody>
 </table>

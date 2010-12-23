@@ -9,6 +9,7 @@
 #include <boost/python/list.hpp>
 #include <boost/python/make_function.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/assert.hpp>
 #include "test_class.hpp"
 
 using namespace boost::python;
@@ -118,10 +119,10 @@ void exercise(list x, object y, object print)
     w.append(5);
     w.append(6);
     w += "hi";
-    assert(w[0] == 5);
-    assert(w[1] == 6);
-    assert(w[2] == 'h');
-    assert(w[3] == 'i');
+    BOOST_ASSERT(w[0] == 5);
+    BOOST_ASSERT(w[1] == 6);
+    BOOST_ASSERT(w[2] == 'h');
+    BOOST_ASSERT(w[3] == 'i');
 }
 
 BOOST_PYTHON_MODULE(list_ext)

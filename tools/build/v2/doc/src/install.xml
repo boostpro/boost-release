@@ -43,7 +43,7 @@ All paths are given relative to
         <filename>tools/build/v2</filename> subdirectory from a full
         Boost distribution, so it is itself a valid Boost.Build root
         directory.  It also contains the
-        <filename>tools/build/jam_src</filename> subdirectory of a
+        <filename>tools/jam/src</filename> subdirectory of a
         full Boost distribution, so you can rebuild Boost.Jam from
         source.
         </para>
@@ -54,7 +54,7 @@ All paths are given relative to
       <listitem>
         <simpara>
           Boost.Build uses <ulink
-          url= "../../tools/build/jam_src/index.html">Boost.Jam</ulink>, an
+          url= "../../tools/jam/index.html">Boost.Jam</ulink>, an
           extension of the <ulink
           url="http://www.perforce.com/jam/jam.html">Perforce
           Jam</ulink> portable <command>make</command> replacement. The
@@ -64,9 +64,9 @@ All paths are given relative to
           a prebuilt executable</ulink></emphasis> from SourceForge.
           If a prebuilt executable is not provided for your platform
           or you are using Boost's sources in an unreleased state, it
-          may be necessary to <ulink
-          url= "../../tools/build/jam_src/index.html#building_bjam">build <command>bjam</command>
-          from sources</ulink> included in the Boost source tree.
+          may be necessary to 
+          <link linkend="jam.building">build <command>bjam</command>
+          from sources</link> included in the Boost source tree.
         </simpara>
       </listitem>
 
@@ -159,12 +159,70 @@ boost-build <replaceable>/path/to/boost.build</replaceable> ;
       </listitem>
     </itemizedlist>
 
-  <para><emphasis role="bold">N.B.</emphasis>
-  When <command>bjam</command> is invoked from anywhere in the Boost
-  directory tree <emphasis>other than</emphasis> the Boost.Build root
-  and its subdirectories, <ulink url="../../tools/build/index.html">Boost.Build
-  v1</ulink> is used by default. To override the default and use
-  Boost.Build v2, you have to add the <option>--v2</option> command
-  line option to all <command>bjam</command> invocations.</para>
+        <bridgehead>Information for distributors</bridgehead>
+
+        <para>
+          If you're planning to package Boost.Build for a Linux distribution,
+          please follow these guidelines:
+
+          <itemizedlist>
+            <listitem><para>Create a separate package for Boost.Jam.</para></listitem>
+
+            <listitem>
+              <para>Create another package for Boost.Build, and make
+              this package install all Boost.Build files to
+              <filename>/usr/share/boost-build</filename> directory. After
+              install, that directory should contain everything you see in
+              Boost.Build release package, except for
+              <filename>jam_src</filename> directory.  If you're using Boost CVS
+              to obtain Boost.Build, as opposed to release package, take
+              everything from the <filename>tools/build/v2</filename> directory.
+              For a check, make sure that
+              <filename>/usr/share/boost-build/boost-build.jam</filename> is installed.
+              </para>
+
+              <para>Placing Boost.Build into <filename>/usr/share/boost-build</filename>
+              will make sure that <command>bjam</command> will find Boost.Build
+              without any additional setup.</para>
+            </listitem>
+
+            <listitem><para>Provide a
+            <filename>/etc/site-config.jam</filename> configuration file that will
+            contain:
+<programlisting>
+using gcc ;
+</programlisting>
+             You might want to add dependency from Boost.Build package to gcc,
+             to make sure that users can always build Boost.Build examples.
+            </para></listitem>
+          </itemizedlist>
+        </para>
+
+        <para>If those guidelines are met, users will be able to invoke
+        <command>bjam</command> without any explicit configuration.
+        </para>
+
+    
+      
 
   </chapter>
+
+<!--
+     Local Variables:
+     mode: nxml
+     sgml-indent-data:t
+     sgml-parent-document:("userman.xml" "chapter")
+     sgml-set-face: t
+     sgml-omittag:nil
+     sgml-shorttag:nil
+     sgml-namecase-general:t
+     sgml-general-insert-case:lower
+     sgml-minimize-attributes:nil
+     sgml-always-quote-attributes:t
+     sgml-indent-step:2
+     sgml-exposed-tags:nil
+     sgml-local-catalogs:nil
+     sgml-local-ecat-files:nil
+     End:
+-->
+

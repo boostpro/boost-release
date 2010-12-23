@@ -1,13 +1,8 @@
 // Copyright (C) 2001-2003
 // William E. Kempf
 //
-// Permission to use, copy, modify, distribute and sell this software
-// and its documentation for any purpose is hereby granted without fee,
-// provided that the above copyright notice appear in all copies and
-// that both that copyright notice and this permission notice appear
-// in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.
-// It is provided "as is" without express or implied warranty.
+//  Distributed under the Boost Software License, Version 1.0. (See accompanying 
+//  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/thread/detail/config.hpp>
 
@@ -296,7 +291,8 @@ recursive_mutex::recursive_mutex()
 
     res = pthread_mutex_init(&m_mutex, &attr);
     {
-        int res = pthread_mutexattr_destroy(&attr);
+        int res = 0;
+        res = pthread_mutexattr_destroy(&attr);
         assert(res == 0);
     }
     if (res != 0)
@@ -452,7 +448,8 @@ recursive_try_mutex::recursive_try_mutex()
 
     res = pthread_mutex_init(&m_mutex, &attr);
     {
-        int res = pthread_mutexattr_destroy(&attr);
+        int res = 0;
+        res = pthread_mutexattr_destroy(&attr);
         assert(res == 0);
     }
     if (res != 0)

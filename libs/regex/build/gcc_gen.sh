@@ -1,5 +1,10 @@
 #! /bin/bash
 
+# copyright John Maddock 2003
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or copy at 
+# http://www.boost.org/LICENSE_1_0.txt.
+
 libname=""
 src=""
 header=""
@@ -103,6 +108,10 @@ function gcc_gen()
 	
 	
 	cat > $out << EOF
+# copyright John Maddock 2006
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or copy at 
+# http://www.boost.org/LICENSE_1_0.txt.
 #
 # auto generated makefile for gcc compiler
 #
@@ -128,11 +137,11 @@ LINKER=g++ -shared
 #
 # compiler options for release build:
 #
-C1=-c -O2 -I../../../
+C1=-c -O2 -I../../..
 #
 # compiler options for debug build:
 #
-C2=-c -g -I../../../
+C2=-c -g -I../../..
 
 ifeq "\$(ICU_PATH)" ""
 \$(warning "Building Boost.Regex without ICU / Unicode support:")
@@ -208,11 +217,11 @@ LINKER=g++ -shared
 #
 # compiler options for release build:
 #
-C1=-c -O2 -I../../../ -fPIC
+C1=-c -O2 -I../../.. -fPIC
 #
 # compiler options for debug build:
 #
-C2=-c -g -I../../../ -fPIC
+C2=-c -g -I../../.. -fPIC
 
 ifeq "\$(ICU_PATH)" ""
 \$(warning "Building Boost.Regex without ICU / Unicode support:")
@@ -257,6 +266,8 @@ gcc_gen_shared
 #
 # remove tmep files;
 rm -f $tout $iout
+
+
 
 
 

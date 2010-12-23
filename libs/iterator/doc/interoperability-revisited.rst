@@ -2,9 +2,12 @@
  Interoperability Revisited 
 ++++++++++++++++++++++++++++
 
-:date: $Date: 2005/02/27 17:28:10 $
+:date: $Date: 2006/09/29 01:59:16 $
 :copyright: Copyright Thomas Witt 2004.
 
+.. Distributed under the Boost
+.. Software License, Version 1.0. (See accompanying
+.. file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 Problem
 =======

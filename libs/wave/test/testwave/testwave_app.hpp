@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -67,30 +67,30 @@ protected:
         std::string const& instr, std::string& expected);
         
     //  Extracts the required preprocessing options from the given input data 
-    //  and initialises the given Wave context object accordingly. 
+    //  and initializes the given Wave context object accordingly. 
     //  We allow the same (applicable) options to be used as are valid for the 
     //  wave driver executable.
     template <typename Context>
     bool extract_options(std::string const& filename, 
-        std::string const& instr, Context& ctx);
+        std::string const& instr, Context& ctx, bool single_line);
 
     //  transfers the options collected in the vm parameter into the given 
     //  context
     template <typename Context>
     bool initialise_options(Context& ctx, 
-        boost::program_options::variables_map const& vm);
+        boost::program_options::variables_map const& vm, bool single_line);
 
     //  Preprocess the given input data and return the generated output through 
     //  the parameter 'result'.
     bool preprocess_file(std::string filename, std::string const& instr, 
-        std::string& result, std::string& error);
+        std::string& result, std::string& error, bool single_line = false);
 
     //  Add special predefined macros to the context object
     template <typename Context>
     bool add_predefined_macros(Context& ctx);
 
     //  This function compares the real result and the expected one but first 
-    //  replaces all occurences in the expected result of 
+    //  replaces all occurrences in the expected result of 
     //      $E: to the result of preprocessing the given expression
     //      $F: to the passed full filepath 
     //      $P: to the full path
@@ -109,6 +109,10 @@ protected:
     //  construct a MAX macro definition string and predefine this macro
     template <typename T, typename Context>
     bool add_max_definition(Context& ctx, char const *name);
+
+    //  Predefine __TESTWAVE_HAS_STRICT_LEXER__
+    template <typename Context>
+    bool add_strict_lexer_definition(Context& ctx);
 
 private:
     int debuglevel;

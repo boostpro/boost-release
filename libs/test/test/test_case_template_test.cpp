@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2003-2005.
+//  (C) Copyright Gennadiy Rozental 2003-2006.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,17 +7,15 @@
 //
 //  File        : $RCSfile: test_case_template_test.cpp,v $
 //
-//  Version     : $Revision: 1.14 $
+//  Version     : $Revision: 1.17 $
 //
 //  Description : tests function template test case
 // ***************************************************************************
 
 // Boost.Test
-#define BOOST_AUTO_TEST_MAIN
-#include <boost/test/auto_unit_test.hpp>
-#include <boost/test/test_tools.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 #include <boost/test/test_case_template.hpp>
-#include <boost/test/framework.hpp>
 #include <boost/test/unit_test_log.hpp>
 #include <boost/test/results_collector.hpp>
 
@@ -137,7 +135,7 @@ BOOST_AUTO_TEST_CASE( test2_one_to_three )
     ut::test_results const& tr = ut::results_collector.results( test->p_id );
 
     ut::unit_test_log.set_stream( std::cout );
-    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)0 );
+    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)2 );
     BOOST_CHECK( !tr.p_aborted );
     BOOST_CHECK( !tr.passed() );
 }
@@ -148,6 +146,15 @@ BOOST_AUTO_TEST_CASE( test2_one_to_three )
 //  Revision History :
 //  
 //  $Log: test_case_template_test.cpp,v $
+//  Revision 1.17  2006/03/19 11:49:04  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.16  2006/01/29 20:22:59  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.15  2005/12/14 06:01:02  rogeeff
+//  *** empty log message ***
+//
 //  Revision 1.14  2005/05/11 05:07:57  rogeeff
 //  licence update
 //

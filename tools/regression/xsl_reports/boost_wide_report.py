@@ -9,6 +9,7 @@ import shutil
 import codecs
 import xml.sax.handler
 import glob
+import re
 import os.path
 import os
 import string
@@ -204,19 +205,72 @@ class merge_xml_action( action ):
 
         self.relevant_paths_.extend( [ self.source_ ] )
         self.boost_paths_.extend( [ self.expected_results_file_, self.failures_markup_file_ ] ) 
+
+
         
     def update( self ):
+        def filter_xml( src, dest ):
+            
+            class xmlgen( xml.sax.saxutils.XMLGenerator ):
+                def __init__( self, writer ):
+                   xml.sax.saxutils.XMLGenerator.__init__( self, writer )
+                  
+                   self.trimmed = 0
+                   self.character_content = ""
+
+                def startElement( self, name, attrs):
+                    self.flush()
+                    xml.sax.saxutils.XMLGenerator.startElement( self, name, attrs )
+
+                def endElement( self, name ):
+                    self.flush()
+                    xml.sax.saxutils.XMLGenerator.endElement( self, name )
+                    
+                def flush( self ):
+                    content = self.character_content
+                    self.character_content = ""
+                    self.trimmed = 0
+                    xml.sax.saxutils.XMLGenerator.characters( self, content )
+
+                def characters( self, content ):
+                    if not self.trimmed:
+                        max_size = pow( 2, 16 )
+                        self.character_content += content
+                        if len( self.character_content ) > max_size:
+                            self.character_content = self.character_content[ : max_size ] + "...\n\n[The content has been trimmed by the report system because it exceeds %d bytes]" % max_size
+                            self.trimmed = 1
+
+            o = open( dest, "w" )
+            try: 
+                gen = xmlgen( o )
+                xml.sax.parse( src, gen )
+            finally:
+                o.close()
+
+            return dest
+
+            
         utils.log( 'Merging "%s" with expected results...' % shorten( self.source_ ) )
-        utils.libxslt( 
-            utils.log
-            , self.source_
-            , xsl_path( 'add_expected_results.xsl' )
-            , os.path.join( self.file_path_ )
-            , {
-              "expected_results_file" : self.expected_results_file_
-              , "failures_markup_file": self.failures_markup_file_
-              }
-            )
+        try:
+            trimmed_source = filter_xml( self.source_, '%s-trimmed.xml' % os.path.splitext( self.source_ )[0] )
+            utils.libxslt(
+                  utils.log
+                , trimmed_source
+                , xsl_path( 'add_expected_results.xsl' )
+                , self.file_path_
+                , {
+                    "expected_results_file" : self.expected_results_file_
+                  , "failures_markup_file": self.failures_markup_file_
+                  }
+                )
+
+            os.unlink( trimmed_source )
+
+        except Exception, msg:
+            utils.log( '  Skipping "%s" due to errors (%s)' % ( self.source_, msg ) )
+            if os.path.exists( self.file_path_ ):
+                os.unlink( self.file_path_ )
+
         
     def _xml_timestamp( xml_path ):
 
@@ -265,6 +319,7 @@ class make_links_action( action ):
         
         open( self.file_path_, "w" ).close()
 
+
 class unzip_action( action ):
     def __init__( self, source, destination, unzip_func ):
         action.__init__( self, destination )
@@ -279,6 +334,7 @@ class unzip_action( action ):
         except Exception, msg:
             utils.log( '  Skipping "%s" due to errors (%s)' % ( self.source_, msg ) )
 
+
 def ftp_task( site, site_path , destination ):
     __log__ = 1
     utils.log( '' )
@@ -291,6 +347,7 @@ def ftp_task( site, site_path , destination ):
     f.cwd( site_path )
 
     source_content = list_ftp( f )
+    source_content = [ x for x in source_content if re.match( r'.+[.](?<!log[.])zip', x.name ) and x.name.lower() != 'boostbook.zip' ]
     destination_content = list_dir( destination )
     d = diff( source_content, destination_content )
 
@@ -358,10 +415,11 @@ def make_links_task( input_dir, output_dir, tag, run_date, comment_file, extende
     for a in actions:
         a.run()
 
+
 class xmlgen( xml.sax.saxutils.XMLGenerator ):
     document_started = 0
-        
-    def startDocument(self):
+    
+    def startDocument( self ):
         if not self.document_started:
             xml.sax.saxutils.XMLGenerator.startDocument( self )
             self.document_started = 1
@@ -369,23 +427,30 @@ class xmlgen( xml.sax.saxutils.XMLGenerator ):
 
 def merge_processed_test_runs( test_runs_dir, tag, writer ):
     utils.log( '' )
-    utils.log( 'merge_processed_test_runs: merging processed test runs into a single XML... %s' % test_runs_dir )
+    utils.log( 'merge_processed_test_runs: merging processed test runs from %s into a single XML...' % test_runs_dir )
     __log__ = 1
     
-    all_runs_xml = xmlgen( writer )
+    all_runs_xml = xmlgen( writer, encoding='utf-8' )
     all_runs_xml.startDocument()
     all_runs_xml.startElement( 'all-test-runs', {} )
     
     files = glob.glob( os.path.join( test_runs_dir, '*.xml' ) )
     for test_run in files:
+        #file_pos = writer.stream.tell()
+        file_pos = writer.tell()
         try:
             utils.log( '    Writing "%s" into the resulting XML...' % test_run )
-            xml.sax.parse( test_run, all_runs_xml  )
+            xml.sax.parse( test_run, all_runs_xml )
         except Exception, msg:
             utils.log( '    Skipping "%s" due to errors (%s)' % ( test_run, msg ) )
+            #writer.stream.seek( file_pos )
+            #writer.stream.truncate()
+            writer.seek( file_pos )
+            writer.truncate()
 
     all_runs_xml.endElement( 'all-test-runs' )
     all_runs_xml.endDocument()
+
 
 def execute_tasks(
           tag
@@ -401,11 +466,6 @@ def execute_tasks(
         , expected_results_file
         , failures_markup_file
         ):
-
-    
-    # results_xml_path = os.path.join( results_dir, results_xml )
-    # utils.log( 'Merging test runs into "%s"...' % results_xml_path )
-
 
     incoming_dir = os.path.join( results_dir, 'incoming', tag )
     processed_dir = os.path.join( incoming_dir, 'processed' )
@@ -434,8 +494,9 @@ def execute_tasks(
                      , failures_markup_file )
 
 
-    results_xml_path = os.path.join( output_dir, "extended_test_results.xml" )
-    writer = codecs.open( results_xml_path, 'w', "utf-8" )
+    results_xml_path = os.path.join( output_dir, 'extended_test_results.xml' )
+    #writer = codecs.open( results_xml_path, 'w', 'utf-8' )
+    writer = open( results_xml_path, 'w' )
     merge_processed_test_runs( merged_dir, tag, writer )
     writer.close()
 
@@ -599,6 +660,24 @@ def make_result_pages(
         , os.path.join( output_dir, 'master.css' )
         )
 
+    fix_file_names( output_dir )
+
+
+def fix_file_names( dir ):
+    """
+    The current version of xslproc doesn't correctly handle
+    spaces on posix systems. We have to manually go through the
+    result set and correct decode encoded spaces (%20).
+    """
+    if os.name == 'posix':
+        for root, dirs, files in os.walk( dir ):
+            for file in files:
+                if file.find( "%20" ) > -1:
+                    new_name = file.replace( "%20", " " )
+                    old_file_path = os.path.join( root, file )
+                    new_file_path = os.path.join( root, new_name )
+                    print "renaming %s %s" % ( old_file_path, new_file_path )
+                    os.rename ( old_file_path, new_file_path )
 
 def build_xsl_reports( 
           locate_root_dir

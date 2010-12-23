@@ -10,7 +10,8 @@
 #include <boost/ref.hpp>
 #include <boost/utility.hpp>
 #include <memory>
-#include <cassert>
+#define BOOST_ENABLE_ASSERT_HANDLER
+#include <boost/assert.hpp>
 #include <boost/python/copy_const_reference.hpp>
 #include <boost/python/return_value_policy.hpp>
 #include <boost/mpl/bool.hpp>
@@ -24,10 +25,10 @@ struct X
 {
     explicit X(int x) : x(x), magic(7654321) { ++counter; }
     X(X const& rhs) : x(rhs.x), magic(7654321) { ++counter; }
-    virtual ~X() { assert(magic == 7654321); magic = 6666666; x = 9999; --counter; }
+    virtual ~X() { BOOST_ASSERT(magic == 7654321); magic = 6666666; x = 9999; --counter; }
 
-    void set(int x) { assert(magic == 7654321); this->x = x; }
-    int value() const { assert(magic == 7654321); return x; }
+    void set(int x) { BOOST_ASSERT(magic == 7654321); this->x = x; }
+    int value() const { BOOST_ASSERT(magic == 7654321); return x; }
     static int count() { return counter; }
  private:
     void operator=(X const&);
@@ -41,8 +42,8 @@ int X::counter;
 
 struct Y : X
 {
-    Y(PyObject* self, int x) : X(x) {};
-    Y(PyObject* self, Y const& rhs) : X(rhs), self(self) {};
+    Y(PyObject* self, int x) : X(x), self(self) {}
+    Y(PyObject* self, Y const& rhs) : X(rhs), self(self) {}
  private:
     Y(Y const&);
     PyObject* self;
@@ -50,8 +51,8 @@ struct Y : X
 
 struct Z : X
 {
-    Z(PyObject* self, int x) : X(x) {};
-    Z(PyObject* self, Z const& rhs) : X(rhs), self(self) {};
+    Z(PyObject* self, int x) : X(x), self(self) {}
+    Z(PyObject* self, Z const& rhs) : X(rhs), self(self) {}
  private:
     Z(Z const&);
     PyObject* self;

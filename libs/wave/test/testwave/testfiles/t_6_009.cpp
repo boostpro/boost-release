@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -16,7 +16,7 @@
 // Tests error reporting: illegal #if expressions. 
 
 // 14.4: Unbalanced parenthesis in #if defined operator.
-//E t_6_009.cpp(20): error: ill formed preprocessor expression: defined()
+//E t_6_009.cpp(20): error: ill formed preprocessor expression: defined(): defined ( MACRO
 #if defined ( MACRO
 #endif
 

@@ -5,7 +5,7 @@
     
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost 
+    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost 
     Software License, Version 1.0. (See accompanying file 
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -29,6 +29,9 @@
 #include <boost/wave/cpplexer/validate_universal_char.hpp>
 #include <boost/wave/cpplexer/convert_trigraphs.hpp>
 #include <boost/wave/cpplexer/cpplexer_exceptions.hpp>
+#if BOOST_WAVE_SUPPORT_PRAGMA_ONCE != 0
+#include <boost/wave/cpplexer/detect_include_guards.hpp>
+#endif
 
 #include "../slex_interface.hpp"
 #include "../slex_token.hpp"
@@ -47,12 +50,12 @@ namespace lexer {
 //  The following numbers are the arraysizes of the token regex's which we
 //  need to specify to make the CW compiler happy (at least up to V9.5).
 #if BOOST_WAVE_SUPPORT_MS_EXTENSIONS != 0
-#define INIT_DATA_SIZE        176
-#define INIT_DATA_CPP_SIZE    15
+#define INIT_DATA_SIZE              176
 #else
-#define INIT_DATA_SIZE        159
-#define INIT_DATA_CPP_SIZE    15
+#define INIT_DATA_SIZE              159
 #endif
+#define INIT_DATA_CPP_SIZE          15
+#define INIT_DATA_PP_NUMBER_SIZE    2
 
 ///////////////////////////////////////////////////////////////////////////////
 // 
@@ -107,15 +110,16 @@ private:
 
     static typename base_type::lexer_data const init_data[INIT_DATA_SIZE];          // common patterns
     static typename base_type::lexer_data const init_data_cpp[INIT_DATA_CPP_SIZE];  // C++ only patterns
+    static typename base_type::lexer_data const init_data_pp_number[INIT_DATA_PP_NUMBER_SIZE];  // pp-number only patterns
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 //  data required for initialization of the lexer (token definitions)
-#define OR      "|"
-#define Q(c)    "\\" c
-#define TRI(c)  Q("?") Q("?") c
+#define OR                  "|"
+#define Q(c)                "\\" c
+#define TRI(c)              Q("?") Q("?") c
 
-// definition of some subtoken regexps to simplify the regex definitions
+// definition of some sub-token regexps to simplify the regex definitions
 #define BLANK               "[ \\t]"
 #define CCOMMENT            \
     Q("/") Q("*") "[^*]*" Q("*") "+" "(" "[^/*][^*]*" Q("*") "+" ")*" Q("/")
@@ -125,15 +129,24 @@ private:
 #define OCTALDIGIT          "[0-7]"
 #define DIGIT               "[0-9]"
 #define HEXDIGIT            "[0-9a-fA-F]"
-#define SIGN                "[-+]?"
-#define EXPONENT            "(" "[eE]" SIGN "[0-9]+" ")"
+#define OPTSIGN             "[-+]?"
+#define EXPSTART            "[eE]" "[-+]"
+#define EXPONENT            "(" "[eE]" OPTSIGN "[0-9]+" ")"
+#define NONDIGIT            "[a-zA-Z_]"
 
 #define INTEGER             \
     "(" "(0x|0X)" HEXDIGIT "+" OR "0" OCTALDIGIT "*" OR "[1-9]" DIGIT "*" ")"
             
 #define INTEGER_SUFFIX      "(" "[uU][lL]?|[lL][uU]?" ")"
-#define LONGINTEGER_SUFFIX  "(" "[uU]" "(" "ll" OR "LL" ")" OR \
-                            "(" "ll" OR "LL" ")" "[uU]" "?" ")"
+#if BOOST_WAVE_SUPPORT_MS_EXTENSIONS != 0
+#define LONGINTEGER_SUFFIX  "(" "[uU]" "(" "[lL][lL]" ")" OR \
+                                "(" "[lL][lL]" ")" "[uU]" "?" OR \
+                                "i64" \
+                            ")" 
+#else
+#define LONGINTEGER_SUFFIX  "(" "[uU]" "(" "[lL][lL]" ")" OR \
+                            "(" "[lL][lL]" ")" "[uU]" "?" ")"
+#endif
 #define FLOAT_SUFFIX        "(" "[fF][lL]?|[lL][fF]?" ")"
 #define CHAR_SPEC           "L?"
 
@@ -159,8 +172,10 @@ private:
 #define INCLUDEDEF          "include"
 #endif
 
+#define PP_NUMBERDEF        Q(".") "?" DIGIT "(" DIGIT OR NONDIGIT OR EXPSTART OR Q(".") ")*"
+
 ///////////////////////////////////////////////////////////////////////////////
-//  sexer state constants
+//  lexer state constants
 #define LEXER_STATE_NORMAL  0
 #define LEXER_STATE_PP      1
 
@@ -342,16 +357,20 @@ lexer<IteratorT, PositionT>::init_data[INIT_DATA_SIZE] =
     TOKEN_DATA(MSEXT_PP_REGION, POUNDDEF PPSPACE "region"),
     TOKEN_DATA(MSEXT_PP_ENDREGION, POUNDDEF PPSPACE "endregion"),
 #endif // BOOST_WAVE_SUPPORT_MS_EXTENSIONS != 0
-    TOKEN_DATA(IDENTIFIER, "([a-zA-Z_]" OR UNIVERSALCHAR ")([a-zA-Z0-9_]" OR UNIVERSALCHAR ")*"),
 //  TOKEN_DATA(OCTALINT, "0" OCTALDIGIT "*" INTEGER_SUFFIX "?"),
 //  TOKEN_DATA(DECIMALINT, "[1-9]" DIGIT "*" INTEGER_SUFFIX "?"),
 //  TOKEN_DATA(HEXAINT, "(0x|0X)" HEXDIGIT "+" INTEGER_SUFFIX "?"),
-    TOKEN_DATA(INTLIT, INTEGER INTEGER_SUFFIX "?"),
     TOKEN_DATA(LONGINTLIT, INTEGER LONGINTEGER_SUFFIX),
+    TOKEN_DATA(INTLIT, INTEGER INTEGER_SUFFIX "?"),
     TOKEN_DATA(FLOATLIT, 
         "(" DIGIT "*" Q(".") DIGIT "+" OR DIGIT "+" Q(".") ")" 
         EXPONENT "?" FLOAT_SUFFIX "?" OR
         DIGIT "+" EXPONENT FLOAT_SUFFIX "?"),
+#if BOOST_WAVE_USE_STRICT_LEXER != 0
+    TOKEN_DATA(IDENTIFIER, "([a-zA-Z_]" OR UNIVERSALCHAR ")([a-zA-Z0-9_]" OR UNIVERSALCHAR ")*"),
+#else
+    TOKEN_DATA(IDENTIFIER, "([a-zA-Z_$]" OR UNIVERSALCHAR ")([a-zA-Z0-9_$]" OR UNIVERSALCHAR ")*"),
+#endif
     TOKEN_DATA(CCOMMENT, CCOMMENT),
     TOKEN_DATA(CPPCOMMENT, Q("/") Q("/[^\\n\\r]*") NEWLINEDEF ),
     TOKEN_DATA(CHARLIT, CHAR_SPEC "'" 
@@ -397,6 +416,16 @@ lexer<IteratorT, PositionT>::init_data_cpp[INIT_DATA_CPP_SIZE] =
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+// C++ only token definitions
+template <typename IteratorT, typename PositionT>
+typename lexer_base<IteratorT, PositionT>::lexer_data const 
+lexer<IteratorT, PositionT>::init_data_pp_number[INIT_DATA_PP_NUMBER_SIZE] = 
+{
+    TOKEN_DATA(PP_NUMBER, PP_NUMBERDEF),
+    { token_id(0) }       // this should be the last entry
+};
+
+///////////////////////////////////////////////////////////////////////////////
 //  undefine macros, required for regular expression definitions
 #undef INCLUDEDEF
 #undef POUNDDEF
@@ -405,7 +434,9 @@ lexer<IteratorT, PositionT>::init_data_cpp[INIT_DATA_CPP_SIZE] =
 #undef DIGIT
 #undef OCTALDIGIT
 #undef HEXDIGIT
-#undef SIGN
+#undef NONDIGIT
+#undef OPTSIGN
+#undef EXPSTART
 #undef EXPONENT
 #undef LONGINTEGER_SUFFIX
 #undef INTEGER_SUFFIX
@@ -416,6 +447,7 @@ lexer<IteratorT, PositionT>::init_data_cpp[INIT_DATA_CPP_SIZE] =
 #undef ESCAPESEQ    
 #undef HEXQUAD      
 #undef UNIVERSALCHAR
+#undef PP_NUMBERDEF
 
 #undef Q
 #undef TRI
@@ -439,6 +471,15 @@ lexer<IteratorT, PositionT>::init_dfa(boost::wave::language_support lang)
 {
     if (this->has_compiled_dfa())
         return;
+
+// if pp-numbers should be preferred, insert the corresponding rule first
+    if (boost::wave::need_prefer_pp_numbers(lang)) {
+        for (int j = 0; 0 != init_data_pp_number[j].tokenid; ++j) {
+            this->register_regex(init_data_pp_number[j].tokenregex, 
+                init_data_pp_number[j].tokenid, init_data_pp_number[j].tokencb, 
+                init_data_pp_number[j].lexerstate);
+        }
+    }
         
 // if in C99 mode, some of the keywords are not valid    
     if (!boost::wave::need_c99(lang)) {
@@ -525,11 +566,11 @@ public:
     typedef typename lexer::lexer<IteratorT, PositionT>::token_type token_type;
 
     slex_functor(IteratorT const &first_, IteratorT const &last_, 
-            PositionT const &pos_, boost::wave::language_support language)
-    :   first(first_, last_, pos_), language(language), at_eof(false)
+            PositionT const &pos_, boost::wave::language_support language_)
+    :   first(first_, last_, pos_), language(language_), at_eof(false)
     {
         // initialize lexer dfa tables
-        init_lexer(lexer, language);  
+        init_lexer(lexer, language_);  
     }
     virtual ~slex_functor() {}
 
@@ -570,8 +611,7 @@ public:
                     // chars found)
                         if (language & support_option_convert_trigraphs) {
                             using boost::wave::cpplexer::impl::convert_trigraphs;
-                            token_val = convert_trigraphs(token_val, 
-                                pos.get_line(), pos.get_column(), pos.get_file()); 
+                            token_val = convert_trigraphs(token_val); 
                         }
                         if (!(language & support_option_no_character_validation)) {
                             using boost::wave::cpplexer::impl::validate_literal;
@@ -625,27 +665,36 @@ public:
                         if (language & support_option_convert_trigraphs)
                         {
                             using boost::wave::cpplexer::impl::convert_trigraph;
-                            token_val = convert_trigraph(
-                                token_val, pos.get_line(), pos.get_column(), 
-                                pos.get_file());
+                            token_val = convert_trigraph(token_val);
                         }
                         break;
                     }
+                    
+#if BOOST_WAVE_SUPPORT_PRAGMA_ONCE != 0
+                    return guards.detect_guard(token_type(id, token_val, pos));
+#else
                     return token_type(id, token_val, pos);
+#endif
                 }
             
             // skip the T_CONTLINE token
             } while (true);
         }
-        return token;       // return T_EOI
+        return token;   // return T_EOI
     }
+    
     void set_position(PositionT const &pos) 
     { 
         // set position has to change the file name and line number only
         first.get_position().set_file(pos.get_file()); 
         first.get_position().set_line(pos.get_line()); 
     }
-    
+
+#if BOOST_WAVE_SUPPORT_PRAGMA_ONCE != 0
+    bool has_include_guards(std::string& guard_name) const 
+        { return guards.detected(guard_name); }
+#endif
+
 private:
     iterator_type first;
     iterator_type last;
@@ -653,6 +702,10 @@ private:
     static lexer::lexer<IteratorT, PositionT> lexer;   // needed only once
     
     bool at_eof;
+
+#if BOOST_WAVE_SUPPORT_PRAGMA_ONCE != 0
+    include_guards<token_type> guards;
+#endif
 };
 
 template <typename IteratorT, typename PositionT>

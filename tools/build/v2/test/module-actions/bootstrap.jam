@@ -1,3 +1,8 @@
+# Copyright 2003 Dave Abrahams 
+# Copyright 2006 Rene Rivera 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
+
 # Demonstration that module variables have the right effect in actions
 
 # Set a variable which says how to dump a file to stdout
@@ -39,10 +44,7 @@ module A
         ALWAYS $(target) ;
     }
     
-    actions act
-    {
-        echo A.act $(<):  $(X1)  $(X2)  $(X3)
-    }
+    actions act { echo A.act $(<): $(X1) $(X2) $(X3) }
     
     make t1 : : A.act ;
     make t2 : : A.act ;
@@ -53,20 +55,14 @@ module B
 {
     X2 = X2-B ;
     
-    actions act
-    {
-        echo B.act $(<):  $(X1)  $(X2)  $(X3)
-    }
+    actions act { echo B.act $(<): $(X1) $(X2) $(X3) }
     
     make t1 : : B.act ;
     make t2 : : B.act ;
     make t3 : : B.act ;
 }
 
-actions act
-{
-    echo act $(<):  $(X1)  $(X2)  $(X3)
-}
+actions act { echo act $(<): $(X1) $(X2) $(X3) }
 
 make t1 : : act ;
 make t2 : : act ;

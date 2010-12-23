@@ -2,6 +2,8 @@
 
 //  Copyright Beman Dawes 2002.
 //  Copyright Rene Rivera 2004.
+//  Copyright Gennaro Prota 2006.
+//
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -9,10 +11,11 @@
 #ifndef BOOST_INSPECTOR_HPP
 #define BOOST_INSPECTOR_HPP
 
-#include <string>
-#include <iostream>
 #include <set>
-#include <boost/filesystem/path.hpp>
+#include <iostream>
+#include <ostream>
+#include <string>
+#include "boost/filesystem/path.hpp"
 
 using std::string;
 using boost::filesystem::path;
@@ -22,9 +25,12 @@ namespace boost
   namespace inspect
   {
     typedef std::set< string > string_set;
-        
+
     class inspector
     {
+    protected:
+        inspector() {}
+
     public:
       virtual ~inspector() {}
 
@@ -33,14 +39,16 @@ namespace boost
 
       // always called:
       virtual void inspect(
-        const string & library_name, // "filesystem"
-        const path & full_path ) {}  // "c:/foo/boost/filesystem/path.hpp"
+        const string & /*library_name*/, // "filesystem"
+        const path & /*full_path*/ ) {}  // "c:/foo/boost/filesystem/path.hpp"
 
       // called only for registered leaf() signatures:
       virtual void inspect(
         const string & library_name, // "filesystem"
         const path & full_path,      // "c:/foo/boost/filesystem/path.hpp"
-        const string & contents ) {} // contents of file
+        const string & contents )    // contents of file
+      = 0
+      ;
 
       // called after all paths visited, but still in time to call error():
       virtual void close() {}
@@ -59,7 +67,7 @@ namespace boost
     private:
       string_set m_signatures;
     };
-    
+
     // for inspection of source code of one form or other
     class source_inspector : public inspector
     {
@@ -67,7 +75,7 @@ namespace boost
       // registers the basic set of known source signatures
       source_inspector();
     };
-    
+
     // for inspection of hypertext, specifically html
     class hypertext_inspector : public inspector
     {
@@ -78,17 +86,16 @@ namespace boost
 
     inline string relative_to( const path & src_arg, const path & base_arg )
     {
-      path src( src_arg );
-      src.normalize();
       path base( base_arg );
       base.normalize();
       string::size_type pos( base.string().size() );
-      return src.string().substr(
-        pos + ( pos < src.string().size() ? 1 : 0 ) );
+      path src( src_arg.string().substr(pos) );
+      src.normalize();
+      return src.string().substr(1);
     }
 
     string impute_library( const path & full_dir_path );
- 
+
   }
 }
 

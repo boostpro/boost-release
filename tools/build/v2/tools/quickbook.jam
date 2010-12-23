@@ -1,6 +1,7 @@
 #
-#   Copyright (c) 2005 Jo√£o Abecasis
+#   Copyright (c) 2005 Jo„o Abecasis
 #   Copyright (c) 2005 Vladimir Prus
+#   Copyright (c) 2006 Rene Rivera
 #
 #   Distributed under the Boost Software License, Version 1.0. (See
 #   accompanying file LICENSE_1_0.txt or copy at
@@ -108,6 +109,9 @@ import feature ;
 import generators ;
 import toolset ;
 import type ;
+import scanner ;
+import project ;
+import targets ;
 
 # The one and only QUICKBOOK type!
 type.register QUICKBOOK : qbk ;
@@ -139,7 +143,7 @@ class quickbook-binary-generator : generator
         if $(quickbook-binary)
         {
             # Use user-supplied command.
-            quickbook-binary = [ common.get-invocation-command quickbook : $(quickbook-binary) ] ;
+            quickbook-binary = [ common.get-invocation-command quickbook : quickbook : $(quickbook-binary) ] ;
         }
         else
         {
@@ -243,6 +247,20 @@ class quickbook-binary-generator : generator
     }
 }
 
+# Define a scanner for tracking QBK include dependencies
+class qbk-scanner : common-scanner
+{
+    rule pattern ( )
+    {
+        return "\\[include[ \t]+([^]]+)\\]" 
+        "\\[include:[a-zA-Z0-9_]+[ \t]+([^]]+)\\]" ;
+    }
+}
+
+scanner.register qbk-scanner : include ;
+
+type.set-scanner QUICKBOOK : qbk-scanner ;
+
 # Initialization of toolset.
 #
 # Parameters:
@@ -278,6 +296,19 @@ rule quickbook-to-boostbook ( target : source : properties * )
 
 actions quickbook-to-boostbook
 {
-    $(QB-COMMAND) $(2) $(1) ;
+    $(QB-COMMAND) --output-file=$(1) $(2)  
 }
 
+# Declare a main target to convert a quickbook source into a boostbook
+# XML file.
+rule to-boostbook ( target-name : sources * : requirements * : default-build * )
+{ 
+  local project = [ project.current ] ;
+    
+  targets.main-target-alternative 
+    [ new typed-target $(target-name) : $(project) : XML
+        : [ targets.main-target-sources $(sources) : $(target-name) ] 
+        : [ targets.main-target-requirements $(requirements) : $(project) ]
+        : [ targets.main-target-default-build $(default-build) : $(project) ] 
+    ] ;
+}

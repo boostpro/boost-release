@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -22,8 +22,10 @@
 //        character.
 
 //  From ISO 9899:1990 / Corrigendum 1. 
-//E t_6_038.cpp(26): error: ill formed preprocessor directive: #define
+#if defined(__TESTWAVE_HAS_STRICT_LEXER__)
+//E(__TESTWAVE_HAS_STRICT_LEXER__) t_6_038.cpp(27): error: ill formed preprocessor directive: #define
 #define THIS$AND$THAT(a, b)     ((a) + (b))
+#endif
 
 // Note: the following definition is legal (object-like macro).
 //       #define THIS $AND$THAT(a, b)    ((a) + (b))

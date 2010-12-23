@@ -8,7 +8,7 @@
     
     http://www.boost.org/
 
-    Copyright (c) 2001-2005 Hartmut Kaiser. Distributed under the Boost 
+    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost 
     Software License, Version 1.0. (See accompanying file 
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -89,6 +89,7 @@ main(int argc, char *argv[])
 
     ctx.set_language(boost::wave::enable_long_long(ctx.get_language()));
     ctx.set_language(boost::wave::enable_preserve_comments(ctx.get_language()));
+    ctx.set_language(boost::wave::enable_prefer_pp_numbers(ctx.get_language()));
 
     context_type::iterator_type first = ctx.begin();
     context_type::iterator_type last = ctx.end();
@@ -106,14 +107,14 @@ main(int argc, char *argv[])
             ++first;
         }
     }
-    catch (boost::wave::cpp_exception &e) {
+    catch (boost::wave::cpp_exception const& e) {
     // some preprocessing error
         cerr 
             << e.file_name() << "(" << e.line_no() << "): "
             << e.description() << endl;
         return 2;
     }
-    catch (std::exception &e) {
+    catch (std::exception const& e) {
     // use last recognized token to retrieve the error position
         cerr 
             << current_token.get_position().get_file() 

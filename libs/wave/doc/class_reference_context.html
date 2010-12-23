@@ -3,8 +3,7 @@
     <head>
         <title>The Context Object</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <link rel="stylesheet" href="theme/style.css" type="text/css">
-    </head>
+        <link rel="stylesheet" href="theme/style.css" type="text/css"></head>
     <body text="#000000" background="theme/bkd.gif">
 <table width="100%" border="0" cellspacing="2" background="theme/bkd2.gif">
   <tr> 
@@ -61,12 +60,12 @@
         <span class="keyword">typedef</span> pp_iterator&lt;context&gt; iterator_type; 
         <span class="keyword">typedef</span> Token token_type;
         <span class="keyword">typedef</span> <span class="keyword">typename</span> token_type::position_type position_type;
-
+        <span class="keyword">typedef</span> std::list&lt;token_type&gt; token_sequence_type;<br>
     <span class="comment">// constructor</span>
         <a href="class_reference_context.html#constructor">context</a>(Iterator<span class="keyword"> const</span> &amp;first_, 
             Iterator <span class="keyword">const</span> &amp;last_, 
             <span class="keyword">char const</span> *fname = <span class="string">"&lt;Unknown&gt;"</span>,
-            TracePolicy &amp;trace = TracePolicy())
+            TracePolicy <span class="keyword">const</span>&amp; trace = TracePolicy())
 
     <span class="comment">// iterator interface</span>
         iterator_type <a href="class_reference_context.html#iterator_interface_begin">begin</a>() <span class="keyword">const</span>;
@@ -86,6 +85,11 @@
         <span class="keyword">bool</span> <a href="class_reference_context.html#remove_macro_definition">remove_macro_definition</a>(<span class="keyword">std::string const</span> &amp;name, 
             <span class="keyword">bool</span> even_predefined = <span class="keyword">false</span>);
         <span class="keyword">void</span> <a href="class_reference_context.html#reset_macro_definitions">reset_macro_definitions</a>();
+    <span class="keyword">    bool</span></span> <a href="class_reference_context.html#get_macro_definition">get_macro_definition</a>(
+        <span class="keyword">    std::string const</span> &amp;name, <span class="keyword">bool</span> &amp;is_function_style, <span class="keyword">
+            bool</span> &amp;is_predefined, position_type &amp;pos, 
+            std::vector&lt;token_type&gt; &amp;parameters, 
+            token_sequence_type &amp;definition) <span class="keyword">const</span>; 
 
     <span class="comment">// other options</span>
         <span class="keyword">void</span> <a href="class_reference_context.html#language_support">set_language</a>(language_support enable);
@@ -127,18 +131,18 @@
   <tr>
     <td class="table_cells"><code>TracePolicy</code></td>
     <td class="table_cells"><p>The type of the trace policy class, which allows 
-        to customize the trace output generated while expanding macros. </p></td>
+        to customize the trace output generated while expanding macros. The requirements for this policy are described <a href="class_reference_ctxpolicy.html">here</a>.</p></td>
   </tr>
 </table>
 <p>For further information about the lexer type to use, please refer to the <a href="class_reference_lexer.html">The 
   Lexer Interface </a>.</p>
-<p>If the template parameter <tt>InputPolicy</tt> is omitted, the template <tt>wave::iteration_context_policies::load_file_to_string</tt> 
+<p>If the template parameter <tt>InputPolicy</tt> is omitted, the template <tt>boost::wave::iteration_context_policies::load_file_to_string</tt> 
   is used. For further information about the input policy, please refer to the 
   topic <a href="class_reference_inptpolcy.html">The Input Policy</a>.</p>
-<p>If the template parameter TracePolicyT is omitted, the <tt>wave::macro_trace_policies::no_tracing</tt> 
+<p>If the template parameter TracePolicyT is omitted, the <tt>boost::wave::macro_trace_policies::no_tracing</tt> 
   policy type is used, i.e. by default there is no tracing performed. For further 
-  information about the tracing policy, please refer to the topic <a href="class_reference_ctxpolicy.html">The 
-  Tracing Policy</a>. </p>
+  information about the hooking policy, please refer to the topic <a href="class_reference_ctxpolicy.html">The 
+  Context Policy</a>. </p>
 <h2><a name="public_typedefs"></a>Public Typedefs</h2>
 <p>The <tt>boost::wave::context</tt> template defines the following public typedefs, which may be useful while using this class:</p>
 <table width="90%" border="0" align="center">
@@ -174,7 +178,7 @@
 <p><b><a name="constructor" id="constructor"></a>Constructor</b></p>
 <pre>    context(Iterator <span class="keyword">const</span> &amp;first, 
         Iterator <span class="keyword">const</span> &amp;last, <span class="keyword">char</span> <span class="keyword">const</span> *filename, 
-        TracePolicy &amp;trace);</pre> 
+        TracePolicy <span class="keyword">const</span>&amp; trace);</pre> 
     <p>Constructs a context object on top of the input stream given by the pair 
     of auxilliary iterators <tt>[first,&nbsp;last)</tt>. The iterators should 
     be at least <tt>forward_iterator</tt> type iterators. The filename parameter 
@@ -333,6 +337,17 @@
 <blockquote>
   <p>Returns, if a macro with the given <tt>name</tt> is defined, i.e. if it is 
     contained in the macro symbol table.</p>
+  </blockquote>
+<p><strong><a name="get_macro_definition"></a>get_macro_definition</strong></p>
+<pre>    <span class="keyword">bool</span></span> get_macro_definition(
+        <span class="keyword">std::string const</span> &amp;name, <span class="keyword">bool</span> &amp;is_function_style, <span class="keyword">
+        bool</span> &amp;is_predefined, position_type &amp;pos, 
+        std::vector&lt;token_type&gt; &amp;parameters, 
+        token_sequence_type &amp;definition) <span class="keyword">const</span>; </pre>
+<blockquote>
+  <p>Allows to retrieve all information known with regard to a macro definition. The parameter <tt>name</tt>    specifies the name of the macro the information should be returned for. The parameters 
+  <tt>is_function_style</tt> and <tt>is_predefined</tt> return, whether the macro has been defined as a function style macro or as a predefined macro resp. The parameter <tt>pos</tt> will contain the position the macro was defined at. The parameter <tt>parameters</tt> will contain the names of the parameters the macro was defined with and the parameter <tt>definition</tt> will contain the token sequence for the definition (macro body).</p>
+  <p>The function returns <tt>true</tt> is the macro was defined and the requested information has been successfully retrieved, <tt>false</tt> otherwise.</p>
 </blockquote>
 <p><a name="remove_macro_definition"></a><b>remove_macro_definition</b></p>
 <pre><span class="keyword">    bool</span> remove_macro_definition(
@@ -380,13 +395,14 @@
     the release number, <span class="literal">'ss'</span> the subrelease number 
     and <span class="literal">'bbbb'</span> the build number. A possible return 
     value looks like <span class="literal">&quot;0.9.1.454&quot;</span>. The returned 
-    value is the same as is inserted in the preprocessed token stream, when the 
+    value is the same as it will be inserted in the preprocessed token stream, when the 
     predefined macro <tt>__WAVE_VERSION_STR__</tt> is expanded.</p>
 </blockquote>
 <h3>Control extended options</h3>
 <p><a name="language_support"></a>set_language<br>
   get_language</p>
-<pre><span class="keyword">    void</span> set_language(<span class="keyword">language_support</span> language);
+<pre><span class="keyword">    void</span> set_language(<span class="keyword">language_support</span> language, 
+        <span class="keyword">bool</span> reset_macros = <span class="keyword">true</span>);
     <span class="keyword">language_support</span> get_language() <span class="keyword">const</span>;</pre>
 <blockquote> 
   <p>This functions allows to specify the language mode, in which the <tt>Wave</tt> 
@@ -398,28 +414,57 @@
         support_cpp = support_normal,
     
     <span class="comment">// support flags for C99</span>
-        support_long_long = 0x02,
-        support_variadics = 0x04,
-        support_c99 = support_variadics | 
-                      support_long_long | 0x08,
+        support_option_long_long = 0x02,
+        support_option_variadics = 0x04,
+        support_c99 = support_option_variadics | 
+                      support_option_long_long | 
+                      0x08,
 
 <span class="comment">    // the mask for the main language settings</span>
         support_option_mask = 0xFF00,<br>
-<span class="comment">    // additional fine tuning of the general behaviour</span>
-        support_option_preserve_comments = 0x0100,<br>        support_option_no_character_validation = 0x0200,<br>        support_option_convert_trigraphs = 0x0400<br>    };</pre>
-  <p>When used with <tt>support_variadics</tt> the support for variadics, placemarkers 
-    and the <tt>operator _Pragma()</tt> is enabled in normal C++ mode. When used with the <tt>support_long_long</tt> the support for long long suffixes is enabled in C++ mode. </p>
-  <p>The <tt>support_c99</tt> switches to the C99 language support, which enables variadics, placemarkers, the <tt>operator _Pragma</tt> and long long suffixes by default. Additionally it disables the C++ specific tokens such as <tt>'-&gt;*'</tt>, <tt>'.*'</tt>, <tt>'::'</tt> etc. </p>
+<span class="comment">    // additional fine tuning of the general behavior</span>
+        support_option_preserve_comments = 0x0100,
+        support_option_no_character_validation = 0x0200,
+        support_option_convert_trigraphs = 0x0400,
+        support_option_single_line = 0x0800,
+        support_option_prefer_pp_numbers = 0x1000,
+        support_option_emit_line_directives = 0x2000,
+        support_option_include_guard_detection = 0x4000
+    };</pre>
+  <p>When used with <tt>support_option_variadics</tt> the support for variadics, placemarkers 
+    and the <tt>operator&nbsp;_Pragma()</tt> is enabled in normal C++ mode. When used with the <tt>support_option_long_long</tt> the support for long long suffixes is enabled in C++ mode. </p>
+  <p>The <tt>support_c99</tt> switches on the C99 language support, which enables variadics, placemarkers, the <tt>operator&nbsp;_Pragma</tt> and long long suffixes by default. Additionally it disables the C++ specific tokens such as <tt>'-&gt;*'</tt>, <tt>'.*'</tt>, <tt>'::'</tt> etc. </p>
   <p>The <tt>support_option_...</tt> values are to be used in conjunction with the main language settings (<tt>support_normal</tt> and <tt>support_c99</tt>) . </p>
   <ul>
-    <li>If the <tt>support_option_preserve_comments</tt> flag is set, the <tt>Wave</tt> library preserves almost all comments in the source code. The only comments not preserved are those contained inside macro definitions. By default all comments are replaced by a single space. </li>
-    <li>If the <tt>support_option_no_character_validation</tt> flag is set , the <tt>Wave</tt> library doesn't validate universal character literals (given in the form of <tt>'u1234'</tt> or <tt>'U12345678'</tt>) to be in the allowed value range. This flag is merely used for internal purposes by the testing framework and will be rarely used by a user of the library.</li>
+    <li>If the <tt>support_option_preserve_comments</tt> flag is set, the <tt>Wave</tt> library preserves almost all comments in the source code. The only comments not preserved are those contained inside macro definitions. If this flag is not set all comments are replaced by a single space. </li>
+    <li>If the <tt>support_option_no_character_validation</tt> flag is set , the <tt>Wave</tt> library does not validate universal character literals (given in the form of <tt>'u1234'</tt> or <tt>'U12345678'</tt>) to be in the allowed value range. This flag is merely used for internal purposes by the testing framework and will be rarely used by a user of the library.</li>
     <li>If the <tt>support_option_convert_trigraphs</tt> flag is set, the <tt>Wave</tt> library replaces all occurences of trigraph characters with their non-trigraph character sequence (i.e. <tt>'??='</tt> is replaced by <tt>'#'</tt> etc.) . By default no replacement is performed. </li>
+    <li>If the <tt>support_option_single_line</tt> flag is set, the <tt>Wave</tt> library will now reprot an error if the last line of the processed input is not terminated by a new line. This flag is merely used for internal purposes by the testing framework and will be rarely used by a user of the library.</li>
+    <li>If the <tt>support_option_prefer_pp_numbers</tt> flag is set, the <tt>Wave</tt> library is instructed to correctly identify pp-number's in the input stream. These get recognized into 'normal' number tokens before they get returned to the calling application. The flag is set by default and is used merely for internal purposes and will be rarely reset by a user of the library. </li>
+    <li>If the <span class="keyword">support_option_emit_line_directives</span> flag is set, the <tt>Wave</tt> library will emit <span class="preprocessor">#line</span> directives in the generated token stream, if appropriate. This flag is set by default, to prevent the library from generating <span class="preprocessor">#line</span> directives it must be reset explicitely. </li>
+    <li>If the <span class="keyword">support_option_include_guard_detection</span> flag is set, the <tt>Wave</tt> library will try to automatically identify include guards during the processing of a included file. Files which contained include guards are handled as if they contained a #pragma once, i.e. these files wonn#t be opened twice, even if specified in a second <span class="preprocessor">#include</span> statement. </li>
   </ul>
+  <blockquote>
+    <p>During this process the library will recognize two forms of include guards:</p>
+    <pre>    <span class="preprocessor">#ifndef</span> INCLUDE_GUARD_MACRO
+    <span class="preprocessor">#define</span> INCLUDE_GUARD_MACRO
+    ...
+    <span class="preprocessor">#endif</span>
+
+  or
+
+    <span class="preprocessor">#if</span> !defined(INCLUDE_GUARD_MACRO)
+    <span class="preprocessor">#define</span> INCLUDE_GUARD_MACRO
+    ...
+    <span class="preprocessor">#endif</span></pre>
+    <p> Note, that the parenthesis in the second form are optional (i.e. <tt>!defined INCLUDE_GUARD_MACRO</tt>      will work as well). The code allows for any whitespace, newline and single 
+      '#' tokens before the <span class="preprocessor">#if</span>/<span class="preprocessor">#ifndef</span> and after the final <span class="preprocessor">#endif</span> for the include guard to be recognized.</p>
+    <p>This flag is on by default, so if you do not want the library to automatically reconize include guards you will need to reset this explicitely. </p>
+  </blockquote>
+  <p><strong> </strong>If the parameter <tt>reset_macros</tt> is true the <tt>set_language</tt> function internally resets the list of defined macros, so please be careful not to call it after you have defined your own macros already. </p>
 </blockquote>
-<p><strong>Note:</strong> The set_language function internally resets the list of defined macros, so please be careful not to call it after you have defined your own macros already. </p>
 <p><a name="set_max_include_nesting_depth" id="set_max_include_nesting_depth"></a>set_max_include_nesting_depth<br>
-  g et_max_include_nesting_depth</p>
+  get_max_include_nesting_depth</p>
 <pre><span class="keyword">    void</span> set_max_include_nesting_depth(size_t new_depth); 
     size_t get_max_include_nesting_depth() <span class="keyword">const</span>;</pre>
 <blockquote> 
@@ -437,12 +482,12 @@
   </tr>
 </table>
 <hr size="1">
-<p class="copyright">Copyright &copy; 2003-2005 Hartmut Kaiser<br>
+<p class="copyright">Copyright &copy; 2003-2007 Hartmut Kaiser<br>
   <br>
   <font size="2">Distributed under the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt) </font> </p>
 <span class="updated"></span>
 <p class="copyright"><span class="updated">Last updated: 
-  <!-- #BeginDate format:fcAm1m -->Sunday, May 15, 2005  12:23<!-- #EndDate -->
+  <!-- #BeginDate format:fcAm1m -->Tuesday, March 20, 2007  14:04<!-- #EndDate -->
   </span>
 </p>
 <p>&nbsp;</p>

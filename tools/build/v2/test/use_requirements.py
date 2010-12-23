@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+# Copyright 2003 Dave Abrahams 
+# Copyright 2002, 2003, 2004, 2006 Vladimir Prus 
+# Distributed under the Boost Software License, Version 1.0. 
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt) 
+
 from BoostBuild import Tester
 t = Tester()
 
@@ -8,14 +13,16 @@ t = Tester()
 # dependents)
 t.write("project-root.jam", "import gcc ;")
 
+# Note: 'lib cc ..', not 'lib c', If using 'lib c: ...' the HP-CXX
+# linker will confuse it with the system C runtime.
 t.write(
     "Jamfile",
 """
     lib b : b.cpp : <link>shared:<define>SHARED_B
     : : <define>FOO <link>shared:<define>SHARED_B    
     ;
-    lib c : c.cpp b ;
-    exe a : a.cpp c ;
+    lib cc : c.cpp b ;
+    exe a : a.cpp cc ;
 """)
 
 t.write(
@@ -177,11 +184,11 @@ t.write(
     # Here's the test: we should correctly
     # handle dependency feature and get
     # use requirements from 'b'.
-    lib c : c.cpp : <link>shared:<define>SHARED_C : : <library>b ;
+    lib cc : c.cpp : <link>shared:<define>SHARED_C : : <library>b ;
     
     # This will build only if <define>FOO
     # was propagated from 'c'.
-    exe a : a.cpp c ;
+    exe a : a.cpp cc ;
 """)
 
 t.write(
@@ -216,7 +223,7 @@ t.run_build_system("--clean")
 t.write(
     "Jamfile",
 """
-    exe a : a.cpp lib1//c ;
+    exe a : a.cpp lib1//cc ;
 """)
 
 t.write(
@@ -227,7 +234,7 @@ t.write(
     : usage-requirements <library>../lib2//b <link>shared:<define>SHARED_C
     ;
     
-    lib c : c.cpp ;    
+    lib cc : c.cpp ;    
 """)
 
 t.write(
@@ -317,5 +324,36 @@ foo() {}
 
 t.run_build_system("link=static")
 t.expect_addition("libs/bin/$toolset/debug/link-static/a_d.obj")
+
+
+# Test that indirect conditionals are respected in
+# usage requirements.
+t.rm(".")
+
+t.write("Jamroot", """
+rule has-foo ( properties * )
+{
+    return <define>HAS_FOO ;
+}
+
+exe a : a.cpp b ;
+lib b : b.cpp : <link>static : : <conditional>@has-foo ;
+""")
+t.write("a.cpp", """
+#ifdef HAS_FOO
+void foo();
+int main() { foo(); }
+#endif
+""")
+t.write("b.cpp", """
+void
+#if defined(_WIN32) && defined(SHARED_B)
+__declspec(dllexport)
+#endif
+foo() {}\n
+""")
+t.run_build_system()
+t.expect_addition("bin/$toolset/debug/a.exe")
+
 
 t.cleanup()

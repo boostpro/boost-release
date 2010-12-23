@@ -15,6 +15,7 @@
 #include <boost/spirit/utility/chset.hpp>
 #include <boost/spirit/symbols/symbols.hpp>
 #include <boost/spirit/utility/escape_char.hpp>
+#include "./phrase.hpp"
 
 namespace quickbook
 {
@@ -26,22 +27,29 @@ namespace quickbook
       , typename Space
       , typename Macro
       , typename DoMacro
+      , typename PreEscape
+      , typename PostEscape
+      , typename EscapeActions
       , typename Unexpected
       , typename Out>
     struct cpp_highlight
-    : public grammar<cpp_highlight<Process, Space, Macro, DoMacro, Unexpected, Out> >
+    : public grammar<cpp_highlight<Process, Space, Macro, DoMacro, PreEscape, PostEscape, EscapeActions, Unexpected, Out> >
     {
-        cpp_highlight(Out& out, Macro const& macro, DoMacro do_macro)
-        : out(out), macro(macro), do_macro(do_macro) {}
+        cpp_highlight(Out& out, Macro const& macro, DoMacro do_macro, EscapeActions& escape_actions)
+        : out(out), macro(macro), do_macro(do_macro), escape_actions(escape_actions) {}
 
         template <typename Scanner>
         struct definition
         {
             definition(cpp_highlight const& self)
+                : common(self.escape_actions, unused)
+                , unused(false)
             {
                 program
                     =
-                    *(  macro
+                    *(  (+space_p)      [Space(self.out)]
+                    |   self.macro      [self.do_macro]
+                    |   escape
                     |   preprocessor    [Process("preprocessor", self.out)]
                     |   comment         [Process("comment", self.out)]
                     |   keyword         [Process("keyword", self.out)]
@@ -50,27 +58,35 @@ namespace quickbook
                     |   string_         [Process("string", self.out)]
                     |   char_           [Process("char", self.out)]
                     |   number          [Process("number", self.out)]
-                    |   space_p         [Space(self.out)]
                     |   anychar_p       [Unexpected(self.out)]
                     )
                     ;
 
-                macro
-                    =   eps_p(*space_p >> self.macro)
-                    >> (*space_p)       [Space(self.out)]
-                    >> self.macro       [self.do_macro]
+                qbk_phrase =
+                   *(   common
+                    |   (anychar_p - str_p("``"))   [self.escape_actions.plain_char]
+                    )
+                    ;
+
+                escape
+                    = str_p("``")           [PreEscape(self.escape_actions, save)]
+                    >>  (
+                            (+(anychar_p - "``") >> eps_p("``"))
+                            & qbk_phrase
+                        )
+                    >> str_p("``")          [PostEscape(self.out, self.escape_actions, save)]
                     ;
 
                 preprocessor
-                    =   *space_p >> '#' >> ((alpha_p | '_') >> *(alnum_p | '_'))
+                    =   '#' >> ((alpha_p | '_') >> *(alnum_p | '_'))
                     ;
 
                 comment
-                    =   +(*space_p >> (comment_p("//") | comment_p("/*", "*/")))
+                    =   comment_p("//") | comment_p("/*", "*/")
                     ;
 
                 keyword
-                    =   *space_p >> keyword_ >> (eps_p - (alnum_p | '_'))
+                    =   keyword_ >> (eps_p - (alnum_p | '_'))
                     ;   // make sure we recognize whole words only
 
                 keyword_
@@ -91,20 +107,19 @@ namespace quickbook
                     ;
 
                 special
-                    =   *space_p >> +chset_p("~!%^&*()+={[}]:;,<.>?/|\\-")
+                    =   +chset_p("~!%^&*()+={[}]:;,<.>?/|\\-")
                     ;
 
                 string_
-                    =   *space_p >> !as_lower_d['l'] >> confix_p('"', *c_escape_ch_p, '"')
+                    =   !as_lower_d['l'] >> confix_p('"', *c_escape_ch_p, '"')
                     ;
 
                 char_
-                    =   *space_p >> !as_lower_d['l'] >> confix_p('\'', *c_escape_ch_p, '\'')
+                    =   !as_lower_d['l'] >> confix_p('\'', *c_escape_ch_p, '\'')
                     ;
 
                 number
-                    =   *space_p >>
-                        (
+                    =   (
                             as_lower_d["0x"] >> hex_p
                         |   '0' >> oct_p
                         |   real_p
@@ -113,13 +128,17 @@ namespace quickbook
                     ;
 
                 identifier
-                    =   *space_p >> ((alpha_p | '_') >> *(alnum_p | '_'))
+                    =   (alpha_p | '_') >> *(alnum_p | '_')
                     ;
             }
 
-            rule<Scanner>   program, macro, preprocessor, comment, special,
-                            string_, char_, number, identifier, keyword;
-            symbols<>       keyword_;
+            rule<Scanner>   program, macro, preprocessor, comment, special, string_, 
+                            char_, number, identifier, keyword, qbk_phrase, escape;
+
+            symbols<> keyword_;
+            phrase_grammar<EscapeActions> common;
+            std::string save;
+            bool unused;
 
             rule<Scanner> const&
             start() const { return program; }
@@ -128,6 +147,7 @@ namespace quickbook
         Out& out;
         Macro const& macro;
         DoMacro do_macro;
+        EscapeActions& escape_actions;
     };
 
     // Grammar for Python highlighting
@@ -138,45 +158,60 @@ namespace quickbook
       , typename Space
       , typename Macro
       , typename DoMacro
+      , typename PreEscape
+      , typename PostEscape
+      , typename EscapeActions
       , typename Unexpected
       , typename Out>
     struct python_highlight
-    : public grammar<python_highlight<Process, Space, Macro, DoMacro, Unexpected, Out> >
+    : public grammar<python_highlight<Process, Space, Macro, DoMacro, PreEscape, PostEscape, EscapeActions, Unexpected, Out> >
     {
-        python_highlight(Out& out, Macro const& macro, DoMacro do_macro)
-        : out(out), macro(macro), do_macro(do_macro) {}
+        python_highlight(Out& out, Macro const& macro, DoMacro do_macro, EscapeActions& escape_actions)
+        : out(out), macro(macro), do_macro(do_macro), escape_actions(escape_actions) {}
 
         template <typename Scanner>
         struct definition
         {
             definition(python_highlight const& self)
+                : common(self.escape_actions, unused)
+                , unused(false)
             {
                 program
                     =
-                    *(  macro
+                    *(  (+space_p)      [Space(self.out)]
+                    |   self.macro      [self.do_macro]
+                    |   escape          
                     |   comment         [Process("comment", self.out)]
                     |   keyword         [Process("keyword", self.out)]
                     |   identifier      [Process("identifier", self.out)]
                     |   special         [Process("special", self.out)]
                     |   string_         [Process("string", self.out)]
                     |   number          [Process("number", self.out)]
-                    |   space_p
                     |   anychar_p       [Unexpected(self.out)]
                     )
                     ;
 
-                macro
-                    =   eps_p(*space_p >> self.macro)
-                    >> (*space_p)       [Space(self.out)]
-                    >> self.macro       [self.do_macro]
+                qbk_phrase =
+                   *(   common
+                    |   (anychar_p - str_p("``"))   [self.escape_actions.plain_char]
+                    )
+                    ;
+
+                escape
+                    = str_p("``")           [PreEscape(self.escape_actions, save)]
+                    >>  (
+                            (+(anychar_p - "``") >> eps_p("``"))
+                            & qbk_phrase
+                        )
+                    >> str_p("``")          [PostEscape(self.out, self.escape_actions, save)]
                     ;
 
                 comment
-                    =   +(*space_p >> comment_p("#"))
+                    =   comment_p("#")
                     ;
 
                 keyword
-                    =   *space_p >> keyword_ >> (eps_p - (alnum_p | '_'))
+                    =   keyword_ >> (eps_p - (alnum_p | '_'))
                     ;   // make sure we recognize whole words only
 
                 keyword_
@@ -196,7 +231,7 @@ namespace quickbook
                     ;
 
                 special
-                    =   *space_p >> +chset_p("~!%^&*()+={[}]:;,<.>/|\\-")
+                    =   +chset_p("~!%^&*()+={[}]:;,<.>/|\\-")
                     ;
 
                 string_prefix
@@ -204,7 +239,7 @@ namespace quickbook
                     ;
                 
                 string_
-                    =   *space_p >> ! string_prefix >> (long_string | short_string)
+                    =   ! string_prefix >> (long_string | short_string)
                     ;
 
                 short_string
@@ -220,8 +255,7 @@ namespace quickbook
                     ;
                 
                 number
-                    =   *space_p >>
-                        (
+                    =   (
                             as_lower_d["0x"] >> hex_p
                         |   '0' >> oct_p
                         |   real_p
@@ -230,14 +264,18 @@ namespace quickbook
                     ;
 
                 identifier
-                    =   *space_p >> ((alpha_p | '_') >> *(alnum_p | '_'))
+                    =   (alpha_p | '_') >> *(alnum_p | '_')
                     ;
             }
 
-            rule<Scanner>   program, macro, comment, special,
-                            string_, string_prefix, short_string, long_string,
-                            number, identifier, keyword;
-            symbols<>       keyword_;
+            rule<Scanner>   program, macro, comment, special, string_, string_prefix, 
+                            short_string, long_string, number, identifier, keyword, 
+                            qbk_phrase, escape;
+
+            symbols<> keyword_;
+            phrase_grammar<EscapeActions> common;
+            std::string save;
+            bool unused;
 
             rule<Scanner> const&
             start() const { return program; }
@@ -246,6 +284,7 @@ namespace quickbook
         Out& out;
         Macro const& macro;
         DoMacro do_macro;
+        EscapeActions& escape_actions;
     };
 }
 
