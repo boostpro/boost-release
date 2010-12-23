@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Class template find_iterator</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../string_algo/reference.html#header.boost.algorithm.string.find_iterator_hpp" title="Header &lt;boost/algorithm/string/find_iterator.hpp&gt;">
 <link rel="prev" href="find_format_all.html" title="Function template find_format_all">
 <link rel="next" href="split_iterator.html" title="Class template split_iterator">
@@ -35,33 +35,32 @@
 <span class="bold"><strong>class</strong></span> <a class="link" href="find_iterator.html" title="Class template find_iterator">find_iterator</a> {
 <span class="bold"><strong>public</strong></span>:
   <span class="emphasis"><em>// <a class="link" href="find_iterator.html#boost.algorithm.find_iteratorconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="find_iterator.html#id2762253-bb">find_iterator</a>();
-  <a class="link" href="find_iterator.html#id2789405-bb">find_iterator</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="find_iterator.html" title="Class template find_iterator">find_iterator</a> &amp;);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> FinderT&gt; <a class="link" href="find_iterator.html#id3320960-bb">find_iterator</a>(IteratorT, IteratorT, FinderT);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> FinderT, <span class="bold"><strong>typename</strong></span> RangeT&gt; <a class="link" href="find_iterator.html#id3323482-bb">find_iterator</a>(RangeT &amp;, FinderT);
+  <a class="link" href="find_iterator.html#id2375404-bb">find_iterator</a>();
+  <a class="link" href="find_iterator.html#id2375418-bb">find_iterator</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="find_iterator.html" title="Class template find_iterator">find_iterator</a> &amp;);
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> FinderT&gt; <a class="link" href="find_iterator.html#id2328193-bb">find_iterator</a>(IteratorT, IteratorT, FinderT);
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> FinderT, <span class="bold"><strong>typename</strong></span> RangeT&gt; <a class="link" href="find_iterator.html#id1285686-bb">find_iterator</a>(RangeT &amp;, FinderT);
 
-  <span class="emphasis"><em>// <a class="link" href="find_iterator.html#id3338752-bb">public member functions</a></em></span>
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="find_iterator.html#id3338755-bb">eof</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="find_iterator.html#id1213810-bb">public member functions</a></em></span>
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="find_iterator.html#id1213813-bb">eof</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="find_iterator.html#id3337114-bb">private member functions</a></em></span>
-  <span class="type"><span class="bold"><strong>const</strong></span> match_type &amp;</span> <a class="link" href="find_iterator.html#id3337117-bb">dereference</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="find_iterator.html#id3337125-bb">increment</a>() ;
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="find_iterator.html#id3067773-bb">equal</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="find_iterator.html" title="Class template find_iterator">find_iterator</a> &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="find_iterator.html#id1285716-bb">private member functions</a></em></span>
+  <span class="type"><span class="bold"><strong>const</strong></span> match_type &amp;</span> <a class="link" href="find_iterator.html#id1285720-bb">dereference</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="find_iterator.html#id1285728-bb">increment</a>() ;
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="find_iterator.html#id1285736-bb">equal</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="find_iterator.html" title="Class template find_iterator">find_iterator</a> &amp;) <span class="bold"><strong>const</strong></span>;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id4020452"></a><h2>Description</h2>
+<a name="id3444211"></a><h2>Description</h2>
 <p>Find iterator encapsulates a Finder and allows for incremental searching in a string. Each increment moves the iterator to the next match.</p>
 <p>Find iterator is a readable forward traversal iterator.</p>
 <p>Dereferencing the iterator yields an iterator_range delimiting the current match. </p>
 <div class="refsect2" lang="en">
-<a name="id4020466"></a><h3>
+<a name="id3444226"></a><h3>
 <a name="boost.algorithm.find_iteratorconstruct-copy-destruct"></a><code class="computeroutput">find_iterator</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id2762253-bb"></a>find_iterator();</pre>
-<p>Construct null iterator. All null iterators are equal.</p>
+<pre class="literallayout"><a name="id2375404-bb"></a>find_iterator();</pre>Default constructor. <p>Construct null iterator. All null iterators are equal.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -73,36 +72,32 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id2789405-bb"></a>find_iterator(<span class="bold"><strong>const</strong></span> <a class="link" href="find_iterator.html" title="Class template find_iterator">find_iterator</a> &amp; Other);</pre>
-<p>Construct a copy of the find_iterator </p>
+<pre class="literallayout"><a name="id2375418-bb"></a>find_iterator(<span class="bold"><strong>const</strong></span> <a class="link" href="find_iterator.html" title="Class template find_iterator">find_iterator</a> &amp; Other);</pre>Copy constructor. <p>Construct a copy of the find_iterator </p>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> FinderT&gt; 
-  <a name="id3320960-bb"></a>find_iterator(IteratorT Begin, IteratorT End, FinderT Finder);</pre>
-<p>Construct new find_iterator for a given finder and a range. </p>
+  <a name="id2328193-bb"></a>find_iterator(IteratorT Begin, IteratorT End, FinderT Finder);</pre>Constructor. <p>Construct new find_iterator for a given finder and a range. </p>
 </li>
 <li>
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> FinderT, <span class="bold"><strong>typename</strong></span> RangeT&gt; 
-  <a name="id3323482-bb"></a>find_iterator(RangeT &amp; Col, FinderT Finder);</pre>
-<p>Construct new find_iterator for a given finder and a range. </p>
+  <a name="id1285686-bb"></a>find_iterator(RangeT &amp; Col, FinderT Finder);</pre>Constructor. <p>Construct new find_iterator for a given finder and a range. </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id4020617"></a><h3>
-<a name="id3338752-bb"></a><code class="computeroutput">find_iterator</code> public member functions</h3>
+<a name="id3444375"></a><h3>
+<a name="id1213810-bb"></a><code class="computeroutput">find_iterator</code> public member functions</h3>
 <div class="orderedlist"><ol type="1"><li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id3338755-bb"></a>eof() <span class="bold"><strong>const</strong></span>;</pre>
-<p>Check the eof condition. Eof condition means that there is nothing more to be searched i.e. find_iterator is after the last match. </p>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id1213813-bb"></a>eof() <span class="bold"><strong>const</strong></span>;</pre>Eof check. <p>Check the eof condition. Eof condition means that there is nothing more to be searched i.e. find_iterator is after the last match. </p>
 </li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id4020667"></a><h3>
-<a name="id3337114-bb"></a><code class="computeroutput">find_iterator</code> private member functions</h3>
+<a name="id3444424"></a><h3>
+<a name="id1285716-bb"></a><code class="computeroutput">find_iterator</code> private member functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> match_type &amp;</span> <a name="id3337117-bb"></a>dereference() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id3337125-bb"></a>increment() ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id3067773-bb"></a>equal(<span class="bold"><strong>const</strong></span> <a class="link" href="find_iterator.html" title="Class template find_iterator">find_iterator</a> &amp; Other) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> match_type &amp;</span> <a name="id1285720-bb"></a>dereference() <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1285728-bb"></a>increment() ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id1285736-bb"></a>equal(<span class="bold"><strong>const</strong></span> <a class="link" href="find_iterator.html" title="Class template find_iterator">find_iterator</a> &amp; Other) <span class="bold"><strong>const</strong></span>;</pre></li>
 </ol></div>
 </div>
 </div>

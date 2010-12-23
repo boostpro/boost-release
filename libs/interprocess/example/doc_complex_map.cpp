@@ -15,6 +15,9 @@
 #include <boost/interprocess/containers/map.hpp>
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/interprocess/containers/string.hpp>
+//<-
+#include "../test/get_process_id_name.hpp"
+//->
 
 using namespace boost::interprocess;
 
@@ -52,28 +55,48 @@ typedef map< char_string, complex_data
 
 int main ()
 {
-   shared_memory_object::remove("MySharedMemory");
-   remove_shared_memory_on_destroy remove_on_destroy("MySharedMemory");
+   //Remove shared memory on construction and destruction
+   struct shm_remove
    {
-      //Create shared memory
-      managed_shared_memory segment(create_only,"MySharedMemory", 65536);
+      //<-
+      #if 1
+      shm_remove() { shared_memory_object::remove(test::get_process_id_name()); }
+      ~shm_remove(){ shared_memory_object::remove(test::get_process_id_name()); }
+      #else
+      //->
+      shm_remove() { shared_memory_object::remove("MySharedMemory"); }
+      ~shm_remove(){ shared_memory_object::remove("MySharedMemory"); }
+      //<-
+      #endif
+      //->
+   } remover;
 
-      //An allocator convertible to any allocator<T, segment_manager_t> type
-      void_allocator alloc_inst (segment.get_segment_manager());
+   //Create shared memory
+   //<-
+   #if 1
+   managed_shared_memory segment(create_only,test::get_process_id_name(), 65536);
+   #else
+   //->
+   managed_shared_memory segment(create_only,"MySharedMemory", 65536);
+   //<-
+   #endif
+   //->
 
-      //Construct the shared memory map and fill it
-      complex_map_type *mymap = segment.construct<complex_map_type>
-         //(object name), (first ctor parameter, second ctor parameter)
-            ("MyMap")(std::less<char_string>(), alloc_inst);
+   //An allocator convertible to any allocator<T, segment_manager_t> type
+   void_allocator alloc_inst (segment.get_segment_manager());
 
-      for(int i = 0; i < 100; ++i){
-         //Both key(string) and value(complex_data) need an allocator in their constructors
-         char_string  key_object(alloc_inst);
-         complex_data mapped_object(i, "default_name", alloc_inst);
-         map_value_type value(key_object, mapped_object);
-         //Modify values and insert them in the map
-         mymap->insert(value);
-      }
+   //Construct the shared memory map and fill it
+   complex_map_type *mymap = segment.construct<complex_map_type>
+      //(object name), (first ctor parameter, second ctor parameter)
+         ("MyMap")(std::less<char_string>(), alloc_inst);
+
+   for(int i = 0; i < 100; ++i){
+      //Both key(string) and value(complex_data) need an allocator in their constructors
+      char_string  key_object(alloc_inst);
+      complex_data mapped_object(i, "default_name", alloc_inst);
+      map_value_type value(key_object, mapped_object);
+      //Modify values and insert them in the map
+      mymap->insert(value);
    }
    return 0;
 }

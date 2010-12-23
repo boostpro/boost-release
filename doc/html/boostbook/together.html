@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Bringing Together a BoostBook Document</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boostbook.html" title="Chapter 27. The BoostBook Documentation Format">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../boostbook.html" title="Chapter 28. The BoostBook Documentation Format">
 <link rel="prev" href="documenting.html" title="Documenting libraries">
 <link rel="next" href="../reference.html" title="Reference">
 </head>
@@ -59,6 +59,16 @@
     <code class="computeroutput">&lt;ulink
     url="http://www.boost.org"&gt;Boost&lt;/ulink&gt;,</code> which
     appears in the document like this: <a href="http://www.boost.org" target="_top">Boost</a>.</p>
+<p>In BoostBook, &lt;ulink&gt; supports a custom url schema for
+    linking to files within the boost distribution. This is formed by
+    setting the <code class="computeroutput">url</code> attribute to <code class="computeroutput">boost:</code>
+    followed by the file's path. For example, we can link to the
+    flyweight library with
+    <code class="computeroutput">&lt;ulink
+    url="boost:/libs/flyweight/index.html"&gt;Boost.Flyweight&lt;/ulink&gt;</code>,
+    which will appear like this: <a href="../../../libs/flyweight/index.html" target="_top">Boost.Flyweight</a>.
+    This schema is only supported for BoostBook &lt;ulink&gt; elements.
+    It isn't available for any other elements or in Docbook.</p>
 <p>The &lt;classname&gt;, &lt;functionname&gt;,
     &lt;methodname&gt;, and &lt;libraryname&gt; link to classes,
     functions, methods, and libraries, respectively. The text of each
@@ -76,15 +86,10 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2003-2005 Douglas Gregor<p>Permission to copy, use, sell and distribute this software
-      is granted provided this copyright notice appears in all copies.
-      Permission to modify the code and to distribute modified code is
-      granted provided this copyright notice appears in all copies,
-      and a notice that the code was modified is included with the
-      copyright notice. </p>
-<p> This software is provided "as is" without express or
-      implied warranty, and with no claim as to its suitability for
-      any purpose. </p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2005 Douglas Gregor<p>Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>).
+      </p>
 </div></td>
 </tr></table>
 <hr>

@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Struct template impl</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../_default.html#id3970331" title="Description">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../_default.html#id3305765" title="Description">
 <link rel="prev" href="../call/impl.html" title="Struct template impl">
 <link rel="next" href="../fold.html" title="Struct template fold">
 </head>
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../call/impl.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../_default.html#id3970331"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../fold.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../call/impl.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../_default.html#id3305765"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../fold.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry" lang="en">
 <a name="boost.proto._default.impl"></a><div class="titlepage"></div>
@@ -38,16 +38,16 @@
   <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> Expr::tag_type <a name="boost.proto._default.impl.Tag"></a>Tag;          <span class="emphasis"><em>// For exposition only</em></span>
   <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>see-below</em></span> <a class="link" href="impl.html#boost.proto._default.impl.result_type">result_type</a>;
 
-  <span class="emphasis"><em>// <a class="link" href="impl.html#id3692368-bb">public member functions</a></em></span>
-  <span class="type">result_type</span> <a class="link" href="impl.html#id3692373-bb"><span class="bold"><strong>operator</strong></span>()</a>(<span class="bold"><strong>typename</strong></span> impl::expr_param, 
+  <span class="emphasis"><em>// <a class="link" href="impl.html#id2614305-bb">public member functions</a></em></span>
+  <span class="type">result_type</span> <a class="link" href="impl.html#id2614309-bb"><span class="bold"><strong>operator</strong></span>()</a>(<span class="bold"><strong>typename</strong></span> impl::expr_param, 
                          <span class="bold"><strong>typename</strong></span> impl::state_param, 
                          <span class="bold"><strong>typename</strong></span> impl::data_param) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>static</strong></span> Expr</span> s_expr;
-  <span class="type"><span class="bold"><strong>static</strong></span> State</span> s_state;
-  <span class="type"><span class="bold"><strong>static</strong></span> Data</span> s_data;
+  <span class="type"><span class="bold"><strong>static</strong></span> Expr</span> s_expr;  <span class="emphasis"><em>// For exposition only</em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> State</span> s_state;  <span class="emphasis"><em>// For exposition only</em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> Data</span> s_data;  <span class="emphasis"><em>// For exposition only</em></span>
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3970571"></a><h2>Description</h2>
+<a name="id3306010"></a><h2>Description</h2>
 <p>
               Let <code class="computeroutput"><code class="computeroutput">OP</code></code> be the C++ operator
               corresponding to <code class="computeroutput">Expr::proto_tag</code>. (For example, if
@@ -61,7 +61,7 @@
               approximate the behavior.
             </p>
 <div class="refsect2" lang="en">
-<a name="id3970643"></a><h3>
+<a name="id3306081"></a><h3>
 <a name="boost.proto._default.impltypes"></a><code class="computeroutput">impl</code> 
         public
        types</h3>
@@ -75,7 +75,7 @@
                     then the result type is
                     </p>
 <pre class="programlisting">decltype(
-  OP Grammar()(<a class="link" href="../child_id3689007.html" title="Function child">proto::child</a>(s_expr), s_state, s_data)
+  OP Grammar()(<a class="link" href="../child_id2610989.html" title="Function child">proto::child</a>(s_expr), s_state, s_data)
 )</pre>
 <p>
                   </p>
@@ -86,7 +86,7 @@
                     then the result type is
                     </p>
 <pre class="programlisting">decltype(
-  Grammar()(<a class="link" href="../child_id3689007.html" title="Function child">proto::child</a>(s_expr), s_state, s_data) OP
+  Grammar()(<a class="link" href="../child_id2610989.html" title="Function child">proto::child</a>(s_expr), s_state, s_data) OP
 )</pre>
 <p>
                   </p>
@@ -97,8 +97,8 @@
                     then the result type is
                     </p>
 <pre class="programlisting">decltype(
-  Grammar()(<a class="link" href="../left_id3689525.html" title="Function left">proto::left</a>(s_expr), s_state, s_data) OP
-  Grammar()(<a class="link" href="../right_id3689650.html" title="Function right">proto::right</a>(s_expr), s_state, s_data)
+  Grammar()(<a class="link" href="../left_id2611499.html" title="Function left">proto::left</a>(s_expr), s_state, s_data) OP
+  Grammar()(<a class="link" href="../right_id2611622.html" title="Function right">proto::right</a>(s_expr), s_state, s_data)
 )</pre>
 <p>
                   </p>
@@ -111,8 +111,8 @@
                   then the result type is
                   </p>
 <pre class="programlisting">decltype(
-  Grammar()(<a class="link" href="../left_id3689525.html" title="Function left">proto::left</a>(s_expr), s_state, s_data) [
-  Grammar()(<a class="link" href="../right_id3689650.html" title="Function right">proto::right</a>(s_expr), s_state, s_data) ]
+  Grammar()(<a class="link" href="../left_id2611499.html" title="Function left">proto::left</a>(s_expr), s_state, s_data) [
+  Grammar()(<a class="link" href="../right_id2611622.html" title="Function right">proto::right</a>(s_expr), s_state, s_data) ]
 )</pre>
 <p>
                 </p>
@@ -125,9 +125,9 @@
                     then the result type is
                     </p>
 <pre class="programlisting">decltype(
-  Grammar()(<a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a>&lt;0&gt;(s_expr), s_state, s_data) ?
-  Grammar()(<a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a>&lt;1&gt;(s_expr), s_state, s_data) :
-  Grammar()(<a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a>&lt;2&gt;(s_expr), s_state, s_data)
+  Grammar()(<a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a>&lt;0&gt;(s_expr), s_state, s_data) ?
+  Grammar()(<a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a>&lt;1&gt;(s_expr), s_state, s_data) :
+  Grammar()(<a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a>&lt;2&gt;(s_expr), s_state, s_data)
 )</pre>
 <p>
                   </p>
@@ -140,10 +140,10 @@
                     then the result type is
                     </p>
 <pre class="programlisting">decltype(
-  Grammar()(<a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a>&lt;0&gt;(s_expr), s_state, s_data) (
-  Grammar()(<a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a>&lt;1&gt;(s_expr), s_state, s_data),
+  Grammar()(<a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a>&lt;0&gt;(s_expr), s_state, s_data) (
+  Grammar()(<a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a>&lt;1&gt;(s_expr), s_state, s_data),
   ...
-  Grammar()(<a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a>&lt;N&gt;(s_expr), s_state, s_data) )
+  Grammar()(<a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a>&lt;N&gt;(s_expr), s_state, s_data) )
 )</pre>
 <p>
                   </p>
@@ -152,10 +152,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3970948"></a><h3>
-<a name="id3692368-bb"></a><code class="computeroutput">impl</code> public member functions</h3>
+<a name="id3306381"></a><h3>
+<a name="id2614305-bb"></a><code class="computeroutput">impl</code> public member functions</h3>
 <div class="orderedlist"><ol type="1"><li>
-<pre class="literallayout"><span class="type">result_type</span> <a name="id3692373-bb"></a><span class="bold"><strong>operator</strong></span>()(<span class="bold"><strong>typename</strong></span> impl::expr_param expr, 
+<pre class="literallayout"><span class="type">result_type</span> <a name="id2614309-bb"></a><span class="bold"><strong>operator</strong></span>()(<span class="bold"><strong>typename</strong></span> impl::expr_param expr, 
                        <span class="bold"><strong>typename</strong></span> impl::state_param state, 
                        <span class="bold"><strong>typename</strong></span> impl::data_param data) <span class="bold"><strong>const</strong></span>;</pre>
 <code class="computeroutput">
@@ -166,7 +166,7 @@
                     If <code class="computeroutput">Tag</code> corresponds to a unary prefix operator,
                     then return
                     </p>
-<pre class="programlisting">OP Grammar()(<code class="computeroutput"><a class="link" href="../child_id3689007.html" title="Function child">proto::child</a></code>(expr), state, data)</pre>
+<pre class="programlisting">OP Grammar()(<code class="computeroutput"><a class="link" href="../child_id2610989.html" title="Function child">proto::child</a></code>(expr), state, data)</pre>
 <p>
                   </p>
 </li>
@@ -175,7 +175,7 @@
                     If <code class="computeroutput">Tag</code> corresponds to a unary postfix operator,
                     then return
                     </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_id3689007.html" title="Function child">proto::child</a></code>(expr), state, data) OP</pre>
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_id2610989.html" title="Function child">proto::child</a></code>(expr), state, data) OP</pre>
 <p>
                   </p>
 </li>
@@ -184,8 +184,8 @@
                     If <code class="computeroutput">Tag</code> corresponds to a binary infix operator,
                     then return
                     </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../left_id3689525.html" title="Function left">proto::left</a></code>(expr), state, data) OP
-Grammar()(<code class="computeroutput"><a class="link" href="../right_id3689650.html" title="Function right">proto::right</a></code>(expr), state, data)</pre>
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../left_id2611499.html" title="Function left">proto::left</a></code>(expr), state, data) OP
+Grammar()(<code class="computeroutput"><a class="link" href="../right_id2611622.html" title="Function right">proto::right</a></code>(expr), state, data)</pre>
 <p>
                   </p>
 </li>
@@ -196,8 +196,8 @@ Grammar()(<code class="computeroutput"><a class="link" href="../right_id3689650.
                   </code>,
                   then return
                   </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../left_id3689525.html" title="Function left">proto::left</a></code>(expr), state, data) [
-Grammar()(<code class="computeroutput"><a class="link" href="../right_id3689650.html" title="Function right">proto::right</a></code>(expr), state, data) ]</pre>
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../left_id2611499.html" title="Function left">proto::left</a></code>(expr), state, data) [
+Grammar()(<code class="computeroutput"><a class="link" href="../right_id2611622.html" title="Function right">proto::right</a></code>(expr), state, data) ]</pre>
 <p>
                 </p>
 </li>
@@ -208,9 +208,9 @@ Grammar()(<code class="computeroutput"><a class="link" href="../right_id3689650.
                     </code>,
                     then return
                     </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a></code>&lt;0&gt;(expr), state, data) ?
-Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a></code>&lt;1&gt;(expr), state, data) :
-Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a></code>&lt;2&gt;(expr), state, data)</pre>
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a></code>&lt;0&gt;(expr), state, data) ?
+Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a></code>&lt;1&gt;(expr), state, data) :
+Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a></code>&lt;2&gt;(expr), state, data)</pre>
 <p>
                   </p>
 </li>
@@ -221,10 +221,10 @@ Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id368925
                     </code>,
                     then return
                     </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a></code>&lt;0&gt;(expr), state, data) (
-Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a></code>&lt;1&gt;(expr), state, data),
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a></code>&lt;0&gt;(expr), state, data) (
+Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a></code>&lt;1&gt;(expr), state, data),
 ...
-Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id3689253.html" title="Function child_c">proto::child_c</a></code>&lt;N&gt;(expr), state, data) )</pre>
+Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id2611231.html" title="Function child_c">proto::child_c</a></code>&lt;N&gt;(expr), state, data) )</pre>
 <p>
                   </p>
 </li>
@@ -243,7 +243,7 @@ Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id368925
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../call/impl.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../_default.html#id3970331"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../fold.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../call/impl.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../_default.html#id3305765"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../fold.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

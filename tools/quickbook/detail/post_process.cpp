@@ -8,7 +8,7 @@
 =============================================================================*/
 #include "./post_process.hpp"
 #include "./utils.hpp"
-#include <boost/spirit/core.hpp>
+#include <boost/spirit/include/classic_core.hpp>
 #include <boost/bind.hpp>
 #include <set>
 #include <stack>
@@ -16,7 +16,7 @@
 
 namespace quickbook
 {
-    using namespace boost::spirit;
+    using namespace boost::spirit::classic;
     using boost::bind;
     typedef std::string::const_iterator iter_type;
 
@@ -417,7 +417,7 @@ namespace quickbook
         int indent;
     };
 
-    void post_process(
+    int post_process(
         std::string const& in
       , std::ostream& out
       , int indent
@@ -437,24 +437,27 @@ namespace quickbook
             if (r.full)
             {
                 out << tidy;
+                return 0;
             }
             else
             {
                 // fallback!
-                ::quickbook::detail::outerr("",0)
+                ::quickbook::detail::outerr("")
                     << "Warning: Post Processing Failed."
                     << std::endl;
                 out << in;
+                return 1;
             }
         }
 
         catch(...)
         {
             // fallback!
-            ::quickbook::detail::outerr("",0)
-                << "Warning: Post Processing Failed."
+            ::quickbook::detail::outerr("")
+                << "Post Processing Failed."
                 << std::endl;
             out << in;
+            return 1;
         }
     }
 }

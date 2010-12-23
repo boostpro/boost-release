@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Reference</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="boostbook.html" title="Chapter 27. The BoostBook Documentation Format">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="boostbook.html" title="Chapter 28. The BoostBook Documentation Format">
 <link rel="prev" href="boostbook/together.html" title="Bringing Together a BoostBook Document">
 <link rel="next" href="boostbook/dtd/class-specialization.html" title="BoostBook element class-specialization">
 </head>
@@ -43,11 +43,14 @@
 <li><a class="link" href="boostbook/dtd/destructor.html" title="BoostBook element destructor">Element <code class="sgmltag-element">destructor</code> - Declares a destructor for the enclosing class</a></li>
 <li><a class="link" href="boostbook/dtd/effects.html" title="BoostBook element effects">Element <code class="sgmltag-element">effects</code> - Declares the side effects of a function</a></li>
 <li><a class="link" href="boostbook/dtd/enum.html" title="BoostBook element enum">Element <code class="sgmltag-element">enum</code> - Declares an enumeration type</a></li>
+<li><a class="link" href="boostbook/dtd/enumname.html" title="BoostBook element enumname">Element <code class="sgmltag-element">enumname</code> - References an enumeration type with the given name</a></li>
 <li><a class="link" href="boostbook/dtd/enumvalue.html" title="BoostBook element enumvalue">Element <code class="sgmltag-element">enumvalue</code> - A single value of an enumeration</a></li>
 <li><a class="link" href="boostbook/dtd/free-function-group.html" title="BoostBook element free-function-group">Element <code class="sgmltag-element">free-function-group</code> - A set of functions that are grouped together under one name</a></li>
 <li><a class="link" href="boostbook/dtd/function.html" title="BoostBook element function">Element <code class="sgmltag-element">function</code> - Declares a function</a></li>
 <li><a class="link" href="boostbook/dtd/functionname.html" title="BoostBook element functionname">Element <code class="sgmltag-element">functionname</code> - References a function with the given name</a></li>
+<li><a class="link" href="boostbook/dtd/globalname.html" title="BoostBook element globalname">Element <code class="sgmltag-element">globalname</code> - References a global with the given name</a></li>
 <li><a class="link" href="boostbook/dtd/header.html" title="BoostBook element header">Element <code class="sgmltag-element">header</code> - Declares a C++ header with the given name</a></li>
+<li><a class="link" href="boostbook/dtd/headername.html" title="BoostBook element headername">Element <code class="sgmltag-element">headername</code> - References a C++ header with the given name</a></li>
 <li><a class="link" href="boostbook/dtd/if-fails.html" title="BoostBook element if-fails">Element <code class="sgmltag-element">if-fails</code> - What it means when a testcase fails</a></li>
 <li><a class="link" href="boostbook/dtd/inherit.html" title="BoostBook element inherit">Element <code class="sgmltag-element">inherit</code> - Declares a base class of the enclosing class or struct</a></li>
 <li><a class="link" href="boostbook/dtd/lib.html" title="BoostBook element lib">Element <code class="sgmltag-element">lib</code> - A library dependency</a></li>
@@ -62,6 +65,7 @@
 <li><a class="link" href="boostbook/dtd/librarypurpose.html" title="BoostBook element librarypurpose">Element <code class="sgmltag-element">librarypurpose</code> - Describes in one short sentence or phrase the purpose of a library</a></li>
 <li><a class="link" href="boostbook/dtd/link-fail-test.html" title="BoostBook element link-fail-test">Element <code class="sgmltag-element">link-fail-test</code> - Declares a test that should compile but fail to link</a></li>
 <li><a class="link" href="boostbook/dtd/link-test.html" title="BoostBook element link-test">Element <code class="sgmltag-element">link-test</code> - Declares a test that should compile and link</a></li>
+<li><a class="link" href="boostbook/dtd/macroname.html" title="BoostBook element macroname">Element <code class="sgmltag-element">macroname</code> - References a macro with the given name</a></li>
 <li><a class="link" href="boostbook/dtd/method.html" title="BoostBook element method">Element <code class="sgmltag-element">method</code> - Declares a method, i.e., a member function</a></li>
 <li><a class="link" href="boostbook/dtd/method-group.html" title="BoostBook element method-group">Element <code class="sgmltag-element">method-group</code> - A set of methods that are grouped together under one name</a></li>
 <li><a class="link" href="boostbook/dtd/namespace.html" title="BoostBook element namespace">Element <code class="sgmltag-element">namespace</code> - Declares a namespace</a></li>
@@ -104,15 +108,10 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2003-2005 Douglas Gregor<p>Permission to copy, use, sell and distribute this software
-      is granted provided this copyright notice appears in all copies.
-      Permission to modify the code and to distribute modified code is
-      granted provided this copyright notice appears in all copies,
-      and a notice that the code was modified is included with the
-      copyright notice. </p>
-<p> This software is provided "as is" without express or
-      implied warranty, and with no claim as to its suitability for
-      any purpose. </p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2005 Douglas Gregor<p>Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>).
+      </p>
 </div></td>
 </tr></table>
 <hr>

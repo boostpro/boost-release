@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Class template second_clock</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../date_time/doxy.html#header.boost.date_time.time_clock_hpp" title="Header &lt;boost/date_time/time_clock.hpp&gt;">
 <link rel="prev" href="base_time.html" title="Class template base_time">
 <link rel="next" href="time_duration.html" title="Class template time_duration">
@@ -38,32 +38,33 @@
   <span class="bold"><strong>typedef</strong></span> time_type::date_type          <a name="boost.date_time.second_clock.date_type"></a>date_type;         
   <span class="bold"><strong>typedef</strong></span> time_type::time_duration_type <a name="boost.date_time.second_clock.time_duration_type"></a>time_duration_type;
 
-  <span class="emphasis"><em>// <a class="link" href="second_clock.html#id3012622-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id3012625-bb">local_time</a>() ;
-  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id2877775-bb">universal_time</a>() ;
+  <span class="emphasis"><em>// <a class="link" href="second_clock.html#id687640-bb">public static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id1118223-bb">local_time</a>() ;
+  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id1118230-bb">universal_time</a>() ;
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> time_zone_type&gt; 
-    <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id2877786-bb">local_time</a>(boost::shared_ptr&lt; time_zone_type &gt;) ;
+    <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id1118241-bb">local_time</a>(boost::shared_ptr&lt; time_zone_type &gt;) ;
 
-  <span class="emphasis"><em>// <a class="link" href="second_clock.html#id2998102-bb">private static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id2998105-bb">create_time</a>(::std::tm *) ;
+  <span class="emphasis"><em>// <a class="link" href="second_clock.html#id687761-bb">private static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a class="link" href="second_clock.html#id687764-bb">create_time</a>(::std::tm *) ;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3124168"></a><h2>Description</h2>
+<a name="id1767572"></a><h2>Description</h2>
 <p>This clock provides resolution to the 1 second level </p>
 <div class="refsect2" lang="en">
-<a name="id3124175"></a><h3>
-<a name="id3012622-bb"></a><code class="computeroutput">second_clock</code> public static functions</h3>
+<a name="id1767578"></a><h3>
+<a name="id687640-bb"></a><code class="computeroutput">second_clock</code> public static functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id3012625-bb"></a>local_time() ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id2877775-bb"></a>universal_time() ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id1118223-bb"></a>local_time() ;</pre></li>
+<li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id1118230-bb"></a>universal_time() ;</pre>Get the current day in universal date as a ymd_type. </li>
 <li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> time_zone_type&gt; 
-  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id2877786-bb"></a>local_time(boost::shared_ptr&lt; time_zone_type &gt; tz_ptr) ;</pre></li>
+  <span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id1118241-bb"></a>local_time(boost::shared_ptr&lt; time_zone_type &gt; tz_ptr) ;</pre></li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3124274"></a><h3>
-<a name="id2998102-bb"></a><code class="computeroutput">second_clock</code> private static functions</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id2998105-bb"></a>create_time(::std::tm * current) ;</pre></li></ol></div>
+<a name="id1767676"></a><h3>
+<a name="id687761-bb"></a><code class="computeroutput">second_clock</code> private static functions</h3>
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> time_type</span> <a name="id687764-bb"></a>create_time(::std::tm * current) ;</pre></li></ol></div>
 </div>
 </div>
 </div>

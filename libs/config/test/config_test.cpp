@@ -1,4 +1,4 @@
-//  This file was automatically generated on Tue Dec 16 16:41:41 2008
+//  This file was automatically generated on Sat Mar 21 15:13:32 2009
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -6,7 +6,7 @@
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/config for the most recent version.//
-//  Revision $Id: config_test.cpp 50531 2009-01-10 11:18:42Z johnmaddock $
+//  Revision $Id: config_test.cpp 51992 2009-03-26 19:00:00Z andysem $
 //
 
 // Test file for config setup
@@ -37,6 +37,16 @@ namespace boost_no_argument_dependent_lookup = empty_boost;
 #else
 namespace boost_no_array_type_specializations = empty_boost;
 #endif
+#ifndef BOOST_NO_AUTO_DECLARATIONS
+#include "boost_no_auto_declarations.ipp"
+#else
+namespace boost_no_auto_declarations = empty_boost;
+#endif
+#ifndef BOOST_NO_AUTO_MULTIDECLARATIONS
+#include "boost_no_auto_multidecl.ipp"
+#else
+namespace boost_no_auto_multideclarations = empty_boost;
+#endif
 #ifndef BOOST_NO_AUTO_PTR
 #include "boost_no_auto_ptr.ipp"
 #else
@@ -46,6 +56,21 @@ namespace boost_no_auto_ptr = empty_boost;
 #include "boost_no_bcb_partial_spec.ipp"
 #else
 namespace boost_bcb_partial_specialization_bug = empty_boost;
+#endif
+#ifndef BOOST_NO_CHAR16_T
+#include "boost_no_char16_t.ipp"
+#else
+namespace boost_no_char16_t = empty_boost;
+#endif
+#ifndef BOOST_NO_CHAR32_T
+#include "boost_no_char32_t.ipp"
+#else
+namespace boost_no_char32_t = empty_boost;
+#endif
+#ifndef BOOST_NO_CONSTEXPR
+#include "boost_no_constexpr.ipp"
+#else
+namespace boost_no_constexpr = empty_boost;
 #endif
 #ifndef BOOST_NO_CTYPE_FUNCTIONS
 #include "boost_no_ctype_functions.ipp"
@@ -72,10 +97,25 @@ namespace boost_no_cwchar = empty_boost;
 #else
 namespace boost_no_cwctype = empty_boost;
 #endif
+#ifndef BOOST_NO_DECLTYPE
+#include "boost_no_decltype.ipp"
+#else
+namespace boost_no_decltype = empty_boost;
+#endif
 #ifndef BOOST_DEDUCED_TYPENAME
 #include "boost_no_ded_typename.ipp"
 #else
 namespace boost_deduced_typename = empty_boost;
+#endif
+#ifndef BOOST_NO_DEFAULTED_FUNCTIONS
+#include "boost_no_defaulted_functions.ipp"
+#else
+namespace boost_no_defaulted_functions = empty_boost;
+#endif
+#ifndef BOOST_NO_DELETED_FUNCTIONS
+#include "boost_no_deleted_functions.ipp"
+#else
+namespace boost_no_deleted_functions = empty_boost;
 #endif
 #ifndef BOOST_NO_DEPENDENT_NESTED_DERIVATIONS
 #include "boost_no_dep_nested_class.ipp"
@@ -97,10 +137,20 @@ namespace boost_no_exceptions = empty_boost;
 #else
 namespace boost_no_exception_std_namespace = empty_boost;
 #endif
+#ifndef BOOST_NO_EXPLICIT_CONVERSION_OPERATORS
+#include "boost_no_explicit_cvt_ops.ipp"
+#else
+namespace boost_no_explicit_conversion_operators = empty_boost;
+#endif
 #ifndef BOOST_NO_EXPLICIT_FUNCTION_TEMPLATE_ARGUMENTS
 #include "boost_no_exp_func_tem_arg.ipp"
 #else
 namespace boost_no_explicit_function_template_arguments = empty_boost;
+#endif
+#ifndef BOOST_NO_EXTERN_TEMPLATE
+#include "boost_no_extern_template.ipp"
+#else
+namespace boost_no_extern_template = empty_boost;
 #endif
 #ifndef BOOST_NO_FUNCTION_TYPE_SPECIALIZATIONS
 #include "boost_no_function_type_spec.ipp"
@@ -167,6 +217,11 @@ namespace boost_no_limits_compile_time_constants = empty_boost;
 #else
 namespace boost_no_long_long_numeric_limits = empty_boost;
 #endif
+#ifndef BOOST_NO_LONG_LONG
+#include "boost_no_long_long.ipp"
+#else
+namespace boost_no_long_long = empty_boost;
+#endif
 #ifndef BOOST_NO_MEMBER_FUNCTION_SPECIALIZATIONS
 #include "boost_no_mem_func_spec.ipp"
 #else
@@ -222,6 +277,11 @@ namespace boost_no_private_in_aggregate = empty_boost;
 #else
 namespace boost_no_pointer_to_member_const = empty_boost;
 #endif
+#ifndef BOOST_NO_RAW_LITERALS
+#include "boost_no_raw_literals.ipp"
+#else
+namespace boost_no_raw_literals = empty_boost;
+#endif
 #ifndef BOOST_NO_UNREACHABLE_RETURN_DETECTION
 #include "boost_no_ret_det.ipp"
 #else
@@ -232,6 +292,16 @@ namespace boost_no_unreachable_return_detection = empty_boost;
 #else
 namespace boost_no_rtti = empty_boost;
 #endif
+#ifndef BOOST_NO_RVALUE_REFERENCES
+#include "boost_no_rvalue_references.ipp"
+#else
+namespace boost_no_rvalue_references = empty_boost;
+#endif
+#ifndef BOOST_NO_SCOPED_ENUMS
+#include "boost_no_scoped_enums.ipp"
+#else
+namespace boost_no_scoped_enums = empty_boost;
+#endif
 #ifndef BOOST_NO_SFINAE
 #include "boost_no_sfinae.ipp"
 #else
@@ -241,6 +311,11 @@ namespace boost_no_sfinae = empty_boost;
 #include "boost_no_sstream.ipp"
 #else
 namespace boost_no_stringstream = empty_boost;
+#endif
+#ifndef BOOST_NO_STATIC_ASSERT
+#include "boost_no_static_assert.ipp"
+#else
+namespace boost_no_static_assert = empty_boost;
 #endif
 #ifndef BOOST_NO_STDC_NAMESPACE
 #include "boost_no_stdc_namespace.ipp"
@@ -342,6 +417,11 @@ namespace boost_no_typeid = empty_boost;
 #else
 namespace boost_no_typename_with_ctor = empty_boost;
 #endif
+#ifndef BOOST_NO_UNICODE_LITERALS
+#include "boost_no_unicode_literals.ipp"
+#else
+namespace boost_no_unicode_literals = empty_boost;
+#endif
 #ifndef BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL
 #include "boost_no_using_breaks_adl.ipp"
 #else
@@ -356,6 +436,11 @@ namespace boost_no_using_declaration_overloads_from_typename_base = empty_boost;
 #include "boost_no_using_template.ipp"
 #else
 namespace boost_no_using_template = empty_boost;
+#endif
+#ifndef BOOST_NO_VARIADIC_TEMPLATES
+#include "boost_no_variadic_templates.ipp"
+#else
+namespace boost_no_variadic_templates = empty_boost;
 #endif
 #ifndef BOOST_NO_VOID_RETURNS
 #include "boost_no_void_returns.ipp"
@@ -896,6 +981,16 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_ARRAY_TYPE_SPECIALIZATIONS at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_auto_declarations::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_AUTO_DECLARATIONS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_auto_multideclarations::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_AUTO_MULTIDECLARATIONS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_auto_ptr::test())
    {
       std::cerr << "Failed test for BOOST_NO_AUTO_PTR at: " << __FILE__ << ":" << __LINE__ << std::endl;
@@ -904,6 +999,21 @@ int main( int, char *[] )
    if(0 != boost_bcb_partial_specialization_bug::test())
    {
       std::cerr << "Failed test for BOOST_BCB_PARTIAL_SPECIALIZATION_BUG at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_char16_t::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CHAR16_T at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_char32_t::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CHAR32_T at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_constexpr::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CONSTEXPR at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_ctype_functions::test())
@@ -931,9 +1041,24 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_CWCTYPE at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_decltype::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_DECLTYPE at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_deduced_typename::test())
    {
       std::cerr << "Failed test for BOOST_DEDUCED_TYPENAME at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_defaulted_functions::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_DEFAULTED_FUNCTIONS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_deleted_functions::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_DELETED_FUNCTIONS at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_dependent_nested_derivations::test())
@@ -956,9 +1081,19 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_EXCEPTION_STD_NAMESPACE at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_explicit_conversion_operators::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_EXPLICIT_CONVERSION_OPERATORS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_explicit_function_template_arguments::test())
    {
       std::cerr << "Failed test for BOOST_NO_EXPLICIT_FUNCTION_TEMPLATE_ARGUMENTS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_extern_template::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_EXTERN_TEMPLATE at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_function_type_specializations::test())
@@ -1026,6 +1161,11 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_LONG_LONG_NUMERIC_LIMITS at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_long_long::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_LONG_LONG at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_member_function_specializations::test())
    {
       std::cerr << "Failed test for BOOST_NO_MEMBER_FUNCTION_SPECIALIZATIONS at: " << __FILE__ << ":" << __LINE__ << std::endl;
@@ -1081,6 +1221,11 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_POINTER_TO_MEMBER_CONST at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_raw_literals::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_RAW_LITERALS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_unreachable_return_detection::test())
    {
       std::cerr << "Failed test for BOOST_NO_UNREACHABLE_RETURN_DETECTION at: " << __FILE__ << ":" << __LINE__ << std::endl;
@@ -1091,6 +1236,16 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_RTTI at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_rvalue_references::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_RVALUE_REFERENCES at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_scoped_enums::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_SCOPED_ENUMS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_sfinae::test())
    {
       std::cerr << "Failed test for BOOST_NO_SFINAE at: " << __FILE__ << ":" << __LINE__ << std::endl;
@@ -1099,6 +1254,11 @@ int main( int, char *[] )
    if(0 != boost_no_stringstream::test())
    {
       std::cerr << "Failed test for BOOST_NO_STRINGSTREAM at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_static_assert::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_STATIC_ASSERT at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_stdc_namespace::test())
@@ -1201,6 +1361,11 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_TYPENAME_WITH_CTOR at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_unicode_literals::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_UNICODE_LITERALS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_function_scope_using_declaration_breaks_adl::test())
    {
       std::cerr << "Failed test for BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL at: " << __FILE__ << ":" << __LINE__ << std::endl;
@@ -1214,6 +1379,11 @@ int main( int, char *[] )
    if(0 != boost_no_using_template::test())
    {
       std::cerr << "Failed test for BOOST_NO_USING_TEMPLATE at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_variadic_templates::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_VARIADIC_TEMPLATES at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_void_returns::test())

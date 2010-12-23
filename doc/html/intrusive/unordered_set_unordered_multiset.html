@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Semi-Intrusive unordered associative containers: unordered_set, unordered_multiset</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="set_multiset.html" title="Intrusive associative containers: set, multiset, rbtree">
 <link rel="next" href="splay_set_multiset.html" title="Intrusive splay tree based associative containers: splay_set, splay_multiset and , splay_tree">
@@ -281,8 +281,9 @@
         </li>
 <li>
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">cache_begin</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enabled</span><span class="special">&gt;</span></code></strong></span>:
-          Due to its internal structure, finding the first element of an unordered
-          container (<code class="computeroutput"><span class="identifier">begin</span><span class="special">()</span></code>
+          <span class="bold"><strong>Note: this option is not compatible with <code class="computeroutput"><span class="identifier">auto_unlink</span></code> hooks</strong></span>. Due to
+          its internal structure, finding the first element of an unordered container
+          (<code class="computeroutput"><span class="identifier">begin</span><span class="special">()</span></code>
           operation) is amortized constant-time. It's possible to speed up <code class="computeroutput"><span class="identifier">begin</span><span class="special">()</span></code>
           and other operations related to it (like <code class="computeroutput"><span class="identifier">clear</span><span class="special">()</span></code>) if the container caches internally the
           position of the first element. This imposes the overhead of one pointer

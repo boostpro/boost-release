@@ -20,7 +20,7 @@ operator << (std::ostream& stream, QString const& string)
 
 BOOST_AUTO_TEST_CASE( defines)
 {
-    BOOST_CHECK_EQUAL(BOOST_IS_DEFINED(QT_CORE_LIB), true);
+    BOOST_CHECK_EQUAL(BOOST_IS_DEFINED(QT_SCRIPT_LIB), true);
 }
 
 BOOST_AUTO_TEST_CASE( script )
@@ -30,5 +30,4 @@ BOOST_AUTO_TEST_CASE( script )
 
    BOOST_CHECK_EQUAL(three.toNumber(), 3);
    BOOST_CHECK_EQUAL(three.toString(), QLatin1String("3"));
-
 }

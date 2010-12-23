@@ -26,6 +26,7 @@
 
   <xsl:param name="admon.style"/>
   <xsl:param name="admon.graphics">1</xsl:param>
+  <xsl:param name="boostbook.verbose" select="0"/>
   <xsl:param name="html.stylesheet" select="'boostbook.css'"/>
   <xsl:param name="navig.graphics" select="1"/>
   <xsl:param name="navig.graphics.extension" select="'.png'"/>
@@ -38,15 +39,18 @@
   <xsl:param name="generate.section.toc.level" select="3"/>
   <xsl:param name="doc.standalone">false</xsl:param>
   <xsl:param name="chunker.output.indent">yes</xsl:param>
+  <xsl:param name="chunk.quietly" select="not(number($boostbook.verbose))"/>
   <xsl:param name="toc.max.depth">2</xsl:param>
   <xsl:param name="callout.graphics.number.limit">15</xsl:param>
   <xsl:param name = "admon.graphics.path"
             select = "concat($boost.root, '/doc/xhtml/images/')"/>
   <xsl:param name = "navig.graphics.path"
             select = "concat($boost.root, '/doc/xhtml/images/')"/>
+  <xsl:param name = "callout.graphics.path"
+            select = "concat($boost.root, '/doc/src/images/callouts/')"/>
 
 
-   <xsl:param name="admon.style">
+  <xsl:param name="admon.style">
     <!-- Remove the style. Let the CSS do the styling -->
 </xsl:param>
 
@@ -72,6 +76,7 @@ sect5     toc
 section   toc
 set       toc,title
   </xsl:param>
+
 
   <xsl:template name="format.cvs.revision">
     <xsl:param name="text"/>
@@ -305,4 +310,3 @@ set       toc,title
 </xsl:template>
 
 </xsl:stylesheet>
-

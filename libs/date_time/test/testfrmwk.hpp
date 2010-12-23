@@ -6,12 +6,13 @@
  * Use, modification and distribution is subject to the 
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
- * $Date: 2008-11-26 16:07:14 -0500 (Wed, 26 Nov 2008) $
+ * $Date: 2009-02-12 15:33:55 -0500 (Thu, 12 Feb 2009) $
  */
 
 
 #include <iostream>
 #include <string>
+#include <boost/config.hpp>
 
 //! Really simple test framework for counting and printing
 class TestStats

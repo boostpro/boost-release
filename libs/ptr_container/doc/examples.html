@@ -10,8 +10,8 @@
 /*
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
-:Date: $Date: 2008-07-16 17:03:47 -0400 (Wed, 16 Jul 2008) $
-:Revision: $Revision: 47494 $
+:Date: $Date: 2009-04-05 16:10:44 -0400 (Sun, 05 Apr 2009) $
+:Revision: $Revision: 52198 $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
@@ -378,9 +378,9 @@ typedef ptr_deque&lt;T&gt;::auto_type auto_type;
 
 // ... fill the container somehow
 
-auto_type ptr  = deq.release_back();             // remove back element from container and give up ownership
+auto_type ptr  = deq.pop_back();                 // remove back element from container and give up ownership
 auto_type ptr2 = deq.release( deq.begin() + 2 ); // use an iterator to determine the element to release
-ptr            = deq.release_front();            // supported for 'ptr_list' and 'ptr_deque'
+ptr            = deq.pop_front();                // supported for 'ptr_list' and 'ptr_deque'
                                 
 deq.push_back( ptr.release() );                  // give ownership back to the container
 </pre>

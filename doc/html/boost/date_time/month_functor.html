@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Class template month_functor</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../date_time/doxy.html#header.boost.date_time.adjust_functors_hpp" title="Header &lt;boost/date_time/adjust_functors.hpp&gt;">
 <link rel="prev" href="day_functor.html" title="Class template day_functor">
 <link rel="next" href="week_functor.html" title="Class template week_functor">
@@ -41,28 +41,29 @@
   <span class="bold"><strong>typedef</strong></span> cal_type::day_type       <a name="boost.date_time.month_functor.day_type"></a>day_type;     
 
   <span class="emphasis"><em>// <a class="link" href="month_functor.html#boost.date_time.month_functorconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="month_functor.html#id3023076-bb">month_functor</a>(<span class="bold"><strong>int</strong></span>);
+  <a class="link" href="month_functor.html#id1142524-bb">month_functor</a>(<span class="bold"><strong>int</strong></span>);
 
-  <span class="emphasis"><em>// <a class="link" href="month_functor.html#id3001150-bb">public member functions</a></em></span>
-  <span class="type">duration_type</span> <a class="link" href="month_functor.html#id3001153-bb">get_offset</a>(<span class="bold"><strong>const</strong></span> date_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">duration_type</span> <a class="link" href="month_functor.html#id2836376-bb">get_neg_offset</a>(<span class="bold"><strong>const</strong></span> date_type &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="month_functor.html#id1142491-bb">public member functions</a></em></span>
+  <span class="type">duration_type</span> <a class="link" href="month_functor.html#id1142494-bb">get_offset</a>(<span class="bold"><strong>const</strong></span> date_type &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">duration_type</span> <a class="link" href="month_functor.html#id1142508-bb">get_neg_offset</a>(<span class="bold"><strong>const</strong></span> date_type &amp;) <span class="bold"><strong>const</strong></span>;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3070517"></a><h2>Description</h2>
+<a name="id1662494"></a><h2>Description</h2>
 <p>This adjustment function provides the logic for 'month-based' advancement on a ymd based calendar. The policy it uses to handle the non existant end of month days is to back up to the last day of the month. Also, if the starting date is the last day of a month, this functor will attempt to adjust to the end of the month. </p>
 <div class="refsect2" lang="en">
-<a name="id3070528"></a><h3>
+<a name="id1662505"></a><h3>
 <a name="boost.date_time.month_functorconstruct-copy-destruct"></a><code class="computeroutput">month_functor</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id3023076-bb"></a>month_functor(<span class="bold"><strong>int</strong></span> f);</pre></li></ol></div>
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id1142524-bb"></a>month_functor(<span class="bold"><strong>int</strong></span> f);</pre></li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id3070568"></a><h3>
-<a name="id3001150-bb"></a><code class="computeroutput">month_functor</code> public member functions</h3>
+<a name="id1662544"></a><h3>
+<a name="id1142491-bb"></a><code class="computeroutput">month_functor</code> public member functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type">duration_type</span> <a name="id3001153-bb"></a>get_offset(<span class="bold"><strong>const</strong></span> date_type &amp; d) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">duration_type</span> <a name="id2836376-bb"></a>get_neg_offset(<span class="bold"><strong>const</strong></span> date_type &amp; d) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">duration_type</span> <a name="id1142494-bb"></a>get_offset(<span class="bold"><strong>const</strong></span> date_type &amp; d) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li>
+<pre class="literallayout"><span class="type">duration_type</span> <a name="id1142508-bb"></a>get_neg_offset(<span class="bold"><strong>const</strong></span> date_type &amp; d) <span class="bold"><strong>const</strong></span>;</pre>Returns a negative duration_type. </li>
 </ol></div>
 </div>
 </div>

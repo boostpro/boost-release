@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Struct c_time</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../date_time/doxy.html#header.boost.date_time.c_time_hpp" title="Header &lt;boost/date_time/c_time.hpp&gt;">
 <link rel="prev" href="c_local_adjustor.html" title="Class template c_local_adjustor">
 <link rel="next" href="../CV/constrained_value.html" title="Class template constrained_value">
@@ -34,23 +34,27 @@
 </em></span>
 <span class="bold"><strong>struct</strong></span> <a class="link" href="c_time.html" title="Struct c_time">c_time</a> {
 
-  <span class="emphasis"><em>// <a class="link" href="c_time.html#id3010418-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id2810261-bb">localtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id2738441-bb">gmtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id3006716-bb">localtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id3011090-bb">gmtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
+  <span class="emphasis"><em>// <a class="link" href="c_time.html#id1142746-bb">public static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id1142749-bb">localtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id1142772-bb">gmtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id1142794-bb">localtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id1142817-bb">gmtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id3071700"></a><h2>Description</h2>
+<a name="id1663651"></a><h2>Description</h2>
 <p>Provides a uniform interface to some ctime functions and their '_r' counterparts. The '_r' functions require a pointer to a user created std::tm struct whereas the regular functions use a staticly created struct and return a pointer to that. These wrapper functions require the user to create a std::tm struct and send in a pointer to it. A pointer to the user created struct will be returned. All functions do proper checking of the C function results and throw exceptions on error. Therefore the functions will never return NULL. </p>
 <div class="refsect2" lang="en">
-<a name="id3071715"></a><h3>
-<a name="id3010418-bb"></a><code class="computeroutput">c_time</code> public static functions</h3>
+<a name="id1663657"></a><h3>
+<a name="id1142746-bb"></a><code class="computeroutput">c_time</code> public static functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id2810261-bb"></a>localtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id2738441-bb"></a>gmtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id3006716-bb"></a>localtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id3011090-bb"></a>gmtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre></li>
+<li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id1142749-bb"></a>localtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
+<li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id1142772-bb"></a>gmtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
+<li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id1142794-bb"></a>localtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
+<li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id1142817-bb"></a>gmtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
 </ol></div>
 </div>
 </div>

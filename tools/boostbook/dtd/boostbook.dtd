@@ -1,5 +1,5 @@
 <!--
-   BoostBook DTD version 1.1
+   BoostBook DTD - development version
 
    For further information, see: http://www.crystalclearsoftware.com/cgi-bin/boost_wiki/wiki.pl?Boost_Documentation_Format
 
@@ -11,13 +11,13 @@
    (See accompanying file LICENSE_1_0.txt or copy at
    http://www.boost.org/LICENSE_1_0.txt)
 
-   This DTD module is identified by the PUBLIC and SYSTEM identifiers:
+   The latest stable DTD module is identified by the PUBLIC and SYSTEM identifiers:
 
    PUBLIC "-//Boost//DTD BoostBook XML V1.1//EN"
    SYSTEM "http://www.boost.org/tools/boostbook/dtd/1.1/boostbook.dtd"
 
-   $Revision: 48202 $
-   $Date: 2008-08-18 17:46:32 -0400 (Mon, 18 Aug 2008) $
+   $Revision: 51774 $
+   $Date: 2009-03-14 07:42:38 -0400 (Sat, 14 Mar 2009) $
 -->
 
 <!--========== Define XInclude features. ==========-->
@@ -313,10 +313,14 @@
     %boost.common.attrib;>
 
 <!ELEMENT macroname (#PCDATA)>
-<!ATTLIST macroname %boost.common.attrib;>
+<!ATTLIST macroname
+    alt          CDATA  #IMPLIED
+    %boost.common.attrib;>
 
 <!ELEMENT headername (#PCDATA)>
-<!ATTLIST headername %boost.common.attrib;>
+<!ATTLIST headername
+    alt          CDATA  #IMPLIED
+    %boost.common.attrib;>
 
 <!ELEMENT globalname (#PCDATA)>
 <!ATTLIST globalname
@@ -415,7 +419,7 @@
      name        CDATA #IMPLIED>
 
 <!--========== Customize the DocBook DTD ==========-->
-<!ENTITY % local.tech.char.class "|functionname|libraryname|enumname|code">
+<!ENTITY % local.tech.char.class "|functionname|libraryname|enumname|headername|macroname|code">
 <!ENTITY % local.para.class
         "|using-namespace|using-class|librarylist|librarycategorylist">
 <!ENTITY % local.descobj.class "|libraryinfo">

@@ -18,7 +18,9 @@
 #include <boost/interprocess/containers/list.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
 #include <cassert>
-#include <cstdio>    //std::remove
+//<-
+#include "../test/get_process_id_name.hpp"
+//->
 
 using namespace boost::interprocess;
 
@@ -49,9 +51,30 @@ typedef list
 int main ()
 {
    //Destroy any previous file with the name to be used.
-   std::remove("MyMappedFile");
+   struct file_remove 
    {
+   //<-
+   #if 1
+      file_remove() { file_mapping::remove(test::get_process_id_name()); }
+      ~file_remove(){ file_mapping::remove(test::get_process_id_name()); }
+   #else
+   //->
+      file_remove() { file_mapping::remove("MyMappedFile"); }
+      ~file_remove(){ file_mapping::remove("MyMappedFile"); }
+   //<-
+   #endif
+   //->
+   } remover;
+   {
+      //<-
+      #if 1
+      managed_mapped_file file(create_only, test::get_process_id_name(), 65536);
+      #else
+      //->
       managed_mapped_file file(create_only, "MyMappedFile", 65536);
+      //<-
+      #endif
+      //->
 
       //Construct an object in the file and
       //pass ownership to this local unique pointer
@@ -72,9 +95,8 @@ int main ()
 
       //Now insert all values
       for(int i = 0; i < 100; ++i){
-         unique_vector->push_back(
-            make_managed_unique_ptr(file.construct<MyType>(anonymous_instance)(i), file)
-            );
+         unique_ptr_type p(make_managed_unique_ptr(file.construct<MyType>(anonymous_instance)(i), file));
+         unique_vector->push_back(boost::interprocess::move(p));
          assert(unique_vector->back()->number_ == i);
       }
       
@@ -84,7 +106,7 @@ int main ()
    
       //Pass ownership of all values to the list
       for(int i = 99; !unique_vector->empty(); --i){
-         unique_list->push_front(move(unique_vector->back()));
+         unique_list->push_front(boost::interprocess::move(unique_vector->back()));
          //The unique ptr of the vector is now empty...
          assert(unique_vector->back() == 0);
          unique_vector->pop_back();
@@ -100,7 +122,16 @@ int main ()
    }
    {
       //Reopen the mapped file and find again the list
+      //<-
+      #if 1
+      managed_mapped_file file(open_only, test::get_process_id_name());
+      #else
+      //->
       managed_mapped_file file(open_only, "MyMappedFile");
+      //<-
+      #endif
+      //->
+
       unique_ptr_list_t   *unique_list =
          file.find<unique_ptr_list_t>("unique list").first;
       assert(unique_list);
@@ -114,7 +145,6 @@ int main ()
       //Now destroy the list. All elements will be automatically deallocated.
       file.destroy_ptr(unique_list);
    }
-   std::remove("MyMappedFile");
    return 0;
 }
 //]
