@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/vector.cpp,v $
-// $Date: 2005/05/15 00:34:07 $
-// $Revision: 1.4 $
+// $Source$
+// $Date: 2005-05-14 20:39:04 -0400 (Sat, 14 May 2005) $
+// $Revision: 28913 $
 
 #include <boost/mpl/vector.hpp>
 #include <boost/mpl/vector/vector10.hpp>

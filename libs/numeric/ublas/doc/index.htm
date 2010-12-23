@@ -153,7 +153,6 @@ Matrix Operations</a></li>
 <ul>
 <li><a href="unbounded_array.htm">Unbounded Array</a></li>
 <li><a href="bounded_array.htm">Bounded Array</a></li>
-<li><a href="array_adaptor.htm">Array Adaptor</a></li>
 <li><a href="range.htm#range">Range</a></li>
 <li><a href="range.htm#slice">Slice</a></li>
 </ul>
@@ -274,7 +273,9 @@ enabled, expression templates disabled) and release mode (size and
 type conformance checks disabled, expression templates enabled).
 Please check, if the preprocessor symbol <code>NDEBUG</code> of
 <code>cassert</code> is defined. <code>NDEBUG</code> enables
-release mode, which in turn uses expression templates.</p>
+release mode, which in turn uses expression templates. You can 
+optionally define <code>BOOST_UBLAS_NDEBUG</code> to disable all
+bounds, structure and similar checks of uBLAS.</p>
 <p>Q: I've written some uBLAS tests, which try to incorrectly
 assign different matrix types or overrun vector and matrix
 dimensions. Why don't I get a compile time or runtime
@@ -297,10 +298,12 @@ reintroducing temporaries using either <code>prod (A,</code>
 <code>&gt; (B, C))</code>.</p>
 <hr />
 <p>Copyright (&copy;) 2000-2002 Joerg Walter, Mathias Koch<br />
-Permission to copy, use, modify, sell and distribute this document
-is granted provided this copyright notice appears in all copies.
-This document is provided ``as is'' without express or implied
-warranty, and with no claim as to its suitability for any
-purpose.</p>
+   Use, modification and distribution are subject to the
+   Boost Software License, Version 1.0.
+   (See accompanying file LICENSE_1_0.txt
+   or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">
+      http://www.boost.org/LICENSE_1_0.txt
+   </a>).
+</p>
 </body>
 </html>

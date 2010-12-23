@@ -10,9 +10,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/example/fsm/aux_/event.hpp,v $
-// $Date: 2004/09/02 15:41:30 $
-// $Revision: 1.3 $
+// $Source$
+// $Date: 2004-09-02 11:41:37 -0400 (Thu, 02 Sep 2004) $
+// $Revision: 24874 $
 
 #include "base_event.hpp"
 

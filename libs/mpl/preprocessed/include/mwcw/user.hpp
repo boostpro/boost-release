@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/include/mwcw/user.hpp,v $
-// $Date: 2004/09/14 12:39:55 $
-// $Revision: 1.3 $
+// $Source$
+// $Date: 2004-09-14 08:39:55 -0400 (Tue, 14 Sep 2004) $
+// $Revision: 25084 $
 
 #define BOOST_NO_CONFIG
 #define BOOST_MPL_CFG_BROKEN_DEFAULT_PARAMETERS_IN_NESTED_TEMPLATES

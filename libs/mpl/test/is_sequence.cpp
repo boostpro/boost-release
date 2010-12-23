@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/is_sequence.cpp,v $
-// $Date: 2006/07/22 15:10:50 $
-// $Revision: 1.5.8.1 $
+// $Source$
+// $Date: 2006-07-22 11:10:50 -0400 (Sat, 22 Jul 2006) $
+// $Revision: 34670 $
 
 #include <boost/mpl/is_sequence.hpp>
 #include <boost/mpl/int.hpp>

@@ -5,7 +5,7 @@
     
     http://www.boost.org/
 
-    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost 
+    Copyright (c) 2001-2008 Hartmut Kaiser. Distributed under the Boost 
     Software License, Version 1.0. (See accompanying file 
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -14,6 +14,7 @@
 #define SLEX_TOKEN_HPP_53A13BD2_FBAA_444B_9B8B_FCB225C2BBA8_INCLUDED
 
 #include <iomanip>
+#include <ios>
 
 #include <boost/wave/wave_config.hpp>
 #include <boost/wave/token_ids.hpp>  
@@ -55,6 +56,8 @@ public:
     operator token_id() const { return id; }
     string_type const &get_value() const { return value; }
     position_type const &get_position() const { return pos; }
+    bool is_eoi() const { return id == T_EOI; }
+
     void set_token_id (token_id id_) { id = id_; }
     void set_value (string_type const &newval) { value = newval; }
     void set_position (position_type const &pos_) { pos = pos_; }
@@ -80,11 +83,13 @@ public:
     {
         using namespace std;
         using namespace boost::wave;
-        stream << setw(16) << left << boost::wave::get_token_name(id) << " ("
+        
+        stream << std::setw(16) 
+            << std::left << boost::wave::get_token_name(id) << " ("
             << "#" << token_id(ID_FROM_TOKEN(*this)) 
             << ") at " << get_position().get_file() << " (" 
-            << setw(3) << right << get_position().get_line() << "/" 
-            << setw(2) << right << get_position().get_column() 
+            << std::setw(3) << std::right << get_position().get_line() << "/" 
+            << std::setw(2) << std::right << get_position().get_column() 
             << "): >";
             
         for (std::size_t i = 0; i < value.size(); ++i) {

@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/include/msvc70/user.hpp,v $
-// $Date: 2004/09/14 12:39:55 $
-// $Revision: 1.5 $
+// $Source$
+// $Date: 2004-09-14 08:39:55 -0400 (Tue, 14 Sep 2004) $
+// $Revision: 25084 $
 
 #define BOOST_NO_CONFIG
 #define BOOST_MSVC 1300

@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: integrate.hpp,v 1.5 2004/07/27 03:43:34 dgregor Exp $
+ * $Id: integrate.hpp 24096 2004-07-27 03:43:34Z dgregor $
  *
  * Revision history
  *   01 April 2001: Modified to use new <boost/limits.hpp> header. (JMaddock)

@@ -5,9 +5,9 @@
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: const_string_test.cpp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.1 $
+//  Version     : $Revision: 33128 $
 //
 //  Description : simple string class test
 // ***************************************************************************

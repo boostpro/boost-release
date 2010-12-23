@@ -5,7 +5,7 @@
     
     http://www.boost.org/
 
-    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost 
+    Copyright (c) 2001-2008 Hartmut Kaiser. Distributed under the Boost 
     Software License, Version 1.0. (See accompanying file 
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -49,7 +49,7 @@
 #endif 
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Now include the cofiguration stuff for the Wave library itself
+//  Now include the configuration stuff for the Wave library itself
 #include <boost/wave/wave_config.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////

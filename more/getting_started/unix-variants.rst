@@ -153,7 +153,7 @@ A. You can specify the full path to each library:
    .. parsed-literal::
 
      $ c++ -I |root| example.cpp -o example **\\**
-        **~/boost/lib/libboost_regex-gcc34-mt-d-1_34.a**
+        **~/boost/lib/libboost_regex-gcc34-mt-d-1_35.a**
 
 B. You can separately specify a directory to search (with ``-L``\
    *directory*) and a library name to search for (with ``-l``\
@@ -163,7 +163,7 @@ B. You can separately specify a directory to search (with ``-L``\
    .. parsed-literal::
 
      $ c++ -I |root| example.cpp -o example **\\**
-        **-L~/boost/lib/ -lboost_regex-gcc34-mt-d-1_34**
+        **-L~/boost/lib/ -lboost_regex-gcc34-mt-d-1_35**
 
    As you can see, this method is just as terse as method A for one
    library; it *really* pays off when you're using multiple
@@ -225,7 +225,7 @@ Spoil Rock Hunter?”
    packages, we'd be glad to help.  Please make your interest known
    to the `Boost developers' list`_.
 
-   .. _Boost developers' list: ../../more/mailing_lists.htm#main
+   .. _Boost developers' list: http://www.boost.org/more/mailing_lists.htm#main
 
 .. [#lowercase-l] That option is a dash followed by a lowercase “L”
    character, which looks very much like a numeral 1 in some fonts.

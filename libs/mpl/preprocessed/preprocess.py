@@ -7,9 +7,9 @@
 #
 # See http://www.boost.org/libs/mpl for documentation.
 
-# $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/preprocess.py,v $
-# $Date: 2005/10/04 08:35:29 $
-# $Revision: 1.5 $
+# $Source$
+# $Date: 2005-10-04 04:35:29 -0400 (Tue, 04 Oct 2005) $
+# $Revision: 31189 $
 
 import pp
 import shutil

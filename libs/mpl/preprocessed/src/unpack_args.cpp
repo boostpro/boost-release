@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/src/unpack_args.cpp,v $
-// $Date: 2006/06/12 05:11:54 $
-// $Revision: 1.3.8.1 $
+// $Source$
+// $Date: 2006-06-12 01:11:55 -0400 (Mon, 12 Jun 2006) $
+// $Revision: 34274 $
 
 #define BOOST_MPL_PREPROCESSING_MODE
 #include <boost/config.hpp>

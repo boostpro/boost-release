@@ -3,24 +3,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Class template date_input_facet</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../date_time/doxy.html#header.boost.date_time.date_facet.hpp" title="Header &lt;boost/date_time/date_facet.hpp&gt;">
 <link rel="prev" href="date_facet.html" title="Class template date_facet">
 <link rel="next" href="simple_format.html" title="Class template simple_format">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table cellpadding="2" width="100%">
+<table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
-<td align="center"><a href="../../../../index.htm">Home</a></td>
+<td align="center"><a href="../../../../index.html">Home</a></td>
 <td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="../../../../people/people.htm">People</a></td>
-<td align="center"><a href="../../../../more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
+<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
 <td align="center"><a href="../../../../more/index.htm">More</a></td>
-</table>
+</tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="date_facet.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.date_facet.hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="simple_format.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="date_facet.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.date_facet.hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="simple_format.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry" lang="en">
 <a name="boost.date_time.date_input_facet"></a><div class="titlepage"></div>
@@ -30,157 +30,160 @@
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> date_type, <span class="bold"><strong>typename</strong></span> CharT, 
-         <span class="bold"><strong>typename</strong></span> InItrT = std::istreambuf_iterator&lt;CharT, std::char_traits&lt;CharT&gt; &gt; &gt; 
-<span class="bold"><strong>class</strong></span> date_input_facet {
+         <span class="bold"><strong>typename</strong></span> InItrT = std::istreambuf_iterator&lt;CharT, std::char_traits&lt;CharT&gt; &gt; &gt; 
+<span class="bold"><strong>class</strong></span> <a class="link" href="date_input_facet.html" title="Class template date_input_facet">date_input_facet</a> {
 <span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> date_type::duration_type                             duration_type;             
-  <span class="bold"><strong>typedef</strong></span> date_type::day_of_week_type                          day_of_week_type;          
-  <span class="bold"><strong>typedef</strong></span> date_type::day_type                                  day_type;                  
-  <span class="bold"><strong>typedef</strong></span> date_type::month_type                                month_type;                
-  <span class="bold"><strong>typedef</strong></span> date_type::year_type                                 year_type;                 
-  <span class="bold"><strong>typedef</strong></span> <a href="period.html" title="Class template period">boost::date_time::period</a>&lt; date_type, duration_type &gt; period_type;               
-  <span class="bold"><strong>typedef</strong></span> std::basic_string&lt; CharT &gt;                           string_type;               
-  <span class="bold"><strong>typedef</strong></span> CharT                                                char_type;                 
-  <span class="bold"><strong>typedef</strong></span> <a href="period_parser.html" title="Class template period_parser">boost::date_time::period_parser</a>&lt; date_type, CharT &gt;  period_parser_type;        
-  <span class="bold"><strong>typedef</strong></span> <a href="special_values_parser.html" title="Class template special_values_parser">special_values_parser</a>&lt; date_type, CharT &gt;            special_values_parser_type;
-  <span class="bold"><strong>typedef</strong></span> std::vector&lt; std::basic_string&lt; CharT &gt; &gt;            input_collection_type;     
-  <span class="bold"><strong>typedef</strong></span> <a href="format_date_parser.html" title="Class template format_date_parser">format_date_parser</a>&lt; date_type, CharT &gt;               format_date_parser_type;   
-  <span class="bold"><strong>typedef</strong></span> <a href="date_generator_parser.html" title="Class template date_generator_parser">date_generator_parser</a>&lt; date_type, CharT &gt;            date_gen_parser_type;      
-  <span class="bold"><strong>typedef</strong></span> <a href="partial_date.html" title="Class template partial_date">partial_date</a>&lt; date_type &gt;                            partial_date_type;         
-  <span class="bold"><strong>typedef</strong></span> <a href="nth_kday_of_month.html" title="Class template nth_kday_of_month">nth_kday_of_month</a>&lt; date_type &gt;                       nth_kday_type;             
-  <span class="bold"><strong>typedef</strong></span> <a href="first_kday_of_month.html" title="Class template first_kday_of_month">first_kday_of_month</a>&lt; date_type &gt;                     first_kday_type;           
-  <span class="bold"><strong>typedef</strong></span> <a href="last_kday_of_month.html" title="Class template last_kday_of_month">last_kday_of_month</a>&lt; date_type &gt;                      last_kday_type;            
-  <span class="bold"><strong>typedef</strong></span> <a href="first_kday_after.html" title="Class template first_kday_after">first_kday_after</a>&lt; date_type &gt;                        kday_after_type;           
-  <span class="bold"><strong>typedef</strong></span> <a href="first_kday_before.html" title="Class template first_kday_before">first_kday_before</a>&lt; date_type &gt;                       kday_before_type;          
+  <span class="emphasis"><em>// types</em></span>
+  <span class="bold"><strong>typedef</strong></span> date_type::duration_type                                    <a name="boost.date_time.date_input_facet.duration_type"></a>duration_type;             
+  <span class="bold"><strong>typedef</strong></span> date_type::day_of_week_type                                 <a name="boost.date_time.date_input_facet.day_of_week_type"></a>day_of_week_type;          
+  <span class="bold"><strong>typedef</strong></span> date_type::day_type                                         <a name="boost.date_time.date_input_facet.day_type"></a>day_type;                  
+  <span class="bold"><strong>typedef</strong></span> date_type::month_type                                       <a name="boost.date_time.date_input_facet.month_type"></a>month_type;                
+  <span class="bold"><strong>typedef</strong></span> date_type::year_type                                        <a name="boost.date_time.date_input_facet.year_type"></a>year_type;                 
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="period.html" title="Class template period">boost::date_time::period</a>&lt; date_type, duration_type &gt;        <a name="boost.date_time.date_input_facet.period_type"></a>period_type;               
+  <span class="bold"><strong>typedef</strong></span> std::basic_string&lt; CharT &gt;                                  <a name="boost.date_time.date_input_facet.string_type"></a>string_type;               
+  <span class="bold"><strong>typedef</strong></span> CharT                                                       <a name="boost.date_time.date_input_facet.char_type"></a>char_type;                 
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="period_parser.html" title="Class template period_parser">boost::date_time::period_parser</a>&lt; date_type, CharT &gt;         <a name="boost.date_time.date_input_facet.period_parser_type"></a>period_parser_type;        
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="special_values_parser.html" title="Class template special_values_parser">boost::date_time::special_values_parser</a>&lt; date_type, CharT &gt; <a name="boost.date_time.date_input_facet.special_values_parser_type"></a>special_values_parser_type;
+  <span class="bold"><strong>typedef</strong></span> std::vector&lt; std::basic_string&lt; CharT &gt; &gt;                   <a name="boost.date_time.date_input_facet.input_collection_type"></a>input_collection_type;     
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="format_date_parser.html" title="Class template format_date_parser">format_date_parser</a>&lt; date_type, CharT &gt;                      <a name="boost.date_time.date_input_facet.format_date_parser_type"></a>format_date_parser_type;   
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="date_generator_parser.html" title="Class template date_generator_parser">date_generator_parser</a>&lt; date_type, CharT &gt;                   <a name="boost.date_time.date_input_facet.date_gen_parser_type"></a>date_gen_parser_type;      
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="partial_date.html" title="Class template partial_date">partial_date</a>&lt; date_type &gt;                                   <a name="boost.date_time.date_input_facet.partial_date_type"></a>partial_date_type;         
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="nth_kday_of_month.html" title="Class template nth_kday_of_month">nth_kday_of_month</a>&lt; date_type &gt;                              <a name="boost.date_time.date_input_facet.nth_kday_type"></a>nth_kday_type;             
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="first_kday_of_month.html" title="Class template first_kday_of_month">first_kday_of_month</a>&lt; date_type &gt;                            <a name="boost.date_time.date_input_facet.first_kday_type"></a>first_kday_type;           
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="last_kday_of_month.html" title="Class template last_kday_of_month">last_kday_of_month</a>&lt; date_type &gt;                             <a name="boost.date_time.date_input_facet.last_kday_type"></a>last_kday_type;            
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="first_kday_after.html" title="Class template first_kday_after">first_kday_after</a>&lt; date_type &gt;                               <a name="boost.date_time.date_input_facet.kday_after_type"></a>kday_after_type;           
+  <span class="bold"><strong>typedef</strong></span> <a class="link" href="first_kday_before.html" title="Class template first_kday_before">first_kday_before</a>&lt; date_type &gt;                              <a name="boost.date_time.date_input_facet.kday_before_type"></a>kday_before_type;          
 
-  <span class="emphasis"><em>// <a href="date_input_facet.html#boost.date_time.date_input_facetconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a href="date_input_facet.html#id752528-bb">date_input_facet</a>(::size_t = 0);
-  <a href="date_input_facet.html#id752537-bb">date_input_facet</a>(<span class="bold"><strong>const</strong></span> string_type &amp;, ::size_t = 0);
-  <a href="date_input_facet.html#id752552-bb">date_input_facet</a>(<span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> format_date_parser_type &amp;, 
-                   <span class="bold"><strong>const</strong></span> special_values_parser_type &amp;, 
-                   <span class="bold"><strong>const</strong></span> period_parser_type &amp;, <span class="bold"><strong>const</strong></span> date_gen_parser_type &amp;, 
-                   ::size_t = 0);
+  <span class="emphasis"><em>// <a class="link" href="date_input_facet.html#boost.date_time.date_input_facetconstruct-copy-destruct">construct/copy/destruct</a></em></span>
+  <a class="link" href="date_input_facet.html#id373320-bb">date_input_facet</a>(::size_t = 0);
+  <a class="link" href="date_input_facet.html#id402664-bb">date_input_facet</a>(<span class="bold"><strong>const</strong></span> string_type &amp;, ::size_t = 0);
+  <a class="link" href="date_input_facet.html#id364654-bb">date_input_facet</a>(<span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.format_date_parser_type">format_date_parser_type</a> &amp;, 
+                   <span class="bold"><strong>const</strong></span> <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.special_values_parser_type">special_values_parser_type</a> &amp;, 
+                   <span class="bold"><strong>const</strong></span> <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.period_parser_type">period_parser_type</a> &amp;, <span class="bold"><strong>const</strong></span> <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.date_gen_parser_type">date_gen_parser_type</a> &amp;, 
+                   ::size_t = 0);
 
-  <span class="emphasis"><em>// <a href="date_input_facet.html#id861009-bb">public member functions</a></em></span>
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id861012-bb">format</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> ) ;
-  <span class="type"><span class="bold"><strong>virtual</strong></span> <span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id761305-bb">set_iso_format</a>() ;
-  <span class="type"><span class="bold"><strong>virtual</strong></span> <span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id794340-bb">set_iso_extended_format</a>() ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id794347-bb">month_format</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> ) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id862364-bb">weekday_format</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> ) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id862378-bb">year_format</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> ) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id862392-bb">period_parser</a>(period_parser_type) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id829300-bb">short_weekday_names</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id829314-bb">long_weekday_names</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id829328-bb">short_month_names</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id767649-bb">long_month_names</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id896852-bb">date_gen_element_strings</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id896866-bb">date_gen_element_strings</a>(<span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
-                                <span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
-                                <span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
-                                <span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
-                                <span class="bold"><strong>const</strong></span> string_type &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="date_input_facet.html#id969481-bb">special_values_parser</a>(special_values_parser_type) ;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id730483-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, date_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id695046-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, month_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id862638-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, day_of_week_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id837049-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, day_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id793157-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, year_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id873566-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, duration_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id866590-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, period_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id866623-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, nth_kday_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id865796-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, partial_date_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id762598-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, first_kday_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id864073-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, last_kday_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id856882-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, kday_before_type &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">InItrT</span> <a href="date_input_facet.html#id786512-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, kday_after_type &amp;) <span class="bold"><strong>const</strong></span>;
-
-  <span class="bold"><strong>static</strong></span> const  char_type long_weekday_format;
-  <span class="bold"><strong>static</strong></span> const  char_type short_weekday_format;
-  <span class="bold"><strong>static</strong></span> const  char_type long_month_format;
-  <span class="bold"><strong>static</strong></span> const  char_type short_month_format;
-  <span class="bold"><strong>static</strong></span> const  char_type four_digit_year_format;
-  <span class="bold"><strong>static</strong></span> const  char_type two_digit_year_format;
-  <span class="bold"><strong>static</strong></span> const  char_type default_period_separator;
-  <span class="bold"><strong>static</strong></span> const  char_type standard_format_specifier;
-  <span class="bold"><strong>static</strong></span> const  char_type iso_format_specifier;
-  <span class="bold"><strong>static</strong></span> const  char_type iso_format_extended_specifier;
-  <span class="bold"><strong>static</strong></span> const  char_type default_date_format;
-  <span class="bold"><strong>static</strong></span> std::locale::id id;
+  <span class="emphasis"><em>// <a class="link" href="date_input_facet.html#id281358-bb">public member functions</a></em></span>
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id316923-bb">format</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> ) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id308290-bb">set_iso_format</a>() ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id351425-bb">set_iso_extended_format</a>() ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id340712-bb">month_format</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> ) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id315512-bb">weekday_format</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> ) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id375974-bb">year_format</a>(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span> ) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id308211-bb">period_parser</a>(<a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.period_parser_type">period_parser_type</a>) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id277772-bb">short_weekday_names</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id322484-bb">long_weekday_names</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id253354-bb">short_month_names</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id325873-bb">long_month_names</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id264557-bb">date_gen_element_strings</a>(<span class="bold"><strong>const</strong></span> input_collection_type &amp;) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id346400-bb">date_gen_element_strings</a>(<span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
+                                <span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
+                                <span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
+                                <span class="bold"><strong>const</strong></span> string_type &amp;, <span class="bold"><strong>const</strong></span> string_type &amp;, 
+                                <span class="bold"><strong>const</strong></span> string_type &amp;) ;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="date_input_facet.html#id356288-bb">special_values_parser</a>(<a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.special_values_parser_type">special_values_parser_type</a>) ;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id340573-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, date_type &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id367763-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, month_type &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id277080-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, day_of_week_type &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id277747-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, day_type &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id321639-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, year_type &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id435891-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, duration_type &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id288892-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.period_type">period_type</a> &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id296078-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.nth_kday_type">nth_kday_type</a> &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id404755-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.partial_date_type">partial_date_type</a> &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id277902-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.first_kday_type">first_kday_type</a> &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id340664-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.last_kday_type">last_kday_type</a> &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id217456-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.kday_before_type">kday_before_type</a> &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">InItrT</span> <a class="link" href="date_input_facet.html#id338347-bb">get</a>(InItrT &amp;, InItrT &amp;, std::ios_base &amp;, <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.kday_after_type">kday_after_type</a> &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> long_weekday_format;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> short_weekday_format;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> long_month_format;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> short_month_format;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> four_digit_year_format;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> two_digit_year_format;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> default_period_separator;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> standard_format_specifier;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> iso_format_specifier;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> iso_format_extended_specifier;
+  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> char_type</span> default_date_format;
+  <span class="bold"><strong>static</strong></span> <span class="type">std::locale::id</span> id;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id1041018"></a><h2>Description</h2>
+<a name="id578933"></a><h2>Description</h2>
 <div class="refsect2" lang="en">
-<a name="id1041021"></a><h3>
-<a name="boost.date_time.date_input_facetconstruct-copy-destruct"></a><code class="computeroutput">date_input_facet</code> construct/copy/destruct</h3>
+<a name="id578937"></a><h3>
+<a name="boost.date_time.date_input_facetconstruct-copy-destruct"></a><code class="computeroutput">date_input_facet</code> 
+        public
+       construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><a name="id752528-bb"></a>date_input_facet(::size_t a_ref = 0);</pre></li>
-<li><pre class="literallayout"><a name="id752537-bb"></a>date_input_facet(<span class="bold"><strong>const</strong></span> string_type &amp; format_str, ::size_t a_ref = 0);</pre></li>
-<li><pre class="literallayout"><a name="id752552-bb"></a>date_input_facet(<span class="bold"><strong>const</strong></span> string_type &amp; format_str, 
-                 <span class="bold"><strong>const</strong></span> format_date_parser_type &amp; date_parser, 
-                 <span class="bold"><strong>const</strong></span> special_values_parser_type &amp; sv_parser, 
-                 <span class="bold"><strong>const</strong></span> period_parser_type &amp; per_parser, 
-                 <span class="bold"><strong>const</strong></span> date_gen_parser_type &amp; date_gen_parser, 
-                 ::size_t ref_count = 0);</pre></li>
+<li><pre class="literallayout"><a name="id373320-bb"></a>date_input_facet(::size_t a_ref = 0);</pre></li>
+<li><pre class="literallayout"><a name="id402664-bb"></a>date_input_facet(<span class="bold"><strong>const</strong></span> string_type &amp; format_str, ::size_t a_ref = 0);</pre></li>
+<li><pre class="literallayout"><a name="id364654-bb"></a>date_input_facet(<span class="bold"><strong>const</strong></span> string_type &amp; format_str, 
+                 <span class="bold"><strong>const</strong></span> <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.format_date_parser_type">format_date_parser_type</a> &amp; date_parser, 
+                 <span class="bold"><strong>const</strong></span> <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.special_values_parser_type">special_values_parser_type</a> &amp; sv_parser, 
+                 <span class="bold"><strong>const</strong></span> <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.period_parser_type">period_parser_type</a> &amp; per_parser, 
+                 <span class="bold"><strong>const</strong></span> <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.date_gen_parser_type">date_gen_parser_type</a> &amp; date_gen_parser, 
+                 ::size_t ref_count = 0);</pre></li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id1041134"></a><h3>
-<a name="id861009-bb"></a><code class="computeroutput">date_input_facet</code> public member functions</h3>
+<a name="id579093"></a><h3>
+<a name="id281358-bb"></a><code class="computeroutput">date_input_facet</code> public member functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id861012-bb"></a>format(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  format_str) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>virtual</strong></span> <span class="bold"><strong>void</strong></span></span> <a name="id761305-bb"></a>set_iso_format() ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>virtual</strong></span> <span class="bold"><strong>void</strong></span></span> <a name="id794340-bb"></a>set_iso_extended_format() ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id794347-bb"></a>month_format(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  format_str) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id862364-bb"></a>weekday_format(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  format_str) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id862378-bb"></a>year_format(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  format_str) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id862392-bb"></a>period_parser(period_parser_type per_parser) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id829300-bb"></a>short_weekday_names(<span class="bold"><strong>const</strong></span> input_collection_type &amp; weekday_names) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id829314-bb"></a>long_weekday_names(<span class="bold"><strong>const</strong></span> input_collection_type &amp; weekday_names) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id829328-bb"></a>short_month_names(<span class="bold"><strong>const</strong></span> input_collection_type &amp; month_names) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id767649-bb"></a>long_month_names(<span class="bold"><strong>const</strong></span> input_collection_type &amp; month_names) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id896852-bb"></a>date_gen_element_strings(<span class="bold"><strong>const</strong></span> input_collection_type &amp; col) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id896866-bb"></a>date_gen_element_strings(<span class="bold"><strong>const</strong></span> string_type &amp; first, 
-                              <span class="bold"><strong>const</strong></span> string_type &amp; second, 
-                              <span class="bold"><strong>const</strong></span> string_type &amp; third, 
-                              <span class="bold"><strong>const</strong></span> string_type &amp; fourth, 
-                              <span class="bold"><strong>const</strong></span> string_type &amp; fifth, 
-                              <span class="bold"><strong>const</strong></span> string_type &amp; last, 
-                              <span class="bold"><strong>const</strong></span> string_type &amp; before, 
-                              <span class="bold"><strong>const</strong></span> string_type &amp; after, 
-                              <span class="bold"><strong>const</strong></span> string_type &amp; of) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id969481-bb"></a>special_values_parser(special_values_parser_type sv_parser) ;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id730483-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, date_type &amp; d) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id695046-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, month_type &amp; m) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id862638-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, day_of_week_type &amp; wd) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id837049-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, day_type &amp; d) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id793157-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, year_type &amp; y) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id873566-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
-           duration_type &amp; dd) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id866590-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, period_type &amp; p) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id866623-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
-           nth_kday_type &amp; nkd) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id865796-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
-           partial_date_type &amp; pd) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id762598-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
-           first_kday_type &amp; fkd) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id864073-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
-           last_kday_type &amp; lkd) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id856882-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
-           kday_before_type &amp; fkb) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id786512-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
-           kday_after_type &amp; fka) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id316923-bb"></a>format(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  format_str) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id308290-bb"></a>set_iso_format() ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id351425-bb"></a>set_iso_extended_format() ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id340712-bb"></a>month_format(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  format_str) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id315512-bb"></a>weekday_format(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  format_str) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id375974-bb"></a>year_format(<span class="bold"><strong>const</strong></span> char_type *<span class="bold"><strong>const</strong></span>  format_str) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id308211-bb"></a>period_parser(<a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.period_parser_type">period_parser_type</a> per_parser) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id277772-bb"></a>short_weekday_names(<span class="bold"><strong>const</strong></span> input_collection_type &amp; weekday_names) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id322484-bb"></a>long_weekday_names(<span class="bold"><strong>const</strong></span> input_collection_type &amp; weekday_names) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id253354-bb"></a>short_month_names(<span class="bold"><strong>const</strong></span> input_collection_type &amp; month_names) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id325873-bb"></a>long_month_names(<span class="bold"><strong>const</strong></span> input_collection_type &amp; month_names) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id264557-bb"></a>date_gen_element_strings(<span class="bold"><strong>const</strong></span> input_collection_type &amp; col) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id346400-bb"></a>date_gen_element_strings(<span class="bold"><strong>const</strong></span> string_type &amp; first, 
+                              <span class="bold"><strong>const</strong></span> string_type &amp; second, 
+                              <span class="bold"><strong>const</strong></span> string_type &amp; third, 
+                              <span class="bold"><strong>const</strong></span> string_type &amp; fourth, 
+                              <span class="bold"><strong>const</strong></span> string_type &amp; fifth, 
+                              <span class="bold"><strong>const</strong></span> string_type &amp; last, 
+                              <span class="bold"><strong>const</strong></span> string_type &amp; before, 
+                              <span class="bold"><strong>const</strong></span> string_type &amp; after, 
+                              <span class="bold"><strong>const</strong></span> string_type &amp; of) ;</pre></li>
+<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id356288-bb"></a>special_values_parser(<a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.special_values_parser_type">special_values_parser_type</a> sv_parser) ;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id340573-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, date_type &amp; d) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id367763-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, month_type &amp; m) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id277080-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, day_of_week_type &amp; wd) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id277747-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, day_type &amp; d) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id321639-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp;, year_type &amp; y) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id435891-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
+           duration_type &amp; dd) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id288892-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.period_type">period_type</a> &amp; p) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id296078-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
+           <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.nth_kday_type">nth_kday_type</a> &amp; nkd) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id404755-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
+           <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.partial_date_type">partial_date_type</a> &amp; pd) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id277902-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
+           <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.first_kday_type">first_kday_type</a> &amp; fkd) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id340664-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
+           <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.last_kday_type">last_kday_type</a> &amp; lkd) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id217456-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
+           <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.kday_before_type">kday_before_type</a> &amp; fkb) <span class="bold"><strong>const</strong></span>;</pre></li>
+<li><pre class="literallayout"><span class="type">InItrT</span> <a name="id338347-bb"></a>get(InItrT &amp; from, InItrT &amp; to, std::ios_base &amp; a_ios, 
+           <a class="link" href="date_input_facet.html#boost.date_time.date_input_facet.kday_after_type">kday_after_type</a> &amp; fka) <span class="bold"><strong>const</strong></span>;</pre></li>
 </ol></div>
 </div>
 </div>
 </div>
-<table width="100%"><tr>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><small>Copyright © 2001-2005 CrystalClear Software, Inc</small></td>
+<td align="right"><div class="copyright-footer">Copyright © 2001-2005 CrystalClear Software, Inc<p>Subject to the Boost Software License, Version 1.0. (See accompanying file
+    <code class="filename">LICENSE_1_0.txt</code> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)</p>
+</div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="date_facet.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.date_facet.hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="simple_format.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="date_facet.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../date_time/doxy.html#header.boost.date_time.date_facet.hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="simple_format.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

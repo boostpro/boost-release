@@ -1,9 +1,9 @@
 /* Copyright (c) 2004 CrystalClear Software, Inc.
  * Use, modification and distribution is subject to the 
  * Boost Software License, Version 1.0. (See accompanying
- * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
+ * file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  * Author: Jeff Garland
- * $Date: 2005/01/30 21:04:48 $
+ * $Date: 2008-02-27 15:00:24 -0500 (Wed, 27 Feb 2008) $
  *
  * This file isn't part of the official regression test suite at
  * the moment, but it is a basic test of the strings_from_facet.hpp

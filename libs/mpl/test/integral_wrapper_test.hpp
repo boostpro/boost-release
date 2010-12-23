@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/integral_wrapper_test.hpp,v $
-// $Date: 2006/11/20 17:59:29 $
-// $Revision: 1.4.2.1 $
+// $Source$
+// $Date: 2006-11-20 12:59:29 -0500 (Mon, 20 Nov 2006) $
+// $Revision: 36116 $
 
 #include <boost/mpl/next_prior.hpp>
 #include <boost/mpl/aux_/test.hpp>

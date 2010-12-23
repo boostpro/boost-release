@@ -60,6 +60,8 @@
 # include "make.h"
 # include "command.h"
 # include "execcmd.h"
+# include "compile.h"
+# include "output.h"
 
 # include <stdlib.h>
 
@@ -103,7 +105,7 @@ static void make1atail(state *pState);
 static void make1b( state *pState );
 static void make1c( state *pState );
 static void make1d( state *pState );
-static void make_closure(void *closure, int status, timing_info*);
+static void make_closure(void *closure, int status, timing_info*, char *, char *);
 
 typedef struct _stack
 {
@@ -127,9 +129,7 @@ static state *alloc_state()
 	}
 	else
 	{
-        if ( DEBUG_PROFILE )
-            profile_memory( sizeof(state) );
-		return (state *)malloc(sizeof(state));
+		return (state *)BJAM_MALLOC(sizeof(state));
 	}
 }
 
@@ -145,7 +145,7 @@ static void clear_state_freelist()
 	{
 		state *pState = state_freelist;
 		state_freelist = state_freelist->prev;
-		free(pState);
+		BJAM_FREE(pState);
 	}
 }
 
@@ -504,19 +504,18 @@ make1c( state *pState )
 
 	if( cmd && pState->t->status == EXEC_CMD_OK )
 	{
+            char *rule_name = 0;
+            char *target = 0;
 		if( DEBUG_MAKEQ || 
             ! ( cmd->rule->actions->flags & RULE_QUIETLY ) && DEBUG_MAKE)
 	    {
-		printf( "%s ", cmd->rule->name );
-		list_print( lol_get( &cmd->args, 0 ) );
-		printf( "\n" );
+            rule_name = cmd->rule->name;
+            target = lol_get(&cmd->args, 0)->string;
+            if ( globs.noexec )
+            {
+                out_action(rule_name,target,cmd->buf,"","",EXIT_OK);
+            }
 	    }
-
-	    if( DEBUG_EXEC )
-		printf( "%s\n", cmd->buf );
-
-	    if( globs.cmdout )
-		fprintf( globs.cmdout, "%s", cmd->buf );
 
 	    if( globs.noexec )
 	    {
@@ -526,10 +525,9 @@ make1c( state *pState )
 	    else
 	    {
 			TARGET *t = pState->t;
-			fflush( stdout );
 
 			pop_state(&state_stack); /* pop state first because execcmd could push state */
-			execcmd( cmd->buf, make_closure, t, cmd->shell );
+			execcmd( cmd->buf, make_closure, t, cmd->shell, rule_name, target );
 	    }
 	}
 	else
@@ -650,7 +648,7 @@ make1c( state *pState )
 		    if( DEBUG_EXECCMD )
 			printf( "SEM: placing %s on stack\n", first->target->name);
             push_state(&temp_stack, first->target, NULL, T_STATE_MAKE1B);
-		    free( first );
+		    BJAM_FREE( first );
 		}
 	    }
 #endif
@@ -664,16 +662,6 @@ make1c( state *pState )
 
 		}
 	}
-}
-
-/* To l, append a 1-element list containing the string representation
- * of x
- */
-static void append_double_string( LOL *l, double x )
-{
-    char buffer[50];
-    sprintf(buffer, "%f", x);
-    lol_add( l, list_new( L0, newstr( buffer ) ) );
 }
 
 /* Look up the __TIMING_RULE__ variable on the given target, and if
@@ -690,34 +678,104 @@ static void call_timing_rule(TARGET* target, timing_info* time)
 
     if (timing_rule)
     {
-        /* We'll prepend $(__TIMING_RULE__[2-]) to the first argument */
-        LIST* initial_args = list_copy( L0, timing_rule->next );
-            
+        /* rule timing-rule (
+            args * :
+            target :
+            start end user system ) */
+
         /* Prepare the argument list */
         FRAME frame[1];
         frame_init( frame );
 
-        /* First argument is the name of the timed target */
-        lol_add( frame->args, list_new( initial_args, target->name ) );
-        append_double_string(frame->args, time->user);
-        append_double_string(frame->args, time->system);
+        /* args * :: $(__ACTION_RULE__[2-]) */
+        lol_add( frame->args, list_copy( L0, timing_rule->next ) );
 
-        if( lol_get( frame->args, 2 ) )
-            evaluate_rule( timing_rule->string, frame );
-            
+        /* target :: the name of the target */
+        lol_add( frame->args, list_new( L0, target->name ) );
+
+        /* start end user system :: info about the action command */
+        lol_add( frame->args,
+            list_new( list_new( list_new( list_new( L0,
+                outf_time(time->start) ),
+                outf_time(time->end) ),
+                outf_double(time->user) ),
+                outf_double(time->system) ) );
+
+        /* Call the rule. */
+        evaluate_rule( timing_rule->string, frame );
+
         /* Clean up */
         frame_free( frame );
     }
 }
 
+/* Look up the __ACTION_RULE__ variable on the given target, and if
+ * non-empty, invoke the rule it names, passing the given info, 
+ * timing_info, executed command and command output
+ */
+static void call_action_rule(TARGET* target, int status, timing_info* time,
+    char *executed_command, char *command_output)
+{
+    LIST* action_rule;
+
+    pushsettings(target->settings);
+    action_rule = var_get( "__ACTION_RULE__" );
+    popsettings(target->settings);
+
+    if (action_rule)
+    {
+        /* rule action-rule (
+            args * :
+            target :
+            command status start end user system :
+            output ? ) */
+
+        /* Prepare the argument list */
+        FRAME frame[1];
+        frame_init( frame );
+
+        /* args * :: $(__ACTION_RULE__[2-]) */
+        lol_add( frame->args, list_copy( L0, action_rule->next ) );
+
+        /* target :: the name of the target */
+        lol_add( frame->args, list_new( L0, target->name ) );
+
+        /* command status start end user system :: info about the action command */
+        lol_add( frame->args,
+            list_new( list_new( list_new( list_new( list_new( list_new( L0,
+                newstr(executed_command) ),
+                outf_int(status) ),
+                outf_time(time->start) ),
+                outf_time(time->end) ),
+                outf_double(time->user) ),
+                outf_double(time->system) ) );
+
+        /* output ? :: the output of the action command */
+        if (command_output)
+            lol_add(frame->args, list_new(L0, newstr(command_output)));
+        else
+            lol_add(frame->args, L0);
+
+        /* Call the rule. */
+        evaluate_rule( action_rule->string, frame );
+
+        /* Clean up */
+        frame_free( frame );
+    }
+}
+
+
 static void make_closure(
-    void *closure, int status, timing_info* time)
+    void *closure, int status, timing_info* time, char *executed_command,
+    char *command_output)
 {
     TARGET* built = (TARGET*)closure;
 
     call_timing_rule(built, time);
     if (DEBUG_EXECCMD)
         printf("%f sec system; %f sec user\n", time->system, time->user);
+
+    call_action_rule(built, status, time, executed_command, command_output);
     
     push_state(&state_stack, built, NULL, T_STATE_MAKE1D)->status = status;
 }
@@ -1066,7 +1124,7 @@ make1settings( LIST *vars )
 
 	    /* Add to settings chain */
 
-	    settings = addsettings( settings, 0, vars->string, nl );
+	    settings = addsettings( settings, VAR_SET, vars->string, nl );
 	}
 
 	return settings;

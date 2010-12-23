@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/partition.cpp,v $
-// $Date: 2004/11/28 03:35:12 $
-// $Revision: 1.2 $
+// $Source$
+// $Date: 2004-11-27 22:35:12 -0500 (Sat, 27 Nov 2004) $
+// $Revision: 26328 $
 
 #include <boost/mpl/partition.hpp>
 #include <boost/mpl/vector.hpp>

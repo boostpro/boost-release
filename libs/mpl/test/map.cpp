@@ -8,9 +8,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/map.cpp,v $
-// $Date: 2005/06/18 22:42:04 $
-// $Revision: 1.5 $
+// $Source$
+// $Date: 2005-06-18 18:42:04 -0400 (Sat, 18 Jun 2005) $
+// $Revision: 29682 $
 
 #include <boost/mpl/map.hpp>
 #include <boost/mpl/insert.hpp>

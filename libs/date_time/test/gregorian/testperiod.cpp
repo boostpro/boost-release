@@ -1,7 +1,7 @@
 /* Copyright (c) 2002,2003 CrystalClear Software, Inc.
  * Use, modification and distribution is subject to the 
  * Boost Software License, Version 1.0. (See accompanying
- * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
+ * file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
  * Author: Jeff Garland 
  */
 
@@ -50,7 +50,11 @@ int main()
   //   std::cout << to_string(p1.begin()) <<"--" 
   //             << to_string(p1.last()) << std::endl;
   check("shift", p1 == shifted);
-  
+
+  //expand the date period  
+  date_period p10(date(2000,Jan,5),date(2000,Jan,8));
+  p10.expand(days(2)); //from 2000-Jan-01--2000-Jan-04
+  check("expand", p10 == date_period(date(2000,Jan,3),date(2000,Jan,10)));
 
   //intersection tests
   date_period i1(date(2000,Jan,5), date(2000,Jan,10));

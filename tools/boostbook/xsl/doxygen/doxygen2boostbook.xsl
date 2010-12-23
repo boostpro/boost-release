@@ -37,16 +37,19 @@
   <!-- The title that will be used for the BoostBook library reference emitted. 
        If left blank, BoostBook will assign a default title. -->
   <xsl:param name="boost.doxygen.reftitle" select="''"/>
-  
+
   <!-- The id used for the library-reference. By default, it is the normalized
        form of the reftitle. -->
   <xsl:param name="boost.doxygen.refid" select="''"/>
+
+  <!-- The directory into which png files corresponding to LaTeX formulas will be found. -->
+  <xsl:param name="boost.doxygen.formuladir" select="'images/'"/>
 
   <xsl:output method="xml" indent="no" standalone="yes"/>
 
   <xsl:key name="compounds-by-kind" match="compounddef" use="@kind"/>
   <xsl:key name="compounds-by-id" match="compounddef" use="@id"/>
-  <xsl:key name="inner-classes" match="compounddef[not(attribute::kind='namespace') and not(attribute::kind='file')]/innerclass" use="@refid"/>
+  <xsl:key name="members-by-id" match="memberdef" use="@id" />
 
   <xsl:strip-space elements="briefdescription detaileddescription"/>
 
@@ -184,8 +187,8 @@ Cannot handle compounddef with kind=<xsl:value-of select="@kind"/>
     <xsl:param name="with-namespace-refs"/>
 
     <xsl:if test="contains(string(location/attribute::file), 
-                           concat('/', $in-file)) and
-                  not (key('inner-classes', @id))">
+                           concat('/', $in-file)) ">
+    
       <!-- The short name of this class -->
       <xsl:variable name="name-with-spec">
         <xsl:call-template name="strip-qualifiers">
@@ -413,6 +416,16 @@ Cannot handle compounddef with kind=<xsl:value-of select="@kind"/>
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="sectiondef" mode="toplevel">
+    <xsl:param name="in-file" select="''"/>
+
+    <xsl:apply-templates mode="toplevel"
+                         select="memberdef[generate-id() =
+                                 generate-id(key('members-by-id', @id))]">
+      <xsl:with-param name="in-file" select="$in-file"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
   <xsl:template match="memberdef" mode="toplevel">
     <xsl:param name="with-namespace-refs"/>
     <xsl:param name="in-file"/>
@@ -448,6 +461,19 @@ Cannot handle compounddef with kind=<xsl:value-of select="@kind"/>
           <xsl:apply-templates select="detaileddescription" mode="passthrough"/>
         </macro>
       </xsl:when>
+
+      <xsl:when test="@kind='function'">
+        <xsl:call-template name="function" />
+      </xsl:when>
+
+      <xsl:when test="@kind='typedef'">
+        <xsl:call-template name="typedef" />
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:message>Cannot handle toplevel memberdef element with
+        kind=<xsl:value-of select="@kind"/></xsl:message>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -665,6 +691,12 @@ Cannot handle compounddef with kind=<xsl:value-of select="@kind"/>
       </xsl:when>
       <xsl:when test="@kind='user-defined'">
         <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:when test="@kind=''">
+        <xsl:apply-templates select="memberdef[generate-id() =
+                                     generate-id(key('members-by-id', @id))]">
+          <xsl:with-param name="in-file" select="$in-file"/>
+        </xsl:apply-templates>
       </xsl:when>
       <xsl:otherwise>
         <xsl:message>
@@ -1328,4 +1360,66 @@ Cannot handle memberdef element with kind=<xsl:value-of select="@kind"/>
     <xsl:apply-templates select="*|text()" mode="passthrough"/>
   </xsl:template>
 
+  <!--
+  Eric Niebler: Jan-8-2008
+  Here is some 3/4-baked support for LaTeX formulas in
+  Doxygen comments. Doxygen doesn't generate the PNG files
+  when outputting XML. In order to use this code, you must
+  run Doxygen first to generate HTML (and the PNG files for
+  the formulas). You can do this in a Jamfile with 
+  "doxygen foo.html : <sources, etc...> ; ", where the ".html"
+  is significant. Then the png files should be copied into the 
+  images/ directory (or another place relative to the html/
+  directory, as specified by $boost.doxygen.formuladir XSL
+  parameter). This can be done with a custom action in a 
+  Jamfile. Finally, the docs can be built as normal.
+  See libs/accumulators/doc/Jamfile.v2 for a working example.
+  -->
+  <xsl:template match="formula" mode="passthrough">
+    <xsl:choose>
+      <xsl:when test="substring(*|text(), 1, 2) = '\['">
+        <equation>
+          <title/>
+          <alt>
+            <xsl:value-of select="*|text()"/>
+          </alt>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata format="PNG" align="center">
+                <xsl:attribute name="fileref">
+                  <xsl:value-of select="concat(concat(concat($boost.doxygen.formuladir, 'form_'), @id), '.png')"/>
+                </xsl:attribute>
+              </imagedata>
+            </imageobject>
+            <textobject role="tex">
+              <phrase>
+                <xsl:value-of select="*|text()"/>
+              </phrase>
+            </textobject>
+          </mediaobject>
+        </equation>
+      </xsl:when>
+      <xsl:otherwise>
+        <inlineequation>
+          <alt>
+            <xsl:value-of select="*|text()"/>
+          </alt>
+          <inlinemediaobject>
+            <imageobject role="html">
+              <imagedata format="PNG">
+                <xsl:attribute name="fileref">
+                  <xsl:value-of select="concat(concat(concat($boost.doxygen.formuladir, 'form_'), @id), '.png')"/>
+                </xsl:attribute>
+              </imagedata>
+            </imageobject>
+            <textobject role="tex">
+              <phrase>
+                <xsl:value-of select="*|text()"/>
+              </phrase>
+            </textobject>
+          </inlinemediaobject>
+        </inlineequation>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
  </xsl:stylesheet>

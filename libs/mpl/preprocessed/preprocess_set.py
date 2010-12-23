@@ -7,9 +7,9 @@
 #
 # See http://www.boost.org/libs/mpl for documentation.
 
-# $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/preprocess_set.py,v $
-# $Date: 2006/11/23 19:57:11 $
-# $Revision: 1.2.8.1 $
+# $Source$
+# $Date: 2006-11-23 14:57:11 -0500 (Thu, 23 Nov 2006) $
+# $Revision: 36168 $
 
 import preprocess
 import os.path

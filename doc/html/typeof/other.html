@@ -1,26 +1,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title> Other considerations and tips</title>
+<title>Other considerations and tips</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../typeof.html" title="Chapter 19. Boost.Typeof">
-<link rel="prev" href="refe.html" title=" Reference">
-<link rel="next" href="cont.html" title=" Contributed By:">
+<link rel="up" href="../typeof.html" title="Chapter 20. Boost.Typeof">
+<link rel="prev" href="refe.html" title="Reference">
+<link rel="next" href="cont.html" title="Contributed By:">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table cellpadding="2" width="100%">
+<table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
-<td align="center"><a href="../../../index.htm">Home</a></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="../../../people/people.htm">People</a></td>
-<td align="center"><a href="../../../more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
+<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
-</table>
+</tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="refe.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../typeof.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="cont.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="refe.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../typeof.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="cont.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -68,12 +68,16 @@
 </span><span class="keyword">typedef</span> <span class="identifier">typeof_access</span><span class="special">::</span><span class="identifier">id2type</span><span class="special">::</span><span class="identifier">type</span> <span class="identifier">type</span><span class="special">;</span> 
 </pre>
 <p>
-        This method has also been adapted to VC7.0, where the nested class is a template
-        class that is specialized in the derived class. The loopholes have been fixed
-        in VC8.0 though, so on this compiler this method doesn't work.
+        Peder Holt adapted this method to VC7.0, where the nested class is a template
+        class that is specialized in the derived class.
       </p>
 <p>
-        For this and many other compilers neither native <code class="computeroutput"><span class="identifier">typeof</span></code>
+        In VC8.0, it seemed that all the bug-featire had been fixed, but Steven Watanabe
+        managed to implement a more rigorous version of the VC7.0 fix that enables
+        'typeof' to be supported 'natively' here as well.
+      </p>
+<p>
+        For many other compilers neither native <code class="computeroutput"><span class="identifier">typeof</span></code>
         support nor the trick described above is an option. For such compilers the
         emulation method is the only way of implementing <code class="computeroutput"><span class="identifier">typeof</span></code>.
       </p>
@@ -316,13 +320,18 @@
 </pre>
 </div>
 </div>
-<table width="100%"><tr>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><small>Copyright © 2004, 2005 Arkadiy Vertleyb, Peder Holt</small></td>
+<td align="right"><div class="copyright-footer">Copyright © 2004, 2005 Arkadiy Vertleyb, Peder Holt<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">
+        http://www.boost.org/LICENSE_1_0.txt </a>)
+      </p>
+</div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="refe.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../typeof.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="cont.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="refe.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../typeof.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="cont.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

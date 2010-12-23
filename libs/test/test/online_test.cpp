@@ -1,37 +1,27 @@
-//  (C) Copyright Gennadiy Rozental 2001-2006.
+//  (C) Copyright Gennadiy Rozental 2001-2007.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: online_test.cpp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.16 $
+//  Version     : $Revision: 41370 $
 //
 //  Description : included Test Execution Monitor test
 // ***************************************************************************
 
 // Boost.Test
 #define BOOST_TEST_MAIN
-#include <boost/test/included/unit_test_framework.hpp>
+#include <boost/test/included/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE( test ) 
 {
+    int i = 1;
+    BOOST_CHECK_EQUAL( i*i, 1 );
 }
 
 //____________________________________________________________________________//
-
-// ***************************************************************************
-//  Revision History :
-//  
-//  $Log: online_test.cpp,v $
-//  Revision 1.16  2006/03/19 11:49:04  rogeeff
-//  *** empty log message ***
-//
-//  Revision 1.15  2006/02/01 08:00:15  rogeeff
-//  *** empty log message ***
-//
-// ***************************************************************************
 
 // EOF

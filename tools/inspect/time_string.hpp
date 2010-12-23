@@ -8,7 +8,7 @@
 //
 // ------------------------------------------------------------------
 //
-// $Id: time_string.hpp,v 1.1.2.1 2006/09/13 17:25:52 grafik Exp $
+// $Id: time_string.hpp 35093 2006-09-13 17:25:52Z grafik $
 
 #ifndef BOOST_TIME_STRING_HPP_GP_20060731
 #define BOOST_TIME_STRING_HPP_GP_20060731

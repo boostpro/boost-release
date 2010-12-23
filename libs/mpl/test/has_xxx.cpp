@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/has_xxx.cpp,v $
-// $Date: 2004/09/18 07:18:02 $
-// $Revision: 1.4 $
+// $Source$
+// $Date: 2004-09-18 03:18:02 -0400 (Sat, 18 Sep 2004) $
+// $Revision: 25188 $
 
 #include <boost/mpl/has_xxx.hpp>
 #include <boost/mpl/aux_/config/workaround.hpp>

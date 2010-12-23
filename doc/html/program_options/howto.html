@@ -3,47 +3,47 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>How To</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../program_options.html" title="Chapter 10. Boost.Program_options">
+<link rel="up" href="../program_options.html" title="Chapter 12. Boost.Program_options">
 <link rel="prev" href="overview.html" title="Library Overview">
 <link rel="next" href="design.html" title="Design Discussion">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table cellpadding="2" width="100%">
+<table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
-<td align="center"><a href="../../../index.htm">Home</a></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="../../../people/people.htm">People</a></td>
-<td align="center"><a href="../../../more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
+<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
-</table>
+</tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="overview.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../program_options.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="design.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../program_options.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="design.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="program_options.howto"></a>How To</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="howto.html#id1592624">Non-conventional Syntax</a></span></dt>
-<dt><span class="section"><a href="howto.html#id1592676">Response Files</a></span></dt>
-<dt><span class="section"><a href="howto.html#id1592754">Winmain Command Line</a></span></dt>
-<dt><span class="section"><a href="howto.html#id1592795">Option Groups and Hidden Options</a></span></dt>
-<dt><span class="section"><a href="howto.html#id1592926">Custom Validators</a></span></dt>
-<dt><span class="section"><a href="howto.html#id1592999">Unicode Support</a></span></dt>
-<dt><span class="section"><a href="howto.html#id1593176">Allowing Unknown Options</a></span></dt>
+<dt><span class="section"><a href="howto.html#id1257648">Non-conventional Syntax</a></span></dt>
+<dt><span class="section"><a href="howto.html#id1257716">Response Files</a></span></dt>
+<dt><span class="section"><a href="howto.html#id1257809">Winmain Command Line</a></span></dt>
+<dt><span class="section"><a href="howto.html#id1257858">Option Groups and Hidden Options</a></span></dt>
+<dt><span class="section"><a href="howto.html#id1258036">Custom Validators</a></span></dt>
+<dt><span class="section"><a href="howto.html#id1258141">Unicode Support</a></span></dt>
+<dt><span class="section"><a href="howto.html#id1258340">Allowing Unknown Options</a></span></dt>
 </dl></div>
 <p>This section describes how the library can be used in specific
   situations.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1592624"></a>Non-conventional Syntax</h3></div></div></div>
+<a name="id1257648"></a>Non-conventional Syntax</h3></div></div></div>
 <p>Sometimes, standard command line syntaxes are not enough. For
     example, the gcc compiler has "-frtti" and -fno-rtti" options, and this
     syntax is not directly supported.
     </p>
-<a class="indexterm" name="id1592636"></a><p>For such cases, the library allows the user to provide an
+<a class="indexterm" name="id1257660"></a><p>For such cases, the library allows the user to provide an
     <em class="firstterm">additional parser</em> -- a function which will be called on each
     command line element, before any processing by the library. If the
     additional parser recognises the syntax, it returns the option name and
@@ -80,8 +80,8 @@ store(command_line_parser(ac, av).options(desc).extra_parser(reg_foo)
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1592676"></a>Response Files</h3></div></div></div>
-<a class="indexterm" name="id1592682"></a><p>Some operating system have very low limits of the command line
+<a name="id1257716"></a>Response Files</h3></div></div></div>
+<a class="indexterm" name="id1257723"></a><p>Some operating system have very low limits of the command line
       length. The common way to work around those limitations is using
       <em class="firstterm">response files</em>.  A response file is just a
       configuration file which uses the same syntax as the command line. If
@@ -147,7 +147,7 @@ if (vm.count("response-file")) {
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1592754"></a>Winmain Command Line</h3></div></div></div>
+<a name="id1257809"></a>Winmain Command Line</h3></div></div></div>
 <p>On the Windows operating system, GUI applications receive the
     command line as a single string, not split into elements. For that reason,
     the command line parser cannot be used directly. At least on some
@@ -169,8 +169,8 @@ store(command_line_parser(args).options(desc).run(), vm);
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1592795"></a>Option Groups and Hidden Options</h3></div></div></div>
-<p>Having a single instance of the <code class="computeroutput"><a href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code> class with all
+<a name="id1257858"></a>Option Groups and Hidden Options</h3></div></div></div>
+<p>Having a single instance of the <code class="computeroutput"><a class="link" href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code> class with all
     the program's options can be problematic:
       </p>
 <div class="itemizedlist"><ul type="disc">
@@ -182,13 +182,13 @@ store(command_line_parser(args).options(desc).run(), vm);
 <p>
     </p>
 <p>To solve the above issues, the library allows a programmer to create several
-      instances of the <code class="computeroutput"><a href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code> class, which can be merged in
+      instances of the <code class="computeroutput"><a class="link" href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code> class, which can be merged in
       different combinations. The following example will define three groups of
       options: command line specific, and two options group for specific program
       modules, only one of which is shown in the generated help message.
     </p>
 <p>Each group is defined using standard syntax. However, you should
-      use reasonable names for each <code class="computeroutput"><a href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code> instance:
+      use reasonable names for each <code class="computeroutput"><a class="link" href="../boost/program_options/options_description.html" title="Class options_description">options_description</a></code> instance:
 </p>
 <pre class="programlisting">
 options_description general("General options");
@@ -268,7 +268,7 @@ if (vm.count("num-threads")) {
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1592926"></a>Custom Validators</h3></div></div></div>
+<a name="id1258036"></a>Custom Validators</h3></div></div></div>
 <p>By default, the conversion of option's value from string into C++
       type is done using iostreams, which sometimes is not convenient. The
       library allows the user to customize the conversion for specific
@@ -331,7 +331,7 @@ void validate(boost::any&amp; v,
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1592999"></a>Unicode Support</h3></div></div></div>
+<a name="id1258141"></a>Unicode Support</h3></div></div></div>
 <p>To use the library with Unicode, you'd need to:
       </p>
 <div class="itemizedlist"><ul type="disc">
@@ -341,7 +341,7 @@ void validate(boost::any&amp; v,
 <p>
     </p>
 <p>Most of the parsers have Unicode versions. For example, the
-      <code class="computeroutput"><a href="../boost/program_options/parse_command_line.html" title="Function template parse_command_line">parse_command_line</a></code> function has an overload which takes
+      <code class="computeroutput"><a class="link" href="../boost/program_options/parse_command_line_id420685.html" title="Function template parse_command_line">parse_command_line</a></code> function has an overload which takes
       <code class="computeroutput">wchar_t</code> strings, instead of ordinary <code class="computeroutput">char</code>.
     </p>
 <p>Even if some of the parsers are Unicode-aware, it does not mean you
@@ -401,48 +401,52 @@ $ export LC_CTYPE=ru_RU.KOI8-R
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1593176"></a>Allowing Unknown Options</h3></div></div></div>
+<a name="id1258340"></a>Allowing Unknown Options</h3></div></div></div>
 <p>Usually, the library throws an exception on unknown option names. This 
       behaviour can be changed. For example, only some part of your application uses 
-      <a href="../program_options.html" title="Chapter 10. Boost.Program_options">Program_options</a>, and you wish to pass unrecognized options to another part of
+      <a class="link" href="../program_options.html" title="Chapter 12. Boost.Program_options">Program_options</a>, and you wish to pass unrecognized options to another part of
       the program, or even to another application.</p>
 <p>To allow unregistered options on the command line, you need to use 
-      the <code class="computeroutput"><a href="../boost/program_options/basic_command_line_parser.html" title="Class template basic_command_line_parser">basic_command_line_parser</a></code> class for parsing (not <code class="computeroutput"><a href="../boost/program_options/parse_command_line.html" title="Function template parse_command_line">parse_command_line</a></code>)
-      and call the <code class="computeroutput"><a href="../boost/program_options/basic_command_line_parser.html#id999223-bb">allow_unregistered</a></code> 
+      the <code class="computeroutput"><a class="link" href="../boost/program_options/basic_command_line_parser.html" title="Class template basic_command_line_parser">basic_command_line_parser</a></code> class for parsing (not <code class="computeroutput"><a class="link" href="../boost/program_options/parse_command_line_id420685.html" title="Function template parse_command_line">parse_command_line</a></code>)
+      and call the <code class="computeroutput"><a class="link" href="../boost/program_options/basic_command_line_parser.html#id331466-bb">allow_unregistered</a></code> 
       method of that class:
       </p>
 <pre class="programlisting">
 parsed_options parsed = 
-    command_line_parser(argv, argc).options(desc).allow_unregistered().run();      
+    command_line_parser(argc, argv).options(desc).allow_unregistered().run();      
       </pre>
 <p>
       
       For each token that looks like an option, but does not have a known name, 
-      an instance of <code class="computeroutput"><a href="../boost/program_options/basic_option.html" title="Class template basic_option">basic_option</a></code> will be added to the result. 
+      an instance of <code class="computeroutput"><a class="link" href="../boost/program_options/basic_option.html" title="Class template basic_option">basic_option</a></code> will be added to the result. 
       The <code class="computeroutput">string_key</code> and <code class="computeroutput">value</code> fields of the instance will contain results 
       of syntactic parsing of the token, the <code class="computeroutput">unregistered</code> field will be set to <code class="computeroutput">true</code>,
       and the <code class="computeroutput">original_tokens</code> field will contain the token as it appeared on the command line.
       </p>
 <p>If you want to pass the unrecognized options further, the 
-      <code class="computeroutput"><a href="../boost/program_options/collect_unrecognized.html" title="Function template collect_unrecognized">collect_unrecognized</a></code> function can be used.
+      <code class="computeroutput"><a class="link" href="../boost/program_options/collect_unrecognized_id247577.html" title="Function template collect_unrecognized">collect_unrecognized</a></code> function can be used.
       The function will collect original tokens for all unrecognized values, and optionally, all found positional options.
       Say, if your code handles a few options, but does not handles positional options at all, you can use the function like this:
       </p>
 <pre class="programlisting">
-vector&lt;string&gt; to_pass_further = collect_arguments(parsed.option, include_positional);
+vector&lt;string&gt; to_pass_further = collect_unrecognized(parsed.options, include_positional);
       </pre>
 <p>
       
       </p>
 </div>
 </div>
-<table width="100%"><tr>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><small>Copyright © 2002-2004 Vladimir Prus</small></td>
+<td align="right"><div class="copyright-footer">Copyright © 2002-2004 Vladimir Prus<p>Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file <code class="filename">LICENSE_1_0.txt</code> or copy at 
+      <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="overview.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../program_options.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="design.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../program_options.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="design.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

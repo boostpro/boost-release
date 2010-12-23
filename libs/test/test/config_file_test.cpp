@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2006.
+//  (C) Copyright Gennadiy Rozental 2001-2007.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: config_file_test.cpp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.5 $
+//  Version     : $Revision: 43798 $
 //
 //  Description : basic_cstring unit test
 // *****************************************************************************
@@ -253,26 +253,5 @@ test_multipart_value()
 //____________________________________________________________________________//
 
 #endif
-
-// *****************************************************************************
-// History :
-//
-// $Log: config_file_test.cpp,v $
-// Revision 1.5  2006/03/19 11:49:04  rogeeff
-// *** empty log message ***
-//
-// Revision 1.4  2005/12/14 06:01:02  rogeeff
-// *** empty log message ***
-//
-// Revision 1.3  2005/05/11 05:07:56  rogeeff
-// licence update
-//
-// Revision 1.2  2005/04/17 15:49:17  rogeeff
-// *** empty log message ***
-//
-// Revision 1.1  2005/04/12 06:19:23  rogeeff
-// runtime.param tests added
-//
-// *****************************************************************************
 
 // EOF

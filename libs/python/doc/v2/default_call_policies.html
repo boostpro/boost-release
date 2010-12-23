@@ -82,6 +82,7 @@ namespace boost { namespace python
         static PyObject* postcall(PyObject*, PyObject* result);
         typedef <a href=
 "#default_result_converter-spec">default_result_converter</a> result_converter;
+        template &lt;class Sig&gt; struct extract_return_type : mpl::front&lt;Sig&gt;{};
     };
 }}
 </pre>
@@ -161,11 +162,11 @@ struct return_value_policy : Base
 
     <p>Revised 
     <!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->
-  13 November, 2002
+  11 June, 2007
   <!--webbot bot="Timestamp" endspan i-checksum="39359" -->
 
 
-  <p><i>&copy; Copyright <a href="../../../../people/dave_abrahams.htm">Dave
+  <p><i>&copy; Copyright <a href="http://www.boost.org/people/dave_abrahams.htm">Dave
   Abrahams</a> 2002.</i> Distributed under the Boost Software License,
   Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
   http://www.boost.org/LICENSE_1_0.txt)</p>

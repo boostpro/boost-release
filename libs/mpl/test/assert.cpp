@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/assert.cpp,v $
-// $Date: 2004/09/18 06:34:19 $
-// $Revision: 1.3 $
+// $Source$
+// $Date: 2004-09-18 02:34:19 -0400 (Sat, 18 Sep 2004) $
+// $Revision: 25186 $
 
 #include <boost/mpl/assert.hpp>
 

@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/include/no_ctps/user.hpp,v $
-// $Date: 2004/09/16 14:13:02 $
-// $Revision: 1.2 $
+// $Source$
+// $Date: 2004-09-16 10:13:02 -0400 (Thu, 16 Sep 2004) $
+// $Revision: 25149 $
 
 #define BOOST_NO_CONFIG
 #define BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION

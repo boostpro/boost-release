@@ -2,7 +2,7 @@
 <!DOCTYPE library PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
   "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd">
 <library name="Lambda" dirname="lambda" id="lambda" 
-         last-revision="$Date: 2004/07/07 19:43:52 $" 
+         last-revision="$Date: 2008-03-22 17:45:55 -0400 (Sat, 22 Mar 2008) $" 
          xmlns:xi="http://www.w3.org/2001/XInclude">
 <libraryinfo>
   <author>
@@ -163,8 +163,8 @@ The STL contains predefined function objects for some common cases (such as <lit
 As an example, one possible implementation for the standard <literal>plus</literal> template is:
 
 <programlisting>
-<![CDATA[template <class T> : public binary_function<T, T, T>
-struct plus {
+<![CDATA[template <class T>
+struct plus : public binary_function<T, T, T> {
   T operator()(const T& i, const T& j) const {
     return i + j; 
   }

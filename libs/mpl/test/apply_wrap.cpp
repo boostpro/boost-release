@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/apply_wrap.cpp,v $
-// $Date: 2004/09/03 16:02:24 $
-// $Revision: 1.3 $
+// $Source$
+// $Date: 2004-09-03 12:02:24 -0400 (Fri, 03 Sep 2004) $
+// $Revision: 24893 $
 
 #include <boost/mpl/apply_wrap.hpp>
 #include <boost/mpl/limits/arity.hpp>

@@ -40,14 +40,21 @@ void bcp_implementation::add_path(const fs::path& p)
 void bcp_implementation::add_directory(const fs::path& p)
 {
    //
-   // don't add files created by build system
+   // Don't add files created by build system:
    //
    if((p.leaf() == "bin") || (p.leaf() == "bin-stage"))
+      return; 
+   //
+   // Don't add version control directories:
+   //
+   if((p.leaf() == "CVS") || (p.leaf() == ".svn"))
       return; 
    //
    // don't add directories not under version control:
    //
    if(m_cvs_mode && !fs::exists(m_boost_path / p / "CVS/Entries"))
+      return;
+   if(m_svn_mode && !fs::exists(m_boost_path / p / ".svn/entries"))
       return;
    //
    // enermerate files and directories:
@@ -75,7 +82,7 @@ void bcp_implementation::add_file(const fs::path& p)
    //
    // if the file does not exist in cvs then don't do anything with it:
    //
-   if(m_cvs_mode && (m_cvs_paths.find(p) == m_cvs_paths.end()))
+   if((m_cvs_mode || m_svn_mode) && (m_cvs_paths.find(p) == m_cvs_paths.end()))
       return;
    //
    // if we've already seen the file return:

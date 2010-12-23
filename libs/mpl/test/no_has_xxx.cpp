@@ -8,9 +8,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/no_has_xxx.cpp,v $
-// $Date: 2004/09/02 15:41:35 $
-// $Revision: 1.2 $
+// $Source$
+// $Date: 2004-09-02 11:41:37 -0400 (Thu, 02 Sep 2004) $
+// $Revision: 24874 $
 
 
 // This file tests that we have the right value for

@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/bool.cpp,v $
-// $Date: 2006/02/20 15:45:07 $
-// $Revision: 1.4 $
+// $Source$
+// $Date: 2006-02-20 10:45:40 -0500 (Mon, 20 Feb 2006) $
+// $Revision: 33026 $
 
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/aux_/test.hpp>

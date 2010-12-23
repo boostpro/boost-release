@@ -3,34 +3,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Tutorial</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../function.html" title="Chapter 6. Boost.Function">
 <link rel="prev" href="history.html" title="History &amp; Compatibility Notes">
 <link rel="next" href="reference.html" title="Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table cellpadding="2" width="100%">
+<table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
-<td align="center"><a href="../../../index.htm">Home</a></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="../../../people/people.htm">People</a></td>
-<td align="center"><a href="../../../more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
+<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
-</table>
+</tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="history.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../function.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="history.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../function.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="function.tutorial"></a>Tutorial</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="tutorial.html#id1186501">Basic Usage</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1186864">Free functions</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1186900">Member functions</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1187118">References to Function Objects</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id1187293">Comparing Boost.Function function objects</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id675762">Basic Usage</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id676170">Free functions</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id676211">Member functions</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id676456">References to Function Objects</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id676655">Comparing Boost.Function function objects</a></span></dt>
 </dl></div>
 <p> Boost.Function has two syntactical forms: the preferred form
 and the portable form. The preferred form fits more closely with the
@@ -79,7 +79,7 @@ form to use for your compiler.
 <p> If your compiler does not appear in this list, please try the preferred syntax and report your results to the Boost list so that we can keep this table up-to-date.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1186501"></a>Basic Usage</h3></div></div></div>
+<a name="id675762"></a>Basic Usage</h3></div></div></div>
 <p> A function wrapper is defined simply
 by instantiating the <code class="computeroutput">function</code> class
 template with the desired return type and argument types, formulated
@@ -102,10 +102,10 @@ following declares a function object wrapper
 </tr></thead>
 <tbody><tr>
 <td align="left">
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;float (int x, int y)&gt; f;</pre>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;float (int x, int y)&gt; f;</pre>
 </td>
 <td align="left">
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a href="../boost/functionN.html" title="Class template functionN">boost::function2</a></code>&lt;float, int, int&gt; f;</pre>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a class="link" href="../boost/functionN.html" title="Class template functionN">boost::function2</a></code>&lt;float, int, int&gt; f;</pre>
 </td>
 </tr></tbody>
 </table></div>
@@ -144,7 +144,7 @@ CopyConstructible, so we can even use references and arrays:
 <colgroup><col></colgroup>
 <thead><tr><th align="left">Preferred syntax</th></tr></thead>
 <tbody><tr><td align="left">
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;void (int values[], int n, int&amp; sum, float&amp; avg)&gt; sum_avg;</pre>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;void (int values[], int n, int&amp; sum, float&amp; avg)&gt; sum_avg;</pre>
 </td></tr></tbody>
 </table></div>
 <p>
@@ -153,7 +153,7 @@ CopyConstructible, so we can even use references and arrays:
 <colgroup><col></colgroup>
 <thead><tr><th align="left">Portable syntax</th></tr></thead>
 <tbody><tr><td align="left">
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a href="../boost/functionN.html" title="Class template functionN">boost::function4</a></code>&lt;void, int*, int, int&amp;, float&amp;&gt; sum_avg;</pre>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a class="link" href="../boost/functionN.html" title="Class template functionN">boost::function4</a></code>&lt;void, int*, int, int&amp;, float&amp;&gt; sum_avg;</pre>
 </td></tr></tbody>
 </table></div>
 <p>
@@ -175,7 +175,7 @@ CopyConstructible, so we can even use references and arrays:
 </p>
 <p> Invoking a function object wrapper that does not actually
 contain a function object is a precondition violation, much like
-trying to call through a null function pointer, and will throw a <code class="computeroutput"><a href="../boost/bad_function_call.html" title="Class bad_function_call">bad_function_call</a></code> exception). We can check for an
+trying to call through a null function pointer, and will throw a <code class="computeroutput"><a class="link" href="../boost/bad_function_call.html" title="Class bad_function_call">bad_function_call</a></code> exception). We can check for an
 empty function object wrapper by using it in a boolean context (it evaluates <code class="computeroutput">true</code> if the wrapper is not empty) or compare it against <code class="computeroutput">0</code>. For instance:
 </p>
 <pre class="programlisting">if (f)
@@ -185,9 +185,9 @@ else
 <p>
 </p>
 <p> Alternatively,
-<code class="computeroutput"><code class="computeroutput"><a href="../boost/function.html#id835072-bb">empty</a></code>()</code>
+<code class="computeroutput"><code class="computeroutput"><a class="link" href="../boost/function.html#id256154-bb">empty</a></code>()</code>
 method will return whether or not the wrapper is empty.  </p>
-<p> Finally, we can clear out a function target by assigning it to <code class="computeroutput">0</code> or by calling the <code class="computeroutput"><code class="computeroutput"><a href="../boost/function.html#id970240-bb">clear</a></code>()</code> member function, e.g., 
+<p> Finally, we can clear out a function target by assigning it to <code class="computeroutput">0</code> or by calling the <code class="computeroutput"><code class="computeroutput"><a class="link" href="../boost/function.html#id244699-bb">clear</a></code>()</code> member function, e.g., 
 </p>
 <pre class="programlisting">f = 0;</pre>
 <p>
@@ -195,7 +195,7 @@ method will return whether or not the wrapper is empty.  </p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1186864"></a>Free functions</h3></div></div></div>
+<a name="id676170"></a>Free functions</h3></div></div></div>
 <p> Free function pointers can be considered singleton function objects with const function call operators, and can therefore be directly used with the function object wrappers: 
 </p>
 <pre class="programlisting">float mul_ints(int x, int y) { return ((float)x) * y; }</pre>
@@ -208,7 +208,7 @@ method will return whether or not the wrapper is empty.  </p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1186900"></a>Member functions</h3></div></div></div>
+<a name="id676211"></a>Member functions</h3></div></div></div>
 <p> In many systems, callbacks often call to member functions of a
 particular object. This is often referred to as "argument binding",
 and is beyond the scope of Boost.Function. The use of member functions
@@ -232,7 +232,7 @@ directly, however, is supported, so the following code is valid:
 </tr></thead>
 <tbody><tr>
 <td align="left">
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;int (X*, int)&gt; f;
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;int (X*, int)&gt; f;
 
 f = &amp;X::foo;
   
@@ -240,7 +240,7 @@ X x;
 f(&amp;x, 5);</pre>
 </td>
 <td align="left">
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a href="../boost/functionN.html" title="Class template functionN">boost::function2</a></code>&lt;int, X*, int&gt; f;
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><a class="link" href="../boost/functionN.html" title="Class template functionN">boost::function2</a></code>&lt;int, X*, int&gt; f;
 
 f = &amp;X::foo;
   
@@ -276,14 +276,14 @@ f(&amp;x, 5);</pre>
 </tr></thead>
 <tbody><tr>
 <td align="left">
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">  <code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;int (int)&gt; f;
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">  <code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;int (int)&gt; f;
 X x;
 f = std::bind1st(
       std::mem_fun(&amp;X::foo), &amp;x);
 f(5); // Call x.foo(5)</pre>
 </td>
 <td align="left">
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">  <code class="computeroutput"><a href="../boost/functionN.html" title="Class template functionN">boost::function1</a></code>&lt;int, int&gt; f;
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">  <code class="computeroutput"><a class="link" href="../boost/functionN.html" title="Class template functionN">boost::function1</a></code>&lt;int, int&gt; f;
 X x;
 f = std::bind1st(
       std::mem_fun(&amp;X::foo), &amp;x);
@@ -294,14 +294,14 @@ f(5); // Call x.foo(5)</pre>
 <p>
 </p>
 </li>
-<li><p>The <a href="../lambda.html" title="Chapter 8. Boost.Lambda">Lambda</a> library. This library provides a powerful composition mechanism to construct function objects that uses very natural C++ syntax. Lambda requires a compiler that is reasonably conformant to the C++ standard. </p></li>
+<li><p>The <a class="link" href="../lambda.html" title="Chapter 10. Boost.Lambda">Lambda</a> library. This library provides a powerful composition mechanism to construct function objects that uses very natural C++ syntax. Lambda requires a compiler that is reasonably conformant to the C++ standard. </p></li>
 </ul></div>
 <p>
 </p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1187118"></a>References to Function Objects</h3></div></div></div>
+<a name="id676456"></a>References to Function Objects</h3></div></div></div>
 <p> In some cases it is
   expensive (or semantically incorrect) to have Boost.Function clone a
   function object. In such cases, it is possible to request that
@@ -323,17 +323,17 @@ f(5); // Call x.foo(5)</pre>
 <tbody><tr>
 <td align="left">
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">stateful_type a_function_object;
-<code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;int (int)&gt; f;
-f = <code class="computeroutput"><a href="../boost/reference_wrapper.html#id1044490-bb">boost::ref</a></code>(a_function_object);
+<code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;int (int)&gt; f;
+f = <code class="computeroutput"><a class="link" href="../boost/reference_wrapper.html#boost.ref_id261348">boost::ref</a></code>(a_function_object);
 
-<code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;int (int)&gt; f2(f);</pre>
+<code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code>&lt;int (int)&gt; f2(f);</pre>
 </td>
 <td align="left">
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">stateful_type a_function_object;
-<code class="computeroutput"><a href="../boost/functionN.html" title="Class template functionN">boost::function1</a></code>&lt;int, int&gt; f;
-f = <code class="computeroutput"><a href="../boost/reference_wrapper.html#id1044490-bb">boost::ref</a></code>(a_function_object);
+<code class="computeroutput"><a class="link" href="../boost/functionN.html" title="Class template functionN">boost::function1</a></code>&lt;int, int&gt; f;
+f = <code class="computeroutput"><a class="link" href="../boost/reference_wrapper.html#boost.ref_id261348">boost::ref</a></code>(a_function_object);
 
-<code class="computeroutput"><a href="../boost/functionN.html" title="Class template functionN">boost::function1</a></code>&lt;int, int&gt; f2(f);</pre>
+<code class="computeroutput"><a class="link" href="../boost/functionN.html" title="Class template functionN">boost::function1</a></code>&lt;int, int&gt; f2(f);</pre>
 </td>
 </tr></tbody>
 </table></div>
@@ -350,38 +350,41 @@ exceptions during assignment or construction.
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1187293"></a>Comparing Boost.Function function objects</h3></div></div></div>
+<a name="id676655"></a>Comparing Boost.Function function objects</h3></div></div></div>
 <p>Function object wrappers can be compared via <code class="computeroutput">==</code>
   or <code class="computeroutput">!=</code> against any function object that can be stored
   within the wrapper. If the function object wrapper contains a
   function object of that type, it will be compared against the given
   function object (which must be either be
-  <a href="../EqualityComparable.html" title="Concept EqualityComparable">EqualityComparable</a> or have an overloaded <code class="computeroutput"><a href="../boost/function_equal.html" title="Function template function_equal">boost::function_equal</a></code>). For instance:</p>
+  <a class="link" href="../EqualityComparable.html" title="Concept EqualityComparable">EqualityComparable</a> or have an overloaded <code class="computeroutput"><a class="link" href="../boost/function_equal_id250660.html" title="Function template function_equal">boost::function_equal</a></code>). For instance:</p>
 <pre class="programlisting">int compute_with_X(X*, int);
 
 f = &amp;X::foo;
 assert(f == &amp;X::foo);
 assert(&amp;compute_with_X != f);</pre>
 <p>When comparing against an instance of
-   <code class="computeroutput"><a href="../boost/reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a></code>, the address
+   <code class="computeroutput"><a class="link" href="../boost/reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a></code>, the address
    of the object in the
-   <code class="computeroutput"><a href="../boost/reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a></code> is compared
+   <code class="computeroutput"><a class="link" href="../boost/reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a></code> is compared
    against the address of the object stored by the function object
    wrapper:</p>
 <pre class="programlisting">a_stateful_object so1, so2;
-f = <code class="computeroutput"><a href="../boost/reference_wrapper.html#id1044490-bb">boost::ref</a></code>(so1);
-assert(f == <code class="computeroutput"><a href="../boost/reference_wrapper.html#id1044490-bb">boost::ref</a></code>(so1));
-assert(f == so1); <span class="emphasis"><em>// Only if a_stateful_object is <a href="../EqualityComparable.html" title="Concept EqualityComparable">EqualityComparable</a></em></span>
-assert(f != <code class="computeroutput"><a href="../boost/reference_wrapper.html#id1044490-bb">boost::ref</a></code>(so2));</pre>
+f = <code class="computeroutput"><a class="link" href="../boost/reference_wrapper.html#boost.ref_id261348">boost::ref</a></code>(so1);
+assert(f == <code class="computeroutput"><a class="link" href="../boost/reference_wrapper.html#boost.ref_id261348">boost::ref</a></code>(so1));
+assert(f == so1); <span class="emphasis"><em>// Only if a_stateful_object is <a class="link" href="../EqualityComparable.html" title="Concept EqualityComparable">EqualityComparable</a></em></span>
+assert(f != <code class="computeroutput"><a class="link" href="../boost/reference_wrapper.html#boost.ref_id261348">boost::ref</a></code>(so2));</pre>
 </div>
 </div>
-<table width="100%"><tr>
-<td align="left"><small><p>Last revised: November 03, 2006 at 19:41:10 GMT</p></small></td>
-<td align="right"><small>Copyright © 2001-2004 Douglas Gregor</small></td>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: November 03, 2006 at 15:41:10 -0400</small></p></td>
+<td align="right"><div class="copyright-footer">Copyright © 2001-2004 Douglas Gregor<p>Use, modification and distribution is subject to the Boost
+    Software License, Version 1.0. (See accompanying file
+    <code class="filename">LICENSE_1_0.txt</code> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)</p>
+</div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="history.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../function.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="history.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../function.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/lambda.cpp,v $
-// $Date: 2005/01/10 14:01:31 $
-// $Revision: 1.8 $
+// $Source$
+// $Date: 2005-01-10 09:01:31 -0500 (Mon, 10 Jan 2005) $
+// $Revision: 26666 $
 
 #include <boost/mpl/logical.hpp>
 #include <boost/mpl/comparison.hpp>

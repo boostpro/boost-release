@@ -3,24 +3,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Extender Manual</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../bbv2.html" title="Chapter 25. Boost.Build V2 User Manual">
 <link rel="prev" href="tasks.html" title="Common tasks">
 <link rel="next" href="reference.html" title="Detailed reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table cellpadding="2" width="100%">
+<table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
-<td align="center"><a href="../../../index.htm">Home</a></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="../../../people/people.htm">People</a></td>
-<td align="center"><a href="../../../more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
+<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
-</table>
+</tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tasks.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tasks.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -54,26 +54,24 @@
       </li>
 <li>Write the result.</li>
 </ol></div>
-<p>It's quite easy to achieve. You write special verbatim files
-  that are just C++, except that the very first line of the file
-  contains the name of a variable that should be generated. A simple tool
-  is created that takes a verbatim file and creates a cpp file with
-  a single <code class="computeroutput">char*</code> variable whose name is taken from the first line
-  of the verbatim file and whose value is the file's properly quoted content.</p>
+<p>It's quite easy to achieve. You write special verbatim files that are
+  just C++, except that the very first line of the file contains the name of a
+  variable that should be generated. A simple tool is created that takes a
+  verbatim file and creates a cpp file with a single <code class="computeroutput">char*</code> variable
+  whose name is taken from the first line of the verbatim file and whose value
+  is the file's properly quoted content.</p>
 <p>Let's see what Boost.Build can do.</p>
-<p>First off, Boost.Build has no idea about "verbatim files". So,
-  you must register a new target type. The following code does
-  it:</p>
+<p>First off, Boost.Build has no idea about "verbatim files". So, you must
+  register a new target type. The following code does it:</p>
 <pre class="programlisting">
 import type ;
-type.register VERBATIM : vrb ;
+type.register VERBATIM : verbatim ;
 </pre>
-<p>The first parameter to
-  <code class="computeroutput">type.register</code> gives the name of the
-  declared type. By convention, it's uppercase. The second parameter
-  is the suffix for files of this type. So, if Boost.Build sees
-  <code class="filename">code.vrb</code> in a list of sources, it knows that it's of type
-  <code class="computeroutput">VERBATIM</code>.</p>
+<p>The first parameter to <code class="computeroutput">type.register</code> gives
+  the name of the declared type. By convention, it's uppercase. The second
+  parameter is the suffix for files of this type. So, if Boost.Build sees
+  <code class="filename">code.verbatim</code> in a list of sources, it knows that it's of
+  type <code class="computeroutput">VERBATIM</code>.</p>
 <p>Next, you tell Boost.Build that the verbatim files can be
   transformed into C++ files in one build step.  A
   <em class="firstterm">generator</em> is a template for a build step that
@@ -105,27 +103,30 @@ actions inline-file
 
 
 </p>
-<p>Now, we're ready to tie it all together. Put all the code
-  above in file <code class="filename">verbatim.jam</code>, add <code class="computeroutput">import verbatim ;</code> 
-  to <code class="filename">project-root.jam</code>, and it's possible to write
-  the following in Jamfile:</p>
+<p>
+    Now, we're ready to tie it all together. Put all the code above in file
+    <code class="filename">verbatim.jam</code>, add <code class="computeroutput">import verbatim ;</code> to
+    <code class="filename">Jamroot.jam</code>, and it's possible to write the following
+    in your Jamfile:
+  </p>
 <pre class="programlisting">
 exe codegen : codegen.cpp class_template.verbatim usage.verbatim ;
 </pre>
 <p>
-The verbatim files will be automatically converted into C++
-and linked it.
+    The listed verbatim files will be automatically converted into C++ source
+    files, compiled and then linked to the codegen executable.
   </p>
-<p>In the subsequent sections, we will extend this example, and review
-        all the mechanisms in detail. The complete code is available in <code class="filename">example/customization</code>
-        directory.
-      </p>
+<p>
+    In subsequent sections, we will extend this example, and review all the
+    mechanisms in detail. The complete code is available in the
+    <code class="filename">example/customization</code> directory.
+  </p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.targets"></a>Target types</h3></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="extender.html#bbv2.extending.scanners">Scanners</a></span></dt></dl></div>
-<p>The first thing we did in the <a href="extender.html#bbv2.extender.intro" title="Introduction">intruduction</a> was declaring a
+<p>The first thing we did in the <a class="link" href="extender.html#bbv2.extender.intro" title="Introduction">intruduction</a> was declaring a
       new target type:
 </p>
 <pre class="programlisting">
@@ -174,7 +175,7 @@ type.register PLUGIN : : SHARED_LIB ;
     </p>
 <p>A type can be defined as "main", in which case Boost.Build will
       automatically declare a main target rule for building targets of that
-      type. More details can be found <a href="extender.html#bbv2.extending.rules.main-type">later</a>.
+      type. More details can be found <a class="link" href="extender.html#bbv2.extending.rules.main-type">later</a>.
     </p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
@@ -251,7 +252,7 @@ type.set-scanner VERBATIM : verbatim-scanner ;
         <code class="computeroutput">generator</code> class. In the simplest case, you don't need to
         create a derived class, but simply create an instance of the
         <code class="computeroutput">generator</code> class. Let's review the example we've seen in the
-        <a href="extender.html#bbv2.extender.intro" title="Introduction">introduction</a>.
+        <a class="link" href="extender.html#bbv2.extender.intro" title="Introduction">introduction</a>.
         
 </p>
 <pre class="programlisting">
@@ -287,13 +288,13 @@ generators.register-standard verbatim.inline-file : VERBATIM : CPP ;
 generators.register-composing mex.mex : CPP LIB : MEX ;
 </pre>
 <p>
-        Standard generators take a <span class="emphasis"><em>single</em></span> source of type
-        <code class="computeroutput">VERBATIM</code> and produces a result. The second generator
-        takes any number of sources, which can have either the
-        <code class="computeroutput">CPP</code> or the <code class="computeroutput">LIB</code> type. Composing generators
+        The first (standard) generator takes a <span class="emphasis"><em>single</em></span>
+        source of type <code class="computeroutput">VERBATIM</code> and produces a result. The second
+        (composing) generator takes any number of sources, which can have either
+        the <code class="computeroutput">CPP</code> or the <code class="computeroutput">LIB</code> type. Composing generators
         are typically used for generating top-level target type. For example,
-        the first generator invoked when building an <code class="computeroutput">exe</code> target
-        is a composing generator corresponding to the proper linker.
+        the first generator invoked when building an <code class="computeroutput">exe</code> target is
+        a composing generator corresponding to the proper linker.
       </p>
 <p>You should also know about two specific functions for registering
         generators: <code class="computeroutput">generators.register-c-compiler</code> and
@@ -304,7 +305,7 @@ generators.register-composing mex.mex : CPP LIB : MEX ;
       </p>
 <p>(Need a note about UNIX)</p>
 <h4>
-<a name="id2124421"></a>Custom generator classes</h4>
+<a name="id1569649"></a>Custom generator classes</h4>
 <p>The standard generators allows you to specify source and target
         types, an action, and a set of flags. If you need anything more complex,
         
@@ -487,8 +488,7 @@ actions inline-file
       <code class="computeroutput">&lt;cxxflags&gt;</code> feature allows you to pass any command line
       options to a C++ compiler. The <code class="computeroutput">&lt;include&gt;</code> feature
       allows you to pass any string preceded by <code class="computeroutput">-I</code> and the interpretation
-      is tool-specific.  (See <a href="faq.html#bbv2.faq.external" title="Can I get output of external program as a variable in a Jamfile?
-    ">the section called &#8220;Can I get output of external program as a variable in a Jamfile?
+      is tool-specific.  (See <a class="xref" href="faq.html#bbv2.faq.external" title="Can I get output of external program as a variable in a Jamfile?">the section called &#8220;Can I get output of external program as a variable in a Jamfile?
     &#8221;</a> for an example of very smart usage of that
       feature).  Of course one should always strive to use portable
       features, but these are still be provided as a backdoor just to make
@@ -514,14 +514,14 @@ actions inline-file
 <p>
     </p>
 <h4>
-<a name="id2124699"></a>Steps for adding a feauture</h4>
+<a name="id1570004"></a>Steps for adding a feauture</h4>
 <p>Adding a feature requires three steps:
 
         </p>
 <div class="orderedlist"><ol type="1">
 <li>
 <p>Declaring a feature. For that, the "feature.feature"
-              rule is used. You have to decide on the set of <a href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">feature
+              rule is used. You have to decide on the set of <a class="link" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">feature
               attributes</a>:
 
               </p>
@@ -556,7 +556,7 @@ actions inline-file
 <p>
       </p>
 <h4>
-<a name="id2124805"></a>Another example</h4>
+<a name="id1570121"></a>Another example</h4>
 <p>Here's another example.
         Let's see how we can make a feature that refers to a target. For example,
         when linking dynamic libraries on windows, one sometimes needs to specify
@@ -638,7 +638,7 @@ rule link
 </li>
 </ol></div>
 <h4>
-<a name="id2124917"></a>Variants and composite features.</h4>
+<a name="id1570245"></a>Variants and composite features.</h4>
 <p>Sometimes you want to create a shortcut for some set of
         features. For example, <code class="computeroutput">release</code> is a value of 
         <code class="computeroutput">&lt;variant&gt;</code> and is a shortcut for a set of features.
@@ -709,17 +709,18 @@ generators.register-standard obfuscate.file : CPP : OBFUSCATED_CPP ;
       and import that module, you'll be able to use the rule "obfuscated-cpp"
       in Jamfiles, which will convert source to the OBFUSCATED_CPP type.
     </p>
-<p>The second way is to write a wrapper rule that calls
-      any of the existing rules. For example, suppose you have only one library per
-      directory and want all cpp files in the directory to be compiled into that library. You
-      can achieve this effect with:
+<p>
+      The second way is to write a wrapper rule that calls any of the existing
+      rules. For example, suppose you have only one library per directory and
+      want all cpp files in the directory to be compiled into that library. You
+      can achieve this effect using:
 </p>
 <pre class="programlisting">
 lib codegen : [ glob *.cpp ] ;
 </pre>
 <p>
-      but if you want to make it even simpler, you could add the following
-      definition to the <code class="filename">project-root.jam</code> file:
+      If you want to make it even simpler, you could add the following
+      definition to the <code class="filename">Jamroot.jam</code> file:
 </p>
 <pre class="programlisting">
 rule glib ( name : extra-sources * : requirements * )
@@ -728,7 +729,7 @@ rule glib ( name : extra-sources * : requirements * )
 }
 </pre>
 <p>
-which would allow you to reduce the Jamfile to
+      allowing you to reduce the Jamfile to just
 </p>
 <pre class="programlisting">
 glib codegen ;
@@ -736,24 +737,21 @@ glib codegen ;
 <p>
     </p>
 <p>
-      Note that because you can associate a custom generator with a target
-      type, the logic of building can be rather compiler. 
-      
-      For example, the
+      Note that because you can associate a custom generator with a target type,
+      the logic of building can be rather complicated. For example, the
       <code class="computeroutput">boostbook</code> module declares a target type
-      <code class="computeroutput">BOOSTBOOK_MAIN</code> and a custom generator for that
-      type. You can use that as example if your main target rule is
-      non-trivial.
+      <code class="computeroutput">BOOSTBOOK_MAIN</code> and a custom generator for that type. You can
+      use that as example if your main target rule is non-trivial.
     </p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.toolset_modules"></a>Toolset modules</h3></div></div></div>
-<p>If your extensions will be used only on one project, they can be
-      placed in a separate <code class="filename">.jam</code> file that will be
-      imported by your <code class="filename">project-root.jam</code>. If the
-      extensions will be used on many projects, users will thank you for 
-      a finishing touch.
+<p>
+      If your extensions will be used only on one project, they can be placed in
+      a separate <code class="filename">.jam</code> file and imported by your
+      <code class="filename">Jamroot.jam</code>. If the extensions will be used on many
+      projects, users will thank you for a finishing touch.
     </p>
 <p>The <code class="computeroutput">using</code> rule provides a standard mechanism
     for loading and configuring extensions.  To make it work, your module
@@ -837,13 +835,13 @@ using yfc ;
     </p>
 </div>
 </div>
-<table width="100%"><tr>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><small></small></td>
+<td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tasks.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tasks.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

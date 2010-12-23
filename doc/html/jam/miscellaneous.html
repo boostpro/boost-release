@@ -3,28 +3,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Miscellaneous</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../jam.html" title="Chapter 24. Boost.Jam : 3.1.14">
-<link rel="prev" href="language.html" title=" Language">
-<link rel="next" href="../bbv2.html" title="Chapter 25. Boost.Build V2 User Manual">
+<link rel="up" href="../jam.html" title="Chapter 24. Boost.Jam : 3.1.16">
+<link rel="prev" href="language.html" title="Language">
+<link rel="next" href="history.html" title="History">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table cellpadding="2" width="100%">
+<table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
-<td align="center"><a href="../../../index.htm">Home</a></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="../../../people/people.htm">People</a></td>
-<td align="center"><a href="../../../more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
+<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
-</table>
+</tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="language.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="../bbv2.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="language.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="history.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="jam.miscellaneous"></a>Miscellaneous</h2></div></div></div>
+<a name="jam.miscellaneous"></a><a class="link" href="miscellaneous.html" title="Miscellaneous">Miscellaneous</a>
+</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="miscellaneous.html#jam.miscellaneous.diagnostics">Diagnostics</a></span></dt>
 <dt><span class="section"><a href="miscellaneous.html#jam.miscellaneous.bugs__limitations">Bugs, Limitations</a></span></dt>
@@ -32,7 +33,8 @@
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="jam.miscellaneous.diagnostics"></a>Diagnostics</h3></div></div></div>
+<a name="jam.miscellaneous.diagnostics"></a><a class="link" href="miscellaneous.html#jam.miscellaneous.diagnostics" title="Diagnostics">Diagnostics</a>
+</h3></div></div></div>
 <p>
         In addition to generic error messages, <code class="literal">bjam</code> may emit one
         of the following:
@@ -82,22 +84,13 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="jam.miscellaneous.bugs__limitations"></a>Bugs, Limitations</h3></div></div></div>
-<p>
-        The <code class="literal">-j</code> flag can cause <code class="literal">bjam</code> to get confused
-        when single actions update more than one target at a time. <code class="literal">bjam</code>
-        may proceed as if the targets were built even though they are still under
-        construction.
-      </p>
+<a name="jam.miscellaneous.bugs__limitations"></a><a class="link" href="miscellaneous.html#jam.miscellaneous.bugs__limitations" title="Bugs, Limitations">Bugs, Limitations</a>
+</h3></div></div></div>
 <p>
         For parallel building to be successful, the dependencies among files must
         be properly spelled out, as targets tend to get built in a quickest-first
         ordering. Also, beware of un-parallelizable commands that drop fixed-named
         files into the current directory, like <code class="literal">yacc(1)</code> does.
-      </p>
-<p>
-        With the <code class="literal">-j</code> flag, errors from failed commands can get
-        staggeringly mixed up.
       </p>
 <p>
         A poorly set <code class="literal">$(JAMSHELL)</code> is likely to result in silent
@@ -106,7 +99,8 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="jam.miscellaneous.fundamentals"></a>Fundamentals</h3></div></div></div>
+<a name="jam.miscellaneous.fundamentals"></a><a class="link" href="miscellaneous.html#jam.miscellaneous.fundamentals" title="Fundamentals">Fundamentals</a>
+</h3></div></div></div>
 <p>
         This section is derived from the official Jam documentation and from experience
         using it and reading the Jambase rules. We repeat the information here mostly
@@ -235,8 +229,8 @@
           following allows a sensible non-empty default which can easily be overridden
           by the user: 
 <pre class="programlisting">
-<span class="identifier">MESSAGE</span> <span class="special">?\=</span> <span class="identifier">starting</span> <span class="identifier">jam</span><span class="special">...</span> <span class="special">;</span>
-<span class="keyword">if</span> #<span class="special">(</span><span class="identifier">MESSAGE</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">ECHO</span> <span class="identifier">The</span> <span class="identifier">message</span> <span class="identifier">is</span><span class="special">:</span> #<span class="special">(</span><span class="identifier">MESSAGE</span><span class="special">)</span> <span class="special">;</span> <span class="special">}</span>
+<span class="identifier">MESSAGE</span> <span class="special">?\=</span> <span class="identifier">starting</span> <span class="identifier">jam</span><span class="special">...</span> <span class="special">;</span>
+<span class="keyword">if</span> #<span class="special">(</span><span class="identifier">MESSAGE</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">ECHO</span> <span class="identifier">The</span> <span class="identifier">message</span> <span class="identifier">is</span><span class="special">:</span> #<span class="special">(</span><span class="identifier">MESSAGE</span><span class="special">)</span> <span class="special">;</span> <span class="special">}</span>
 </pre>
           If the user wants a specific message, he invokes jam with <code class="literal">"-sMESSAGE=message
           text"</code>. If he wants no message, he invokes jam with <code class="literal">-sMESSAGE=</code>
@@ -258,14 +252,17 @@
 </ul></div>
 </div>
 </div>
-<table width="100%"><tr>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><small>Copyright © 2003-2006 Rene
-      Rivera, David Abrahams, Vladimir Prus</small></td>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2007 Rene Rivera, David Abrahams, Vladimir Prus<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="language.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="../bbv2.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="language.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../jam.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="history.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

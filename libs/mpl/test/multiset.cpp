@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/multiset.cpp,v $
-// $Date: 2006/06/12 07:13:12 $
-// $Revision: 1.3.2.2 $
+// $Source$
+// $Date: 2006-06-12 03:13:12 -0400 (Mon, 12 Jun 2006) $
+// $Revision: 34275 $
 
 #include <boost/mpl/multiset/multiset0.hpp>
 //#include <boost/mpl/multiset/multiset10.hpp>

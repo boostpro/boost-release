@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: random_demo.cpp,v 1.17 2005/05/10 20:40:59 jmaurer Exp $
+ * $Id: random_demo.cpp 28794 2005-05-10 20:40:59Z jmaurer $
  *
  * A short demo program how to use the random number library.
  */

@@ -1,7 +1,6 @@
-# (C) Copyright Rene Rivera, 2003.
-#
-# See accompanying license for terms and conditions of use.
-#
+# Copyright 2003 Rene Rivera
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
 # Modifiers are generalized generators that mutate targets in specific ways.
 # This structure allows for grouping a variety of functionality in an
@@ -14,7 +13,7 @@ import feature ;
 import errors ;
 import type ;
 import "class" : new ;
-import generators : generator ;
+import generators ;
 import property ;
 import virtual-target ;
 import numbers ;
@@ -25,17 +24,23 @@ import property-set ;
 # Base generator for creating targets that are modifications of existing
 # targets.
 #
-rule modifier (
-    id
-    composing ?
-    : source-types *
-    : target-types-and-names +   
-    : requirements *
-    )
+class modifier : generator
 {
-    generator.__init__ $(id) $(composing) : $(source-types) : $(target-types-and-names) : $(requirements) ;
+    rule __init__ (
+        id
+        composing ?
+        : source-types *
+        : target-types-and-names +   
+        : requirements *
+        )
+    {
+        generator.__init__ $(id) $(composing)
+            : $(source-types)
+            : $(target-types-and-names)
+            : $(requirements) ;
     
-    self.targets-in-progress = ;
+        self.targets-in-progress = ;
+    }
     
     # Wraps the generation of the target to call before and after rules to
     # affect the real target.
@@ -47,16 +52,21 @@ rule modifier (
         if ! $(current-target) in $(self.targets-in-progress)
         {
             # Before modifications...
-            local project_ = [ modify-project-before
-                $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
-            local name_ = [ modify-name-before
-                $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
-            local property-set_ = [ modify-properties-before
-                $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
-            local sources_ = [ modify-sources-before
-                $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
-            local multiple_ = [ modify-multiple-before
-                $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
+            local project_ =
+                [ modify-project-before
+                    $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
+            local name_ =
+                [ modify-name-before
+                    $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
+            local property-set_ =
+                [ modify-properties-before
+                    $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
+            local sources_ =
+                [ modify-sources-before
+                    $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
+            local multiple_ =
+                [ modify-multiple-before
+                    $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
             project = $(project_) ;
             name = $(name_) ;
             property-set = $(property-set_) ;
@@ -64,16 +74,23 @@ rule modifier (
             multiple = $(multiple_) ;
             
             # Generate the real target...
-            local target-type-p = [ property.select <main-target-type> : [ $(property-set).raw ] ] ;
+            local target-type-p =
+                [ property.select <main-target-type> : [ $(property-set).raw ] ] ;
             self.targets-in-progress += $(current-target) ;
             result =
-                [ generators.construct $(project) $(name) : $(target-type-p:G=) $(multiple) :
-                    $(property-set) : $(sources) ] ;
+                [ generators.construct $(project) $(name)
+                    : $(target-type-p:G=) $(multiple)
+                    : $(property-set)
+                    : $(sources) ] ;
             self.targets-in-progress = $(self.targets-in-progress[1--2]) ;
             
             # After modifications...
-            result = [ modify-target-after $(result) :
-                $(project) $(name) : $(property-set) : $(sources) : $(multiple) ] ;
+            result =
+                [ modify-target-after $(result)
+                    : $(project) $(name)
+                    : $(property-set)
+                    : $(sources)
+                    : $(multiple) ] ;
         }
         return $(result) ;
     }
@@ -108,9 +125,10 @@ rule modifier (
         return $(target) ;
     }
     
-    # Utility, clones a file-target with optional changes to the name, type, and project
-    # of the target.
-    # NOTE: This functionality should be moved, and generalized, to virtual-targets.
+    # Utility, clones a file-target with optional changes to the name, type and
+    # project of the target.
+    # NOTE: This functionality should be moved, and generalized, to
+    # virtual-targets.
     #
     rule clone-file-target ( target : new-name ? : new-type ? : new-project ? )
     {
@@ -135,17 +153,20 @@ rule modifier (
         return $(result) ;
     }
 }
-class modifier : generator ;
 
-# A modifier that changes the name of a target, after it's generated, given
-# a regular expression to slpit the name, and a set of token to insert
-# between the split tokens of the name. This also exposes the target for other
-# uses with a symlink to the original name (optionally).
+
+# A modifier that changes the name of a target, after it's generated, given a
+# regular expression to split the name, and a set of token to insert between the
+# split tokens of the name. This also exposes the target for other uses with a
+# symlink to the original name (optionally).
 #
-rule name-modifier ( )
+class name-modifier : modifier
 {
-    # Apply ourselves to EXE targets, for now.
-    modifier.__init__ name.modifier : : EXE LIB : <name-modify>yes ;
+    rule __init__ ( )
+    {
+        # Apply ourselves to EXE targets, for now.
+        modifier.__init__ name.modifier : : EXE LIB : <name-modify>yes ;
+    }
     
     # Modifies the name, by cloning the target with the new name.
     #
@@ -203,7 +224,6 @@ rule name-modifier ( )
         return <name-modify>yes ;
     }
 }
-class name-modifier : modifier ;
 feature.feature name-modifier : : free ;
 feature.feature name-modify : no yes : incidental optional ;
 generators.register [ new name-modifier ] ;

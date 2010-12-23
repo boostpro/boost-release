@@ -3,24 +3,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Tutorial</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../bbv2.html" title="Chapter 25. Boost.Build V2 User Manual">
 <link rel="prev" href="installation.html" title="Installation">
 <link rel="next" href="advanced.html" title="Overview">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table cellpadding="2" width="100%">
+<table cellpadding="2" width="100%"><tr>
 <td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
-<td align="center"><a href="../../../index.htm">Home</a></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
 <td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
-<td align="center"><a href="../../../people/people.htm">People</a></td>
-<td align="center"><a href="../../../more/faq.htm">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/people/people.htm">People</a></td>
+<td align="center"><a href="http://www.boost.org/more/faq.htm">FAQ</a></td>
 <td align="center"><a href="../../../more/index.htm">More</a></td>
-</table>
+</tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="installation.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="advanced.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="installation.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="advanced.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -54,7 +54,7 @@ exe hello : hello.cpp ;
 <p>
 
       Even with this simple setup, you can do some interesting
-      things. First of all, just invoking <span><strong class="command">bjam</strong></span> will
+      things. First of all, just invoking <span class="command"><strong>bjam</strong></span> will
       build the <code class="filename">hello</code>
       executable by compiling and
       linking <code class="filename">hello.cpp</code>. By default, debug variant 
@@ -151,7 +151,7 @@ bjam release inlining=off debug-symbols=on
 <p>
 </p>
 <p>The <code class="option">release</code> and <code class="option">debug</code> that we've seen
-      in <span><strong class="command">bjam</strong></span> invocations are just a shorthand way to
+      in <span class="command"><strong>bjam</strong></span> invocations are just a shorthand way to
       specify values of the <code class="varname">variant</code> feature.  For example, the command
       above could also have been written this way:
 
@@ -167,7 +167,7 @@ bjam variant=release inlining=off debug-symbols=on
       from the name of one of its values.
     </p>
 <p>
-      A complete description of features can be found in <a href="reference.html#bbv2.reference.features" title="Features and properties">the section called &#8220;Features and properties&#8221;</a>.
+      A complete description of features can be found in <a class="xref" href="reference.html#bbv2.reference.features" title="Features and properties">the section called &#8220;Features and properties&#8221;</a>.
     </p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
@@ -181,7 +181,7 @@ bjam variant=release inlining=off debug-symbols=on
         properties used for building targets are typically a
         combination of the build request and properties derived from
         the project's <code class="filename">Jamroot</code> (and its other
-        Jamfiles, as described in <a href="tutorial.html#bbv2.tutorial.hierarchy" title="Project Hierarchies">the section called &#8220;Project Hierarchies&#8221;</a>).  For example, the
+        Jamfiles, as described in <a class="xref" href="tutorial.html#bbv2.tutorial.hierarchy" title="Project Hierarchies">the section called &#8220;Project Hierarchies&#8221;</a>).  For example, the
         locations of <code class="computeroutput">#include</code>d header files are normally
         not specified on the command-line, but described in
         Jamfiles as <em class="firstterm">target
@@ -200,18 +200,18 @@ exe hello
 <p> 
         When <code class="filename">hello</code> is built, the two
         requirements specified above will always be present. 
-        If the build request given on the <span><strong class="command">bjam</strong></span>
+        If the build request given on the <span class="command"><strong>bjam</strong></span>
         command-line explictly contradicts a target's requirements,
         the target requirements usually override (or, in the case of
         &#8220;free&#8221;&#8221; features like
         <code class="varname">&lt;include&gt;</code>,
-        <sup>[<a name="id2118228" href="#ftn.id2118228">5</a>]</sup>
+        <sup>[<a name="id1562601" href="#ftn.id1562601" class="footnote">6</a>]</sup>
         augments) the build request.
 
       </p>
 <div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>The value of the <code class="varname">&lt;include&gt;</code> feature is
@@ -292,7 +292,7 @@ top/
       </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -321,12 +321,12 @@ top/
 
       in its requirements, then all of its subprojects will have it
       in their requirements, too.  Of course, any project can add
-      include paths to those specified by its parents. <sup>[<a name="id2118464" href="#ftn.id2118464">6</a>]</sup> 
+      include paths to those specified by its parents. <sup>[<a name="id1562850" href="#ftn.id1562850" class="footnote">7</a>]</sup> 
     More details can be found in 
-      <a href="advanced.html#bbv2.advanced.projects" title="Projects">the section called &#8220;Projects&#8221;</a>.
+      <a class="xref" href="advanced.html#bbv2.advanced.projects" title="Projects">the section called &#8220;Projects&#8221;</a>.
     </p>
 <p>
-      Invoking <span><strong class="command">bjam</strong></span> without explicitly specifying
+      Invoking <span class="command"><strong>bjam</strong></span> without explicitly specifying
       any targets on the command line builds the project rooted in the
       current directory.  Building a project does not automatically
       cause its subprojects to be built unless the parent project's
@@ -385,7 +385,7 @@ exe app : app.cpp ../util/foo//bar ;
     </p>
 <div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>Some other build system have special syntax for listing dependent
@@ -466,16 +466,16 @@ The <code class="filename">/library-example/foo//bar</code> syntax is used
     </p>
 <div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
 <p>If you want all applications in some project to link
       to a certain library, you can avoid having to specify it directly the sources of every
       target by using the
-      <code class="varname">&lt;source&gt;</code> property. For example, if <code class="filename">/boost/filesystem//fs</code>
+      <code class="varname">&lt;library&gt;</code> property. For example, if <code class="filename">/boost/filesystem//fs</code>
       should be linked to all applications in your project, you can add
-      <code class="computeroutput">&lt;source&gt;/boost/filesystem//fs</code> to the project's requirements, like this:</p>
+      <code class="computeroutput">&lt;library&gt;/boost/filesystem//fs</code> to the project's requirements, like this:</p>
 <pre class="programlisting">
 project 
    : requirements &lt;source&gt;/boost/filesystem//fs
@@ -517,7 +517,7 @@ lib l : l.cpp : &lt;link&gt;static ;
       to express linking requirements on a per-target basis.  
       For example, if a particular executable can be correctly built
       only with the static version of a library, we can qualify the
-      executable's <a href="reference.html#bbv2.reference.targets.references">target
+      executable's <a class="link" href="reference.html#bbv2.reference.targets.references">target
       reference</a> to the library as follows:
 
 
@@ -527,7 +527,7 @@ lib l : l.cpp : &lt;link&gt;static ;
 exe important : main.cpp helpers/&lt;link&gt;static ;</pre>
 <p>
 
-    No matter what arguments are specified on the <span><strong class="command">bjam</strong></span>
+    No matter what arguments are specified on the <span class="command"><strong>bjam</strong></span>
     command line, <code class="filename">important</code> will only be linked with
     the static version of <code class="filename">helpers</code>.
     </p>
@@ -557,7 +557,7 @@ exe e1 : e1.cpp foo ;
 exe e10 : e10.cpp foo ;</pre>
 <p>
 
-        The <a href="tasks.html#bbv2.tasks.alias" title="Alias"><code class="computeroutput">alias</code></a> 
+        The <a class="link" href="tasks.html#bbv2.tasks.alias" title="Alias"><code class="computeroutput">alias</code></a> 
         rule is specifically used to rename a reference to a target and possibly
         change the properties.
         
@@ -565,7 +565,7 @@ exe e10 : e10.cpp foo ;</pre>
       </p>
 <div class="tip"><table border="0" summary="Tip">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -591,7 +591,7 @@ exe app : app.cpp core ;</pre>
 </table></div>
 <div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>(Note for non-UNIX system). Typically, shared libraries must be
@@ -645,11 +645,11 @@ lib demangler : demangler_msvc.cpp : &lt;toolset&gt;msvc ; # alternative 3
 </pre>
 <p>
       When building <code class="filename">demangler</code>, Boost.Build will compare
-      requirements for each alternative with build properties to find the best match.
-      For example, when building with with <code class="computeroutput">&lt;toolset&gt;gcc</code> 
-      alternative 2, will be selected, and when building with 
-      <code class="computeroutput">&lt;toolset&gt;msvc</code> alternative 3 will be selected. In all other
-      cases, the most generic alternative 1 will be built.
+      requirements for each alternative with build properties to find the best
+      match. For example, when building with <code class="computeroutput">&lt;toolset&gt;gcc</code> 
+      alternative 2, will be selected, and when building with
+      <code class="computeroutput">&lt;toolset&gt;msvc</code> alternative 3 will be selected. In all
+      other cases, the most generic alternative 1 will be built.
     </p>
 </div>
 <div class="section" lang="en">
@@ -733,27 +733,27 @@ lib pythonlib : : &lt;name&gt;python22_d &lt;variant&gt;debug ;
 <p>
 
     </p>
-<p>A more advanced use of prebuilt targets is described in <a href="faq.html#bbv2.recipies.site-config" title="Targets in site-config.jam">the section called &#8220;Targets in site-config.jam&#8221;</a>.    
+<p>A more advanced use of prebuilt targets is described in <a class="xref" href="faq.html#bbv2.recipies.site-config" title="Targets in site-config.jam">the section called &#8220;Targets in site-config.jam&#8221;</a>.    
     </p>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2118228" href="#id2118228">5</a>] </sup>
-See <a href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>
+<div class="footnote"><p><sup>[<a name="ftn.id1562601" href="#id1562601" class="para">6</a>] </sup>
+See <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>
 </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id2118464" href="#id2118464">6</a>] </sup>Many
+<div class="footnote"><p><sup>[<a name="ftn.id1562850" href="#id1562850" class="para">7</a>] </sup>Many
       features will be overridden,
-      rather than added-to, in subprojects.  See <a href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a> for more
+      rather than added-to, in subprojects.  See <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a> for more
       information</p></div>
 </div>
 </div>
-<table width="100%"><tr>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><small></small></td>
+<td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="installation.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="advanced.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="installation.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="advanced.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

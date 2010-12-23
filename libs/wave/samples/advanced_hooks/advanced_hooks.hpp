@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2007 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2008 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -56,7 +56,7 @@ public:
     found_directive(TokenT const& directive)
 #else
     template <typename ContextT, typename TokenT>
-    void
+    bool
     found_directive(ContextT const& ctx, TokenT const& directive)
 #endif
     {
@@ -81,6 +81,10 @@ public:
         default:
             break;
         }
+
+#if BOOST_WAVE_USE_DEPRECIATED_PREPROCESSING_HOOKS == 0
+        return false;
+#endif
     }
 
     ///////////////////////////////////////////////////////////////////////////

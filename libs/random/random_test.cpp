@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: random_test.cpp,v 1.58 2005/08/25 16:27:27 johnmaddock Exp $
+ * $Id: random_test.cpp 30670 2005-08-25 16:27:28Z johnmaddock $
  */
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300

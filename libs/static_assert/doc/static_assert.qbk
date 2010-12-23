@@ -12,14 +12,14 @@
     [category template]
     [category testing]
     [category generic]
-    [last-revision $Date: 2007/05/09 17:20:56 $]
+    [last-revision $Date: 2008-02-21 11:51:41 -0500 (Thu, 21 Feb 2008) $]
 ]
 
-[section:intro Overview and Tutorial]
+This manual is also available in 
+[@http:svn.boost.org/svn/boost/sandbox/pdf/static_assert/release/static_assert.pdf 
+printer friendly PDF format].
 
-This documentation is 
-[@http://boost-consulting.com/vault/index.php?action=downloadfile&filename=boost_static_assert-1.34.pdf&directory=PDF%20Documentation& 
-also available in printer-friendly PDF format].
+[section:intro Overview and Tutorial]
 
 The header `<boost/static_assert.hpp>` supplies a single macro `BOOST_STATIC_ASSERT(x)`, 
 which generates a compile time error message if the integral-constant-expression `x`
@@ -98,12 +98,17 @@ the user that the template is being misused.
    #include <boost/type_traits.hpp>
 
    template <class RandomAccessIterator >
-   RandomAccessIterator foo(RandomAccessIterator from, RandomAccessIterator to)
+   RandomAccessIterator foo(RandomAccessIterator from, 
+                            RandomAccessIterator to)
    {
       // this template can only be used with
       // random access iterators...
-      typedef typename std::iterator_traits< RandomAccessIterator >::iterator_category cat;
-      BOOST_STATIC_ASSERT((boost::is_convertible<cat, const std::random_access_iterator_tag&>::value));
+      typedef typename std::iterator_traits< 
+            RandomAccessIterator >::iterator_category cat;
+      BOOST_STATIC_ASSERT(
+         (boost::is_convertible<
+            cat, 
+            const std::random_access_iterator_tag&>::value));
       //
       // detail goes here...
       return from;
@@ -221,6 +226,5 @@ working at namespace, function, and class scope outweighed the ugliness of a mac
 ]
 
 [endsect]
-
 
 

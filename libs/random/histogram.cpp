@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: histogram.cpp,v 1.8 2004/07/27 03:43:34 dgregor Exp $
+ * $Id: histogram.cpp 24096 2004-07-27 03:43:34Z dgregor $
  *
  * This test program allows to visibly examine the results of the
  * distribution functions.

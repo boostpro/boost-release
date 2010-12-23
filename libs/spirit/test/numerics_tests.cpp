@@ -1,6 +1,6 @@
 /*=============================================================================
     Copyright (c) 2001-2003 Joel de Guzman
-    Copyright (c) 2001-2003 Hartmut Kaiser
+    Copyright (c) 2001-2008 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
     Use, modification and distribution is subject to the Boost Software
@@ -9,6 +9,7 @@
 =============================================================================*/
 #include <boost/spirit/core.hpp>
 #include <boost/spirit/actor/assign_actor.hpp>
+#include <climits>
 #include <iostream>
 #include <boost/detail/lightweight_test.hpp>
 
@@ -111,7 +112,7 @@ main()
     char const* int_underflow = "-2147483649";
     char const* max_binary = "11111111111111111111111111111111";
     char const* binary_overflow = "100000000000000000000000000000000";
-    char const* max_octal = "77777777777";
+    char const* max_octal = "37777777777";
     char const* octal_overflow = "100000000000";
     char const* max_hex = "FFFFFFFF";
     char const* hex_overflow = "100000000";

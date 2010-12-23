@@ -15,7 +15,6 @@
 
 // Test for the compressed sparse row graph type
 #include <boost/graph/compressed_sparse_row_graph.hpp>
-#include <boost/test/minimal.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/erdos_renyi_generator.hpp>
 #include <boost/graph/graph_utility.hpp>
@@ -30,6 +29,7 @@
 #include <boost/limits.hpp>
 #include <string>
 #include <boost/graph/iteration_macros.hpp>
+#include <boost/test/minimal.hpp>
 
 // Algorithms to test against
 #include <boost/graph/betweenness_centrality.hpp>
@@ -38,7 +38,13 @@
 typedef boost::adjacency_list<> GraphT;
 typedef boost::erdos_renyi_iterator<boost::minstd_rand, GraphT> ERGen;
 
-typedef boost::compressed_sparse_row_graph<> CSRGraphT;
+struct VertexData 
+{
+  int index;
+};
+
+typedef boost::compressed_sparse_row_graph<boost::directedS, VertexData>
+  CSRGraphT;
 
 template <class G1, class VI1, class G2, class VI2, class IsomorphismMap>
 void assert_graphs_equal(const G1& g1, const VI1& vi1,
@@ -191,6 +197,9 @@ void test(const OrigGraph& g)
   CSRGraphT g4;
   BOOST_CHECK(num_vertices(g4) == 0);
   std::size_t first_vert = add_vertices(num_vertices(g3), g4);
+  BGL_FORALL_VERTICES(v, g4, CSRGraphT)
+    g4[v].index = v;
+
   BOOST_CHECK(first_vert == 0);
   BOOST_CHECK(num_vertices(g4) == num_vertices(g3));
   CSRGraphT::edge_iterator ei, ei_end;

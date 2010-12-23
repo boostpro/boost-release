@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: random_speed.cpp,v 1.13 2004/07/27 03:43:34 dgregor Exp $
+ * $Id: random_speed.cpp 24096 2004-07-27 03:43:34Z dgregor $
  */
 
 #include <iostream>

@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/integral_c.cpp,v $
-// $Date: 2005/05/14 16:00:57 $
-// $Revision: 1.5 $
+// $Source$
+// $Date: 2005-05-14 12:00:57 -0400 (Sat, 14 May 2005) $
+// $Revision: 28898 $
 
 #include <boost/mpl/integral_c.hpp>
 #include <boost/preprocessor/repeat.hpp>

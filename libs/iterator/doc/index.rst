@@ -19,7 +19,7 @@ __ ../../../index.htm
 :Contact:       dave@boost-consulting.com, jsiek@osl.iu.edu, witt@styleadvisor.com
 :organizations: `Boost Consulting`_, Indiana University `Open Systems
                 Lab`_, `Zephyr Associates, Inc.`_
-:date:          $Date: 2006/09/11 22:27:28 $
+:date:          $Date: 2008-03-22 17:45:55 -0400 (Sat, 22 Mar 2008) $
 
 :copyright:     Copyright David Abrahams, Jeremy Siek, Thomas Witt 2003.
 
@@ -43,7 +43,7 @@ __ ../../../index.htm
            The components of the Boost Iterator Library replace the
            older Boost Iterator Adaptor Library.
 
-.. _concepts: ../../../more/generic_programming.html#concept
+.. _concepts: http://www.boost.org/more/generic_programming.html#concept
 
 .. contents:: **Table of Contents**
 
@@ -271,7 +271,7 @@ over how your iterator works: you can add additional constructors,
 or even override the iterator functionality provided by the
 library.
 
-.. _`type generator`: ../../../more/generic_programming.html#type_generator
+.. _`type generator`: http://www.boost.org/more/generic_programming.html#type_generator
 
 If you're looking for the old ``projection_iterator`` component,
 its functionality has been merged into ``transform_iterator``: as

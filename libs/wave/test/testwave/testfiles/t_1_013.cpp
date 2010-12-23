@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2006 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2008 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -30,6 +30,7 @@ xglue(HIGH, LOW)
 //R #line 22 "t_1_013.cpp"
 //R printf("x" "1" "= %d, x" "2" "= %s", x1, x2);
 //R fputs("strncmp(\"abc\\0d\?\", \"abc\", '\\4', \"\\u1234\") == 0" ": @\n", s);
+//R
 //R "vers2.hpp"
 //R "hello";
 //R "hello" ", world"
