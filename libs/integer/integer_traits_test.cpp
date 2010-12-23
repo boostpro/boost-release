@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: integer_traits_test.cpp,v 1.6 2001/05/31 17:19:40 jmaurer Exp $
+ * $Id: integer_traits_test.cpp,v 1.7 2001/09/28 17:38:10 darinadler Exp $
  *
  * Revision history
  *  2000-02-22  Small improvements by Beman Dawes
@@ -35,14 +35,19 @@
  * Therefore, avoid explicit function template instantiations.
  */
 
+template<typename T> inline T make_char_numeric_for_streaming(T x) { return x; }
+inline int make_char_numeric_for_streaming(char c) { return c; }
+inline int make_char_numeric_for_streaming(signed char c) { return c; }
+inline int make_char_numeric_for_streaming(unsigned char c) { return c; }
+
 template<class T>
 void runtest(const char * type, T)
 {
   typedef boost::integer_traits<T> traits;
   std::cout << "Checking " << type
-	    << "; min is " << traits::min()
-            << ", max is " << traits::max()
-	    << std::endl;
+            << "; min is " << make_char_numeric_for_streaming(traits::min())
+            << ", max is " << make_char_numeric_for_streaming(traits::max())
+            << std::endl;
   BOOST_TEST(traits::is_specialized);
   BOOST_TEST(traits::is_integer);
   BOOST_TEST(traits::is_integral);

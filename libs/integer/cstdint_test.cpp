@@ -9,21 +9,12 @@
 //  See http://www.boost.org for most recent version including documentation.
 
 //  Revision History
+//   11 Sep 01  Adapted to work with macros defined in native stdint.h (John Maddock)
 //   12 Nov 00  Adapted to merged <boost/cstdint.hpp>
 //   23 Sep 00  Added INTXX_C constant macro support + int64_t support (John Maddock).
 //   28 Jun 00  Initial version
 #include <cassert>
 #include <iostream>
-#include <boost/cstdint.hpp>
-//
-// macros should not be defined by default:
-//
-#ifdef INT8_C
-#error header incorrectly implemented
-#endif
-//
-// now define the macros:
-//
 #define __STDC_CONSTANT_MACROS
 #include <boost/cstdint.hpp>
 
@@ -108,10 +99,17 @@ void integral_constant_type_check(T1, T2)
    // numeric_limits implementations currently
    // vary too much, or are incomplete or missing.
    //
-   assert(sizeof(T1) == sizeof(T2));
    T1 t1 = -1;
    T2 t2 = -1;
+#if defined(BOOST_HAS_STDINT_H)
+   // if we have a native stdint.h
+   // then the INTXX_C macros may define
+   // a type that's wider than required:
+   assert(sizeof(T1) <= sizeof(T2));
+#else
+   assert(sizeof(T1) == sizeof(T2));
    assert(t1 == t2);
+#endif
    if(t1 >= 0)
      assert(t2 >= 0);
    else
@@ -216,12 +214,4 @@ int main()
   return 0;
 }
 
-//
-// now verify that constant macros get undef'ed correctly:
-//
-#undef __STDC_CONSTANT_MACROS
-#include <boost/cstdint.hpp>
 
-#ifdef INT8_C
-#error boost/cstdint.hpp not correctly defined
-#endif

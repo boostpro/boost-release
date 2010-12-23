@@ -13,7 +13,7 @@
 
 // Author: Dietmar Kuehl dietmar.kuehl@claas-solutions.de 
 // Title:  STL container support, including support for built-in arrays
-// Version: $Id: array_traits.hpp,v 1.3 2001/02/02 20:58:53 jmaurer Exp $
+// Version: $Id: array_traits.hpp,v 1.5 2001/09/09 04:32:21 darinadler Exp $
 
 // Dec 4, 2000  Added some more typedefs to array_traits including
 //              an iterator type to supersede iter_type. -J.Siek
@@ -42,7 +42,7 @@ namespace boost
       typedef iterator iter_type; // just for backward compatibility
       typedef typename Cont::size_type size_type;
       typedef typename Cont::value_type value_type;
-      typedef typename Cont::reference referece;
+      typedef typename Cont::reference reference;
       typedef typename Cont::pointer pointer;
       static iterator begin(Cont &cont) { return cont.begin(); }
       static iterator end(Cont &cont) { return cont.end(); }
@@ -93,7 +93,7 @@ namespace boost
       typedef value_type* pointer;
       static iterator begin(T const (&array)[sz]) { return array; }
       static iterator end(T const (&array)[sz]) { return array + sz; }
-      static size_type size(T const (&array)[sz]) { return sz; }
+      static size_type size(T const (&)[sz]) { return sz; }
     };
 
   template <typename T, int sz>

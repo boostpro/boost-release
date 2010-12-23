@@ -56,7 +56,7 @@ namespace boost {
       std::less<W> compare;
       detail::_project2nd<W,W> combine;
       dijkstra_shortest_paths(G, s, params.distance_compare(compare).
-			      distance_combine(combine));    
+			      distance_combine(combine));
     }
   } // namespace detail
 

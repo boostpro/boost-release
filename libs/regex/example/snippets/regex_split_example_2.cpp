@@ -16,7 +16,7 @@
  /*
   *   LOCATION:    see http://www.boost.org for most recent version.
   *   FILE         regex_split_example_2.cpp
-  *   VERSION      3.00
+  *   VERSION      see <boost/version.hpp>
   *   DESCRIPTION: regex_split example: spit out linked URL's.
   */
 
@@ -24,6 +24,7 @@
 #include <list>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <boost/regex.hpp>
 
 boost::regex e("<\\s*A\\s+[^>]*href\\s*=\\s*\"([^\"]*)\"",

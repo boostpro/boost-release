@@ -19,6 +19,13 @@ NESTED_DECL(is_scalar)
 NESTED_DECL(is_compound)
 NESTED_DECL(is_POD)
 
+struct non_default_constructable_UDT
+{
+	non_default_constructable_UDT(const non_default_constructable_UDT&){}
+private:
+	non_default_constructable_UDT(){}
+};
+
 int cpp_main(int argc, char* argv[])
 {
    NESTED_TEST(is_class, int)
@@ -204,6 +211,7 @@ int cpp_main(int argc, char* argv[])
    soft_value_test(true, boost::is_empty<boost::noncopyable>::value)
    soft_value_test(false, boost::is_empty<non_empty>::value)
    soft_value_test(false, boost::is_empty<const non_empty&>::value)
+   soft_value_test(true, boost::is_empty<non_default_constructable_UDT>::value)
 
    return check_result(argc, argv);
 }
@@ -218,12 +226,15 @@ unsigned int expected_failures = 55;
 #elif defined(__GNUC__)
 // classes that are POD's, or empty:
 unsigned int expected_failures = 4;
+#elif defined(__MWERKS__)
+unsigned int expected_failures = 12;
 #elif defined(BOOST_MSVC)
 // can't handle classes that are POD's or arrays that are POD's
 unsigned int expected_failures = 19;
 #else
 unsigned int expected_failures = 4;
 #endif
+
 
 
 

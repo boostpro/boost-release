@@ -39,7 +39,7 @@
 #include <boost/iterator_adaptors.hpp>
 #include <boost/pending/integer_range.hpp>
 #include <boost/graph/properties.hpp>
-#include <boost/utility.hpp>
+#include <boost/tuple/tuple.hpp>
 
 namespace boost {
   
@@ -196,7 +196,7 @@ namespace boost {
       void initialize(MatrixIter&) const{ }
 
       void increment(MatrixIter& i) {
-	increment_dispatch(i, Directed());
+        increment_dispatch(i, Directed());
       }
       void increment_dispatch(MatrixIter& i, directedS) {
         ++i;
@@ -365,7 +365,8 @@ namespace boost {
       if (Directed::is_directed)
         return m_matrix[u * m_vertex_set.size() + v];
       else {
-        if (v > u) std::swap(u, v);
+        if (v > u)
+          std::swap(u, v);
         return m_matrix[u * (u - 1)/2 + v];
       }
     }
@@ -374,7 +375,8 @@ namespace boost {
       if (Directed::is_directed)
         return m_matrix[u * m_vertex_set.size() + v];
       else {
-        if (v > u) std::swap(u, v);
+        if (v > u)
+          std::swap(u, v);
         return m_matrix[u * (u + 1)/2 + v];
       }
     }
@@ -703,13 +705,13 @@ namespace boost {
     struct adj_matrix_any_vertex_pa {
       template <class Tag, class Graph, class Property>
       struct bind {
-	typedef typename property_value<Property,Tag>::type Value;
-	typedef typename boost::graph_traits<Graph>::vertex_descriptor Vertex;
-	
+        typedef typename property_value<Property,Tag>::type Value;
+        typedef typename boost::graph_traits<Graph>::vertex_descriptor Vertex;
+        
         typedef adj_matrix_vertex_property_map<Graph*, Vertex, Value, Value&,
-	  Tag> type;
+          Tag> type;
         typedef adj_matrix_vertex_property_map<const Graph*, Vertex, Value, 
-	  const Value&, Tag> const_type;
+          const Value&, Tag> const_type;
       };
     };
     struct adj_matrix_id_vertex_pa {

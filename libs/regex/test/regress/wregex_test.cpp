@@ -16,7 +16,7 @@
  /*
   *   LOCATION:    see http://www.boost.org for most recent version.
   *   FILE         regex_test.cpp
-  *   VERSION      3.12
+  *   VERSION      see <boost/version.hpp>
   *   DESCRIPTION: Builds regression test program with default
   *                locale and wide character tests.  Also
   *                instantiates all the templates in the library
@@ -24,7 +24,8 @@
   */
 
 // disable automatic selection of support library:
-#define BOOST_RE_NO_LIB
+#define BOOST_REGEX_NO_LIB
+#define BOOST_REGEX_STATIC_LINK
 
 #if defined(_MSC_VER) && defined(__STL_DEBUG) && defined(_DLL)
 //
@@ -41,7 +42,7 @@
 #include <boost/regex.hpp>
 #include <boost/regex/src.cpp>
 
-#ifdef BOOST_RE_NO_WCSTRING
+#ifdef BOOST_NO_WREGEX
 #error The regex library is not configured for wide character support
 #endif
 
@@ -122,7 +123,7 @@ template std::size_t regex_split(test_string_type*,
 
 template std::size_t regex_split(test_string_type*, test_string_type&);
 
-#ifndef BOOST_RE_NO_PARTIAL_FUNC_SPEC
+#ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
 //
 // the following prototypes are only available if partial ordering
 // of template functions is supported:
@@ -181,9 +182,9 @@ template test_string_type regex_merge(const test_string_type&,
 //
 // include regression test source files:
 //
-#ifdef BOOST_RE_LOCALE_W32
+#ifdef BOOST_REGEX_USE_WIN32_LOCALE
 #define BOOST_RE_TEST_LOCALE_W32
-#elif !defined(BOOST_RE_LOCALE_C)
+#elif !defined(BOOST_REGEX_USE_C_LOCALE)
 #define BOOST_RE_TEST_LOCALE_CPP
 #endif
 #define TEST_UNICODE
@@ -191,5 +192,11 @@ template test_string_type regex_merge(const test_string_type&,
 #include "parse.cpp"
 #include "regress.cpp"
 
-
+//
+// Como goes into an infinite loop trying to link this,
+// just have it fail for now:
+//
+#if defined(__COMO__) && defined(_MSC_VER)
+#error "Comeau in VC6 mode goes into an infinite loop trying to link this program!!!"
+#endif
 

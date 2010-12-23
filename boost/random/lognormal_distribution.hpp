@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: lognormal_distribution.hpp,v 1.2 2001/06/01 17:11:49 jmaurer Exp $
+ * $Id: lognormal_distribution.hpp,v 1.3 2001/09/26 21:45:25 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -34,8 +34,8 @@ namespace std {
 
 namespace boost {
 
-#ifdef __GNUC__
-// Special gcc workaround: gcc does not yet support using-declarations
+#if defined(__GNUC__) && (__GNUC__ < 3)
+// Special gcc workaround: gcc 2.95.x ignores using-declarations
 // in template classes (confirmed by gcc author Martin v. Loewis)
   using std::sqrt;
   using std::exp;

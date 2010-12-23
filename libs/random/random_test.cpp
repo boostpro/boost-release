@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: random_test.cpp,v 1.16 2001/05/07 21:24:23 jmaurer Exp $
+ * $Id: random_test.cpp,v 1.17 2001/09/03 18:23:41 jmaurer Exp $
  */
 
 #include <iostream>
@@ -96,9 +96,11 @@ void instantiate_iterator_interface(Generator & gen)
 
   BOOST_TEST(res == *gen++);
   BOOST_TEST(gen == gen);
+#if 0
+  // Distribution functions may have a cache which is purged on copy.
+  // Thus, the copy never compares equal.  Example: normal_distribution.
   Generator gen2 = gen;
   BOOST_TEST(gen == gen2);     // must be equal to a copy
-#if 0
   ++gen2;
   // this is only correct for elementary generators, others have ref members
   BOOST_TEST(gen != gen2);

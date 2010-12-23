@@ -54,7 +54,7 @@ std::string get_host()
   return "aix";
 #elif defined __MSL__ && __dest_os == __mac_os
   return "macos";
-#elif defined __MSL__ && __dest_os == __mac_os_x
+#elif defined __MSL__ && __dest_os == __mac_os_x || defined(__APPLE_CC__)
   return "macosx";
 #else
 # error Please adapt for your platform
@@ -92,11 +92,15 @@ std::string get_system_configuration()
   return "BeOS 5 Intel Edition";
 }
 
-#elif defined __MSL__ && (__dest_os == __mac_os || __dest_os == __mac_os_x)
+#elif defined __MSL__ && (__dest_os == __mac_os || __dest_os == __mac_os_x) || defined(__APPLE_CC__)
 
 std::string get_system_configuration()
 {
-  return "Mac OS";
+#if __dest_os == _mac_os
+  return "Mac OS 9";
+#else
+  return "Mac OS X";
+#endif
 }
 
 #else
@@ -235,8 +239,8 @@ void read_compiler_configuration(const std::string & file, OutputIterator out)
   }
 }
 
-const std::string pass_string = "Pass";
-const std::string fail_string = "<font color=\"#FF0000\">Fail</font>";
+std::string pass_string = "Pass";
+std::string fail_string = "<font color=\"#FF0000\">Fail</font>";
 
 // map test name to results, one character ("P" or "F") for each compiler
 typedef std::map<std::string, std::string> previous_results_type;

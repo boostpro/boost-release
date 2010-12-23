@@ -203,10 +203,10 @@ explicit indirect_iterator_generator::type(const BaseIterator&amp; it)
 
     <blockquote>
 <pre>
-template &lt;class BaseIterator,
-          class Value, class Pointer, class Reference,
-          class ConstPointer, class ConstReference&gt;
-class indirect_iterator_pair_generator
+  template &lt;class BaseIterator,
+            class Value, class Reference, class ConstReference, 
+            class Category, class Pointer, class ConstPointer&gt;
+  struct indirect_iterator_pair_generator;
 {
 public:
   typedef <tt><a href=
@@ -293,13 +293,6 @@ b,c,d,e,f,g,h,
          <b>Default:</b> <tt>Value&amp;</tt> 
 
       <tr>
-        <td><tt>Pointer</tt> 
-
-        <td>The <tt>pointer</tt> type of the resulting <tt>iterator</tt>, and
-        in particular, the result type of its <tt>operator-&gt;()</tt>.<br>
-         <b>Default:</b> <tt>Value*</tt> 
-
-      <tr>
         <td><tt>ConstReference</tt> 
 
         <td>The <tt>reference</tt> type of the resulting
@@ -308,17 +301,25 @@ b,c,d,e,f,g,h,
          <b>Default:</b> <tt>const Value&amp;</tt> 
 
       <tr>
+        <td><tt>Category</tt> 
+        <td>The <tt>iterator_category</tt> type for the resulting iterator.<br>
+         <b>Default:</b>
+        <tt>std::iterator_traits&lt;BaseIterator&gt;::iterator_category</tt> 
+
+      <tr>
+        <td><tt>Pointer</tt> 
+
+        <td>The <tt>pointer</tt> type of the resulting <tt>iterator</tt>, and
+        in particular, the result type of its <tt>operator-&gt;()</tt>.<br>
+         <b>Default:</b> <tt>Value*</tt> 
+
+      <tr>
         <td><tt>ConstPointer</tt> 
 
         <td>The <tt>pointer</tt> type of the resulting <tt>const_iterator</tt>,
         and in particular, the result type of its <tt>operator-&gt;()</tt>.<br>
          <b>Default:</b> <tt>const Value*</tt> 
 
-      <tr>
-        <td><tt>Category</tt> 
-        <td>The <tt>iterator_category</tt> type for the resulting iterator.<br>
-         <b>Default:</b>
-        <tt>std::iterator_traits&lt;BaseIterator&gt;::iterator_category</tt> 
     </table>
 
     <h3>Concept Model</h3>
@@ -422,7 +423,7 @@ a,b,c,d,e,f,g,
     <hr>
 
     <p>Revised 
-    <!--webbot bot="Timestamp" s-type="EDITED" s-format="%d %b %Y" startspan -->17 Aug 2001<!--webbot bot="Timestamp" endspan i-checksum="14763" -->
+    <!--webbot bot="Timestamp" s-type="EDITED" s-format="%d %b %Y" startspan -->18 Sep 2001<!--webbot bot="Timestamp" endspan i-checksum="14941" -->
 
 
     <p>&copy; Copyright Jeremy Siek and David Abrahams 2001. Permission to

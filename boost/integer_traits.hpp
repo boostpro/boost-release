@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: integer_traits.hpp,v 1.12 2001/06/20 11:42:44 johnmaddock Exp $
+ * $Id: integer_traits.hpp,v 1.15 2001/09/24 23:45:49 darinadler Exp $
  *
  * Idea by Beman Dawes, Ed Brey, Steve Cleary, and Nathan Myers
  */
@@ -23,7 +23,7 @@
 
 // These are an implementation detail and not part of the interface
 #include <limits.h>
-#ifndef BOOST_NO_INTRINSIC_WCHAR_T
+#if !defined(BOOST_NO_INTRINSIC_WCHAR_T) && !defined(BOOST_NO_CWCHAR)
 #include <wchar.h>
 #endif
 
@@ -85,18 +85,23 @@ class integer_traits<unsigned char>
 template<>
 class integer_traits<wchar_t>
   : public std::numeric_limits<wchar_t>,
-#if defined(__BORLANDC__) || defined(__CYGWIN__) || defined(__MINGW32__) || (defined(__BEOS__) && defined(__GNUC__))
+#if defined(WCHAR_MIN) && defined(WCHAR_MAX)
+    public detail::integer_traits_base<wchar_t, WCHAR_MIN, WCHAR_MAX>
+#elif defined(__BORLANDC__) || defined(__CYGWIN__) || defined(__MINGW32__) || (defined(__BEOS__) && defined(__GNUC__))
     // No WCHAR_MIN and WCHAR_MAX, whar_t is short and unsigned:
     public detail::integer_traits_base<wchar_t, 0, 0xffff>
-#elif defined(__sgi) && (!defined(__SGI_STL_PORT) || __SGI_STL_PORT < 0x400)
-    // SGI MIPSpro with native library doesn't have them, either
+#elif (defined(__sgi) && (!defined(__SGI_STL_PORT) || __SGI_STL_PORT < 0x400)) || (defined __APPLE__)
+    // No WCHAR_MIN and WCHAR_MAX, wchar_t has the same range as int.
+    // SGI MIPSpro with native library is one case like this.
+    // Mac OS X with native library is another.
     public detail::integer_traits_base<wchar_t, INT_MIN, INT_MAX>
 #elif defined(__hpux) && defined(__GNUC__) && !defined(__SGI_STL_PORT)
-    // GCC 2.95.2 doesn't have them on HP-UX, either
-    // (also, std::numeric_limits<wchar_t> appears to return the wrong values)
+    // No WCHAR_MIN and WCHAR_MAX, wchar_t has the same range as unsigned int.
+    // HP-UX GCC 2.95.2 is a case like this
+    // (also, std::numeric_limits<wchar_t> appears to return the wrong values).
     public detail::integer_traits_base<wchar_t, 0, UINT_MAX>
 #else
-    public detail::integer_traits_base<wchar_t, WCHAR_MIN, WCHAR_MAX>
+#error No WCHAR_MIN and WCHAR_MAX present, please adjust integer_traits<> for your compiler.
 #endif
 { };
 #endif // BOOST_NO_INTRINSIC_WCHAR_T
@@ -137,7 +142,7 @@ class integer_traits<unsigned long>
     public detail::integer_traits_base<unsigned long, 0, ULONG_MAX>
 { };
 
-#ifdef ULLONG_MAX
+#if defined(ULLONG_MAX) && !defined(__SUNPRO_CC)
 template<>
 class integer_traits<long long>
   : public std::numeric_limits<long long>,

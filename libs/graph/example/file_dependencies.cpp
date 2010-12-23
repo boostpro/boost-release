@@ -86,6 +86,7 @@ protected:
   bool& m_has_cycle;
 };
 
+
 int main(int,char*[])
 {
     
@@ -137,7 +138,7 @@ int main(int,char*[])
   // grouped together
   {
     // Set up the necessary graph properties.
-    vector<int> time(N, 0);
+    vector<int> time(N);
     typedef vector<int>::iterator Time;
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, g);
 
@@ -157,9 +158,10 @@ int main(int,char*[])
       if (in_degree[*i] == 0)
         dijkstra_shortest_paths(g, *i, 
 				distance_map(&time[0]). 
-				weight_map(weight). 
 				distance_compare(compare).
-				distance_combine(combine));
+				distance_combine(combine).
+				distance_inf(0).
+				weight_map(weight));
     }
 
     cout << "parallel make ordering, " << endl

@@ -15,7 +15,7 @@
 
  /*
   *   FILE     cregex.h
-  *   VERSION  2.21
+  *   VERSION  see <boost/version.hpp>
   *   deprecated regular expression matching algorithms
   */
 
@@ -48,7 +48,7 @@ using boost::regerrorA;
 using boost::regexecA;
 using boost::regfreeA;
 
-#ifndef BOOST_RE_NO_WCSTRING
+#ifndef BOOST_NO_WREGEX
 using boost::regex_tW;
 using boost::regcompW;
 using boost::regerrorW;

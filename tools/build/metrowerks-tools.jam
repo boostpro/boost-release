@@ -17,6 +17,7 @@
 
 # if METROWERKS_ROOT is unset, this will "multiply away" to nothing.
 METROWERKS_SETUP = "call "\"$(METROWERKS_ROOT)$(SLASH)"Other Metrowerks Tools"$(SLASH)"Command Line Tools"$(SLASH)cwenv.bat\"" -quiet" ;
+METROWERKS_LINK_SETUP = "set MWWinx86LibraryFiles=" ;
 
 flags metrowerks DEFINES <define> ;
 flags metrowerks UNDEFS <undef> ;
@@ -27,8 +28,8 @@ flags metrowerks LINKFLAGS <debug-symbols>on : -g ;
 
 flags metrowerks LINKFLAGS <target-type>DLL : -shared ;
 flags metrowerks CFLAGS <optimization>off : -O0 ;
-flags metrowerks CFLAGS <optimization>speed : -Op ;
-flags metrowerks CFLAGS <optimization>space : -Os ;
+flags metrowerks CFLAGS <optimization>speed : -opt full ;
+flags metrowerks CFLAGS <optimization>space : -O4,s intrinsics ;
 flags metrowerks CFLAGS <inlining>off : -inline off ;
 flags metrowerks CFLAGS <inlining>on : -inline on ;
 flags metrowerks CFLAGS <inlining>full : -inline auto -inline level=8 ;
@@ -45,8 +46,9 @@ else
   flags metrowerks STDLIBS <runtime-link>dynamic : mwcrtldll.lib;gdi32.lib;user32.lib;kernel32.lib ;
 }
 
+flags metrowerks LIBPATH <library-path> ;
 flags metrowerks NEEDLIBS <library-file> ;
-flags metrowerks NEEDLIBS <find-library> ;
+flags metrowerks FINDLIBS <find-library> ;
 
 # How will we find metrowerks standard headers?
 # If the user specified METROWERKS_INCLUDE_ROOT, use that
@@ -77,8 +79,8 @@ rule Link-action
 actions metrowerks-Link-action bind NEEDLIBS
 {
     $(METROWERKS_SETUP)
-    set MWWinx86LibraryFiles=$(STDLIBS)
-    mwld -export dllexport -nowraplines $(LINKFLAGS) $(IMPLIB_COMMAND)"$(<[2])" -o "$(<[1])"  $(UNDEFS) $(NEEDLIBS) "$(>)"
+    $(METROWERKS_LINK_SETUP)$(STDLIBS)
+    mwld -export dllexport -nowraplines $(LINKFLAGS) -L$(LIBPATH) -L$(STDLIBPATH) $(IMPLIB_COMMAND)"$(<[2])" -o "$(<[1])"  $(UNDEFS) $(NEEDLIBS) "$(>)" -l$(FINDLIBS)
 }
 
 #### Cc #####
@@ -91,7 +93,7 @@ rule Cc-action
 actions metrowerks-Cc-action
 {
     $(METROWERKS_SETUP)
-    mwcc -c -cwd include -U$(UNDEFS) -D$(DEFINES) -nowraplines $(CFLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    mwcc -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -nowraplines $(CFLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### C++ ####
@@ -103,7 +105,7 @@ rule C++-action
 actions metrowerks-C++-action
 {
     $(METROWERKS_SETUP)
-    mwcc -c -cwd include -U$(UNDEFS) -D$(DEFINES) -nowraplines -lang c++ $(CFLAGS) $(C++FLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
+    mwcc -c -warn on,nounusedexpr,nounused -cwd include -U$(UNDEFS) -D$(DEFINES) -DNOMINMAX -nowraplines -lang c++ $(CFLAGS) $(C++FLAGS) -I- -I"$(HDRS)" -I"$(STDHDRS)" -o "$(<)" "$(>)"
 }
 
 #### Archive ####

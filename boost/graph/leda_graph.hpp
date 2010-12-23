@@ -148,14 +148,14 @@ namespace boost {
     typedef boost::iterator_adaptor<edge,
       boost::leda_out_edge_iterator_policies,
       edge, const edge&, const edge*,
-      boost::multi_pass_input_iterator_tag,
+      std::forward_iterator_tag,
       std::ptrdiff_t
     > out_edge_iterator;
 
     typedef boost::iterator_adaptor<edge,
       boost::leda_in_edge_iterator_policies, 
       edge, const edge&, const edge*,
-      boost::multi_pass_input_iterator_tag,
+      std::forward_iterator_tag,
       std::ptrdiff_t
     > in_edge_iterator;
 
@@ -497,6 +497,10 @@ namespace boost {
     : public put_get_helper<ERef, leda_node_property_map<E, ERef, NodeMapPtr> >
   {
   public:
+    typedef E value_type;
+    typedef ERef reference;
+    typedef node key_type;
+    typedef lvalue_property_map_tag category;
     leda_node_property_map(NodeMapPtr a) : m_array(a) { }
     ERef operator[](node n) const { return (*m_array)[n]; }
   protected:

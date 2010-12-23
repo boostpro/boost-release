@@ -16,12 +16,14 @@
  /*
   *   LOCATION:    see http://www.boost.org for most recent version.
   *   FILE:        regex_debug.cpp
-  *   VERSION:     3.12
+  *   VERSION:     see <boost/version.hpp>
   *   DESCRIPTION: Misc. debugging helpers.
   */
 
 
-#include <boost/regex/detail/regex_config.hpp>
+#define BOOST_REGEX_SOURCE
+
+#include <boost/regex/config.hpp>
 #include <boost/regex/detail/regex_raw_buffer.hpp>
 #include <boost/regex.hpp>
 
@@ -29,7 +31,7 @@
 #include <crtdbg.h>
 #endif
 
-#ifdef BOOST_RE_DEBUG
+#ifdef BOOST_REGEX_DEBUG
 #ifndef BOOST_RE_OLD_IOSTREAM
 #include <ostream>
 #else 

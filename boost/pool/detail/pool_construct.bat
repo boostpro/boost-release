@@ -1,6 +1,6 @@
 @echo off
 rem
-rem Copyright (C) 2000 Stephen Cleary (shammah@voyager.net)
+rem Copyright (C) 2000, 2001 Stephen Cleary (shammah@voyager.net)
 rem
 rem This file can be redistributed and/or modified under the terms found
 rem  in "copyright.html"
@@ -19,11 +19,9 @@ goto end
 
 rem DJGPP programs (including m4) running on Windows/NT do NOT support long
 rem  file names (see the DJGPP v2 FAQ, question 8.1)
-rem I don't redirect input, or else you'll lose the file name entirely -
-rem  'pool_c~1.m4' is better than 'stdin' in error messages
 rem Note that the output doesn't have to be a short name because it's an
 rem  argument to the command shell, not m4.
 :NT
-m4 -P -E -DNumberOfArguments=%1 pool_c~1.m4 > pool_construct.inc
+m4 -P -E -DNumberOfArguments=%1 < pool_construct.m4 > pool_construct.inc
 
 :end

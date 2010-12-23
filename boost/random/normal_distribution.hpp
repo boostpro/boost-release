@@ -12,7 +12,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: normal_distribution.hpp,v 1.3 2001/06/28 18:40:22 jmaurer Exp $
+ * $Id: normal_distribution.hpp,v 1.5 2001/09/03 18:21:32 jmaurer Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files
@@ -44,7 +44,14 @@ public:
     assert(sigma >= 0);
     this->iterator_init();
   }
-  // compiler-generated copy constructor is fine
+
+  // compiler-generated copy constructor is NOT fine, need to purge cache
+  normal_distribution(const normal_distribution& other)
+    : generator_iterator_mixin_adapter<
+      normal_distribution<UniformRandomNumberGenerator, RealType>, RealType>(other),
+    _rng(other._rng), _mean(other._mean), _sigma(other._sigma), _valid(false)
+  {
+  }
   // uniform_01 cannot be assigned, neither can this class
 
   result_type operator()()

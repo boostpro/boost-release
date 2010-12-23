@@ -10,23 +10,15 @@
 
 //  Classes appear in alphabetical order
 
-//  Revision History
-//  21 May 01  checked_delete() and checked_array_delete() added (Beman Dawes,
-//             suggested by Dave Abrahams, generalizing idea from Vladimir Prus)
-//  21 May 01  made next() and prior() inline (Beman Dawes)  
-//  26 Jan 00  protected noncopyable destructor added (Miki Jovanovic)
-//  10 Dec 99  next() and prior() templates added (Dave Abrahams)
-//  30 Aug 99  moved cast templates to cast.hpp (Beman Dawes)
-//   3 Aug 99  cast templates added
-//  20 Jul 99  name changed to utility.hpp 
-//   9 Jun 99  protected noncopyable default ctor
-//   2 Jun 99  Initial Version. Class noncopyable only contents (Dave Abrahams)
-
 #ifndef BOOST_UTILITY_HPP
 #define BOOST_UTILITY_HPP
 
-#include <boost/config.hpp>        // broken compiler workarounds 
-#include <boost/static_assert.hpp> 
+#include <boost/config.hpp>        // broken compiler workarounds
+#include <boost/static_assert.hpp>
+
+// certain headers are part of the <utility.hpp> interface
+#include <boost/utility/base_from_member.hpp>  
+ 
 #include <cstddef>                 // for size_t
 #include <utility>                 // for std::pair
 
@@ -87,31 +79,6 @@ namespace boost
         const noncopyable& operator=( const noncopyable& );
     }; // noncopyable
 
-//  class tied  -------------------------------------------------------//
-
-    // A helper for conveniently assigning the two values from a pair
-    // into separate variables. The idea for this comes from Jaakko J„rvi's
-    // Binder/Lambda Library.
-
-    // Constributed by Jeremy Siek
-
-    template <class A, class B>
-    class tied {
-    public:
-      inline tied(A& a, B& b) : _a(a), _b(b) { }
-      template <class U, class V>
-      inline tied& operator=(const std::pair<U,V>& p) {
-        _a = p.first;
-        _b = p.second;
-        return *this;
-      }
-    protected:
-      A& _a;
-      B& _b;
-    };
-
-    template <class A, class B>
-    inline tied<A,B> tie(A& a, B& b) { return tied<A,B>(a, b); }
 
 } // namespace boost
 
