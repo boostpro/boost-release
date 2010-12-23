@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Synchronization mechanisms</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../interprocess.html" title="Chapter&#160;9.&#160;Boost.Interprocess">
@@ -351,7 +351,7 @@
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_recursive_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-<code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_recursive__id821645.html" title="Class interprocess_recursive_mutex">interprocess_recursive_mutex</a></code>:
+<code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_recursive__id822492.html" title="Class interprocess_recursive_mutex">interprocess_recursive_mutex</a></code>:
             A recursive, anonymous mutex that can be placed in shared memory or memory
             mapped files.
           </li></ul></div>
@@ -1340,7 +1340,7 @@
           To sum up:
         </p>
 <div class="table">
-<a name="id918840"></a><p class="title"><b>Table&#160;9.5.&#160;Locking Possibilities</b></p>
+<a name="id919502"></a><p class="title"><b>Table&#160;9.5.&#160;Locking Possibilities</b></p>
 <div class="table-contents"><table class="table" summary="Locking Possibilities">
 <colgroup>
 <col>
@@ -1348,52 +1348,52 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                If a thread has acquired the...
-              </p>
-              </th>
+                  <p>
+                    If a thread has acquired the...
+                  </p>
+                </th>
 <th>
-              <p>
-                Other threads can acquire...
-              </p>
-              </th>
+                  <p>
+                    Other threads can acquire...
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                Sharable lock
-              </p>
-              </td>
+                  <p>
+                    Sharable lock
+                  </p>
+                </td>
 <td>
-              <p>
-                many sharable locks and 1 upgradable lock
-              </p>
-              </td>
+                  <p>
+                    many sharable locks and 1 upgradable lock
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Upgradable lock
-              </p>
-              </td>
+                  <p>
+                    Upgradable lock
+                  </p>
+                </td>
 <td>
-              <p>
-                many sharable locks
-              </p>
-              </td>
+                  <p>
+                    many sharable locks
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Exclusive lock
-              </p>
-              </td>
+                  <p>
+                    Exclusive lock
+                  </p>
+                </td>
 <td>
-              <p>
-                no locks
-              </p>
-              </td>
+                  <p>
+                    no locks
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
@@ -1407,7 +1407,7 @@
           data is guaranteed to remain unchanged</strong></span>:
         </p>
 <div class="table">
-<a name="id918950"></a><p class="title"><b>Table&#160;9.6.&#160;Transition Possibilities</b></p>
+<a name="id919617"></a><p class="title"><b>Table&#160;9.6.&#160;Transition Possibilities</b></p>
 <div class="table-contents"><table class="table" summary="Transition Possibilities">
 <colgroup>
 <col>
@@ -1415,90 +1415,90 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                If a thread has acquired the...
-              </p>
-              </th>
+                  <p>
+                    If a thread has acquired the...
+                  </p>
+                </th>
 <th>
-              <p>
-                It can atomically release the previous lock and...
-              </p>
-              </th>
+                  <p>
+                    It can atomically release the previous lock and...
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                Sharable lock
-              </p>
-              </td>
+                  <p>
+                    Sharable lock
+                  </p>
+                </td>
 <td>
-              <p>
-                try to obtain (not guaranteed) immediately the Exclusive lock if
-                no other thread has exclusive or upgrable lock
-              </p>
-              </td>
+                  <p>
+                    try to obtain (not guaranteed) immediately the Exclusive lock
+                    if no other thread has exclusive or upgrable lock
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Sharable lock
-              </p>
-              </td>
+                  <p>
+                    Sharable lock
+                  </p>
+                </td>
 <td>
-              <p>
-                try to obtain (not guaranteed) immediately the Upgradable lock if
-                no other thread has exclusive or upgrable lock
-              </p>
-              </td>
+                  <p>
+                    try to obtain (not guaranteed) immediately the Upgradable lock
+                    if no other thread has exclusive or upgrable lock
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Upgradable lock
-              </p>
-              </td>
+                  <p>
+                    Upgradable lock
+                  </p>
+                </td>
 <td>
-              <p>
-                obtain the Exclusive lock when all sharable locks are released
-              </p>
-              </td>
+                  <p>
+                    obtain the Exclusive lock when all sharable locks are released
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Upgradable lock
-              </p>
-              </td>
+                  <p>
+                    Upgradable lock
+                  </p>
+                </td>
 <td>
-              <p>
-                obtain the Sharable lock immediately
-              </p>
-              </td>
+                  <p>
+                    obtain the Sharable lock immediately
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Exclusive lock
-              </p>
-              </td>
+                  <p>
+                    Exclusive lock
+                  </p>
+                </td>
 <td>
-              <p>
-                obtain the Upgradable lock immediately
-              </p>
-              </td>
+                  <p>
+                    obtain the Upgradable lock immediately
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Exclusive lock
-              </p>
-              </td>
+                  <p>
+                    Exclusive lock
+                  </p>
+                </td>
 <td>
-              <p>
-                obtain the Sharable lock immediately
-              </p>
-              </td>
+                  <p>
+                    obtain the Sharable lock immediately
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
@@ -1961,7 +1961,7 @@
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">sync</span><span class="special">/</span><span class="identifier">interprocess_upgradable_mutex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-<code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_upgradable_id821880.html" title="Class interprocess_upgradable_mutex">interprocess_upgradable_mutex</a></code>:
+<code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_upgradable_id822727.html" title="Class interprocess_upgradable_mutex">interprocess_upgradable_mutex</a></code>:
             A non-recursive, anonymous upgradable mutex that can be placed in shared
             memory or memory mapped files.
           </li></ul></div>

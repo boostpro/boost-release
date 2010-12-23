@@ -188,7 +188,7 @@ testwave_app::got_expected_result(std::string const& filename,
                 break;
 
             case 'P':       // insert full path
-            case 'B':       // same as 'P', but forward slashs on Windows
+            case 'B':       // same as 'P', but forward slashes on Windows
                 {
                     fs::path fullpath (
                         fs::complete(
@@ -229,8 +229,56 @@ testwave_app::got_expected_result(std::string const& filename,
                                 boost::wave::util::native_file_string(fullpath));
                         }
                         else {
-                            full_result += 
-                                escape_lit(fullpath.string());
+                            full_result += escape_lit(fullpath.string());
+                        }
+                        pos1 = expected.find_first_of ("$", pos = pos1 + 2);
+                    }
+                }
+                break;
+
+            case 'R':       // insert relative file name
+            case 'S':       // same as 'R', but forward slashes on Windows 
+                {
+                    fs::path relpath;
+                    boost::wave::util::as_relative_to(
+                        boost::wave::util::create_path(filename), 
+                        boost::wave::util::current_path(),
+                        relpath);
+
+                    if ('(' == expected[pos1+2]) {
+                    // the $R(basename) syntax is used
+                        std::size_t p = expected.find_first_of(")", pos1+1);
+                        if (std::string::npos == p) {
+                            std::cerr 
+                                << "testwave: unmatched parenthesis in $R"
+                                    " directive" << std::endl;
+                            return false;
+                        }
+                        std::string base = expected.substr(pos1+3, p-pos1-3);
+                        relpath = boost::wave::util::branch_path(relpath) / 
+                            boost::wave::util::create_path(base);
+                        full_result += expected.substr(pos, pos1-pos);
+                        if ('R' == expected[pos1+1]) {
+                            full_result += escape_lit(
+                                boost::wave::util::native_file_string(
+                                    boost::wave::util::normalize(relpath)));
+                        }
+                        else {
+                            full_result += escape_lit(
+                                boost::wave::util::normalize(relpath).string());
+                        }
+                        pos1 = expected.find_first_of ("$", 
+                            pos = pos1 + 4 + base.size());
+                    }
+                    else {
+                    // the $R is used on its own
+                        full_result += expected.substr(pos, pos1-pos);
+                        if ('R' == expected[pos1+1]) {
+                            full_result += escape_lit(
+                                boost::wave::util::native_file_string(relpath));
+                        }
+                        else {
+                            full_result += escape_lit(relpath.string());
                         }
                         pos1 = expected.find_first_of ("$", pos = pos1 + 2);
                     }
@@ -859,6 +907,7 @@ testwave_app::initialise_options(Context& ctx, po::variables_map const& vm,
             std::cerr << "initialise_options: option: single_line" << std::endl;
         }
         ctx.set_language(boost::wave::enable_single_line(ctx.get_language()));
+        ctx.set_language(boost::wave::enable_emit_line_directives(ctx.get_language(), false));
     }
     
 //  add include directories to the system include search paths
@@ -959,7 +1008,7 @@ testwave_app::initialise_options(Context& ctx, po::variables_map const& vm,
                 std::cerr << "initialise_options: option: -U" << *cit 
                           << std::endl;
             }
-            ctx.remove_macro_definition((*cit).c_str());
+            ctx.remove_macro_definition(*cit);
         }
     }
 

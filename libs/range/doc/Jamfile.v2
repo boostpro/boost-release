@@ -8,26 +8,25 @@
 #// For more information, see http://www.boost.org/libs/range/
 #//
 
+project boost/libs/range/doc ;
+using boostbook ;
+using quickbook ;
 
-use-project boost : $(BOOST_ROOT) ;
+path-constant images_location : html ;
 
-
-import boostbook : boostbook ;
-import quickbook ;
-
-xml boost_range : boost_range.qbk ;
-
-boostbook standalone
+boostbook quickbook
   :
-    boost_range
+    boost_range.qbk
   :
-    <xsl:param>toc.max.depth=2
-    <xsl:param>toc.section.depth=4
-    <xsl:param>chunk.section.depth=2
- 
-#    <xsl:param>generate.section.toc.level=4
-#    <xsl:param>chunk.first.sections=7
-#    <xsl:param>toc.section.depth=10
-     <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/doc/html
+    <xsl:param>boost.root=../../../..
+    <xsl:param>boost.libraries=../../../libraries.htm
+    <xsl:param>html.stylesheet=../../../../doc/html/boostbook.css
+    <xsl:param>chunk.section.depth=4
+    <xsl:param>chunk.first.sections=1
+    <xsl:param>toc.section.depth=3
+    <xsl:param>toc.max.depth=3
+    <xsl:param>generate.section.toc.level=4
+    <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/doc/html
+    <format>pdf:<xsl:param>img.src.path=$(images_location)/
   ;
 

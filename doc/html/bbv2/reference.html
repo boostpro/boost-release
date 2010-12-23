@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Reference</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../bbv2.html" title="Chapter&#160;32.&#160;Boost.Build V2 User Manual">
+<link rel="up" href="../bbv2.html" title="Chapter&#160;33.&#160;Boost.Build V2 User Manual">
 <link rel="prev" href="tasks.html" title="Common tasks">
 <link rel="next" href="extender.html" title="Extender Manual">
 </head>
@@ -158,6 +158,23 @@ ECHO [ glob-tree *.cpp : .svn ] ;
         requested on the command line, or if their dependents are built.
         Compare this to ordinary targets, that are built implicitly when
         their containing project is built.</p></dd>
+<dt><span class="term"><code class="literal">always</code></span></dt>
+<dd>
+<p>The <code class="literal">always</code> funciton takes a single
+        parameter&#8212;a list of metatarget names. The top-level targets produced
+        by the named metatargets will be always considered out of date. Consider this example:
+        </p>
+<pre class="programlisting">
+exe hello : hello.cpp ;
+exe bye : bye.cpp ;
+always hello ;
+</pre>
+<p>If a build of <code class="filename">hello</code> is requested, then the binary will
+        always be relinked. The object files will not be recompiled, though. Note that if
+        a build of <code class="filename">hello</code> is not requested, for example you specify just
+        <code class="filename">bye</code> on the command line, <code class="filename">hello</code> will not
+        be relinked.</p>
+</dd>
 <dt><span class="term"><code class="literal">constant</code></span></dt>
 <dd>
 <p>Sets project-wide constant. Takes two
@@ -208,7 +225,7 @@ path-constant DATA : data/a.txt ;
 <p>This section documents the features that are built-in into
     Boost.Build. For features with a fixed set of values, that set is
     provided, with the default value listed first.</p>
-<a class="indexterm" name="id2193516"></a><div class="variablelist"><dl>
+<a class="indexterm" name="id2239445"></a><div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">variant</code></span></dt>
 <dd>
 <p>
@@ -507,7 +524,7 @@ path-constant DATA : data/a.txt ;
 </dd>
 <dt><span class="term"><code class="literal">embed-manifest</code></span></dt>
 <dd>
-<a class="indexterm" name="id2194609"></a><a class="indexterm" name="id2194618"></a><p>
+<a class="indexterm" name="id2240543"></a><a class="indexterm" name="id2240552"></a><p>
             <span class="bold"><strong>Allowed values:</strong></span> on, off.
           </p>
 <p>This feature is specific to the msvc toolset (see
@@ -525,7 +542,7 @@ path-constant DATA : data/a.txt ;
 <a name="bbv2.reference.tools"></a>Builtin tools</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compilers">C++ Compilers</a></span></dt>
-<dt><span class="section"><a href="reference.html#id2197287">Third-party libraries</a></span></dt>
+<dt><span class="section"><a href="reference.html#id2243222">Third-party libraries</a></span></dt>
 </dl></div>
 <p>Boost.Build comes with support for a large number of C++ compilers,
       and other tools. This section documents how to use those tools.</p>
@@ -614,7 +631,7 @@ using gcc : [<span class="optional"><em class="replaceable"><code>version</code>
                 be either <code class="computeroutput">windres</code> for msvc resource compiler,
                 or <code class="computeroutput">rc</code> for borland's resource compiler.</p></dd>
 </dl></div>
-<a class="indexterm" name="id2195030"></a>
+<a class="indexterm" name="id2240964"></a>
 
           In order to compile 64-bit applications, you have to specify
           <code class="computeroutput">address-model=64</code>, and the <code class="computeroutput">instruction-set</code>
@@ -631,7 +648,7 @@ using gcc : [<span class="optional"><em class="replaceable"><code>version</code>
           to that of the gcc module.
           </p>
 <p>
-          <a class="indexterm" name="id2195101"></a>
+          <a class="indexterm" name="id2241034"></a>
           The darwin toolset can generate so called "fat"
           binaries&#8212;binaries that can run support more than one
           architecture, or address mode. To build a binary that can run both
@@ -740,7 +757,7 @@ using msvc : [<span class="optional"><em class="replaceable"><code>version</code
 <div class="section" title="64-bit support">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="v2.reference.tools.compiler.msvc.64"></a>64-bit support</h6></div></div></div>
-<a class="indexterm" name="id2195573"></a><p>Starting with version 8.0, Microsoft Visual Studio can
+<a class="indexterm" name="id2241507"></a><p>Starting with version 8.0, Microsoft Visual Studio can
             generate binaries for 64-bit processor, both 64-bit flavours of x86
             (codenamed AMD64/EM64T), and Itanium (codenamed IA64). In addition,
             compilers that are itself run in 64-bit mode, for better
@@ -1080,7 +1097,7 @@ using sun : [<span class="optional"><em class="replaceable"><code>version</code>
 <dd><p>Specifies additional command line options that will be
       passed to the linker.</p></dd>
 </dl></div>
-<a class="indexterm" name="id2197205"></a>
+<a class="indexterm" name="id2243140"></a>
           Starting with Sun Studio 12, you can create 64-bit applications
           by using the <code class="computeroutput">address-model=64</code> property.
 
@@ -1105,14 +1122,14 @@ using vacpp ;</pre>
 </div>
 <div class="section" title="Third-party libraries">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2197287"></a>Third-party libraries</h4></div></div></div>
+<a name="id2243222"></a>Third-party libraries</h4></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="reference.html#bbv2.reference.tools.libraries.stlport">STLport library</a></span></dt></dl></div>
 <p>Boost.Build provides special support for some
         third-party C++ libraries, documented below.</p>
 <div class="section" title="STLport library">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.libraries.stlport"></a>STLport library</h5></div></div></div>
-<a class="indexterm" name="id2197309"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
+<a class="indexterm" name="id2243244"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
           is an alternative implementation of C++ runtime library. Boost.Build
           supports using that library on Windows platfrom.  Linux is
           hampered by different naming of libraries in each STLport
@@ -1416,7 +1433,7 @@ exe a : a.cpp
 </li>
 <li class="listitem">
 <p><span class="emphasis"><em>dependency</em></span></p>
-<p>The value of dependency feature if a target reference.
+<p>The value of a dependency feature is a target reference.
               When used for building of a main target, the value of
               dependency feature is treated as additional dependency.</p>
 <p>For example, dependency features allow to state that

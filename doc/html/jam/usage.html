@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Using BJam</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../jam.html" title="Chapter&#160;31.&#160;Boost.Jam : 3.1.17">
+<link rel="up" href="../jam.html" title="Chapter&#160;32.&#160;Boost.Jam : 3.1.18">
 <link rel="prev" href="building.html" title="Building BJam">
 <link rel="next" href="language.html" title="Language">
 </head>
@@ -30,6 +30,19 @@
 <dt><span class="section"><a href="usage.html#jam.usage.options"> Options</a></span></dt>
 <dt><span class="section"><a href="usage.html#jam.usage.operation"> Operation</a></span></dt>
 </dl></div>
+<div class="warning" title="Warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Most probably, you are looking for <a href="http://boost.org/boost-build2/doc/html/index.html" target="_top">Boost.Build
+        manual</a> or <a href="http://www.boost.org/boost-build2/doc/html/bbv2/overview/invocation.html" target="_top">Boost.Build
+        command-line syntax</a>. This section documents only low-level options
+        used by the Boost.Jam build engine, and does not mention any high-level syntax
+        of Boost.Build
+      </p></td></tr>
+</table></div>
 <p>
       If <span class="emphasis"><em>target</em></span> is provided on the command line, <code class="literal">bjam</code>
       builds <span class="emphasis"><em>target</em></span>; otherwise <code class="literal">bjam</code> builds
@@ -52,104 +65,106 @@
 <div class="variablelist">
 <p class="title"><b></b></p>
 <dl>
-<dt><span class="term"><code class="literal">-a</code></span></dt>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-a</code></p></div></span></dt>
 <dd><p>
-            Build all targets anyway, even if they are up-to-date.
-          </p></dd>
-<dt><span class="term"><code class="literal">-d&#160;<span class="emphasis"><em>n</em></span></code></span></dt>
+              Build all targets anyway, even if they are up-to-date.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-d&#160;<span class="emphasis"><em>n</em></span></code></p></div></span></dt>
 <dd>
 <p>
-            Enable cummulative debugging levels from 1 to n. Values are:
-          </p>
-<p>
+              Enable cummulative debugging levels from 1 to n. Values are:
             </p>
+<p>
+              </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">Show the actions taken for building targets, as they are executed (the
-            default).</li>
+              default).</li>
 <li class="listitem">Show "quiet" actions and display all action text,
-            as they are executed.</li>
+              as they are executed.</li>
 <li class="listitem">Show dependency analysis, and target/source timestamps/paths.</li>
 <li class="listitem">Show
-            arguments and timming of shell invocations.</li>
+              arguments and timming of shell invocations.</li>
 <li class="listitem">Show rule invocations and
-            variable expansions.</li>
+              variable expansions.</li>
 <li class="listitem">Show directory/header file/archive scans, and attempts
-            at binding to targets.</li>
+              at binding to targets.</li>
 <li class="listitem">Show variable settings.</li>
-<li class="listitem">Show variable fetches, variable
-            expansions, and evaluation of '"if"' expressions.</li>
-<li class="listitem">Show variable
-            manipulation, scanner tokens, and memory usage.</li>
-<li class="listitem">Show profile information
-            for rules, both timing and memory.</li>
-<li class="listitem">Show parsing progress of Jamfiles.</li>
+<li class="listitem">Show variable fetches,
+              variable expansions, and evaluation of '"if"' expressions.</li>
 <li class="listitem">Show
-            graph of target dependencies.</li>
-<li class="listitem">Show change target status (fate).</li>
+              variable manipulation, scanner tokens, and memory usage.</li>
+<li class="listitem">Show profile
+              information for rules, both timing and memory.</li>
+<li class="listitem">Show parsing progress
+              of Jamfiles.</li>
+<li class="listitem">Show graph of target dependencies.</li>
+<li class="listitem">Show change target status
+              (fate).</li>
 </ol></div>
 <p>
 
-          </p>
+            </p>
 </dd>
-<dt><span class="term"><code class="literal">-d&#160;+<span class="emphasis"><em>n</em></span></code></span></dt>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-d&#160;+<span class="emphasis"><em>n</em></span></code></p></div></span></dt>
 <dd><p>
-            Enable debugging level <span class="emphasis"><em>n</em></span>.
-          </p></dd>
-<dt><span class="term"><code class="literal">-d&#160;0</code></span></dt>
+              Enable debugging level <span class="emphasis"><em>n</em></span>.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-d&#160;0</code></p></div></span></dt>
 <dd><p>
-            Turn off all debugging levels. Only errors are reported.
-          </p></dd>
-<dt><span class="term"><code class="literal">-f&#160;<span class="emphasis"><em>Jambase</em></span></code></span></dt>
+              Turn off all debugging levels. Only errors are reported.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-f&#160;<span class="emphasis"><em>Jambase</em></span></code></p></div></span></dt>
 <dd><p>
-            Read <span class="emphasis"><em>Jambase</em></span> instead of using the built-in Jambase.
-            Only one -f flag is permitted, but the <span class="emphasis"><em>Jambase</em></span> may
-            explicitly include other files. A <span class="emphasis"><em>Jambase</em></span> name of
-            "-" is allowed, in which case console input is read until it
-            is closed, at which point the input is treated as the Jambase.
-          </p></dd>
-<dt><span class="term"><code class="literal">-j&#160;<span class="emphasis"><em>n</em></span></code></span></dt>
+              Read <span class="emphasis"><em>Jambase</em></span> instead of using the built-in Jambase.
+              Only one -f flag is permitted, but the <span class="emphasis"><em>Jambase</em></span>
+              may explicitly include other files. A <span class="emphasis"><em>Jambase</em></span>
+              name of "-" is allowed, in which case console input is read
+              until it is closed, at which point the input is treated as the Jambase.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-j&#160;<span class="emphasis"><em>n</em></span></code></p></div></span></dt>
 <dd><p>
-            Run up to <span class="emphasis"><em>n</em></span> shell commands concurrently (UNIX and
-            NT only). The default is 1.
-          </p></dd>
-<dt><span class="term"><code class="literal">-l&#160;<span class="emphasis"><em>n</em></span></code></span></dt>
+              Run up to <span class="emphasis"><em>n</em></span> shell commands concurrently (UNIX
+              and NT only). The default is 1.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-l&#160;<span class="emphasis"><em>n</em></span></code></p></div></span></dt>
 <dd><p>
-            Limit actions to running for <span class="emphasis"><em>n</em></span> number of seconds,
-            after which they are stopped. Note: Windows only.
-          </p></dd>
-<dt><span class="term"><code class="literal">-n</code></span></dt>
+              Limit actions to running for <span class="emphasis"><em>n</em></span> number of seconds,
+              after which they are stopped. Note: Windows only.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-n</code></p></div></span></dt>
 <dd><p>
-            Don't actually execute the updating actions, but do everything else.
-            This changes the debug level default to <code class="literal">-d 2</code>.
-          </p></dd>
-<dt><span class="term"><code class="literal">-o&#160;<span class="emphasis"><em>file</em></span></code></span></dt>
+              Don't actually execute the updating actions, but do everything else.
+              This changes the debug level default to <code class="literal">-d 2</code>.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-o&#160;<span class="emphasis"><em>file</em></span></code></p></div></span></dt>
 <dd><p>
-            Write the updating actions to the specified file instead of running them.
-          </p></dd>
-<dt><span class="term"><code class="literal">-q</code></span></dt>
+              Write the updating actions to the specified file instead of running
+              them.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-q</code></p></div></span></dt>
 <dd><p>
-            Quit quickly (as if an interrupt was received) as soon as <span class="bold"><strong>any</strong></span>
-            target fails.
-          </p></dd>
-<dt><span class="term"><code class="literal">-s&#160;<span class="emphasis"><em>var</em></span>=<span class="emphasis"><em>value</em></span></code></span></dt>
+              Quit quickly (as if an interrupt was received) as soon as <span class="bold"><strong>any</strong></span> target fails.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-s&#160;<span class="emphasis"><em>var</em></span>=<span class="emphasis"><em>value</em></span></code></p></div></span></dt>
 <dd><p>
-            Set the variable <span class="emphasis"><em>var</em></span> to <span class="emphasis"><em>value</em></span>,
-            overriding both internal variables and variables imported from the environment.
-          </p></dd>
-<dt><span class="term"><code class="literal">-t&#160;<span class="emphasis"><em>target</em></span></code></span></dt>
+              Set the variable <span class="emphasis"><em>var</em></span> to <span class="emphasis"><em>value</em></span>,
+              overriding both internal variables and variables imported from the
+              environment.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-t&#160;<span class="emphasis"><em>target</em></span></code></p></div></span></dt>
 <dd><p>
-            Rebuild <span class="emphasis"><em>target</em></span> and everything that depends on it,
-            even if it is up-to-date.
-          </p></dd>
-<dt><span class="term"><code class="literal">--&#160;<span class="emphasis"><em>value</em></span></code></span></dt>
+              Rebuild <span class="emphasis"><em>target</em></span> and everything that depends on
+              it, even if it is up-to-date.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">--&#160;<span class="emphasis"><em>value</em></span></code></p></div></span></dt>
 <dd><p>
-            The option and <span class="emphasis"><em>value</em></span> is ignored, but is available
-            from the <code class="literal">$(ARGV)</code> variable.
-          </p></dd>
-<dt><span class="term"><code class="literal">-v</code></span></dt>
+              The option and <span class="emphasis"><em>value</em></span> is ignored, but is available
+              from the <code class="literal">$(ARGV)</code> variable.
+            </p></dd>
+<dt><span class="term"><div class="literallayout"><p><code class="literal">-v</code></p></div></span></dt>
 <dd><p>
-            Print the version of <code class="literal">bjam</code> and exit.
-          </p></dd>
+              Print the version of <code class="literal">bjam</code> and exit.
+            </p></dd>
 </dl>
 </div>
 <div class="section" title="Command-line and Environment Variable Quoting">

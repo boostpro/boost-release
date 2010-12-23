@@ -18,6 +18,26 @@
 </div>
 <div class="toc" id="toc"></div>
 
+<h2>Release 1.43.0</h2>
+
+<h3>bug fixes</h3>
+
+<ul>
+<li><a href="https://svn.boost.org/trac/boost/ticket/3968">[3968]</a> fixed coordinate_matrix sort problem on MSVC10
+</li>
+<li><a href="https://svn.boost.org/trac/boost/ticket/3539">[3539]</a>
+	changed computation of <code>norm_inf</code> for complex types to match
+	mathematical definition. <br />
+	<b>Note:</b> This might cause a performance drop
+	because now <code>std::abs(z)</code> is called for each vector element.
+	The old implementation used <code>std::max(std::abs(real(z)),std::abs(imag(z))</code>.
+	Further <code>norm_inf</code> and <code>norm_1</code> will now return
+	the same values for complex vector.
+</li>
+<li><a href="https://svn.boost.org/trac/boost/ticket/3501">[3501]</a> Moved free functions in <code>concepts.hpp</code> into anonymous namespace.
+</li>
+</ul>
+
 <h2>Release 1.41.1</h2>
 
 <h3>new features</h3>
@@ -36,11 +56,9 @@ the new tests in <tt>libs/numeric/ublas/test</tt> and the inline documentation o
 <h3>bug fixes</h3>
 
 <ul>
-<li><a href="https://svn.boost.org/trac/boost/ticket/3293">[3293]</a>Fix resizing problem in <code>identity_matrix</code>
+<li><a href="https://svn.boost.org/trac/boost/ticket/3293">[3293]</a> Fix resizing problem in <code>identity_matrix</code>
 </li>
-<li><a href="https://svn.boost.org/trac/boost/ticket/3499">[3499]</a>Add DefaultConstructible to concept checks
-</li>
-<li><a href="https://svn.boost.org/trac/boost/ticket/3501">[3501]</a>Add <i>inline</i> to free functions in <code>concepts.hpp</code>
+<li><a href="https://svn.boost.org/trac/boost/ticket/3499">[3499]</a> Add DefaultConstructible to concept checks
 </li>
 </ul>
 

@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Usage</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../string_algo.html" title="Chapter&#160;20.&#160;Boost String Algorithms Library">
+<link rel="up" href="../string_algo.html" title="Chapter&#160;21.&#160;Boost String Algorithms Library">
 <link rel="prev" href="release_notes.html" title="Release Notes">
 <link rel="next" href="quickref.html" title="Quick Reference">
 </head>
@@ -26,18 +26,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="string_algo.usage"></a>Usage</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="usage.html#id1718151">First Example</a></span></dt>
-<dt><span class="section"><a href="usage.html#id1718346">Case conversion</a></span></dt>
-<dt><span class="section"><a href="usage.html#id1718411">Predicates and Classification</a></span></dt>
-<dt><span class="section"><a href="usage.html#id1718493">Trimming</a></span></dt>
-<dt><span class="section"><a href="usage.html#id1718562">Find algorithms</a></span></dt>
-<dt><span class="section"><a href="usage.html#id1718682">Replace Algorithms</a></span></dt>
-<dt><span class="section"><a href="usage.html#id1718809">Find Iterator</a></span></dt>
-<dt><span class="section"><a href="usage.html#id1718906">Split</a></span></dt>
+<dt><span class="section"><a href="usage.html#id1760892">First Example</a></span></dt>
+<dt><span class="section"><a href="usage.html#id1761088">Case conversion</a></span></dt>
+<dt><span class="section"><a href="usage.html#id1761154">Predicates and Classification</a></span></dt>
+<dt><span class="section"><a href="usage.html#id1761237">Trimming</a></span></dt>
+<dt><span class="section"><a href="usage.html#id1761305">Find algorithms</a></span></dt>
+<dt><span class="section"><a href="usage.html#id1761425">Replace Algorithms</a></span></dt>
+<dt><span class="section"><a href="usage.html#id1761554">Find Iterator</a></span></dt>
+<dt><span class="section"><a href="usage.html#id1761650">Split</a></span></dt>
 </dl></div>
 <div class="section" title="First Example">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1718151"></a>First Example</h3></div></div></div>
+<a name="id1760892"></a>First Example</h3></div></div></div>
 <p>
             Using the algorithms is straightforward. Let us have a look at the first example:
         </p>
@@ -76,7 +76,7 @@
                     The magic of <a href="../../../libs/range/index.html" target="_top">Boost.Range</a> 
                     provides a uniform way of handling different string types. 
                     If there is a need to pass a pair of iterators, 
-                    <a href="../../../libs/range/doc/utility_class.html" target="_top"><code class="computeroutput">boost::iterator_range</code></a>
+                    <a href="../../../libs/range/doc/html/range/utilities/iterator_range.html" target="_top"><code class="computeroutput">boost::iterator_range</code></a>
                     can be used to package iterators into a structure with a compatible interface.
                 </p>
 </li>
@@ -109,7 +109,7 @@
 </div>
 <div class="section" title="Case conversion">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1718346"></a>Case conversion</h3></div></div></div>
+<a name="id1761088"></a>Case conversion</h3></div></div></div>
 <p>
             STL has a nice way of converting character case. Unfortunately, it works only
             for a single character and we want to convert a string, 
@@ -128,7 +128,7 @@
 </div>
 <div class="section" title="Predicates and Classification">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1718411"></a>Predicates and Classification</h3></div></div></div>
+<a name="id1761154"></a>Predicates and Classification</h3></div></div></div>
 <p>
             A part of the library deals with string related predicates. Consider this example:
         </p>
@@ -175,7 +175,7 @@
 </div>
 <div class="section" title="Trimming">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1718493"></a>Trimming</h3></div></div></div>
+<a name="id1761237"></a>Trimming</h3></div></div></div>
 <p>
             When parsing the input from a user, strings usually have unwanted leading or trailing 
             characters. To get rid of them, we need trim functions:
@@ -201,7 +201,7 @@
 </div>
 <div class="section" title="Find algorithms">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1718562"></a>Find algorithms</h3></div></div></div>
+<a name="id1761305"></a>Find algorithms</h3></div></div></div>
 <p>
             The library contains a set of find algorithms. Here is an example:
         </p>
@@ -222,7 +222,7 @@
         </pre>
 <p>
             We have used <code class="computeroutput"><a class="link" href="../boost/algorithm/find_last.html" title="Function template find_last">find_last()</a></code> to search the <code class="computeroutput">text</code> for "ll".
-            The result is given in the <a href="../../../libs/range/doc/utility_class.html" target="_top"><code class="computeroutput">boost::iterator_range</code></a>. 
+            The result is given in the <a href="../../../libs/range/doc/html/range/utilities/iterator_range.html" target="_top"><code class="computeroutput">boost::iterator_range</code></a>. 
             This range delimits the
             part of the input which satisfies the find criteria. In our example it is the last occurrence of "ll".
             
@@ -231,7 +231,7 @@
             <a href="../../../libs/range/index.html" target="_top">Boost.Range</a>.
 
             The following lines transform the result. Notice that 
-            <a href="../../../libs/range/doc/utility_class.html" target="_top"><code class="computeroutput">boost::iterator_range</code></a> has familiar 
+            <a href="../../../libs/range/doc/html/range/utilities/iterator_range.html" target="_top"><code class="computeroutput">boost::iterator_range</code></a> has familiar 
             <code class="computeroutput">begin()</code> and <code class="computeroutput">end()</code> methods, so it can be used like any other STL container.
             Also it is convertible to bool therefore it is easy to use find algorithms for a simple containment checking.
         </p>
@@ -241,7 +241,7 @@
 </div>
 <div class="section" title="Replace Algorithms">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1718682"></a>Replace Algorithms</h3></div></div></div>
+<a name="id1761425"></a>Replace Algorithms</h3></div></div></div>
 <p>
             Find algorithms can be used for searching for a specific part of string. Replace goes one step
             further. After a matching part is found, it is substituted with something else. The substitution is computed
@@ -273,13 +273,13 @@
 </div>
 <div class="section" title="Find Iterator">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1718809"></a>Find Iterator</h3></div></div></div>
+<a name="id1761554"></a>Find Iterator</h3></div></div></div>
 <p>
             An extension to find algorithms it the Find Iterator. Instead of searching for just a one part of a string, 
             the find iterator allows us to iterate over the substrings matching the specified criteria.
             This facility is using the <a class="link" href="concept.html#string_algo.finder_concept" title="Finder Concept">Finder</a> to incrementally
             search the string. 
-            Dereferencing a find iterator yields an <a href="../../../libs/range/doc/utility_class.html" target="_top"><code class="computeroutput">boost::iterator_range</code></a> 
+            Dereferencing a find iterator yields an <a href="../../../libs/range/doc/html/range/utilities/iterator_range.html" target="_top"><code class="computeroutput">boost::iterator_range</code></a> 
             object, that delimits the current match.
         </p>
 <p>
@@ -331,7 +331,7 @@
 </div>
 <div class="section" title="Split">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1718906"></a>Split</h3></div></div></div>
+<a name="id1761650"></a>Split</h3></div></div></div>
 <p>
             Split algorithms are an extension to the find iterator for one common usage scenario.
             These algorithms use a find iterator and store all matches into the provided
@@ -340,7 +340,7 @@
         </p>
 <p>
             Two algorithms are provided. <code class="computeroutput"><a class="link" href="../boost/algorithm/find_all.html" title="Function template find_all">find_all()</a></code> finds all copies
-            of a string in the input. <code class="computeroutput"><a class="link" href="../boost/algorithm/split_id614972.html" title="Function template split">split()</a></code> splits the input into parts.
+            of a string in the input. <code class="computeroutput"><a class="link" href="../boost/algorithm/split_id667600.html" title="Function template split">split()</a></code> splits the input into parts.
         </p>
 <pre class="programlisting">
     string str1("hello abc-*-ABC-*-aBc goodbye");
@@ -364,7 +364,7 @@
             to all substrings that are in case-insensitive manner equal to "abc".
         </p>
 <p>
-            Second example uses <code class="computeroutput"><a class="link" href="../boost/algorithm/split_id614972.html" title="Function template split">split()</a></code> to split string str1 into parts
+            Second example uses <code class="computeroutput"><a class="link" href="../boost/algorithm/split_id667600.html" title="Function template split">split()</a></code> to split string str1 into parts
             separated by characters '-' or '*'. These parts are then put into the SplitVec.
             It is possible to specify if adjacent separators are concatenated or not.
         </p>
@@ -374,7 +374,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: June 14, 2009 at 23:56:08 +0100</small></p></td>
+<td align="left"><p><small>Last revised: April 22, 2010 at 00:00:35 +0100</small></p></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2002-2004 Pavol Droba<p>Use, modification and distribution is subject to the Boost
                 Software License, Version 1.0. (See accompanying file
                 <code class="filename">LICENSE_1_0.txt</code> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

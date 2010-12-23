@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Custom Memory Allocation</title>
-<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../core.html" title="Core Concepts and Functionality">
@@ -82,22 +82,11 @@
           Custom memory allocation support is currently implemented for all asynchronous
           operations with the following exceptions:
         </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-<code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver</span><span class="special">::</span><span class="identifier">async_resolve</span><span class="special">()</span></code>
-            on all platforms.
-          </li>
-<li class="listitem">
-<code class="computeroutput"><span class="identifier">basic_socket</span><span class="special">::</span><span class="identifier">async_connect</span><span class="special">()</span></code>
-            on Windows.
-          </li>
-<li class="listitem">
-            Any operation involving <code class="computeroutput"><span class="identifier">null_buffers</span><span class="special">()</span></code> on Windows, other than an asynchronous
-            read performed on a stream-oriented socket.
-          </li>
-</ul></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            Asynchronous SSL operations.
+          </li></ul></div>
 <a name="boost_asio.overview.core.allocation.see_also"></a><h6>
-<a name="id561608"></a>
+<a name="id561672"></a>
           <a class="link" href="allocation.html#boost_asio.overview.core.allocation.see_also">See Also</a>
         </h6>
 <p>

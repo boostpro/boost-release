@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>io_service::post</title>
-<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../io_service.html" title="io_service">
@@ -27,7 +27,7 @@
 <a name="boost_asio.reference.io_service.post"></a><a class="link" href="post.html" title="io_service::post"> io_service::post</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id945661"></a> 
+          <a class="indexterm" name="id953226"></a> 
 Request the <a class="link" href="../io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> to invoke the given
           handler and return immediately.
         </p>
@@ -51,7 +51,7 @@ Request the <a class="link" href="../io_service.html" title="io_service"><code c
           member functions is currently being invoked.
         </p>
 <a name="boost_asio.reference.io_service.post.parameters"></a><h6>
-<a name="id945876"></a>
+<a name="id953441"></a>
           <a class="link" href="post.html#boost_asio.reference.io_service.post.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
@@ -60,17 +60,35 @@ Request the <a class="link" href="../io_service.html" title="io_service"><code c
 <dt><span class="term">handler</span></dt>
 <dd>
 <p>
-              The handler to be called. The <a class="link" href="../io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> will make a copy
-              of the handler object as required. The function signature of the handler
-              must be: 
+                The handler to be called. The <a class="link" href="../io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> will make a copy
+                of the handler object as required. The function signature of the
+                handler must be: 
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">();</span> 
 </pre>
 <p>
-            </p>
+              </p>
 </dd>
 </dl>
 </div>
+<a name="boost_asio.reference.io_service.post.remarks"></a><h6>
+<a name="id953520"></a>
+          <a class="link" href="post.html#boost_asio.reference.io_service.post.remarks">Remarks</a>
+        </h6>
+<p>
+          This function throws an exception only if:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            the handler's asio_handler_allocate function; or
+          </li>
+<li class="listitem">
+            the handler's copy constructor
+          </li>
+</ul></div>
+<p>
+          throws an exception.
+        </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

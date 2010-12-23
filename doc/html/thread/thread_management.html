@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Thread Management</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;21.&#160;Thread">
+<link rel="up" href="../thread.html" title="Chapter&#160;22.&#160;Thread">
 <link rel="prev" href="changes.html" title="Changes since boost 1.40">
 <link rel="next" href="synchronization.html" title="Synchronization">
 </head>
@@ -32,7 +32,7 @@
 <dt><span class="section"><a href="thread_management.html#thread.thread_management.threadgroup"> Class <code class="computeroutput"><span class="identifier">thread_group</span></code></a></span></dt>
 </dl></div>
 <a name="thread.thread_management.synopsis"></a><h4>
-<a name="id1759002"></a>
+<a name="id1802027"></a>
       <a class="link" href="thread_management.html#thread.thread_management.synopsis">Synopsis</a>
     </h4>
 <p>
@@ -70,7 +70,7 @@
       for details.]
     </p>
 <a name="thread.thread_management.launching_threads"></a><h4>
-<a name="id1759317"></a>
+<a name="id1802341"></a>
       <a class="link" href="thread_management.html#thread.thread_management.launching_threads">Launching threads</a>
     </h4>
 <p>
@@ -120,7 +120,7 @@
       be passed.
     </p>
 <a name="thread.thread_management.exceptions_in_thread_functions"></a><h4>
-<a name="id1759789"></a>
+<a name="id1802814"></a>
       <a class="link" href="thread_management.html#thread.thread_management.exceptions_in_thread_functions">Exceptions
       in thread functions</a>
     </h4>
@@ -131,7 +131,7 @@
       is called.
     </p>
 <a name="thread.thread_management.joining_and_detaching"></a><h4>
-<a name="id1759880"></a>
+<a name="id1802905"></a>
       <a class="link" href="thread_management.html#thread.thread_management.joining_and_detaching">Joining and
       detaching</a>
     </h4>
@@ -162,7 +162,7 @@
       specified time has elapsed.
     </p>
 <a name="thread.thread_management.interruption"></a><h4>
-<a name="id1760228"></a>
+<a name="id1803253"></a>
       <a class="link" href="thread_management.html#thread.thread_management.interruption">Interruption</a>
     </h4>
 <p>
@@ -228,7 +228,7 @@
 <a name="interruption_points"></a><p>
     </p>
 <a name="thread.thread_management.predefined_interruption_points"></a><h4>
-<a name="id1760925"></a>
+<a name="id1803950"></a>
       <a class="link" href="thread_management.html#thread.thread_management.predefined_interruption_points">Predefined
       Interruption Points</a>
     </h4>
@@ -249,7 +249,7 @@
 <li class="listitem"><a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_point" title="Non-member function interruption_point()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_point</span><span class="special">()</span></code></a></li>
 </ul></div>
 <a name="thread.thread_management.thread_ids"></a><h4>
-<a name="id1761344"></a>
+<a name="id1804368"></a>
       <a class="link" href="thread_management.html#thread.thread_management.thread_ids">Thread IDs</a>
     </h4>
 <p>
@@ -379,13 +379,13 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Constructs a <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> instance that refers
-              to <span class="emphasis"><em>Not-a-Thread</em></span>.
-            </p></dd>
+                Constructs a <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> instance that refers
+                to <span class="emphasis"><em>Not-a-Thread</em></span>.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing
-            </p></dd>
+                Nothing
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -402,28 +402,29 @@
 <dl>
 <dt><span class="term">Preconditions:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">Callable</span></code> must by copyable.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">Callable</span></code> must by
+                copyable.
+              </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">func</span></code> is copied into
-              storage managed internally by the thread library, and that copy is
-              invoked on a newly-created thread of execution. If this invocation
-              results in an exception being propagated into the internals of the
-              thread library that is not of type <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code>,
-              then <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">terminate</span><span class="special">()</span></code>
-              will be called.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">func</span></code> is copied into
+                storage managed internally by the thread library, and that copy is
+                invoked on a newly-created thread of execution. If this invocation
+                results in an exception being propagated into the internals of the
+                thread library that is not of type <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code>,
+                then <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">terminate</span><span class="special">()</span></code>
+                will be called.
+              </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to the newly created thread of execution.
-            </p></dd>
+                <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to the newly created thread of execution.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
-              occurs.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
+                occurs.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -440,31 +441,31 @@
 <dl>
 <dt><span class="term">Preconditions:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">F</span></code> and each <code class="computeroutput"><span class="identifier">A</span></code>n must by copyable or movable.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">F</span></code> and each <code class="computeroutput"><span class="identifier">A</span></code>n must by copyable or movable.
+              </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              As if <a class="link" href="thread_management.html#thread.thread_management.thread.callable_constructor" title="Thread Constructor"><code class="computeroutput"><span class="identifier">thread</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span><span class="identifier">f</span><span class="special">,</span><span class="identifier">a1</span><span class="special">,</span><span class="identifier">a2</span><span class="special">,...))</span></code>.
-              Consequently, <code class="computeroutput"><span class="identifier">f</span></code> and
-              each <code class="computeroutput"><span class="identifier">a</span></code>n are copied
-              into internal storage for access by the new thread.</a>
-            </p></dd>
+                As if <a class="link" href="thread_management.html#thread.thread_management.thread.callable_constructor" title="Thread Constructor"><code class="computeroutput"><span class="identifier">thread</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span><span class="identifier">f</span><span class="special">,</span><span class="identifier">a1</span><span class="special">,</span><span class="identifier">a2</span><span class="special">,...))</span></code>.
+                Consequently, <code class="computeroutput"><span class="identifier">f</span></code> and
+                each <code class="computeroutput"><span class="identifier">a</span></code>n are copied
+                into internal storage for access by the new thread.</a>
+              </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to the newly created thread of execution.
-            </p></dd>
+                <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to the newly created thread of execution.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
-              occurs.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
+                occurs.
+              </p></dd>
 <dt><span class="term">Note:</span></dt>
 <dd><p>
-              Currently up to nine additional arguments <code class="computeroutput"><span class="identifier">a1</span></code>
-              to <code class="computeroutput"><span class="identifier">a9</span></code> can be specified
-              in addition to the function <code class="computeroutput"><span class="identifier">f</span></code>.
-            </p></dd>
+                Currently up to nine additional arguments <code class="computeroutput"><span class="identifier">a1</span></code>
+                to <code class="computeroutput"><span class="identifier">a9</span></code> can be specified
+                in addition to the function <code class="computeroutput"><span class="identifier">f</span></code>.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -480,14 +481,14 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              has an associated thread of execution, calls <a class="link" href="thread_management.html#thread.thread_management.thread.detach" title="Member function detach()"><code class="computeroutput"><span class="identifier">detach</span><span class="special">()</span></code></a>.
-              Destroys <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.
-            </p></dd>
+                If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                has an associated thread of execution, calls <a class="link" href="thread_management.html#thread.thread_management.thread.detach" title="Member function detach()"><code class="computeroutput"><span class="identifier">detach</span><span class="special">()</span></code></a>.
+                Destroys <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -503,14 +504,14 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to a thread of execution, <code class="computeroutput"><span class="keyword">false</span></code>
-              otherwise.
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to a thread of execution, <code class="computeroutput"><span class="keyword">false</span></code>
+                otherwise.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing
-            </p></dd>
+                Nothing
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -526,32 +527,32 @@
 <dl>
 <dt><span class="term">Preconditions:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get_id</span><span class="special">()!=</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">get_id</span><span class="special">()</span></code>
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get_id</span><span class="special">()!=</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">get_id</span><span class="special">()</span></code>
+              </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to a thread of execution, waits for that thread of execution
-              to complete.
-            </p></dd>
+                If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to a thread of execution, waits for that thread of execution
+                to complete.
+              </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to a thread of execution on entry, that thread of execution
-              has completed. <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              no longer refers to any thread of execution.
-            </p></dd>
+                If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to a thread of execution on entry, that thread of execution
+                has completed. <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                no longer refers to any thread of execution.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if the current
-              thread of execution is interrupted.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if the current
+                thread of execution is interrupted.
+              </p></dd>
 <dt><span class="term">Notes:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">join</span><span class="special">()</span></code>
-              is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
-              points</em></span></a>.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">join</span><span class="special">()</span></code>
+                is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
+                points</em></span></a>.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -570,45 +571,45 @@
 <dl>
 <dt><span class="term">Preconditions:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get_id</span><span class="special">()!=</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">get_id</span><span class="special">()</span></code>
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get_id</span><span class="special">()!=</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">get_id</span><span class="special">()</span></code>
+              </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to a thread of execution, waits for that thread of execution
-              to complete, the time <code class="computeroutput"><span class="identifier">wait_until</span></code>
-              has been reach or the specified duration <code class="computeroutput"><span class="identifier">rel_time</span></code>
-              has elapsed. If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              doesn't refer to a thread of execution, returns immediately.
-            </p></dd>
+                If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to a thread of execution, waits for that thread of execution
+                to complete, the time <code class="computeroutput"><span class="identifier">wait_until</span></code>
+                has been reach or the specified duration <code class="computeroutput"><span class="identifier">rel_time</span></code>
+                has elapsed. If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                doesn't refer to a thread of execution, returns immediately.
+              </p></dd>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to a thread of execution on entry, and that thread of execution
-              has completed before the call times out, <code class="computeroutput"><span class="keyword">false</span></code>
-              otherwise.
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to a thread of execution on entry, and that thread of execution
+                has completed before the call times out, <code class="computeroutput"><span class="keyword">false</span></code>
+                otherwise.
+              </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to a thread of execution on entry, and <code class="computeroutput"><span class="identifier">timed_join</span></code>
-              returns <code class="computeroutput"><span class="keyword">true</span></code>, that thread
-              of execution has completed, and <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> no longer refers to any thread
-              of execution. If this call to <code class="computeroutput"><span class="identifier">timed_join</span></code>
-              returns <code class="computeroutput"><span class="keyword">false</span></code>, <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              is unchanged.
-            </p></dd>
+                If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to a thread of execution on entry, and <code class="computeroutput"><span class="identifier">timed_join</span></code>
+                returns <code class="computeroutput"><span class="keyword">true</span></code>, that thread
+                of execution has completed, and <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> no longer refers to any thread
+                of execution. If this call to <code class="computeroutput"><span class="identifier">timed_join</span></code>
+                returns <code class="computeroutput"><span class="keyword">false</span></code>, <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                is unchanged.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if the current
-              thread of execution is interrupted.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if the current
+                thread of execution is interrupted.
+              </p></dd>
 <dt><span class="term">Notes:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">timed_join</span><span class="special">()</span></code>
-              is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
-              points</em></span></a>.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">timed_join</span><span class="special">()</span></code>
+                is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
+                points</em></span></a>.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -624,19 +625,19 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to a thread of execution, that thread of execution becomes detached,
-              and no longer has an associated <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object.
-            </p></dd>
+                If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to a thread of execution, that thread of execution becomes
+                detached, and no longer has an associated <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object.
+              </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              no longer refers to any thread of execution.
-            </p></dd>
+                <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                no longer refers to any thread of execution.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing
-            </p></dd>
+                Nothing
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -652,14 +653,14 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to a thread of execution, an instance of <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> that represents that thread.
-              Otherwise returns a default-constructed <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a>.
-            </p></dd>
+                If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to a thread of execution, an instance of <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> that represents that
+                thread. Otherwise returns a default-constructed <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a>.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing
-            </p></dd>
+                Nothing
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -675,17 +676,18 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              refers to a thread of execution, request that the thread will be interrupted
-              the next time it enters one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
-              points</em></span></a> with interruption enabled, or if it is currently
-              <span class="emphasis"><em>blocked</em></span> in a call to one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption points</em></span></a>
-              with interruption enabled .
-            </p></dd>
+                If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                refers to a thread of execution, request that the thread will be
+                interrupted the next time it enters one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
+                points</em></span></a> with interruption enabled, or if it is currently
+                <span class="emphasis"><em>blocked</em></span> in a call to one of the predefined
+                <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption points</em></span></a>
+                with interruption enabled .
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing
-            </p></dd>
+                Nothing
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -701,14 +703,14 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              The number of hardware threads available on the current system (e.g.
-              number of CPUs or cores or hyperthreading units), or 0 if this information
-              is not available.
-            </p></dd>
+                The number of hardware threads available on the current system (e.g.
+                number of CPUs or cores or hyperthreading units), or 0 if this information
+                is not available.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing
-            </p></dd>
+                Nothing
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -725,15 +727,15 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Returns an instance of <code class="computeroutput"><span class="identifier">native_handle_type</span></code>
-              that can be used with platform-specific APIs to manipulate the underlying
-              implementation. If no such instance exists, <code class="computeroutput"><span class="identifier">native_handle</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">native_handle_type</span></code>
-              are not present.
-            </p></dd>
+                Returns an instance of <code class="computeroutput"><span class="identifier">native_handle_type</span></code>
+                that can be used with platform-specific APIs to manipulate the underlying
+                implementation. If no such instance exists, <code class="computeroutput"><span class="identifier">native_handle</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">native_handle_type</span></code>
+                are not present.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -748,8 +750,8 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">get_id</span><span class="special">()==</span><span class="identifier">other</span><span class="special">.</span><span class="identifier">get_id</span><span class="special">()</span></code>
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">get_id</span><span class="special">()==</span><span class="identifier">other</span><span class="special">.</span><span class="identifier">get_id</span><span class="special">()</span></code>
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -764,8 +766,8 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">get_id</span><span class="special">()!=</span><span class="identifier">other</span><span class="special">.</span><span class="identifier">get_id</span><span class="special">()</span></code>
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">get_id</span><span class="special">()!=</span><span class="identifier">other</span><span class="special">.</span><span class="identifier">get_id</span><span class="special">()</span></code>
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -781,19 +783,19 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Suspends the current thread until the specified time has been reached.
-            </p></dd>
+                Suspends the current thread until the specified time has been reached.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if the current
-              thread of execution is interrupted.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if the current
+                thread of execution is interrupted.
+              </p></dd>
 <dt><span class="term">Notes:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">sleep</span><span class="special">()</span></code>
-              is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
-              points</em></span></a>.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">sleep</span><span class="special">()</span></code>
+                is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
+                points</em></span></a>.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -809,8 +811,8 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              See <a class="link" href="thread_management.html#thread.thread_management.this_thread.yield" title="Non-member function yield()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">yield</span><span class="special">()</span></code></a>.
-            </p></dd>
+                See <a class="link" href="thread_management.html#thread.thread_management.this_thread.yield" title="Non-member function yield()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">yield</span><span class="special">()</span></code></a>.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -826,20 +828,20 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Exchanges the threads of execution associated with <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> and <code class="computeroutput"><span class="identifier">other</span></code>,
-              so <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              is associated with the thread of execution associated with <code class="computeroutput"><span class="identifier">other</span></code> prior to the call, and vice-versa.
-            </p></dd>
+                Exchanges the threads of execution associated with <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                and <code class="computeroutput"><span class="identifier">other</span></code>, so <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                is associated with the thread of execution associated with <code class="computeroutput"><span class="identifier">other</span></code> prior to the call, and vice-versa.
+              </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get_id</span><span class="special">()</span></code>
-              returns the same value as <code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">get_id</span><span class="special">()</span></code> prior to the call. <code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">get_id</span><span class="special">()</span></code>
-              returns the same value as <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get_id</span><span class="special">()</span></code> prior to the call.
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get_id</span><span class="special">()</span></code>
+                returns the same value as <code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">get_id</span><span class="special">()</span></code> prior to the call. <code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">get_id</span><span class="special">()</span></code>
+                returns the same value as <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get_id</span><span class="special">()</span></code> prior to the call.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -857,8 +859,8 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              <a class="link" href="thread_management.html#thread.thread_management.thread.swap" title="Member function swap()"><code class="computeroutput"><span class="identifier">lhs</span><span class="special">.</span><span class="identifier">swap</span><span class="special">(</span><span class="identifier">rhs</span><span class="special">)</span></code></a>.
-            </p></dd>
+                <a class="link" href="thread_management.html#thread.thread_management.thread.swap" title="Member function swap()"><code class="computeroutput"><span class="identifier">lhs</span><span class="special">.</span><span class="identifier">swap</span><span class="special">(</span><span class="identifier">rhs</span><span class="special">)</span></code></a>.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -912,13 +914,13 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-                Constructs a <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> instance that represents
-                <span class="emphasis"><em>Not-a-Thread</em></span>.
-              </p></dd>
+                  Constructs a <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> instance that represents
+                  <span class="emphasis"><em>Not-a-Thread</em></span>.
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing
-              </p></dd>
+                  Nothing
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -933,15 +935,15 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-                <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-                and <code class="computeroutput"><span class="identifier">y</span></code> both represent
-                the same thread of execution, or both represent <span class="emphasis"><em>Not-a-Thread</em></span>,
-                <code class="computeroutput"><span class="keyword">false</span></code> otherwise.
-              </p></dd>
+                  <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                  and <code class="computeroutput"><span class="identifier">y</span></code> both represent
+                  the same thread of execution, or both represent <span class="emphasis"><em>Not-a-Thread</em></span>,
+                  <code class="computeroutput"><span class="keyword">false</span></code> otherwise.
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing
-              </p></dd>
+                  Nothing
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -956,15 +958,15 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-                <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-                and <code class="computeroutput"><span class="identifier">y</span></code> represent different
-                threads of execution, or one represents a thread of execution, and
-                the other represent <span class="emphasis"><em>Not-a-Thread</em></span>, <code class="computeroutput"><span class="keyword">false</span></code> otherwise.
-              </p></dd>
+                  <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                  and <code class="computeroutput"><span class="identifier">y</span></code> represent
+                  different threads of execution, or one represents a thread of execution,
+                  and the other represent <span class="emphasis"><em>Not-a-Thread</em></span>, <code class="computeroutput"><span class="keyword">false</span></code> otherwise.
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing
-              </p></dd>
+                  Nothing
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -979,21 +981,21 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-                <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span><span class="special">!=</span><span class="identifier">y</span></code>
-                is <code class="computeroutput"><span class="keyword">true</span></code> and the implementation-defined
-                total order of <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> values places <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-                before <code class="computeroutput"><span class="identifier">y</span></code>, <code class="computeroutput"><span class="keyword">false</span></code> otherwise.
-              </p></dd>
+                  <code class="computeroutput"><span class="keyword">true</span></code> if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span><span class="special">!=</span><span class="identifier">y</span></code>
+                  is <code class="computeroutput"><span class="keyword">true</span></code> and the implementation-defined
+                  total order of <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> values places <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                  before <code class="computeroutput"><span class="identifier">y</span></code>, <code class="computeroutput"><span class="keyword">false</span></code> otherwise.
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing
-              </p></dd>
+                  Nothing
+                </p></dd>
 <dt><span class="term">Note:</span></dt>
 <dd><p>
-                A <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> instance representing
-                <span class="emphasis"><em>Not-a-Thread</em></span> will always compare less than an
-                instance representing a thread of execution.
-              </p></dd>
+                  A <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> instance representing
+                  <span class="emphasis"><em>Not-a-Thread</em></span> will always compare less than
+                  an instance representing a thread of execution.
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1009,12 +1011,12 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-                <code class="computeroutput"><span class="identifier">y</span><span class="special">&lt;*</span><span class="keyword">this</span></code>
-              </p></dd>
+                  <code class="computeroutput"><span class="identifier">y</span><span class="special">&lt;*</span><span class="keyword">this</span></code>
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing
-              </p></dd>
+                  Nothing
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1030,12 +1032,12 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-                <code class="computeroutput"><span class="special">!(</span><span class="identifier">y</span><span class="special">&lt;*</span><span class="keyword">this</span><span class="special">)</span></code>
-              </p></dd>
+                  <code class="computeroutput"><span class="special">!(</span><span class="identifier">y</span><span class="special">&lt;*</span><span class="keyword">this</span><span class="special">)</span></code>
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing
-              </p></dd>
+                  Nothing
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1051,12 +1053,12 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-                <code class="computeroutput"><span class="special">!(*</span><span class="keyword">this</span><span class="special">&lt;</span><span class="identifier">y</span><span class="special">)</span></code>
-              </p></dd>
+                  <code class="computeroutput"><span class="special">!(*</span><span class="keyword">this</span><span class="special">&lt;</span><span class="identifier">y</span><span class="special">)</span></code>
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing
-              </p></dd>
+                  Nothing
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1074,15 +1076,15 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-                Writes a representation of the <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> instance <code class="computeroutput"><span class="identifier">x</span></code> to the stream <code class="computeroutput"><span class="identifier">os</span></code>,
-                such that the representation of two instances of <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> <code class="computeroutput"><span class="identifier">a</span></code>
-                and <code class="computeroutput"><span class="identifier">b</span></code> is the same
-                if <code class="computeroutput"><span class="identifier">a</span><span class="special">==</span><span class="identifier">b</span></code>, and different if <code class="computeroutput"><span class="identifier">a</span><span class="special">!=</span><span class="identifier">b</span></code>.
-              </p></dd>
+                  Writes a representation of the <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> instance <code class="computeroutput"><span class="identifier">x</span></code> to the stream <code class="computeroutput"><span class="identifier">os</span></code>, such that the representation
+                  of two instances of <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> <code class="computeroutput"><span class="identifier">a</span></code>
+                  and <code class="computeroutput"><span class="identifier">b</span></code> is the same
+                  if <code class="computeroutput"><span class="identifier">a</span><span class="special">==</span><span class="identifier">b</span></code>, and different if <code class="computeroutput"><span class="identifier">a</span><span class="special">!=</span><span class="identifier">b</span></code>.
+                </p></dd>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-                <code class="computeroutput"><span class="identifier">os</span></code>
-              </p></dd>
+                  <code class="computeroutput"><span class="identifier">os</span></code>
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1129,14 +1131,14 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              An instance of <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> that represents that currently
-              executing thread.
-            </p></dd>
+                An instance of <a class="link" href="thread_management.html#thread.thread_management.thread.id" title="Class boost::thread::id"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">id</span></code></a> that represents that
+                currently executing thread.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
-              occurs.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
+                occurs.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1157,14 +1159,14 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Check to see if the current thread has been interrupted.
-            </p></dd>
+                Check to see if the current thread has been interrupted.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
-              and <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_requested" title="Non-member function interruption_requested()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_requested</span><span class="special">()</span></code></a>
-              both return <code class="computeroutput"><span class="keyword">true</span></code>.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
+                and <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_requested" title="Non-member function interruption_requested()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_requested</span><span class="special">()</span></code></a>
+                both return <code class="computeroutput"><span class="keyword">true</span></code>.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1185,14 +1187,14 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">true</span></code> if interruption has
-              been requested for the current thread, <code class="computeroutput"><span class="keyword">false</span></code>
-              otherwise.
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">true</span></code> if interruption
+                has been requested for the current thread, <code class="computeroutput"><span class="keyword">false</span></code>
+                otherwise.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1213,14 +1215,14 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">true</span></code> if interruption has
-              been enabled for the current thread, <code class="computeroutput"><span class="keyword">false</span></code>
-              otherwise.
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">true</span></code> if interruption
+                has been enabled for the current thread, <code class="computeroutput"><span class="keyword">false</span></code>
+                otherwise.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1242,19 +1244,19 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Suspends the current thread until the specified time has elapsed.
-            </p></dd>
+                Suspends the current thread until the specified time has elapsed.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if the current
-              thread of execution is interrupted.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_interrupted</span></code> if the current
+                thread of execution is interrupted.
+              </p></dd>
 <dt><span class="term">Notes:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">sleep</span><span class="special">()</span></code>
-              is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
-              points</em></span></a>.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">sleep</span><span class="special">()</span></code>
+                is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
+                points</em></span></a>.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1275,13 +1277,13 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Gives up the remainder of the current thread's time slice, to allow
-              other threads to run.
-            </p></dd>
+                Gives up the remainder of the current thread's time slice, to allow
+                other threads to run.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1326,19 +1328,19 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-                Stores the current state of <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
-                and disables interruption for the current thread.
-              </p></dd>
+                  Stores the current state of <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
+                  and disables interruption for the current thread.
+                </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-                <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
-                returns <code class="computeroutput"><span class="keyword">false</span></code> for the
-                current thread.
-              </p></dd>
+                  <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
+                  returns <code class="computeroutput"><span class="keyword">false</span></code> for
+                  the current thread.
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing.
-              </p></dd>
+                  Nothing.
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1354,23 +1356,23 @@
 <dl>
 <dt><span class="term">Preconditions:</span></dt>
 <dd><p>
-                Must be called from the same thread from which <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> was constructed.
-              </p></dd>
+                  Must be called from the same thread from which <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> was constructed.
+                </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-                Restores the current state of <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
-                for the current thread to that prior to the construction of <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.
-              </p></dd>
+                  Restores the current state of <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
+                  for the current thread to that prior to the construction of <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.
+                </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-                <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
-                for the current thread returns the value stored in the constructor
-                of <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.
-              </p></dd>
+                  <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
+                  for the current thread returns the value stored in the constructor
+                  of <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing.
-              </p></dd>
+                  Nothing.
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1417,24 +1419,24 @@
 <dl>
 <dt><span class="term">Preconditions:</span></dt>
 <dd><p>
-                Must be called from the same thread from which <code class="computeroutput"><span class="identifier">disabler</span></code>
-                was constructed.
-              </p></dd>
+                  Must be called from the same thread from which <code class="computeroutput"><span class="identifier">disabler</span></code>
+                  was constructed.
+                </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-                Restores the current state of <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
-                for the current thread to that prior to the construction of <code class="computeroutput"><span class="identifier">disabler</span></code>.
-              </p></dd>
+                  Restores the current state of <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
+                  for the current thread to that prior to the construction of <code class="computeroutput"><span class="identifier">disabler</span></code>.
+                </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-                <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
-                for the current thread returns the value stored in the constructor
-                of <code class="computeroutput"><span class="identifier">disabler</span></code>.
-              </p></dd>
+                  <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
+                  for the current thread returns the value stored in the constructor
+                  of <code class="computeroutput"><span class="identifier">disabler</span></code>.
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing.
-              </p></dd>
+                  Nothing.
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1450,21 +1452,21 @@
 <dl>
 <dt><span class="term">Preconditions:</span></dt>
 <dd><p>
-                Must be called from the same thread from which <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> was constructed.
-              </p></dd>
+                  Must be called from the same thread from which <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> was constructed.
+                </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-                Disables interruption for the current thread.
-              </p></dd>
+                  Disables interruption for the current thread.
+                </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-                <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
-                for the current thread returns <code class="computeroutput"><span class="keyword">false</span></code>.
-              </p></dd>
+                  <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>
+                  for the current thread returns <code class="computeroutput"><span class="keyword">false</span></code>.
+                </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                Nothing.
-              </p></dd>
+                  Nothing.
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1484,31 +1486,32 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              A copy of <code class="computeroutput"><span class="identifier">func</span></code> is placed
-              in thread-specific storage. This copy is invoked when the current thread
-              exits (even if the thread has been interrupted).
-            </p></dd>
+                A copy of <code class="computeroutput"><span class="identifier">func</span></code> is
+                placed in thread-specific storage. This copy is invoked when the
+                current thread exits (even if the thread has been interrupted).
+              </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
-              A copy of <code class="computeroutput"><span class="identifier">func</span></code> has
-              been saved for invocation on thread exit.
-            </p></dd>
+                A copy of <code class="computeroutput"><span class="identifier">func</span></code> has
+                been saved for invocation on thread exit.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">bad_alloc</span></code> if memory cannot be allocated
-              for the copy of the function, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code>
-              if any other error occurs within the thread library. Any exception
-              thrown whilst copying <code class="computeroutput"><span class="identifier">func</span></code>
-              into internal storage.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">bad_alloc</span></code> if memory cannot be allocated
+                for the copy of the function, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code>
+                if any other error occurs within the thread library. Any exception
+                thrown whilst copying <code class="computeroutput"><span class="identifier">func</span></code>
+                into internal storage.
+              </p></dd>
 <dt><span class="term">Note:</span></dt>
 <dd><p>
-              This function is <span class="bold"><strong>not</strong></span> called if the
-              thread was terminated forcefully using platform-specific APIs, or if
-              the thread is terminated due to a call to <code class="computeroutput"><span class="identifier">exit</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">abort</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">terminate</span><span class="special">()</span></code>. In particular, returning from <code class="computeroutput"><span class="identifier">main</span><span class="special">()</span></code>
-              is equivalent to call to <code class="computeroutput"><span class="identifier">exit</span><span class="special">()</span></code>, so will not call any functions registered
-              with <code class="computeroutput"><span class="identifier">at_thread_exit</span><span class="special">()</span></code>
-            </p></dd>
+                This function is <span class="bold"><strong>not</strong></span> called if the
+                thread was terminated forcefully using platform-specific APIs, or
+                if the thread is terminated due to a call to <code class="computeroutput"><span class="identifier">exit</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">abort</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">terminate</span><span class="special">()</span></code>. In particular, returning from
+                <code class="computeroutput"><span class="identifier">main</span><span class="special">()</span></code>
+                is equivalent to call to <code class="computeroutput"><span class="identifier">exit</span><span class="special">()</span></code>, so will not call any functions
+                registered with <code class="computeroutput"><span class="identifier">at_thread_exit</span><span class="special">()</span></code>
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1572,8 +1575,8 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Create a new thread group with no threads.
-            </p></dd>
+                Create a new thread group with no threads.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1588,9 +1591,10 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Destroy <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-              and <code class="computeroutput"><span class="keyword">delete</span></code> all <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> objects in the group.
-            </p></dd>
+                Destroy <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                and <code class="computeroutput"><span class="keyword">delete</span></code> all <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a>
+                objects in the group.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1607,17 +1611,18 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Create a new <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object as-if by <code class="computeroutput"><span class="keyword">new</span> <span class="identifier">thread</span><span class="special">(</span><span class="identifier">threadfunc</span><span class="special">)</span></code> and add it to the group.
-            </p></dd>
+                Create a new <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object as-if by
+                <code class="computeroutput"><span class="keyword">new</span> <span class="identifier">thread</span><span class="special">(</span><span class="identifier">threadfunc</span><span class="special">)</span></code> and add it to the group.
+              </p></dd>
 <dt><span class="term">Postcondition:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">size</span><span class="special">()</span></code>
-              is increased by one, the new thread is running.
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">size</span><span class="special">()</span></code>
+                is increased by one, the new thread is running.
+              </p></dd>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              A pointer to the new <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object.
-            </p></dd>
+                A pointer to the new <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1633,20 +1638,20 @@
 <dl>
 <dt><span class="term">Precondition:</span></dt>
 <dd><p>
-              The expression <code class="computeroutput"><span class="keyword">delete</span> <span class="identifier">thrd</span></code> is well-formed and will not
-              result in undefined behaviour.
-            </p></dd>
+                The expression <code class="computeroutput"><span class="keyword">delete</span> <span class="identifier">thrd</span></code> is well-formed and will not
+                result in undefined behaviour.
+              </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Take ownership of the <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object pointed to by
-              <code class="computeroutput"><span class="identifier">thrd</span></code> and add it to
-              the group.
-            </p></dd>
+                Take ownership of the <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object pointed to
+                by <code class="computeroutput"><span class="identifier">thrd</span></code> and add it
+                to the group.
+              </p></dd>
 <dt><span class="term">Postcondition:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">size</span><span class="special">()</span></code>
-              is increased by one.
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">size</span><span class="special">()</span></code>
+                is increased by one.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1662,15 +1667,15 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="identifier">thrd</span></code> is a member
-              of the group, remove it without calling <code class="computeroutput"><span class="keyword">delete</span></code>.
-            </p></dd>
+                If <code class="computeroutput"><span class="identifier">thrd</span></code> is a member
+                of the group, remove it without calling <code class="computeroutput"><span class="keyword">delete</span></code>.
+              </p></dd>
 <dt><span class="term">Postcondition:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="identifier">thrd</span></code> was a member
-              of the group, <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">size</span><span class="special">()</span></code>
-              is decreased by one.
-            </p></dd>
+                If <code class="computeroutput"><span class="identifier">thrd</span></code> was a member
+                of the group, <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">size</span><span class="special">()</span></code>
+                is decreased by one.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1686,19 +1691,19 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Call <code class="computeroutput"><span class="identifier">join</span><span class="special">()</span></code>
-              on each <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object in the group.
-            </p></dd>
+                Call <code class="computeroutput"><span class="identifier">join</span><span class="special">()</span></code>
+                on each <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object in the group.
+              </p></dd>
 <dt><span class="term">Postcondition:</span></dt>
 <dd><p>
-              Every thread in the group has terminated.
-            </p></dd>
+                Every thread in the group has terminated.
+              </p></dd>
 <dt><span class="term">Note:</span></dt>
 <dd><p>
-              Since <a class="link" href="thread_management.html#thread.thread_management.thread.join" title="Member function join()"><code class="computeroutput"><span class="identifier">join</span><span class="special">()</span></code></a>
-              is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
-              points</em></span></a>, <code class="computeroutput"><span class="identifier">join_all</span><span class="special">()</span></code> is also an interruption point.
-            </p></dd>
+                Since <a class="link" href="thread_management.html#thread.thread_management.thread.join" title="Member function join()"><code class="computeroutput"><span class="identifier">join</span><span class="special">()</span></code></a>
+                is one of the predefined <a class="link" href="thread_management.html#interruption_points"><span class="emphasis"><em>interruption
+                points</em></span></a>, <code class="computeroutput"><span class="identifier">join_all</span><span class="special">()</span></code> is also an interruption point.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1714,9 +1719,9 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Call <code class="computeroutput"><span class="identifier">interrupt</span><span class="special">()</span></code>
-              on each <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object in the group.
-            </p></dd>
+                Call <code class="computeroutput"><span class="identifier">interrupt</span><span class="special">()</span></code>
+                on each <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a> object in the group.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -1732,12 +1737,12 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              The number of threads in the group.
-            </p></dd>
+                The number of threads in the group.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>

@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Struct template callable_eval</title>
-<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../../proto/reference.html#header.boost.proto.context.callable_hpp" title="Header &lt;boost/proto/context/callable.hpp&gt;">
@@ -33,7 +33,7 @@
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a class="link" href="../../../proto/reference.html#header.boost.proto.context.callable_hpp" title="Header &lt;boost/proto/context/callable.hpp&gt;">boost/proto/context/callable.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Expr, <span class="bold"><strong>typename</strong></span> Context&gt; 
+</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../../../Expr.html" title="Concept Expr">Expr</a>, <span class="bold"><strong>typename</strong></span> Context&gt; 
 <span class="bold"><strong>struct</strong></span> <a class="link" href="callable_eval.html" title="Struct template callable_eval">callable_eval</a> {
   <span class="emphasis"><em>// types</em></span>
   <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> boost::result_of&lt;
@@ -45,25 +45,25 @@
     )&gt;::type
    <a name="boost.proto.context.callable_eval.result_type"></a>result_type;
 
-  <span class="emphasis"><em>// <a class="link" href="callable_eval.html#id1272810-bb">public member functions</a></em></span>
-  <span class="type">result_type</span> <a class="link" href="callable_eval.html#id1272814-bb"><span class="bold"><strong>operator</strong></span>()</a>(Expr &amp;, Context &amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="callable_eval.html#id1278756-bb">public member functions</a></em></span>
+  <span class="type">result_type</span> <a class="link" href="callable_eval.html#id1278761-bb"><span class="bold"><strong>operator</strong></span>()</a>(Expr &amp;, Context &amp;) <span class="bold"><strong>const</strong></span>;
 };</pre></div>
 <div class="refsect1" title="Description">
-<a name="id1679098"></a><h2>Description</h2>
+<a name="id1683731"></a><h2>Description</h2>
 <p>
               <code class="computeroutput">proto::context::callable_eval&lt;&gt;</code> requires that
               <code class="computeroutput">Context</code> is a <a class="link" href="../../../PolymorphicFunctionObject.html" title="Concept PolymorphicFunctionObject">PolymorphicFunctionObject</a>
               that can be invoked with <code class="computeroutput">Expr</code>'s tag and children as
               expressions, as follows:
               </p>
-<pre class="programlisting">context(typename Expr::proto_tag(), <a class="link" href="../child_c_id1265156.html" title="Function child_c">proto::child_c</a>&lt;0&gt;(expr), ... <a class="link" href="../child_c_id1265156.html" title="Function child_c">proto::child_c</a>&lt;N&gt;(expr))</pre>
+<pre class="programlisting">context(typename Expr::proto_tag(), <a class="link" href="../child_c_id1270832.html" title="Function child_c">proto::child_c</a>&lt;0&gt;(expr), ... <a class="link" href="../child_c_id1270832.html" title="Function child_c">proto::child_c</a>&lt;N&gt;(expr))</pre>
 <p>
             </p>
 <div class="refsect2" title="callable_eval public member functions">
-<a name="id1679156"></a><h3>
-<a name="id1272810-bb"></a><code class="computeroutput">callable_eval</code> public member functions</h3>
+<a name="id1683789"></a><h3>
+<a name="id1278756-bb"></a><code class="computeroutput">callable_eval</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="type">result_type</span> <a name="id1272814-bb"></a><span class="bold"><strong>operator</strong></span>()(Expr &amp; expr, Context &amp; context) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">result_type</span> <a name="id1278761-bb"></a><span class="bold"><strong>operator</strong></span>()(Expr &amp; expr, Context &amp; context) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -88,8 +88,8 @@
 <td><p>
                   <code class="computeroutput">
                     context(typename Expr::proto_tag(),
-                    <a class="link" href="../child_c_id1265156.html" title="Function child_c">proto::child_c</a>&lt;0&gt;(expr),...
-                    <a class="link" href="../child_c_id1265156.html" title="Function child_c">proto::child_c</a>&lt;N&gt;(expr))
+                    <a class="link" href="../child_c_id1270832.html" title="Function child_c">proto::child_c</a>&lt;0&gt;(expr),...
+                    <a class="link" href="../child_c_id1270832.html" title="Function child_c">proto::child_c</a>&lt;N&gt;(expr))
                   </code>
                 </p></td>
 </tr>

@@ -2,12 +2,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Appendices</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../proto.html" title="Chapter&#160;15.&#160;Boost.Proto">
-<link rel="prev" href="../PolymorphicFunctionObject.html" title="Concept PolymorphicFunctionObject">
-<link rel="next" href="../ref.html" title="Chapter&#160;16.&#160;Boost.Ref">
+<link rel="prev" href="../Transform.html" title="Concept Transform">
+<link rel="next" href="../boost_random.html" title="Chapter&#160;16.&#160;Boost.Random">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,84 +20,168 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../PolymorphicFunctionObject.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../proto.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../ref.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../Transform.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../proto.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../boost_random.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" title="Appendices">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="proto.appendices"></a><a class="link" href="appendices.html" title="Appendices">Appendices</a>
 </h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="appendices.html#boost_proto.appendices.history"> Appendix A: History</a></span></dt>
-<dt><span class="section"><a href="appendices.html#boost_proto.appendices.rationale"> Appendix B: Rationale</a></span></dt>
-<dt><span class="section"><a href="appendices.html#boost_proto.appendices.implementation"> Appendix C: Implementation
+<dt><span class="section"><a href="appendices.html#boost_proto.appendices.release_notes"> Appendix A: Release
       Notes</a></span></dt>
-<dt><span class="section"><a href="appendices.html#boost_proto.appendices.acknowledgements"> Appendix D:
+<dt><span class="section"><a href="appendices.html#boost_proto.appendices.history"> Appendix B: History</a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost_proto.appendices.rationale"> Appendix C: Rationale</a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost_proto.appendices.implementation"> Appendix D: Implementation
+      Notes</a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost_proto.appendices.acknowledgements"> Appendix E:
       Acknowledgements</a></span></dt>
 </dl></div>
-<div class="section" title="Appendix A: History">
+<div class="section" title="Appendix A: Release Notes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_proto.appendices.history"></a><a class="link" href="appendices.html#boost_proto.appendices.history" title="Appendix A: History"> Appendix A: History</a>
+<a name="boost_proto.appendices.release_notes"></a><a class="link" href="appendices.html#boost_proto.appendices.release_notes" title="Appendix A: Release Notes"> Appendix A: Release
+      Notes</a>
+</h3></div></div></div>
+<a name="boost_proto.appendices.release_notes.boost_1_43"></a><h5>
+<a name="id1688049"></a>
+        <a class="link" href="appendices.html#boost_proto.appendices.release_notes.boost_1_43">Boost 1.43</a>
+      </h5>
+<p>
+        In Boost 1.43, the recommended usage of <code class="computeroutput"><a class="link" href="../boost/proto/extends.html" title="Struct template extends">proto::extends&lt;&gt;</a></code>
+        changed slightly. The new usage looks like this:
+      </p>
+<pre class="programlisting"><span class="comment">// my_expr is an expression extension of the Expr parameter
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">my_expr</span>
+  <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">&gt;,</span> <span class="identifier">my_domain</span><span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="identifier">my_expr</span><span class="special">(</span><span class="identifier">Expr</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">expr</span> <span class="special">=</span> <span class="identifier">Expr</span><span class="special">())</span>
+      <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">,</span> <span class="identifier">my_domain</span><span class="special">&gt;(</span><span class="identifier">expr</span><span class="special">)</span>
+    <span class="special">{}</span>
+
+    <span class="comment">// NEW: use the following macro to bring
+</span>    <span class="comment">// proto::extends::operator= into scope.
+</span>    <span class="identifier">BOOST_PROTO_EXTENDS_USING_ASSIGN</span><span class="special">(</span><span class="identifier">my_expr</span><span class="special">)</span>
+<span class="special">};</span>
+</pre>
+<p>
+        The new thing is the use of the <code class="literal"><code class="computeroutput"><a class="link" href="../BOOST_PROTO_EXTENDS_USING_ASSIGN.html" title="Macro BOOST_PROTO_EXTENDS_USING_ASSIGN">BOOST_PROTO_EXTENDS_USING_ASSIGN</a></code>()</code>
+        macro. To allow assignment operators to build expression trees, <code class="computeroutput"><a class="link" href="../boost/proto/extends.html" title="Struct template extends">proto::extends&lt;&gt;</a></code> overloads the assignment
+        operator. However, for the <code class="computeroutput"><span class="identifier">my_expr</span></code>
+        template, the compiler generates a default copy assignment operator that
+        hides the ones in <code class="computeroutput"><a class="link" href="../boost/proto/extends.html" title="Struct template extends">proto::extends&lt;&gt;</a></code>. This is often not desired
+        (although it depends on the syntax you want to allow).
+      </p>
+<p>
+        Previously, the recommended usage was to do this:
+      </p>
+<pre class="programlisting"><span class="comment">// my_expr is an expression extension of the Expr parameter
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">my_expr</span>
+  <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">&gt;,</span> <span class="identifier">my_domain</span><span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="identifier">my_expr</span><span class="special">(</span><span class="identifier">Expr</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">expr</span> <span class="special">=</span> <span class="identifier">Expr</span><span class="special">())</span>
+      <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">,</span> <span class="identifier">my_domain</span><span class="special">&gt;(</span><span class="identifier">expr</span><span class="special">)</span>
+    <span class="special">{}</span>
+
+    <span class="comment">// OLD: don't do it like this anymore.
+</span>    <span class="keyword">using</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">,</span> <span class="identifier">my_domain</span><span class="special">&gt;::</span><span class="keyword">operator</span><span class="special">=;</span>
+<span class="special">};</span>
+</pre>
+<p>
+        While this works in the majority of cases, it still doesn't suppress the
+        implicit generation of the default assignment operator. As a result, expressions
+        of the form <code class="computeroutput"><span class="identifier">a</span> <span class="special">=</span>
+        <span class="identifier">b</span></code> could either build an expression
+        template or do a copy assignment depending on whether the types of <code class="computeroutput"><span class="identifier">a</span></code> and <code class="computeroutput"><span class="identifier">b</span></code>
+        happen to be the same. That can lead to subtle bugs, so the behavior was
+        changed.
+      </p>
+<p>
+        The <code class="literal"><code class="computeroutput"><a class="link" href="../BOOST_PROTO_EXTENDS_USING_ASSIGN.html" title="Macro BOOST_PROTO_EXTENDS_USING_ASSIGN">BOOST_PROTO_EXTENDS_USING_ASSIGN</a></code>()</code>
+        brings into scope the assignment operators defined in <code class="computeroutput"><a class="link" href="../boost/proto/extends.html" title="Struct template extends">proto::extends&lt;&gt;</a></code>
+        as well as suppresses the generation of the copy assignment operator.
+      </p>
+<p>
+        Also note that the <code class="computeroutput"><a class="link" href="../boost/proto/literal.html" title="Struct template literal">proto::literal&lt;&gt;</a></code> class template, which
+        uses <code class="computeroutput"><a class="link" href="../boost/proto/extends.html" title="Struct template extends">proto::extends&lt;&gt;</a></code>, has been chaged to use
+        <code class="literal"><code class="computeroutput"><a class="link" href="../BOOST_PROTO_EXTENDS_USING_ASSIGN.html" title="Macro BOOST_PROTO_EXTENDS_USING_ASSIGN">BOOST_PROTO_EXTENDS_USING_ASSIGN</a></code>()</code>.
+        The implications are highlighted in the sample code below:
+      </p>
+<pre class="programlisting"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">literal</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">a</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="identifier">b</span><span class="special">(</span><span class="number">2</span><span class="special">);</span> <span class="comment">// two non-const proto literals
+</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">literal</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="identifier">c</span><span class="special">(</span><span class="number">3</span><span class="special">);</span> <span class="comment">// a const proto literal
+</span>
+<span class="identifier">a</span> <span class="special">=</span> <span class="identifier">b</span><span class="special">;</span> <span class="comment">// No-op. Builds an expression tree and discards it.
+</span>       <span class="comment">// Same behavior in 1.42 and 1.43.
+</span>
+<span class="identifier">a</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">;</span> <span class="comment">// CHANGE! In 1.42, this performed copy assignment, causing
+</span>       <span class="comment">// a's value to change to 3. In 1.43, the behavior is now
+</span>       <span class="comment">// the same as above: build and discard an expression tree.
+</span></pre>
+</div>
+<div class="section" title="Appendix B: History">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_proto.appendices.history"></a><a class="link" href="appendices.html#boost_proto.appendices.history" title="Appendix B: History"> Appendix B: History</a>
 </h3></div></div></div>
 <div class="variablelist">
 <p class="title"><b></b></p>
 <dl>
 <dt><span class="term">August 11, 2008</span></dt>
 <dd><p>
-            Proto v4 is merged to Boost trunk with more powerful transform protocol.
-          </p></dd>
+              Proto v4 is merged to Boost trunk with more powerful transform protocol.
+            </p></dd>
 <dt><span class="term">April 7, 2008</span></dt>
 <dd><p>
-            Proto is accepted into Boost.
-          </p></dd>
+              Proto is accepted into Boost.
+            </p></dd>
 <dt><span class="term">March 1, 2008</span></dt>
 <dd><p>
-            Proto's Boost review begins.
-          </p></dd>
+              Proto's Boost review begins.
+            </p></dd>
 <dt><span class="term">January 11, 2008</span></dt>
 <dd><p>
-            Boost.Proto v3 brings separation of grammars and transforms and a "round"
-            lambda syntax for defining transforms in-place.
-          </p></dd>
+              Boost.Proto v3 brings separation of grammars and transforms and a "round"
+              lambda syntax for defining transforms in-place.
+            </p></dd>
 <dt><span class="term">April 15, 2007</span></dt>
 <dd><p>
-            Boost.Xpressive is ported from Proto compilers to Proto transforms. Support
-            for old Proto compilers is dropped.
-          </p></dd>
+              Boost.Xpressive is ported from Proto compilers to Proto transforms.
+              Support for old Proto compilers is dropped.
+            </p></dd>
 <dt><span class="term">April 4, 2007</span></dt>
 <dd><p>
-            Preliminary submission of Proto to Boost.
-          </p></dd>
+              Preliminary submission of Proto to Boost.
+            </p></dd>
 <dt><span class="term">December 11, 2006</span></dt>
 <dd><p>
-            The idea for transforms that decorate grammar rules is born in a private
-            email discussion with Joel de Guzman and Hartmut Kaiser. The first transforms
-            are committed to CVS 5 days later on December 16.
-          </p></dd>
+              The idea for transforms that decorate grammar rules is born in a private
+              email discussion with Joel de Guzman and Hartmut Kaiser. The first
+              transforms are committed to CVS 5 days later on December 16.
+            </p></dd>
 <dt><span class="term">November 1, 2006</span></dt>
 <dd><p>
-            The idea for <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">matches</span><span class="special">&lt;&gt;</span></code>
-            and the whole grammar facility is hatched during a discussion with Hartmut
-            Kaiser on the spirit-devel list. The first version of <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">matches</span><span class="special">&lt;&gt;</span></code> is checked into CVS 3 days later.
-            Message is <a href="http://osdir.com/ml/parsers.spirit.devel/2006-11/msg00003.html" target="_top">here</a>.
-          </p></dd>
+              The idea for <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">matches</span><span class="special">&lt;&gt;</span></code> and the whole grammar facility
+              is hatched during a discussion with Hartmut Kaiser on the spirit-devel
+              list. The first version of <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">matches</span><span class="special">&lt;&gt;</span></code> is checked into CVS 3 days
+              later. Message is <a href="http://osdir.com/ml/parsers.spirit.devel/2006-11/msg00003.html" target="_top">here</a>.
+            </p></dd>
 <dt><span class="term">October 28, 2006</span></dt>
 <dd><p>
-            Proto is reborn, this time with a uniform expression types that are POD.
-            Announcement is <a href="http://lists.boost.org/Archives/boost/2006/10/112453.php" target="_top">here</a>.
-          </p></dd>
+              Proto is reborn, this time with a uniform expression types that are
+              POD. Announcement is <a href="http://lists.boost.org/Archives/boost/2006/10/112453.php" target="_top">here</a>.
+            </p></dd>
 <dt><span class="term">April 20, 2005</span></dt>
 <dd><p>
-            Proto is born as a major refactorization of Boost.Xpressive's meta-programming.
-            Proto offers expression types, operator overloads and "compilers",
-            an early formulation of what later became transforms. Announcement is
-            <a href="http://lists.boost.org/Archives/boost/2005/04/85256.php" target="_top">here</a>.
-          </p></dd>
+              Proto is born as a major refactorization of Boost.Xpressive's meta-programming.
+              Proto offers expression types, operator overloads and "compilers",
+              an early formulation of what later became transforms. Announcement
+              is <a href="http://lists.boost.org/Archives/boost/2005/04/85256.php" target="_top">here</a>.
+            </p></dd>
 </dl>
 </div>
 </div>
-<div class="section" title="Appendix B: Rationale">
+<div class="section" title="Appendix C: Rationale">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_proto.appendices.rationale"></a><a class="link" href="appendices.html#boost_proto.appendices.rationale" title="Appendix B: Rationale"> Appendix B: Rationale</a>
+<a name="boost_proto.appendices.rationale"></a><a class="link" href="appendices.html#boost_proto.appendices.rationale" title="Appendix C: Rationale"> Appendix C: Rationale</a>
 </h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="appendices.html#boost_proto.appendices.rationale.static_initialization">
@@ -153,9 +237,9 @@
         </p>
 </div>
 </div>
-<div class="section" title="Appendix C: Implementation Notes">
+<div class="section" title="Appendix D: Implementation Notes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_proto.appendices.implementation"></a><a class="link" href="appendices.html#boost_proto.appendices.implementation" title="Appendix C: Implementation Notes"> Appendix C: Implementation
+<a name="boost_proto.appendices.implementation"></a><a class="link" href="appendices.html#boost_proto.appendices.implementation" title="Appendix D: Implementation Notes"> Appendix D: Implementation
       Notes</a>
 </h3></div></div></div>
 <div class="toc"><dl>
@@ -347,9 +431,9 @@
         </p>
 </div>
 </div>
-<div class="section" title="Appendix D: Acknowledgements">
+<div class="section" title="Appendix E: Acknowledgements">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_proto.appendices.acknowledgements"></a><a class="link" href="appendices.html#boost_proto.appendices.acknowledgements" title="Appendix D: Acknowledgements"> Appendix D:
+<a name="boost_proto.appendices.acknowledgements"></a><a class="link" href="appendices.html#boost_proto.appendices.acknowledgements" title="Appendix E: Acknowledgements"> Appendix E:
       Acknowledgements</a>
 </h3></div></div></div>
 <p>
@@ -357,6 +441,15 @@
         take a chance on using Proto for their work on Spirit-2 and Karma when Proto
         was little more than a vision. Their requirements and feedback have been
         indespensable.
+      </p>
+<p>
+        Thanks to Daniel James for providing a patch to remove the dependence on
+        deprecated configuration macros for C++0x features.
+      </p>
+<p>
+        Thanks to Dave Abrahams for an especially detailed review, and for making
+        a VM with msvc-7.1 available so I could track down portability issues on
+        that compiler.
       </p>
 <p>
         Thanks also to the developers of <a href="http://www.codesourcery.com/pooma/download.html" target="_top">PETE</a>.
@@ -374,7 +467,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../PolymorphicFunctionObject.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../proto.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../ref.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../Transform.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../proto.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../boost_random.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

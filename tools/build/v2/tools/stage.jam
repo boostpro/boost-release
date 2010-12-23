@@ -246,20 +246,23 @@ class install-target-class : basic-target
             s += [ $(t).creating-subvariant ] ;
         }
         s = [ sequence.unique $(s) ] ;
-
-        local result = $(targets) ;
+        
+        local result = [ new set ] ;
+        $(result).add $(targets) ;
+        
         for local i in $(s)
         {
-            result += [ $(i).all-referenced-targets ] ;
+            $(i).all-referenced-targets $(result) ;
         }
         local result2 ;
-        for local r in $(result)
+        for local r in [ $(result).list ]
         {
             if $(r:G) != <use>
             {
                 result2 += $(r:G=) ;
             }
         }
+        DELETE_MODULE $(result) ;
         result = [ sequence.unique $(result2) ] ;
     }
 
@@ -354,16 +357,36 @@ class installed-exe-generator : generator
 
     rule run ( project name ? : property-set : source : multiple ? )
     {
+        local need-relink ;
+        
         if [ $(property-set).get <os> ] in NT CYGWIN ||
             [ $(property-set).get <target-os> ] in windows cygwin
         {
-            # Relinking is never needed on NT.
-            return [ stage.copy-file $(project)
+        }
+        else
+        {
+            # See if the dll-path properties are not changed during
+            # install. If so, copy, don't relink.
+            local a = [ $(source).action ] ;
+            local p = [ $(a).properties ] ;
+            local original = [ $(p).get <dll-path> ] ;
+            local current = [ $(property-set).get <dll-path> ] ;
+            
+            if $(current) != $(original)
+            {
+                need-relink = true ;
+            }            
+        }
+        
+            
+        if $(need-relink)
+        {
+            return [ stage.relink-file $(project)
               : $(source) : $(property-set) ] ;
         }
         else
         {
-            return [ stage.relink-file $(project)
+            return [ stage.copy-file $(project)
               : $(source) : $(property-set) ] ;
         }
     }

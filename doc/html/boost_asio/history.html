@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Revision History</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../boost_asio.html" title="Boost.Asio">
@@ -26,8 +26,76 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_asio.history"></a><a class="link" href="history.html" title="Revision History"> Revision History</a>
 </h2></div></div></div>
+<a name="boost_asio.history.asio_1_4_5___boost_1_43"></a><h4>
+<a name="id1195688"></a>
+      <a class="link" href="history.html#boost_asio.history.asio_1_4_5___boost_1_43">Asio 1.4.5 / Boost
+      1.43</a>
+    </h4>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        Improved performance.
+      </li>
+<li class="listitem">
+        Reduced compile times.
+      </li>
+<li class="listitem">
+        Reduced the size of generated code.
+      </li>
+<li class="listitem">
+        Extended the guarantee that background threads don't call user code to all
+        asynchronous operations (<a href="https://svn.boost.org/trac/boost/ticket/3923" target="_top">#3923</a>).
+      </li>
+<li class="listitem">
+        Changed to use edge-triggered epoll on Linux.
+      </li>
+<li class="listitem">
+        Changed to use <code class="computeroutput"><span class="identifier">timerfd</span></code> for
+        dispatching timers on Linux, when available.
+      </li>
+<li class="listitem">
+        Changed to use one-shot notifications with kqueue on Mac OS X and BSD platforms.
+      </li>
+<li class="listitem">
+        Added a bitmask type <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">resolver_query_base</span><span class="special">::</span><span class="identifier">flags</span></code> as per the TR2 proposal. This type
+        prevents implicit conversion from <code class="computeroutput"><span class="keyword">int</span></code>
+        to <code class="computeroutput"><span class="identifier">flags</span></code>, allowing the compiler
+        to catch cases where users incorrectly pass a numeric port number as the
+        service name.
+      </li>
+<li class="listitem">
+        Added <code class="computeroutput"><span class="preprocessor">#define</span> <span class="identifier">NOMINMAX</span></code>
+        for all Windows compilers. Users can define <code class="computeroutput"><span class="identifier">BOOST_ASIO_NO_NOMINMAX</span></code>
+        to suppress this definition (<a href="https://svn.boost.org/trac/boost/ticket/3901" target="_top">#3901</a>).
+      </li>
+<li class="listitem">
+        Fixed a bug where 0-byte asynchronous reads were incorrectly passing an
+        <code class="computeroutput"><span class="identifier">error</span><span class="special">::</span><span class="identifier">eof</span></code> result to the completion handler (<a href="https://svn.boost.org/trac/boost/ticket/4023" target="_top">#4023</a>).
+      </li>
+<li class="listitem">
+        Changed the <code class="computeroutput"><span class="identifier">io_control</span><span class="special">()</span></code>
+        member functions to always call <code class="computeroutput"><span class="identifier">ioctl</span></code>
+        on the underlying descriptor when modifying blocking mode (<a href="https://svn.boost.org/trac/boost/ticket/3307" target="_top">#3307</a>).
+      </li>
+<li class="listitem">
+        Changed the resolver implementation to longer require the typedefs <code class="computeroutput"><span class="identifier">InternetProtocol</span><span class="special">::</span><span class="identifier">resolver_query</span></code> and <code class="computeroutput"><span class="identifier">InternetProtocol</span><span class="special">::</span><span class="identifier">resolver_iterator</span></code>,
+        as neither typedef is part of the documented <code class="computeroutput"><span class="identifier">InternetProtocol</span></code>
+        requirements. The corresponding typedefs in the <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span></code>,
+        <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">udp</span></code> and <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span></code>
+        classes have been deprecated.
+      </li>
+<li class="listitem">
+        Fixed out-of-band handling for reactors not based on <code class="computeroutput"><span class="identifier">select</span><span class="special">()</span></code>.
+      </li>
+<li class="listitem">
+        Added new <code class="computeroutput"><span class="identifier">BOOST_ASIO_DISABLE_THREADS</span></code>
+        macro that allows Asio's threading support to be independently disabled.
+      </li>
+<li class="listitem">
+        Minor documentation improvements.
+      </li>
+</ul></div>
 <a name="boost_asio.history.asio_1_4_4___boost_1_42"></a><h4>
-<a name="id1179103"></a>
+<a name="id1196074"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_4___boost_1_42">Asio 1.4.4 / Boost
       1.42</a>
     </h4>
@@ -92,7 +160,7 @@
       </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_3___boost_1_40"></a><h4>
-<a name="id1179344"></a>
+<a name="id1196315"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_3___boost_1_40">Asio 1.4.3 / Boost
       1.40</a>
     </h4>
@@ -149,7 +217,7 @@
       </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_2___boost_1_39"></a><h4>
-<a name="id1179609"></a>
+<a name="id1196580"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_2___boost_1_39">Asio 1.4.2 / Boost
       1.39</a>
     </h4>
@@ -201,7 +269,7 @@
       </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_1___boost_1_38"></a><h4>
-<a name="id1179826"></a>
+<a name="id1196797"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_1___boost_1_38">Asio 1.4.1 / Boost
       1.38</a>
     </h4>
@@ -233,7 +301,7 @@
       </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_0___boost_1_37"></a><h4>
-<a name="id1179968"></a>
+<a name="id1196939"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_0___boost_1_37">Asio 1.4.0 / Boost
       1.37</a>
     </h4>
@@ -267,7 +335,7 @@
       </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_2_0___boost_1_36"></a><h4>
-<a name="id1180081"></a>
+<a name="id1197052"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_2_0___boost_1_36">Asio 1.2.0 / Boost
       1.36</a>
     </h4>
@@ -319,7 +387,7 @@
       </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_0_0___boost_1_35"></a><h4>
-<a name="id1180264"></a>
+<a name="id1197236"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_0_0___boost_1_35">Asio 1.0.0 / Boost
       1.35</a>
     </h4>

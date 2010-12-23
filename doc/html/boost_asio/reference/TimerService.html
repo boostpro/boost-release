@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Timer service requirements</title>
-<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
@@ -44,7 +44,7 @@
         <code class="computeroutput"><span class="identifier">error_code</span></code>, and <code class="computeroutput"><span class="identifier">h</span></code> denotes a value meeting <a class="link" href="WaitHandler.html" title="Wait handler requirements"><code class="computeroutput"><span class="identifier">WaitHandler</span></code></a> requirements.
       </p>
 <div class="table">
-<a name="id658858"></a><p class="title"><b>Table&#160;36.&#160;TimerService requirements</b></p>
+<a name="id659717"></a><p class="title"><b>Table&#160;36.&#160;TimerService requirements</b></p>
 <div class="table-contents"><table class="table" summary="TimerService requirements">
 <colgroup>
 <col>
@@ -53,195 +53,197 @@
 </colgroup>
 <thead><tr>
 <th>
-            <p>
-              expression
-            </p>
-            </th>
+                <p>
+                  expression
+                </p>
+              </th>
 <th>
-            <p>
-              return type
-            </p>
-            </th>
+                <p>
+                  return type
+                </p>
+              </th>
 <th>
-            <p>
-              assertion/note<br> pre/post-condition
-            </p>
-            </th>
+                <p>
+                  assertion/note<br> pre/post-condition
+                </p>
+              </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">destroy</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">destroy</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-            </p>
-            </td>
+                <p>
+                </p>
+              </td>
 <td>
-            <p>
-              From <a class="link" href="IoObjectService.html" title="I/O object service requirements">IoObjectService</a>
-              requirements. Implicitly cancels asynchronous wait operations, as if
-              by calling <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">cancel</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">e</span><span class="special">)</span></code>.
-            </p>
-            </td>
+                <p>
+                  From <a class="link" href="IoObjectService.html" title="I/O object service requirements">IoObjectService</a>
+                  requirements. Implicitly cancels asynchronous wait operations,
+                  as if by calling <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">cancel</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">e</span><span class="special">)</span></code>.
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              
+                <p>
+                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">cancel</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">e</span><span class="special">);</span>
 </pre>
 <p>
-            </p>
-            </td>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">size_t</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">size_t</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              Causes any outstanding asynchronous wait operations to complete as
-              soon as possible. Handlers for cancelled operations shall be passed
-              the error code <code class="computeroutput"><span class="identifier">error</span><span class="special">::</span><span class="identifier">operation_aborted</span></code>.
-              Sets <code class="computeroutput"><span class="identifier">e</span></code> to indicate
-              success or failure. Returns the number of operations that were cancelled.
-            </p>
-            </td>
+                <p>
+                  Causes any outstanding asynchronous wait operations to complete
+                  as soon as possible. Handlers for cancelled operations shall be
+                  passed the error code <code class="computeroutput"><span class="identifier">error</span><span class="special">::</span><span class="identifier">operation_aborted</span></code>.
+                  Sets <code class="computeroutput"><span class="identifier">e</span></code> to indicate
+                  success or failure. Returns the number of operations that were
+                  cancelled.
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">Time</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">Time</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-            </p>
-            </td>
+                <p>
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              
+                <p>
+                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">t</span><span class="special">,</span> <span class="identifier">e</span><span class="special">);</span>
 </pre>
 <p>
-            </p>
-            </td>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">size_t</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">size_t</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              Implicitly cancels asynchronous wait operations, as if by calling
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">cancel</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">e</span><span class="special">)</span></code>.
-              Returns the number of operations that were cancelled.<br> post:
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">t</span></code>.
-            </p>
-            </td>
+                <p>
+                  Implicitly cancels asynchronous wait operations, as if by calling
+                  <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">cancel</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span>
+                  <span class="identifier">e</span><span class="special">)</span></code>.
+                  Returns the number of operations that were cancelled.<br> post:
+                  <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">)</span>
+                  <span class="special">==</span> <span class="identifier">t</span></code>.
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_from_now</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_from_now</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">duration_type</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">duration_type</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              Returns a value equivalent to <code class="computeroutput"><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">subtract</span><span class="special">(</span><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">),</span> <span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">now</span><span class="special">())</span></code>.
-            </p>
-            </td>
+                <p>
+                  Returns a value equivalent to <code class="computeroutput"><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">subtract</span><span class="special">(</span><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">),</span> <span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">now</span><span class="special">())</span></code>.
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              
+                <p>
+                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_from_now</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">d</span><span class="special">,</span> <span class="identifier">e</span><span class="special">);</span>
 </pre>
 <p>
-            </p>
-            </td>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">size_t</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">size_t</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              Equivalent to <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">add</span><span class="special">(</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">now</span><span class="special">(),</span>
-              <span class="identifier">d</span><span class="special">),</span>
-              <span class="identifier">e</span><span class="special">)</span></code>.
-            </p>
-            </td>
+                <p>
+                  Equivalent to <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">add</span><span class="special">(</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">now</span><span class="special">(),</span> <span class="identifier">d</span><span class="special">),</span> <span class="identifier">e</span><span class="special">)</span></code>.
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              
+                <p>
+                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">wait</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">e</span><span class="special">);</span>
 </pre>
 <p>
-            </p>
-            </td>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">error_code</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">error_code</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              Sets <code class="computeroutput"><span class="identifier">e</span></code> to indicate
-              success or failure. Returns <code class="computeroutput"><span class="identifier">e</span></code>.<br>
-              post: <code class="computeroutput"><span class="special">!!</span><span class="identifier">e</span>
-              <span class="special">||</span> <span class="special">!</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">lt</span><span class="special">(</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">now</span><span class="special">(),</span>
-              <span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">))</span></code>.
-            </p>
-            </td>
+                <p>
+                  Sets <code class="computeroutput"><span class="identifier">e</span></code> to indicate
+                  success or failure. Returns <code class="computeroutput"><span class="identifier">e</span></code>.<br>
+                  post: <code class="computeroutput"><span class="special">!!</span><span class="identifier">e</span>
+                  <span class="special">||</span> <span class="special">!</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">lt</span><span class="special">(</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">now</span><span class="special">(),</span>
+                  <span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">))</span></code>.
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              
+                <p>
+                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">async_wait</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">h</span><span class="special">);</span>
 </pre>
 <p>
-            </p>
-            </td>
+                </p>
+              </td>
 <td>
-            <p>
-            </p>
-            </td>
+                <p>
+                </p>
+              </td>
 <td>
-            <p>
-              Initiates an asynchronous wait operation that is performed via the
-              <code class="computeroutput"><span class="identifier">io_service</span></code> object
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">()</span></code>
-              and behaves according to <a class="link" href="asynchronous_operations.html" title="Requirements on asynchronous operations">asynchronous
-              operation</a> requirements.<br> <br> The handler shall be posted
-              for execution only if the condition <code class="computeroutput"><span class="special">!!</span><span class="identifier">ec</span> <span class="special">||</span> <span class="special">!</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">lt</span><span class="special">(</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">now</span><span class="special">(),</span> <span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">))</span></code> holds, where <code class="computeroutput"><span class="identifier">ec</span></code>
-              is the error code to be passed to the handler.
-            </p>
-            </td>
+                <p>
+                  Initiates an asynchronous wait operation that is performed via
+                  the <code class="computeroutput"><span class="identifier">io_service</span></code>
+                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">()</span></code>
+                  and behaves according to <a class="link" href="asynchronous_operations.html" title="Requirements on asynchronous operations">asynchronous
+                  operation</a> requirements.<br> <br> The handler shall be
+                  posted for execution only if the condition <code class="computeroutput"><span class="special">!!</span><span class="identifier">ec</span> <span class="special">||</span>
+                  <span class="special">!</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">lt</span><span class="special">(</span><span class="identifier">TimeTraits</span><span class="special">::</span><span class="identifier">now</span><span class="special">(),</span> <span class="identifier">a</span><span class="special">.</span><span class="identifier">expires_at</span><span class="special">(</span><span class="identifier">b</span><span class="special">))</span></code> holds, where <code class="computeroutput"><span class="identifier">ec</span></code>
+                  is the error code to be passed to the handler.
+                </p>
+              </td>
 </tr>
 </tbody>
 </table></div>

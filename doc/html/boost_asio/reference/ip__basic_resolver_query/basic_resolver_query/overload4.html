@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>ip::basic_resolver_query::basic_resolver_query (4 of 4 overloads)</title>
-<link rel="stylesheet" href="../../../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../basic_resolver_query.html" title="ip::basic_resolver_query::basic_resolver_query">
@@ -34,8 +34,63 @@
     <span class="keyword">const</span> <span class="identifier">protocol_type</span> <span class="special">&amp;</span> <span class="identifier">protocol</span><span class="special">,</span>
     <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> <span class="identifier">host_name</span><span class="special">,</span>
     <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> <span class="identifier">service_name</span><span class="special">,</span>
-    <span class="keyword">int</span> <span class="identifier">flags</span> <span class="special">=</span> <span class="identifier">address_configured</span><span class="special">);</span>
+    <span class="identifier">resolver_query_base</span><span class="special">::</span><span class="identifier">flags</span> <span class="identifier">resolve_flags</span> <span class="special">=</span> <span class="identifier">address_configured</span><span class="special">);</span>
 </pre>
+<p>
+            This constructor is typically used to perform name resolution for communication
+            with remote hosts.
+          </p>
+<a name="boost_asio.reference.ip__basic_resolver_query.basic_resolver_query.overload4.parameters"></a><h6>
+<a name="id992260"></a>
+            <a class="link" href="overload4.html#boost_asio.reference.ip__basic_resolver_query.basic_resolver_query.overload4.parameters">Parameters</a>
+          </h6>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl>
+<dt><span class="term">protocol</span></dt>
+<dd><p>
+                  A protocol object, normally representing either the IPv4 or IPv6
+                  version of an internet protocol.
+                </p></dd>
+<dt><span class="term">host_name</span></dt>
+<dd><p>
+                  A string identifying a location. May be a descriptive name or a
+                  numeric address string. If an empty string and the passive flag
+                  has been specified, the resolved endpoints are suitable for local
+                  service binding. If an empty string and passive is not specified,
+                  the resolved endpoints will use the loopback address.
+                </p></dd>
+<dt><span class="term">service_name</span></dt>
+<dd><p>
+                  A string identifying the requested service. This may be a descriptive
+                  name or a numeric string corresponding to a port number. May be
+                  an empty string, in which case all resolved endpoints will have
+                  a port number of 0.
+                </p></dd>
+<dt><span class="term">resolve_flags</span></dt>
+<dd><p>
+                  A set of flags that determine how name resolution should be performed.
+                  The default flags are suitable for communication with remote hosts.
+                </p></dd>
+</dl>
+</div>
+<a name="boost_asio.reference.ip__basic_resolver_query.basic_resolver_query.overload4.remarks"></a><h6>
+<a name="id992360"></a>
+            <a class="link" href="overload4.html#boost_asio.reference.ip__basic_resolver_query.basic_resolver_query.overload4.remarks">Remarks</a>
+          </h6>
+<p>
+            On POSIX systems, host names may be locally defined in the file <code class="computeroutput"><span class="special">/</span><span class="identifier">etc</span><span class="special">/</span><span class="identifier">hosts</span></code>.
+            On Windows, host names may be defined in the file <code class="computeroutput"><span class="identifier">c</span><span class="special">:\</span><span class="identifier">windows</span><span class="special">\</span><span class="identifier">system32</span><span class="special">\</span><span class="identifier">drivers</span><span class="special">\</span><span class="identifier">etc</span><span class="special">\</span><span class="identifier">hosts</span></code>.
+            Remote host name resolution is performed using DNS. Operating systems
+            may use additional locations when resolving host names (such as NETBIOS
+            names on Windows).
+          </p>
+<p>
+            On POSIX systems, service names are typically defined in the file <code class="computeroutput"><span class="special">/</span><span class="identifier">etc</span><span class="special">/</span><span class="identifier">services</span></code>.
+            On Windows, service names may be found in the file <code class="computeroutput"><span class="identifier">c</span><span class="special">:\</span><span class="identifier">windows</span><span class="special">\</span><span class="identifier">system32</span><span class="special">\</span><span class="identifier">drivers</span><span class="special">\</span><span class="identifier">etc</span><span class="special">\</span><span class="identifier">services</span></code>.
+            Operating systems may use additional locations when resolving service
+            names.
+          </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

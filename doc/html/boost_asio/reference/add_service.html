@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>add_service</title>
-<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
@@ -27,7 +27,7 @@
 <a name="boost_asio.reference.add_service"></a><a class="link" href="add_service.html" title="add_service"> add_service</a>
 </h3></div></div></div>
 <p>
-        <a class="indexterm" name="id661267"></a>
+        <a class="indexterm" name="id662149"></a>
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">typename</span> <a class="link" href="Service.html" title="Service requirements">Service</a><span class="special">&gt;</span>
@@ -39,7 +39,7 @@
         This function is used to add a service to the <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>.
       </p>
 <a name="boost_asio.reference.add_service.parameters"></a><h5>
-<a name="id661391"></a>
+<a name="id662273"></a>
         <a class="link" href="add_service.html#boost_asio.reference.add_service.parameters">Parameters</a>
       </h5>
 <div class="variablelist">
@@ -47,25 +47,26 @@
 <dl>
 <dt><span class="term">ios</span></dt>
 <dd><p>
-            The <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>
-            object that owns the service.
-          </p></dd>
+              The <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>
+              object that owns the service.
+            </p></dd>
 <dt><span class="term">svc</span></dt>
 <dd>
 <p>
-            The service object. On success, ownership of the service object is transferred
-            to the <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>. When the <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> object is destroyed,
-            it will destroy the service object by performing: 
+              The service object. On success, ownership of the service object is
+              transferred to the <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>. When the <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>
+              object is destroyed, it will destroy the service object by performing:
+              
 </p>
 <pre class="programlisting"><span class="keyword">delete</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">service</span><span class="special">*&gt;(</span><span class="identifier">svc</span><span class="special">)</span> 
 </pre>
 <p>
-          </p>
+            </p>
 </dd>
 </dl>
 </div>
 <a name="boost_asio.reference.add_service.exceptions"></a><h5>
-<a name="id661538"></a>
+<a name="id662423"></a>
         <a class="link" href="add_service.html#boost_asio.reference.add_service.exceptions">Exceptions</a>
       </h5>
 <div class="variablelist">
@@ -73,17 +74,17 @@
 <dl>
 <dt><span class="term">boost::asio::service_already_exists</span></dt>
 <dd><p>
-            Thrown if a service of the given type is already present in the <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>.
-          </p></dd>
+              Thrown if a service of the given type is already present in the <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>.
+            </p></dd>
 <dt><span class="term">boost::asio::invalid_service_owner</span></dt>
 <dd><p>
-            Thrown if the service's owning <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> is not the <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>
-            object specified by the ios parameter.
-          </p></dd>
+              Thrown if the service's owning <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> is not the <a class="link" href="io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>
+              object specified by the ios parameter.
+            </p></dd>
 </dl>
 </div>
 <a name="boost_asio.reference.add_service.requirements"></a><h5>
-<a name="id661638"></a>
+<a name="id662525"></a>
         <a class="link" href="add_service.html#boost_asio.reference.add_service.requirements">Requirements</a>
       </h5>
 <p>

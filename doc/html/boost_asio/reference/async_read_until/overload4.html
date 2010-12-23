@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>async_read_until (4 of 4 overloads)</title>
-<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../async_read_until.html" title="async_read_until">
@@ -61,11 +61,16 @@
 </ul></div>
 <p>
           This operation is implemented in terms of zero or more calls to the stream's
-          async_read_some function. If the match condition function object already
-          indicates a match, the operation completes immediately.
+          async_read_some function, and is known as a <span class="bold"><strong>composed
+          operation</strong></span>. If the match condition function object already indicates
+          a match, this asynchronous operation completes immediately. The program
+          must ensure that the stream performs no other read operations (such as
+          async_read, async_read_until, the stream's async_read_some function, or
+          any other composed operations that perform reads) until this operation
+          completes.
         </p>
 <a name="boost_asio.reference.async_read_until.overload4.parameters"></a><h6>
-<a name="id674341"></a>
+<a name="id676223"></a>
           <a class="link" href="overload4.html#boost_asio.reference.async_read_until.overload4.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
@@ -73,46 +78,46 @@
 <dl>
 <dt><span class="term">s</span></dt>
 <dd><p>
-              The stream from which the data is to be read. The type must support
-              the AsyncReadStream concept.
-            </p></dd>
+                The stream from which the data is to be read. The type must support
+                the AsyncReadStream concept.
+              </p></dd>
 <dt><span class="term">b</span></dt>
 <dd><p>
-              A streambuf object into which the data will be read.
-            </p></dd>
+                A streambuf object into which the data will be read.
+              </p></dd>
 <dt><span class="term">match_condition</span></dt>
 <dd>
 <p>
-              The function object to be called to determine whether a match exists.
-              The signature of the function object must be: 
+                The function object to be called to determine whether a match exists.
+                The signature of the function object must be: 
 </p>
 <pre class="programlisting"><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">bool</span><span class="special">&gt;</span> <span class="identifier">match_condition</span><span class="special">(</span><span class="identifier">iterator</span> <span class="identifier">begin</span><span class="special">,</span> <span class="identifier">iterator</span> <span class="identifier">end</span><span class="special">);</span>
 </pre>
 <p>
-              where <code class="computeroutput"><span class="identifier">iterator</span></code> represents
-              the type: 
+                where <code class="computeroutput"><span class="identifier">iterator</span></code> represents
+                the type: 
 </p>
 <pre class="programlisting"><span class="identifier">buffers_iterator</span><span class="special">&lt;</span><span class="identifier">basic_streambuf</span><span class="special">&lt;</span><span class="identifier">Allocator</span><span class="special">&gt;::</span><span class="identifier">const_buffers_type</span><span class="special">&gt;</span>
 </pre>
 <p>
-              The iterator parameters <code class="computeroutput"><span class="identifier">begin</span></code>
-              and <code class="computeroutput"><span class="identifier">end</span></code> define the
-              range of bytes to be scanned to determine whether there is a match.
-              The <code class="computeroutput"><span class="identifier">first</span></code> member of
-              the return value is an iterator marking one-past-the-end of the bytes
-              that have been consumed by the match function. This iterator is used
-              to calculate the <code class="computeroutput"><span class="identifier">begin</span></code>
-              parameter for any subsequent invocation of the match condition. The
-              <code class="computeroutput"><span class="identifier">second</span></code> member of the
-              return value is true if a match has been found, false otherwise.
-            </p>
+                The iterator parameters <code class="computeroutput"><span class="identifier">begin</span></code>
+                and <code class="computeroutput"><span class="identifier">end</span></code> define the
+                range of bytes to be scanned to determine whether there is a match.
+                The <code class="computeroutput"><span class="identifier">first</span></code> member
+                of the return value is an iterator marking one-past-the-end of the
+                bytes that have been consumed by the match function. This iterator
+                is used to calculate the <code class="computeroutput"><span class="identifier">begin</span></code>
+                parameter for any subsequent invocation of the match condition. The
+                <code class="computeroutput"><span class="identifier">second</span></code> member of
+                the return value is true if a match has been found, false otherwise.
+              </p>
 </dd>
 <dt><span class="term">handler</span></dt>
 <dd>
 <p>
-              The handler to be called when the read operation completes. Copies
-              will be made of the handler as required. The function signature of
-              the handler must be: 
+                The handler to be called when the read operation completes. Copies
+                will be made of the handler as required. The function signature of
+                the handler must be: 
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span>
   <span class="comment">// Result of operation.
@@ -125,16 +130,16 @@
 <span class="special">);</span> 
 </pre>
 <p>
-              Regardless of whether the asynchronous operation completes immediately
-              or not, the handler will not be invoked from within this function.
-              Invocation of the handler will be performed in a manner equivalent
-              to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">post</span><span class="special">()</span></code>.
-            </p>
+                Regardless of whether the asynchronous operation completes immediately
+                or not, the handler will not be invoked from within this function.
+                Invocation of the handler will be performed in a manner equivalent
+                to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">post</span><span class="special">()</span></code>.
+              </p>
 </dd>
 </dl>
 </div>
 <a name="boost_asio.reference.async_read_until.overload4.remarks"></a><h6>
-<a name="id674776"></a>
+<a name="id676663"></a>
           <a class="link" href="overload4.html#boost_asio.reference.async_read_until.overload4.remarks">Remarks</a>
         </h6>
 <p>
@@ -150,7 +155,7 @@
           It must be specialised for other user-defined function objects.
         </p>
 <a name="boost_asio.reference.async_read_until.overload4.examples"></a><h6>
-<a name="id674834"></a>
+<a name="id676722"></a>
           <a class="link" href="overload4.html#boost_asio.reference.async_read_until.overload4.examples">Examples</a>
         </h6>
 <p>

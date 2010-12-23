@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Threads and Boost.Asio</title>
-<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../core.html" title="Core Concepts and Functionality">
@@ -27,7 +27,7 @@
 <a name="boost_asio.overview.core.threads"></a><a class="link" href="threads.html" title="Threads and Boost.Asio"> Threads and Boost.Asio</a>
 </h4></div></div></div>
 <a name="boost_asio.overview.core.threads.thread_safety"></a><h6>
-<a name="id556128"></a>
+<a name="id556347"></a>
           <a class="link" href="threads.html#boost_asio.overview.core.threads.thread_safety">Thread Safety</a>
         </h6>
 <p>
@@ -37,7 +37,7 @@
           guarantee that it is safe to use a single object concurrently.
         </p>
 <a name="boost_asio.overview.core.threads.thread_pools"></a><h6>
-<a name="id556161"></a>
+<a name="id556380"></a>
           <a class="link" href="threads.html#boost_asio.overview.core.threads.thread_pools">Thread Pools</a>
         </h6>
 <p>
@@ -52,7 +52,7 @@
           may distribute work across them in an arbitrary fashion.
         </p>
 <a name="boost_asio.overview.core.threads.internal_threads"></a><h6>
-<a name="id556249"></a>
+<a name="id556468"></a>
           <a class="link" href="threads.html#boost_asio.overview.core.threads.internal_threads">Internal
           Threads</a>
         </h6>
@@ -70,30 +70,6 @@
             must block all signals.
           </li>
 </ul></div>
-<div class="note" title="Note"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/html/images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-<p>
-            The implementation currently violates the first of these rules for the
-            following functions:
-          </p>
-<p>
-            &#8212; <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver</span><span class="special">::</span><span class="identifier">async_resolve</span><span class="special">()</span></code>
-            on all platforms.
-          </p>
-<p>
-            &#8212; <code class="computeroutput"><span class="identifier">basic_socket</span><span class="special">::</span><span class="identifier">async_connect</span><span class="special">()</span></code>
-            on Windows.
-          </p>
-<p>
-            &#8212; Any operation involving <code class="computeroutput"><span class="identifier">null_buffers</span><span class="special">()</span></code> on Windows, other than an asynchronous
-            read performed on a stream-oriented socket.
-          </p>
-</td></tr>
-</table></div>
 <p>
           This approach is complemented by the following guarantee:
         </p>
@@ -128,7 +104,7 @@
           </li>
 </ul></div>
 <a name="boost_asio.overview.core.threads.see_also"></a><h6>
-<a name="id556471"></a>
+<a name="id556605"></a>
           <a class="link" href="threads.html#boost_asio.overview.core.threads.see_also">See Also</a>
         </h6>
 <p>

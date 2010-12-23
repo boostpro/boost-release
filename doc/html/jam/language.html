@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Language</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../jam.html" title="Chapter&#160;31.&#160;Boost.Jam : 3.1.17">
+<link rel="up" href="../jam.html" title="Chapter&#160;32.&#160;Boost.Jam : 3.1.18">
 <link rel="prev" href="usage.html" title="Using BJam">
 <link rel="next" href="miscellaneous.html" title="Miscellaneous">
 </head>
@@ -218,36 +218,37 @@ on <span class="emphasis"><em>target</em></span> $(<span class="emphasis"><em>va
 <dl>
 <dt><span class="term"><code class="literal">actions bind <span class="emphasis"><em>vars</em></span></code></span></dt>
 <dd><p>
-              <code class="literal">$(<span class="emphasis"><em>vars</em></span>)</code> will be replaced with
-              bound values.
-            </p></dd>
+                <code class="literal">$(<span class="emphasis"><em>vars</em></span>)</code> will be replaced
+                with bound values.
+              </p></dd>
 <dt><span class="term"><code class="literal">actions existing</code></span></dt>
 <dd><p>
-              <code class="literal">$(&gt;)</code> includes only source targets currently existing.
-            </p></dd>
+                <code class="literal">$(&gt;)</code> includes only source targets currently
+                existing.
+              </p></dd>
 <dt><span class="term"><code class="literal">actions ignore</code></span></dt>
 <dd><p>
-              The return status of the commands is ignored.
-            </p></dd>
+                The return status of the commands is ignored.
+              </p></dd>
 <dt><span class="term"><code class="literal">actions piecemeal</code></span></dt>
 <dd><p>
-              commands are repeatedly invoked with a subset of <code class="literal">$(&gt;)</code>
-              small enough to fit in the command buffer on this OS.
-            </p></dd>
+                commands are repeatedly invoked with a subset of <code class="literal">$(&gt;)</code>
+                small enough to fit in the command buffer on this OS.
+              </p></dd>
 <dt><span class="term"><code class="literal">actions quietly</code></span></dt>
 <dd><p>
-              The action is not echoed to the standard output.
-            </p></dd>
+                The action is not echoed to the standard output.
+              </p></dd>
 <dt><span class="term"><code class="literal">actions together</code></span></dt>
 <dd><p>
-              The <code class="literal">$(&gt;)</code> from multiple invocations of the same
-              action on the same built target are glommed together.
-            </p></dd>
+                The <code class="literal">$(&gt;)</code> from multiple invocations of the same
+                action on the same built target are glommed together.
+              </p></dd>
 <dt><span class="term"><code class="literal">actions updated</code></span></dt>
 <dd><p>
-              <code class="literal">$(&gt;)</code> includes only source targets themselves
-              marked for updating.
-            </p></dd>
+                <code class="literal">$(&gt;)</code> includes only source targets themselves
+                marked for updating.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -281,54 +282,54 @@ report I 2 : sorry : Joe Dave Pete ;
 </colgroup>
 <thead><tr>
 <th>
-                <p>
-                  Symbol
-                </p>
+                  <p>
+                    Symbol
+                  </p>
                 </th>
 <th>
-                <p>
-                  Semantics of preceding symbol
-                </p>
+                  <p>
+                    Semantics of preceding symbol
+                  </p>
                 </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-                <p>
-                  <code class="literal">?</code>
-                </p>
+                  <p>
+                    <code class="literal">?</code>
+                  </p>
                 </td>
 <td>
-                <p>
-                  optional
-                </p>
-                </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <code class="literal">*</code>
-                </p>
-                </td>
-<td>
-                <p>
-                  Bind to zero or more unbound elements of the actual argument. When
-                  <code class="literal">*</code> appears where an argument name is expected,
-                  any number of additional arguments are accepted. This feature can
-                  be used to implement "varargs" rules.
-                </p>
+                  <p>
+                    optional
+                  </p>
                 </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  <code class="literal">+</code>
-                </p>
+                  <p>
+                    <code class="literal">*</code>
+                  </p>
                 </td>
 <td>
-                <p>
-                  Bind to one or more unbound elements of the actual argument.
-                </p>
+                  <p>
+                    Bind to zero or more unbound elements of the actual argument.
+                    When <code class="literal">*</code> appears where an argument name is expected,
+                    any number of additional arguments are accepted. This feature
+                    can be used to implement "varargs" rules.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="literal">+</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Bind to one or more unbound elements of the actual argument.
+                  </p>
                 </td>
 </tr>
 </tbody>
@@ -802,14 +803,14 @@ UPDATE $(previous-updates) a-new-target ;
 <dl>
 <dt><span class="term"><code class="literal">subkeys</code></span></dt>
 <dd><p>
-                  Names of all direct subkeys of '<span class="emphasis"><em>path</em></span>'.
-                </p></dd>
+                    Names of all direct subkeys of '<span class="emphasis"><em>path</em></span>'.
+                  </p></dd>
 <dt><span class="term"><code class="literal">values</code></span></dt>
 <dd><p>
-                  Names of values contained in registry key given by '<span class="emphasis"><em>path</em></span>'.
-                  The "default" value of the key appears in the returned
-                  list only if its value has been set in the registry.
-                </p></dd>
+                    Names of values contained in registry key given by '<span class="emphasis"><em>path</em></span>'.
+                    The "default" value of the key appears in the returned
+                    list only if its value has been set in the registry.
+                  </p></dd>
 </dl>
 </div>
 <p>
@@ -851,20 +852,103 @@ for local subkey in $(subkeys)
 <dl>
 <dt><span class="term"><code class="literal">exit-status</code></span></dt>
 <dd><p>
-                  In addition to the output the result status of the executed command
-                  is returned as a second element of the result.
-                </p></dd>
+                    In addition to the output the result status of the executed command
+                    is returned as a second element of the result.
+                  </p></dd>
 <dt><span class="term"><code class="literal">no-output</code></span></dt>
 <dd><p>
-                  Don't capture the output of the command. Instead an empty ("")
-                  string value is returned in place of the output.
-                </p></dd>
+                    Don't capture the output of the command. Instead an empty ("")
+                    string value is returned in place of the output.
+                  </p></dd>
 </dl>
 </div>
 <p>
               Because the Perforce/Jambase defines a <code class="literal">SHELL</code> rule
               which hides the builtin rule, <code class="literal">COMMAND</code> can be used
               as an alias for <code class="literal">SHELL</code> in such a case.
+            </p>
+</div>
+<div class="section" title="MD5">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="jam.language.rules.builtins.utility._md5__"></a><a class="link" href="language.html#jam.language.rules.builtins.utility._md5__" title="MD5"><code class="literal">MD5</code>
+            </a>
+</h6></div></div></div>
+<pre class="programlisting">rule MD5 ( <span class="emphasis"><em>string</em></span> )
+</pre>
+<p>
+              <code class="literal">MD5</code> computes the MD5 hash of the string passed as
+              paramater and returns it.
+            </p>
+</div>
+<div class="section" title="SPLIT_BY_CHARACTERS">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="jam.language.rules.builtins.utility._split_by_characters__"></a><a class="link" href="language.html#jam.language.rules.builtins.utility._split_by_characters__" title="SPLIT_BY_CHARACTERS"><code class="literal">SPLIT_BY_CHARACTERS</code>
+            </a>
+</h6></div></div></div>
+<pre class="programlisting">rule SPLIT_BY_CHARACTERS ( <span class="emphasis"><em>string</em></span> : <span class="emphasis"><em>delimiters</em></span> )
+</pre>
+<p>
+              <code class="literal">SPLIT_BY_CHARACTERS</code> splits the specified <span class="emphasis"><em>string</em></span>
+              on any delimiter character present in <span class="emphasis"><em>delimiters</em></span>
+              and returns the resulting list.
+            </p>
+</div>
+<div class="section" title="PRECIOUS">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="jam.language.rules.builtins.utility._precious__"></a><a class="link" href="language.html#jam.language.rules.builtins.utility._precious__" title="PRECIOUS"><code class="literal">PRECIOUS</code>
+            </a>
+</h6></div></div></div>
+<pre class="programlisting">rule PRECIOUS ( <span class="emphasis"><em>targets</em></span> * )
+</pre>
+<p>
+              The <code class="literal">PRECIOUS</code> rule specifies that each of the targets
+              passed as the arguments should not be removed even if the command updating
+              that target fails.
+            </p>
+</div>
+<div class="section" title="PAD">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="jam.language.rules.builtins.utility._pad__"></a><a class="link" href="language.html#jam.language.rules.builtins.utility._pad__" title="PAD"><code class="literal">PAD</code>
+            </a>
+</h6></div></div></div>
+<pre class="programlisting">rule PAD ( <span class="emphasis"><em>string</em></span> : <span class="emphasis"><em>width</em></span> )
+</pre>
+<p>
+              If <span class="emphasis"><em>string</em></span> is shorter than <span class="emphasis"><em>width</em></span>
+              characters, pads it with whitespace characters on the right, and returns
+              the result. Otherwise, returns <span class="emphasis"><em>string</em></span> unmodified.
+            </p>
+</div>
+<div class="section" title="FILE_OPEN">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="jam.language.rules.builtins.utility._file_open__"></a><a class="link" href="language.html#jam.language.rules.builtins.utility._file_open__" title="FILE_OPEN"><code class="literal">FILE_OPEN</code>
+            </a>
+</h6></div></div></div>
+<pre class="programlisting">rule FILE_OPEN ( <span class="emphasis"><em>filename</em></span> : <span class="emphasis"><em>mode</em></span> )
+</pre>
+<p>
+              The <code class="literal">FILE_OPEN</code> rule opens the specified file and
+              returns a file descriptor. The <span class="emphasis"><em>mode</em></span> parameter
+              can be either "w" or "r". Note that at present,
+              only the <code class="literal">UPDATE_NOW</code> rule can use the resulting file
+              descriptor number.
+            </p>
+</div>
+<div class="section" title="UPDATE_NOW">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="jam.language.rules.builtins.utility._update_now__"></a><a class="link" href="language.html#jam.language.rules.builtins.utility._update_now__" title="UPDATE_NOW"><code class="literal">UPDATE_NOW</code>
+            </a>
+</h6></div></div></div>
+<pre class="programlisting">rule UPDATE_NOW ( <span class="emphasis"><em>targets</em></span> * : <span class="emphasis"><em>log</em></span> ? : <span class="emphasis"><em>ignore-minus-n</em></span> ? )
+</pre>
+<p>
+              The <code class="literal">UPDATE_NOW</code> caused the specified targets to be
+              updated immediately. If update was successfull, non-empty string is
+              returned. The <span class="emphasis"><em>log</em></span> parameter, if present, specifies
+              a descriptor of a file where all output from building is redirected.
+              If the <span class="emphasis"><em>ignore-minus-n</em></span> parameter is specified,
+              the targets are updated even if the <code class="literal">-n</code> parameter
+              is specified on the command line.
             </p>
 </div>
 </div>
@@ -895,65 +979,58 @@ for local subkey in $(subkeys)
 <dl>
 <dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span></code></span></dt>
 <dd><p>
-            true if any <span class="emphasis"><em>a</em></span> element is a non-zero-length string
-          </p></dd>
+              true if any <span class="emphasis"><em>a</em></span> element is a non-zero-length string
+            </p></dd>
 <dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> = <span class="emphasis"><em>b</em></span></code></span></dt>
 <dd><p>
-            list <span class="emphasis"><em>a</em></span> matches list <span class="emphasis"><em>b</em></span> string-for-string
-          </p></dd>
+              list <span class="emphasis"><em>a</em></span> matches list <span class="emphasis"><em>b</em></span> string-for-string
+            </p></dd>
 <dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> != <span class="emphasis"><em>b</em></span></code></span></dt>
 <dd><p>
-            list <span class="emphasis"><em>a</em></span> does not match list <span class="emphasis"><em>b</em></span>
-          </p></dd>
-<dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> &lt;
-        <span class="emphasis"><em>b</em></span></code></span></dt>
+              list <span class="emphasis"><em>a</em></span> does not match list <span class="emphasis"><em>b</em></span>
+            </p></dd>
+<dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> &lt; <span class="emphasis"><em>b</em></span></code></span></dt>
 <dd><p>
-            <span class="emphasis"><em>a[i]</em></span> string is less than <span class="emphasis"><em>b[i]</em></span>
-            string, where <span class="emphasis"><em>i</em></span> is first mismatched element in lists
-            <span class="emphasis"><em>a</em></span> and <span class="emphasis"><em>b</em></span>
-          </p></dd>
-<dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> &lt;=
-        <span class="emphasis"><em>b</em></span></code></span></dt>
+              <span class="emphasis"><em>a[i]</em></span> string is less than <span class="emphasis"><em>b[i]</em></span>
+              string, where <span class="emphasis"><em>i</em></span> is first mismatched element in
+              lists <span class="emphasis"><em>a</em></span> and <span class="emphasis"><em>b</em></span>
+            </p></dd>
+<dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> &lt;= <span class="emphasis"><em>b</em></span></code></span></dt>
 <dd><p>
-            every <span class="emphasis"><em>a</em></span> string is less than or equal to its <span class="emphasis"><em>b</em></span>
-            counterpart
-          </p></dd>
-<dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> &gt;
-        <span class="emphasis"><em>b</em></span></code></span></dt>
+              every <span class="emphasis"><em>a</em></span> string is less than or equal to its <span class="emphasis"><em>b</em></span>
+              counterpart
+            </p></dd>
+<dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> &gt; <span class="emphasis"><em>b</em></span></code></span></dt>
 <dd><p>
-            <span class="emphasis"><em>a[i]</em></span> string is greater than <span class="emphasis"><em>b[i]</em></span>
-            string, where <span class="emphasis"><em>i</em></span> is first mismatched element
-          </p></dd>
-<dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> &gt;=
-        <span class="emphasis"><em>b</em></span></code></span></dt>
+              <span class="emphasis"><em>a[i]</em></span> string is greater than <span class="emphasis"><em>b[i]</em></span>
+              string, where <span class="emphasis"><em>i</em></span> is first mismatched element
+            </p></dd>
+<dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> &gt;= <span class="emphasis"><em>b</em></span></code></span></dt>
 <dd><p>
-            every <span class="emphasis"><em>a</em></span> string is greater than or equal to its
-            <span class="emphasis"><em>b</em></span> counterpart
-          </p></dd>
+              every <span class="emphasis"><em>a</em></span> string is greater than or equal to its
+              <span class="emphasis"><em>b</em></span> counterpart
+            </p></dd>
 <dt><span class="term"><code class="literal"><span class="emphasis"><em>a</em></span> in <span class="emphasis"><em>b</em></span></code></span></dt>
 <dd><p>
-            true if all elements of <span class="emphasis"><em>a</em></span> can be found in <span class="emphasis"><em>b</em></span>,
-            or if <span class="emphasis"><em>a</em></span> has no elements
-          </p></dd>
+              true if all elements of <span class="emphasis"><em>a</em></span> can be found in <span class="emphasis"><em>b</em></span>,
+              or if <span class="emphasis"><em>a</em></span> has no elements
+            </p></dd>
 <dt><span class="term"><code class="literal">! <span class="emphasis"><em>cond</em></span></code></span></dt>
 <dd><p>
-            condition not true
-          </p></dd>
-<dt><span class="term"><code class="literal"><span class="emphasis"><em>cond</em></span> &amp;&amp;
-        <span class="emphasis"><em>cond</em></span></code></span></dt>
+              condition not true
+            </p></dd>
+<dt><span class="term"><code class="literal"><span class="emphasis"><em>cond</em></span> &amp;&amp; <span class="emphasis"><em>cond</em></span></code></span></dt>
 <dd><p>
-            conjunction
-          </p></dd>
-<dt><span class="term"><code class="literal"><span class="emphasis"><em>cond</em></span> ||
-        <span class="emphasis"><em>cond</em></span></code></span></dt>
+              conjunction
+            </p></dd>
+<dt><span class="term"><code class="literal"><span class="emphasis"><em>cond</em></span> || <span class="emphasis"><em>cond</em></span></code></span></dt>
 <dd><p>
-            disjunction
-          </p></dd>
-<dt><span class="term"><code class="literal">( <span class="emphasis"><em>cond</em></span>
-        )</code></span></dt>
+              disjunction
+            </p></dd>
+<dt><span class="term"><code class="literal">( <span class="emphasis"><em>cond</em></span> )</code></span></dt>
 <dd><p>
-            precedence grouping
-          </p></dd>
+              precedence grouping
+            </p></dd>
 </dl>
 </div>
 <pre class="programlisting">include <span class="emphasis"><em>file</em></span> ;
@@ -1009,24 +1086,24 @@ for local subkey in $(subkeys)
 <dl>
 <dt><span class="term"><code class="literal">?</code></span></dt>
 <dd><p>
-            match any single character
-          </p></dd>
+              match any single character
+            </p></dd>
 <dt><span class="term"><code class="literal">*</code></span></dt>
 <dd><p>
-            match zero or more characters
-          </p></dd>
+              match zero or more characters
+            </p></dd>
 <dt><span class="term"><code class="literal">[<span class="emphasis"><em>chars</em></span>]</code></span></dt>
 <dd><p>
-            match any single character in <span class="emphasis"><em>chars</em></span>
-          </p></dd>
+              match any single character in <span class="emphasis"><em>chars</em></span>
+            </p></dd>
 <dt><span class="term"><code class="literal">[^<span class="emphasis"><em>chars</em></span>]</code></span></dt>
 <dd><p>
-            match any single character not in <span class="emphasis"><em>chars</em></span>
-          </p></dd>
+              match any single character not in <span class="emphasis"><em>chars</em></span>
+            </p></dd>
 <dt><span class="term"><code class="literal">\<span class="emphasis"><em>x</em></span></code></span></dt>
 <dd><p>
-            match <span class="emphasis"><em>x</em></span> (escapes the other wildcards)
-          </p></dd>
+              match <span class="emphasis"><em>x</em></span> (escapes the other wildcards)
+            </p></dd>
 </dl>
 </div>
 <pre class="programlisting">while <span class="emphasis"><em>cond</em></span> { <span class="emphasis"><em>statements</em></span> }
@@ -1148,121 +1225,122 @@ $(Z) -&gt;
 <dl>
 <dt><span class="term"><code class="literal">[<span class="emphasis"><em>n</em></span>]</code></span></dt>
 <dd><p>
-              Select element number <span class="emphasis"><em>n</em></span> (starting at 1). If the
-              variable contains fewer than <span class="emphasis"><em>n</em></span> elements, the result
-              is a zero-element list. <span class="emphasis"><em>n</em></span> can be negative in which
-              case the element number <span class="emphasis"><em>n</em></span> from the last leftward
-              is returned.
-            </p></dd>
+                Select element number <span class="emphasis"><em>n</em></span> (starting at 1). If
+                the variable contains fewer than <span class="emphasis"><em>n</em></span> elements,
+                the result is a zero-element list. <span class="emphasis"><em>n</em></span> can be
+                negative in which case the element number <span class="emphasis"><em>n</em></span>
+                from the last leftward is returned.
+              </p></dd>
 <dt><span class="term"><code class="literal">[<span class="emphasis"><em>n</em></span>-<span class="emphasis"><em>m</em></span>]</code></span></dt>
 <dd><p>
-              Select elements number <span class="emphasis"><em>n</em></span> through <span class="emphasis"><em>m</em></span>.
-              <span class="emphasis"><em>n</em></span> and <span class="emphasis"><em>m</em></span> can be negative in
-              which case they refer to elements counting from the last leftward.
-            </p></dd>
+                Select elements number <span class="emphasis"><em>n</em></span> through <span class="emphasis"><em>m</em></span>.
+                <span class="emphasis"><em>n</em></span> and <span class="emphasis"><em>m</em></span> can be negative
+                in which case they refer to elements counting from the last leftward.
+              </p></dd>
 <dt><span class="term"><code class="literal">[<span class="emphasis"><em>n</em></span>-]</code></span></dt>
 <dd><p>
-              Select elements number <span class="emphasis"><em>n</em></span> through the last. <span class="emphasis"><em>n</em></span>
-              can be negative in which case it refers to the element counting from
-              the last leftward.
-            </p></dd>
+                Select elements number <span class="emphasis"><em>n</em></span> through the last.
+                <span class="emphasis"><em>n</em></span> can be negative in which case it refers to
+                the element counting from the last leftward.
+              </p></dd>
 <dt><span class="term"><code class="literal">:B</code></span></dt>
 <dd><p>
-              Select filename base.
-            </p></dd>
+                Select filename base.
+              </p></dd>
 <dt><span class="term"><code class="literal">:S</code></span></dt>
 <dd><p>
-              Select (last) filename suffix.
-            </p></dd>
+                Select (last) filename suffix.
+              </p></dd>
 <dt><span class="term"><code class="literal">:M</code></span></dt>
 <dd><p>
-              Select archive member name.
-            </p></dd>
+                Select archive member name.
+              </p></dd>
 <dt><span class="term"><code class="literal">:D</code></span></dt>
 <dd><p>
-              Select directory path.
-            </p></dd>
+                Select directory path.
+              </p></dd>
 <dt><span class="term"><code class="literal">:P</code></span></dt>
 <dd><p>
-              Select parent directory.
-            </p></dd>
+                Select parent directory.
+              </p></dd>
 <dt><span class="term"><code class="literal">:G</code></span></dt>
 <dd><p>
-              Select grist.
-            </p></dd>
+                Select grist.
+              </p></dd>
 <dt><span class="term"><code class="literal">:U</code></span></dt>
 <dd><p>
-              Replace lowercase characters with uppercase.
-            </p></dd>
+                Replace lowercase characters with uppercase.
+              </p></dd>
 <dt><span class="term"><code class="literal">:L</code></span></dt>
 <dd><p>
-              Replace uppercase characters with lowercase.
-            </p></dd>
+                Replace uppercase characters with lowercase.
+              </p></dd>
 <dt><span class="term"><code class="literal">:T</code></span></dt>
 <dd>
 <p>
-              Converts all back-slashes ("\") to forward slashes ("/").
-              For example 
+                Converts all back-slashes ("\") to forward slashes ("/").
+                For example 
 </p>
 <pre class="programlisting"><span class="identifier">x</span> <span class="special">=</span> <span class="string">"C:\\Program Files\\Borland"</span> <span class="special">;</span> <span class="identifier">ECHO</span> <span class="error">$</span><span class="special">(</span><span class="identifier">x</span><span class="special">:</span><span class="identifier">T</span><span class="special">)</span> <span class="special">;</span>
 </pre>
 <p>
-              prints <code class="literal">"C:/Program Files/Borland"</code>
-            </p>
+                prints <code class="literal">"C:/Program Files/Borland"</code>
+              </p>
 </dd>
 <dt><span class="term"><code class="literal">:W</code></span></dt>
 <dd>
 <p>
-              When invoking Windows-based tools from <a href="http://www.cygwin.com/" target="_top">Cygwin</a>
-              it can be important to pass them true windows-style paths. The <code class="literal">:W</code>
-              modifier, <span class="bold"><strong>under Cygwin only</strong></span>, turns
-              a cygwin path into a Win32 path using the <a href="http://www.cygwin.com/cygwin-api/func-cygwin-conv-to-win32-path.html" target="_top"><code class="literal">cygwin_conv_to_win32_path</code></a>
-              function. On other platforms, the string is unchanged. For example
-              
+                When invoking Windows-based tools from <a href="http://www.cygwin.com/" target="_top">Cygwin</a>
+                it can be important to pass them true windows-style paths. The <code class="literal">:W</code>
+                modifier, <span class="bold"><strong>under Cygwin only</strong></span>, turns
+                a cygwin path into a Win32 path using the <a href="http://www.cygwin.com/cygwin-api/func-cygwin-conv-to-win32-path.html" target="_top"><code class="literal">cygwin_conv_to_win32_path</code></a>
+                function. On other platforms, the string is unchanged. For example
+                
 </p>
 <pre class="programlisting"><span class="identifier">x</span> <span class="special">=</span> <span class="string">"/cygdrive/c/Program Files/Borland"</span> <span class="special">;</span> <span class="identifier">ECHO</span> <span class="error">$</span><span class="special">(</span><span class="identifier">x</span><span class="special">:</span><span class="identifier">W</span><span class="special">)</span> <span class="special">;</span>
 </pre>
 <p>
-              prints <code class="literal">"C:\Program Files\Borland"</code> on Cygwin
-            </p>
+                prints <code class="literal">"C:\Program Files\Borland"</code> on
+                Cygwin
+              </p>
 </dd>
 <dt><span class="term"><code class="literal">:<span class="emphasis"><em>chars</em></span></code></span></dt>
 <dd><p>
-              Select the components listed in <span class="emphasis"><em>chars</em></span>.
-            </p></dd>
+                Select the components listed in <span class="emphasis"><em>chars</em></span>.
+              </p></dd>
 <dt><span class="term"><code class="literal">:G=<span class="emphasis"><em>grist</em></span></code></span></dt>
 <dd><p>
-              Replace grist with <span class="emphasis"><em>grist</em></span>.
-            </p></dd>
+                Replace grist with <span class="emphasis"><em>grist</em></span>.
+              </p></dd>
 <dt><span class="term"><code class="literal">:D=<span class="emphasis"><em>path</em></span></code></span></dt>
 <dd><p>
-              Replace directory with <span class="emphasis"><em>path</em></span>.
-            </p></dd>
+                Replace directory with <span class="emphasis"><em>path</em></span>.
+              </p></dd>
 <dt><span class="term"><code class="literal">:B=<span class="emphasis"><em>base</em></span></code></span></dt>
 <dd><p>
-              Replace the base part of file name with <span class="emphasis"><em>base</em></span>.
-            </p></dd>
+                Replace the base part of file name with <span class="emphasis"><em>base</em></span>.
+              </p></dd>
 <dt><span class="term"><code class="literal">:S=<span class="emphasis"><em>suf</em></span></code></span></dt>
 <dd><p>
-              Replace the suffix of file name with <span class="emphasis"><em>suf</em></span>.
-            </p></dd>
+                Replace the suffix of file name with <span class="emphasis"><em>suf</em></span>.
+              </p></dd>
 <dt><span class="term"><code class="literal">:M=<span class="emphasis"><em>mem</em></span></code></span></dt>
 <dd><p>
-              Replace the archive member name with <span class="emphasis"><em>mem</em></span>.
-            </p></dd>
+                Replace the archive member name with <span class="emphasis"><em>mem</em></span>.
+              </p></dd>
 <dt><span class="term"><code class="literal">:R=<span class="emphasis"><em>root</em></span></code></span></dt>
 <dd><p>
-              Prepend <span class="emphasis"><em>root</em></span> to the whole file name, if not already
-              rooted.
-            </p></dd>
+                Prepend <span class="emphasis"><em>root</em></span> to the whole file name, if not
+                already rooted.
+              </p></dd>
 <dt><span class="term"><code class="literal">:E=<span class="emphasis"><em>value</em></span></code></span></dt>
 <dd><p>
-              Assign <span class="emphasis"><em>value</em></span> to the variable if it is unset.
-            </p></dd>
+                Assign <span class="emphasis"><em>value</em></span> to the variable if it is unset.
+              </p></dd>
 <dt><span class="term"><code class="literal">:J=<span class="emphasis"><em>joinval</em></span></code></span></dt>
 <dd><p>
-              Concatentate list elements into single element, separated by <span class="emphasis"><em>joinval</em></span>'.
-            </p></dd>
+                Concatentate list elements into single element, separated by <span class="emphasis"><em>joinval</em></span>'.
+              </p></dd>
 </dl>
 </div>
 <p>
@@ -1321,6 +1399,9 @@ ECHO $(y) ;     # prints "4 5 6"
 </dl></div>
 <p>
           This section discusses variables that have special meaning to <code class="literal">bjam</code>.
+          All of these must be defined or used in the global module -- using those
+          variables inside a named module will not have the desired effect. See
+          <a class="link" href="language.html#jam.language.modules" title="Modules">Modules</a>.
         </p>
 <div class="section" title="SEARCH and LOCATE">
 <div class="titlepage"><div><div><h5 class="title">
@@ -1456,32 +1537,32 @@ ECHO $(y) ;     # prints "4 5 6"
 <dl>
 <dt><span class="term"><code class="literal">OS</code></span></dt>
 <dd><p>
-                OS identifier string
-              </p></dd>
+                  OS identifier string
+                </p></dd>
 <dt><span class="term"><code class="literal">OSPLAT</code></span></dt>
 <dd><p>
-                Underlying architecture, when applicable
-              </p></dd>
+                  Underlying architecture, when applicable
+                </p></dd>
 <dt><span class="term"><code class="literal">MAC</code></span></dt>
 <dd><p>
-                true on MAC platform
-              </p></dd>
+                  true on MAC platform
+                </p></dd>
 <dt><span class="term"><code class="literal">NT</code></span></dt>
 <dd><p>
-                true on NT platform
-              </p></dd>
+                  true on NT platform
+                </p></dd>
 <dt><span class="term"><code class="literal">OS2</code></span></dt>
 <dd><p>
-                true on OS2 platform
-              </p></dd>
+                  true on OS2 platform
+                </p></dd>
 <dt><span class="term"><code class="literal">UNIX</code></span></dt>
 <dd><p>
-                true on Unix platforms
-              </p></dd>
+                  true on Unix platforms
+                </p></dd>
 <dt><span class="term"><code class="literal">VMS</code></span></dt>
 <dd><p>
-                true on VMS platform
-              </p></dd>
+                  true on VMS platform
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1495,24 +1576,24 @@ ECHO $(y) ;     # prints "4 5 6"
 <dl>
 <dt><span class="term"><code class="literal">JAMDATE</code></span></dt>
 <dd><p>
-                Time and date at <code class="literal">bjam</code> start-up as an ISO-8601
-                UTC value.
-              </p></dd>
+                  Time and date at <code class="literal">bjam</code> start-up as an ISO-8601
+                  UTC value.
+                </p></dd>
 <dt><span class="term"><code class="literal">JAMUNAME</code></span></dt>
 <dd><p>
-                Ouput of uname(1) command (Unix only)
-              </p></dd>
+                  Ouput of uname(1) command (Unix only)
+                </p></dd>
 <dt><span class="term"><code class="literal">JAMVERSION</code></span></dt>
 <dd><p>
-                <code class="literal">bjam</code> version, currently "3.1.17"
-              </p></dd>
+                  <code class="literal">bjam</code> version, currently "3.1.18"
+                </p></dd>
 <dt><span class="term"><code class="literal">JAM_VERSION</code></span></dt>
 <dd><p>
-                A predefined global variable with two elements indicates the version
-                number of Boost Jam. Boost Jam versions start at "<code class="literal">03</code>"
-                "<code class="literal">00</code>". Earlier versions of <code class="literal">Jam</code>
-                do not automatically define <code class="literal">JAM_VERSION</code>.
-              </p></dd>
+                  A predefined global variable with two elements indicates the version
+                  number of Boost Jam. Boost Jam versions start at "<code class="literal">03</code>"
+                  "<code class="literal">00</code>". Earlier versions of <code class="literal">Jam</code>
+                  do not automatically define <code class="literal">JAM_VERSION</code>.
+                </p></dd>
 </dl>
 </div>
 </div>
@@ -1593,46 +1674,46 @@ esac
 <dl>
 <dt><span class="term"><code class="literal">args</code></span></dt>
 <dd><p>
-                Any values following the rule name in the <code class="literal">__TIMING_RULE__</code>
-                or <code class="literal">__ACTION_RULE__</code> are passed along here.
-              </p></dd>
+                  Any values following the rule name in the <code class="literal">__TIMING_RULE__</code>
+                  or <code class="literal">__ACTION_RULE__</code> are passed along here.
+                </p></dd>
 <dt><span class="term"><code class="literal">target</code></span></dt>
 <dd><p>
-                The <code class="literal">bjam</code> target that was built.
-              </p></dd>
+                  The <code class="literal">bjam</code> target that was built.
+                </p></dd>
 <dt><span class="term"><code class="literal">command</code></span></dt>
 <dd><p>
-                The text of the executed command in the action body.
-              </p></dd>
+                  The text of the executed command in the action body.
+                </p></dd>
 <dt><span class="term"><code class="literal">status</code></span></dt>
 <dd><p>
-                The integer result of the executed command.
-              </p></dd>
+                  The integer result of the executed command.
+                </p></dd>
 <dt><span class="term"><code class="literal">start</code></span></dt>
 <dd><p>
-                The starting timestamp of the executed command as a ISO-8601 UTC
-                value.
-              </p></dd>
+                  The starting timestamp of the executed command as a ISO-8601 UTC
+                  value.
+                </p></dd>
 <dt><span class="term"><code class="literal">end</code></span></dt>
 <dd><p>
-                The completion timestamp of the executed command as a ISO-8601 UTC
-                value.
-              </p></dd>
+                  The completion timestamp of the executed command as a ISO-8601
+                  UTC value.
+                </p></dd>
 <dt><span class="term"><code class="literal">user</code></span></dt>
 <dd><p>
-                The number of user CPU seconds the executed command spent as a floating
-                point value.
-              </p></dd>
+                  The number of user CPU seconds the executed command spent as a
+                  floating point value.
+                </p></dd>
 <dt><span class="term"><code class="literal">system</code></span></dt>
 <dd><p>
-                The number of system CPU seconds the executed command spent as a
-                floating point value.
-              </p></dd>
+                  The number of system CPU seconds the executed command spent as
+                  a floating point value.
+                </p></dd>
 <dt><span class="term"><code class="literal">output</code></span></dt>
 <dd><p>
-                The output of the command as a single string. The content of the
-                output reflects the use of the <code class="literal">-pX</code> option.
-              </p></dd>
+                  The output of the command as a single string. The content of the
+                  output reflects the use of the <code class="literal">-pX</code> option.
+                </p></dd>
 </dl>
 </div>
 <div class="note" title="Note"><table border="0" summary="Note">

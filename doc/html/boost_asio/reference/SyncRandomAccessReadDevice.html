@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Buffer-oriented synchronous random-access read device requirements</title>
-<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
@@ -37,10 +37,8 @@
         denotes an object of type <code class="computeroutput"><span class="identifier">error_code</span></code>.
       </p>
 <div class="table">
-<a name="id655782"></a><p class="title"><b>Table&#160;31.&#160;Buffer-oriented synchronous random-access read device
-      requirements</b></p>
-<div class="table-contents"><table class="table" summary="Buffer-oriented synchronous random-access read device
-      requirements">
+<a name="id656588"></a><p class="title"><b>Table&#160;31.&#160;Buffer-oriented synchronous random-access read device requirements</b></p>
+<div class="table-contents"><table class="table" summary="Buffer-oriented synchronous random-access read device requirements">
 <colgroup>
 <col>
 <col>
@@ -48,36 +46,37 @@
 </colgroup>
 <thead><tr>
 <th>
-            <p>
-              operation
-            </p>
-            </th>
+                <p>
+                  operation
+                </p>
+              </th>
 <th>
-            <p>
-              type
-            </p>
-            </th>
+                <p>
+                  type
+                </p>
+              </th>
 <th>
-            <p>
-              semantics, pre/post-conditions
-            </p>
-            </th>
+                <p>
+                  semantics, pre/post-conditions
+                </p>
+              </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">read_some_at</span><span class="special">(</span><span class="identifier">o</span><span class="special">,</span> <span class="identifier">mb</span><span class="special">);</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">read_some_at</span><span class="special">(</span><span class="identifier">o</span><span class="special">,</span>
+                  <span class="identifier">mb</span><span class="special">);</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">size_t</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">size_t</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              Equivalent to: 
+                <p>
+                  Equivalent to: 
 </p>
 <pre class="programlisting"><span class="identifier">error_code</span> <span class="identifier">ec</span><span class="special">;</span>
 <span class="identifier">size_t</span> <span class="identifier">s</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">.</span><span class="identifier">read_some_at</span><span class="special">(</span><span class="identifier">o</span><span class="special">,</span> <span class="identifier">mb</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">);</span>
@@ -85,34 +84,39 @@
 <span class="keyword">return</span> <span class="identifier">s</span><span class="special">;</span>
 </pre>
 <p>
-            </p>
-            </td>
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">read_some_at</span><span class="special">(</span><span class="identifier">o</span><span class="special">,</span> <span class="identifier">mb</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">);</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">read_some_at</span><span class="special">(</span><span class="identifier">o</span><span class="special">,</span>
+                  <span class="identifier">mb</span><span class="special">,</span>
+                  <span class="identifier">ec</span><span class="special">);</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">size_t</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">size_t</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              Reads one or more bytes of data from the device <code class="computeroutput"><span class="identifier">a</span></code>
-              at offset <code class="computeroutput"><span class="identifier">o</span></code>.<br>
-              <br> The mutable buffer sequence <code class="computeroutput"><span class="identifier">mb</span></code>
-              specifies memory where the data should be placed. The <code class="computeroutput"><span class="identifier">read_some_at</span></code> operation shall always
-              fill a buffer in the sequence completely before proceeding to the next.<br>
-              <br> If successful, returns the number of bytes read and sets <code class="computeroutput"><span class="identifier">ec</span></code> such that <code class="computeroutput"><span class="special">!</span><span class="identifier">ec</span></code> is true. If an error occurred,
-              returns <code class="computeroutput"><span class="number">0</span></code> and sets <code class="computeroutput"><span class="identifier">ec</span></code> such that <code class="computeroutput"><span class="special">!!</span><span class="identifier">ec</span></code> is true.<br> <br> If the total
-              size of all buffers in the sequence <code class="computeroutput"><span class="identifier">mb</span></code>
-              is <code class="computeroutput"><span class="number">0</span></code>, the function shall
-              return <code class="computeroutput"><span class="number">0</span></code> immediately.
-            </p>
-            </td>
+                <p>
+                  Reads one or more bytes of data from the device <code class="computeroutput"><span class="identifier">a</span></code>
+                  at offset <code class="computeroutput"><span class="identifier">o</span></code>.<br>
+                  <br> The mutable buffer sequence <code class="computeroutput"><span class="identifier">mb</span></code>
+                  specifies memory where the data should be placed. The <code class="computeroutput"><span class="identifier">read_some_at</span></code> operation shall
+                  always fill a buffer in the sequence completely before proceeding
+                  to the next.<br> <br> If successful, returns the number of
+                  bytes read and sets <code class="computeroutput"><span class="identifier">ec</span></code>
+                  such that <code class="computeroutput"><span class="special">!</span><span class="identifier">ec</span></code>
+                  is true. If an error occurred, returns <code class="computeroutput"><span class="number">0</span></code>
+                  and sets <code class="computeroutput"><span class="identifier">ec</span></code> such
+                  that <code class="computeroutput"><span class="special">!!</span><span class="identifier">ec</span></code>
+                  is true.<br> <br> If the total size of all buffers in the sequence
+                  <code class="computeroutput"><span class="identifier">mb</span></code> is <code class="computeroutput"><span class="number">0</span></code>, the function shall return <code class="computeroutput"><span class="number">0</span></code> immediately.
+                </p>
+              </td>
 </tr>
 </tbody>
 </table></div>

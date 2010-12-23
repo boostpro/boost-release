@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class template signalN</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../signals/reference.html#header.boost.signal_hpp" title="Header &lt;boost/signal.hpp&gt;">
@@ -62,32 +62,32 @@
   <span class="bold"><strong>static</strong></span> <span class="bold"><strong>const</strong></span> <span class="type"><span class="bold"><strong>int</strong></span></span> arity = N;
 
   <span class="emphasis"><em>// <a class="link" href="signalN.html#boost.signalNconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="signalN.html#id655076-bb">signalN</a>(<span class="bold"><strong>const</strong></span> combiner_type&amp; = combiner_type(), 
+  <a class="link" href="signalN.html#id615330-bb">signalN</a>(<span class="bold"><strong>const</strong></span> combiner_type&amp; = combiner_type(), 
           <span class="bold"><strong>const</strong></span> group_compare_type&amp; = group_compare_type());
-  <a class="link" href="signalN.html#id1115523-bb">~signalN</a>();
+  <a class="link" href="signalN.html#id1157374-bb">~signalN</a>();
 
-  <span class="emphasis"><em>// <a class="link" href="signalN.html#id1115536-bb">connection management</a></em></span>
+  <span class="emphasis"><em>// <a class="link" href="signalN.html#id694146-bb">connection management</a></em></span>
   <span class="type"><a class="link" href="signals/connection.html" title="Class connection">signals::connection</a></span> 
-  <a class="link" href="signalN.html#id1115544-bb">connect</a>(<span class="bold"><strong>const</strong></span> slot_type&amp;, signals::connect_position = signals::at_back);
+  <a class="link" href="signalN.html#id694153-bb">connect</a>(<span class="bold"><strong>const</strong></span> slot_type&amp;, signals::connect_position = signals::at_back);
   <span class="type"><a class="link" href="signals/connection.html" title="Class connection">signals::connection</a></span> 
-  <a class="link" href="signalN.html#id1115572-bb">connect</a>(<span class="bold"><strong>const</strong></span> group_type&amp;, <span class="bold"><strong>const</strong></span> slot_type&amp;, 
+  <a class="link" href="signalN.html#id619372-bb">connect</a>(<span class="bold"><strong>const</strong></span> group_type&amp;, <span class="bold"><strong>const</strong></span> slot_type&amp;, 
           signals::connect_position = signals::at_back);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="signalN.html#id636754-bb">disconnect</a>(<span class="bold"><strong>const</strong></span> group_type&amp;);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Slot&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="signalN.html#id636769-bb">disconnect</a>(<span class="bold"><strong>const</strong></span> Slot&amp;);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="signalN.html#id636818-bb">disconnect_all_slots</a>();
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="signalN.html#id636861-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">std::size_t</span> <a class="link" href="signalN.html#id636904-bb">num_slots</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="signalN.html#id1155511-bb">disconnect</a>(<span class="bold"><strong>const</strong></span> group_type&amp;);
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Slot&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="signalN.html#id690522-bb">disconnect</a>(<span class="bold"><strong>const</strong></span> Slot&amp;);
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="signalN.html#id690567-bb">disconnect_all_slots</a>();
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="signalN.html#id640066-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">std::size_t</span> <a class="link" href="signalN.html#id640109-bb">num_slots</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="signalN.html#id644793-bb">invocation</a></em></span>
-  <span class="type">result_type</span> <a class="link" href="signalN.html#id644801-bb"><span class="bold"><strong>operator</strong></span>()</a>(arg1_type, arg2_type, ..., argN_type);
-  <span class="type">result_type</span> <a class="link" href="signalN.html#id644830-bb"><span class="bold"><strong>operator</strong></span>()</a>(arg1_type, arg2_type, ..., argN_type) <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="signalN.html#id640144-bb">invocation</a></em></span>
+  <span class="type">result_type</span> <a class="link" href="signalN.html#id640152-bb"><span class="bold"><strong>operator</strong></span>()</a>(arg1_type, arg2_type, ..., argN_type);
+  <span class="type">result_type</span> <a class="link" href="signalN.html#id626943-bb"><span class="bold"><strong>operator</strong></span>()</a>(arg1_type, arg2_type, ..., argN_type) <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="signalN.html#id644965-bb">combiner access</a></em></span>
-  <span class="type">combiner_type&amp;</span> <a class="link" href="signalN.html#id644973-bb">combiner</a>();
-  <span class="type"><span class="bold"><strong>const</strong></span> combiner_type&amp;</span> <a class="link" href="signalN.html#id1126642-bb">combiner</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="signalN.html#id617102-bb">combiner access</a></em></span>
+  <span class="type">combiner_type&amp;</span> <a class="link" href="signalN.html#id617110-bb">combiner</a>();
+  <span class="type"><span class="bold"><strong>const</strong></span> combiner_type&amp;</span> <a class="link" href="signalN.html#id617116-bb">combiner</a>() <span class="bold"><strong>const</strong></span>;
 };</pre></div>
 <div class="refsect1" title="Description">
-<a name="id1690202"></a><h2>Description</h2>
+<a name="id1733148"></a><h2>Description</h2>
 <p>The class template <a class="link" href="signalN.html" title="Class template signalN">signalN</a> covers
          several related classes signal0, signal1, signal2, etc.,
          where the number suffix describes the number of function
@@ -96,13 +96,13 @@
          <a class="link" href="signalN.html" title="Class template signalN">signalN</a> will be described, where N
          represents the number of function parameters.</p>
 <div class="refsect2" title="signalN public construct/copy/destruct">
-<a name="id1690230"></a><h3>
+<a name="id1733176"></a><h3>
 <a name="boost.signalNconstruct-copy-destruct"></a><code class="computeroutput">signalN</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id655076-bb"></a>signalN(<span class="bold"><strong>const</strong></span> combiner_type&amp; combiner = combiner_type(), 
+<pre class="literallayout"><a name="id615330-bb"></a>signalN(<span class="bold"><strong>const</strong></span> combiner_type&amp; combiner = combiner_type(), 
         <span class="bold"><strong>const</strong></span> group_compare_type&amp; compare = group_compare_type());</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -113,13 +113,13 @@
 </tr>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><code class="computeroutput">this-&gt;<a class="link" href="signalN.html#id636861-bb">empty</a>()</code></td>
+<td><code class="computeroutput">this-&gt;<a class="link" href="signalN.html#id640066-bb">empty</a>()</code></td>
 </tr>
 </tbody>
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1115523-bb"></a>~signalN();</pre>
+<pre class="literallayout"><a name="id1157374-bb"></a>~signalN();</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -131,15 +131,15 @@
 </ol></div>
 </div>
 <div class="refsect2" title="signalN connection management">
-<a name="id1690343"></a><h3>
-<a name="id1115536-bb"></a><code class="computeroutput">signalN</code> connection management</h3>
+<a name="id1733289"></a><h3>
+<a name="id694146-bb"></a><code class="computeroutput">signalN</code> connection management</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1115540-bb"></a><span class="type"><a class="link" href="signals/connection.html" title="Class connection">signals::connection</a></span> 
-<a name="id1115544-bb"></a>connect(<span class="bold"><strong>const</strong></span> slot_type&amp; slot, 
+<pre class="literallayout"><a name="id694149-bb"></a><span class="type"><a class="link" href="signals/connection.html" title="Class connection">signals::connection</a></span> 
+<a name="id694153-bb"></a>connect(<span class="bold"><strong>const</strong></span> slot_type&amp; slot, 
         signals::connect_position at = signals::at_back);
 <span class="type"><a class="link" href="signals/connection.html" title="Class connection">signals::connection</a></span> 
-<a name="id1115572-bb"></a>connect(<span class="bold"><strong>const</strong></span> group_type&amp; group, <span class="bold"><strong>const</strong></span> slot_type&amp; slot, 
+<a name="id619372-bb"></a>connect(<span class="bold"><strong>const</strong></span> group_type&amp; group, <span class="bold"><strong>const</strong></span> slot_type&amp; slot, 
         signals::connect_position at = signals::at_back);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -190,8 +190,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id636750-bb"></a><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id636754-bb"></a>disconnect(<span class="bold"><strong>const</strong></span> group_type&amp; group);
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Slot&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id636769-bb"></a>disconnect(<span class="bold"><strong>const</strong></span> Slot&amp; slot);</pre>
+<pre class="literallayout"><a name="id1155508-bb"></a><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1155511-bb"></a>disconnect(<span class="bold"><strong>const</strong></span> group_type&amp; group);
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Slot&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id690522-bb"></a>disconnect(<span class="bold"><strong>const</strong></span> Slot&amp; slot);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -220,7 +220,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id636818-bb"></a>disconnect_all_slots();</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id690567-bb"></a>disconnect_all_slots();</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -231,7 +231,7 @@
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
 <td>
-<code class="computeroutput">this-&gt;<a class="link" href="signalN.html#id636861-bb">empty</a>()</code>.</td>
+<code class="computeroutput">this-&gt;<a class="link" href="signalN.html#id640066-bb">empty</a>()</code>.</td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -252,7 +252,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id636861-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id640066-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -284,7 +284,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">std::size_t</span> <a name="id636904-bb"></a>num_slots() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">std::size_t</span> <a name="id640109-bb"></a>num_slots() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -315,11 +315,11 @@
 </ol></div>
 </div>
 <div class="refsect2" title="signalN invocation">
-<a name="id1690829"></a><h3>
-<a name="id644793-bb"></a><code class="computeroutput">signalN</code> invocation</h3>
+<a name="id1733774"></a><h3>
+<a name="id640144-bb"></a><code class="computeroutput">signalN</code> invocation</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="id644797-bb"></a><span class="type">result_type</span> <a name="id644801-bb"></a><span class="bold"><strong>operator</strong></span>()(arg1_type a1, arg2_type a2, ..., argN_type aN);
-<span class="type">result_type</span> <a name="id644830-bb"></a><span class="bold"><strong>operator</strong></span>()(arg1_type a1, arg2_type a2, ..., argN_type aN) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id640148-bb"></a><span class="type">result_type</span> <a name="id640152-bb"></a><span class="bold"><strong>operator</strong></span>()(arg1_type a1, arg2_type a2, ..., argN_type aN);
+<span class="type">result_type</span> <a name="id626943-bb"></a><span class="bold"><strong>operator</strong></span>()(arg1_type a1, arg2_type a2, ..., argN_type aN) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -373,11 +373,11 @@
 </li></ol></div>
 </div>
 <div class="refsect2" title="signalN combiner access">
-<a name="id1690995"></a><h3>
-<a name="id644965-bb"></a><code class="computeroutput">signalN</code> combiner access</h3>
+<a name="id1733940"></a><h3>
+<a name="id617102-bb"></a><code class="computeroutput">signalN</code> combiner access</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="id644969-bb"></a><span class="type">combiner_type&amp;</span> <a name="id644973-bb"></a>combiner();
-<span class="type"><span class="bold"><strong>const</strong></span> combiner_type&amp;</span> <a name="id1126642-bb"></a>combiner() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id617106-bb"></a><span class="type">combiner_type&amp;</span> <a name="id617110-bb"></a>combiner();
+<span class="type"><span class="bold"><strong>const</strong></span> combiner_type&amp;</span> <a name="id617116-bb"></a>combiner() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>

@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Thread Local Storage</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;21.&#160;Thread">
+<link rel="up" href="../thread.html" title="Chapter&#160;22.&#160;Thread">
 <link rel="prev" href="synchronization.html" title="Synchronization">
 <link rel="next" href="time.html" title="Date and Time Requirements">
 </head>
@@ -29,7 +29,7 @@
 <div class="toc"><dl><dt><span class="section"><a href="thread_local_storage.html#thread.thread_local_storage.thread_specific_ptr"> Class
       <code class="computeroutput"><span class="identifier">thread_specific_ptr</span></code></a></span></dt></dl></div>
 <a name="thread.thread_local_storage.synopsis"></a><h4>
-<a name="id1818916"></a>
+<a name="id1862264"></a>
       <a class="link" href="thread_local_storage.html#thread.thread_local_storage.synopsis">Synopsis</a>
     </h4>
 <p>
@@ -52,7 +52,7 @@
       such as only supporting POD types.
     </p>
 <a name="thread.thread_local_storage.portable_thread_local_storage_with__code__phrase_role__identifier__boost__phrase__phrase_role__special______phrase__phrase_role__identifier__thread_specific_ptr__phrase___code_"></a><h4>
-<a name="id1819026"></a>
+<a name="id1862374"></a>
       <a class="link" href="thread_local_storage.html#thread.thread_local_storage.portable_thread_local_storage_with__code__phrase_role__identifier__boost__phrase__phrase_role__special______phrase__phrase_role__identifier__thread_specific_ptr__phrase___code_">Portable
       thread-local storage with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_specific_ptr</span></code></a>
     </h4>
@@ -73,7 +73,7 @@
       to take back responsibility for destroying the object.
     </p>
 <a name="thread.thread_local_storage.cleanup_at_thread_exit"></a><h4>
-<a name="id1819033"></a>
+<a name="id1862382"></a>
       <a class="link" href="thread_local_storage.html#thread.thread_local_storage.cleanup_at_thread_exit">Cleanup
       at thread exit</a>
     </h4>
@@ -150,22 +150,22 @@
 <dl>
 <dt><span class="term">Requires:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">delete</span> <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code> is well-formed.
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">delete</span> <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code> is well-formed.
+              </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Construct a <code class="computeroutput"><span class="identifier">thread_specific_ptr</span></code>
-              object for storing a pointer to an object of type <code class="computeroutput"><span class="identifier">T</span></code>
-              specific to each thread. The default <code class="computeroutput"><span class="keyword">delete</span></code>-based
-              cleanup function will be used to destroy any thread-local objects when
-              <code class="computeroutput"><span class="identifier">reset</span><span class="special">()</span></code>
-              is called, or the thread exits.
-            </p></dd>
+                Construct a <code class="computeroutput"><span class="identifier">thread_specific_ptr</span></code>
+                object for storing a pointer to an object of type <code class="computeroutput"><span class="identifier">T</span></code>
+                specific to each thread. The default <code class="computeroutput"><span class="keyword">delete</span></code>-based
+                cleanup function will be used to destroy any thread-local objects
+                when <code class="computeroutput"><span class="identifier">reset</span><span class="special">()</span></code>
+                is called, or the thread exits.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
-              occurs.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
+                occurs.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -179,22 +179,21 @@
 <dl>
 <dt><span class="term">Requires:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">cleanup_function</span><span class="special">(</span><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">())</span></code>
-              does not throw any exceptions.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">cleanup_function</span><span class="special">(</span><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">())</span></code> does not throw any exceptions.
+              </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Construct a <code class="computeroutput"><span class="identifier">thread_specific_ptr</span></code>
-              object for storing a pointer to an object of type <code class="computeroutput"><span class="identifier">T</span></code>
-              specific to each thread. The supplied <code class="computeroutput"><span class="identifier">cleanup_function</span></code>
-              will be used to destroy any thread-local objects when <code class="computeroutput"><span class="identifier">reset</span><span class="special">()</span></code>
-              is called, or the thread exits.
-            </p></dd>
+                Construct a <code class="computeroutput"><span class="identifier">thread_specific_ptr</span></code>
+                object for storing a pointer to an object of type <code class="computeroutput"><span class="identifier">T</span></code>
+                specific to each thread. The supplied <code class="computeroutput"><span class="identifier">cleanup_function</span></code>
+                will be used to destroy any thread-local objects when <code class="computeroutput"><span class="identifier">reset</span><span class="special">()</span></code>
+                is called, or the thread exits.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
-              occurs.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
+                occurs.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -208,14 +207,14 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Calls <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">reset</span><span class="special">()</span></code>
-              to clean up the associated value for the current thread, and destroys
-              <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.
-            </p></dd>
+                Calls <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">reset</span><span class="special">()</span></code>
+                to clean up the associated value for the current thread, and destroys
+                <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 <div class="note" title="Note"><table border="0" summary="Note">
@@ -242,12 +241,12 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              The pointer associated with the current thread.
-            </p></dd>
+                The pointer associated with the current thread.
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 <div class="note" title="Note"><table border="0" summary="Note">
@@ -273,12 +272,12 @@
 <dl>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code>
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code>
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -294,16 +293,16 @@
 <dl>
 <dt><span class="term">Requires:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span></code> is not <code class="computeroutput"><span class="identifier">NULL</span></code>.
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span></code> is not <code class="computeroutput"><span class="identifier">NULL</span></code>.
+              </p></dd>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="special">*(</span><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">())</span></code>
-            </p></dd>
+                <code class="computeroutput"><span class="special">*(</span><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">())</span></code>
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -318,19 +317,19 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              If <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()!=</span><span class="identifier">new_value</span></code> and <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code> is non-<code class="computeroutput"><span class="identifier">NULL</span></code>,
-              invoke <code class="computeroutput"><span class="keyword">delete</span> <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">cleanup_function</span><span class="special">(</span><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">())</span></code> as appropriate. Store <code class="computeroutput"><span class="identifier">new_value</span></code> as the pointer associated
-              with the current thread.
-            </p></dd>
+                If <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()!=</span><span class="identifier">new_value</span></code> and <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code> is non-<code class="computeroutput"><span class="identifier">NULL</span></code>,
+                invoke <code class="computeroutput"><span class="keyword">delete</span> <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">cleanup_function</span><span class="special">(</span><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">())</span></code> as appropriate. Store <code class="computeroutput"><span class="identifier">new_value</span></code> as the pointer associated
+                with the current thread.
+              </p></dd>
 <dt><span class="term">Postcondition:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()==</span><span class="identifier">new_value</span></code>
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()==</span><span class="identifier">new_value</span></code>
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
-              occurs.
-            </p></dd>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread_resource_error</span></code> if an error
+                occurs.
+              </p></dd>
 </dl>
 </div>
 </div>
@@ -345,19 +344,19 @@
 <dl>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-              Return <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code>
-              and store <code class="computeroutput"><span class="identifier">NULL</span></code> as the
-              pointer associated with the current thread without invoking the cleanup
-              function.
-            </p></dd>
+                Return <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span></code>
+                and store <code class="computeroutput"><span class="identifier">NULL</span></code> as
+                the pointer associated with the current thread without invoking the
+                cleanup function.
+              </p></dd>
 <dt><span class="term">Postcondition:</span></dt>
 <dd><p>
-              <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()==</span><span class="number">0</span></code>
-            </p></dd>
+                <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()==</span><span class="number">0</span></code>
+              </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-              Nothing.
-            </p></dd>
+                Nothing.
+              </p></dd>
 </dl>
 </div>
 </div>

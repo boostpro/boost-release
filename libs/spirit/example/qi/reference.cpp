@@ -9,6 +9,7 @@
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
+#include <boost/fusion/include/adapt_struct.hpp>
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -285,6 +286,7 @@ namespace boost { namespace spirit { namespace traits
         typedef int& type;
         static int& pre(int_data& d) { return d.i; }
         static void post(int_data& val, int const& attr) {}
+        static void fail(int_data&) {}
     };
 }}}
 //]
@@ -326,7 +328,7 @@ main()
         test_parser("x", lit('x'));                 // explicit literal
         test_parser("x", char_('x'));               // ascii::char_
         //]
-        
+
         //[reference_char_range
         char ch;
         test_parser_attr("5", char_('0','9'), ch);  // ascii::char_ range
@@ -414,6 +416,23 @@ main()
         /*`The use of lexeme here will prevent skipping in between the
             digits and the sign making inputs such as `"1 2 345"` erroneous.*/
         test_phrase_parser("12345", lexeme[ -(lit('+') | '-') >> +digit ]);
+        //]
+    }
+    
+    {
+        //[reference_using_declarations_no_skip
+        using boost::spirit::qi::no_skip;
+        using boost::spirit::qi::char_;
+        //]
+        
+        //[reference_no_skip
+        /*`The use of no_skip here will prevent skipping of whitespace in front 
+           and in between the characters of the string `'  abc  '`.*/
+        
+        std::string str;
+        test_phrase_parser_attr("'  abc  '", 
+            '\'' >> no_skip[+~char_('\'')] >> '\'', str); 
+        std::cout << str << std::endl;    // will output: >  abc  <
         //]
     }
     

@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>async_read_at (2 of 4 overloads)</title>
-<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../async_read_at.html" title="async_read_at">
@@ -59,7 +59,7 @@
           </li>
 </ul></div>
 <a name="boost_asio.reference.async_read_at.overload2.parameters"></a><h6>
-<a name="id668471"></a>
+<a name="id669414"></a>
           <a class="link" href="overload2.html#boost_asio.reference.async_read_at.overload2.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
@@ -67,26 +67,27 @@
 <dl>
 <dt><span class="term">d</span></dt>
 <dd><p>
-              The device from which the data is to be read. The type must support
-              the AsyncRandomAccessReadDevice concept.
-            </p></dd>
+                The device from which the data is to be read. The type must support
+                the AsyncRandomAccessReadDevice concept.
+              </p></dd>
 <dt><span class="term">offset</span></dt>
 <dd><p>
-              The offset at which the data will be read.
-            </p></dd>
+                The offset at which the data will be read.
+              </p></dd>
 <dt><span class="term">buffers</span></dt>
 <dd><p>
-              One or more buffers into which the data will be read. The sum of the
-              buffer sizes indicates the maximum number of bytes to read from the
-              device. Although the buffers object may be copied as necessary, ownership
-              of the underlying memory blocks is retained by the caller, which must
-              guarantee that they remain valid until the handler is called.
-            </p></dd>
+                One or more buffers into which the data will be read. The sum of
+                the buffer sizes indicates the maximum number of bytes to read from
+                the device. Although the buffers object may be copied as necessary,
+                ownership of the underlying memory blocks is retained by the caller,
+                which must guarantee that they remain valid until the handler is
+                called.
+              </p></dd>
 <dt><span class="term">completion_condition</span></dt>
 <dd>
 <p>
-              The function object to be called to determine whether the read operation
-              is complete. The signature of the function object must be: 
+                The function object to be called to determine whether the read operation
+                is complete. The signature of the function object must be: 
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">completion_condition</span><span class="special">(</span>
   <span class="comment">// Result of latest async_read_some_at operation.
@@ -97,17 +98,17 @@
 <span class="special">);</span> 
 </pre>
 <p>
-              A return value of 0 indicates that the read operation is complete.
-              A non-zero return value indicates the maximum number of bytes to be
-              read on the next call to the device's async_read_some_at function.
-            </p>
+                A return value of 0 indicates that the read operation is complete.
+                A non-zero return value indicates the maximum number of bytes to
+                be read on the next call to the device's async_read_some_at function.
+              </p>
 </dd>
 <dt><span class="term">handler</span></dt>
 <dd>
 <p>
-              The handler to be called when the read operation completes. Copies
-              will be made of the handler as required. The function signature of
-              the handler must be: 
+                The handler to be called when the read operation completes. Copies
+                will be made of the handler as required. The function signature of
+                the handler must be: 
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span>
   <span class="comment">// Result of operation.
@@ -120,16 +121,16 @@
 <span class="special">);</span> 
 </pre>
 <p>
-              Regardless of whether the asynchronous operation completes immediately
-              or not, the handler will not be invoked from within this function.
-              Invocation of the handler will be performed in a manner equivalent
-              to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">post</span><span class="special">()</span></code>.
-            </p>
+                Regardless of whether the asynchronous operation completes immediately
+                or not, the handler will not be invoked from within this function.
+                Invocation of the handler will be performed in a manner equivalent
+                to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">post</span><span class="special">()</span></code>.
+              </p>
 </dd>
 </dl>
 </div>
 <a name="boost_asio.reference.async_read_at.overload2.example"></a><h6>
-<a name="id668851"></a>
+<a name="id669801"></a>
           <a class="link" href="overload2.html#boost_asio.reference.async_read_at.overload2.example">Example</a>
         </h6>
 <p>

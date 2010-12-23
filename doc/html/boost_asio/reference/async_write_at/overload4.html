@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>async_write_at (4 of 4 overloads)</title>
-<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../async_write_at.html" title="async_write_at">
@@ -62,7 +62,7 @@
           async_write_some_at function.
         </p>
 <a name="boost_asio.reference.async_write_at.overload4.parameters"></a><h6>
-<a name="id682739"></a>
+<a name="id684703"></a>
           <a class="link" href="overload4.html#boost_asio.reference.async_write_at.overload4.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
@@ -70,25 +70,25 @@
 <dl>
 <dt><span class="term">d</span></dt>
 <dd><p>
-              The device to which the data is to be written. The type must support
-              the AsyncRandomAccessWriteDevice concept.
-            </p></dd>
+                The device to which the data is to be written. The type must support
+                the AsyncRandomAccessWriteDevice concept.
+              </p></dd>
 <dt><span class="term">offset</span></dt>
 <dd><p>
-              The offset at which the data will be written.
-            </p></dd>
+                The offset at which the data will be written.
+              </p></dd>
 <dt><span class="term">b</span></dt>
 <dd><p>
-              A <a class="link" href="../basic_streambuf.html" title="basic_streambuf"><code class="computeroutput"><span class="identifier">basic_streambuf</span></code></a> object from
-              which data will be written. Ownership of the streambuf is retained
-              by the caller, which must guarantee that it remains valid until the
-              handler is called.
-            </p></dd>
+                A <a class="link" href="../basic_streambuf.html" title="basic_streambuf"><code class="computeroutput"><span class="identifier">basic_streambuf</span></code></a> object from
+                which data will be written. Ownership of the streambuf is retained
+                by the caller, which must guarantee that it remains valid until the
+                handler is called.
+              </p></dd>
 <dt><span class="term">completion_condition</span></dt>
 <dd>
 <p>
-              The function object to be called to determine whether the write operation
-              is complete. The signature of the function object must be: 
+                The function object to be called to determine whether the write operation
+                is complete. The signature of the function object must be: 
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">completion_condition</span><span class="special">(</span>
   <span class="comment">// Result of latest async_write_some_at operation.
@@ -99,17 +99,17 @@
 <span class="special">);</span> 
 </pre>
 <p>
-              A return value of 0 indicates that the write operation is complete.
-              A non-zero return value indicates the maximum number of bytes to be
-              written on the next call to the device's async_write_some_at function.
-            </p>
+                A return value of 0 indicates that the write operation is complete.
+                A non-zero return value indicates the maximum number of bytes to
+                be written on the next call to the device's async_write_some_at function.
+              </p>
 </dd>
 <dt><span class="term">handler</span></dt>
 <dd>
 <p>
-              The handler to be called when the write operation completes. Copies
-              will be made of the handler as required. The function signature of
-              the handler must be: 
+                The handler to be called when the write operation completes. Copies
+                will be made of the handler as required. The function signature of
+                the handler must be: 
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span>
   <span class="comment">// Result of operation.
@@ -121,11 +121,11 @@
 <span class="special">);</span> 
 </pre>
 <p>
-              Regardless of whether the asynchronous operation completes immediately
-              or not, the handler will not be invoked from within this function.
-              Invocation of the handler will be performed in a manner equivalent
-              to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">post</span><span class="special">()</span></code>.
-            </p>
+                Regardless of whether the asynchronous operation completes immediately
+                or not, the handler will not be invoked from within this function.
+                Invocation of the handler will be performed in a manner equivalent
+                to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">post</span><span class="special">()</span></code>.
+              </p>
 </dd>
 </dl>
 </div>

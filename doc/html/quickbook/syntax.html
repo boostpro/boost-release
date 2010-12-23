@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Syntax Summary</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../quickbook.html" title="Chapter&#160;30.&#160;Quickbook 1.5">
+<link rel="up" href="../quickbook.html" title="Chapter&#160;31.&#160;Quickbook 1.5">
 <link rel="prev" href="change_log.html" title="Change Log">
 <link rel="next" href="install.html" title="Installation and configuration">
 </head>
@@ -81,6 +81,7 @@
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.escape">Escape</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.single_char_escape">Single
         char escape</a></span></dt>
+<dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.unicode_escape">Unicode escape</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.images">Images</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.footnotes">Footnotes</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.cond"> Conditional Generation</a></span></dt>
@@ -123,9 +124,7 @@
           This will generate:
         </p>
 <p>
-          <em class="replaceable"><code>
-            replacement
-          </code></em>
+          <em class="replaceable"><code>replacement</code></em>
         </p>
 </div>
 <div class="section" title="Quotations">
@@ -179,7 +178,7 @@ the true business precept.]
 <p>
           Unlike QuickBook's standard formatting scheme, the rules for simpler alternatives
           are much stricter
-          <sup>[<a name="id2161090" href="#ftn.id2161090" class="footnote">6</a>]</sup>
+          <sup>[<a name="id2205920" href="#ftn.id2205920" class="footnote">6</a>]</sup>
           .
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -214,7 +213,7 @@ the true business precept.]
           </li>
 </ul></div>
 <div class="table">
-<a name="quickbook.syntax.phrase.simple_formatting.more_formatting_samples"></a><p class="title"><b>Table&#160;30.1.&#160;More Formatting Samples</b></p>
+<a name="quickbook.syntax.phrase.simple_formatting.more_formatting_samples"></a><p class="title"><b>Table&#160;31.1.&#160;More Formatting Samples</b></p>
 <div class="table-contents"><table class="table" summary="More Formatting Samples">
 <colgroup>
 <col>
@@ -222,184 +221,186 @@ the true business precept.]
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Markup
-              </p>
-              </th>
+                  <p>
+                    Markup
+                  </p>
+                </th>
 <th>
-              <p>
-                Result
-              </p>
-              </th>
+                  <p>
+                    Result
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                <code class="literal">*Bold*</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">*Bold*</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                <span class="bold"><strong>Bold</strong></span>
-              </p>
-              </td>
+                  <p>
+                    <span class="bold"><strong>Bold</strong></span>
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">*Is bold*</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">*Is bold*</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                <span class="bold"><strong>Is bold</strong></span>
-              </p>
-              </td>
+                  <p>
+                    <span class="bold"><strong>Is bold</strong></span>
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">* Not bold* *Not bold * * Not bold *</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">* Not bold* *Not bold * * Not bold *</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                * Not bold* *Not bold * * Not bold *
-              </p>
-              </td>
+                  <p>
+                    * Not bold* *Not bold * * Not bold *
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">This*Isn't*Bold (no bold)</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">This*Isn't*Bold (no bold)</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                This*Isn't*Bold (no bold)
-              </p>
-              </td>
+                  <p>
+                    This*Isn't*Bold (no bold)
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">(*Bold Inside*) (parenthesis not bold)</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">(*Bold Inside*) (parenthesis not bold)</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                (<span class="bold"><strong>Bold Inside</strong></span>) (parenthesis not bold)
-              </p>
-              </td>
+                  <p>
+                    (<span class="bold"><strong>Bold Inside</strong></span>) (parenthesis not
+                    bold)
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">*(Bold Outside)* (parenthesis bold)</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">*(Bold Outside)* (parenthesis bold)</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                <span class="bold"><strong>(Bold Outside)</strong></span> (parenthesis bold)
-              </p>
-              </td>
+                  <p>
+                    <span class="bold"><strong>(Bold Outside)</strong></span> (parenthesis
+                    bold)
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">3*4*5 = 60 (no bold)</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">3*4*5 = 60 (no bold)</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                3*4*5 = 60 (no bold)
-              </p>
-              </td>
+                  <p>
+                    3*4*5 = 60 (no bold)
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">3 * 4 * 5 = 60 (no bold)</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">3 * 4 * 5 = 60 (no bold)</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                3 * 4 * 5 = 60 (no bold)
-              </p>
-              </td>
+                  <p>
+                    3 * 4 * 5 = 60 (no bold)
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">3 *4* 5 = 60 (4 is bold)</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">3 *4* 5 = 60 (4 is bold)</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                3 <span class="bold"><strong>4</strong></span> 5 = 60 (4 is bold)
-              </p>
-              </td>
+                  <p>
+                    3 <span class="bold"><strong>4</strong></span> 5 = 60 (4 is bold)
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">*This is bold* this is not *but this is*</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">*This is bold* this is not *but this is*</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                <span class="bold"><strong>This is bold</strong></span> this is not <span class="bold"><strong>but this is</strong></span>
-              </p>
-              </td>
+                  <p>
+                    <span class="bold"><strong>This is bold</strong></span> this is not <span class="bold"><strong>but this is</strong></span>
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">*This is bold*.</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">*This is bold*.</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                <span class="bold"><strong>This is bold</strong></span>.
-              </p>
-              </td>
+                  <p>
+                    <span class="bold"><strong>This is bold</strong></span>.
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">*B*. (bold B)</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">*B*. (bold B)</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                <span class="bold"><strong>B</strong></span>. (bold B)
-              </p>
-              </td>
+                  <p>
+                    <span class="bold"><strong>B</strong></span>. (bold B)
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">['*Bold-Italic*]</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">['*Bold-Italic*]</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                <span class="emphasis"><em><span class="bold"><strong>Bold-Italic</strong></span></em></span>
-              </p>
-              </td>
+                  <p>
+                    <span class="emphasis"><em><span class="bold"><strong>Bold-Italic</strong></span></em></span>
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                <code class="literal">*side-by*/-side/</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">*side-by*/-side/</code>
+                  </p>
+                </td>
 <td>
-              <p>
-                <span class="bold"><strong>side-by</strong></span><span class="emphasis"><em>-side</em></span>
-              </p>
-              </td>
+                  <p>
+                    <span class="bold"><strong>side-by</strong></span><span class="emphasis"><em>-side</em></span>
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
@@ -537,7 +538,7 @@ C++ comment `// looks like this` whereas a Python comment [python]
           whereas a Python comment <code class="computeroutput"><span class="comment">#looks like this</span></code>.
         </p>
 <div class="table">
-<a name="quickbook.syntax.phrase.source_mode.supported_source_modes"></a><p class="title"><b>Table&#160;30.2.&#160;Supported Source Modes</b></p>
+<a name="quickbook.syntax.phrase.source_mode.supported_source_modes"></a><p class="title"><b>Table&#160;31.2.&#160;Supported Source Modes</b></p>
 <div class="table-contents"><table class="table" summary="Supported Source Modes">
 <colgroup>
 <col>
@@ -545,52 +546,52 @@ C++ comment `// looks like this` whereas a Python comment [python]
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Mode
-              </p>
-              </th>
+                  <p>
+                    Mode
+                  </p>
+                </th>
 <th>
-              <p>
-                Source Mode Markup
-              </p>
-              </th>
+                  <p>
+                    Source Mode Markup
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                C++
-              </p>
-              </td>
+                  <p>
+                    C++
+                  </p>
+                </td>
 <td>
-              <p>
-                <code class="literal">[c++]</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">[c++]</code>
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Python
-              </p>
-              </td>
+                  <p>
+                    Python
+                  </p>
+                </td>
 <td>
-              <p>
-                <code class="literal">[python]</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">[python]</code>
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Plain Text
-              </p>
-              </td>
+                  <p>
+                    Plain Text
+                  </p>
+                </td>
 <td>
-              <p>
-                <code class="literal">[teletype]</code>
-              </p>
-              </td>
+                  <p>
+                    <code class="literal">[teletype]</code>
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
@@ -817,6 +818,30 @@ escape (no processing/formatting)
           has a special meaning. The escaped space is removed from the output.
         </p>
 </div>
+<div class="section" title="Unicode escape">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="quickbook.syntax.phrase.unicode_escape"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.unicode_escape" title="Unicode escape">Unicode escape</a>
+</h4></div></div></div>
+<p>
+          You can enter any 16-bit unicode character by using <code class="computeroutput"><span class="special">\</span><span class="identifier">u</span></code> followed by its 4 digit hexadecimal
+          code, or a 32-bit character by using <code class="computeroutput"><span class="special">\</span><span class="identifier">U</span></code> followed by an 8 digit hexadecimal
+          code. eg.
+        </p>
+<pre class="programlisting">\u03B1 + \u03B2
+</pre>
+<p>
+          will generate:
+        </p>
+<div class="blockquote"><blockquote class="blockquote">
+<p>
+            </p>
+<p>
+              &#945; + &#946;
+            </p>
+<p>
+          </p>
+</blockquote></div>
+</div>
 <div class="section" title="Images">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.images"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.images" title="Images">Images</a>
@@ -849,7 +874,7 @@ escape (no processing/formatting)
 </pre>
 <p>
           will generate this
-          <sup>[<a name="id2162884" href="#ftn.id2162884" class="footnote">7</a>]</sup>
+          <sup>[<a name="id2207806" href="#ftn.id2207806" class="footnote">7</a>]</sup>
           .
         </p>
 <div class="section" title="Macro Expansion">
@@ -903,7 +928,7 @@ escape (no processing/formatting)
         </p>
 <p>
           Yes!
-          <sup>[<a name="id2163032" href="#ftn.id2163032" class="footnote">8</a>]</sup>
+          <sup>[<a name="id2207953" href="#ftn.id2207953" class="footnote">8</a>]</sup>
         </p>
 </div>
 </div>
@@ -1537,27 +1562,27 @@ escape (no processing/formatting)
 [h6 Heading 6]
 </pre>
 <a name="quickbook.syntax.block.headings.heading_1"></a><h2>
-<a name="id2164410"></a>
+<a name="id2209333"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_1">Heading 1</a>
         </h2>
 <a name="quickbook.syntax.block.headings.heading_2"></a><h3>
-<a name="id2164432"></a>
+<a name="id2209354"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_2">Heading 2</a>
         </h3>
 <a name="quickbook.syntax.block.headings.heading_3"></a><h4>
-<a name="id2164453"></a>
+<a name="id2209376"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_3">Heading 3</a>
         </h4>
 <a name="quickbook.syntax.block.headings.heading_4"></a><h5>
-<a name="id2164474"></a>
+<a name="id2209397"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_4">Heading 4</a>
         </h5>
 <a name="quickbook.syntax.block.headings.heading_5"></a><h6>
-<a name="id2164494"></a>
+<a name="id2209418"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_5">Heading 5</a>
         </h6>
 <a name="quickbook.syntax.block.headings.heading_6"></a><h5>
-<a name="id2164515"></a>
+<a name="id2209439"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_6">Heading 6</a>
         </h5>
 <p>
@@ -1697,7 +1722,7 @@ sf_logo
           Quickbook has some predefined macros that you can already use.
         </p>
 <div class="table">
-<a name="quickbook.syntax.block.predefined_macros.predefined_macros"></a><p class="title"><b>Table&#160;30.3.&#160;Predefined Macros</b></p>
+<a name="quickbook.syntax.block.predefined_macros.predefined_macros"></a><p class="title"><b>Table&#160;31.3.&#160;Predefined Macros</b></p>
 <div class="table-contents"><table class="table" summary="Predefined Macros">
 <colgroup>
 <col>
@@ -1706,72 +1731,72 @@ sf_logo
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Macro
-              </p>
-              </th>
+                  <p>
+                    Macro
+                  </p>
+                </th>
 <th>
-              <p>
-                Meaning
-              </p>
-              </th>
+                  <p>
+                    Meaning
+                  </p>
+                </th>
 <th>
-              <p>
-                Example
-              </p>
-              </th>
+                  <p>
+                    Example
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                __DATE__
-              </p>
-              </td>
+                  <p>
+                    __DATE__
+                  </p>
+                </td>
 <td>
-              <p>
-                Today's date
-              </p>
-              </td>
+                  <p>
+                    Today's date
+                  </p>
+                </td>
 <td>
-              <p>
-                2010-Feb-01
-              </p>
-              </td>
+                  <p>
+                    2010-May-02
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                __TIME__
-              </p>
-              </td>
+                  <p>
+                    __TIME__
+                  </p>
+                </td>
 <td>
-              <p>
-                The current time
-              </p>
-              </td>
+                  <p>
+                    The current time
+                  </p>
+                </td>
 <td>
-              <p>
-                10:24:06 AM
-              </p>
-              </td>
+                  <p>
+                    02:27:27 AM
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                __FILENAME__
-              </p>
-              </td>
+                  <p>
+                    __FILENAME__
+                  </p>
+                </td>
 <td>
-              <p>
-                Quickbook source filename
-              </p>
-              </td>
+                  <p>
+                    Quickbook source filename
+                  </p>
+                </td>
 <td>
-              <p>
-                /Users/daniel/boost/release/boost-release/tools/quickbook/doc/quickbook.qbk
-              </p>
-              </td>
+                  <p>
+                    /Users/daniel/boost/release/boost-release/tools/quickbook/doc/quickbook.qbk
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
@@ -1800,7 +1825,7 @@ Hi, my name is [name]. I am [age] years old. I am a [what].
 ]
 </pre>
 <a name="quickbook.syntax.block.templates.template_identifier"></a><h6>
-<a name="id2165063"></a>
+<a name="id2209997"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_identifier">Template
           Identifier</a>
         </h6>
@@ -1818,7 +1843,7 @@ Hi, my name is [name]. I am [age] years old. I am a [what].
           </li>
 </ul></div>
 <a name="quickbook.syntax.block.templates.formal_template_arguments"></a><h6>
-<a name="id2165104"></a>
+<a name="id2210038"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.formal_template_arguments">Formal
           Template Arguments</a>
         </h6>
@@ -1838,7 +1863,7 @@ Hi, my name is [name]. I am [age] years old. I am a [what].
           of the template call.
         </p>
 <a name="quickbook.syntax.block.templates.template_body"></a><h6>
-<a name="id2165209"></a>
+<a name="id2210143"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_body">Template
           Body</a>
         </h6>
@@ -1863,7 +1888,7 @@ replacement text...
           block level elements are not allowed in phrase templates.
         </p>
 <a name="quickbook.syntax.block.templates.template_expansion"></a><h6>
-<a name="id2165262"></a>
+<a name="id2210196"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_expansion">Template
           Expansion</a>
         </h6>
@@ -1914,7 +1939,7 @@ replacement text...
           by the close parenthesis.
         </p>
 <a name="quickbook.syntax.block.templates.nullary_templates"></a><h6>
-<a name="id2165356"></a>
+<a name="id2210290"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.nullary_templates">Nullary
           Templates</a>
         </h6>
@@ -1997,7 +2022,7 @@ for the journey to old age.]]]
           brackets, though.
         </p>
 <a name="quickbook.syntax.block.templates.simple_arguments"></a><h6>
-<a name="id2165556"></a>
+<a name="id2210490"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.simple_arguments">Simple
           Arguments</a>
         </h6>
@@ -2065,7 +2090,7 @@ for the journey to old age.]]]
           </p></td></tr>
 </table></div>
 <a name="quickbook.syntax.block.templates.punctuation_templates"></a><h6>
-<a name="id2165693"></a>
+<a name="id2210626"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.punctuation_templates">Punctuation
           Templates</a>
         </h6>
@@ -2144,10 +2169,8 @@ for the journey to old age.]]]
           will generate:
         </p>
 <div class="table">
-<a name="quickbook.syntax.block.tables.id"></a><p class="title"><b>Table&#160;30.4.&#160;A Simple
-        Table</b></p>
-<div class="table-contents"><table class="table" summary="A Simple
-        Table">
+<a name="quickbook.syntax.block.tables.id"></a><p class="title"><b>Table&#160;31.4.&#160;A Simple Table</b></p>
+<div class="table-contents"><table class="table" summary="A Simple Table">
 <colgroup>
 <col>
 <col>
@@ -2155,72 +2178,72 @@ for the journey to old age.]]]
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Heading 1
-              </p>
-              </th>
+                  <p>
+                    Heading 1
+                  </p>
+                </th>
 <th>
-              <p>
-                Heading 2
-              </p>
-              </th>
+                  <p>
+                    Heading 2
+                  </p>
+                </th>
 <th>
-              <p>
-                Heading 3
-              </p>
-              </th>
+                  <p>
+                    Heading 3
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                R0-C0
-              </p>
-              </td>
+                  <p>
+                    R0-C0
+                  </p>
+                </td>
 <td>
-              <p>
-                R0-C1
-              </p>
-              </td>
+                  <p>
+                    R0-C1
+                  </p>
+                </td>
 <td>
-              <p>
-                R0-C2
-              </p>
-              </td>
+                  <p>
+                    R0-C2
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                R1-C0
-              </p>
-              </td>
+                  <p>
+                    R1-C0
+                  </p>
+                </td>
 <td>
-              <p>
-                R1-C1
-              </p>
-              </td>
+                  <p>
+                    R1-C1
+                  </p>
+                </td>
 <td>
-              <p>
-                R1-C2
-              </p>
-              </td>
+                  <p>
+                    R1-C2
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                R2-C0
-              </p>
-              </td>
+                  <p>
+                    R2-C0
+                  </p>
+                </td>
 <td>
-              <p>
-                R2-C1
-              </p>
-              </td>
+                  <p>
+                    R2-C1
+                  </p>
+                </td>
 <td>
-              <p>
-                R2-C2
-              </p>
-              </td>
+                  <p>
+                    R2-C2
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
@@ -2242,7 +2265,7 @@ for the journey to old age.]]]
           which will generate:
         </p>
 <p>
-          <a class="link" href="syntax.html#quickbook.syntax.block.tables.id" title="Table&#160;30.4.&#160;A Simple Table">link to table</a>
+          <a class="link" href="syntax.html#quickbook.syntax.block.tables.id" title="Table&#160;31.4.&#160;A Simple Table">link to table</a>
         </p>
 <p>
           The syntax is free-format and allows big cells to be formatted nicely.
@@ -2273,7 +2296,7 @@ for the journey to old age.]]]
           and thus:
         </p>
 <div class="table">
-<a name="quickbook.syntax.block.tables.table_with_fat_cells"></a><p class="title"><b>Table&#160;30.5.&#160;Table with fat cells</b></p>
+<a name="quickbook.syntax.block.tables.table_with_fat_cells"></a><p class="title"><b>Table&#160;31.5.&#160;Table with fat cells</b></p>
 <div class="table-contents"><table class="table" summary="Table with fat cells">
 <colgroup>
 <col>
@@ -2281,49 +2304,49 @@ for the journey to old age.]]]
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Heading 1
-              </p>
-              </th>
+                  <p>
+                    Heading 1
+                  </p>
+                </th>
 <th>
-              <p>
-                Heading 2
-              </p>
-              </th>
+                  <p>
+                    Heading 2
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                Row 0, Col 0: a small cell
-              </p>
-              </td>
+                  <p>
+                    Row 0, Col 0: a small cell
+                  </p>
+                </td>
 <td>
-              <p>
-                Row 0, Col 1: a big fat cell with paragraphs
-              </p>
-              <p>
-                Boost provides free peer-reviewed portable C++ source libraries.
-              </p>
-              <p>
-                We emphasize libraries that work well with the C++ Standard Library.
-                Boost libraries are intended to be widely useful, and usable across
-                a broad spectrum of applications. The Boost license encourages both
-                commercial and non-commercial use.
-              </p>
-              </td>
+                  <p>
+                    Row 0, Col 1: a big fat cell with paragraphs
+                  </p>
+                  <p>
+                    Boost provides free peer-reviewed portable C++ source libraries.
+                  </p>
+                  <p>
+                    We emphasize libraries that work well with the C++ Standard Library.
+                    Boost libraries are intended to be widely useful, and usable
+                    across a broad spectrum of applications. The Boost license encourages
+                    both commercial and non-commercial use.
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                Row 1, Col 0: a small cell
-              </p>
-              </td>
+                  <p>
+                    Row 1, Col 0: a small cell
+                  </p>
+                </td>
 <td>
-              <p>
-                Row 1, Col 1: a small cell
-              </p>
-              </td>
+                  <p>
+                    Row 1, Col 1: a small cell
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
@@ -2348,35 +2371,33 @@ for the journey to old age.]]]
 ]
 </pre>
 <div class="table">
-<a name="quickbook.syntax.block.tables.table_with_code"></a><p class="title"><b>Table&#160;30.6.&#160;Table
-        with code</b></p>
-<div class="table-contents"><table class="table" summary="Table
-        with code">
+<a name="quickbook.syntax.block.tables.table_with_code"></a><p class="title"><b>Table&#160;31.6.&#160;Table with code</b></p>
+<div class="table-contents"><table class="table" summary="Table with code">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Comment
-              </p>
-              </th>
+                  <p>
+                    Comment
+                  </p>
+                </th>
 <th>
-              <p>
-                Code
-              </p>
-              </th>
+                  <p>
+                    Code
+                  </p>
+                </th>
 </tr></thead>
 <tbody><tr>
 <td>
-              <p>
-                My first program
-              </p>
-              </td>
+                  <p>
+                    My first program
+                  </p>
+                </td>
 <td>
-              <p>
-                
+                  <p>
+                    
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
@@ -2387,8 +2408,8 @@ for the journey to old age.]]]
 <span class="special">}</span>
 </pre>
 <p>
-              </p>
-              </td>
+                  </p>
+                </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2416,20 +2437,20 @@ for the journey to old age.]]]
 <dl>
 <dt><span class="term">term 1</span></dt>
 <dd><p>
-              The definition of term 1
-            </p></dd>
+                The definition of term 1
+              </p></dd>
 <dt><span class="term">term 2</span></dt>
 <dd><p>
-              The definition of term 2
-            </p></dd>
+                The definition of term 2
+              </p></dd>
 <dt><span class="term">term 3</span></dt>
 <dd>
 <p>
-              The definition of term 3.
-            </p>
+                The definition of term 3.
+              </p>
 <p>
-              Definitions may contain paragraphs.
-            </p>
+                Definitions may contain paragraphs.
+              </p>
 </dd>
 </dl>
 </div>
@@ -2493,7 +2514,7 @@ for the journey to old age.]]]
           QuickBook's import facility provides a nice solution.
         </p>
 <a name="quickbook.syntax.block.import.example"></a><h6>
-<a name="id2166515"></a>
+<a name="id2211463"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.example">Example</a>
         </h6>
 <p>
@@ -2588,7 +2609,7 @@ for the journey to old age.]]]
 <p>
         </p>
 <a name="quickbook.syntax.block.import.code_snippet_markup"></a><h6>
-<a name="id2166775"></a>
+<a name="id2211723"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.code_snippet_markup">Code
           Snippet Markup</a>
         </h6>
@@ -2608,7 +2629,7 @@ for the journey to old age.]]]
           This too will not be visible in quickbook.
         </p>
 <a name="quickbook.syntax.block.import.special_comments"></a><h6>
-<a name="id2167150"></a>
+<a name="id2211828"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.special_comments">Special
           Comments</a>
         </h6>
@@ -2651,7 +2672,7 @@ for the journey to old age.]]]
           between the delimeters will simply be ignored.
         </p>
 <a name="quickbook.syntax.block.import.callouts"></a><h6>
-<a name="id2167300"></a>
+<a name="id2211978"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.callouts">Callouts</a>
         </h6>
 <p>
@@ -2785,17 +2806,17 @@ for the journey to old age.]]]
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2161090" href="#id2161090" class="para">6</a>] </sup>
+<div class="footnote"><p><sup>[<a name="ftn.id2205920" href="#id2205920" class="para">6</a>] </sup>
               Thanks to David Barrett, author of <a href="http://quinthar.com/qwikiwiki/index.php?page=Home" target="_top">Qwiki</a>,
               for sharing these samples and teaching me these obscure formatting
               rules. I wasn't sure at all if <a href="http://spirit.sourceforge.net" target="_top">Spirit</a>,
               being more or less a formal EBNF parser, can handle the context sensitivity
               and ambiguity.
             </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id2162884" href="#id2162884" class="para">7</a>] </sup>
+<div class="footnote"><p><sup>[<a name="ftn.id2207806" href="#id2207806" class="para">7</a>] </sup>
               A sample footnote
             </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id2163032" href="#id2163032" class="para">8</a>] </sup>
+<div class="footnote"><p><sup>[<a name="ftn.id2207953" href="#id2207953" class="para">8</a>] </sup>
               Conditional Generation makes quickbook turing complete.
             </p></div>
 </div>

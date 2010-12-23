@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>async_read_until (1 of 4 overloads)</title>
-<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../async_read_until.html" title="async_read_until">
@@ -57,11 +57,16 @@
 </ul></div>
 <p>
           This operation is implemented in terms of zero or more calls to the stream's
-          async_read_some function. If the streambuf's get area already contains
-          the delimiter, the asynchronous operation completes immediately.
+          async_read_some function, and is known as a <span class="bold"><strong>composed
+          operation</strong></span>. If the streambuf's get area already contains the
+          delimiter, this asynchronous operation completes immediately. The program
+          must ensure that the stream performs no other read operations (such as
+          async_read, async_read_until, the stream's async_read_some function, or
+          any other composed operations that perform reads) until this operation
+          completes.
         </p>
 <a name="boost_asio.reference.async_read_until.overload1.parameters"></a><h6>
-<a name="id671557"></a>
+<a name="id672529"></a>
           <a class="link" href="overload1.html#boost_asio.reference.async_read_until.overload1.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
@@ -69,25 +74,25 @@
 <dl>
 <dt><span class="term">s</span></dt>
 <dd><p>
-              The stream from which the data is to be read. The type must support
-              the AsyncReadStream concept.
-            </p></dd>
+                The stream from which the data is to be read. The type must support
+                the AsyncReadStream concept.
+              </p></dd>
 <dt><span class="term">b</span></dt>
 <dd><p>
-              A streambuf object into which the data will be read. Ownership of the
-              streambuf is retained by the caller, which must guarantee that it remains
-              valid until the handler is called.
-            </p></dd>
+                A streambuf object into which the data will be read. Ownership of
+                the streambuf is retained by the caller, which must guarantee that
+                it remains valid until the handler is called.
+              </p></dd>
 <dt><span class="term">delim</span></dt>
 <dd><p>
-              The delimiter character.
-            </p></dd>
+                The delimiter character.
+              </p></dd>
 <dt><span class="term">handler</span></dt>
 <dd>
 <p>
-              The handler to be called when the read operation completes. Copies
-              will be made of the handler as required. The function signature of
-              the handler must be: 
+                The handler to be called when the read operation completes. Copies
+                will be made of the handler as required. The function signature of
+                the handler must be: 
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span>
   <span class="comment">// Result of operation.
@@ -100,16 +105,16 @@
 <span class="special">);</span> 
 </pre>
 <p>
-              Regardless of whether the asynchronous operation completes immediately
-              or not, the handler will not be invoked from within this function.
-              Invocation of the handler will be performed in a manner equivalent
-              to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">post</span><span class="special">()</span></code>.
-            </p>
+                Regardless of whether the asynchronous operation completes immediately
+                or not, the handler will not be invoked from within this function.
+                Invocation of the handler will be performed in a manner equivalent
+                to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">post</span><span class="special">()</span></code>.
+              </p>
 </dd>
 </dl>
 </div>
 <a name="boost_asio.reference.async_read_until.overload1.remarks"></a><h6>
-<a name="id671802"></a>
+<a name="id672780"></a>
           <a class="link" href="overload1.html#boost_asio.reference.async_read_until.overload1.remarks">Remarks</a>
         </h6>
 <p>
@@ -119,7 +124,7 @@
           to examine.
         </p>
 <a name="boost_asio.reference.async_read_until.overload1.example"></a><h6>
-<a name="id671832"></a>
+<a name="id672809"></a>
           <a class="link" href="overload1.html#boost_asio.reference.async_read_until.overload1.example">Example</a>
         </h6>
 <p>
@@ -140,6 +145,30 @@
 <span class="special">...</span>
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">async_read_until</span><span class="special">(</span><span class="identifier">s</span><span class="special">,</span> <span class="identifier">b</span><span class="special">,</span> <span class="char">'\n'</span><span class="special">,</span> <span class="identifier">handler</span><span class="special">);</span> 
 </pre>
+<p>
+          After the <code class="computeroutput"><span class="identifier">async_read_until</span></code>
+          operation completes successfully, the buffer <code class="computeroutput"><span class="identifier">b</span></code>
+          contains the delimiter:
+        </p>
+<pre class="programlisting"><span class="special">{</span> <span class="char">'a'</span><span class="special">,</span> <span class="char">'b'</span><span class="special">,</span> <span class="special">...,</span> <span class="char">'c'</span><span class="special">,</span> <span class="char">'\n'</span><span class="special">,</span> <span class="char">'d'</span><span class="special">,</span> <span class="char">'e'</span><span class="special">,</span> <span class="special">...</span> <span class="special">}</span> 
+</pre>
+<p>
+          The call to <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">getline</span></code> then extracts the data up to
+          and including the delimiter, so that the string <code class="computeroutput"><span class="identifier">line</span></code>
+          contains:
+        </p>
+<pre class="programlisting"><span class="special">{</span> <span class="char">'a'</span><span class="special">,</span> <span class="char">'b'</span><span class="special">,</span> <span class="special">...,</span> <span class="char">'c'</span><span class="special">,</span> <span class="char">'\n'</span> <span class="special">}</span> 
+</pre>
+<p>
+          The remaining data is left in the buffer <code class="computeroutput"><span class="identifier">b</span></code>
+          as follows:
+        </p>
+<pre class="programlisting"><span class="special">{</span> <span class="char">'d'</span><span class="special">,</span> <span class="char">'e'</span><span class="special">,</span> <span class="special">...</span> <span class="special">}</span> 
+</pre>
+<p>
+          This data may be the start of a new line, to be extracted by a subsequent
+          <code class="computeroutput"><span class="identifier">async_read_until</span></code> operation.
+        </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

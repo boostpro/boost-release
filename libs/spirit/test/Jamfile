@@ -1,6 +1,6 @@
 #==============================================================================
-#   Copyright (c) 2001-2009 Joel de Guzman
-#   Copyright (c) 2001-2009 Hartmut Kaiser
+#   Copyright (c) 2001-2010 Joel de Guzman
+#   Copyright (c) 2001-2010 Hartmut Kaiser
 #
 #   Use, modification and distribution is subject to the Boost Software
 #   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -38,6 +38,7 @@ import testing ;
     [ run qi/char_class.cpp                 : : : : ]
     #[ run qi/debug.cpp                      : : : : ]
     [ run qi/difference.cpp                 : : : : ]
+    [ run qi/encoding.cpp                   : : : : ]
     [ run qi/end.cpp                        : : : : ]
     [ run qi/eps.cpp                        : : : : ]
     [ run qi/expect.cpp                     : : : : ]
@@ -48,10 +49,12 @@ import testing ;
     [ run qi/lexeme.cpp                     : : : : ]
     [ run qi/lit.cpp                        : : : : ]
     [ run qi/list.cpp                       : : : : ]
+    [ run qi/hold.cpp                       : : : : ]
     [ run qi/match_manip.cpp                : : : : ]
     [ run qi/match_manip_attr.cpp           : : : : ]
     [ run qi/matches.cpp                    : : : : ]
     [ run qi/no_case.cpp                    : : : : ]
+    [ run qi/no_skip.cpp                    : : : : ]
     [ run qi/not_predicate.cpp              : : : : ]
     [ run qi/optional.cpp                   : : : : ]
     [ run qi/parse_attr.cpp                 : : : : ]
@@ -85,6 +88,7 @@ import testing ;
     [ run karma/char_class.cpp              : : : : karma_char_class ]
     [ run karma/columns.cpp                 : : : : ]
     [ run karma/delimiter.cpp               : : : : ]
+    [ run karma/encoding.cpp                : : : : karma_encoding ]
     [ run karma/eol.cpp                     : : : : karma_eol ]
     [ run karma/eps.cpp                     : : : : karma_eps ]
     [ run karma/format_manip.cpp            : : : : ]
@@ -104,6 +108,7 @@ import testing ;
     [ run karma/optional.cpp                : : : : karma_optional ]
     [ run karma/pattern.cpp                 : : : : karma_pattern ]
     [ run karma/pattern2.cpp                : : : : karma_pattern2 ]
+    [ run karma/pattern3.cpp                : : : : karma_pattern3 ]
     [ run karma/plus.cpp                    : : : : karma_plus ]
     [ run karma/real_numerics.cpp           : : : : ]
     [ run karma/repeat.cpp                  : : : : karma_repeat ]
@@ -129,6 +134,7 @@ import testing ;
     [ run lex/set_token_value_phoenix.cpp   : : : : ]
     [ run lex/semantic_actions.cpp          : : : : ]
 
+    # run Lex regression tests
     [ run lex/regression001.cpp             : : : : lex_regression001 ]
     [ run lex/regression002.cpp             : : : : lex_regression002 ]
     [ run lex/regression003_generate.cpp    : $(LEX_DIR)/matlib_static.h : : : lex_regression003_generate ]
@@ -137,6 +143,16 @@ import testing ;
     [ run lex/regression003_switch.cpp             : : : <dependency>.//lex_regression003_generate_switch : lex_regression003_switch ]
     [ run lex/regression004.cpp             : : : : lex_regression004 ]
     [ run lex/regression005.cpp             : : : : lex_regression005 ]
+
+    # support tests
+    [ compile support/multi_pass_regression001.cpp : : support_multi_pass_regression001 ]
+    [ compile support/multi_pass_regression002.cpp : : support_multi_pass_regression002 ]
+    [ compile support/multi_pass_regression003.cpp : : support_multi_pass_regression003 ]
+
+
+    # regression tests
+    [ run qi/clear_test.cpp                 : : : : ]
+    [ run qi/reorder_test.cpp               : : : : ]
 
     ;
 

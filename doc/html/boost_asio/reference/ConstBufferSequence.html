@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Constant buffer sequence requirements</title>
-<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
@@ -35,7 +35,7 @@
         denotes an identifier.
       </p>
 <div class="table">
-<a name="id617329"></a><p class="title"><b>Table&#160;5.&#160;ConstBufferSequence requirements</b></p>
+<a name="id617595"></a><p class="title"><b>Table&#160;5.&#160;ConstBufferSequence requirements</b></p>
 <div class="table-contents"><table class="table" summary="ConstBufferSequence requirements">
 <colgroup>
 <col>
@@ -44,72 +44,72 @@
 </colgroup>
 <thead><tr>
 <th>
-            <p>
-              expression
-            </p>
-            </th>
+                <p>
+                  expression
+                </p>
+              </th>
 <th>
-            <p>
-              return type
-            </p>
-            </th>
+                <p>
+                  return type
+                </p>
+              </th>
 <th>
-            <p>
-              assertion/note<br> pre/post-condition
-            </p>
-            </th>
+                <p>
+                  assertion/note<br> pre/post-condition
+                </p>
+              </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">value_type</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">value_type</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">T</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">T</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">T</span></code> meets the requirements
-              for <a class="link" href="ConvertibleToConstBuffer.html" title="Convertible to const buffer requirements">ConvertibleToConstBuffer</a>.
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">T</span></code> meets the requirements
+                  for <a class="link" href="ConvertibleToConstBuffer.html" title="Convertible to const buffer requirements">ConvertibleToConstBuffer</a>.
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">const_iterator</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">const_iterator</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              iterator type pointing to <code class="computeroutput"><span class="identifier">T</span></code>
-            </p>
-            </td>
+                <p>
+                  iterator type pointing to <code class="computeroutput"><span class="identifier">T</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">const_iterator</span></code> meets
-              the requirements for bidirectional iterators (C++ Std, 24.1.4).
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">const_iterator</span></code>
+                  meets the requirements for bidirectional iterators (C++ Std, 24.1.4).
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">X</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">X</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-            </p>
-            </td>
+                <p>
+                </p>
+              </td>
 <td>
-            <p>
-              post: <code class="computeroutput"><span class="identifier">equal_const_buffer_seq</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">X</span><span class="special">(</span><span class="identifier">a</span><span class="special">))</span></code> where the binary predicate <code class="computeroutput"><span class="identifier">equal_const_buffer_seq</span></code> is defined
-              as 
+                <p>
+                  post: <code class="computeroutput"><span class="identifier">equal_const_buffer_seq</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">X</span><span class="special">(</span><span class="identifier">a</span><span class="special">))</span></code> where the binary predicate <code class="computeroutput"><span class="identifier">equal_const_buffer_seq</span></code> is defined
+                  as 
 </p>
 <pre class="programlisting"><span class="keyword">bool</span> <span class="identifier">equal_const_buffer_seq</span><span class="special">(</span>
   <span class="keyword">const</span> <span class="identifier">X</span><span class="special">&amp;</span> <span class="identifier">x1</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">X</span><span class="special">&amp;</span> <span class="identifier">x2</span><span class="special">)</span>
@@ -122,8 +122,8 @@
 <span class="special">}</span>
 </pre>
 <p>
-              and the binary predicate <code class="computeroutput"><span class="identifier">equal_buffer</span></code>
-              is defined as 
+                  and the binary predicate <code class="computeroutput"><span class="identifier">equal_buffer</span></code>
+                  is defined as 
 </p>
 <pre class="programlisting"><span class="keyword">bool</span> <span class="identifier">equal_buffer</span><span class="special">(</span>
   <span class="keyword">const</span> <span class="identifier">X</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&amp;</span> <span class="identifier">v1</span><span class="special">,</span>
@@ -138,22 +138,22 @@
 <span class="special">}</span>
 </pre>
 <p>
-            </p>
-            </td>
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">X</span> <span class="identifier">u</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">X</span> <span class="identifier">u</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-            </p>
-            </td>
+                <p>
+                </p>
+              </td>
 <td>
-            <p>
-              post: 
+                <p>
+                  post: 
 </p>
 <pre class="programlisting"><span class="identifier">distance</span><span class="special">(</span><span class="identifier">a</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">a</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span>
   <span class="special">==</span> <span class="identifier">distance</span><span class="special">(</span><span class="identifier">u</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">u</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span>
@@ -161,8 +161,8 @@
              <span class="identifier">u</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">equal_buffer</span><span class="special">)</span>
 </pre>
 <p>
-              where the binary predicate <code class="computeroutput"><span class="identifier">equal_buffer</span></code>
-              is defined as 
+                  where the binary predicate <code class="computeroutput"><span class="identifier">equal_buffer</span></code>
+                  is defined as 
 </p>
 <pre class="programlisting"><span class="keyword">bool</span> <span class="identifier">equal_buffer</span><span class="special">(</span>
   <span class="keyword">const</span> <span class="identifier">X</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&amp;</span> <span class="identifier">v1</span><span class="special">,</span>
@@ -177,60 +177,59 @@
 <span class="special">}</span>
 </pre>
 <p>
-            </p>
-            </td>
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="special">(&amp;</span><span class="identifier">a</span><span class="special">)-&gt;~</span><span class="identifier">X</span><span class="special">();</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="special">(&amp;</span><span class="identifier">a</span><span class="special">)-&gt;~</span><span class="identifier">X</span><span class="special">();</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="keyword">void</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">void</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              note: the destructor is applied to every element of <code class="computeroutput"><span class="identifier">a</span></code>;
-              all the memory is deallocated.
-            </p>
-            </td>
+                <p>
+                  note: the destructor is applied to every element of <code class="computeroutput"><span class="identifier">a</span></code>; all the memory is deallocated.
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">const_iterator</span></code> or convertible
-              to <code class="computeroutput"><span class="identifier">const_iterator</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">const_iterator</span></code>
+                  or convertible to <code class="computeroutput"><span class="identifier">const_iterator</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-            </p>
-            </td>
+                <p>
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">end</span><span class="special">();</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">end</span><span class="special">();</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-              <code class="computeroutput"><span class="identifier">const_iterator</span></code> or convertible
-              to <code class="computeroutput"><span class="identifier">const_iterator</span></code>
-            </p>
-            </td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">const_iterator</span></code>
+                  or convertible to <code class="computeroutput"><span class="identifier">const_iterator</span></code>
+                </p>
+              </td>
 <td>
-            <p>
-            </p>
-            </td>
+                <p>
+                </p>
+              </td>
 </tr>
 </tbody>
 </table></div>

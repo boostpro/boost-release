@@ -26,6 +26,7 @@ import utility ;
 import version ;
 import virtual-target ;
 import generators ;
+import configure ;
 
 ################################################################################
 #
@@ -113,6 +114,15 @@ rule set-default-toolset ( toolset : version ? )
     .default-toolset-version = $(version) ;
 }
 
+rule set-pre-build-hook ( function )
+{
+    .pre-build-hook = $(function) ;
+}
+
+rule set-post-build-hook ( function )
+{
+    .post-build-hook = $(function) ;
+}
 
 ################################################################################
 #
@@ -238,6 +248,12 @@ local rule load-config ( module-name : filename : path + : must-find ? )
                 "$(filename)" "from" $(where) "." ;
         }
 
+        # Set source location so that path-constant in config files
+        # with relative paths work. This is of most importance
+        # for project-config.jam, but may be used in other
+        # config files as well.
+        local attributes = [ project.attributes $(module-name) ] ;
+        $(attributes).set source-location : $(where:D) : exact ;
         modules.load $(module-name) : $(filename) : $(path) ;
         project.load-used-projects $(module-name) ;
     }
@@ -573,6 +589,10 @@ local rule should-clean-project ( project )
             {
                 default-toolset = msvc ;
             }
+            else if [ os.name ] = MACOSX
+            {
+                default-toolset = darwin ;
+            }                        
         }
 
         ECHO "warning: No toolsets are configured." ;
@@ -691,6 +711,17 @@ local rule should-clean-project ( project )
     {
         generators.dump ;
     }
+    
+    # We wish to put config.log in the build directory corresponding
+    # to Jamroot, so that the location does not differ depending on
+    # directory where we do build.  The amount of indirection necessary
+    # here is scary.
+    local first-project = [ $(targets[0]).project ] ;
+    local first-project-root-location = [ $(first-project).get project-root ] ;
+    local first-project-root-module = [ project.load $(first-project-root-location) ] ;
+    local first-project-root = [ project.target  $(first-project-root-module) ] ;
+    local first-build-build-dir = [ $(first-project-root).build-dir ] ;
+    configure.set-log-file $(first-build-build-dir)/config.log ;
     
     # Now that we have a set of targets to build and a set of property sets to
     # build the targets with, we can start the main build process by using each
@@ -898,6 +929,21 @@ local rule should-clean-project ( project )
         modules.poke : PARALLELISM : $(j) ;
     }
     
+    local k = [ option.get keep-going : true : true ] ;
+    if $(k) in "on" "yes" "true"
+    {
+        modules.poke : KEEP_GOING : 1 ;
+    }
+    else if $(k) in "off" "no" "false"
+    {
+        modules.poke : KEEP_GOING : 0 ;
+    }
+    else
+    {
+        ECHO "error: Invalid value for the --keep-going option" ;
+        EXIT ;
+    }
+                
     # The 'all' pseudo target is not strictly needed expect in the case when we
     # use it below but people often assume they always have this target
     # available and do not declare it themselves before use which may cause
@@ -926,8 +972,30 @@ local rule should-clean-project ( project )
         UPDATE clean ;
     }
     else
-    {
+    {      
+        configure.print-configure-checks-summary ;        
+        
+        if $(.pre-build-hook)
+        {
+            $(.pre-build-hook) ;
+        }
+        
         DEPENDS all : $(actual-targets) ;
-        UPDATE all $(.out-xml) ;
+        if UPDATE_NOW in [ RULENAMES ]
+        {            
+            local ok = [ UPDATE_NOW all $(.out-xml) ] ;
+            if $(.post-build-hook)
+            {
+                $(.post-build-hook) $(ok) ;
+            }
+            # Prevent automatic update of the 'all' target, now that
+            # we have explicitly updated what we wanted.
+            UPDATE ;
+        }
+        else
+        {
+            UPDATE all $(.out-xml) ;
+        }            
     }
 }
+

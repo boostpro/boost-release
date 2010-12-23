@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class template static_rational</title>
-<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../boost_units/Reference.html#header.boost.units.static_rational_hpp" title="Header &lt;boost/units/static_rational.hpp&gt;">
@@ -39,16 +39,16 @@
   <span class="bold"><strong>typedef</strong></span> <a class="link" href="static_rational.html" title="Class template static_rational">static_rational</a>&lt; Numerator, Denominator &gt; <a name="boost.units.static_rational.type"></a>type;  <span class="emphasis"><em>// static_rational&lt;N,D&gt; reduced by GCD </em></span>
 
   <span class="emphasis"><em>// <a class="link" href="static_rational.html#boost.units.static_rationalconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="static_rational.html#id1406607-bb">static_rational</a>();
+  <a class="link" href="static_rational.html#id1432737-bb">static_rational</a>();
 
-  <span class="emphasis"><em>// <a class="link" href="static_rational.html#id1406584-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> integer_type</span> <a class="link" href="static_rational.html#id1406587-bb">numerator</a>() ;
-  <span class="type"><span class="bold"><strong>static</strong></span> integer_type</span> <a class="link" href="static_rational.html#id1406595-bb">denominator</a>() ;
+  <span class="emphasis"><em>// <a class="link" href="static_rational.html#id1432714-bb">public static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> integer_type</span> <a class="link" href="static_rational.html#id1432717-bb">numerator</a>() ;
+  <span class="type"><span class="bold"><strong>static</strong></span> integer_type</span> <a class="link" href="static_rational.html#id1432725-bb">denominator</a>() ;
   <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> integer_type</span> Numerator;
   <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> integer_type</span> Denominator;
 };</pre></div>
 <div class="refsect1" title="Description">
-<a name="id1955130"></a><h2>Description</h2>
+<a name="id1998817"></a><h2>Description</h2>
 <p>This is an implementation of a compile time rational number, where <code class="computeroutput">static_rational&lt;N,D&gt;</code> represents a rational number with numerator <code class="computeroutput">N</code> and denominator <code class="computeroutput">D</code>. Because of the potential for ambiguity arising from multiple equivalent values of <code class="computeroutput">static_rational</code> (e.g. <code class="computeroutput">static_rational&lt;6,2&gt;==static_rational&lt;3&gt;</code>), static rationals should always be accessed through <code class="computeroutput">static_rational&lt;N,D&gt;::type</code>. Template specialization prevents instantiation of zero denominators (i.e. <code class="computeroutput">static_rational&lt;N,0&gt;</code>). The following compile-time arithmetic operators are provided for static_rational variables only (no operators are defined between long and static_rational):</p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem"><p><code class="computeroutput">mpl::negate</code> </p></li>
@@ -61,18 +61,18 @@
 </p>
 <p>Neither <code class="computeroutput">static_power</code> nor <code class="computeroutput">static_root</code> are defined for <code class="computeroutput">static_rational</code>. This is because template types may not be floating point values, while powers and roots of rational numbers can produce floating point values. </p>
 <div class="refsect2" title="static_rational public construct/copy/destruct">
-<a name="id1955252"></a><h3>
+<a name="id1998939"></a><h3>
 <a name="boost.units.static_rationalconstruct-copy-destruct"></a><code class="computeroutput">static_rational</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="id1406607-bb"></a>static_rational();</pre></li></ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="id1432737-bb"></a>static_rational();</pre></li></ol></div>
 </div>
 <div class="refsect2" title="static_rational public static functions">
-<a name="id1955285"></a><h3>
-<a name="id1406584-bb"></a><code class="computeroutput">static_rational</code> public static functions</h3>
+<a name="id1998972"></a><h3>
+<a name="id1432714-bb"></a><code class="computeroutput">static_rational</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> integer_type</span> <a name="id1406587-bb"></a>numerator() ;</pre></li>
-<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> integer_type</span> <a name="id1406595-bb"></a>denominator() ;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> integer_type</span> <a name="id1432717-bb"></a>numerator() ;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> integer_type</span> <a name="id1432725-bb"></a>denominator() ;</pre></li>
 </ol></div>
 </div>
 </div>

@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class template apply_visitor_delayed_t</title>
-<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../variant/reference.html#header.boost.variant.apply_visitor_hpp" title="Header &lt;boost/variant/apply_visitor.hpp&gt;">
@@ -38,15 +38,15 @@
   <span class="bold"><strong>typedef</strong></span> <span class="bold"><strong>typename</strong></span> Visitor::result_type <a name="boost.apply_visitor_delayed_t.result_type"></a>result_type;
 
   <span class="emphasis"><em>// <a class="link" href="apply_visitor_delayed_t.html#boost.apply_visitor_delayed_tconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <span class="bold"><strong>explicit</strong></span> <a class="link" href="apply_visitor_delayed_t.html#id1134221-bb">apply_visitor_delayed_t</a>(Visitor &amp;);
+  <span class="bold"><strong>explicit</strong></span> <a class="link" href="apply_visitor_delayed_t.html#id1477058-bb">apply_visitor_delayed_t</a>(Visitor &amp;);
 
-  <span class="emphasis"><em>// <a class="link" href="apply_visitor_delayed_t.html#id1343692-bb">function object interface</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Variant&gt; <span class="type">result_type</span> <a class="link" href="apply_visitor_delayed_t.html#id1343699-bb"><span class="bold"><strong>operator</strong></span>()</a>(Variant &amp;);
+  <span class="emphasis"><em>// <a class="link" href="apply_visitor_delayed_t.html#id1477079-bb">function object interface</a></em></span>
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Variant&gt; <span class="type">result_type</span> <a class="link" href="apply_visitor_delayed_t.html#id1477087-bb"><span class="bold"><strong>operator</strong></span>()</a>(Variant &amp;);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Variant1, <span class="bold"><strong>typename</strong></span> Variant2&gt; 
-    <span class="type">result_type</span> <a class="link" href="apply_visitor_delayed_t.html#id1136135-bb"><span class="bold"><strong>operator</strong></span>()</a>(Variant1 &amp;, Variant2 &amp;);
+    <span class="type">result_type</span> <a class="link" href="apply_visitor_delayed_t.html#id1486666-bb"><span class="bold"><strong>operator</strong></span>()</a>(Variant1 &amp;, Variant2 &amp;);
 };</pre></div>
 <div class="refsect1" title="Description">
-<a name="id2048568"></a><h2>Description</h2>
+<a name="id2092450"></a><h2>Description</h2>
 <p>Adapts the function given at construction for use as a
           function object. This is useful, for example, when one needs to
           operate on each element of a sequence of variant objects using a
@@ -56,12 +56,12 @@
           <code class="computeroutput"><a class="link" href="apply_visitor.html" title="Function apply_visitor">apply_visitor</a></code> for a simple
           way to create <code class="computeroutput">apply_visitor_delayed_t</code> objects.</p>
 <div class="refsect2" title="apply_visitor_delayed_t public construct/copy/destruct">
-<a name="id2048606"></a><h3>
+<a name="id2092488"></a><h3>
 <a name="boost.apply_visitor_delayed_tconstruct-copy-destruct"></a><code class="computeroutput">apply_visitor_delayed_t</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id1134221-bb"></a>apply_visitor_delayed_t(Visitor &amp; visitor);</pre>
+<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id1477058-bb"></a>apply_visitor_delayed_t(Visitor &amp; visitor);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -73,12 +73,12 @@
 </li></ol></div>
 </div>
 <div class="refsect2" title="apply_visitor_delayed_t function object interface">
-<a name="id2048661"></a><h3>
-<a name="id1343692-bb"></a><code class="computeroutput">apply_visitor_delayed_t</code> function object interface</h3>
+<a name="id2092543"></a><h3>
+<a name="id1477079-bb"></a><code class="computeroutput">apply_visitor_delayed_t</code> function object interface</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="id1343695-bb"></a><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Variant&gt; <span class="type">result_type</span> <a name="id1343699-bb"></a><span class="bold"><strong>operator</strong></span>()(Variant &amp; operand);
+<pre class="literallayout"><a name="id1477083-bb"></a><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Variant&gt; <span class="type">result_type</span> <a name="id1477087-bb"></a><span class="bold"><strong>operator</strong></span>()(Variant &amp; operand);
 <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Variant1, <span class="bold"><strong>typename</strong></span> Variant2&gt; 
-  <span class="type">result_type</span> <a name="id1136135-bb"></a><span class="bold"><strong>operator</strong></span>()(Variant1 &amp; operand1, Variant2 &amp; operand2);</pre>Function call operator.<p class="simpara">Invokes
+  <span class="type">result_type</span> <a name="id1486666-bb"></a><span class="bold"><strong>operator</strong></span>()(Variant1 &amp; operand1, Variant2 &amp; operand2);</pre>Function call operator.<p class="simpara">Invokes
             <code class="computeroutput"><a class="link" href="apply_visitor.html" title="Function apply_visitor">apply_visitor</a></code> on the
             stored visitor using the given operands.</p>
 </li></ol></div>

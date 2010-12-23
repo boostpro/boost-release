@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class postconstructor_invoker</title>
-<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../signals2/reference.html#header.boost.signals2.deconstruct_hpp" title="Header &lt;boost/signals2/deconstruct.hpp&gt;">
@@ -35,44 +35,44 @@
 <span class="bold"><strong>class</strong></span> <a class="link" href="postconstructor_invoker.html" title="Class postconstructor_invoker">postconstructor_invoker</a> {
 <span class="bold"><strong>public</strong></span>:
 
-  <span class="emphasis"><em>// <a class="link" href="postconstructor_invoker.html#id1117569-bb">public methods</a></em></span>
-  <a class="link" href="postconstructor_invoker.html#id1137470-bb"><span class="bold"><strong>operator</strong></span> <span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</a>();
-  <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a class="link" href="postconstructor_invoker.html#id621526-bb">postconstruct</a>();
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> A1&gt; <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a class="link" href="postconstructor_invoker.html#id1120333-bb">postconstruct</a>(A1);
+  <span class="emphasis"><em>// <a class="link" href="postconstructor_invoker.html#id1145947-bb">public methods</a></em></span>
+  <a class="link" href="postconstructor_invoker.html#id1146078-bb"><span class="bold"><strong>operator</strong></span> <span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</a>();
+  <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a class="link" href="postconstructor_invoker.html#id463362-bb">postconstruct</a>();
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> A1&gt; <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a class="link" href="postconstructor_invoker.html#id466061-bb">postconstruct</a>(A1);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> A1, <span class="bold"><strong>typename</strong></span> A2&gt; 
-    <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a class="link" href="postconstructor_invoker.html#id694894-bb">postconstruct</a>(A1, A1);
+    <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a class="link" href="postconstructor_invoker.html#id637046-bb">postconstruct</a>(A1, A1);
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> A1, <span class="bold"><strong>typename</strong></span> A2, ..., <span class="bold"><strong>typename</strong></span> AN&gt; 
-    <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a class="link" href="postconstructor_invoker.html#id1136325-bb">postconstruct</a>(A1, A1, ..., A1);
+    <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a class="link" href="postconstructor_invoker.html#id703007-bb">postconstruct</a>(A1, A1, ..., A1);
 };</pre></div>
 <div class="refsect1" title="Description">
-<a name="id1702801"></a><h2>Description</h2>
+<a name="id1745481"></a><h2>Description</h2>
 <p>
             Objects of type <code class="computeroutput">postconstructor_invoker</code> are returned by calls to the
             <a class="link" href="deconstruct.html" title="Function deconstruct">deconstruct()</a> factory function.  These objects are intended
             to either be immediately assigned to a shared_ptr (in which case the
             class' conversion operator will perform the conversion by calling the
-            <a class="link" href="postconstructor_invoker.html#id621522-bb">postconstruct</a> with no arguments), or to be converted
+            <a class="link" href="postconstructor_invoker.html#id705441-bb">postconstruct</a> with no arguments), or to be converted
             to shared_ptr explicitly by the user calling one of
-            the <a class="link" href="postconstructor_invoker.html#id621522-bb">postconstruct</a> methods.
+            the <a class="link" href="postconstructor_invoker.html#id705441-bb">postconstruct</a> methods.
           </p>
 <div class="refsect2" title="postconstructor_invoker public methods">
-<a name="id1702842"></a><h3>
-<a name="id1117569-bb"></a><code class="computeroutput">postconstructor_invoker</code> public methods</h3>
+<a name="id1745523"></a><h3>
+<a name="id1145947-bb"></a><code class="computeroutput">postconstructor_invoker</code> public methods</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1137470-bb"></a><span class="bold"><strong>operator</strong></span> <span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;();</pre>
+<pre class="literallayout"><a name="id1146078-bb"></a><span class="bold"><strong>operator</strong></span> <span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;();</pre>
 <p>
               The conversion operator has the same effect as explicitly calling
-              the <code class="computeroutput"><a class="link" href="postconstructor_invoker.html#id621522-bb">postconstruct</a></code> method with no arguments.
+              the <code class="computeroutput"><a class="link" href="postconstructor_invoker.html#id705441-bb">postconstruct</a></code> method with no arguments.
             </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id621522-bb"></a><span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a name="id621526-bb"></a>postconstruct();
-<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> A1&gt; <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a name="id1120333-bb"></a>postconstruct(A1 a1);
+<pre class="literallayout"><a name="id705441-bb"></a><span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a name="id463362-bb"></a>postconstruct();
+<span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> A1&gt; <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a name="id466061-bb"></a>postconstruct(A1 a1);
 <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> A1, <span class="bold"><strong>typename</strong></span> A2&gt; 
-  <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a name="id694894-bb"></a>postconstruct(A1 a1, A1 a2);
+  <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a name="id637046-bb"></a>postconstruct(A1 a1, A1 a2);
 <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> A1, <span class="bold"><strong>typename</strong></span> A2, ..., <span class="bold"><strong>typename</strong></span> AN&gt; 
-  <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a name="id1136325-bb"></a>postconstruct(A1 a1, A1 a2, ..., A1 aN);</pre>
+  <span class="type"><span class="bold"><strong>const</strong></span> shared_ptr&lt;T&gt; &amp;</span> <a name="id703007-bb"></a>postconstruct(A1 a1, A1 a2, ..., A1 aN);</pre>
 <p>
               The <code class="computeroutput">postconstruct</code> methods make an unqualified call to
               <code class="computeroutput">adl_postconstruct()</code> and then return the <code class="computeroutput">shared_ptr</code>
