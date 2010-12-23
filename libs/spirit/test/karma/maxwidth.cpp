@@ -1,4 +1,4 @@
-//  Copyright (c) 2001-2009 Hartmut Kaiser
+//  Copyright (c) 2001-2010 Hartmut Kaiser
 // 
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying 
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -44,20 +44,20 @@ main()
     }
 
     {
-//         std::string str;
-//         BOOST_TEST(test("01234567", 
-//             maxwidth(8, std::back_inserter(str))[lit("01234567")]) &&
-//             str.empty());
-// 
-//         str = "";
-//         BOOST_TEST(test("0123456", 
-//             maxwidth(8, std::back_inserter(str))[lit("0123456")]) &&
-//             str.empty());
-// 
-//         str = "";
-//         BOOST_TEST(test("01234567", 
-//             maxwidth(8, std::back_inserter(str))[lit("012345678")]) &&
-//             str == "8");
+        std::string str;
+        BOOST_TEST(test("01234567", 
+            maxwidth(8, std::back_inserter(str))[lit("01234567")]) &&
+            str.empty());
+
+        str = "";
+        BOOST_TEST(test("0123456", 
+            maxwidth(8, std::back_inserter(str))[lit("0123456")]) &&
+            str.empty());
+
+        str = "";
+        BOOST_TEST(test("01234567", 
+            maxwidth(8, std::back_inserter(str))[lit("012345678")]) &&
+            str == "8");
     }
 
     {

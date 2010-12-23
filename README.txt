@@ -1,116 +1,127 @@
 
-Version 1.41.0
+Version 1.42.0
 
 New Libraries
 
-     * Property Tree: A tree data structure especially suited to storing configuration data, from Marcin Kalicinski and Sebastian Redl.
+     * Uuid: A universally unique identifier, from Andy Tompkins.
 
 Updated Libraries
 
-     * DateTime:
-          + The default format for time durations is now "%-%O:%M:%S%F" instead of "%-%H:%M:%S%F" that was used previously. In order to retain the old behavior, the format string has to be specified explicitly during the time IO facet construction (#1861).
-          + Gregorian dates now use 32-bit integer type internally on 64-bit platforms (#3308).
-          + See the full changelog for more detail.
-     * Filesystem:
-          + Bug fixes: (#3385). (#3528). (#3509).
+     * Asio:
+          + Added a new HTTP Server 4 example illustrating the use of stackless coroutines with Asio.
+          + Changed handler allocation and invocation to use boost::addressof to get the address of handler objects, rather than applying operator& directly (#2977).
+          + Restricted MSVC buffer debugging workaround to 2008, as it causes a crash with 2010 beta 2 (#3796, #3822).
+          + Fixed a problem with the lifetime of handler memory, where Windows needs the OVERLAPPED structure to be valid until both the initiating function call has returned and the completion packet has been delivered.
+          + Don't block signals while performing system calls, but instead restart the calls if they are interrupted.
+          + Documented the guarantee made by strand objects with respect to order of handler invocation.
+          + Changed strands to use a pool of implementations, to make copying of strands cheaper.
+          + Ensured that kqueue support is enabled for BSD platforms (#3626).
+          + Added a boost_ prefix to the extern "C" thread entry point function (#3809).
+          + In getaddrinfo emulation, only check the socket type (SOCK_STREAM or SOCK_DGRAM) if a service name has been specified. This should allow the emulation to work with raw sockets.
+          + Added a workaround for some broken Windows firewalls that make a socket appear bound to 0.0.0.0 when it is in fact bound to 127.0.0.1.
+          + Applied a fix for reported excessive CPU usage under Solaris (#3670).
+          + Added some support for platforms that use older compilers such as g++ 2.95 (#3743).
+     * Circular Buffer:
+          + Added methods erase_begin(size_type) and erase_end(size_type) with constant complexity for such types of stored elements which do not need an explicit destruction e.g. int or double.
+          + Similarly changed implementation of the clear() method and the destructor so their complexity is now constant for such types of stored elements which do not require an explicit destruction (the complexity for other types remains linear).
+     * Fusion:
+          + The accumulator is the first argument to the functor of fusion::fold and fusion::accumulate (#2355).
+          + Added support for associative iterators and views (#3473).
+     * Graph:
+          + Removed old interface to compressed_sparse_row_graph, making new interface the default.
+     * Integer:
+          + Reverted Trunk to release branch state (i.e. a "known good state").
+          + Fixed issues: 653, 3084, 3177, 3180, 3568, 3657, 2134.
+          + Added long long support to boost::static_log2, boost::static_signed_min, boost::static_signed_max, boost::static_unsigned_minboost::static_unsigned_max, when available.
+          + The argument type and the result type of boost::static_signed_min etc are now typedef'd. Formerly, they were hardcoded as unsigned long and int respectively. Please, use the provided typedefs in new code (and update old code as soon as possible).
      * Iostreams:
-          + Add a grep filter (#1627).
-          + Support archives with multiple members (#1896).
-          + Make tee work with input streams (#791).
-          + Improved filesystem interoperability.
-          + Several warnings fixed or suppressed (including #1618, #1875, #2779).
-          + Various other fixes (including #1580, #1671).
-     * Math: Substantially improved the performance of the incomplete gamma function and it's inverse: this enhances the performance of the gamma, poisson, chi-squared and non-central chi-squared distributions.
-     * Multi-index Containers: Maintenance fixes. Consult the library release notes for further information.
+          + Fixed many outstanding issues. Thanks to Richard Smith for his work on this. (#3612, #3311, #2094, #3010, #2894, #3011, #3352, #3505).
+          + For more information see the library release notes.
+     * Program.Options:
+          + Information about option name added to a few exception classes and various clean ups in exception classes (#3423).
+          + Description wordwrapping in presense of default parameters fixed (#2613).
+          + Empty value in configuration file is now permitted (#1537).
+          + Quotes are no longer stripped from string values (#850).
+          + Fix endless loop in case of long default arguments (#689).
+          + Fix compile warning caused by usage of boost::any (#2562).
+          + Fix memory bug in example/response_file.cpp (#3525).
+          + Most compilation warnings were fixed (#3608).
+          + Make column width for description text configurable. (#3703).
+          + Add general split function: split_unix() (#2561).
+          + Enable open config files from given file name (#3264).
+          + Additional flag for required options (#2982).
+          + Enable case insensitive style for command line (#3498).
+     * PropertyMap:
+          + Removed old header files (directly in the boost/ directory); they were deprecated since 1.40, replaced by headers in boost/property_map/.
      * Proto:
-          + Clean up some MSVC warnings and errors in /Za (disable Microsoft extensions) mode.
-          + Fixes for c++0x mode on various compilers.
-     * Python: Boost.Python now supports Python 3 (Haoyu Bai's Google Summer of Code project, mentored by Stefan Seefeld).
-     * Regex: Added support for many Perl 5.10 syntax elements including named sub-expressions, branch resets and recursive regular expressions.
-     * Spirit: This is the initial official release of the new Spirit V2.1, a completely new library for parsing, lexing, and output generation. Note: this release is not backwards compatible with earlier versions.
-     * System:
-          + Bug fix: (#3559).
-     * Thread:
-          + Support for futures, promises and packaged tasks added
-          + boost::thread_specific_ptr is now faster when there are lots of thread-specific objects
-          + Some Boost.Thread facilities are now header-only
-     * Unordered: Major update:
-          + Replaced a lot of the macro based implementation with a cleaner template based implementation.
-          + Reduced memory use.
-          + Full details in the changelog.
-     * Utility: A "const" issue of value_initialized is fixed: Its data() member function and its conversion operator are replaced by overloads for const and non-const access (#2548).
-     * Wave: See the changelog for details.
+          + Fix const correctness issues with proto::flatten and friends (#3364).
+          + Accomodate recent change to fusion::fold, remove old support for Doxygen and pre-1.35 Fusion (#3553).
+          + In binary operations, when one operand has a user-specified domain and the other has the default domain, the user-specified domain trumps.
+          + Fix BOOST_PROTO_EXTENDS to work with elaborated types.
+          + Work around EDG compiler bug with function types and cv-qualification.
+     * Regex:
+          + Added support for Functors rather than strings as format expressions.
+          + Improved error reporting when throwing exceptions to include better more relevant information.
+          + Improved performance and reduced stack usage of recursive expressions.
+          + Fixed tickets #2802, #3425, #3507, #3546, #3631, #3632, #3715, #3718, #3763, #3764
+     * Spirit: Spirit V2.2, see the 'What's New' section for details.
+     * Unordered:
+          + Support instantiating the containers with incomplete value types.
+          + Add erase_return_void as a temporary workaround for the current erase which can be inefficient because it has to find the next element to return an iterator (#3693).
+          + Add templated find overload for compatible keys.
+          + Improved codegear compatibility.
+          + Other minor changes, full details in the changelog.
      * Xpressive:
-          + Fix infinite loop with some uses of \Q...\E quotemeta (#3586).
-          + Eliminate unreachable code warnings on MSVC
-          + Clean up some MSVC warnings and errors in /Za ("disable Microsoft extensions") mode.
-          + Fixes for c++0x mode on various compilers.
-
-Build System
-
-   A bug preventing "fat" 32-bit + 64-bit builds on OSX has been fixed.
-
-Boost.CMake moved
-
-   The cmake version of boost has moved; the Boost.CMmake release will be separate and will lag the main release slightly, but will also be capable of producing patch releases as necessary.
-
-   More information on the Boost CMake wiki page.
-
-Updated Tools
-
-     * Quickbook 1.5: These changes require your document to use the [quickbook 1.5] tag:
-          + More intuitive syntax and variable lookup for template calls (#1174, #2034, #2036).
-          + Image attributes (#1157)
-          + Table Ids (#1194)
-          + Better handling of whitespace in section syntax. (#2712)
+          + match_results no longer relies on undefined behavior in std::list (#3278).
+          + Do NOT copy singular iterators (#3538).
+          + Eliminate gcc and darwin warnings (#3734).
 
 Compilers Tested
 
    Boost's primary test compilers are:
      * OS X:
-          + GCC 4.0.1 on Intel Tiger and Leopard.
+          + GCC 4.0.1 on Intel Leopard.
           + GCC 4.0.1 on PowerPC Tiger.
      * Linux:
           + GCC 4.4.1 on Ubuntu Linux.
-          + GCC 4.4 on Debian
+          + GCC 4.4 on Debian.
      * Windows:
           + Visual C++ 7.1 SP1, 8.0 SP1 and 9.0 SP1 on Windows XP.
+          + Visual C++ 9.0 on Windows 2008, 64 bit.
+          + GCC 4.3.3, using Mingw
+     * FreeBSD:
+          + GCC 4.2.1, 32 and 64 bit.
 
    Boost's additional test compilers include:
      * Linux:
           + Intel 10.1 on Red Hat Enterprise Linux.
-          + Intel 10.1 on 64-bit Red Hat Enterprise Linux.
-          + Intel 10.1 on Suse Linux on 64 bit Itanium.
+          + Intel 10.1 on 64 bit Red Hat Enterprise Linux.
           + Intel 11.0 on 32 bit Red Hat Enterprise Linux.
           + Intel 11.0 on 64 bit Red Hat Enterprise Linux.
           + Intel 11.1 on 64 bit Red Hat Enterprise Linux.
           + Intel 11.1 on 64 bit Linux Redhat 5.1 Server.
-          + GCC 3.4.3, GCC 4.2.4, GCC 4.3.3 and GCC 4.4.1 on Red Hat Enterprise Linux.
-          + GCC 4.3.3 and GCC 4.4.1 with C++0x extensions on Red Hat Enterprise Linux.
-          + GCC 4.3.3 on 64-bit Redhat Server 5.1.
-          + GCC 4.3.3 on 64 bit Linux.
-          + GCC 4.3.4 on Debian unstable.
-          + GCC 4.3.2 on 64 bit Gentoo.
+          + Intel 11.1 on Suse Linux 64 bit.
+          + GCC 3.4.6, GCC 4.2.4, GCC 4.3.4 and GCC 4.4.2 on Red Hat Enterprise Linux.
+          + GCC 4.3.4 and GCC 4.4.2 with C++0x extensions on Red Hat Enterprise Linux.
+          + GCC 4.4.1 on 64 bit Linux.
+          + GCC 4.4.3 on Debian unstable.
           + QLogic PathScale(TM) Compiler Suite: Version 3.2 on Red Hat Enterprise Linux.
-          + Sun 5.9 on Red Hat Enterprise Linux.
      * OS X:
-          + Intel C++ Compiler 11.1 on Leopard.
-          + Intel C++ Compiler 10.1, 11.0.
-          + GCC 4.0.1 on Intel Tiger.
+          + Intel C++ Compiler 10.1, 11.0, 11.1 on Leopard.
+          + GCC 4.0.1 on Intel Leopard.
           + GCC 4.0.1 on PowerPC Tiger.
      * Windows:
           + Visual C++ 7.1, 8,0, 9,0 on XP.
-          + Visual C++ 9.0 on 32-bit Vista.
-          + Visual C++ 9.0 on AMD 64-bit Vista.
           + Visual C++ 9.0 using STLport 5.2 on XP and Windows Mobile 5.0.
-          + Visual C++ 10.0 beta 1 with a patch for the program options lib.
-          + Borland/Codegear C++ 5.9.3, 6.1.3 (2009), 6.2.0 (2010).
+          + Visual C++ 10.0 beta 2.
+          + Visual C++ 10.0 on 32-bit Vista.
+          + Borland/Codegear C++ 5.9.3, 6.1.3 (2009), 6.2.1 (2010).
           + Intel C++ 11.1, with a Visual C++ 9.0 backend, on Vista 32-bit.
           + GCC 4.4.1 on Mingw, with and without C++0x extensions.
      * AIX:
           + IBM XL C/C++ Enterprise Edition for AIX, V10.1.0.0, on AIX Version 5.3.0.40.
      * FreeBSD:
-          + GCC 4.2.1 on FreeBSD 7.0.
+          + GCC 4.2.1 on FreeBSD 7.0, 32 bit and 64 bit.
      * Solaris:
           + Sun C++ 5.10 on Solaris 5.10.
 

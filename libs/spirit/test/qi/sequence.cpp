@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2001-2009 Joel de Guzman
+    Copyright (c) 2001-2010 Joel de Guzman
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -145,7 +145,48 @@ main()
         BOOST_TEST(v[0] == 'a');
         BOOST_TEST(v[1] == 'b');
         BOOST_TEST(v[2] == 'c');
+    }
 
+    { // alternative forms of attributes. Allow sequences to take in
+      // stl containers.
+
+        std::string s;
+        BOOST_TEST(test_attr("foobar", string("foo") >> string("bar"), s));
+        BOOST_TEST(s == "foobar");
+    }
+
+//     // alternative forms of attributes. Allow sequences to take in
+//     // stl containers of stl containers.
+//     {
+//         // this use case still does not compile, needs some additional work
+// 
+//         std::vector<std::string> v;
+//         BOOST_TEST(test_attr("abc1,abc2,abc3", 
+//             *~char_(',') >> *(',' >> *~char_(',')), v));
+//         BOOST_TEST(v.size() == 3);
+//         BOOST_TEST(v[0] == "abc1");
+//         BOOST_TEST(v[1] == "abc2");
+//         BOOST_TEST(v[2] == "abc3");
+//     }
+
+//     {
+//         std::vector<std::string> v;
+//         rule<char const*, std::string()> e = *~char_(',');
+//         rule<char const*, std::vector<std::string>()> l = e >> *(',' >> e);
+// 
+//         BOOST_TEST(test_attr("abc1,abc2,abc3", l, v));
+//         BOOST_TEST(v.size() == 3);
+//         BOOST_TEST(v[0] == "abc1");
+//         BOOST_TEST(v[1] == "abc2");
+//         BOOST_TEST(v[2] == "abc3");
+//     }
+
+    {
+        std::vector<char> v;
+        BOOST_TEST(test_attr("ab", char_ >> -char_, v));
+        BOOST_TEST(v.size() == 2);
+        BOOST_TEST(v[0] == 'a');
+        BOOST_TEST(v[1] == 'b');
     }
 
     {   // test action

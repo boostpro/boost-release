@@ -1,4 +1,4 @@
-//  Copyright (c) 2001-2009 Hartmut Kaiser
+//  Copyright (c) 2001-2010 Hartmut Kaiser
 // 
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying 
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -21,6 +21,7 @@
 #include <boost/spirit/include/karma_numeric.hpp>
 #include <boost/spirit/include/karma_directive.hpp>
 #include <boost/spirit/include/karma_action.hpp>
+#include <boost/spirit/include/karma_phoenix_attributes.hpp>
 
 #include <limits>
 #include "test.hpp"
@@ -91,6 +92,18 @@ struct test_minmax
         BOOST_TEST(test(expected_minval, gen(minval), optmin));
         BOOST_TEST(test(expected_maxval, gen(maxval), optmax));
 
+// we support Phoenix attributes only starting with V2.2
+#if SPIRIT_VERSION >= 0x2020
+    // Phoenix expression tests (only supported while including
+    // karma_phoenix_attributes.hpp
+        namespace phoenix = boost::phoenix;
+
+        BOOST_TEST(test("1", gen, phoenix::val(1)));
+
+        T val = 1;
+        BOOST_TEST(test("1", gen, phoenix::ref(val)));
+        BOOST_TEST(test("2", gen, ++phoenix::ref(val)));
+#endif
     }
 };
 
@@ -273,6 +286,10 @@ main()
         BOOST_TEST(test_delimited("ff ", hex, 0xff, char_(' ')));
         BOOST_TEST(test_delimited("1234 ", oct, 01234, char_(' ')));
         BOOST_TEST(test_delimited("11110000 ", bin, 0xf0, char_(' ')));
+
+        // test unsigned generator with signed integral value
+        BOOST_TEST(test("ff", hex, (char)0xff));
+        BOOST_TEST(test_delimited("ff ", hex, (char)0xff, char_(' ')));
 
         BOOST_TEST(test("1234", lower[uint_], 1234));
         BOOST_TEST(test("ff", lower[hex], 0xff));

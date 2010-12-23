@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Practical considerations</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../lambda.html" title="Chapter 11. Boost.Lambda">
+<link rel="up" href="../lambda.html" title="Chapter&#160;11.&#160;Boost.Lambda">
 <link rel="prev" href="extending.html" title="Extending return type deduction system">
 <link rel="next" href="s08.html" title="Relation to other Boost libraries">
 </head>
@@ -24,15 +24,15 @@
 </div>
 <div class="section" title="Practical considerations">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id1349417"></a>Practical considerations</h2></div></div></div>
+<a name="id1363619"></a>Practical considerations</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="s07.html#id1349423">Performance</a></span></dt>
-<dt><span class="section"><a href="s07.html#id1349811">About compiling</a></span></dt>
-<dt><span class="section"><a href="s07.html#id1349861">Portability</a></span></dt>
+<dt><span class="section"><a href="s07.html#id1363624">Performance</a></span></dt>
+<dt><span class="section"><a href="s07.html#id1364013">About compiling</a></span></dt>
+<dt><span class="section"><a href="s07.html#id1364063">Portability</a></span></dt>
 </dl></div>
 <div class="section" title="Performance">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1349423"></a>Performance</h3></div></div></div>
+<a name="id1363624"></a>Performance</h3></div></div></div>
 <p>In theory, all overhead of using STL algorithms and lambda functors 
 compared to hand written loops can be optimized away, just as the overhead 
 from standard STL function objects and binders can.
@@ -53,7 +53,7 @@ reading the argument from one <code class="literal">std::vector&lt;int&gt;</code
 and placing the result into another.
 The length of the vectors was 100 elements.
 The running times are listed in 
-<a class="xref" href="s07.html#table:increasing_arithmetic_test" title="Table 11.3. Test 1">Table 11.3, &#8220;Test 1&#8221;</a>.
+<a class="xref" href="s07.html#table:increasing_arithmetic_test" title="Table&#160;11.3.&#160;Test 1">Table&#160;11.3, &#8220;Test 1&#8221;</a>.
 
 We can observe that there is no significant difference between the
 two approaches.
@@ -64,12 +64,12 @@ perform an operation to each element in a 100-element long vector.
 This time the element type of the vectors was <code class="literal">double</code>
 and we started with very simple arithmetic expressions and moved to 
 more complex ones.
-The running times are listed in <a class="xref" href="s07.html#table:ll_vs_stl_test" title="Table 11.4. Test 2">Table 11.4, &#8220;Test 2&#8221;</a>.
+The running times are listed in <a class="xref" href="s07.html#table:ll_vs_stl_test" title="Table&#160;11.4.&#160;Test 2">Table&#160;11.4, &#8220;Test 2&#8221;</a>.
 
 Here, we also included classic STL style unnamed functions into tests.
 We do not show these expressions, as they get rather complex. 
 For example, the
-last expression in <a class="xref" href="s07.html#table:ll_vs_stl_test" title="Table 11.4. Test 2">Table 11.4, &#8220;Test 2&#8221;</a> written with
+last expression in <a class="xref" href="s07.html#table:ll_vs_stl_test" title="Table&#160;11.4.&#160;Test 2">Table&#160;11.4, &#8220;Test 2&#8221;</a> written with
 classic STL tools contains 7 calls to <code class="literal">compose2</code>, 
 8 calls to <code class="literal">bind1st</code>
 and altogether 14 constructor invocations for creating 
@@ -101,7 +101,7 @@ this for some seemingly simple expressions.
 
 </p>
 <div class="table">
-<a name="table:increasing_arithmetic_test"></a><p class="title"><b>Table 11.3. Test 1</b></p>
+<a name="table:increasing_arithmetic_test"></a><p class="title"><b>Table&#160;11.3.&#160;Test 1</b></p>
 <div class="table-contents">
 <div class="caption">CPU time of expressions with integer multiplication written as a lambda expression and as a traditional hand-coded function object class. 
 The running times are expressed in arbitrary units.</div>
@@ -151,7 +151,7 @@ The running times are expressed in arbitrary units.</div>
 <p>
 </p>
 <div class="table">
-<a name="table:ll_vs_stl_test"></a><p class="title"><b>Table 11.4. Test 2</b></p>
+<a name="table:ll_vs_stl_test"></a><p class="title"><b>Table&#160;11.4.&#160;Test 2</b></p>
 <div class="table-contents">
 <div class="caption">CPU time of arithmetic expressions written as lambda 
 expressions, as classic STL unnamed functions (using <code class="literal">compose2</code>, <code class="literal">bind1st</code> etc.) and as traditional hand-coded function object classes. 
@@ -211,12 +211,12 @@ The running times are expressed in arbitrary units.</div>
 </p>
 <p>Some additional performance testing with an earlier version of the
 library is described
-<a class="xref" href="../lambda.html#cit:jarvi:00" title="The Lambda Library : Lambda Abstraction in C++">[<abbr class="abbrev">Jär00</abbr>]</a>.
+<a class="xref" href="../lambda.html#cit:jarvi:00" title="The Lambda Library : Lambda Abstraction in C++">[<abbr class="abbrev">J&#228;r00</abbr>]</a>.
 </p>
 </div>
 <div class="section" title="About compiling">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1349811"></a>About compiling</h3></div></div></div>
+<a name="id1364013"></a>About compiling</h3></div></div></div>
 <p>The BLL uses templates rather heavily, performing numerous recursive instantiations of the same templates. 
 This has (at least) three implications:
 </p>
@@ -240,8 +240,8 @@ Most compilers allow a greater number of nested templates, but commonly require 
 </div>
 <div class="section" title="Portability">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1349861"></a>Portability</h3></div></div></div>
-<div class="toc"><dl><dt><span class="section"><a href="s07.html#id1349894">Test coverage</a></span></dt></dl></div>
+<a name="id1364063"></a>Portability</h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="s07.html#id1364096">Test coverage</a></span></dt></dl></div>
 <p>
 The BLL works with the following compilers, that is, the compilers are capable of compiling the test cases that are included with the BLL:
 
@@ -260,7 +260,7 @@ The BLL works with the following compilers, that is, the compilers are capable o
 </p>
 <div class="section" title="Test coverage">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1349894"></a>Test coverage</h4></div></div></div>
+<a name="id1364096"></a>Test coverage</h4></div></div></div>
 <p>The following list describes the test files included and the features that each file covers:
 
 </p>
@@ -329,7 +329,7 @@ Contains tests for using <code class="literal">boost::function</code> together w
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 1999-2004 Jaakko Järvi, Gary Powell<p>Use, modification and distribution is subject to the Boost
+<td align="right"><div class="copyright-footer">Copyright &#169; 1999-2004 Jaakko J&#228;rvi, Gary Powell<p>Use, modification and distribution is subject to the Boost
     Software License, Version 1.0. (See accompanying file
     <code class="filename">LICENSE_1_0.txt</code> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)</p>
 </div></td>

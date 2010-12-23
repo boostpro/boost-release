@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class variable_value</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
@@ -35,63 +35,76 @@
 <span class="bold"><strong>class</strong></span> <a class="link" href="variable_value.html" title="Class variable_value">variable_value</a> {
 <span class="bold"><strong>public</strong></span>:
   <span class="emphasis"><em>// <a class="link" href="variable_value.html#boost.program_options.variable_valueconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="variable_value.html#id982374-bb">variable_value</a>();
-  <a class="link" href="variable_value.html#id982375-bb">variable_value</a>(<span class="bold"><strong>const</strong></span> boost::any &amp;, <span class="bold"><strong>bool</strong></span>);
+  <a class="link" href="variable_value.html#id935118-bb">variable_value</a>();
+  <a class="link" href="variable_value.html#id935119-bb">variable_value</a>(<span class="bold"><strong>const</strong></span> boost::any &amp;, <span class="bold"><strong>bool</strong></span>);
 
-  <span class="emphasis"><em>// <a class="link" href="variable_value.html#id970176-bb">public member functions</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><span class="bold"><strong>const</strong></span> T &amp;</span> <a class="link" href="variable_value.html#id970179-bb">as</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type">T &amp;</span> <a class="link" href="variable_value.html#id970197-bb">as</a>() ;
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="variable_value.html#id970216-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="variable_value.html#id970226-bb">defaulted</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>const</strong></span> boost::any &amp;</span> <a class="link" href="variable_value.html#id982353-bb">value</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">boost::any &amp;</span> <a class="link" href="variable_value.html#id982364-bb">value</a>() ;
+  <span class="emphasis"><em>// <a class="link" href="variable_value.html#id935037-bb">public member functions</a></em></span>
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><span class="bold"><strong>const</strong></span> T &amp;</span> <a class="link" href="variable_value.html#id935040-bb">as</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type">T &amp;</span> <a class="link" href="variable_value.html#id935058-bb">as</a>() ;
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="variable_value.html#id935077-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="variable_value.html#id935086-bb">defaulted</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>const</strong></span> boost::any &amp;</span> <a class="link" href="variable_value.html#id935098-bb">value</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">boost::any &amp;</span> <a class="link" href="variable_value.html#id935108-bb">value</a>() ;
+
+  <span class="emphasis"><em>// <a class="link" href="variable_value.html#id935130-bb">friend functions</a></em></span>
+  <span class="type"><span class="bold"><strong>friend</strong></span> BOOST_PROGRAM_OPTIONS_DECL <span class="bold"><strong>void</strong></span></span> 
+  <a class="link" href="variable_value.html#id935133-bb">store</a>(<span class="bold"><strong>const</strong></span> <a class="link" href="basic_parsed_options.html" title="Class template basic_parsed_options">basic_parsed_options</a>&lt; <span class="bold"><strong>char</strong></span> &gt; &amp;, <a class="link" href="variables_map.html" title="Class variables_map">variables_map</a> &amp;, <span class="bold"><strong>bool</strong></span>) ;
 };</pre></div>
 <div class="refsect1" title="Description">
-<a name="id1420497"></a><h2>Description</h2>
+<a name="id1436536"></a><h2>Description</h2>
 <p>Class holding value of option. Contains details about how the value is set and allows to conveniently obtain the value. </p>
 <div class="refsect2" title="variable_value public construct/copy/destruct">
-<a name="id1420505"></a><h3>
+<a name="id1436543"></a><h3>
 <a name="boost.program_options.variable_valueconstruct-copy-destruct"></a><code class="computeroutput">variable_value</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="id982374-bb"></a>variable_value();</pre></li>
-<li class="listitem"><pre class="literallayout"><a name="id982375-bb"></a>variable_value(<span class="bold"><strong>const</strong></span> boost::any &amp; v, <span class="bold"><strong>bool</strong></span> defaulted);</pre></li>
+<li class="listitem"><pre class="literallayout"><a name="id935118-bb"></a>variable_value();</pre></li>
+<li class="listitem"><pre class="literallayout"><a name="id935119-bb"></a>variable_value(<span class="bold"><strong>const</strong></span> boost::any &amp; v, <span class="bold"><strong>bool</strong></span> defaulted);</pre></li>
 </ol></div>
 </div>
 <div class="refsect2" title="variable_value public member functions">
-<a name="id1420564"></a><h3>
-<a name="id970176-bb"></a><code class="computeroutput">variable_value</code> public member functions</h3>
+<a name="id1436601"></a><h3>
+<a name="id935037-bb"></a><code class="computeroutput">variable_value</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><span class="bold"><strong>const</strong></span> T &amp;</span> <a name="id970179-bb"></a>as() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type"><span class="bold"><strong>const</strong></span> T &amp;</span> <a name="id935040-bb"></a>as() <span class="bold"><strong>const</strong></span>;</pre>
 <p>If stored value if of type T, returns that value. Otherwise, throws boost::bad_any_cast exception. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type">T &amp;</span> <a name="id970197-bb"></a>as() ;</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T&gt; <span class="type">T &amp;</span> <a name="id935058-bb"></a>as() ;</pre>
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id970216-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>Returns true if no value is stored. </li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id935077-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>Returns true if no value is stored. </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id970226-bb"></a>defaulted() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id935086-bb"></a>defaulted() <span class="bold"><strong>const</strong></span>;</pre>
 <p>Returns true if the value was not explicitly given, but has default value. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> boost::any &amp;</span> <a name="id982353-bb"></a>value() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> boost::any &amp;</span> <a name="id935098-bb"></a>value() <span class="bold"><strong>const</strong></span>;</pre>
 <p>Returns the contained value. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">boost::any &amp;</span> <a name="id982364-bb"></a>value() ;</pre>
+<pre class="literallayout"><span class="type">boost::any &amp;</span> <a name="id935108-bb"></a>value() ;</pre>
 <p>Returns the contained value. </p>
 </li>
 </ol></div>
+</div>
+<div class="refsect2" title="variable_value friend functions">
+<a name="id1436798"></a><h3>
+<a name="id935130-bb"></a><code class="computeroutput">variable_value</code> friend functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="type"><span class="bold"><strong>friend</strong></span> BOOST_PROGRAM_OPTIONS_DECL <span class="bold"><strong>void</strong></span></span> 
+<a name="id935133-bb"></a>store(<span class="bold"><strong>const</strong></span> <a class="link" href="basic_parsed_options.html" title="Class template basic_parsed_options">basic_parsed_options</a>&lt; <span class="bold"><strong>char</strong></span> &gt; &amp; options, <a class="link" href="variables_map.html" title="Class variables_map">variables_map</a> &amp; m, <span class="bold"><strong>bool</strong></span>) ;</pre>
+<p>Stores in 'm' all options that are defined in 'options'. If 'm' already has a non-defaulted value of an option, that value is not changed, even if 'options' specify some value. </p>
+</li></ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2002-2004 Vladimir Prus<p>Distributed under the Boost Software License, Version 1.0.
+<td align="right"><div class="copyright-footer">Copyright &#169; 2002-2004 Vladimir Prus<p>Distributed under the Boost Software License, Version 1.0.
       (See accompanying file <code class="filename">LICENSE_1_0.txt</code> or copy at 
       <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

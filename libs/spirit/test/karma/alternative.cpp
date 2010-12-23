@@ -1,4 +1,4 @@
-//  Copyright (c) 2001-2009 Hartmut Kaiser
+//  Copyright (c) 2001-2010 Hartmut Kaiser
 // 
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying 
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -90,6 +90,13 @@ main()
         int i = 10;
         BOOST_TEST(test("a", lit('a') | int_, i));
         BOOST_TEST(test("10", int_ | lit('a'), i));
+    }
+
+    {
+        BOOST_TEST(test("abc", string | int_, std::string("abc")));
+        BOOST_TEST(test("1234", string | int_, 1234));
+        BOOST_TEST(test("abc", int_ | string, std::string("abc")));
+        BOOST_TEST(test("1234", int_ | string, 1234));
     }
 
     {

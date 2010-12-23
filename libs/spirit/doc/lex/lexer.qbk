@@ -1,6 +1,6 @@
 [/==============================================================================
-    Copyright (C) 2001-2009 Joel de Guzman
-    Copyright (C) 2001-2009 Hartmut Kaiser
+    Copyright (C) 2001-2010 Joel de Guzman
+    Copyright (C) 2001-2010 Hartmut Kaiser
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -72,6 +72,20 @@ Options may be zero or more of the characters 'i' or 's'.
 
 [note POSIX character classes are not currently supported, due to performance issues
 when creating them in wide character mode.]
+
+[tip  If you want to build tokens for syntaxes that recognize items like quotes 
+      (`"'"`, `'"'`) and backslash (`\`), here is example syntax to get you started. 
+      The lesson here really is to remember that both c++, as well as regular 
+      expressions require escaping with `\` for some constructs, which can 
+      cascade.
+      ``
+          quote1         = "'";            // match single "'"
+          quote2         = "\\\"";         // match single '"'
+          literal_quote1 = "\\'";          // match backslash followed by single "'"
+          literal_quote2 = "\\\\\\\"";     // match backslash followed by single '"'
+          literal_backslash = "\\\\\\\\";  // match two backslashs
+      ``
+]
 
 [heading Regular Expression Precedence]
 

@@ -1,4 +1,4 @@
-//  Copyright (c) 2001-2009 Hartmut Kaiser
+//  Copyright (c) 2001-2010 Hartmut Kaiser
 //  Copyright (c) 2009 Carl Barron
 // 
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying 
@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
     matlib_type matrix(results);
 
     std::ofstream out(argc < 2 ? "matlib_static.h" : argv[1]);
-    BOOST_TEST(boost::spirit::lex::lexertl::generate_static(matrix, out, "matlib"));
+    BOOST_TEST(boost::spirit::lex::lexertl::generate_static_dfa(matrix, out, "matlib"));
     return boost::report_errors();
 }
+

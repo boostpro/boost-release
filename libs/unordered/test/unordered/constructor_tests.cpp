@@ -3,6 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "../helpers/prefix.hpp"
+
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
 #include "../helpers/test.hpp"
@@ -20,7 +22,8 @@ namespace constructor_tests {
 test::seed_t seed(356730);
 
 template <class T>
-void constructor_tests1(T*, test::random_generator generator = test::default_generator)
+void constructor_tests1(T*,
+    test::random_generator generator = test::default_generator)
 {
     BOOST_DEDUCED_TYPENAME T::hasher hf;
     BOOST_DEDUCED_TYPENAME T::key_equal eq;
@@ -150,7 +153,8 @@ void constructor_tests1(T*, test::random_generator generator = test::default_gen
 }
 
 template <class T>
-void constructor_tests2(T*, test::random_generator const& generator = test::default_generator)
+void constructor_tests2(T*,
+    test::random_generator const& generator = test::default_generator)
 {
     BOOST_DEDUCED_TYPENAME T::hasher hf;
     BOOST_DEDUCED_TYPENAME T::hasher hf1(1);
@@ -243,8 +247,14 @@ void constructor_tests2(T*, test::random_generator const& generator = test::defa
     std::cerr<<"Construct 8 - from input iterator\n";
     {
         test::random_values<T> v(100, generator);
-        T x(test::input_iterator(v.begin()), test::input_iterator(v.end()), 0, hf1, eq1);
-        T y(test::input_iterator(x.begin()), test::input_iterator(x.end()), 0, hf2, eq2);
+        BOOST_DEDUCED_TYPENAME test::random_values<T>::const_iterator
+            v_begin = v.begin(), v_end = v.end();
+        T x(test::input_iterator(v_begin),
+            test::input_iterator(v_end), 0, hf1, eq1);
+        BOOST_DEDUCED_TYPENAME T::const_iterator
+            x_begin = x.begin(), x_end = x.end();
+        T y(test::input_iterator(x_begin),
+            test::input_iterator(x_end), 0, hf2, eq2);
         test::check_container(x, v);
         test::check_container(y, x);
         test::check_equivalent_keys(x);
@@ -319,11 +329,17 @@ void constructor_tests2(T*, test::random_generator const& generator = test::defa
 }
 
 template <class T>
-void map_constructor_test(T* = 0, test::random_generator const& generator = test::default_generator)
+void map_constructor_test(T* = 0,
+    test::random_generator const& generator = test::default_generator)
 {
     std::cerr<<"map_constructor_test\n";
 
-    typedef test::list<std::pair<BOOST_DEDUCED_TYPENAME T::key_type, BOOST_DEDUCED_TYPENAME T::mapped_type> > list;
+    typedef test::list<
+        std::pair<
+            BOOST_DEDUCED_TYPENAME T::key_type,
+            BOOST_DEDUCED_TYPENAME T::mapped_type
+        >
+    > list;
     test::random_values<T> v(1000, generator);
     list l(v.begin(), v.end());
     T x(l.begin(), l.end());
@@ -332,10 +348,18 @@ void map_constructor_test(T* = 0, test::random_generator const& generator = test
     test::check_equivalent_keys(x);
 }
 
-boost::unordered_set<test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_set;
-boost::unordered_multiset<test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_multiset;
-boost::unordered_map<test::object, test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_map;
-boost::unordered_multimap<test::object, test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_multimap;
+boost::unordered_set<test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_set;
+boost::unordered_multiset<test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_multiset;
+boost::unordered_map<test::object, test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_map;
+boost::unordered_multimap<test::object, test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_multimap;
 
 using test::default_generator;
 using test::generate_collisions;
@@ -365,7 +389,8 @@ UNORDERED_AUTO_TEST(test_default_initializer_list) {
 
 #endif
 
-#if !defined(BOOST_NO_INITIALIZER_LISTS)
+#if !defined(BOOST_NO_0X_HDR_INITIALIZER_LIST) && \
+    !defined(BOOST_NO_INITIALIZER_LISTS)
 
 UNORDERED_AUTO_TEST(test_initializer_list) {
     std::cerr<<"Initializer List Tests\n";

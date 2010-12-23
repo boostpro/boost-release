@@ -3,6 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "../helpers/prefix.hpp"
+
 #include <boost/unordered/unordered_set_fwd.hpp>
 
 struct true_type { char x[100]; };
@@ -45,7 +47,8 @@ bool call_not_equals(int_multiset& x, int_multiset& y) {
 #include "../helpers/test.hpp"
 
 UNORDERED_AUTO_TEST(use_fwd_declared_trait_without_definition) {
-    BOOST_TEST(sizeof(is_unordered_set_impl((int_set*) 0)) == sizeof(true_type));
+    BOOST_TEST(sizeof(is_unordered_set_impl((int_set*) 0))
+        == sizeof(true_type));
 }
 
 #include <boost/unordered_set.hpp>

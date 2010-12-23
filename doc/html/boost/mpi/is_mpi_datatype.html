@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Struct template is_mpi_datatype</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
@@ -35,7 +35,7 @@
 <span class="bold"><strong>struct</strong></span> <a class="link" href="is_mpi_datatype.html" title="Struct template is_mpi_datatype">is_mpi_datatype</a> : <span class="bold"><strong>public</strong></span> boost::mpi::is_mpi_builtin_datatype&lt; T &gt; {
 };</pre></div>
 <div class="refsect1" title="Description">
-<a name="id1386100"></a><h2>Description</h2>
+<a name="id1400311"></a><h2>Description</h2>
 <p>This type trait determines if it is possible to build an MPI data type that represents a C++ data type. When this is the case, <code class="computeroutput">is_mpi_datatype</code> derives <code class="computeroutput">mpl::true_</code> and the MPI data type will be accessible via <code class="computeroutput">get_mpi_datatype</code>.</p>
 <p>For any C++ type that maps to a built-in MPI data type (see <code class="computeroutput">is_mpi_builtin_datatype</code>), <code class="computeroutput">is_mpi_data_type</code> is trivially true. However, any POD ("Plain Old Data") type containing types that themselves can be represented by MPI data types can itself be represented as an MPI data type. For instance, a <code class="computeroutput">point3d</code> class containing three <code class="computeroutput">double</code> values can be represented as an MPI data type. To do so, first make the data type Serializable (using the Boost.Serialization library); then, specialize the <code class="computeroutput">is_mpi_datatype</code> trait for the point type so that it will derive <code class="computeroutput">mpl::true_:</code> </p>
 <pre class="programlisting">    namespace boost { namespace mpi {
@@ -48,7 +48,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2005-2007 Douglas Gregor,
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005-2007 Douglas Gregor,
       Matthias Troyer, Trustees of Indiana University<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">

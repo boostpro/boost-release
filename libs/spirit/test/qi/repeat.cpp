@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2001-2009 Joel de Guzman
+    Copyright (c) 2001-2010 Joel de Guzman
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -39,9 +39,10 @@ namespace boost { namespace spirit { namespace traits
     template <>
     struct push_back_container<x_attr, char>
     {
-        static void call(x_attr& /*c*/, char /*val*/)
+        static bool call(x_attr& /*c*/, char /*val*/)
         {
             // push back value type into container
+            return true;
         }
     };
 }}}
@@ -153,6 +154,21 @@ main()
 
         s.clear();
         BOOST_TEST(test_attr("b b b b", omit[repeat(4)[char_('b')]], s, space) && s == "bbbb");
+    }
+
+    {
+        BOOST_TEST(test("1 2 3", int_ >> repeat(2)[int_], space));
+        BOOST_TEST(!test("1 2", int_ >> repeat(2)[int_], space));
+    }
+
+    {
+        std::vector<char> v;
+        BOOST_TEST(test_attr("1 2 3", int_ >> repeat(2)[int_], v, space));
+        BOOST_TEST(v.size() == 3 && v[0] == 1 && v[1] == 2 && v[2] == 3);
+
+        v.clear();
+        BOOST_TEST(!test_attr("1 2", int_ >> repeat(2)[int_], v, space));
+        BOOST_TEST(v.size() == 1 && v[0] == 1);
     }
 
     { // actions

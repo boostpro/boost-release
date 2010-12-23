@@ -3,6 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "../helpers/prefix.hpp"
+
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
 #include "../helpers/test.hpp"
@@ -18,7 +20,8 @@ namespace assign_tests {
 test::seed_t seed(96785);
 
 template <class T>
-void assign_tests1(T*, test::random_generator generator = test::default_generator)
+void assign_tests1(T*,
+    test::random_generator generator = test::default_generator)
 {
     BOOST_DEDUCED_TYPENAME T::hasher hf;
     BOOST_DEDUCED_TYPENAME T::key_equal eq;
@@ -52,7 +55,8 @@ void assign_tests1(T*, test::random_generator generator = test::default_generato
 }
 
 template <class T>
-void assign_tests2(T*, test::random_generator generator = test::default_generator)
+void assign_tests2(T*,
+    test::random_generator generator = test::default_generator)
 {
     BOOST_DEDUCED_TYPENAME T::hasher hf1(1);
     BOOST_DEDUCED_TYPENAME T::hasher hf2(2);
@@ -85,10 +89,18 @@ void assign_tests2(T*, test::random_generator generator = test::default_generato
     }
 }
 
-boost::unordered_set<test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_set;
-boost::unordered_multiset<test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_multiset;
-boost::unordered_map<test::object, test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_map;
-boost::unordered_multimap<test::object, test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_multimap;
+boost::unordered_set<test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_set;
+boost::unordered_multiset<test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_multiset;
+boost::unordered_map<test::object, test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_map;
+boost::unordered_multimap<test::object, test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_multimap;
 
 using test::default_generator;
 using test::generate_collisions;
@@ -118,7 +130,8 @@ UNORDERED_AUTO_TEST(assign_default_initializer_list) {
 
 #endif
 
-#if !defined(BOOST_NO_INITIALIZER_LISTS)
+#if !defined(BOOST_NO_0X_HDR_INITIALIZER_LIST) && \
+    !defined(BOOST_NO_INITIALIZER_LISTS)
 
 UNORDERED_AUTO_TEST(assign_initializer_list)
 {

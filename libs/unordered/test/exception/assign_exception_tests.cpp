@@ -3,9 +3,15 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "../helpers/prefix.hpp"
+
 #include "./containers.hpp"
 #include "../helpers/random_values.hpp"
 #include "../helpers/invariants.hpp"
+
+#if defined(BOOST_MSVC)
+#pragma warning(disable:4512) // assignment operator could not be generated
+#endif
 
 test::seed_t seed(12847);
 
@@ -18,7 +24,8 @@ struct self_assign_base : public test::exception_base
     typedef T data_type;
     T init() const { return T(values.begin(), values.end()); }
     void run(T& x) const { x = x; }
-    void check(T const& x) const { test::check_equivalent_keys(x); }
+    void check BOOST_PREVENT_MACRO_SUBSTITUTION(T const& x) const
+        { test::check_equivalent_keys(x); }
 };
 
 template <class T>
@@ -40,15 +47,20 @@ struct assign_base : public test::exception_base
     typedef BOOST_DEDUCED_TYPENAME T::key_equal key_equal;
     typedef BOOST_DEDUCED_TYPENAME T::allocator_type allocator_type;
 
-    assign_base(unsigned int count1, unsigned int count2, int tag1, int tag2)
-        : x_values(count1), y_values(count2),
-        x(x_values.begin(), x_values.end(), 0, hasher(tag1), key_equal(tag1), allocator_type(tag1)),
-        y(y_values.begin(), y_values.end(), 0, hasher(tag2), key_equal(tag2), allocator_type(tag2)) {}
+    assign_base(unsigned int count1, unsigned int count2, int tag1, int tag2) :
+        x_values(count1),
+        y_values(count2),
+        x(x_values.begin(), x_values.end(), 0, hasher(tag1), key_equal(tag1),
+            allocator_type(tag1)),
+        y(y_values.begin(), y_values.end(), 0, hasher(tag2), key_equal(tag2),
+            allocator_type(tag2))
+    {}
 
     typedef T data_type;
     T init() const { return T(x); }
     void run(T& x1) const { x1 = y; }
-    void check(T const& x1) const { test::check_equivalent_keys(x1); }
+    void check BOOST_PREVENT_MACRO_SUBSTITUTION(T const& x1) const
+        { test::check_equivalent_keys(x1); }
 };
 
 template <class T>

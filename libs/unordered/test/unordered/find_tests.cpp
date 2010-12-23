@@ -3,6 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "../helpers/prefix.hpp"
+
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
 #include "../helpers/test.hpp"
@@ -33,7 +35,8 @@ void find_tests1(X*, test::random_generator generator = test::default_generator)
         {
             BOOST_DEDUCED_TYPENAME X::key_type key = test::get_key<X>(*it1);
             iterator pos = x.find(key);
-            BOOST_DEDUCED_TYPENAME X::const_iterator const_pos = x_const.find(key);
+            BOOST_DEDUCED_TYPENAME X::const_iterator
+                const_pos = x_const.find(key);
             BOOST_TEST(pos != x.end() &&
                     x.key_eq()(key, test::get_key<X>(*pos)));
             BOOST_TEST(const_pos != x_const.end() &&
@@ -81,15 +84,78 @@ void find_tests1(X*, test::random_generator generator = test::default_generator)
     }
 }
 
-boost::unordered_set<test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_set;
-boost::unordered_multiset<test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_multiset;
-boost::unordered_map<test::object, test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_map;
-boost::unordered_multimap<test::object, test::object, test::hash, test::equal_to, test::allocator<test::object> >* test_multimap;
+struct compatible_key
+{
+    test::object o_;
+    
+    compatible_key(test::object const& o) : o_(o) {}
+};
+
+struct compatible_hash
+{
+    test::hash hash_;
+
+    std::size_t operator()(compatible_key const& k) const {
+        return hash_(k.o_);
+    }
+};
+
+struct compatible_predicate
+{
+    test::equal_to equal_;
+
+    bool operator()(compatible_key const& k1, compatible_key const& k2) const {
+        return equal_(k1.o_, k2.o_);
+    }
+};
+
+template <class X>
+void find_compatible_keys_test(X*,
+    test::random_generator generator = test::default_generator)
+{
+    typedef BOOST_DEDUCED_TYPENAME X::iterator iterator;
+    typedef BOOST_DEDUCED_TYPENAME test::random_values<X>::iterator
+        value_iterator;
+    test::random_values<X> v(500, generator);
+    X x(v.begin(), v.end());
+    
+    compatible_hash h;
+    compatible_predicate eq;
+    
+    for(value_iterator it = v.begin(), end = v.end(); it != end; ++it) {
+        BOOST_DEDUCED_TYPENAME X::key_type key = test::get_key<X>(*it);
+        BOOST_TEST(x.find(key) == x.find(compatible_key(key), h, eq));
+    }
+
+    test::random_values<X> v2(20, generator);
+    
+    for(value_iterator it = v2.begin(), end = v2.end(); it != end; ++it) {
+        BOOST_DEDUCED_TYPENAME X::key_type key = test::get_key<X>(*it);
+        BOOST_TEST(x.find(key) == x.find(compatible_key(key), h, eq));
+    }
+}
+
+boost::unordered_set<test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_set;
+boost::unordered_multiset<test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_multiset;
+boost::unordered_map<test::object, test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_map;
+boost::unordered_multimap<test::object, test::object,
+    test::hash, test::equal_to,
+    test::allocator<test::object> >* test_multimap;
 
 using test::default_generator;
 using test::generate_collisions;
 
 UNORDERED_TEST(find_tests1,
+    ((test_set)(test_multiset)(test_map)(test_multimap))
+    ((default_generator)(generate_collisions))
+)
+UNORDERED_TEST(find_compatible_keys_test,
     ((test_set)(test_multiset)(test_map)(test_multimap))
     ((default_generator)(generate_collisions))
 )

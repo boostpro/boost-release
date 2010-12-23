@@ -1,6 +1,6 @@
 [/==============================================================================
-    Copyright (C) 2001-2009 Joel de Guzman
-    Copyright (C) 2001-2009 Hartmut Kaiser
+    Copyright (C) 2001-2010 Joel de Guzman
+    Copyright (C) 2001-2010 Hartmut Kaiser
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,9 +19,9 @@ yields a new parser type which is a composite of its operands, `a` and
 
 This module includes different parsers which get instantiated if one of
 the overloaded operators is used with more primitive parser constructs.
-It includes Alternative (`|`), And predicate (unary `&`), Difference
-(`-`), Expect (`>`), Kleene star (unary `*`), Lists (`%`), Not
-predicate (`!`), Optional (unary `-`), Permutation (`^`), Plus (unary
+It includes Alternative (`|`), And-predicate (unary `&`), Difference
+(`-`), Expect (`>`), Kleene star (unary `*`), Lists (`%`), Not-predicate (`!`), 
+Optional (unary `-`), Permutation (`^`), Plus (unary
 `+`), Sequence (`>>`), and Sequential-Or (`||`).
 
 [heading Module Header]
@@ -116,14 +116,14 @@ Some using declarations:
 [endsect] [/ Alternative]
 
 [/------------------------------------------------------------------------------]
-[section:and_predicate And Predicate (`&a`)]
+[section:and_predicate And-Predicate (`&a`)]
 
 [heading Description]
 
 Syntactic predicates assert a certain conditional syntax to be satisfied
 before evaluating another production. Similar to semantic predicates,
-__qi_eps__, syntactic predicates do not consume any input. The /and
-predicate/, `&a`, is a positive syntactic predicate that returns a zero
+__qi_eps__, syntactic predicates do not consume any input. The /and-predicate/, 
+`&a`, is a positive syntactic predicate that returns a zero
 length match only if its predicate matches.
 
 [heading Header]
@@ -454,14 +454,14 @@ __qi_basics_examples__ section.]
 [endsect] [/ List]
 
 [/------------------------------------------------------------------------------]
-[section:not_predicate Not Predicate (`!a`)]
+[section:not_predicate Not-Predicate (`!a`)]
 
 [heading Description]
 
 Syntactic predicates assert a certain conditional syntax to be satisfied
 before evaluating another production. Similar to semantic predicates,
-__qi_eps__, syntactic predicates do not consume any input. The /not
-predicate/, `!a`, is a negative syntactic predicate that returns a zero
+__qi_eps__, syntactic predicates do not consume any input. The /not-predicate/, 
+`!a`, is a negative syntactic predicate that returns a zero
 length match only if its predicate fails to match.
 
 [heading Header]
@@ -823,16 +823,25 @@ See __qi_comp_attr_notation__.
 [table
     [[Expression]       [Attribute]]
     [[`a || b`]  
-[``a: A, b: B --> (a || b): tuple<A, B>
-a: A, b: Unused --> (a || b): A
-a: Unused, b: B --> (a || b): B
+[``a: A, b: B --> (a || b): tuple<optional<A>, optional<B> >
+a: A, b: Unused --> (a || b): optional<A>
+a: Unused, b: B --> (a || b): optional<B>
 a: Unused, b: Unused --> (a || b): Unused
 
-a: A, b: A --> (a || b): vector<A>
-a: vector<A>, b: A --> (a || b): vector<A>
-a: A, b: vector<A> --> (a || b): vector<A>
-a: vector<A>, b: vector<A> --> (a || b): vector<A>``]]
+a: A, b: A --> (a || b): vector<optional<A> >``]]
 ]
+
+[note The sequential-or parser behaves attribute-wise very similar to the 
+      plain sequence parser (`a >> b`) in the sense that it exposes the 
+      attributes of its elements separately. For instance, if you attach a 
+      semantic action to the whole sequential-or:
+      ``
+          (int_ || int_)[print_pair(_1, _2)]
+      ``
+      the function object `print_pair` would be invoked with the
+      attribute of the first `int_` (`boost::optional<int>`) as its first 
+      parameter and the attribute of the second `int_` (`boost::optional<int>`
+      as well) as its second parameter.]
 
 [heading Complexity]
 

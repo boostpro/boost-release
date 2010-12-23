@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2001-2009 Hartmut Kaiser
+    Copyright (c) 2001-2010 Hartmut Kaiser
     http://spirit.sourceforge.net/
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -105,7 +105,7 @@ void test_binary_generator_attr(char const* expected, std::size_t size, G const&
 }
 //]
 
-//[reference_karma_stream_complex
+//[reference_karma_complex
 // a simple complex number representation z = a + bi
 struct complex
 {
@@ -116,7 +116,9 @@ struct complex
     double a;
     double b;
 };
+//]
 
+//[reference_karma_stream_complex
 // define streaming operator for the type complex
 std::ostream& 
 operator<< (std::ostream& os, complex const& z)
@@ -124,6 +126,50 @@ operator<< (std::ostream& os, complex const& z)
     os << "{" << z.a << "," << z.b << "}";
     return os;
 }
+//]
+
+//[reference_karma_auto_complex
+/*`The following construct is required to allow the `complex` data structure
+   to be utilized as a __fusion__ sequence. This is required as we will 
+   emit output for this data structure with a __karma__ sequence:
+   `'{' << karma::double_ << ',' << karma::double_ << '}'`.
+*/
+BOOST_FUSION_ADAPT_STRUCT(
+    complex,
+    (double, a)
+    (double, b)
+)
+
+/*`We add a specialization for the create_generator customization point
+   defining a custom output format for the complex type. Generally, any 
+   specialization for create_generator is expected to return the proto 
+   expression to be used to generate output for the type the customization 
+   point has been specialized for.
+ */
+/*`We need to utilize `proto::deep_copy` as the expression contains literals 
+   (the `'{'`, `','`, and `'}'`) which normally get embedded in the proto 
+   expression by reference only. The deep copy converts the proto tree to 
+   hold this by value. The deep copy operation can be left out for simpler 
+   proto expressions (not containing references to temporaries). Alternatively
+   you could use the `proto::make_expr` facility to build the required
+   proto expression.
+*/
+namespace boost { namespace spirit { namespace traits
+{
+    template <>
+    struct create_generator<complex>
+    {
+        typedef proto::result_of::deep_copy<
+            BOOST_TYPEOF('{' << karma::double_ << ',' << karma::double_ << '}')
+        >::type type;
+
+        static type call()
+        {
+            return proto::deep_copy(
+                '{' << karma::double_ << ',' << karma::double_ << '}');
+        }
+    };
+}}}
 //]
 
 //[reference_karma_auxiliary_attr_cast_data1
@@ -420,6 +466,23 @@ int main()
     }
 
     {
+        //[reference_karma_using_declarations_columns
+        using boost::spirit::karma::double_;
+        using boost::spirit::karma::columns;
+        using boost::spirit::karma::space;
+        //]
+
+        //[reference_karma_columns
+        std::vector<double> v;
+        v.push_back(1.0);
+        v.push_back(2.0);
+        v.push_back(3.0);
+        test_generator_attr("1.0\n2.0\n3.0\n", columns(1)[*double_], v);
+        test_generator_attr_delim("1.0 2.0 \n3.0 \n", columns(2)[*double_], space, v);
+        //]
+    }
+
+    {
         //[reference_karma_using_declarations_bool
         using boost::spirit::karma::bool_;
         using boost::spirit::karma::lit;
@@ -609,6 +672,27 @@ int main()
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    // auto module
+    {
+        //[reference_karma_using_declarations_auto
+        using boost::spirit::karma::auto_;
+        //]
+
+        //[reference_karma_auto
+        /*`Emit a simple string using the `karma::string` generator:
+         */
+        test_generator_attr("abc", auto_, "abc");
+        test_generator("abc", auto_("abc"));
+
+        /*`Emit instances of the `complex` data type as defined above using the
+           generator defined by the customization point for `complex`:
+         */
+        test_generator_attr("{1.2,2.4}", auto_, complex(1.2, 2.4));
+        test_generator("{1.2,2.4}", auto_(complex(1.2, 2.4)));
+        //]
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     // binary module
     {
         //[reference_karma_using_declarations_native_binary
@@ -750,6 +834,25 @@ int main()
         v.push_back(456);
         v.push_back(789);
         test_generator_attr_delim("123 , 456 , 789", nlist, space, v);
+        //]
+    }
+
+    // symbols
+    {
+        //[reference_karma_using_declarations_symbols
+        using boost::spirit::karma::symbols;
+        //]
+
+        //[reference_karma_symbols
+        symbols<char, char const*> sym;
+
+        sym.add
+            ('a', "Apple")
+            ('b', "Banana")
+            ('o', "Orange")
+        ;
+
+        test_generator_attr("Banana", sym, 'b');
         //]
     }
 

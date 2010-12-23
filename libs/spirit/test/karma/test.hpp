@@ -1,4 +1,4 @@
-//  Copyright (c) 2001-2009 Hartmut Kaiser
+//  Copyright (c) 2001-2010 Hartmut Kaiser
 // 
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying 
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,8 +10,10 @@
 #include <string>
 #include <iterator>
 #include <iostream>
+#include <iomanip>
 #include <typeinfo>
 
+#include <boost/foreach.hpp>
 #include <boost/spirit/include/karma_generate.hpp>
 #include <boost/spirit/include/karma_what.hpp>
 
@@ -57,6 +59,23 @@ namespace spirit_test
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    template <typename Char, typename T>
+    void print_binary_if_failed(char const* func, bool result
+      , std::basic_string<Char> const& generated, T const& expected)
+    {
+        if (!result)
+            std::cerr << "in " << func << ": result is false" << std::endl;
+        else if (generated.size() != expected.size() ||
+                 std::memcmp(generated.c_str(), expected.c_str(), generated.size()))
+        {
+            std::cerr << "in " << func << ": generated \"";
+            BOOST_FOREACH(int c, generated)
+                std::cerr << "\\x" << std::hex << std::setfill('0') << std::setw(2) << c;
+            std::cerr << "\"" << std::endl;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     template <typename Char, typename Generator>
     inline bool test(Char const *expected, Generator const& g)
     {
@@ -96,7 +115,7 @@ namespace spirit_test
     ///////////////////////////////////////////////////////////////////////////
     template <typename Char, typename Generator, typename Attribute>
     inline bool test(Char const *expected, Generator const& g, 
-        Attribute const &attr)
+        Attribute const &attrib)
     {
         namespace karma = boost::spirit::karma;
         typedef std::basic_string<Char> string_type;
@@ -107,7 +126,7 @@ namespace spirit_test
 
         string_type generated;
         std::back_insert_iterator<string_type> outit(generated);
-        bool result = karma::generate(outit, g, attr);
+        bool result = karma::generate(outit, g, attrib);
 
         print_if_failed("test", result, generated, expected);
         return result && generated == expected;
@@ -115,7 +134,7 @@ namespace spirit_test
 
     template <typename Char, typename Generator, typename Attribute>
     inline bool test(std::basic_string<Char> const& expected, Generator const& g, 
-        Attribute const &attr)
+        Attribute const &attrib)
     {
         namespace karma = boost::spirit::karma;
         typedef std::basic_string<Char> string_type;
@@ -126,7 +145,7 @@ namespace spirit_test
 
         string_type generated;
         std::back_insert_iterator<string_type> outit(generated);
-        bool result = karma::generate(outit, g, attr);
+        bool result = karma::generate(outit, g, attrib);
 
         print_if_failed("test", result, generated, expected);
         return result && generated == expected;
@@ -175,7 +194,7 @@ namespace spirit_test
     template <typename Char, typename Generator, typename Attribute,
         typename Delimiter>
     inline bool test_delimited(Char const *expected, Generator const& g, 
-        Attribute const &attr, Delimiter const& d)
+        Attribute const &attrib, Delimiter const& d)
     {
         namespace karma = boost::spirit::karma;
         typedef std::basic_string<Char> string_type;
@@ -186,7 +205,7 @@ namespace spirit_test
 
         string_type generated;
         std::back_insert_iterator<string_type> outit(generated);
-        bool result = karma::generate_delimited(outit, g, d, attr);
+        bool result = karma::generate_delimited(outit, g, d, attrib);
 
         print_if_failed("test_delimited", result, generated, expected);
         return result && generated == expected;
@@ -195,7 +214,7 @@ namespace spirit_test
     template <typename Char, typename Generator, typename Attribute,
         typename Delimiter>
     inline bool test_delimited(std::basic_string<Char> const& expected, 
-        Generator const& g, Attribute const &attr, Delimiter const& d)
+        Generator const& g, Attribute const &attrib, Delimiter const& d)
     {
         namespace karma = boost::spirit::karma;
         typedef std::basic_string<Char> string_type;
@@ -206,7 +225,7 @@ namespace spirit_test
 
         string_type generated;
         std::back_insert_iterator<string_type> outit(generated);
-        bool result = karma::generate_delimited(outit, g, d, attr);
+        bool result = karma::generate_delimited(outit, g, d, attrib);
 
         print_if_failed("test_delimited", result, generated, expected);
         return result && generated == expected;
@@ -229,6 +248,8 @@ namespace spirit_test
         std::back_insert_iterator<string_type> outit(generated);
         bool result = karma::generate(outit, g);
 
+        print_binary_if_failed("binary_test", result, generated
+          , std::string(expected, size));
         return result && !std::memcmp(generated.c_str(), expected, size);
     }
 
@@ -236,7 +257,7 @@ namespace spirit_test
     template <typename Generator, typename Attribute>
     inline bool 
     binary_test(char const *expected, std::size_t size, 
-        Generator const& g, Attribute const &attr)
+        Generator const& g, Attribute const &attrib)
     {
         namespace karma = boost::spirit::karma;
         typedef std::basic_string<char> string_type;
@@ -247,8 +268,10 @@ namespace spirit_test
 
         string_type generated;
         std::back_insert_iterator<string_type> outit(generated);
-        bool result = karma::generate(outit, g, attr);
+        bool result = karma::generate(outit, g, attrib);
 
+        print_binary_if_failed("binary_test", result, generated
+          , std::string(expected, size));
         return result && !std::memcmp(generated.c_str(), expected, size);
     }
 
@@ -269,6 +292,8 @@ namespace spirit_test
         std::back_insert_iterator<string_type> outit(generated);
         bool result = karma::generate_delimited(outit, g, d);
 
+        print_binary_if_failed("binary_test_delimited", result, generated
+          , std::string(expected, size));
         return result && !std::memcmp(generated.c_str(), expected, size);
     }
 
@@ -276,7 +301,7 @@ namespace spirit_test
     template <typename Generator, typename Attribute, typename Delimiter>
     inline bool 
     binary_test_delimited(char const *expected, std::size_t size, 
-        Generator const& g, Attribute const &attr, Delimiter const& d)
+        Generator const& g, Attribute const &attrib, Delimiter const& d)
     {
         namespace karma = boost::spirit::karma;
         typedef std::basic_string<char> string_type;
@@ -287,8 +312,10 @@ namespace spirit_test
 
         string_type generated;
         std::back_insert_iterator<string_type> outit(generated);
-        bool result = karma::generate_delimited(outit, g, d, attr);
+        bool result = karma::generate_delimited(outit, g, d, attrib);
 
+        print_binary_if_failed("binary_test_delimited", result, generated
+          , std::string(expected, size));
         return result && !std::memcmp(generated.c_str(), expected, size);
     }
 

@@ -5,6 +5,8 @@
 
 // This checks that template code implemented using hash_fwd will work.
 
+#include "./config.hpp"
+
 #include "./hash_fwd_test.hpp"
 
 #include <boost/detail/lightweight_test.hpp>
@@ -66,10 +68,12 @@ void fwd_test3()
     test::test_type3<int> x(values1.begin(), values1.end());
     test::test_type3<std::string> y(values2.begin(), values2.end());
 
-    std::size_t seed1 = HASH_NAMESPACE::hash_range(values1.begin(), values1.end());
+    std::size_t seed1 =
+        HASH_NAMESPACE::hash_range(values1.begin(), values1.end());
     HASH_NAMESPACE::hash_range(seed1, values1.begin(), values1.end());
 
-    std::size_t seed2 = HASH_NAMESPACE::hash_range(values2.begin(), values2.end());
+    std::size_t seed2 =
+        HASH_NAMESPACE::hash_range(values2.begin(), values2.end());
     HASH_NAMESPACE::hash_range(seed2, values2.begin(), values2.end());
 
     HASH_NAMESPACE::hash<test::test_type3<int> > hasher_test_int;
@@ -90,4 +94,3 @@ int main()
 #endif
     return boost::report_errors();
 }
-

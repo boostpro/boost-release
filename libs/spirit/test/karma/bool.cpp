@@ -1,6 +1,6 @@
 /*=============================================================================
-    Copyright (c) 2001-2009 Hartmut Kaiser
-    Copyright (c) 2001-2009 Joel de Guzman
+    Copyright (c) 2001-2010 Hartmut Kaiser
+    Copyright (c) 2001-2010 Joel de Guzman
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,6 +12,8 @@
 #include <boost/spirit/include/karma_string.hpp>
 #include <boost/spirit/include/karma_numeric.hpp>
 #include <boost/spirit/include/karma_directive.hpp>
+#include <boost/spirit/include/karma_operator.hpp>
+#include <boost/spirit/include/karma_phoenix_attributes.hpp>
 
 #include <boost/spirit/include/phoenix_core.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
@@ -95,11 +97,29 @@ int main()
         boost::optional<bool> optbool;
 
         BOOST_TEST(!test("", bool_, optbool));
+        BOOST_TEST(test("", -bool_, optbool));
         optbool = false;
         BOOST_TEST(test("false", bool_, optbool));
+        BOOST_TEST(test("false", -bool_, optbool));
         optbool = true;
         BOOST_TEST(test("true", bool_, optbool));
+        BOOST_TEST(test("true", -bool_, optbool));
     }
+
+// we support Phoenix attributes only starting with V2.2
+#if SPIRIT_VERSION >= 0x2020
+    // test Phoenix expression attributes (requires to include 
+    // karma_phoenix_attributes.hpp)
+    {
+        namespace phoenix = boost::phoenix;
+
+        BOOST_TEST(test("true", bool_, phoenix::val(true)));
+
+        bool b = false;
+        BOOST_TEST(test("false", bool_, phoenix::ref(b)));
+        BOOST_TEST(test("true", bool_, ++phoenix::ref(b)));
+    }
+#endif
 
     {
         BOOST_TEST(test("false", lower[bool_], false));

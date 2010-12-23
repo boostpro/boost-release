@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Struct c_time</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
@@ -34,34 +34,34 @@
 </em></span>
 <span class="bold"><strong>struct</strong></span> <a class="link" href="c_time.html" title="Struct c_time">c_time</a> {
 
-  <span class="emphasis"><em>// <a class="link" href="c_time.html#id345381-bb">public static functions</a></em></span>
-  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id345384-bb">localtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id582903-bb">gmtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id575568-bb">localtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
-  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id568863-bb">gmtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
+  <span class="emphasis"><em>// <a class="link" href="c_time.html#id573922-bb">public static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id573925-bb">localtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id573948-bb">gmtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id573970-bb">localtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
+  <span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a class="link" href="c_time.html#id573993-bb">gmtime</a>(<span class="bold"><strong>const</strong></span> std::time_t *, std::tm *) ;
 };</pre></div>
 <div class="refsect1" title="Description">
-<a name="id752828"></a><h2>Description</h2>
+<a name="id766140"></a><h2>Description</h2>
 <p>Provides a uniform interface to some ctime functions and their '_r' counterparts. The '_r' functions require a pointer to a user created std::tm struct whereas the regular functions use a staticly created struct and return a pointer to that. These wrapper functions require the user to create a std::tm struct and send in a pointer to it. This struct may be used to store the resulting time. The returned pointer may or may not point to this struct, however, it will point to the result of the corresponding function. All functions do proper checking of the C function results and throw exceptions on error. Therefore the functions will never return NULL. </p>
 <div class="refsect2" title="c_time public static functions">
-<a name="id752833"></a><h3>
-<a name="id345381-bb"></a><code class="computeroutput">c_time</code> public static functions</h3>
+<a name="id766145"></a><h3>
+<a name="id573922-bb"></a><code class="computeroutput">c_time</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id345384-bb"></a>localtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id573925-bb"></a>localtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id582903-bb"></a>gmtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id573948-bb"></a>gmtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id575568-bb"></a>localtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id573970-bb"></a>localtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id568863-bb"></a>gmtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::tm *</span> <a name="id573993-bb"></a>gmtime(<span class="bold"><strong>const</strong></span> std::time_t * t, std::tm * result) ;</pre>requires a pointer to a user created std::tm struct </li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2001-2005 CrystalClear Software, Inc<p>Subject to the Boost Software License, Version 1.0. (See accompanying file
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2005 CrystalClear Software, Inc<p>Subject to the Boost Software License, Version 1.0. (See accompanying file
     <code class="filename">LICENSE_1_0.txt</code> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)</p>
 </div></td>
 </tr></table>

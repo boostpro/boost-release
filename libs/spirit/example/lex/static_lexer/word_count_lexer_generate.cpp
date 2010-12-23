@@ -1,4 +1,4 @@
-//  Copyright (c) 2001-2009 Hartmut Kaiser
+//  Copyright (c) 2001-2010 Hartmut Kaiser
 // 
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying 
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -40,6 +40,6 @@ int main(int argc, char* argv[])
     // The suffix "wcl" used below results in a type lexertl::static_::lexer_wcl
     // to be generated, which needs to be passed as a template parameter to the 
     // lexertl::static_lexer template (see word_count_lexer_static.cpp).
-    return lex::lexertl::generate_static(word_count, out, "wcl") ? 0 : -1;
+    return lex::lexertl::generate_static_dfa(word_count, out, "wcl") ? 0 : -1;
 }
 //]

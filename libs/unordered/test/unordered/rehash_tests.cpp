@@ -3,6 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "../helpers/prefix.hpp"
+
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
 #include "../helpers/test.hpp"
@@ -17,7 +19,8 @@ test::seed_t seed(2974);
 template <class X>
 bool postcondition(X const& x, BOOST_DEDUCED_TYPENAME X::size_type n)
 {
-    return x.bucket_count() > x.size() / x.max_load_factor() && x.bucket_count() >= n;
+    return x.bucket_count() > x.size() / x.max_load_factor() &&
+        x.bucket_count() >= n;
 }
 
 template <class X>
@@ -33,7 +36,8 @@ void rehash_empty_test1(X* = 0)
 }
 
 template <class X>
-void rehash_empty_test2(X* = 0, test::random_generator generator = test::default_generator)
+void rehash_empty_test2(X* = 0,
+    test::random_generator generator = test::default_generator)
 {
     test::random_values<X> v(1000, generator);
     test::ordered<X> tracker;
@@ -51,7 +55,8 @@ void rehash_empty_test2(X* = 0, test::random_generator generator = test::default
 }
 
 template <class X>
-void rehash_empty_test3(X* = 0, test::random_generator generator = test::default_generator)
+void rehash_empty_test3(X* = 0,
+    test::random_generator generator = test::default_generator)
 {
     test::random_values<X> v(1000, generator);
     test::ordered<X> tracker;
@@ -70,7 +75,8 @@ void rehash_empty_test3(X* = 0, test::random_generator generator = test::default
 
 
 template <class X>
-void rehash_test1(X* = 0, test::random_generator generator = test::default_generator)
+void rehash_test1(X* = 0,
+    test::random_generator generator = test::default_generator)
 {
     test::random_values<X> v(1000, generator);
     test::ordered<X> tracker;

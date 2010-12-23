@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>strand</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
@@ -27,13 +27,13 @@
 <a name="boost_asio.reference.strand"></a><a class="link" href="strand.html" title="strand"> strand</a>
 </h3></div></div></div>
 <p>
-        <a class="indexterm" name="id1125546"></a> 
+        <a class="indexterm" name="id1126054"></a> 
 Typedef for backwards compatibility.
       </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">strand</span> <span class="identifier">strand</span><span class="special">;</span>
 </pre>
 <a name="boost_asio.reference.strand.member_functions"></a><h5>
-<a name="id1125615"></a>
+<a name="id1126122"></a>
         <a class="link" href="strand.html#boost_asio.reference.strand.member_functions">Member Functions</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -147,8 +147,71 @@ Typedef for backwards compatibility.
         to post and dispatch handlers with the guarantee that none of those handlers
         will execute concurrently.
       </p>
+<a name="boost_asio.reference.strand.order_of_handler_invocation"></a><h5>
+<a name="id1126401"></a>
+        <a class="link" href="strand.html#boost_asio.reference.strand.order_of_handler_invocation">Order
+        of handler invocation</a>
+      </h5>
+<p>
+        Given:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          a strand object s
+        </li>
+<li class="listitem">
+          an object a meeting completion handler requirements
+        </li>
+<li class="listitem">
+          an object a1 which is an arbitrary copy of a made by the implementation
+        </li>
+<li class="listitem">
+          an object b meeting completion handler requirements
+        </li>
+<li class="listitem">
+          an object b1 which is an arbitrary copy of b made by the implementation
+        </li>
+</ul></div>
+<p>
+        if any of the following conditions are true:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          s.post(a) happens-before s.post(b)
+        </li>
+<li class="listitem">
+          s.post(a) happens-before s.dispatch(b), where the latter is performed outside
+          the strand
+        </li>
+<li class="listitem">
+          s.dispatch(a) happens-before s.post(b), where the former is performed outside
+          the strand
+        </li>
+<li class="listitem">
+          s.dispatch(a) happens-before s.dispatch(b), where both are performed outside
+          the strand
+        </li>
+</ul></div>
+<p>
+        then <code class="computeroutput"><span class="identifier">asio_handler_invoke</span><span class="special">(</span><span class="identifier">a1</span><span class="special">,</span>
+        <span class="special">&amp;</span><span class="identifier">a1</span><span class="special">)</span></code> happens-before <code class="computeroutput"><span class="identifier">asio_handler_invoke</span><span class="special">(</span><span class="identifier">b1</span><span class="special">,</span>
+        <span class="special">&amp;</span><span class="identifier">b1</span><span class="special">)</span></code>.
+      </p>
+<p>
+        Note that in the following case:
+      </p>
+<pre class="programlisting"><span class="identifier">async_op_1</span><span class="special">(...,</span> <span class="identifier">s</span><span class="special">.</span><span class="identifier">wrap</span><span class="special">(</span><span class="identifier">a</span><span class="special">));</span>
+<span class="identifier">async_op_2</span><span class="special">(...,</span> <span class="identifier">s</span><span class="special">.</span><span class="identifier">wrap</span><span class="special">(</span><span class="identifier">b</span><span class="special">));</span> 
+</pre>
+<p>
+        the completion of the first async operation will perform <code class="computeroutput"><span class="identifier">s</span><span class="special">.</span><span class="identifier">dispatch</span><span class="special">(</span><span class="identifier">a</span><span class="special">)</span></code>,
+        and the second will perform <code class="computeroutput"><span class="identifier">s</span><span class="special">.</span><span class="identifier">dispatch</span><span class="special">(</span><span class="identifier">b</span><span class="special">)</span></code>,
+        but the order in which those are performed is unspecified. That is, you cannot
+        state whether one happens-before the other. Therefore none of the above conditions
+        are met and no ordering guarantee is made.
+      </p>
 <a name="boost_asio.reference.strand.thread_safety"></a><h5>
-<a name="id1125894"></a>
+<a name="id1126717"></a>
         <a class="link" href="strand.html#boost_asio.reference.strand.thread_safety">Thread Safety</a>
       </h5>
 <p>
@@ -160,7 +223,7 @@ Typedef for backwards compatibility.
         Safe.
       </p>
 <a name="boost_asio.reference.strand.requirements"></a><h5>
-<a name="id1125945"></a>
+<a name="id1126768"></a>
         <a class="link" href="strand.html#boost_asio.reference.strand.requirements">Requirements</a>
       </h5>
 <p>
@@ -172,7 +235,7 @@ Typedef for backwards compatibility.
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2003 - 2008 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

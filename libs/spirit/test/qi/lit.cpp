@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2001-2009 Joel de Guzman
+    Copyright (c) 2001-2010 Joel de Guzman
     http://spirit.sourceforge.net/
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -84,8 +84,10 @@ main()
         std::string s;
         BOOST_TEST((test_attr("kimpo", string("kimpo"), s)));
         BOOST_TEST(s == "kimpo");
+        s.clear();
         BOOST_TEST((test_attr(L"kimpo", string(L"kimpo"), s)));
         BOOST_TEST(s == "kimpo");
+        s.clear();
         BOOST_TEST((test_attr("x", string("x"), s)));
         BOOST_TEST(s == "x");
     }

@@ -6,6 +6,8 @@
 // The code for erasing elements from containers with equivalent keys is very
 // hairy with several tricky edge cases - so explicitly test each one.
 
+#include "../helpers/prefix.hpp"
+
 #include <boost/unordered_map.hpp>
 #include "../helpers/test.hpp"
 #include "../helpers/list.hpp"
@@ -14,6 +16,11 @@
 #include <iterator>
 #include <boost/next_prior.hpp>
 #include "../objects/test.hpp"
+
+#if BOOST_WORKAROUND(BOOST_MSVC, < 1400)
+#pragma warning(disable:4267) // conversion from 'size_t' to 'unsigned int',
+                              // possible loss of data.
+#endif
 
 struct write_pair_type
 {
@@ -128,7 +135,8 @@ template <class Container>
 void erase_subrange_tests(Container const& x)
 {
     for(std::size_t length = 0; length < x.size(); ++length) {
-        for(std::size_t position = 0; position < x.size() - length; ++position) {
+        for(std::size_t position = 0; position < x.size() - length; ++position)
+        {
             Container y(x);
             collide_list init(y.begin(), y.end());
             if(!general_erase_range_test(y, position, position + length)) {

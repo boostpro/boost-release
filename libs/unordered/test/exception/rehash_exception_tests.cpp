@@ -3,6 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "../helpers/prefix.hpp"
+
 #include "./containers.hpp"
 #include <string>
 #include "../helpers/random_values.hpp"
@@ -18,7 +20,9 @@ struct rehash_test_base : public test::exception_base
 {
     test::random_values<T> values;
     unsigned int n;
-    rehash_test_base(unsigned int count = 100, unsigned int n = 0) : values(count), n(n) {}
+    rehash_test_base(unsigned int count = 100, unsigned int n = 0)
+        : values(count), n(n)
+    {}
 
     typedef T data_type;
     typedef test::strong<T> strong_type;
@@ -28,7 +32,9 @@ struct rehash_test_base : public test::exception_base
         return x;
     }
 
-    void check(T const& x, strong_type const& strong) const {
+    void check BOOST_PREVENT_MACRO_SUBSTITUTION(T const& x,
+        strong_type const& strong) const
+    {
         std::string scope(test::scope);
 
         if(scope.find("hash::operator()") == std::string::npos &&

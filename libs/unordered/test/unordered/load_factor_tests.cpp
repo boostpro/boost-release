@@ -3,6 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "../helpers/prefix.hpp"
+
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
 #include "../helpers/test.hpp"
@@ -34,7 +36,8 @@ void set_load_factor_tests(X* = 0)
 }
 
 template <class X>
-void insert_test(X*, float mlf, test::random_generator generator = test::default_generator)
+void insert_test(X*, float mlf,
+    test::random_generator generator = test::default_generator)
 {
     X x;
     x.max_load_factor(mlf);

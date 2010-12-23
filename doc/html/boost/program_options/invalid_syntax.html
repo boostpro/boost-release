@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class invalid_syntax</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
@@ -34,29 +34,54 @@
 </em></span>
 <span class="bold"><strong>class</strong></span> <a class="link" href="invalid_syntax.html" title="Class invalid_syntax">invalid_syntax</a> : <span class="bold"><strong>public</strong></span> boost::program_options::error {
 <span class="bold"><strong>public</strong></span>:
+
+  <span class="bold"><strong>enum</strong></span> <a name="boost.program_options.invalid_syntax.kind_t"></a>kind_t { long_not_allowed =  30, long_adjacent_not_allowed, 
+                short_adjacent_not_allowed, empty_adjacent_parameter, 
+                missing_parameter, extra_parameter, unrecognized_line };
   <span class="emphasis"><em>// <a class="link" href="invalid_syntax.html#boost.program_options.invalid_syntaxconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a class="link" href="invalid_syntax.html#id970902-bb">invalid_syntax</a>(<span class="bold"><strong>const</strong></span> std::string &amp;, <span class="bold"><strong>const</strong></span> std::string &amp;);
-  <a class="link" href="invalid_syntax.html#id984110-bb">~invalid_syntax</a>();
-  <span class="type">std::string</span> tokens;
-  <span class="type">std::string</span> msg;
+  <a class="link" href="invalid_syntax.html#id982011-bb">invalid_syntax</a>(<span class="bold"><strong>const</strong></span> std::string &amp;, kind_t);
+  <a class="link" href="invalid_syntax.html#id907372-bb">~invalid_syntax</a>();
+
+  <span class="emphasis"><em>// <a class="link" href="invalid_syntax.html#id941493-bb">public member functions</a></em></span>
+  <span class="type">kind_t</span> <a class="link" href="invalid_syntax.html#id941496-bb">kind</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>const</strong></span> std::string &amp;</span> <a class="link" href="invalid_syntax.html#id982004-bb">tokens</a>() <span class="bold"><strong>const</strong></span>;
+
+  <span class="emphasis"><em>// <a class="link" href="invalid_syntax.html#id907373-bb">protected static functions</a></em></span>
+  <span class="type"><span class="bold"><strong>static</strong></span> std::string</span> <a class="link" href="invalid_syntax.html#id907376-bb">error_message</a>(kind_t) ;
 };</pre></div>
 <div class="refsect1" title="Description">
-<a name="id1409238"></a><h2>Description</h2>
+<a name="id1423613"></a><h2>Description</h2>
 <div class="refsect2" title="invalid_syntax public construct/copy/destruct">
-<a name="id1409242"></a><h3>
+<a name="id1423617"></a><h3>
 <a name="boost.program_options.invalid_syntaxconstruct-copy-destruct"></a><code class="computeroutput">invalid_syntax</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="id970902-bb"></a>invalid_syntax(<span class="bold"><strong>const</strong></span> std::string &amp; tokens, <span class="bold"><strong>const</strong></span> std::string &amp; msg);</pre></li>
-<li class="listitem"><pre class="literallayout"><a name="id984110-bb"></a>~invalid_syntax();</pre></li>
+<li class="listitem"><pre class="literallayout"><a name="id982011-bb"></a>invalid_syntax(<span class="bold"><strong>const</strong></span> std::string &amp; tokens, kind_t kind);</pre></li>
+<li class="listitem"><pre class="literallayout"><a name="id907372-bb"></a>~invalid_syntax();</pre></li>
 </ol></div>
+</div>
+<div class="refsect2" title="invalid_syntax public member functions">
+<a name="id1423670"></a><h3>
+<a name="id941493-bb"></a><code class="computeroutput">invalid_syntax</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><span class="type">kind_t</span> <a name="id941496-bb"></a>kind() <span class="bold"><strong>const</strong></span>;</pre></li>
+<li class="listitem"><pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> std::string &amp;</span> <a name="id982004-bb"></a>tokens() <span class="bold"><strong>const</strong></span>;</pre></li>
+</ol></div>
+</div>
+<div class="refsect2" title="invalid_syntax protected static functions">
+<a name="id1423737"></a><h3>
+<a name="id907373-bb"></a><code class="computeroutput">invalid_syntax</code> protected static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="type"><span class="bold"><strong>static</strong></span> std::string</span> <a name="id907376-bb"></a>error_message(kind_t kind) ;</pre>
+<p>Used to convert kind_t to a related error text </p>
+</li></ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2002-2004 Vladimir Prus<p>Distributed under the Boost Software License, Version 1.0.
+<td align="right"><div class="copyright-footer">Copyright &#169; 2002-2004 Vladimir Prus<p>Distributed under the Boost Software License, Version 1.0.
       (See accompanying file <code class="filename">LICENSE_1_0.txt</code> or copy at 
       <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

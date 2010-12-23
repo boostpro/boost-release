@@ -4987,7 +4987,17 @@ These tests will fail in most compilers that don't support rvalue references.
 
     <!-- type_traits -->
     <library name="type_traits">
-        <mark-expected-failures>
+       <mark-expected-failures>
+          <test name="has_operator_new_test"/>
+          <test name="make_signed_test"/>
+          <test name="make_unsigned_test"/>
+          <toolset name="msvc-7.1"/>
+          <note author="John Maddock">
+             Apparently the compiler can't cope with these - later versions are fine though.
+             Probably work-round-able if someone would care to look into these.
+          </note>
+       </mark-expected-failures>
+       <mark-expected-failures>
             <test name="function_traits_test"/>
             <test name="remove_bounds_test"/>
             <test name="remove_const_test"/>
@@ -5216,7 +5226,16 @@ These tests will fail in most compilers that don't support rvalue references.
                 work by someone who has this compiler.
             </note>
         </mark-unusable>
-        <mark-expected-failures>
+       <mark-expected-failures>
+          <test name="test_type_traits"/>
+          <test name="std_test_type_traits"/>
+          <toolset name="msvc-7.1"/>
+          <note author="John Maddock">
+             Later versions of MSVC are required for these tests - the issues may
+             be work-round-able if anyone cares enough to look into them.
+          </note>
+       </mark-expected-failures>
+       <mark-expected-failures>
             <test name="test_mem_fn_tricky"/>
             <test name="test_bind_tricky"/>
             <test name="test_ref_wrapper_tricky"/>
@@ -5790,32 +5809,6 @@ These tests will fail in most compilers that don't support rvalue references.
     <!-- unordered -->
     <library name="unordered">
       <mark-expected-failures>
-        <test name="move_tests"/>
-        <toolset name="msvc-6*"/>
-        <toolset name="msvc-7*"/>
-        <toolset name="msvc-8*"/>
-        <toolset name="msvc-9.0"/>
-        <toolset name="msvc-9.0express"/>
-        <toolset name="msvc-10.0"/>
-        <toolset name="intel-win-10.1"/>
-        <toolset name="borland-*"/>
-        <toolset name="sun-*"/>
-        <toolset name="hp_css-*"/>
-        <toolset name="intel-linux-8*"/>
-        <toolset name="intel-linux-9.0*"/>
-        <toolset name="acc-pa_risc"/>
-        <note author="Daniel James">
-            This tests whether the container is successfully moved under
-            different circumstances, and fails if it is copied. Typically if
-            this one fails, it just means that return value optimization was
-            not applied. It might be possible to change the test to make it for
-            the compiler to apply ADL (by not having non-const reference
-            parameters for the function which returns the container). So this
-            is an acceptable failure.
-        </note>
-      </mark-expected-failures>
-
-      <mark-expected-failures>
         <test name="unnecessary_copy_tests"/>
         <toolset name="borland-*"/>
         <toolset name="sun-*"/>
@@ -5830,7 +5823,7 @@ These tests will fail in most compilers that don't support rvalue references.
         <test name="compile_map"/>
         <test name="compile_set"/>
         <toolset name="gcc-open64"/>
-        <toolset name="pathscale-3.1"/>
+        <toolset name="pathscale-*"/>
         <note author="Daniel James">
             Concept checks don't seem to work on pathscale.
         </note>

@@ -2,7 +2,7 @@
 // deadline_timer.cpp
 // ~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2008 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,7 +17,8 @@
 #include <boost/asio/deadline_timer.hpp>
 
 #include <boost/bind.hpp>
-#include <boost/asio.hpp>
+#include <boost/asio/io_service.hpp>
+#include <boost/asio/placeholders.hpp>
 #include "unit_test.hpp"
 
 using namespace boost::posix_time;
@@ -58,7 +59,11 @@ void cancel_timer(boost::asio::deadline_timer* t)
 
 ptime now()
 {
+#if defined(BOOST_DATE_TIME_HAS_HIGH_PRECISION_CLOCK)
   return microsec_clock::universal_time();
+#else // defined(BOOST_DATE_TIME_HAS_HIGH_PRECISION_CLOCK)
+  return second_clock::universal_time();
+#endif // defined(BOOST_DATE_TIME_HAS_HIGH_PRECISION_CLOCK)
 }
 
 void deadline_timer_test()
