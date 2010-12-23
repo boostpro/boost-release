@@ -61,8 +61,8 @@ scanner_tests()
         pp1(cp_first, cp_last);
 
     //  compile check only...
-    scanner<> spp1(pp1);
-    scanner<> spp2(pp1);
+    scanner<> spp1(pp1); (void)spp1;
+    scanner<> spp2(pp1); (void)spp2;
     //    spp1 = spp2;
     //  compile check only...
 
