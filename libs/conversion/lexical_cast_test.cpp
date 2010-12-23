@@ -21,17 +21,12 @@
 
 #include <boost/lexical_cast.hpp>
 
+#include <boost/cstdint.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 
 #include <string>
 #include <memory>
-
-#if defined(BOOST_NO_STRINGSTREAM) || \
-    defined(BOOST_NO_STD_WSTRING) || \
-    defined(BOOST_NO_STD_LOCALE)
-#define DISABLE_WIDE_CHAR_SUPPORT
-#endif
 
 #if (defined(BOOST_HAS_LONG_LONG) || defined(BOOST_HAS_MS_INT64)) \
     && !(defined(BOOST_MSVC) && BOOST_MSVC < 1300)
@@ -76,6 +71,8 @@ void test_conversion_from_to_int();
 void test_conversion_from_to_uint();
 void test_conversion_from_to_long();
 void test_conversion_from_to_ulong();
+void test_conversion_from_to_intmax_t();
+void test_conversion_from_to_uintmax_t();
 #ifdef LCAST_TEST_LONGLONG
 void test_conversion_from_to_longlong();
 void test_conversion_from_to_ulonglong();
@@ -98,30 +95,32 @@ unit_test::test_suite *init_unit_test_suite(int, char *[])
     suite->add(BOOST_TEST_CASE(test_conversion_from_to_wchar_t_alias));
     suite->add(BOOST_TEST_CASE(test_conversion_to_pointer));
     suite->add(BOOST_TEST_CASE(test_conversion_to_string));
-    #ifndef DISABLE_WIDE_CHAR_SUPPORT
+#ifndef BOOST_LCAST_NO_WCHAR_T
     suite->add(BOOST_TEST_CASE(test_conversion_from_wchar_t));
     suite->add(BOOST_TEST_CASE(test_conversion_to_wchar_t));
     suite->add(BOOST_TEST_CASE(test_conversion_from_wstring));
     suite->add(BOOST_TEST_CASE(test_conversion_to_wstring));
-    #endif
+#endif
     suite->add(BOOST_TEST_CASE(test_bad_lexical_cast));
     suite->add(BOOST_TEST_CASE(test_no_whitespace_stripping));
     suite->add(BOOST_TEST_CASE(&test_conversion_from_to_short));
     suite->add(BOOST_TEST_CASE(&test_conversion_from_to_ushort));
     suite->add(BOOST_TEST_CASE(&test_conversion_from_to_int));
     suite->add(BOOST_TEST_CASE(&test_conversion_from_to_uint));
-    suite->add(BOOST_TEST_CASE(&test_conversion_from_to_ulong));
     suite->add(BOOST_TEST_CASE(&test_conversion_from_to_long));
-    #ifdef LCAST_TEST_LONGLONG
+    suite->add(BOOST_TEST_CASE(&test_conversion_from_to_ulong));
+    suite->add(BOOST_TEST_CASE(&test_conversion_from_to_intmax_t));
+    suite->add(BOOST_TEST_CASE(&test_conversion_from_to_uintmax_t));
+#ifdef LCAST_TEST_LONGLONG
     suite->add(BOOST_TEST_CASE(&test_conversion_from_to_longlong));
     suite->add(BOOST_TEST_CASE(&test_conversion_from_to_ulonglong));
-    #endif
-    #ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#endif
+#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     suite->add(BOOST_TEST_CASE(&test_traits));
     suite->add(BOOST_TEST_CASE(&test_wtraits));
     suite->add(BOOST_TEST_CASE(&test_allocator));
     suite->add(BOOST_TEST_CASE(&test_wallocator));
-    #endif
+#endif
 
     return suite;
 }
@@ -263,14 +262,14 @@ void test_conversion_from_to_wchar_t_alias()
 void test_conversion_to_pointer()
 {
     BOOST_CHECK_THROW(lexical_cast<char *>("Test"), bad_lexical_cast);
-    #ifndef DISABLE_WIDE_CHAR_SUPPORT
+#ifndef BOOST_LCAST_NO_WCHAR_T
     BOOST_CHECK_THROW(lexical_cast<wchar_t *>("Test"), bad_lexical_cast);
-    #endif
+#endif
 }
 
 void test_conversion_from_wchar_t()
 {
-#ifndef DISABLE_WIDE_CHAR_SUPPORT
+#ifndef BOOST_LCAST_NO_WCHAR_T
 #if !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     BOOST_CHECK_EQUAL(1, lexical_cast<int>(L'1'));
     BOOST_CHECK_THROW(lexical_cast<int>(L'A'), bad_lexical_cast);
@@ -303,7 +302,7 @@ void test_conversion_from_wchar_t()
 
 void test_conversion_to_wchar_t()
 {
-#if !defined(DISABLE_WIDE_CHAR_SUPPORT) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
+#if !defined(BOOST_LCAST_NO_WCHAR_T) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     BOOST_CHECK_EQUAL(L'1', lexical_cast<wchar_t>(1));
     BOOST_CHECK_EQUAL(L'0', lexical_cast<wchar_t>(0));
     BOOST_CHECK_EQUAL(L'1', lexical_cast<wchar_t>('1'));
@@ -325,12 +324,12 @@ void test_conversion_to_wchar_t()
         lexical_cast<wchar_t>(std::wstring(L"")), bad_lexical_cast);
     BOOST_CHECK_THROW(
         lexical_cast<wchar_t>(std::wstring(L"Test")), bad_lexical_cast);
-    #endif
+#endif
 }
 
 void test_conversion_from_wstring()
 {
-    #ifndef DISABLE_WIDE_CHAR_SUPPORT
+#ifndef BOOST_LCAST_NO_WCHAR_T
     BOOST_CHECK_EQUAL(123, lexical_cast<int>(std::wstring(L"123")));
     BOOST_CHECK_THROW(
         lexical_cast<int>(std::wstring(L"")), bad_lexical_cast);
@@ -343,12 +342,12 @@ void test_conversion_from_wstring()
         lexical_cast<bool>(std::wstring(L"")), bad_lexical_cast);
     BOOST_CHECK_THROW(
         lexical_cast<bool>(std::wstring(L"Test")), bad_lexical_cast);
-    #endif
+#endif
 }
 
 void test_conversion_to_wstring()
 {
-    #ifndef DISABLE_WIDE_CHAR_SUPPORT
+#ifndef BOOST_LCAST_NO_WCHAR_T
     wchar_t buf[] = L"hello";
     wchar_t* str = buf;
     BOOST_CHECK(str == lexical_cast<std::wstring>(str));
@@ -368,7 +367,7 @@ void test_conversion_to_wstring()
     BOOST_CHECK(L"Test" == lexical_cast<std::wstring>(std::wstring(L"Test")));
     BOOST_CHECK(L" " == lexical_cast<std::wstring>(std::wstring(L" ")));
     BOOST_CHECK(L"" == lexical_cast<std::wstring>(std::wstring(L"")));
-    #endif
+#endif
 }
 
 void test_bad_lexical_cast()
@@ -522,27 +521,50 @@ template<class T, class CharT>
 void test_conversion_from_string_to_integral(CharT)
 {
     typedef std::numeric_limits<T> limits;
+    typedef std::basic_string<CharT> string_type;
 
-    T t;
+    string_type s;
+    string_type const zero = to_str<CharT>(0);
+    string_type const nine = to_str<CharT>(9);
+    T const min_val = (limits::min)();
+    T const max_val = (limits::max)();
 
-    t = (limits::min)();
-    BOOST_CHECK(lexical_cast<T>(to_str<CharT>(t)) == t);
+    s = to_str<CharT>(min_val);
+    BOOST_CHECK_EQUAL(lexical_cast<T>(s), min_val);
+    if(limits::is_signed)
+    {
+#if defined(BOOST_MSVC) && BOOST_MSVC == 1400
+        // VC++ 8.0 bug, see libs/conversion/test/lexical_cast_vc8_bug_test.cpp
+        if(sizeof(T) < sizeof(boost::intmax_t))
+#endif
+        {
+            BOOST_CHECK_THROW(lexical_cast<T>(s + zero), bad_lexical_cast);
+            BOOST_CHECK_THROW(lexical_cast<T>(s + nine), bad_lexical_cast);
+        }
+    }
 
-    t = (limits::max)();
-    BOOST_CHECK(lexical_cast<T>(to_str<CharT>(t)) == t);
+    s = to_str<CharT>(max_val);
+    BOOST_CHECK_EQUAL(lexical_cast<T>(s), max_val);
+#if defined(BOOST_MSVC) && BOOST_MSVC == 1400
+    // VC++ 8.0 bug, see libs/conversion/test/lexical_cast_vc8_bug_test.cpp
+    if(sizeof(T) != sizeof(boost::intmax_t))
+#endif
+    {
+        BOOST_CHECK_THROW(lexical_cast<T>(s + zero), bad_lexical_cast);
+        BOOST_CHECK_THROW(lexical_cast<T>(s + nine), bad_lexical_cast);
+    }
 
     if(limits::digits <= 16 && lcast_test_small_integral_types_completely)
         // min and max have already been tested.
-        for(t = 1 + (limits::min)(); t != (limits::max)(); ++t)
+        for(T t = 1 + min_val; t != max_val; ++t)
             BOOST_CHECK(lexical_cast<T>(to_str<CharT>(t)) == t);
     else
     {
-        T const min_val = (limits::min)();
-        T const max_val = (limits::max)();
         T const half_max_val = max_val / 2;
         T const cnt = lcast_integral_test_counter; // to supress warnings
         unsigned int const counter = cnt < half_max_val ? cnt : half_max_val;
 
+        T t;
         unsigned int i;
 
         // Test values around min:
@@ -577,7 +599,7 @@ void test_conversion_from_to_integral_for_locale()
     test_conversion_from_integral_to_integral<T>();
     test_conversion_from_integral_to_string<T>('0');
     test_conversion_from_string_to_integral<T>('0');
-#if !defined(DISABLE_WIDE_CHAR_SUPPORT) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
+#if !defined(BOOST_LCAST_NO_WCHAR_T)
     test_conversion_from_integral_to_string<T>(L'0');
     test_conversion_from_string_to_integral<T>(L'0');
 #endif
@@ -598,7 +620,7 @@ void test_conversion_from_to_integral()
     test_conversion_from_integral_to_char<T>(zero);
     test_conversion_from_integral_to_char<T>(szero);
     test_conversion_from_integral_to_char<T>(uzero);
-#if !defined(DISABLE_WIDE_CHAR_SUPPORT) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
+#if !defined(BOOST_LCAST_NO_WCHAR_T) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     wchar_t const wzero = L'0';
     test_conversion_from_integral_to_char<T>(wzero);
 #endif
@@ -656,14 +678,24 @@ void test_conversion_from_to_uint()
     test_conversion_from_to_integral<unsigned int>();
 }
 
+void test_conversion_from_to_long()
+{
+    test_conversion_from_to_integral<long>();
+}
+
 void test_conversion_from_to_ulong()
 {
     test_conversion_from_to_integral<unsigned long>();
 }
 
-void test_conversion_from_to_long()
+void test_conversion_from_to_intmax_t()
 {
-    test_conversion_from_to_integral<long>();
+    test_conversion_from_to_integral<boost::intmax_t>();
+}
+
+void test_conversion_from_to_uintmax_t()
+{
+    test_conversion_from_to_integral<boost::uintmax_t>();
 }
 
 #if defined(BOOST_HAS_LONG_LONG)

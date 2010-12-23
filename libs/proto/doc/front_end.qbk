@@ -169,7 +169,7 @@ Now, let's try to define a function template that returns an expression template
     typename proto::function<
         typename proto::terminal<pow_fun<Exp> >::type
       , Arg const &
-    >::type
+    >::type const
     pow(Arg const &arg)
     {
         typedef
@@ -214,7 +214,7 @@ Proto expressions can only have other Proto expressions as children. But if we l
     typename proto::function<
         typename proto::terminal<pow_fun<Exp> >::type
       , Arg const & // <=== ERROR! This may not be a Proto type!
-    >::type
+    >::type const
     pow(Arg const &arg)
 
 What we want is a way to make `Arg` into a Proto terminal if it is not a Proto expression already, and leave it alone if it is. For that, we can use _as_child_. The following implementation of the `pow()` function handles all argument types, expression templates or otherwise.
@@ -226,7 +226,7 @@ What we want is a way to make `Arg` into a Proto terminal if it is not a Proto e
     typename proto::function<
         typename proto::terminal<pow_fun<Exp> >::type
       , typename proto::result_of::as_child<Arg const>::type
-    >::type
+    >::type const
     pow(Arg const &arg)
     {
         typedef
@@ -255,7 +255,7 @@ The versions of the `pow()` function we've seen above are rather verbose. In the
         proto::tag::function  // Tag type
       , pow_fun<Exp>          // First child (by value)
       , Arg const &           // Second child (by reference)
-    >::type
+    >::type const
     pow(Arg const &arg)
     {
         return proto::make_expr<proto::tag::function>(
@@ -346,6 +346,10 @@ We use this domain type when extending the _expr_ type, which we do with the _ex
     };
 
 We want calculator expressions to be function objects, so we have to define an `operator()` that takes and returns doubles. The `calculator<>` wrapper above does that with the help of the _extends_ template. The first template to _extends_ parameter is the expression type we are extending. The second is the type of the wrapped expression. The third parameter is the domain that this wrapper is associated with. A wrapper type like `calculator<>` that inherits from _extends_ behaves just like the expression type it has extended, with any additional behaviors you choose to give it.
+
+[note [*Why not just inherit from [^proto::expr<>]?]
+
+You might be thinking that this expression extension business is unnecessarily complicated. After all, isn't this why C++ supports inheritance? Why can't [^calculator<Expr>] just inherit from [^Expr] directly? The reason is because [^Expr], which presumably is an instantiation of _expr_, has expression template-building operator overloads that will be incorrect for derived types. They will store `*this` by reference to `proto::expr<>`, effectively slicing off any derived parts. _extends_ gives your derived types operator overloads that don't slice off your additional members.]
 
 Although not strictly necessary in this case, we bring `extends<>::operator=` into scope with a `using` declaration. This is really only necessary if you want expressions like `_1 = 3` to create a lazily evaluated assignment. _extends_ defines the appropriate `operator=` for you, but the compiler-generated `calculator<>::operator=` will hide it unless you make it available with the `using` declaration.
 

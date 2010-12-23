@@ -6,9 +6,6 @@
 #include <boost/config/warning_disable.hpp>
 #include <boost/detail/lightweight_test.hpp>
 
-// include this first to make rules have placeholders (e.g. r._1)
-#include <boost/spirit/include/support_argument.hpp>
-
 #include <boost/spirit/include/karma_operator.hpp>
 #include <boost/spirit/include/karma_char.hpp>
 #include <boost/spirit/include/karma_string.hpp>
@@ -24,12 +21,12 @@
 #include "test.hpp"
 
 using namespace spirit_test;
-using namespace boost::spirit::karma;
+using namespace boost::spirit;
 using namespace boost::spirit::ascii;
 
 typedef spirit_test::output_iterator<char>::type outiter_type;
 
-struct num_list : grammar<outiter_type, space_type>
+struct num_list : karma::grammar<outiter_type, space_type>
 {
     num_list() : num_list::base_type(start)
     {
@@ -40,7 +37,7 @@ struct num_list : grammar<outiter_type, space_type>
         start = num1 << ',' << num2 << ',' << num3;
     }
 
-    rule<outiter_type, space_type> start, num1, num2, num3;
+    karma::rule<outiter_type, space_type> start, num1, num2, num3;
 };
 
 int
@@ -52,7 +49,6 @@ main()
     }
 
     { // direct access to the rules
-
         num_list def;
         BOOST_TEST(test_delimited("123 ", def.num1, space));
         BOOST_TEST(test_delimited("123 , 456 , 789 ", def.start, space));

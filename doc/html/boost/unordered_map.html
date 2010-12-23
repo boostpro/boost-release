@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Class template unordered_map</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../unordered/reference.html#header.boost.unordered_map_hpp" title="Header &lt;boost/unordered_map.hpp&gt;">
 <link rel="prev" href="unordered_multiset.html" title="Class template unordered_multiset">
@@ -57,99 +57,103 @@
   <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a class="link" href="unordered_map.html#boost.unordered_map.const_local_iterator">const_local_iterator</a>;
 
   <span class="emphasis"><em>// <a class="link" href="unordered_map.html#boost.unordered_mapconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_map.html#id1274836-bb">unordered_map</a>(size_type = <span class="emphasis"><em>implementation-defined</em></span>, 
+  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_map.html#id1303614-bb">unordered_map</a>(size_type = <span class="emphasis"><em>implementation-defined</em></span>, 
                          hasher <span class="bold"><strong>const</strong></span>&amp; = hasher(), 
                          key_equal <span class="bold"><strong>const</strong></span>&amp; = key_equal(), 
                          allocator_type <span class="bold"><strong>const</strong></span>&amp; = allocator_type());
   <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; 
-    <a class="link" href="unordered_map.html#id1273542-bb">unordered_map</a>(InputIterator, InputIterator, 
+    <a class="link" href="unordered_map.html#id1303695-bb">unordered_map</a>(InputIterator, InputIterator, 
                   size_type = implementation-defined, 
                   hasher <span class="bold"><strong>const</strong></span>&amp; = hasher(), key_equal <span class="bold"><strong>const</strong></span>&amp; = key_equal(), 
                   allocator_type <span class="bold"><strong>const</strong></span>&amp; = allocator_type());
-  <a class="link" href="unordered_map.html#id1273641-bb">unordered_map</a>(unordered_map <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_map.html#id1273662-bb">unordered_map</a>(Allocator <span class="bold"><strong>const</strong></span>&amp;);
-  <a class="link" href="unordered_map.html#id1273690-bb">unordered_map</a>(unordered_map <span class="bold"><strong>const</strong></span>&amp;, Allocator <span class="bold"><strong>const</strong></span>&amp;);
-  <a class="link" href="unordered_map.html#id1273730-bb">~unordered_map</a>();
-  <span class="type">unordered_map&amp;</span> <a class="link" href="unordered_map.html#id1273734-bb"><span class="bold"><strong>operator</strong></span>=</a>(unordered_map <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">allocator_type</span> <a class="link" href="unordered_map.html#id1273761-bb">get_allocator</a>() <span class="bold"><strong>const</strong></span>;
+  <a class="link" href="unordered_map.html#id1303794-bb">unordered_map</a>(unordered_map <span class="bold"><strong>const</strong></span>&amp;);
+  <a class="link" href="unordered_map.html#id1303825-bb">unordered_map</a>(unordered_map &amp;&amp;);
+  <span class="bold"><strong>explicit</strong></span> <a class="link" href="unordered_map.html#id1303866-bb">unordered_map</a>(Allocator <span class="bold"><strong>const</strong></span>&amp;);
+  <a class="link" href="unordered_map.html#id1303894-bb">unordered_map</a>(unordered_map <span class="bold"><strong>const</strong></span>&amp;, Allocator <span class="bold"><strong>const</strong></span>&amp;);
+  <a class="link" href="unordered_map.html#id1303934-bb">~unordered_map</a>();
+  <span class="type">unordered_map&amp;</span> <a class="link" href="unordered_map.html#id1303947-bb"><span class="bold"><strong>operator</strong></span>=</a>(unordered_map <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">unordered_map&amp;</span> <a class="link" href="unordered_map.html#id1302602-bb"><span class="bold"><strong>operator</strong></span>=</a>(unordered_map &amp;&amp;);
+  <span class="type">allocator_type</span> <a class="link" href="unordered_map.html#id1302655-bb">get_allocator</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1273773-bb">size and capacity</a></em></span>
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_map.html#id1273777-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1273799-bb">size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1273826-bb">max_size</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1302667-bb">size and capacity</a></em></span>
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_map.html#id1302672-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1302694-bb">size</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1302721-bb">max_size</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1273849-bb">iterators</a></em></span>
-  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1273858-bb">begin</a>();
-  <span class="type">const_iterator</span> <a class="link" href="unordered_map.html#id1273862-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1273881-bb">end</a>();
-  <span class="type">const_iterator</span> <a class="link" href="unordered_map.html#id1273889-bb">end</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="unordered_map.html#id1273905-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a class="link" href="unordered_map.html#id1272527-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1302743-bb">iterators</a></em></span>
+  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1302752-bb">begin</a>();
+  <span class="type">const_iterator</span> <a class="link" href="unordered_map.html#id1302757-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1302776-bb">end</a>();
+  <span class="type">const_iterator</span> <a class="link" href="unordered_map.html#id1302784-bb">end</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_iterator</span> <a class="link" href="unordered_map.html#id1302800-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_iterator</span> <a class="link" href="unordered_map.html#id1302818-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1272545-bb">modifiers</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a class="link" href="unordered_map.html#id1272550-bb">emplace</a>(Args&amp;&amp;...);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1272647-bb">emplace_hint</a>(const_iterator, Args&amp;&amp;...);
-  <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a class="link" href="unordered_map.html#id1272761-bb">insert</a>(value_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1272832-bb">insert</a>(const_iterator, value_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1272920-bb">insert</a>(InputIterator, InputIterator);
-  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1272997-bb">erase</a>(const_iterator);
-  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1273063-bb">erase</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1273118-bb">erase</a>(const_iterator, const_iterator);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1273198-bb">clear</a>();
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1273235-bb">swap</a>(unordered_map&amp;);
+  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1302836-bb">modifiers</a></em></span>
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a class="link" href="unordered_map.html#id1302841-bb">emplace</a>(Args&amp;&amp;...);
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1302938-bb">emplace_hint</a>(const_iterator, Args&amp;&amp;...);
+  <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a class="link" href="unordered_map.html#id1303052-bb">insert</a>(value_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1303123-bb">insert</a>(const_iterator, value_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1303210-bb">insert</a>(InputIterator, InputIterator);
+  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1303288-bb">erase</a>(const_iterator);
+  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1303353-bb">erase</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1303409-bb">erase</a>(const_iterator, const_iterator);
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1303488-bb">clear</a>();
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1303525-bb">swap</a>(unordered_map&amp;);
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1273287-bb">observers</a></em></span>
-  <span class="type">hasher</span> <a class="link" href="unordered_map.html#id1273291-bb">hash_function</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">key_equal</span> <a class="link" href="unordered_map.html#id1273307-bb">key_eq</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1303577-bb">observers</a></em></span>
+  <span class="type">hasher</span> <a class="link" href="unordered_map.html#id1303582-bb">hash_function</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">key_equal</span> <a class="link" href="unordered_map.html#id1303598-bb">key_eq</a>() <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1273325-bb">lookup</a></em></span>
-  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1273334-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1273352-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1273390-bb">count</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">std::pair&lt;iterator, iterator&gt;</span> <a class="link" href="unordered_map.html#id1273428-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a class="link" href="unordered_map.html#id1273446-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">mapped_type&amp;</span> <a class="link" href="unordered_map.html#id1273496-bb"><span class="bold"><strong>operator</strong></span>[]</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">Mapped&amp;</span> <a class="link" href="unordered_map.html#id1272324-bb">at</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
-  <span class="type">Mapped <span class="bold"><strong>const</strong></span>&amp;</span> <a class="link" href="unordered_map.html#id1272336-bb">at</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1302560-bb">lookup</a></em></span>
+  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1302569-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">iterator</span> <a class="link" href="unordered_map.html#id1302588-bb">find</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1302425-bb">count</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">std::pair&lt;iterator, iterator&gt;</span> <a class="link" href="unordered_map.html#id1302463-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a class="link" href="unordered_map.html#id1302482-bb">equal_range</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">mapped_type&amp;</span> <a class="link" href="unordered_map.html#id1302532-bb"><span class="bold"><strong>operator</strong></span>[]</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">Mapped&amp;</span> <a class="link" href="unordered_map.html#id1300880-bb">at</a>(key_type <span class="bold"><strong>const</strong></span>&amp;);
+  <span class="type">Mapped <span class="bold"><strong>const</strong></span>&amp;</span> <a class="link" href="unordered_map.html#id1300892-bb">at</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1272401-bb">bucket interface</a></em></span>
-  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1272406-bb">bucket_count</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1272426-bb">max_bucket_count</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1272446-bb">bucket_size</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1270758-bb">bucket</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type">local_iterator</span> <a class="link" href="unordered_map.html#id1270807-bb">begin</a>(size_type);
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_map.html#id1270825-bb">begin</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">local_iterator</span> <a class="link" href="unordered_map.html#id1270878-bb">end</a>(size_type);
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_map.html#id1270896-bb">end</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_map.html#id1270945-bb">cbegin</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_local_iterator</span> <a class="link" href="unordered_map.html#id1270994-bb">cend</a>(size_type);
+  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1300957-bb">bucket interface</a></em></span>
+  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1300962-bb">bucket_count</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1300982-bb">max_bucket_count</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1301002-bb">bucket_size</a>(size_type) <span class="bold"><strong>const</strong></span>;
+  <span class="type">size_type</span> <a class="link" href="unordered_map.html#id1301048-bb">bucket</a>(key_type <span class="bold"><strong>const</strong></span>&amp;) <span class="bold"><strong>const</strong></span>;
+  <span class="type">local_iterator</span> <a class="link" href="unordered_map.html#id1301097-bb">begin</a>(size_type);
+  <span class="type">const_local_iterator</span> <a class="link" href="unordered_map.html#id1301115-bb">begin</a>(size_type) <span class="bold"><strong>const</strong></span>;
+  <span class="type">local_iterator</span> <a class="link" href="unordered_map.html#id1301169-bb">end</a>(size_type);
+  <span class="type">const_local_iterator</span> <a class="link" href="unordered_map.html#id1301187-bb">end</a>(size_type) <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_local_iterator</span> <a class="link" href="unordered_map.html#id1301236-bb">cbegin</a>(size_type) <span class="bold"><strong>const</strong></span>;
+  <span class="type">const_local_iterator</span> <a class="link" href="unordered_map.html#id1301285-bb">cend</a>(size_type);
 
-  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1271042-bb">hash policy</a></em></span>
-  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_map.html#id1271047-bb">load_factor</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_map.html#id1271067-bb">max_load_factor</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1271087-bb">max_load_factor</a>(<span class="bold"><strong>float</strong></span>);
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1271119-bb">rehash</a>(size_type);
+  <span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1301333-bb">hash policy</a></em></span>
+  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_map.html#id1301337-bb">load_factor</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>float</strong></span></span> <a class="link" href="unordered_map.html#id1301357-bb">max_load_factor</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1301377-bb">max_load_factor</a>(<span class="bold"><strong>float</strong></span>);
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#id1301409-bb">rehash</a>(size_type);
 };
 
-<span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1271169-bb">Equality Comparisons</a></em></span>
+<span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1301459-bb">Equality Comparisons</a></em></span>
 <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
          <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_map.html#boost.operator==_id1271173"><span class="bold"><strong>operator</strong></span>==</a>(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_map.html#boost.operator==_id1301464"><span class="bold"><strong>operator</strong></span>==</a>(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
                   unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;);
 <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
          <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_map.html#boost.operator!=_id1271254"><span class="bold"><strong>operator</strong></span>!=</a>(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a class="link" href="unordered_map.html#boost.operator!=_id1301544"><span class="bold"><strong>operator</strong></span>!=</a>(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;, 
                   unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp;);
 
-<span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1271335-bb">swap</a></em></span>
+<span class="emphasis"><em>// <a class="link" href="unordered_map.html#id1301626-bb">swap</a></em></span>
 <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
          <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#boost.swap_id1271340">swap</a>(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp;, 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a class="link" href="unordered_map.html#boost.swap_id1301630">swap</a>(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp;, 
             unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp;);</pre></div>
 <div class="refsect1" title="Description">
-<a name="id1979698"></a><h2>Description</h2>
-<p>For the normative reference see chapter 23 of
-              <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008-2009/n2691.pdf" target="_top">the working draft of the C++ standard [n2691].</a></p>
+<a name="id2012174"></a><h2>Description</h2>
+<p>Based on chapter 23 of
+              <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2960.pdf" target="_top">the working draft of the C++ standard [n2960]</a>.
+              But without the updated rules for allocators.
+            </p>
 <p><span class="bold"><strong>Template Parameters</strong></span>
               </p>
 <div class="informaltable"><table class="table">
@@ -185,7 +189,7 @@
 <p>The elements are organized into buckets. Keys with the same hash code are stored in the same bucket.</p>
 <p>The number of buckets can be automatically increased by a call to insert, or as the result of calling rehash.</p>
 <div class="refsect2" title="unordered_map public types">
-<a name="id1979814"></a><h3>
+<a name="id2012292"></a><h3>
 <a name="boost.unordered_maptypes"></a><code class="computeroutput">unordered_map</code> 
         public
        types</h3>
@@ -206,14 +210,14 @@
 <p>
 <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a name="boost.unordered_map.iterator"></a>iterator;</p>
 <p>A iterator whose value type is <span class="type">value_type</span>. </p>
-<p>Any iterator category except output iterator.</p>
+<p>The iterator category is at least a forward iterator.</p>
 <p>Convertible to <span class="type">const_iterator</span>.</p>
 </li>
 <li class="listitem">
 <p>
 <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> <a name="boost.unordered_map.const_iterator"></a>const_iterator;</p>
 <p>A constant iterator whose value type is <span class="type">value_type</span>. </p>
-<p>Any iterator category except output iterator.</p>
+<p>The iterator category is at least a forward iterator.</p>
 </li>
 <li class="listitem">
 <p>
@@ -230,13 +234,13 @@
 </ol></div>
 </div>
 <div class="refsect2" title="unordered_map public construct/copy/destruct">
-<a name="id1980039"></a><h3>
+<a name="id2012518"></a><h3>
 <a name="boost.unordered_mapconstruct-copy-destruct"></a><code class="computeroutput">unordered_map</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id1274836-bb"></a>unordered_map(size_type n = <span class="emphasis"><em>implementation-defined</em></span>, 
+<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id1303614-bb"></a>unordered_map(size_type n = <span class="emphasis"><em>implementation-defined</em></span>, 
                        hasher <span class="bold"><strong>const</strong></span>&amp; hf = hasher(), 
                        key_equal <span class="bold"><strong>const</strong></span>&amp; eq = key_equal(), 
                        allocator_type <span class="bold"><strong>const</strong></span>&amp; a = allocator_type());</pre>
@@ -245,13 +249,13 @@
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><code class="computeroutput"><a class="link" href="unordered_map.html#id1273799-bb">size</a>() == 0</code></td>
+<td><code class="computeroutput"><a class="link" href="unordered_map.html#id1302694-bb">size</a>() == 0</code></td>
 </tr></tbody>
 </table></div>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; 
-  <a name="id1273542-bb"></a>unordered_map(InputIterator f, InputIterator l, 
+  <a name="id1303695-bb"></a>unordered_map(InputIterator f, InputIterator l, 
                 size_type n = implementation-defined, 
                 hasher <span class="bold"><strong>const</strong></span>&amp; hf = hasher(), 
                 key_equal <span class="bold"><strong>const</strong></span>&amp; eq = key_equal(), 
@@ -259,55 +263,130 @@
 <p>Constructs an empty container with at least n buckets, using hf as the hash function, eq as the key equality predicate, a as the allocator and a maximum load factor of 1.0 and inserts the elements from [f, l) into it.</p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1273641-bb"></a>unordered_map(unordered_map <span class="bold"><strong>const</strong></span>&amp;);</pre>
+<pre class="literallayout"><a name="id1303794-bb"></a>unordered_map(unordered_map <span class="bold"><strong>const</strong></span>&amp;);</pre>
 <p>The copy constructor. Copies the contained elements, hash function, predicate, maximum load factor and allocator.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput">value_type</code> is copy constructible</p></td>
+</tr></tbody>
+</table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id1273662-bb"></a>unordered_map(Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
+<pre class="literallayout"><a name="id1303825-bb"></a>unordered_map(unordered_map &amp;&amp;);</pre>
+<p>The move constructor.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Notes:</span></p></td>
+<td><p>This is emulated on compilers without rvalue references.</p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>
+                <code class="computeroutput">value_type</code> is move constructible.
+                (TODO: This is not actually required in this implementation).
+              </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="bold"><strong>explicit</strong></span> <a name="id1303866-bb"></a>unordered_map(Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
 <p>Constructs an empty container, using allocator <code class="computeroutput">a</code>.</p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1273690-bb"></a>unordered_map(unordered_map <span class="bold"><strong>const</strong></span>&amp; x, Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
+<pre class="literallayout"><a name="id1303894-bb"></a>unordered_map(unordered_map <span class="bold"><strong>const</strong></span>&amp; x, Allocator <span class="bold"><strong>const</strong></span>&amp; a);</pre>
 <p>Constructs an container, copying <code class="computeroutput">x</code>'s contained elements, hash function, predicate, maximum load factor, but using allocator <code class="computeroutput">a</code>.</p>
 </li>
-<li class="listitem"><pre class="literallayout"><a name="id1273730-bb"></a>~unordered_map();</pre></li>
+<li class="listitem">
+<pre class="literallayout"><a name="id1303934-bb"></a>~unordered_map();</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Notes:</span></p></td>
+<td><p>The destructor is applied to every element, and all memory is deallocated</p></td>
+</tr></tbody>
+</table></div>
+</li>
 </ol></div>
 </div>
-<pre class="literallayout"><span class="type">unordered_map&amp;</span> <a name="id1273734-bb"></a><span class="bold"><strong>operator</strong></span>=(unordered_map <span class="bold"><strong>const</strong></span>&amp;);</pre>
+<pre class="literallayout"><span class="type">unordered_map&amp;</span> <a name="id1303947-bb"></a><span class="bold"><strong>operator</strong></span>=(unordered_map <span class="bold"><strong>const</strong></span>&amp;);</pre>
 <p>The assignment operator. Copies the contained elements, hash function, predicate and maximum load factor but not the allocator.</p>
-<pre class="literallayout"><span class="type">allocator_type</span> <a name="id1273761-bb"></a>get_allocator() <span class="bold"><strong>const</strong></span>;</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Notes:</span></p></td>
+<td><p>
+                On compilers without rvalue references, there is a single assignment
+                operator with the signature <code class="computeroutput">operator=(unordered_map)</code>
+                in order to emulate move semantics.
+              </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput">value_type</code> is copy constructible</p></td>
+</tr>
+</tbody>
+</table></div>
+<pre class="literallayout"><span class="type">unordered_map&amp;</span> <a name="id1302602-bb"></a><span class="bold"><strong>operator</strong></span>=(unordered_map &amp;&amp;);</pre>
+<p>The move assignment operator.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Notes:</span></p></td>
+<td><p>
+                On compilers without rvalue references, there is a single assignment
+                operator with the signature <code class="computeroutput">operator=(unordered_map)</code>
+                in order to emulate move semantics.
+              </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>
+                <code class="computeroutput">value_type</code> is move constructible.
+                (TODO: This is not actually required in this implementation).
+              </p></td>
+</tr>
+</tbody>
+</table></div>
+<pre class="literallayout"><span class="type">allocator_type</span> <a name="id1302655-bb"></a>get_allocator() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="refsect2" title="unordered_map size and capacity">
-<a name="id1980351"></a><h3>
-<a name="id1273773-bb"></a><code class="computeroutput">unordered_map</code> size and capacity</h3>
+<a name="id2012995"></a><h3>
+<a name="id1302667-bb"></a><code class="computeroutput">unordered_map</code> size and capacity</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id1273777-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id1302672-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
-<td><code class="computeroutput"><a class="link" href="unordered_map.html#id1273799-bb">size</a>() == 0</code></td>
+<td><code class="computeroutput"><a class="link" href="unordered_map.html#id1302694-bb">size</a>() == 0</code></td>
 </tr></tbody>
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1273799-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id1302694-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
-<td><code class="computeroutput">std::distance(<a class="link" href="unordered_map.html#id1273853-bb">begin</a>(), <a class="link" href="unordered_map.html#id1273877-bb">end</a>())</code></td>
+<td><code class="computeroutput">std::distance(<a class="link" href="unordered_map.html#id1302748-bb">begin</a>(), <a class="link" href="unordered_map.html#id1302772-bb">end</a>())</code></td>
 </tr></tbody>
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1273826-bb"></a>max_size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id1302721-bb"></a>max_size() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term">Returns:</span></p></td>
 <td>
-<code class="computeroutput"><a class="link" href="unordered_map.html#id1273799-bb">size</a>()</code> of the largest possible container.
+<code class="computeroutput"><a class="link" href="unordered_map.html#id1302694-bb">size</a>()</code> of the largest possible container.
               </td>
 </tr></tbody>
 </table></div>
@@ -315,12 +394,12 @@
 </ol></div>
 </div>
 <div class="refsect2" title="unordered_map iterators">
-<a name="id1980511"></a><h3>
-<a name="id1273849-bb"></a><code class="computeroutput">unordered_map</code> iterators</h3>
+<a name="id2013154"></a><h3>
+<a name="id1302743-bb"></a><code class="computeroutput">unordered_map</code> iterators</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1273853-bb"></a><span class="type">iterator</span> <a name="id1273858-bb"></a>begin();
-<span class="type">const_iterator</span> <a name="id1273862-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1302748-bb"></a><span class="type">iterator</span> <a name="id1302752-bb"></a>begin();
+<span class="type">const_iterator</span> <a name="id1302757-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -331,8 +410,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1273877-bb"></a><span class="type">iterator</span> <a name="id1273881-bb"></a>end();
-<span class="type">const_iterator</span> <a name="id1273889-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1302772-bb"></a><span class="type">iterator</span> <a name="id1302776-bb"></a>end();
+<span class="type">const_iterator</span> <a name="id1302784-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -343,7 +422,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1273905-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1302800-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -354,7 +433,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1272527-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_iterator</span> <a name="id1302818-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -367,11 +446,11 @@
 </ol></div>
 </div>
 <div class="refsect2" title="unordered_map modifiers">
-<a name="id1980697"></a><h3>
-<a name="id1272545-bb"></a><code class="computeroutput">unordered_map</code> modifiers</h3>
+<a name="id2013340"></a><h3>
+<a name="id1302836-bb"></a><code class="computeroutput">unordered_map</code> modifiers</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a name="id1272550-bb"></a>emplace(Args&amp;&amp;... args);</pre>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; <span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a name="id1302841-bb"></a>emplace(Args&amp;&amp;... args);</pre>
 <p>Inserts an object, constructed with the arguments <code class="computeroutput">args</code>, in the container if and only if there is no element in the container with an equivalent key.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -402,7 +481,7 @@
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span>... Args&gt; 
-  <span class="type">iterator</span> <a name="id1272647-bb"></a>emplace_hint(const_iterator hint, Args&amp;&amp;... args);</pre>
+  <span class="type">iterator</span> <a name="id1302938-bb"></a>emplace_hint(const_iterator hint, Args&amp;&amp;... args);</pre>
 <p>Inserts an object, constructed with the arguments <code class="computeroutput">args</code>, in the container if and only if there is no element in the container with an equivalent key.</p>
 <p>hint is a suggestion to where the element should be inserted.</p>
 <div class="variablelist"><table border="0">
@@ -431,7 +510,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a name="id1272761-bb"></a>insert(value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
+<pre class="literallayout"><span class="type">std::pair&lt;iterator, <span class="bold"><strong>bool</strong></span>&gt;</span> <a name="id1303052-bb"></a>insert(value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
 <p>Inserts obj in the container if and only if there is no element in the container with an equivalent key.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -458,7 +537,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1272832-bb"></a>insert(const_iterator hint, value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id1303123-bb"></a>insert(const_iterator hint, value_type <span class="bold"><strong>const</strong></span>&amp; obj);</pre>
 <p>Inserts obj in the container if and only if there is no element in the container with an equivalent key.</p>
 <p>hint is a suggestion to where the element should be inserted.</p>
 <div class="variablelist"><table border="0">
@@ -485,7 +564,7 @@
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> <a class="link" href="../InputIterator.html" title="Concept InputIterator">InputIterator</a>&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1272920-bb"></a>insert(InputIterator first, InputIterator last);</pre>
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1303210-bb"></a>insert(InputIterator first, InputIterator last);</pre>
 <p>Inserts a range of elements into the container. Elements are inserted if and only if there is no element in the container with an equivalent key.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -505,7 +584,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1272997-bb"></a>erase(const_iterator position);</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id1303288-bb"></a>erase(const_iterator position);</pre>
 <p>Erase the element pointed to by <code class="computeroutput">position</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -525,7 +604,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1273063-bb"></a>erase(key_type <span class="bold"><strong>const</strong></span>&amp; k);</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id1303353-bb"></a>erase(key_type <span class="bold"><strong>const</strong></span>&amp; k);</pre>
 <p>Erase all elements with key equivalent to <code class="computeroutput">k</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -542,7 +621,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">iterator</span> <a name="id1273118-bb"></a>erase(const_iterator first, const_iterator last);</pre>
+<pre class="literallayout"><span class="type">iterator</span> <a name="id1303409-bb"></a>erase(const_iterator first, const_iterator last);</pre>
 <p>Erases the elements in the range from <code class="computeroutput">first</code> to <code class="computeroutput">last</code>.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -562,14 +641,14 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1273198-bb"></a>clear();</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1303488-bb"></a>clear();</pre>
 <p>Erases all elements in the container.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><p><code class="computeroutput"><a class="link" href="unordered_map.html#id1273799-bb">size</a>() == 0</code></p></td>
+<td><p><code class="computeroutput"><a class="link" href="unordered_map.html#id1302694-bb">size</a>() == 0</code></p></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -579,7 +658,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1273235-bb"></a>swap(unordered_map&amp;);</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1303525-bb"></a>swap(unordered_map&amp;);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -598,11 +677,11 @@
 </ol></div>
 </div>
 <div class="refsect2" title="unordered_map observers">
-<a name="id1981448"></a><h3>
-<a name="id1273287-bb"></a><code class="computeroutput">unordered_map</code> observers</h3>
+<a name="id2014090"></a><h3>
+<a name="id1303577-bb"></a><code class="computeroutput">unordered_map</code> observers</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type">hasher</span> <a name="id1273291-bb"></a>hash_function() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">hasher</span> <a name="id1303582-bb"></a>hash_function() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -613,7 +692,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">key_equal</span> <a name="id1273307-bb"></a>key_eq() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">key_equal</span> <a name="id1303598-bb"></a>key_eq() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -626,12 +705,12 @@
 </ol></div>
 </div>
 <div class="refsect2" title="unordered_map lookup">
-<a name="id1981536"></a><h3>
-<a name="id1273325-bb"></a><code class="computeroutput">unordered_map</code> lookup</h3>
+<a name="id2014177"></a><h3>
+<a name="id1302560-bb"></a><code class="computeroutput">unordered_map</code> lookup</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1273329-bb"></a><span class="type">iterator</span> <a name="id1273334-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k);
-<span class="type">iterator</span> <a name="id1273352-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1302565-bb"></a><span class="type">iterator</span> <a name="id1302569-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k);
+<span class="type">iterator</span> <a name="id1302588-bb"></a>find(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -641,7 +720,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1273390-bb"></a>count(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id1302425-bb"></a>count(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -651,8 +730,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1273424-bb"></a><span class="type">std::pair&lt;iterator, iterator&gt;</span> <a name="id1273428-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k);
-<span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a name="id1273446-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1302459-bb"></a><span class="type">std::pair&lt;iterator, iterator&gt;</span> <a name="id1302463-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k);
+<span class="type">std::pair&lt;const_iterator, const_iterator&gt;</span> <a name="id1302482-bb"></a>equal_range(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -665,7 +744,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">mapped_type&amp;</span> <a name="id1273496-bb"></a><span class="bold"><strong>operator</strong></span>[](key_type <span class="bold"><strong>const</strong></span>&amp; k);</pre>
+<pre class="literallayout"><span class="type">mapped_type&amp;</span> <a name="id1302532-bb"></a><span class="bold"><strong>operator</strong></span>[](key_type <span class="bold"><strong>const</strong></span>&amp; k);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -692,8 +771,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1272319-bb"></a><span class="type">Mapped&amp;</span> <a name="id1272324-bb"></a>at(key_type <span class="bold"><strong>const</strong></span>&amp; k);
-<span class="type">Mapped <span class="bold"><strong>const</strong></span>&amp;</span> <a name="id1272336-bb"></a>at(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1300875-bb"></a><span class="type">Mapped&amp;</span> <a name="id1300880-bb"></a>at(key_type <span class="bold"><strong>const</strong></span>&amp; k);
+<span class="type">Mapped <span class="bold"><strong>const</strong></span>&amp;</span> <a name="id1300892-bb"></a>at(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -716,11 +795,11 @@
 </ol></div>
 </div>
 <div class="refsect2" title="unordered_map bucket interface">
-<a name="id1981959"></a><h3>
-<a name="id1272401-bb"></a><code class="computeroutput">unordered_map</code> bucket interface</h3>
+<a name="id2014599"></a><h3>
+<a name="id1300957-bb"></a><code class="computeroutput">unordered_map</code> bucket interface</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1272406-bb"></a>bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id1300962-bb"></a>bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -730,7 +809,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1272426-bb"></a>max_bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id1300982-bb"></a>max_bucket_count() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -740,13 +819,13 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1272446-bb"></a>bucket_size(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id1301002-bb"></a>bucket_size(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td><p><code class="computeroutput">n &lt; <a class="link" href="unordered_map.html#id1272406-bb">bucket_count</a>()</code></p></td>
+<td><p><code class="computeroutput">n &lt; <a class="link" href="unordered_map.html#id1300962-bb">bucket_count</a>()</code></p></td>
 </tr>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
@@ -756,7 +835,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">size_type</span> <a name="id1270758-bb"></a>bucket(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">size_type</span> <a name="id1301048-bb"></a>bucket(key_type <span class="bold"><strong>const</strong></span>&amp; k) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -772,8 +851,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1270802-bb"></a><span class="type">local_iterator</span> <a name="id1270807-bb"></a>begin(size_type n);
-<span class="type">const_local_iterator</span> <a name="id1270825-bb"></a>begin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1301093-bb"></a><span class="type">local_iterator</span> <a name="id1301097-bb"></a>begin(size_type n);
+<span class="type">const_local_iterator</span> <a name="id1301115-bb"></a>begin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -789,8 +868,8 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1270874-bb"></a><span class="type">local_iterator</span> <a name="id1270878-bb"></a>end(size_type n);
-<span class="type">const_local_iterator</span> <a name="id1270896-bb"></a>end(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a name="id1301164-bb"></a><span class="type">local_iterator</span> <a name="id1301169-bb"></a>end(size_type n);
+<span class="type">const_local_iterator</span> <a name="id1301187-bb"></a>end(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -806,7 +885,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id1270945-bb"></a>cbegin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id1301236-bb"></a>cbegin(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -822,7 +901,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id1270994-bb"></a>cend(size_type n);</pre>
+<pre class="literallayout"><span class="type">const_local_iterator</span> <a name="id1301285-bb"></a>cend(size_type n);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -840,11 +919,11 @@
 </ol></div>
 </div>
 <div class="refsect2" title="unordered_map hash policy">
-<a name="id1982421"></a><h3>
-<a name="id1271042-bb"></a><code class="computeroutput">unordered_map</code> hash policy</h3>
+<a name="id2015059"></a><h3>
+<a name="id1301333-bb"></a><code class="computeroutput">unordered_map</code> hash policy</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id1271047-bb"></a>load_factor() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id1301337-bb"></a>load_factor() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -854,7 +933,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id1271067-bb"></a>max_load_factor() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>float</strong></span></span> <a name="id1301357-bb"></a>max_load_factor() <span class="bold"><strong>const</strong></span>;</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -864,7 +943,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1271087-bb"></a>max_load_factor(<span class="bold"><strong>float</strong></span> z);</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1301377-bb"></a>max_load_factor(<span class="bold"><strong>float</strong></span> z);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -874,7 +953,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1271119-bb"></a>rehash(size_type n);</pre>
+<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id1301409-bb"></a>rehash(size_type n);</pre>
 <p>Changes the number of buckets so that there at least <code class="computeroutput">n</code> buckets, and so that the load factor is less than the maximum load factor.</p>
 <p>Invalidates iterators, and changes the order of elements. Pointers and references to elements are not invalidated.</p>
 <div class="variablelist"><table border="0">
@@ -888,13 +967,13 @@
 </ol></div>
 </div>
 <div class="refsect2" title="unordered_map Equality Comparisons">
-<a name="id1982607"></a><h3>
-<a name="id1271169-bb"></a><code class="computeroutput">unordered_map</code> Equality Comparisons</h3>
+<a name="id2015244"></a><h3>
+<a name="id1301459-bb"></a><code class="computeroutput">unordered_map</code> Equality Comparisons</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
          <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator==_id1271173"></a><span class="bold"><strong>operator</strong></span>==(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator==_id1301464"></a><span class="bold"><strong>operator</strong></span>==(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
                   unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; y);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -911,7 +990,7 @@
 <li class="listitem">
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
          <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator!=_id1271254"></a><span class="bold"><strong>operator</strong></span>!=(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
+  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="boost.operator!=_id1301544"></a><span class="bold"><strong>operator</strong></span>!=(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; x, 
                   unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt; <span class="bold"><strong>const</strong></span>&amp; y);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -928,12 +1007,12 @@
 </ol></div>
 </div>
 <div class="refsect2" title="unordered_map swap">
-<a name="id1982806"></a><h3>
-<a name="id1271335-bb"></a><code class="computeroutput">unordered_map</code> swap</h3>
+<a name="id2015442"></a><h3>
+<a name="id1301626-bb"></a><code class="computeroutput">unordered_map</code> swap</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
 <pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Key, <span class="bold"><strong>typename</strong></span> Mapped, <span class="bold"><strong>typename</strong></span> Hash, <span class="bold"><strong>typename</strong></span> Pred, 
          <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="boost.swap_id1271340"></a>swap(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp; x, 
+  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="boost.swap_id1301630"></a>swap(unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp; x, 
             unordered_map&lt;Key, Mapped, Hash, Pred, Alloc&gt;&amp; y);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">

@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2001-2007 Joel de Guzman
+    Copyright (c) 2001-2009 Joel de Guzman
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,13 +24,39 @@
 #include <iostream>
 #include "test.hpp"
 
-using namespace spirit_test;
+struct x_attr
+{
+};
+
+namespace boost { namespace spirit { namespace traits 
+{
+    template <>
+    struct container_value<x_attr>
+    {
+        typedef char type; // value type of container
+    };
+
+    template <>
+    struct push_back_container<x_attr, char>
+    {
+        static void call(x_attr& /*c*/, char /*val*/)
+        {
+            // push back value type into container
+        }
+    };
+}}}
 
 int
 main()
 {
-    using namespace boost::spirit;
+    using spirit_test::test;
+    using spirit_test::test_attr;
     using namespace boost::spirit::ascii;
+    using boost::spirit::qi::int_;
+    using boost::spirit::qi::omit;
+    using boost::spirit::qi::lit;
+    using boost::spirit::qi::_1;
+    using boost::spirit::qi::lexeme;
 
     {
         BOOST_TEST(test("aaaaaaaa", +char_));
@@ -57,27 +83,33 @@ main()
     }
 
     {
+        std::vector<std::string> v;
+        BOOST_TEST(test_attr("a b c d", +lexeme[+alpha], v, space) && 4 == v.size() &&
+            v[0] == "a" && v[1] == "b" && v[2] == "c" &&  v[3] == "d");
+    }
+    
+    {
         BOOST_TEST(test("Kim Kim Kim", +lit("Kim"), space));
     }
 
     {
-        std::vector<char> v;
-        v.clear();
-        BOOST_TEST(test_attr("bbbb", +omit[char_('b')], v) && 0 == v.size());
+        // The following 4 tests show that omit does not inhibit explicit attributes
 
-        v.clear();
-        BOOST_TEST(test_attr("bbbb", omit[+char_('b')], v) && 0 == v.size());
+        std::string s;
+        BOOST_TEST(test_attr("bbbb", +omit[char_('b')], s) && s == "bbbb");
 
-        v.clear();
-        BOOST_TEST(test_attr("b b b b ", +omit[char_('b')], v, space) && 0 == v.size());
+        s.clear();
+        BOOST_TEST(test_attr("bbbb", omit[+char_('b')], s) && s == "bbbb");
 
-        v.clear();
-        BOOST_TEST(test_attr("b b b b ", omit[+char_('b')], v, space) && 0 == v.size());
+        s.clear();
+        BOOST_TEST(test_attr("b b b b ", +omit[char_('b')], s, space) && s == "bbbb");
+
+        s.clear();
+        BOOST_TEST(test_attr("b b b b ", omit[+char_('b')], s, space) && s == "bbbb");
     }
 
     { // actions
         namespace phx = boost::phoenix;
-        using boost::spirit::arg_names::_1;
 
         std::vector<char> v;
         BOOST_TEST(test("bbbb", (+char_)[phx::ref(v) = _1]) && 4 == v.size() &&
@@ -86,11 +118,16 @@ main()
 
     { // more actions
         namespace phx = boost::phoenix;
-        using boost::spirit::arg_names::_1;
 
         std::vector<int> v;
         BOOST_TEST(test("1 2 3", (+int_)[phx::ref(v) = _1], space) && 3 == v.size() &&
             v[0] == 1 && v[1] == 2 && v[2] == 3);
+    }
+    
+    { // attribute customization
+        
+        x_attr x;
+        test_attr("abcde", +char_, x);
     }
 
     return boost::report_errors();

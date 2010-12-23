@@ -1,4 +1,4 @@
-# $Id: Jamfile.v2 42230 2007-12-21 11:51:05Z anthonyw $
+# $Id: Jamfile.v2 56992 2009-10-19 09:18:13Z anthonyw $
 # Copyright 2006-2007 Roland Schwarz.
 # Copyright 2007 Anthony Williams
 # Distributed under the Boost Software License, Version 1.0. (See
@@ -180,7 +180,6 @@ rule requirements ( properties * )
 alias thread_sources
     : ## win32 sources ##
       win32/thread.cpp
-      win32/exceptions.cpp
       win32/tss_dll.cpp
       win32/tss_pe.cpp
     : ## requirements ##
@@ -190,7 +189,6 @@ alias thread_sources
 alias thread_sources
     : ## pthread sources ##
       pthread/thread.cpp
-      pthread/exceptions.cpp
       pthread/once.cpp
     : ## requirements ##
       <threadapi>pthread

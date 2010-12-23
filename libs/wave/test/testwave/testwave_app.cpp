@@ -7,10 +7,14 @@
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 
+// disable stupid compiler warnings
+#include <boost/config/warning_disable.hpp>
+
 // system headers
 #include <string>
 #include <iostream>
 #include <vector>
+#include <ctime>
 
 // include boost
 #include <boost/config.hpp>
@@ -35,6 +39,14 @@
 #include "testwave_app.hpp"
 #include "collect_hooks_information.hpp"
 
+# ifdef BOOST_NO_STDC_NAMESPACE
+namespace std 
+{ 
+    using ::asctime; using ::gmtime; using ::localtime;
+    using ::difftime; using ::time; using ::tm; using ::mktime; using ::system; 
+}
+# endif
+
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
@@ -53,8 +65,8 @@ namespace {
         std::string &result)
     {
         typedef typename Iterator::value_type token_type;
-        
-        token_type tok = *it++;    
+
+        token_type tok = *it++;
         result = result + tok.get_value().c_str();
         return (it == end) ? false : true;
     }
@@ -64,7 +76,7 @@ namespace {
     String const& handle_quoted_filepath(String &name)
     {
         using boost::wave::util::impl::unescape_lit;
-        
+
         String unesc_name = unescape_lit(name.substr(1, name.size()-2));
         fs::path p (boost::wave::util::create_path(unesc_name.c_str()));
 
@@ -79,7 +91,7 @@ namespace {
     {
         typedef typename Iterator::value_type token_type;
         typedef typename token_type::string_type string_type;
-        
+
         if (!handle_next_token(it, end, result) ||  // #line
             !handle_next_token(it, end, result) ||  // whitespace
             !handle_next_token(it, end, result) ||  // number
@@ -87,7 +99,7 @@ namespace {
         {
             return false;
         }
-        
+
         using boost::wave::util::impl::unescape_lit;
         
         token_type filename = *it;
@@ -133,11 +145,11 @@ testwave_app::got_expected_result(std::string const& filename,
     std::string const& result, std::string& expected)
 {
     using boost::wave::util::impl::escape_lit;
-    
+
     std::string full_result;
     std::string::size_type pos = 0;
     std::string::size_type pos1 = expected.find_first_of("$");
-    
+
     if (pos1 != std::string::npos) {
         do {
             switch(expected[pos1+1]) {
@@ -168,7 +180,7 @@ testwave_app::got_expected_result(std::string const& filename,
                     }
                 }
                 break;
-                
+
             case 'F':       // insert base file name
                 full_result = full_result + 
                     expected.substr(pos, pos1-pos) + escape_lit(filename);
@@ -183,7 +195,7 @@ testwave_app::got_expected_result(std::string const& filename,
                             boost::wave::util::create_path(filename), 
                             boost::wave::util::current_path())
                         );
-                        
+
                     if ('(' == expected[pos1+2]) {
                     // the $P(basename) syntax is used
                         std::size_t p = expected.find_first_of(")", pos1+1);
@@ -224,7 +236,7 @@ testwave_app::got_expected_result(std::string const& filename,
                     }
                 }
                 break;
-                
+
             case 'V':       // insert Boost version
                 full_result = full_result + 
                     expected.substr(pos, pos1-pos) + BOOST_LIB_VERSION;
@@ -244,7 +256,7 @@ testwave_app::got_expected_result(std::string const& filename,
     else {
         full_result = expected;
     }
-    
+
     expected = full_result;
     return full_result == result;
 }

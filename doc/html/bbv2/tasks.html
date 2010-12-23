@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Common tasks</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../bbv2.html" title="Chapter 31. Boost.Build V2 User Manual">
-<link rel="prev" href="advanced.html" title="Overview">
+<link rel="up" href="../bbv2.html" title="Chapter 32. Boost.Build V2 User Manual">
+<link rel="prev" href="overview.html" title="Overview">
 <link rel="next" href="reference.html" title="Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="advanced.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" title="Common tasks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -39,14 +39,14 @@
 <p>
     This section describes main targets types that Boost.Build supports
     out-of-the-box. Unless otherwise noted, all mentioned main target rules have
-    the common signature, described in <a class="xref" href="advanced.html#bbv2.advanced.targets" title="Declaring Targets">the section called &#8220;Declaring Targets&#8221;</a>.
+    the common signature, described in <a class="xref" href="overview.html#bbv2.overview.targets" title="Declaring Targets">the section called &#8220;Declaring Targets&#8221;</a>.
   </p>
 <div class="section" title="Programs">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.programs"></a>Programs</h3></div></div></div>
-<a class="indexterm" name="id2137264"></a><p>
+<a class="indexterm" name="id2171690"></a><p>
       Programs are created using the <code class="computeroutput">exe</code> rule, which follows the
-      <a class="link" href="advanced.html#bbv2.main-target-rule-syntax">common syntax</a>. For
+      <a class="link" href="overview.html#bbv2.main-target-rule-syntax">common syntax</a>. For
       example:
 </p>
 <pre class="programlisting">
@@ -82,7 +82,7 @@ exe hello : hello.cpp some_library.lib /some_project//library
 <a name="bbv2.tasks.libraries"></a>Libraries</h3></div></div></div>
 <p>
       Library targets are created using the <code class="computeroutput">lib</code> rule, which
-      follows the <a class="link" href="advanced.html#bbv2.main-target-rule-syntax">common syntax
+      follows the <a class="link" href="overview.html#bbv2.main-target-rule-syntax">common syntax
       </a>. For example:
 </p>
 <pre class="programlisting">
@@ -293,10 +293,10 @@ exe main : main.cpp static_libraries ;
       files.
     </p>
 <h4>
-<a name="id2137823"></a>Basic install</h4>
+<a name="id2172249"></a>Basic install</h4>
 <p>
       For installing a built target you should use the <code class="computeroutput">install</code>
-      rule, which follows the <a class="link" href="advanced.html#bbv2.main-target-rule-syntax">
+      rule, which follows the <a class="link" href="overview.html#bbv2.main-target-rule-syntax">
       common syntax</a>. For example:
 </p>
 <pre class="programlisting">
@@ -332,7 +332,7 @@ install dist2 : hello helpers : &lt;location&gt;$(DIST) ;
       variables</a>
     </p>
 <h4>
-<a name="id2137935"></a>Installing with all dependencies</h4>
+<a name="id2172362"></a>Installing with all dependencies</h4>
 <p>
       Specifying the names of all libraries to install can be boring. The
       <code class="computeroutput">install</code> allows you to specify only the top-level executable
@@ -356,8 +356,8 @@ install dist : hello
       otherwise, all found target will be installed.
     </p>
 <h4>
-<a name="id2137988"></a>Preserving Directory Hierarchy</h4>
-<a class="indexterm" name="id2137991"></a><p>
+<a name="id2172415"></a>Preserving Directory Hierarchy</h4>
+<a class="indexterm" name="id2172418"></a><p>
       By default, the <code class="computeroutput">install</code> rule will strip paths from its
       sources. So, if sources include <code class="filename">a/b/c.hpp</code>, the
       <code class="filename">a/b</code> part will be ignored. To make the
@@ -381,7 +381,7 @@ install headers
       an entire directory tree.
     </p>
 <h4>
-<a name="id2138066"></a>Installing into Several Directories</h4>
+<a name="id2172493"></a>Installing into Several Directories</h4>
 <p>
       The <a class="link" href="tasks.html#bbv2.tasks.alias" title="Alias"><code class="computeroutput">alias</code></a> rule can be
       used when targets need to be installed into several directories:
@@ -395,7 +395,7 @@ install install-lib : helper : /usr/lib ;
     </p>
 <p>
       Because the <code class="computeroutput">install</code> rule just copies targets, most free
-      features <sup>[<a name="id2138102" href="#ftn.id2138102" class="footnote">13</a>]</sup> have no
+      features <sup>[<a name="id2172529" href="#ftn.id2172529" class="footnote">13</a>]</sup> have no
       effect when used in requirements of the <code class="computeroutput">install</code> rule. The
       only two that matter are <a class="link" href="reference.html#bbv2.builtin.features.dependency">
       <code class="varname">dependency</code></a> and, on Unix, <a class="link" href="reference.html#bbv2.reference.features.dll-path"><code class="varname">dll-path</code>
@@ -420,7 +420,7 @@ install install-lib : helper : /usr/lib ;
 <a name="bbv2.builtins.testing"></a>Testing</h3></div></div></div>
 <p>
       Boost.Build has convenient support for running unit tests. The simplest
-      way is the <code class="computeroutput">unit-test</code> rule, which follows the <a class="link" href="advanced.html#bbv2.main-target-rule-syntax">common syntax</a>. For example:
+      way is the <code class="computeroutput">unit-test</code> rule, which follows the <a class="link" href="overview.html#bbv2.main-target-rule-syntax">common syntax</a>. For example:
 </p>
 <pre class="programlisting">
 unit-test helpers_test : helpers_test.cpp helpers ;
@@ -504,7 +504,7 @@ rule run ( sources + : args * : input-files * : requirements * : target-name ?
       target-name</code></em>.output</code>.
     </p>
 <p>
-      <a class="indexterm" name="id2138423"></a>
+      <a class="indexterm" name="id2172851"></a>
       If the <code class="literal">preserve-test-targets</code> feature has the value
       <code class="literal">off</code>, then <code class="computeroutput">run</code> and the <code class="computeroutput">run-fail</code>
       rules will remove the executable after running it.  This somewhat decreases
@@ -574,7 +574,7 @@ actions in2out
 <p>
       If you run <span class="command"><strong>bjam</strong></span> and <code class="filename">file.out</code> does
       not exist, Boost.Build will run the <span class="command"><strong>in2out</strong></span> command to
-      create that file. For more details on specifying actions, see <a class="xref" href="advanced.html#bbv2.advanced.jam_language.actions">the section called &#8220;Boost.Jam Language&#8221;</a>.
+      create that file. For more details on specifying actions, see <a class="xref" href="overview.html#bbv2.overview.jam_language.actions">the section called &#8220;Boost.Jam Language&#8221;</a>.
     </p>
 <p>
       It could be that you just want to run some command unconditionally, and
@@ -734,11 +734,11 @@ exe app : app.cpp : &lt;implicit-dependency&gt;parser ;
 <div class="section" title="Cross-compilation">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.crosscompile"></a>Cross-compilation</h3></div></div></div>
-<a class="indexterm" name="id2139013"></a><p>Boost.Build supports cross compilation with the gcc and msvc
+<a class="indexterm" name="id2173441"></a><p>Boost.Build supports cross compilation with the gcc and msvc
     toolsets.</p>
 <p>
       When using gcc, you first need to specify your cross compiler
-      in <code class="filename">user-config.jam</code> (see <a class="xref" href="advanced.html#bbv2.advanced.configuration" title="Configuration">the section called &#8220;Configuration&#8221;</a>), 
+      in <code class="filename">user-config.jam</code> (see <a class="xref" href="overview.html#bbv2.overview.configuration" title="Configuration">the section called &#8220;Configuration&#8221;</a>), 
       for example:</p>
 <pre class="programlisting">
 using gcc : arm : arm-none-linux-gnueabi-g++ ;
@@ -773,7 +773,7 @@ bjam toolset=gcc-mingw <span class="bold"><strong>target-os=windows</strong></sp
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2138102" href="#id2138102" class="para">13</a>] </sup>see the definition of "free" in <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2172529" href="#id2172529" class="para">13</a>] </sup>see the definition of "free" in <a class="xref" href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -782,7 +782,7 @@ bjam toolset=gcc-mingw <span class="bold"><strong>target-os=windows</strong></sp
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="advanced.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

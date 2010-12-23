@@ -16,11 +16,34 @@ TODO (known issues):
 - Fix the trigraph backslash problem in the re2c (C/C++ and IDL) scanners, if 
   there is the end of the (internal) buffer just in between a '??/' and a '\n'.
 
-- Do a sourceforge release.
-
 -------------------------------------------------------------------------------
 
 CHANGELOG
+
+Boost V1.41.0
+- V2.0.3
+- Switched to Re2C V0.13.5
+- Fixed --list_includes/-l command line option of the wave driver tool to 
+  correctly indent the generated list of included files.
+- Finally fixed all remaining examples. Everything seems to work fine now.
+- Specifying a custom token type now works as expected. The new lexer interface
+  introduced in V2.0 broke this part.
+- Removed old code related to pre Boost V1.31 (related to V1 of iterator 
+  library).
+- Added a new commandline option --macrocounts/-c to the Wave driver application
+  which lists all macro invocation counts to an optionally specified file 
+  (default is cout).
+- Fixed compilation problems caused by recent changes to the multi_pass iterator
+  from Spirit V2.1.
+- Added a new preprocessing hooks detected_pragma_once() and 
+  detected_include_guard() which are getting called whenever either a #pragma 
+  once has been detected or if the include guard heuristics detected an 
+  include guard for a particular include file.
+- Added a new command line option to the wave driver tool: --listguards/-g 
+  allowing to trace all include files which are either contain a #pragma once 
+  or contain include guards.
+- Started to elminate g++ struct aliasing warnings (more to fix, mostly in 
+  flex_string).
 
 Boost V1.40.0
 - V2.0.2

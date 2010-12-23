@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Thread Management</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter 20. Thread">
-<link rel="prev" href="changes.html" title="Changes since boost 1.35">
+<link rel="up" href="../thread.html" title="Chapter 21. Thread">
+<link rel="prev" href="changes.html" title="Changes since boost 1.40">
 <link rel="next" href="synchronization.html" title="Synchronization">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -32,7 +32,7 @@
 <dt><span class="section"><a href="thread_management.html#thread.thread_management.threadgroup"> Class <code class="computeroutput"><span class="identifier">thread_group</span></code></a></span></dt>
 </dl></div>
 <a name="thread.thread_management.synopsis"></a><h4>
-<a name="id1725988"></a>
+<a name="id1741879"></a>
       <a class="link" href="thread_management.html#thread.thread_management.synopsis">Synopsis</a>
     </h4>
 <p>
@@ -70,7 +70,7 @@
       for details.]
     </p>
 <a name="thread.thread_management.launching_threads"></a><h4>
-<a name="id1726302"></a>
+<a name="id1742193"></a>
       <a class="link" href="thread_management.html#thread.thread_management.launching_threads">Launching threads</a>
     </h4>
 <p>
@@ -120,7 +120,7 @@
       be passed.
     </p>
 <a name="thread.thread_management.exceptions_in_thread_functions"></a><h4>
-<a name="id1726775"></a>
+<a name="id1742665"></a>
       <a class="link" href="thread_management.html#thread.thread_management.exceptions_in_thread_functions">Exceptions
       in thread functions</a>
     </h4>
@@ -131,7 +131,7 @@
       is called.
     </p>
 <a name="thread.thread_management.joining_and_detaching"></a><h4>
-<a name="id1726866"></a>
+<a name="id1742756"></a>
       <a class="link" href="thread_management.html#thread.thread_management.joining_and_detaching">Joining and
       detaching</a>
     </h4>
@@ -162,7 +162,7 @@
       specified time has elapsed.
     </p>
 <a name="thread.thread_management.interruption"></a><h4>
-<a name="id1727215"></a>
+<a name="id1743104"></a>
       <a class="link" href="thread_management.html#thread.thread_management.interruption">Interruption</a>
     </h4>
 <p>
@@ -228,7 +228,7 @@
 <a name="interruption_points"></a><p>
     </p>
 <a name="thread.thread_management.predefined_interruption_points"></a><h4>
-<a name="id1727911"></a>
+<a name="id1743800"></a>
       <a class="link" href="thread_management.html#thread.thread_management.predefined_interruption_points">Predefined
       Interruption Points</a>
     </h4>
@@ -249,7 +249,7 @@
 <li class="listitem"><a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_point" title="Non-member function interruption_point()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_point</span><span class="special">()</span></code></a></li>
 </ul></div>
 <a name="thread.thread_management.thread_ids"></a><h4>
-<a name="id1728331"></a>
+<a name="id1744219"></a>
       <a class="link" href="thread_management.html#thread.thread_management.thread_ids">Thread IDs</a>
     </h4>
 <p>
@@ -1500,6 +1500,14 @@
               if any other error occurs within the thread library. Any exception
               thrown whilst copying <code class="computeroutput"><span class="identifier">func</span></code>
               into internal storage.
+            </p></dd>
+<dt><span class="term">Note:</span></dt>
+<dd><p>
+              This function is <span class="bold"><strong>not</strong></span> called if the
+              thread was terminated forcefully using platform-specific APIs, or if
+              the thread is terminated due to a call to <code class="computeroutput"><span class="identifier">exit</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">abort</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">terminate</span><span class="special">()</span></code>. In particular, returning from <code class="computeroutput"><span class="identifier">main</span><span class="special">()</span></code>
+              is equivalent to call to <code class="computeroutput"><span class="identifier">exit</span><span class="special">()</span></code>, so will not call any functions registered
+              with <code class="computeroutput"><span class="identifier">at_thread_exit</span><span class="special">()</span></code>
             </p></dd>
 </dl>
 </div>

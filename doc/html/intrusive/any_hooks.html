@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Any Hooks: A single hook for any Intrusive container</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../intrusive.html" title="Chapter 10. Boost.Intrusive">
 <link rel="prev" href="obtaining_iterators_from_values.html" title="Obtaining iterators from values">
@@ -41,7 +41,7 @@
 <p>
       However, there is a more size-efficient alternative in <span class="bold"><strong>Boost.Intrusive</strong></span>:
       "any" hooks (<code class="computeroutput"><a class="link" href="../boost/intrusive/any_base_hook.html" title="Class template any_base_hook">any_base_hook</a></code>
-      and <code class="computeroutput"><a class="link" href="../boost/intrusive/any_member_hook.html" title="Class template any_member_hook">any_member_hook</a></code>.
+      and <code class="computeroutput"><a class="link" href="../boost/intrusive/any_member_hook.html" title="Class template any_member_hook">any_member_hook</a></code>).
       These hooks can be used to store a type in several containers offered by <span class="bold"><strong>Boost.Intrusive</strong></span> minimizing the size of the class.
     </p>
 <p>
@@ -69,8 +69,8 @@
 </ul></div>
 <p>
       <code class="computeroutput"><span class="identifier">auto_unlink</span></code> can't be supported
-      because the hook does not know in which type of might be inserted container.
-      Additionally, these hooks don't support <code class="computeroutput"><span class="identifier">unlink</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">swap_nodes</span><span class="special">()</span></code> operations for the same reason.
+      because the hook does not know in which type of container might be currently
+      inserted. Additionally, these hooks don't support <code class="computeroutput"><span class="identifier">unlink</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">swap_nodes</span><span class="special">()</span></code> operations for the same reason.
     </p>
 <p>
       Here is an example that creates a class with two any hooks, and uses one to
@@ -139,7 +139,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2005 Olaf Krzikalla, 2006-2008 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright © 2005 Olaf Krzikalla, 2006-2009 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -15,6 +15,9 @@
 
 #include <cassert>
 #include <cstddef> // NULL
+#ifdef BOOST_SERIALIZATION_LOG
+#include <iostream>
+#endif
 
 // STL
 #include <set>
@@ -97,9 +100,10 @@ public:
         extended_type_info const * derived,
         extended_type_info const * base,
         std::ptrdiff_t difference,
-        bool includes_virtual_base
+        bool includes_virtual_base,
+        void_caster const * const parent
     ) :
-        void_caster(derived, base, difference, true /*heap*/),
+        void_caster(derived, base, difference, parent),
         m_includes_virtual_base(includes_virtual_base)
     {
         recursive_register(includes_virtual_base);
@@ -190,6 +194,14 @@ void_caster::recursive_register(bool includes_virtual_base) const {
     void_cast_detail::set_type & s
         = void_cast_detail::void_caster_registry::get_mutable_instance();
 
+    #ifdef BOOST_SERIALIZATION_LOG
+    std::clog << "recursive_register\n";
+    std::clog << m_derived->get_debug_info();
+    std::clog << "<-";
+    std::clog << m_base->get_debug_info();
+    std::clog << "\n";
+    #endif
+
     s.insert(this);
 
     // generate all implied void_casts.
@@ -200,18 +212,20 @@ void_caster::recursive_register(bool includes_virtual_base) const {
                 (*it)->m_derived, 
                 m_base,
                 m_difference + (*it)->m_difference,
-                includes_virtual_base
+                includes_virtual_base,
+                this
             );
         if(* (*it)->m_derived == * m_base)
             new void_caster_shortcut(
                 m_derived, 
                 (*it)->m_base, 
                 m_difference + (*it)->m_difference,
-                includes_virtual_base
+                includes_virtual_base,
+                this
             );
     }
 }
-                         
+
 BOOST_SERIALIZATION_DECL(void)
 void_caster::recursive_unregister() const {
     if(void_caster_registry::is_destroyed())
@@ -226,23 +240,17 @@ void_caster::recursive_unregister() const {
         if(
             m_base == (*it)->m_base
         &&  m_derived == (*it)->m_derived
-        ||
-            ! m_derived_observer.expired()
-        && ! (*it)->m_base_observer.expired()
-        && *m_derived == *(*it)->m_base
-        ||
-            ! m_base_observer.expired()
-        && ! (*it)->m_derived_observer.expired()
-        && *(*it)->m_derived == *m_base
         ){
+            s.erase(it++);
+        }
+        else
+        if( (*it)->m_parent == this ){
             // since recursion could invalidate it
+            // save pointer to set member
             const void_caster * vc = *it;
-            s.erase(it);
-            if(vc->m_heap){
-                // save pointer to set member
-                // and erase first
-                delete vc;
-            }
+            // and erase first
+            s.erase(it++);
+            delete vc;
             it = s.begin();
         }
         else

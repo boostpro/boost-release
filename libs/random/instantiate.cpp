@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: instantiate.cpp 53871 2009-06-13 17:54:06Z steven_watanabe $
+ * $Id: instantiate.cpp 56814 2009-10-14 04:54:01Z steven_watanabe $
  */
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
@@ -56,6 +56,8 @@ void instantiate_dist(URNG& urng, const char * name, const Dist& dist)
   // this keeps a reference to urng
   boost::variate_generator<URNG&, Dist> genref(urng, dist);
 
+  BOOST_CHECK(gen.engine() == genref.engine());
+
 #ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
   // and here is a pointer to (a copy of) the urng
   URNG copy = urng;
@@ -69,10 +71,12 @@ void instantiate_dist(URNG& urng, const char * name, const Dist& dist)
     (void) genptr();
 #endif
   }
+  // If the values are not exactly equal, we cannot
+  // rely on them being close...
   typename Dist::result_type g = gen();
-  BOOST_CHECK(std::abs(g - genref()) < 1e-6);
+  BOOST_CHECK_EQUAL(g, genref());
 #ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-  BOOST_CHECK(std::abs(g - genptr()) < 1e-6);
+  BOOST_CHECK_EQUAL(g, genptr());
 #endif
 
   (void) gen.engine();

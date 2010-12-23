@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Differences to Boost.Build V1</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../bbv2.html" title="Chapter 31. Boost.Build V2 User Manual">
+<link rel="up" href="../bbv2.html" title="Chapter 32. Boost.Build V2 User Manual">
 <link rel="prev" href="faq.html" title="Frequently Asked Questions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -25,33 +25,33 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.vs_v1"></a>Differences to Boost.Build V1</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="vs_v1.html#bbv2.advanced.differences_to_v1.configuration">Configuration</a></span></dt>
-<dt><span class="section"><a href="vs_v1.html#bbv2.advanced.differences_to_v1.jamfiles">Writing Jamfiles</a></span></dt>
-<dt><span class="section"><a href="vs_v1.html#bbv2.advanced.differences_to_v1.build_process">Build process</a></span></dt>
+<dt><span class="section"><a href="vs_v1.html#bbv2.overview.differences_to_v1.configuration">Configuration</a></span></dt>
+<dt><span class="section"><a href="vs_v1.html#bbv2.overview.differences_to_v1.jamfiles">Writing Jamfiles</a></span></dt>
+<dt><span class="section"><a href="vs_v1.html#bbv2.overview.differences_to_v1.build_process">Build process</a></span></dt>
 </dl></div>
 <p>While Boost.Build V2 is based on the same ideas as Boost.Build V1,
   some of the syntax was changed, and some new important features were
   added. This chapter describes most of the changes.</p>
 <div class="section" title="Configuration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="bbv2.advanced.differences_to_v1.configuration"></a>Configuration</h3></div></div></div>
+<a name="bbv2.overview.differences_to_v1.configuration"></a>Configuration</h3></div></div></div>
 <p>In V1, toolsets were configured by environment variables. If you
       wanted to use two versions of the same toolset, you had to create a new
       toolset module that would set the variables and then invoke the base
       toolset. In V2, toolsets are configured by the
       <code class="computeroutput">using</code>, and you can easily configure several
-      versions of a toolset. See <a class="xref" href="advanced.html#bbv2.advanced.configuration" title="Configuration">the section called &#8220;Configuration&#8221;</a> for details.
+      versions of a toolset. See <a class="xref" href="overview.html#bbv2.overview.configuration" title="Configuration">the section called &#8220;Configuration&#8221;</a> for details.
       </p>
 </div>
 <div class="section" title="Writing Jamfiles">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="bbv2.advanced.differences_to_v1.jamfiles"></a>Writing Jamfiles</h3></div></div></div>
+<a name="bbv2.overview.differences_to_v1.jamfiles"></a>Writing Jamfiles</h3></div></div></div>
 <p>Probably one of the most important differences in V2 Jamfiles is
       the use of project requirements. In V1, if several targets had the same
       requirements (for example, a common <code class="computeroutput">#include</code> path), it was necessary to
       manually write the requirements or use a helper rule or template target. In V2, the
       common properties can be specified with the <code class="computeroutput">requirements</code> project
-      attribute, as documented in <a class="xref" href="advanced.html#bbv2.advanced.projects" title="Projects">the section called &#8220;Projects&#8221;</a>.
+      attribute, as documented in <a class="xref" href="overview.html#bbv2.overview.projects" title="Projects">the section called &#8220;Projects&#8221;</a>.
       </p>
 <p><a class="link" href="tutorial.html#bbv2.tutorial.libs" title="Dependent Targets">Usage requirements</a>
       also help to simplify Jamfiles. 
@@ -63,7 +63,7 @@
 <p>The difference between <code class="computeroutput">lib</code> and <code class="computeroutput">dll</code> targets in V1 is completely
       eliminated in V2. There's only one library target type, <code class="computeroutput">lib</code>, which can create
       either static or shared libraries depending on the value of the 
-        <a class="link" href="reference.html#bbv2.advanced.builtins.features.link"><code class="varname">&lt;link&gt;</code>
+        <a class="link" href="reference.html#bbv2.overview.builtins.features.link"><code class="varname">&lt;link&gt;</code>
       feature</a>. If your target should be only built in one way, you
       can add <code class="computeroutput">&lt;link&gt;shared</code> or <code class="computeroutput">&lt;link&gt;static</code> to its requirements.
       </p>
@@ -88,7 +88,7 @@ exe a : a.cpp ../foo//bar ;
 </div>
 <div class="section" title="Build process">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="bbv2.advanced.differences_to_v1.build_process"></a>Build process</h3></div></div></div>
+<a name="bbv2.overview.differences_to_v1.build_process"></a>Build process</h3></div></div></div>
 <p>The command line syntax in V2 is completely different. For example
 </p>
 <pre class="programlisting">
@@ -107,7 +107,7 @@ bjam toolset=msvc variant=release some_target
 bjam msvc release some_target
 </pre>
 <p>
-      See <a class="link" href="advanced.html#bbv2.advanced.invocation" title="Invocation">the reference</a> for a
+      See <a class="link" href="overview.html#bbv2.overview.invocation" title="Invocation">the reference</a> for a
       complete description of the syntax.
       </p>
 </div>

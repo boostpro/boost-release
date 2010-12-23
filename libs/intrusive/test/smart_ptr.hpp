@@ -34,7 +34,7 @@ struct reinterpret_cast_tag {};
 struct empty_type{};
 
 template<class T>
-struct random_it 
+struct random_it
 : public boost::iterator<std::random_access_iterator_tag, 
                          T, std::ptrdiff_t, T*, T&> 
 {

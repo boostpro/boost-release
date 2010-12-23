@@ -215,7 +215,7 @@ command invokes Boost.Build to build the separately-compiled Boost
 libraries. Please consult the `Boost.Build documentation`__ for a list
 of options that can be passed to ``bjam``.
 
-__ http://www.boost.org/boost-build2/doc/html/bbv2/advanced/invocation.html
+__ http://www.boost.org/boost-build2/doc/html/bbv2/overview/invocation.html
 
 Or, Build Binaries From Source
 ------------------------------
@@ -223,6 +223,14 @@ Or, Build Binaries From Source
 If you're using an earlier version of Visual C++, or a compiler
 from another vendor, you'll need to use Boost.Build_ to create your
 own binaries.
+
+.. Admonition:: Boost.CMake
+
+  There is also an experimental CMake build for boost, supported and distributed
+  separately.  See the `Boost.CMake`_ wiki page for more information.
+
+  .. _`Boost.CMake`:
+       https://svn.boost.org/trac/boost/wiki/CMake
 
 .. include:: detail/build-from-source-head.rst
 
