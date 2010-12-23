@@ -19,7 +19,7 @@
 
 <BR Clear>
 
-<H1><A NAME="sec:bfs">
+<H1><A NAME="sec:transitive_closure">
 <TT>transitive_closure</TT>
 </H1>
 
@@ -33,8 +33,7 @@ void transitive_closure(const Graph&amp; g, GraphTC&amp; tc,
 template &lt;typename Graph, typename GraphTC,
   typename G_to_TC_VertexMap, typename VertexIndexMap&gt;
 void transitive_closure(const Graph&amp; g, GraphTC&amp; tc,
-			 G_to_TC_VertexMap g_to_tc_map,
-			 VertexIndexMap index_map)
+                        G_to_TC_VertexMap g_to_tc_map, VertexIndexMap index_map)
 </PRE>
 
 The transitive closure of a graph <i>G = (V,E)</i> is a graph <i>G* =
@@ -79,7 +78,7 @@ UTIL/OUT: <tt>orig_to_copy(G_to_TC_VertexMap g_to_tc_map)</tt>
   vertices in the output transitive closure graph.
 </blockquote>
 
-IN: <tt>vertex_index(VertexIndexMap&amp; index_map)</tt>
+IN: <tt>vertex_index_map(VertexIndexMap&amp; index_map)</tt>
 <blockquote>
   This maps each vertex to an integer in the range <tt>[0,
   num_vertices(g))</tt>. This parameter is only necessary when the

@@ -1,4 +1,4 @@
-// -*-C++-*- array.hpp
+// -*-C++-*- array_traits.hpp
 // <!!----------------------------------------------------------------------> 
 // <!! Copyright (C) 1998 Dietmar Kuehl, Claas Solutions GmbH > 
 // <!!> 
@@ -13,15 +13,15 @@
 
 // Author: Dietmar Kuehl dietmar.kuehl@claas-solutions.de 
 // Title:  STL container support, including support for built-in arrays
-// Version: $Id: array_traits.hpp,v 1.5 2001/09/09 04:32:21 darinadler Exp $
+// Version: $Id: array_traits.hpp,v 1.6 2001/10/25 21:22:42 darinadler Exp $
 
 // Dec 4, 2000  Added some more typedefs to array_traits including
 //              an iterator type to supersede iter_type. -J.Siek
 
 // -------------------------------------------------------------------------- 
 
-#if !defined(BOOST_ARRAY_HPP)
-#define BOOST_ARRAY_HPP 1
+#if !defined(BOOST_ARRAY_TRAITS_HPP)
+#define BOOST_ARRAY_TRAITS_HPP 1
 
 // -------------------------------------------------------------------------- 
 
@@ -160,4 +160,4 @@ namespace boost
 
 // -----------------------------------------------------------------------------
 
-#endif /* BOOST_ARRAY_HPP */
+#endif /* BOOST_ARRAY_TRAITS_HPP */

@@ -33,12 +33,6 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/property_map.hpp>
 
-#include <cstdlib>  // for abs
-#include <cmath>
-#ifdef BOOST_NO_STDC_NAMESPACE
-namespace std { using ::abs; }
-#endif
-
 namespace boost {
 
     // The following version of the plus functor prevents
@@ -47,11 +41,14 @@ namespace boost {
     template <class T>
     struct closed_plus
     {
+      // std::abs just isn't portable :(
+      template <class X>
+      inline X my_abs(const X& x) const { return x < 0 ? -x : x; }
+
       T operator()(const T& a, const T& b) const {
 	using namespace std;
 	T inf = numeric_limits<T>::max();
-	// make sure to call abs() unqualified.
-	if (b > 0 && abs(inf - a) < b)
+	if (b > 0 && my_abs(inf - a) < b)
 	  return inf;
 	return a + b;
       }
@@ -71,7 +68,7 @@ namespace boost {
       typedef typename property_traits<WeightMap>::value_type W;
       D d_u = get(d, u), d_v = get(d, v);
       W w_e = get(w, e);
-      
+
       if ( compare(combine(d_u, w_e), d_v) ) {
         put(d, v, combine(d_u, w_e));
 	put(p, v, u);

@@ -4,6 +4,7 @@
 // "as is" without express or implied warranty, and with no claim as
 // to its suitability for any purpose.
 
+#include <boost/config.hpp>
 #include <iostream>
 #include <boost/graph/isomorphism.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -62,14 +63,20 @@ main()
 
   std::vector<graph_traits<graph_t>::vertex_descriptor> f(n);
 
-  bool ret = isomorphism(g1, g2, 
-                         isomorphism_map(make_iterator_property_map
-                                         (f.begin(), v1_index_map)));
+#ifdef BOOST_MSVC
+  bool ret = isomorphism
+    (g1, g2, make_iterator_property_map(f.begin(), v1_index_map, f[0]),
+     degree_vertex_invariant(), get(vertex_index, g1), get(vertex_index, g2));
+#else
+  bool ret = isomorphism
+    (g1, g2, isomorphism_map
+     (make_iterator_property_map(f.begin(), v1_index_map, f[0])));
+#endif
   std::cout << "isomorphic? " << ret << std::endl;
 
   std::cout << "f: ";
-  for (int v = 0; v != f.size(); ++v)
-    std::cout << get(vertex_index, g2, f[v]) << " ";
+  for (std::size_t v = 0; v != f.size(); ++v)
+    std::cout << get(get(vertex_index, g2), f[v]) << " ";
   std::cout << std::endl;
   
   return 0;

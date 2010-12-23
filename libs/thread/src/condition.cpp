@@ -6,12 +6,12 @@
 // provided that the above copyright notice appear in all copies and
 // that both that copyright notice and this permission notice appear
 // in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.  
+// about the suitability of this software for any purpose.
 // It is provided "as is" without express or implied warranty.
 
 #include <boost/thread/condition.hpp>
 #include <boost/thread/xtime.hpp>
-#include <boost/thread/thread.hpp> 
+#include <boost/thread/thread.hpp>
 #include <boost/thread/exceptions.hpp>
 #include <boost/limits.hpp>
 #include <cassert>
@@ -30,28 +30,28 @@ namespace boost {
 condition::condition()
     : m_gone(0), m_blocked(0), m_waiting(0)
 {
-    m_gate = reinterpret_cast<unsigned long>(CreateSemaphore(0, 1, 1, 0));
-    m_queue = reinterpret_cast<unsigned long>(CreateSemaphore(0, 0, std::numeric_limits<long>::max(), 0));
-    m_mutex = reinterpret_cast<unsigned long>(CreateMutex(0, 0, 0));
+    m_gate = reinterpret_cast<void*>(CreateSemaphore(0, 1, 1, 0));
+    m_queue = reinterpret_cast<void*>(CreateSemaphore(0, 0, std::numeric_limits<long>::max(), 0));
+    m_mutex = reinterpret_cast<void*>(CreateMutex(0, 0, 0));
 
     if (!m_gate || !m_queue || !m_mutex)
     {
         int res = 0;
-		if (m_gate)
-		{
-			res = CloseHandle(reinterpret_cast<HANDLE>(m_gate));
-			assert(res);
-		}
-		if (m_queue)
-		{
-			res = CloseHandle(reinterpret_cast<HANDLE>(m_queue));
-			assert(res);
-		}
-		if (m_mutex)
-		{
-			res = CloseHandle(reinterpret_cast<HANDLE>(m_mutex));
-			assert(res);
-		}
+        if (m_gate)
+        {
+            res = CloseHandle(reinterpret_cast<HANDLE>(m_gate));
+            assert(res);
+        }
+        if (m_queue)
+        {
+            res = CloseHandle(reinterpret_cast<HANDLE>(m_queue));
+            assert(res);
+        }
+        if (m_mutex)
+        {
+            res = CloseHandle(reinterpret_cast<HANDLE>(m_mutex));
+            assert(res);
+        }
 
         throw thread_resource_error();
     }
@@ -185,7 +185,7 @@ void condition::do_wait()
     int res = 0;
     res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_queue), INFINITE);
     assert(res == WAIT_OBJECT_0);
-    
+
     unsigned was_waiting=0;
     unsigned was_gone=0;
 
@@ -240,12 +240,12 @@ bool condition::do_timed_wait(const xtime& xt)
     unsigned milliseconds;
     to_duration(xt, milliseconds);
 
-    int res = 0;
+    unsigned int res = 0;
     res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_queue), milliseconds);
     assert(res != WAIT_FAILED && res != WAIT_ABANDONED);
 
     bool ret = (res == WAIT_OBJECT_0);
-    
+
     unsigned was_waiting=0;
     unsigned was_gone=0;
 

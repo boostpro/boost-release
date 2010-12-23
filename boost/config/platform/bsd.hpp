@@ -37,3 +37,17 @@
 // The BSD <ctype.h> has macros only, no functions:
 //
 #define BOOST_NO_CTYPE_FUNCTIONS
+
+//
+// thread API's not auto detected:
+//
+#define BOOST_HAS_SCHED_YIELD
+#define BOOST_HAS_NANOSLEEP
+#define BOOST_HAS_GETTIMEOFDAY
+#define BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
+
+// boilerplate code:
+#define BOOST_HAS_UNISTD_H
+#include <boost/config/posix_features.hpp>
+
+

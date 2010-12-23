@@ -10,7 +10,7 @@
  * software for any purpose. It is provided "as is" without express or
  * implied warranty.
  *
- * $Id: integer_traits.hpp,v 1.15 2001/09/24 23:45:49 darinadler Exp $
+ * $Id: integer_traits.hpp,v 1.16 2001/10/30 20:55:18 jmaurer Exp $
  *
  * Idea by Beman Dawes, Ed Brey, Steve Cleary, and Nathan Myers
  */
@@ -90,14 +90,15 @@ class integer_traits<wchar_t>
 #elif defined(__BORLANDC__) || defined(__CYGWIN__) || defined(__MINGW32__) || (defined(__BEOS__) && defined(__GNUC__))
     // No WCHAR_MIN and WCHAR_MAX, whar_t is short and unsigned:
     public detail::integer_traits_base<wchar_t, 0, 0xffff>
-#elif (defined(__sgi) && (!defined(__SGI_STL_PORT) || __SGI_STL_PORT < 0x400)) || (defined __APPLE__)
+#elif (defined(__sgi) && (!defined(__SGI_STL_PORT) || __SGI_STL_PORT < 0x400)) || (defined __APPLE__) || (defined(__hpux) && defined(__GNUC__) && (__GNUC__ == 3) && !defined(__SGI_STL_PORT))
     // No WCHAR_MIN and WCHAR_MAX, wchar_t has the same range as int.
-    // SGI MIPSpro with native library is one case like this.
-    // Mac OS X with native library is another.
+    //  - SGI MIPSpro with native library
+    //  - gcc 3.x on HP-UX
+    //  - Mac OS X with native library
     public detail::integer_traits_base<wchar_t, INT_MIN, INT_MAX>
-#elif defined(__hpux) && defined(__GNUC__) && !defined(__SGI_STL_PORT)
+#elif defined(__hpux) && defined(__GNUC__) && (__GNUC__ == 2) && !defined(__SGI_STL_PORT)
     // No WCHAR_MIN and WCHAR_MAX, wchar_t has the same range as unsigned int.
-    // HP-UX GCC 2.95.2 is a case like this
+    //  - gcc 2.95.x on HP-UX
     // (also, std::numeric_limits<wchar_t> appears to return the wrong values).
     public detail::integer_traits_base<wchar_t, 0, UINT_MAX>
 #else

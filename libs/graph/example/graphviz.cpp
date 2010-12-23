@@ -23,6 +23,7 @@
 // OR OTHER RIGHTS.
 //=======================================================================
 
+#include <boost/config.hpp>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -35,7 +36,7 @@ using boost::GraphvizGraph;
 template <class Vertex>
 const std::string& 
 vertex_label(const Vertex& u, const GraphvizGraph& g) {
-  boost::property_map<GraphvizGraph, boost::vertex_attribute_t>::type
+  boost::property_map<GraphvizGraph, boost::vertex_attribute_t>::const_type
     va = boost::get(boost::vertex_attribute, g); 
   return (*(va[u].find("label"))).second;
 }

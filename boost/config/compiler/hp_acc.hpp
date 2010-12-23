@@ -8,7 +8,8 @@
 //  HP aCC C++ compiler setup:
 
 // THIS FILE IS INCOMPLETE: WE NEED THE CORRECT VERSION CHECKS ADDING!!!
-#if (__HP_aCC <= 0) || !defined(BOOST_STRICT_CONFIG)
+#if (__HP_aCC <= 33100) || !defined(BOOST_STRICT_CONFIG)
+#    define BOOST_NO_INTEGRAL_INT64_T
 #    define BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS
 #    define BOOST_NO_OPERATORS_IN_NAMESPACE
 #  if !defined(_NAMESPACE_STD)
@@ -28,7 +29,7 @@
 #endif
 //
 // last known and checked version is 0:
-#if (__HP_aCC > 0)
+#if (__HP_aCC > 33100)
 #  if defined(BOOST_ASSERT_CONFIG)
 #     error "Unknown compiler version - please run the configure tests and report the results"
 #  endif

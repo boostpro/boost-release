@@ -137,10 +137,12 @@ namespace boost {
       inline out_edge_iter_policies(const VertexDescriptor& src)
         : m_src(src) { }
 
-      template <class EdgeDescriptor, class OutEdgeIter>
-      inline EdgeDescriptor
-      dereference(boost::type<EdgeDescriptor>, const OutEdgeIter& i) const {
-        return EdgeDescriptor(m_src, (*i).get_target(), &(*i).get_property());
+      template <class OutEdgeIter>
+      inline typename OutEdgeIter::value_type
+      dereference(const OutEdgeIter& i) const {
+	typedef typename OutEdgeIter::value_type EdgeDescriptor;
+        return EdgeDescriptor(m_src, (*i.base()).get_target(), 
+			      &(*i.base()).get_property());
       }
       VertexDescriptor m_src;
     };
@@ -151,10 +153,12 @@ namespace boost {
       inline in_edge_iter_policies(const VertexDescriptor& src) 
         : m_src(src) { }
 
-      template <class EdgeDescriptor, class InEdgeIter>
-      inline EdgeDescriptor
-      dereference(boost::type<EdgeDescriptor>, const InEdgeIter& i) const {
-        return EdgeDescriptor((*i).get_target(), m_src, &i->get_property());
+      template <class InEdgeIter>
+      inline typename InEdgeIter::value_type
+      dereference(const InEdgeIter& i) const {
+	typedef typename InEdgeIter::value_type EdgeDescriptor;
+        return EdgeDescriptor((*i.base()).get_target(), m_src,
+			      &i.base()->get_property());
       }
       VertexDescriptor m_src;
     };
@@ -165,11 +169,12 @@ namespace boost {
     struct undirected_edge_iter_policies
       : public boost::default_iterator_policies
     {
-      template <class EdgeDescriptor, class InEdgeIter>
-      inline EdgeDescriptor
-      dereference(boost::type<EdgeDescriptor>, const InEdgeIter& i) const {
-        return EdgeDescriptor((*i).m_source, (*i).m_target,
-                              &i->get_property());
+      template <class EdgeIter>
+      inline typename EdgeIter::value_type
+      dereference(const EdgeIter& i) const {
+	typedef typename EdgeIter::value_type EdgeDescriptor;
+        return EdgeDescriptor((*i.base()).m_source, (*i.base()).m_target,
+                              &i.base()->get_property());
       }
     };
 
@@ -242,7 +247,7 @@ namespace boost {
     public:
       typedef Property property_type;
       inline stored_edge_iter() { }
-      inline stored_edge_iter(Vertex v, Iter i = Iter())
+      inline stored_edge_iter(Vertex v, Iter i = Iter(), void* = 0)
         : stored_edge<Vertex>(v), m_iter(i) { }
       inline Property& get_property() { return m_iter->get_property(); }
       inline const Property& get_property() const { 
@@ -252,6 +257,31 @@ namespace boost {
     protected:
       Iter m_iter;
     };
+
+    // For when the EdgeList is a std::vector.
+    // Want to make the iterator stable, so use an offset
+    // instead of an iterator into a std::vector
+    template <class Vertex, class EdgeVec, class Property>
+    class stored_ra_edge_iter
+      : public stored_edge<Vertex>
+    {
+      typedef typename EdgeVec::iterator Iter;
+    public:
+      typedef Property property_type;
+      inline stored_ra_edge_iter() { }
+      inline stored_ra_edge_iter(Vertex v, Iter i = Iter(), 
+				 EdgeVec* edge_vec = 0)
+        : stored_edge<Vertex>(v), m_i(i - edge_vec->begin()), m_vec(edge_vec){ }
+      inline Property& get_property() { return (*m_vec)[m_i].get_property(); }
+      inline const Property& get_property() const { 
+        return (*m_vec)[m_i].get_property();
+      }
+      inline Iter get_iter() const { return m_vec->begin() + m_i; }
+    protected:
+      std::size_t m_i;
+      EdgeVec* m_vec;
+    };
+
   } // namespace detail
     
   template <class Tag, class Vertex, class Property>
@@ -266,6 +296,14 @@ namespace boost {
   const typename property_value<Property,Tag>::type&
   get(Tag property_tag,
       const detail::stored_edge_iter<Vertex, Iter, Property>& e)
+  {
+    return get_property_value(e.get_property(), property_tag);
+  }
+
+  template <class Tag, class Vertex, class EdgeVec, class Property>
+  const typename property_value<Property,Tag>::type&
+  get(Tag property_tag,
+      const detail::stored_ra_edge_iter<Vertex, EdgeVec, Property>& e)
   {
     return get_property_value(e.get_property(), property_tag);
   }
@@ -289,10 +327,10 @@ namespace boost {
         if (first != last)
           for (; i != last; ++i)
             if (!pred(*i)) {
-              *first.iter() = *i.iter();
+              *first.base() = *i.base();
               ++first;
             }
-        el.erase(first.iter(), el.end());
+        el.erase(first.base(), el.end());
       }
       template <class incidence_iterator, class EdgeList, class Predicate>
       inline void
@@ -306,7 +344,7 @@ namespace boost {
              first != last; first = next) {
           ++next;
           if (pred(*first))
-            el.erase( first.iter() );
+            el.erase( first.base() );
         }
       }
 
@@ -366,7 +404,7 @@ namespace boost {
         graph_type& g = static_cast<graph_type&>(*this);
         typename Config::edge_descriptor e = *iter;
         typename Config::OutEdgeList& el = g.out_edge_list(source(e, g));
-        el.erase(iter.iter());
+        el.erase(iter.base());
       }
 
     };
@@ -402,6 +440,7 @@ namespace boost {
     template <class Config>
     struct directed_graph_helper
       : public directed_edges_helper<Config> { 
+      typedef typename Config::edge_descriptor edge_descriptor;
       typedef adj_list_dir_traversal_tag traversal_category;
     };
 
@@ -498,7 +537,7 @@ namespace boost {
     // O(1) for allow_parallel_edge_tag
     // O(log(E/V)) for disallow_parallel_edge_tag
     template <class Config>
-    inline std::pair<typename Config::edge_descriptor, bool>
+    inline std::pair<typename directed_graph_helper<Config>::edge_descriptor, bool>
     add_edge(typename Config::vertex_descriptor u, 
              typename Config::vertex_descriptor v,
              const typename Config::edge_property_type& p, 
@@ -713,7 +752,7 @@ namespace boost {
           typename Config::vertex_descriptor v = target(*out_i, g);
           detail::remove_directed_edge_dispatch
             (*out_i, g.out_edge_list(v), *(PropT*)(*out_i).get_property());
-          g.m_edges.erase( (*out_i.iter()).get_iter() );
+          g.m_edges.erase( (*out_i.base()).get_iter() );
         }
       // Now remove the edges from this out-edge list.
       typename Config::out_edge_iterator first, last;
@@ -810,9 +849,9 @@ namespace boost {
 	= boost::prior(g.m_edges.end());
       typename Config::OutEdgeList::iterator i;
       boost::tie(i, inserted) = boost::push(g.out_edge_list(u), 
-					    StoredEdge(v, p_iter));
+				    StoredEdge(v, p_iter, &g.m_edges));
       if (inserted) {
-	boost::push(g.out_edge_list(v), StoredEdge(u, p_iter));
+	boost::push(g.out_edge_list(v), StoredEdge(u, p_iter, &g.m_edges));
 	return std::make_pair(edge_descriptor(u, v, &p_iter->get_property()),
 			      true);
       } else {
@@ -1006,7 +1045,7 @@ namespace boost {
              *(PropT*)(*out_i).get_property());
           // Put in garbage to delete later. Will need the properties
           // for the remove_if of the out-edges.
-          garbage.push_back((*out_i.iter()).get_iter());
+          garbage.push_back((*out_i.base()).get_iter());
         }
 
       // Now remove the edges from this out-edge list.
@@ -1044,7 +1083,7 @@ namespace boost {
             (*in_i, g.out_edge_list(u), *(PropT*)(*in_i).get_property());
           // Put in garbage to delete later. Will need the properties
           // for the remove_if of the out-edges.
-          garbage.push_back((*in_i.iter()).get_iter());
+          garbage.push_back((*in_i.base()).get_iter());
         }
       // Now remove the edges from this in-edge list.
       typename Config::in_edge_iterator first, last;
@@ -1156,15 +1195,15 @@ namespace boost {
         = boost::prior(g.m_edges.end());
       typename Config::OutEdgeList::iterator i;
       boost::tie(i, inserted) = boost::push(g.out_edge_list(u), 
-                                            StoredEdge(v, p_iter));
+                                        StoredEdge(v, p_iter, &g.m_edges));
       if (inserted) {
-        boost::push(in_edge_list(g, v), StoredEdge(u, p_iter));
+        boost::push(in_edge_list(g, v), StoredEdge(u, p_iter, &g.m_edges));
         return std::make_pair(edge_descriptor(u, v, &p_iter->m_property), 
                               true);
       } else {
         g.m_edges.erase(p_iter);
         return std::make_pair(edge_descriptor(u, v, 
-                                              &i->get_iter()->get_property()), 
+                                     &i->get_iter()->get_property()), 
                               false);
       }
     }
@@ -1934,9 +1973,9 @@ namespace boost {
     //=========================================================================
     // Adjacency List Generator
 
-    template <class Graph, class VertexListS, class EdgeListS,
+    template <class Graph, class VertexListS, class OutEdgeListS,
               class DirectedS, class VertexProperty, class EdgeProperty, 
-              class GraphProperty>
+              class GraphProperty, class EdgeListS>
     struct adj_list_gen
     {
       typedef typename detail::is_random_access<VertexListS>::type 
@@ -1947,7 +1986,7 @@ namespace boost {
 
       struct config
       {
-        typedef EdgeListS edgelist_selector;
+        typedef OutEdgeListS edgelist_selector;
 
         typedef Graph graph_type;
         typedef EdgeProperty edge_property_type;
@@ -1955,7 +1994,7 @@ namespace boost {
         typedef GraphProperty graph_property_type;
         typedef std::size_t vertices_size_type;
 
-        typedef adjacency_list_traits<EdgeListS, VertexListS, DirectedS> 
+        typedef adjacency_list_traits<OutEdgeListS, VertexListS, DirectedS> 
            Traits;
 
         typedef typename Traits::directed_category directed_category;
@@ -1979,8 +2018,8 @@ namespace boost {
 
         // EdgeContainer and StoredEdge
 
-        typedef std::list< list_edge<vertex_descriptor,EdgeProperty> >
-          EdgeContainer;
+        typedef typename container_gen<EdgeListS, 
+          list_edge<vertex_descriptor, EdgeProperty> >::type EdgeContainer;
 
         typedef typename ct_and<DirectedT, 
              typename ct_not<BidirectionalT>::type >::type on_edge_storage;
@@ -1991,14 +2030,19 @@ namespace boost {
 
         typedef typename EdgeContainer::iterator EdgeIter;
 
+	typedef typename detail::is_random_access<EdgeListS>::type is_edge_ra;
+
         typedef typename boost::ct_if_t<on_edge_storage,
           stored_edge_property<vertex_descriptor, EdgeProperty>,
-          stored_edge_iter<vertex_descriptor, EdgeIter, EdgeProperty>
+          typename boost::ct_if_t<is_edge_ra,
+            stored_ra_edge_iter<vertex_descriptor, EdgeContainer, EdgeProperty>,
+            stored_edge_iter<vertex_descriptor, EdgeIter, EdgeProperty>
+          >::type
         >::type StoredEdge;
 
         // Adjacency Types
 
-        typedef typename container_gen<EdgeListS, StoredEdge>::type 
+        typedef typename container_gen<OutEdgeListS, StoredEdge>::type 
           OutEdgeList;
         typedef typename OutEdgeList::size_type degree_size_type;
         typedef typename OutEdgeList::iterator OutEdgeIter;

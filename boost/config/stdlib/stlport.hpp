@@ -46,6 +46,17 @@
 #endif
 
 //
+// If the streams are not native, and we have a "using ::x" compiler bug
+// then the io stream facets are not available in namespace std::
+//
+#if !defined(_STLP_OWN_IOSTREAMS) && defined(_STLP_USE_NAMESPACES) && defined(BOOST_NO_USING_TEMPLATE)
+#  define BOOST_NO_STD_LOCALE
+#endif
+#if !defined(__SGI_STL_OWN_IOSTREAMS) && defined(__STL_USE_NAMESPACES) && defined(BOOST_NO_USING_TEMPLATE)
+#  define BOOST_NO_STD_LOCALE
+#endif
+
+//
 // Without member template support enabled, their are no template
 // iterate constructors, and no std::allocator:
 //
@@ -92,14 +103,17 @@
 #endif
 
 //
-// If STLport thinks there are no wide functions, <cwchar> etc. is not working.
+// If STLport thinks there are no wide functions, <cwchar> etc. is not working; but
+// only if BOOST_NO_STDC_NAMESPACE is not defined (if it is then we do the import 
+// into std:: ourselves).
 //
-#if defined(_STLP_NO_NATIVE_WIDE_FUNCTIONS)
+#if defined(_STLP_NO_NATIVE_WIDE_FUNCTIONS) && !defined(BOOST_NO_STDC_NAMESPACE)
 #  define BOOST_NO_CWCHAR
 #  define BOOST_NO_CWTYPE
 #endif
 
 
 #define BOOST_STDLIB "STLPort standard library version " BOOST_STRINGIZE(__SGI_STL_PORT)
+
 
 

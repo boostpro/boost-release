@@ -35,6 +35,11 @@
 //
 #define BOOST_HAS_THREADS
 
+//
+// gcc has "long long"
+//
+#define BOOST_HAS_LONG_LONG
+
 #define BOOST_COMPILER "GNU C++ version " BOOST_STRINGIZE(__GNUC__) "." BOOST_STRINGIZE(__GNUC_MINOR__)
 
 //

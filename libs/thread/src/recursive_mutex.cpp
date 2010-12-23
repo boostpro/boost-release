@@ -6,11 +6,11 @@
 // provided that the above copyright notice appear in all copies and
 // that both that copyright notice and this permission notice appear
 // in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.  
+// about the suitability of this software for any purpose.
 // It is provided "as is" without express or implied warranty.
 
 #include <boost/thread/recursive_mutex.hpp>
-#include <boost/thread/xtime.hpp> 
+#include <boost/thread/xtime.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/limits.hpp>
 #include <stdexcept>
@@ -30,47 +30,35 @@ namespace boost {
 recursive_mutex::recursive_mutex()
     : m_count(0)
 {
-    m_mutex = reinterpret_cast<unsigned long>(CreateMutex(0, 0, 0));
+    m_mutex = reinterpret_cast<void*>(new(std::nothrow) CRITICAL_SECTION);
     if (!m_mutex)
         throw thread_resource_error();
+    InitializeCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
 }
 
 recursive_mutex::~recursive_mutex()
 {
-    int res = 0;
-    res = CloseHandle(reinterpret_cast<HANDLE>(m_mutex));
-    assert(res);
+    DeleteCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
+    delete reinterpret_cast<LPCRITICAL_SECTION>(m_mutex);
 }
 
 void recursive_mutex::do_lock()
 {
-    int res = 0;
-    res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), INFINITE);
-    assert(res == WAIT_OBJECT_0);
+    EnterCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
 
     if (++m_count > 1)
-    {
-        res = ReleaseMutex(reinterpret_cast<HANDLE>(m_mutex));
-        assert(res);
-    }
+        LeaveCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
 }
 
 void recursive_mutex::do_unlock()
 {
     if (--m_count == 0)
-    {
-        int res = 0;
-        res = ReleaseMutex(reinterpret_cast<HANDLE>(m_mutex));
-        assert(res);
-    }
+        LeaveCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
 }
 
 void recursive_mutex::do_lock(cv_state& state)
 {
-    int res = 0;
-    res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), INFINITE);
-    assert(res == WAIT_OBJECT_0);
-
+    EnterCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
     m_count = state;
 }
 
@@ -78,16 +66,13 @@ void recursive_mutex::do_unlock(cv_state& state)
 {
     state = m_count;
     m_count = 0;
-
-    int res = 0;
-    res = ReleaseMutex(reinterpret_cast<HANDLE>(m_mutex));
-    assert(res);
+    LeaveCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
 }
 
 recursive_try_mutex::recursive_try_mutex()
     : m_count(0)
 {
-    m_mutex = reinterpret_cast<unsigned long>(CreateMutex(0, 0, 0));
+    m_mutex = reinterpret_cast<void*>(CreateMutex(0, 0, 0));
     if (!m_mutex)
         throw thread_resource_error();
 }
@@ -114,7 +99,7 @@ void recursive_try_mutex::do_lock()
 
 bool recursive_try_mutex::do_trylock()
 {
-    int res = 0;
+    unsigned int res = 0;
     res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), 0);
     assert(res != WAIT_FAILED && res != WAIT_ABANDONED);
 
@@ -162,7 +147,7 @@ void recursive_try_mutex::do_unlock(cv_state& state)
 recursive_timed_mutex::recursive_timed_mutex()
     : m_count(0)
 {
-    m_mutex = reinterpret_cast<unsigned long>(CreateMutex(0, 0, 0));
+    m_mutex = reinterpret_cast<void*>(CreateMutex(0, 0, 0));
     if (!m_mutex)
         throw thread_resource_error();
 }
@@ -189,7 +174,7 @@ void recursive_timed_mutex::do_lock()
 
 bool recursive_timed_mutex::do_trylock()
 {
-    int res = 0;
+    unsigned int res = 0;
     res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), 0);
     assert(res != WAIT_FAILED && res != WAIT_ABANDONED);
 
@@ -210,7 +195,7 @@ bool recursive_timed_mutex::do_timedlock(const xtime& xt)
     unsigned milliseconds;
     to_duration(xt, milliseconds);
 
-    int res = 0;
+    unsigned int res = 0;
     res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), milliseconds);
     assert(res != WAIT_FAILED && res != WAIT_ABANDONED);
 
@@ -249,7 +234,7 @@ void recursive_timed_mutex::do_unlock(cv_state& state)
 {
     state = m_count;
     m_count = 0;
-    
+
     int res = 0;
     res = ReleaseMutex(reinterpret_cast<HANDLE>(m_mutex));
     assert(res);
@@ -610,7 +595,7 @@ recursive_timed_mutex::recursive_timed_mutex()
     res = pthread_mutex_init(&m_mutex, 0);
     if (res != 0)
         throw thread_resource_error();
-    
+
     res = pthread_cond_init(&m_unlocked, 0);
     if (res != 0)
     {
@@ -706,7 +691,7 @@ bool recursive_timed_mutex::do_timedlock(const xtime& xt)
                 break;
             assert(res == 0);
         }
-        
+
         if (!m_valid_id)
         {
             m_thread_id = tid;

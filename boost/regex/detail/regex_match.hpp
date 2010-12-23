@@ -34,6 +34,27 @@ namespace boost{
    #pragma option push -a4 -b -Ve -pc -w-8026
 #endif
 
+//
+// Unfortunately Rogue Waves standard library appears to have a bug
+// in std::basic_string::compare that results in eroneous answers
+// in some cases (tested with Borland C++ 5.1, Rogue Wave lib version
+// 0x020101) the test case was:
+// {39135,0} < {0xff,0}
+// which succeeds when it should not.
+//
+#ifndef _RWSTD_VER
+# define STR_COMP(s,p) s.compare(p)
+#else
+template <class C, class T, class A>
+int string_compare(const std::basic_string<C,T,A>& s, const C* p)
+{ return s.compare(p); }
+int string_compare(const std::string& s, const char* p)
+{ return std::strcmp(s.c_str(), p); }
+int string_compare(const std::wstring& s, const wchar_t* p)
+{ return std::wcscmp(s.c_str(), p); }
+# define STR_COMP(s,p) string_compare(s,p)
+#endif
+
 template <class iterator, class charT, class traits_type, class Allocator>
 iterator BOOST_REGEX_CALL re_is_set_member(iterator next, 
                           iterator last, 
@@ -104,11 +125,11 @@ iterator BOOST_REGEX_CALL re_is_set_member(iterator next,
             traits_inst.transform(s1, s2);
          for(i = 0; i < set_->cranges; ++i)
          {
-            if(s1 <= p)
+            if(STR_COMP(s1, p) <= 0)
             {
                while(*p)++p;
                ++p;
-               if(s1 >= p)
+               if(STR_COMP(s1, p) >= 0)
                   return set_->isnot ? next : ++next;
             }
             else
@@ -129,7 +150,7 @@ iterator BOOST_REGEX_CALL re_is_set_member(iterator next,
          traits_inst.transform_primary(s1, s2);
          for(i = 0; i < set_->cequivalents; ++i)
          {
-            if(s1 == p)
+            if(STR_COMP(s1, p) == 0)
                return set_->isnot ? next : ++next;
             // skip string
             while(*p)++p;
@@ -163,9 +184,9 @@ public:
    
    ~_priv_match_data()
    {
-      free();
+      m_free();
    }
-   void free();
+   void m_free();
    void set_accumulator_size(unsigned int size);
    int* get_accumulators()
    {
@@ -191,7 +212,7 @@ void _priv_match_data<iterator, Allocator>::set_accumulator_size(unsigned int si
 {
    if(size > caccumulators)
    {
-      free();
+      m_free();
       caccumulators = size;
       accumulators = i_alloc(temp_match.allocator()).allocate(caccumulators);
       loop_starts = it_alloc(temp_match.allocator()).allocate(caccumulators);
@@ -201,7 +222,7 @@ void _priv_match_data<iterator, Allocator>::set_accumulator_size(unsigned int si
 }
 
 template <class iterator, class Allocator>
-void _priv_match_data<iterator, Allocator>::free()
+void _priv_match_data<iterator, Allocator>::m_free()
 {
    if(caccumulators)
    {
@@ -1051,10 +1072,6 @@ namespace{
 template <class Predicate, class I, class charT, class traits, class A, class A2>
 unsigned int reg_grep2(Predicate foo, I first, I last, const reg_expression<charT, traits, A>& e, unsigned flags, A2 a)
 {
-#ifdef BOOST_MSVC
-#  pragma warning(push)
-#  pragma warning(disable: 4800)
-#endif
    typedef access_t<charT, traits, A> access;
 
    if(e.flags() & regbase::failbit)

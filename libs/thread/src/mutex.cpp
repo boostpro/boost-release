@@ -6,7 +6,7 @@
 // provided that the above copyright notice appear in all copies and
 // that both that copyright notice and this permission notice appear
 // in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.  
+// about the suitability of this software for any purpose.
 // It is provided "as is" without express or implied warranty.
 
 #include <boost/thread/mutex.hpp>
@@ -16,6 +16,7 @@
 #include <boost/limits.hpp>
 #include <stdexcept>
 #include <cassert>
+#include <new>
 #include "timeconv.inl"
 
 #if defined(BOOST_HAS_WINTHREADS)
@@ -30,30 +31,26 @@ namespace boost {
 #if defined(BOOST_HAS_WINTHREADS)
 mutex::mutex()
 {
-    m_mutex = reinterpret_cast<unsigned long>(CreateMutex(0, 0, 0));
+    m_mutex = reinterpret_cast<void*>(new(std::nothrow) CRITICAL_SECTION);
     if (!m_mutex)
         throw thread_resource_error();
+    InitializeCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
 }
 
 mutex::~mutex()
 {
-    int res = 0;
-    res = CloseHandle(reinterpret_cast<HANDLE>(m_mutex));
-    assert(res);
+    DeleteCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
+    delete reinterpret_cast<LPCRITICAL_SECTION>(m_mutex);
 }
 
 void mutex::do_lock()
 {
-    int res = 0;
-    res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), INFINITE);
-    assert(res == WAIT_OBJECT_0);
+    EnterCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
 }
 
 void mutex::do_unlock()
 {
-    int res = 0;
-    res = ReleaseMutex(reinterpret_cast<HANDLE>(m_mutex));
-    assert(res);
+    LeaveCriticalSection(reinterpret_cast<LPCRITICAL_SECTION>(m_mutex));
 }
 
 void mutex::do_lock(cv_state&)
@@ -68,7 +65,7 @@ void mutex::do_unlock(cv_state&)
 
 try_mutex::try_mutex()
 {
-    m_mutex = reinterpret_cast<unsigned long>(CreateMutex(0, 0, 0));
+    m_mutex = reinterpret_cast<void*>(CreateMutex(0, 0, 0));
     if (!m_mutex)
         throw thread_resource_error();
 }
@@ -89,7 +86,7 @@ void try_mutex::do_lock()
 
 bool try_mutex::do_trylock()
 {
-    int res = 0;
+    unsigned int res = 0;
     res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), 0);
     assert(res != WAIT_FAILED && res != WAIT_ABANDONED);
     return res == WAIT_OBJECT_0;
@@ -114,7 +111,7 @@ void try_mutex::do_unlock(cv_state&)
 
 timed_mutex::timed_mutex()
 {
-    m_mutex = reinterpret_cast<unsigned long>(CreateMutex(0, 0, 0));
+    m_mutex = reinterpret_cast<void*>(CreateMutex(0, 0, 0));
     if (!m_mutex)
         throw thread_resource_error();
 }
@@ -135,7 +132,7 @@ void timed_mutex::do_lock()
 
 bool timed_mutex::do_trylock()
 {
-    int res = 0;
+    unsigned int res = 0;
     res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), 0);
     assert(res != WAIT_FAILED && res != WAIT_ABANDONED);
     return res == WAIT_OBJECT_0;
@@ -146,7 +143,7 @@ bool timed_mutex::do_timedlock(const xtime& xt)
     unsigned milliseconds;
     to_duration(xt, milliseconds);
 
-    int res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), milliseconds);
+    unsigned int res = WaitForSingleObject(reinterpret_cast<HANDLE>(m_mutex), milliseconds);
     assert(res != WAIT_FAILED && res != WAIT_ABANDONED);
     return res == WAIT_OBJECT_0;
 }
@@ -199,7 +196,7 @@ void mutex::do_unlock()
     assert(res == 0);
 }
 
-void mutex::do_lock(cv_state& state)
+void mutex::do_lock(cv_state&)
 {
 }
 
@@ -248,7 +245,7 @@ void try_mutex::do_unlock()
     assert(res == 0);
 }
 
-void try_mutex::do_lock(cv_state& state)
+void try_mutex::do_lock(cv_state&)
 {
 }
 
@@ -338,7 +335,7 @@ bool timed_mutex::do_timedlock(const xtime& xt)
         if (res == ETIMEDOUT)
             break;
     }
-    
+
     bool ret = false;
     if (!m_locked)
     {
@@ -367,7 +364,7 @@ void timed_mutex::do_unlock()
     assert(res == 0);
 }
 
-void timed_mutex::do_lock(cv_state& state)
+void timed_mutex::do_lock(cv_state&)
 {
     int res = 0;
     while (m_locked)

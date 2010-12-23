@@ -31,18 +31,26 @@
 #     endif
 
       // BOOST_HAS_NANOSLEEP:
-      // This is predicated on _POSIX_TIMERS:
-#     if defined(_POSIX_TIMERS) && (_POSIX_TIMERS+0 >= 0)
+      // This is predicated on _POSIX_TIMERS or _XOPEN_REALTIME:
+#     if (defined(_POSIX_TIMERS) && (_POSIX_TIMERS+0 >= 0)) \
+             || (defined(_XOPEN_REALTIME) && (_XOPEN_REALTIME+0 >= 0))
 #        define BOOST_HAS_NANOSLEEP
+#     endif
+
+      // BOOST_HAS_CLOCK_GETTIME:
+      // This is predicated on _POSIX_TIMERS (also on _XOPEN_REALTIME
+      // but at least one platform - linux - defines that flag without
+      // defining clock_gettime):
+#     if (defined(_POSIX_TIMERS) && (_POSIX_TIMERS+0 >= 0))
+#        define BOOST_HAS_CLOCK_GETTIME
 #     endif
 
       // BOOST_HAS_SCHED_YIELD:
       // This is predicated on _POSIX_PRIORITY_SCHEDULING or
-      // on _POSIX_THREAD_PRIORITY_SCHEDULING.
-#     if defined(_POSIX_PRIORITY_SCHEDULING) && (_POSIX_PRIORITY_SCHEDULING+0 > 0)
-#        define BOOST_HAS_SCHED_YIELD
-#     endif
-#     if defined(_POSIX_THREAD_PRIORITY_SCHEDULING) && (_POSIX_THREAD_PRIORITY_SCHEDULING+0 > 0)
+      // on _POSIX_THREAD_PRIORITY_SCHEDULING or on _XOPEN_REALTIME.
+#     if defined(_POSIX_PRIORITY_SCHEDULING) && (_POSIX_PRIORITY_SCHEDULING+0 > 0)\
+            || (defined(_POSIX_THREAD_PRIORITY_SCHEDULING) && (_POSIX_THREAD_PRIORITY_SCHEDULING+0 > 0))\
+            || (defined(_XOPEN_REALTIME) && (_XOPEN_REALTIME+0 >= 0))
 #        define BOOST_HAS_SCHED_YIELD
 #     endif
 
@@ -54,12 +62,5 @@
 #        define BOOST_HAS_GETTIMEOFDAY
 #        define BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
 #     endif
-
-      // BOOST_HAS_CLOCK_GETTIME:
-      // This is predicated on _POSIX_TIMERS.
-#     if defined(_POSIX_TIMERS) && (_POSIX_TIMERS+0 > 0)
-#        define BOOST_HAS_CLOCK_GETTIME
-#     endif
-
 
 #  endif

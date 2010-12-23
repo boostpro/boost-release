@@ -17,3 +17,12 @@
 
 #define BOOST_NO_SWPRINTF 
 #define BOOST_NO_CWCTYPE
+
+// boilerplate code:
+#define BOOST_HAS_UNISTD_H
+#include <boost/config/posix_features.hpp>
+
+#ifndef BOOST_HAS_GETTIMEOFDAY
+// gettimeofday is always available
+#define BOOST_HAS_GETTIMEOFDAY
+#endif

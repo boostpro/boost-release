@@ -28,6 +28,13 @@
 #  define BOOST_FUNCTION_INIT , invoker(0)
 #endif // BOOST_FUNCTION_USE_VIRTUAL_FUNCTIONS
 
+// Type of the default allocator
+#ifndef BOOST_NO_STD_ALLOCATOR
+#  define BOOST_FUNCTION_DEFAULT_ALLOCATOR std::allocator<function_base>
+#else
+#  define BOOST_FUNCTION_DEFAULT_ALLOCATOR int
+#endif // BOOST_NO_STD_ALLOCATOR
+
 namespace boost {
   namespace detail {
     namespace function {
@@ -107,7 +114,7 @@ namespace boost {
         }
 
       private:
-        FunctionPtr function_ptr;
+        mutable FunctionPtr function_ptr;
 #else
         static R invoke(any_pointer function_ptr BOOST_FUNCTION_COMMA
                         BOOST_FUNCTION_PARMS)
@@ -184,7 +191,7 @@ namespace boost {
         }
 
       private:
-        FunctionPtr function_ptr;
+        mutable FunctionPtr function_ptr;
 #  else
         static unusable invoke(any_pointer function_ptr BOOST_FUNCTION_COMMA
                                BOOST_FUNCTION_PARMS)
@@ -417,7 +424,7 @@ namespace boost {
     BOOST_FUNCTION_TEMPLATE_PARMS,
     typename Policy    = empty_function_policy,
     typename Mixin     = empty_function_mixin,
-    typename Allocator = std::allocator<function_base>
+    typename Allocator = BOOST_FUNCTION_DEFAULT_ALLOCATOR
   >
   class BOOST_FUNCTION_FUNCTION : public function_base, public Mixin
   {
@@ -612,10 +619,14 @@ namespace boost {
     template<typename Functor>
     void assign_to(const Functor& f)
     {
-      typedef typename detail::function::IF<(is_pointer<Functor>::value),
-                         detail::function::function_ptr_tag,
-                         detail::function::function_obj_tag>::type tag;
+      typedef typename detail::function::get_function_tag<Functor>::type tag;
       this->assign_to(f, tag());
+    }
+
+    template<typename MemberPtr>
+    void assign_to(MemberPtr f, detail::function::member_ptr_tag)
+    {
+      this->assign_to(mem_fn(f));
     }
 
     template<typename FunctionPtr>
@@ -723,8 +734,9 @@ namespace boost {
                    >& f2)
   {
     f1.swap(f2);
-  }                   
+  }
 }
 
 // Cleanup after ourselves...
+#undef BOOST_FUNCTION_DEFAULT_ALLOCATOR
 #undef BOOST_FUNCTION_INIT

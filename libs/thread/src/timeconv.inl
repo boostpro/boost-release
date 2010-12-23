@@ -6,9 +6,9 @@
 // provided that the above copyright notice appear in all copies and
 // that both that copyright notice and this permission notice appear
 // in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.  
+// about the suitability of this software for any purpose.
 // It is provided "as is" without express or implied warranty.
- 
+
 namespace {
     const unsigned MILLISECONDS_PER_SECOND = 1000;
     const unsigned NANOSECONDS_PER_SECOND = 1000000000;
@@ -23,7 +23,7 @@ namespace {
         xt.sec += (milliseconds / MILLISECONDS_PER_SECOND);
         xt.nsec += ((milliseconds % MILLISECONDS_PER_SECOND) * NANOSECONDS_PER_MILLISECOND);
 
-        if (xt.nsec > NANOSECONDS_PER_SECOND)
+        if (xt.nsec > static_cast<const int>(NANOSECONDS_PER_SECOND))
         {
             ++xt.sec;
             xt.nsec -= NANOSECONDS_PER_SECOND;
@@ -35,6 +35,11 @@ namespace {
     {
         ts.tv_sec = static_cast<int>(xt.sec);
         ts.tv_nsec = static_cast<int>(xt.nsec);
+        if(ts.tv_nsec > NANOSECONDS_PER_SECOND)
+        {
+            ts.tv_sec += ts.tv_nsec / NANOSECONDS_PER_SECOND;
+            ts.tv_nsec %= NANOSECONDS_PER_SECOND;
+        }
     }
 
     inline void to_time(unsigned milliseconds, timespec& ts)
@@ -66,6 +71,11 @@ namespace {
                 ts.tv_sec -= 1;
                 ts.tv_nsec += NANOSECONDS_PER_SECOND;
             }
+           if(ts.tv_nsec > NANOSECONDS_PER_SECOND)
+           {
+               ts.tv_sec += ts.tv_nsec / NANOSECONDS_PER_SECOND;
+               ts.tv_nsec %= NANOSECONDS_PER_SECOND;
+           }
         }
     }
 #endif

@@ -6,11 +6,10 @@
 // provided that the above copyright notice appear in all copies and
 // that both that copyright notice and this permission notice appear
 // in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.  
+// about the suitability of this software for any purpose.
 // It is provided "as is" without express or implied warranty.
 
 #include <boost/thread/thread.hpp>
-#include <boost/thread/semaphore.hpp>
 #include <boost/thread/xtime.hpp>
 #include <boost/thread/condition.hpp>
 #include <cassert>
@@ -77,7 +76,7 @@ thread::thread()
     : m_joinable(false)
 {
 #if defined(BOOST_HAS_WINTHREADS)
-    m_thread = reinterpret_cast<unsigned long>(GetCurrentThread());
+    m_thread = reinterpret_cast<void*>(GetCurrentThread());
     m_id = GetCurrentThreadId();
 #elif defined(BOOST_HAS_PTHREADS)
     m_thread = pthread_self();
@@ -89,7 +88,7 @@ thread::thread(const function0<void>& threadfunc)
 {
     thread_param param(threadfunc);
 #if defined(BOOST_HAS_WINTHREADS)
-    m_thread = _beginthreadex(0, 0, &thread_proxy, &param, 0, &m_id);
+    m_thread = reinterpret_cast<void*>(_beginthreadex(0, 0, &thread_proxy, &param, 0, &m_id));
     if (!m_thread)
         throw thread_resource_error();
 #elif defined(BOOST_HAS_PTHREADS)
@@ -163,12 +162,14 @@ void thread::sleep(const xtime& xt)
     timespec ts;
     to_timespec_duration(xt, ts);
 
-	//  nanosleep takes a timespec that is an offset, not
-	//  an absolute time.
+    //  nanosleep takes a timespec that is an offset, not
+    //  an absolute time.
     nanosleep(&ts, 0);
 #   else
-    semaphore sema;
-    sema.down(xt);
+    mutex mx;
+    mutex::scoped_lock lock(mx);
+    condition cond;
+    cond.timed_wait(lock, xt);
 #   endif
 #endif
 }

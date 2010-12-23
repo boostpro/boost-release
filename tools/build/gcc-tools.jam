@@ -25,9 +25,17 @@ flags gcc CFLAGS <inlining>off : -fno-inline ;
 flags gcc CFLAGS <inlining>on : -Wno-inline ;
 flags gcc CFLAGS <inlining>full : -finline-functions -Wno-inline ;
 
+if $(UNIX)
+{
+	flags gcc CFLAGS <threading>multi : -pthread ;
+	flags gcc LINKFLAGS <threading>multi : -pthread ;
+}
+
 flags gcc CFLAGS <profiling>on : -pg ;
 flags gcc LINKFLAGS <profiling>on : -pg ;
 
+flags gcc CFLAGS <cflags> ;
+flags gcc C++FLAGS <cxxflags> ;
 flags gcc DEFINES <define> ;
 flags gcc UNDEFS <undef> ;
 flags gcc HDRS <include> ;
@@ -66,7 +74,7 @@ rule Link-action
 # for gcc, we repeat all libraries so that dependencies are always resolved
 actions gcc-Link-action bind NEEDLIBS
 {
-    $(GCC_BIN_DIRECTORY)g++ $(IMPLIB_COMMAND)$(<[2]) $(LINKFLAGS) -o "$(<[1])" -L$(LIBPATH) -L$(STDLIBPATH) "$(>)" "$(NEEDLIBS)" "$(NEEDLIBS)" -l$(FINDLIBS)
+    $(GCC_BIN_DIRECTORY)g++ $(IMPLIB_COMMAND)$(<[2]) $(LINKFLAGS) -o "$(<[1])" -L$(LIBPATH) -L$(STDLIBPATH) "$(>)" -l$(FINDLIBS) "$(NEEDLIBS)" "$(NEEDLIBS)"
 }
 
 # older actions

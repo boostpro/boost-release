@@ -25,17 +25,18 @@
 
 <P>
 <PRE>
-  template &lt;class <a href="./VertexListGraph.html">VertexListGraph</a>, class P, class T, class R&gt;
-  void breadth_first_search(VertexListGraph& G, 
-    typename graph_traits&lt;VertexListGraph&gt;::vertex_descriptor s, 
-    const bgl_named_params&lt;P, T, R&gt;&amp; params);
+<i>// named paramter version</i>
+template &lt;class <a href="./VertexListGraph.html">VertexListGraph</a>, class P, class T, class R&gt;
+void breadth_first_search(VertexListGraph& G, 
+  typename graph_traits&lt;VertexListGraph&gt;::vertex_descriptor s, 
+  const bgl_named_params&lt;P, T, R&gt;&amp; params);
 
-  template &lt;class VertexListGraph, class Buffer, class BFSVisitor, 
-            class ColorMap&gt;
-  void breadth_first_search
-    (const VertexListGraph&amp; g, 
-     typename graph_traits&lt;VertexListGraph&gt;::vertex_descriptor s, 
-     Buffer&amp; Q, BFSVisitor vis, ColorMap color);
+<i>// non-named parameter version</i>
+template &lt;class VertexListGraph, class Buffer, class BFSVisitor, 
+	  class ColorMap&gt;
+void breadth_first_search(const VertexListGraph&amp; g, 
+   typename graph_traits&lt;VertexListGraph&gt;::vertex_descriptor s, 
+   Buffer&amp; Q, BFSVisitor vis, ColorMap color);
 </PRE>
 
 
@@ -305,8 +306,8 @@ from <A HREF="./graph_theory_review.html#fig:bfs-example">Figure
 <HR>
 <TABLE>
 <TR valign=top>
-<TD nowrap>Copyright &copy 2000</TD><TD>
-<A HREF="../../../people/jeremy_siek.htm">Jeremy Siek</A>, Univ.of Notre Dame (<A HREF="mailto:jsiek@lsc.nd.edu">jsiek@lsc.nd.edu</A>)
+<TD nowrap>Copyright &copy 2000-2001</TD><TD>
+<A HREF="../../../people/jeremy_siek.htm">Jeremy Siek</A>, Indiana University (<A HREF="mailto:jsiek@osl.iu.edu">jsiek@osl.iu.edu</A>)
 </TD></TR></TABLE>
 
 </BODY>

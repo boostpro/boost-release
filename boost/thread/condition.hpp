@@ -6,7 +6,7 @@
 // provided that the above copyright notice appear in all copies and
 // that both that copyright notice and this permission notice appear
 // in supporting documentation.  William E. Kempf makes no representations
-// about the suitability of this software for any purpose.  
+// about the suitability of this software for any purpose.
 // It is provided "as is" without express or implied warranty.
 
 #ifndef BOOST_CONDITION_WEK070601_HPP
@@ -14,11 +14,12 @@
 
 #include <boost/config.hpp>
 #ifndef BOOST_HAS_THREADS
-#   error	Thread support is unavailable!
+#   error   Thread support is unavailable!
 #endif
 
 #include <boost/thread/exceptions.hpp>
 #include <boost/utility.hpp>
+#include <boost/thread/detail/lock.hpp>
 
 #if defined(BOOST_HAS_PTHREADS)
 #   include <pthread.h>
@@ -33,7 +34,7 @@ class condition : private noncopyable
 public:
     condition();
     ~condition();
-    
+
     void notify_one();
     void notify_all();
 
@@ -42,7 +43,7 @@ public:
     {
         if (!lock)
             throw lock_error();
-        
+
         do_wait(lock.m_mutex);
     }
 
@@ -51,7 +52,7 @@ public:
     {
         if (!lock)
             throw lock_error();
-        
+
         while (!pred())
             do_wait(lock.m_mutex);
     }
@@ -61,7 +62,7 @@ public:
     {
         if (!lock)
             throw lock_error();
-        
+
         return do_timed_wait(lock.m_mutex, xt);
     }
 
@@ -70,7 +71,7 @@ public:
     {
         if (!lock)
             throw lock_error();
-        
+
         while (!pred())
         {
             if (!do_timed_wait(lock.m_mutex, xt))
@@ -88,8 +89,9 @@ private:
         enter_wait();
 #endif
 
-        typename M::cv_state state;
-        mutex.do_unlock(state);
+        typedef typename detail::thread::lock_ops<M> lock_ops;
+        lock_ops::lock_state state;
+        lock_ops::unlock(mutex, state);
 
 #if defined(BOOST_HAS_PTHREADS)
         do_wait(state.pmutex);
@@ -97,7 +99,7 @@ private:
         do_wait();
 #endif
 
-        mutex.do_lock(state);
+        lock_ops::lock(mutex, state);
     }
 
     template <typename M>
@@ -107,8 +109,9 @@ private:
         enter_wait();
 #endif
 
-        typename M::cv_state state;
-        mutex.do_unlock(state);
+        typedef typename detail::thread::lock_ops<M> lock_ops;
+        lock_ops::lock_state state;
+        lock_ops::unlock(mutex, state);
 
         bool ret = false;
 
@@ -118,7 +121,7 @@ private:
         ret = do_timed_wait(xt);
 #endif
 
-        mutex.do_lock(state);
+        lock_ops::lock(mutex, state);
 
         return ret;
     }
@@ -133,9 +136,9 @@ private:
 #endif
 
 #if defined(BOOST_HAS_WINTHREADS)
-    unsigned long m_gate;
-    unsigned long m_queue;
-    unsigned long m_mutex;
+    void* m_gate;
+    void* m_queue;
+    void* m_mutex;
     unsigned m_gone; // # threads that timed out and never made it to the m_queue
     unsigned long m_blocked; // # threads m_blocked m_waiting for the condition
     unsigned m_waiting; // # threads m_waiting no longer m_waiting for the condition but still

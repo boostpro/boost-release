@@ -22,6 +22,18 @@
 # endif
 
 //
+// look for long long by looking for the appropriate macros in <limits.h>.
+// Note that we use limits.h rather than climits for maximal portability,
+// remember that since these just declare a bunch of macros, there should be
+// no namespace issues from this.
+//
+#include <limits.h>
+# if !defined(BOOST_MSVC) && !defined(__BORLANDC__) \
+   && (defined(ULLONG_MAX) || defined(ULONG_LONG_MAX) || defined(ULONGLONG_MAX))
+#  define BOOST_HAS_LONG_LONG
+#endif
+
+//
 // Assume any extensions are in namespace std:: unless stated otherwise:
 //
 #  ifndef BOOST_STD_EXTENSION_NAMESPACE
@@ -108,26 +120,6 @@
 //
 #  if defined(BOOST_NO_CWCHAR) && !defined(BOOST_NO_SWPRINTF)
 #     define BOOST_NO_SWPRINTF
-#  endif
-
-//
-// If the platform claims to be Unix, then it had better behave like Unix!
-//
-#  if defined(unix) \
-      || defined(__unix) \
-      || defined(_XOPEN_SOURCE) \
-      || defined(_POSIX_SOURCE)
-
-#     ifndef BOOST_HAS_UNISTD_H
-#        define BOOST_HAS_UNISTD_H
-#     endif
-#  endif
-
-//
-// If we have a <unistd.h> then some options can be deduced from it:
-//
-#  ifdef BOOST_HAS_UNISTD_H
-#     include <boost/config/posix_features.hpp>
 #  endif
 
 //
@@ -240,7 +232,7 @@ namespace std {
 
 #if defined(BOOST_NO_STD_USE_FACET)
 #  ifdef BOOST_HAS_TWO_ARG_USE_FACET
-#     define BOOST_USE_FACET(Type, loc) std::use_facet(loc, static_cast<Type const*>(0))
+#     define BOOST_USE_FACET(Type, loc) std::use_facet(loc, static_cast<Type*>(0))
 #  elif defined(BOOST_HAS_MACRO_USE_FACET)
 #     define BOOST_USE_FACET(Type, loc) std::_USE(loc, Type)
 #  elif defined(BOOST_HAS_STLP_USE_FACET)

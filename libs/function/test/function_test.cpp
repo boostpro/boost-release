@@ -44,6 +44,15 @@ struct write_const_1_nonconst_2
   void operator()() const { global_int = 1; }
 };
 
+struct add_to_obj
+{
+  add_to_obj(int v) : value(v) {}
+
+  int operator()(int x) const { return value + x; }
+
+  int value;
+};
+
 static void
 test_zero_args()
 {
@@ -527,8 +536,15 @@ test_one_arg()
   function<string, string> id(&identity_str);
   BOOST_TEST(id("str") == "str");
 
-  function<std::string, char*> id2(&identity_str);
+  function<std::string, const char*> id2(&identity_str);
   BOOST_TEST(id2("foo") == "foo");
+
+  add_to_obj add_to(5);
+  function<int, int> f2(add_to);
+  BOOST_TEST(f2(3) == 8);
+
+  const function<int, int> cf2(add_to);
+  BOOST_TEST(cf2(3) == 8);
 }
 
 static void
@@ -556,6 +572,37 @@ test_emptiness()
   BOOST_TEST(f3.empty());
 }
 
+struct X {
+  X(int v) : value(v) {}
+
+  int twice() const { return 2*value; }
+  int plus(int v) { return value + v; }
+
+  int value;
+};
+
+static void
+test_member_functions()
+{
+  boost::function<int, X*> f1(&X::twice);
+  
+  X one(1);
+  X five(5);
+
+  BOOST_TEST(f1(&one) == 2);
+  BOOST_TEST(f1(&five) == 10);
+
+  boost::function<int, X*> f1_2;
+  f1_2 = &X::twice;
+
+  BOOST_TEST(f1_2(&one) == 2);
+  BOOST_TEST(f1_2(&five) == 10);
+
+  boost::function<int, X&, int> f2(&X::plus);
+  BOOST_TEST(f2(one, 3) == 4);
+  BOOST_TEST(f2(five, 4) == 9);
+}
+
 int
 test_main(int, char* [])
 {
@@ -563,5 +610,6 @@ test_main(int, char* [])
   test_one_arg();
   test_two_args();
   test_emptiness();
+  test_member_functions();
   return 0;
 }

@@ -105,13 +105,7 @@ rule dll-files
     type-DEPENDS dll : $(<) ;
     
     # Set up the import library dependency on Windows
-    local f ;
-    for f in $(<[2-])
-    {
-        INCLUDES $(<) : $(f) ;
-        INCLUDES $(f) : $(<) ;
-    }
-    
+    INCLUDES $(<[1]) : $(<[2-]) ;
     main-from-objects $(<) : [ Objects $(>) ] : DLL ;
 }
 
@@ -124,9 +118,7 @@ rule main-from-objects
 {
     # make compiled sources a dependency of target
 
-    DEPENDS $(<) : $(>) ;
-
-	MakeLocate $(<) : $(LOCATE_TARGET) ;
+    MakeLocate $(<) : $(LOCATE_TARGET) ;
 
     Clean clean : $(<) ;
 
@@ -134,6 +126,7 @@ rule main-from-objects
     local link-function = Link-$(3) ;
     local ignored = [ $(link-function) $(<) : $(>) : $(3) ] ;
     Chmod $(<[1]) ;
+    DEPENDS $(<) : $(>) ;
 }
 
 rule Link-EXE
@@ -164,7 +157,8 @@ RUN_PATH ?= $(PATH) ;
 # A simple action to run an executable target
 actions Run
 {
-    $(SHELL_EXPORT)PATH=$(RUN_PATH)
+    $(SHELL_SET)PATH=$(RUN_PATH)
+    $(SHELL_EXPORT)PATH
     $(<)
 }
 
@@ -723,9 +717,9 @@ rule fixup-path-properties
 {
     local path-properties = [ get-properties $(gPATH_FEATURES) : $(<) ] ;
     local non-path = [ difference $(<) : $(path-properties) ] ;    
-    if $(RELATIVE_SUBDIR) && ! $(path-properties:R)
+    if $(RELATIVE_SUBDIR)
     {
-        path-properties = $(path-properties:R=$(RELATIVE_SUBDIR)) ;
+        path-properties = [ root-paths $(path-properties) : $(RELATIVE_SUBDIR) ] ;
     }
     return $(path-properties) $(non-path) ;
 }
@@ -872,6 +866,13 @@ rule expand-build-request
     local defaulted-features = [ difference $(relevant_features)
                                 : $(override-properties:G) $(base-properties:G) ] ;
     local defaulted-properties = [ feature-default $(defaulted-features) ] ;
+    # VP: defaulted-properties have the form <feature>value and there's 1 value.
+    # Hence, each element of defaulted-properties will be part of each
+    # component of override-sets and will be a part of each property-set 
+    # returned. By segregating them, the result is changed in only one
+    # way: free properties does not show up in target path.
+    local defaulted-free-properties = [ segregate-free-properties defaulted-properties ] ;
+
 
     # form override property sets of the form (property1[/property2...] )+,
     # sorted in feature order. These represent the properties of subvariants
@@ -882,7 +883,8 @@ rule expand-build-request
     # return path-property-sets corresponding to each (sub)variant build
     # described.
     return [ make-path-property-sets $(toolset)$(SLASH)$(variant)
-                : [ fixup-path-properties $(base-properties) $(free-properties) ]
+                : [ fixup-path-properties $(base-properties) $(free-properties) 
+    	    $(defaulted-free-properties) ]
                 : $(override-sets) ] ;
 }
 
@@ -1001,15 +1003,14 @@ rule dependent-include
         # rule to find it.
         
         local jamfile-path
-            = [ join-path
-                [ simplify-path-tokens
-                  $(RELATIVE_SUBDIR_TOKENS) [ directory-of $(target) ] $(JAMFILE) ] ] ;
+            = [ tokens-to-simple-path
+                  $(RELATIVE_SUBDIR_TOKENS) [ directory-of $(target) ] $(JAMFILE) ] ;
                   
         if ! $(gINCLUDED($(jamfile-path)))
         {
             # protect variables from being permanently set by SubDir invocations
             # in included files.
-            local $(gSUBDIR_GLOBALS) ;
+            local [ protect-subdir ] ;
 
             # this stack allows us to avoid making dependee libraries part of
             # the "type" targets, e.g. all, exe, obj. See rule type-DEPENDS.
@@ -1107,7 +1108,7 @@ rule link-libraries
     local new-subdir = TOP [ top-relative-tokens [ directory-of $(lib-path) ] ] ;
     
     # protect global variables from being permanently set by SubDir
-    local $(gSUBDIR_GLOBALS) ;
+    local [ protect-subdir ] ;
 
     # Enter the dependee subproject
     SubDir $(new-subdir) ;
@@ -1166,7 +1167,7 @@ rule declare-fake-targets
     # The following checks that we're in the subdirectory of Jam's invocation
     # so that we can arrange for ungristed target names to be built from the
     # command-line.
-    if ( $(SUBDIR_TOKENS) = $(gINVOCATION_SUBDIR_TOKENS) )
+    if [ in-invocation-subdir ]
     {
         DEPENDS $(<:G=) : $(<) ; # allows $(<:G=) to be used to build all variants
         NOTFILE $(<:G=) ;
@@ -1357,3 +1358,23 @@ rule unit-test
     }
 }
 
+rule list-files
+{
+    DEPENDS $(<) : $(>) ;
+
+    list-files-aux1 $(<) : $(>[1]) ;
+    if $(>[2])
+    {
+        list-files-aux2 $(<) : $(>[2-]) ;
+    }
+}
+
+actions quietly piecemeal list-files-aux1
+{
+    echo "$(>)" > $(<)
+}
+
+actions quietly piecemeal list-files-aux2
+{
+    echo "$(>)" >> $(<)
+}

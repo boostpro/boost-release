@@ -309,14 +309,14 @@ namespace boost {
   template <typename VertexListGraph, typename MutableGraph>
   void copy_graph(const VertexListGraph& g_in, MutableGraph& g_out)
   {
-    std::vector<typename graph_traits<VertexListGraph>::vertex_descriptor> 
-      orig2copy(num_vertices(g_in));
+    typedef typename graph_traits<VertexListGraph>::vertex_descriptor vertex_t;
+    std::vector<vertex_t> orig2copy(num_vertices(g_in));
     typedef typename detail::choose_graph_copy<VertexListGraph>::type 
       copy_impl;
     copy_impl::apply
       (g_in, g_out, 
-       make_vertex_copier(g_in, g_out), 
-       make_edge_copier(g_in, g_out), 
+       detail::make_vertex_copier(g_in, g_out), 
+       detail::make_edge_copier(g_in, g_out), 
        make_iterator_property_map(orig2copy.begin(), 
                                   get(vertex_index, g_in), orig2copy[0]),
        get(vertex_index, g_in)

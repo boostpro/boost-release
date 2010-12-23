@@ -26,15 +26,17 @@
 
 <P>
 <PRE>
+<i>// named paramter version</i>
 template &lt;class <a href="./VertexListGraph.html">VertexListGraph</a>, class P, class T, class R&gt;
 void
 dijkstra_shortest_paths(VertexListGraph&amp; g,
   typename graph_traits&lt;VertexListGraph&gt;::vertex_descriptor s,
   const bgl_named_params&lt;P, T, R&gt;&amp; params);
 
-template &lt;class VertexListGraph, class DijkstraVisitor, 
+<i>// non-named parameter version</i>
+template &lt;class <a href="./VertexListGraph.html">VertexListGraph</a>, class <a href="DijkstraVisitor.html">DijkstraVisitor</a>, 
 	  class PredecessorMap, class DistanceMap,
-	  class WeightMap, class IndexMap, class Compare, class Combine, 
+	  class WeightMap, class IndexMap, class <a href="http://www.sgi.com/tech/stl/BinaryPredicate.html">Compare</a>, class <a href="http://www.sgi.com/tech/stl/BinaryFunction.html">Combine</a>, 
 	  class DistInf, class DistZero&gt;
 void dijkstra_shortest_paths
   (const VertexListGraph&amp; g,
@@ -372,8 +374,8 @@ if all vertices are reachable from the source.
 <H3>Example</H3>
 
 <P>
-See <a href="../example/dijkstra.cpp">
-<TT>examples/dijkstra.cpp</TT></a> for an example of using Dijkstra's
+See <a href="../example/dijkstra-example.cpp">
+<TT>example/dijkstra-example.cpp</TT></a> for an example of using Dijkstra's
 algorithm.
 
 <H3>Notes</H3>
@@ -395,8 +397,8 @@ distance less than infinity.
 <HR>
 <TABLE>
 <TR valign=top>
-<TD nowrap>Copyright &copy 2000</TD><TD>
-<A HREF="../../../people/jeremy_siek.htm">Jeremy Siek</A>, Univ.of Notre Dame (<A HREF="mailto:jsiek@lsc.nd.edu">jsiek@lsc.nd.edu</A>)
+<TD nowrap>Copyright &copy 2000-2001</TD><TD>
+<A HREF="../../../people/jeremy_siek.htm">Jeremy Siek</A>, Indiana University (<A HREF="mailto:jsiek@osl.iu.edu">jsiek@osl.iu.edu</A>)
 </TD></TR></TABLE>
 
 </BODY>

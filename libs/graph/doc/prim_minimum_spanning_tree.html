@@ -27,10 +27,20 @@
 
 <P>
 <PRE>
+<i>// named parameter version</i>
 template &lt;class <a href="./VertexListGraph.html">VertexListGraph</a>, class P, class T, class R&gt;
 void prim_minimum_spanning_tree(VertexListGraph&amp; g,
   typename graph_traits&lt;VertexListGraph&gt;::vertex_descriptor s,
-  const bgl_named_params&lt;P, T, R&gt;&amp; params);
+  const bgl_named_params&lt;P, T, R&gt;&amp; params)
+
+<i>// non-named parameter version</i>
+template &lt;class VertexListGraph, class DijkstraVisitor, 
+	  class PredecessorMap, class DistanceMap,
+	  class WeightMap, class IndexMap&gt;
+void prim_minimum_spanning_tree(const VertexListGraph&amp; g,
+   typename graph_traits&lt;VertexListGraph&gt;::vertex_descriptor s, 
+   PredecessorMap predecessor, DistanceMap distance, WeightMap weight, 
+   IndexMap index_map, DijkstraVisitor vis)
 </PRE>
 
 <P>
@@ -234,7 +244,7 @@ The time complexity is <i>O(E log V)</i>.
 
 <P>
 The file <a
-href="../example/prim.cpp"><TT>examples/prim.cpp</TT></a>
+href="../example/prim-example.cpp"><TT>examples/prim-example.cpp</TT></a>
 contains an example of using Prim's algorithm.
 
 
@@ -251,8 +261,8 @@ contains an example of using Prim's algorithm.
 <HR>
 <TABLE>
 <TR valign=top>
-<TD nowrap>Copyright &copy 2000</TD><TD>
-<A HREF="../../../people/jeremy_siek.htm">Jeremy Siek</A>, Univ.of Notre Dame (<A HREF="mailto:jsiek@lsc.nd.edu">jsiek@lsc.nd.edu</A>)
+<TD nowrap>Copyright &copy 2000-2001</TD><TD>
+<A HREF="../../../people/jeremy_siek.htm">Jeremy Siek</A>, Indiana University (<A HREF="mailto:jsiek@osl.iu.edu">jsiek@osl.iu.edu</A>)
 </TD></TR></TABLE>
 
 </BODY>

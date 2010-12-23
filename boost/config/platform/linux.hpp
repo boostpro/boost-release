@@ -25,6 +25,18 @@
 #  endif
 #endif
 
+//
+// If glibc is past version 2 then we definitely have
+// gettimeofday, earlier versions may or may not have it:
+//
+#if defined(__GLIBC__) && (__GLIBC__ >= 2)
+#  define BOOST_HAS_GETTIMEOFDAY
+#endif
+
+#ifdef __USE_POSIX199309
+#  define BOOST_HAS_NANOSLEEP
+#endif
+
 #if defined(__GLIBC__) && defined(__GLIBC_PREREQ)
 // __GLIBC_PREREQ is available since 2.1.2
 
@@ -35,6 +47,10 @@
 #else
 #  define BOOST_NO_SWPRINTF
 #endif
+
+// boilerplate code:
+#define BOOST_HAS_UNISTD_H
+#include <boost/config/posix_features.hpp>
 
 #ifndef __GNUC__
 //

@@ -79,8 +79,9 @@ namespace boost {
       return edge_proxy;
     }
     template <typename EdgeProxy>
-    void set_edge_exists(EdgeProxy edge_proxy, bool flag) {
+    EdgeProxy set_edge_exists(EdgeProxy edge_proxy, bool flag) {
       edge_proxy = flag;
+      return edge_proxy; // just to avoid never used warning
     }
 
 
@@ -103,11 +104,11 @@ namespace boost {
       stored_edge.second = ep;
     }
 
-    const no_property& get_property(const bool&) {
+    const no_property& get_property(const char&) {
       static no_property s_prop;
       return s_prop;
     }
-    no_property& get_property(bool&) {
+    no_property& get_property(char&) {
       static no_property s_prop;
       return s_prop;
     }
@@ -127,17 +128,19 @@ namespace boost {
       dir_adj_matrix_out_edge_iter_policies(const VertexDescriptor& src,
                                             const VerticesSizeType& n)
         : m_src(src), m_targ(0), m_n(n) { }
-      
-      void increment(MatrixIter& i) {
-        ++i;
+
+      template <typename Iter>
+      void increment(Iter& i) {
+        ++i.base();
         ++m_targ;
       }
-      template <typename EdgeDescriptor>
-      inline EdgeDescriptor
-      dereference(boost::type<EdgeDescriptor>, const MatrixIter& i) const 
+      template <typename Iter>
+      inline typename Iter::value_type
+      dereference(const Iter& i) const 
       {
-        return EdgeDescriptor(get_edge_exists(*i), m_src, m_targ, 
-                              &get_property(*i));
+	typedef typename Iter::value_type EdgeDescriptor;
+        return EdgeDescriptor(get_edge_exists(*i.base()), m_src, m_targ, 
+                              &get_property(*i.base()));
       }
       VertexDescriptor m_src, m_targ;
       VerticesSizeType m_n;
@@ -157,24 +160,27 @@ namespace boost {
 
       void initialize(MatrixIter&) const{ }
 
-      void increment(MatrixIter& i) {
+      template <typename Iter>
+      void increment(Iter& i) {
         if (m_targ < m_src)     // first half
-          ++i;
+          ++i.base();
         else {                  // second half
           ++m_inc;
-          i += m_inc;
+          i.base() += m_inc;
         }
         ++m_targ;
       }
-      template <typename EdgeDescriptor>
-      inline EdgeDescriptor
-      dereference(boost::type<EdgeDescriptor>, const MatrixIter& i) const 
+      template <typename Iter>
+      inline typename Iter::value_type
+      dereference(const Iter& i) const 
       {
-        return EdgeDescriptor(get_edge_exists(*i), m_src, m_targ,
-                              &get_property(*i));
+	typedef typename Iter::value_type EdgeDescriptor;
+        return EdgeDescriptor(get_edge_exists(*i.base()), m_src, m_targ,
+                              &get_property(*i.base()));
       }
-      bool equal(const MatrixIter& x, const MatrixIter& y) const
-      { return x == y; }
+      template <typename Iter>
+      bool equal(const Iter& x, const Iter& y) const
+      { return x.base() == y.base(); }
 
       VertexDescriptor m_src, m_inc, m_targ;
       VerticesSizeType m_n;
@@ -195,8 +201,9 @@ namespace boost {
 
       void initialize(MatrixIter&) const{ }
 
-      void increment(MatrixIter& i) {
-        increment_dispatch(i, Directed());
+      template <typename Iter>
+      void increment(Iter& i) {
+        increment_dispatch(i.base(), Directed());
       }
       void increment_dispatch(MatrixIter& i, directedS) {
         ++i;
@@ -215,12 +222,13 @@ namespace boost {
           ++m_targ;
       }
 
-      template <typename EdgeDescriptor>
-      inline EdgeDescriptor
-      dereference(boost::type<EdgeDescriptor>, const MatrixIter& i) const 
+      template <typename Iter>
+      inline typename Iter::value_type
+      dereference(const Iter& i) const 
       {
-        return EdgeDescriptor(get_edge_exists(*i), m_src, m_targ,
-                              &get_property(*i));
+	typedef typename Iter::value_type EdgeDescriptor;
+        return EdgeDescriptor(get_edge_exists(*i.base()), m_src, m_targ,
+                              &get_property(*i.base()));
       }
       
       MatrixIter m_start;
@@ -272,7 +280,7 @@ namespace boost {
     typedef adjacency_matrix_traits<Directed> Traits;
   public: // should be private
     typedef typename ct_if_t<typename has_property<EdgeProperty>::type,
-      std::pair<bool, EdgeProperty>, bool>::type StoredEdge;
+      std::pair<bool, EdgeProperty>, char>::type StoredEdge;
 #if defined(BOOST_MSVC)
     typedef std::vector<StoredEdge> Matrix;
 #else

@@ -100,6 +100,7 @@ int cpp_main(int argc, char* argv[])
    value_test(true, boost::is_member_pointer<mf2>::value)
    value_test(true, boost::is_member_pointer<mf3>::value)
    value_test(true, boost::is_member_pointer<mf4>::value)
+   value_test(true, boost::is_member_pointer<cmf>::value)
    value_test(false, boost::is_member_pointer<void>::value)
 #ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
    value_test(false, boost::is_member_pointer<test_abc1>::value)
@@ -122,7 +123,11 @@ int cpp_main(int argc, char* argv[])
 #ifdef __BORLANDC__
 unsigned int expected_failures = 2;
 #elif defined(__SUNPRO_CC)
+#if (__SUNPRO_CC <= 0x520)
 unsigned int expected_failures = 11;
+#else
+unsigned int expected_failures = 1;
+#endif
 #elif defined(__GNUC__)
 unsigned int expected_failures = 1; // can't handle cv-qualified references
 #elif defined(BOOST_MSVC)

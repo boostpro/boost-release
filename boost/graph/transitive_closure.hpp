@@ -64,6 +64,8 @@ namespace boost
                             G_to_TC_VertexMap g_to_tc_map,
                             VertexIndexMap index_map)
   {
+    if (num_vertices(g) == 0)
+      return;
     typedef typename graph_traits < Graph >::vertex_descriptor vertex;
     typedef typename graph_traits < Graph >::edge_descriptor edge;
     typedef typename graph_traits < Graph >::vertex_iterator vertex_iterator;
@@ -80,7 +82,7 @@ namespace boost
 
     typedef size_type cg_vertex;
     std::vector < cg_vertex > component_number_vec(num_vertices(g));
-    iterator_property_map < cg_vertex *, VertexIndexMap >
+    iterator_property_map < cg_vertex *, VertexIndexMap, cg_vertex, cg_vertex& >
       component_number(&component_number_vec[0], index_map);
 
     int num_scc = strong_components(g, component_number,
@@ -116,9 +118,9 @@ namespace boost
                      vertex_index_map(identity_property_map()));
     std::reverse(topo_order.begin(), topo_order.end());
     size_type n = 0;
-    for (std::vector < cg_vertex >::iterator i = topo_order.begin();
-         i != topo_order.end(); ++i)
-      topo_number[*i] = n++;
+    for (std::vector < cg_vertex >::iterator iter = topo_order.begin();
+         iter != topo_order.end(); ++iter)
+      topo_number[*iter] = n++;
 
     for (size_type i = 0; i < num_vertices(CG); ++i)
       std::sort(CG[i].begin(), CG[i].end(),
@@ -138,9 +140,9 @@ namespace boost
           for (;;) {
             chain.push_back(v);
             in_a_chain[v] = true;
-            graph_traits < CG_t >::adjacency_iterator adj_first, adj_last;
+            typename graph_traits < CG_t >::adjacency_iterator adj_first, adj_last;
             tie(adj_first, adj_last) = adjacent_vertices(v, CG);
-            graph_traits < CG_t >::adjacency_iterator next
+            typename graph_traits < CG_t >::adjacency_iterator next
               =
               std::find_if(adj_first, adj_last,
                            not1(detail::subscript(in_a_chain)));
@@ -232,13 +234,15 @@ namespace boost
   template < typename Graph, typename GraphTC >
     void transitive_closure(const Graph & g, GraphTC & tc)
   {
+    if (num_vertices(g) == 0)
+      return;
     typedef typename property_map < Graph, vertex_index_t >::const_type
       VertexIndexMap;
     VertexIndexMap index_map = get(vertex_index, g);
 
     typedef typename graph_traits < GraphTC >::vertex_descriptor tc_vertex;
     std::vector < tc_vertex > to_tc_vec(num_vertices(g));
-    iterator_property_map < tc_vertex *, VertexIndexMap >
+    iterator_property_map < tc_vertex *, VertexIndexMap, tc_vertex, tc_vertex&>
       g_to_tc_map(&to_tc_vec[0], index_map);
 
     transitive_closure(g, tc, g_to_tc_map, index_map);
@@ -271,13 +275,11 @@ namespace boost
     void transitive_closure(const Graph & g, GraphTC & tc,
                             const bgl_named_params < P, T, R > &params)
   {
-    detail::transitive_closure_dispatch(g, tc,
-                                        get_param(params, orig_to_copy),
-                                        choose_const_pmap(get_param
-                                                          (params,
-                                                           vertex_index), g,
-                                                          vertex_index)
-      );
+    if (num_vertices(g) == 0)
+      return;
+    detail::transitive_closure_dispatch
+      (g, tc, get_param(params, orig_to_copy_t()),
+       choose_const_pmap(get_param(params, vertex_index), g, vertex_index) );
   }
 
 
