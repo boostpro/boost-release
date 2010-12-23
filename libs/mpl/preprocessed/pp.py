@@ -7,9 +7,9 @@
 #
 # See http://www.boost.org/libs/mpl for documentation.
 
-# $Source$
-# $Date: 2005-10-04 04:35:29 -0400 (Tue, 04 Oct 2005) $
-# $Revision: 31189 $
+# $Id: pp.py 49270 2008-10-11 06:35:10Z agurtovoy $
+# $Date: 2008-10-11 02:35:10 -0400 (Sat, 11 Oct 2008) $
+# $Revision: 49270 $
 
 import fileinput
 import os
@@ -146,7 +146,7 @@ class pretty:
         self.copyright = None
         
         self.re_header_name_comment = re.compile( 
-              r'^\s*//\s+\$[S]ource: /cvsroot/boost/boost/(.*?%s\.hpp),v\s*\$$'
+              r'^\s*//\s+\$[I]d:\s+(.*?%s\.hpp)\s+[^$]+[$]$'
                 % os.path.splitext( name )[0]
             )
         
@@ -199,7 +199,7 @@ class pretty:
                 match = self.re_header_name_comment.match( line )
                 self.output.write( \
                     '\n%s\n' \
-                    '// Preprocessed version of "%s" header\n' \
+                    '// *Preprocessed* version of the main "%s" header\n' \
                     '// -- DO NOT modify by hand!\n\n' \
                     % ( self.copyright, match.group(1) )
                     )

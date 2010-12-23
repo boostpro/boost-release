@@ -28,6 +28,8 @@ boostbook doc
     <dependency>../libs/foreach/doc//foreach
     <dependency>../libs/mpi/doc//mpi
     <dependency>../libs/mpi/doc//mpi_autodoc.xml
+    #<dependency>../libs/proto/doc//protodoc.xml 
+    <dependency>../libs/proto/doc//proto
     <dependency>../libs/typeof/doc//typeof
     <dependency>../libs/xpressive/doc//autodoc.xml
     <dependency>../libs/xpressive/doc//xpressive
@@ -36,6 +38,7 @@ boostbook doc
     <dependency>../libs/date_time/xmldoc//posix_time_autodoc.xml
     <dependency>../libs/date_time/xmldoc//local_time_autodoc.xml
     <dependency>../tools/jam/doc//bjam
+    <dependency>../tools/quickbook/doc//quickbook
     <dependency>../libs/interprocess/doc//autodoc.xml
     <dependency>../libs/interprocess/doc//interprocess
     <dependency>../libs/intrusive/doc//autodoc.xml
@@ -52,9 +55,11 @@ boostbook doc
     <implicit-dependency>../libs/static_assert/doc//static_assert
     <implicit-dependency>../libs/tr1/doc//tr1
     <implicit-dependency>../libs/foreach/doc//foreach
+    <implicit-dependency>../libs/proto/doc//proto
     <implicit-dependency>../libs/typeof/doc//typeof
     <implicit-dependency>../libs/xpressive/doc//xpressive
     <implicit-dependency>../tools/jam/doc//bjam
+    <implicit-dependency>../tools/quickbook/doc//quickbook
     <implicit-dependency>../libs/mpi/doc//mpi
     <implicit-dependency>../libs/interprocess/doc//interprocess
     <implicit-dependency>../libs/intrusive/doc//intrusive
@@ -66,11 +71,14 @@ boostbook doc
 
     <dependency>css
     <dependency>images
+    <dependency>callouts
     ;
 
 install css : [ glob src/*.css ] : <location>html ;
 explicit css ;
 install images : [ glob src/images/*.png ] : <location>html/images ;
 explicit images ;
+install callouts : [ glob src/images/callouts/*.png ] : <location>html/images/callouts ;
+explicit callouts ;
 
 

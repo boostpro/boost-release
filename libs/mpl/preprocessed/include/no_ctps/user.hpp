@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source$
-// $Date: 2004-09-16 10:13:02 -0400 (Thu, 16 Sep 2004) $
-// $Revision: 25149 $
+// $Id: user.hpp 49268 2008-10-11 06:26:17Z agurtovoy $
+// $Date: 2008-10-11 02:26:17 -0400 (Sat, 11 Oct 2008) $
+// $Revision: 49268 $
 
 #define BOOST_NO_CONFIG
 #define BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION

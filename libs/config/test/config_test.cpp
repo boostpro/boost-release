@@ -1,4 +1,4 @@
-//  This file was automatically generated on Sat Jul 12 12:39:34 2008
+//  This file was automatically generated on Sat Sep 20 09:49:52 2008
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -6,7 +6,7 @@
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/config for the most recent version.//
-//  Revision $Id: config_test.cpp 47435 2008-07-15 10:41:52Z johnmaddock $
+//  Revision $Id: config_test.cpp 49212 2008-10-09 16:08:03Z johnmaddock $
 //
 
 // Test file for config setup
@@ -187,6 +187,11 @@ namespace boost_no_member_template_keyword = empty_boost;
 #else
 namespace boost_no_pointer_to_member_template_parameters = empty_boost;
 #endif
+#ifndef BOOST_NO_NESTED_FRIENDSHIP
+#include "boost_no_nested_friendship.ipp"
+#else
+namespace boost_no_nested_friendship = empty_boost;
+#endif
 #ifndef BOOST_NO_OPERATORS_IN_NAMESPACE
 #include "boost_no_ops_in_namespace.ipp"
 #else
@@ -216,6 +221,11 @@ namespace boost_no_pointer_to_member_const = empty_boost;
 #include "boost_no_ret_det.ipp"
 #else
 namespace boost_no_unreachable_return_detection = empty_boost;
+#endif
+#ifndef BOOST_NO_RTTI
+#include "boost_no_rtti.ipp"
+#else
+namespace boost_no_rtti = empty_boost;
 #endif
 #ifndef BOOST_NO_SFINAE
 #include "boost_no_sfinae.ipp"
@@ -316,6 +326,11 @@ namespace boost_no_two_phase_name_lookup = empty_boost;
 #include "boost_no_typeid.ipp"
 #else
 namespace boost_no_typeid = empty_boost;
+#endif
+#ifndef BOOST_NO_TYPENAME_WITH_CTOR
+#include "boost_no_typename_with_ctor.ipp"
+#else
+namespace boost_no_typename_with_ctor = empty_boost;
 #endif
 #ifndef BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL
 #include "boost_no_using_breaks_adl.ipp"
@@ -1021,6 +1036,11 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_POINTER_TO_MEMBER_TEMPLATE_PARAMETERS at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_nested_friendship::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_NESTED_FRIENDSHIP at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_operators_in_namespace::test())
    {
       std::cerr << "Failed test for BOOST_NO_OPERATORS_IN_NAMESPACE at: " << __FILE__ << ":" << __LINE__ << std::endl;
@@ -1049,6 +1069,11 @@ int main( int, char *[] )
    if(0 != boost_no_unreachable_return_detection::test())
    {
       std::cerr << "Failed test for BOOST_NO_UNREACHABLE_RETURN_DETECTION at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_rtti::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_RTTI at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_sfinae::test())
@@ -1149,6 +1174,11 @@ int main( int, char *[] )
    if(0 != boost_no_typeid::test())
    {
       std::cerr << "Failed test for BOOST_NO_TYPEID at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_typename_with_ctor::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_TYPENAME_WITH_CTOR at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_function_scope_using_declaration_breaks_adl::test())

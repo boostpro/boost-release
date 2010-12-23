@@ -107,8 +107,18 @@
         </li>
 </ul></div>
 <p>
-        If any of these macros is not redefined, the assertion will default to <code class="computeroutput"><span class="identifier">BOOST_ASSERT</span></code>.
+        If any of these macros is not redefined, the assertion will default to <code class="computeroutput"><span class="identifier">BOOST_ASSERT</span></code>. If <code class="computeroutput"><span class="identifier">BOOST_INTRUSIVE_SAFE_HOOK_DEFAULT_ASSERT</span></code>
+        or <code class="computeroutput"><span class="identifier">BOOST_INTRUSIVE_SAFE_HOOK_DESTRUCTOR_ASSERT</span></code>
+        is defined and the programmer needs to include a file to configure that assertion,
+        it can define <code class="computeroutput"><span class="identifier">BOOST_INTRUSIVE_SAFE_HOOK_DESTRUCTOR_ASSERT_INCLUDE</span></code>
+        or <code class="computeroutput"><span class="identifier">BOOST_INTRUSIVE_SAFE_HOOK_DEFAULT_ASSERT_INCLUDE</span></code>
+        with the name of the file to include:
       </p>
+<p>
+      </p>
+<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">BOOST_INTRUSIVE_SAFE_HOOK_DESTRUCTOR_ASSERT</span>          <span class="identifier">MYASSERT</span>
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_INTRUSIVE_SAFE_HOOK_DESTRUCTOR_ASSERT_INCLUDE</span> <span class="special">&lt;</span><span class="identifier">myassert</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span>
+</pre>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

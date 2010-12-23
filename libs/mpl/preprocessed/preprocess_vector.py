@@ -7,9 +7,9 @@
 #
 # See http://www.boost.org/libs/mpl for documentation.
 
-# $Source$
-# $Date: 2006-11-23 14:57:11 -0500 (Thu, 23 Nov 2006) $
-# $Revision: 36168 $
+# $Id: preprocess_vector.py 49269 2008-10-11 06:30:50Z agurtovoy $
+# $Date: 2008-10-11 02:30:50 -0400 (Sat, 11 Oct 2008) $
+# $Revision: 49269 $
 
 import preprocess
 import os.path

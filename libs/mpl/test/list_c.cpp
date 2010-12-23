@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source$
-// $Date: 2004-11-27 22:35:12 -0500 (Sat, 27 Nov 2004) $
-// $Revision: 26328 $
+// $Id: list_c.cpp 49268 2008-10-11 06:26:17Z agurtovoy $
+// $Date: 2008-10-11 02:26:17 -0400 (Sat, 11 Oct 2008) $
+// $Revision: 49268 $
 
 #include <boost/mpl/list_c.hpp>
 #include <boost/mpl/front.hpp>

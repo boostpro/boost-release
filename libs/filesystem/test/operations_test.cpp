@@ -9,6 +9,9 @@
 
 #include <boost/config/warning_disable.hpp>
 
+//  See deprecated_test for tests of deprecated features
+#define BOOST_FILESYSTEM_NO_DEPRECATED
+
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <boost/cerrno.hpp>
@@ -25,6 +28,7 @@ using boost::system::system_error;
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <cstring> // for strncmp, etc.
 #include <ctime>
 #include <cstdlib> // for system()
 
@@ -143,8 +147,11 @@ namespace
       exception_thrown = true;
       if ( report_throws ) std::cout << x.what() << std::endl;
       if ( platform == "Windows" && language_id == 0x0409 ) // English (United States)
-        BOOST_CHECK( std::strcmp( x.what(),
-          "boost::filesystem::create_directory" ) == 0 );
+        // the stdcxx standard library apparently appends additional info
+        // to what(), so check only the initial portion: 
+        BOOST_CHECK( std::strncmp( x.what(),
+          "boost::filesystem::create_directory",
+          sizeof("boost::filesystem::create_directory")-1 ) == 0 );
     }
     BOOST_CHECK( exception_thrown );
 
@@ -215,7 +222,7 @@ namespace
   
   void bad_directory_size()
   {
-    fs::file_size( fs::current_path() );
+    fs::file_size( fs::current_path<fs::path>() );
   }
   
   fs::path bad_create_directory_path;
@@ -297,11 +304,11 @@ int test_main( int argc, char * argv[] )
       ==  "//net/bar/foo" );
 
   // predicate and status tests
+  BOOST_CHECK( fs::exists( "/" ) );
   fs::path ng( " no-way, Jose" );
   BOOST_CHECK( !fs::exists( ng ) );
   BOOST_CHECK( !fs::is_directory( ng ) );
   BOOST_CHECK( !fs::is_regular_file( ng ) );
-  BOOST_CHECK( !fs::is_regular( ng ) );  // verify deprecated name still works
   BOOST_CHECK( !fs::is_symlink( ng ) );
   fs::file_status stat( fs::status( ng ) );
   BOOST_CHECK( fs::status_known( stat ) );
@@ -319,6 +326,49 @@ int test_main( int argc, char * argv[] )
   BOOST_CHECK( !fs::is_symlink( stat ) );
 
   fs::path dir(  fs::initial_path<fs::path>() / temp_dir_name );
+
+  if ( fs::exists( dir ) )
+    fs::remove_all( dir );  // remove residue from prior failed tests
+  BOOST_CHECK( !fs::exists( dir ) );
+
+  // create a directory, then check it for consistency
+  //   take extra care to report problems, since if this fails
+  //   many subsequent tests will fail
+  try
+  {
+    fs::create_directory( dir );
+  }
+
+  catch ( const fs::filesystem_error & x )
+  {
+    std::cout << x.what() << "\n\n"
+       "***** Creating directory " << dir.string() << " failed.          *****\n"
+       "***** This is a serious error that will prevent further tests    *****\n"
+       "***** from returning useful results. Further testing is aborted. *****\n\n";
+    return 1;
+  }
+
+  catch ( ... )
+  {
+    std::cout << "\n\n"
+       "***** Creating directory " << dir.string() << " failed.          *****\n"
+       "***** This is a serious error that will prevent further tests    *****\n"
+       "***** from returning useful results. Further testing is aborted. *****\n\n";
+    return 1;
+  }
+
+  BOOST_CHECK( fs::exists( dir ) );
+  BOOST_CHECK( BOOST_FS_IS_EMPTY( dir ) );
+  BOOST_CHECK( fs::is_directory( dir ) );
+  BOOST_CHECK( !fs::is_regular_file( dir ) );
+  BOOST_CHECK( !fs::is_other( dir ) );
+  BOOST_CHECK( !fs::is_symlink( dir ) );
+  stat = fs::status( dir );
+  BOOST_CHECK( fs::exists( stat ) );
+  BOOST_CHECK( fs::is_directory( stat ) );
+  BOOST_CHECK( !fs::is_regular_file( stat ) );
+  BOOST_CHECK( !fs::is_other( stat ) );
+  BOOST_CHECK( !fs::is_symlink( stat ) );
   
   // Windows only tests
   if ( platform == "Windows" )
@@ -365,9 +415,6 @@ int test_main( int argc, char * argv[] )
       == fs::initial_path<fs::path>().root_path().string()+"foo" );
   } // POSIX
 
-  fs::remove_all( dir );  // in case residue from prior failed tests
-  BOOST_CHECK( !fs::exists( dir ) );
-
   // the bound functions should throw, so CHECK_EXCEPTION() should return true
   BOOST_CHECK( CHECK_EXCEPTION( bad_file_size, ENOENT ) );
 
@@ -381,22 +428,6 @@ int test_main( int argc, char * argv[] )
   // several functions give unreasonable results if uintmax_t isn't 64-bits
   std::cout << "sizeof(boost::uintmax_t) = " << sizeof(boost::uintmax_t) << '\n';
   BOOST_CHECK( sizeof( boost::uintmax_t ) >= 8 );
-
-  // create a directory, then check it for consistency
-  BOOST_CHECK( fs::create_directory( dir ) );
-
-  BOOST_CHECK( fs::exists( dir ) );
-  BOOST_CHECK( BOOST_FS_IS_EMPTY( dir ) );
-  BOOST_CHECK( fs::is_directory( dir ) );
-  BOOST_CHECK( !fs::is_regular_file( dir ) );
-  BOOST_CHECK( !fs::is_other( dir ) );
-  BOOST_CHECK( !fs::is_symlink( dir ) );
-  stat = fs::status( dir );
-  BOOST_CHECK( fs::exists( stat ) );
-  BOOST_CHECK( fs::is_directory( stat ) );
-  BOOST_CHECK( !fs::is_regular_file( stat ) );
-  BOOST_CHECK( !fs::is_other( stat ) );
-  BOOST_CHECK( !fs::is_symlink( stat ) );
 
   // set the current directory, then check it for consistency
   fs::path original_dir = fs::current_path<fs::path>();
@@ -438,9 +469,6 @@ int test_main( int argc, char * argv[] )
   BOOST_CHECK( !fs::is_symlink( dir ) );
   BOOST_CHECK( !fs::is_symlink( "nosuchfileordirectory" ) );
 
-  BOOST_CHECK( !fs::symbolic_link_exists( dir ) );
-  BOOST_CHECK( !fs::symbolic_link_exists( "nosuchfileordirectory" ) );
-
   fs::path d1( dir / "d1" );
   BOOST_CHECK( fs::create_directory( d1 ) );
   BOOST_CHECK( fs::exists( d1 ) );
@@ -477,7 +505,7 @@ int test_main( int argc, char * argv[] )
     BOOST_CHECK( fs::is_directory( dir_itr->status() ) );
     BOOST_CHECK( fs::is_directory( fs::symlink_status(*dir_itr) ) );
     BOOST_CHECK( fs::is_directory( dir_itr->symlink_status() ) );
-    BOOST_CHECK( dir_itr->filename() == "d1" );
+    BOOST_CHECK( dir_itr->path().filename() == "d1" );
   }
 
   // create a second directory named d2
@@ -497,21 +525,21 @@ int test_main( int argc, char * argv[] )
     BOOST_CHECK( !fs::is_symlink(dir_itr->status()) );
 
     fs::directory_iterator dir_itr2( dir );
-    BOOST_CHECK( dir_itr->filename() == "d1"
-      || dir_itr->filename() == "d2" );
-    BOOST_CHECK( dir_itr2->filename() == "d1" || dir_itr2->filename() == "d2" );
-    if ( dir_itr->filename() == "d1" )
+    BOOST_CHECK( dir_itr->path().filename() == "d1"
+      || dir_itr->path().filename() == "d2" );
+    BOOST_CHECK( dir_itr2->path().filename() == "d1" || dir_itr2->path().filename() == "d2" );
+    if ( dir_itr->path().filename() == "d1" )
     {
-      BOOST_CHECK( (++dir_itr)->filename() == "d2" );
-      BOOST_CHECK( dir_itr2->filename() == "d1" );
-      BOOST_CHECK( (++dir_itr2)->filename() == "d2" );
+      BOOST_CHECK( (++dir_itr)->path().filename() == "d2" );
+      BOOST_CHECK( dir_itr2->path().filename() == "d1" );
+      BOOST_CHECK( (++dir_itr2)->path().filename() == "d2" );
     }
     else
     {
-      BOOST_CHECK( dir_itr->filename() == "d2" );
-      BOOST_CHECK( (++dir_itr)->filename() == "d1" );
-      BOOST_CHECK( (dir_itr2)->filename() == "d2" );
-      BOOST_CHECK( (++dir_itr2)->filename() == "d1" );
+      BOOST_CHECK( dir_itr->path().filename() == "d2" );
+      BOOST_CHECK( (++dir_itr)->path().filename() == "d1" );
+      BOOST_CHECK( (dir_itr2)->path().filename() == "d2" );
+      BOOST_CHECK( (++dir_itr2)->path().filename() == "d1" );
     }
     BOOST_CHECK( ++dir_itr == fs::directory_iterator() );
     BOOST_CHECK( dir_itr2 != fs::directory_iterator() );
@@ -520,21 +548,21 @@ int test_main( int argc, char * argv[] )
 
   { // *i++ must work to meet the standard's InputIterator requirements
     fs::directory_iterator dir_itr( dir );
-    BOOST_CHECK( dir_itr->filename() == "d1"
-      || dir_itr->filename() == "d2" );
-    if ( dir_itr->filename() == "d1" )
+    BOOST_CHECK( dir_itr->path().filename() == "d1"
+      || dir_itr->path().filename() == "d2" );
+    if ( dir_itr->path().filename() == "d1" )
     {
-      BOOST_CHECK( (*dir_itr++).filename() == "d1" );
-      BOOST_CHECK( dir_itr->filename() == "d2" );
+      BOOST_CHECK( (*dir_itr++).path().filename() == "d1" );
+      BOOST_CHECK( dir_itr->path().filename() == "d2" );
     }
     else
     {
       // Check C++98 input iterator requirements
-      BOOST_CHECK( (*dir_itr++).filename() == "d2" );
+      BOOST_CHECK( (*dir_itr++).path().filename() == "d2" );
       // input iterator requirements in the current WP would require this check:
       // BOOST_CHECK( implicit_cast<std::string const&>(*dir_itr++).filename() == "d1" );
 
-      BOOST_CHECK( dir_itr->filename() == "d1" );
+      BOOST_CHECK( dir_itr->path().filename() == "d1" );
     }
 
     // test case reported in comment to SourceForge bug tracker [937606]
@@ -559,7 +587,7 @@ int test_main( int argc, char * argv[] )
     bool found(false);
     do
     {
-      if ( it->filename() == temp_dir_name ) found = true;
+      if ( it->path().filename() == temp_dir_name ) found = true;
     } while ( ++it != fs::directory_iterator() );
     BOOST_CHECK( found );
   }
@@ -776,10 +804,10 @@ int test_main( int argc, char * argv[] )
   create_file( file_ph, "" );
   BOOST_CHECK( fs::exists( file_ph ) );
   BOOST_CHECK( !fs::is_directory( file_ph ) );
-  fs::remove( file_ph );
+  BOOST_CHECK( fs::remove( file_ph ) );
   BOOST_CHECK( !fs::exists( file_ph ) );
-  fs::remove( "no-such-file" );
-  fs::remove( "no-such-directory/no-such-file" );
+  BOOST_CHECK( !fs::remove( "no-such-file" ) );
+  BOOST_CHECK( !fs::remove( "no-such-directory/no-such-file" ) );
 
   // remove() directory
   d1 = dir / "shortlife_dir";
@@ -790,50 +818,50 @@ int test_main( int argc, char * argv[] )
   BOOST_CHECK( BOOST_FS_IS_EMPTY( d1 ) );
   bad_remove_dir = dir;
   BOOST_CHECK( CHECK_EXCEPTION( bad_remove, ENOTEMPTY ) );
-  fs::remove( d1 );
+  BOOST_CHECK( fs::remove( d1 ) );
   BOOST_CHECK( !fs::exists( d1 ) );
 
   if ( create_symlink_ok )  // only if symlinks supported
   {
     // remove() dangling symbolic link
     fs::path link( "dangling_link" );
-    fs::remove( link );
+    fs::remove( link );  // remove any residue from past tests
     BOOST_CHECK( !fs::is_symlink( link ) );
     BOOST_CHECK( !fs::exists( link ) );
     fs::create_symlink( "nowhere", link );
     BOOST_CHECK( !fs::exists( link ) );
     BOOST_CHECK( fs::is_symlink( link ) );
-    fs::remove( link );
+    BOOST_CHECK( fs::remove( link ) );
     BOOST_CHECK( !fs::is_symlink( link ) );
 
     // remove() self-refering symbolic link
     link = "link_to_self";
-    fs::remove( link );
+    fs::remove( link );  // remove any residue from past tests
     BOOST_CHECK( !fs::is_symlink( link ) );
     BOOST_CHECK( !fs::exists( link ) );
     fs::create_symlink( link, link );
-    fs::remove( link );
+    BOOST_CHECK( fs::remove( link ) );
     BOOST_CHECK( !fs::exists( link ) );
     BOOST_CHECK( !fs::is_symlink( link ) );
 
     // remove() cyclic symbolic link
     link = "link_to_a";
     fs::path link2( "link_to_b" );
-    fs::remove( link );
-    fs::remove( link2 );
+    fs::remove( link );   // remove any residue from past tests
+    fs::remove( link2 );  // remove any residue from past tests
     BOOST_CHECK( !fs::is_symlink( link ) );
     BOOST_CHECK( !fs::exists( link ) );
     fs::create_symlink( link, link2 );
     fs::create_symlink( link2, link );
-    fs::remove( link );
-    fs::remove( link2 );
+    BOOST_CHECK( fs::remove( link ) );
+    BOOST_CHECK( fs::remove( link2 ) );
     BOOST_CHECK( !fs::exists( link ) );
     BOOST_CHECK( !fs::exists( link2 ) );
     BOOST_CHECK( !fs::is_symlink( link ) );
 
     // remove() symbolic link to file
     file_ph = "link_target";
-    fs::remove( file_ph );
+    fs::remove( file_ph );  // remove any residue from past tests
     BOOST_CHECK( !fs::exists( file_ph ) );
     create_file( file_ph, "" );
     BOOST_CHECK( fs::exists( file_ph ) );
@@ -845,11 +873,11 @@ int test_main( int argc, char * argv[] )
     BOOST_CHECK( !fs::is_directory( link ) );
     BOOST_CHECK( fs::is_regular_file( link ) );
     BOOST_CHECK( fs::is_symlink( link ) );
-    fs::remove( link );
+    BOOST_CHECK( fs::remove( link ) );
     BOOST_CHECK( fs::exists( file_ph ) );
     BOOST_CHECK( !fs::exists( link ) );
     BOOST_CHECK( !fs::is_symlink( link ) );
-    fs::remove( file_ph );
+    BOOST_CHECK( fs::remove( file_ph ) );
     BOOST_CHECK( !fs::exists( file_ph ) );
   }
 

@@ -9,7 +9,7 @@
 
 # Usage:
 #
-#   bjam [options] [install|stage]
+#   bjam [options] [properties] [install|stage]
 #
 #   Builds and installs Boost.
 #
@@ -56,8 +56,6 @@
 #   --build-dir=DIR         Build in this location instead of building
 #                           within the distribution tree. Recommended!
 #
-#   --toolset=toolset       Indicates the toolset to build with.
-#
 #   --show-libraries        Displays the list of Boost libraries that require
 #                           build and installation steps, then exit.
 #
@@ -93,6 +91,20 @@
 #
 #   --without-<library>     Do not build, stage, or install the specified
 #                           <library>. By default, all libraries are built.
+#
+# Properties:
+#
+#   toolset=toolset         Indicates the toolset to build with.
+#
+#   variant=debug|release   Select the build variant
+#
+#   link=static|shared      Whether to build static or shared libraries
+#
+#   threading=single|multi  Whether to build single or multithreaded binaries
+# 
+#   runtime-link=static|shared      
+#                           Whether to link to static or shared C and C++ runtime.
+#   
 
 # TODO:
 #  - handle boost version
@@ -114,7 +126,7 @@ import sequence ;
 import symlink ;
 
 path-constant BOOST_ROOT : . ;
-constant BOOST_VERSION : 1.36.0 ;
+constant BOOST_VERSION : 1.37.0 ;
 constant BOOST_JAMROOT_MODULE : $(__name__) ;
 
 local version-tag = [ MATCH "^([^.]+)[.]([^.]+)[.]([^.]+)" : $(BOOST_VERSION) ] ;
@@ -364,10 +376,12 @@ else if [ modules.peek : UNIX ]
 }
 
 local headers =
-    [ path.glob-tree boost : *.hpp *.ipp *.h *.inc : CVS ]
-    [ path.glob-tree boost/compatibility/cpp_c_headers : c* : CVS ]
-    ;
-
+    # The .SUNWCCh files are present in tr1 include directory and have to be installed,
+    # see http://lists.boost.org/Archives/boost/2007/05/121430.php
+    [ path.glob-tree $(BOOST_ROOT)/boost : *.hpp *.ipp *.h *.inc *.SUNWCCh : CVS .svn ]
+    [ path.glob-tree $(BOOST_ROOT)/boost/compatibility/cpp_c_headers : c* : CVS .svn ] 
+    [ path.glob boost/tr1/tr1 : * : bcc32 sun CVS .svn ]
+          ;
 
 # Complete install
 package.install install-proper

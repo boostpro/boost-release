@@ -120,9 +120,10 @@
 <span class="bold"><strong><code class="computeroutput"><span class="identifier">optimize_size</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">Enable</span><span class="special">&gt;</span></code></strong></span>:
           The hook will be optimized for size instead of speed. The hook will embed
           the color bit of the red-black tree node in the parent pointer if pointer
-          alignment is even. Optimizing the size will reduce speed performance a
-          bit since masking operations will be needed to access parent pointer and
-          color attributes. Default: <code class="computeroutput"><span class="identifier">optimize_size</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span></code>.
+          alignment is even. In some platforms, optimizing the size might reduce
+          speed performance a bit since masking operations will be needed to access
+          parent pointer and color attributes, in other platforms this option improves
+          performance due to improved memory locality. Default: <code class="computeroutput"><span class="identifier">optimize_size</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span></code>.
         </li>
 </ul></div>
 </div>

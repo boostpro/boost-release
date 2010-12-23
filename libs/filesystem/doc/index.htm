@@ -41,9 +41,10 @@
     <a href="#Using">Using the library</a><br>
     <a href="#tutorial">Two-minute tutorial</a><br>
     <a href="#Cautions">Cautions</a><br>
-    <a href="#Using_reference_doc">Using the Reference Documentation</a><br>
     <a href="#Examples">Example programs</a><br>
     <a href="#Implementation">Implementation</a><br>
+    <a href="#Macros">Macros</a><br>
+    <a href="#Deprecated-names">Deprecated names and features</a><br>
     <a href="#narrow-only">Using only narrow character paths</a><br>
     <a href="#Building">Building the object-library</a><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<a href="#Cgywin">Notes for Cygwin users</a><br>
@@ -309,6 +310,211 @@ either the POSIX or Windows API.</p>
 <p>The library is in regular use on Apple  OS X, HP-UX, IBM AIX, Linux, 
 Microsoft Windows, SGI IRIX, and Sun Solaris operating systems using a variety 
 of compilers.</p>
+<h2><a name="Macros">Macros</a></h2>
+<p>Users may defined the following macros if desired. Sensible defaults are 
+provided, so users can ignore these macros unless they have special needs.</p>
+<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
+  <tr>
+    <td><b><i>Macro Name</i></b></td>
+    <td><b><i>Default</i></b></td>
+    <td><b><i>Effect if defined</i></b></td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_WINDOWS_API</code></td>
+    <td valign="top">Defined if Windows is detected by Boost.System's automatic configuration 
+    code, otherwise not defined.</td>
+    <td valign="top">Implementation uses the Microsoft Windows native 
+    application program interface (API).</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_POSIX_API</code></td>
+    <td valign="top">Defined if Windows is not detected by Boost.System's automatic configuration 
+    code.</td>
+    <td valign="top">Implementation uses the POSIX native 
+    application program interface (API).</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_DYN_LINK</code></td>
+    <td valign="top">Defined if <code>BOOST_ALL_DYN_LINK</code> is defined, 
+    otherwise not defined.</td>
+    <td valign="top">Boost.System library is dynamically linked. If not defined, 
+    static linking is assumed.</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_NO_LIB</code></td>
+    <td valign="top">Defined if <code>BOOST_ALL_NO_LIB</code> is defined, 
+    otherwise not defined.</td>
+    <td valign="top">Boost.System library does not use the Boost auto-link 
+    facility.</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_NARROW_ONLY</code></td>
+    <td valign="top">Not defined.</td>
+    <td valign="top">Removes features that require wchar_t support.</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_NO_DEPRECATED</code></td>
+    <td valign="top">Not defined.</td>
+    <td valign="top">Deprecated features are excluded.</td>
+  </tr>
+</table>
+<h2><a name="Deprecated-names">Deprecated names</a> and features</h2>
+<p style="font-size: 10pt">As the library evolves over time, names sometimes 
+change or features are removed. To ease transition, Boost.Filesystem deprecates 
+the old names and features, but continues to provide them unless macro <code>
+BOOST_FILESYSTEM_NO_DEPRECATED</code> is defined.</p>
+<table border="1" cellpadding="5" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111">
+  <tr>
+    <td style="font-size: 10pt">
+    <b><i>Component</i></b></td>
+    <td style="font-size: 10pt">
+    <p style="font-size: 10pt"><b><i>Old name, now deprecated</i></b></td>
+    <td style="font-size: 10pt">
+    <p style="font-size: 10pt"><b><i>New name</i></b></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top"><code>basic_path</code></td>
+    <td style="font-size: 10pt"><code>leaf()</code></td>
+    <td style="font-size: 10pt"><code>filename()</code></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top"><code>basic_path</code></td>
+    <td style="font-size: 10pt"><code>branch_path()</code></td>
+    <td style="font-size: 10pt"><code>parent_path()</code></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top"><code>basic_path</code></td>
+    <td style="font-size: 10pt"><code>has_leaf()</code></td>
+    <td style="font-size: 10pt"><code>has_filename()</code></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top"><code>basic_path</code></td>
+    <td style="font-size: 10pt"><code>has_branch_path()</code></td>
+    <td style="font-size: 10pt"><code>has_parent_path()</code></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <p style="font-size: 10pt"><code>remove_leaf()</code></td>
+    <td style="font-size: 10pt">
+    <p style="font-size: 10pt"><code>remove_filename()</code></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <code>basic_path( const string_type &amp; str,<br>
+&nbsp; name_check )</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <code>basic_path( const string_type::value_type * s,<br>
+&nbsp; name_check )</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <code>native_file_string()</code></td>
+    <td style="font-size: 10pt">
+    <code>file_string()</code></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <code>native_directory_string()</code></td>
+    <td style="font-size: 10pt">
+    <code>directory_string()</code></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <code>default_name_check_writable()</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <code>default_name_check( name_check )</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <code>default_name_check()</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <code>canonize()</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_path</code></td>
+    <td style="font-size: 10pt">
+    <code>normalize()</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>operations.hpp</code></td>
+    <td style="font-size: 10pt">
+    <code>is_regular( file_status f )</code></td>
+    <td style="font-size: 10pt">
+    <code>is_regular_file( file_status f )</code></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>operations.hpp</code></td>
+    <td style="font-size: 10pt">
+    <code>symbolic_link_exists( const path &amp; ph )</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_directory_status</code></td>
+    <td style="font-size: 10pt">
+    <code>filename()</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed, use path().filename() instead</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_directory_status</code></td>
+    <td style="font-size: 10pt">
+    <code>leaf()</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed, use path().filename() instead</code></i></td>
+  </tr>
+  <tr>
+    <td style="font-size: 10pt" valign="top">
+    <code>basic_directory_status</code></td>
+    <td style="font-size: 10pt">
+    <code>string()</code></td>
+    <td style="font-size: 10pt">
+    <i><code>feature removed, use path().string() instead</code></i></td>
+  </tr>
+</table>
 <h2><a name="narrow-only">Restricting library to narrow character paths</a></h2>
 <p>Compilers or standard libraries which do not support wide characters (wchar_t) 
 or wide character strings (std::wstring) are detected automatically, and cause 
@@ -469,7 +675,44 @@ performance issues.</p>
 
 <h2><a name="Change-history">Change history</a></h2>
 
-<h3>Version 1.35.0</h3>
+<h3>Version 1.37.0</h3>
+
+<ul>
+  <li>Doc fixes: Update release history, add tables of macros and deprecated 
+  names.</li>
+  <li>Bug fix: convenience.hpp didn't fully apply BOOST_FILESYSTEM_NO_DEPRECATED 
+  to name changes.</li>
+  <li>Bug fix: Ticket #1972 'remove' fixes.</li>
+  <li>Bug fix: Restore deprecated basic_directory_entry names inadvertently 
+  removed.</li>
+  <li>Bug fix: Provide deprecated functions has_branch_path and has_leaf, 
+  inadvertently omitted from 1.36.0</li>
+  <li>Add workarounds for Codegear/Borland C++ Builder 2009.</li>
+</ul>
+
+<h3>Version 1.36.0 - August 14th, 2008</h3>
+
+<ul>
+  <li>Added stem(), extension(), and replace_extension() member functions to 
+  basic_path, based on the basename(), extension(), and change_extension() 
+  functions from convenience.hpp.</li>
+  <li>Changed path.hpp function names:<ul>
+    <li>leaf() -&gt; filename().</li>
+    <li>has_leaf() -&gt; has_filename().</li>
+    <li>branch_path() -&gt; parent_path().</li>
+    <li>has_branch_path() -&gt; has_parent_path().</li>
+    <li>remove_leaf() -&gt; remove_filename().</li>
+  </ul>
+  </li>
+  <li>Changed operations.hpp function names:<ul>
+    <li>is_regular() -&gt; is_regular_file().</li>
+  </ul>
+  </li>
+  <li>Bug fix: Add path.cpp #include &lt;cwchar&gt;</li>
+  <li>Cleared path.hpp gcc shadow warnings.</li>
+</ul>
+
+<h3>Version 1.35.0 - March 29th, 2008</h3>
 
 <ul>
   <li>Diagnostics moved to the separate <a href="../../system/doc/index.html">
@@ -479,7 +722,9 @@ performance issues.</p>
   <li>A few minor implementation fixes.</li>
 </ul>
 
-<h3><a href="i18n.html">Version 1.34.0</a></h3>
+<h3>Version 1.34.1 - July 24th, 2007</h3>
+
+<h3><a href="i18n.html">Version 1.34.0</a> - May 12th, 2007</h3>
 
 <ul>
   <li><a href="i18n.html#Internationalization">Internationalization</a>, provided by 
@@ -511,13 +756,13 @@ performance issues.</p>
   <li>Numerous small implementation fixes.</li>
 </ul>
 
-<h3>Version 1.33.0</h3>
+<h3>Version 1.33.0 - August 11th, 2005</h3>
 
 <ul>
   <li>Some small implementation fixes.</li>
 </ul>
 
-<h3>Version 1.32.0</h3>
+<h3>Version 1.32.0 - November 19th, 2004</h3>
 
 <ul>
   <li><a href="reference.html#Attribute-functions">file_size()</a> function added.</li>
@@ -536,7 +781,7 @@ performance issues.</p>
   very long paths correctly.</li>
 </ul>
 
-<h3>Version 1.31.0</h3>
+<h3>Version 1.31.0 - January 26th, 2004</h3>
 
 <ul>
   <li>The object library can now be <a href="#Building">built</a> for either 
@@ -548,14 +793,20 @@ performance issues.</p>
   function normalize(). This changes behavior, 
   in that canonical form is now different, but eliminates a subtle
   <a href="design.htm#symbolic-link-use-case">bug</a> when symbolic links to 
-  directories are present. </li>
+  directories are present.</li>
+</ul>
+
+<h3>&nbsp;<br>
+Version 1.30.0 - March 19th, 2003</h3>
+<ul>
+  <li>Initial official Boost version.</li>
 </ul>
 
 <hr>
 <p>Revised
-<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->18 March, 2008<!--webbot bot="Timestamp" endspan i-checksum="29005" --></p>
+<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->28 October, 2008<!--webbot bot="Timestamp" endspan i-checksum="39203" --></p>
 
-<p>© Copyright Beman Dawes, 2002-2005</p>
+<p>&copy; Copyright Beman Dawes, 2002-2005</p>
 <p> Use, modification, and distribution are subject to the Boost Software 
 License, Version 1.0. See <a href="http://www.boost.org/LICENSE_1_0.txt">
 www.boost.org/LICENSE_1_0.txt</a></p>

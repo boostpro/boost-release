@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2003-2007.
+//  (C) Copyright Gennadiy Rozental 2003-2008.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,7 +7,7 @@
 //
 //  File        : $RCSfile$
 //
-//  Version     : $Revision: 41369 $
+//  Version     : $Revision: 49312 $
 //
 //  Description : implements support for test cases templates instantiated with 
 //                sequence of test types
@@ -15,9 +15,6 @@
 
 #ifndef BOOST_TEST_TEST_CASE_TEMPLATE_HPP_071894GER
 #define BOOST_TEST_TEST_CASE_TEMPLATE_HPP_071894GER
-
-// Boost.Test
-#include <boost/test/unit_test_suite.hpp>
 
 // Boost
 #include <boost/mpl/for_each.hpp>

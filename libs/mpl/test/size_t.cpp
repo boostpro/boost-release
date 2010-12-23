@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source$
-// $Date: 2005-12-07 22:23:02 -0500 (Wed, 07 Dec 2005) $
-// $Revision: 31949 $
+// $Id: size_t.cpp 49268 2008-10-11 06:26:17Z agurtovoy $
+// $Date: 2008-10-11 02:26:17 -0400 (Sat, 11 Oct 2008) $
+// $Revision: 49268 $
 
 // Necessary to overcome a strange name lookup bug in GCC 3.3 and 4.0 for Mac OS X
 #if defined(__APPLE_CC__) && defined(__GNUC__) && (__GNUC__ <= 4)

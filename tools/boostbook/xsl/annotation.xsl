@@ -16,30 +16,13 @@
   <xsl:key name="libraries" match="library" use="@name"/>
   <xsl:key name="macros" match="macro" use="@name"/>
   <xsl:key name="headers" match="header" use="@name"/>
+  <xsl:key name="globals" match="namespace/data-member|header/data-member" use="@name"/>
   <xsl:key name="named-entities" match="class|struct|union|concept|function|overloaded-function|macro|library|namespace/data-member|header/data-member|*[attribute::id]" use="@name|@id"/>
 
   <xsl:template match="function|overloaded-function" mode="generate.id">
-    <xsl:variable name="name" select="normalize-space(@name)"/>
-    <xsl:variable name="translated-name"
-                  select="translate($name,
-                                    '~!%^&amp;*()[].,&lt;&gt;|/ +-=',
-                                    'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')"/>
-
-    <xsl:choose>
-      <xsl:when test="count(key('named-entities', $name))=1
-                      and ($translated-name=$name)">
-        <xsl:call-template name="fully-qualified-id">
-          <xsl:with-param name="node" select="."/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="fully-qualified-id">
-          <xsl:with-param name="node" select="."/>
-        </xsl:call-template>
-        <xsl:text>_</xsl:text>
-        <xsl:value-of select="generate-id(.)"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:call-template name="fully-qualified-id">
+      <xsl:with-param name="node" select="."/>
+    </xsl:call-template>
   </xsl:template>
 
   <xsl:template match="classname" mode="annotation">
@@ -81,6 +64,36 @@
       <xsl:with-param name="display-name" select="string(.)"/>
       <xsl:with-param name="unqualified-name" select="$unqualified-name"/>
       <xsl:with-param name="nodes" select="key('classes', $unqualified-name)"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="globalname" mode="annotation">
+    <!-- Determine the (possibly qualified) global name we are looking for -->
+    <xsl:variable name="name">
+      <xsl:choose>
+        <xsl:when test="@alt">
+          <xsl:value-of select="@alt"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="string(.)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!-- Determine the unqualified name -->
+    <xsl:variable name="unqualified-name">
+      <xsl:call-template name="strip-qualifiers">
+        <xsl:with-param name="name" select="$name"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:call-template name="cxx-link-name">
+      <xsl:with-param name="lookup" select="."/>
+      <xsl:with-param name="type" select="'data-member'"/>
+      <xsl:with-param name="name" select="$name"/>
+      <xsl:with-param name="display-name" select="string(.)"/>
+      <xsl:with-param name="unqualified-name" select="$unqualified-name"/>
+      <xsl:with-param name="nodes" select="key('globals', $unqualified-name)"/>
     </xsl:call-template>
   </xsl:template>
 

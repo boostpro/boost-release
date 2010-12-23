@@ -27,6 +27,23 @@
 <a name="function.history"></a>History &amp; Compatibility Notes</h2></div></div></div>
 <div class="itemizedlist"><ul type="disc" compact>
 <li>
+<p><span class="bold"><strong>Version 1.37.0</strong></span>: </p>
+<div class="itemizedlist"><ul type="circle" compact>
+<li><p>Improved the performance of Boost.Function's
+      swap() operation for large function objects. Original patch
+      contributed by Niels Dekker.</p></li>
+<li><p>Added a new header &lt;boost/function/function_typeof.hpp&gt; that provides support for using the Boost.Typeof library on Boost.Function objects.</p></li>
+<li><p>Added a new header &lt;boost/function/function_fwd.hpp&gt; that provides support for using the Boost.Typeof library on Boost.Function objects.</p></li>
+<li><p>The <code class="computeroutput"><a class="link" href="../boost/function.html#id2608455-bb">target</a></code>()
+      function now respects the cv-qualifiers of function objects
+      stored by reference
+      (using <code class="computeroutput"><a class="link" href="../boost/reference_wrapper.html" title="Class template reference_wrapper">boost::reference_wrapper</a></code>), such
+      that a reference to a <code class="computeroutput">const</code> function object cannot
+      be accessed as a reference to a non-<code class="computeroutput">const</code> function
+      object.</p></li>
+</ul></div>
+</li>
+<li>
 <p><span class="bold"><strong>Version 1.36.0</strong></span>: </p>
 <div class="itemizedlist"><ul type="circle" compact><li><p>Boost.Function now implements allocator support
       in the same way that is is provided in C++0x, based on C++
@@ -52,9 +69,9 @@
 <li><p><code class="computeroutput"><a class="link" href="../boost/function.html" title="Class template function">boost::function</a></code>
       and <code class="computeroutput"><a class="link" href="../boost/functionN.html" title="Class template functionN">boost::functionN</a></code> objects
       can be assigned to 0 (semantically equivalent to calling
-      <code class="computeroutput"><a class="link" href="../boost/function.html#id2375363-bb">clear</a>()</code>) and
+      <code class="computeroutput"><a class="link" href="../boost/function.html#id2468302-bb">clear</a>()</code>) and
       compared against 0 (semantically equivalent to calling
-      <code class="computeroutput"><a class="link" href="../boost/function.html#id2489350-bb">empty</a>()</code>).</p></li>
+      <code class="computeroutput"><a class="link" href="../boost/function.html#id2344128-bb">empty</a>()</code>).</p></li>
 <li><p>The Boost.Function code is now generated
       entirely by the <a href="../../../libs/preprocessor/index.html" target="_top">Preprocessor</a> library,
       so it is now possible to generate
@@ -120,7 +137,7 @@
 </ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: July 14, 2008 at 14:32:29 -0400</small></p></td>
+<td align="left"><p><small>Last revised: October 16, 2008 at 09:21:50 -0400</small></p></td>
 <td align="right"><div class="copyright-footer">Copyright © 2001-2004 Douglas Gregor<p>Use, modification and distribution is subject to the Boost
     Software License, Version 1.0. (See accompanying file
     <code class="filename">LICENSE_1_0.txt</code> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)</p>

@@ -3,11 +3,47 @@
 //Distributed under the Boost Software License, Version 1.0. (See accompanying
 //file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include <boost/exception/get_error_info.hpp>
 #include <boost/exception/info_tuple.hpp>
 #include <boost/detail/lightweight_test.hpp>
+#include <boost/detail/workaround.hpp>
 
 struct throws_on_copy;
 struct non_printable { };
+
+struct
+user_data
+    {
+    int & count;
+
+    explicit
+    user_data( int & count ):
+        count(count)
+        {
+        ++count;
+        }
+
+    user_data( user_data const & x ):
+        count(x.count)
+        {
+        ++count;
+        }
+
+    ~user_data()
+        {
+        --count;
+        }
+    };
+
+#if BOOST_WORKAROUND(__CODEGEARC__, BOOST_TESTED_AT(0x610))
+struct tag_test_1 {};
+struct tag_test_2 {};
+struct tag_test_3 {};
+struct tag_test_4 {};
+struct tag_test_5 {};
+struct tag_test_6 {};
+struct tag_user_data {};
+#endif
 
 typedef boost::error_info<struct tag_test_1,int> test_1;
 typedef boost::error_info<struct tag_test_2,unsigned int> test_2;
@@ -15,6 +51,7 @@ typedef boost::error_info<struct tag_test_3,float> test_3;
 typedef boost::error_info<struct tag_test_4,throws_on_copy> test_4;
 typedef boost::error_info<struct tag_test_5,std::string> test_5;
 typedef boost::error_info<struct tag_test_6,non_printable> test_6;
+typedef boost::error_info<struct tag_user_data,user_data> test_7;
 
 struct
 test_exception:
@@ -38,12 +75,20 @@ throws_on_copy
 void
 basic_test()
     {
-    test_exception x;
-    x << test_1(1) << test_2(2u) << test_3(3.14159f);
-    BOOST_TEST(*boost::get_error_info<test_1>(x)==1);
-    BOOST_TEST(*boost::get_error_info<test_2>(x)==2u);
-    BOOST_TEST(*boost::get_error_info<test_3>(x)==3.14159f);
-    BOOST_TEST(!boost::get_error_info<test_4>(x));
+    try
+        {
+        test_exception x;
+        x << test_1(1) << test_2(2u) << test_3(3.14159f);
+        throw x;
+        }
+    catch(
+    test_exception & x )
+        {
+        BOOST_TEST(*boost::get_error_info<test_1>(x)==1);
+        BOOST_TEST(*boost::get_error_info<test_2>(x)==2u);
+        BOOST_TEST(*boost::get_error_info<test_3>(x)==3.14159f);
+        BOOST_TEST(!boost::get_error_info<test_4>(x));
+        }
     }
 
 void
@@ -58,8 +103,8 @@ exception_safety_test()
     catch(
     test_exception & )
         {
+        BOOST_TEST(!boost::get_error_info<test_4>(x));
         }
-    BOOST_TEST(!boost::get_error_info<test_4>(x));
     }
 
 void
@@ -107,7 +152,9 @@ test_empty()
     catch(
     boost::exception & x )
         {
+#ifndef BOOST_NO_RTTI
         BOOST_TEST( dynamic_cast<test_exception *>(&x) );
+#endif
         BOOST_TEST( !boost::get_error_info<test_1>(x) );
         }
     catch(
@@ -124,7 +171,9 @@ test_empty()
     catch(
     test_exception & x )
         {
-        BOOST_TEST( dynamic_cast<boost::exception *>(&x) );
+#ifndef BOOST_NO_RTTI
+        BOOST_TEST( dynamic_cast<boost::exception const *>(&x)!=0 );
+#endif
         }
     catch(
     ... )
@@ -245,6 +294,29 @@ test_add_tuple()
         }
     }
 
+void
+test_lifetime()
+    {
+    int count=0;
+    try
+        {
+        throw test_exception() << test_7(user_data(count));
+        BOOST_TEST(false);
+        }
+    catch(
+    boost::exception & x )
+        {
+        BOOST_TEST(count==1);
+        BOOST_TEST( boost::get_error_info<test_7>(x) );
+        }
+    catch(
+    ... )
+        {
+        BOOST_TEST(false);
+        }
+    BOOST_TEST(!count);
+    }
+
 int
 main()
     {
@@ -254,5 +326,6 @@ main()
     test_basic_throw_catch();
     test_catch_add_info();
     test_add_tuple();
+    test_lifetime();
     return boost::report_errors();
     }

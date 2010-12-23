@@ -152,7 +152,7 @@
 
   <xsl:template match="header" mode="generate.id">
     <xsl:text>header.</xsl:text>
-    <xsl:value-of select="translate(@name, '/','.')"/>
+    <xsl:value-of select="translate(@name, '/.', '._')"/>
   </xsl:template>
 
   <xsl:template match="*" mode="passthrough">
@@ -421,7 +421,7 @@ Error: XSL template 'link-or-anchor' called with invalid link-type '<xsl:value-o
 
   <!-- These DocBook elements have special meaning. Use the annotation mode -->
   <xsl:template match="classname|methodname|functionname|enumname|
-                       macroname|headername">
+                       macroname|headername|globalname">
     <computeroutput>
       <xsl:apply-templates select="." mode="annotation"/>
     </computeroutput>

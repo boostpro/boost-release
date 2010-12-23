@@ -31,7 +31,7 @@ std::string copyright(
 "//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)\n"
 "\n"
 "//  See http://www.boost.org/libs/config for the most recent version."
-"//\n//  Revision $Id: generate.cpp 47435 2008-07-15 10:41:52Z johnmaddock $\n//\n");
+"//\n//  Revision $Id: generate.cpp 49283 2008-10-11 15:47:59Z johnmaddock $\n//\n");
 
 std::stringstream config_test1;
 std::stringstream config_test1a;
@@ -156,12 +156,12 @@ void write_test_file(const fs::path& file,
          "#  undef BOOST_ASSERT_CONFIG\n"
          "#endif\n\n";
 
-	  static const boost::regex tr1_exp("BOOST_HAS_TR1.*");
+      static const boost::regex tr1_exp("BOOST_HAS_TR1.*");
 
       ofs << "#include <boost/config.hpp>\n";
 
-	  if(regex_match(macro_name, tr1_exp))
-		  ofs << "#include <boost/tr1/detail/config.hpp>\n";
+      if(regex_match(macro_name, tr1_exp))
+         ofs << "#include <boost/tr1/detail/config.hpp>\n";
 
       ofs << "#include \"test.hpp\"\n\n"
          "#if";

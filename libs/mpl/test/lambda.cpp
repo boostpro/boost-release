@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source$
-// $Date: 2005-01-10 09:01:31 -0500 (Mon, 10 Jan 2005) $
-// $Revision: 26666 $
+// $Id: lambda.cpp 49268 2008-10-11 06:26:17Z agurtovoy $
+// $Date: 2008-10-11 02:26:17 -0400 (Sat, 11 Oct 2008) $
+// $Revision: 49268 $
 
 #include <boost/mpl/logical.hpp>
 #include <boost/mpl/comparison.hpp>

@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Detailed reference</title>
+<title>Reference</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../bbv2.html" title="Chapter 28. Boost.Build V2 User Manual">
-<link rel="prev" href="extender.html" title="Extender Manual">
-<link rel="next" href="faq.html" title="Frequently Asked Questions">
+<link rel="up" href="../bbv2.html" title="Chapter 30. Boost.Build V2 User Manual">
+<link rel="prev" href="tasks.html" title="Common tasks">
+<link rel="next" href="extender.html" title="Extender Manual">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,11 +20,11 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="extender.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="tasks.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="extender.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="bbv2.reference"></a>Detailed reference</h2></div></div></div>
+<a name="bbv2.reference"></a>Reference</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="reference.html#bbv2.reference.general">General information</a></span></dt>
 <dt><span class="section"><a href="reference.html#bbv2.reference.rules">Builtin rules</a></span></dt>
@@ -37,10 +37,7 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.general"></a>General information</h3></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section"><a href="reference.html#bbv2.reference.init">Initialization</a></span></dt>
-<dt><span class="section"><a href="reference.html#bbv2.reference.commandline">Command line</a></span></dt>
-</dl></div>
+<div class="toc"><dl><dt><span class="section"><a href="reference.html#bbv2.reference.init">Initialization</a></span></dt></dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.init"></a>Initialization</h4></div></div></div>
@@ -75,174 +72,7 @@ boost-build build-system ;
         In this case, running bjam anywhere in the project tree will
         automatically find the build system.</p>
 <p>The default <code class="filename">bootstrap.jam</code>, after loading some standard
-        definitions, loads two files, which can be provided/customised by
-        user: <code class="filename">site-config.jam</code> and <code class="filename">user-config.jam</code>.</p>
-<p>Locations where those files are searched are summarized below:</p>
-<div class="table">
-<a name="bbv2.reference.init.config"></a><p class="title"><b>Table 28.2. Search paths for configuration files</b></p>
-<div class="table-contents"><table class="table" summary="Search paths for configuration files">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th> </th>
-<th>site-config.jam</th>
-<th>user-config.jam</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Linux</td>
-<td>
-                <p><code class="computeroutput">/etc</code></p>
-                <p><code class="computeroutput">$HOME</code></p>
-                <p><code class="computeroutput">$BOOST_BUILD_PATH</code></p>
-              </td>
-<td>
-                <p><code class="computeroutput">$HOME</code></p>
-                <p><code class="computeroutput">$BOOST_BUILD_PATH</code></p>
-              </td>
-</tr>
-<tr>
-<td>Windows</td>
-<td>
-                <p><code class="computeroutput">%SystemRoot%</code></p>
-                <p><code class="computeroutput">%HOMEDRIVE%%HOMEPATH%</code></p>
-                <p><code class="computeroutput">%HOME%</code></p>
-                <p><code class="computeroutput">%BOOST_BUILD_PATH%</code></p>
-              </td>
-<td>
-                <p><code class="computeroutput">%HOMEDRIVE%%HOMEPATH%</code></p>
-                <p><code class="computeroutput">%HOME%</code></p>
-                <p><code class="computeroutput">%BOOST_BUILD_PATH%</code></p>
-              </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<br class="table-break"><p>
-        Boost.Build comes with default versions of those files,
-        
-        which can serve as templates for customized versions.
-      </p>
-</div>
-<div class="section" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="bbv2.reference.commandline"></a>Command line</h4></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section"><a href="reference.html#bbv2.reference.init.args">Command line arguments</a></span></dt>
-<dt><span class="section"><a href="reference.html#bbv2.reference.init.options">Command line options</a></span></dt>
-</dl></div>
-<p>The command line may contain:</p>
-<div class="itemizedlist"><ul type="disc">
-<li>Jam options,</li>
-<li>Boost.Build <a class="link" href="reference.html#bbv2.reference.init.options" title="Command line options">options</a>,</li>
-<li>Command line arguments</li>
-</ul></div>
-<div class="section" lang="en">
-<div class="titlepage"><div><div><h5 class="title">
-<a name="bbv2.reference.init.args"></a>Command line arguments</h5></div></div></div>
-<p>
-          Command line arguments specify targets and build
-          request using the following rules.
-        </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
-              An argument that does not contain slashes or the <code class="computeroutput">=</code>
-              symbol is either a value of an implicit feature or of a target to
-              be built. It is taken to be value of a feature if an appropriate
-              feature exists. Otherwise, it is considered a <a class="link" href="reference.html#bbv2.reference.ids" title="Target identifiers and references">target id</a>. Building the
-              special target name &#8220;clean&#8221; has the same effect as
-              using the <code class="computeroutput">--clean</code> option.
-            </li>
-<li>
-<p>
-              An argument containing either slashes or the <code class="computeroutput">=</code> symbol
-              specifies a number of build request elements (see <a class="xref" href="advanced.html#bbv2.advanced.build_request" title="Build Request">the section called &#8220;Build Request&#8221;</a>). In its simplest form, it is just
-              a set of properties, separated by slashes, which become a single
-              build request element, for example:
-
-</p>
-<pre class="programlisting">
-borland/runtime-link=static
-</pre>
-<p>
-
-              A more complex form can be used to save typing. For example,
-              instead of
-
-</p>
-<pre class="programlisting">
-borland/runtime-link=static borland/runtime-link=dynamic
-</pre>
-<p>
-
-              one can use
-
-</p>
-<pre class="programlisting">
-borland/runtime-link=static,dynamic
-</pre>
-<p>
-
-              Exactly, the conversion from argument to build request
-              elements is performed by (1) splitting the argument at each slash,
-              (2) converting each split part into a set of properties and (3)
-              taking all possible combinations
-                
-              of the property sets. Each split
-              part should have either the form
-
-</p>
-<pre class="programlisting">
-<span class="emphasis"><em>feature-name</em></span>=<span class="emphasis"><em>feature-value1</em></span>[","<span class="emphasis"><em>feature-valueN</em></span>]*
-</pre>
-<p>
-
-              or, in case of implicit features
-
-</p>
-<pre class="programlisting">
-<span class="emphasis"><em>feature-value1</em></span>[","<span class="emphasis"><em>feature-valueN</em></span>;]*
-</pre>
-<p>
-
-              will be converted into the property set
-
-</p>
-<pre class="programlisting">
-&lt;feature-name&gt;feature-value1 .... &lt;feature-name&gt;feature-valueN
-</pre>
-<p>
-
-
-
-            </p>
-</li>
-</ul></div>
-<p>
-          For example, the command line
-
-</p>
-<pre class="programlisting">
-target1 debug gcc/runtime-link=dynamic,static
-</pre>
-<p>
-
-          would cause target called <code class="literal">target1</code> to be rebuilt in
-          debug mode, except that for gcc, both dynamically and statically
-          linked binaries would be created.
-        </p>
-</div>
-<div class="section" lang="en">
-<div class="titlepage"><div><div><h5 class="title">
-<a name="bbv2.reference.init.options"></a>Command line options</h5></div></div></div>
-<p>All of the Boost.Build options start with the "--" prefix.
-          They are described in the following table.</p>
-<p>FIXME: That table has moved into "User documentation" section
-        and there is nothing we can add here. Remove this part?</p>
-</div>
+        definitions, loads two <code class="filename">site-config.jam</code> and <code class="filename">user-config.jam</code>.</p>
 </div>
 </div>
 <div class="section" lang="en">
@@ -380,30 +210,42 @@ path-constant DATA : data/a.txt ;
 <dt><span class="term"><code class="literal">variant</code></span></dt>
 <dd>
 <p>
-            A feature that combines several low-level features, making
-            it easy to request common build configurations.
+            A feature combining several low-level features, making it easy to
+            request common build configurations.
           </p>
-<p><span class="bold"><strong>Allowed values:</strong></span> <code class="literal">debug</code>, <code class="literal">release</code>,
-            <code class="literal">profile</code>.</p>
-<p>The value <code class="literal">debug</code> expands to</p>
+<p>
+            <span class="bold"><strong>Allowed values:</strong></span>
+            <code class="literal">debug</code>, <code class="literal">release</code>,
+            <code class="literal">profile</code>.
+          </p>
+<p>
+            The value <code class="literal">debug</code> expands to
+          </p>
 <pre class="programlisting">
 &lt;optimization&gt;off &lt;debug-symbols&gt;on &lt;inlining&gt;off &lt;runtime-debugging&gt;on
 </pre>
-<p>The value <code class="literal">release</code> expands to</p>
+<p>
+            The value <code class="literal">release</code> expands to
+          </p>
 <pre class="programlisting">
 &lt;optimization&gt;speed &lt;debug-symbols&gt;off &lt;inlining&gt;full &lt;runtime-debugging&gt;off
 </pre>
-<p>The value <code class="literal">profile</code> expands to the same as
-          <code class="literal">release</code>, plus:</p>
+<p>
+            The value <code class="literal">profile</code> expands to the same as
+            <code class="literal">release</code>, plus:
+          </p>
 <pre class="programlisting">
 &lt;profiling&gt;on &lt;debug-symbols&gt;on
 </pre>
-<p>User can define his own build variants using the <code class="computeroutput">variant</code> rule from the <code class="computeroutput">common</code>
-          module.</p>
-<p><span class="bold"><strong>Notee:</strong></span> Runtime
-          debugging is on in debug builds to suit the expectations of
-          people used to various IDEs.
-          
+<p>
+            Users can define their own build variants using the
+            <code class="computeroutput">variant</code> rule from the <code class="computeroutput">common</code> module.
+          </p>
+<p>
+            <span class="bold"><strong>Note:</strong></span> Runtime debugging is on in
+            debug builds to suit the expectations of people used to various
+            IDEs.
+            
           </p>
 </dd>
 <dt>
@@ -413,7 +255,7 @@ path-constant DATA : data/a.txt ;
 <p><span class="bold"><strong>Allowed values:</strong></span> <code class="literal">shared</code>,
             <code class="literal">static</code></p>
 <p>
-            A feature that controls how libraries are built.
+            A feature controling how libraries are built.
           </p>
 </dd>
 <dt>
@@ -478,8 +320,9 @@ path-constant DATA : data/a.txt ;
             Specify an additional directory where the system should
             look for shared libraries when the executable or shared
             library is run. This feature only affects Unix
-            compilers. Plase see <a class="xref" href="faq.html#bbv2.faq.dll-path" title="Why are the dll-path and hardcode-dll-paths properties useful?">the section called &#8220;Why are the <code class="computeroutput">dll-path</code> and
-    <code class="computeroutput">hardcode-dll-paths</code> properties useful?
+            compilers. Plase see <a class="xref" href="faq.html#bbv2.faq.dll-path" title="Why are the dll-path and hardcode-dll-paths properties useful?">the section called &#8220;
+      Why are the <code class="literal">dll-path</code> and <code class="literal">hardcode-dll-paths
+      </code> properties useful?
     &#8221;</a>
             in <a class="xref" href="faq.html" title="Frequently Asked Questions">the section called &#8220;Frequently Asked Questions&#8221;</a> for details.
           </dd>
@@ -510,6 +353,11 @@ path-constant DATA : data/a.txt ;
             and for <code class="computeroutput">linkflags</code> that is the linker. The features are
             handy when you are trying to do something special that cannot be
             achieved by a higher-level feature in Boost.Build.
+          </dd>
+<dt><span class="term"><code class="literal">include</code></span></dt>
+<dd>
+            Specifies an additional include path that is to be passed to C and
+            C++ compilers.
           </dd>
 <dt><span class="term"><code class="literal">warnings</code></span></dt>
 <dd>
@@ -580,7 +428,10 @@ path-constant DATA : data/a.txt ;
           the general processor familty to generate code for.</p></dd>
 <dt><span class="term"><code class="literal">instruction-set</code></span></dt>
 <dd>
-<p>Allowed values for this feature depend on used toolset.</p>
+<p>
+            <span class="bold"><strong>Allowed values:</strong></span> depend on the used
+            toolset.
+          </p>
 <p>The <code class="literal">instruction-set</code> specifies for which
           specific instruction set the code should be generated.  The
           code in general might not run on processors with older/different
@@ -602,6 +453,27 @@ path-constant DATA : data/a.txt ;
           features. Please see <a class="xref" href="reference.html#bbv2.reference.tools.compilers" title="C++ Compilers">the section called &#8220;C++ Compilers&#8221;</a>
           for details.</p>
 </dd>
+<dt><span class="term"><code class="literal">c++-template-depth</code></span></dt>
+<dd>
+<p>
+            <span class="bold"><strong>Allowed values:</strong></span> Any positive
+            integer.
+          </p>
+<p>
+            This feature allows configuring a C++ compiler with the maximal
+            template instantiation depth parameter. Specific toolsets may or may
+            not provide support for this feature depending on whether their
+            compilers provide a corresponding command-line option.
+          </p>
+<p>
+            <span class="bold"><strong>Note:</strong></span> Due to some internal details
+            in the current Boost Build implementation it is not possible to have
+            features whose valid values are all positive integer. As a
+            workaround a large set of allowed values has been defined for this
+            feature and, if a different one is needed, user can easily add it by
+            calling the feature.extend rule.
+          </p>
+</dd>
 </dl></div>
 </div>
 <div class="section" lang="en">
@@ -609,25 +481,22 @@ path-constant DATA : data/a.txt ;
 <a name="bbv2.reference.tools"></a>Builtin tools</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compilers">C++ Compilers</a></span></dt>
-<dt><span class="section"><a href="reference.html#id3912697">Third-party libraries</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4126355">Third-party libraries</a></span></dt>
 </dl></div>
 <p>Boost.Build comes with support for a large number of C++ compilers,
       and other tools. This section documents how to use those tools.</p>
 <p>Before using any tool, you must declare your intention, and possibly
       specify additional information about the tool's configuration. This is
-      done with the <code class="computeroutput">using</code> rule, for example:
-</p>
+      done by calling the <code class="computeroutput">using</code> rule, typically in your
+      <code class="filename">user-config.jam</code>, for example:</p>
 <pre class="programlisting">
 using gcc ;
 </pre>
-<p>
-      additional parameters can be passed just like for other rules, for example:
-</p>
+<p>additional parameters can be passed just like for other rules, for example:</p>
 <pre class="programlisting">
 using gcc : 4.0 : g++-4.0 ;
 </pre>
-<p>
-      The options that can be passed to each tool will be documented in the
+<p>The options that can be passed to each tool are documented in the
       subsequent sections.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
@@ -646,7 +515,10 @@ using gcc : 4.0 : g++-4.0 ;
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compiler.vacpp">IBM Visual Age</a></span></dt>
 </dl></div>
 <p>This section lists all Boost.Build modules that support C++
-        compilers and documents how each one can be initialized.</p>
+          compilers and documents how each one can be initialized.  The name
+          of support module for compiler is also the value for
+          the <code class="computeroutput">toolset</code> feature that can be used to explicitly
+          request that compiler. </p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.compiler.gcc"></a>GNU C++</h5></div></div></div>
@@ -696,7 +568,7 @@ using gcc : [<span class="optional"><em class="replaceable"><code>version</code>
                 be either <code class="computeroutput">windres</code> for msvc resource compiler,
                 or <code class="computeroutput">rc</code> for borland's resource compiler.</p></dd>
 </dl></div>
-<a class="indexterm" name="id3910461"></a>
+<a class="indexterm" name="id4124121"></a>
 
           In order to compile 64-bit applications, you have to specify
           <code class="computeroutput">address-model=64</code>, and the <code class="computeroutput">instruction-set</code>
@@ -793,7 +665,7 @@ using msvc : [<span class="optional"><em class="replaceable"><code>version</code
               used compiler binary, e.g. <span class="command"><strong>vcvars32.bat</strong></span> or
               <span class="command"><strong>vsvars32.bat</strong></span>.</p></dd>
 <dt>
-<span class="term"><code class="literal">setup-amd64&gt;</code>, </span><span class="term"><code class="literal">setup-i386&gt;</code>, </span><span class="term"><code class="literal">setup-ia64&gt;</code></span>
+<span class="term"><code class="literal">setup-amd64</code>, </span><span class="term"><code class="literal">setup-i386</code>, </span><span class="term"><code class="literal">setup-ia64</code></span>
 </dt>
 <dd><p>The filename of the target platform specific
               environment setup script to run before invoking any of the tools
@@ -802,8 +674,8 @@ using msvc : [<span class="optional"><em class="replaceable"><code>version</code
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h6 class="title">
-<a name="id3910965"></a>64-bit support</h6></div></div></div>
-<a class="indexterm" name="id3910971"></a><p>Starting with version 8.0, Microsoft Visual Studio can
+<a name="id4124624"></a>64-bit support</h6></div></div></div>
+<a class="indexterm" name="id4124630"></a><p>Starting with version 8.0, Microsoft Visual Studio can
             generate binaries for 64-bit processor, both 64-bit flavours of x86
             (codenamed AMD64/EM64T), and Itanium (codenamed IA64). In addition,
             compilers that are itself run in 64-bit mode, for better
@@ -1058,7 +930,7 @@ using cw : [<span class="optional"><em class="replaceable"><code>version</code><
 using dmc : [<span class="optional"><em class="replaceable"><code>version</code></em></span>] : [<span class="optional"><em class="replaceable"><code>c++-compile-command</code></em></span>] : [<span class="optional"><em class="replaceable"><code>compiler options</code></em></span>] ;</pre>
 <p>This statement may be repeated several times, if you want to configure several versions of the compiler.</p>
 <p>If the command is not specified, Boost.Build will search for
-          a binary named <span class="command"><strong>como</strong></span> in
+          a binary named <span class="command"><strong>dmc</strong></span> in
           <code class="envar">PATH</code>.</p>
 <p>The following options can be provided, using <code class="literal">&lt;<em class="replaceable"><code>option-name</code></em>&gt;<em class="replaceable"><code>option-value</code></em></code> syntax:</p>
 <div class="variablelist"><dl>
@@ -1143,7 +1015,7 @@ using sun : [<span class="optional"><em class="replaceable"><code>version</code>
 <dd><p>Specifies additional command line options that will be
       passed to the linker.</p></dd>
 </dl></div>
-<a class="indexterm" name="id3912615"></a>
+<a class="indexterm" name="id4126273"></a>
           Starting with Sun Studio 12, you can create 64-bit applications
           by using the <code class="computeroutput">address-model=64</code> property.
 
@@ -1168,14 +1040,14 @@ using vacpp ;</pre>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3912697"></a>Third-party libraries</h4></div></div></div>
+<a name="id4126355"></a>Third-party libraries</h4></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="reference.html#bbv2.reference.tools.libraries.stlport">STLport library</a></span></dt></dl></div>
 <p>Boost.Build provides special support for some
         third-party C++ libraries, documented below.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.libraries.stlport"></a>STLport library</h5></div></div></div>
-<a class="indexterm" name="id3912719"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
+<a class="indexterm" name="id4126377"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
           is an alternative implementation of C++ runtime library. Boost.Build
           supports using that library on Windows platfrom.  Linux is
           hampered by different naming of libraries in each STLport
@@ -1660,11 +1532,11 @@ requested-properties -&gt; property-path
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.reference.generators"></a>Generators</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="reference.html#id3913940">Selecting and ranking viable generators</a></span></dt>
-<dt><span class="section"><a href="reference.html#id3914004">Running generators</a></span></dt>
-<dt><span class="section"><a href="reference.html#id3914062">Selecting dependency graph</a></span></dt>
-<dt><span class="section"><a href="reference.html#id3914077">Property adjustment</a></span></dt>
-<dt><span class="section"><a href="reference.html#id3914153">Transformations cache</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4127598">Selecting and ranking viable generators</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4127662">Running generators</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4127706">Selecting dependency graph</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4127722">Property adjustment</a></span></dt>
+<dt><span class="section"><a href="reference.html#id4127798">Transformations cache</a></span></dt>
 </dl></div>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
@@ -1695,7 +1567,7 @@ requested-properties -&gt; property-path
       below.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3913940"></a>Selecting and ranking viable generators</h4></div></div></div>
+<a name="id4127598"></a>Selecting and ranking viable generators</h4></div></div></div>
 <p>Each generator, in addition to target types that it can
         produce, have attribute that affects its applicability in
         particular sitiation. Those attributes are:</p>
@@ -1729,7 +1601,7 @@ requested-properties -&gt; property-path
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3914004"></a>Running generators</h4></div></div></div>
+<a name="id4127662"></a>Running generators</h4></div></div></div>
 <p>When generators are selected, each is run to produce a list of
         created targets. This list might include targets that are not of
         requested types, because generators create the same targets as
@@ -1751,7 +1623,7 @@ requested-properties -&gt; property-path
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3914062"></a>Selecting dependency graph</h4></div></div></div>
+<a name="id4127706"></a>Selecting dependency graph</h4></div></div></div>
 <p>
         After all generators are run,
         it is necessary to decide which of successfull invocation will be
@@ -1762,7 +1634,7 @@ requested-properties -&gt; property-path
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3914077"></a>Property adjustment</h4></div></div></div>
+<a name="id4127722"></a>Property adjustment</h4></div></div></div>
 <p>Because target location is determined by the build system, it
         is sometimes necessary to adjust properties, in order to not
         break actions. For example, if there's an action that generates
@@ -1801,7 +1673,7 @@ requested-properties -&gt; property-path
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3914153"></a>Transformations cache</h4></div></div></div>
+<a name="id4127798"></a>Transformations cache</h4></div></div></div>
 <p>
         Under certain conditions, an
         attempt is made to cache results of transformation search. First,
@@ -1819,7 +1691,7 @@ requested-properties -&gt; property-path
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="extender.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="faq.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="tasks.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../bbv2.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="extender.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

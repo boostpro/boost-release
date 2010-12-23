@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source$
-// $Date: 2006-02-20 10:45:40 -0500 (Mon, 20 Feb 2006) $
-// $Revision: 33026 $
+// $Id: bool.cpp 49268 2008-10-11 06:26:17Z agurtovoy $
+// $Date: 2008-10-11 02:26:17 -0400 (Sat, 11 Oct 2008) $
+// $Revision: 49268 $
 
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/aux_/test.hpp>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../bbv2.html" title="Chapter 28. Boost.Build V2 User Manual">
+<link rel="up" href="../bbv2.html" title="Chapter 30. Boost.Build V2 User Manual">
 <link rel="prev" href="tutorial.html" title="Tutorial">
 <link rel="next" href="tasks.html" title="Common tasks">
 </head>
@@ -33,44 +33,61 @@
 <dt><span class="section"><a href="advanced.html#bbv2.advanced.projects">Projects</a></span></dt>
 <dt><span class="section"><a href="advanced.html#bbv2.advanced.build_process">The Build Process</a></span></dt>
 </dl></div>
-<p>This section will provide the information necessary to create your own
-  projects using Boost.Build. The information provided here is relatively
-  high-level, and <a class="xref" href="reference.html" title="Detailed reference">the section called &#8220;Detailed reference&#8221;</a> as well as the on-line help
-  system must be used to obtain low-level documentation (see <a class="xref" href="advanced.html#bbv2.reference.init.options.help"><code class="option">--help</code></a>).</p>
-<p>Boost.Build actually consists of two parts - Boost.Jam, a build engine
-  with its own interpreted language, and Boost.Build itself, implemented in
-  Boost.Jam's language. The chain of events when you type
-  <span class="command"><strong>bjam</strong></span> on the command line is:
+<p>
+      This section will provide the information necessary to create your own
+      projects using Boost.Build. The information provided here is relatively
+      high-level, and <a class="xref" href="reference.html" title="Reference">the section called &#8220;Reference&#8221;</a> as well as the on-line
+      help system must be used to obtain low-level documentation (see <a class="xref" href="advanced.html#bbv2.reference.init.options.help"><code class="option">--help</code></a>).
+    </p>
+<p>
+      Boost.Build actually consists of two parts - Boost.Jam, a build engine
+      with its own interpreted language, and Boost.Build itself, implemented in
+      Boost.Jam's language. The chain of events when you type
+      <span class="command"><strong>bjam</strong></span> on the command line is as follows:
       </p>
 <div class="orderedlist"><ol type="1">
-<li><p>Boost.Jam tries to find Boost.Build and loads the top-level
-          module. The exact process is described in <a class="xref" href="reference.html#bbv2.reference.init" title="Initialization">the section called &#8220;Initialization&#8221;</a></p></li>
-<li><p>The top-level module loads user-defined configuration files,
-          <code class="filename">user-config.jam</code> and
-          <code class="filename">site-config.jam</code>, which define available toolsets.
+<li><p>
+            Boost.Jam tries to find Boost.Build and loads the top-level module.
+            The exact process is described in <a class="xref" href="reference.html#bbv2.reference.init" title="Initialization">the section called &#8220;Initialization&#8221;</a>
           </p></li>
-<li><p>The Jamfile in the current directory is read. That in turn
-          might cause reading of further Jamfiles. As a result, a tree of
-          projects is created, with targets inside projects.</p></li>
-<li><p>Finally, using the build request specified on the command line,
-          Boost.Build decides which targets should be built, and how. That
-          information is passed back to Boost.Jam, which takes care of
-          actually running commands.</p></li>
+<li><p>
+            The top-level module loads user-defined configuration files,
+            <code class="filename">user-config.jam</code> and <code class="filename">site-config.jam
+            </code>, which define available toolsets.
+          </p></li>
+<li><p>
+            The Jamfile in the current directory is read. That in turn might
+            cause reading of further Jamfiles. As a result, a tree of projects
+            is created, with targets inside projects.
+          </p></li>
+<li><p>
+            Finally, using the build request specified on the command line,
+            Boost.Build decides which targets should be built and how. That
+            information is passed back to Boost.Jam, which takes care of
+            actually running the scheduled build action commands.
+          </p></li>
 </ol></div>
 <p>
     </p>
-<p>So, to be able to successfully use Boost.Build, you need to know only
-      four things:
+<p>
+      So, to be able to successfully use Boost.Build, you need to know only four
+      things:
       </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p><a class="link" href="advanced.html#bbv2.advanced.configuration" title="Configuration">
-              How to configure Boost.Build</a></p></li>
-<li><p><a class="link" href="advanced.html#bbv2.advanced.targets" title="Declaring Targets">
-              How to write declares targets in Jamfiles</a></p></li>
-<li><p><a class="link" href="advanced.html#bbv2.advanced.build_process" title="The Build Process">
-              How the build process works</a></p></li>
-<li><p>Some Basics about the Boost.Jam language. See
-          <a class="xref" href="advanced.html#bbv2.advanced.jam_language" title="Boost.Jam Language">the section called &#8220;Boost.Jam Language&#8221;</a>.
+<li><p>
+            <a class="link" href="advanced.html#bbv2.advanced.configuration" title="Configuration">How to configure
+            Boost.Build</a>
+          </p></li>
+<li><p>
+            <a class="link" href="advanced.html#bbv2.advanced.targets" title="Declaring Targets">How to declare targets in
+              Jamfiles</a>
+          </p></li>
+<li><p>
+            <a class="link" href="advanced.html#bbv2.advanced.build_process" title="The Build Process">How the build process
+              works</a>
+          </p></li>
+<li><p>
+            Some Basics about the Boost.Jam language. See <a class="xref" href="advanced.html#bbv2.advanced.jam_language" title="Boost.Jam Language">the section called &#8220;Boost.Jam Language&#8221;</a>.
           </p></li>
 </ul></div>
 <p>
@@ -78,130 +95,149 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.advanced.jam_language"></a>Boost.Jam Language</h3></div></div></div>
-<p>This section will describe the basics of the Boost.Jam
-      language&#8212;just enough for writing Jamfiles. For more information,
-      please see the <a class="link" href="../">Boost.Jam</a> documentation.
-      </p>
-<p><a class="link" href="../">Boost.Jam</a> has an interpreted,
-      procedural language. On the lowest level, a <a class="link" href="../">
-      Boost.Jam</a> program consists of variables and
-      <a class="indexterm" name="id3902263"></a>
-      <em class="firstterm">rules</em> (the Jam term for function). They are grouped
-      in modules&#8212;there's one global module and a number of named modules.
-      Besides that, a <a class="link" href="../">Boost.Jam</a> program contains
-      classes and class instances.</p>
-<p>Syntantically, a <a class="link" href="../">Boost.Jam</a> program
-      consists of two kind of elements&#8212;keywords (which have a special
-      meaning to <a class="link" href="../">Boost.Jam</a>) and literals.
-
-      Consider this code:
-      </p>
-<pre class="programlisting">
-a = b ;</pre>
 <p>
-      which assigns the value <code class="literal">b</code> to the variable
-      <code class="literal">a</code>. Here, <code class="literal">=</code> and <code class="literal">;</code>
-      are keywords, while <code class="literal">a</code> and <code class="literal">b</code> are
-      literals.
+        This section will describe the basics of the Boost.Jam language&#8212;
+        just enough for writing Jamfiles. For more information, please see the
+        <a class="link" href="../">Boost.Jam</a> documentation.
       </p>
+<p>
+        <a class="link" href="../">Boost.Jam</a> has an interpreted, procedural
+        language. On the lowest level, a <a class="link" href="../">Boost.Jam
+        </a> program consists of variables and <a class="indexterm" name="id4117350"></a> <em class="firstterm">rules</em> (Jam term for
+        function). They are grouped into modules&#8212;there is one global
+        module and a number of named modules. Besides that, a <a class="link" href="../">Boost.Jam</a> program contains classes and class
+        instances.
+      </p>
+<p>
+        Syntantically, a <a class="link" href="../">Boost.Jam</a> program
+        consists of two kind of elements&#8212;keywords (which have a special
+        meaning to <a class="link" href="../">Boost.Jam</a>) and literals.
+        Consider this code:
+</p>
+<pre class="programlisting">
+a = b ;
+</pre>
+<p>
+        which assigns the value <code class="literal">b</code> to the variable <code class="literal">a
+        </code>. Here, <code class="literal">=</code> and <code class="literal">;</code> are
+        keywords, while <code class="literal">a</code> and <code class="literal">b</code> are
+        literals.
+        </p>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
-<tr><td align="left" valign="top"><p>All syntax elements, even keywords, must be separated by spaces.
-        For example, omitting the space character before <code class="literal">;</code>
-        will lead to a syntax error.
-        </p></td></tr>
+<tr><td align="left" valign="top"><p>
+            All syntax elements, even keywords, must be separated by spaces. For
+            example, omitting the space character before <code class="literal">;</code>
+            will lead to a syntax error.
+          </p></td></tr>
 </table></div>
 <p>
-      If you want to use a literal value that is the same as some keyword, the
-      value can be quoted:
-      </p>
+        If you want to use a literal value that is the same as some keyword, the
+        value can be quoted:
+</p>
 <pre class="programlisting">
-a = "=" ;</pre>
+a = "=" ;
+</pre>
 <p>
       </p>
-<p>All variables in <a class="link" href="../">Boost.Jam</a> have the
-      same type&#8212;list of strings. To define a variable one assigns a value
-      to it, like in the previous example. An undefined variable is the same as
-      a variable with an empty value. Variables can be accessed using the
-      <code class="computeroutput">$(<em class="replaceable"><code>variable</code></em>)</code> syntax. For example:
-      </p>
+<p>
+        All variables in <a class="link" href="../">Boost.Jam</a> have the same
+        type&#8212;list of strings. To define a variable one assigns a value to
+        it, like in the previous example. An undefined variable is the same as a
+        variable with an empty value. Variables can be accessed using the
+        <code class="computeroutput">$(<em class="replaceable"><code>variable</code></em>)</code> syntax. For example:
+</p>
 <pre class="programlisting">
-a = $(b) $(c) ;</pre>
+a = $(b) $(c) ;
+</pre>
 <p>
       </p>
 <p>
-        Rules are defined by specifying the rule name, the parameter names,
-        and the allowed size of the list value for each parameter.
-        </p>
+        Rules are defined by specifying the rule name, the parameter names, and
+        the allowed value list size for each parameter.
+</p>
 <pre class="programlisting">
 rule <em class="replaceable"><code>example</code></em>
-     (
-         <em class="replaceable"><code>parameter1</code></em> :
-         <em class="replaceable"><code>parameter2 ?</code></em> :
-         <em class="replaceable"><code>parameter3 +</code></em> :
-         <em class="replaceable"><code>parameter4 *</code></em>
-     )
-     {
-        // body
-     }</pre>
+ (
+     <em class="replaceable"><code>parameter1</code></em> :
+     <em class="replaceable"><code>parameter2 ?</code></em> :
+     <em class="replaceable"><code>parameter3 +</code></em> :
+     <em class="replaceable"><code>parameter4 *</code></em>
+ )
+ {
+    # rule body
+ }
+ </pre>
 <p>
         When this rule is called, the list passed as the first argument must
         have exactly one value. The list passed as the second argument can
         either have one value of be empty. The two remaining arguments can be
         arbitrarily long, but the third argument may not be empty.
       </p>
-<p>The overview of <a class="link" href="../">Boost.Jam</a> language
-      statements is given below:
-      </p>
+<p>
+        The overview of <a class="link" href="../">Boost.Jam</a> language
+        statements is given below:
+</p>
 <pre class="programlisting">
 helper 1 : 2 : 3 ;
-x = [ helper 1 : 2 : 3 ] ;</pre>
+x = [ helper 1 : 2 : 3 ] ;
+</pre>
 <p>
-      This code calls the named rule with the specified arguments. When the
-      result of the call must be used inside some expression, you need to add
-      brackets around the call, like shown on the second line.
-      </p>
+        This code calls the named rule with the specified arguments. When the
+        result of the call must be used inside some expression, you need to add
+        brackets around the call, like shown on the second line.
+</p>
 <pre class="programlisting">
-if cond { statements } [ else { statements } ]</pre>
+if cond { statements } [ else { statements } ]
+</pre>
 <p>
-      This is a regular if-statement. The condition is composed of:
-      </p>
+        This is a regular if-statement. The condition is composed of:
+        </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>Literals (true if at least one string is not empty)</p></li>
-<li><p>Comparisons: <code class="computeroutput">a
-        <em class="replaceable"><code>operator</code></em> b</code> where
-        <em class="replaceable"><code>operator</code></em> is one of <code class="computeroutput">=</code>,
-        <code class="computeroutput">!=</code>, <code class="computeroutput">&lt;</code>, <code class="computeroutput">&gt;</code>,
-        <code class="computeroutput">&lt;=</code>, <code class="computeroutput">&gt;=</code>. The comparison is done
-        pairwise between each string in the left and the right arguments.
-        </p></li>
-<li><p>Logical operations: <code class="computeroutput">! a</code>, <code class="computeroutput">a &amp;&amp;
-        b</code>, <code class="computeroutput">a || b</code></p></li>
-<li><p>Grouping: <code class="computeroutput">( cond )</code></p></li>
+<li><p>
+              Literals (true if at least one string is not empty)
+            </p></li>
+<li><p>
+              Comparisons: <code class="computeroutput">a <em class="replaceable"><code>operator</code></em> b</code>
+              where <em class="replaceable"><code>operator</code></em> is one of
+              <code class="computeroutput">=</code>, <code class="computeroutput">!=</code>, <code class="computeroutput">&lt;</code>,
+              <code class="computeroutput">&gt;</code>, <code class="computeroutput">&lt;=</code> or <code class="computeroutput">&gt;=</code>. The
+              comparison is done pairwise between each string in the left and
+              the right arguments.
+            </p></li>
+<li><p>
+              Logical operations: <code class="computeroutput">! a</code>, <code class="computeroutput">a &amp;&amp; b</code>,
+              <code class="computeroutput">a || b</code>
+            </p></li>
+<li><p>
+              Grouping: <code class="computeroutput">( cond )</code>
+            </p></li>
 </ul></div>
 <p>
-      </p>
+</p>
 <pre class="programlisting">
-for var in list { statements }</pre>
+for var in list { statements }
+</pre>
 <p>
-      Executes statements for each element in list, setting the variable
-      <code class="varname">var</code> to the element value.
-      </p>
+        Executes statements for each element in list, setting the variable
+        <code class="varname">var</code> to the element value.
+</p>
 <pre class="programlisting">
-while cond { statements }</pre>
+while cond { statements }
+</pre>
 <p>
-      Repeatedly execute statements while cond remains true upon entry.
-      </p>
+        Repeatedly execute statements while cond remains true upon entry.
+</p>
 <pre class="programlisting">
 return values ;
-      </pre>
-<p>This statement should be used only inside a
-      rule and assigns <code class="computeroutput">values</code> to the return value of the
-      rule.
-      </p>
+</pre>
+<p>
+        This statement should be used only inside a rule and assigns
+        <code class="computeroutput">values</code> to the return value of the rule.
+        </p>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
@@ -209,38 +245,42 @@ return values ;
 </tr>
 <tr><td align="left" valign="top">
 <p>
-        The <code class="computeroutput">return</code> statement does not exit the rule. For example:
-        </p>
+            The <code class="computeroutput">return</code> statement does not exit the rule. For
+            example:
+</p>
 <pre class="programlisting">
 rule test ( )
 {
-   if 1 = 1 {
+   if 1 = 1
+   {
       return "reasonable" ;
    }
    return "strange" ;
-}</pre>
-<p> will return <code class="literal">strange</code>, not
-<code class="literal">reasonable</code>.
-      </p>
+}
+</pre>
+<p>
+            will return <code class="literal">strange</code>, not
+            <code class="literal">reasonable</code>.
+          </p>
 </td></tr>
 </table></div>
 <p>
-
-        </p>
+</p>
 <pre class="programlisting">
 import <em class="replaceable"><code>module</code></em> ;
-import <em class="replaceable"><code>module</code></em> : <em class="replaceable"><code>rule</code></em> ;</pre>
+import <em class="replaceable"><code>module</code></em> : <em class="replaceable"><code>rule</code></em> ;
+</pre>
 <p>
-      The first form imports the specified bjam module. All rules from
-      that module are made available using the qualified name:
-      <code class="computeroutput"><em class="replaceable"><code>module</code></em>.<em class="replaceable"><code>rule</code></em></code>.
-      The second form imports the specified rules only, and they can be called
-      using unqualified names.
+        The first form imports the specified bjam module. All rules from that
+        module are made available using the qualified name: <code class="computeroutput"><em class="replaceable"><code>
+        module</code></em>.<em class="replaceable"><code>rule</code></em></code>. The second
+        form imports the specified rules only, and they can be called using
+        unqualified names.
       </p>
 <p><a name="bbv2.advanced.jam_language.actions"></a>
         Sometimes, you'd need to specify the actual command lines to be used
-        when creating targets. In jam language, you use named actions to do this.
-        For example:
+        when creating targets. In jam language, you use named actions to do
+        this. For example:
 </p>
 <pre class="programlisting">
 actions create-file-from-another
@@ -249,16 +289,16 @@ actions create-file-from-another
 }
 </pre>
 <p>
-        This specifies a named action called
-        <code class="literal">create-file-from-another</code>. The text inside braces is
-        the command to invoke. The <code class="literal">$(&lt;)</code> variable will be
-        expanded to a list of generated files, and the
-        <code class="literal">$(&gt;)</code> variable will be expanded to a list of
-        source files.
+        This specifies a named action called <code class="literal">
+        create-file-from-another</code>. The text inside braces is the
+        command to invoke. The <code class="literal">$(&lt;)</code> variable will be
+        expanded to a list of generated files, and the <code class="literal">$(&gt;)
+        </code> variable will be expanded to a list of source files.
       </p>
-<p>To flexibly adjust command line, you can define a rule with the same
-      name as the action, and taking three parameters -- targets, sources and
-      properties. For example:
+<p>
+        To flexibly adjust the command line, you can define a rule with the same
+        name as the action and taking three parameters -- targets, sources and
+        properties. For example:
 </p>
 <pre class="programlisting">
 rule create-file-from-another ( targets * : sources * : properties * )
@@ -274,69 +314,110 @@ actions create-file-from-another
 }
 </pre>
 <p>
-      In this example, the rule checks if certain build property is specified.
-      If so, it sets variable <code class="varname">OPIONS</code> that is then used inside
-      the action. Note that the variables set "on a target" will be visible only
-      inside actions building that target, not globally. Were they set globally,
-      using variable named <code class="varname">OPTIONS</code> in two unrelated actions
-      would be impossible.
+        In this example, the rule checks if certain build property is specified.
+        If so, it sets variable <code class="varname">OPIONS</code> that is then used
+        inside the action. Note that the variables set "on a target" will be
+        visible only inside actions building that target, not globally. Were
+        they set globally, using variable named <code class="varname">OPTIONS</code> in
+        two unrelated actions would be impossible.
       </p>
-<p>More details can be found in Jam reference,
-      <a class="xref" href="../jam/language.html#jam.language.rules" title="Rules">the section called &#8220; Rules&#8221;</a>
+<p>
+        More details can be found in Jam reference, <a class="xref" href="../jam/language.html#jam.language.rules" title="Rules">the section called &#8220; Rules&#8221;</a>.
       </p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.advanced.configuration"></a>Configuration</h3></div></div></div>
-<p>The Boost.Build configuration is specified in the file
-    <code class="filename">user-config.jam</code>. You can edit the one in the top-level
-    directory of Boost.Build installation or create a copy in your home
-    directory and edit that. (See <a class="xref" href="reference.html#bbv2.reference.init.config" title="Table 28.2. Search paths for configuration files">Table 28.2, &#8220;Search paths for configuration files&#8221;</a>
-    for the exact search paths.) The primary function of that file is to declare
-    which compilers and other tools are available. The simplest syntax to
-    configure a tool is:
-
-</p>
+<p>
+      On startup, Boost.Build searches and reads two configuration files: 
+      <code class="filename">site-config.jam</code> and <code class="filename">user-config.jam</code>.
+      The first one is usually installed and maintained by system administrator, and
+      the second is for user to modify.  You can edit the one in the top-level
+      directory of Boost.Build installation or create a copy in your home
+      directory and edit the copy.  The following table explains where both files
+      are searched.
+    </p>
+<div class="table">
+<a name="bbv2.reference.init.config"></a><p class="title"><b>Table 30.1. Search paths for configuration files</b></p>
+<div class="table-contents"><table class="table" summary="Search paths for configuration files">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th> </th>
+<th>site-config.jam</th>
+<th>user-config.jam</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Linux</td>
+<td>
+              <p><code class="computeroutput">/etc</code></p>
+              <p><code class="computeroutput">$HOME</code></p>
+              <p><code class="computeroutput">$BOOST_BUILD_PATH</code></p>
+            </td>
+<td>
+              <p><code class="computeroutput">$HOME</code></p>
+              <p><code class="computeroutput">$BOOST_BUILD_PATH</code></p>
+            </td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>
+              <p><code class="computeroutput">%SystemRoot%</code></p>
+              <p><code class="computeroutput">%HOMEDRIVE%%HOMEPATH%</code></p>
+              <p><code class="computeroutput">%HOME%</code></p>
+              <p><code class="computeroutput">%BOOST_BUILD_PATH%</code></p>
+            </td>
+<td>
+              <p><code class="computeroutput">%HOMEDRIVE%%HOMEPATH%</code></p>
+              <p><code class="computeroutput">%HOME%</code></p>
+              <p><code class="computeroutput">%BOOST_BUILD_PATH%</code></p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/html/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        You can use the <span class="command"><strong>--debug-configuration</strong></span> option to
+        find which configuration files are actually loaded.
+      </p></td></tr>
+</table></div>
+<p>
+      Usually, <code class="filename">user-config.jam</code> just defines available compilers
+      and other tools (see <a class="xref" href="faq.html#bbv2.recipies.site-config" title="Targets in site-config.jam">the section called &#8220;Targets in site-config.jam&#8221;</a> for more advanced
+      usage). A tool is configured using the following syntax:
+    </p>
 <pre class="programlisting">
-using <em class="replaceable"><code>tool-name</code></em> ;
+using <em class="replaceable"><code>tool-name</code></em> : ... ;
 </pre>
 <p>
       The <code class="computeroutput">using</code> rule is given a name of tool, and
       will make that tool available to Boost.Build. For example,
-      <code class="computeroutput">using gcc ;</code> will make the gcc compiler available.
-    </p>
-<p>
-      Since nothing but a tool name is specified, Boost.Build will pick some
-      default settings. For example, it will use the <span class="command"><strong>gcc</strong></span>
-      executable found in the <code class="envar">PATH</code>, or look in some known
-      installation locations. In most cases, this strategy works automatically.
-      In case you have several versions of a compiler, it's installed in some
-      unusual location, or you need to tweak its configuration, you'll need to
-      pass additional parameters to the <code class="computeroutput">using</code> rule.
-      The parameters to <code class="computeroutput">using</code> can be different for
-      each tool. You can obtain specific documentation for any tool's
-      configuration parameters by invoking
 </p>
 <pre class="programlisting">
-bjam --help <em class="replaceable"><code>tool-name</code></em>.init
+using gcc ;
 </pre>
-<p>
+<p> will make the <a href="http://gcc.gnu.org" target="_top">GCC</a> compiler available.
     </p>
 <p>
-      That said, for all the compiler toolsets Boost.Build supports
+      All the supported tools are documented in <a class="xref" href="reference.html#bbv2.reference.tools" title="Builtin tools">the section called &#8220;Builtin tools&#8221;</a>,
+      including the specific options they take. Some general notes that apply to most
+      C++ compilers are below.
+    </p>
+<p>
+      For all the C++ compiler toolsets Boost.Build supports
       out-of-the-box, the list of parameters to
       <code class="computeroutput">using</code> is the same: <em class="parameter"><code>toolset-name</code></em>, <em class="parameter"><code>version</code></em>, <em class="parameter"><code>invocation-command</code></em>, and <em class="parameter"><code>options</code></em>.
-      
     </p>
-<p>The <em class="parameter"><code>version</code></em> parameter
-    identifies the toolset version, in case you have several installed. It can
-    have any form you like, but it is recommended that you use a numeric
-    identifier like <code class="literal">7.1</code>.
-    </p>
-<p>
-      The <em class="parameter"><code>invocation-command</code></em> parameter
-      is the command that must be executed to run the compiler. This parameter
-      can usually be omitted if the compiler executable
+<p>If you have a single compiler, and the compiler executable
       </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>has its &#8220;usual name&#8221; and is in the
@@ -347,43 +428,33 @@ bjam --help <em class="replaceable"><code>tool-name</code></em>.init
       registry.</p></li>
 </ul></div>
 <p>
-
-      For example:
-</p>
+    it can be configured by simply:</p>
 <pre class="programlisting">
-using msvc : 7.1 ;
-using gcc ;
+using <em class="replaceable"><code>tool-name</code></em> ;
 </pre>
-<p>
-If the compiler can be found in the <code class="envar">PATH</code> but only by a
-nonstandard name, you can just supply that name:
-</p>
+<p>If the compiler is installed in a custom directory, you should provide the
+    command that invokes the compiler, for example:</p>
 <pre class="programlisting">
 using gcc : : g++-3.2 ;
-</pre>
-<p>
-Otherwise, it might be necessary to supply the complete path to the
-compiler executable:
-</p>
-<pre class="programlisting">
 using msvc : : "Z:/Programs/Microsoft Visual Studio/vc98/bin/cl" ;
 </pre>
 <p>
-Some Boost.Build toolsets will use that path to take additional
-actions required before invoking the compiler, such as calling
-vendor-supplied scripts to set up its required environment variables.
-When compiler executables for C and C++ are different, path to the C++
-compiler executable must be specified. The &#8220;invocation command&#8221;
-can be any command allowed by the operating system. For example:
+      Some Boost.Build toolsets will use that path to take additional actions
+      required before invoking the compiler, such as calling vendor-supplied
+      scripts to set up its required environment variables. When compiler
+      executables for C and C++ are different, path to the C++ compiler
+      executable must be specified. The command can
+      be any command allowed by the operating system. For example:
 </p>
 <pre class="programlisting">
 using msvc : : echo Compiling &amp;&amp; foo/bar/baz/cl ;
 </pre>
 <p>
-will work.
+      will work.
     </p>
-<p>To configure several versions of a toolset, simply invoke
-    the <code class="computeroutput">using</code> rule multiple times:
+<p>
+      To configure several versions of a toolset, simply invoke the
+      <code class="computeroutput">using</code> rule multiple times:
 </p>
 <pre class="programlisting">
 using gcc : 3.3 ;
@@ -391,142 +462,270 @@ using gcc : 3.4 : g++-3.4 ;
 using gcc : 3.2 : g++-3.2 ;
 </pre>
 <p>
-        Note that in the first call to
-        <code class="computeroutput">using</code>, the compiler found in the
-        <code class="envar">PATH</code> will be used, and there's no need to
-        explicitly specify the command.
+      Note that in the first call to <code class="computeroutput">using</code>, the
+      compiler found in the <code class="envar">PATH</code> will be used, and there is no
+      need to explicitly specify the command.
     </p>
-<p>As shown above, both the <em class="parameter"><code>version</code></em> and <em class="parameter"><code>invocation-command</code></em> parameters are
-    optional, but there's an important restriction: if you configure
-    the same toolset more than once, you must pass the <em class="parameter"><code>version</code></em>
-    parameter every time. For example, the following is not allowed:
-</p>
-<pre class="programlisting">
-using gcc ;
-using gcc : 3.4 : g++-3.4 ;
-</pre>
 <p>
-      because the first <code class="computeroutput">using</code> call does
-      not specify a <em class="parameter"><code>version</code></em>.
-    </p>
-<p>The <em class="parameter"><code>options</code></em>
-    parameter is used to fine-tune the configuration. All of
-    Boost.Build's standard compiler toolsets accept properties of the
-    four builtin features <code class="varname">cflags</code>,
-    <code class="varname">cxxflags</code>, <code class="varname">compileflags</code> and
-    <code class="varname">linkflags</code> as <em class="parameter"><code>options</code></em> specifying flags that will be
-    always passed to the corresponding tools. Values of the
-    <code class="varname">cflags</code> feature are passed directly to the C
-    compiler, values of the <code class="varname">cxxflags</code> feature are
-    passed directly to the C++ compiler, and values of the
-    <code class="varname">compileflags</code> feature are passed to both. For
-    example, to configure a <span class="command"><strong>gcc</strong></span> toolset so that it
-    always generates 64-bit code you could write:
+      Many of toolsets have an <em class="parameter"><code>options</code></em>
+      parameter to fine-tune the configuration. All of
+      Boost.Build's standard compiler toolsets accept four options
+      <code class="varname">cflags</code>, <code class="varname">cxxflags</code>, 
+      <code class="varname">compileflags</code> and <code class="varname">linkflags</code> as <em class="parameter"><code>options</code></em> specifying flags that will be
+      always passed to the corresponding tools. Values of the
+      <code class="varname">cflags</code> feature are passed directly to the C
+      compiler, values of the <code class="varname">cxxflags</code> feature are
+      passed directly to the C++ compiler, and values of the
+      <code class="varname">compileflags</code> feature are passed to both. For
+      example, to configure a <span class="command"><strong>gcc</strong></span> toolset so that it
+      always generates 64-bit code you could write:
 </p>
 <pre class="programlisting">
-using gcc : 3.4 : : &lt;compileflags&gt;-m64 &lt;linkflags&gt;-m64 ;
+        using gcc : 3.4 : : &lt;compileflags&gt;-m64 &lt;linkflags&gt;-m64 ;
 </pre>
 <p>
     </p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/html/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Although the syntax used to specify toolset options is very similar
+        to syntax used to specify requirements in Jamfiles, the toolset options
+        are not the same as features. Don't try to specify a feature value
+        in toolset initialization.
+      </p></td></tr>
+</table></div>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.advanced.invocation"></a>Invocation</h3></div></div></div>
-<p>This section describes how invoke Boost.Build from the command line</p>
+<div class="toc"><dl>
+<dt><span class="section"><a href="advanced.html#bbv2.advanced.invocation.examples">Examples</a></span></dt>
+<dt><span class="section"><a href="advanced.html#bbv2.advanced.invocation.options">Options</a></span></dt>
+<dt><span class="section"><a href="advanced.html#bbv2.advanced.invocation.properties">Properties</a></span></dt>
+<dt><span class="section"><a href="advanced.html#bbv2.advanced.invocation.targets">Targets</a></span></dt>
+</dl></div>
+<p>To invoke Boost.Build, type <span class="command"><strong>bjam</strong></span> on the command line. Three kinds
+      of command-line tokens are accepted, in any order:</p>
+<div class="variablelist"><dl>
+<dt><span class="term">options</span></dt>
+<dd><p>Options start with either dash, or two dashes.  The standard options
+          are listed below, and each project may add additional options</p></dd>
+<dt><span class="term">properties</span></dt>
+<dd><p>Properties specify details of what you want to build (e.g. debug
+          or release variant).  Syntactically, all command line tokens with equal sign in them
+          are considered to specify properties.  In the simplest form, property looks like
+          <span class="command"><strong><em class="replaceable"><code>feature</code></em>=<em class="replaceable"><code>value</code></em></strong></span>
+          </p></dd>
+<dt><span class="term">target</span></dt>
+<dd><p>All tokens that are neither options nor properties specify 
+          what targets to build.  The available targets entirely depend on the project
+          you are building.</p></dd>
+</dl></div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="bbv2.advanced.invocation.examples"></a>Examples</h4></div></div></div>
 <p>To build all targets defined in Jamfile in the current directory with default properties, run:
 </p>
 <pre class="screen">
 bjam
 </pre>
+<p>
+        </p>
 <p>To build specific targets, specify them on the command line:
 </p>
 <pre class="screen">
 bjam lib1 subproject//lib2
 </pre>
 <p>
-      </p>
+        </p>
 <p>To request a certain value for some property, add <code class="literal">
-      <em class="replaceable"><code>property</code></em>=<em class="replaceable"><code>value</code></em></code> to the command line:
+        <em class="replaceable"><code>property</code></em>=<em class="replaceable"><code>value</code></em></code> to the command line:
 </p>
 <pre class="screen">
 bjam toolset=gcc variant=debug optimization=space
 </pre>
 <p>
-       For often used features, like <code class="literal">toolset</code> and <code class="literal">variant</code> you can
-       omit the feature name, so the above can be written as:
-</p>
-<pre class="screen">
-bjam optimization=space
-</pre>
-<p>
-      </p>
+        </p>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="bbv2.advanced.invocation.options"></a>Options</h4></div></div></div>
 <p>Boost.Build recognizes the following command line options.</p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="option">--clean</code></span></dt>
-<dd><p>Cleans all targets in the current directory and
-            in any subprojects. Note that unlike the <code class="literal">clean</code>
-            target in make, you can use <code class="literal">--clean</code>
-            together with target names to clean specific targets.</p></dd>
-<dt><span class="term"><code class="option">--clean-all</code></span></dt>
-<dd><p>Cleans all targets,
-            no matter where they are defined. In particular, it will clean targets
-            in parent Jamfiles, and targets defined under other project roots.
-            </p></dd>
-<dt><span class="term"><code class="option">--build-dir</code></span></dt>
-<dd>
-<p>Changes build directories for all project roots being built. When
-            this option is specified, all Jamroot files should declare project name.
-            The build directory for the project root will be computed by concatanating
-            the value of the <code class="option">--build-dir</code> option, the project name
-            specified in Jamroot, and the build dir specified in Jamroot
-            (or <code class="literal">bin</code>, if none is specified).
-            </p>
-<p>The option is primarily useful when building from read-only
-            media, when you can't modify Jamroot.
-            </p>
-</dd>
-<dt><span class="term"><code class="option">--version</code></span></dt>
-<dd><p>Prints information on Boost.Build and Boost.Jam
-                  versions.
-            </p></dd>
 <dt>
 <a name="bbv2.reference.init.options.help"></a><span class="term"><code class="option">--help</code></span>
 </dt>
 <dd><p>Invokes the online help system. This prints general
-                  information on how to use the help system with additional
-                  --help* options.
-            </p></dd>
+              information on how to use the help system with additional
+              --help* options.
+              </p></dd>
+<dt><span class="term"><code class="option">--clean</code></span></dt>
+<dd><p>Cleans all targets in the current directory and
+              in any subprojects. Note that unlike the <code class="literal">clean</code>
+              target in make, you can use <code class="literal">--clean</code>
+              together with target names to clean specific targets.</p></dd>
+<dt><span class="term"><code class="option">--clean-all</code></span></dt>
+<dd><p>Cleans all targets,
+              no matter where they are defined. In particular, it will clean targets
+              in parent Jamfiles, and targets defined under other project roots.
+              </p></dd>
+<dt><span class="term"><code class="option">--build-dir</code></span></dt>
+<dd>
+<p>Changes build directories for all project roots being built. When
+              this option is specified, all Jamroot files should declare project name.
+              The build directory for the project root will be computed by concatanating
+              the value of the <code class="option">--build-dir</code> option, the project name
+              specified in Jamroot, and the build dir specified in Jamroot
+              (or <code class="literal">bin</code>, if none is specified).
+              </p>
+<p>The option is primarily useful when building from read-only
+              media, when you can't modify Jamroot.
+              </p>
+</dd>
+<dt><span class="term"><code class="option">--version</code></span></dt>
+<dd><p>Prints information on Boost.Build and Boost.Jam
+              versions.
+              </p></dd>
 <dt><span class="term"><code class="option">--debug-configuration</code></span></dt>
 <dd><p>Produces debug information about loading of Boost.Build
-            and toolset files.</p></dd>
+              and toolset files.</p></dd>
 <dt><span class="term"><code class="option">--debug-building</code></span></dt>
 <dd><p>Prints what targets are being built and with what properties.
-            </p></dd>
+              </p></dd>
 <dt><span class="term"><code class="option">--debug-generators</code></span></dt>
 <dd><p>Produces debug output from generator search process.
-            Useful for debugging custom generators.
-            </p></dd>
+              Useful for debugging custom generators.
+              </p></dd>
 <dt><span class="term"><code class="option">--ignore-config</code></span></dt>
 <dd><p>Do not load <code class="literal">site-config.jam</code> and
-                  <code class="literal">user-config.jam</code> configuration files.
-            </p></dd>
-<dt><span class="term"><code class="option">--debug</code></span></dt>
-<dd><p>Enables internal checks.
-            </p></dd>
+              <code class="literal">user-config.jam</code> configuration files.
+              </p></dd>
 </dl></div>
-<p>For complete specification of command line syntax, see
-      <a class="xref" href="reference.html#bbv2.reference.init.args" title="Command line arguments">the section called &#8220;Command line arguments&#8221;</a>
-      </p>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="bbv2.advanced.invocation.properties"></a>Properties</h4></div></div></div>
+<p>In the simplest case, the build is performed with a single set of properties,
+        that you specify on the command line with elements in the form
+        <span class="command"><strong><em class="replaceable"><code>feature</code></em>=<em class="replaceable"><code>value</code></em></strong></span>.
+        The complete list of features can be found in <a class="xref" href="reference.html#bbv2.advanced.builtins.features" title="Builtin features">the section called &#8220;Builtin features&#8221;</a>. 
+        The most common features are summarized below.</p>
+<div class="table">
+<a name="id4118721"></a><p class="title"><b>Table 30.2. </b></p>
+<div class="table-contents"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Feature</th>
+<th>Allowed values</th>
+<th>Notes</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>variant</td>
+<td>debug,release</td>
+<td> </td>
+</tr>
+<tr>
+<td>link</td>
+<td>shared,static</td>
+<td>Determines if Boost.Build creates shared or static libraries</td>
+</tr>
+<tr>
+<td>threading</td>
+<td>single,multi</td>
+<td>Cause the produced binaries to be thread-safe.  This requires proper support in the source code itself.</td>
+</tr>
+<tr>
+<td>toolset</td>
+<td>(Depends on configuration)</td>
+<td>The C++ compiler to use. See <a class="xref" href="reference.html#bbv2.reference.tools.compilers" title="C++ Compilers">the section called &#8220;C++ Compilers&#8221;</a> for a detailed list.</td>
+</tr>
+<tr>
+<td>cxxflags</td>
+<td>(Arbitrary string)</td>
+<td>Custom options to pass to the C++ compiler.</td>
+</tr>
+<tr>
+<td>cflags</td>
+<td>(Arbitrary string)</td>
+<td>Custom options to pass to the C compiler.</td>
+</tr>
+<tr>
+<td>includes</td>
+<td>(Arbitrary string)</td>
+<td>Additional include paths for C and C++ compilers.</td>
+</tr>
+<tr>
+<td>define</td>
+<td>(Arbitrary string)</td>
+<td>Additional macro definitions for C and C++ compilers.</td>
+</tr>
+<tr>
+<td>runtime-link</td>
+<td>shared,static</td>
+<td>Determines if shared or static version of C and C++ runtimes should be used.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+
+        If you have more than one version of a given C++ toolset (e.g. configured in
+        <code class="filename">user-config.jam</code>, or autodetected, as happens with msvc), you can
+        request the specific version by passing 
+        <code class="computeroutput"><em class="replaceable"><code>toolset</code></em>-<em class="replaceable"><code>version</code></em></code> as
+        the value of the <code class="computeroutput">toolset</code> feature, for example <code class="computeroutput">toolset=msvc-8.0</code>.
+
+
+        <p>
+          If a feature has a fixed set of values it can be specified more than 
+          once on the command line. 
+          In which case, everything will be built several times --
+          once for each specified value of a feature.  For example, if you use
+        </p>
+<pre class="screen">
+bjam link=static link=shared threading=single threading=multi
+</pre>
+<p>
+          Then a total of 4 builds will be performed.  For convenience, 
+          instead of specifying all requested values of a feature in separate command line elements,
+          you can separate the values with commands, for example:
+        </p>
+<pre class="screen">
+bjam link=static,shared threading=single,multi
+</pre>
+<p>
+          The comma has special meaning only if the feature has a fixed set of values, so
+        </p>
+<pre class="screen">
+bjam include=static,shared
+</pre>
+<p>is not treated specially.</p>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="bbv2.advanced.invocation.targets"></a>Targets</h4></div></div></div>
+<p>All command line elements that are neither options nor properties are the names of the
+        targets to build. See <a class="xref" href="reference.html#bbv2.reference.ids" title="Target identifiers and references">the section called &#8220;Target identifiers and references&#8221;</a>. If no target is specified,
+        the project in the current directory is built.</p>
+</div>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.advanced.targets"></a>Declaring Targets</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="advanced.html#id3903658">Name</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id3903714">Sources</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id4119183">Name</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id4119238">Sources</a></span></dt>
 <dt><span class="section"><a href="advanced.html#bbv2.advanced.targets.requirements">Requirements</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id3904049">Default Build</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id3904077">Additional Information</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id4119572">Default Build</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id4119600">Additional Information</a></span></dt>
 </dl></div>
 <p><a name="bbv2.advanced.targets.main"></a>
         A <em class="firstterm">Main target</em> is a user-defined named
@@ -535,9 +734,9 @@ bjam optimization=space
         target rules described in <a class="xref" href="reference.html#bbv2.reference.rules" title="Builtin rules">the section called &#8220;Builtin rules&#8221;</a>.  The user can also declare
         custom main target rules as shown in <a class="xref" href="extender.html#bbv2.extending.rules" title="Main target rules">the section called &#8220;Main target rules&#8221;</a>.
       </p>
-<a class="indexterm" name="id3903504"></a><p>Most main target rules in Boost.Build have the same common
+<a class="indexterm" name="id4119030"></a><p>Most main target rules in Boost.Build have the same common
       signature:</p>
-<a class="indexterm" name="id3903518"></a><a name="bbv2.main-target-rule-syntax"></a><pre class="programlisting">
+<a class="indexterm" name="id4119044"></a><a name="bbv2.main-target-rule-syntax"></a><pre class="programlisting">
 rule <em class="replaceable"><code>rule-name</code></em> (
      main-target-name :
      sources + :
@@ -585,7 +784,7 @@ rule <em class="replaceable"><code>rule-name</code></em> (
       </p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3903658"></a>Name</h4></div></div></div>
+<a name="id4119183"></a>Name</h4></div></div></div>
 <p>The name of main target has two purposes. First, it's used to refer to this target from
         other targets and from command line. Second, it's used to compute the names of the generated files.
         Typically, filenames are obtained from main target name by appending system-dependent suffixes and
@@ -605,7 +804,7 @@ obj test.debug : test.cpp : &lt;variant&gt;debug ;
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3903714"></a>Sources</h4></div></div></div>
+<a name="id4119238"></a>Sources</h4></div></div></div>
 <p>The list of sources specifies what should be processed to
         get the resulting targets. Most of the time, it's just a list of
         files. Sometimes, you'll want to automatically construct the
@@ -624,29 +823,28 @@ exe b : [ glob *.cpp ] ;  # all .cpp files in this directory are sources
         </p>
 <p>
           
-          The list of sources can also refer to other main targets.
-          Targets in the same project can be referred to by name, while
-          targets in other projects must be qualified with a directory or a
-          symbolic project name. The directory/project name is separated from
-          the target name by a double forward slash. There's no special syntax to
-          distinguish the directory name from the project name&#8212;the part before
-          the double slash is first looked up as project name, and then as directory
-          name. For example:
+          The list of sources can also refer to other main targets. Targets in
+          the same project can be referred to by name, while targets in other
+          projects must be qualified with a directory or a symbolic project
+          name. The directory/project name is separated from the target name by
+          a double forward slash. There is no special syntax to distinguish the
+          directory name from the project name&#8212;the part before the double
+          slash is first looked up as project name, and then as directory name.
+          For example:
         </p>
 <pre class="programlisting">
 lib helper : helper.cpp ;
 exe a : a.cpp helper ;
-# Since all project ids start with slash, ".." is directory name.
+# Since all project ids start with slash, ".." is a directory name.
 exe b : b.cpp ..//utils ;
 exe c : c.cpp /boost/program_options//program_options ;
 </pre>
 <p>
-          The first exe uses the library defined in the same
-          project. The second one uses some target (most likely library)
-          defined by Jamfile one level higher. Finally, the third target
-          uses some <a href="http://boost.org" target="_top">C++ Boost</a>
-          library, referring to it by absolute symbolic name. More
-          information about target references can be found in <a class="xref" href="tutorial.html#bbv2.tutorial.libs" title="Dependent Targets">the section called &#8220;Dependent Targets&#8221;</a> and <a class="xref" href="reference.html#bbv2.reference.ids" title="Target identifiers and references">the section called &#8220;Target identifiers and references&#8221;</a>.
+          The first exe uses the library defined in the same project. The second
+          one uses some target (most likely a library) defined by a Jamfile one
+          level higher. Finally, the third target uses a <a href="http://boost.org" target="_top">C++ Boost</a> library, referring to it using
+          its absolute symbolic name. More information about target references
+          can be found in <a class="xref" href="tutorial.html#bbv2.tutorial.libs" title="Dependent Targets">the section called &#8220;Dependent Targets&#8221;</a> and <a class="xref" href="reference.html#bbv2.reference.ids" title="Target identifiers and references">the section called &#8220;Target identifiers and references&#8221;</a>.
         </p>
 </div>
 <div class="section" lang="en">
@@ -757,7 +955,7 @@ exe test3 : test3.cpp : -&lt;threading&gt;multi ;
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3904049"></a>Default Build</h4></div></div></div>
+<a name="id4119572"></a>Default Build</h4></div></div></div>
 <p>The <code class="varname">default-build</code> parameter
         is a set of properties to be used if the build request does
         not otherwise specify a value for features in the set. For example:
@@ -774,7 +972,7 @@ exe hello : hello.cpp : : &lt;threading&gt;multi ;
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3904077"></a>Additional Information</h4></div></div></div>
+<a name="id4119600"></a>Additional Information</h4></div></div></div>
 <p>
           The ways a target is built can be so different that
           describing them using conditional requirements would be
@@ -867,7 +1065,7 @@ project tennis
 
         </p>
 <div class="table">
-<a name="id3904292"></a><p class="title"><b>Table 28.1. </b></p>
+<a name="id4119816"></a><p class="title"><b>Table 30.3. </b></p>
 <div class="table-contents"><table class="table" summary="">
 <colgroup>
 <col>
@@ -968,8 +1166,8 @@ project tennis
 <a name="bbv2.advanced.build_process"></a>The Build Process</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="advanced.html#bbv2.advanced.build_request">Build Request</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id3904629">Building a main target</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id3904755">Building a Project</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id4120152">Building a main target</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id4120277">Building a Project</a></span></dt>
 </dl></div>
 <p>When you've described your targets, you want Boost.Build to run the
       right tools and create the needed targets.
@@ -1021,12 +1219,12 @@ bjam app1 lib1//lib1 gcc debug optimization=full
 </pre>
 <p>
         The complete syntax, which has some additional shortcuts, is
-        described in <a class="xref" href="reference.html#bbv2.reference.commandline" title="Command line">the section called &#8220;Command line&#8221;</a>.
+        described in <a class="xref" href="../">???</a>.
       </p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3904629"></a>Building a main target</h4></div></div></div>
+<a name="id4120152"></a>Building a main target</h4></div></div></div>
 <p>When you request, directly or indirectly, a build of a main target
         with specific requirements, the following steps are done. Some brief
         explanation is provided, and more details are given in <a class="xref" href="reference.html#bbv2.reference.buildprocess" title="Build process">the section called &#8220;Build process&#8221;</a>.
@@ -1086,7 +1284,7 @@ bjam app1 lib1//lib1 gcc debug optimization=full
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3904755"></a>Building a Project</h4></div></div></div>
+<a name="id4120277"></a>Building a Project</h4></div></div></div>
 <p>Often, a user builds a complete project, not just one main
       target. In fact, invoking <span class="command"><strong>bjam</strong></span> without
       arguments
