@@ -84,7 +84,7 @@
       documentation.</p>
 <p>Boost.Jam has an interpreted, procedural language. 
       On the lowest level, a Boost.Jam program consists of variables and 
-      <a class="indexterm" name="id2119154"></a>
+      <a class="indexterm" name="id2119697"></a>
       <em class="firstterm">rules</em> (the Jam term for function). They are grouped
       in modules&#8212;there's one global module and a number of named
       modules. Besides that, a Boost.Jam program contains classes and class
@@ -525,11 +525,11 @@ bjam optimization=space
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.advanced.targets"></a>Declaring Targets</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="advanced.html#id2120369">Name</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id2120525">Sources</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id2120913">Name</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id2121069">Sources</a></span></dt>
 <dt><span class="section"><a href="advanced.html#bbv2.advanced.targets.requirements">Requirements</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id2120836">Default Build</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id2120864">Additional Information</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id2121380">Default Build</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id2121408">Additional Information</a></span></dt>
 </dl></div>
 <p><a name="bbv2.advanced.targets.main"></a>
         A <em class="firstterm">Main target</em> is a user-defined named
@@ -538,9 +538,9 @@ bjam optimization=space
         target rules described in <a href="reference.html#bbv2.reference.rules" title="Builtin rules">the section called &#8220;Builtin rules&#8221;</a>.  The user can also declare
         custom main target rules as shown in <a href="extender.html#bbv2.extending.rules" title="Main target rules">the section called &#8220;Main target rules&#8221;</a>.
       </p>
-<a class="indexterm" name="id2120317"></a><p>Most main target rules in Boost.Build have the same common
+<a class="indexterm" name="id2120861"></a><p>Most main target rules in Boost.Build have the same common
       signature:</p>
-<a class="indexterm" name="id2120330"></a><a name="bbv2.main-target-rule-syntax"></a><pre class="programlisting">
+<a class="indexterm" name="id2120874"></a><a name="bbv2.main-target-rule-syntax"></a><pre class="programlisting">
 rule <em class="replaceable"><code>rule-name</code></em> (
      main-target-name :
      sources + :
@@ -588,7 +588,7 @@ rule <em class="replaceable"><code>rule-name</code></em> (
       </p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2120369"></a>Name</h4></div></div></div>
+<a name="id2120913"></a>Name</h4></div></div></div>
 <p>The name of main target has two purposes. First, it's used to refer to this target from
         other targets and from command line. Second, it's used to compute the names of the generated files.
         Typically, filenames are obtained from main target name by appending system-dependent suffixes and
@@ -608,7 +608,7 @@ obj test.debug : test.cpp : &lt;variant&gt;debug ;
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2120525"></a>Sources</h4></div></div></div>
+<a name="id2121069"></a>Sources</h4></div></div></div>
 <p>The list of sources specifies what should be processed to
         get the resulting targets. Most of the time, it's just a list of
         files. Sometimes, you'll want to automatically construct the
@@ -760,7 +760,7 @@ exe test3 : test3.cpp : -&lt;threading;&gt;multi ;
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2120836"></a>Default Build</h4></div></div></div>
+<a name="id2121380"></a>Default Build</h4></div></div></div>
 <p>The <code class="varname">default-build</code> parameter
         is a set of properties to be used if the build request does
         not otherwise specify a value for features in the set. For example:
@@ -777,7 +777,7 @@ exe hello : hello.cpp : : &lt;threading&gt;multi ;
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2120864"></a>Additional Information</h4></div></div></div>
+<a name="id2121408"></a>Additional Information</h4></div></div></div>
 <p>
           The ways a target is built can be so different that
           describing them using conditional requirements would be
@@ -870,7 +870,7 @@ project tennis
 
         </p>
 <div class="table">
-<a name="id2121078"></a><p class="title"><b>Table 25.1. </b></p>
+<a name="id2121622"></a><p class="title"><b>Table 25.1. </b></p>
 <table class="table" summary="">
 <colgroup>
 <col>
@@ -971,8 +971,8 @@ project tennis
 <a name="bbv2.advanced.build_process"></a>The Build Process</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="advanced.html#bbv2.advanced.build_request">Build Request</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id2121396">Building a main target</a></span></dt>
-<dt><span class="section"><a href="advanced.html#id2121511">Building a Project</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id2121940">Building a main target</a></span></dt>
+<dt><span class="section"><a href="advanced.html#id2122056">Building a Project</a></span></dt>
 </dl></div>
 <p>When you've described your targets, you want Boost.Build to run the
       right tools and create the needed targets. 
@@ -1029,7 +1029,7 @@ bjam app1 lib1//lib1 gcc debug optimization=full
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2121396"></a>Building a main target</h4></div></div></div>
+<a name="id2121940"></a>Building a main target</h4></div></div></div>
 <p>When you request, directly or indirectly, a build of a main target
         with specific requirements, the following steps are done. Some brief
         explanation is provided, and more details are given in <a href="reference.html#bbv2.reference.buildprocess" title="Build process">the section called &#8220;Build process&#8221;</a>.
@@ -1092,7 +1092,7 @@ bjam app1 lib1//lib1 gcc debug optimization=full
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2121511"></a>Building a Project</h4></div></div></div>
+<a name="id2122056"></a>Building a Project</h4></div></div></div>
 <p>Often, a user builds a complete project, not just one main
       target. In fact, invoking <span><strong class="command">bjam</strong></span> without
       arguments

@@ -96,7 +96,7 @@ import errors ;
 import "class" : new ;
 import common ;
 
-constant BOOST_VERSION : 1.34.0 ;
+constant BOOST_VERSION : 1.34.1 ;
 
 local version-tag = [ MATCH "^([^.]+)[.]([^.]+)[.]([^.]+)" : $(BOOST_VERSION) ] ;
 if $(version-tag[3]) = 0
@@ -407,7 +407,8 @@ if $(layout-versioned)
             {
                 noversion-file = 
                   [ MATCH "(.*)-[0-9_]+([.]so)[.0-9]*" : $(name) ] 
-                  [ MATCH "(.*)-[0-9_]+([.]a)" : $(name) ] ;
+                  [ MATCH "(.*)-[0-9_]+([.]a)" : $(name) ] 
+                  [ MATCH "(.*)-[0-9_]+([.]dll[.]a)" : $(name) ] ;
             }
                         
             local new-name = 

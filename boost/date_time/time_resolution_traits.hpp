@@ -6,7 +6,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2005/08/25 16:27:20 $
+ * $Date: 2007/05/25 19:58:16 $
  */
 
 
@@ -120,11 +120,10 @@ namespace date_time {
                    + (fractional_seconds_type(minutes)*60) 
                    + seconds)*res_adjust()) + fs) * -1);
       }
-      else{
-        return (((fractional_seconds_type(hours)*3600) 
-                 + (fractional_seconds_type(minutes)*60) 
-                 + seconds)*res_adjust()) + fs;
-      }
+
+      return (((fractional_seconds_type(hours)*3600) 
+               + (fractional_seconds_type(minutes)*60) 
+               + seconds)*res_adjust()) + fs;
     }
     
   };

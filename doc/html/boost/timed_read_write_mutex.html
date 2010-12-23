@@ -27,7 +27,22 @@
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class timed_read_write_mutex</span></h2>
 <p>boost::timed_read_write_mutex &#8212; <p>The <a href="timed_read_write_mutex.html" title="Class timed_read_write_mutex">timed_read_write_mutex</a> class is a model of the 
-			<a href="../thread/concepts.html#thread.concepts.TimedReadWriteMutex" title="TimedReadWriteMutex Concept">TimedReadWriteMutex</a> concept.</p></p>
+			<a href="../thread/concepts.html#thread.concepts.TimedReadWriteMutex" title="TimedReadWriteMutex Concept">TimedReadWriteMutex</a> concept.</p><div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"> Unfortunately it turned out that the current implementation of Read/Write Mutex has     
+            some serious problems. So it was decided not to put this implementation into
+            release grade code. Also discussions on the mailing list led to the
+            conclusion that the current concepts need to be rethought. In particular
+            the schedulings <a href="../thread/concepts.html#thread.concepts.read-write-scheduling-policies.inter-class" title="Inter-Class Scheduling Policies">
+                Inter-Class Scheduling Policies</a> are deemed unnecessary.
+            There seems to be common belief that a fair scheme suffices.
+            The following documentation has been retained however, to give
+            readers of this document the opportunity to study the original design.
+    </td></tr>
+</table></div></p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis">
@@ -45,11 +60,11 @@
   <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>implementation-defined</em></span> scoped_timed_write_lock;     
 
   <span class="emphasis"><em>// <a href="timed_read_write_mutex.html#boost.timed_read_write_mutexconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a href="timed_read_write_mutex.html#id1311390-bb">timed_read_write_mutex</a>(boost::read_write_scheduling_policy);
-  <a href="timed_read_write_mutex.html#id1311418-bb">~timed_read_write_mutex</a>();
+  <a href="timed_read_write_mutex.html#id1315142-bb">timed_read_write_mutex</a>(boost::read_write_scheduling_policy);
+  <a href="timed_read_write_mutex.html#id1252798-bb">~timed_read_write_mutex</a>();
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id1742693"></a><h2>Description</h2>
+<a name="id1743218"></a><h2>Description</h2>
 <p>The <a href="timed_read_write_mutex.html" title="Class timed_read_write_mutex">timed_read_write_mutex</a> class is a model of the 
 			<a href="../thread/concepts.html#thread.concepts.TimedReadWriteMutex" title="TimedReadWriteMutex Concept">TimedReadWriteMutex</a> concept. 
 			It should be used to synchronize access to shared resources using
@@ -147,11 +162,11 @@
 			unless all locks are read-locks (but see below)</td></tr>
 </table></div>
 <div class="refsect2" lang="en">
-<a name="id1743089"></a><h3>
+<a name="id1743614"></a><h3>
 <a name="boost.timed_read_write_mutexconstruct-copy-destruct"></a><code class="computeroutput">timed_read_write_mutex</code> construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><a name="id1311390-bb"></a>timed_read_write_mutex(boost::read_write_scheduling_policy count);</pre>
+<pre class="literallayout"><a name="id1315142-bb"></a>timed_read_write_mutex(boost::read_write_scheduling_policy count);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -172,7 +187,7 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><a name="id1311418-bb"></a>~timed_read_write_mutex();</pre>
+<pre class="literallayout"><a name="id1252798-bb"></a>~timed_read_write_mutex();</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>

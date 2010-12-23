@@ -41,28 +41,28 @@
   <span class="bold"><strong>typedef</strong></span> traits_type::locale_type            locale_type;    
 
   <span class="emphasis"><em>// <a href="regex_compiler.html#boost.xpressive.regex_compilerconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a href="regex_compiler.html#id964130-bb">regex_compiler</a>(RegexTraits <span class="bold"><strong>const</strong></span> &amp; = RegexTraits());
+  <a href="regex_compiler.html#id1215036-bb">regex_compiler</a>(RegexTraits <span class="bold"><strong>const</strong></span> &amp; = RegexTraits());
 
-  <span class="emphasis"><em>// <a href="regex_compiler.html#id698094-bb">public member functions</a></em></span>
-  <span class="type">locale_type</span> <a href="regex_compiler.html#id698097-bb">imbue</a>(locale_type) ;
-  <span class="type">locale_type</span> <a href="regex_compiler.html#id1248439-bb">getloc</a>() <span class="bold"><strong>const</strong></span>;
+  <span class="emphasis"><em>// <a href="regex_compiler.html#id1218774-bb">public member functions</a></em></span>
+  <span class="type">locale_type</span> <a href="regex_compiler.html#id1218777-bb">imbue</a>(locale_type) ;
+  <span class="type">locale_type</span> <a href="regex_compiler.html#id622609-bb">getloc</a>() <span class="bold"><strong>const</strong></span>;
   <span class="type"><a href="basic_regex.html" title="Struct template basic_regex">basic_regex</a>&lt; BidiIter &gt;</span> 
-  <a href="regex_compiler.html#id1248453-bb">compile</a>(string_type, flag_type = regex_constants::ECMAScript) ;
+  <a href="regex_compiler.html#id622623-bb">compile</a>(string_type, flag_type = regex_constants::ECMAScript) ;
 };</pre></div>
 <div class="refsect1" lang="en">
-<a name="id2023849"></a><h2>Description</h2>
+<a name="id2024385"></a><h2>Description</h2>
 <p>Class template regex_compiler is used to construct a basic_regex object from a string. The string should contain a valid regular expression. You can imbue a regex_compiler object with a locale, after which all basic_regex objects created with that regex_compiler object will use that locale. After creating a regex_compiler object, and optionally imbueing it with a locale, you can call the compile() method to construct a basic_regex object, passing it the string representing the regular expression. You can call compile() multiple times on the same regex_compiler object. Two basic_regex objects compiled from the same string will have different regex_id's. </p>
 <div class="refsect2" lang="en">
-<a name="id2023855"></a><h3>
+<a name="id2024390"></a><h3>
 <a name="boost.xpressive.regex_compilerconstruct-copy-destruct"></a><code class="computeroutput">regex_compiler</code> construct/copy/destruct</h3>
-<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id964130-bb"></a>regex_compiler(RegexTraits <span class="bold"><strong>const</strong></span> &amp; traits = RegexTraits());</pre></li></ol></div>
+<div class="orderedlist"><ol type="1"><li><pre class="literallayout"><a name="id1215036-bb"></a>regex_compiler(RegexTraits <span class="bold"><strong>const</strong></span> &amp; traits = RegexTraits());</pre></li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2023895"></a><h3>
-<a name="id698094-bb"></a><code class="computeroutput">regex_compiler</code> public member functions</h3>
+<a name="id2024430"></a><h3>
+<a name="id1218774-bb"></a><code class="computeroutput">regex_compiler</code> public member functions</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type">locale_type</span> <a name="id698097-bb"></a>imbue(locale_type loc) ;</pre>
+<pre class="literallayout"><span class="type">locale_type</span> <a name="id1218777-bb"></a>imbue(locale_type loc) ;</pre>
 <p>Specify the locale to be used by a regex_compiler.</p>
 <p>
 
@@ -91,14 +91,14 @@
 </table></div>
 </li>
 <li>
-<pre class="literallayout"><span class="type">locale_type</span> <a name="id1248439-bb"></a>getloc() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="type">locale_type</span> <a name="id622609-bb"></a>getloc() <span class="bold"><strong>const</strong></span>;</pre>
 <p>Get the locale used by a regex_compiler.</p>
 <p>
 </p>
 </li>
 <li>
 <pre class="literallayout"><span class="type"><a href="basic_regex.html" title="Struct template basic_regex">basic_regex</a>&lt; BidiIter &gt;</span> 
-<a name="id1248453-bb"></a>compile(string_type pat, flag_type flags = regex_constants::ECMAScript) ;</pre>
+<a name="id622623-bb"></a>compile(string_type pat, flag_type flags = regex_constants::ECMAScript) ;</pre>
 <p>Builds a basic_regex object from a std::string.</p>
 <p>
 

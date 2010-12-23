@@ -42,7 +42,7 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.tasks.programs"></a>Programs</h3></div></div></div>
-<a class="indexterm" name="id2121601"></a><p>Programs are created using the <code class="computeroutput">exe</code> rule, which
+<a class="indexterm" name="id2122146"></a><p>Programs are created using the <code class="computeroutput">exe</code> rule, which
         follows the <a href="advanced.html#bbv2.main-target-rule-syntax">common
           syntax</a>. For example:
 </p>
@@ -282,7 +282,7 @@ exe main : main.cpp lib_alias ;
 <p>This section describes various ways to install built target
       and arbitrary files.</p>
 <h4>
-<a name="id2122154"></a>Basic install</h4>
+<a name="id2122699"></a>Basic install</h4>
 <p>For installing a built target you should use the
         <code class="computeroutput">install</code> rule, which follows the <a href="advanced.html#bbv2.main-target-rule-syntax">common syntax</a>. For
         example:
@@ -320,7 +320,7 @@ install dist2 : hello helpers : &lt;location&gt;$(DIST) ;
       ">environment variables</a>
       </p>
 <h4>
-<a name="id2122269"></a>Installing with all dependencies</h4>
+<a name="id2122813"></a>Installing with all dependencies</h4>
 <p>
         Specifying the names of all libraries to install can be boring. The
         <code class="computeroutput">install</code> allows you to specify only the top-level executable
@@ -344,7 +344,7 @@ install dist : hello
         will be installed, otherwise, all found target will be installed.
       </p>
 <h4>
-<a name="id2122321"></a>Preserving Directory Hierarchy</h4>
+<a name="id2122866"></a>Preserving Directory Hierarchy</h4>
 <p>By default, the <code class="computeroutput">install</code> rules will stip paths from
       it's sources. So, if sources include <code class="filename">a/b/c.hpp</code>,
       the <code class="filename">a/b</code> part will be ignored. To make the 
@@ -365,7 +365,7 @@ install headers
       the a file named <code class="filename">/tmp/b/c.h</code> will be created.
       </p>
 <h4>
-<a name="id2122380"></a>Installing into Several Directories</h4>
+<a name="id2122924"></a>Installing into Several Directories</h4>
 <p>The <a href="tasks.html#bbv2.tasks.alias" title="Alias"><code class="computeroutput">alias</code></a>
       rule can be used when targets must be installed into several
       directories:
@@ -378,7 +378,7 @@ install install-lib : helper : /usr/lib ;
 <p>
     </p>
 <p>Because the <code class="computeroutput">install</code> rule just copies targets, most 
-    free features <sup>[<a name="id2122415" href="#ftn.id2122415">7</a>]</sup>
+    free features <sup>[<a name="id2122959" href="#ftn.id2122959">7</a>]</sup>
     have no effect when used in requirements of the <code class="computeroutput">install</code> rule.
     The only two which matter are  
     <a href="reference.html#bbv2.builtin.features.dependency">
@@ -668,7 +668,7 @@ exe app : app.cpp : &lt;implicit-dependency&gt;parser ;
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2122415" href="#id2122415">7</a>] </sup>see the definition of "free" in <a href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2122959" href="#id2122959">7</a>] </sup>see the definition of "free" in <a href="reference.html#bbv2.reference.features.attributes" title="Feature Attributes">the section called &#8220;Feature Attributes&#8221;</a>.</p></div>
 </div>
 </div>
 <table width="100%"><tr>

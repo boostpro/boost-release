@@ -31,7 +31,7 @@
 </h3></div></div>
 <div><p class="copyright">Copyright © 2001-2003 William E. Kempf</p></div>
 <div><div class="legalnotice">
-<a name="id1709359"></a><p>Subject to the Boost Software License, Version 1.0. 
+<a name="id1709814"></a><p>Subject to the Boost Software License, Version 1.0. 
      (See accompanying file LICENSE-1.0 or  http://www.boost.org/LICENSE-1.0)</p>
 </div></div>
 </div></div>
@@ -41,17 +41,17 @@
 <dt><span class="section"><a href="thread.html#thread.overview">Overview</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="thread.html#thread.introduction">Introduction</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709453">Dangers</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709681">C++ Standard Library usage in multithreaded programs</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709864">Common guarantees for all <span class="bold"><strong>Boost.Thread</strong></span> components</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1709909">Dangers</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710137">C++ Standard Library usage in multithreaded programs</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710320">Common guarantees for all <span class="bold"><strong>Boost.Thread</strong></span> components</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="thread/design.html">Design</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="thread/design.html#thread.design.goals">Goals</a></span></dt>
-<dt><span class="section"><a href="thread/design.html#id1710217">Iterative Phases</a></span></dt>
-<dt><span class="section"><a href="thread/design.html#id1710262">Phase 1, Synchronization Primitives</a></span></dt>
+<dt><span class="section"><a href="thread/design.html#id1710673">Iterative Phases</a></span></dt>
+<dt><span class="section"><a href="thread/design.html#id1710717">Phase 1, Synchronization Primitives</a></span></dt>
 <dt><span class="section"><a href="thread/design.html#thread.design.phase2">Phase 2, Thread Management and Thread Specific Storage</a></span></dt>
-<dt><span class="section"><a href="thread/design.html#id1710432">The Next Phase</a></span></dt>
+<dt><span class="section"><a href="thread/design.html#id1710888">The Next Phase</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="thread/concepts.html">Concepts</a></span></dt>
 <dd><dl>
@@ -107,9 +107,9 @@
 <a name="thread.overview"></a>Overview</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="thread.html#thread.introduction">Introduction</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709453">Dangers</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709681">C++ Standard Library usage in multithreaded programs</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709864">Common guarantees for all <span class="bold"><strong>Boost.Thread</strong></span> components</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1709909">Dangers</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710137">C++ Standard Library usage in multithreaded programs</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710320">Common guarantees for all <span class="bold"><strong>Boost.Thread</strong></span> components</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
@@ -138,15 +138,15 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1709453"></a>Dangers</h3></div></div></div>
+<a name="id1709909"></a>Dangers</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="thread.html#id1709459">General considerations</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709555">Testing and debugging considerations</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709614">Getting a head start</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1709914">General considerations</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710011">Testing and debugging considerations</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710070">Getting a head start</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1709459"></a>General considerations</h4></div></div></div>
+<a name="id1709914"></a>General considerations</h4></div></div></div>
 <p>Beyond the errors which can occur in single-threaded programs,
     multithreaded programs are subject to additional errors:
     </p>
@@ -177,7 +177,7 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1709555"></a>Testing and debugging considerations</h4></div></div></div>
+<a name="id1710011"></a>Testing and debugging considerations</h4></div></div></div>
 <p>Multithreaded programs are non-deterministic. In other words, the
       same program with the same input data may follow different execution
       paths each time it is invoked. That can make testing and debugging a
@@ -199,7 +199,7 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1709614"></a>Getting a head start</h4></div></div></div>
+<a name="id1710070"></a>Getting a head start</h4></div></div></div>
 <p>Although it might appear that multithreaded programs are inherently
       unreliable, many reliable multithreaded programs do exist. Multithreading
       techniques are known which lead to reliable programs.</p>
@@ -216,14 +216,14 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1709681"></a>C++ Standard Library usage in multithreaded programs</h3></div></div></div>
+<a name="id1710137"></a>C++ Standard Library usage in multithreaded programs</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="thread.html#id1709688">Runtime libraries</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709741">Potentially non-thread-safe functions</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710143">Runtime libraries</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710197">Potentially non-thread-safe functions</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1709688"></a>Runtime libraries</h4></div></div></div>
+<a name="id1710143"></a>Runtime libraries</h4></div></div></div>
 <p>
       <span class="bold"><strong>Warning:</strong></span> Multithreaded programs such as
 	  those using <span class="bold"><strong>Boost.Thread</strong></span> must link to <a href="thread.html#thread.glossary.thread-safe">thread-safe</a> versions of
@@ -235,7 +235,7 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1709741"></a>Potentially non-thread-safe functions</h4></div></div></div>
+<a name="id1710197"></a>Potentially non-thread-safe functions</h4></div></div></div>
 <p>Certain C++ Standard Library functions inherited from C are
       particular problems because they hold internal state between
       calls:
@@ -265,14 +265,14 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1709864"></a>Common guarantees for all <span class="bold"><strong>Boost.Thread</strong></span> components</h3></div></div></div>
+<a name="id1710320"></a>Common guarantees for all <span class="bold"><strong>Boost.Thread</strong></span> components</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="thread.html#id1709875">Exceptions</a></span></dt>
-<dt><span class="section"><a href="thread.html#id1709958">NonCopyable requirement</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710331">Exceptions</a></span></dt>
+<dt><span class="section"><a href="thread.html#id1710414">NonCopyable requirement</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1709875"></a>Exceptions</h4></div></div></div>
+<a name="id1710331"></a>Exceptions</h4></div></div></div>
 <p><span class="bold"><strong>Boost.Thread</strong></span> destructors never
 	  throw exceptions. Unless otherwise specified, other
 	  <span class="bold"><strong>Boost.Thread</strong></span> functions that do not have
@@ -292,7 +292,7 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1709958"></a>NonCopyable requirement</h4></div></div></div>
+<a name="id1710414"></a>NonCopyable requirement</h4></div></div></div>
 <p><span class="bold"><strong>Boost.Thread</strong></span> classes documented as
 	  meeting the NonCopyable requirement disallow copy construction and copy
 	  assignment. For the sake of exposition, the synopsis of such classes show
@@ -367,7 +367,7 @@
 <p>During the lifetime of a thread, it shall be in one of the following
 	  states:</p>
 <div class="table">
-<a name="id1765622"></a><p class="title"><b>Table 15.26. Thread States</b></p>
+<a name="id1766146"></a><p class="title"><b>Table 15.26. Thread States</b></p>
 <table class="table" summary="Thread States">
 <colgroup>
 <col>
@@ -404,7 +404,7 @@
 </div>
 <p>Thread state transitions shall occur only as specified:</p>
 <div class="table">
-<a name="id1765704"></a><p class="title"><b>Table 15.27. Thread States Transitions</b></p>
+<a name="id1766228"></a><p class="title"><b>Table 15.27. Thread States Transitions</b></p>
 <table class="table" summary="Thread States Transitions">
 <colgroup>
 <col>
@@ -528,7 +528,7 @@
 	  function arguments [1.9/17], while the "sequence point after a call" is the
 	  sequence point after the copying of the returned value... [1.9/17].</p>
 <div class="table">
-<a name="id1766019"></a><p class="title"><b>Table 15.28. Memory Visibility</b></p>
+<a name="id1766542"></a><p class="title"><b>Table 15.28. Memory Visibility</b></p>
 <table class="table" summary="Memory Visibility">
 <colgroup>
 <col>

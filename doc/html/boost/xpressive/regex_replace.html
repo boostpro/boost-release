@@ -42,7 +42,7 @@
                 std::basic_string&lt; Char &gt; <span class="bold"><strong>const</strong></span> &amp; fmt, 
                 regex_constants::match_flag_type flags = regex_constants::match_default);</pre></div>
 <div class="refsect1" lang="en">
-<a name="id2023451"></a><h2>Description</h2>
+<a name="id2023986"></a><h2>Description</h2>
 <p>Constructs a regex_iterator object: regex_iterator&lt; BidiIter &gt; i(begin, end, re, flags), and uses i to enumerate through all of the matches m of type match_results&lt; BidiIter &gt; that occur within the sequence [begin, end). If no such matches are found and !(flags &amp; format_no_copy) then calls std::copy(begin, end, out). Otherwise, for each match found, if !(flags &amp; format_no_copy) calls std::copy(m.prefix().first, m.prefix().second, out), and then calls m.format(out, fmt, flags). Finally if !(flags &amp; format_no_copy) calls std::copy(last_m.suffix().first, last_m.suffix().second, out) where last_m is a copy of the last match found. If flags &amp; format_first_only is non-zero then only the first match found is replaced.</p>
 <p>
 

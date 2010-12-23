@@ -37,6 +37,7 @@
 <dt><span class="section"><a href="reference.html#header.boost.algorithm.string.find_iterator.hpp">Header &lt;boost/algorithm/string/find_iterator.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.algorithm.string.finder.hpp">Header &lt;boost/algorithm/string/finder.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.algorithm.string.formatter.hpp">Header &lt;boost/algorithm/string/formatter.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.algorithm.string.iter_find.hpp">Header &lt;boost/algorithm/string/iter_find.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.algorithm.string.join.hpp">Header &lt;boost/algorithm/string/join.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.algorithm.string.predicate.hpp">Header &lt;boost/algorithm/string/predicate.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.algorithm.string.regex.hpp">Header &lt;boost/algorithm/string/regex.hpp&gt;</a></span></dt>
@@ -98,13 +99,13 @@
     <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> RangeT&gt; <span class="type"><span class="emphasis"><em>unspecified</em></span></span> <a href="../boost/algorithm/is_any_of.html" title="Function template is_any_of">is_any_of</a>(<span class="bold"><strong>const</strong></span> RangeT &amp;);
     <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> CharT&gt; <span class="type"><span class="emphasis"><em>unspecified</em></span></span> <a href="../boost/algorithm/is_from_range.html" title="Function template is_from_range">is_from_range</a>(CharT, CharT);
     <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Pred1T, <span class="bold"><strong>typename</strong></span> Pred2T&gt; 
-      <span class="type"><span class="emphasis"><em>unspecified</em></span></span> <a href="../id1212680-bb.html" title="Function template operator&amp;&amp;"><span class="bold"><strong>operator</strong></span>&amp;&amp;</a>(<span class="bold"><strong>const</strong></span> predicate_facade&lt; Pred1T &gt; &amp;, 
+      <span class="type"><span class="emphasis"><em>unspecified</em></span></span> <a href="../id686531-bb.html" title="Function template operator&amp;&amp;"><span class="bold"><strong>operator</strong></span>&amp;&amp;</a>(<span class="bold"><strong>const</strong></span> predicate_facade&lt; Pred1T &gt; &amp;, 
                              <span class="bold"><strong>const</strong></span> predicate_facade&lt; Pred2T &gt; &amp;);
     <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Pred1T, <span class="bold"><strong>typename</strong></span> Pred2T&gt; 
-      <span class="type"><span class="emphasis"><em>unspecified</em></span></span> <a href="../id698813-bb.html" title="Function template operator||"><span class="bold"><strong>operator</strong></span>||</a>(<span class="bold"><strong>const</strong></span> predicate_facade&lt; Pred1T &gt; &amp;, 
+      <span class="type"><span class="emphasis"><em>unspecified</em></span></span> <a href="../id691749-bb.html" title="Function template operator||"><span class="bold"><strong>operator</strong></span>||</a>(<span class="bold"><strong>const</strong></span> predicate_facade&lt; Pred1T &gt; &amp;, 
                              <span class="bold"><strong>const</strong></span> predicate_facade&lt; Pred2T &gt; &amp;);
     <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> PredT&gt; 
-      <span class="type"><span class="emphasis"><em>unspecified</em></span></span> <a href="../id683435-bb.html" title="Function template operator!"><span class="bold"><strong>operator</strong></span>!</a>(<span class="bold"><strong>const</strong></span> predicate_facade&lt; PredT &gt; &amp;);
+      <span class="type"><span class="emphasis"><em>unspecified</em></span></span> <a href="../id863102-bb.html" title="Function template operator!"><span class="bold"><strong>operator</strong></span>!</a>(<span class="bold"><strong>const</strong></span> predicate_facade&lt; PredT &gt; &amp;);
   }
 }</pre>
 </div>
@@ -370,6 +371,20 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.algorithm.string.iter_find.hpp"></a>Header &lt;<a href="../../../boost/algorithm/string/iter_find.hpp" target="_top">boost/algorithm/string/iter_find.hpp</a>&gt;</h3></div></div></div>
+<p>Defines generic split algorithms. Split algorithms can be used to divide a sequence into several part according to a given criteria. Result is given as a 'container of containers' where elements are copies or references to extracted parts.</p>
+<p>There are two algorithms provided. One iterates over matching substrings, the other one over the gaps between these matches.</p>
+<pre class="synopsis"><span class="bold"><strong>namespace</strong></span> boost {
+  <span class="bold"><strong>namespace</strong></span> algorithm {
+    <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> SequenceSequenceT, <span class="bold"><strong>typename</strong></span> RangeT, <span class="bold"><strong>typename</strong></span> FinderT&gt; 
+      <span class="type">SequenceSequenceT &amp;</span> <a href="../boost/algorithm/iter_find.html" title="Function template iter_find">iter_find</a>(SequenceSequenceT &amp;, RangeT &amp;, FinderT);
+    <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> SequenceSequenceT, <span class="bold"><strong>typename</strong></span> RangeT, <span class="bold"><strong>typename</strong></span> FinderT&gt; 
+      <span class="type">SequenceSequenceT &amp;</span> <a href="../boost/algorithm/iter_split.html" title="Function template iter_split">iter_split</a>(SequenceSequenceT &amp;, RangeT &amp;, FinderT);
+  }
+}</pre>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
 <a name="header.boost.algorithm.string.join.hpp"></a>Header &lt;<a href="../../../boost/algorithm/string/join.hpp" target="_top">boost/algorithm/string/join.hpp</a>&gt;</h3></div></div></div>
 <p>Defines join algorithm.</p>
 <p>Join algorithm is a counterpart to split algorithms. It joins strings from a 'list' by adding user defined separator. Additionally there is a version that allows simple filtering by providing a predicate.</p>
@@ -381,7 +396,7 @@
     <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> SequenceSequenceT, <span class="bold"><strong>typename</strong></span> Range1T, 
              <span class="bold"><strong>typename</strong></span> PredicateT&gt; 
       <span class="type">range_value&lt; SequenceSequenceT &gt;::type</span> 
-      <a href="../id1037117-bb.html" title="Function template join_if">join_if</a>(<span class="bold"><strong>const</strong></span> SequenceSequenceT &amp;, Range1T &amp;, PredicateT);
+      <a href="../id1044106-bb.html" title="Function template join_if">join_if</a>(<span class="bold"><strong>const</strong></span> SequenceSequenceT &amp;, Range1T &amp;, PredicateT);
   }
 }</pre>
 </div>
@@ -525,7 +540,7 @@
     <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> SequenceSequenceT, <span class="bold"><strong>typename</strong></span> Range1T, <span class="bold"><strong>typename</strong></span> CharT, 
              <span class="bold"><strong>typename</strong></span> RegexTraitsT&gt; 
       <span class="type">range_value&lt; SequenceSequenceT &gt;::type</span> 
-      <a href="../id963389-bb.html" title="Function template join_if">join_if</a>(<span class="bold"><strong>const</strong></span> SequenceSequenceT &amp;, Range1T &amp;, 
+      <a href="../id999800-bb.html" title="Function template join_if">join_if</a>(<span class="bold"><strong>const</strong></span> SequenceSequenceT &amp;, Range1T &amp;, 
               <span class="bold"><strong>const</strong></span> basic_regex&lt; CharT, RegexTraitsT &gt; &amp;, 
               match_flag_type = match_default);
   }
@@ -705,7 +720,7 @@
                 <span class="bold"><strong>const</strong></span> std::locale &amp; = std::locale());
     <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> SequenceSequenceT, <span class="bold"><strong>typename</strong></span> RangeT, <span class="bold"><strong>typename</strong></span> PredicateT&gt; 
       <span class="type">SequenceSequenceT &amp;</span> 
-      <a href="../id1038227-bb.html" title="Function template split">split</a>(SequenceSequenceT &amp;, RangeT &amp;, PredicateT, 
+      <a href="../id691162-bb.html" title="Function template split">split</a>(SequenceSequenceT &amp;, RangeT &amp;, PredicateT, 
             token_compress_mode_type = token_compress_off);
   }
 }</pre>
