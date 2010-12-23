@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Examples</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
 <link rel="up" href="../any.html" title="Chapter 1. Boost.Any">
 <link rel="prev" href="../any.html" title="Chapter 1. Boost.Any">
@@ -24,19 +24,19 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id447589"></a>Examples</h3></div></div></div>
+<a name="id969978"></a>Examples</h3></div></div></div>
 <p>The following code demonstrates the syntax for using
     implicit conversions to and copying of any objects:</p>
 <pre class="programlisting">
 #include &lt;list&gt;
 #include &lt;boost/any.hpp&gt;
 
-using <a href="../any_cast.html" title="Function any_cast">boost::any_cast</a>;
-typedef std::list&lt;<a href="../boost/any.html" title="Class any">boost::any</a>&gt; many;
+using <code class="computeroutput"><a href="../any_cast.html" title="Function any_cast">boost::any_cast</a></code>;
+typedef std::list&lt;<code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code>&gt; many;
 
 void append_int(many &amp; values, int value)
 {
-    <a href="../boost/any.html" title="Class any">boost::any</a> to_append = value;
+    <code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code> to_append = value;
     values.push_back(to_append);
 }
 
@@ -50,46 +50,46 @@ void append_char_ptr(many &amp; values, const char * value)
     values.push_back(value);
 }
 
-void append_any(many &amp; values, const <a href="../boost/any.html" title="Class any">boost::any</a> &amp; value)
+void append_any(many &amp; values, const <code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code> &amp; value)
 {
     values.push_back(value);
 }
 
 void append_nothing(many &amp; values)
 {
-    values.push_back(<a href="../boost/any.html" title="Class any">boost::any</a>());
+    values.push_back(<code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code>());
 }
 </pre>
 <p>The following predicates follow on from the previous
     definitions and demonstrate the use of queries on any
     objects:</p>
 <pre class="programlisting">
-bool is_empty(const <a href="../boost/any.html" title="Class any">boost::any</a> &amp; operand)
+bool is_empty(const <code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code> &amp; operand)
 {
-    return operand.<a href="../boost/any.html#id141181-bb">empty</a>();
+    return operand.<code class="computeroutput"><a href="../boost/any.html#id761592-bb">empty</a></code>();
 }
 
-bool is_int(const <a href="../boost/any.html" title="Class any">boost::any</a> &amp; operand)
+bool is_int(const <code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code> &amp; operand)
 {
-    return operand.<a href="../boost/any.html#id141206-bb">type</a>() == typeid(int);
+    return operand.<code class="computeroutput"><a href="../boost/any.html#id761615-bb">type</a></code>() == typeid(int);
 }
 
-bool is_char_ptr(const <a href="../boost/any.html" title="Class any">boost::any</a> &amp; operand)
+bool is_char_ptr(const <code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code> &amp; operand)
 {
     try
     {
-        <a href="../any_cast.html" title="Function any_cast">any_cast</a>&lt;const char *&gt;(operand);
+        <code class="computeroutput"><a href="../any_cast.html" title="Function any_cast">any_cast</a></code>&lt;const char *&gt;(operand);
         return true;
     }
-    catch(const <a href="../bad_any_cast.html" title="Class bad_any_cast">boost::bad_any_cast</a> &amp;)
+    catch(const <code class="computeroutput"><a href="../bad_any_cast.html" title="Class bad_any_cast">boost::bad_any_cast</a></code> &amp;)
     {
         return false;
     }
 }
 
-bool is_string(const <a href="../boost/any.html" title="Class any">boost::any</a> &amp; operand)
+bool is_string(const <code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code> &amp; operand)
 {
-    return <a href="../any_cast.html" title="Function any_cast">any_cast</a>&lt;std::string&gt;(&amp;operand);
+    return <code class="computeroutput"><a href="../any_cast.html" title="Function any_cast">any_cast</a></code>&lt;std::string&gt;(&amp;operand);
 }
 
 void count_all(many &amp; values, std::ostream &amp; out)
@@ -109,10 +109,10 @@ void count_all(many &amp; values, std::ostream &amp; out)
 struct property
 {
     property();
-    property(const std::string &amp;, const <a href="../boost/any.html" title="Class any">boost::any</a> &amp;);
+    property(const std::string &amp;, const <code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code> &amp;);
 
     std::string name;
-    <a href="../boost/any.html" title="Class any">boost::any</a> value;
+    <code class="computeroutput"><a href="../boost/any.html" title="Class any">boost::any</a></code> value;
 };
 
 typedef std::list&lt;property&gt; properties;
@@ -127,7 +127,7 @@ typedef std::list&lt;property&gt; properties;
 class consumer
 {
 public:
-    virtual void notify(const <a href="../boost/any.html" title="Class any">any</a> &amp;) = 0;
+    virtual void notify(const <code class="computeroutput"><a href="../boost/any.html" title="Class any">any</a></code> &amp;) = 0;
     ...
 };
 </pre>

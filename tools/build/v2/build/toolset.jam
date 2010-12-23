@@ -131,7 +131,7 @@ local rule add-flag ( rule-or-module :
 
 # Returns the first element of 'property-sets' which is a subset of
 # 'properties', or an empty list if no such element exists.
-local rule find-property-subset ( property-sets * : properties * )
+rule find-property-subset ( property-sets * : properties * )
 {
     local result ;
     for local s in $(property-sets)
@@ -194,34 +194,40 @@ rule handle-flag-value ( value * : properties * )
     }
     else
     {
-        result += $(values) ;
+        result += $(value) ;
     }      
     return $(result) ;
 }
 
-
-rule set-target-variables ( rule-or-module targets + : properties * )
-{ 
+# Given a rule name and a property set, returns a list of interleaved
+# variables names and values which must be set on targets for that
+# rule/property-set combination. 
+rule set-target-variables-aux ( rule-or-module : property-set )
+{
+    local result ;
+    properties = [ $(property-set).raw ] ;
     for local f in $(.$(rule-or-module).flags) 
     {
         local variable = $(.$(rule-or-module).variable.$(f)) ;
         local condition = $(.$(rule-or-module).condition.$(f)) ;
         local values = $(.$(rule-or-module).values.$(f)) ;
-        local result ;
+
         
         if ! $(condition) ||
           [ find-property-subset $(condition) : $(properties) ]
         {
-            result += [ handle-flag-value $(values) : $(properties) ] ;
-        }
-
-        # Without this test, the assignment below would create a
-        # target variable even if $(result) is empty.  That is
-        # undesirable because the empty target variable would mask
-        # module globals intended to be used as defaults.
-        if $(result)-is-nonempty
-        {
-            $(variable) on $(targets) += $(result) ;
+            local processed ;
+            for local v in $(values)
+            {                
+                # The value might be <feature-name> so needs special
+                # treatment.
+                processed += [ 
+                  handle-flag-value $(v) : $(properties) ] ;
+            }
+            for local r in $(processed)
+            {                        
+                result += $(variable) $(r) ;
+            }            
         }
     }
     
@@ -229,8 +235,41 @@ rule set-target-variables ( rule-or-module targets + : properties * )
     local next = [ MATCH ^(.+)\\.([^\\.])* : $(rule-or-module) ] ;
     if $(next)
     {
-        set-target-variables $(next) $(targets) : $(properties) ;        
-    }    
+        result += [
+          set-target-variables-aux $(next[1]) : $(property-set) ] ;        
+    }        
+    return $(result) ;    
+}
+
+
+rule set-target-variables ( rule-or-module targets + : property-set )
+{     
+    properties = [ $(property-set).raw ] ;
+    local key = $(rule-or-module).$(property-set) ;
+    local settings = $(.stv.$(key)) ;
+    if ! $(settings)
+    {
+        settings = [ 
+          set-target-variables-aux $(rule-or-module) : $(property-set) ] ;
+
+        if ! $(settings)
+        {
+            settings = none ;
+        }
+        .stv.$(key) = $(settings) ;
+    }
+        
+    if $(settings) != none
+    {
+        while $(settings)
+        {
+            # Here, $(settings[1]) is the name of variable to assign
+            # and $(settings[2]) is the value.
+            
+            $(settings[1]) on $(targets) += $(settings[2]) ;
+            settings = $(settings[3-]) ;
+        }    
+    }
 }
 
 .toolsets += $(toolset) ;
@@ -333,7 +372,7 @@ rule inherit-rules ( toolset : base )
         local id = [ MATCH "[^.]*\.(.*)" : [ $(g).id ] ] ;
         rules += $(id) ;
     }    
-    IMPORT $(base) : $(rules) : $(toolset) : $(rules) : localized ;
+    IMPORT $(base) : $(rules) : $(toolset) : $(rules) ;
     # Import the rules to the global scope
     IMPORT $(toolset) : $(rules) : : $(toolset).$(rules) ;
 }

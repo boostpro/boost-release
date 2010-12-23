@@ -20,6 +20,8 @@ namespace std{
 
 #include <boost/archive/archive_exception.hpp>
 #include "test_tools.hpp"
+#include <boost/preprocessor/stringize.hpp>
+#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/type_info_implementation.hpp>
@@ -51,7 +53,6 @@ class polymorphic_derived2 : public polymorphic_base
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
     }
 };
-
 
 // save derived polymorphic class
 void save_derived(const char *testfile)
@@ -232,7 +233,7 @@ test_main( int /* argc */, char* /* argv */[] )
     load_registered(testfile);
 
     std::remove(testfile);
-    return boost::exit_success;
+    return EXIT_SUCCESS;
 }
 
 // EOF

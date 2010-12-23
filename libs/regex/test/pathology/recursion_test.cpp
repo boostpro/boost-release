@@ -1,7 +1,7 @@
 /*
  *
  * Copyright (c) 1998-2002
- * Dr John Maddock
+ * John Maddock
  *
  * Use, modification and distribution are subject to the 
  * Boost Software License, Version 1.0. (See accompanying file 
@@ -58,4 +58,4 @@ int test_main( int , char* [] )
    return 0;
 }
 
-
+#include <boost/test/included/test_exec_monitor.hpp>

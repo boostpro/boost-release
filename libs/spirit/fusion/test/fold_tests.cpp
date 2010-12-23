@@ -5,7 +5,7 @@
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#include <boost/test/minimal.hpp>
+#include <boost/detail/lightweight_test.hpp>
 #include <boost/spirit/fusion/sequence/tuple.hpp>
 #include <boost/spirit/fusion/sequence/io.hpp>
 #include <boost/spirit/fusion/algorithm/fold.hpp>
@@ -65,7 +65,7 @@ struct count_ints
 };
 
 int
-test_main(int, char*[])
+main()
 {
     using namespace boost::fusion;
     using boost::mpl::vector;
@@ -85,7 +85,7 @@ test_main(int, char*[])
         typedef tuple<int> tuple_type;
         tuple_type t(12345);
 
-        int n = fusion::fold(t, int_<0>(), count_ints());
+        int n = fusion::fold(t, FUSION_INT(0)(), count_ints());
         std::cout << n << std::endl;
         BOOST_TEST(n == 1);
     }
@@ -94,18 +94,18 @@ test_main(int, char*[])
         typedef tuple<int, char, int, double, int> tuple_type;
         tuple_type t(12345, 'x', 678910, 3.36, 8756);
 
-        int n = fusion::fold(t, int_<0>(), count_ints());
+        int n = fusion::fold(t, FUSION_INT(0)(), count_ints());
         std::cout << n << std::endl;
         BOOST_TEST(n == 3);
     }
 
     {
         typedef vector<int, char, int, double, int> mpl_vec;
-        int n = fusion::fold(mpl_vec(), int_<0>(), count_ints());
+        int n = fusion::fold(mpl_vec(), FUSION_INT(0)(), count_ints());
         std::cout << n << std::endl;
         BOOST_TEST(n == 3);
     }
 
-    return 0;
+    return boost::report_errors();
 }
 

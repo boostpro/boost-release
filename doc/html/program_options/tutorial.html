@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Tutorial</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../program_options.html" title="Chapter 6. Boost.Program_options">
-<link rel="prev" href="../program_options.html" title="Chapter 6. Boost.Program_options">
+<link rel="up" href="../program_options.html" title="Chapter 7. Boost.Program_options">
+<link rel="prev" href="../program_options.html" title="Chapter 7. Boost.Program_options">
 <link rel="next" href="overview.html" title="Library Overview">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,9 +26,9 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="program_options.tutorial"></a>Tutorial</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="tutorial.html#id547985">Getting Started</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id548122">Option Details</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#id548282">Multiple Sources</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id1246788">Getting Started</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id1246925">Option Details</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#id1247078">Multiple Sources</a></span></dt>
 </dl></div>
 <p>In this section, we'll take a look at the most common usage scenarios
   of the program_options library, starting with the simplest one. The examples
@@ -39,7 +39,7 @@
 <pre class="programlisting">namespace po = boost::program_options;</pre>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id547985"></a>Getting Started</h4></div></div></div>
+<a name="id1246788"></a>Getting Started</h4></div></div></div>
 <p>The first example is the simplest possible: it only handles two
     options. Here's the source code (the full program is in
     "example/first.cpp"):
@@ -70,45 +70,44 @@ if (vm.count("compression")) {
 }
 </pre>
 <p>We start by declaring all allowed options using the
-    <a href="../options_description.html" title="Class options_description">options_description</a> class. The <tt class="computeroutput">add_options</tt> method of that
+     class. The <code class="computeroutput">add_options</code> method of that
     class returns a special proxy object that defines
-    <tt class="computeroutput">operator()</tt>. Calls to that operator actually declare
+    <code class="computeroutput">operator()</code>. Calls to that operator actually declare
     options. The parameters are option name, information about value, and option
     description. In this example, the first option has no value, and the second
-    one has a value of type <tt class="computeroutput">int</tt>.
+    one has a value of type <code class="computeroutput">int</code>.
   </p>
-<p>After that, an object of class <tt class="computeroutput">variables_map</tt> is
+<p>After that, an object of class <code class="computeroutput">variables_map</code> is
     declared. That class is intended to store values of options, and can store
-    values of arbitrary types. Next, the calls to <tt class="computeroutput">store</tt>,
-    <tt class="computeroutput">parse_command_line</tt> and <tt class="computeroutput">notify</tt> functions cause
-    <tt class="computeroutput">vm</tt> to contain all the options found on the command
+    values of arbitrary types. Next, the calls to <code class="computeroutput">store</code>,
+    <code class="computeroutput">parse_command_line</code> and <code class="computeroutput">notify</code> functions cause
+    <code class="computeroutput">vm</code> to contain all the options found on the command
     line.</p>
 <p>And now, finally, we can use the options as we like. The
-    <tt class="computeroutput">variables_map</tt> class can be used just like
-    <tt class="computeroutput">std::map</tt>, except that values stored there must be retrieved
-    with the <tt class="computeroutput">as</tt> method shown above. (If the type specified in the
-    call to the <tt class="computeroutput">as</tt> method is different from the actually stored
+    <code class="computeroutput">variables_map</code> class can be used just like
+    <code class="computeroutput">std::map</code>, except that values stored there must be retrieved
+    with the <code class="computeroutput">as</code> method shown above. (If the type specified in the
+    call to the <code class="computeroutput">as</code> method is different from the actually stored
     type, an exception is thrown.)
   </p>
 <p>It's now a good time to try compiling the code yourself, but if
     you're not yet ready, here's an example session:
 </p>
 <pre class="screen">
-$bin/gcc/debug/first
+$<strong class="userinput"><code>bin/gcc/debug/first</code></strong>
 Compression level was not set.
-$bin/gcc/debug/first --help
+$<strong class="userinput"><code>bin/gcc/debug/first --help</code></strong>
 Allowed options:
   --help                 : produce help message
   --compression arg      : set compression level
-
-$bin/gcc/debug/first --compression 10
+$<strong class="userinput"><code>bin/gcc/debug/first --compression 10</code></strong>
 Compression level was set to 10.
     </pre>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id548122"></a>Option Details</h4></div></div></div>
-<p>An option value, surely, can have other types than <tt class="computeroutput">int</tt>, and
+<a name="id1246925"></a>Option Details</h4></div></div></div>
+<p>An option value, surely, can have other types than <code class="computeroutput">int</code>, and
   can have other interesting properties, which we'll discuss right now. The
   complete version of the code snipped below can be found in
   "example/options_description.cpp".</p>
@@ -131,12 +130,12 @@ desc.add_options()
 <p>The "--help" option should be familiar from the previous example. 
     It's a good idea to have this option in all cases.</p>
 <p>The "optimization" option shows two new features. First, we specify
-    the address of the variable(<tt class="computeroutput">&amp;opt</tt>). After storing values, that
+    the address of the variable(<code class="computeroutput">&amp;opt</code>). After storing values, that
     variable will have the value of the option. Second, we specify a default
     value of 10, which will be used if no value is specified by the user.
   </p>
 <p>The "include-path" option is an example of the only case where
-    the interface of the <tt class="computeroutput">options_description</tt> class serves only one
+    the interface of the <code class="computeroutput">options_description</code> class serves only one
     source -- the command line. Users typically like to use short option names
     for common options, and the "include-path,I" name specifies that short
     option name is "I". So, both "--include-path" and "-I" can be used.
@@ -144,15 +143,11 @@ desc.add_options()
 <p>The "input-file" option specifies the list of files to
     process. That's okay for a start, but, of course, writing something like:
     </p>
-<pre class="screen">
-compiler --input-file=a.cpp
-    </pre>
+<pre class="screen"><strong class="userinput"><code>compiler --input-file=a.cpp</code></strong></pre>
 <p>
     is a little non-standard, compared with
     </p>
-<pre class="screen">
-compiler a.cpp
-    </pre>
+<pre class="screen"><strong class="userinput"><code>compiler a.cpp</code></strong></pre>
 <p>
     We'll address this in a moment.
   </p>
@@ -175,8 +170,8 @@ po::notify(vm);
 <p>
     The first two lines say that all positional options should be translated
     into "input-file" options. Also note that we use the
-    command_line_parser class to parse the command
-    line, not the <a href="../parse_command_line.html" title="Function template parse_command_line">parse_command_line</a>
+     class to parse the command
+    line, not the 
     function. The latter is a convenient wrapper for simple cases, but now we
     need to pass additional information.
   </p>
@@ -202,7 +197,7 @@ cout &lt;&lt; "Optimization level is " &lt;&lt; opt &lt;&lt; "\n";
 <p>Here's an example session:
     </p>
 <pre class="screen">
-$bin/gcc/debug/options_description --help
+$<strong class="userinput"><code>bin/gcc/debug/options_description --help</code></strong>
 Usage: options_description [options]
 Allowed options:
   --help                 : produce help message
@@ -211,7 +206,7 @@ Allowed options:
   --input-file arg       : input file
 $bin/gcc/debug/options_description
 Optimization level is 10
-$bin/gcc/debug/options_description --optimization 4 -I foo a.cpp
+$<strong class="userinput"><code>bin/gcc/debug/options_description --optimization 4 -I foo a.cpp</code></strong>
 Include paths are: foo
 Input files are: a.cpp
 Optimization level is 4
@@ -225,7 +220,7 @@ Optimization level is 4
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id548282"></a>Multiple Sources</h4></div></div></div>
+<a name="id1247078"></a>Multiple Sources</h4></div></div></div>
 <p>It's quite likely that specifying all options to our compiler on the
     command line will annoy users. What if a user installs a new library and
     wants to always pass an additional command line element? What if he has
@@ -241,7 +236,7 @@ Optimization level is 4
 <p>Let's see the code now. The complete program is in
       "examples/multiple_sources.cpp". The option definition has two interesting
       details. First, we declare several instances of the
-      <tt class="computeroutput">options_description</tt> class. The reason is that, in general,
+      <code class="computeroutput">options_description</code> class. The reason is that, in general,
       not all options are alike. Some options, like "input-file" above, should
       not be presented in an automatic help message. Some options make sense only
       in the config file. Finally, it's nice to have some structure in the help message,
@@ -276,12 +271,12 @@ hidden.add_options()
     ;        
 </pre>
 <p>
-      Note the call to the <tt class="computeroutput">composing</tt> method in the declaration of the
+      Note the call to the <code class="computeroutput">composing</code> method in the declaration of the
       "include-path" option. It tells the library that values from different sources
       should be composed together, as we'll see shortly.
     </p>
 <p>    
-      The <tt class="computeroutput">add</tt> method of the <tt class="computeroutput">options_description</tt>
+      The <code class="computeroutput">add</code> method of the <code class="computeroutput">options_description</code>
       class can be used to further group the options:
       </p>
 <pre class="programlisting">
@@ -295,8 +290,8 @@ po::options_description visible("Allowed options");
 visible.add(generic).add(config);
       </pre>
 <p>The parsing and storing of values follows the usual pattern, except that
-      we additionally call parse_config_file, and
-      call the <a href="../id281355.html" title="Function store">store</a> function twice. But what
+      we additionally call <code class="computeroutput">parse_config_file</code>, and
+      call the  function twice. But what
       happens if the same value is specified both on the command line and in
       config file? Usually, the value stored first is preferred. This is what
       happens for the "--optimization" option. For "composing" options, like
@@ -305,10 +300,10 @@ visible.add(generic).add(config);
 <p>Here's an example session:
 </p>
 <pre class="screen">
-$bin/gcc/debug/multiple_sources
+$<strong class="userinput"><code>bin/gcc/debug/multiple_sources</code></strong>
 Include paths are: /opt
 Optimization level is 1
-$bin/gcc/debug/multiple_sources --help
+$<strong class="userinput"><code>bin/gcc/debug/multiple_sources --help</code></strong>
 Allows options:
 
 Generic options:
@@ -319,7 +314,7 @@ Configuration:
   --optimization n       : optimization level
   -I [ --include-path ] path : include path
 
-$bin/gcc/debug/multiple_sources --optimization=4 -I foo a.cpp b.cpp
+$<strong class="userinput"><code>bin/gcc/debug/multiple_sources --optimization=4 -I foo a.cpp b.cpp</code></strong>
 Include paths are: foo /opt
 Input files are: a.cpp b.cpp
 Optimization level is 4

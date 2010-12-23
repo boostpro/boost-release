@@ -10,9 +10,9 @@
 <title>uBLAS Overview</title>
 </head>
 <body>
-<h1><img src="../../../../boost.png" alt="boost.png" align="middle" />
+<h1><img src="../../../../boost.png" align="middle" />
 uBLAS Overview</h1>
-<h2>Rationale</h2>
+<h2><a name="rationale" id="rationale">Rationale</h2>
 <p><cite>It would be nice if every kind of numeric software could
 be written in C++ without loss of efficiency, but unless something
 can be found that achieves this without compromising the C++ type
@@ -39,7 +39,7 @@ similar efforts:</p>
 Jack Dongarra et al.</li>
 <li><a href="http://www.oonumerics.org/blitz/">Blitz++</a> by Todd
 Veldhuizen</li>
-<li><a href="http://www.acl.lanl.gov/pooma/">POOMA</a> by Scott
+<li><a href="http://acts.nersc.gov/pooma/">POOMA</a> by Scott
 Haney et al.</li>
 <li><a href="http://www.lsc.nd.edu/research/mtl/">MTL</a> by Jeremy
 Siek et al.</li>
@@ -210,22 +210,27 @@ to use lazy evaluation as known from modern functional programming
 languages. The principle of this approach is to evaluate a complex
 expression element wise and to assign it directly to the
 target.</p>
-<p>Two interesting and dangerous facts result.</p>
-<p>First one may get serious side effects using element wise
+<p>Two interesting and dangerous facts result:</p>
+<h4>Aliases</h4>
+<p>One may get serious side effects using element wise
 evaluation on vectors or matrices. Consider the matrix vector
 product <em>x = A x</em>. Evaluation of
 <em>A</em><sub><em>1</em></sub><em>x</em> and assignment to
 <em>x</em><sub><em>1</em></sub> changes the right hand side, so
 that the evaluation of <em>A</em><sub><em>2</em></sub><em>x</em>
-returns a wrong result. Our solution for this problem is to
+returns a wrong result. In this case there are <strong>aliases</strong> of the elements 
+<em>x</em><sub><em>n</em></sub> on both the left and right hand side of the assignment.</p>
+<p>Our solution for this problem is to
 evaluate the right hand side of an assignment into a temporary and
 then to assign this temporary to the left hand side. To allow
 further optimizations, we provide a corresponding member function
-for every assignment operator. By using this member function a
-programmer can confirm, that the left and right hand sides of an
+for every assignment operator and also a 
+<a href="operations_overview.htm#noalias"> <code>noalias</code> syntax.</a>
+By using this syntax a programmer can confirm, that the left and right hand sides of an
 assignment are independent, so that element wise evaluation and
 direct assignment to the target is safe.</p>
-<p>Next one can get worse computational complexity under certain
+<h4>Complexity</h4>
+<p>The computational complexity may be unexpectedly large under certain
 cirumstances. Consider the chained matrix vector product <em>A (B
 x)</em>. Conventional evaluation of <em>A (B x)</em> is quadratic.
 Deferred evaluation of <em>B x</em><sub><em>i</em></sub> is linear.
@@ -259,7 +264,7 @@ development cycle. Switching from debug mode to release mode is
 controlled by the <code>NDEBUG</code> preprocessor symbol of
 <code>&lt;cassert&gt;</code>.</p>
 
-<h3>Functionality</h3>
+<h2><a name="functionality" id="functionality">Functionality</h2>
 
 <p>Every C++ library supporting linear algebra will be measured
 against the long-standing Fortran package BLAS. We now describe how
@@ -590,23 +595,8 @@ FORTAN compatible data.
 </p>
 
 <h2>Compatibility</h2>
-<p>For compatibility reasons we provide array like indexing for
-vectors and matrices, although this could be expensive for matrices
-due to the needed temporary proxy objects.</p>
-<p>To support the most widely used C++ compilers our design and
-implementation do not depend on partial template specialization
-essentially.</p>
-<p>The library presumes standard compliant allocation through
-<code>operator new</code> and <code>operator delete</code>. So
-programs which are intended to run under MSVC 6.0 should set a
-correct new handler throwing a <code>std::bad_alloc</code>
-exception via <code>_set_new_handler</code> to detect out of memory
-conditions.</p>
-<p>To get the most performance out of the box with MSVC 6.0, you
-should change the preprocessor definition of
-<code>BOOST_UBLAS_INLINE</code> to <code>__forceinline</code> in
-the header file config.hpp. But we suspect this optimization to be
-fragile.</p>
+<p>For compatibility reasons we provide array like indexing for vectors and matrices. For some types (hermitian, sparse etc) this can be expensive for matrices due to the needed temporary proxy objects.</p>
+<p>uBLAS uses STL compatible allocators for the allocation of the storage required for it's containers.</p>
 <h2>Benchmark Results</h2>
 <p>The following tables contain results of one of our benchmarks.
 This benchmark compares a native C implementation ('C array') and
@@ -617,237 +607,168 @@ Besides the generic vector and matrix classes the benchmark
 utilizes special classes <code>c_vector</code> and
 <code>c_matrix</code>, which are intended to avoid every overhead
 through genericity.</p>
-<p>The benchmark program was compiled with MSVC 6.0 and run on an
-Intel Pentium II with 333 Mhz. First we comment the results for
-double vectors and matrices of dimension 3 and 3 x 3,
-respectively.</p>
+<p>The benchmark program <strong>bench1</strong> was compiled with GCC 4.0 and run on an Athlon 64 3000+. Times are scales for reasonable precision by running <strong>bench1 100</strong>.</p>
+<p>First we comment the results for double vectors and matrices of dimension 3 and 3 x 3, respectively.</p>
 <table border="1" summary="1st benchmark">
 <tbody>
 <tr>
-<th align="left">Operation</th>
-<th align="left">Implementation</th>
-<th align="left">Elapsed [s]</th>
-<th align="left">MFLOP/s</th>
 <th align="left">Comment</th>
 </tr>
 <tr>
-<td rowspan="4">inner_prod</td>
+<td rowspan="3">inner_prod</td>
 <td>C array</td>
-<td align="right">0.1</td>
-<td align="right">47.6837</td>
-<td rowspan="4">No significant abstraction penalty</td>
+<td align="right">0.61</td>
+<td align="right">782</td>
+<td rowspan="3">Some abstraction penalty</td>
 </tr>
 <tr>
 <td>c_vector</td>
-<td align="right">0.06</td>
-<td align="right">79.4729</td>
+<td align="right">0.86</td>
+<td align="right">554</td>
 </tr>
 <tr>
 <td>vector&lt;unbounded_array&gt;</td>
-<td align="right">0.11</td>
-<td align="right">43.3488</td>
+<td align="right">1.02</td>
+<td align="right">467</td>
 </tr>
 <tr>
-<td>vector&lt;std::vector&gt;</td>
-<td align="right">0.11</td>
-<td align="right">43.3488</td>
-</tr>
-<tr>
-<td rowspan="7">vector + vector</td>
+<td rowspan="5">vector + vector</td>
 <td>C array</td>
-<td align="right">0.05</td>
-<td align="right">114.441</td>
-<td rowspan="7">Abstraction penalty: factor 2</td>
-</tr>
-<tr>
-<td>c_vector safe</td>
-<td align="right">0.22</td>
-<td align="right">26.0093</td>
+<td align="right">0.51</td>
+<td align="right">1122</td>
+<td rowspan="5">Abstraction penalty: factor 2</td>
 </tr>
 <tr>
 <td>c_vector fast</td>
-<td align="right">0.11</td>
-<td align="right">52.0186</td>
-</tr>
-<tr>
-<td>vector&lt;unbounded_array&gt; safe</td>
-<td align="right">1.05</td>
-<td align="right">5.44957</td>
+<td align="right">1.17</td>
+<td align="right">489</td>
 </tr>
 <tr>
 <td>vector&lt;unbounded_array&gt; fast</td>
-<td align="right">0.16</td>
-<td align="right">35.7628</td>
+<td align="right">1.32</td>
+<td align="right">433</td>
 </tr>
 <tr>
-<td>vector&lt;std::vector&gt; safe</td>
-<td align="right">1.16</td>
-<td align="right">4.9328</td>
+<td>c_vector safe</td>
+<td align="right">2.02</td>
+<td align="right">283</td>
 </tr>
 <tr>
-<td>vector&lt;std::vector&gt; fast</td>
-<td align="right">0.16</td>
-<td align="right">35.7628</td>
+<td>vector&lt;unbounded_array&gt; safe</td>
+<td align="right">6.95</td>
+<td align="right">82</td>
 </tr>
 <tr>
-<td rowspan="7">outer_prod</td>
+<td rowspan="5">outer_prod</td>
 <td>C array</td>
-<td align="right">0.06</td>
-<td align="right">85.8307</td>
-<td rowspan="7">Abstraction penalty: factor 2</td>
-</tr>
-<tr>
-<td>c_matrix, c_vector safe</td>
-<td align="right">0.22</td>
-<td align="right">23.4084</td>
+<td align="right">0.59</td>
+<td align="right">872</td>
+<td rowspan="5">Some abstraction penalty</td>
 </tr>
 <tr>
 <td>c_matrix, c_vector fast</td>
-<td align="right">0.11</td>
-<td align="right">46.8167</td>
+<td align="right">0.88</td>
+<td align="right">585</td>
 </tr>
 <tr>
-<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt;
-safe</td>
-<td align="right">0.38</td>
-<td align="right">13.5522</td>
-</tr>
-<tr>
-<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt;
-fast</td>
-<td align="right">0.16</td>
-<td align="right">32.1865</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt;, vector&lt;std::vector&gt; safe</td>
-<td align="right">0.5</td>
-<td align="right">10.2997</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt;, vector&lt;std::vector&gt; fast</td>
-<td align="right">0.11</td>
-<td align="right">46.8167</td>
-</tr>
-<tr>
-<td rowspan="7">prod (matrix, vector)</td>
-<td>C array</td>
-<td align="right">0.06</td>
-<td align="right">71.5256</td>
-<td rowspan="7">No significant abstraction penalty</td>
+<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt; fast</td>
+<td align="right">0.90</td>
+<td align="right">572</td>
 </tr>
 <tr>
 <td>c_matrix, c_vector safe</td>
-<td align="right">0.11</td>
-<td align="right">39.0139</td>
+<td align="right">1.66</td>
+<td align="right">310</td>
+</tr>
+<tr>
+<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt; safe</td>
+<td align="right">2.95</td>
+<td align="right">175</td>
+</tr>
+<tr>
+<td rowspan="5">prod (matrix, vector)</td>
+<td>C array</td>
+<td align="right">0.64</td>
+<td align="right">671</td>
+<td rowspan="5">No significant abstraction penalty</td>
 </tr>
 <tr>
 <td>c_matrix, c_vector fast</td>
-<td align="right">0.11</td>
-<td align="right">39.0139</td>
+<td align="right">0.70</td>
+<td align="right">613</td>
 </tr>
 <tr>
-<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt;
-safe</td>
-<td align="right">0.33</td>
-<td align="right">13.0046</td>
+<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt; fast</td>
+<td align="right">0.79</td>
+<td align="right">543</td>
 </tr>
 <tr>
-<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt;
-fast</td>
-<td align="right">0.11</td>
-<td align="right">39.0139</td>
+<td>c_matrix, c_vector safe</td>
+<td align="right">0.95</td>
+<td align="right">452</td>
 </tr>
 <tr>
-<td>matrix&lt;std::vector&gt;, vector&lt;std::vector&gt; safe</td>
-<td align="right">0.38</td>
-<td align="right">11.2935</td>
+<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt; safe</td>
+<td align="right">2.61</td>
+<td align="right">164</td>
 </tr>
 <tr>
-<td>matrix&lt;std::vector&gt;, vector&lt;std::vector&gt; fast</td>
-<td align="right">0.05</td>
-<td align="right">85.8307</td>
-</tr>
-<tr>
-<td rowspan="7">matrix + matrix</td>
+<td rowspan="5">matrix + matrix</td>
 <td>C array</td>
-<td align="right">0.11</td>
-<td align="right">46.8167</td>
-<td rowspan="7">No significant abstraction penalty</td>
-</tr>
-<tr>
-<td>c_matrix safe</td>
-<td align="right">0.17</td>
-<td align="right">30.2932</td>
+<td align="right">0.75</td>
+<td align="right">686</td>
+<td rowspan="5">No significant abstraction penalty</td>
 </tr>
 <tr>
 <td>c_matrix fast</td>
-<td align="right">0.11</td>
-<td align="right">46.8167</td>
-</tr>
-<tr>
-<td>matrix&lt;unbounded_array&gt; safe</td>
-<td align="right">0.44</td>
-<td align="right">11.7042</td>
+<td align="right">0.99</td>
+<td align="right">520</td>
 </tr>
 <tr>
 <td>matrix&lt;unbounded_array&gt; fast</td>
-<td align="right">0.16</td>
-<td align="right">32.1865</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt; safe</td>
-<td align="right">0.6</td>
-<td align="right">8.58307</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt; fast</td>
-<td align="right">0.17</td>
-<td align="right">30.2932</td>
-</tr>
-<tr>
-<td rowspan="7">prod (matrix, matrix)</td>
-<td>C array</td>
-<td align="right">0.11</td>
-<td align="right">39.0139</td>
-<td rowspan="7">No significant abstraction penalty</td>
+<td align="right">1.29</td>
+<td align="right">399</td>
 </tr>
 <tr>
 <td>c_matrix safe</td>
-<td align="right">0.11</td>
-<td align="right">39.0139</td>
-</tr>
-<tr>
-<td>c_matrix fast</td>
-<td align="right">0.11</td>
-<td align="right">39.0139</td>
+<td align="right">1.7</td>
+<td align="right">303</td>
 </tr>
 <tr>
 <td>matrix&lt;unbounded_array&gt; safe</td>
-<td align="right">0.22</td>
-<td align="right">19.507</td>
+<td align="right">3.14</td>
+<td align="right">164</td>
+</tr>
+<tr>
+<td rowspan="5">prod (matrix, matrix)</td>
+<td>C array</td>
+<td align="right">0.94</td>
+<td align="right">457</td>
+<td rowspan="5">No significant abstraction penalty</td>
+</tr>
+<tr>
+<td>c_matrix fast</td>
+<td align="right">1.17</td>
+<td align="right">367</td>
 </tr>
 <tr>
 <td>matrix&lt;unbounded_array&gt; fast</td>
-<td align="right">0.11</td>
-<td align="right">39.0139</td>
+<td align="right">1.34</td>
+<td align="right">320</td>
 </tr>
 <tr>
-<td>matrix&lt;std::vector&gt; safe</td>
-<td align="right">0.27</td>
-<td align="right">15.8946</td>
+<td>c_matrix safe</td>
+<td align="right">1.56</td>
+<td align="right">275</td>
 </tr>
 <tr>
-<td>matrix&lt;std::vector&gt; fast</td>
-<td align="right">0.11</td>
-<td align="right">39.0139</td>
+<td>matrix&lt;unbounded_array&gt; safe</td>
+<td align="right">2.06</td>
+<td align="right">208</td>
 </tr>
 </tbody>
 </table>
-<p>We notice a twofold performance loss for small vectors and
-matrices: first the general abstraction penalty for using classes,
-and then a small loss when using the generic vector and matrix
-classes. The difference w.r.t. alias assumptions is also
-significant.</p>
+<p>We notice a two fold performance loss for small vectors and matrices: first the general abstraction penalty for using classes, and then a small loss when using the generic vector and matrix classes. The difference w.r.t. alias assumptions is also significant.</p>
 <p>Next we comment the results for double vectors and matrices of
 dimension 100 and 100 x 100, respectively.</p>
 <table border="1" summary="2nd benchmark">
@@ -860,215 +781,158 @@ dimension 100 and 100 x 100, respectively.</p>
 <th align="left">Comment</th>
 </tr>
 <tr>
-<td rowspan="4">inner_prod</td>
+<td rowspan="3">inner_prod</td>
 <td>C array</td>
-<td align="right">0.05</td>
-<td align="right">113.869</td>
-<td rowspan="4">No significant abstraction penalty</td>
+<td align="right">0.64</td>
+<td align="right">889</td>
+<td rowspan="3">No significant abstraction penalty</td>
 </tr>
 <tr>
 <td>c_vector</td>
-<td align="right">0.06</td>
-<td align="right">94.8906</td>
+<td align="right">0.66</td>
+<td align="right">862</td>
 </tr>
 <tr>
 <td>vector&lt;unbounded_array&gt;</td>
-<td align="right">0.05</td>
-<td align="right">113.869</td>
+<td align="right">0.66</td>
+<td align="right">862</td>
 </tr>
 <tr>
-<td>vector&lt;std::vector&gt;</td>
-<td align="right">0.06</td>
-<td align="right">94.8906</td>
-</tr>
-<tr>
-<td rowspan="7">vector + vector</td>
+<td rowspan="5">vector + vector</td>
 <td>C array</td>
-<td align="right">0.05</td>
-<td align="right">114.441</td>
-<td rowspan="7">No significant abstraction penalty</td>
-</tr>
-<tr>
-<td>c_vector safe</td>
-<td align="right">0.11</td>
-<td align="right">52.0186</td>
+<td align="right">0.64</td>
+<td align="right">894</td>
+<td rowspan="5">No significant abstraction penalty</td>
 </tr>
 <tr>
 <td>c_vector fast</td>
-<td align="right">0.11</td>
-<td align="right">52.0186</td>
-</tr>
-<tr>
-<td>vector&lt;unbounded_array&gt; safe</td>
-<td align="right">0.11</td>
-<td align="right">52.0186</td>
+<td align="right">0.66</td>
+<td align="right">867</td>
 </tr>
 <tr>
 <td>vector&lt;unbounded_array&gt; fast</td>
-<td align="right">0.06</td>
-<td align="right">95.3674</td>
+<td align="right">0.66</td>
+<td align="right">867</td>
 </tr>
 <tr>
-<td>vector&lt;std::vector&gt; safe</td>
-<td align="right">0.17</td>
-<td align="right">33.6591</td>
+<td>c_vector safe</td>
+<td align="right">1.14</td>
+<td align="right">501</td>
 </tr>
 <tr>
-<td>vector&lt;std::vector&gt; fast</td>
-<td align="right">0.11</td>
-<td align="right">52.0186</td>
+<td>vector&lt;unbounded_array&gt; safe</td>
+<td align="right">1.23</td>
+<td align="right">465</td>
 </tr>
 <tr>
-<td rowspan="7">outer_prod</td>
+<td rowspan="5">outer_prod</td>
 <td>C array</td>
-<td align="right">0.05</td>
-<td align="right">114.441</td>
-<td rowspan="7">No significant abstraction penalty</td>
-</tr>
-<tr>
-<td>c_matrix, c_vector safe</td>
-<td align="right">0.28</td>
-<td align="right">20.4359</td>
+<td align="right">0.50</td>
+<td align="right">1144</td>
+<td rowspan="5">No significant abstraction penalty</td>
 </tr>
 <tr>
 <td>c_matrix, c_vector fast</td>
-<td align="right">0.11</td>
-<td align="right">52.0186</td>
+<td align="right">0.71</td>
+<td align="right">806</td>
 </tr>
 <tr>
-<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt;
-safe</td>
-<td align="right">0.27</td>
-<td align="right">21.1928</td>
+<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt; fast</td>
+<td align="right">0.57</td>
+<td align="right">1004</td>
+</tr>
+<tr>
+<td>c_matrix, c_vector safe</td>
+<td align="right">1.91</td>
+<td align="right">300</td>
+</tr>
+<tr>
+<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt; safe</td>
+<td align="right">0.89</td>
+<td align="right">643</td>
+</tr>
+<tr>
+<td rowspan="5">prod (matrix, vector)</td>
+<td>C array</td>
+<td align="right">0.65</td>
+<td align="right">876</td>
+<td rowspan="5">No significant abstraction penalty</td>
+</tr>
+<tr>
+<td>c_matrix, c_vector fast</td>
+<td align="right">0.65</td>
+<td align="right">876</td>
 </tr>
 <tr>
 <td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt;
 fast</td>
-<td align="right">0.06</td>
-<td align="right">95.3674</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt;, vector&lt;std::vector&gt; safe</td>
-<td align="right">0.28</td>
-<td align="right">20.4359</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt;, vector&lt;std::vector&gt; fast</td>
-<td align="right">0.11</td>
-<td align="right">52.0186</td>
-</tr>
-<tr>
-<td rowspan="7">prod (matrix, vector)</td>
-<td>C array</td>
-<td align="right">0.11</td>
-<td align="right">51.7585</td>
-<td rowspan="7">No significant abstraction penalty</td>
+<td align="right">0.66</td>
+<td align="right">863</td>
 </tr>
 <tr>
 <td>c_matrix, c_vector safe</td>
-<td align="right">0.11</td>
-<td align="right">51.7585</td>
-</tr>
-<tr>
-<td>c_matrix, c_vector fast</td>
-<td align="right">0.05</td>
-<td align="right">113.869</td>
+<td align="right">0.66</td>
+<td align="right">863</td>
 </tr>
 <tr>
 <td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt;
 safe</td>
-<td align="right">0.11</td>
-<td align="right">51.7585</td>
+<td align="right">0.66</td>
+<td align="right">863</td>
 </tr>
 <tr>
-<td>matrix&lt;unbounded_array&gt;, vector&lt;unbounded_array&gt;
-fast</td>
-<td align="right">0.06</td>
-<td align="right">94.8906</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt;, vector&lt;std::vector&gt; safe</td>
-<td align="right">0.1</td>
-<td align="right">56.9344</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt;, vector&lt;std::vector&gt; fast</td>
-<td align="right">0.06</td>
-<td align="right">94.8906</td>
-</tr>
-<tr>
-<td rowspan="7">matrix + matrix</td>
+<td rowspan="5">matrix + matrix</td>
 <td>C array</td>
-<td align="right">0.22</td>
-<td align="right">26.0093</td>
-<td rowspan="7">No significant abstraction penalty</td>
-</tr>
-<tr>
-<td>c_matrix safe</td>
-<td align="right">0.49</td>
-<td align="right">11.6776</td>
+<td align="right">0.96</td>
+<td align="right">596</td>
+<td rowspan="5">No significant abstraction penalty</td>
 </tr>
 <tr>
 <td>c_matrix fast</td>
-<td align="right">0.22</td>
-<td align="right">26.0093</td>
-</tr>
-<tr>
-<td>matrix&lt;unbounded_array&gt; safe</td>
-<td align="right">0.39</td>
-<td align="right">14.6719</td>
+<td align="right">1.21</td>
+<td align="right">473</td>
 </tr>
 <tr>
 <td>matrix&lt;unbounded_array&gt; fast</td>
-<td align="right">0.22</td>
-<td align="right">26.0093</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt; safe</td>
-<td align="right">0.44</td>
-<td align="right">13.0046</td>
-</tr>
-<tr>
-<td>matrix&lt;std::vector&gt; fast</td>
-<td align="right">0.27</td>
-<td align="right">21.1928</td>
-</tr>
-<tr>
-<td rowspan="7">prod (matrix, matrix)</td>
-<td>C array</td>
-<td align="right">0.06</td>
-<td align="right">94.8906</td>
-<td rowspan="7">No significant abstraction penalty</td>
+<td align="right">1.00</td>
+<td align="right">572</td>
 </tr>
 <tr>
 <td>c_matrix safe</td>
-<td align="right">0.06</td>
-<td align="right">94.8906</td>
-</tr>
-<tr>
-<td>c_matrix fast</td>
-<td align="right">0.05</td>
-<td align="right">113.869</td>
+<td align="right">2.44</td>
+<td align="right">235</td>
 </tr>
 <tr>
 <td>matrix&lt;unbounded_array&gt; safe</td>
-<td align="right">0.11</td>
-<td align="right">51.7585</td>
+<td align="right">1.30</td>
+<td align="right">440</td>
+</tr>
+<tr>
+<td rowspan="5">prod (matrix, matrix)</td>
+<td>C array</td>
+<td align="right">0.70</td>
+<td align="right">813</td>
+<td rowspan="5">No significant abstraction penalty</td>
+</tr>
+<tr>
+<td>c_matrix fast</td>
+<td align="right">0.73</td>
+<td align="right">780</td>
 </tr>
 <tr>
 <td>matrix&lt;unbounded_array&gt; fast</td>
-<td align="right">0.17</td>
-<td align="right">33.4908</td>
+<td align="right">0.76</td>
+<td align="right">749</td>
 </tr>
 <tr>
-<td>matrix&lt;std::vector&gt; safe</td>
-<td align="right">0.11</td>
-<td align="right">51.7585</td>
+<td>c_matrix safe</td>
+<td align="right">0.75</td>
+<td align="right">759</td>
 </tr>
 <tr>
-<td>matrix&lt;std::vector&gt; fast</td>
-<td align="right">0.16</td>
-<td align="right">35.584</td>
+<td>matrix&lt;unbounded_array&gt; safe</td>
+<td align="right">0.76</td>
+<td align="right">749</td>
 </tr>
 </tbody>
 </table>
@@ -1083,6 +947,5 @@ is granted provided this copyright notice appears in all copies.
 This document is provided ``as is'' without express or implied
 warranty, and with no claim as to its suitability for any
 purpose.</p>
-<p>Last revised: 2004-07-05</p>
 </body>
 </html>

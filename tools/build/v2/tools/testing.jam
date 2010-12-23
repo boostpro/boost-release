@@ -48,6 +48,7 @@ import path ;
 import os ;
 import common ;
 import sequence ;
+import errors ;
 
 rule init ( ) { }
 
@@ -60,19 +61,19 @@ feature.feature testing.input-file : : free dependency ;
 
 # Register target types.
 type.register TEST : test ;
-type.register COMPILE : : TEST : main ;
-type.register COMPILE_FAIL : : TEST : main ;
-type.register RUN_OUTPUT : run : : main ;
-type.register RUN : : TEST : main ;
-type.register RUN_FAIL : : TEST : main ;
-type.register UNIT_TEST : passed : TEST : main ;
+type.register COMPILE : : TEST ;
+type.register COMPILE_FAIL : : TEST ;
+type.register RUN_OUTPUT : run ;
+type.register RUN : : TEST ;
+type.register RUN_FAIL : : TEST ;
+type.register UNIT_TEST : passed : TEST ;
 
 # Declare the rules which create main targets. 
 # While the 'type' module already creates rules with the same names for us,
 # we need extra convenience: default name of main target, so write
 # our own versions.
 
-# Helper rule. Create a test target, using basename of first source of no
+# Helper rule. Create a test target, using basename of first source if no
 # target name is explicitly passed. Remembers the created target in
 # a global variable.
 rule make-test ( target-type : sources + : requirements * : target-name ? )
@@ -108,15 +109,27 @@ rule compile-fail ( sources + : requirements * : target-name ? )
     return [ make-test compile-fail : $(sources) : $(requirements) : $(target-name) ] ;
 }
 
+rule handle-input-files ( input-files * )
+{
+    if $(input-files[2])
+    {
+        # Check that sorting made when creating property-set instance
+        # won't change the ordering.
+        if [ sequence.insertion-sort $(input-files) ] != $(input-files)
+        {
+            errors.user-error "Names of input files must be sorted alphabetically"
+              : "due to internal limitations" ;
+        }        
+    }
+    return <testing.input-file>$(input-files) ;
+}
+
+
 rule run ( sources + : args * : input-files * : requirements * : target-name ? 
     : default-build * )
 {      
     requirements += <testing.arg>$(args:J=" ") ;
-    requirements += <testing.input-file>$(input-files[1]) ;
-    if $(input-files[2]) || $(default-build)
-    {
-        EXIT "NOT supported" ;
-    }    
+    requirements += [ handle-input-files $(input-files) ] ;
     return [ make-test run : $(sources) : $(requirements) : $(target-name) ] ;
 }
 
@@ -124,11 +137,7 @@ rule run-fail ( sources + : args * : input-files * : requirements * : target-nam
     : default-build * )
 {    
     requirements += <testing.arg>$(args:J=" ") ;    
-    requirements += <testing.input-file>$(input-files[1]) ;
-    if $(input-files[2]) || $(default-build)
-    {
-        EXIT "NOT supported" ;
-    }    
+    requirements += [ handle-input-files $(input-files) ] ;
     return [ make-test run-fail : $(sources) : $(requirements) : $(target-name) ] ;
 }
 
@@ -158,6 +167,30 @@ rule dump-tests # ( project-module )
     }    
 }
 
+# Given a project location, compute the name of Boost library
+local rule get-library-name ( path )
+{
+    # Path is in normalized form, so all slashes are forward.
+
+    local match1 = [ MATCH /libs/(.*)/(test|example) : $(path) ] ;
+    local match2 = [ MATCH /libs/(.*)$ : $(path) ] ;
+    local match3 = [ MATCH (/status$) : $(path) ] ;
+
+    if $(match1) { return $(match1[0]) ; }
+    else if $(match2) { return $(match2[0]) ; }
+    else if $(match3) { return "" ; }
+    else if --dump-tests in [ modules.peek : ARGV ] 
+    { 
+        EXIT Cannot extract library name from path $(path) ; 
+    }
+}
+
+
+# Take a target (instance of 'basic-target') and prints 
+# - its type
+# - its name
+# - comments specified via the <test-info> property
+# - relative location of all source from the project root.
 rule dump-test ( target )
 {
     local type = [ $(target).type ] ;
@@ -165,8 +198,13 @@ rule dump-test ( target )
     local project = [ $(target).project ] ;
     
     local project-root = [ $(project).get project-root ] ;
-    local project-root-location = [ $(project-root).get-location ] ;
-    
+    local library = [ get-library-name 
+        [ path.root [ $(project).get location ] [ path.pwd ] ] ] ;
+    if $(library)
+    {
+        name = $(library)/$(name) ;
+    }
+        
     local sources = [ $(target).sources ] ;
     local source-files ;
     for local s in $(sources)
@@ -176,11 +214,11 @@ rule dump-test ( target )
             source-files += 
               [ path.relative 
                   [ path.root [ $(s).location ] [ path.pwd ] ]
-                  [ path.root $(project-root-location) [ path.pwd ] ] ] ;
+                  [ path.root $(project-root) [ path.pwd ] ] ] ;
         }                
     }
           
-    local r = [ $(t).requirements ] ;
+    local r = [ $(target).requirements ] ;
     # Extract values of the <test-info> feature
     local test-info = [ $(r).get <test-info> ] ;
     
@@ -273,21 +311,15 @@ rule run-path-setup ( target : source : properties * )
     # invocation.
     local dll-paths = [ feature.get-values <dll-path> : $(properties) ] ;
     dll-paths += [ feature.get-values <xdll-path> : $(properties) ] ;
+    dll-paths += [ on $(source) return $(RUN_PATH) ] ;
     dll-paths = [ sequence.unique $(dll-paths) ] ;
     if $(dll-paths)
     {    
         dll-paths = [ sequence.transform path.native : $(dll-paths) ] ;
-        if [ modules.peek : NT ]
-        {
-            PATH_SETUP on $(target) = 
-              [ common.path-variable-setting-command PATH : $(dll-paths) %PATH% ] ;
-        }
-        else
-        {
-            PATH_SETUP on $(target) = 
-              [ common.path-variable-setting-command LD_LIBRARY_PATH :
-                  $(dll-paths) $LD_LIBRARY_PATH : exported ] ;
-        }        
+        
+        PATH_SETUP on $(target) = 
+          [ common.prepend-path-variable-command
+              [ os.shared-library-path-variable ] : $(dll-paths) ] ;
     }            
 }
 
@@ -393,3 +425,33 @@ actions unit-test
 IMPORT $(__name__) : compile compile-fail test-suite run run-fail 
   : : compile compile-fail test-suite run run-fail ;
 
+
+type.register TIME : time ;
+generators.register-standard testing.time : : TIME ;
+
+rule record-time ( target source : user : system )
+{
+    local src-string = [$(source:G=:J=",")"] " ;
+    USER_TIME on $(target) += $(src-string)$(user) ;
+    SYSTEM_TIME on $(target) += $(src-string)$(system) ;
+}
+
+IMPORT testing : record-time : : testing.record-time ;
+rule time ( target : source : properties *  )
+{
+    # Set up rule for recording timing information
+    __TIMING_RULE__ on $(source) = testing.record-time $(target) ;
+    
+    # Make sure that the source is rebuilt any time we need to
+    # retrieve that information
+    REBUILDS $(target) : $(source) ;
+}
+
+actions time
+{
+    echo user: $(USER_TIME)
+    echo system: $(SYSTEM_TIME)
+      
+    echo user: $(USER_TIME)" seconds" > $(<)
+    echo system: $(SYSTEM_TIME)" seconds" > $(<)
+}

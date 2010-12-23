@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: variate_generator.hpp,v 1.7 2004/07/27 03:43:32 dgregor Exp $
+ * $Id: variate_generator.hpp,v 1.8 2005/02/14 11:53:50 johnmaddock Exp $
  *
  */
 
@@ -87,9 +87,9 @@ class variate_generator
 {
 private:
   typedef random::detail::pass_through_engine<Engine> decorated_engine;
-  typedef typename decorated_engine::base_type engine_value_type;
 
 public:
+  typedef typename decorated_engine::base_type engine_value_type;
   typedef Engine engine_type;
   typedef Distribution distribution_type;
   typedef typename Distribution::result_type result_type;

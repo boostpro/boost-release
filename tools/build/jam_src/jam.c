@@ -196,6 +196,14 @@ static void run_unit_tests()
 }
 #endif
 
+#ifdef HAVE_PYTHON
+    extern PyObject*
+    bjam_call(PyObject *self, PyObject *args);
+ 
+    extern PyObject*
+    bjam_import_rule(PyObject* self, PyObject* args);
+#endif
+
 int  main( int argc, char **argv, char **arg_environ )
 {
     int		n;
@@ -206,16 +214,34 @@ int  main( int argc, char **argv, char **arg_environ )
     int		status;
     int arg_c = argc;
     char ** arg_v = argv;
+    const char *progname = argv[0];
 
 # ifdef OS_MAC
     InitGraf(&qd.thePort);
 # endif
 
+#ifdef HAVE_PYTHON
+    Py_Initialize();
+
+    {
+        static PyMethodDef BjamMethods[] = {
+            {"call", bjam_call, METH_VARARGS,
+             "Call the specified bjam rule."},
+            {"import_rule", bjam_import_rule, METH_VARARGS,
+             "Imports Python callable to bjam."},
+            {NULL, NULL, 0, NULL}
+        };
+
+        Py_InitModule("bjam", BjamMethods);
+    }
+
+#endif
+
     argc--, argv++;
 
-	if( ( n = getoptions( argc, argv, "-:d:j:f:gs:t:ano:qv", optv ) ) < 0 )
+	if( getoptions( argc, argv, "-:d:j:f:gs:t:ano:qv", optv ) < 0 )
     {
-        printf( "\nusage: jam [ options ] targets...\n\n" );
+        printf( "\nusage: %s [ options ] targets...\n\n", progname );
 
         printf( "-a      Build all targets, even if they are current.\n" );
         printf( "-dx     Set the debug level to x (0-9).\n" );
@@ -233,8 +259,6 @@ int  main( int argc, char **argv, char **arg_environ )
         exit( EXITBAD );
     }
 
-    argc -= n, argv += n;
-
     /* Version info. */
 
     if( ( s = getoptval( optv, 'v', 0 ) ) )
@@ -244,7 +268,8 @@ int  main( int argc, char **argv, char **arg_environ )
 	   printf( "   Copyright 1993-2002 Christopher Seiwald and Perforce Software, Inc.  \n" );
         printf( "   Copyright 2001 David Turner.\n" );
         printf( "   Copyright 2001-2004 David Abrahams.\n" );
-        printf( "   Copyright 2002-2004 Rene Rivera.\n" );
+        printf( "   Copyright 2002-2005 Rene Rivera.\n" );
+        printf( "   Copyright 2003-2005 Vladimir Prus.\n" );
 
         return EXITOK;
     }
@@ -322,7 +347,7 @@ int  main( int argc, char **argv, char **arg_environ )
     {
    /* Pleace don't change the following line. The 'bump_version.py' script
        expect a specific format of it. */
-    char  *major_version = "03", *minor_version = "01", *changenum = "10";
+    char  *major_version = "03", *minor_version = "01", *changenum = "11";
     var_set( "JAM_VERSION",
              list_new( list_new( list_new( L0, newstr( major_version ) ), 
                                  newstr( minor_version ) ), 
@@ -354,7 +379,13 @@ int  main( int argc, char **argv, char **arg_environ )
 
     /* load up environment variables */
 
-    var_defines( use_environ );
+    /* first into global module, with splitting, for backward compatibility */
+    var_defines( use_environ, 1 );
+    
+    /* then into .ENVIRON, without splitting */
+    enter_module( bindmodule(".ENVIRON") );
+    var_defines( use_environ, 0 );
+    exit_module( bindmodule(".ENVIRON") );
 
 	/*
 	 * Jam defined variables OS, OSPLAT
@@ -363,7 +394,7 @@ int  main( int argc, char **argv, char **arg_environ )
      * change Jam notion of the current platform.
 	 */
 
-    var_defines( othersyms );
+    var_defines( othersyms, 1 );
 
 
     /* Load up variables set on command line. */
@@ -373,7 +404,7 @@ int  main( int argc, char **argv, char **arg_environ )
         char *symv[2];
         symv[0] = s;
         symv[1] = 0;
-        var_defines( symv );
+        var_defines( symv, 1 );
     }
 
     /* Set the ARGV to reflect the complete list of arguments of invocation. */
@@ -389,9 +420,18 @@ int  main( int argc, char **argv, char **arg_environ )
 
     /* Add the targets in the command line to update list */
 
-    for ( n = 0; n < argc; ++n )
+    for ( n = 1; n < arg_c; ++n )
     {
-        mark_target_for_updating(argv[n]);
+        if ( arg_v[n][0] == '-' )
+        {
+            char *f = "-:d:j:f:gs:t:ano:qv";
+            for( ; *f; f++ ) if( *f == arg_v[n][1] ) break;
+            if ( f[1] == ':' && arg_v[n][2] == '\0' ) { ++n; }
+        }
+        else
+        {
+            mark_target_for_updating(arg_v[n]);
+        }
     }
 
     /* Parse ruleset */
@@ -462,6 +502,11 @@ int  main( int argc, char **argv, char **arg_environ )
 
     if( globs.cmdout )
         fclose( globs.cmdout );
+
+#ifdef HAVE_PYTHON
+    Py_Finalize();
+#endif
+
 
     return status ? EXITBAD : EXITOK;
 }

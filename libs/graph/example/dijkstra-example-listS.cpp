@@ -1,25 +1,9 @@
 //=======================================================================
 // Copyright 2001 Jeremy G. Siek, Andrew Lumsdaine, Lie-Quan Lee, 
 //
-// This file is part of the Boost Graph Library
-//
-// You should have received a copy of the License Agreement for the
-// Boost Graph Library along with the software; see the file LICENSE.
-// If not, contact Office of Research, Indiana University,
-// Bloomington, IN 47405.
-//
-// Permission to modify the code and to distribute the code is
-// granted, provided the text of this NOTICE is retained, a notice if
-// the code was modified is included with the above COPYRIGHT NOTICE
-// and with the COPYRIGHT NOTICE in the LICENSE file, and that the
-// LICENSE file is distributed with the modified code.
-//
-// LICENSOR MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.
-// By way of example, but not limitation, Licensor MAKES NO
-// REPRESENTATIONS OR WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY
-// PARTICULAR PURPOSE OR THAT THE USE OF THE LICENSED SOFTWARE COMPONENTS
-// OR DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS
-// OR OTHER RIGHTS.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 #include <boost/config.hpp>
 #include <iostream>
@@ -52,14 +36,23 @@ main(int, char *[])
   };
   int weights[] = { 1, 2, 1, 2, 7, 3, 1, 1, 1 };
   int num_arcs = sizeof(edge_array) / sizeof(Edge);
+  graph_traits<graph_t>::vertex_iterator i, iend;
+
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   graph_t g(num_nodes);
   property_map<graph_t, edge_weight_t>::type weightmap = get(edge_weight, g);
+
+  std::vector<vertex_descriptor> msvc_vertices;
+  for (tie(i, iend) = vertices(g); i != iend; ++i)
+    msvc_vertices.push_back(*i);
+
   for (std::size_t j = 0; j < num_arcs; ++j) {
     edge_descriptor e; bool inserted;
-    tie(e, inserted) = add_edge(edge_array[j].first, edge_array[j].second, g);
+    tie(e, inserted) = add_edge(msvc_vertices[edge_array[j].first], 
+                                msvc_vertices[edge_array[j].second], g);
     weightmap[e] = weights[j];
   }
+
 #else
   graph_t g(edge_array, edge_array + num_arcs, weights, num_nodes);
   property_map<graph_t, edge_weight_t>::type weightmap = get(edge_weight, g);
@@ -69,7 +62,6 @@ main(int, char *[])
   property_map<graph_t, vertex_index_t>::type indexmap = get(vertex_index, g);
   property_map<graph_t, vertex_name_t>::type name = get(vertex_name, g);
   int c = 0;
-  graph_traits<graph_t>::vertex_iterator i, iend;
   for (tie(i, iend) = vertices(g); i != iend; ++i, ++c) {
     indexmap[*i] = c;
     name[*i] = 'A' + c;

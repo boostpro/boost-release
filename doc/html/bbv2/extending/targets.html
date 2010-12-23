@@ -3,10 +3,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Target types</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<style type="text/css">
+body { background-image: url('http://docbook.sourceforge.net/release/images/draft.png');
+       background-repeat: no-repeat;
+       background-position: top left;
+       /* The following properties make the watermark "fixed" on the page. */
+       /* I think that's just a bit too distracting for the reader... */
+       /* background-attachment: fixed; */
+       /* background-position: center center; */
+     }</style>
 <link rel="start" href="../../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../extender.html" title="Chapter 22. Extender Manual">
-<link rel="prev" href="../extender.html" title="Chapter 22. Extender Manual">
+<link rel="up" href="../extender.html" title="Chapter 25. Extender Manual">
+<link rel="prev" href="../extender.html" title="Chapter 25. Extender Manual">
 <link rel="next" href="tools.html" title="Tools and generators">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -40,19 +49,41 @@ type.register VERBATIM : verbatim ;
         because Boost.Build can guess the type of sources from their
         extensions.        
       </p>
-<p>The first two parameters for the <tt class="computeroutput">type.register</tt> rule
+<p>The first two parameters for the <code class="computeroutput">type.register</code> rule
         are the name of new type and the list of extensions associated with
         it. A file with an extension from the list will have the given target
         type. In the case where a target of the declared type is generated
-        from other sources, the first specified extension will be used. This
-        behaviour can be changed using the
-        <tt class="computeroutput">type.set-generated-target-suffix</tt> rule.
+        from other sources, the first specified extension will be used. 
       </p>
+<p>Sometimes you want to change the suffix used for generated targets
+      depending on build properties, such as toolset. For example, some compiler
+      uses extension <code class="literal">elf</code> for executable files. You can use the
+      <code class="computeroutput">type.set-generated-target-suffix</code> rule:
+</p>
+<pre class="programlisting">
+type.set-generated-target-suffix EXE : &lt;toolset&gt;elf : elf ;
+</pre>
+<p>A new target type can be inherited from an existing one. 
+</p>
+<pre class="programlisting">
+type.register PLUGIN : : SHARED_LIB ;
+</pre>
 <p>
-        Something about 'main' types.
-      </p>
-<p>Something about base types.
-      </p>
+      The above code defines a new type derived from
+      <code class="computeroutput">SHARED_LIB</code>. Initially, the new type inherits all the
+      properties of the base type - in particular generators and suffix.
+      Typically, you'll change the new type in some way. For example, using
+      <code class="computeroutput">type.set-generated-target-suffix</code> you can set the suffix for
+      the new type. Or you can write special generator for the new type. For
+      example, it can generate additional metainformation for plugin.
+      In either way, the <code class="computeroutput">PLUGIN</code> type can be used whenever
+      <code class="computeroutput">SHARED_LIB</code> can. For example, you can directly link plugins
+      to an application.
+    </p>
+<p>A type can be defined as "main", in which case Boost.Build will
+      automatically declare a main target rule for building targets of that
+      type. More details can be found <a href="rules.html#bbv2.extending.rules.main-type">later</a>.
+    </p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="bbv2.extending.scanners"></a>Scanners</h3></div></div></div>
@@ -74,11 +105,15 @@ class verbatim-scanner : common-scanner
 }
 </pre>
 <p>         
-          All the complex logic is in the <tt class="computeroutput">common-scanner</tt> class,
-          and you only need to override the method which returns the regular
-          expression to be used for scanning. The paranthethis in the regular
-          expression indicate which part of the string is the name of the
-          included file. 
+          All the complex logic is in the <code class="computeroutput">common-scanner</code>
+          class, and you only need to override the method that returns
+          the regular expression to be used for scanning. The
+          paranthethis in the regular expression indicate which part
+          of the string is the name of the included file.  Only the
+          first parenthesized group in the regular expression will be
+          recognized; if you can't express everything you want that
+          way, you can return multiple regular expressions, each of
+          which contains a parenthesized group to be matched.
         </p>
 <p>After that, we need to register our scanner class:
 </p>
@@ -87,10 +122,10 @@ scanner.register verbatim-scanner : include ;
 </pre>
 <p>
             The value of the second parameter, in this case
-            <tt class="computeroutput">include</tt>, specifies which properties contain the list
-            of paths which should be searched for the included files.
+            <code class="computeroutput">include</code>, specifies the properties that contain the list
+            of paths that should be searched for the included files.
          </p>
-<p>Finally, we assign the new scaner to the <tt class="computeroutput">VERBATIM</tt>
+<p>Finally, we assign the new scaner to the <code class="computeroutput">VERBATIM</code>
         target type:
 </p>
 <pre class="programlisting">

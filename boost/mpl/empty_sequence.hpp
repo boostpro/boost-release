@@ -11,9 +11,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/boost/mpl/Attic/empty_sequence.hpp,v $
-// $Date: 2004/11/13 20:19:44 $
-// $Revision: 1.1.2.1 $
+// $Source: /cvsroot/boost/boost/boost/mpl/empty_sequence.hpp,v $
+// $Date: 2004/11/28 01:53:40 $
+// $Revision: 1.2 $
 
 #include <boost/mpl/size_fwd.hpp>
 #include <boost/mpl/int.hpp>

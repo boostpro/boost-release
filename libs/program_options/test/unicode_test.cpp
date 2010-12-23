@@ -46,7 +46,7 @@ void test_unicode_to_unicode()
 void test_unicode_to_native()
 {
     std::codecvt<wchar_t, char, mbstate_t>* facet = 
-        new boost::program_options::detail::utf8_codecvt_facet<wchar_t, char>;
+        new boost::program_options::detail::utf8_codecvt_facet;
     locale::global(locale(locale(), facet));
 
     options_description desc;
@@ -61,13 +61,13 @@ void test_unicode_to_native()
     variables_map vm;
     store(wcommand_line_parser(args).options(desc).run(), vm);
 
-    BOOST_TEST(vm["foo"].as<string>() == "\xD1\x8F");    
+    BOOST_CHECK(vm["foo"].as<string>() == "\xD1\x8F");    
 }
 
 void test_native_to_unicode()
 {
     std::codecvt<wchar_t, char, mbstate_t>* facet = 
-        new boost::program_options::detail::utf8_codecvt_facet<wchar_t, char>;
+        new boost::program_options::detail::utf8_codecvt_facet;
     locale::global(locale(locale(), facet));
 
     options_description desc;
@@ -82,7 +82,7 @@ void test_native_to_unicode()
     variables_map vm;
     store(command_line_parser(args).options(desc).run(), vm);
 
-    BOOST_TEST(vm["foo"].as<wstring>() == L"\x044F");    
+    BOOST_CHECK(vm["foo"].as<wstring>() == L"\x044F");    
 }
 
 
@@ -107,19 +107,19 @@ void test_command_line()
     desc.add_options()
         ("foo,f", new untyped_value(), "")
         // Explicit qualification is a workaround for vc6
-        ("bar,b", po::value<std::string>()->implicit(), "")
+        ("bar,b", po::value<std::string>(), "")
         ("baz", new untyped_value())
         ("plug*", new untyped_value())
         ;
 
-    wchar_t* cmdline4_[] = { L"--foo=1\u0FF52", L"-f4", L"--bar=11", L"--bar", 
-                             L"-b4", L"-b", L"--plug3=10"};
+    wchar_t* cmdline4_[] = { L"--foo=1\u0FF52", L"-f4", L"--bar=11",
+                             L"-b4", L"--plug3=10"};
     vector<wstring> cmdline4 = sv(cmdline4_,
                                   sizeof(cmdline4_)/sizeof(cmdline4_[0]));
     vector<woption> a4 = 
         wcommand_line_parser(cmdline4).options(desc).run().options;
 
-    BOOST_CRITICAL_TEST(a4.size() == 7);
+    BOOST_REQUIRE(a4.size() == 5);
 
     check_value(a4[0], "foo", L"1\u0FF52");
     check_value(a4[1], "foo", L"4");
@@ -132,7 +132,7 @@ void test_command_line()
 void test_config_file()
 {
     std::codecvt<wchar_t, char, mbstate_t>* facet = 
-        new boost::program_options::detail::utf8_codecvt_facet<wchar_t, char>;
+        new boost::program_options::detail::utf8_codecvt_facet;
     locale::global(locale(locale(), facet));
 
     options_description desc;
@@ -146,7 +146,7 @@ void test_config_file()
     variables_map vm;
     store(parse_config_file(stream, desc), vm);
 
-    BOOST_TEST(vm["foo"].as<string>() == "\xD1\x8F");    
+    BOOST_CHECK(vm["foo"].as<string>() == "\xD1\x8F");    
 }
 
 int test_main(int, char* [])

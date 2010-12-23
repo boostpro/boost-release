@@ -8,8 +8,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/libs/mpl/test/integral_c.cpp,v $
-// $Date: 2004/09/02 15:41:35 $
-// $Revision: 1.4 $
+// $Date: 2005/05/14 16:00:57 $
+// $Revision: 1.5 $
 
 #include <boost/mpl/integral_c.hpp>
 #include <boost/preprocessor/repeat.hpp>
@@ -20,7 +20,10 @@
 MPL_TEST_CASE()
 {
 #   define WRAPPER(T, i) integral_c<T,i>
+
+#if !(defined(__APPLE_CC__) && defined(__GNUC__) && (__GNUC__ == 3) && (__GNUC_MINOR__ <= 3))
     BOOST_PP_REPEAT(10, INTEGRAL_WRAPPER_TEST, char)
+#endif
     BOOST_PP_REPEAT(10, INTEGRAL_WRAPPER_TEST, short)
     BOOST_PP_REPEAT(10, INTEGRAL_WRAPPER_TEST, int)
     BOOST_PP_REPEAT(10, INTEGRAL_WRAPPER_TEST, long)

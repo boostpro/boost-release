@@ -21,6 +21,7 @@ feature.extend toolset : gcc ;
 
 import unix ;
 toolset.inherit-generators gcc : unix : unix.link unix.link.dll ;
+generators.override builtin.lib-generator : gcc.prebuilt ;
 toolset.inherit-flags gcc : unix ;
 toolset.inherit-rules gcc : unix ;
 
@@ -87,7 +88,24 @@ flags gcc.compile OPTIONS <profiling>on : -pg ;
 # inside 'init'.
 if [ os.name ] != CYGWIN && [ os.name ] != NT
 {        
-    flags gcc.compile OPTIONS <link>shared/<main-target-type>LIB : -fPIC ;
+    # This logic will add -fPIC for all compilations:
+    #
+    # lib a : a.cpp b ;
+    # obj b : b.cpp ;
+    # exe c : c.cpp a d ;
+    # obj d : d.cpp ;
+    # 
+    # This all is fine, except that 'd' will be compiled with
+    # -fPIC even though it's not needed, as 'd' is used only in
+    # exe. However, it's hard to detect where a target is going to
+    # be used. Alternative, we can set -fPIC only when main target type 
+    # is LIB but than 'b' will be compiled without -fPIC. In x86-64 that
+    # will lead to link errors. So, compile everything with -fPIC.
+    #
+    # Yet another alternative would be to create propagated <sharedable> 
+    # feature, and set it when building shared libraries, but that's hard
+    # to implement and will increase target path length even more.
+    flags gcc.compile OPTIONS <link>shared : -fPIC ;
 }    
 if [ os.name ] != NT
 {
@@ -136,18 +154,18 @@ actions compile.c
 }
 
 # The class which check that we don't try to use
-# the <link-runtime>static property while creating or using shared library,
+# the <runtime-link>static property while creating or using shared library,
 # since it's not supported by gcc/libc.
 class gcc-linking-generator : unix-linking-generator
 {
     rule generated-targets ( sources + : property-set : project name ? )
     {
-        if <link-runtime>static in [ $(property-set).raw ] 
+        if <runtime-link>static in [ $(property-set).raw ] 
         {
             local m ;
             if [ id ] = "gcc.link.dll"
             {
-                m = "on gcc, DLL can't be build with <link-runtime>static" ;
+                m = "on gcc, DLL can't be build with <runtime-link>static" ;
             }         
             if ! $(m) {                
                 for local s in $(sources)
@@ -155,14 +173,14 @@ class gcc-linking-generator : unix-linking-generator
                     local type = [ $(s).type ] ;
                     if $(type) &&  [ type.is-derived $(type) SHARED_LIB ] 
                     {
-                        m = "on gcc, using DLLS together with the <link-runtime>static options is not possible " ;
+                        m = "on gcc, using DLLS together with the <runtime-link>static options is not possible " ;
                     }                
                 }                
             }
             if $(m)
             {
                 errors.user-error $(m) :
-                  "it's suggested to use <link-runtime>static together with the <link>static" ;
+                  "it's suggested to use <runtime-link>static together with the <link>static" ;
             }
             
         }
@@ -179,6 +197,7 @@ generators.register [ new gcc-linking-generator gcc.link.dll : LIB OBJ : SHARED_
     : <toolset>gcc ] ;
 
 generators.override gcc.prebuilt : builtin.prebuilt ;
+generators.override gcc.searched-lib-generator : searched-lib-generator ;
 
 
 
@@ -192,9 +211,9 @@ flags gcc.link FINDLIBS-ST <find-static-library> ;
 flags gcc.link FINDLIBS-SA <find-shared-library> ;
 flags gcc.link LIBRARIES <library-file> ;
 
-# For <link-runtime>static we made sure there are no dynamic libraries 
+# For <runtime-link>static we made sure there are no dynamic libraries 
 # in the link
-flags gcc.link OPTIONS <link-runtime>static : -static ;
+flags gcc.link OPTIONS <runtime-link>static : -static ;
 
 # Now, the vendor specific flags
 # The parameter linker can be either gnu or sun
@@ -256,12 +275,27 @@ rule init-link-flags ( toolset linker condition )
 rule link ( targets * : sources * : properties * )
 {
     SPACE on $(targets) = " " ;    
+    # Serialize execution of the 'link' action, since
+    # running N links in parallel is just slower.
+    # For now, serialize only gcc links, it might be a good
+    # idea to serialize all links.
+    JAM_SEMAPHORE on $(targets) = <s>gcc-link-semaphore ;
 }
 
 actions link bind LIBRARIES
 {
     "$(CONFIG_COMMAND)" -L"$(LINKPATH)" -Wl,-R$(SPACE)-Wl,"$(RPATH)" -Wl,-rpath-link$(SPACE)-Wl,"$(RPATH_LINK)" -o "$(<)" "$(>)" "$(LIBRARIES)" -l$(FINDLIBS-ST) -l$(FINDLIBS-SA) $(OPTIONS) 
 }
+
+
+# Always remove archive and start again. Here's rationale from
+# Andre Hentz:
+# I had a file, say a1.c, that was included into liba.a. 
+# I moved a1.c to a2.c, updated my Jamfiles and rebuilt. 
+# My program was crashing with absurd errors. 
+# After some debugging I traced it back to the fact that a1.o was *still* 
+# in liba.a 
+RM = [ common.rm-command ] ;
 
 # Declare action for creating static libraries
 # The 'r' letter means to replace files in the archive
@@ -272,6 +306,7 @@ actions link bind LIBRARIES
 #   some platforms, for whatever reasons.
 actions piecemeal archive 
 {
+    $(RM) "$(<)"
     ar ruc "$(<)" "$(>)"
 }
 
@@ -279,6 +314,7 @@ actions piecemeal archive
 rule link.dll ( targets * : sources * : properties * )
 {
     SPACE on $(targets) = " " ;    
+    JAM_SEMAPHORE on $(targets) = <s>gcc-link-semaphore ;
 }
 
 # Differ from 'link' above only by -shared.
@@ -325,6 +361,10 @@ else if [ modules.peek : UNIX ]
     case HP_UX :
         {
         # gcc on HP-UX does not support multi-threading, don't set anything here
+        }
+    case Darwin :
+        {
+        # Darwin has no threading options, don't set anything here.
         }
     case * :
         {

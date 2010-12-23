@@ -1,7 +1,7 @@
 /*
  *
  * Copyright (c) 2004
- * Dr John Maddock
+ * John Maddock
  *
  * Use, modification and distribution are subject to the
  * Boost Software License, Version 1.0. (See accompanying file
@@ -37,14 +37,14 @@ void test_captures(const std::string& regx, const std::string& text, T& expected
       unsigned i, j;
 #ifndef __sgi
       // strange type deduction causes this test to fail on SGI:
-      BOOST_TEST(what.size() == ARRAY_SIZE(expected));
+      BOOST_CHECK(what.size() == ARRAY_SIZE(expected));
 #endif
       for(i = 0; i < what.size(); ++i)
       {
-         BOOST_TEST(what.captures(i).size() <= ARRAY_SIZE(expected[i]));
+         BOOST_CHECK(what.captures(i).size() <= ARRAY_SIZE(expected[i]));
          for(j = 0; j < what.captures(i).size(); ++j)
          {
-            BOOST_TEST(what.captures(i)[j] == expected[i][j]);
+            BOOST_CHECK(what.captures(i)[j] == expected[i][j]);
          }
       }
    }
@@ -113,3 +113,4 @@ int test_main(int , char* [])
    return 0;
 }
 
+#include <boost/test/included/test_exec_monitor.hpp>

@@ -17,12 +17,14 @@ namespace std{
 }
 #endif
 
+#include "test_tools.hpp"
+#include <boost/preprocessor/stringize.hpp>
+#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
+#include <boost/detail/no_exceptions_support.hpp>
+
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/split_member.hpp>
 #include <boost/serialization/vector.hpp>
-
-#include "test_tools.hpp"
-#include "throw_exception.hpp"
 
 //A holds a pointer to another A, but doesn't own the pointer.
 //objCount
@@ -65,6 +67,7 @@ public:
     A* next_;
     static int objcount;
 };
+
 
 int A::objcount = 0;
 
@@ -113,6 +116,7 @@ test_main( int /* argc */, char* /* argv */[] )
             ia.delete_created_pointers();
             vec.clear();
         }
+        BOOST_CATCH_END
     }
 
     //delete the objects
@@ -123,7 +127,7 @@ test_main( int /* argc */, char* /* argv */[] )
     //identify the leaks
     BOOST_CHECK(A::objcount == 0);
     std::remove(testfile);
-    return boost::exit_success;
+    return EXIT_SUCCESS;
 }
 
 

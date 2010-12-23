@@ -9,7 +9,7 @@
 <title>Types Overview</title>
 </head>
 <body>
-<h1><img src="../../../../boost.png" alt="boost.png" align="middle" />
+<h1><img src="../../../../boost.png" align="middle" />
 Overview of Matrix- and Vector-Types </h1>
 
 <dl>
@@ -65,7 +65,7 @@ look at the section "storage layout".</td></tr>
 <td>a dense vector of values of type <code>T</code> of variable
 size. A storage type <code>A</code> can be specified
 which defaults to <code>unbounded_array</code>.
-Elements are zeroed by default.</td>
+Elements are constructed by <code>A</code>, which need not initialise their value.</td>
 
 </tr>
 <tr>
@@ -73,7 +73,7 @@ Elements are zeroed by default.</td>
 <td>a dense vector of values of type <code>T</code> of variable size but with maximum
 <code>N</code>. The default constructor creates <code>v</code>
 with size <code>N</code>.
-Elements are zeroed by default.</td>
+Elements are constructed by the storage type <code>bounded_array</code>, which need not initialise their value.</td>
 </tr>
 <tr>
 <td><code>c_vector&lt;T, M&gt;<br />&nbsp;&nbsp; v(size);</code></td>
@@ -93,7 +93,7 @@ vector is zero other then a single specified element.
 <br/><code>index</code> should be less than <code>size</code>.</td>
 </tr>
 <tr>
-<td><code>sparse_vector&lt;T [, S]&gt;<br />&nbsp;&nbsp; v(size);</code></td>
+<td><code>mapped_vector&lt;T [, S]&gt;<br />&nbsp;&nbsp; v(size);</code></td>
 <td>a sparse vector of values of type <code>T</code> of variable
 size. The sparse storage type <code>S</code> can be <code>std::map&lt;size_t,
 T&gt;</code> or <code>map_array&lt;size_t, T&gt;</code>.</td>
@@ -171,14 +171,14 @@ size.  A storage type <code>A</code> can be specified
 which defaults to <code>unbounded_array</code>.
 The orientation functor <code>F</code> defaults to
 <code>row_major</code>.
-Elements are zeroed by default.</td>
+Elements are constructed by <code>A</code>, which need not initialise their value.</td>
 </tr>
 <tr>
 <td><code>bounded_matrix&lt;T, M, N [, F]&gt;<br />&nbsp;&nbsp; m;</code></td>
 <td>a dense matrix of type <code>T</code> with variable size with maximum <code>M</code>-by-<code>N</code>. The orientation functor <code>F</code>
 defaults to <code>row_major</code>. The default constructor creates
 <code>m</code> with size <code>M</code>-by-<code>N</code>.
-Elements are zeroed by default.</td>
+Elements are constructed by the storage type <code>bounded_array</code>, which need not initialise their value.</td>
 </tr>
 <tr>
 <td><code>c_matrix&lt;T, M, N&gt;<br />&nbsp;&nbsp; m(size1, size2);</code></td>
@@ -242,7 +242,7 @@ variable size. Only the given triangular matrix is stored using
 the order <code>F</code>.</td>
 </tr>
 <tr>
-<td><code>sparse_matrix&lt;T, [F, S]&gt;<br />&nbsp;&nbsp; m(size1, size2 [,
+<td><code>mapped_matrix&lt;T, [F, S]&gt;<br />&nbsp;&nbsp; m(size1, size2 [,
 non_zeros]);</code></td>
 <td>a sparse matrix of values of type <code>T</code> of variable
 size. The sparse storage type <code>S</code> can be either <code>std::map&lt;size_t,
@@ -369,14 +369,14 @@ array.<br />
 The storage layout usually is BLAS compliant.</td>
 </tr>
 <tr>
-<td><code>sparse_vector&lt;T,<br />
+<td><code>mapped_vector&lt;T,<br />
 &nbsp;std::map&lt;std::size_t, T&gt; &gt;<br />
 &nbsp;&nbsp;v (size, non_zeros)</code></td>
 <td>a sparse vector, storage is provided by a standard
 map.</td>
 </tr>
 <tr>
-<td><code>sparse_vector&lt;T,<br />
+<td><code>mapped_vector&lt;T,<br />
 &nbsp;map_array&lt;std::size_t, T&gt; &gt;<br />
 &nbsp;&nbsp;v (size, non_zeros)</code></td>
 <td>a sparse vector, storage is provided by a map
@@ -494,7 +494,7 @@ major.<br />
 The storage layout usually is BLAS compliant.</td>
 </tr>
 <tr>
-<td><code>sparse_matrix&lt;T,<br />
+<td><code>mapped_matrix&lt;T,<br />
 &nbsp;row_major,<br />
 &nbsp;std::map&lt;std::size_t, T&gt; &gt;<br />
 &nbsp;&nbsp;m (size1, size2, non_zeros)</code></td>
@@ -502,7 +502,7 @@ The storage layout usually is BLAS compliant.</td>
 is provided by a standard map.</td>
 </tr>
 <tr>
-<td><code>sparse_matrix&lt;T,<br />
+<td><code>mapped_matrix&lt;T,<br />
 &nbsp;column_major,<br />
 &nbsp;std::map&lt;std::size_t, T&gt; &gt;<br />
 &nbsp;&nbsp;m (size1, size2, non_zeros)</code></td>
@@ -510,7 +510,7 @@ is provided by a standard map.</td>
 storage is provided by a standard map.</td>
 </tr>
 <tr>
-<td><code>sparse_matrix&lt;T,<br />
+<td><code>mapped_matrix&lt;T,<br />
 &nbsp;row_major,<br />
 &nbsp;map_array&lt;std::size_t, T&gt; &gt;<br />
 &nbsp;&nbsp;m (size1, size2, non_zeros)</code></td>
@@ -518,7 +518,7 @@ storage is provided by a standard map.</td>
 is provided by a map array.</td>
 </tr>
 <tr>
-<td><code>sparse_matrix&lt;T,<br />
+<td><code>mapped_matrix&lt;T,<br />
 &nbsp;column_major,<br />
 &nbsp;map_array&lt;std::size_t, T&gt; &gt;<br />
 &nbsp;&nbsp;m (size1, size2, non_zeros)</code></td>
@@ -566,6 +566,5 @@ is granted provided this copyright notice appears in all copies.
 This document is provided ``as is'' without express or implied
 warranty, and with no claim as to its suitability for any
 purpose.</p>
-<p>Last revised: 2004-08-08</p>
 </body>
 </html>

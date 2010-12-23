@@ -1,9 +1,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Libraries and Dependent Targets</title>
+<title>Dependent Targets</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <style type="text/css">
 body { background-image: url('http://docbook.sourceforge.net/release/images/draft.png');
        background-repeat: no-repeat;
@@ -14,9 +14,9 @@ body { background-image: url('http://docbook.sourceforge.net/release/images/draf
        /* background-position: center center; */
      }</style>
 <link rel="start" href="../../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../tutorial.html" title="Chapter 20. Tutorial">
+<link rel="up" href="../tutorial.html" title="Chapter 23. Tutorial">
 <link rel="prev" href="hierarchy.html" title="Project Hierarchies">
-<link rel="next" href="depends.html" title="Library dependencies">
+<link rel="next" href="linkage.html" title="Static and shared libaries">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
@@ -29,22 +29,21 @@ body { background-image: url('http://docbook.sourceforge.net/release/images/draf
 </table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="hierarchy.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorial.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="depends.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="hierarchy.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorial.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="linkage.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="bbv2.tutorial.libs"></a>Libraries and Dependent Targets</h2></div></div></div>
-<i><span class="comment">TODO: need to make this
-      section consistent with "examples-v2/libraries".</span></i><p>
-      Targets that are "needed" by other targets are called
-      <i class="firstterm">dependencies</i> of those other targets.  The
+<a name="bbv2.tutorial.libs"></a>Dependent Targets</h2></div></div></div>
+<p>
+      Targets that are &#8220;needed&#8221; by other targets are called
+      <em class="firstterm">dependencies</em> of those other targets.  The
       targets that need the other targets are called
-      <i class="firstterm">dependent</i> targets.
+      <em class="firstterm">dependent</em> targets.
     </p>
 <p>To get a feeling of target dependencies, let's continue the
-      above example and see how <tt class="filename">src/Jamfile</tt> can
-      use libraries from <tt class="filename">util/foo</tt>.  Assume
-      util/foo/Jamfile contains:
+      above example and see how <code class="filename">top/app/Jamfile</code> can
+      use libraries from <code class="filename">top/util/foo</code>.  If
+      <code class="filename">top/util/foo/Jamfile</code> contains
 
 </p>
 <pre class="programlisting">
@@ -52,7 +51,8 @@ lib bar : bar.cpp ;
 </pre>
 <p>
 
-      Then, to use this library in <tt class="filename">src/Jamfile</tt>, we can write:
+      then to use this library in <code class="filename">top/app/Jamfile</code>, we can
+      write:
 
 </p>
 <pre class="programlisting">
@@ -60,34 +60,44 @@ exe app : app.cpp ../util/foo//bar ;
 </pre>
 <p>
 
-      While <tt class="computeroutput">app.cpp</tt> refers to a regular source file,
-      <tt class="computeroutput">../util/foo//bar</tt> is a reference to another target:
-      a library "bar" declared in the <tt class="filename">Jamfile</tt> at
-      <tt class="filename">../util/foo</tt>.  When linking the
-      <span><b class="command">app</b></span> executable, the appropriate version of
-      <tt class="computeroutput">bar</tt> will be built and linked in. What do we mean by
-      "appropriate"? For example, suppose we build "app" with:
-
-</p>
+      While <code class="computeroutput">app.cpp</code> refers to a regular source file,
+      <code class="computeroutput">../util/foo//bar</code> is a reference to another target:
+      a library <code class="filename">bar</code> declared in the Jamfile at
+      <code class="filename">../util/foo</code>. 
+    </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>Some other build system have special syntax for listing dependent
+      libraries, for example <code class="varname">LIBS</code> variable. In Boost.Build,
+      you just add the library to the list of sources.
+      </p>
+</div>
+<p>Suppose we build <code class="filename">app</code> with:
+    </p>
 <pre class="screen">
-bjam app optimization=full cxxflags=-w-8080
-</pre>
+bjam app optimization=full define=USE_ASM
+    </pre>
 <p>
-
-      Which properties must be used to build <tt class="computeroutput">foo</tt>? The
-      answer is that some properties are
-      <i class="firstterm">propagated</i> &#8212; Boost.Build attempts to
-      use dependencies with the same value of propagated features. The
-      &lt;optimization&gt; feature is propagated, so both "app" and
-      "foo" will be compiled with full optimization. But
-      &lt;cxxflags&gt; feature is not propagated: its value will be
-      added as-is to compiler flags for "a.cpp", but won't affect
-      "foo". There is still a couple of problems. First, the library
-      probably has some headers which must be used when compiling
-      "app.cpp". We could use requirements on "app" to add those
-      includes, but then this work will be repeated for all programs
-      which use "foo". A better solution is to modify
-      util/foo/Jamfilie in this way:
+    Which properties will be used to build <code class="computeroutput">foo</code>? The answer is
+    that some features are
+    <em class="firstterm">propagated</em>&#8212;Boost.Build attempts to use
+    dependencies with the same value of propagated features. The
+    <code class="varname">&lt;optimization&gt;</code> feature is propagated, so both
+    <code class="filename">app</code> and <code class="filename">foo</code> will be compiled
+    with full optimization. But <code class="varname">&lt;define&gt;</code> is not
+    propagated: its value will be added as-is to the compiler flags for
+    <code class="filename">a.cpp</code>, but won't affect <code class="filename">foo</code>.
+    </p>
+<p>Let's improve this project further.
+      The library
+      probably has some headers that must be used when compiling
+      <code class="filename">app.cpp</code>. We could manually add the necessary
+      <code class="computeroutput">#include</code> paths to <code class="filename">app</code>'s
+      requirements as values of the
+      <code class="varname">&lt;include&gt;</code> feature, but then this work will 
+      be repeated for all programs
+      that use <code class="filename">foo</code>. A better solution is to modify
+      <code class="filename">util/foo/Jamfile</code> in this way:
 
 </p>
 <pre class="programlisting">
@@ -99,55 +109,54 @@ lib foo : foo.cpp ;
 </pre>
 <p>
 
-      Usage requirements are requirements which are applied to
-      dependents. In this case, &lt;include&gt; will be applied to all
-      targets which use "foo" &#8212; i.e. targets which have "foo"
-      either in sources or in dependency properties. You'd need to
-      specify usage requirements only once, and programs which use "foo"
-      don't have to care about include paths any longer. Or course, the
-      path will be interpreted relatively to "util/foo" and will be
-      adjusted according to the <span><b class="command">bjam</b></span>s invocation
-      directory. For
-      example, if building from project root, the final compiler's
-      command line will contain <tt class="option">-Ilib/foo</tt>.
+      Usage requirements are applied not to the target being declared
+      but to its
+      dependents. In this case, <code class="literal">&lt;include&gt;.</code> will be applied to all
+      targets that directly depend on <code class="filename">foo</code>.
     </p>
-<p>The second problem is that we hardcode the path to library's
-      Jamfile. Imagine it's hardcoded in 20 different places and we
-      change the directory layout. The solution is to use project ids
-      &#8212; symbolic names, not tied to directory layout. First, we
-      assign a project id to Jamfile in util/foo:</p>
+<p>Another improvement is using symbolic identifiers to refer to
+      the library, as opposed to <code class="filename">Jamfile</code> location.
+      In a large project, a library can be used by many targets, and if 
+      they all use <code class="filename">Jamfile</code> location,
+      a change in directory organization entails much work.
+      The solution is to use project ids&#8212;symbolic names
+      not tied to directory layout. First, we need to assign a project id by
+      adding this code to
+      <code class="filename">Jamroot</code>:</p>
 <pre class="programlisting">
-project foo
-    : usage-requirements &lt;include&gt;.
-    ;
-</pre>
-<p>
-      Second, we use the project id to refer to the library in
-      src/Jamfile:
+use-project /library-example/foo : util/foo ;
+      </pre>
+<p>Second, we modify <code class="filename">app/Jamfile</code> to use the
+      project id:
 
 </p>
 <pre class="programlisting">
-exe app : app.cpp /foo//bar ;
+exe app : app.cpp /library-example/foo//bar ;
 </pre>
 <p>
-
-      The "/foo//bar" syntax is used to refer to target "foo" in
-      project with global id "/foo" (the slash is used to specify global
-      id). This way, users of "foo" do not depend on its location, only
-      on id, which is supposedly stable. The only thing left, it to make
-      sure that src/Jamfile knows the project id that it uses. We add to
-      top/Jamfile the following line:
-
-</p>
-<pre class="programlisting">
-use-project /foo : util/foo ;
-</pre>
-<p>
-
-      Now, all projects can refer to "foo" using the symbolic
-      name. If the library is moved somewhere, only a single line in the
-      top-level Jamfile should be changed.
+The <code class="filename">/library-example/foo//bar</code> syntax is used 
+      to refer to the target <code class="filename">bar</code> in
+      the project with id <code class="filename">/library-example/foo</code>.
+      We've achieved our goal&#8212;if the library is moved to a different
+      directory, only <code class="filename">Jamroot</code> must be modified.
+      Note that project ids are global&#8212;two Jamfiles are not
+      allowed to assign the same project id to different directories.
+           
     </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>If you want all applications in some project to link
+      to a certain library, you can avoid having to specify it directly the sources of every
+      target by using the
+      <code class="varname">&lt;source&gt;</code> property. For example, if <code class="filename">/boost/filesystem//fs</code>
+      should be linked to all applications in your project, you can add
+      <code class="computeroutput">&lt;source&gt;/boost/filesystem//fs</code> to the project's requirements, like this:</p>
+<pre class="programlisting">
+project 
+   : requirements &lt;source&gt;/boost/filesystem//fs
+   ;   
+      </pre>
+</div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
@@ -155,7 +164,7 @@ use-project /foo : util/foo ;
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="hierarchy.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorial.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="depends.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="hierarchy.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorial.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="linkage.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

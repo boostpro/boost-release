@@ -27,7 +27,8 @@ namespace std{
 
 #include <boost/archive/archive_exception.hpp>
 #include "test_tools.hpp"
-#include "throw_exception.hpp"
+#include <boost/preprocessor/stringize.hpp>
+#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 ///////////////////////////////////////////////////////
 // simple class test - using non-intrusive syntax
@@ -89,9 +90,8 @@ bool A::operator<(const A &rhs) const
 
 // function specializations must be defined in the appropriate
 // namespace - boost::serialization
-#ifdef BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
-namespace boost { namespace serialization {
-#endif
+namespace boost { 
+namespace serialization {
 
 // This first set of overrides should work with all compilers.
 
@@ -118,9 +118,8 @@ void serialize(
     ar & boost::serialization::make_nvp("x", a.x);
 }
 
-#ifdef BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
-}} // namespace boost::serialization
-#endif
+} // serialization
+} // namespace boost
 
 void save(const char * testfile){
     test_ostream os(testfile, TEST_STREAM_FLAGS);
@@ -139,6 +138,7 @@ void save(const char * testfile){
 
     delete pa2;
 }
+
 void load(const char * testfile){
     test_istream is(testfile, TEST_STREAM_FLAGS);
     test_iarchive ia(is);
@@ -165,7 +165,7 @@ test_main( int /* argc */, char* /* argv */[] )
     save(testfile);
     load(testfile);
     std::remove(testfile);
-    return boost::exit_success;
+    return EXIT_SUCCESS;
 }
 
 // EOF

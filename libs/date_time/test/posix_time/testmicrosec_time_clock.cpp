@@ -21,10 +21,18 @@ main()
   ptime last = microsec_clock::local_time();
 
   int max = 30;
-  for (int i = 0; i<max; i++)
+  int i = 0;
+  for (i = 0; i<max; i++)
   {
     for (int j=0; j<100000; j++)
     {
+      // some systems loop too fast so "last is less" tests fail
+      // due to 'last' & 't2' being equal. These calls slow
+      // it down enough to make 'last' & 't2' different
+#if defined(BOOST_HAS_GETTIMEOFDAY)
+      timeval tv;
+      gettimeofday(&tv, 0);
+#endif
 #if defined(BOOST_HAS_FTIME)
       SYSTEMTIME st;
       GetSystemTime(&st);
@@ -42,11 +50,57 @@ main()
     check("seconds match", 
           t1.time_of_day().minutes() == t2.time_of_day().minutes());
     check("hours date", t1.date() == t2.date());
-    check("last is less", last < t2);
+    if( !check("last is less", last < t2) ) {
+      std::cout << to_simple_string(last) << " < " 
+        << to_simple_string(t2) << std::endl;
+    }
     last = t2;
 
     
   }
+
+
+  std::cout << "Now do the same test for universal time -- a few less iterations" << std::endl;
+  max = 10;
+  last = microsec_clock::universal_time();
+  for (i = 0; i<max; i++)
+  {
+    for (int j=0; j<100000; j++)
+    {
+      // some systems loop too fast so "last is less" tests fail
+      // due to 'last' & 't2' being equal. These calls slow
+      // it down enough to make 'last' & 't2' different
+#if defined(BOOST_HAS_GETTIMEOFDAY)
+      timeval tv;
+      gettimeofday(&tv, 0);
+#endif
+#if defined(BOOST_HAS_FTIME)
+      SYSTEMTIME st;
+      GetSystemTime(&st);
+#endif
+    }
+
+    ptime t1 = second_clock::universal_time();
+    std::cout << to_simple_string(t1) << std::endl;
+
+    ptime t2 = microsec_clock::universal_time();
+    std::cout << to_simple_string(t2) << std::endl;
+    check("hours match", t1.time_of_day().hours() == t2.time_of_day().hours());
+    check("minutes match", 
+          t1.time_of_day().minutes() == t2.time_of_day().minutes());
+    check("seconds match", 
+          t1.time_of_day().minutes() == t2.time_of_day().minutes());
+    check("hours date", t1.date() == t2.date());
+    //check("last is less", last < t2);
+    if( !check("last is less", last < t2) ) {
+      std::cout << to_simple_string(last) << " < " 
+        << to_simple_string(t2) << std::endl;
+    }
+    last = t2;
+
+    
+  }
+
 #else
   check("Get time of day micro second clock not supported due to inadequate compiler/platform", false);
 #endif

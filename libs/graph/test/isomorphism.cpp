@@ -21,7 +21,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <time.h> // clock used without std:: qualifier?
-#include <boost/test/test_tools.hpp>
+#include <boost/test/minimal.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/isomorphism.hpp>
 #include <boost/property_map.hpp>
@@ -29,6 +29,7 @@
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/mersenne_twister.hpp>
+#include <boost/lexical_cast.hpp>
 
 using namespace boost;
 
@@ -81,7 +82,7 @@ void generate_random_digraph(Graph& g, double edge_probability)
   boost::uniform_real<double> distrib(0.0, 1.0);
   boost::variate_generator<boost::mt19937&, boost::uniform_real<double> >
     random_dist(random_gen, distrib);
-  
+
   for (vertex_iterator u = vertices(g).first; u != vertices(g).second; ++u) {
     vertex_iterator v = u;
     ++v;
@@ -92,7 +93,7 @@ void generate_random_digraph(Graph& g, double edge_probability)
   }
 }
 
-void test_isomorphism(int n, double edge_probability) 
+void test_isomorphism(int n, double edge_probability)
 {
   typedef adjacency_list<vecS, vecS, bidirectionalS> graph1;
   typedef adjacency_list<listS, listS, bidirectionalS,
@@ -104,7 +105,7 @@ void test_isomorphism(int n, double edge_probability)
   randomly_permute_graph(g1, g2);
 
   int v_idx = 0;
-  for (graph2::vertex_iterator v = vertices(g2).first; 
+  for (graph2::vertex_iterator v = vertices(g2).first;
        v != vertices(g2).second; ++v) {
     put(vertex_index_t(), g2, *v, v_idx++);
   }
@@ -113,14 +114,14 @@ void test_isomorphism(int n, double edge_probability)
 
   bool isomorphism_correct;
   clock_t start = clock();
-  BOOST_TEST(isomorphism_correct = isomorphism
+  BOOST_CHECK(isomorphism_correct = isomorphism
                (g1, g2, isomorphism_map(make_assoc_property_map(mapping))));
   clock_t end = clock();
 
   std::cout << "Elapsed time (clock cycles): " << (end - start) << std::endl;
 
   bool verify_correct;
-  BOOST_TEST(verify_correct = 
+  BOOST_CHECK(verify_correct =
              verify_isomorphism(g1, g2, make_assoc_property_map(mapping)));
 
   if (!isomorphism_correct || !verify_correct) {
@@ -128,7 +129,7 @@ void test_isomorphism(int n, double edge_probability)
     {
       std::ofstream out("isomorphism_failure.bg1");
       out << num_vertices(g1) << std::endl;
-      for (graph1::edge_iterator e = edges(g1).first; 
+      for (graph1::edge_iterator e = edges(g1).first;
            e != edges(g1).second; ++e) {
         out << get(vertex_index_t(), g1, source(*e, g1)) << ' '
             << get(vertex_index_t(), g1, target(*e, g1)) << std::endl;
@@ -139,7 +140,7 @@ void test_isomorphism(int n, double edge_probability)
     {
       std::ofstream out("isomorphism_failure.bg2");
       out << num_vertices(g2) << std::endl;
-      for (graph2::edge_iterator e = edges(g2).first; 
+      for (graph2::edge_iterator e = edges(g2).first;
            e != edges(g2).second; ++e) {
         out << get(vertex_index_t(), g2, source(*e, g2)) << ' '
             << get(vertex_index_t(), g2, target(*e, g2)) << std::endl;
@@ -155,12 +156,8 @@ int test_main(int argc, char* argv[])
     return 0;
   }
 
-#ifndef BOOST_NO_STDC_NAMESPACE
-  using std::atoi;
-  using std::atof;
-#endif
-  int n = atoi(argv[1]);
-  double edge_prob = atof(argv[2]);
+  int n = boost::lexical_cast<int>(argv[1]);
+  double edge_prob = boost::lexical_cast<double>(argv[2]);
   test_isomorphism(n, edge_prob);
 
   return 0;

@@ -33,10 +33,10 @@ generators.register-standard extra.x_pro : X_PRO : X1 X2 ;
 #if $(no-var) {
 import nm ;
 
-type.register CPP_MARKED : marked.cpp : CPP ;
+type.register CPP_MARKED : marked_cpp : CPP ;
 type.register POSITIONS : positions ;
-type.register NM.TARGET.CPP : target.cpp : CPP ;
-type.register NM_EXE : : EXE : main ;
+type.register NM.TARGET.CPP : target_cpp : CPP ;
+type.register NM_EXE : : EXE ;
 
 generators.register-standard nm.target-source : CPP_MARKED : NM.TARGET.CPP ;
 generators.register-standard nm.cpp-mark : CPP : CPP_MARKED POSITIONS ;
@@ -60,7 +60,7 @@ class nm::target::cpp-obj-generator : generator
             local converted = [ generators.construct $(project) : NM.TARGET.CPP : $(properties) : $(source) ] ;
         if $(converted[1])
             {            
-                local result = [ generators.construct $(project) : OBJ : $(properties) : $(converted[1]) ] ;
+                local result = [ generators.construct $(project) : OBJ : $(properties) : $(converted[2]) ] ;
                 return $(result) ;
             }
             else

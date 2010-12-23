@@ -12,8 +12,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/pair_view.hpp,v $
-// $Date: 2004/11/10 23:38:08 $
-// $Revision: 1.4.2.1 $
+// $Date: 2004/11/28 01:56:21 $
+// $Revision: 1.5 $
 
 #include <boost/mpl/begin_end.hpp>
 #include <boost/mpl/iterator_category.hpp>

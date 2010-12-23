@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Extending return type deduction system</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../lambda.html" title="Chapter 5. Boost.Lambda">
+<link rel="up" href="../lambda.html" title="Chapter 6. Boost.Lambda">
 <link rel="prev" href="le_in_details.html" title="Lambda expressions in details">
 <link rel="next" href="s07.html" title="Practical considerations">
 </head>
@@ -34,7 +34,7 @@ In many cases this is not necessary,
 as the BLL defines default return types for operators.
 
 For example, the default return type for all comparison operators is 
-<tt class="literal">bool</tt>, and as long as the user defined comparison operators 
+<code class="literal">bool</code>, and as long as the user defined comparison operators 
 have a bool return type, there is no need to write new specializations 
 for the return type deduction classes.
 
@@ -52,31 +52,31 @@ specializations for these templates.
 
 The templates for unary functors are
 
-<tt class="literal">
+<code class="literal">
 plain_return_type_1&lt;Action, A&gt;
-</tt>
+</code>
 
 and 
 
-<tt class="literal">
+<code class="literal">
 return_type_1&lt;Action, A&gt;
-</tt>, and 
+</code>, and 
 
-<tt class="literal">
+<code class="literal">
 plain_return_type_2&lt;Action, A, B&gt;
-</tt>
+</code>
 
 and 
 
-<tt class="literal">
+<code class="literal">
 return_type_2&lt;Action, A, B&gt;
-</tt>
+</code>
 
 respectively for binary functors.
 
 </p>
 <p>
-The first parameter (<tt class="literal">Action</tt>) to all these templates 
+The first parameter (<code class="literal">Action</code>) to all these templates 
 is the <span class="emphasis"><em>action</em></span> class, which specifies the operator. 
 
 Operators with similar return type rules are grouped together into 
@@ -85,21 +85,21 @@ and only the action class and action group together define the operator
 unambiguously. 
 
 As an example, the action type 
-<tt class="literal">arithmetic_action&lt;plus_action&gt;</tt> stands for 
-<tt class="literal">operator+</tt>. 
+<code class="literal">arithmetic_action&lt;plus_action&gt;</code> stands for 
+<code class="literal">operator+</code>. 
 
 The complete listing of different action types is shown in 
-<a href="extending.html#table:actions" title="Table 5.2. Action types">Table 5.2, &#8220;Action types&#8221;</a>. 
+<a href="extending.html#table:actions" title="Table 6.2. Action types">Table 6.2, &#8220;Action types&#8221;</a>. 
 </p>
 <p>
-The latter parameters, <tt class="literal">A</tt> in the unary case, 
-or <tt class="literal">A</tt> and <tt class="literal">B</tt> in the binary case, 
+The latter parameters, <code class="literal">A</code> in the unary case, 
+or <code class="literal">A</code> and <code class="literal">B</code> in the binary case, 
 stand for the argument types of the operator call. 
 
 The two sets of templates, 
-<tt class="literal">plain_return_type_<i class="parameter"><tt>n</tt></i></tt> and 
-<tt class="literal">return_type_<i class="parameter"><tt>n</tt></i></tt> 
-(<i class="parameter"><tt>n</tt></i> is 1 or 2) differ in the way how parameter types 
+<code class="literal">plain_return_type_<em class="parameter"><code>n</code></em></code> and 
+<code class="literal">return_type_<em class="parameter"><code>n</code></em></code> 
+(<em class="parameter"><code>n</code></em> is 1 or 2) differ in the way how parameter types 
 are presented to them.
 
 For the former templates, the parameter types are always provided as 
@@ -117,11 +117,11 @@ cv-qualifiers, and are non-reference types as well.
  
 The downside is, that for an overloaded set of operators of the 
 kind described above, one may end up needing up to 
-16 <tt class="literal">return_type_2</tt> specializations.
+16 <code class="literal">return_type_2</code> specializations.
 </p>
 <p>
 Suppose the user has overloaded the following operators for some user defined 
-types <tt class="literal">X</tt>, <tt class="literal">Y</tt> and <tt class="literal">Z</tt>:
+types <code class="literal">X</code>, <code class="literal">Y</code> and <code class="literal">Z</code>:
 
 </p>
 <pre class="programlisting">
@@ -131,9 +131,9 @@ Z operator-(const X&amp;, const Y&amp;);
 <p>
 
 Now, one can add a specialization stating, that if the left hand argument 
-is of type <tt class="literal">X</tt>, and the right hand one of type 
-<tt class="literal">Y</tt>, the return type of all such binary arithmetic 
-operators is <tt class="literal">Z</tt>:
+is of type <code class="literal">X</code>, and the right hand one of type 
+<code class="literal">Y</code>, the return type of all such binary arithmetic 
+operators is <code class="literal">Z</code>:
 
 </p>
 <pre class="programlisting">
@@ -154,15 +154,15 @@ Having this specialization defined, BLL is capable of correctly
 deducing the return type of the above two operators.
 
 Note, that the specializations must be in the same namespace, 
-<tt class="literal">::boost::lambda</tt>, with the primary template. 
+<code class="literal">::boost::lambda</code>, with the primary template. 
 
 For brevity, we do not show the namespace definitions in the examples below.
 </p>
 <p>
 It is possible to specialize on the level of an individual operator as well, 
 in addition to providing a specialization for a group of operators. 
-Say, we add a new arithmetic operator for argument types <tt class="literal">X</tt> 
-and <tt class="literal">Y</tt>:
+Say, we add a new arithmetic operator for argument types <code class="literal">X</code> 
+and <code class="literal">Y</code>:
 
 </p>
 <pre class="programlisting">
@@ -171,7 +171,7 @@ X operator*(const X&amp;, const Y&amp;);
 <p>
 
 Our first rule for all arithmetic operators specifies that the return 
-type of this operator is <tt class="literal">Z</tt>, 
+type of this operator is <code class="literal">Z</code>, 
 which obviously is not the case.
 Hence, we provide a new rule for the multiplication operator:
 
@@ -195,15 +195,15 @@ template &lt;class T&gt; class my_vector;
 <p>
 
 Suppose the addition operator is defined between any two 
-<tt class="literal">my_vector</tt> instantiations, 
+<code class="literal">my_vector</code> instantiations, 
 as long as the addition operator is defined between their element types. 
 
-Furthermore, the element type of the resulting <tt class="literal">my_vector</tt> 
+Furthermore, the element type of the resulting <code class="literal">my_vector</code> 
 is the same as the result type of the addition between the element types.
 
-E.g., adding <tt class="literal">my_vector&lt;int&gt;</tt> and 
-<tt class="literal">my_vector&lt;double&gt;</tt> results in 
-<tt class="literal">my_vector&lt;double&gt;</tt>.
+E.g., adding <code class="literal">my_vector&lt;int&gt;</code> and 
+<code class="literal">my_vector&lt;double&gt;</code> results in 
+<code class="literal">my_vector&lt;double&gt;</code>.
 
 The BLL has traits classes to perform the implicit built-in and standard 
 type conversions between integral, floating point, and complex classes.
@@ -222,7 +222,7 @@ operator+(const my_vector&lt;A&gt;&amp; a, const my_vector&lt;B&gt;&amp; b)
 }
 </pre>
 <p>
-To allow BLL to deduce the type of <tt class="literal">my_vector</tt> 
+To allow BLL to deduce the type of <code class="literal">my_vector</code> 
 additions correctly, we can define:
 
 </p>
@@ -238,11 +238,11 @@ public:
 </pre>
 <p>
 Note, that we are reusing the existing specializations for the 
-BLL <tt class="literal">return_type_2</tt> template, 
+BLL <code class="literal">return_type_2</code> template, 
 which require that the argument types are references. 
 </p>
 <div class="table">
-<a name="table:actions"></a><p class="title"><b>Table 5.2. Action types</b></p>
+<a name="table:actions"></a><p class="title"><b>Table 6.2. Action types</b></p>
 <table class="table" summary="Action types">
 <colgroup>
 <col>
@@ -250,160 +250,160 @@ which require that the argument types are references.
 </colgroup>
 <tbody>
 <tr>
-<td><tt class="literal">+</tt></td>
-<td><tt class="literal">arithmetic_action&lt;plus_action&gt;</tt></td>
+<td><code class="literal">+</code></td>
+<td><code class="literal">arithmetic_action&lt;plus_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">arithmetic_action&lt;minus_action&gt;</tt></td>
+<td><code class="literal">-</code></td>
+<td><code class="literal">arithmetic_action&lt;minus_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">*</tt></td>
-<td><tt class="literal">arithmetic_action&lt;multiply_action&gt;</tt></td>
+<td><code class="literal">*</code></td>
+<td><code class="literal">arithmetic_action&lt;multiply_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">/</tt></td>
-<td><tt class="literal">arithmetic_action&lt;divide_action&gt;</tt></td>
+<td><code class="literal">/</code></td>
+<td><code class="literal">arithmetic_action&lt;divide_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">%</tt></td>
-<td><tt class="literal">arithmetic_action&lt;remainder_action&gt;</tt></td>
+<td><code class="literal">%</code></td>
+<td><code class="literal">arithmetic_action&lt;remainder_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">+</tt></td>
-<td><tt class="literal">unary_arithmetic_action&lt;plus_action&gt;</tt></td>
+<td><code class="literal">+</code></td>
+<td><code class="literal">unary_arithmetic_action&lt;plus_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">unary_arithmetic_action&lt;minus_action&gt;</tt></td>
+<td><code class="literal">-</code></td>
+<td><code class="literal">unary_arithmetic_action&lt;minus_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&amp;</tt></td>
-<td><tt class="literal">bitwise_action&lt;and_action&gt;</tt></td>
+<td><code class="literal">&amp;</code></td>
+<td><code class="literal">bitwise_action&lt;and_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">|</tt></td>
-<td><tt class="literal">bitwise_action&lt;or_action&gt;</tt></td>
+<td><code class="literal">|</code></td>
+<td><code class="literal">bitwise_action&lt;or_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">~</tt></td>
-<td><tt class="literal">bitwise_action&lt;not_action&gt;</tt></td>
+<td><code class="literal">~</code></td>
+<td><code class="literal">bitwise_action&lt;not_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">^</tt></td>
-<td><tt class="literal">bitwise_action&lt;xor_action&gt;</tt></td>
+<td><code class="literal">^</code></td>
+<td><code class="literal">bitwise_action&lt;xor_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;&lt;</tt></td>
-<td><tt class="literal">bitwise_action&lt;leftshift_action_no_stream&gt;</tt></td>
+<td><code class="literal">&lt;&lt;</code></td>
+<td><code class="literal">bitwise_action&lt;leftshift_action_no_stream&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;&gt;</tt></td>
-<td><tt class="literal">bitwise_action&lt;rightshift_action_no_stream&gt;</tt></td>
+<td><code class="literal">&gt;&gt;</code></td>
+<td><code class="literal">bitwise_action&lt;rightshift_action_no_stream&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&amp;&amp;</tt></td>
-<td><tt class="literal">logical_action&lt;and_action&gt;</tt></td>
+<td><code class="literal">&amp;&amp;</code></td>
+<td><code class="literal">logical_action&lt;and_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">||</tt></td>
-<td><tt class="literal">logical_action&lt;or_action&gt;</tt></td>
+<td><code class="literal">||</code></td>
+<td><code class="literal">logical_action&lt;or_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">!</tt></td>
-<td><tt class="literal">logical_action&lt;not_action&gt;</tt></td>
+<td><code class="literal">!</code></td>
+<td><code class="literal">logical_action&lt;not_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;</tt></td>
-<td><tt class="literal">relational_action&lt;less_action&gt;</tt></td>
+<td><code class="literal">&lt;</code></td>
+<td><code class="literal">relational_action&lt;less_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;</tt></td>
-<td><tt class="literal">relational_action&lt;greater_action&gt;</tt></td>
+<td><code class="literal">&gt;</code></td>
+<td><code class="literal">relational_action&lt;greater_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;=</tt></td>
-<td><tt class="literal">relational_action&lt;lessorequal_action&gt;</tt></td>
+<td><code class="literal">&lt;=</code></td>
+<td><code class="literal">relational_action&lt;lessorequal_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;=</tt></td>
-<td><tt class="literal">relational_action&lt;greaterorequal_action&gt;</tt></td>
+<td><code class="literal">&gt;=</code></td>
+<td><code class="literal">relational_action&lt;greaterorequal_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">==</tt></td>
-<td><tt class="literal">relational_action&lt;equal_action&gt;</tt></td>
+<td><code class="literal">==</code></td>
+<td><code class="literal">relational_action&lt;equal_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">!=</tt></td>
-<td><tt class="literal">relational_action&lt;notequal_action&gt;</tt></td>
+<td><code class="literal">!=</code></td>
+<td><code class="literal">relational_action&lt;notequal_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">+=</tt></td>
-<td><tt class="literal">arithmetic_assignment_action&lt;plus_action&gt;</tt></td>
+<td><code class="literal">+=</code></td>
+<td><code class="literal">arithmetic_assignment_action&lt;plus_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-=</tt></td>
-<td><tt class="literal">arithmetic_assignment_action&lt;minus_action&gt;</tt></td>
+<td><code class="literal">-=</code></td>
+<td><code class="literal">arithmetic_assignment_action&lt;minus_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">*=</tt></td>
-<td><tt class="literal">arithmetic_assignment_action&lt;multiply_action&gt;</tt></td>
+<td><code class="literal">*=</code></td>
+<td><code class="literal">arithmetic_assignment_action&lt;multiply_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">/=</tt></td>
-<td><tt class="literal">arithmetic_assignment_action&lt;divide_action&gt;</tt></td>
+<td><code class="literal">/=</code></td>
+<td><code class="literal">arithmetic_assignment_action&lt;divide_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">%=</tt></td>
-<td><tt class="literal">arithmetic_assignment_action&lt;remainder_action&gt;</tt></td>
+<td><code class="literal">%=</code></td>
+<td><code class="literal">arithmetic_assignment_action&lt;remainder_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&amp;=</tt></td>
-<td><tt class="literal">bitwise_assignment_action&lt;and_action&gt;</tt></td>
+<td><code class="literal">&amp;=</code></td>
+<td><code class="literal">bitwise_assignment_action&lt;and_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">=|</tt></td>
-<td><tt class="literal">bitwise_assignment_action&lt;or_action&gt;</tt></td>
+<td><code class="literal">=|</code></td>
+<td><code class="literal">bitwise_assignment_action&lt;or_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">^=</tt></td>
-<td><tt class="literal">bitwise_assignment_action&lt;xor_action&gt;</tt></td>
+<td><code class="literal">^=</code></td>
+<td><code class="literal">bitwise_assignment_action&lt;xor_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;&lt;=</tt></td>
-<td><tt class="literal">bitwise_assignment_action&lt;leftshift_action&gt;</tt></td>
+<td><code class="literal">&lt;&lt;=</code></td>
+<td><code class="literal">bitwise_assignment_action&lt;leftshift_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;&gt;=</tt></td>
-<td><tt class="literal">bitwise_assignment_action&lt;rightshift_action&gt;</tt></td>
+<td><code class="literal">&gt;&gt;=</code></td>
+<td><code class="literal">bitwise_assignment_action&lt;rightshift_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">++</tt></td>
-<td><tt class="literal">pre_increment_decrement_action&lt;increment_action&gt;</tt></td>
+<td><code class="literal">++</code></td>
+<td><code class="literal">pre_increment_decrement_action&lt;increment_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">--</tt></td>
-<td><tt class="literal">pre_increment_decrement_action&lt;decrement_action&gt;</tt></td>
+<td><code class="literal">--</code></td>
+<td><code class="literal">pre_increment_decrement_action&lt;decrement_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">++</tt></td>
-<td><tt class="literal">post_increment_decrement_action&lt;increment_action&gt;</tt></td>
+<td><code class="literal">++</code></td>
+<td><code class="literal">post_increment_decrement_action&lt;increment_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">--</tt></td>
-<td><tt class="literal">post_increment_decrement_action&lt;decrement_action&gt;</tt></td>
+<td><code class="literal">--</code></td>
+<td><code class="literal">post_increment_decrement_action&lt;decrement_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&amp;</tt></td>
-<td><tt class="literal">other_action&lt;address_of_action&gt;</tt></td>
+<td><code class="literal">&amp;</code></td>
+<td><code class="literal">other_action&lt;address_of_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">*</tt></td>
-<td><tt class="literal">other_action&lt;contents_of_action&gt;</tt></td>
+<td><code class="literal">*</code></td>
+<td><code class="literal">other_action&lt;contents_of_action&gt;</code></td>
 </tr>
 <tr>
-<td><tt class="literal">,</tt></td>
-<td><tt class="literal">other_action&lt;comma_action&gt;</tt></td>
+<td><code class="literal">,</code></td>
+<td><code class="literal">other_action&lt;comma_action&gt;</code></td>
 </tr>
 </tbody>
 </table>

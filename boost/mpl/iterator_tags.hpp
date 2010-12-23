@@ -11,8 +11,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/iterator_tags.hpp,v $
-// $Date: 2004/11/11 05:15:08 $
-// $Revision: 1.2.2.1 $
+// $Date: 2004/11/28 01:54:51 $
+// $Revision: 1.3 $
 
 #include <boost/mpl/int.hpp>
 

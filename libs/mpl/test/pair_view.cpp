@@ -9,8 +9,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/libs/mpl/test/pair_view.cpp,v $
-// $Date: 2004/11/10 23:51:34 $
-// $Revision: 1.2.2.1 $
+// $Date: 2004/11/28 03:35:12 $
+// $Revision: 1.3 $
 
 #include <boost/mpl/pair_view.hpp>
 #include <boost/mpl/vector/vector50_c.hpp>

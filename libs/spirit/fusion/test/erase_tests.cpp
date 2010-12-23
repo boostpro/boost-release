@@ -5,7 +5,7 @@
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#include <boost/test/minimal.hpp>
+#include <boost/detail/lightweight_test.hpp>
 #include <boost/spirit/fusion/sequence/tuple.hpp>
 #include <boost/spirit/fusion/sequence/io.hpp>
 #include <boost/spirit/fusion/sequence/equal_to.hpp>
@@ -17,7 +17,7 @@
 #include <boost/mpl/int.hpp>
 
 int
-test_main(int, char*[])
+main()
 {
     using namespace boost::fusion;
     using boost::mpl::vector_c;
@@ -43,14 +43,14 @@ test_main(int, char*[])
 
     {
         typedef vector_c<int, 1, 2, 3, 4, 5> mpl_vec;
-        typedef begin<mpl_vec>::type mpl_vec_begin;
-        typedef advance<mpl_vec_begin, int_<3> >::type mpl_vec_at3;
+        typedef boost::mpl::begin<mpl_vec>::type mpl_vec_begin;
+        typedef boost::mpl::advance<mpl_vec_begin, int_<3> >::type mpl_vec_at3;
 
         std::cout << erase(mpl_vec(), mpl_vec_at3()) << std::endl;
         BOOST_TEST((erase(mpl_vec(), mpl_vec_at3())
             == make_tuple(1, 2, 3, 5)));
     }
 
-    return 0;
+    return boost::report_errors();
 }
 

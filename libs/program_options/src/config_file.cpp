@@ -10,6 +10,7 @@
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/errors.hpp>
 #include <boost/program_options/detail/convert.hpp>
+#include <boost/throw_exception.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -54,7 +55,7 @@ namespace boost { namespace program_options { namespace detail {
                     bad_prefixes = true;
             }
             if (bad_prefixes)
-                throw error("bad prefixes");
+                boost::throw_exception(error("bad prefixes"));
             allowed_prefixes.insert(s);
         }
     }
@@ -100,10 +101,10 @@ namespace boost { namespace program_options { namespace detail {
                     string value = trim_ws(s.substr(n+1));
 
                     if (!allowed_option(name))
-                        throw unknown_option(name);
+                        boost::throw_exception(unknown_option(name));
                                         
                     if (value.empty())
-                        throw invalid_syntax(s, "no value given");
+                        boost::throw_exception(invalid_syntax(s, "no value given"));
                     
                     found = true;
                     this->value().string_key = name;
@@ -112,7 +113,7 @@ namespace boost { namespace program_options { namespace detail {
                     break;
 
                 } else {
-                    throw invalid_syntax(s, "unrecognized line");
+                    boost::throw_exception(invalid_syntax(s, "unrecognized line"));
                 }
             }
         }
@@ -136,9 +137,8 @@ namespace boost { namespace program_options { namespace detail {
         return false;
     }
 
-// On Metrowerks, the function is defined inline.
-
-#if BOOST_WORKAROUND(__COMO_VERSION__, BOOST_TESTED_AT(4303))
+#if BOOST_WORKAROUND(__COMO_VERSION__, BOOST_TESTED_AT(4303)) || \
+        (defined(__sgi) && BOOST_WORKAROUND(_COMPILER_VERSION, BOOST_TESTED_AT(741)))
     template<>
     bool
     basic_config_file_iterator<wchar_t>::getline(std::string& s)

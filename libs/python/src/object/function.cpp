@@ -404,7 +404,7 @@ void function::add_to_namespace(
             dict = ((PyClassObject*)ns)->cl_dict;
         else if (PyType_Check(ns))
             dict = ((PyTypeObject*)ns)->tp_dict;
-        else
+        else    
             dict = PyObject_GetAttrString(ns, "__dict__");
 
         if (dict == 0)
@@ -471,8 +471,18 @@ void function::add_to_namespace(
     add_to_namespace(name_space, name_, attribute);
     if (doc != 0)
     {
-        object attr_copy(attribute);
-        attr_copy.attr("__doc__") = doc;
+        // Accumulate documentation
+        object mutable_attribute(attribute);
+        
+        if (
+            PyObject_HasAttrString(mutable_attribute.ptr(), "__doc__")
+            && mutable_attribute.attr("__doc__"))
+        {
+            mutable_attribute.attr("__doc__") += "\n\n";
+            mutable_attribute.attr("__doc__") += doc;
+        }
+        else
+            mutable_attribute.attr("__doc__") = doc;
     }
 }
 
@@ -566,11 +576,20 @@ extern "C"
         else
             return python::incref(f->name().ptr());
     }
+
+    // We add a dummy __class__ attribute in order to fool PyDoc into
+    // treating these as built-in functions and scanning their
+    // documentation
+    static PyObject* function_get_class(PyObject* op, void*)
+    {
+        return python::incref(upcast<PyObject>(&PyCFunction_Type));
+    }
 }
     
 static PyGetSetDef function_getsetlist[] = {
     {"__name__", (getter)function_get_name, 0 },
     {"func_name", (getter)function_get_name, 0 },
+    {"__class__", (getter)function_get_class, 0 },    // see note above
     {"__doc__", (getter)function_get_doc, (setter)function_set_doc},
     {"func_doc", (getter)function_get_doc, (setter)function_set_doc},
     {NULL} /* Sentinel */

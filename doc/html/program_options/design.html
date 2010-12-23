@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Design Discussion</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../program_options.html" title="Chapter 6. Boost.Program_options">
+<link rel="up" href="../program_options.html" title="Chapter 7. Boost.Program_options">
 <link rel="prev" href="howto.html" title="How To">
 <link rel="next" href="s06.html" title="Acknowledgements">
 </head>
@@ -44,8 +44,8 @@
 
       </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>Each parser should accept either <tt class="computeroutput">char*</tt>
-          or <tt class="computeroutput">wchar_t*</tt>, correctly split the input into option
+<li><p>Each parser should accept either <code class="computeroutput">char*</code>
+          or <code class="computeroutput">wchar_t*</code>, correctly split the input into option
           names and option values and return the data.
           </p></li>
 <li><p>For each option, it should be possible to specify whether the conversion
@@ -81,7 +81,7 @@
 <p>Another important point is that ascii strings are passed though
       without modification. In other words, it's not possible to just convert
       ascii to Unicode and process the Unicode further. The problem is that the
-      default conversion mechanism -- the <tt class="computeroutput">codecvt</tt> facet -- might
+      default conversion mechanism -- the <code class="computeroutput">codecvt</code> facet -- might
       not work with 8-bit input without additional setup.
     </p>
 <p>The Unicode support outlined above is not complete. For example, we
@@ -94,7 +94,7 @@
       internationalized too.
     </p>
 <p>The primary question in implementing the Unicode support is whether
-      to use templates and <tt class="computeroutput">std::basic_string</tt> or to use some
+      to use templates and <code class="computeroutput">std::basic_string</code> or to use some
       internal encoding and convert between internal and external encodings on
       the interface boundaries.            
     </p>
@@ -112,40 +112,40 @@
       </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Use a fully templated implementation: given a string of a
-            certain type, a parser will return a parsed_options instance
-            with strings of the same type (i.e. the parsed_options class
+            certain type, a parser will return a  instance
+            with strings of the same type (i.e. the  class
             will be templated).</p></li>
 <li><p>Use internal encoding: same as above, but strings will be converted to and
             from the internal encoding.</p></li>
 <li><p>Use and partly expose the internal encoding: same as above,
-            but the strings in the parsed_options instance will be in the
+            but the strings in the  instance will be in the
             internal encoding. This might avoid a conversion if
-            parsed_options instance is passed directly to other components,
+             instance is passed directly to other components,
             but can be also dangerous or confusing for a user.
           </p></li>
 </ul></div>
 <p>The second solution appears to be the best -- it does not increase
     the code size much and is cleaner than the third. To avoid extra
-    conversions, the Unicode version of parsed_options can also store
+    conversions, the Unicode version of  can also store
     strings in internal encoding.
     </p>
 <p>For the options descriptions component, we don't have much
       choice. Since it's not desirable to have either all options use ascii or all
       of them use Unicode, but rather have some ascii and some Unicode options, the
-      interface of the <a href="../value_semantic.html" title="Class value_semantic">value_semantic</a> must work with both. The only way is
+      interface of the  must work with both. The only way is
       to pass an additional flag telling if strings use ascii or internal encoding.
-      The instance of <a href="../value_semantic.html" title="Class value_semantic">value_semantic</a> can then convert into some
+      The instance of  can then convert into some
       other encoding if needed.
     </p>
-<p>For the storage component, the only affected function is <a href="../id281355.html" title="Function store">store</a>.
-      For Unicode input, the <a href="../id281355.html" title="Function store">store</a> function should convert the value to the
-      internal encoding.  It should also inform the <a href="../value_semantic.html" title="Class value_semantic">value_semantic</a> class
+<p>For the storage component, the only affected function is .
+      For Unicode input, the  function should convert the value to the
+      internal encoding.  It should also inform the  class
       about the used encoding.
     </p>
 <p>Finally, what internal encoding should we use? The
     alternatives are:
-    <tt class="computeroutput">std::wstring</tt> (using UCS-4 encoding) and
-    <tt class="computeroutput">std::string</tt> (using UTF-8 encoding). The difference between
+    <code class="computeroutput">std::wstring</code> (using UCS-4 encoding) and
+    <code class="computeroutput">std::string</code> (using UTF-8 encoding). The difference between
     alternatives is:
       </p>
 <div class="itemizedlist"><ul type="disc">
@@ -153,7 +153,7 @@
 <li><p>Space: UTF-8 takes less space when input is ascii</p></li>
 <li><p>Code size: UTF-8 requires additional conversion code. However,
             it allows one to use existing parsers without converting them to
-            <tt class="computeroutput">std::wstring</tt> and such conversion is likely to create a
+            <code class="computeroutput">std::wstring</code> and such conversion is likely to create a
             number of new instantiations.
           </p></li>
 </ul></div>

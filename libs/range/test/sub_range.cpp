@@ -16,35 +16,18 @@
 #  pragma warn -8057 // unused argument argc/argv in Boost.Test
 #endif
 
-#include <boost/range/iterator_range.hpp>
 #include <boost/range/sub_range.hpp>
-#include <boost/test/unit_test.hpp>
 #include <boost/test/test_tools.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
 
-// This should be included before "using namespace boost",
-// otherwise gcc headers will be confused with boost::iterator
-// namespace.
-#include <boost/test/included/unit_test_framework.hpp> 
-
 using namespace boost;
 using namespace std;
 
-struct add_one
+void check_sub_range()
 {
-    template< class T >
-    T operator()( T r ) const
-    {
-        return r + 1;
-    }
-};
-
-void check_iterator_range()
-{
-   
-   
+      
     typedef string::iterator               iterator;
     typedef string::const_iterator         const_iterator;
     typedef iterator_range<iterator>       irange;
@@ -78,16 +61,16 @@ void check_iterator_range()
     BOOST_CHECK_EQUAL( r.size(), s.size() );
     BOOST_CHECK_EQUAL( r2.size(), s2.size() );
     
-#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564))
-    if( !(bool)r )
-        BOOST_CHECK( false );
-    if( !(bool)r2 )
-        BOOST_CHECK( false );
-    if( !(bool)s )
-        BOOST_CHECK( false );
-    if( !(bool)s2 )
-        BOOST_CHECK( false );    
-#else
+//#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564))
+//    if( !(bool)r )
+//        BOOST_CHECK( false );
+//    if( !(bool)r2 )
+//        BOOST_CHECK( false );
+//    if( !(bool)s )
+//        BOOST_CHECK( false );
+//    if( !(bool)s2 )
+//        BOOST_CHECK( false );    
+//#else
     if( !r )
         BOOST_CHECK( false );
     if( !r2 )
@@ -96,18 +79,13 @@ void check_iterator_range()
         BOOST_CHECK( false );
     if( !s2 )
         BOOST_CHECK( false );
-#endif    
+//#endif    
 
     cout << r << r2 << s << s2;
     
     string res  = copy_range<string>( r );
     BOOST_CHECK( equal( res.begin(), res.end(), r.begin() ) );
     
-    typedef vector<char> string_type;
-    string_type res2 = transform_range<string_type>( r, add_one() );
-    BOOST_CHECK( res2[0] == 'i' );
-    BOOST_CHECK( *res2.rbegin() == 'e' );
-     
     r.empty();
     s.empty();
     r.size();
@@ -139,16 +117,30 @@ void check_iterator_range()
     BOOST_CHECK( rrr == rr );
     BOOST_CHECK( !( rrr != rr ) );
     BOOST_CHECK( !( rrr < rr ) );
-}
 
+    const irange cr = make_iterator_range( str );
+    BOOST_CHECK_EQUAL( cr.front(), 'h' );
+    BOOST_CHECK_EQUAL( cr.back(), 'd' );
+    BOOST_CHECK_EQUAL( cr[1], 'e' );
 
-using boost::unit_test_framework::test_suite;
+    rrr = make_iterator_range( str, 1, -1 );
+    BOOST_CHECK( rrr == "ello worl" );
+    rrr = make_iterator_range( rrr, -1, 1 );
+    BOOST_CHECK( rrr == str );
+    rrr.front() = 'H';
+    rrr.back()  = 'D';
+    rrr[1]      = 'E';
+    BOOST_CHECK( rrr == "HEllo worlD" );
+}   
+
+#include <boost/test/unit_test.hpp>
+using boost::unit_test::test_suite;
 
 test_suite* init_unit_test_suite( int argc, char* argv[] )
 {
     test_suite* test = BOOST_TEST_SUITE( "Range Test Suite" );
 
-    test->add( BOOST_TEST_CASE( &check_iterator_range ) );
+    test->add( BOOST_TEST_CASE( &check_sub_range ) );
 
     return test;
 }

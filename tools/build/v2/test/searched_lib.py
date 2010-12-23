@@ -10,7 +10,7 @@ t = Tester()
 
 # To start with, we have to prepate a library to link with
 t.write("lib/project-root.jam", "")
-t.write("lib/Jamfile", "lib libtest_lib : test_lib.cpp ;")
+t.write("lib/Jamfile", "lib test_lib : test_lib.cpp ;")
 t.write("lib/test_lib.cpp", """
 #ifdef _WIN32
 __declspec(dllexport)
@@ -19,15 +19,15 @@ void foo() {}
 """);
 
 t.run_build_system(subdir="lib")
-t.expect_addition("lib/bin/$toolset/debug/libtest_lib.dll")
+t.expect_addition("lib/bin/$toolset/debug/test_lib.dll")
 
 # Auto adjusting of suffixes does not work, since we need to
 # change dll to lib.
 # 
 if (os.name == 'nt' or os.uname()[0].lower().startswith('cygwin')) and get_toolset() != 'gcc':
-    t.copy("lib/bin/$toolset/debug/libtest_lib.lib", "lib/test_lib.lib")
+    t.copy("lib/bin/$toolset/debug/test_lib.lib", "lib/test_lib.lib")
 else:
-    t.copy("lib/bin/$toolset/debug/libtest_lib.dll", "lib/libtest_lib.dll")
+    t.copy("lib/bin/$toolset/debug/test_lib.dll", "lib/test_lib.dll")
 
 
 # Test that the simplest usage of searched library works.
@@ -132,13 +132,12 @@ t.write("project-root.jam", "")
 t.write("a.cpp", "")
 
 t.write("Jamfile", """
-project a : requirements <link-runtime>static ;
+project a : requirements <runtime-link>static ;
 
 static-lib a : a.cpp l ;
 lib l : : <name>l_f ;
 """)
 
 t.run_build_system("-n")
-
 
 t.cleanup()

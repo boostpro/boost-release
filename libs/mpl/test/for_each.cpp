@@ -8,8 +8,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/libs/mpl/test/for_each.cpp,v $
-// $Date: 2004/10/30 08:27:47 $
-// $Revision: 1.12.2.2 $
+// $Date: 2004/11/28 03:35:12 $
+// $Revision: 1.13 $
 
 #include <boost/mpl/for_each.hpp>
 

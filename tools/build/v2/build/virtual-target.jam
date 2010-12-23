@@ -9,7 +9,7 @@
 #  if particular target should be created at all.
 
 import "class" : new ;
-import path property-set utility sequence errors set ;
+import path property-set utility sequence errors set type os ;
 
 #                       +--------------------------+
 #                       | virtual-target           |
@@ -201,34 +201,36 @@ class virtual-target
 class abstract-file-target : virtual-target
 {
     import project regex sequence path type ;
+    import property-set ;
+    import indirect ;
     
-    rule __init__ ( name
-        : type ?  # Optional type for this target
-                  : project
+    rule __init__ ( 
+         name     # Name for this target
+        exact ?   # If non-empty, the name is exactly the name
+                  # created file should have. Otherwise, the '__init__'
+                  # method will add suffix obtained from 'type' by
+                  # calling 'type.generated-target-suffix'.
+        : type ?  # The type of this target.
+        : project
+        : action ?
     )
     {
         virtual-target.__init__ $(name) : $(project) ;
             
         self.type = $(type) ;
-        self.action = ;
+        self.action = $(action) ;
+        if $(action)
+        {         
+            $(action).add-targets $(__name__) ;
+
+            if $(self.type) && ! $(exact)              
+            {                
+                _adjust-name $(name) ;
+            }            
+        }        
     }
     
     rule type ( ) { return $(self.type) ; }
-    rule set-type ( type )
-    {
-        self.type = $(type) ;
-    }
-
-    # Sets the suffix. When generating target name, it will be used in preference to
-    # the suffix that is associated with 'type'
-    rule suffix ( suffix ? )
-    {
-        if $(suffix)
-        {
-            self.suffix = $(suffix) ;
-        }
-        return $(self.suffix) ;
-    }
 
     # Sets the path. When generating target name, it will override any path
     # computation from properties.
@@ -239,12 +241,8 @@ class abstract-file-target : virtual-target
 
     # If 'a' is supplied, sets action to 'a'.
     # Returns the action currently set.
-    rule action ( a ? )
+    rule action ( )
     {
-        if $(a)
-        {
-            self.action = $(a) ;
-        }
         return $(self.action) ;
     }
 
@@ -259,18 +257,6 @@ class abstract-file-target : virtual-target
         return $(self.root) ;
     }
     
-    rule set-intermediate ( value ? )
-    {
-        self.intermediate = $(value) ;
-    }
-    
-    rule intermediate ( )      
-    {
-        return $(self.intermediate) ;
-    }
-    
-    
-
     # Gets or sets the subvariant which created this target. Subvariant
     # is set when target is brought into existance, and is never changed
     # after that. In particual, if target is shared by subvariant, only 
@@ -360,8 +346,8 @@ class abstract-file-target : virtual-target
         if ! $(self.actual-name)
         {            
             local grist = [ grist ] ;
-            
-            local basename = [ actual-basename ] ;
+
+            local basename = [ path.native $(self.name) ] ;
             self.actual-name = <$(grist)>$(basename) ;
             
         }
@@ -379,7 +365,7 @@ class abstract-file-target : virtual-target
         local path = [ path ] ;
         if $(path)
         {
-            # The target will be generated to a know path. Just use the path
+            # The target will be generated to a known path. Just use the path
             # for identification, since path is as unique as it can get.
             return p$(path) ;            
         }
@@ -395,42 +381,91 @@ class abstract-file-target : virtual-target
             {
                 local ps = [ $(self.action).properties ] ;     
                 local property-grist = [ $(ps).as-path ] ;
-                location-grist = $(location-grist)/$(property-grist) ;
+                # 'property-grist' can be empty when 'ps' is an empty
+                # property set.
+                if $(property-grist)
+                {                    
+                    location-grist = $(location-grist)/$(property-grist) ;
+                }                
             }            
                         
             return l$(location-grist) ;
         }                
-    }
+    }            
+
+    # Given the target name specified in constructor, returns the
+    # name which should be really used, by looking at the <tag> properties.
+    # The tag properties come in two flavour:
+    #   - <tag>value, 
+    #   - <tag>@rule-name
+    # In the first case, value is just added to name
+    # In the second case, the specified rule is called with specified name,
+    # target type and properties and should return the new name.
+    # If not <tag> property is specified, or the rule specified by
+    # <tag> returns nothing, returns the result of calling 
+    # virtual-target.add-suffix
+    rule _adjust-name ( specified-name )
+    {        
+        local ps ;
+        if $(self.action) 
+        {
+            ps = [ $(self.action).properties ] ;
+        }
+        else
+        {
+            ps = [ property-set.empty ] ;
+        }
         
-    # Helper to actual-name, above. Compute the 'basename' of the filename
-    # of the actual created file.
-    rule actual-basename ( )
-    {
-        local name = [ path.native $(self.name) ] ;
-        if $(self.suffix)
+        local tag = [ $(ps).get <tag> ] ;
+
+        if $(tag)
         {
-            name = $(name).$(self.suffix) ;
-        }
-        else if $(self.type)
-        {
-            local properties ;
-            if $(self.action)
+            local rule-name = [ MATCH ^@(.*) : $(tag) ] ;
+            if $(rule-name)
             {
-                local ps = [ $(self.action).properties ] ;
-                properties = [ $(ps).raw ] ;
-            }                        
-            local suffix = [ type.generated-target-suffix $(self.type) :
-              $(properties) ] ;
-            if $(suffix)
-            {                
-                name = $(name).$(suffix) ;
-            }            
+                if $(tag[2])
+                {
+                    errors.error "<tag>@rulename is present but is not the only <tag> feature" ;
+                }
+                
+                self.name = [ indirect.call $(rule-name) $(specified-name) :
+                  $(self.type) :  $(ps) ] ;
+            }
+            else
+            {
+                errors.error 
+                  "The value of the <tag> feature must be '@rule-nane'" ;
+            }
         }
-        return $(name) ;        
+        
+        # If there's no tag or the tag rule returned nothing.
+        if ! $(tag) || ! $(self.name)
+        {                            
+            self.name = [ virtual-target.add-prefix-and-suffix
+                $(specified-name) : $(self.type) : $(ps) ] ;
+        }    
     }
     
-
 }
+
+# Appends the suffix appropriate to 'type/property-set' combination
+# to the specified name and returns the result.
+rule add-prefix-and-suffix ( specified-name : type ? : property-set )
+{
+    local suffix = [ type.generated-target-suffix $(type) : $(property-set) ] ;
+    suffix = .$(suffix) ;
+    
+    local prefix ;
+    
+    if [ type.is-derived $(type) LIB ] && [ os.on-unix ] 
+       && ! [ MATCH ^(lib) : $(specified-name) ]
+    {
+        prefix = "lib" ;
+    }
+    
+    return $(prefix:E="")$(specified-name)$(suffix:E="") ;
+}
+
 
 # File target with explicitly known location.
 #
@@ -452,12 +487,17 @@ class file-target : abstract-file-target
     import errors ;
     
     rule __init__ (
-      name
+      name exact ?
         : type ?  # Optional type for this target
         : project
+        : action ?
+        : path ?
     )
     {
-        abstract-file-target.__init__ $(name) : $(type) : $(project) ;   
+        abstract-file-target.__init__ $(name) $(exact) : $(type) : $(project) 
+          : $(action) ;   
+
+        self.path = $(path) ;
     }
         
     rule actualize-location ( target )
@@ -471,12 +511,30 @@ class file-target : abstract-file-target
             # Make sure the path exists.
             DEPENDS $(target) : $(path) ;
             common.MkDir $(path) ;
+
+            # It's possible that the target name includes a directory
+            # too, for example when installing headers. Create that
+            # directory.
+            if $(target:D)
+            {
+                local d = $(target:D) ;
+                d = $(d:R=$(path)) ;
+                DEPENDS $(target) : $(d) ;
+
+                common.MkDir $(d) ;
+            }            
+            
+            # For real file target, we create gristless target that
+            # depends on the real target. This allows to run
+            #
+            #    bjam hello.o
+            #
+            # without trying to guess the name of the real target.            
+            DEPENDS $(target:G=) : $(target) ;
         }
         else
         {
-            # This is a source file.
-            SEARCH on $(target) =
-              [ path.native [ $(self.project).get source-location ] ] ;
+            SEARCH on $(target) = [ path.native $(self.path) ] ;
         }        
     }
     
@@ -486,21 +544,18 @@ class file-target : abstract-file-target
         if ! $(self.path)
         {
             if $(self.action)
-            {                
-                local build-dir = [ $(self.project).get build-dir ] ;
-                if ! $(build-dir)
-                {
-                    build-dir = [ path.join 
-                        [ $(self.project).get location ]
-                        bin
-                    ] ;
+            {       
+                local p = [ $(self.action).properties ] ;                
+                local path = [ $(p).target-path ] ;
+                
+                if $(path[2]) = true
+                {        
+                    # Indicates that the path is relative to
+                    # build dir.
+                    path = [ path.join [ $(self.project).build-dir ]
+                       $(path[1]) ] ;
                 }
-                
-                local path = [ path.join
-                    $(build-dir)
-                      [ $(self.action).path ]
-                ] ;
-                
+                                
                 # Store the computed path, so that it's not recomputed
                 # any more
                 self.path = [ path.native $(path) ] ;
@@ -513,11 +568,16 @@ class file-target : abstract-file-target
 
 class notfile-target : abstract-file-target
 {
-    rule __init__ ( name : project )
+    rule __init__ ( name : project : action ? )
     {
-        abstract-file-target.__init__ $(name) : : $(project) ;
+        abstract-file-target.__init__ $(name) : : $(project) : $(action) ;
     }
     
+    # Returns nothing, to indicate that target path is not known.
+    rule path ( )
+    {
+        return ;
+    }
             
     rule actualize-location ( target )
     {
@@ -534,11 +594,10 @@ class notfile-target : abstract-file-target
 # not establish dependency relationship, but should do everything else.
 class action 
 {
-    import type toolset property-set indirect class path ;
+    import type toolset property-set indirect class path assert ;
     
-    rule __init__ ( targets + : sources * : action-name + : property-set ? )
+    rule __init__ ( sources * : action-name + : property-set ? )
     {        
-        self.targets = $(targets) ;
         self.sources = $(sources) ;
     
         self.action-name = [ indirect.make-qualified $(action-name) ] ;
@@ -556,6 +615,11 @@ class action
         self.properties = $(property-set) ;
     }        
     
+    rule add-targets ( targets * )
+    {
+        self.targets += $(targets) ;
+    }
+        
     rule targets ( )
     {
         return $(self.targets) ;
@@ -584,8 +648,7 @@ class action
             self.actualized = true ;
 
             local ps = [ properties ] ;
-            local properties = [ adjust-properties [ $(ps).raw ] ] ;
-
+            local properties = [ adjust-properties $(ps) ] ;
 
             local actual-targets ;
             for local i in [ targets ]
@@ -593,7 +656,7 @@ class action
                 actual-targets += [ $(i).actualize ] ;
             }
 
-            actualize-sources [ sources ] ;
+            actualize-sources [ sources ] : $(properties) ;
 
             DEPENDS $(actual-targets) : $(self.actual-sources) $(self.dependency-only-sources) ;
 
@@ -604,7 +667,7 @@ class action
                 : $(properties) ;
             
             indirect.call $(self.action-name) 
-              $(actual-targets) : $(self.actual-sources) : $(properties)
+              $(actual-targets) : $(self.actual-sources) : [ $(properties).raw ] 
                 ;
             
             # Since we set up creating action here, we also set up
@@ -616,7 +679,7 @@ class action
     # Helper for 'actualize-sources'.
     # For each passed source, actualizes it with the appropriate scanner.
     # Returns the actualized virtual targets.
-    rule actualize-source-type ( sources * )
+    rule actualize-source-type ( sources * : property-set )
     {
         local result = ;
         for local i in $(sources)
@@ -625,7 +688,7 @@ class action
             if [ $(i).type ]
             {
                 scanner =
-                  [ type.get-scanner [ $(i).type ] : $(properties) ] ;
+                  [ type.get-scanner [ $(i).type ] : $(property-set) ] ;
             }
             result += [ $(i).actualize $(scanner) ] ;
         }
@@ -641,43 +704,23 @@ class action
     #
     # New values will be *appended* to the variables. They may be non-empty,
     # if caller wants it.
-    rule actualize-sources ( sources * )
+    rule actualize-sources ( sources * : property-set )
     {
         local dependencies = [ $(self.properties).get <dependency> ] ;
                 
-        self.dependency-only-sources += [ actualize-source-type $(dependencies) ] ;
-        self.actual-sources += [ actualize-source-type $(sources) ] ;
-    }
-
-    rule path ( )
-    {
-        local p = [ $(self.properties).as-path ] ;
-        # Really, an ugly hack. Boost regression test system requires
-        # specific target paths, and it seems that changing it to handle
-        # other directory layout is really hard. For that reason,
-        # we teach V2 to do the things regression system requires.
-        # The value o '<location-prefix>' is predended to the path.
-        local prefix = [ $(self.properties).get <location-prefix> ] ;
-        if $(prefix)
-        {
-            p = [ path.join $(prefix) $(p) ] ;
-        }        
-        return $(p) ;
+        self.dependency-only-sources += [ 
+          actualize-source-type $(dependencies) : $(property-set) ] ;
+        self.actual-sources += [ 
+          actualize-source-type $(sources) : $(property-set) ] ;
     }
 
     # Determined real properties when trying building with 'properties'.
     # This is last chance to fix properties, for example to adjust includes
     # to get generated headers correctly. Default implementation returns
     # its argument.
-    rule adjust-properties ( properties * )
+    rule adjust-properties ( property-set )
     {
-        return $(properties) ;
-    }
-
-
-    rule set-targets ( targets * )
-    {
-        self.targets = $(targets) ;
+        return $(property-set) ;
     }
 }
 
@@ -687,9 +730,9 @@ class action
 # actions which create them.
 class null-action : action 
 {
-    rule __init__ ( targets + : property-set ? )
+    rule __init__ ( property-set ? )
     {
-        action.__init__ $(targets) : : .no-action : $(property-set) ;
+        action.__init__  : .no-action : $(property-set) ;
     }
         
     rule actualize ( )
@@ -713,35 +756,30 @@ class null-action : action
 # FIXME: more correct way would be to compute path to the file, based on name and source location
 # for the project, and use that path to determine if the target was already created.
 # TODO: passing project with all virtual targets starts to be annoying.
-rule from-file ( file : project )
+rule from-file ( file : file-loc : project )
 {
     import type ; # had to do this here to break a circular dependency
 
     # Check if we've created a target corresponding to this file.
-    local source-location = [ $(project).get source-location ] ;
-    local path = [ path.root [ path.root [ path.make $(file) ] $(source-location) ] 
-      [ path.pwd ] ] ;
-                
+    local path = [ path.root [ path.root $(file) $(file-loc) ]
+                             [ path.pwd ] ] ;
+
     if $(.files.$(path))
     {
         return $(.files.$(path)) ;
     }
     else
     {
-        local name = [ path.make $(file:S=) ] ;
+        local name = [ path.make $(file) ] ;
         local type = [ type.type $(file) ] ;
         local result ;
-        if ! $(type)
-        {
-            # warning "cannot determine type for file $(file)" ;
-            result = [ new file-target $(file) :  : $(project) ] ;
-        }
-        else
-        {
-            local v = [ new file-target $(name) : $(type) : $(project) ] ;
-            $(v).suffix [ MATCH ^.(.*)$ : $(file:S) ] ;
-            result = $(v) ;
-        }
+
+        result = [ new file-target $(file)
+                         : $(type)
+                         : $(project)
+                         : #action
+                         : $(file-loc) ] ;
+
         .files.$(path) = $(result) ;
         return $(result) ;
     }
@@ -754,7 +792,8 @@ rule from-file ( file : project )
 rule register ( target )
 {
     local signature = [ sequence.join
-        [ $(target).actual-name ] : - ] ;    
+       [ $(target).name ] : - ] ;    
+
             
     local result ;
     for local t in $(.cache.$(signature))
@@ -822,9 +861,9 @@ rule register-actual-name ( actual-name : virtual-target )
         }        
         errors.error "Duplicate name of actual target:" $(actual-name) 
           : "previous virtual target" [ $(.actual.$(actual-name)).str ] 
-          : "created from" [ $(cmt1).location ]
+          : "created from" [ $(cmt1).full-name ]
           : "another virtual target" [ $(virtual-target).str ]
-          : "created from" [ $(cmt2).location ]                
+          : "created from" [ $(cmt2).full-name ]                
           : "added properties: " $(properties-added) 
           : "removed properties: " $(properties-removed) ;
     }
@@ -881,13 +920,18 @@ rule clone-action ( action : new-project : new-action-name ? : new-properties ? 
     {
         new-properties = [ $(action).properties ] ;
     }
-                    
+
+    local action-class = [ modules.peek $(action) : __class__ ] ;
+    local cloned-action = [ class.new $(action-class)  
+      [ $(action).sources ] : $(new-action-name) : $(new-properties) ] ;
+                        
     local cloned-targets ;
     for local target in [ $(action).targets ]
     {
         local n = [ $(target).name ] ;
-        local cloned-target = [ class.new file-target $(n:D=) : [ $(target).type ] 
-          : $(new-project) ] ;
+        # Don't modify the name of the produced targets.Strip the directory f
+        local cloned-target = [ class.new file-target $(n) exact : [ $(target).type ] 
+          : $(new-project) : $(cloned-action) ] ;
         local d = [ $(target).dependencies ] ;
         if $(d)
         {            
@@ -898,128 +942,8 @@ rule clone-action ( action : new-project : new-action-name ? : new-properties ? 
         
         cloned-targets += $(cloned-target) ;
     }        
-        
-    local action-class = [ modules.peek $(action) : __class__ ] ;
-    
-    local cloned-action = [ class.new $(action-class) $(cloned-targets) : 
-      [ $(action).sources ] : $(new-action-name) : $(new-properties) ] ;
-    
-    for local cloned-target in $(cloned-targets)
-    {        
-        $(cloned-target).action $(cloned-action) ;
-    }
-    
-    
+                    
     return $(cloned-action) ;        
-}
-
-
-
-
-# Clones a dependency graph template, given one of its root,
-# and a new source target to instantinate the template with.
-#
-# If 'target's name is "%" and type is equal to 'new-source's
-# return 'new-source', otherwise created a new target:
-#  - if there "%" in target's name, its replaced with 'new-target's
-#  - project for new target is the same as for 'new-target'
-#  - other attributes are copied
-#
-# If 'dont-recurse' is not set, clones action, which results in
-# cloning of other targets, and, ultimately, cloning of the
-# entire dependency graph.
-#
-# The 'new-project' parameter tells what project should be assigned
-# for newly created non-source targets.
-rule clone-template ( target dont-recurse ? : new-source : new-project : dont-register ? )
-{
-    local name = [ $(new-source).name ] ;
-    local old-name = [ $(target).name ] ;
-    local new-name = $(old-name) ;
-    local m = [ MATCH (.*)(%)(.*) : $(old-name) ] ;
-    if $(m)
-    {
-        if [ $(target).action ]
-        {
-            new-name = [ sequence.join $(m[1]) $(name:D=) $(m[3]) ] ;
-        }
-        else
-        {
-            new-name = [ sequence.join $(m[1]) $(name) $(m[3]) ] ;
-        }
-    }
-
-    if $(old-name) = % && [ $(target).type ] = [ $(new-source).type ]
-    {
-        return $(new-source) ;
-    }
-    else
-    {
-        local cloned = [ new file-target $(new-name) : [ $(target).type ] :
-          $(new-project) ] ;
-        $(cloned).set-intermediate [ $(target).intermediate ] ;
-
-        if ! $(dont-recurse) && [ $(target).action ]
-        {
-            local cloned-action = [ clone-action-template
-                [ $(target).action ] $(target) $(cloned) : $(new-source) : $(new-project) ] ;
-
-            cloned-targets = $(cloned) ;
-            for t in [ $(cloned-action).targets ]
-            {
-                if $(t) != $(target)
-                {
-                    cloned-targets +=
-                      [ clone-template $(t) dont-recurse : $(new-source) : $(new-project) 
-                        # We don't want to pass new targets vis 'register' util we've
-                        # finished building them -- i.e. until we assign the action.
-                        # It might seem registering this not-yet ready target is
-                        # harmless, but in fact the 'register' logic expects than
-                        # registered target is never changed later.
-                        : dont-register ] ;
-                }
-            }
-            local cloned-targets2 ;
-            for local t in $(cloned-targets)
-            {
-                $(t).action $(cloned-action) ;
-
-                cloned-targets2 += [ register $(t) ] ;
-
-            }
-            
-            $(cloned-action).set-targets $(cloned-targets2) ;
-            cloned = $(cloned-targets2[1]) ;
-        }
-        else
-        {
-            if ! $(dont-register)
-            {                
-                cloned = [ register $(cloned) ] ;
-            }            
-        }
-        return $(cloned) ;
-    }
-}
-
-# Clones an action template: helper for clone-template above.
-local rule clone-action-template ( action from cloned-from : new-source : new-project )
-{
-    local targets ;
-    local sources ;
-
-    for local t in [ $(action).sources ]
-    {
-        sources += [ clone-template $(t) : $(new-source) : $(new-project) ] ;
-    }
-
-    local action-class = [ modules.peek $(action) : __class__ ] ;
-
-    local ps = [ $(action).properties ] ;
-    local cloned = [ new $(action-class) [ $(action).targets ] : $(sources)
-                     : [ $(action).action-name ] : $(ps) ] ;
-
-    return $(cloned) ;
 }
 
 class subvariant
@@ -1091,17 +1015,19 @@ class subvariant
     # Returns all targets referenced by this subvariant,
     # either directly or indirectly, and 
     # either as sources, or as dependency properties.
+    # Targets referred with dependency property are returned a properties,
+    # not targets.
     rule all-referenced-targets ( )
     {
         # Find directly referenced targets.
         local deps = [ $(self.build-properties).dependency ] ;
-        local all-targets = $(self.sources) $(deps:G=) ;
+        local all-targets = $(self.sources) $(deps) ;
         
         # Find other subvariants.
         local r ;
         for local t in $(all-targets)
         {            
-            r += [ $(t).creating-subvariant ] ;
+            r += [ $(t:G=).creating-subvariant ] ;
         }
         r = [ sequence.unique $(r) ] ;
         for local s in $(r) 

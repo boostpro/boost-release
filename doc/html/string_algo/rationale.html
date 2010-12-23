@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Rationale</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../string_algo.html" title="Chapter 9. Boost String Algorithms Library">
+<link rel="up" href="../string_algo.html" title="Chapter 11. Boost String Algorithms Library">
 <link rel="prev" href="../trim.html" title="Function template trim">
 <link rel="next" href="env.html" title="Environment">
 </head>
@@ -26,12 +26,12 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="string_algo.rationale"></a>Rationale</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="rationale.html#id616014">Locales</a></span></dt>
+<dt><span class="section"><a href="rationale.html#id1356907">Locales</a></span></dt>
 <dt><span class="section"><a href="rationale.html#string_algo.regex">Regular Expressions</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id616014"></a>Locales</h4></div></div></div>
+<a name="id1356907"></a>Locales</h4></div></div></div>
 <p>
             Locales have a very close relation to string processing. They contain information about
             the character sets and are used, for example, to change the case of characters and 
@@ -46,10 +46,10 @@
         </p>
 <p>
             Fortunately, the C++ standard allows to specify the <span class="emphasis"><em>global</em></span> locales (using static member
-            function <tt class="computeroutput">std:locale::global()</tt>). When instantiating an
-            <tt class="computeroutput">std::locale</tt> class without explicit information, the instance will 
+            function <code class="computeroutput">std:locale::global()</code>). When instantiating an
+            <code class="computeroutput">std::locale</code> class without explicit information, the instance will 
             be initialized with the <span class="emphasis"><em>global</em></span> locale. This implies, that if an algorithm needs a locale,
-            it should have an <tt class="computeroutput">std::locale</tt> parameter defaulting to  <tt class="computeroutput">std::locale()</tt>.
+            it should have an <code class="computeroutput">std::locale</code> parameter defaulting to  <code class="computeroutput">std::locale()</code>.
             If a user needs to specify locales explicitly, she can do so. Otherwise the <span class="emphasis"><em>global</em></span>
             locales are used.
         </p>

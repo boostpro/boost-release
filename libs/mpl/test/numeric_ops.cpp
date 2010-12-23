@@ -8,8 +8,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/libs/mpl/test/numeric_ops.cpp,v $
-// $Date: 2004/10/24 06:36:25 $
-// $Revision: 1.3.2.1 $
+// $Date: 2004/11/28 03:35:12 $
+// $Revision: 1.5 $
 
 #include <boost/mpl/arithmetic.hpp>
 #include <boost/mpl/comparison.hpp>

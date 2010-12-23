@@ -29,9 +29,9 @@ void simple_thread()
 void comparison_thread(boost::thread* parent)
 {
     boost::thread thrd;
-    BOOST_TEST(thrd != *parent);
+    BOOST_CHECK(thrd != *parent);
     boost::thread thrd2;
-    BOOST_TEST(thrd == thrd2);
+    BOOST_CHECK(thrd == thrd2);
 }
 
 void test_sleep()
@@ -41,7 +41,7 @@ void test_sleep()
 
     // Ensure it's in a range instead of checking actual equality due to time
     // lapse
-    BOOST_CHECK(in_range(xt));
+    BOOST_CHECK(in_range(xt, 2));
 }
 
 void do_test_creation()

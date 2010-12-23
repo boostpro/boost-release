@@ -17,7 +17,9 @@
 #include <boost/program_options/detail/convert.hpp>
 
 #include <boost/bind.hpp>
+#include <boost/throw_exception.hpp>
 
+#include <cctype>
 
 #if !defined(__GNUC__) || __GNUC__ < 3
 #include <iostream>
@@ -83,111 +85,21 @@ namespace boost { namespace program_options {
     }
 #endif
 
-    namespace detail
-    {
-        void
-        parse_command_line(cmdline& cmd, parsed_options& result);
-    }
-
-    common_command_line_parser::
-    common_command_line_parser(const std::vector<std::string>& args)
-    : m_style(0), m_desc(0), m_positional(0), m_args(args)
-    {}
-
-    parsed_options
-    common_command_line_parser::run() const
-    {
-        parsed_options result(m_desc);
-        detail::cmdline cmd(m_args, m_style);
-        cmd.set_additional_parser(m_ext);
-
-        if (m_desc) {
-            set<string> keys = m_desc->primary_keys();
-            for (set<string>::iterator i = keys.begin(); i != keys.end(); ++i) {
-                const option_description& d = m_desc->find(*i);
-                char s = d.short_name().empty() ? '\0' : d.short_name()[0];
-
-                shared_ptr<const value_semantic> vs = d.semantic();
-                char flags;
-                if (vs->is_zero_tokens())
-                    flags = '|';
-                else
-                    if (vs->is_implicit()) 
-                        if (vs->is_multitoken())
-                            flags = '*';
-                        else
-                            flags = '?';
-                    else if (vs->is_multitoken())
-                        flags = '+';
-                    else flags = ':';
-
-                cmd.add_option(d.long_name(), s, flags, 1);
-            }
-        }
-
-        detail::parse_command_line(cmd, result);
-
-        if (m_positional)
-        {
-            unsigned position = 0;
-            for (unsigned i = 0; i < result.options.size(); ++i) {
-                option& opt = result.options[i];
-                if (opt.position_key != -1) {
-                    if (position >= m_positional->max_total_count())
-                    {
-                        throw too_many_positional_options_error(
-                            "too many positional options");
-                    }
-                    opt.string_key = m_positional->name_for_position(position);
-                    ++position;
-                }
-            }
-        }
-
-        return result;        
-    }
-
-
-    namespace detail {
-        void
-        parse_command_line(cmdline& cmd, parsed_options& result)
-        {
-            int position(0);
-            
-            while(++cmd) {
-                
-                option n;
-                
-                if (cmd.at_option()) {
-                    if (*cmd.option_name().rbegin() != '*') {
-                        n.string_key = cmd.option_name();
-                    }
-                    else {
-                        n.string_key = cmd.raw_option_name();
-                    }
-                    n.value = cmd.option_values();
-                } else {
-                    n.position_key = position++;
-                    n.value.clear();
-                    n.value.push_back(cmd.argument());
-                }
-                result.options.push_back(n);
-            }
-        }
-    }
-
     template<class charT>
     basic_parsed_options<charT>
     parse_config_file(std::basic_istream<charT>& is, 
                       const options_description& desc)
     {    
         set<string> allowed_options;
-        set<string> pm = desc.primary_keys();
-        for (set<string>::iterator i = pm.begin(); i != pm.end(); ++i) {
-            const option_description& d = desc.find(*i);
+
+        const vector<shared_ptr<option_description> >& options = desc.options();
+        for (unsigned i = 0; i < options.size(); ++i)
+        {
+            const option_description& d = *options[i];
 
             if (d.long_name().empty())
-                throw error("long name required for config file");
+                boost::throw_exception(
+                    error("long name required for config file"));
 
             allowed_options.insert(d.long_name());
         }

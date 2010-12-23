@@ -63,13 +63,29 @@ if $(PYTHON_WINDOWS)
     CYGWIN_PYTHON_DEBUG_DLL_PATH ?= $(CYGWIN_PYTHON_DEBUG_ROOT)/bin ;
     CYGWIN_PYTHON_DEBUG_LIB_PATH ?= $(CYGWIN_PYTHON_DEBUG_ROOT)/lib/python$(CYGWIN_PYTHON_DEBUG_VERSION)/config ;
 }
-else if $(UNIX) && $(OS) = MACOSX
+else if $(UNIX)
 {
-    PYTHON_EMBEDDED_LIBRARY = ;
-}
-else
-{
-    PYTHON_EMBEDDED_LIBRARY = python$(PYTHON_VERSION) dl util ;
+	# PYTHON_EMBEDDED_LIBRARY: Libraries to include when
+	# embedding Python in C++ code.  We need the Python library,
+	# libdl for dynamic loading and possibly libutil on BSD-like
+	# systems (including Linux).  A dynamic libpython should
+	# automatically pick up the libutil dependency, but we cannot
+	# tell here if we are linking with a static or dynamic
+	# libpython, so we include libutil for all UNIX systems where
+	# it is available.
+
+	if $(OS) = MACOSX
+	{
+		PYTHON_EMBEDDED_LIBRARY = ;
+	}
+	else if $(OS) = SOLARIS
+	{
+		PYTHON_EMBEDDED_LIBRARY = python$(PYTHON_VERSION) dl ;
+	}
+	else
+	{
+		PYTHON_EMBEDDED_LIBRARY = python$(PYTHON_VERSION) dl util ;
+	}
 }
 
 
@@ -290,7 +306,7 @@ rule select-python-library ( toolset variant : properties * )
             } 
         }
     }
-    if $(OS) = MACOSX && $(toolset) = darwin
+    if $(OS) = MACOSX && [ MATCH .*(darwin).* : $(toolset) ]
     {
         if <target-type>PYD in $(properties)
         {
@@ -412,13 +428,6 @@ rule Link-PYD
     if $(UNIX) 
     {
         LINK_LIBPATH on $(<) = [ join $(gRUN_LD_LIBRARY_PATH($(<))) : $(SPLITPATH) ] ;
-        
-        if $(OS) = AIX
-        {
-            # explicitly designate the exported init<module> function
-            LINKFLAGS on $(<) += "-e init$(<[1]:B)" ; 
-            Aix-Implib-Action $(<) : $(>) ;
-        }
     }
     gRUN_PYTHONPATH($(<)) += $(gLOCATE($(<[1]))) ;
     .do-link $(<) : $(>) : PYD ;
@@ -509,8 +518,8 @@ rule boost-python-test ( name : sources + : requirements * : default-BUILD * )
     extension $(name) : $(sources) : $(requirements) <suppress>true : $(4) ;
 }
 
-# Returns the executable to use for testing a Python module
-rule test-executable(PYD) ( target-to-test )
+# Returns the executable to use for testing one or more Python modules
+rule test-executable(PYD) ( targets-to-test + )
 {
     # choose the right python executable
     local python = $(PYTHON) ;
@@ -538,7 +547,11 @@ rule test-executable(PYD) ( target-to-test )
 
 rule check-python-config ( )
 {
-    if ! $(gPYTHON_CONFIG_CHECKED)
+    if --without-python in $(ARGV)
+    {
+        gNO_PYTHON_INSTALL = true ;
+    }
+    else if ! $(gPYTHON_CONFIG_CHECKED)
     {
         local dir ;
         
@@ -558,6 +571,9 @@ rule check-python-config ( )
         {
             gNO_PYTHON_INSTALL = true ;
             ECHO "---------------------------------------------------------------------" ;
+            ECHO "*** If you don't need Boost.Python, you can ignore this section  ***" ;
+            ECHO "*** pass --without-python to suppress this message in the future ***" ;
+            ECHO ;
             ECHO skipping Boost.Python library build due to missing or incorrect configuration ;
             ECHO ;
             ECHO "couldn't find Python.h in"  \"$(dir:J=" ")\" ;
@@ -571,11 +587,12 @@ rule check-python-config ( )
             ECHO "otherwise set:" ;
             ECHO ;
             ECHO "    PYTHON_LIB_PATH       - path to Python library object; currently" ;
-            ECHO "                          \""$(PYTHON_LIB_PATH:J=" ")\" ;
+            ECHO "                            \""$(PYTHON_LIB_PATH:J=" ")\" ;
             
             if ! $(NT)
             {
-                ECHO "    PYTHON_INCLUDES    - path to Python #include directories; currently" \"$(PYTHON_INCLUDES:J=" ")\" ;
+                ECHO "    PYTHON_INCLUDES       - path to Python #include directories; currently" ;
+                ECHO "                            \""$(PYTHON_INCLUDES:J=" ")\" ;
             }
             else if [ intersection $(TOOLS) : $(gcc-compilers) ]
             {

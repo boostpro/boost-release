@@ -231,12 +231,16 @@ flags gcc CFLAGS <architecture>sparc/<address-model>64 : -m64 ;
 flags gcc LINKFLAGS <architecture>sparc/<address-model>64 : -m64 ;
 # RS/6000 & PowerPC
 .ARCH = <architecture>power <architecture>native ;
-flags gcc CFLAGS <architecture>power/<instruction-set>default : -mcpu=power ;
+flags gcc CFLAGS <architecture>power/<address-model>default/<instruction-set>default : -mcpu=common ;
+flags gcc CFLAGS <architecture>power/<address-model>32/<instruction-set>default : -mcpu=common ;
+flags gcc CFLAGS <architecture>power/<address-model>64/<instruction-set>default : -mcpu=powerpc64 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>rios : -mcpu=rios ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>rios1 : -mcpu=rios1 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>rsc : -mcpu=rsc ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>rios2 : -mcpu=rios2 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>rs64a : -mcpu=rs64a ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>403 : -mcpu=403 ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>505 : -mcpu=505 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>601 : -mcpu=601 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>602 : -mcpu=602 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>603 : -mcpu=603 ;
@@ -246,19 +250,26 @@ flags gcc CFLAGS $(.ARCH)/<instruction-set>604e : -mcpu=604e ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>620 : -mcpu=620 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>630 : -mcpu=630 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>740 : -mcpu=740 ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>7400 : -mcpu=7400 ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>7450 : -mcpu=7450 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>750 : -mcpu=750 ;
-flags gcc CFLAGS $(.ARCH)/<instruction-set>power : -mcpu=power ;
-flags gcc CFLAGS $(.ARCH)/<instruction-set>power2 : -mcpu=power2 ;
-flags gcc CFLAGS $(.ARCH)/<instruction-set>powerpc : -mcpu=powerpc ;
-flags gcc CFLAGS $(.ARCH)/<instruction-set>power64 : -mcpu=power64 ;
-flags gcc CFLAGS $(.ARCH)/<instruction-set>403 : -mcpu=403 ;
-flags gcc CFLAGS $(.ARCH)/<instruction-set>505 : -mcpu=505 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>801 : -mcpu=801 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>821 : -mcpu=821 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>823 : -mcpu=823 ;
 flags gcc CFLAGS $(.ARCH)/<instruction-set>860 : -mcpu=860 ;
-flags gcc CFLAGS $(.ARCH)/<instruction-set>power-common : -mcpu=common ;
-flags gcc CFLAGS <architecture>power/<address-model>64 : -mpowerpc64 ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>power : -mcpu=power ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>power2 : -mcpu=power2 ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>power3 : -mcpu=power3 ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>power4 : -mcpu=power4 ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>power5 : -mcpu=power5 ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>powerpc : -mcpu=powerpc ;
+flags gcc CFLAGS $(.ARCH)/<instruction-set>powerpc64 : -mcpu=powerpc64 ;
+# AIX variant of RS/6000 & PowerPC
+flags gcc CFLAGS <architecture>power/<address-model>32/<object-model>aix : -maix32 ;
+flags gcc LINKFLAGS <architecture>power/<address-model>32/<object-model>aix : -maix32 ;
+flags gcc CFLAGS <architecture>power/<address-model>64/<object-model>aix : -maix64 ;
+flags gcc LINKFLAGS <architecture>power/<address-model>64/<object-model>aix : -maix64 ;
+flags gcc AROPTIONS <architecture>power/<address-model>64/<object-model>aix : "-X 64" ;
 # MIPS-1-2-3-4
 flags gcc MIPS <architecture>mips1 <architecture>mips2 <architecture>mips3 <architecture>mips4 : TRUE ;
 flags gcc MIPS
@@ -296,6 +307,11 @@ if $(MIPS)
     flags gcc CFLAGS <address-model>default : -mgp32 ;
     flags gcc CFLAGS <address-model>32 : -mgp32 ;
     flags gcc CFLAGS <address-model>64 : -mgp64 -mlong64 ;
+}
+#S390
+if $(OSPLAT) = 390
+{
+    flags gcc CFLAGS <threading>multi : -D_REENTRANT ;
 }
 
 #
@@ -362,11 +378,27 @@ flags gcc .AR : [ GLOB $(GCC_BIN_DIRECTORY) $(PATH) : ar ar.exe ] ;
 
 # used to manipulate the object files produced by GCC to
 # prevent the merging of debug symbols (which happens to be n^2 slow)
-flags gcc .OBJCOPY : [ GLOB $(GCC_BIN_DIRECTORY) $(PATH) : objcopy ] ;
+if ! ( --no-objcopy in $(ARGV) )
+{
+    flags gcc .OBJCOPY : [ GLOB $(GCC_BIN_DIRECTORY) $(PATH) : objcopy ] ;
+}
 
 if ! $(on-windows)
 {
     flags gcc .SET_EXIT : "set -e" ;
+}
+
+# Since GCC doesn't support response files, we want to give it a
+# chance to execute any long commands via spawnvp on NT, where the
+# command-line length limitation can really get in the way.  We call
+# this on every target, but it will only take effect for targets we
+# deem spawnable, and that have long command-lines.
+rule gcc-spawn ( targets + )
+{
+    if $(NT) 
+    {
+        JAMSHELL on $(targets) = % ;
+    }
 }
 
 #### Link ####
@@ -413,7 +445,7 @@ rule Link-action
 
         # This will appear before the import library name when building a DLL, but
         # will be "multiplied away" otherwise. The --exclude-symbols directive
-        # proved to be neccessary with some versions of Cygwin.
+        # proved to be necessary with some versions of Cygwin.
         DLL_LINK_FLAGS on $(<) += "-Wl,--exclude-symbols,_bss_end__:_bss_start__:_data_end__:_data_start__" ;
 
         # set the link command to generate an import library
@@ -427,10 +459,7 @@ rule Link-action
     gRUN_LD_LIBRARY_PATH($(<)) += $(STDLIBPATH:T) ;
     
     # Workaround GCC's lack of command-files and NT's line-length limitation.
-    if $(NT) {
-        JAMSHELL on $(<) = % ;
-    }
-
+    gcc-spawn $(<) ;
     gcc-Link-action $(<) : $(>) ;
 
     if $(DLLVERSION) && $(TARGET_TYPE) in $(SHARED_TYPES) && ( $(OS) = LINUX || $(OS) = OPENBSD ) && ! $(NO_GNU_LN)
@@ -453,6 +482,7 @@ actions gcc-Link-action bind NEEDLIBS NEEDIMPS
 
 rule Cc-action
 {
+    gcc-spawn $(<) ;
     _ on $(<) = " " ;
     gcc-Cc-action $(<) : $(>) ;
 }
@@ -467,6 +497,7 @@ actions gcc-Cc-action
 #### C++ ####
 rule C++-action
 {
+    gcc-spawn $(<) ;
     _ on $(<) = " " ;
     gcc-C++-action $(<) : $(>) ;
 }
@@ -482,10 +513,11 @@ actions gcc-C++-action
 
 rule Archive-action
 {
+    gcc-spawn $(<) ;
     gcc-Archive-action $(<) : $(>) ;
 }
 
 actions updated together piecemeal gcc-Archive-action
 {
-    "$(.AR[1])" ru$(ARFLAGS:J=) "$(<)" "$(>)"
+    "$(.AR[1])" $(AROPTIONS) ru$(ARFLAGS:J=) "$(<)" "$(>)"
 }

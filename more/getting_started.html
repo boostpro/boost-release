@@ -88,7 +88,7 @@
          <tr vAlign="top" align="left">
             <td vAlign="top" align="center" width="40" bgColor="#ffff66"><font size="6"><b><a id="step1" name="step1"></a>1</b></font></td>
             <td>The Boost Libraries are distributed through the SourceForge file distribution 
-               system. Click here to <b><a href="http://sourceforge.net/project/showfiles.php?group_id=7586">
+               system. Click here to <b><a href="http://sourceforge.net/project/showfiles.php?group_id=7586&package_id=8041">
                      <font size="4">download releases from SourceForge</font></a></b>. And 
                unpack the release to a convenient location.</td>
          </tr>
@@ -170,7 +170,7 @@
                are using a Boost distribution is to <strong><a href="http://sourceforge.net/project/showfiles.php?group_id=7586&amp;package_id=72941">
                      download a prebuilt executable</a></strong> from SourceForge. If a 
                prebuilt executable is not provided for your platform or you are using Boost's 
-               sources in an unreleased state, it may be neccessary to <A href="../tools/build/jam_src/index.html#building_bjam">
+               sources in an unreleased state, it may be necessary to <A href="../tools/build/jam_src/index.html#building_bjam">
                   build <tt>bjam</tt> from sources</A> included in the Boost source tree. To 
                install Boost.Jam, copy the <tt>bjam</tt> executable to a location accessible 
                in your <tt>PATH</tt>.</td>
@@ -288,7 +288,7 @@
          </tr>
          <tr>
             <td><A href="../tools/build/v1/kcc-tools.html"><code>kcc</code></A></td>
-            <td><a href="http://developer.intel.com/software/products/kcc/">KAI C++</a></td>
+            <td>KAI C++</td>
          </tr>
          <tr>
             <td><A href="../tools/build/v1/kylix-tools.html"><code>kylix</code></A></td>
@@ -486,7 +486,7 @@
             <td vAlign="top" noWrap align="left"><tt>--with-&lt;<i>library</i>&gt;</tt></td>
             <td vAlign="top" align="left">Build, stage, or install the specified library. This 
                changes the default from trying to build all possible libraries, to only 
-               building the speicfied libraries.</td>
+               building the specified libraries.</td>
          </tr>
          <tr>
             <td vAlign="top" noWrap align="left"><tt>--with-python-root[=PYTHON_ROOT]</tt></td>
@@ -503,6 +503,37 @@
                runtime. This builds an additional set of libraries for use with the debug 
                version of Python. The regular versions of the Boost.Python libraries are also 
                built.</td>
+         </tr>
+         <tr>
+            <td vAlign="top" noWrap align="left"><tt>-sHAVE_ICU=1</tt></td>
+            <td vAlign="top" align="left">Build Boost.Regex libraries with Unicode support
+               provided by the <a href="http://www-306.ibm.com/software/globalization/icu/index.jsp">
+               ICU libraries</a>.  ICU must have been built with the same
+               compiler that you are using to build Boost, and must be installed into
+               your compiler's include and library search paths.  See 
+               <a href="../libs/regex/doc/install.html#unicode">the Boost.Regex
+               installation documentation for more information</a>.</td>
+         </tr>
+         <tr>
+            <td vAlign="top" noWrap align="left"><tt>-sICU_PATH=<I>path</I></tt></td>
+            <td vAlign="top" align="left">Build Boost.Regex libraries with Unicode support
+               provided by the <a href="http://www-306.ibm.com/software/globalization/icu/index.jsp">
+               ICU libraries</a>.  ICU must have been built with the same
+               compiler that you are using to build Boost, and must have been built 
+               (or installed to) directory <I>path</I>.  
+               For example if you configured ICU with <tt>--prefix=/usr/local/icu/3.3</tt>, then use
+               <tt>-sICU_PATH=/usr/local/icu/3.3</tt>.  See 
+               <a href="../libs/regex/doc/install.html#unicode">the Boost.Regex
+               installation documentation for more information</a>.</td>
+         </tr>
+         <tr>
+            <td vAlign="top" noWrap align="left"><tt>-sNO_COMPRESSION=1</tt></td>
+            <td vAlign="top" align="left">Build Boost.Iostreams without support for the compression
+            filters which rely on the non-Boost libraries zlib and libbz2. If you use Windows, 
+            this option is enabled by default. If you use UNIX, the compression filters will likely
+            work with no configuration, so this option should not be necessary. For full details see 
+            <A HREF="http://www.boost.org/libs/iostreams/doc/index.html?path=7">Boost.Iostreams Installation</A>.
+            </td>
          </tr>
       </table>
       <p>There are additional options as supported by <A href="../tools/build/v1/build_system.htm">
@@ -843,7 +874,7 @@
          static libraries (archives), and ".so" for shared libraries. For toolsets that 
          support it in Unix they will also have a full version extension (for example "<tt>.so.1.31.0</tt>") 
          with a symbolic link for the un-versioned library.</p>
-      <H2><A name="#auto-link"></A>Automatic Linking on Windows</H2>
+      <H2><A name="auto-link"></A>Automatic Linking on Windows</H2>
       <P>For most Boost libraries that have separate source, the correct build variant 
          is linked against automatically when you include one of that library's header 
          files.&nbsp; For this feature to work, your compiler must support the <code>#pragma 
@@ -901,8 +932,18 @@
                <TD>No</TD>
                <TD>static</TD>
                <TD>No</TD>
-               <TD>The separate Graph library source is needed only when <A href="../libs/graph/doc/read-graphviz.html">
+               <TD>The separate Graph library source is needed only when <A href="../libs/graph/doc/read_graphviz.html">
                      reading an AT&amp;T graphviz file.</A></TD>
+            </TR>
+            <TR>
+               <TD>Iostreams</TD>
+               <TD>Yes</TD>
+               <TD>
+                  <P>Yes</P>
+               </TD>
+               <TD>static</TD>
+               <TD>Yes</TD>
+               <TD>&nbsp;</TD>
             </TR>
             <TR>
                <TD>Program Options</TD>
@@ -931,12 +972,12 @@
                <TD>&nbsp;</TD>
             </TR>
             <TR>
-               <TD>Serialisation</TD>
+               <TD>Serialization</TD>
                <TD>Yes</TD>
-               <TD>No</TD>
+               <TD>Yes</TD>
                <TD>static</TD>
-               <TD>No</TD>
-               <TD>Automatic linking support will be introduced in a future release.</TD>
+               <TD>Yes</TD>
+               <TD>&nbsp;</TD>
             </TR>
             <TR>
                <TD>Signals</TD>
@@ -952,17 +993,25 @@
                <TD>No</TD>
                <TD>static</TD>
                <TD>No</TD>
-               <TD>Which library you link to depends upon which program entry point you define, 
+              <TD>Which library you link to depends upon which program entry point you define, 
                   rather than which Boost.Test features you use.</TD>
             </TR>
             <TR>
                <TD>Thread</TD>
                <TD>Partial</TD>
                <TD>Yes</TD>
-               <TD>dynamic</TD>
+               <TD>static (Visual C++), otherwise dynamic</TD>
                <TD>Yes</TD>
                <TD>For technical reasons static linking is supported on only one Windows compiler 
                   (Visual C++).</TD>
+            </TR>
+            <TR>
+               <TD>Wave</TD>
+               <TD>Yes</TD>
+               <TD>Yes</TD>
+               <TD>static</TD>
+               <TD>Yes</TD>
+               <TD>&nbsp;</TD>
             </TR>
          </TABLE>
       </P>
@@ -993,3 +1042,6 @@
                www.boost.org/LICENSE_1_0.txt</a>)</small></p>
    </body>
 </html>
+
+
+

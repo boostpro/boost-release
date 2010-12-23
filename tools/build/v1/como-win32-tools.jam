@@ -23,7 +23,7 @@ free-feature no-warn ;
 # COMO_BACKEND_PATH - path to backend compiler root directory, defaults to $(VC7_ROOT)
 
 # Keep using COMO_BASE for backward compatibility
-set-as-singleton COMO_BASE COMO_BIN_PATH COMO_INCLUDE_PATH COMO_STDLIB_PATH COMO_BACKEND COMO_BACKEND_PATH ;
+set-as-singleton COMO_BASE COMO_PATH COMO_BIN_PATH COMO_INCLUDE_PATH COMO_STDLIB_PATH COMO_BACKEND COMO_BACKEND_PATH ;
 COMO_BASE ?= $(COMO_PATH) ;
 
 # compute directories for invoking como
@@ -51,7 +51,7 @@ if ! $(COMO_PATH_SETUP) # do this once
     COMO_BACKEND_SETUP ?= "call "\"$(COMO_BACKEND_PATH)\\..\\Common7\\Tools\\vsvars32"\" >nul" ;
     COMO_BASE_SETUP ?= "set \"COMO_BASE=$(COMO_BASE)\"" ;
     COMO_PATH_SETUP ?= "" ;
-    COMO_CMD = $(COMO_BIN_DIRECTORY)como --$(COMO_BACKEND) ;
+    COMO_CMD = \"$(COMO_BIN_DIRECTORY)como\" --$(COMO_BACKEND) ;
 }
 
 
@@ -66,6 +66,7 @@ flags como-win32 CFLAGS <optimization>off : /Od ;
 
 flags como-win32 CFLAGS <cflags> ;
 flags como-win32 CFLAGS : -D_WIN32 ; # make sure that we get the Boost Win32 platform config header.
+flags como-win32 CFLAGS <threading>single : -DBOOST_SP_DISABLE_THREADS ;
 flags como-win32 CFLAGS <threading>multi : -D_MT ; # make sure that our config knows that threading is on.
 flags como-win32 C++FLAGS <cxxflags> ;
 flags como-win32 DEFINES <define> ;
@@ -107,7 +108,7 @@ actions como-Link-action bind NEEDLIBS
 rule Cc-action
 {
     if $(>:G=:D=) in $(NO_WARN) { WARN on $(<) = "" ; }
-    else { WARN on $(<) = --a ; }
+    else { WARN on $(<) = --a -DBOOST_COMO_STRICT=1 ; }
     como-Cc-action $(<) : $(>) ;
 }
 
@@ -125,7 +126,7 @@ actions como-Cc-action
 rule C++-action
 {
     if $(>:G=:D=) in $(NO_WARN) { WARN on $(<) = "" ; }
-    else { WARN on $(<) = --a ; }
+    else { WARN on $(<) = --a -DBOOST_COMO_STRICT=1 ; }
     como-C++-action $(<) : $(>) ;
 }
 

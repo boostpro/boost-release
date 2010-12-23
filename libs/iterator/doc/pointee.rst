@@ -5,7 +5,7 @@
 :Author: David Abrahams
 :Contact: dave@boost-consulting.com
 :organization: `Boost Consulting`_
-:date: $Date: 2004/11/01 21:24:48 $
+:date: $Date: 2005/02/27 17:28:11 $
 :copyright: Copyright David Abrahams 2004. 
 
 .. _`Boost Consulting`: http://www.boost-consulting.com
@@ -42,7 +42,7 @@ determine the appropriate ``::type`` reliably for all
 ``Dereferenceable``\ s, but it makes very good guesses (it works
 for all pointers, standard and boost smart pointers, and
 iterators), and when it guesses wrongly, it can be specialized as
-neccessary::
+necessary::
 
   namespace boost
   {

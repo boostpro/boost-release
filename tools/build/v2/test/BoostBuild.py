@@ -20,16 +20,18 @@ def get_toolset():
     return toolset or 'gcc'
 
 windows = 0
+if os.environ.get('OS','').lower().startswith('windows') or \
+       os.__dict__.has_key('uname') and \
+       os.uname()[0].lower().startswith('cygwin'):
+    windows = 1
+
 suffixes = {}
 
 # Prepare the map of suffixes
 def prepare_suffix_map(toolset):
     global windows, suffixes    
     suffixes = {'.exe': '', '.dll': '.so', '.lib': '.a', '.obj': '.o'}
-    if os.environ.get('OS','').lower().startswith('windows') or \
-       os.__dict__.has_key('uname') and \
-       os.uname()[0].lower().startswith('cygwin'):
-        windows = 1
+    if windows:
         suffixes = {}
         if toolset in ["gcc"]:
             suffixes['.lib'] = '.a' # static libs have '.a' suffix with mingw...
@@ -37,6 +39,9 @@ def prepare_suffix_map(toolset):
     if os.__dict__.has_key('uname') and os.uname()[0] == 'Darwin':
         suffixes['.dll'] = '.dylib'
 
+lib_prefix = 1
+if windows:
+    lib_prefix = 0
         
     
     
@@ -68,13 +73,20 @@ class Tester(TestCmd.TestCmd):
     Optional argument `executable` indicates the name of the
     executable to invoke. Set this to "jam" to test Boost.Build v1
     behavior.
+
+    Optional argument `work_dir` indicates an absolute directory, 
+    where the test will run be run.
     """
     def __init__(self, arguments="", executable = 'bjam', match =
                  TestCmd.match_exact, boost_build_path = None,
                  translate_suffixes = 1, pass_toolset = 1,
+                 workdir = '',
                  **keywords):
 
         self.original_workdir = os.getcwd()
+        if workdir != '' and not os.path.isabs(workdir):
+            raise "Parameter workdir <"+workdir+"> must point to a absolute directory: "
+
         self.last_build_time = 0
         self.translate_suffixes = translate_suffixes
 
@@ -93,7 +105,11 @@ class Tester(TestCmd.TestCmd):
                     print 'Setting $TMP to /tmp to get around problem with short path names'
                     os.environ['TMP'] = '/tmp'
             elif os.uname()[0] == 'Linux':
-                jam_build_dir = "bin.linuxx86"
+                cpu = os.uname()[4]
+                if re.match("i.86", cpu):
+                    jam_build_dir = "bin.linuxx86";
+                else:
+                    jam_build_dir = "bin.linux" + os.uname()[4]
             elif os.uname()[0] == 'SunOS':
                 jam_build_dir = "bin.solaris"
             elif os.uname()[0] == 'Darwin':
@@ -102,6 +118,8 @@ class Tester(TestCmd.TestCmd):
                 jam_build_dir = "bin.aix"
             elif os.uname()[0] == "IRIX64":
                 jam_build_dir = "bin.irix"
+            elif os.uname()[0] == "FreeBSD":
+                jam_build_dir = "bin.freebsd"
             else:
                 raise "Don't know directory where jam is build for this system: " + os.name + "/" + os.uname()[0]
         else:
@@ -147,7 +165,7 @@ class Tester(TestCmd.TestCmd):
             self
             , program=program_list
             , match=match
-            , workdir=''
+            , workdir = workdir
             , **keywords)
 
         os.chdir(self.workdir)
@@ -256,6 +274,12 @@ class Tester(TestCmd.TestCmd):
     def run_build_system(
         self, extra_args='', subdir='', stdout = None, stderr = '',
         status = 0, match = None, pass_toolset = None, **kw):
+
+        if os.path.isabs(subdir):
+            if stderr:
+                print "You must pass a relative directory to subdir <"+subdir+">."
+            status = 1
+            return
 
         self.previous_tree = build_tree(self.workdir)
 
@@ -523,6 +547,20 @@ class Tester(TestCmd.TestCmd):
         """Removes in-place, element of 'list' that match the given wildcard."""
         list[:] = filter(lambda x, w=wildcard: not fnmatch.fnmatch(x, w), list)
 
+    def adjust_lib_name(self, name):
+        global lib_prefix
+        result = name
+        
+        pos = string.rfind(name, ".")
+        if pos != -1:
+            suffix = name[pos:]
+            if suffix in [".lib", ".dll"]:
+                (head, tail) = os.path.split(name)
+                if lib_prefix:
+                    tail = "lib" + tail
+                    result = os.path.join(head, tail)
+        return result
+                
     def adjust_suffix(self, name):
         if not self.translate_suffixes:
             return name
@@ -544,7 +582,8 @@ class Tester(TestCmd.TestCmd):
     def adjust_names(self, names):
         if type(names) == types.StringType:
                 names = [names]
-        r = map(self.adjust_suffix, names)
+        r = map(self.adjust_lib_name, names)
+        r = map(self.adjust_suffix, r)
         r = map(lambda x, t=self.toolset: string.replace(x, "$toolset", t), r)
         return r
 
@@ -556,7 +595,7 @@ class Tester(TestCmd.TestCmd):
     # Wait while time is no longer equal to the time last "run_build_system"
     # call finished.
     def wait_for_time_change(self):
-        while int(time.time()) == int(self.last_build_time):
+        while int(time.time()) < int(self.last_build_time) + 1:
             time.sleep(0.1)
 
             

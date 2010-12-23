@@ -3,7 +3,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland
- * $Date: 2004/10/12 22:27:14 $
+ * $Date: 2005/01/30 21:04:48 $
  *
  * This file isn't part of the official regression test suite at
  * the moment, but it is a basic test of the strings_from_facet.hpp
@@ -17,7 +17,7 @@
 #include <vector>
 #include <fstream>
 
-#include "strings_from_facet.hpp"
+#include "boost/date_time/strings_from_facet.hpp"
 #include "algorithm_ext/container_print.hpp"
 
 

@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2003-2004.
+//  (C) Copyright Gennadiy Rozental 2003-2005.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,18 +7,19 @@
 //
 //  File        : $RCSfile: class_properties_test.cpp,v $
 //
-//  Version     : $Revision: 1.2 $
+//  Version     : $Revision: 1.7 $
 //
 //  Description : unit test for class properties facility
 // ***************************************************************************
 
 // Boost.Test
 #include <boost/test/unit_test.hpp>
-#include <boost/test/detail/class_properties.hpp>
-using namespace boost::unit_test;
+#include <boost/test/utils/class_properties.hpp>
 
 // STL
 #include <vector>
+
+using namespace boost::unit_test;
 
 //____________________________________________________________________________//
 
@@ -196,10 +197,27 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
 //  Revision History :
 //  
 //  $Log: class_properties_test.cpp,v $
-//  Revision 1.2  2004/05/21 06:26:10  rogeeff
+//  Revision 1.7  2005/06/11 19:20:58  rogeeff
+//  *** empty log message ***
+//
+//  Revision 1.6  2005/05/11 05:07:56  rogeeff
 //  licence update
 //
-//  Revision 1.1  2004/05/11 11:05:46  rogeeff
+//  Revision 1.5  2005/01/30 03:35:55  rogeeff
+//  no message
+//
+//  Revision 1.3  2005/01/18 08:30:08  rogeeff
+//  unit_test_log rework:
+//     eliminated need for ::instance()
+//     eliminated need for << end and ...END macro
+//     straitend interface between log and formatters
+//     change compiler like formatter name
+//     minimized unit_test_log interface and reworked to use explicit calls
+//
+//  Revision 1.2  2005/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.1  2005/05/11 11:05:46  rogeeff
 //  basic_cstring introduced and used everywhere
 //  class properties reworked
 //  namespace names shortened
@@ -207,7 +225,6 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
 //  Revision 1.3  2003/12/01 00:42:37  rogeeff
 //  prerelease cleaning
 //
-
 // ***************************************************************************
 
 // EOF

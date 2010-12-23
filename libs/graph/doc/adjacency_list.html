@@ -178,7 +178,9 @@ Properties </A>. The property maps are objects that implement the
 interface defined in Section <A
 HREF="../../property_map/property_map.html">Property Map
 Concepts</A> or may be <a href="bundles.html">bundled properties</a>,
-which have a more succinct syntax. The property maps obtained from the
+which have a more succinct syntax. The types of all property values
+must be Copy Constructible, Assignable, and Default Constructible.  
+The property maps obtained from the
 <TT>adjacency_list</TT> class are models of the <a
 href="../../property_map/LvaluePropertyMap.html">Lvalue Property
 Map</a> concept. If the <TT>adjacency_list</TT> is const,
@@ -481,6 +483,30 @@ The property value type for the graph property specified by the
 
 <hr>
 
+<tt>adjacency_list::out_edge_list_selector</tt>
+<br><br>
+The type <tt>OutEdgeListS</tt>.
+
+<hr>
+
+<tt>adjacency_list::vertex_list_selector</tt>
+<br><br>
+The type <tt>VertexListS</tt>.
+
+<hr>
+
+<tt>adjacency_list::directed_selector</tt>
+<br><br>
+The type <tt>DirectedS</tt>.
+
+<hr>
+
+<tt>adjacency_list::edge_list_selector</tt>
+<br><br>
+The type <tt>EdgeListS</tt>.
+
+<hr>
+
 <H2>Member Functions</H2>
 
 <hr>
@@ -745,10 +771,8 @@ add_edge(vertex_descriptor&nbsp;u, vertex_descriptor&nbsp;v,
 Adds edge <i>(u,v)</i> to the graph and returns the edge descriptor
 for the new edge. For graphs that do not allow parallel edges, if the
 edge is already in the graph then a duplicate will not be added and
-the <TT>bool</TT> flag will be <TT>false</TT>. Also, if <i>u</i> and
-<i>v</i> are descriptors for the same vertex (creating a self loop)
-and the graph is undirected, then the edge will not be added and the
-flag will be <TT>false</TT>.  When the flag is <TT>false</TT>, the
+the <TT>bool</TT> flag will be <TT>false</TT>. When the flag is
+<TT>false</TT>, the
 returned edge descriptor points to the already existing edge.
 
 <p>

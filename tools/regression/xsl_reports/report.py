@@ -223,7 +223,7 @@ def build_xsl_reports(
         , upload = False
         ):
 
-    ( run_date ) = time.strftime('%a, %d %b %Y %H:%M:%S +0000', time.gmtime() )
+    ( run_date ) = time.strftime( '%Y-%m-%dT%H:%M:%SZ', time.gmtime() )
     
     test_results_file = os.path.join( results_dir, 'test_results.xml' )
     bin_boost_dir = os.path.join( locate_root_dir, 'bin', 'boost' )
@@ -304,9 +304,12 @@ def accept_args( args ):
     if not options.has_key( '--results-dir' ):
          options[ '--results-dir' ] = options[ '--locate-root' ]
 
-    if options.has_key( '--v2' ) and not options.has_key( '--results-prefix' ):
-        options[ '--results-prefix' ] = 'all'
-        
+    if not options.has_key( '--results-prefix' ):
+        if options.has_key( '--v2' ):
+            options[ '--results-prefix' ] = 'all'
+        else:
+            options[ '--results-prefix' ] = ''
+    
     return ( 
           options[ '--locate-root' ]
         , options[ '--tag' ]

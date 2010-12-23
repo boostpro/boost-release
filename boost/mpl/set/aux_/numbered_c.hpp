@@ -11,9 +11,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/boost/mpl/set/aux_/Attic/numbered_c.hpp,v $
-// $Date: 2004/11/10 23:38:13 $
-// $Revision: 1.1.2.2 $
+// $Source: /cvsroot/boost/boost/boost/mpl/set/aux_/numbered_c.hpp,v $
+// $Date: 2004/11/28 01:50:43 $
+// $Revision: 1.2 $
 
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/enum_trailing_params.hpp>

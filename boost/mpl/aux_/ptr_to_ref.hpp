@@ -11,8 +11,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/aux_/ptr_to_ref.hpp,v $
-// $Date: 2004/10/13 18:23:20 $
-// $Revision: 1.4 $
+// $Date: 2005/06/22 15:20:18 $
+// $Revision: 1.5 $
 
 #include <boost/mpl/aux_/static_cast.hpp>
 #include <boost/mpl/aux_/config/msvc.hpp>
@@ -20,7 +20,9 @@
 
 
 #if BOOST_WORKAROUND(BOOST_MSVC, BOOST_TESTED_AT(1400)) \
-    || BOOST_WORKAROUND(__EDG_VERSION__, <= 245)
+    ||  ( BOOST_WORKAROUND(__EDG_VERSION__, <= 245) \
+        && !(defined(__STD_STRICT_ANSI) \
+            || defined(__STD_STRICT_ANSI_ERRORS)) )
 
 #   define BOOST_MPL_AUX_PTR_TO_REF(X) \
     *BOOST_MPL_AUX_STATIC_CAST(X*, 0) \

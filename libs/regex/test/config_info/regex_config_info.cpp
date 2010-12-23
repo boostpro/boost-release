@@ -1,7 +1,7 @@
 /*
  *
  * Copyright (c) 2003
- * Dr John Maddock
+ * John Maddock
  *
  * Use, modification and distribution are subject to the 
  * Boost Software License, Version 1.0. (See accompanying file 
@@ -57,6 +57,10 @@ int NEW_MAIN()
    PRINT_MACRO(BOOST_REGEX_CALL);
    PRINT_MACRO(BOOST_REGEX_CCALL);
    PRINT_MACRO(BOOST_REGEX_MAX_STATE_COUNT);
+   PRINT_MACRO(BOOST_REGEX_BUGGY_CTYPE_FACET);
+   PRINT_MACRO(BOOST_REGEX_MATCH_EXTRA);
+   PRINT_MACRO(BOOST_HAS_ICU);
+   PRINT_MACRO(BOOST_REGEX_HAS_OTHER_WCHAR_T);
 
 #if defined(BOOST_REGEX_CONFIG_INFO) && !defined(NO_RECURSE)
    print_regex_library_info();

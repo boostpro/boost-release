@@ -1,11 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Definitions</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<style type="text/css">
+body { background-image: url('http://docbook.sourceforge.net/release/images/draft.png');
+       background-repeat: no-repeat;
+       background-position: top left;
+       /* The following properties make the watermark "fixed" on the page. */
+       /* I think that's just a bit too distracting for the reader... */
+       /* background-attachment: fixed; */
+       /* background-position: center center; */
+     }</style>
 <link rel="start" href="../../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../reference.html" title="Chapter 23. Detailed reference">
+<link rel="up" href="../reference.html" title="Chapter 26. Detailed reference">
 <link rel="prev" href="buildprocess.html" title="Build process">
 <link rel="next" href="generators.html" title="Generators">
 </head>
@@ -23,7 +32,8 @@
 <a accesskey="p" href="buildprocess.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="generators.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bbv2.reference.definitions"></a>Definitions</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="definitions.html#bbv2.reference.features">Features and properties</a></span></dt>
 <dt><span class="section"><a href="definitions.html#bbv2.reference.variants">Build Variants</a></span></dt>
@@ -41,37 +51,37 @@
 </dl></div>
 <p>A <span class="emphasis"><em>feature</em></span> is a normalized (toolset-independent)
         aspect of a build configuration, such as whether inlining is
-        enabled. Feature names may not contain the '<tt class="literal">&gt;</tt>'
+        enabled. Feature names may not contain the '<code class="literal">&gt;</code>'
         character.</p>
 <p>Each feature in a build configuration has one or more
         associated <span class="emphasis"><em>value</em></span>s. Feature values for non-free features
-        may not contain the '<tt class="literal">&lt;</tt>', '<tt class="literal">:</tt>', or
-        '<tt class="literal">=</tt>' characters. Feature values for free features may not
-        contain the '<tt class="literal">&lt;</tt>' character.</p>
+        may not contain the '<code class="literal">&lt;</code>', '<code class="literal">:</code>', or
+        '<code class="literal">=</code>' characters. Feature values for free features may not
+        contain the '<code class="literal">&lt;</code>' character.</p>
 <p>A <span class="emphasis"><em>property</em></span> is a (feature,value) pair, expressed as
         &lt;feature&gt;value.</p>
-<p>A <span class="emphasis"><em>subfeature</em></span> is a feature which only exists in the
+<p>A <span class="emphasis"><em>subfeature</em></span> is a feature that only exists in the
         presence of its parent feature, and whose identity can be derived
         (in the context of its parent) from its value. A subfeature's
         parent can never be another subfeature. Thus, features and their
         subfeatures form a two-level hierarchy.</p>
-<p>A <span class="emphasis"><em>value-string</em></span> for a feature <span class="bold"><b>F</b></span> is a string of
+<p>A <span class="emphasis"><em>value-string</em></span> for a feature <span class="bold"><strong>F</strong></span> is a string of
         the form
-        <tt class="literal">value-subvalue1-subvalue2</tt>...<tt class="literal">-subvalueN</tt>, where
-        <tt class="literal">value</tt> is a legal value for <span class="bold"><b>F</b></span> and
-        <tt class="literal">subvalue1</tt>...<tt class="literal">subvalueN</tt> are legal values of some
-        of <span class="bold"><b>F</b></span>'s subfeatures. For example, the properties
-        <tt class="literal">&lt;toolset&gt;gcc &lt;toolset-version&gt;3.0.1</tt> can be
+        <code class="literal">value-subvalue1-subvalue2</code>...<code class="literal">-subvalueN</code>, where
+        <code class="literal">value</code> is a legal value for <span class="bold"><strong>F</strong></span> and
+        <code class="literal">subvalue1</code>...<code class="literal">subvalueN</code> are legal values of some
+        of <span class="bold"><strong>F</strong></span>'s subfeatures. For example, the properties
+        <code class="literal">&lt;toolset&gt;gcc &lt;toolset-version&gt;3.0.1</code> can be
         expressed more conscisely using a value-string, as
-        <tt class="literal">&lt;toolset&gt;gcc-3.0.1</tt>.</p>
+        <code class="literal">&lt;toolset&gt;gcc-3.0.1</code>.</p>
 <p>A <span class="emphasis"><em>property set</em></span> is a set of properties (i.e. a
         collection without duplicates), for instance:
-        <tt class="literal">&lt;toolset&gt;gcc &lt;runtime-link&gt;static</tt>.</p>
+        <code class="literal">&lt;toolset&gt;gcc &lt;runtime-link&gt;static</code>.</p>
 <p>A <span class="emphasis"><em>property path</em></span> is a property set whose elements have
         been joined into a single string separated by slashes. A property
         path representation of the previous example would be
-        <tt class="literal">&lt;toolset&gt;gcc/&lt;runtime-link&gt;static</tt>.</p>
-<p>A <span class="emphasis"><em>build specification</em></span> is a property set which fully
+        <code class="literal">&lt;toolset&gt;gcc/&lt;runtime-link&gt;static</code>.</p>
+<p>A <span class="emphasis"><em>build specification</em></span> is a property set that fully
         describes the set of features used to build a target.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
@@ -84,9 +94,9 @@
           feature-value. Subproperty validity may be restricted so
           that certain values are valid only in the presence of
           certain other subproperties. For example, it is possible
-          to specify that the <tt class="computeroutput">&lt;gcc-target&gt;mingw</tt>
+          to specify that the <code class="computeroutput">&lt;gcc-target&gt;mingw</code>
           property is only valid in the presence of
-          <tt class="computeroutput">&lt;gcc-version&gt;2.95.2</tt>.
+          <code class="computeroutput">&lt;gcc-version&gt;2.95.2</code>.
         </p>
 </div>
 <div class="section" lang="en">
@@ -105,7 +115,7 @@
 <p>Incidental features are assumed not to affect build
               products at all. As a consequence, the build system may use
               the same file for targets whose build specification differs
-              only in incidental features. A feature which controls a
+              only in incidental features. A feature that controls a
               compiler's warning level is one example of a likely
               incidental feature.</p>
 <p>Non-incidental features are assumed to affect build
@@ -123,7 +133,7 @@
               when building any of its dependencies as part of that main
               target. For instance, when an optimized exectuable is
               requested, one usually wants it to be linked with optimized
-              libraries. Thus, the <tt class="literal">&lt;optimization&gt;</tt> feature is
+              libraries. Thus, the <code class="literal">&lt;optimization&gt;</code> feature is
               propagated.</p>
 </li>
 <li>
@@ -140,9 +150,9 @@
 </li>
 <li>
 <p><span class="emphasis"><em>optional</em></span></p>
-<p>An optional feature is a feature which is not required to
+<p>An optional feature is a feature that is not required to
               appear in a build specification. Every non-optional non-free
-              feature has a default value which is used when a value for
+              feature has a default value that is used when a value for
               the feature is not otherwise specified, either in a target's
               requirements or in the user's build request. [A feature's
               default value is given by the first value listed in the
@@ -184,7 +194,7 @@
               feature. When generating targets from a set of build
               properties, composite features are recursively expanded and
               <span class="emphasis"><em>added</em></span> to the build property set, so rules can find
-              them if neccessary. Non-composite non-free features override
+              them if necessary. Non-composite non-free features override
               components of composite features in a build property set.</p>
 </li>
 <li>
@@ -199,15 +209,15 @@
               the sources of A. </p>
 </li>
 </ul></div>
-<p>Features which are neither free nor incidental are called
+<p>Features that are neither free nor incidental are called
           <span class="emphasis"><em>base</em></span> features.</p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="bbv2.reference.features.declaration"></a>Feature Declaration</h4></div></div></div>
 <p>The low-level feature declaration interface is the
-          <tt class="literal">feature</tt> rule from the
-          <tt class="literal">feature</tt> module:
+          <code class="literal">feature</code> rule from the
+          <code class="literal">feature</code> module:
           
 </p>
 <pre class="programlisting">
@@ -216,7 +226,7 @@ rule feature ( name : allowed-values * : attributes * )
 <p>
           
           A feature's allowed-values may be extended with the
-          <tt class="computeroutput">feature.extend</tt> rule.
+          <code class="computeroutput">feature.extend</code> rule.
         </p>
 </div>
 </div>
@@ -225,7 +235,7 @@ rule feature ( name : allowed-values * : attributes * )
 <a name="bbv2.reference.variants"></a>Build Variants</h3></div></div></div>
 <p>
         A build variant, or (simply variant) is a special kind of composite
-        feature which automatically incorporates the default values of
+        feature that automatically incorporates the default values of
         features that . Typically you'll want at least two separate
         variants: one for debugging, and one for your release code. [
         Volodya says: "Yea, we'd need to mention that it's a composite
@@ -244,10 +254,6 @@ rule feature ( name : allowed-values * : attributes * )
         set of properties to use for building. This process is called
         <span class="emphasis"><em>property refinement</em></span> and is performed by these rules</p>
 <div class="orderedlist"><ol type="1">
-<li>
-            If original properties and required properties are not
-            link-compatible, refinement fails.
-          </li>
 <li>
             Each property in the required set is added to the original
             property set
@@ -276,6 +282,12 @@ rule feature ( name : allowed-values * : attributes * )
 </p>
 <pre class="programlisting">
 exe hello : hello.cpp : &lt;toolset&gt;yfc:&lt;cxxflags&gt;-disable-pointless-warning ;
+</pre>
+<p>The syntax also allows several properties in the condition, for
+        example:
+</p>
+<pre class="programlisting">
+exe hello : hello.cpp : &lt;os&gt;NT,&lt;toolset&gt;gcc:&lt;link&gt;static ;
 </pre>
 </div>
 <div class="section" lang="en">
@@ -321,7 +333,7 @@ lib/b.cpp                            -- regular file
 /boost/thread                        -- project "/boost/thread"
 /home/ghost/build/lr_library//parser -- target in specific project
 </pre>
-<p><span class="bold"><b>Rationale:</b></span>Target is separated from project by special
+<p><span class="bold"><strong>Rationale:</strong></span>Target is separated from project by special
         separator (not just slash), because:</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -348,9 +360,9 @@ requested-properties -&gt; property-path
         </pre>
 <p>
         
-        would cause the version of <tt class="literal">cmdline</tt> library,
+        would cause the version of <code class="literal">cmdline</code> library,
         optimized for space, to be linked in even if the
-        <tt class="literal">compiler</tt> executable is build with optimization for
+        <code class="literal">compiler</code> executable is build with optimization for
         speed.
       </p>
 </div>

@@ -3,25 +3,9 @@
 // Copyright 2001 University of Notre Dame.
 // Author: Lie-Quan Lee
 //
-// This file is part of the Boost Graph Library
-//
-// You should have received a copy of the License Agreement for the
-// Boost Graph Library along with the software; see the file LICENSE.
-// If not, contact Office of Research, University of Notre Dame, Notre
-// Dame, IN 46556.
-//
-// Permission to modify the code and to distribute modified code is
-// granted, provided the text of this NOTICE is retained, a notice that
-// the code was modified is included with the above COPYRIGHT NOTICE and
-// with the COPYRIGHT NOTICE in the LICENSE file, and that the LICENSE
-// file is distributed with the modified code.
-//
-// LICENSOR MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.
-// By way of example, but not limitation, Licensor MAKES NO
-// REPRESENTATIONS OR WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY
-// PARTICULAR PURPOSE OR THAT THE USE OF THE LICENSED SOFTWARE COMPONENTS
-// OR DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS
-// OR OTHER RIGHTS.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 
 #include <iostream>
@@ -245,6 +229,7 @@
 %type<i>    graph graph_header graph_type stmt_list stmt attr_stmt attr_header
 %type<i>    attr_list attr compound_stmt node_stmt edge_stmt opt_attr
 %type<i>    graph_body edge_rhs_one edge_rhs graph_attr opt_graph_body
+%type<i>    nonempty_attr_list
 %type<ptr>  graph_name
 %type<ptr>  edge_endpoint node_id  node_port subgraph subgraph_header
 
@@ -299,7 +284,10 @@ attr_header:  GRAPH_T  { graphviz::attribute_state = GRAPH_GRAPH_A; }
               | EDGE_T { graphviz::attribute_state = GRAPH_EDGE_A; }
               ;
 
-attr_list:    attr | attr_list attr_separator attr
+attr_list: nonempty_attr_list | {} 
+              ;
+
+nonempty_attr_list: attr | nonempty_attr_list attr_separator attr
               ;
 
 attr:         ID_T '=' ID_T 

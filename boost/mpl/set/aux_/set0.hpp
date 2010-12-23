@@ -12,8 +12,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/set/aux_/set0.hpp,v $
-// $Date: 2004/10/13 18:23:37 $
-// $Revision: 1.7 $
+// $Date: 2005/06/18 22:03:08 $
+// $Revision: 1.8 $
 
 #include <boost/mpl/long.hpp>
 #include <boost/mpl/void.hpp>
@@ -50,9 +50,9 @@ namespace boost { namespace mpl {
 
 #endif
 
-
 template< typename Dummy = na > struct set0
 {
+    typedef set0<>          item_;
     typedef aux::set_tag    tag;
     typedef void_           last_masked_;
     typedef void_           item_type_;

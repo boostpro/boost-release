@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Relation to other Boost libraries</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../lambda.html" title="Chapter 5. Boost.Lambda">
+<link rel="up" href="../lambda.html" title="Chapter 6. Boost.Lambda">
 <link rel="prev" href="s07.html" title="Practical considerations">
 <link rel="next" href="s09.html" title="Contributors">
 </head>
@@ -24,14 +24,14 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id547165"></a>Relation to other Boost libraries</h3></div></div></div>
+<a name="id1246000"></a>Relation to other Boost libraries</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="s08.html#id547170">Boost Function</a></span></dt>
-<dt><span class="section"><a href="s08.html#id547254">Boost Bind</a></span></dt>
+<dt><span class="section"><a href="s08.html#id1246004">Boost Function</a></span></dt>
+<dt><span class="section"><a href="s08.html#id1246081">Boost Bind</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id547170"></a>Boost Function</h4></div></div></div>
+<a name="id1246004"></a>Boost Function</h4></div></div></div>
 <p>Sometimes it is convenient to store lambda functors in variables.
 However, the types of even the simplest lambda functors are long and unwieldy, and it is in general unfeasible to declare variables with lambda functor types.
 <span class="emphasis"><em>The Boost Function library</em></span>[<a href="../lambda.html#cit:boost::function" title="[function]"><span class="abbrev">function</span></a>] defines wrappers for arbitrary function objects, for example 
@@ -49,10 +49,10 @@ g(i);    // sets i to = 11;
 </pre>
 <p>
 
-The return and parameter types of the wrapped function object must be written explicilty as the template argument to the wrapper template <tt class="literal">boost::function</tt>; even when lambda functors, which otherwise have generic parameters, are wrapped.
-Wrapping a function object with <tt class="literal">boost::function</tt> introduces a performance cost comparable to virtual function dispatch, though virtual functions are not actually used.
+The return and parameter types of the wrapped function object must be written explicilty as the template argument to the wrapper template <code class="literal">boost::function</code>; even when lambda functors, which otherwise have generic parameters, are wrapped.
+Wrapping a function object with <code class="literal">boost::function</code> introduces a performance cost comparable to virtual function dispatch, though virtual functions are not actually used.
 
-Note that storing lambda functors inside <tt class="literal">boost::function</tt> 
+Note that storing lambda functors inside <code class="literal">boost::function</code> 
 introduces a danger.
 Certain types of lambda functors may store references to the bound 
 arguments, instead as taking copies of the arguments of the lambda expression.
@@ -60,7 +60,7 @@ When temporary lambda functor objects are used
 in STL algorithm invocations this is always safe, as the lambda functor gets 
 destructed immediately after the STL algortihm invocation is completed.
 
-However, a lambda functor wrapped inside <tt class="literal">boost::function</tt> 
+However, a lambda functor wrapped inside <code class="literal">boost::function</code> 
 may continue to exist longer, creating the possibility of dangling references.
 For example:
 
@@ -76,8 +76,8 @@ counter(3); // error, *sum does not exist anymore
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id547254"></a>Boost Bind</h4></div></div></div>
-<div class="toc"><dl><dt><span class="section"><a href="s08.html#id547301">First argument of bind expression</a></span></dt></dl></div>
+<a name="id1246081"></a>Boost Bind</h4></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="s08.html#id1246134">First argument of bind expression</a></span></dt></dl></div>
 <p><span class="emphasis"><em>The Boost Bind</em></span>[<a href="../lambda.html#cit:boost::bind" title="[bind]"><span class="abbrev">bind</span></a>] library has partially overlapping functionality with the BLL. 
 Basically, the Boost Bind library (BB in the sequel) implements the bind expression part of BLL.
 There are, however, some semantical differerences.
@@ -88,8 +88,8 @@ This means that the bind expressions from the BB cannot be used within
 bind expressions, or within other type of lambda expressions, of the BLL.
 The same holds for using BLL bind expressions in the BB.
 The libraries can coexist, however, as
-the names of the BB library are in <tt class="literal">boost</tt> namespace, 
-whereas the BLL names are in <tt class="literal">boost::lambda</tt> namespace.
+the names of the BB library are in <code class="literal">boost</code> namespace, 
+whereas the BLL names are in <code class="literal">boost::lambda</code> namespace.
 </p>
 <p>
 The BLL requires a compiler that is reasonably conformant to the 
@@ -102,7 +102,7 @@ between the bind expressions in BB and BLL.
 </p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
-<a name="id547301"></a>First argument of bind expression</h5></div></div></div>
+<a name="id1246134"></a>First argument of bind expression</h5></div></div></div>
 
 In BB the first argument of the bind expression, the target function, 
 is treated differently from the other arguments, 
@@ -125,7 +125,7 @@ int bar(int, int);
 nested(bind(bar, 1, _1));
 </pre>
 
-The bind expression inside <tt class="literal">foo</tt> becomes:
+The bind expression inside <code class="literal">foo</code> becomes:
 <pre class="programlisting">
 bind(bind(bar, 1, _1), _1)(x)
 </pre>
@@ -139,7 +139,7 @@ whereas the BB library as
 bar(1, x)
 </pre>
 
-To get this functionality in BLL, the bind expression inside the <tt class="literal">foo</tt> function can be written as:
+To get this functionality in BLL, the bind expression inside the <code class="literal">foo</code> function can be written as:
 <pre class="programlisting">
 bind(unlambda(f), _1)(x);
 </pre>

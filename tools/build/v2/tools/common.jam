@@ -107,12 +107,17 @@ rule check-init-parameters ( toolset : * )
     return $(condition) ;
 }
 
-# A helper rule to get the command to invoke some tool. The rule is either passed
-# a user provided command, it which case it checks it for correctness, or it tries
-# to find the tool using it's name, the PATH, and additional path.
+# A helper rule to get the command to invoke some tool. 
+# In 'user-provided-command' is not given, tries to find binary
+# named 'tool' in PATH and in the passed 'additional-path'. Otherwise,
+# verified that the first element of 'user-provided-command' is an
+# existing program.
+#
+#
 # This rule returns the command to be used when invoking the tool. If we can't
 # find the tool, a warning is issued.
-# If 'path-last' is specified, path is checked after 'additional-paths'.
+# If 'path-last' is specified, PATH is checked after 'additional-paths' when
+# searching to 'tool'.
 rule get-invocation-command ( 
     toolset : tool : user-provided-command * : additional-paths * : path-last ? )
 {
@@ -164,12 +169,12 @@ rule get-absolute-tool-path ( command )
 
 
 
-# Attempts to find tool (binary) named 'name' in PATH and in 'additiona-paths'.
-# If found in path, returns 'name'.
-# If found in additional paths, returns full name. If there are several possibilities,
-# returns them all.
+# Attempts to find tool (binary) named 'name' in PATH and in 'additional-paths'.
+# If found in PATH, returns 'name'.
+# If found in additional paths, returns absolute name. If the tool is found
+# in several directories, return all paths.
 # Otherwise, returns empty string.
-# If 'path-last' is specified, path is checked after 'additional-paths'.
+# If 'path-last' is specified, PATH is searched after 'additional-paths'.
 rule find-tool ( name : additional-paths * : path-last ? )
 {
     local path = [ path.programs-path ] ;
@@ -243,7 +248,7 @@ rule check-tool ( xcommand + )
 # - OPTIONS for compile.c++ to the value of <cxxflags> in options
 # - OPTIOns for compile to the value of <compileflags> in options
 # - OPTIONs for link to the value of <linkflags> in options
-rule handle-options ( toolset : condition * : command ? : options * )
+rule handle-options ( toolset : condition * : command * : options * )
 {
     # The last parameter ('true') says it's OK to set flags for another
     # module,   
@@ -254,6 +259,8 @@ rule handle-options ( toolset : condition * : command ? : options * )
       [ feature.get-values <cflags> : $(options) ] : unchecked ;
     toolset.flags $(toolset).compile.c++ OPTIONS $(condition) :
       [ feature.get-values <cxxflags> : $(options) ] : unchecked ;
+    toolset.flags $(toolset).compile.fortran OPTIONS $(condition) :
+      [ feature.get-values <fflags> : $(options) ] : unchecked ;
     toolset.flags $(toolset).link OPTIONS $(condition) :
       [ feature.get-values <linkflags> : $(options) ] : unchecked ;        
 }
@@ -289,45 +296,45 @@ else
 nl = "
 " ;
 
-# Returns the command needed to set shell variable on the
-# current platform.
-rule variable-setting-command ( variable value )
+rule rm-command ( ) 
 {
-    if [ modules.peek : NT ]
+     return $(RM) ;
+}
+
+# Returns the command needed to set the environment variable on the
+# current platform.  The variable setting persists through all
+# following commands and is visible in the environment seen by
+# subsequently executed commands.  In other words, on Unix systems,
+# the variable is exported, which is consistent with the only possible
+# behavior on Windows systems.
+rule variable-setting-command ( variable : value )
+{    
+    if [ os.name ] = NT
     {
         return "set $(variable)=$(value)$(nl)" ;
     }
     else
     {
-        return "$(variable)=$(value)" ;
+        return "$(variable)=$(value)$(nl)export $(variable)$(nl)" ;
     }
 }
 
-# Returns the command needed to set shell variable on the
-# current platform. Each element of values is expected to be a path,
-# elements are joined with os-specific characer which delimits paths in
-# environment variables.
-rule path-variable-setting-command ( variable : values * : exported ? )
+# Returns a command that sets the named shell path variable to the
+# given NATIVE paths to on the current platform.
+rule path-variable-setting-command ( variable : paths * )
 {   
-    local result ;
-    if [ modules.peek : NT ]
-    {
-        result = set $(variable)=$(values:J=";")$(nl) ;                
-    }
-    else
-    {
-        # We can't put ":" directly in :J modifier.
-        local sep = ":" ;
-        if $(exported)
-        {                       
-            result = $(variable)=$(values:J=$(sep));export $(variable) ;
-        }
-        else
-        {
-            result = $(variable)=$(values:J=$(sep)) ;    
-        }                
-    }
-    return $(result:J=" ") ;
+    local sep = [ os.path-separator ] ;
+    return [ variable-setting-command $(variable) : $(paths:J=$(sep)) ] ;
+}
+
+# Returns a command that prepends the given paths to the named path
+# variable on the current platform.
+rule prepend-path-variable-command ( variable : paths * )
+{   
+    return [ 
+      path-variable-setting-command $(variable) 
+        : $(paths) [ os.expand-variable $(variable) ]
+    ] ;
 }
 
 
@@ -417,21 +424,28 @@ actions copy
 # Cause creation of response file, containing the sources in 'sources'
 # All the targets in 'targets' will depend on response file, and response
 # file will be created before the targets are built.
-rule response-file ( targets + : sources * : the-response-file : properties * )
+rule response-file ( targets + : sources * : the-response-file ? : properties * )
 {
-    # Manufacture a fake target for response file.
-    # If response file is in targets, we're in trouble.
-    # The actions for response file are already generated, and bjam thinks it's 
-    # created. So setting dependency on response file will not help to create
-    # it before other targets. So, we need another target.
+    # TODO: now 'the-response-file' is just ignored. Need to remove
+    # the argument altother and adjust callers.
     
-    local g = [ utility.ungrist $(the-response-file:G) ] ;
-    local rsp = $(the-response-file:G=$(g)-rsp) ;
-    LOCATE on $(rsp) = [ on $(the-response-file) return $(LOCATE) ] ;    
+    # Create a target for response file. Note that we add 'rsp' to the target
+    # name (without stripping suffix), so that response file names for c.exe
+    # and c.obj are different.
+    local rsp = $(targets[1]).rsp ;
+    RSP on $(targets) = $(rsp) ;
+    LOCATE on $(rsp) = [ on $(targets[1]) return $(LOCATE) ] ;
     DEPENDS $(targets) : $(rsp) ;
-    # Cause RSP to be recreated if sources are out-of-date.
+    # In theory, we don't need dependecy from response file on sources
+    # because response file only needs the names of the sources.
+    # In practice, bjam won't recreated TEMPORARY target without dependencies.
     DEPENDS $(rsp) : $(sources) ;
-        
+    # Make sure the directory is created before the response file. The target
+    # itself depends on directory, but response file does not, yet.
+    DEPENDS $(rsp) : [ on $(targets[1]) return $(LOCATE) ] ;
+    
+    TEMPORARY $(rsp) ;
+            
     # Add libraries from <library> property to the list of sources.
     local libraries ;
     for local p in $(properties)
@@ -450,7 +464,7 @@ rule response-file ( targets + : sources * : the-response-file : properties * )
     }
     
     sources += $(xlibraries) ; 
-       
+
     response-file-1 $(rsp) : $(sources[1]) ;
     if $(sources[2-])
     {
@@ -462,7 +476,12 @@ rule response-file ( targets + : sources * : the-response-file : properties * )
         [ on $(targets[1])
           return "$(LIBRARY_OPTION)$(FINDLIBS_ST)"
             "$(LIBRARY_OPTION)$(FINDLIBS_SA)"
-        ] ] ;    
+        ] ] ;
+
+    print.text
+        [ on $(targets[1])
+          return -D$(DEFINES) -I\"$(INCLUDES)\"
+        ] ;
 }
 
 # response-file generation is broken up into two phases, the first of
@@ -478,3 +497,30 @@ actions quietly piecemeal response-file-2
     echo "$(>)" >> "$(<)"
 }
 
+rule __test__ ( ) {
+
+    import assert ;
+    
+    local save-os = [ modules.peek os : name ] ;
+    
+    modules.poke os : .name : LINUX ;
+    
+    local nl = "
+" ;
+    
+    assert.result "PATH=foo:bar:baz$(nl)export PATH$(nl)"
+      : path-variable-setting-command PATH : foo bar baz ;
+    
+    assert.result "PATH=foo:bar:$PATH$(nl)export PATH$(nl)"
+      : prepend-path-variable-command PATH : foo bar ;
+    
+    modules.poke os : .name : NT ;
+    
+    assert.result "set PATH=foo;bar;baz$(nl)"
+      : path-variable-setting-command PATH : foo bar baz ;
+    
+    assert.result "set PATH=foo;bar;%PATH%$(nl)"
+      : prepend-path-variable-command PATH : foo bar ;
+
+    modules.poke os : .name : $(save-os) ;      
+}    

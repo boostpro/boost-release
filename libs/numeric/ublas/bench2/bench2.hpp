@@ -17,6 +17,17 @@
 #ifndef BENCH2_H
 #define BENCH2_H
 
+#include <iostream>
+#include <string>
+#include <valarray>
+
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/vector_sparse.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/matrix_sparse.hpp>
+
+#include <boost/timer.hpp>
+
 namespace ublas = boost::numeric::ublas;
 
 void header (std::string text);
@@ -25,10 +36,6 @@ template<class T>
 struct footer {
     void operator () (int multiplies, int plus, int runs, double elapsed) {
         std::cout << "elapsed: " << elapsed << " s, "
-                  << (multiplies * ublas::type_traits<T>::multiplies_complexity +
-                      plus * ublas::type_traits<T>::plus_complexity) * runs /
-                     (1024 * 1024 * elapsed) << " Mflops" << std::endl;
-        std::cerr << "elapsed: " << elapsed << " s, "
                   << (multiplies * ublas::type_traits<T>::multiplies_complexity +
                       plus * ublas::type_traits<T>::plus_complexity) * runs /
                      (1024 * 1024 * elapsed) << " Mflops" << std::endl;
@@ -46,18 +53,9 @@ struct c_matrix_traits {
 
 template<class T, int N>
 struct initialize_c_vector  {
-#ifdef BOOST_MSVC
-    BOOST_UBLAS_INLINE
-    void operator () (typename c_vector_traits<T, N>::type v) {
-#else
     void operator () (typename c_vector_traits<T, N>::type &v) {
-#endif
         for (int i = 0; i < N; ++ i)
-#ifndef BOOST_NO_STDC_NAMESPACE
             v [i] = std::rand () * 1.f;
-#else
-            v [i] = ::rand () * 1.f;
-#endif
 //            v [i] = 0.f;
         }
 };
@@ -66,29 +64,16 @@ BOOST_UBLAS_INLINE
 void initialize_vector (V &v) {
     int size = v.size ();
     for (int i = 0; i < size; ++ i)
-#ifndef BOOST_NO_STDC_NAMESPACE
         v [i] = std::rand () * 1.f;
-#else
-        v [i] = ::rand () * 1.f;
-#endif
 //        v [i] = 0.f;
 }
 
 template<class T, int N, int M>
 struct initialize_c_matrix  {
-#ifdef BOOST_MSVC
-    BOOST_UBLAS_INLINE
-    void operator () (typename c_matrix_traits<T, N, M>::type m) {
-#else
     void operator () (typename c_matrix_traits<T, N, M>::type &m) {
-#endif
         for (int i = 0; i < N; ++ i)
             for (int j = 0; j < M; ++ j)
-#ifndef BOOST_NO_STDC_NAMESPACE
                 m [i] [j] = std::rand () * 1.f;
-#else
-                m [i] [j] = ::rand () * 1.f;
-#endif
 //                m [i] [j] = 0.f;
     }
 };
@@ -99,11 +84,7 @@ void initialize_matrix (M &m, ublas::row_major_tag) {
     int size2 = m.size2 ();
     for (int i = 0; i < size1; ++ i)
         for (int j = 0; j < size2; ++ j)
-#ifndef BOOST_NO_STDC_NAMESPACE
             m (i, j) = std::rand () * 1.f;
-#else
-            m (i, j) = ::rand () * 1.f;
-#endif
 //            m (i, j) = 0.f;
 }
 template<class M>
@@ -113,17 +94,13 @@ void initialize_matrix (M &m, ublas::column_major_tag) {
     int size2 = m.size2 ();
     for (int j = 0; j < size2; ++ j)
         for (int i = 0; i < size1; ++ i)
-#ifndef BOOST_NO_STDC_NAMESPACE
             m (i, j) = std::rand () * 1.f;
-#else
-            m (i, j) = ::rand () * 1.f;
-#endif
 //            m (i, j) = 0.f;
 }
 template<class M>
 BOOST_UBLAS_INLINE
 void initialize_matrix (M &m) {
-    typedef BOOST_UBLAS_TYPENAME M::orientation_category orientation_category;
+    typedef typename M::orientation_category orientation_category;
     initialize_matrix (m, orientation_category ());
 }
 
@@ -135,12 +112,7 @@ void sink_scalar (const T &s) {
 
 template<class T, int N>
 struct sink_c_vector {
-#ifdef BOOST_MSVC
-    BOOST_UBLAS_INLINE
-    void operator () (const typename c_vector_traits<T, N>::type v) {
-#else
     void operator () (const typename c_vector_traits<T, N>::type &v) {
-#endif
         static typename c_vector_traits<T, N>::type g_v;
         for (int i = 0; i < N; ++ i)
             g_v [i] = v [i];
@@ -154,12 +126,7 @@ void sink_vector (const V &v) {
 
 template<class T, int N, int M>
 struct sink_c_matrix {
-#ifdef BOOST_MSVC
-    BOOST_UBLAS_INLINE
-    void operator () (const typename c_matrix_traits<T, N, M>::type m) {
-#else
     void operator () (const typename c_matrix_traits<T, N, M>::type &m) {
-#endif
     static typename c_matrix_traits<T, N, M>::type g_m;
     for (int i = 0; i < N; ++ i)
         for (int j = 0; j < M; ++ j)
@@ -203,15 +170,13 @@ struct fast_tag {};
 // #define USE_STD_MAP
 // #define USE_STD_VALARRAY
 
-#define USE_SPARSE_VECTOR
+#define USE_MAPPED_VECTOR
 #define USE_COMPRESSED_VECTOR
 #define USE_COORDINATE_VECTOR
 
-#define USE_SPARSE_MATRIX
+#define USE_MAPPED_MATRIX
 // #define USE_SPARSE_VECTOR_OF_SPARSE_VECTOR
 #define USE_COMPRESSED_MATRIX
 #define USE_COORDINATE_MATRIX
 
 #endif
-
-

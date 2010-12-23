@@ -18,7 +18,6 @@
 
 #include <boost/assign/list_inserter.hpp>
 #include <boost/assign/list_of.hpp>
-#include <boost/test/unit_test.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/array.hpp>
 #include <boost/function.hpp>
@@ -35,8 +34,7 @@
 
 namespace ba = boost::assign;
 
-template< class T >
-void function_ptr( T )
+void function_ptr( int )
 {
     // do nothing
 }
@@ -62,7 +60,7 @@ void check_list_inserter()
     //
     // @note: cast only necessary on CodeWarrior
     //
-    make_list_inserter( (void (*)(int))&function_ptr<int> )( 5 ),3;
+    make_list_inserter( (void (*)(int))&function_ptr )( 5 ),3;
     make_list_inserter( functor() )( 4 ),2;
     
 #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564))
@@ -149,9 +147,8 @@ void check_list_inserter()
 
 
 
-#include <boost/test/included/unit_test_framework.hpp> 
-
-using boost::unit_test_framework::test_suite;
+#include <boost/test/unit_test.hpp>
+using boost::unit_test::test_suite;
 
 test_suite* init_unit_test_suite( int argc, char* argv[] )
 {

@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Frequently Asked Questions</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../signals.html" title="Chapter 8. Boost.Signals">
-<link rel="prev" href="../id429900-bb.html" title="Class last_value&lt;void&gt;">
+<link rel="up" href="../signals.html" title="Chapter 9. Boost.Signals">
+<link rel="prev" href="../id906590-bb.html" title="Class last_value&lt;void&gt;">
 <link rel="next" href="s05.html" title="Design Overview">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,19 +20,19 @@
 </table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../id429900-bb.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s05.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../id906590-bb.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s05.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id574063"></a>Frequently Asked Questions</h3></div></div></div>
+<a name="id1287277"></a>Frequently Asked Questions</h3></div></div></div>
 <div class="qandaset">
 <dl>
-<dt>1. <a href="s04.html#id574074">Don't noncopyable signal semantics mean that a class
+<dt>1. <a href="s04.html#id1287287">Don't noncopyable signal semantics mean that a class
         with a signal member will be noncopyable as well?</a>
 </dt>
-<dt>2. <a href="s04.html#id574089">Is Boost.Signals thread-safe?</a>
+<dt>2. <a href="s04.html#id1287301">Is Boost.Signals thread-safe?</a>
 </dt>
-<dt>3. <a href="s04.html#id574102">How do I get Boost.Signals to work with Qt?</a>
+<dt>3. <a href="s04.html#id1287313">How do I get Boost.Signals to work with Qt?</a>
 </dt>
 </dl>
 <table border="0" summary="Q and A Set">
@@ -40,7 +40,7 @@
 <tbody>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id574074"></a><a name="id574075"></a><b>1.</b>
+<a name="id1287287"></a><a name="id1287288"></a><b>1.</b>
 </td>
 <td align="left" valign="top"><p>Don't noncopyable signal semantics mean that a class
         with a signal member will be noncopyable as well?</p></td>
@@ -55,7 +55,7 @@
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id574089"></a><a name="id574090"></a><b>2.</b>
+<a name="id1287301"></a><a name="id1287302"></a><b>2.</b>
 </td>
 <td align="left" valign="top"><p>Is Boost.Signals thread-safe?</p></td>
 </tr>
@@ -68,7 +68,7 @@
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id574102"></a><a name="id574103"></a><b>3.</b>
+<a name="id1287313"></a><a name="id1287314"></a><b>3.</b>
 </td>
 <td align="left" valign="top"><p>How do I get Boost.Signals to work with Qt?</p></td>
 </tr>
@@ -76,16 +76,16 @@
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
 <p>When building with Qt, the Moc keywords
-        <tt class="computeroutput">signals</tt> and <tt class="computeroutput">slots</tt> are defined using
+        <code class="computeroutput">signals</code> and <code class="computeroutput">slots</code> are defined using
         preprocessor macros, causing programs using Boost.Signals and
         Qt together to fail to compile. Although this is a problem
         with Qt and not Boost.Signals, a user can use the two systems
-        together by defining the <tt class="computeroutput">BOOST_SIGNALS_NAMESPACE</tt>
-        macro to some other identifier (e.g., <tt class="computeroutput">signalslib</tt>)
+        together by defining the <code class="computeroutput">BOOST_SIGNALS_NAMESPACE</code>
+        macro to some other identifier (e.g., <code class="computeroutput">signalslib</code>)
         when building and using the Boost.Signals library. Then the
         namespace of the Boost.Signals library will be
-        <tt class="computeroutput">boost::BOOST_SIGNALS_NAMESPACE</tt> instead of
-        <tt class="computeroutput">boost::signals</tt>. To retain the original namespace
+        <code class="computeroutput">boost::BOOST_SIGNALS_NAMESPACE</code> instead of
+        <code class="computeroutput">boost::signals</code>. To retain the original namespace
         name in translation units that do not interact with Qt, you
         can use a namespace alias:</p>
 <pre class="programlisting">
@@ -105,7 +105,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../id429900-bb.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s05.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../id906590-bb.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../signals.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="s05.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

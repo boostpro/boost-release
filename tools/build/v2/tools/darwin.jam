@@ -11,10 +11,13 @@ import feature : feature ;
 import toolset : flags ;
 import type ;
 import common ;
+import generators ;
 
 toolset.register darwin ;
 import gcc ;
 toolset.inherit-generators darwin : gcc ;
+generators.override builtin.lib-generator : darwin.prebuilt ;
+generators.override darwin.searched-lib-generator : searched-lib-generator ;
 toolset.inherit-rules darwin : gcc ;
 toolset.inherit-flags darwin : gcc ;
 
@@ -26,19 +29,20 @@ rule init ( version ? : command * : options * )
     
     common.handle-options darwin : $(condition) : $(command) : $(options) ;
     
+    # GCC 4.0 and higher in Darwin does not have -fcoalesce-templates.
+    local gccversion = [ SHELL "$(command) -dumpversion" ] ;
+    if $(gccversion) < "4.0.0"
+    {
+        flags darwin.compile.c++ OPTIONS : -fcoalesce-templates ;
+    }
+
     gcc.init-link-flags darwin darwin $(condition) ;
 }
-
-# Darwin has a different shared library suffix
-type.set-generated-target-suffix SHARED_LIB : <toolset>darwin : dylib ;
-# we need to be able to tell the type of .dylib files
-type.register-suffixes dylib : SHARED_LIB ;
 
 feature framework : : free ;
 
 flags darwin.compile OPTIONS <link>shared : -dynamic ;
 flags darwin.compile OPTIONS : -Wno-long-double -no-cpp-precomp  ;
-flags darwin.compile.c++ OPTIONS : -fcoalesce-templates ;
 
 flags darwin.link FRAMEWORK <framework> ;
 
@@ -46,14 +50,11 @@ flags darwin.link FRAMEWORK <framework> ;
 # uncomment to see what libtool is doing under the hood
 # flags darwin.link.dll OPTIONS : -Wl,-v ;
 
+_ = " " ;
+
 actions link bind LIBRARIES
 {
     $(CONFIG_COMMAND) $(ST_OPTIONS) -L"$(LINKPATH)" -o "$(<)" "$(>)" "$(LIBRARIES)" -l$(FINDLIBS-SA) -l$(FINDLIBS-ST) -framework$(_)$(FRAMEWORK) $(OPTIONS)   
-}
-
-rule link.dll
-{
-    _ on $(<) = " " ;
 }
 
 actions link.dll bind LIBRARIES

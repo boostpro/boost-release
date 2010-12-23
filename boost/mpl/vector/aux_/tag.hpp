@@ -11,8 +11,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/vector/aux_/tag.hpp,v $
-// $Date: 2004/11/08 15:15:49 $
-// $Revision: 1.4.2.1 $
+// $Date: 2004/11/28 01:52:12 $
+// $Revision: 1.5 $
 
 #include <boost/mpl/aux_/config/typeof.hpp>
 #include <boost/mpl/aux_/nttp_decl.hpp>

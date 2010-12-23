@@ -412,6 +412,10 @@ else if $(UNIX)
     SHELL_EXPORT    ?= "export " ;
     SHELL_SET       ?= "" ;
     gSHELL_LIBPATH  ?= LD_LIBRARY_PATH ;
+    BINDIR          ?= /usr/local/bin ;
+    LIBDIR          ?= /usr/local/lib ;
+    MANDIR          ?= /usr/local/man ;
+    STDHDRS         ?= /usr/include ;
 }
     
 #
@@ -422,7 +426,7 @@ AR              ?= ar ru ;
 AS              ?= as ;
 ASFLAGS         ?= ;
 AWK             ?= awk ;
-BINDIR          ?= /usr/local/bin ;
+BINDIR          ?= ;
 CLONE           ?= $(CP) ;
 CLONE           ?= cp -fp ;
 CP              ?= cp -f ;
@@ -438,9 +442,9 @@ HDRS            ?= ;
 JAMFILE         ?= Jamfile ;
 JAMRULES        ?= Jamrules ;
 LEX             ?= ;
-LIBDIR          ?= /usr/local/lib ;
+LIBDIR          ?= ;
 LN              ?= ln ;
-MANDIR          ?= /usr/local/man ;
+MANDIR          ?= ;
 MKDIR           ?= mkdir ;
 MV              ?= mv -f ;
 OPTIM           ?= ;
@@ -454,7 +458,7 @@ SHELL_EXPORT    ?= ;
 SHELL_SET       ?= "" ;
 SLASH           ?= / ;
 SPLITPATH       ?= ":" ; # dwa -- added missing SPLITPATH
-STDHDRS         ?= /usr/include ;
+STDHDRS         ?= ;
 SUFEXE          ?= "" ;
 SUFDLL          ?= .so ;
 SUFLIB          ?= .a ;
@@ -519,8 +523,14 @@ set-as-singleton
 # dwa 6/17/01 - added test
 DEPENDS all : shell files lib dll exe obj ;
 DEPENDS all shell files lib dll exe obj test : first ;
-NOTFILE all first shell files lib dll exe obj dirs clean uninstall test ;
+NOTFILE all first shell files lib dll exe obj dirs clean uninstall test nothing ;
 ALWAYS clean uninstall ;
+
+#
+# Prevent external variables from interfeering with some esnetial intenal
+# variables.
+#
+TOP = ;
 
 #
 # Rules
@@ -717,10 +727,11 @@ rule HdrRule
     local s = $(angle-includes) $(quoted-includes) ;
 
     INCLUDES $(<) : $(s) ;
-    SEARCH on $(angle-includes) = $(HDRSEARCH)  ;
-    SEARCH on $(quoted-includes) = $(gBINDING($(<)):D) $(HDRSEARCH)  ;
     NOCARE $(s) ;
 
+    SEARCH on $(angle-includes) = $(HDRSEARCH)  ;
+    SEARCH on $(quoted-includes) = $(gBINDING($(<)):D) $(HDRSEARCH)  ;
+    
     BINDRULE on $(s) = remember-binding ;
 
     # Propagate on $(<) to $(>)
@@ -729,6 +740,34 @@ rule HdrRule
     HDRSCAN on $(s) = $(HDRSCAN) ;
     HDRRULE on $(s) = $(HDRRULE) ;
     HDRGRIST on $(s) = $(HDRGRIST) ;
+}
+rule HdrSearchAndLocate ( header : search * )
+{
+    if ! $(gBINDING($(header)))
+    {
+        local header-glob = [ GLOB "$(search:G=)" : $(header:G=) ] ;
+        local header-locate = ;
+        for local bound-path in $(header-glob)
+        {
+            if ! $(header-locate)
+            {
+                if ! [ GLOB "$(bound-path)" : * ]
+                {
+                    header-locate = $(bound-path) ;
+                }
+            }
+        }
+        if $(header-locate)
+        {
+            LOCATE on $(header) = $(header-locate:D) ;
+            gBINDING($(header)) = $(header-locate) ;
+        }
+        else
+        {
+            LOCATE on $(header) = $(DOT) ;
+            gBINDING($(header)) = $(header:G=:R=$(DOT)) ;
+        }
+    }
 }
 
 # dwa 6/4/01 - modified for boost
@@ -1360,6 +1399,15 @@ rule SubDir
                          # other than TOP, but just in case...
     }
 
+    # Get path to current directory from root using SubDir.
+    # Save dir tokens for other potential uses.
+    local .SUBDIR_TOKENS = $(<[2-]) ;
+    
+    # This allows us to determine whether we're in the directory where jam was
+    # invoked from so that we can make locally named targets
+    gINVOCATION_SUBDIR_TOKENS ?= $(.SUBDIR_TOKENS) ;
+    gINVOCATION_SUBDIR_TOKENS ?= $(DOT) ;
+
     #
     # If $(TOP)/Jamrules hasn't been included, do so.
     #
@@ -1381,11 +1429,6 @@ rule SubDir
     # Save dir tokens for other potential uses.
     SUBDIR_TOKENS = $(<[2-]) ;
     
-    # This allows us to determine whether we're in the directory where jam was
-    # invoked from so that we can make locally named targets
-    gINVOCATION_SUBDIR_TOKENS ?= $(SUBDIR_TOKENS) ;
-    gINVOCATION_SUBDIR_TOKENS ?= $(DOT) ;
-
     # SUBDIR is the path from the invocation directory to the subproject
     # directory.
     SUBDIR = [ tokens-to-simple-path $($(gTOP)_TOKENS)  $(SUBDIR_TOKENS) ] ;
@@ -2133,7 +2176,17 @@ actions MkDir1
     $(MKDIR) "$(<)"
 }
 
-actions together Ranlib
+rule Ranlib
+{
+    Ranlib-action $(<) : $(>) ;
+}
+
+rule Ranlib-action
+{
+    system-Ranlib $(<) : $(>) ;
+}
+
+actions together system-Ranlib
 {
     $(RANLIB) "$(<)"
 }

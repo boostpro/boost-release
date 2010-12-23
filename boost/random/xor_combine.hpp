@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: xor_combine.hpp,v 1.11 2004/09/30 19:15:32 mistevens Exp $
+ * $Id: xor_combine.hpp,v 1.13 2005/05/21 15:57:00 dgregor Exp $
  *
  */
 

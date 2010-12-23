@@ -98,11 +98,13 @@ bpl-test crossmod_exception
 [ bpl-test return_arg ]
 [ bpl-test staticmethod ]
 [ bpl-test shared_ptr ]
+[ bpl-test andreas_beyer ]
 [ bpl-test polymorphism ]
 [ bpl-test polymorphism2 ]
 [ bpl-test auto_ptr ]
 [ bpl-test minimal ]
 [ bpl-test args ]
+[ bpl-test raw_ctor ]
 [ bpl-test numpy ]
 [ bpl-test enum ]
 [ bpl-test exception_translator ]
@@ -160,6 +162,8 @@ bpl-test crossmod_exception
 [ bpl-test docstring ]
 
 [ bpl-test vector_indexing_suite ]
+[ bpl-test pointer_vector ]
+
 
 [ extension map_indexing_suite_ext
     : map_indexing_suite.cpp int_map_indexing_suite.cpp <template>../build/extension ]
@@ -174,9 +178,9 @@ bpl-test crossmod_exception
 
 # --- unit tests of library components ---
 
-[ run indirect_traits_test.cpp ]
+[ compile indirect_traits_test.cpp ]
 [ run destroy_test.cpp ]
-[ run pointer_type_id_test.cpp  <lib>../../test/build/boost_test_exec_monitor <template>py-unit-test ]
+[ run pointer_type_id_test.cpp <template>py-unit-test ]
 [ run bases.cpp  <template>py-unit-test ]
 [ run if_else.cpp ]
 [ run pointee.cpp  <template>py-unit-test ]
@@ -187,12 +191,12 @@ bpl-test crossmod_exception
 [ compile object_manager.cpp   <template>py-unit-test ]
 [ compile copy_ctor_mutates_rhs.cpp   <template>py-unit-test ]
 
-[ run upcast.cpp  <lib>../../test/build/boost_test_exec_monitor  <template>py-unit-test ]
+[ run upcast.cpp <template>py-unit-test ]
   
 [ compile select_holder.cpp <template>py-unit-test ]
   
 [ run select_from_python_test.cpp ../src/converter/type_id.cpp
-  <lib>../../test/build/boost_test_exec_monitor <template>py-unit-test ]
+  <template>py-unit-test ]
 
 [ compile select_arg_to_python_test.cpp <template>py-unit-test ]
 

@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/Attic/partition.cpp,v $
-// $Date: 2004/11/10 23:51:34 $
-// $Revision: 1.1.2.1 $
+// $Source: /cvsroot/boost/boost/libs/mpl/test/partition.cpp,v $
+// $Date: 2004/11/28 03:35:12 $
+// $Revision: 1.2 $
 
 #include <boost/mpl/partition.hpp>
 #include <boost/mpl/vector.hpp>

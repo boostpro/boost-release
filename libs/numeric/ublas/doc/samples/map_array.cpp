@@ -19,7 +19,8 @@
 int main () {
     using namespace boost::numeric::ublas;
     map_array<int, double> a;
-    for (unsigned i = 0; i < a.size (); ++ i) {
+    a.reserve (3);
+    for (unsigned i = 0; i < 3; ++ i) {
         a [i] = i;
         std::cout << a [i] << std::endl;
     }

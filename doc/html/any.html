@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Chapter 1. Boost.Any</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="The Boost C++ Libraries">
 <link rel="up" href="libraries.html" title="Part I. The Boost C++ Libraries">
 <link rel="prev" href="libraries/s02.html" title="Libraries Listed by Category">
@@ -34,7 +34,7 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="section"><a href="any.html#id447427">Introduction</a></span></dt>
+<dt><span class="section"><a href="any.html#id969830">Introduction</a></span></dt>
 <dt><span class="section"><a href="any/s02.html">Examples</a></span></dt>
 <dt><span class="section"><a href="any/reference.html">Reference</a></span></dt>
 <dd><dl>
@@ -46,7 +46,7 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id447427"></a>Introduction</h3></div></div></div>
+<a name="id969830"></a>Introduction</h3></div></div></div>
 <p>There are times when a generic (in the sense of
     <span class="emphasis"><em>general</em></span> as opposed to
     <span class="emphasis"><em>template-based programming</em></span>) type is needed:
@@ -56,20 +56,20 @@
     type:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Converting types that can hold one of a number of
-        possible value types, e.g. <tt class="computeroutput">int</tt> and
-        <tt class="computeroutput">string</tt>, and freely convert between them, for
-        instance interpreting <tt class="computeroutput">5</tt> as <tt class="computeroutput">"5"</tt> or
+        possible value types, e.g. <code class="computeroutput">int</code> and
+        <code class="computeroutput">string</code>, and freely convert between them, for
+        instance interpreting <code class="computeroutput">5</code> as <code class="computeroutput">"5"</code> or
         vice-versa.  Such types are common in scripting and other
         interpreted
         languages. 
-        <tt class="computeroutput">boost::lexical_cast</tt>
+        <code class="computeroutput">boost::lexical_cast</code>
         supports such conversion functionality.</p></li>
 <li><p>
         Discriminated types that contain values of different types but
-        do not attempt conversion between them, i.e. <tt class="computeroutput">5</tt> is
-        held strictly as an <tt class="computeroutput">int</tt> and is not implicitly
-        convertible either to <tt class="computeroutput">"5"</tt> or to
-        <tt class="computeroutput">5.0</tt>. Their indifference to interpretation but
+        do not attempt conversion between them, i.e. <code class="computeroutput">5</code> is
+        held strictly as an <code class="computeroutput">int</code> and is not implicitly
+        convertible either to <code class="computeroutput">"5"</code> or to
+        <code class="computeroutput">5.0</code>. Their indifference to interpretation but
         awareness of type effectively makes them safe, generic
         containers of single values, with no scope for surprises from
         ambiguous conversions.</p></li>
@@ -77,10 +77,10 @@
         Indiscriminate types that can refer to anything but are
         oblivious to the actual underlying type, entrusting all forms
         of access and interpretation to the programmer. This niche is
-        dominated by <tt class="computeroutput">void *</tt>, which offers plenty of scope
+        dominated by <code class="computeroutput">void *</code>, which offers plenty of scope
         for surprising, undefined behavior.</p></li>
 </ul></div>
-<p>The <tt class="computeroutput"><a href="boost/any.html" title="Class any">boost::any</a></tt> class
+<p>The <code class="computeroutput"><a href="boost/any.html" title="Class any">boost::any</a></code> class
     (based on the class of the same name described in <a href="http://www.two-sdg.demon.co.uk/curbralan/papers/ValuedConversions.pdf" target="_top">"Valued
     Conversions"</a> by Kevlin Henney, <span class="emphasis"><em>C++
     Report</em></span> 12(7), July/August 2000) is a variant value type
@@ -88,8 +88,8 @@
     type and safe checked extraction of that value strictly against
     its type. A similar design, offering more appropriate operators,
     can be used for a generalized function adaptor,
-    <tt class="computeroutput">any_function</tt>, a generalized iterator adaptor,
-    <tt class="computeroutput">any_iterator</tt>, and other object types that need
+    <code class="computeroutput">any_function</code>, a generalized iterator adaptor,
+    <code class="computeroutput">any_iterator</code>, and other object types that need
     uniform runtime treatment but support only compile-time template
     parameter conformance.</p>
 </div>

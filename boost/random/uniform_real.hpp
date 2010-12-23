@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: uniform_real.hpp,v 1.14 2004/07/27 03:43:32 dgregor Exp $
+ * $Id: uniform_real.hpp,v 1.17 2005/01/28 15:04:17 dgregor Exp $
  *
  * Revision history
  *  2001-04-08  added min<max assertion (N. Becker)
@@ -34,7 +34,7 @@ public:
   typedef RealType result_type;
 
   explicit uniform_real(RealType min = RealType(0),
-                        RealType max = RealType(1)) 
+                        RealType max = RealType(1))
     : _min(min), _max(max)
   {
 #ifndef BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
@@ -50,7 +50,11 @@ public:
   void reset() { }
 
   template<class Engine>
-  result_type operator()(Engine& eng) { return eng() * (_max - _min) + _min; }
+  result_type operator()(Engine& eng) {
+    return static_cast<result_type>(eng() - eng.min BOOST_PREVENT_MACRO_SUBSTITUTION())
+           / static_cast<result_type>(eng.max BOOST_PREVENT_MACRO_SUBSTITUTION() - eng.min BOOST_PREVENT_MACRO_SUBSTITUTION())
+           * (_max - _min) + _min;
+  }
 
 #if !defined(BOOST_NO_OPERATORS_IN_NAMESPACE) && !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
   template<class CharT, class Traits>

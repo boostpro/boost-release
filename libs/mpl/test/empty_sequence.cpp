@@ -8,9 +8,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/Attic/empty_sequence.cpp,v $
-// $Date: 2004/11/13 20:19:18 $
-// $Revision: 1.1.2.1 $
+// $Source: /cvsroot/boost/boost/libs/mpl/test/empty_sequence.cpp,v $
+// $Date: 2004/11/28 03:35:12 $
+// $Revision: 1.2 $
 
 #include <boost/mpl/empty_sequence.hpp>
 #include <boost/mpl/size.hpp>

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Frequently Asked Questions</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
 <link rel="up" href="../function.html" title="Chapter 4. Boost.Function">
 <link rel="prev" href="../function_equal.html" title="Function template function_equal">
@@ -27,18 +27,18 @@
 <a name="function.faq"></a>Frequently Asked Questions</h3></div></div></div>
 <div class="qandaset">
 <dl>
-<dt>1. <a href="faq.html#id538300">Why can't I compare
+<dt>1. <a href="faq.html#id1214641">Why can't I compare
     boost::function objects with
     operator== or
     operator!=?</a>
 </dt>
-<dt>2. <a href="faq.html#id538649">I see void pointers; is this [mess] type safe?</a>
+<dt>2. <a href="faq.html#id1214973">I see void pointers; is this [mess] type safe?</a>
 </dt>
-<dt>3. <a href="faq.html#id538675">Why are there workarounds for void returns? C++ allows them!</a>
+<dt>3. <a href="faq.html#id1214987">Why are there workarounds for void returns? C++ allows them!</a>
 </dt>
-<dt>4. <a href="faq.html#id538722">Why (function) cloning?</a>
+<dt>4. <a href="faq.html#id1215029">Why (function) cloning?</a>
 </dt>
-<dt>5. <a href="faq.html#id538736">How much overhead does a call through boost::function incur?</a>
+<dt>5. <a href="faq.html#id1215043">How much overhead does a call through boost::function incur?</a>
 </dt>
 </dl>
 <table border="0" summary="Q and A Set">
@@ -46,91 +46,91 @@
 <tbody>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id538300"></a><a name="id538301"></a><b>1.</b>
+<a name="id1214641"></a><a name="id1214642"></a><b>1.</b>
 </td>
 <td align="left" valign="top"><p>Why can't I compare
-    <a href="../boost/function.html" title="Class template function">boost::function</a> objects with
-    <tt class="computeroutput">operator==</tt> or
-    <tt class="computeroutput">operator!=</tt>?</p></td>
+    <code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code> objects with
+    <code class="computeroutput">operator==</code> or
+    <code class="computeroutput">operator!=</code>?</p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
-<p>Comparison between <a href="../boost/function.html" title="Class template function">boost::function</a>
+<p>Comparison between <code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code>
       objects cannot be implemented "well", and therefore will not be
-      implemented. The typical semantics requested for <tt class="computeroutput">f ==
-      g</tt> given <a href="../boost/function.html" title="Class template function">boost::function</a> objects
-      <tt class="computeroutput">f</tt> and <tt class="computeroutput">g</tt> are:</p>
+      implemented. The typical semantics requested for <code class="computeroutput">f ==
+      g</code> given <code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code> objects
+      <code class="computeroutput">f</code> and <code class="computeroutput">g</code> are:</p>
 <div class="itemizedlist"><ul type="disc">
-<li>If <tt class="computeroutput">f</tt> and <tt class="computeroutput">g</tt>
+<li>If <code class="computeroutput">f</code> and <code class="computeroutput">g</code>
           store function objects of the same type, use that type's
-          <tt class="computeroutput">operator==</tt> to compare
+          <code class="computeroutput">operator==</code> to compare
           them.</li>
-<li>If <tt class="computeroutput">f</tt> and <tt class="computeroutput">g</tt>
+<li>If <code class="computeroutput">f</code> and <code class="computeroutput">g</code>
           store function objects of different types, return
-          <tt class="computeroutput">false</tt>.</li>
+          <code class="computeroutput">false</code>.</li>
 </ul></div>
 <p>The problem occurs when the type of the function objects
-      stored by both <tt class="computeroutput">f</tt> and <tt class="computeroutput">g</tt> doesn't have an
-      <tt class="computeroutput">operator==</tt>: we would like the expression <tt class="computeroutput">f ==
-      g</tt> to fail to compile, as occurs with, e.g., the standard
+      stored by both <code class="computeroutput">f</code> and <code class="computeroutput">g</code> doesn't have an
+      <code class="computeroutput">operator==</code>: we would like the expression <code class="computeroutput">f ==
+      g</code> to fail to compile, as occurs with, e.g., the standard
       containers. However, this is not implementable for
-      <a href="../boost/function.html" title="Class template function">boost::function</a> because it necessarily
+      <code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code> because it necessarily
       "erases" some type information after it has been assigned a
       function object, so it cannot try to call
-      <tt class="computeroutput">operator==</tt> later: it must either find a way to call
-      <tt class="computeroutput">operator==</tt> now, or it will never be able to call it
+      <code class="computeroutput">operator==</code> later: it must either find a way to call
+      <code class="computeroutput">operator==</code> now, or it will never be able to call it
       later. Note, for instance, what happens if you try to put a
-      <tt class="computeroutput">float</tt> value into a
-      <a href="../boost/function.html" title="Class template function">boost::function</a> object: you will get an
+      <code class="computeroutput">float</code> value into a
+      <code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code> object: you will get an
       error at the assignment operator or constructor, not in
-      <tt class="computeroutput">operator()</tt>, because the function-call expression
+      <code class="computeroutput">operator()</code>, because the function-call expression
       must be bound in the constructor or assignment operator.</p>
 <p>The most promising approach is to find a method of
-      determining if <tt class="computeroutput">operator==</tt> can be called for a
+      determining if <code class="computeroutput">operator==</code> can be called for a
       particular type, and then supporting it only when it is
       available; in other situations, an exception would be
       thrown. However, to date there is no known way to detect if an
-      arbitrary operator expression <tt class="computeroutput">f == g</tt> is suitably
+      arbitrary operator expression <code class="computeroutput">f == g</code> is suitably
       defined. The best solution known has the following undesirable
       qualities:</p>
 <div class="orderedlist"><ol type="1">
 <li>Fails at compile-time for objects where
-        <tt class="computeroutput">operator==</tt> is not accessible (e.g., because it is
-        <tt class="computeroutput">private</tt>).</li>
+        <code class="computeroutput">operator==</code> is not accessible (e.g., because it is
+        <code class="computeroutput">private</code>).</li>
 <li>Fails at compile-time if calling
-        <tt class="computeroutput">operator==</tt> is ambiguous.</li>
+        <code class="computeroutput">operator==</code> is ambiguous.</li>
 <li>Appears to be correct if the
-        <tt class="computeroutput">operator==</tt> declaration is correct, even though
-        <tt class="computeroutput">operator==</tt> may not compile.</li>
+        <code class="computeroutput">operator==</code> declaration is correct, even though
+        <code class="computeroutput">operator==</code> may not compile.</li>
 </ol></div>
 <p>All of these problems translate into failures in the
-      <a href="../boost/function.html" title="Class template function">boost::function</a> constructors or
+      <code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code> constructors or
       assignment operator, <span class="emphasis"><em>even if the user never invokes
       operator==</em></span>. We can't do that to users.</p>
 <p>The other option is to place the burden on users that want
-      to use <tt class="computeroutput">operator==</tt>, e.g., by providing an
-      <tt class="computeroutput">is_equality_comparable</tt> trait they may
+      to use <code class="computeroutput">operator==</code>, e.g., by providing an
+      <code class="computeroutput">is_equality_comparable</code> trait they may
       specialize. This is a workable solution, but is dangerous in
       practice, because forgetting to specialize the trait will result
       in unexpected exceptions being thrown from
-      <a href="../boost/function.html" title="Class template function">boost::function</a>'s
-      <tt class="computeroutput">operator==</tt>. This essentially negates the usefulness
-      of <tt class="computeroutput">operator==</tt> in the context in which it is most
+      <code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code>'s
+      <code class="computeroutput">operator==</code>. This essentially negates the usefulness
+      of <code class="computeroutput">operator==</code> in the context in which it is most
       desired: multitarget callbacks. The
-      <a href="../signals.html" title="Chapter 8. Boost.Signals">Signals</a> library has a way around
+      <a href="../signals.html" title="Chapter 9. Boost.Signals">Signals</a> library has a way around
       this.</p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id538649"></a><a name="id538650"></a><b>2.</b>
+<a name="id1214973"></a><a name="id1214974"></a><b>2.</b>
 </td>
 <td align="left" valign="top"><p>I see void pointers; is this [mess] type safe?</p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
-<td align="left" valign="top"><p>Yes, <tt class="computeroutput">boost::function</tt> is type
+<td align="left" valign="top"><p>Yes, <code class="computeroutput">boost::function</code> is type
 safe even though it uses void pointers and pointers to functions
 returning void and taking no arguments. Essentially, all type
 information is encoded in the functions that manage and invoke
@@ -143,7 +143,7 @@ invoke a function pointer with the wrong type).  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id538675"></a><a name="id538676"></a><b>3.</b>
+<a name="id1214987"></a><a name="id1214988"></a><b>3.</b>
 </td>
 <td align="left" valign="top"><p>Why are there workarounds for void returns? C++ allows them!</p></td>
 </tr>
@@ -154,19 +154,19 @@ invoke a function pointer with the wrong type).  </p></td>
 </p>
 <pre class="programlisting">void f();
 void g() { return f(); }</pre>
-<p> This is a valid usage of <tt class="computeroutput">boost::function</tt> because void returns are not used. With void returns, we would attempting to compile ill-formed code similar to:
+<p> This is a valid usage of <code class="computeroutput">boost::function</code> because void returns are not used. With void returns, we would attempting to compile ill-formed code similar to:
 </p>
 <pre class="programlisting">int f();
 void g() { return f(); }</pre>
 <p> In essence, not using void returns allows
-<tt class="computeroutput">boost::function</tt> to swallow a return value. This is
+<code class="computeroutput">boost::function</code> to swallow a return value. This is
 consistent with allowing the user to assign and invoke functions and
 function objects with parameters that don't exactly match.</p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id538722"></a><a name="id538723"></a><b>4.</b>
+<a name="id1215029"></a><a name="id1215030"></a><b>4.</b>
 </td>
 <td align="left" valign="top"><p>Why (function) cloning?</p></td>
 </tr>
@@ -180,22 +180,22 @@ function objects with parameters that don't exactly match.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id538736"></a><a name="id538737"></a><b>5.</b>
+<a name="id1215043"></a><a name="id1215044"></a><b>5.</b>
 </td>
-<td align="left" valign="top"><p>How much overhead does a call through <tt class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></tt> incur?</p></td>
+<td align="left" valign="top"><p>How much overhead does a call through <code class="computeroutput"><a href="../boost/function.html" title="Class template function">boost::function</a></code> incur?</p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
-<p>The cost of <tt class="computeroutput">boost::function</tt> can be reasonably
+<p>The cost of <code class="computeroutput">boost::function</code> can be reasonably
       consistently measured at around 20ns +/- 10 ns on a modern &gt;2GHz
       platform versus directly inlining the code.</p>
 <p>However, the performance of your application may benefit
-      from or be disadvantaged by <tt class="computeroutput">boost::function</tt>
+      from or be disadvantaged by <code class="computeroutput">boost::function</code>
       depending on how your C++ optimiser optimises.  Similar to a
       standard function pointer, differences of order of 10% have been
       noted to the benefit or disadvantage of using
-      <tt class="computeroutput">boost::function</tt> to call a function that contains a
+      <code class="computeroutput">boost::function</code> to call a function that contains a
       tight loop depending on your compilation circumstances.</p>
 <p>[Answer provided by Matt Hurd. See <a href="http://article.gmane.org/gmane.comp.lib.boost.devel/33278" target="_top">http://article.gmane.org/gmane.comp.lib.boost.devel/33278</a>]</p>
 </td>

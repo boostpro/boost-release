@@ -11,8 +11,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/distance_fwd.hpp,v $
-// $Date: 2004/11/10 23:38:00 $
-// $Revision: 1.2.2.1 $
+// $Date: 2004/11/28 01:53:40 $
+// $Revision: 1.3 $
 
 #include <boost/mpl/aux_/common_name_wknd.hpp>
 

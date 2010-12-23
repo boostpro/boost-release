@@ -12,8 +12,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/set/aux_/iterator.hpp,v $
-// $Date: 2004/09/02 15:41:02 $
-// $Revision: 1.3 $
+// $Date: 2005/06/18 22:03:09 $
+// $Revision: 1.4 $
 
 #include <boost/mpl/set/aux_/set0.hpp>
 #include <boost/mpl/has_key.hpp>
@@ -31,9 +31,9 @@ template< typename Set, typename Tail > struct s_iter;
 
 template< typename Set, typename Tail > struct s_iter_impl
 {
-    typedef Tail                    tail_;
-    typedef forward_iterator_tag    category;
-    typedef typename Tail::type     type;
+    typedef Tail                        tail_;
+    typedef forward_iterator_tag        category;
+    typedef typename Tail::item_::type  type;
 
 #if defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
     typedef typename eval_if< 

@@ -1,7 +1,7 @@
 /*
  *
  * Copyright (c) 1998-2002
- * Dr John Maddock
+ * John Maddock
  *
  * Use, modification and distribution are subject to the 
  * Boost Software License, Version 1.0. (See accompanying file 
@@ -33,8 +33,13 @@ using std::getline;
 
 #include <boost/config.hpp>
 #include <boost/regex.hpp>
+#include <boost/cregex.hpp>
 #include <boost/timer.hpp> 
 #include <boost/smart_ptr.hpp>
+
+#if defined(_WIN32) && defined(BOOST_REGEX_USE_WIN32_LOCALE)
+#include <windows.h>
+#endif
 
 #if (defined(_MSC_VER) && (_MSC_VER <= 1300)) || defined(__sgi)
 // maybe no Koenig lookup, use using declaration instead:
@@ -210,7 +215,7 @@ int main(int argc, char**argv)
          // cache load:
          regex_search(s2, sm, ex);
 
-         // measure time interval for reg_expression<char>
+         // measure time interval for basic_regex<char>
          do{
             iters *= (tim > 0.001) ? (1.1/tim) : 100;
             t.restart();
@@ -278,7 +283,7 @@ int main(int argc, char**argv)
          }
 #endif
         
-         // measure time interval for reg_expression<char> using a deque
+         // measure time interval for basic_regex<char> using a deque
          iters = 10;
          tim = 1.1;
          // cache load:
@@ -367,7 +372,9 @@ int main(int argc, char**argv)
    return 0;
 }
 
-
+#if defined(_WIN32) && defined(BOOST_REGEX_USE_WIN32_LOCALE)
+#pragma message(lib, "user32.lib")
+#endif
 
 
 

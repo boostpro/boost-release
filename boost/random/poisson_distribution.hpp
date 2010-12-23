@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: poisson_distribution.hpp,v 1.13 2004/07/27 03:43:32 dgregor Exp $
+ * $Id: poisson_distribution.hpp,v 1.15 2005/05/21 15:57:00 dgregor Exp $
  *
  */
 

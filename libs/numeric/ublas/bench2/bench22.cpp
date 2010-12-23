@@ -14,16 +14,6 @@
 //  GeNeSys mbH & Co. KG in producing this work.
 //
 
-#include <iostream>
-#include <string>
-
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_sparse.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_sparse.hpp>
-
-#include <boost/timer.hpp>
-
 #include "bench2.hpp"
 
 template<class T, int N>
@@ -50,9 +40,6 @@ struct bench_c_outer_prod {
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
         }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
-        }
     }
 };
 template<class M, class V, int N>
@@ -75,9 +62,6 @@ struct bench_my_outer_prod {
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
         }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
-        }
     }
     void operator () (int runs, fast_tag) const {
         try {
@@ -94,9 +78,6 @@ struct bench_my_outer_prod {
         }
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
         }
     }
 };
@@ -123,9 +104,6 @@ struct bench_cpp_outer_prod {
         }
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
         }
     }
 };
@@ -155,9 +133,6 @@ struct bench_c_matrix_vector_prod {
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
         }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
-        }
     }
 };
 template<class M, class V, int N>
@@ -180,9 +155,6 @@ struct bench_my_matrix_vector_prod {
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
         }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
-        }
     }
     void operator () (int runs, fast_tag) const {
         try {
@@ -199,9 +171,6 @@ struct bench_my_matrix_vector_prod {
         }
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
         }
     }
 };
@@ -227,9 +196,6 @@ struct bench_cpp_matrix_vector_prod {
         }
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
         }
     }
 };
@@ -257,9 +223,6 @@ struct bench_c_matrix_add {
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
         }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
-        }
     }
 };
 template<class M, int N>
@@ -281,9 +244,6 @@ struct bench_my_matrix_add {
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
         }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
-        }
     }
     void operator () (int runs, fast_tag) const {
         try {
@@ -299,9 +259,6 @@ struct bench_my_matrix_add {
         }
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
         }
     }
 };
@@ -323,9 +280,6 @@ struct bench_cpp_matrix_add {
         }
         catch (std::exception &e) {
             std::cout << e.what () << std::endl;
-        }
-        catch (...) {
-            std::cout << "unknown exception" << std::endl;
         }
     }
 };
@@ -513,5 +467,3 @@ template struct bench_2<std::complex<double>, 30>;
 template struct bench_2<std::complex<double>, 100>;
 #endif
 #endif
-
-

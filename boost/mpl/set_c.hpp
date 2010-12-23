@@ -10,9 +10,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/boost/mpl/Attic/set_c.hpp,v $
-// $Date: 2004/11/10 23:38:08 $
-// $Revision: 1.1.2.2 $
+// $Source: /cvsroot/boost/boost/boost/mpl/set_c.hpp,v $
+// $Date: 2004/11/28 01:58:03 $
+// $Revision: 1.2 $
 
 #if !defined(BOOST_MPL_PREPROCESSING_MODE)
 #   include <boost/mpl/limits/set.hpp>

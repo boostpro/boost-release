@@ -1,4 +1,5 @@
 import xml.sax.saxutils
+import time
 
 def make_test_name( library_idx, test_idx ):
     return "test_%02d_%02d" % ( library_idx, test_idx )
@@ -29,6 +30,8 @@ def make_test_target_directory( library_idx, toolset_idx, test_name, variant ):
     else:
         return base
 
+def format_timestamp( timestamp ):
+    return time.strftime( "%Y-%m-%dT%H:%M:%SZ", timestamp )
 
 def make_test_log( xml_generator
                    , library_idx
@@ -109,21 +112,22 @@ def make_expicit_failure_markup( num_of_libs, num_of_toolsets, num_of_tests ):
 
         for i_test in range( 0, num_of_tests ):
 
-            corner_case_test = 0
+            category = 0
             explicitly_marked_failure = 0
             unresearched = 0
 
-            if i_test > num_of_tests - 3:     corner_case_test = 1
+            if i_test % 2 == 0:
+                category = i_test % 3
             
             if i_test % 3 == 0:
                 explicitly_marked_failure = 1
                 if i_test % 2 == 0:
                     unresearched = 1
 
-            if corner_case_test or explicitly_marked_failure:
+            if category or explicitly_marked_failure:
                 test_attrs = { "name": make_test_name( i_library, i_test ) }
-                if corner_case_test:
-                    test_attrs[ "corner-case" ] = "yes"
+                if category:
+                    test_attrs[ "category" ] = "Category %s" % category
                 g.startElement( "test", test_attrs )
                 if explicitly_marked_failure:
                     failure_attrs = {}

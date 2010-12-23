@@ -1,7 +1,7 @@
 [library python
     [version 1.0]
     [authors [de Guzman, Joel], [Abrahams, David]]
-    [copyright 2002 2003 2004 Joel de Guzman, David Abrahams]
+    [copyright 2002 2003 2004 2005 Joel de Guzman, David Abrahams]
     [category inter-language support]
     [purpose
         Reflects C++ classes and functions into Python
@@ -21,6 +21,7 @@
 [def __alert__      [$images/alert.png]]
 [def __tip__        [$images/tip.png]]
 [def :-)            [$images/smiley.png]]
+[def __jam__        [$images/jam.png]]
 
 [section QuickStart]
 
@@ -58,9 +59,13 @@ can be exposed to Python by writing a Boost.Python wrapper:
 That's it. We're done. We can now build this as a shared library. The
 resulting DLL is now visible to Python. Here's a sample Python session:
 
+[python]
+
     >>> import hello
     >>> print hello.greet()
     hello, world
+
+[c++]
 
 [:['[*Next stop... Building your Hello World module from start to finish...]]]
 
@@ -115,45 +120,53 @@ platforms. The complete list of Bjam executables can be found
 [@http://sourceforge.net/project/showfiles.php?group_id=7586 here].
 
 [h2 Let's Jam!]
-[$../images/jam.png]
+__jam__
 
 Here is our minimalist Jamfile:
 
 [pre
-    subproject libs/python/example/tutorial ;
+# This is the top of our own project tree
+project-root ;
 
-    SEARCH on python.jam = $(BOOST_BUILD_PATH) ;
-    include python.jam ;
+import python ;
 
-    extension hello                     # Declare a Python extension called hello
-    :   hello.cpp                       # source
-        <dll>../../build/boost_python   # dependencies
-        ;
+extension hello                     # Declare a Python extension called hello
+:   hello.cpp                       # source
+    # requirements and dependencies for Boost.Python extensions
+    <template>@boost/libs/python/build/extension
+    ;
 ]
 
-First, we need to specify our location in the boost project hierarchy.
-It so happens that the tutorial example is located in [^/libs/python/example/tutorial].
-Thus:
+First, we need to specify our location. You may place your project anywhere.
+[^project-root] allows you to do that.
 
 [pre
-    subproject libs/python/example/tutorial ;
+project-root ;
 ]
 
-Then we will include the definitions needed by Python modules:
+By doing so, you'll need a Jamrules file. Simply copy the one in the 
+[@../../../../example/tutorial/Jamrules example/tutorial directory] and tweak 
+the [^path-global BOOST_ROOT] to where your boost root directory is. The file
+has [@../../../../example/tutorial/Jamrules detailed instructions] you can follow.
+
+Then we will import the definitions needed by Python modules:
 
 [pre
-    SEARCH on python.jam = $(BOOST_BUILD_PATH) ;
-    include python.jam ;
+import python ;
 ]
 
 Finally we declare our [^hello] extension:
 
 [pre
-    extension hello                     # Declare a Python extension called hello
-    :   hello.cpp                       # source
-        <dll>../../build/boost_python   # dependencies
-        ;
+extension hello                     # Declare a Python extension called hello
+:   hello.cpp                       # source
+
+    # requirements and dependencies for Boost.Python extensions
+    <template>@boost/libs/python/build/extension
+    ;
 ]
+
+The last part tells BJam that we are depending on the Boost Python Library.
 
 [h2 Running bjam]
 
@@ -165,29 +178,38 @@ Make sure that the environment is set so that we can invoke the C++
 compiler. With MSVC, that would mean running the [^Vcvars32.bat] batch
 file. For instance:
 
-    C:\Program Files\Microsoft Visual Studio\VC98\bin\Vcvars32.bat
+[pre
+C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Tools\vsvars32.bat
+]
 
 Some environment variables will have to be setup for proper building of our
 Python modules. Example:
 
-    set PYTHON_ROOT=c:/dev/tools/python
-    set PYTHON_VERSION=2.2
+[pre
+set PYTHON_ROOT=c:/dev/tools/python
+set PYTHON_VERSION=2.2
+]
 
 The above assumes that the Python installation is in [^c:/dev/tools/python]
-and that we are using Python version 2.2. You'll have to tweak this path
+and that we are using Python version 2.2. You'll have to tweak these
 appropriately.
 
 [blurb __tip__ Be sure not to include a third number, e.g. [*not]  "2.2.1",
 even if that's the version you have.]
+
+Take note that you may also do that through the Jamrules file we put in
+our project as detailed above. The file
+has [@../../../../example/tutorial/Jamrules detailed instructions] you 
+can follow.
 
 Now we are ready... Be sure to [^cd] to [^libs/python/example/tutorial]
 where the tutorial [^"hello.cpp"] and the [^"Jamfile"] is situated.
 
 Finally:
 
-    bjam -sTOOLS=msvc
+    bjam -sTOOLS=vc-7_1
 
-We are again assuming that we are using Microsoft Visual C++ version 6. If
+We are again assuming that we are using Microsoft Visual C++ version 7.1. If
 not, then you will have to specify the appropriate tool. See
 [@../../../../../../tools/build/index.html Building Boost Libraries] for
 further details.
@@ -195,26 +217,26 @@ further details.
 It should be building now:
 
 [pre
-    cd C:\dev\boost\libs\python\example\tutorial
-    bjam -sTOOLS=msvc
-    ...patience...
-    ...found 1703 targets...
-    ...updating 40 targets...
+cd C:\dev\boost\libs\python\example\tutorial
+bjam -sTOOLS=msvc
+...patience...
+...found 1703 targets...
+...updating 40 targets...
 ]
 
 And so on... Finally:
 
 [pre
-    vc-C++ ..\..\..\..\libs\python\example\tutorial\bin\hello.pyd\msvc\debug\
-    runtime-link-dynamic\hello.obj
-    hello.cpp
-    vc-Link ..\..\..\..\libs\python\example\tutorial\bin\hello.pyd\msvc\debug\
-    runtime-link-dynamic\hello.pyd ..\..\..\..\libs\python\example\tutorial\bin\
-    hello.pyd\msvc\debug\runtime-link-dynamic\hello.lib
-       Creating library ..\..\..\..\libs\python\example\tutorial\bin\hello.pyd\
-       msvc\debug\runtime-link-dynamic\hello.lib and object ..\..\..\..\libs\python\
-       example\tutorial\bin\hello.pyd\msvc\debug\runtime-link-dynamic\hello.exp
-    ...updated 40 targets...
+Creating library bin\boost\libs\python\build\boost_python.dll\vc-7_1\debug\th
+reading-multi\boost_python.lib and object bin\boost\libs\python\build\boost_pyth
+on.dll\vc-7_1\debug\threading-multi\boost_python.exp
+vc-C++ bin\tutorial\hello.pyd\vc-7_1\debug\threading-multi\hello.obj
+hello.cpp
+vc-Link bin\tutorial\hello.pyd\vc-7_1\debug\threading-multi\hello.pyd bin\tutori
+al\hello.pyd\vc-7_1\debug\threading-multi\hello.lib
+   Creating library bin\tutorial\hello.pyd\vc-7_1\debug\threading-multi\hello.li
+b and object bin\tutorial\hello.pyd\vc-7_1\debug\threading-multi\hello.exp
+...updated 31 targets...
 ]
 
 If all is well, you should now have:
@@ -229,18 +251,20 @@ if you are on Windows, and
 
 if you are on Unix.
 
-[^boost_python.dll] can be found somewhere in [^libs\python\build\bin]
-while [^hello.pyd] can be found somewhere in
-[^libs\python\example\tutorial\bin]. After a successful build, you can just
-link in these DLLs with the Python interpreter. In Windows for example, you
-can simply put these libraries inside the directory where the Python
-executable is.
+[^boost_python.dll] and [^hello.pyd] can be found somewhere in your project's
+[^bin] directory. After a successful build, you can just link in these DLLs with 
+the Python interpreter. In Windows for example, you can simply put these libraries 
+inside the directory where the Python executable is.
 
 You may now fire up Python and run our hello module:
+
+[python]
 
     >>> import hello
     >>> print hello.greet()
     hello, world
+
+[c++]
 
 [:[*There you go... Have fun!]]
 
@@ -276,6 +300,8 @@ Here, we wrote a C++ class wrapper that exposes the member functions
 [^greet] and [^set]. Now, after building our module as a shared library, we
 may use our class [^World] in Python. Here's a sample Python session:
 
+[python]
+
     >>> import hello
     >>> planet = hello.World()
     >>> planet.set('howdy')
@@ -293,6 +319,8 @@ which is why we were able to write
 
 We may wish to wrap a class with a non-default constructor. Let us
 build on our previous example:
+
+[c++]
 
     struct World
     {
@@ -364,6 +392,8 @@ Our C++ [^Var] class and its data members can be exposed to Python:
 Then, in Python, assuming we have placed our Var class inside the namespace
 hello as we did before:
 
+[python]
+
     >>> x = hello.Var('pi')
     >>> x.value = 3.14
     >>> print x.name, 'is around', x.value
@@ -372,12 +402,10 @@ hello as we did before:
 Note that [^name] is exposed as [*read-only] while [^value] is exposed
 as [*read-write].
 
-[pre
     >>> x.name = 'e' # can't change name
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     AttributeError: can't set attribute
-]
 
 [endsect]
 [section Class Properties]
@@ -387,6 +415,8 @@ upon. Well designed classes that take advantage of encapsulation hide
 the class' data members. The only way to access the class' data is
 through access (getter/setter) functions. Access functions expose class
 properties. Here's an example:
+
+[c++]
 
     struct Num
     {
@@ -407,6 +437,8 @@ attributes can just be a different syntax for a method call. Wrapping our
 
 And at last, in Python:
 
+[python]
+
     >>> x = Num()
     >>> x.value = 3.14
     >>> x.value, x.rovalue
@@ -415,6 +447,8 @@ And at last, in Python:
 
 Take note that the class property [^rovalue] is exposed as [*read-only]
 since the [^rovalue] setter member function is not passed in:
+
+[c++]
 
     .add_property("rovalue", &Num::get)
 
@@ -513,7 +547,7 @@ inherited `wrapper<Base>` (See [@../../../v2/wrapper.html Wrapper]). The
 `wrapper` template makes the job of wrapping classes that are meant to
 overridden in Python, easier.
 
-[blurb __alert__ MSVC6/7 Workaround\n\n 
+[blurb __alert__ [*MSVC6/7 Workaround]\n\n 
 If you are using Microsoft Visual C++ 6 or 7, you have to write `f` as:\n\n
 `return call<int>(this->get_override("f").ptr());`.]
 
@@ -538,7 +572,7 @@ correspond roughly to C++'s [*member functions]]
 [section Virtual Functions with Default Implementations]
 
 We've seen in the previous section how classes with pure virtual functions are 
-wrapped using Boost.Python's [@../../../v2//wrapper.html class wrapper]
+wrapped using Boost.Python's [@../../../v2/wrapper.html class wrapper]
 facilities. If we wish to wrap [*non]-pure-virtual functions instead, the 
 mechanism is a bit different.
 
@@ -577,7 +611,7 @@ We wrap it this way:
 Notice how we implemented `BaseWrap::f`. Now, we have to check if there is an 
 override for `f`. If none, then we call `Base::f()`.
 
-[blurb __alert__ MSVC6/7 Workaround\n\n 
+[blurb __alert__ [*MSVC6/7 Workaround]\n\n 
 If you are using Microsoft Visual C++ 6 or 7, you have to rewrite the line
 with the `*note*` as:\n\n
 `return call<char const*>(f.ptr());`.]
@@ -594,6 +628,8 @@ forwarding function to its default implementation [^default_f]. There's a
 special [^def] function for this purpose.
 
 In Python, the results would be as expected:
+
+[python]
 
     >>> base = Base()
     >>> class Derived(Base):
@@ -623,6 +659,8 @@ this and makes it easy to wrap C++ operator-powered classes.
 
 Consider a file position class [^FilePos] and a set of operators that take
 on FilePos instances:
+
+[c++]
 
     class FilePos { /*...*/ };
 
@@ -661,13 +699,13 @@ similar set of intuitive interfaces can also be used to wrap C++ functions
 that correspond to these Python ['special functions]. Example:
 
     class Rational
-    { operator double() const; };
+    { public: operator double() const; };
 
     Rational pow(Rational, Rational);
     Rational abs(Rational);
     ostream& operator<<(ostream&,Rational);
 
-    class_<Rational>()
+    class_<Rational>("Rational")
         .def(float_(self))                  // __float__
         .def(pow(self, other<Rational>))    // __pow__
         .def(abs(self))                     // __abs__
@@ -676,9 +714,9 @@ that correspond to these Python ['special functions]. Example:
 
 Need we say more?
 
-[blurb __note__ What is the business of [^operator<<] [^.def(str(self))]?
-Well, the method [^str] requires the [^operator<<] to do its work (i.e.
-[^operator<<] is used by the method defined by def(str(self)).]
+[blurb __note__ What is the business of `operator<<`?
+Well, the method `str` requires the `operator<<` to do its work (i.e.
+`operator<<` is used by the method defined by `def(str(self))`.]
 
 [endsect]
 [endsect] [/ Exposing Classes ]
@@ -698,27 +736,27 @@ But before you do, you might want to fire up Python 2.2 or later and type
 [^>>> import this].
 
 [pre
-    >>> import this
-    The Zen of Python, by Tim Peters
-    Beautiful is better than ugly.
-    Explicit is better than implicit.
-    Simple is better than complex.
-    Complex is better than complicated.
-    Flat is better than nested.
-    Sparse is better than dense.
-    Readability counts.
-    Special cases aren't special enough to break the rules.
-    Although practicality beats purity.
-    Errors should never pass silently.
-    Unless explicitly silenced.
-    In the face of ambiguity, refuse the temptation to guess.
-    There should be one-- and preferably only one --obvious way to do it
-    Although that way may not be obvious at first unless you're Dutch.
-    Now is better than never.
-    Although never is often better than *right* now.
-    If the implementation is hard to explain, it's a bad idea.
-    If the implementation is easy to explain, it may be a good idea.
-    Namespaces are one honking great idea -- let's do more of those!
+>>> import this
+The Zen of Python, by Tim Peters
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
 ]
 
 [section Call Policies]
@@ -771,6 +809,8 @@ Here's what's happening:
 
 We could copy result into a new object:
 
+[python]
+
     >>> f(y, z).set(42) # Result disappears
     >>> y.x.get()       # No crash, but still bad
     3.14
@@ -780,6 +820,8 @@ promise that the Python interface should reflect the C++ interface as
 closely as possible.
 
 Our problems do not end there. Suppose Y is implemented as follows:
+
+[c++]
 
     struct Y
     {
@@ -1117,6 +1159,8 @@ Class [^object] wraps [^PyObject*]. All the intricacies of dealing with
 
 To illustrate, this Python code snippet:
 
+[python]
+
     def f(x, y):
          if (y == 'foo'):
              x[3:7] = 'bar'
@@ -1128,6 +1172,8 @@ To illustrate, this Python code snippet:
        return f;
 
 Can be rewritten in C++ using Boost.Python facilities this way:
+
+[c++]
 
     object f(object x, object y) {
          if (y == "foo")
@@ -1194,18 +1240,22 @@ member functions.
 Demonstrates that you can write the C++ equivalent of [^"format" % x,y,z]
 in Python, which is useful since there's no easy way to do that in std C++.
 
-__alert__ [*Beware] the common pitfall of forgetting that the constructors
-of most of Python's mutable types make copies, just as in Python.
+[blurb
+    __alert__ [*Beware] the common pitfall of forgetting that the constructors
+    of most of Python's mutable types make copies, just as in Python.
+]
 
 Python:
+[python]
 
     >>> d = dict(x.__dict__)     # copies x.__dict__
     >>> d['whatever']            # modifies the copy
 
 C++:
+[c++]
 
-    dict d(x.attr("__dict__"));  # copies x.__dict__
-    d['whatever'] = 3;           # modifies the copy
+    dict d(x.attr("__dict__"));  // copies x.__dict__
+    d['whatever'] = 3;           // modifies the copy
 
 [h2 class_<T> as objects]
 
@@ -1239,16 +1289,15 @@ we wanted to do above can be achieved by writing:
     Vec2& v = extract<Vec2&>(o);
     assert(l == v.length());
 
-The first line attempts to extract the "length" attribute of the
-Boost.Python [^object] [^o]. The second line attempts to ['extract] the
-[^Vec2] object from held by the Boost.Python [^object] [^o].
+The first line attempts to extract the "length" attribute of the Boost.Python 
+[^object]. The second line attempts to ['extract] the [^Vec2] object from held 
+by the Boost.Python [^object].
 
-Take note that we said "attempt to" above. What if the Boost.Python
-[^object] [^o] does not really hold a [^Vec2] type? This is certainly
-a possibility considering the dynamic nature of Python [^object]s. To
-be on the safe side, if the C++ type can't be extracted, an
-appropriate exception is thrown. To avoid an exception, we need to
-test for extractibility:
+Take note that we said "attempt to" above. What if the Boost.Python [^object] 
+does not really hold a [^Vec2] type? This is certainly a possibility considering 
+the dynamic nature of Python [^object]s. To be on the safe side, if the C++ type 
+can't be extracted, an appropriate exception is thrown. To avoid an exception, 
+we need to test for extractibility:
 
     extract<Vec2&> x(o);
     if (x.check()) {
@@ -1292,11 +1341,15 @@ attributes. Details can be found [@../../../v2/scope.html here].]
 
 You can access those values in Python as
 
+[python]
+
     >>> my_module.choice.red
     my_module.choice.red
 
 where my_module is the module where the enum is declared. You can also
 create a new scope around a class:
+
+[c++]
 
     scope in_X = class_<X>("X")
                     .def( ... )
@@ -1362,20 +1415,20 @@ include path.
 In a Jamfile, all the above boils down to:
 
 [pre
-    projectroot c:\projects\embedded_program ; # location of the program
+projectroot c:\projects\embedded_program ; # location of the program
 
-    # bring in the rules for python
-    SEARCH on python.jam = $(BOOST_BUILD_PATH) ;
-    include python.jam ;
+# bring in the rules for python
+SEARCH on python.jam = $(BOOST_BUILD_PATH) ;
+include python.jam ;
 
-    exe embedded_program # name of the executable
-      : #sources
-         embedded_program.cpp
-      : # requirements
-         <find-library>boost_python <library-path>c:\boost\libs\python
-      $(PYTHON_PROPERTIES)
-        <library-path>$(PYTHON_LIB_PATH)
-        <find-library>$(PYTHON_EMBEDDED_LIBRARY) ;
+exe embedded_program # name of the executable
+  : #sources
+     embedded_program.cpp
+  : # requirements
+     <find-library>boost_python <library-path>c:\boost\libs\python
+  $(PYTHON_PROPERTIES)
+    <library-path>$(PYTHON_LIB_PATH)
+    <find-library>$(PYTHON_EMBEDDED_LIBRARY) ;
 ]
 
 [h2 Getting started]
@@ -1497,17 +1550,19 @@ the object's [^ptr] member function to retrieve the [^PyObject*].
 This should create a file called 'hello.txt' in the current directory
 containing a phrase that is well-known in programming circles.
 
-__note__ [*Note] that we wrap the return value of PyRun_String in a
-(nameless) [^handle] even though we are not interested in it. If we didn't
-do this, the the returned object would be kept alive unnecessarily. Unless
-you want to be a Dr. Frankenstein, always wrap [^PyObject*]s in [^handle]s.
+[blurb
+    __note__ [*Note] that we wrap the return value of PyRun_String in a
+    (nameless) [^handle] even though we are not interested in it. If we didn't
+    do this, the the returned object would be kept alive unnecessarily. Unless
+    you want to be a Dr. Frankenstein, always wrap [^PyObject*]s in [^handle]s.
+]
 
 [h2 Beyond handles]
 
 It's nice that [^handle] manages the reference counting details for us, but
 other than that it doesn't do much. Often we'd like to have a more useful
 class to manipulate Python objects. But we have already seen such a class
-above, and in the [@object.html previous section]: the aptly
+above, and in the [@python/object.html previous section]: the aptly
 named [^object] class and it's derivatives. We've already seen that they
 can be constructed from a [^handle]. The following examples should further
 illustrate this fact:
@@ -1542,10 +1597,12 @@ PyRun_String return the result directly with Py_eval_input:
 
     int five_squared = extract<int>(result);
 
-__note__ [*Note] that [^object]'s member function to return the wrapped
-[^PyObject*] is called [^ptr] instead of [^get]. This makes sense if you
-take into account the different functions that [^object] and [^handle]
-perform.
+[blurb
+    __note__ [*Note] that [^object]'s member function to return the wrapped
+    [^PyObject*] is called [^ptr] instead of [^get]. This makes sense if you
+    take into account the different functions that [^object] and [^handle]
+    perform.
+]
 
 [h2 Exception handling]
 
@@ -1634,6 +1691,8 @@ iterators, but these are two very different beasts.
 
 The typical Python iteration protocol: [^[*for y in x...]] is as follows:
 
+[python]
+
     iter = x.__iter__()         # get iterator
     try:
         while 1:
@@ -1643,8 +1702,10 @@ The typical Python iteration protocol: [^[*for y in x...]] is as follows:
 
 Boost.Python provides some mechanisms to make C++ iterators play along
 nicely as Python iterators. What we need to do is to produce
-appropriate __iter__ function from C++ iterators that is compatible
+appropriate `__iter__` function from C++ iterators that is compatible
 with the Python iteration protocol. For example:
+
+[c++]
 
     object get_iterator = iterator<vector<int> >();
     object iter = get_iterator(v);
@@ -1677,6 +1738,8 @@ with &T::begin, &T::end.
 Let's put this into action... Here's an example from some hypothetical
 bogon Particle accelerator code:
 
+[python]
+
     f = Field()
     for x in f.pions:
         smash(x)
@@ -1684,6 +1747,8 @@ bogon Particle accelerator code:
         count(y)
 
 Now, our C++ Wrapper:
+
+[c++]
 
     class_<F>("Field")
         .property("pions", range(&F::p_begin, &F::p_end))
@@ -1774,20 +1839,22 @@ Unix and [^.dll] for Windows, works just as well.]
 Now, we create this directory structure for our Python package:
 
 [pre
-    sounds/
-        __init__.py
-        core.pyd
-        filters.pyd
-        io.pyd
+sounds/
+    \_\_init\_\_.py
+    core.pyd
+    filters.pyd
+    io.pyd
 ]
 
-The file [^__init__.py] is what tells Python that the directory [^sounds/] is
+The file [^\_\_init\_\_.py] is what tells Python that the directory [^sounds/] is
 actually a Python package. It can be a empty file, but can also perform some
 magic, that will be shown later.
 
 Now our package is ready. All the user has to do is put [^sounds] into his
 [@http://www.python.org/doc/current/tut/node8.html#SECTION008110000000000000000 PYTHONPATH]
 and fire up the interpreter:
+
+[python]
 
     >>> import sounds.io
     >>> import sounds.filters
@@ -1806,6 +1873,8 @@ it.
 If we want this flexibility, we will have to complicate our package hierarchy a
 little. First, we will have to change the name of the extension modules:
 
+[c++]
+
     /* file core.cpp */
     BOOST_PYTHON_MODULE(_core)
     {
@@ -1818,30 +1887,32 @@ be changed to [^_core.pyd] as well, and we do the same to the other extension mo
 Now, we change our package hierarchy like so:
 
 [pre
-    sounds/
-        __init__.py
-        core/
-            __init__.py
-            _core.pyd
-        filters/
-            __init__.py
-            _filters.pyd
-        io/
-            __init__.py
-            _io.pyd
+sounds/
+    \_\_init\_\_.py
+    core/
+        \_\_init\_\_.py
+        _core.pyd
+    filters/
+        \_\_init\_\_.py
+        _filters.pyd
+    io/
+        \_\_init\_\_.py
+        _io.pyd
 ]
 
 Note that we created a directory for each extension module, and added a
-__init__.py to each one. But if we leave it that way, the user will have to
+\_\_init\_\_.py to each one. But if we leave it that way, the user will have to
 access the functions in the core module with this syntax:
+
+[python]
 
     >>> import sounds.core._core
     >>> sounds.core._core.foo(...)
 
-which is not what we want. But here enters the [^__init__.py] magic: everything
-that is brought to the [^__init__.py] namespace can be accessed directly by the
+which is not what we want. But here enters the [^\_\_init\_\_.py] magic: everything
+that is brought to the [^\_\_init\_\_.py] namespace can be accessed directly by the
 user.  So, all we have to do is bring the entire namespace from [^_core.pyd]
-to [^core/__init__.py]. So add this line of code to [^sounds/core/__init__.py]:
+to [^core/\_\_init\_\_.py]. So add this line of code to [^sounds/core/\_\_init\_\_.py]:
 
     from _core import *
 
@@ -1864,7 +1935,7 @@ create a file named [^sounds/filters/echo_noise.py] and code our function:
         s = _filters.noise(sound)
         return s
 
-Next, we add this line to [^sounds/filters/__init__.py]:
+Next, we add this line to [^sounds/filters/\_\_init\_\_.py]:
 
     from echo_noise import echo_noise
 
@@ -1899,6 +1970,8 @@ Yes, Python rox. :-)
 We can do the same with classes that were wrapped with Boost.Python. Suppose
 we have a class [^point] in C++:
 
+[c++]
+
     class point {...};
 
     BOOST_PYTHON_MODULE(_geom)
@@ -1908,7 +1981,9 @@ we have a class [^point] in C++:
 
 If we are using the technique from the previous session,
 [link python.creating_packages Creating Packages], we can code directly
-into [^geom/__init__.py]:
+into [^geom/\_\_init\_\_.py]:
+
+[python]
 
     from _geom import *
 
@@ -1976,6 +2051,8 @@ If you have ever exported a lot of classes, you know that it takes quite a good
 time to compile the Boost.Python wrappers. Plus the memory consumption can
 easily become too high. If this is causing you problems, you can split the
 class_ definitions in multiple files:
+
+[c++]
 
     /* file point.cpp */
     #include <point.h>

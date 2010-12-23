@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Introduction</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../lambda.html" title="Chapter 5. Boost.Lambda">
+<link rel="up" href="../lambda.html" title="Chapter 6. Boost.Lambda">
 <link rel="prev" href="getting_started.html" title="Getting Started">
 <link rel="next" href="using_library.html" title="Using the library">
 </head>
@@ -24,14 +24,14 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id539972"></a>Introduction</h3></div></div></div>
+<a name="id1222695"></a>Introduction</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="s03.html#id539976">Motivation</a></span></dt>
-<dt><span class="section"><a href="s03.html#id540239">Introduction to lambda expressions</a></span></dt>
+<dt><span class="section"><a href="s03.html#id1222698">Motivation</a></span></dt>
+<dt><span class="section"><a href="s03.html#id1222933">Introduction to lambda expressions</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id539976"></a>Motivation</h4></div></div></div>
+<a name="id1222698"></a>Motivation</h4></div></div></div>
 <p>The Standard Template Library (STL)
 	[<a href="../lambda.html#cit:stepanov:94" title="[STL94]"><span class="abbrev">STL94</span></a>], now part of the C++ Standard Library [<a href="../lambda.html#cit:c++:98" title="[C++98]"><span class="abbrev">C++98</span></a>], is a generic container and algorithm library.
 Typically STL algorithms operate on container elements via <span class="emphasis"><em>function objects</em></span>. These function objects are passed as arguments to the algorithms.
@@ -39,8 +39,8 @@ Typically STL algorithms operate on container elements via <span class="emphasis
 <p>
 Any C++ construct that can be called with the function call syntax
 is a function object. 
-The STL contains predefined function objects for some common cases (such as <tt class="literal">plus</tt>, <tt class="literal">less</tt> and <tt class="literal">not1</tt>). 
-As an example, one possible implementation for the standard <tt class="literal">plus</tt> template is:
+The STL contains predefined function objects for some common cases (such as <code class="literal">plus</code>, <code class="literal">less</code> and <code class="literal">not1</code>). 
+As an example, one possible implementation for the standard <code class="literal">plus</code> template is:
 
 </p>
 <pre class="programlisting">
@@ -53,7 +53,7 @@ struct plus {
 </pre>
 <p>
 
-The base class <tt class="literal">binary_function&lt;T, T, T&gt;</tt> contains typedefs for the argument and return types of the function object, which are needed to make the function object <span class="emphasis"><em>adaptable</em></span>.
+The base class <code class="literal">binary_function&lt;T, T, T&gt;</code> contains typedefs for the argument and return types of the function object, which are needed to make the function object <span class="emphasis"><em>adaptable</em></span>.
 </p>
 <p>
 In addition to the basic function object classes, such as the one above,
@@ -71,9 +71,9 @@ public:
 </pre>
 <p>
 
-the equivalent functionality can be achieved with the <tt class="literal">plus</tt> template and one of the binder templates (<tt class="literal">bind1st</tt>).
+the equivalent functionality can be achieved with the <code class="literal">plus</code> template and one of the binder templates (<code class="literal">bind1st</code>).
 E.g., the following two expressions create function objects with identical functionalities; 
-when invoked, both return the result of adding <tt class="literal">1</tt> to the argument of the function object:
+when invoked, both return the result of adding <code class="literal">1</code> to the argument of the function object:
 
 </p>
 <pre class="programlisting">
@@ -82,8 +82,8 @@ bind1st(plus&lt;int&gt;(), 1)
 </pre>
 <p>
 
-The subexpression <tt class="literal">plus&lt;int&gt;()</tt> in the latter line is a binary function object which computes the sum of two integers, and <tt class="literal">bind1st</tt> invokes this function object partially binding the first argument to <tt class="literal">1</tt>.
-As an example of using the above function object, the following code adds <tt class="literal">1</tt> to each element of some container <tt class="literal">a</tt> and outputs the results into the standard output stream <tt class="literal">cout</tt>.
+The subexpression <code class="literal">plus&lt;int&gt;()</code> in the latter line is a binary function object which computes the sum of two integers, and <code class="literal">bind1st</code> invokes this function object partially binding the first argument to <code class="literal">1</code>.
+As an example of using the above function object, the following code adds <code class="literal">1</code> to each element of some container <code class="literal">a</code> and outputs the results into the standard output stream <code class="literal">cout</code>.
 
 </p>
 <pre class="programlisting">
@@ -153,7 +153,7 @@ as function composition is supported implicitly.
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id540239"></a>Introduction to lambda expressions</h4></div></div></div>
+<a name="id1222933"></a>Introduction to lambda expressions</h4></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="s03.html#lambda.partial_function_application">Partial function application</a></span></dt>
 <dt><span class="section"><a href="s03.html#lambda.terminology">Terminology</a></span></dt>
@@ -173,9 +173,9 @@ lambda x<sub>1</sub> ... x<sub>n</sub>.e
 	</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>
-	      the parameters of this function: <tt class="literal">x<sub>1</sub> ... x<sub>n</sub></tt>.
+	      the parameters of this function: <code class="literal">x<sub>1</sub> ... x<sub>n</sub></code>.
 	      </p></li>
-<li><p>the expression e which computes the value of the function in terms of the parameters <tt class="literal">x<sub>1</sub> ... x<sub>n</sub></tt>.
+<li><p>the expression e which computes the value of the function in terms of the parameters <code class="literal">x<sub>1</sub> ... x<sub>n</sub></code>.
 	    </p></li>
 </ul></div>
 <p>
@@ -192,11 +192,11 @@ Applying the lambda function means substituting the formal parameters with the a
 (lambda x y.x+y) 2 3 = 2 + 3 = 5 
 </pre>
 <p>
-In the C++ version of lambda expressions the <tt class="literal">lambda x<sub>1</sub> ... x<sub>n</sub></tt> part is missing and the formal parameters have predefined names.
+In the C++ version of lambda expressions the <code class="literal">lambda x<sub>1</sub> ... x<sub>n</sub></code> part is missing and the formal parameters have predefined names.
 In the current version of the library, 
 there are three such predefined formal parameters, 
 called <span class="emphasis"><em>placeholders</em></span>: 
-<tt class="literal">_1</tt>, <tt class="literal">_2</tt> and <tt class="literal">_3</tt>. 
+<code class="literal">_1</code>, <code class="literal">_2</code> and <code class="literal">_3</code>. 
 They refer to the first, second and third argument of the function defined 
 by the lambda expression.
 	
@@ -212,7 +212,7 @@ Hence, there is no syntactic keyword for C++ lambda expressions.
 	The use of a placeholder as an operand implies that the operator invocation is a lambda expression.
 	However, this is true only for operator invocations.
 	Lambda expressions containing function calls, control structures, casts etc. require special syntactic constructs. 
-	Most importantly, function calls need to be wrapped inside a <tt class="literal">bind</tt> function. 
+	Most importantly, function calls need to be wrapped inside a <code class="literal">bind</code> function. 
 
 	As an example, consider the lambda expression:
 
@@ -220,7 +220,7 @@ Hence, there is no syntactic keyword for C++ lambda expressions.
 <pre class="programlisting">lambda x y.foo(x,y)</pre>
 <p>
 
-	Rather than <tt class="literal">foo(_1, _2)</tt>, the C++ counterpart for this expression is:
+	Rather than <code class="literal">foo(_1, _2)</code>, the C++ counterpart for this expression is:
 
 	</p>
 <pre class="programlisting">bind(foo, _1, _2)</pre>
@@ -228,7 +228,7 @@ Hence, there is no syntactic keyword for C++ lambda expressions.
 
 	We refer to this type of C++ lambda expressions as <span class="emphasis"><em>bind expressions</em></span>. 
       </p>
-<p>A lambda expression defines a C++ function object, hence function application syntax is like calling any other function object, for instance: <tt class="literal">(_1 + _2)(i, j)</tt>.
+<p>A lambda expression defines a C++ function object, hence function application syntax is like calling any other function object, for instance: <code class="literal">(_1 + _2)(i, j)</code>.
 
 
       </p>

@@ -17,7 +17,6 @@
 <a href="#Synopsis">Header synopsis</a><br>
 <a href="#directory_iterator">Class directory_iterator</a><br>
 &nbsp;&nbsp;&nbsp; <a href="#constructors">Constructors</a><br>
-&nbsp;&nbsp;&nbsp; <a href="#destructor">Destructor</a><br>
 &nbsp;&nbsp;&nbsp; <a href="#Other_functions">Other_functions</a><br>
 <a href="#Non-member_functions">Operations functions</a><br>
 &nbsp;&nbsp;&nbsp; <a href="#exists">exists</a><br>
@@ -59,7 +58,7 @@ header. </p>
   namespace filesystem
   {
 
-    class <a href="#Class directory_iterator">directory_iterator</a>
+    class <a href="#directory_iterator">directory_iterator</a>
     {
     public:
       typedef <a href="path.htm">path</a>                     value_type;
@@ -71,7 +70,7 @@ header. </p>
       <a href="#constructors">directory_iterator</a>();
       explicit <a href="#constructors">directory_iterator</a>( const path &amp; directory_ph );
 
-      // <a href="#other functions">other functions</a>
+      // <a href="#Other_functions">Other_functions</a>
       // ...
     };
 
@@ -296,12 +295,11 @@ exists(ph) &amp;&amp; is_directory(ph)</code> can always be added later.</p>
       values. The POSIX implementation does not protect against
       <a href="index.htm#Race-condition">race conditions</a>.<br>
 &nbsp;</li>
-      <li>Windows: stat() reports identical st_dev values and 
-      GetFileInformationByHandle() reports identical dwVolumeSerialNumber, 
-      nFileIndexHigh, nFileIndexLow, nFileSizeHigh, and nFileSizeLow values. 
+      <li>Windows: GetFileInformationByHandle() reports identical dwVolumeSerialNumber, 
+      nFileIndexHigh, nFileIndexLow, nFileSizeHigh, nFileSizeLow values, 
+      ftLastWriteTime.dwLowDateTime, and ftLastWriteTime.dwHighDateTime. 
       Note that for identical media (particularly bit-for-bit duplicate CD's, 
-      Floppies, or memory cards) on the same lettered drive of different network 
-      shared systems, equivalent() will return <code>true</code> even though the 
+      Floppies, or memory cards)  equivalent() will return <code>true</code> even though the 
       media are physically different. The Windows implementation does protect 
       against <a href="index.htm#Race-condition">race conditions</a>.</li>
     </ul>
@@ -316,7 +314,8 @@ exists(ph) &amp;&amp; is_directory(ph)</code> can always be added later.</p>
   <p><code>boost::intmax_t file_size( const path &amp; ph );</code></p>
   <p><b>Returns:</b> The size of the file in bytes as reported by the operating 
   system.</p>
-  <p><b>Throws:</b> if <code>!exists(ph) || is_directory(ph)</code></p>
+  <p><b>Throws:</b> if <code>!exists(ph) || is_directory(ph) || </code>the file 
+  size cannot be determined (such as for an input stream).</p>
 <p><b>Warming:</b> If a compiler does not support <code>maxint_t</code> large 
 enough to represent the operating system's maximum file size, or if the 
 implementation does not know how to query the operating system for large file 
@@ -631,7 +630,7 @@ by a prior program run by the command processor.</p>
 
 <hr>
 <p>Revised
-<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->21 March, 2004<!--webbot bot="Timestamp" endspan i-checksum="28864" --></p>
+<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->02 August, 2005<!--webbot bot="Timestamp" endspan i-checksum="34600" --></p>
 <p>© Copyright Beman Dawes, 2002</p>
 <p> Use, modification, and distribution are subject to the Boost Software 
 License, Version 1.0. (See accompanying file <a href="../../../LICENSE_1_0.txt">

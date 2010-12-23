@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/src/Attic/deque.cpp,v $
-// $Date: 2004/11/10 21:05:11 $
-// $Revision: 1.1.2.1 $
+// $Source: /cvsroot/boost/boost/libs/mpl/preprocessed/src/deque.cpp,v $
+// $Date: 2004/11/28 03:35:12 $
+// $Revision: 1.2 $
 
 #define BOOST_MPL_PREPROCESSING_MODE
 #include <boost/config.hpp>

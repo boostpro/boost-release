@@ -1,9 +1,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 20. Tutorial</title>
+<title>Chapter 23. Tutorial</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <style type="text/css">
 body { background-image: url('http://docbook.sourceforge.net/release/images/draft.png');
        background-repeat: no-repeat;
@@ -15,7 +15,7 @@ body { background-image: url('http://docbook.sourceforge.net/release/images/draf
      }</style>
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
 <link rel="up" href="../bbv2.html" title="Part III. Boost.Build v2 User Manual">
-<link rel="prev" href="installation.html" title="Chapter 19. Installation">
+<link rel="prev" href="installation.html" title="Chapter 22. Installation">
 <link rel="next" href="tutorial/properties.html" title="Properties">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -33,7 +33,7 @@ body { background-image: url('http://docbook.sourceforge.net/release/images/draf
 </div>
 <div class="chapter" lang="en">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="bbv2.tutorial"></a>Chapter 20. Tutorial</h2></div></div></div>
+<a name="bbv2.tutorial"></a>Chapter 23. Tutorial</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -44,8 +44,7 @@ body { background-image: url('http://docbook.sourceforge.net/release/images/draf
 <dt><span class="section"><a href="tutorial/properties.html#bbv2.tutorial.properties.project_attributes">Project Attributes</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="tutorial/hierarchy.html">Project Hierarchies</a></span></dt>
-<dt><span class="section"><a href="tutorial/libs.html">Libraries and Dependent Targets</a></span></dt>
-<dt><span class="section"><a href="tutorial/depends.html">Library dependencies</a></span></dt>
+<dt><span class="section"><a href="tutorial/libs.html">Dependent Targets</a></span></dt>
 <dt><span class="section"><a href="tutorial/linkage.html">Static and shared libaries</a></span></dt>
 <dt><span class="section"><a href="tutorial/conditions.html">Conditions and alternatives</a></span></dt>
 <dt><span class="section"><a href="tutorial/prebuilt.html">Prebuilt targets</a></span></dt>
@@ -55,9 +54,9 @@ body { background-image: url('http://docbook.sourceforge.net/release/images/draf
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.tutorial.hello"></a>Hello, world</h2></div></div></div>
 <p>The simplest project that Boost.Build can construct is
-      stored in <tt class="filename">example/hello/</tt> directory. The
+      stored in <code class="filename">example/hello/</code> directory. The
       project is described by a file
-      called <tt class="filename">Jamfile</tt> that contains:
+      called <code class="filename">Jamroot</code> that contains:
 
 </p>
 <pre class="programlisting">
@@ -66,11 +65,12 @@ exe hello : hello.cpp ;
 <p>
 
       Even with this simple setup, you can do some interesting
-      things. First of all, just invoking <span><b class="command">bjam</b></span> will
-      build the debug variant of the <span><b class="command">hello</b></span>
+      things. First of all, just invoking <span><strong class="command">bjam</strong></span> will
+      build the <code class="filename">hello</code>
       executable by compiling and
-      linking <tt class="filename">hello.cpp</tt>.  Now, to build the
-      release variant of <span><b class="command">hello</b></span>, invoke
+      linking <code class="filename">hello.cpp</code>. By default, debug variant 
+      is built. Now, to build the
+      release variant of <code class="filename">hello</code>, invoke 
 
 </p>
 <pre class="screen">
@@ -80,9 +80,9 @@ bjam release
 
       Note that debug and release variants are created in different
       directories, so you can switch between variants or even build
-      multiple variants at once, without any unneccessary
+      multiple variants at once, without any unnecessary
       recompilation. Let's extend the example by adding another line
-      to our project's <tt class="filename">Jamfile</tt>:
+      to our project's <code class="filename">Jamroot</code>:
 
 </p>
 <pre class="programlisting">
@@ -90,8 +90,8 @@ exe hello2 : hello.cpp ;
 </pre>
 <p>
 
-      Now we can build both the debug and release variants of our
-      project:
+      Now let us build both the debug and release variants of our project
+      again:
 
 </p>
 <pre class="screen">
@@ -99,11 +99,11 @@ bjam debug release
 </pre>
 <p>
 
-      Note that two variants of <span><b class="command">hello2</b></span> are linked.
+      Note that two variants of <code class="filename">hello2</code> are linked.
       Since we have already built both variants
-      of <span><b class="command">hello</b></span>, hello.cpp won't be recompiled;
+      of <code class="filename">hello</code>, hello.cpp won't be recompiled;
       instead the existing object files will just be linked into the
-      corresponding variants of <span><b class="command">hello2</b></span>. Now 
+      corresponding variants of <code class="filename">hello2</code>. Now 
       let's remove all the built products:
 
 </p>
@@ -114,7 +114,7 @@ bjam --clean debug release
 
       It's also possible to build or clean specific targets.  The
       following two commands, respectively, build or clean only the
-      debug version of <span><b class="command">hello2</b></span>.
+      debug version of <code class="filename">hello2</code>.
 
 </p>
 <pre class="screen">

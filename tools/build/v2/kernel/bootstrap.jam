@@ -12,6 +12,37 @@ if $(JAM_VERSION:J="") < 030109
     EXIT ;
 } 
 
+local required-rules = GLOB-RECURSIVELY ;
+
+for local r in $(required-rules)
+{
+    if ! $(r) in [ RULENAMES ]
+    {
+        ECHO "error: builtin rule '$(r)' is not present" ;
+        ECHO "error: you version of bjam is likely out of date" ;
+        ECHO "error: please get a fresh version from CVS." ;
+        EXIT ;
+    }    
+}
+
+# Check that the builtin .ENVIRON module is present. We don't have a
+# builtin to check that a module is present, so we assume that the PATH
+# environment variable is always set and verify that the .ENVIRON module
+# has non-empty value of that variable.
+module .ENVIRON 
+{   
+    local p = $(PATH) $(Path) $(path) ;
+    if ! $(p)
+    {
+        ECHO "error: no builtin module .ENVIRON is found" ;
+        ECHO "error: you version of bjam is likely out of date" ;
+        ECHO "error: please get a fresh version from CVS." ;
+        EXIT ;
+    }
+}
+
+
+
 # Bootstrap the module system. Then bring the import rule into the global module.
 #
 SEARCH on <module@>modules.jam = $(.bootstrap-file:D) ;
@@ -40,6 +71,8 @@ IMPORT modules : import : : import ;
       ;
     local whereami = [ NORMALIZE_PATH $(.bootstrap-file:DT) ] ;
     BOOST_BUILD_PATH += $(whereami:D)/$(subdirs) ;
+    
+    modules.poke .ENVIRON : BOOST_BUILD_PATH : $(BOOST_BUILD_PATH) ;    
 }
 
 # Reload the modules, to clean up things. The modules module can tolerate

@@ -11,8 +11,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/aux_/has_rebind.hpp,v $
-// $Date: 2004/10/30 08:21:49 $
-// $Revision: 1.12.2.1 $
+// $Date: 2004/11/28 01:33:58 $
+// $Revision: 1.13 $
 
 #include <boost/mpl/aux_/config/msvc.hpp>
 #include <boost/mpl/aux_/config/intel.hpp>

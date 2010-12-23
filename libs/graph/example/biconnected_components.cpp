@@ -1,32 +1,16 @@
 //=======================================================================
 // Copyright 2001 Jeremy G. Siek, Andrew Lumsdaine, Lie-Quan Lee, 
 //
-// This file is part of the Boost Graph Library
-//
-// You should have received a copy of the License Agreement for the
-// Boost Graph Library along with the software; see the file LICENSE.
-// If not, contact Office of Research, Indiana University,
-// Bloomington, IN 47405.
-//
-// Permission to modify the code and to distribute the code is
-// granted, provided the text of this NOTICE is retained, a notice if
-// the code was modified is included with the above COPYRIGHT NOTICE
-// and with the COPYRIGHT NOTICE in the LICENSE file, and that the
-// LICENSE file is distributed with the modified code.
-//
-// LICENSOR MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.
-// By way of example, but not limitation, Licensor MAKES NO
-// REPRESENTATIONS OR WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY
-// PARTICULAR PURPOSE OR THAT THE USE OF THE LICENSED SOFTWARE COMPONENTS
-// OR DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS
-// OR OTHER RIGHTS.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 #include <boost/config.hpp>
 #include <vector>
 #include <list>
 #include <boost/graph/biconnected_components.hpp>
 #include <boost/graph/adjacency_list.hpp>
-
+#include <iterator>
 #include <iostream>
 
 namespace boost
@@ -60,19 +44,29 @@ main()
   add_edge(6, 7, g);
   add_edge(7, 8, g);
 
-  std::size_t c = 0;
-  std::vector < std::size_t > discover_time(num_vertices(g));
-  std::vector < vertex_t > lowpt(num_vertices(g));
   property_map < graph_t, edge_component_t >::type
     component = get(edge_component, g);
-  biconnected_components(0, 8, g, component, c, &discover_time[0], &lowpt[0]);
+
+  std::size_t num_comps = biconnected_components(g, component);
+  std::cerr << "Found " << num_comps << " biconnected components.\n";
+
+  std::vector<vertex_t> art_points;
+  articulation_points(g, std::back_inserter(art_points));
+  std::cerr << "Found " << art_points.size() << " articulation points.\n";
 
   std::cout << "graph A {\n" << "  node[shape=\"circle\"]\n";
 
+  for (std::size_t i = 0; i < art_points.size(); ++i) {
+    std::cout << (char)(art_points[i] + 'A') 
+              << " [ style=\"filled\", fillcolor=\"red\" ];" 
+              << std::endl;
+  }
+
   graph_traits < graph_t >::edge_iterator ei, ei_end;
   for (tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
-    std::cout << source(*ei, g) << " -- " << target(*ei, g)
-      << "[label=\"" << component[*ei] << "\"]\n";
+    std::cout << (char)(source(*ei, g) + 'A') << " -- " 
+              << (char)(target(*ei, g) + 'A')
+              << "[label=\"" << component[*ei] << "\"]\n";
   std::cout << "}\n";
 
   return 0;

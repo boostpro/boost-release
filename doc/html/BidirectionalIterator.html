@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Concept BidirectionalIterator</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="The Boost C++ Libraries">
 <link rel="up" href="concepts/reference.html" title="Concept reference">
 <link rel="prev" href="ForwardIterator.html" title="Concept ForwardIterator">
@@ -29,7 +29,7 @@
 <p>BidirectionalIterator</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455259"></a><h2>Description</h2>
+<a name="id976672"></a><h2>Description</h2>
 <p>A bidirectional iterator is an iterator that can read through a sequence
   of values.  It can move in either direction through the sequence, and can
   be either mutable (data pointed to by it can be changed) or not mutable.</p>
@@ -39,39 +39,39 @@
   incrementable).</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455276"></a><h2>Refinement of</h2>
+<a name="id976688"></a><h2>Refinement of</h2>
 <div class="itemizedlist"><ul type="disc"><li><p><a href="ForwardIterator.html" title="Concept ForwardIterator">ForwardIterator</a></p></li></ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455290"></a><h2>Associated types</h2>
+<a name="id976700"></a><h2>Associated types</h2>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p><span class="bold"><b>value_type</b></span></p>
+<p><span class="bold"><strong>value_type</strong></span></p>
 <pre class="literallayout">std::iterator_traits&lt;Iter&gt;::value_type</pre>
 <p>The value type of the iterator</p>
 </li>
 <li>
-<p><span class="bold"><b>category</b></span></p>
+<p><span class="bold"><strong>category</strong></span></p>
 <pre class="literallayout">std::iterator_traits&lt;Iter&gt;::iterator_category</pre>
 <p>The category of the iterator</p>
 </li>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455333"></a><h2>Notation</h2>
+<a name="id976740"></a><h2>Notation</h2>
 <div class="variablelist"><dl>
 <dt><span class="term">Iter</span></dt>
 <dd>A type playing the role of iterator-type in the <a href="BidirectionalIterator.html" title="Concept BidirectionalIterator">BidirectionalIterator</a> concept.</dd>
 <dt>
-<span class="term"><tt class="varname">i</tt>, </span><span class="term"><tt class="varname">j</tt>, </span>
+<span class="term"><code class="varname">i</code>, </span><span class="term"><code class="varname">j</code></span>
 </dt>
 <dd>Objects of type Iter</dd>
-<dt><span class="term"><tt class="varname">x</tt></span></dt>
+<dt><span class="term"><code class="varname">x</code></span></dt>
 <dd>Object of type value_type</dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455377"></a><h2>Type expressions</h2>
+<a name="id976778"></a><h2>Type expressions</h2>
 <div class="variablelist"><dl>
 <dt><span class="term">Category tag</span></dt>
 <dd><p><span class="type">category</span> must be 
@@ -80,7 +80,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455397"></a><h2>Valid expressions</h2>
+<a name="id976797"></a><h2>Valid expressions</h2>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -103,9 +103,9 @@
 <td><p>Predecrement</p></td>
 <td><p>--i</p></td>
 <td><p><span class="type">Iter &amp;</span></p></td>
-<td><p><tt class="computeroutput">i</tt> is incrementable (not
-    off-the-end) and some dereferenceable iterator <tt class="computeroutput">j</tt> exists
-    such that <tt class="computeroutput">i == ++j</tt></p></td>
+<td><p><code class="computeroutput">i</code> is incrementable (not
+    off-the-end) and some dereferenceable iterator <code class="computeroutput">j</code> exists
+    such that <code class="computeroutput">i == ++j</code></p></td>
 <td> </td>
 <td> </td>
 </tr>
@@ -114,42 +114,42 @@
 <td><p>i--</p></td>
 <td><p><span class="type">Iter</span></p></td>
 <td><p>Same as for predecrement</p></td>
-<td><p>Equivalent to <tt class="computeroutput">{Iter j = i; --i; return j;}</tt></p></td>
-<td><p><tt class="computeroutput">i</tt> is dereferenceable or
+<td><p>Equivalent to <code class="computeroutput">{Iter j = i; --i; return j;}</code></p></td>
+<td><p><code class="computeroutput">i</code> is dereferenceable or
     off-the-end</p></td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455500"></a><h2>Complexity</h2>
+<a name="id976889"></a><h2>Complexity</h2>
 <p>
   All iterator operations must take amortized constant time.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455508"></a><h2>Invariants</h2>
+<a name="id976896"></a><h2>Invariants</h2>
 <div class="variablelist"><dl>
 <dt><span class="term">Predecrement must return object</span></dt>
-<dd><p><tt class="computeroutput">&amp;i = &amp;(--i)</tt></p></dd>
+<dd><p><code class="computeroutput">&amp;i = &amp;(--i)</code></p></dd>
 <dt><span class="term">Unique path through sequence</span></dt>
-<dd><p><tt class="computeroutput">i == j</tt> implies <tt class="computeroutput">--i == --j</tt></p></dd>
+<dd><p><code class="computeroutput">i == j</code> implies <code class="computeroutput">--i == --j</code></p></dd>
 <dt><span class="term">Increment and decrement are inverses</span></dt>
-<dd><p><tt class="computeroutput">++i; --i;</tt> and <tt class="computeroutput">--i; ++i;</tt> must end up with the
-  value of <tt class="computeroutput">i</tt> unmodified, if <tt class="computeroutput">i</tt> both of the
+<dd><p><code class="computeroutput">++i; --i;</code> and <code class="computeroutput">--i; ++i;</code> must end up with the
+  value of <code class="computeroutput">i</code> unmodified, if <code class="computeroutput">i</code> both of the
   operations in the pair are valid.
   </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455576"></a><h2>Models</h2>
+<a name="id976958"></a><h2>Models</h2>
 <div class="itemizedlist"><ul type="disc">
 <li><span class="simplelist"><span class="type">T *</span></span></li>
 <li><span class="simplelist"><span class="type">std::list&lt;T&gt;::iterator</span></span></li>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id455599"></a><h2>See also</h2>
+<a name="id976979"></a><h2>See also</h2>
 <div class="itemizedlist"><ul type="disc"><li><p><a href="RandomAccessIterator.html" title="Concept RandomAccessIterator">RandomAccessIterator</a></p></li></ul></div>
 </div>
 </div>

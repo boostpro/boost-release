@@ -42,27 +42,25 @@ T    acosh_error_evaluator(T x)
 }
 
 
-template<typename T>
-void    acosh_test(const char * more_blurb)
+BOOST_TEST_CASE_TEMPLATE_FUNCTION(acosh_test, T)
 {
     BOOST_MESSAGE("Testing acosh in the real domain for "
-        << more_blurb << ".");
+        << string_type_name<T>::_() << ".");
     
     for    (int i = 0; i <= 100; i++)
     {
         T    x = static_cast<T>(i-50)/static_cast<T>(5);
         
-        BOOST_CHECK_PREDICATE(::std::less_equal<T>(), 2,
-            (
-                acosh_error_evaluator(x),
-                static_cast<T>(4)
-            ));
+        BOOST_CHECK_PREDICATE(::std::less_equal<T>(),
+            (acosh_error_evaluator(x))
+            (static_cast<T>(4)));
     }
 }
 
 
 void    acosh_manual_check()
 {
+    BOOST_MESSAGE(" ");
     BOOST_MESSAGE("acosh");
     
     for    (int i = 0; i <= 100; i++)

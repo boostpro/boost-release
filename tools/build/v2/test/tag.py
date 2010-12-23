@@ -6,14 +6,46 @@
 #  warranty, and with no claim as to its suitability for any purpose.
 
 from BoostBuild import Tester, List
+import string
 
 t = Tester()
 
 t.write("project-root.jam", "")
 t.write("Jamfile", """ 
-local tags = <variant>debug:<tag>_d <variant>release:<tag>_r <link>shared:<tag>s <link>static:<tag>t ;
-exe a : a.cpp : $(tags) ;
-lib b : a.cpp : $(tags) ;
+import virtual-target ;
+rule tag ( name : type ? : property-set )
+{
+    local tags ;
+    local v = [ $(property-set).get <variant> ] ;
+    if $(v) = debug
+    {
+        tags += d ;
+    }
+    else if $(v) = release
+    {
+        tags += r ;
+    }
+    
+    local l = [ $(property-set).get <link> ] ;
+    if $(l) = shared
+    {
+        tags += s ;
+    }
+    else if $(l) = static
+    {
+        tags += t ;
+    }
+    
+    if $(tags)
+    {
+        return [ virtual-target.add-prefix-and-suffix $(name)_$(tags:J="") 
+            : $(type) : $(property-set) ] ;
+    }
+    
+}
+
+exe a : a.cpp : <tag>@$(__name__).tag ;
+lib b : a.cpp : <tag>@$(__name__).tag ;
 stage c : a ;
 """)
 
@@ -49,6 +81,25 @@ t.expect_addition(file_list)
 
 t.run_build_system(variants + " clean")
 t.expect_removal(file_list)
+
+# Regression test: the 'tag' feature did not work in directories that
+# had dot in names.
+t.write("version-1.32.0/Jamroot", """
+project test : requirements <tag>@$(__name__).tag ;
+
+rule tag ( name : type ? : property-set )
+{
+   # Do nothing, just make sure the rule is invoked OK.
+   ECHO "The tag rule was invoked" ;
+}
+exe a : a.cpp ;
+""")
+
+t.write("version-1.32.0/a.cpp", "int main() { return 0; }\n")
+
+t.run_build_system(subdir="version-1.32.0")
+t.expect_addition("version-1.32.0/bin/$toolset/debug/a.exe")
+t.fail_test(string.find(t.stdout(), "The tag rule was invoked") == -1)
 
 t.cleanup()
 

@@ -6,7 +6,7 @@
 # Defines the "symlink" special target. 'symlink' targets make symbolic links
 # to the sources.
 
-import targets modules path class os feature project ;
+import targets modules path class os feature project property-set ;
 
 .count = 0 ;
 
@@ -51,14 +51,15 @@ class symlink-targets : basic-target
         self.virtual-targets = ;
     }    
     
-    rule construct ( source-targets * : property-set )
+    rule construct ( name : source-targets * : property-set )
     {
         local i = 1 ;
         for local t in $(source-targets)
         {
             local s = $(self.targets[$(i)]) ;
-            local vt = [ class.new file-target $(s:D=) : [ $(t).type ] : $(self.project) ] ;
-            $(vt).action [ class.new action $(vt) : $(t) : symlink.ln : $(property-set) ] ;
+            local a = [ class.new action  $(t) : symlink.ln : $(property-set) ] ;
+            local vt = [ class.new file-target $(s:D=) 
+              : [ $(t).type ] : $(self.project) : $(a) ] ;
             
             # Place the symlink in the directory relative to the project
             # location, instead of placing it in the build directory.
@@ -70,7 +71,7 @@ class symlink-targets : basic-target
             self.virtual-targets += $(vt) ;
             i = [ numbers.increment $(i) ] ;
         }
-        return $(self.virtual-targets) ;
+        return [ property-set.empty ] $(self.virtual-targets) ;
     }
 }
 

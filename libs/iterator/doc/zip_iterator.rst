@@ -5,7 +5,7 @@
 :Author: David Abrahams, Thomas Becker
 :Contact: dave@boost-consulting.com, thomas@styleadvisor.com
 :organization: `Boost Consulting`_, `Zephyr Associates, Inc.`_
-:date: $Date: 2004/11/01 21:24:48 $
+:date: $Date: 2004/11/01 21:23:46 $
 :copyright: Copyright David Abrahams and Thomas Becker 2003. 
 
 .. _`Boost Consulting`: http://www.boost-consulting.com

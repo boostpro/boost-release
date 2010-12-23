@@ -30,8 +30,8 @@ inline boost::xtime delay(int secs, int msecs=0, int nsecs=0)
     const int NANOSECONDS_PER_MILLISECOND = 1000000;
 
     boost::xtime xt;
-    BOOST_CHECK_EQUAL(boost::xtime_get(&xt, boost::TIME_UTC),
-        static_cast<int>(boost::TIME_UTC));
+    if (boost::TIME_UTC != boost::xtime_get (&xt, boost::TIME_UTC))
+        BOOST_ERROR ("boost::xtime_get != boost::TIME_UTC");
 
     nsecs += xt.nsec;
     msecs += nsecs / NANOSECONDS_PER_MILLISECOND;
@@ -140,10 +140,10 @@ void timed_test(F func, int secs,
 }
 
 template <typename F, typename T>
-class binder
+class thread_binder
 {
 public:
-    binder(const F& func, const T& param)
+    thread_binder(const F& func, const T& param)
         : func(func), param(param) { }
     void operator()() const { func(param); }
 
@@ -153,9 +153,9 @@ private:
 };
 
 template <typename F, typename T>
-binder<F, T> bind(const F& func, const T& param)
+thread_binder<F, T> bind(const F& func, const T& param)
 {
-    return binder<F, T>(func, param);
+    return thread_binder<F, T>(func, param);
 }
 } // namespace
 

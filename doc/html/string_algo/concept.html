@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Concepts</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../string_algo.html" title="Chapter 9. Boost String Algorithms Library">
+<link rel="up" href="../string_algo.html" title="Chapter 11. Boost String Algorithms Library">
 <link rel="prev" href="design.html" title="Design Topics">
 <link rel="next" href="reference.html" title="Reference">
 </head>
@@ -26,15 +26,15 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="string_algo.concept"></a>Concepts</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="concept.html#id579771">Definitions</a></span></dt>
+<dt><span class="section"><a href="concept.html#id1311377">Definitions</a></span></dt>
 <dt><span class="section"><a href="concept.html#string_algo.finder_concept">Finder Concept</a></span></dt>
 <dt><span class="section"><a href="concept.html#string_algo.formatter_concept">Formatter concept</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id579771"></a>Definitions</h4></div></div></div>
+<a name="id1311377"></a>Definitions</h4></div></div></div>
 <div class="table">
-<a name="id579775"></a><p class="title"><b>Table 9.13. Notation</b></p>
+<a name="id1311380"></a><p class="title"><b>Table 11.12. Notation</b></p>
 <table class="table" summary="Notation">
 <colgroup>
 <col>
@@ -42,32 +42,32 @@
 </colgroup>
 <tbody>
 <tr>
-<td align="left"><tt class="computeroutput">F</tt></td>
+<td align="left"><code class="computeroutput">F</code></td>
 <td align="left">A type that is a model of Finder</td>
 </tr>
 <tr>
-<td align="left"><tt class="computeroutput">Fmt</tt></td>
+<td align="left"><code class="computeroutput">Fmt</code></td>
 <td align="left">A type that is a model of Formatter</td>
 </tr>
 <tr>
-<td align="left"><tt class="computeroutput">Iter</tt></td>
+<td align="left"><code class="computeroutput">Iter</code></td>
 <td align="left">
                             Iterator Type
                         </td>
 </tr>
 <tr>
-<td align="left"><tt class="computeroutput">f</tt></td>
-<td align="left">Object of type <tt class="computeroutput">F</tt>
+<td align="left"><code class="computeroutput">f</code></td>
+<td align="left">Object of type <code class="computeroutput">F</code>
 </td>
 </tr>
 <tr>
-<td align="left"><tt class="computeroutput">fmt</tt></td>
-<td align="left">Object of type <tt class="computeroutput">Fmt</tt>
+<td align="left"><code class="computeroutput">fmt</code></td>
+<td align="left">Object of type <code class="computeroutput">Fmt</code>
 </td>
 </tr>
 <tr>
-<td align="left"><tt class="computeroutput">i,j</tt></td>
-<td align="left">Objects of type <tt class="computeroutput">Iter</tt>
+<td align="left"><code class="computeroutput">i,j</code></td>
+<td align="left">Objects of type <code class="computeroutput">Iter</code>
 </td>
 </tr>
 </tbody>
@@ -79,11 +79,11 @@
 <a name="string_algo.finder_concept"></a>Finder Concept</h4></div></div></div>
 <p>
             Finder is a functor which searches for an arbitrary part of a container. 
-            The result of the search is given as an <a href="../iterator_range.html" title="Class template iterator_range">iterator_range</a> 
+            The result of the search is given as an <code class="computeroutput">iterator_range</code> 
             delimiting the selected part.
         </p>
 <div class="table">
-<a name="id579886"></a><p class="title"><b>Table 9.14. Valid Expressions</b></p>
+<a name="id1311479"></a><p class="title"><b>Table 11.13. Valid Expressions</b></p>
 <table class="table" summary="Valid Expressions">
 <colgroup>
 <col>
@@ -96,8 +96,8 @@
 <th align="left">Effects</th>
 </tr></thead>
 <tbody><tr>
-<td align="left"><tt class="computeroutput">f(i,j)</tt></td>
-<td align="left">Convertible to <tt class="computeroutput">iterator_range&lt;Iter&gt;</tt>
+<td align="left"><code class="computeroutput">f(i,j)</code></td>
+<td align="left">Convertible to <code class="computeroutput">iterator_range&lt;Iter&gt;</code>
 </td>
 <td align="left">Perform the search on the interval [i,j) and returns the result of the search</td>
 </tr></tbody>
@@ -112,10 +112,10 @@
             Note, that it is only required that the finder works with a particular iterator type. However,
             a Finder operation can be defined as a template, allowing the Finder to work with any iterator.
         </p>
-<p><span class="bold"><b>Examples</b></span></p>
+<p><span class="bold"><strong>Examples</strong></span></p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-                    Finder implemented as a class. This Finder always returns the whole input as a match. <tt class="computeroutput">operator()</tt>
+                    Finder implemented as a class. This Finder always returns the whole input as a match. <code class="computeroutput">operator()</code>
                     is templated, so that the finder can be used on any iterator type.
                     
                     <pre class="programlisting">
@@ -155,11 +155,11 @@ boost::iterator_range&lt;std::string&gt; simple_finder(
             They are used in close combination with finders.
             A formatter is a functor, which takes a result from a Finder operation and transforms it in a specific way. 
             The operation of the formatter can use additional information provided by a specific finder,
-            for example <a href="../id308968.html" title="Function template regex_formatter">regex_formatter()</a> uses the match information from
-            <a href="../id363826.html" title="Function template regex_finder">regex_finder()</a> to format the result of formatter operation.
+            for example <code class="computeroutput"><a href="../id1171494.html" title="Function template regex_formatter">regex_formatter()</a></code> uses the match information from
+            <code class="computeroutput"><a href="../id685080.html" title="Function template regex_finder">regex_finder()</a></code> to format the result of formatter operation.
         </p>
 <div class="table">
-<a name="id580046"></a><p class="title"><b>Table 9.15. Valid Expressions</b></p>
+<a name="id1311619"></a><p class="title"><b>Table 11.14. Valid Expressions</b></p>
 <table class="table" summary="Valid Expressions">
 <colgroup>
 <col>
@@ -172,7 +172,7 @@ boost::iterator_range&lt;std::string&gt; simple_finder(
 <th align="left">Effects</th>
 </tr></thead>
 <tbody><tr>
-<td align="left"><tt class="computeroutput">fmt(f(i,j))</tt></td>
+<td align="left"><code class="computeroutput">fmt(f(i,j))</code></td>
 <td align="left">A container type, accessible using container traits</td>
 <td align="left">Formats the result of the finder operation</td>
 </tr></tbody>
@@ -183,11 +183,11 @@ boost::iterator_range&lt;std::string&gt; simple_finder(
             select a part of the input, formatter takes this selection and performs some formating
             on it. Algorithms can abstract from formating using a formatter.
         </p>
-<p><span class="bold"><b>Examples</b></span></p>
+<p><span class="bold"><strong>Examples</strong></span></p>
 <div class="itemizedlist"><ul type="disc">
 <li>
                     Formatter implemented as a class. This Formatter does not perform any formating and 
-                    returns the match, repackaged. <tt class="computeroutput">operator()</tt>
+                    returns the match, repackaged. <code class="computeroutput">operator()</code>
                     is templated, so that the Formatter can be used on any Finder type.
                     
                     <pre class="programlisting">

@@ -15,8 +15,8 @@
 <h2>Contents</h2>
                    
 <dl>
-  <dt><a href="#intro">Rationale</a></dt>
-  <dt><a href="#rationale">Introduction</a></dt>
+  <dt><a href="#rationale">Rationale</a></dt>
+  <dt><a href="#intro">Introduction</a></dt>
 </dl>
                    
 <ul>
@@ -49,7 +49,7 @@ a solution   with consistent syntax for value   initialization of scalar,
 union and class   types. <br>
   </p>
         
-<h2><a name="into"></a>Introduction</h2>
+<h2><a name="intro"></a>Introduction</h2>
      
 <p>The C++ standard [<a href="#references">1</a>] contains the definitions 
     of <code>zero-initialization</code> and <code>default-initialization</code>.
@@ -131,7 +131,7 @@ data member:</p>
                    
 <h2><a name="val_init"><code>template class value_initialized&lt;T&gt;</code></a></h2>
                    
-<pre>namespace boost {<br><br>template&lt;class T&gt;<br>class value_initialized<br>{<br>  public :<br>    value_initialized() : x() {}<br>    operator T&amp;() const { return x ; }<br>    T&amp; data() const { return x ; }<br><br>  private :<br>    <i>impll-defined</i> x ;<br>} ;<br><br>template&lt;class T&gt;<br>T const&amp; get ( value_initialized&lt;T&gt; const&amp; x )<br>{<br>  return x.data() ;<br>}<br><br>template&lt;class T&gt;<br>T&amp; get ( value_initialized&lt;T&gt;&amp; x )<br>{<br>  return x.data() ;<br>}<br><br>} // namespace boost<br></pre>
+<pre>namespace boost {<br><br>template&lt;class T&gt;<br>class value_initialized<br>{<br>  public :<br>    value_initialized() : x() {}<br>    operator T&amp;() const { return x ; }<br>    T&amp; data() const { return x ; }<br><br>  private :<br>    <i>unspecified</i> x ;<br>} ;<br><br>template&lt;class T&gt;<br>T const&amp; get ( value_initialized&lt;T&gt; const&amp; x )<br>{<br>  return x.data() ;<br>}<br><br>template&lt;class T&gt;<br>T&amp; get ( value_initialized&lt;T&gt;&amp; x )<br>{<br>  return x.data() ;<br>}<br><br>} // namespace boost<br></pre>
                     
 <p>An object of this template class is a <code>T</code>-wrapper convertible 
     to <code>'T&amp;'</code> whose wrapped object (data member of type <code>T</code>) 

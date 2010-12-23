@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  (C) Copyright Gennadiy Rozental 2001-2005.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,14 +7,15 @@
 //
 //  File        : $RCSfile: output_test_stream_test.cpp,v $
 //
-//  Version     : $Revision: 1.18 $
+//  Version     : $Revision: 1.20 $
 //
 //  Description : tests output_test_stream test tool functionality
 // ***************************************************************************
 
 // Boost.Test
 #include <boost/test/unit_test.hpp>
-using boost::test_toolbox::output_test_stream;
+#include <boost/test/output_test_stream.hpp>
+using boost::test_tools::output_test_stream;
 using boost::unit_test::test_suite;
 
 // STL
@@ -215,16 +216,22 @@ init_unit_test_suite( int /*argc*/, char* /*argv*/[] ) {
 //  Revision History :
 //  
 //  $Log: output_test_stream_test.cpp,v $
-//  Revision 1.18  2004/06/05 11:04:17  rogeeff
-//  no message
-//
-//  Revision 1.17  2004/05/27 06:30:48  rogeeff
-//  no message
-//
-//  Revision 1.16  2004/05/21 06:26:10  rogeeff
+//  Revision 1.20  2005/05/11 05:07:57  rogeeff
 //  licence update
 //
-//  Revision 1.15  2004/05/11 11:05:06  rogeeff
+//  Revision 1.19  2005/01/30 03:35:55  rogeeff
+//  no message
+//
+//  Revision 1.18  2005/06/05 11:04:17  rogeeff
+//  no message
+//
+//  Revision 1.17  2005/05/27 06:30:48  rogeeff
+//  no message
+//
+//  Revision 1.16  2005/05/21 06:26:10  rogeeff
+//  licence update
+//
+//  Revision 1.15  2005/05/11 11:05:06  rogeeff
 //  basic_cstring introduced and used everywhere
 //  class properties reworked
 //  namespace names shortened

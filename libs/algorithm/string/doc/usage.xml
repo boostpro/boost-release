@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE library PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
 "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd">
-<section id="string_algo.usage" last-revision="$Date: 2004/08/03 17:09:28 $">
+<section id="string_algo.usage" last-revision="$Date: 2005/05/14 19:11:09 $">
     <title>Usage</title>
 
     <using-namespace name="boost"/>
@@ -46,10 +46,10 @@
                     <code>to_lower(str1)</code>, than <code>to_lower(str1.begin(), str1.end())</code>.
                 </para>
                 <para>
-                    The magic of <link linkend="string_algo.collection_traits">collection_traits</link> 
+                    The magic of <ulink url="../../libs/range/index.html">Boost.Range</ulink> 
                     provides a uniform way of handling different string types. 
                     If there is a need to pass a pair of iterators, 
-                    <link linkend="string_algo.iterator_range"><code>iterator_range</code></link>
+                    <ulink url="../../libs/range/doc/utility_class.html"><code>boost::iterator_range</code></ulink>
                     can be used to package iterators into a structure with a compatible interface.
                 </para>
             </listitem>
@@ -200,16 +200,16 @@
         </programlisting>
         <para>
             We have used <functionname>find_last()</functionname> to search the <code>text</code> for "ll".
-            The result is given in the <link linkend="string_algo.iterator_range"><code>iterator_range</code></link>. 
+            The result is given in the <ulink url="../../libs/range/doc/utility_class.html"><code>boost::iterator_range</code></ulink>. 
             This range delimits the
             part of the input which satisfies the find criteria. In our example it is the last occurrence of "ll".
             
             As we can see, input of the <functionname>find_last()</functionname> algorithm can be also 
             char[] because this type is supported by 
-            <link linkend="string_algo.collection_traits">collection_traits</link>.
+            <ulink linkend="../../libs/range/doc/index.html">Boost.Range</ulink>.
 
             The following lines transform the result. Notice that 
-            <link linkend="string_algo.iterator_range"><code>iterator_range</code></link> has familiar 
+            <ulink url="../../libs/range/doc/utility_class.html"><code>boost::iterator_range</code></ulink> has familiar 
             <code>begin()</code> and <code>end()</code> methods, so it can be used like any other STL container.
             Also it is convertible to bool therefore it is easy to use find algorithms for a simple containment checking.
         </para>
@@ -256,7 +256,7 @@
             the find iterator allows us to iterate over the substrings matching the specified criteria.
             This facility is using the <link linkend="string_algo.finder_concept">Finder</link> to incrementally
             search the string. 
-            Dereferencing a find iterator yields an <link linkend="string_algo.iterator_range"><code>iterator_range</code></link> 
+            Dereferencing a find iterator yields an <ulink url="../../libs/range/doc/utility_class.html"><code>boost::iterator_range</code></ulink> 
             object, that delimits the current match.
         </para>
         <para>
@@ -274,7 +274,7 @@
         It!=string_find_iterator();
         ++It)
     {
-        cout &lt;&lt; copy_iterator_range&lt;std::string&gt;(*It) &lt;&lt; endl;
+        cout &lt;&lt; copy_range&lt;std::string&gt;(*It) &lt;&lt; endl;
     }
 
     // Output will be:
@@ -288,7 +288,7 @@
         It!=string_find_iterator();
         ++It)
     {
-        cout &lt;&lt; copy_iterator_range&lt;std::string&gt;(*It) &lt;&lt; endl;
+        cout &lt;&lt; copy_range&lt;std::string&gt;(*It) &lt;&lt; endl;
     }
 
     // Output will be:
@@ -300,7 +300,7 @@
             Note that the find iterators have only one template parameter. It is the base iterator type.
             The Finder is specified at runtime. This allows us to typedef a find iterator for
             common string types and reuse it. Additionally make_*_iterator functions help
-            to construct a find iterator for a particular collection.
+            to construct a find iterator for a particular range.
         </para>
         <para>
             See the reference in <headername>boost/algorithm/string/find_iterator.hpp</headername>.

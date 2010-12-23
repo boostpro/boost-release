@@ -87,6 +87,9 @@ struct _rule {
                                 * appear in the global module and be
                                 * automatically imported into other modules
                                 */
+#ifdef HAVE_PYTHON
+    PyObject* python_function;
+#endif    
 };
 
 /* ACTIONS - a chain of ACTIONs */
@@ -156,6 +159,10 @@ struct _target {
 
 # define T_FLAG_INTERNAL 0x0200    /* internal INCLUDES node */
 
+/*  Indicates that the target must be a file. This prevents matching non-files,
+    like directories, when a target is searched. */
+#define     T_FLAG_ISFILE   0x0400
+
 
 
 #ifdef OPT_SEMAPHORE
@@ -174,6 +181,8 @@ struct _target {
 # define 	T_BIND_EXISTS	3	/* real file, timestamp valid */
 
 	TARGETS		*depends;	/* dependencies */
+	TARGETS		*dependents;/* the inverse of dependencies */
+    TARGETS     *rebuilds;  /* targets that should be force-rebuilt whenever this one is */
 	TARGET		*includes;	/* includes */
     TARGET        *original_target; /* original_target->includes = this */
     char rescanned;
@@ -194,14 +203,15 @@ struct _target {
 
 # define	T_FATE_BUILD	5	/* >= BUILD rebuilds target */
 # define	T_FATE_TOUCHED	5	/* manually touched with -t */
-# define	T_FATE_MISSING	6	/* is missing, needs updating */
-# define	T_FATE_NEEDTMP	7	/* missing temp that must be rebuild */
-# define 	T_FATE_OUTDATED	8	/* is out of date, needs updating */
-# define 	T_FATE_UPDATE	9	/* deps updated, needs updating */
+# define	T_FATE_REBUILD	6
+# define	T_FATE_MISSING	7	/* is missing, needs updating */
+# define	T_FATE_NEEDTMP	8	/* missing temp that must be rebuild */
+# define 	T_FATE_OUTDATED	9	/* is out of date, needs updating */
+# define 	T_FATE_UPDATE	10	/* deps updated, needs updating */
 
-# define 	T_FATE_BROKEN	10	/* >= BROKEN ruins parents */
-# define 	T_FATE_CANTFIND	10	/* no rules to make missing target */
-# define 	T_FATE_CANTMAKE	11	/* can't find dependents */
+# define 	T_FATE_BROKEN	11	/* >= BROKEN ruins parents */
+# define 	T_FATE_CANTFIND	11	/* no rules to make missing target */
+# define 	T_FATE_CANTMAKE	12	/* can't find dependents */
 
 	char	progress;		/* tracks make1() progress */
 

@@ -96,7 +96,7 @@ int main() {}
 
 t.write("project-root.jam", """ 
 import type ;
-type.register MYEXE : : EXE : main ;
+type.register MYEXE : : EXE ;
 type.set-generated-target-suffix MYEXE : <optimization>off : myexe ; 
 """)
 
@@ -128,7 +128,7 @@ foo() { }
 t.write("Jamfile", """ 
 lib l : l.cpp ;
 exe a : a.cpp l ;
-stage dist : a : <traverse-dependencies>on <include-type>EXE <include-type>LIB ; 
+stage dist : a : <install-dependencies>on <install-type>EXE <install-type>LIB ; 
 """)
 
 t.write("project-root.jam", "")
@@ -137,6 +137,81 @@ t.rm("dist")
 t.run_build_system()
 t.expect_addition("dist/a.exe")
 t.expect_addition("dist/l.dll")
+
+# Check that <use> properties are ignored the traversing
+# target for staging.
+t.copy("l.cpp", "l2.cpp")
+t.copy("l.cpp", "l3.cpp")
+t.write("Jamfile", """
+lib l2 : l2.cpp ;
+lib l3 : l3.cpp ;
+lib l : l.cpp : <use>l2 <dependency>l3 ;
+exe a : a.cpp l ;
+stage dist : a : <install-dependencies>on <install-type>EXE <install-type>LIB ; 
+""")
+
+t.rm("dist")
+t.run_build_system()
+t.expect_addition("dist/l3.dll")
+t.expect_nothing("dist/l2.dll")
+
+# Check if <dependency> on 'stage' works.
+t.rm(".")
+t.write("Jamroot", """
+stage a1 : a1.txt : <location>dist ;
+stage a2 : a2.txt : <location>dist <dependency>a1 ;
+""")
+t.write("a1.txt", "")
+t.write("a2.txt", "")
+t.run_build_system("a2")
+t.expect_addition(["dist/a1.txt", "dist/a2.txt"])
+
+# Regression test: check if <location>. works
+t.rm(".")
+t.write("Jamroot", """
+stage a1 : d/a1.txt : <location>. ;
+""")
+t.write("d/a1.txt", "")
+t.run_build_system()
+t.expect_addition("a1.txt")
+
+# Test that relative paths of sources can be preserved
+t.rm(".")
+t.write("Jamroot", """
+install dist : a/b/c.h : <install-source-root>. ;
+""")
+t.write("a/b/c.h", "")
+t.run_build_system()
+t.expect_addition("dist/a/b/c.h")
+
+t.write("Jamroot", """
+install dist : a/b/c.h : <install-source-root>a ;
+""")
+t.write("a/b/c.h", "")
+t.run_build_system()
+t.expect_addition("dist/b/c.h")
+
+t.rm(".")
+t.write("build/Jamroot", """
+install dist : ../a/b/c.h 
+    : <location>../dist <install-source-root>../a ;
+""")
+t.write("a/b/c.h", "")
+t.run_build_system(subdir="build")
+t.expect_addition("dist/b/c.h")
+
+t.write("Jamroot", """
+install dist2 : a/b/c.h : <install-source-root>a ;
+""")
+t.write("a/b/c.h", "")
+t.write("sub/Jamfile", """
+alias h : ..//dist2 ;
+""")
+t.run_build_system(subdir="sub")
+t.expect_addition("dist2/b/c.h")
+
+
+
 
 
 t.cleanup()

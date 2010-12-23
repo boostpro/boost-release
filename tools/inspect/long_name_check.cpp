@@ -48,7 +48,7 @@ namespace boost
       if ( leaf.size() > 31 )
       {
         ++m_long_name_errors;
-        error( library_name, full_path, "filename > 31 chars" );
+        error( library_name, full_path, "filename &gt; 31 chars" );
       }
 
       if ( std::count( leaf.begin(), leaf.end(), '.' ) > 1 )
@@ -91,16 +91,18 @@ namespace boost
         error( library_name, full_path, "file path will be > 100 chars if placed on a CD" );
       }
 
-      try
+      if (relative_path.leaf() != ".cvsignore")
       {
-        path const check_portability( relative_path.string(), &filesystem::portable_name );
+        try
+        {
+          path const check_portability( relative_path.string(), &filesystem::portable_name );
+        }
+        catch ( filesystem::filesystem_error const& )
+        {
+          ++m_long_name_errors;
+          error( library_name, full_path, "nonportable path" );
+        }
       }
-      catch ( filesystem::filesystem_error const& )
-      {
-        ++m_long_name_errors;
-        error( library_name, full_path, "nonportable path" );
-      }
-
     }
 
     long_name_check::~long_name_check()

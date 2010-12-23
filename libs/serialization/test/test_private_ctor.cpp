@@ -10,9 +10,10 @@
 
 #include <boost/test/test_tools.hpp>
 
-#include <boost/serialization/vector.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+
+#include <boost/serialization/vector.hpp>
 
 class V {
     int m_i;    
@@ -28,14 +29,16 @@ class V {
 int test_main(int /* argc */, char * /* argv */[])
 {
     std::stringstream ss;
-    std::vector<V> v;
+    const std::vector<V> v;
     {
         boost::archive::text_oarchive oa(ss);
         oa << v;
     }
+    std::vector<V> v1;
     {
         boost::archive::text_iarchive ia(ss);
-        ia >> v;
+        ia >> v1;
     }
-    return boost::exit_success;
+    //BOOST_CHECK(v == v1);
+    return EXIT_SUCCESS;
 }

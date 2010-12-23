@@ -1,9 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 22. Extender Manual</title>
+<title>Chapter 25. Extender Manual</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<style type="text/css">
+body { background-image: url('http://docbook.sourceforge.net/release/images/draft.png');
+       background-repeat: no-repeat;
+       background-position: top left;
+       /* The following properties make the watermark "fixed" on the page. */
+       /* I think that's just a bit too distracting for the reader... */
+       /* background-attachment: fixed; */
+       /* background-position: center center; */
+     }</style>
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
 <link rel="up" href="../bbv2.html" title="Part III. Boost.Build v2 User Manual">
 <link rel="prev" href="advanced/differences_to_v1.html" title="Differences to Boost.Build V1">
@@ -24,7 +33,7 @@
 </div>
 <div class="chapter" lang="en">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="bbv2.extender"></a>Chapter 22. Extender Manual</h2></div></div></div>
+<a name="bbv2.extender"></a>Chapter 25. Extender Manual</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -41,16 +50,16 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.extender.intro"></a>Introduction</h2></div></div></div>
 <p>This document explains how to extend Boost.Build to accomodate
-  your local requirements. Let's start with quite simple, but
+  your local requirements. Let's start with a simple but
   realistic example.</p>
-<p>Say you're writing an application which generates C++ code. If
+<p>Say you're writing an application that generates C++ code. If
   you ever did this, you know that it's not nice. Embedding large
   portions of C++ code in string literals is very awkward. A much
   better solution is:</p>
 <div class="orderedlist"><ol type="1">
 <li>
         Write the template of the code to be generated, leaving
-    placeholders at the points which will change
+    placeholders at the points that will change
       </li>
 <li>
         Access the template in your application and replace
@@ -58,37 +67,43 @@
       </li>
 <li>Write the result.</li>
 </ol></div>
-<p>It's quite easy to achieve. You write special verbatim files,
-  which are just C++, except that the very first line of the file
-  gives a name of variable that should be generated. A simple tool
-  is created which takes verbatim file and creates a cpp file with
-  a single char* variable, which name is taken from the first line
-  of verbatim file, and which value is properly quoted content of
-  the verbatim file.</p>
+<p>It's quite easy to achieve. You write special verbatim files
+  that are just C++, except that the very first line of the file
+  contains the name of a variable that should be generated. A simple tool
+  is created that takes a verbatim file and creates a cpp file with
+  a single <code class="computeroutput">char*</code> variable whose name is taken from the first line
+  of the verbatim file and whose value is the file's properly quoted content.</p>
 <p>Let's see what Boost.Build can do.</p>
 <p>First off, Boost.Build has no idea about "verbatim files". So,
-  you must register a new type. The following code does it:</p>
+  you must register a new target type. The following code does
+  it:</p>
 <pre class="programlisting">
 import type ;
-type.register VERBATIM : verbatim ;
+type.register VERBATIM : vrb ;
 </pre>
-<p>The first parameter to 'type.register' gives the name of
-  declared type. By convention, it's uppercase. The second
-  parameter is suffix for this type. So, if Boost.Build sees
-  "code.verbatim" in the list of sources, it knows that it's of
-  type <tt class="literal">VERBATIM</tt>.</p>
-<p>Lastly, you need a tool to convert verbatim files to C++. Say
-  you've sketched such a tool in Python. Then, you have to inform
-  Boost.Build about the tool. The Boost.Build concept which
-  represents a tool is <span class="emphasis"><em>generator</em></span>.</p>
-<p>First, you say that generator 'inline-file' is able to convert
-  VERBATIM type into C++:</p>
+<p>The first parameter to
+  <code class="computeroutput">type.register</code> gives the name of the
+  declared type. By convention, it's uppercase. The second parameter
+  is the suffix for files of this type. So, if Boost.Build sees
+  <code class="filename">code.vrb</code> in a list of sources, it knows that it's of type
+  <code class="computeroutput">VERBATIM</code>.</p>
+<p>Next, you tell Boost.Build that the verbatim files can be
+  transformed into C++ files in one build step.  A
+  <em class="firstterm">generator</em> is a template for a build step that
+  transforms targets of one type (or set of types) into another.  Our
+  generator will be called <code class="computeroutput">verbatim.inline-file</code>; it
+  transforms <code class="computeroutput">VERBATIM</code> files into <code class="computeroutput">CPP</code> files:
+
+</p>
 <pre class="programlisting">
 import generators ;
 generators.register-standard verbatim.inline-file : VERBATIM : CPP ;
 </pre>
-<p>Second, you must specify the commands to be run to actually
-  perform convertion:</p>
+<p>Lastly, you have to inform Boost.Build about the shell
+  commands used to make that transformation.  That's done with an
+  <code class="computeroutput">actions</code> declaration.
+
+</p>
 <pre class="programlisting">
 actions inline-file
 {
@@ -96,9 +111,9 @@ actions inline-file
 }
 </pre>
 <p>Now, we're ready to tie it all together. Put all the code
-  above in file "verbatim.jam", add "import verbatim ;" to
-  "project-root.jam", and it's possible to write the following in
-  Jamfile:</p>
+  above in file <code class="filename">verbatim.jam</code>, add <code class="computeroutput">import verbatim ;</code> 
+  to <code class="filename">project-root.jam</code>, and it's possible to write
+  the following in Jamfile:</p>
 <pre class="programlisting">
 exe codegen : codegen.cpp class_template.verbatim usage.verbatim ;
 </pre>

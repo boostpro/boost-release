@@ -5,9 +5,11 @@
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#include <boost/test/minimal.hpp>
+#include <boost/detail/lightweight_test.hpp>
 #include <boost/spirit/fusion/sequence/io.hpp>
 #include <boost/spirit/fusion/sequence/single_view.hpp>
+#include <boost/spirit/fusion/sequence/begin.hpp>
+#include <boost/spirit/fusion/iterator/deref.hpp>
 
 struct X {};
 
@@ -19,7 +21,7 @@ OS& operator<<(OS& os, X const&)
 }
 
 int
-test_main(int, char*[])
+main()
 {
     using namespace boost::fusion;
 
@@ -32,11 +34,17 @@ test_main(int, char*[])
     {
         single_view<int> view1(3);
         std::cout << view1 << std::endl;
+        
+        // allow single_view element to be modified
+        *begin(view1) += 4;
+        std::cout << view1 << std::endl;
+        BOOST_TEST(*begin(view1) == 7);
+        BOOST_TEST(view1.val == 7);
 
         single_view<X> view2;
         std::cout << view2 << std::endl;
     }
 
-    return 0;
+    return boost::report_errors();
 }
 

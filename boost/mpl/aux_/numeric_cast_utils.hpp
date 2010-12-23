@@ -10,9 +10,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/boost/mpl/aux_/Attic/numeric_cast_utils.hpp,v $
-// $Date: 2004/11/10 23:48:15 $
-// $Revision: 1.1.2.1 $
+// $Source: /cvsroot/boost/boost/boost/mpl/aux_/numeric_cast_utils.hpp,v $
+// $Date: 2004/11/28 01:39:23 $
+// $Revision: 1.2 $
 
 #include <boost/mpl/numeric_cast.hpp>
 #include <boost/mpl/apply_wrap.hpp>

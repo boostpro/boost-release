@@ -1,343 +1,275 @@
-//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  (C) Copyright Gennadiy Rozental 2001-2005.
 //  Distributed under the Boost Software License, Version 1.0.
-//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
 //  File        : $RCSfile: test_tools_test.cpp,v $
 //
-//  Version     : $Revision: 1.34 $
+//  Version     : $Revision: 1.43 $
 //
 //  Description : tests all Test Tools but output_test_stream
 // ***************************************************************************
 
 // Boost.Test
-#include <boost/test/unit_test.hpp>
-#include <boost/test/unit_test_result.hpp>
-using namespace boost::unit_test;
-using boost::test_toolbox::extended_predicate_value;
+#define BOOST_AUTO_TEST_MAIN
+#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test_log.hpp>
+#include <boost/test/output_test_stream.hpp>
+#include <boost/test/execution_monitor.hpp>
+#include <boost/test/detail/unit_test_parameters.hpp>
+#include <boost/test/output/compiler_log_formatter.hpp>
+#include <boost/test/framework.hpp>
 
-// BOOST
+// Boost
 #include <boost/bind.hpp>
 
 // STL
 #include <iostream>
 #include <iomanip>
-#include <list>
-#include <typeinfo>
-#include <cassert>
+
+using namespace boost::unit_test;
+using namespace boost::test_tools;
 
 //____________________________________________________________________________//
 
-#define CHECK_TOOL_USAGE( tool_usage, check )               \
-{                                                           \
-    boost::test_toolbox::output_test_stream output;         \
-                                                            \
-    unit_test_log::instance().set_log_stream( output );     \
-    { unit_test_result_saver saver;                         \
-      tool_usage;                                           \
-    }                                                       \
-    unit_test_log::instance().set_log_stream( std::cout );  \
-    BOOST_CHECK( check );                                   \
-}
+#define CHECK_CRITICAL_TOOL_USAGE( tool_usage )     \
+{                                                   \
+    bool throw_ = false;                            \
+    try {                                           \
+        tool_usage;                                 \
+    } catch( boost::execution_aborted const& ) {    \
+        throw_ = true;                              \
+    }                                               \
+                                                    \
+    BOOST_CHECK_MESSAGE( throw_, "not aborted" );   \
+}                                                   \
+/**/
 
-//____________________________________________________________________________//
-
-#define CHECK_CRITICAL_TOOL_USAGE( tool_usage, nothrow_check, throw_check ) \
-{                                                                           \
-    boost::test_toolbox::output_test_stream output;                         \
-                                                                            \
-    unit_test_log::instance().set_log_stream( output );                     \
-    try {                                                                   \
-        {   unit_test_result_saver saver;                                   \
-            tool_usage;                                                     \
-        }                                                                   \
-        unit_test_log::instance().set_log_stream( std::cout );              \
-        BOOST_CHECK( nothrow_check );                                       \
-    } catch( boost::test_toolbox::tt_detail::test_tool_failed const&) {     \
-        unit_test_log::instance().set_log_stream( std::cout );              \
-        BOOST_CHECK( throw_check );                                         \
-    }                                                                       \
-}
-
-//____________________________________________________________________________//
-
-char
-set_unix_slash( char in )
-{
-    return in == '\\' ? '/' : in;
-}
-
-static std::string const&
-normalize_file_name( char const* f )
-{
-    static std::string buffer;
-
-    buffer = f;
-
-    std::transform( buffer.begin(), buffer.end(), buffer.begin(), &set_unix_slash );
-
-    return buffer;
-}
-
-#ifdef BOOST_TEST_SHIFTED_LINE
-
-#define CHECK_PATTERN( msg, shift ) \
-    (boost::wrap_stringstream().ref() << normalize_file_name( __FILE__ ) << "(" << (__LINE__-shift) << "): " << msg).str()
-
-#else
-
-#define CHECK_PATTERN( msg, shift ) \
-    (boost::wrap_stringstream().ref() << normalize_file_name( __FILE__ ) << "(" << __LINE__ << "): " << msg).str()
-
-#endif
 //____________________________________________________________________________//
 
 class bool_convertible
 {
     struct Tester {};
 public:
-    operator Tester*() { return static_cast<Tester*>( 0 ) + 1; }
+    operator Tester*() const { return static_cast<Tester*>( 0 ) + 1; }
 };
 
-void
-test_BOOST_CHECK()
+//____________________________________________________________________________//
+
+struct shorten_lf : public boost::unit_test::output::compiler_log_formatter
 {
-#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK" << '\"' <<
+    void    print_prefix( std::ostream& output, boost::unit_test::const_string, std::size_t line )
+    {
+        output << line << ": ";
+    }
+};
 
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
+//____________________________________________________________________________//
 
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK( true ),
-        output.is_empty()
-    );
+std::string match_file_name( "./test_files/test_tools_test.pattern" );
+std::string save_file_name( "test_tools_test.pattern" );
+
+output_test_stream& ots()
+{
+    static boost::shared_ptr<output_test_stream> inst;
+
+    if( !inst ) {
+        inst.reset( 
+            auto_unit_test_suite()->argc <= 1
+                ? new output_test_stream( runtime_config::save_pattern() ? save_file_name : match_file_name, !runtime_config::save_pattern() )
+                : new output_test_stream( auto_unit_test_suite()->argv[1], !runtime_config::save_pattern() ) );
+    }
+
+    return *inst;
+}
+
+//____________________________________________________________________________//
+
+#define TEST_CASE( name )                                   \
+void name ## _impl();                                       \
+void name ## _impl_defer();                                 \
+                                                            \
+BOOST_AUTO_TEST_CASE( name )                                \
+{                                                           \
+    test_case* impl = make_test_case( &name ## _impl, #name ); \
+                                                            \
+    unit_test_log.set_stream( ots() );                      \
+    unit_test_log.set_threshold_level( log_nothing );       \
+    unit_test_log.set_formatter( new shorten_lf );          \
+    framework::run( impl );                                 \
+                                                            \
+    unit_test_log.set_threshold_level(                      \
+        runtime_config::log_level() != invalid_log_level    \
+            ? runtime_config::log_level()                   \
+            : log_all_errors );                             \
+    unit_test_log.set_format( runtime_config::log_format());\
+    unit_test_log.set_stream( std::cout );                  \
+    BOOST_CHECK( ots().match_pattern() );                   \
+}                                                           \
+                                                            \
+void name ## _impl()                                        \
+{                                                           \
+    unit_test_log.set_threshold_level( log_all_errors );    \
+                                                            \
+    name ## _impl_defer();                                  \
+                                                            \
+    unit_test_log.set_threshold_level( log_nothing );       \
+}                                                           \
+                                                            \
+void name ## _impl_defer()                                  \
+/**/
+
+//____________________________________________________________________________//
+
+TEST_CASE( test_BOOST_WARN )
+{
+    unit_test_log.set_threshold_level( log_warnings );
+    BOOST_WARN( sizeof(int) == sizeof(short) );
+
+    unit_test_log.set_threshold_level( log_successful_tests );
+    BOOST_WARN( sizeof(unsigned char) == sizeof(char) );
+}
+
+//____________________________________________________________________________//
+
+TEST_CASE( test_BOOST_CHECK )
+{
+    BOOST_CHECK( true );
 
     bool_convertible bc;
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK( bc ),
-        output.is_empty()
-    );
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK( false ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test false failed\n", 2 ) )
-    );
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK( 1==2 ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test 1==2 failed\n", 2 ) )
-    );
+    BOOST_CHECK( bc );
 
     int i=2;
 
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK( i==1 ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test i==1 failed\n", 2 ) )
-    );
+    BOOST_CHECK( false );
+    BOOST_CHECK( 1==2 );
+    BOOST_CHECK( i==1 );
 
-    unit_test_log::instance().set_log_threshold_level( log_successful_tests );
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK( i==2 ),
-        output.is_equal( CHECK_PATTERN( "info: test i==2 passed\n", 2 ) )
-    );
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
+    unit_test_log.set_threshold_level( log_successful_tests );
+    BOOST_CHECK( i==2 );
 }
 
 //____________________________________________________________________________//
 
-void
-test_BOOST_REQUIRE()
+TEST_CASE( test_BOOST_REQUIRE )
 {
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_REQUIRE" << '\"' <<
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE( true ) );
 
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
-
-    CHECK_CRITICAL_TOOL_USAGE(
-        BOOST_REQUIRE( true ),
-        true, false
-    );
-
-    CHECK_CRITICAL_TOOL_USAGE(
-        BOOST_REQUIRE( false ),
-        false, true
-    );
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE( false ) );
 
     int j = 3;
 
-    CHECK_CRITICAL_TOOL_USAGE(
-        BOOST_REQUIRE( j > 5 ),
-        false, output.is_equal( CHECK_PATTERN( "fatal error in " TEST_CASE_NAME ": test j > 5 failed\n", 2 ) )
-    );
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE( j > 5 ) );
 
-    unit_test_log::instance().set_log_threshold_level( log_successful_tests );
-    CHECK_CRITICAL_TOOL_USAGE(
-        BOOST_REQUIRE( j < 5 ),
-        output.is_equal( CHECK_PATTERN( "info: test j < 5 passed\n", 1 ) ) , false
-    );
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
+    unit_test_log.set_threshold_level( log_successful_tests );
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE( j < 5 ) );
 }
 
 //____________________________________________________________________________//
 
-struct A {
-    friend std::ostream& operator<<( std::ostream& str, A const& a ) { str << "struct A"; return str;}
-};
-
-void
-test_BOOST_MESSAGE()
+TEST_CASE( test_BOOST_WARN_MESSAGE )
 {
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_REQUIRE" << '\"' <<
-
-    unit_test_log::instance().set_log_threshold_level( log_messages );
-
-    CHECK_TOOL_USAGE(
-        BOOST_MESSAGE( "still testing" ),
-        output.is_equal( "still testing\n" )
-    );
-
-    CHECK_TOOL_USAGE(
-        BOOST_MESSAGE( "1+1=" << 2 ),
-        output.is_equal( "1+1=2\n" )
-    );
-
-    int i = 2;
-    CHECK_TOOL_USAGE(
-        BOOST_MESSAGE( i << "+" << i << "=" << (i+i) ),
-        output.is_equal( "2+2=4\n" )
-    );
-
-    A a = A();
-    CHECK_TOOL_USAGE(
-        BOOST_MESSAGE( a ),
-        output.is_equal( "struct A\n" )
-    );
-
-#if !defined(BOOST_NO_STD_LOCALE) && BOOST_WORKAROUND(BOOST_MSVC, >= 1310)
-
-    CHECK_TOOL_USAGE(
-        BOOST_MESSAGE( std::hex << std::showbase << 20 ),
-        output.is_equal( "0x14\n" )
-    );
-
-#endif
-
-    CHECK_TOOL_USAGE(
-        BOOST_MESSAGE( std::setw( 4 ) << 20 ),
-        output.is_equal( "  20\n" )
-        );
-}
-
-//____________________________________________________________________________//
-
-void
-test_BOOST_WARN()
-{
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_WARN" << '\"' <<
-
-    unit_test_log::instance().set_log_threshold_level( log_warnings );
-
-    CHECK_TOOL_USAGE(
-        BOOST_WARN( sizeof(int) == sizeof(short) ),
-        output.is_equal( CHECK_PATTERN( "warning in " TEST_CASE_NAME
-                                        ": condition sizeof(int) == sizeof(short) is not satisfied\n", 3 ) )
-    );
-}
-
-//____________________________________________________________________________//
-
-class bad_func_container : public test_case
-{
-public:
-    bad_func_container() : test_case( "test_BOOST_CHECKPOINT", true, 1 ) {}
-    void do_run() {
-        throw "some error";
-    }
-} bad;
-
-void
-test_BOOST_CHECKPOINT()
-{
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECKPOINT" << '\"' <<
-
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
-
-    BOOST_CHECKPOINT( "Going to do a silly things" );
-
-    CHECK_TOOL_USAGE(
-        bad.run(),
-        output.is_equal(
-            (boost::wrap_stringstream().ref()
-                << "Exception in " TEST_CASE_NAME ": C string: some error\n"
-                << normalize_file_name( __FILE__ ) << "(" << 270 << "): "
-                << "last checkpoint: Going to do a silly things\n").str()
-        )
-    );
-}
-
-//____________________________________________________________________________//
-
-void
-test_BOOST_WARN_MESSAGE()
-{
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_WARN_MESSAGE" << '\"' <<
-
-    unit_test_log::instance().set_log_threshold_level( log_warnings );
-
-    CHECK_TOOL_USAGE(
-        BOOST_WARN_MESSAGE( sizeof(int) == sizeof(short), "memory won't be used efficiently" ),
-        output.is_equal( CHECK_PATTERN( "warning in " TEST_CASE_NAME ": memory won't be used efficiently\n", 2 ) )
-    );
-
+    BOOST_WARN_MESSAGE( sizeof(int) == sizeof(short), "memory won't be used efficiently" );
     int obj_size = 33;
 
-    CHECK_TOOL_USAGE(
-        BOOST_WARN_MESSAGE( obj_size <= 8, "object size " << obj_size << " too big to be efficiently passed by value" ),
-        output.is_equal( CHECK_PATTERN( "warning in " TEST_CASE_NAME
-                                        ": object size 33 too big to be efficiently passed by value\n", 3 ) )
-    );
+    BOOST_WARN_MESSAGE( obj_size <= 8, 
+                        "object size " << obj_size << " is too big to be efficiently passed by value" );
 
+    unit_test_log.set_threshold_level( log_successful_tests );
+    BOOST_WARN_MESSAGE( obj_size > 8, "object size " << obj_size << " is too small" );
 }
 
 //____________________________________________________________________________//
 
-void
-test_BOOST_CHECK_MESSAGE()
+boost::test_tools::predicate_result
+test_pred1()
 {
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_MESSAGE" << '\"' <<
+    boost::test_tools::predicate_result res( false );
 
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
+    res.message() << "Some explanation";
 
+    return res;
+}
 
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_MESSAGE( 2+2 == 5, "Well, may be that what I belive in" ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": Well, may be that what I belive in\n", 2 ) )
-    );
+TEST_CASE( test_BOOST_CHECK_MESSAGE )
+{
+    BOOST_CHECK_MESSAGE( 2+2 == 5, "Well, may be that what I believe in" );
 
+    BOOST_CHECK_MESSAGE( test_pred1(), "Checking predicate failed" );
+
+    unit_test_log.set_threshold_level( log_successful_tests );
+    BOOST_CHECK_MESSAGE( 2+2 == 4, "Could it fail?" );
 }
 
 //____________________________________________________________________________//
 
-void
-test_BOOST_REQUIRE_MESSAGE()
+TEST_CASE( test_BOOST_REQUIRE_MESSAGE )
 {
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_REQUIRE_MESSAGE" << '\"' <<
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE_MESSAGE( false, "Here we should stop" ) );
 
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
+    unit_test_log.set_threshold_level( log_successful_tests );
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE_MESSAGE( true, "That's OK" ) );
+}
 
-    CHECK_CRITICAL_TOOL_USAGE(
-        BOOST_REQUIRE_MESSAGE( false, "Here we should stop" ),
-        false, output.is_equal(
-            CHECK_PATTERN( "fatal error in " TEST_CASE_NAME ": Here we should stop" << "\n", 3 ) )
-    );
+//____________________________________________________________________________//
+
+TEST_CASE( test_BOOST_ERROR )
+{
+    BOOST_ERROR( "Fail to miss an error" );
+}
+
+//____________________________________________________________________________//
+
+TEST_CASE( test_BOOST_FAIL )
+{
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_FAIL( "No! No! Show must go on." ) );
+}
+
+//____________________________________________________________________________//
+
+struct my_exception {
+    explicit my_exception( int ec = 0 ) : m_error_code( ec ) {}
+
+    int m_error_code;
+};
+
+bool is_critical( my_exception const& ex ) { return ex.m_error_code < 0; }
+
+TEST_CASE( test_BOOST_CHECK_THROW )
+{
+    int i=0;
+    BOOST_CHECK_THROW( i++, my_exception );
+
+    unit_test_log.set_threshold_level( log_warnings );
+    BOOST_WARN_THROW( i++, my_exception );
+
+    unit_test_log.set_threshold_level( log_all_errors );
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE_THROW( i++, my_exception ) );
+
+    unit_test_log.set_threshold_level( log_successful_tests );
+    BOOST_CHECK_THROW( throw my_exception(), my_exception );
+}
+
+//____________________________________________________________________________//
+
+TEST_CASE( test_BOOST_CHECK_EXCEPTION )
+{
+    BOOST_CHECK_EXCEPTION( throw my_exception( 1 ), my_exception, is_critical );
+
+    unit_test_log.set_threshold_level( log_successful_tests );
+    BOOST_CHECK_EXCEPTION( throw my_exception( -1 ), my_exception, is_critical );
+}
+
+//____________________________________________________________________________//
+
+TEST_CASE( test_BOOST_CHECK_NO_THROW )
+{
+    int i=0;
+    BOOST_CHECK_NO_THROW( i++ );
+
+    BOOST_CHECK_NO_THROW( throw my_exception() );
 }
 
 //____________________________________________________________________________//
@@ -345,77 +277,96 @@ test_BOOST_REQUIRE_MESSAGE()
 struct B {
     B( int i ) : m_i( i ) {}
 
-    friend bool operator==( B const& b1, B const& b2 ) { return b1.m_i == b2.m_i; }
-    friend std::ostream& operator<<( std::ostream& str, B const& b ) { str << "B(" << b.m_i << ")"; return str; }
-
     int m_i;
 };
 
-void
-test_BOOST_CHECK_EQUAL()
+bool          operator==( B const& b1, B const& b2 ) { return b1.m_i == b2.m_i; }
+std::ostream& operator<<( std::ostream& str, B const& b ) { return str << "B(" << b.m_i << ")"; }
+
+//____________________________________________________________________________//
+
+struct C {
+    C( int i, int id ) : m_i( i ), m_id( id ) {}
+
+    int m_i;
+    int m_id;
+};
+
+boost::test_tools::predicate_result
+operator==( C const& c1, C const& c2 )
 {
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_EQUAL" << '\"' <<
+    boost::test_tools::predicate_result res( c1.m_i == c2.m_i && c1.m_id == c2.m_id );
 
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
+    if( !res ) {
+        if( c1.m_i != c2.m_i )
+            res.message() << "Index mismatch";
+        else
+            res.message() << "Id mismatch";
+    }
 
+    return res;
+}
+
+std::ostream& operator<<( std::ostream& str, C const& c ) { return str << "C(" << c.m_i << ',' << c.m_id << ")"; }
+
+//____________________________________________________________________________//
+
+TEST_CASE( test_BOOST_CHECK_EQUAL )
+{
     int i=1;
     int j=2;
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_EQUAL( i, j ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test i == j failed [1 != 2]\n", 2 ) )
-    );
+    BOOST_CHECK_EQUAL( i, j );
+    BOOST_CHECK_EQUAL( ++i, j );
+    BOOST_CHECK_EQUAL( i++, j );
 
     char const* str1 = "test1";
     char const* str2 = "test12";
+    BOOST_CHECK_EQUAL( str1, str2 );
 
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_EQUAL( str1, str2 ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test str1 == str2 failed [test1 != test12]\n", 2 ) )
-    );
+    unit_test_log.set_threshold_level( log_successful_tests );
+    BOOST_CHECK_EQUAL( i+1, j );
 
+    char const* str3 = "1test1";
+    BOOST_CHECK_EQUAL( str1, str3+1 );
+
+    unit_test_log.set_threshold_level( log_all_errors );
     str1 = NULL;
     str2 = NULL;
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_EQUAL( str1, str2 ),
-        output.is_empty()
-    );
+    BOOST_CHECK_EQUAL( str1, str2 );
 
     str1 = "test";
     str2 = NULL;
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_EQUAL( str1, str2 ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test str1 == str2 failed [test != null string]\n", 2 ) )
-    );
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE_EQUAL( str1, str2 ) );
 
     B b1(1);
     B b2(2);
 
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_EQUAL( b1, b2 ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test b1 == b2 failed [B(1) != B(2)]\n", 2 ) )
-    );
+    unit_test_log.set_threshold_level( log_warnings );
+    BOOST_WARN_EQUAL( b1, b2 );
+
+    unit_test_log.set_threshold_level( log_all_errors );
+    C c1( 0, 100 );
+    C c2( 0, 101 );
+    C c3( 1, 102 );
+    BOOST_CHECK_EQUAL( c1, c3 );
+    BOOST_CHECK_EQUAL( c1, c2 );
 }
 
 //____________________________________________________________________________//
 
 bool is_even( int i )        { return i%2 == 0;  }
 int  foo( int arg, int mod ) { return arg % mod; }
+bool moo( int arg1, int arg2, int mod ) { return ((arg1+arg2) % mod) == 0; }
 
 BOOST_TEST_DONT_PRINT_LOG_VALUE( std::list<int> )
 
-extended_predicate_value
+boost::test_tools::predicate_result
 compare_lists( std::list<int> const& l1, std::list<int> const& l2 )
 {
     if( l1.size() != l2.size() ) {
-        extended_predicate_value res( false );
+        boost::test_tools::predicate_result res( false );
 
-        res.p_message.reset( new boost::wrap_stringstream );
-
-        *res.p_message << " Different sizes [" << l1.size() << "!=" << l2.size() << "]";
+        res.message() << "Different sizes [" << l1.size() << "!=" << l2.size() << "]";
 
         return res;
     }
@@ -423,178 +374,49 @@ compare_lists( std::list<int> const& l1, std::list<int> const& l2 )
     return true;
 }
 
-void
-test_BOOST_CHECK_PREDICATE()
+TEST_CASE( test_BOOST_CHECK_PREDICATE )
 {
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_PREDICATE" << '\"' <<
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_PREDICATE( &is_even, 1, (14) ),
-        output.is_empty()
-    );
+    BOOST_CHECK_PREDICATE( is_even, (14) );
 
     int i = 17;
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_PREDICATE( &is_even, 1, (i) ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test &is_even(i) failed for 17\n", 2 ) )
-    );
+    BOOST_CHECK_PREDICATE( is_even, (i) );
 
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_PREDICATE( std::not_equal_to<int>(), 2, (i,17) ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test std::not_equal_to<int>()(i, 17) failed for (17, 17)\n", 2 ) )
-    );
+    using std::not_equal_to;
+    BOOST_CHECK_PREDICATE( not_equal_to<int>(), (i)(17) );
 
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_PREDICATE( boost::bind( &is_even, boost::bind( &foo, _1, _2 ) ), 2, (i,15) ),
-        output.is_empty()
-    );
+    int j=15;
+    BOOST_CHECK_PREDICATE( boost::bind( is_even, boost::bind( &foo, _1, _2 ) ), (i)(j) );
 
+    unit_test_log.set_threshold_level( log_warnings );
+    BOOST_WARN_PREDICATE( moo, (12)(i)(j) );
+
+    unit_test_log.set_threshold_level( log_all_errors );
     std::list<int> l1, l2, l3;
     l1.push_back( 1 );
     l3.push_back( 1 );
     l1.push_back( 2 );
     l3.push_back( 3 );
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_PREDICATE( &compare_lists, 2, (l1,l2) ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test &compare_lists(l1, l2) failed for (, ) Different sizes [2!=0]\n", 2 ) )
-    );
+    BOOST_CHECK_PREDICATE( compare_lists, (l1)(l2) );
 }
 
 //____________________________________________________________________________//
 
-void
-test_BOOST_REQUIRE_PREDICATE()
+TEST_CASE( test_BOOST_REQUIRE_PREDICATE )
 {
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_REQUIRE_PREDICATE" << '\"' <<
-
     int arg1 = 1;
     int arg2 = 2;
 
-    CHECK_CRITICAL_TOOL_USAGE(
-        BOOST_REQUIRE_PREDICATE( std::less_equal<int>(), 2, ( arg1, arg2 ) ),
-        output.is_empty(), false
-    );
+    using std::less_equal;
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE_PREDICATE( less_equal<int>(), (arg1)(arg2) ) );
 
-   CHECK_CRITICAL_TOOL_USAGE(
-        BOOST_REQUIRE_PREDICATE( std::less_equal<int>(), 2, ( arg2, arg1 ) ),
-        false, output.is_equal( CHECK_PATTERN( 
-                    "fatal error in " TEST_CASE_NAME ": test std::less_equal<int>()(arg2, arg1) "
-                    "failed for (" << arg2 << ", " << arg1 << ")\n", 4 ) )
-    );
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE_PREDICATE( less_equal<int>(), (arg2)(arg1) ) );
 }
 
 //____________________________________________________________________________//
 
-void
-test_BOOST_ERROR()
+TEST_CASE( test_BOOST_CHECK_EQUAL_COLLECTIONS )
 {
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_ERROR" << '\"' <<
-
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
-
-    CHECK_TOOL_USAGE(
-        BOOST_ERROR( "Fail to miss an error" ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": Fail to miss an error\n", 2 ) )
-    );
-
-    CHECK_CRITICAL_TOOL_USAGE(
-        BOOST_FAIL( "No! No! Show must go on." ),
-        false, output.is_equal( CHECK_PATTERN( "fatal error in " TEST_CASE_NAME ": No! No! Show must go on.\n", 2 ) )
-    );
-}
-
-//____________________________________________________________________________//
-
-struct my_exception {
-    explicit my_exception( int ec = 0 ) : m_error_code( ec ) {}
-    
-    int m_error_code;
-};
-
-bool is_critical( my_exception const& ex ) { return ex.m_error_code < 0; }
-
-void
-test_BOOST_CHECK_THROW()
-{
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_THROW" << '\"' <<
-
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
-
-    int i=0;
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_THROW( i++, my_exception ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": exception my_exception is expected\n", 2 ) )
-    );
-
-    unit_test_log::instance().set_log_threshold_level( log_successful_tests );
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_THROW( throw my_exception(), my_exception ),
-        output.is_equal( CHECK_PATTERN( "info: exception my_exception is caught\n", 2 ) )
-    );
-
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
-}
-
-//____________________________________________________________________________//
-
-void
-test_BOOST_CHECK_EXCEPTION()
-{
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_EXCEPTION" << '\"' <<
-
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_EXCEPTION( throw my_exception( 1 ), my_exception, is_critical ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": incorrect exception my_exception is caught\n", 2 ) )
-    );
-
-    unit_test_log::instance().set_log_threshold_level( log_successful_tests );
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_EXCEPTION( throw my_exception( -1 ), my_exception, is_critical ),
-        output.is_equal( CHECK_PATTERN( "info: incorrect exception my_exception is caught\n", 2 ) )
-    );
-
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
-}
-
-//____________________________________________________________________________//
-
-void
-test_BOOST_CHECK_NO_THROW()
-{
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_NO_THROW" << '\"' <<
-
-    int i=0;
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_NO_THROW( i++ ),
-        output.is_empty() 
-    );
-
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_NO_THROW( throw my_exception() ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": exception was thrown by throw my_exception()\n", 2 ) )
-    );
-}
-
-//____________________________________________________________________________//
-
-void
-test_BOOST_CHECK_EQUAL_COLLECTIONS()
-{
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_CHECK_EQUAL_COLLECTIONS" << '\"' <<
-
-    unit_test_log::instance().set_log_threshold_level( log_all_errors );
+    unit_test_log.set_threshold_level( log_all_errors );
 
     int pattern [] = { 1, 2, 3, 4, 5, 6, 7 };
 
@@ -608,32 +430,65 @@ test_BOOST_CHECK_EQUAL_COLLECTIONS()
     testlist.push_back( 7 ); // 6
     testlist.push_back( 7 );
 
-#if !defined(__BORLANDC__)
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_EQUAL_COLLECTIONS( testlist.begin(), testlist.end(), pattern ),
-            output.is_equal( CHECK_PATTERN( 
-              "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed in a position 2 [4 != 3]\n"
-              << normalize_file_name( __FILE__ ) << "(" << __LINE__ << "): "
-              << "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed in a position 5 [7 != 6]\n"
-              , 6 ) )
-    );
-#else
-    CHECK_TOOL_USAGE(
-        BOOST_CHECK_EQUAL_COLLECTIONS( testlist.begin(), testlist.end(), pattern ),
-            output.is_equal( CHECK_PATTERN( 
-              "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed in a position 2 [4 != 3]\n"
-              << normalize_file_name( __FILE__ ) << "(" << (__LINE__-6) << "): "
-              << "error in " TEST_CASE_NAME ": test {testlist.begin(), testlist.end()} == {pattern, ...} failed in a position 5 [7 != 6]\n"
-              , 6 ) )
-    );
-#endif
-
+    BOOST_CHECK_EQUAL_COLLECTIONS( testlist.begin(), testlist.end(), pattern, pattern+7 );
+    BOOST_CHECK_EQUAL_COLLECTIONS( testlist.begin(), testlist.end(), pattern, pattern+2 );
 }
 
 //____________________________________________________________________________//
 
-void
-test_BOOST_IS_DEFINED()
+TEST_CASE( test_BOOST_CHECK_BITWISE_EQUAL )
+{
+    BOOST_CHECK_BITWISE_EQUAL( 0x16, 0x16 );
+
+    BOOST_CHECK_BITWISE_EQUAL( (char)0x06, (char)0x16 );
+
+    unit_test_log.set_threshold_level( log_warnings );
+    BOOST_WARN_BITWISE_EQUAL( (char)0x26, (char)0x04 );
+
+    unit_test_log.set_threshold_level( log_all_errors );
+    CHECK_CRITICAL_TOOL_USAGE( BOOST_REQUIRE_BITWISE_EQUAL( (char)0x26, (int)0x26 ) );
+}
+
+//____________________________________________________________________________//
+
+struct A {
+    friend std::ostream& operator<<( std::ostream& str, A const& a ) { str << "struct A"; return str;}
+};
+
+TEST_CASE( test_BOOST_MESSAGE )
+{
+    unit_test_log.set_threshold_level( log_messages );
+
+    BOOST_MESSAGE( "still testing" );
+    BOOST_MESSAGE( "1+1=" << 2 );
+
+    int i = 2;
+    BOOST_MESSAGE( i << "+" << i << "=" << (i+i) );
+
+    A a = A();
+    BOOST_MESSAGE( a );
+
+#if !defined(BOOST_NO_STD_LOCALE) && ( !defined(BOOST_MSVC) || BOOST_WORKAROUND(BOOST_MSVC, >= 1310))
+    BOOST_MESSAGE( std::hex << std::showbase << 20 );
+#else
+    BOOST_MESSAGE( "0x14" );
+#endif
+
+    BOOST_MESSAGE( std::setw( 4 ) << 20 );
+}
+
+//____________________________________________________________________________//
+
+TEST_CASE( test_BOOST_CHECKPOINT )
+{
+    BOOST_CHECKPOINT( "Going to do a silly things" );
+
+    throw "some error";
+}
+
+//____________________________________________________________________________//
+
+TEST_CASE( test_BOOST_IS_DEFINED )
 {
 #define SYMBOL1
 #define SYMBOL2 std::cout
@@ -651,93 +506,25 @@ test_BOOST_IS_DEFINED()
 
 //____________________________________________________________________________//
 
-void
-test_BOOST_BITWISE_EQUAL()
-{
-#undef  TEST_CASE_NAME
-#define TEST_CASE_NAME << '\"' << "test_BOOST_BITWISE_EQUAL" << '\"' <<
-
-    CHECK_TOOL_USAGE(
-        BOOST_BITWISE_EQUAL( 0x16, 0x16 ),
-        output.is_empty()
-    );
-
-    CHECK_TOOL_USAGE(
-        BOOST_BITWISE_EQUAL( (char)0x06, (char)0x16 ),
-        output.is_equal( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test (char)0x06 =.= (char)0x16 in the position 4 failed\n", 2 ) )
-    );
-
-    CHECK_TOOL_USAGE(
-        BOOST_BITWISE_EQUAL( (char)0x26, (char)0x04 ),
-        output.is_equal( 
-        std::string( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test (char)0x26 =.= (char)0x04 in the position 1 failed\n", 4 ) )
-            .append( CHECK_PATTERN( "error in " TEST_CASE_NAME ": test (char)0x26 =.= (char)0x04 in the position 5 failed\n", 4 ) ) )
-    );
-}
-
-//____________________________________________________________________________//
-
-
-test_suite*
-init_unit_test_suite( int /*argc*/, char* /*argv*/[] )
-{
-    test_suite* test = BOOST_TEST_SUITE("Test Tools test");
-
-    test->add( BOOST_TEST_CASE( &test_BOOST_CHECK ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_REQUIRE ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_MESSAGE ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_WARN ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_CHECKPOINT ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_WARN_MESSAGE ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_MESSAGE ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_REQUIRE_MESSAGE ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_EQUAL ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_ERROR ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_THROW ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_NO_THROW ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_EXCEPTION ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_EQUAL_COLLECTIONS ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_IS_DEFINED ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_CHECK_PREDICATE ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_REQUIRE_PREDICATE ) );
-    test->add( BOOST_TEST_CASE( &test_BOOST_BITWISE_EQUAL ) );
-
-    return test;
-}
-
-//____________________________________________________________________________//
-
 // ***************************************************************************
 //  Revision History :
-//  
+//
 //  $Log: test_tools_test.cpp,v $
-//  Revision 1.34  2004/10/05 01:46:33  rogeeff
-//  borland fix
-//
-//  Revision 1.33  2004/10/01 10:55:43  rogeeff
-//  some test errors workarrounds
-//
-//  Revision 1.32  2004/06/07 07:34:23  rogeeff
-//  detail namespace renamed
-//
-//  Revision 1.31  2004/05/27 06:30:48  rogeeff
-//  no message
-//
-//  Revision 1.30  2004/05/21 06:26:11  rogeeff
+//  Revision 1.43  2005/05/11 05:07:57  rogeeff
 //  licence update
 //
-//  Revision 1.29  2004/05/11 11:05:06  rogeeff
-//  basic_cstring introduced and used everywhere
-//  class properties reworked
-//  namespace names shortened
+//  Revision 1.42  2005/04/17 15:49:17  rogeeff
+//  *** empty log message ***
 //
-//  Revision 1.28  2003/12/23 13:23:35  johnmaddock
-//  Added patch for gcc2.95.3 (and no new iostreams).
+//  Revision 1.41  2005/03/22 07:14:44  rogeeff
+//  no message
 //
-//  Revision 1.27  2003/12/01 00:42:38  rogeeff
-//  prerelease cleaning
+//  Revision 1.40  2005/02/21 10:29:06  rogeeff
+//  no message
 //
-
+//  Revision 1.39  2005/02/20 08:28:34  rogeeff
+//  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
+//
 // ***************************************************************************
 
 // EOF

@@ -10,9 +10,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/boost/mpl/Attic/min.hpp,v $
-// $Date: 2004/11/11 04:50:18 $
-// $Revision: 1.1.2.1 $
+// $Source: /cvsroot/boost/boost/boost/mpl/min.hpp,v $
+// $Date: 2004/11/28 01:55:27 $
+// $Revision: 1.2 $
 
 #include <boost/mpl/min_max.hpp>
 

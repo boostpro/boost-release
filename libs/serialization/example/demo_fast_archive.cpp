@@ -13,18 +13,21 @@
 #include <boost/type_traits/is_array.hpp>
 #include <boost/pfto.hpp>
 
+#define BOOST_ARCHIVE_SOURCE
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
-
-using namespace boost::archive;
 
 // include template definitions for base classes used.  Otherwise
 // you'll get link failure with undefined symbols
 #include <boost/archive/impl/basic_binary_oprimitive.ipp>
 #include <boost/archive/impl/basic_binary_iprimitive.ipp>
+#include <boost/archive/impl/basic_binary_oarchive.ipp>
+#include <boost/archive/impl/basic_binary_iarchive.ipp>
 
 #include <boost/archive/impl/archive_pointer_iserializer.ipp>
 #include <boost/archive/impl/archive_pointer_oserializer.ipp>
+
+using namespace boost::archive;
 
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // "Fast" output binary archive.  This is a variation of the native binary 
@@ -47,7 +50,7 @@ public:
 //        using binary_oarchive_impl<derived_t>::load_override;
     // so we use the sure-fire method below.  This failed to work as well
     template<class T>
-    void save_override(const T & t, BOOST_PFTO int){
+    void save_override(T & t, BOOST_PFTO int){
         binary_oarchive_impl<fast_binary_oarchive>::save_override(t, 0);
         // verify that this program is in fact working by making sure
         // that arrays are getting passed here
@@ -124,7 +127,7 @@ public:
 
 int main( int argc, char* argv[] )
 {
-    int a[3] = {1, 2, 3};
+    const int a[3] = {1, 2, 3};
     int a1[3] = {4, 5, 6};
 
     std::stringstream ss;

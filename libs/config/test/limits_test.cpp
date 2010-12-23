@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: limits_test.cpp,v 1.10 2004/09/04 10:34:48 johnmaddock Exp $
+ * $Id: limits_test.cpp,v 1.13 2005/07/19 17:14:00 johnmaddock Exp $
  */
 
 #include <boost/limits.hpp>
@@ -54,6 +54,24 @@ inline int make_char_numeric_for_streaming(signed char c) { return c; }
 inline int make_char_numeric_for_streaming(unsigned char c) { return c; }
 #endif
 
+#if (defined(_GLIBCPP_VERSION) || defined(_GLIBCXX_VERSION)) \
+   && defined(BOOST_HAS_LONG_LONG) \
+   && !defined(_GLIBCPP_USE_LONG_LONG) \
+   && !defined(_GLIBCXX_USE_LONG_LONG)
+//
+// Some libstdc++ versions have numeric_limits<long long> but no
+// iostream support for long long.  TODO, find a better fix!!
+//
+std::ostream& operator<<(std::ostream& os, long long i )
+{
+    return os << static_cast<long double>(i);
+}
+std::ostream& operator<<(std::ostream& os, unsigned long long i )
+{
+    return os << static_cast<long double>(i);
+}
+#endif
+
 template<class T>
 void test_integral_limits(const T &, const char * msg)
 {
@@ -64,10 +82,10 @@ void test_integral_limits(const T &, const char * msg)
             << ", max: " << make_char_numeric_for_streaming((lim::max)())
             << std::endl;
 
-  BOOST_TEST(lim::is_specialized);
-  BOOST_TEST(lim::is_integer);
-  // BOOST_TEST(lim::is_modulo);
-  BOOST_TEST((lim::min)() < (lim::max)());
+  BOOST_CHECK(static_cast<bool>(lim::is_specialized));
+  BOOST_CHECK(static_cast<bool>(lim::is_integer));
+  // BOOST_CHECK(lim::is_modulo);
+  BOOST_CHECK(static_cast<bool>((lim::min)() < (lim::max)()));
 }
 
 template <class T>
@@ -89,10 +107,10 @@ void test_float_limits(const T &, const char * msg)
   std::cout << "\nTesting " << msg << std::endl;
   typedef std::numeric_limits<T> lim;
 
-  BOOST_TEST(lim::is_specialized);
-  BOOST_TEST(!lim::is_modulo);
-  BOOST_TEST(!lim::is_integer);
-  BOOST_TEST(lim::is_signed);
+  BOOST_CHECK(static_cast<bool>(lim::is_specialized));
+  BOOST_CHECK(static_cast<bool>(!lim::is_modulo));
+  BOOST_CHECK(static_cast<bool>(!lim::is_integer));
+  BOOST_CHECK(static_cast<bool>(lim::is_signed));
 
   const T infinity = lim::infinity();
   const T qnan = lim::quiet_NaN();
@@ -109,15 +127,15 @@ void test_float_limits(const T &, const char * msg)
   print_hex_val(qnan, "qnan");
   print_hex_val(snan, "snan");
 
-  BOOST_TEST((lim::max)() > 1000);
-  BOOST_TEST((lim::min)() > 0);
-  BOOST_TEST((lim::min)() < 0.001);
-  BOOST_TEST(lim::epsilon() > 0);
+  BOOST_CHECK((lim::max)() > 1000);
+  BOOST_CHECK((lim::min)() > 0);
+  BOOST_CHECK((lim::min)() < 0.001);
+  BOOST_CHECK(lim::epsilon() > 0);
 
   if(lim::is_iec559) {
-    BOOST_TEST(lim::has_infinity);
-    BOOST_TEST(lim::has_quiet_NaN);
-    BOOST_TEST(lim::has_signaling_NaN);
+    BOOST_CHECK(static_cast<bool>(lim::has_infinity));
+    BOOST_CHECK(static_cast<bool>(lim::has_quiet_NaN));
+    BOOST_CHECK(static_cast<bool>(lim::has_signaling_NaN));
   } else {
     std::cout << "Does not claim IEEE conformance" << std::endl;
   }
@@ -125,8 +143,8 @@ void test_float_limits(const T &, const char * msg)
   if(lim::has_infinity) {
     // Make sure those values are not 0 or similar nonsense.
     // Infinity must compare as if larger than the maximum representable value.
-    BOOST_TEST(infinity > (lim::max)());
-    BOOST_TEST(-infinity < -(lim::max)());
+    BOOST_CHECK(infinity > (lim::max)());
+    BOOST_CHECK(-infinity < -(lim::max)());
   } else {
     std::cout << "Does not have infinity" << std::endl;
   }
@@ -135,16 +153,16 @@ void test_float_limits(const T &, const char * msg)
     // NaNs shall always compare "false" when compared for equality
     // If one of these fail, your compiler may be optimizing incorrectly,
     // or the standard library is incorrectly configured.
-    BOOST_TEST(! (qnan == 42));
-    BOOST_TEST(! (qnan == qnan));
-    BOOST_TEST(qnan != 42);
-    BOOST_TEST(qnan != qnan);
+    BOOST_CHECK(! (qnan == 42));
+    BOOST_CHECK(! (qnan == qnan));
+    BOOST_CHECK(qnan != 42);
+    BOOST_CHECK(qnan != qnan);
 
     // The following tests may cause arithmetic traps.
-    // BOOST_TEST(! (qnan < 42));
-    // BOOST_TEST(! (qnan > 42));
-    // BOOST_TEST(! (qnan <= 42));
-    // BOOST_TEST(! (qnan >= 42));
+    // BOOST_CHECK(! (qnan < 42));
+    // BOOST_CHECK(! (qnan > 42));
+    // BOOST_CHECK(! (qnan <= 42));
+    // BOOST_CHECK(! (qnan >= 42));
   } else {
     std::cout << "Does not have QNaN" << std::endl;
   }

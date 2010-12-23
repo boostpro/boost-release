@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/libs/mpl/test/Attic/deque.cpp,v $
-// $Date: 2004/11/10 23:53:10 $
-// $Revision: 1.1.2.1 $
+// $Source: /cvsroot/boost/boost/libs/mpl/test/deque.cpp,v $
+// $Date: 2004/11/28 03:35:12 $
+// $Revision: 1.2 $
 
 #include <boost/mpl/deque.hpp>
 #include <boost/mpl/push_back.hpp>

@@ -28,12 +28,12 @@
       <h3>Synopsis</h3>
       <p>The type <code>match_flag_type</code> is an implementation specific bitmask 
          type (17.3.2.1.2) that controls how a regular expression is matched against a 
-         character sequence.&nbsp; The behavior of the format flags is descibed in more 
+         character sequence.&nbsp; The behavior of the format flags is described in more 
          detail in the <A href="format_syntax.html">format syntax guide</A>.</p>
       <pre>
 namespace boost{ namespace regex_constants{
 
-typedef <EM>implementation-specific-bitmask-type</EM> match_flag_type;
+typedef <EM>implemenation-specific-bitmask-type</EM> match_flag_type;
 
 static const match_flag_type match_default = 0;
 static const match_flag_type match_not_bob;
@@ -54,6 +54,7 @@ static const match_flag_type match_not_dot_null;
 static const match_flag_type format_default = 0;
 static const match_flag_type format_sed;
 static const match_flag_type format_perl;
+static const match_flag_type format_literal; <BR>
 static const match_flag_type format_no_copy;
 static const match_flag_type format_first_only;
 static const match_flag_type format_all;
@@ -70,10 +71,10 @@ static const match_flag_type format_all;
       <table id="Table2" cellspacing="1" cellpadding="7" width="100%" border="0">
          <tr>
             <td valign="top" width="50%">
-               <p>Element</p>
+               <p><STRONG>Element</STRONG></p>
             </td>
             <td valign="top" width="50%">
-               <p>Effect if set</p>
+               <p><STRONG>Effect if set</STRONG></p>
             </td>
          </tr>
          <tr>
@@ -88,12 +89,12 @@ static const match_flag_type format_all;
          </tr>
          <tr>
             <td valign="top" width="50%">match_not_bob</td>
-            <td valign="top" width="50%">Specifies that the expression "\A" should not match 
-               against the sub-sequence [first,first).</td>
+            <td valign="top" width="50%">Specifies that the expressions "\A" and 
+               "\`"&nbsp;should not match against the sub-sequence [first,first).</td>
          </tr>
          <tr>
             <td valign="top" width="50%">match_not_eob</td>
-            <td valign="top" width="50%">Specifies that the expressions "\z" and 
+            <td valign="top" width="50%">Specifies that the expressions "\'", "\z" and 
                "\Z"&nbsp;should not match against the sub-sequence [last,last).</td>
          </tr>
          <tr>
@@ -119,8 +120,8 @@ static const match_flag_type format_all;
                <p>match_not_bow</p>
             </td>
             <td valign="top" width="50%">
-               <p>Specifies that the expression "\b" should not be matched against the 
-                  sub-sequence [first,first).</p>
+               <p>Specifies that the expressions "\&lt;" and&nbsp;"\b" should not be matched 
+                  against the sub-sequence [first,first).</p>
             </td>
          </tr>
          <tr>
@@ -128,8 +129,8 @@ static const match_flag_type format_all;
                <p>match_not_eow</p>
             </td>
             <td valign="top" width="50%">
-               <p>Specifies that the expression "\b" should not be matched against the 
-                  sub-sequence [last,last).</p>
+               <p>Specifies that the expressions "\&gt;" and&nbsp;"\b" should not be matched 
+                  against the sub-sequence [last,last).</p>
             </td>
          </tr>
          <tr>
@@ -138,7 +139,10 @@ static const match_flag_type format_all;
             </td>
             <td valign="top" width="50%">
                <p>Specifies that if more than one match is possible then any match is an 
-                  acceptable result.</p>
+                  acceptable result: this will still find the leftmost match, but may not find 
+                  the "best" match at that position.&nbsp; Use this flag if you care about the 
+                  speed of matching, but don't care what was matched (only whether there is one 
+                  or not).</p>
             </td>
          </tr>
          <tr>
@@ -163,9 +167,11 @@ static const match_flag_type format_all;
             </td>
             <td valign="top" width="50%">
                <p>Specifies that if no match can be found, then it is acceptable to return a 
-                  match [from, last) where from!=last, if there exists some sequence of 
-                  characters [from,to) of which [from,last) is a prefix, and which would result 
-                  in a full match.</p>
+                  match [from, last) such that from!= last, if there could exist some longer 
+                  sequence of characters [from,to) of which [from,last) is a prefix, and which 
+                  would result in a full match.</p>
+               <P>This flag is used when matching incomplete or very long texts, see the <A href="partial_matches.html">
+                     partial matches documentation</A> for more information.</P>
             </td>
          </tr>
          <TR>
@@ -177,10 +183,11 @@ static const match_flag_type format_all;
          </TR>
          <TR>
             <TD vAlign="top" width="50%">match_single_line</TD>
-            <TD vAlign="top" width="50%">Equivalent to Perl's s/ modifier; prevents ^ from 
-               matching after an embedded newline character (so that it only matches at the 
-               start of the text being matched), and $ from matching before an embedded 
-               newline (so that it only matches at the end of the text being matched).</TD>
+            <TD vAlign="top" width="50%">Equivalent to the inverse of Perl's m/ modifier; 
+               prevents ^ from matching after an embedded newline character (so that it only 
+               matches at the start of the text being matched), and $ from matching before an 
+               embedded newline (so that it only matches at the end of the text being 
+               matched).</TD>
          </TR>
          <tr>
             <td valign="top" width="50%">
@@ -195,7 +202,7 @@ static const match_flag_type format_all;
          <tr>
             <td valign="top" width="50%">match_not_dot_newline</td>
             <td valign="top" width="50%">Specifies that the expression "." does not match a 
-               newline character.</td>
+               newline character.&nbsp; This is the inverse of Perl's s/ modifier.</td>
          </tr>
          <tr>
             <td valign="top" width="50%">match_not_dot_null</td>
@@ -237,6 +244,12 @@ static const match_flag_type format_all;
                   string, that the new string is constructed using the same rules as Perl 5.</p>
             </td>
          </tr>
+         <TR>
+            <TD vAlign="top" width="50%">format_literal</TD>
+            <TD vAlign="top" width="50%">Specified that when a regular expression match is to 
+               be replaced by a new string, that the new string is a literal copy of the 
+               replacement text.</TD>
+         </TR>
          <tr>
             <td valign="top" width="50%" height="32">format_all</td>
             <td valign="top" width="50%" height="32">Specifies that all syntax extensions are 

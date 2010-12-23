@@ -45,8 +45,8 @@ void test_variable_map()
     options_description desc;
     desc.add_options()
         ("foo,f", new untyped_value)
-        ("bar,b", po::value<string>()->implicit())
-        ("biz,z", po::value<string>()->implicit())
+        ("bar,b", po::value<string>())
+        ("biz,z", po::value<string>())
         ("baz", new untyped_value())
         ("output,o", new untyped_value(), "")
         ;
@@ -57,12 +57,12 @@ void test_variable_map()
     variables_map vm;
     store(a3, vm);
     notify(vm);
-    BOOST_CRITICAL_TEST(vm.size() == 4);
-    BOOST_TEST(vm["foo"].as<string>() == "'12'");
-    BOOST_TEST(vm["bar"].as<string>() == "11");
-    BOOST_TEST(vm.count("biz") == 1);
-    BOOST_TEST(vm["biz"].as<string>() == "3");
-    BOOST_TEST(vm["output"].as<string>() == "foo");
+    BOOST_REQUIRE(vm.size() == 4);
+    BOOST_CHECK(vm["foo"].as<string>() == "'12'");
+    BOOST_CHECK(vm["bar"].as<string>() == "11");
+    BOOST_CHECK(vm.count("biz") == 1);
+    BOOST_CHECK(vm["biz"].as<string>() == "3");
+    BOOST_CHECK(vm["output"].as<string>() == "foo");
 
     int i;
     desc.add_options()
@@ -78,11 +78,11 @@ void test_variable_map()
     variables_map vm2;
     store(a4, vm2);
     notify(vm2);
-    BOOST_CRITICAL_TEST(vm2.size() == 3);
-    BOOST_TEST(vm2["zee"].as<bool>() == true);
-    BOOST_TEST(vm2["zak"].as<int>() == 13);
-    BOOST_TEST(vm2["opt"].as<bool>() == false);
-    BOOST_TEST(i == 13);
+    BOOST_REQUIRE(vm2.size() == 3);
+    BOOST_CHECK(vm2["zee"].as<bool>() == true);
+    BOOST_CHECK(vm2["zak"].as<int>() == 13);
+    BOOST_CHECK(vm2["opt"].as<bool>() == false);
+    BOOST_CHECK(i == 13);
 
     options_description desc2;
     desc2.add_options()
@@ -98,10 +98,10 @@ void test_variable_map()
     variables_map vm3;
     store(a5, vm3);
     notify(vm3);
-    BOOST_CRITICAL_TEST(vm3.size() == 3);
-    BOOST_TEST(vm3["vee"].as<string>() == "42");
-    BOOST_TEST(vm3["voo"].as<string>() == "1");
-    BOOST_TEST(vm3["iii"].as<int>() == 123);
+    BOOST_REQUIRE(vm3.size() == 3);
+    BOOST_CHECK(vm3["vee"].as<string>() == "42");
+    BOOST_CHECK(vm3["voo"].as<string>() == "1");
+    BOOST_CHECK(vm3["iii"].as<int>() == 123);
 }
 
 int stored_value;
@@ -227,13 +227,54 @@ void test_priority()
     BOOST_CHECK_EQUAL(vm["include"].as< vector<int> >()[1], 7);
 }
 
+void test_multiple_assignments_with_different_option_description()
+{
+    // Test that if we store option twice into the same variable_map,
+    // and some of the options stored the first time are not present
+    // in the options descrription provided the second time, we don't crash.
 
+    options_description desc1("");    
+    desc1.add_options()
+        ("help,h", "")
+        ("includes", po::value< vector<string> >()->composing(), "");
+        ;
+
+    options_description desc2("");
+    desc2.add_options()
+        ("output,o", "");
+
+    vector<string> input1;
+    input1.push_back("--help");
+    input1.push_back("--includes=a");
+    parsed_options p1 = command_line_parser(input1).options(desc1).run();
+
+    vector<string> input2;
+    input1.push_back("--output");
+    parsed_options p2 = command_line_parser(input2).options(desc2).run();
+
+    vector<string> input3;
+    input3.push_back("--includes=b");
+    parsed_options p3 = command_line_parser(input3).options(desc1).run();
+
+
+    variables_map vm;
+    store(p1, vm);
+    store(p2, vm);
+    store(p3, vm);
+
+    BOOST_REQUIRE(vm.count("help") == 1);
+    BOOST_REQUIRE(vm.count("includes") == 1);
+    BOOST_CHECK_EQUAL(vm["includes"].as< vector<string> >()[0], "a");
+    BOOST_CHECK_EQUAL(vm["includes"].as< vector<string> >()[1], "b");
+
+} 
 
 int test_main(int, char* [])
 {
     test_variable_map();
     test_semantic_values();
     test_priority();
+    test_multiple_assignments_with_different_option_description();
     return 0;
 }
 

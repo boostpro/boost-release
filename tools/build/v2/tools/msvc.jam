@@ -30,7 +30,7 @@ feature.subfeature toolset msvc : vendor
   # to be seen, though ;-)
   ;
 
-RM =  [ modules.peek common : RM ] ;
+RM =  [ common.rm-command ] ;
 
 # Initialize the toolset for a specific version. As the result, path to
 # compiler and, possible, program names are set up, and will be used when
@@ -141,19 +141,24 @@ rule init (
         }                
     }
                 
-    # The following options work only for 7* versions. It means
-    # that if the user has not specified a version he gets 6.0 compatible
-    # behavious (i.e. a bit buggy)
+    # Starting with versions 7.0, the msvc compiler have the /Zc:forScope
+    # and /Zc:wchar_t options that improve C++ standard conformance, but
+    # those options are off by default.
+    # If we're sure that msvc version is at 7.*, add those options explicitly.
+    # We can be sure either if user specified version 7.* explicitly,
+    # or if the installation path contain 7.* (this is checked above).
     if [ MATCH ^(7\..*) : $(version) ] 
     {
         flags msvc.compile CFLAGS $(condition) : /Zc:forScope /Zc:wchar_t ;
     }
     
     # 8.0 deprecates some of the options
-    if [ MATCH ^(8) : $(version) ]
+    if ! [ MATCH ^([67].*) : $(version) ] 
     {
         flags msvc.compile CFLAGS $(condition)/<optimization>speed : /O2 ;
         flags msvc.compile CFLAGS $(condition)/<optimization>space : /O1 ;
+        flags msvc.link.dll MANIFEST : "mt -manifest " ;
+        flags msvc.link.dll OUTPUTRESOURCE : "-outputresource:" ;
     }
     else
     {        
@@ -166,13 +171,9 @@ rule default-paths ( version ? )
 {
     local possible-paths ;
     
-    local ProgramFiles = [ modules.peek : ProgramFiles ] ;
-    if $(ProgramFiles)
-    {
-        ProgramFiles = "$(ProgramFiles:J= )" ;
-    }
-    else
-    {
+    local ProgramFiles = [ os.environ ProgramFiles ] ;
+    if ! $(ProgramFiles)
+    {        
         ProgramFiles = "c:\\Program Files" ;
     }
 
@@ -206,8 +207,9 @@ rule default-paths ( version ? )
     }
     else
     {
-        possible-paths += $(version-7.1-path) $(version-7.0-path) $(version-6-path) ;
+        possible-paths += $(version-8.0-path) $(version-7.1-path) $(version-7.0-path) $(version-6-path) ;
     }
+    
     # The vccars32.bat is actually in "bin" directory.
     # (except for free VC7.1 tools)
     possible-paths = $(possible-paths)\\bin $(possible-paths) ;
@@ -221,10 +223,10 @@ rule default-paths ( version ? )
 # is it possible to combine these?
 # make the generators non-composing, so that they don't convert each source
 # into separate rsp file.
-generators.register-linker msvc.link : OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : EXE RSP : <toolset>msvc ;
-generators.register-linker msvc.link.dll : OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB RSP : <toolset>msvc ;
-
-generators.register-composing msvc.archive : OBJ : STATIC_LIB RSP : <toolset>msvc ;
+generators.register-linker msvc.link : OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : EXE : <toolset>msvc ;
+generators.register-linker msvc.link.dll : OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB : <toolset>msvc ;
+  
+generators.register-archiver msvc.archive : OBJ : STATIC_LIB : <toolset>msvc ;
 generators.register-c-compiler msvc.compile.c++ : CPP : OBJ : <toolset>msvc ;
 generators.register-c-compiler msvc.compile.c : C : OBJ : <toolset>msvc ;
 generators.register-standard msvc.compile.rc : RC : OBJ(%_res) : <toolset>msvc ;
@@ -240,16 +242,20 @@ flags msvc.compile CFLAGS <optimization>off : /Od ;
 flags msvc.compile CFLAGS <inlining>off : /Ob0 ;
 flags msvc.compile CFLAGS <inlining>on : /Ob1 ;
 flags msvc.compile CFLAGS <inlining>full : /Ob2 ;
-flags msvc.compile CFLAGS <exception-handling>on : /EHsc ;
-flags msvc.compile CFLAGS <rtti>on : /GR ;
-flags msvc.compile CFLAGS <runtime-debugging>off/<link-runtime>shared : /MD ;
-flags msvc.compile CFLAGS <runtime-debugging>on/<link-runtime>shared : /MDd ;
 
-flags msvc.compile CFLAGS <runtime-debugging>off/<link-runtime>static/<threading>single : /ML ;
-flags msvc.compile CFLAGS <runtime-debugging>on/<link-runtime>static/<threading>single : /MLd ;
-flags msvc.compile CFLAGS <runtime-debugging>off/<link-runtime>static/<threading>multi : /MT ;
-flags msvc.compile CFLAGS <runtime-debugging>on/<link-runtime>static/<threading>multi : /MTd ;
-flags msvc.compile CFLAGS <base-target-type>CPP : /EHsc ;
+flags msvc.compile C++FLAGS  <exception-handling>on/<asynch-exceptions>off/<extern-c-nothrow>off : /EHs ;
+flags msvc.compile C++FLAGS  <exception-handling>on/<asynch-exceptions>off/<extern-c-nothrow>on : /EHsc ;
+flags msvc.compile C++FLAGS  <exception-handling>on/<asynch-exceptions>on/<extern-c-nothrow>off : /EHa ;
+flags msvc.compile C++FLAGS  <exception-handling>on/<asynch-exceptions>on/<extern-c-nothrow>on : /EHac ;
+
+flags msvc.compile CFLAGS <rtti>on : /GR ;
+flags msvc.compile CFLAGS <runtime-debugging>off/<runtime-link>shared : /MD ;
+flags msvc.compile CFLAGS <runtime-debugging>on/<runtime-link>shared : /MDd ;
+
+flags msvc.compile CFLAGS <runtime-debugging>off/<runtime-link>static/<threading>single : /ML ;
+flags msvc.compile CFLAGS <runtime-debugging>on/<runtime-link>static/<threading>single : /MLd ;
+flags msvc.compile CFLAGS <runtime-debugging>off/<runtime-link>static/<threading>multi : /MT ;
+flags msvc.compile CFLAGS <runtime-debugging>on/<runtime-link>static/<threading>multi : /MTd ;
 
 flags msvc.compile USER_CFLAGS <cflags> : ;
 flags msvc.compile.c++ USER_CFLAGS <cxxflags> : ;
@@ -260,16 +266,16 @@ flags msvc.compile DEFINES <define> ;
 flags msvc.compile UNDEFS <undef> ;
 flags msvc.compile INCLUDES <include> ;
 
-flags msvc WHATEVER <toolset-msvc:version> ;
+flags msvc.compile.c++ C++FLAGS : /wd4675 ;
 
 # The actions differ only by explicit selection of input language
-actions compile.c
+actions compile.c bind RSP
 {
-    $(.CC) /Zm800 -nologo -TC -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(USER_CFLAGS) -I"$(INCLUDES)" -c -Fo"$(<:W)" "$(>:W)"
+    $(.CC) /Zm800 -nologo -TC -U$(UNDEFS) $(CFLAGS) $(USER_CFLAGS) @"$(RSP:W)" -c -Fo"$(<[1]:W)" && $(RM) "$(RSP)"
 }
-actions compile.c++
+actions compile.c++ bind RSP
 {
-    $(.CC) /Zm800 -nologo -TP -U$(UNDEFS) -D$(DEFINES) $(CFLAGS) $(USER_CFLAGS) -I"$(INCLUDES)" -c -Fo"$(<:W)" "$(>:W)"
+    $(.CC) /Zm800 -nologo -TP -U$(UNDEFS) $(CFLAGS) $(C++FLAGS) $(USER_CFLAGS) @"$(RSP:W)" -c -Fo"$(<[1]:W)" && $(RM) "$(RSP)" 
 }
 
 actions compile.rc
@@ -327,18 +333,18 @@ if [ os.name ] in NT
 {    
     # The 'DEL' command would issue a message to stdout
     # if the file does not exist, so need a check.
-    actions archive 
+    actions archive bind RSP
     {  
         if exist "$(<[1])" DEL "$(<[1])"  
-        $(.LD) /lib /NOLOGO /out:"$(<[1])" @"$(<[2])"
+        $(.LD) /lib /NOLOGO /out:"$(<[1])" @"$(RSP)" && $(RM) "$(RSP)"
     }
 }
 else
 {
-    actions archive 
+    actions archive bind RSP
     {  
         $(RM) "$(<[1])"
-        $(.LD) /lib /NOLOGO /out:"$(<[1])" @"$(<[2])"
+        $(.LD) /lib /NOLOGO /out:"$(<[1])" @"$(RSP)" && $(RM) "$(RSP)"
     }
 }
         
@@ -348,14 +354,25 @@ else
 # rebuilt every time. I'm not sure that incremental linking is
 # such a great idea in general, but in this case I'm sure we
 # don't want it.
-actions link bind DEF_FILE
+actions link bind DEF_FILE RSP
 {
-    $(.LD) /NOLOGO $(LINKFLAGS) /out:"$(<[1]:W)" /INCREMENTAL:NO /LIBPATH:"$(LINKPATH:W)" $(USER_LINKFLAGS) @"$(<[2]:W)"
+    $(.LD) /NOLOGO $(LINKFLAGS) /out:"$(<[1]:W)" /INCREMENTAL:NO /LIBPATH:"$(LINKPATH:W)" $(USER_LINKFLAGS) @"$(RSP:W)" && $(RM) "$(RSP)"
 }
 
-actions link.dll bind DEF_FILE
+actions link.dll bind DEF_FILE RSP
 {
-    $(.LD) /NOLOGO $(LINKFLAGS) /out:"$(<[1]:W)" /INCREMENTAL:NO /IMPLIB:"$(<[2]:W)" /LIBPATH:"$(LINKPATH:W)" /def:$(DEF_FILE) $(USER_LINKFLAGS) @"$(<[3]:W)"
+    $(.LD) /NOLOGO $(LINKFLAGS) /out:"$(<[1]:W)" /INCREMENTAL:NO /IMPLIB:"$(<[2]:W)" /LIBPATH:"$(LINKPATH:W)" /def:$(DEF_FILE) $(USER_LINKFLAGS) @"$(RSP:W)" && $(RM) "$(RSP)"
+    $(MANIFEST)$(<[1]).manifest $(OUTPUTRESOURCE)$(<[1]);#2
 }
 
-        
+rule compile.c++ ( targets + : sources * : properties * )
+{
+    common.response-file $(targets) : $(sources) : $(response-file) : $(properties) ;
+}
+
+rule compile.c ( targets + : sources * : properties * )
+{
+    common.response-file $(targets) : $(sources) : $(targets[2]) : $(properties) ;
+}
+
+

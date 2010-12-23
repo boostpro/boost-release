@@ -63,10 +63,6 @@ void test()
     if (PyImport_AppendInittab("embedded_hello", initembedded_hello) == -1)
         throw std::runtime_error("Failed to add embedded_hello to the interpreter's "
                                  "builtin modules");
-
-    // Initialize the interpreter
-    Py_Initialize();
-
     // Retrieve the main module
     python::object main_module((
         python::handle<>(python::borrowed(PyImport_AddModule("__main__")))));
@@ -105,7 +101,7 @@ void test()
     // as easy!
     python::object py_base = PythonDerived();
     Base& py = python::extract<Base&>(py_base)
-#if BOOST_WORKAROUND(BOOST_MSVC, <= 1300) || BOOST_WORKAROUND(BOOST_INTEL_WIN, <= 810)
+#if BOOST_WORKAROUND(BOOST_MSVC, <= 1300) || BOOST_WORKAROUND(BOOST_INTEL_WIN, <= 900)
         ()
 #endif 
         ;
@@ -169,6 +165,9 @@ test_tutorial2()
 
 int main()
 {
+    // Initialize the interpreter
+    Py_Initialize();
+
     if (python::handle_exception(test))
     {
         if (PyErr_Occurred())
@@ -190,6 +189,8 @@ int main()
         return 1;
     }
 
+    // Boost.Python doesn't support Py_Finalize yet.
+    // Py_Finalize();
     return 0;
 }
 #include "module_tail.cpp"

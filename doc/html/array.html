@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Chapter 2. Boost.Array</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="The Boost C++ Libraries">
 <link rel="up" href="libraries.html" title="Part I. The Boost C++ Libraries">
 <link rel="prev" href="any/s04.html" title="Acknowledgements">
@@ -31,7 +31,7 @@
 </h3></div></div>
 <div><p class="copyright">Copyright © 2001-2004 Nicolai M. Josuttis</p></div>
 <div><div class="legalnotice">
-<a name="id449486"></a><p>Permission to copy, use, modify, sell and distribute this
+<a name="id971681"></a><p>Permission to copy, use, modify, sell and distribute this
       software is granted provided this copyright notice appears in
       all copies. This software is provided "as is" without express or
       implied warranty, and with no claim as to its suitability for
@@ -58,28 +58,28 @@
     provide the interface of STL containers (although, they provide
     the iterator interface of STL containers).</p>
 <p>As replacement for ordinary arrays, the STL provides class
-    <tt class="computeroutput">std::vector</tt>.  However,
-    <tt class="computeroutput">std::vector&lt;&gt;</tt> provides
+    <code class="computeroutput">std::vector</code>.  However,
+    <code class="computeroutput">std::vector&lt;&gt;</code> provides
     the semantics of dynamic arrays. Thus, it manages data to be able
     to change the number of elements. This results in some overhead in
     case only arrays with static size are needed.</p>
 <p>In his book, <span class="emphasis"><em>Generic Programming and the
     STL</em></span>, Matthew H. Austern introduces a useful wrapper
     class for ordinary arrays with static size, called
-    <tt class="computeroutput">block</tt>.  It is safer and has no worse performance than
+    <code class="computeroutput">block</code>.  It is safer and has no worse performance than
     ordinary arrays. In <span class="emphasis"><em>The C++ Programming
     Language</em></span>, 3rd edition, Bjarne Stroustrup introduces a
-    similar class, called <tt class="computeroutput">c_array</tt>, which I (<a href="http://www.josuttis.com" target="_top">Nicolai Josuttis</a>) present
+    similar class, called <code class="computeroutput">c_array</code>, which I (<a href="http://www.josuttis.com" target="_top">Nicolai Josuttis</a>) present
     slightly modified in my book <span class="emphasis"><em>The C++ Standard Library -
     A Tutorial and Reference</em></span>, called
-    <tt class="computeroutput">carray</tt>. This is the essence of these approaches
+    <code class="computeroutput">carray</code>. This is the essence of these approaches
     spiced with many feedback from <a href="http://www.boost.org" target="_top">boost</a>.</p>
 <p>After considering different names, we decided to name this
-    class simply <tt class="computeroutput"><a href="boost/array.html" title="Class template array">array</a></tt>.</p>
+    class simply <code class="computeroutput"><a href="boost/array.html" title="Class template array">array</a></code>.</p>
 <p>Note that this class is suggested to be part of the next
     Technical Report, which will extend the C++ Standard (see
     <a href="" target="_top">http://std.dkuug.dk/jtc1/sc22/wg21/docs/papers/2003/n1548.htm</a>).</p>
-<p>Class <tt class="computeroutput"><a href="boost/array.html" title="Class template array">array</a></tt> fulfills most
+<p>Class <code class="computeroutput"><a href="boost/array.html" title="Class template array">array</a></code> fulfills most
     but not all of the requirements of "reversible containers" (see
     Section 23.1, [lib.container.requirements] of the C++
     Standard). The reasons array is not an reversible STL container is
@@ -89,18 +89,18 @@
 <li>No constructors are provided.</li>
 <li>Elements may have an undetermined initial value (see <a href="array/rationale.html" title="Design Rationale">the section called &#8220;Design Rationale&#8221;</a>).</li>
 <li>
-<a href="boost/array.html#id227567">swap</a>() has no constant complexity.</li>
+<code class="computeroutput"><a href="boost/array.html#id763420">swap</a></code>() has no constant complexity.</li>
 <li>
-<a href="boost/array.html#id229934-bb">size</a>() is always constant, based on the second template argument of the type.</li>
+<code class="computeroutput"><a href="boost/array.html#id686133-bb">size</a></code>() is always constant, based on the second template argument of the type.</li>
 <li>The container provides no allocator support.</li>
 </ul></div>
 <p>It doesn't fulfill the requirements of a "sequence" (see Section 23.1.1, [lib.sequence.reqmts] of the C++ Standard), except that:
       </p>
 <div class="itemizedlist"><ul type="disc" compact>
 <li>
-<a href="boost/array.html#id227365-bb">front</a>() and <a href="boost/array.html#id227401-bb">back</a>() are provided.</li>
+<code class="computeroutput"><a href="boost/array.html#id763241-bb">front</a></code>() and <code class="computeroutput"><a href="boost/array.html#id763273-bb">back</a></code>() are provided.</li>
 <li>
-<a href="boost/array.html#id227255-bb">operator[]</a> and <a href="boost/array.html#id227310-bb">at</a>() are provided.</li>
+<code class="computeroutput"><a href="boost/array.html#id685146-bb">operator[]</a></code> and <code class="computeroutput"><a href="boost/array.html#id726524-bb">at</a></code>() are provided.</li>
 </ul></div>
 </div>
 </div>

@@ -9,6 +9,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/adjacency_matrix.hpp>
 #include <boost/graph/filtered_graph.hpp>
+#include <boost/graph/subgraph.hpp>
 #include <string>
 #include <vector>
 
@@ -83,7 +84,7 @@ void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
   // Try adding a vertex with a property value
   vertex_descriptor bloomington = do_add_vertex(map, vi, City("Bloomington", 39000, 47401),
                                                 can_add_vertex);
-  BOOST_TEST(get(boost::vertex_bundle, map)[bloomington].zipcodes[0] == 47401);
+  BOOST_CHECK(get(boost::vertex_bundle, map)[bloomington].zipcodes[0] == 47401);
   
   edge_descriptor e = add_edge(v, u, map).first;
   map[e].name = "I-87";
@@ -93,25 +94,47 @@ void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
   map[e].divided = true;
 
   edge_descriptor our_trip = add_edge(v, bloomington, Highway("Long haul", 1000), map).first;
-  BOOST_TEST(get(boost::edge_bundle, map, our_trip).miles == 1000);
+  BOOST_CHECK(get(boost::edge_bundle, map, our_trip).miles == 1000);
   
-  BOOST_TEST(get(get(&City::name, map), v) == "Troy");
-  BOOST_TEST(get(get(&Highway::name, map), e) == "I-87");
-  BOOST_TEST(get(&City::name, map, u) == "Albany");
-  BOOST_TEST(get(&Highway::name, map, e) == "I-87");
+  BOOST_CHECK(get(get(&City::name, map), v) == "Troy");
+  BOOST_CHECK(get(get(&Highway::name, map), e) == "I-87");
+  BOOST_CHECK(get(&City::name, map, u) == "Albany");
+  BOOST_CHECK(get(&Highway::name, map, e) == "I-87");
   put(&City::population, map, v, 49168);
-  BOOST_TEST(get(&City::population, map)[v] == 49168);
+  BOOST_CHECK(get(&City::population, map)[v] == 49168);
   
   boost::filtered_graph<Map, boost::keep_all> fmap(map, boost::keep_all());
-  BOOST_TEST(get(boost::edge_bundle, map, our_trip).miles == 1000);
+  BOOST_CHECK(get(boost::edge_bundle, map, our_trip).miles == 1000);
   
-  BOOST_TEST(get(get(&City::name, fmap), v) == "Troy");
-  BOOST_TEST(get(get(&Highway::name, fmap), e) == "I-87");
-  BOOST_TEST(get(&City::name, fmap, u) == "Albany");
-  BOOST_TEST(get(&Highway::name, fmap, e) == "I-87");
+  BOOST_CHECK(get(get(&City::name, fmap), v) == "Troy");
+  BOOST_CHECK(get(get(&Highway::name, fmap), e) == "I-87");
+  BOOST_CHECK(get(&City::name, fmap, u) == "Albany");
+  BOOST_CHECK(get(&Highway::name, fmap, e) == "I-87");
   put(&City::population, fmap, v, 49169);
-  BOOST_TEST(get(&City::population, fmap)[v] == 49169);
+  BOOST_CHECK(get(&City::population, fmap)[v] == 49169);
 
+}
+
+void test_subgraph_bundled_properties()
+{
+  typedef boost::subgraph<
+            boost::adjacency_list<boost::vecS, boost::vecS, 
+                                  boost::bidirectionalS, City, 
+                                  boost::property<boost::edge_index_t, int,
+                                                  Highway> > > SubMap;
+  typedef boost::graph_traits<SubMap>::vertex_descriptor Vertex;
+  typedef boost::graph_traits<SubMap>::vertex_iterator vertex_iterator;
+
+  SubMap map(3);
+  vertex_iterator vi = vertices(map).first;
+  Vertex troy = *vi++;
+  map[troy].name = "Troy";
+  map[*vi++].name = "Bloomington";
+  map[*vi++].name = "Endicott";
+
+  SubMap& g1 = map.create_subgraph();
+  Vertex troy1 = add_vertex(*vertices(map).first, g1);
+  BOOST_CHECK(map[troy1].name == g1[troy1].name);
 }
 
 int test_main(int, char*[])
@@ -124,6 +147,6 @@ int test_main(int, char*[])
 
   test_bundled_properties(static_cast<Map1*>(0), truth<true>());
   test_bundled_properties(static_cast<Map2*>(0), truth<false>());
-  
+  test_subgraph_bundled_properties();
   return 0;
 }

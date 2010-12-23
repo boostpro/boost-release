@@ -18,12 +18,12 @@ namespace std{
 #endif
 
 #include "test_tools.hpp"
-
-#include <boost/serialization/nvp.hpp>
-#include "throw_exception.hpp"
-
+#include <boost/preprocessor/stringize.hpp>
+#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
+#include <boost/detail/no_exceptions_support.hpp>
 #include <boost/archive/archive_exception.hpp>
 
+#include <boost/serialization/nvp.hpp>
 #include "A.hpp"
 
 template<class T>
@@ -57,7 +57,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     BOOST_REQUIRE(NULL != testfile);
 
     // test array of objects
-    A a_array[10];
+    const A a_array[10];
     {   
         test_ostream os(testfile, TEST_STREAM_FLAGS);
         test_oarchive oa(os);
@@ -88,12 +88,14 @@ int test_main( int /* argc */, char* /* argv */[] )
                 );
                 exception_invoked = true;
             }
+            BOOST_CATCH_END
             BOOST_CHECK(exception_invoked);
         }
         BOOST_CATCH (boost::archive::archive_exception ae){}
+        BOOST_CATCH_END
     }
     std::remove(testfile);
-    return boost::exit_success;
+    return EXIT_SUCCESS;
 }
 
 // EOF

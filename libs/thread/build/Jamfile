@@ -46,7 +46,6 @@ import ./threads ;
         : ## requirements ##
           <sysinclude>$(BOOST_ROOT) #:should be unnecessary (because already included in thread_base)
           <define>BOOST_THREAD_BUILD_LIB=1
-          <runtime-link>static
           # the common names rule ensures that the library will
           # be named according to the rules used by the install
           # and auto-link features:
@@ -102,7 +101,8 @@ import ./threads ;
               <template>boost_thread_lib_base
             : ## requirements ##
               <define>BOOST_THREAD_LIB_NAME=$(boost_thread_lib_name_ptw32)
-              $(pthreads-win32)
+              $(boost_thread_lib_settings_ptw32)
+            : ## default build ##
         ;
 
         dll $(boost_thread_lib_name_ptw32)
@@ -110,7 +110,8 @@ import ./threads ;
               <template>boost_thread_dll_base
             : ## requirements ##
               <define>BOOST_THREAD_LIB_NAME=$(boost_thread_lib_name_ptw32)
-              $(pthreads-win32)
+              $(boost_thread_lib_settings_ptw32)
+            : ## default build ##
         ;
 
         stage bin-stage

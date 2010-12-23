@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Design Overview</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../variant.html" title="Chapter 12. Boost.Variant">
+<link rel="up" href="../variant.html" title="Chapter 15. Boost.Variant">
 <link rel="prev" href="../visitor_ptr.html" title="Function template visitor_ptr">
 <link rel="next" href="misc.html" title="Miscellaneous Notes">
 </head>
@@ -41,15 +41,15 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="variant.design.never-empty.guarantee"></a>The Guarantee</h5></div></div></div>
-<p>All instances <tt class="computeroutput">v</tt> of type
-        <tt class="computeroutput"><a href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1,T2,...,TN&gt;</tt>
-        guarantee that <tt class="computeroutput">v</tt> has constructed content of one of the
-        types <tt class="computeroutput">T<span class="emphasis"><em>i</em></span></tt>, even if an operation on
-        <tt class="computeroutput">v</tt> has previously failed.</p>
-<p>This implies that <tt class="computeroutput">variant</tt> may be viewed precisely as
+<p>All instances <code class="computeroutput">v</code> of type
+        <code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">variant</a>&lt;T1,T2,...,TN&gt;</code>
+        guarantee that <code class="computeroutput">v</code> has constructed content of one of the
+        types <code class="computeroutput">T<span class="emphasis"><em>i</em></span></code>, even if an operation on
+        <code class="computeroutput">v</code> has previously failed.</p>
+<p>This implies that <code class="computeroutput">variant</code> may be viewed precisely as
         a union of <span class="emphasis"><em>exactly</em></span> its bounded types. This
         "never-empty" property insulates the user from the
-        possibility of undefined <tt class="computeroutput">variant</tt> content and the
+        possibility of undefined <code class="computeroutput">variant</code> content and the
         significant additional complexity-of-use attendant with such a
         possibility.</p>
 </div>
@@ -63,29 +63,29 @@
         unreasonably restrictive additional requirements on
         <a href="../">bounded types</a>).</p>
 <p>The central difficulty emerges in the details of
-        <tt class="computeroutput">variant</tt> assignment. Given two instances <tt class="computeroutput">v1</tt>
-        and <tt class="computeroutput">v2</tt> of some concrete <tt class="computeroutput">variant</tt> type, there
+        <code class="computeroutput">variant</code> assignment. Given two instances <code class="computeroutput">v1</code>
+        and <code class="computeroutput">v2</code> of some concrete <code class="computeroutput">variant</code> type, there
         are two distinct, fundamental cases we must consider for the assignment
-        <tt class="computeroutput">v1 = v2</tt>.</p>
-<p>First consider the case that <tt class="computeroutput">v1</tt> and <tt class="computeroutput">v2</tt>
-        each contains a value of the same type. Call this type <tt class="computeroutput">T</tt>.
+        <code class="computeroutput">v1 = v2</code>.</p>
+<p>First consider the case that <code class="computeroutput">v1</code> and <code class="computeroutput">v2</code>
+        each contains a value of the same type. Call this type <code class="computeroutput">T</code>.
         In this situation, assignment is perfectly straightforward: use
-        <tt class="computeroutput">T::operator=</tt>.</p>
-<p>However, we must also consider the case that <tt class="computeroutput">v1</tt> and
-        <tt class="computeroutput">v2</tt> contain values <span class="emphasis"><em>of distinct types</em></span>.
-        Call these types <tt class="computeroutput">T</tt> and <tt class="computeroutput">U</tt>. At this point,
-        since <tt class="computeroutput">variant</tt> manages its content on the stack, the
-        left-hand side of the assignment (i.e., <tt class="computeroutput">v1</tt>) must destroy
+        <code class="computeroutput">T::operator=</code>.</p>
+<p>However, we must also consider the case that <code class="computeroutput">v1</code> and
+        <code class="computeroutput">v2</code> contain values <span class="emphasis"><em>of distinct types</em></span>.
+        Call these types <code class="computeroutput">T</code> and <code class="computeroutput">U</code>. At this point,
+        since <code class="computeroutput">variant</code> manages its content on the stack, the
+        left-hand side of the assignment (i.e., <code class="computeroutput">v1</code>) must destroy
         its content so as to permit in-place copy-construction of the content
-        of the right-hand side (i.e., <tt class="computeroutput">v2</tt>). In the end, whereas
-        <tt class="computeroutput">v1</tt> began with content of type <tt class="computeroutput">T</tt>, it ends
-        with content of type <tt class="computeroutput">U</tt>, namely a copy of the content of
-        <tt class="computeroutput">v2</tt>.</p>
+        of the right-hand side (i.e., <code class="computeroutput">v2</code>). In the end, whereas
+        <code class="computeroutput">v1</code> began with content of type <code class="computeroutput">T</code>, it ends
+        with content of type <code class="computeroutput">U</code>, namely a copy of the content of
+        <code class="computeroutput">v2</code>.</p>
 <p>The crux of the problem, then, is this: in the event that
-        copy-construction of the content of <tt class="computeroutput">v2</tt> fails, how can
-        <tt class="computeroutput">v1</tt> maintain its "never-empty" guarantee?
-        By the time copy-construction from <tt class="computeroutput">v2</tt> is attempted,
-        <tt class="computeroutput">v1</tt> has already destroyed its content!</p>
+        copy-construction of the content of <code class="computeroutput">v2</code> fails, how can
+        <code class="computeroutput">v1</code> maintain its "never-empty" guarantee?
+        By the time copy-construction from <code class="computeroutput">v2</code> is attempted,
+        <code class="computeroutput">v1</code> has already destroyed its content!</p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
@@ -98,7 +98,7 @@
 <li>Provide some "backup" storage, appropriately
             aligned, capable of holding values of the contained type of the
             left-hand side.</li>
-<li>Copy the memory (e.g., using <tt class="computeroutput">memcpy</tt>) of the
+<li>Copy the memory (e.g., using <code class="computeroutput">memcpy</code>) of the
             storage of the left-hand side to the backup storage.</li>
 <li>Attempt a copy of the right-hand side content to the
             (now-replicated) left-hand side storage.</li>
@@ -147,16 +147,16 @@
         Williams proposed in
         <a href="refs.html#variant.refs.wil02">[Wil02]</a> a scheme that served
         as the basis for a portable solution in some pre-release
-        implementations of <tt class="computeroutput">variant</tt>.</p>
+        implementations of <code class="computeroutput">variant</code>.</p>
 <p>The essential idea to this scheme, which shall be referred to as
         the "double storage" scheme, is to provide enough space
-        within a <tt class="computeroutput">variant</tt> to hold two separate values of any of
+        within a <code class="computeroutput">variant</code> to hold two separate values of any of
         the bounded types.</p>
 <p>With the secondary storage, a copy the right-hand side can be
         attempted without first destroying the content of the left-hand side;
         accordingly, the content of the left-hand side remains available in
         the event of an exception.</p>
-<p>Thus, with this scheme, the <tt class="computeroutput">variant</tt> implementation
+<p>Thus, with this scheme, the <code class="computeroutput">variant</code> implementation
         needs only to keep track of which storage contains the content -- and
         dispatch any visitation requests, queries, etc. accordingly.</p>
 <p>The most obvious flaw to this approach is the space overhead
@@ -167,7 +167,7 @@
         details) -- many users on the Boost mailing list strongly objected to
         the use of double storage. In particular, it was noted that the
         overhead of double storage would be at play at all times -- even if
-        assignment to <tt class="computeroutput">variant</tt> never occurred. For this reason
+        assignment to <code class="computeroutput">variant</code> never occurred. For this reason
         and others, a new approach was developed.</p>
 </div>
 <div class="section" lang="en">
@@ -177,31 +177,31 @@
         realized that no replacement would be without drawbacks. Thus, a
         compromise was desired.</p>
 <p>To this end, Dave Abrahams suggested to include the following in
-        the behavior specification for <tt class="computeroutput">variant</tt> assignment:
-        "<tt class="computeroutput">variant</tt> assignment from one type to another may
-        incur dynamic allocation." That is, while <tt class="computeroutput">variant</tt> would
+        the behavior specification for <code class="computeroutput">variant</code> assignment:
+        "<code class="computeroutput">variant</code> assignment from one type to another may
+        incur dynamic allocation." That is, while <code class="computeroutput">variant</code> would
         continue to store its content <span class="emphasis"><em>in situ</em></span> after
         construction and after assignment involving identical contained types,
-        <tt class="computeroutput">variant</tt> would store its content on the heap after
+        <code class="computeroutput">variant</code> would store its content on the heap after
         assignment involving distinct contained types.</p>
 <p>The algorithm for assignment would proceed as follows:
 
         </p>
 <div class="orderedlist"><ol type="1">
 <li>Copy-construct the content of the right-hand side to the
-            heap; call the pointer to this data <tt class="computeroutput">p</tt>.</li>
+            heap; call the pointer to this data <code class="computeroutput">p</code>.</li>
 <li>Destroy the content of the left-hand side.</li>
-<li>Copy <tt class="computeroutput">p</tt> to the left-hand side
+<li>Copy <code class="computeroutput">p</code> to the left-hand side
             storage.</li>
 </ol></div>
 <p>
 
         Since all operations on pointers are nothrow, this scheme would allow
-        <tt class="computeroutput">variant</tt> to meet its never-empty guarantee.
+        <code class="computeroutput">variant</code> to meet its never-empty guarantee.
       </p>
 <p>The most obvious concern with this approach is that while it
         certainly eliminates the space overhead of double storage, it
-        introduces the overhead of dynamic-allocation to <tt class="computeroutput">variant</tt>
+        introduces the overhead of dynamic-allocation to <code class="computeroutput">variant</code>
         assignment -- not just in terms of the initial allocation but also
         as a result of the continued storage of the content on the heap. While
         the former problem is unavoidable, the latter problem may be avoided
@@ -211,19 +211,19 @@
 <div class="orderedlist"><ol type="1">
 <li>Copy-construct the content of the
             <span class="emphasis"><em>left</em></span>-hand side to the heap; call the pointer to
-            this data <tt class="computeroutput">backup</tt>.</li>
+            this data <code class="computeroutput">backup</code>.</li>
 <li>Destroy the content of the left-hand side.</li>
 <li>Copy-construct the content of the right-hand side in the
             (now-empty) storage of the left-hand side.</li>
-<li>In the event of failure, copy <tt class="computeroutput">backup</tt> to the
+<li>In the event of failure, copy <code class="computeroutput">backup</code> to the
             left-hand side storage.</li>
 <li>In the event of success, deallocate the data pointed to
-            by <tt class="computeroutput">backup</tt>.</li>
+            by <code class="computeroutput">backup</code>.</li>
 </ol></div>
 <p>With this technique: 1) only a single storage is used;
         2) allocation is on the heap in the long-term only if the assignment
         fails; and 3) after any <span class="emphasis"><em>successful</em></span> assignment,
-        storage within the <tt class="computeroutput">variant</tt> is guaranteed. For the
+        storage within the <code class="computeroutput">variant</code> is guaranteed. For the
         purposes of the initial release of the library, these characteristics
         were deemed a satisfactory compromise solution.</p>
 <p>There remain notable shortcomings, however. In particular, there
@@ -234,7 +234,7 @@
         though, the library treats storage of its content as an implementation
         detail. Nonetheless, as described in the next section, there
         <span class="emphasis"><em>are</em></span> certain things the user can do to ensure the
-        greatest efficiency for <tt class="computeroutput">variant</tt> instances (see
+        greatest efficiency for <code class="computeroutput">variant</code> instances (see
         <a href="design.html#variant.design.never-empty.optimizations" title="Enabling Optimizations">the section called &#8220;Enabling Optimizations&#8221;</a> for
         details).</p>
 </div>
@@ -244,39 +244,39 @@
 <p>As described in
         <a href="design.html#variant.design.never-empty.problem" title="The Implementation Problem">the section called &#8220;The Implementation Problem&#8221;</a>, the central
         difficulty in implementing the never-empty guarantee is the
-        possibility of failed copy-construction during <tt class="computeroutput">variant</tt>
+        possibility of failed copy-construction during <code class="computeroutput">variant</code>
         assignment. Yet types with nothrow copy constructors clearly never
         face this possibility. Similarly, if one of the bounded types of the
-        <tt class="computeroutput">variant</tt> is nothrow default-constructible, then such a
+        <code class="computeroutput">variant</code> is nothrow default-constructible, then such a
         type could be used as a safe "fallback" type in the event of
         failed copy construction.</p>
-<p>Accordingly, <tt class="computeroutput">variant</tt> is designed to enable the
+<p>Accordingly, <code class="computeroutput">variant</code> is designed to enable the
         following optimizations once the following criteria on its bounded
         types are met:
 
         </p>
 <div class="itemizedlist"><ul type="disc">
-<li>For each bounded type <tt class="computeroutput">T</tt> that is nothrow
+<li>For each bounded type <code class="computeroutput">T</code> that is nothrow
             copy-constructible (as indicated by
-            <tt class="computeroutput">boost::has_nothrow_copy</tt>), the
-            library guarantees <tt class="computeroutput">variant</tt> will use only single
-            storage and in-place construction for <tt class="computeroutput">T</tt>.</li>
+            <code class="computeroutput">boost::has_nothrow_copy</code>), the
+            library guarantees <code class="computeroutput">variant</code> will use only single
+            storage and in-place construction for <code class="computeroutput">T</code>.</li>
 <li>If <span class="emphasis"><em>any</em></span> bounded type is nothrow
             default-constructible (as indicated by
-            <tt class="computeroutput">boost::has_nothrow_constructor</tt>),
-            the library guarantees <tt class="computeroutput">variant</tt> will use only single
+            <code class="computeroutput">boost::has_nothrow_constructor</code>),
+            the library guarantees <code class="computeroutput">variant</code> will use only single
             storage and in-place construction for <span class="emphasis"><em>every</em></span>
-            bounded type in the <tt class="computeroutput">variant</tt>. Note, however, that in
+            bounded type in the <code class="computeroutput">variant</code>. Note, however, that in
             the event of assignment failure, an unspecified nothrow
             default-constructible bounded type will be default-constructed in
             the left-hand side operand so as to preserve the never-empty
             guarantee.</li>
 </ul></div>
-<p><span class="bold"><b>Caveat</b></span>: On most platforms, the
-        <a href="../../../libs/type_traits/index.html" target="_top">Type Traits</a> templates
-        <tt class="computeroutput">has_nothrow_copy</tt> and <tt class="computeroutput">has_nothrow_constructor</tt>
-        by default return <tt class="computeroutput">false</tt> for all <tt class="computeroutput">class</tt> and
-        <tt class="computeroutput">struct</tt> types. It is necessary therefore to provide
+<p><span class="bold"><strong>Caveat</strong></span>: On most platforms, the
+        Type Traits templates
+        <code class="computeroutput">has_nothrow_copy</code> and <code class="computeroutput">has_nothrow_constructor</code>
+        by default return <code class="computeroutput">false</code> for all <code class="computeroutput">class</code> and
+        <code class="computeroutput">struct</code> types. It is necessary therefore to provide
         specializations of these templates as appropriate for user-defined
         types, as demonstrated in the following:
 
@@ -286,20 +286,20 @@
 namespace boost {
 
   template &lt;&gt;
-  struct has_nothrow_copy&lt; myUDT &gt;
-    : mpl::true_
+  struct <code class="computeroutput">has_nothrow_copy</code>&lt; myUDT &gt;
+    : <code class="computeroutput">mpl::true_</code>
   {
   };
 
 }
 </pre>
-<p><span class="bold"><b>Implementation Note</b></span>: So as to make
-        the behavior of <tt class="computeroutput">variant</tt> more predictable in the aftermath
+<p><span class="bold"><strong>Implementation Note</strong></span>: So as to make
+        the behavior of <code class="computeroutput">variant</code> more predictable in the aftermath
         of an exception, the current implementation prefers to default-construct
-        <tt class="computeroutput">boost::blank</tt> if specified as a
+        <code class="computeroutput">boost::blank</code> if specified as a
         bounded type instead of other nothrow default-constructible bounded
         types. (If this is deemed to be a useful feature, it will become part
-        of the specification for <tt class="computeroutput">variant</tt>; otherwise, it may be
+        of the specification for <code class="computeroutput">variant</code>; otherwise, it may be
         obsoleted. Please provide feedback to the Boost mailing list.)</p>
 </div>
 <div class="section" lang="en">
@@ -308,13 +308,13 @@ namespace boost {
 <p>As the previous sections have demonstrated, much effort has been
         expended in an attempt to provide a balance between performance, data
         size, and heap usage. Further, significant optimizations may be
-        enabled in <tt class="computeroutput">variant</tt> on the basis of certain traits of its
+        enabled in <code class="computeroutput">variant</code> on the basis of certain traits of its
         bounded types.</p>
 <p>However, there will be some users for whom the chosen compromise
         is unsatisfactory (e.g.: heap allocation must be avoided at all costs;
         if heap allocation is used, custom allocators must be used; etc.). For
         this reason, a future version of the library will support a
-        policy-based implementation of <tt class="computeroutput">variant</tt>. While this will
+        policy-based implementation of <code class="computeroutput">variant</code>. While this will
         not eliminate the problems described in the previous sections, it will
         allow the decisions regarding tradeoffs to be decided by the user
         rather than the library designers.</p>

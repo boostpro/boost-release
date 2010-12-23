@@ -5,12 +5,17 @@
  * Subject to the Boost Software License, Version 1.0. 
  * (See accompanying file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2004/10/02 18:49:16 $
+ * $Date: 2005/05/11 13:01:53 $
  */
 
 #include "boost/date_time/local_time/local_date_time.hpp"
 #include "boost/date_time/period.hpp"
 #include "boost/date_time/time_iterator.hpp"
+#include "boost/date_time/compiler_config.hpp"
+#if defined(BOOST_DATE_TIME_OPTIONAL_GREGORIAN_TYPES)
+#include "boost/date_time/local_time/date_duration_operators.hpp"
+#endif //BOOST_DATE_TIME_OPTIONAL_GREGORIAN_TYPES
+#include "boost/date_time/local_time/custom_time_zone.hpp"
 
 namespace boost {
 namespace local_time {
@@ -20,7 +25,10 @@ namespace local_time {
 
   typedef date_time::time_itr<local_date_time> local_time_iterator;
 
-  //todo -- add clock definitions in here...
+  typedef date_time::second_clock<local_date_time> local_sec_clock; 
+  typedef date_time::microsec_clock<local_date_time> local_microsec_clock;
+  //! Shared Pointer for time_zone and posix_time_zone objects
+  typedef boost::shared_ptr<time_zone> time_zone_ptr;
   
   //bring special enum values into the namespace
   using date_time::special_values;

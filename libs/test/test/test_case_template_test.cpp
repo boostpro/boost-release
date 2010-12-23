@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2003-2004.
+//  (C) Copyright Gennadiy Rozental 2003-2005.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,30 +7,34 @@
 //
 //  File        : $RCSfile: test_case_template_test.cpp,v $
 //
-//  Version     : $Revision: 1.8 $
+//  Version     : $Revision: 1.14 $
 //
 //  Description : tests function template test case
 // ***************************************************************************
 
 // Boost.Test
-#include <boost/test/unit_test_suite.hpp>
-#include <boost/test/unit_test_result.hpp>
+#define BOOST_AUTO_TEST_MAIN
+#include <boost/test/auto_unit_test.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/test_case_template.hpp>
+#include <boost/test/framework.hpp>
+#include <boost/test/unit_test_log.hpp>
+#include <boost/test/results_collector.hpp>
 
-#if !defined ( __GNUC__ ) || __GNUC__ > 2
-#include <boost/test/detail/nullstream.hpp>
-typedef boost::onullstream onullstream_type;
+#if BOOST_WORKAROUND(  __GNUC__, < 3 )
+#include <boost/test/output_test_stream.hpp>
+typedef boost::test_tools::output_test_stream onullstream_type;
 #else
-typedef boost::test_toolbox::output_test_stream onullstream_type;
+#include <boost/test/utils/nullstream.hpp>
+typedef boost::onullstream onullstream_type;
 #endif
 
-// Boost
+// BOOST
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/list_c.hpp>
 #include <boost/scoped_ptr.hpp>
 
-namespace tf  = boost::unit_test;
+namespace ut = boost::unit_test;
 namespace mpl = boost::mpl;
 
 // STL
@@ -38,114 +42,104 @@ namespace mpl = boost::mpl;
 
 //____________________________________________________________________________//
 
-template<typename Number>
-void test0( Number* = 0 )
+BOOST_TEST_CASE_TEMPLATE_FUNCTION( test0, Number )
 {
     BOOST_CHECK_EQUAL( 2, (int const)Number::value );
 }
 
-BOOST_META_FUNC_TEST_CASE( test0 );
-
 //____________________________________________________________________________//
 
-template<typename Number>
-void test1( Number* = 0 )
+BOOST_TEST_CASE_TEMPLATE_FUNCTION( test1, Number )
 {
     BOOST_CHECK_EQUAL( 6, (int const)Number::value );
-
     BOOST_REQUIRE( 2 <= (int const)Number::value );
-
     BOOST_CHECK_EQUAL( 3, (int const)Number::value );
 }
 
-BOOST_META_FUNC_TEST_CASE( test1 );
-
 //____________________________________________________________________________//
 
-template<typename Number>
-void test2( Number* = 0 )
+BOOST_TEST_CASE_TEMPLATE_FUNCTION( test2, Number )
 {
     throw Number();
 }
 
-BOOST_META_FUNC_TEST_CASE( test2 );
+//____________________________________________________________________________//
+
+BOOST_AUTO_TEST_CASE( test0_only_2 )
+{
+    onullstream_type    null_output;
+
+    typedef boost::mpl::list_c<int,2,2,2,2,2,2,2> only_2;
+    ut::unit_test_log.set_stream( null_output );
+
+    ut::test_suite* test = BOOST_TEST_SUITE( "" );
+    test->add( BOOST_TEST_CASE_TEMPLATE( test0, only_2 ) );
+    ut::framework::run( test );
+    ut::test_results const& tr = ut::results_collector.results( test->p_id );
+
+    ut::unit_test_log.set_stream( std::cout );
+    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)0 );
+    BOOST_CHECK( !tr.p_aborted );
+}
 
 //____________________________________________________________________________//
 
-int test_main( int, char* [] ) 
+BOOST_AUTO_TEST_CASE( test0_one_to_ten )
 {
-    tf::unit_test_counter               num_of_failures;
-    bool                                exception_caught;
-    onullstream_type                    null_output;
-    boost::scoped_ptr<tf::test_case>    test;  
+    onullstream_type    null_output;
+    ut::test_suite* test = BOOST_TEST_SUITE( "" );
 
-    tf::unit_test_log::instance().set_log_stream( null_output );
-
-    {
-        tf::unit_test_result_saver saver;
-        typedef boost::mpl::list_c<int,2,2,2,2,2,2,2> only_2;
-        test.reset( BOOST_FUNC_TEMPLATE_TEST_CASE( test0, only_2  ) );
-
-        test->run();
-
-        tf::unit_test_result::instance().failures_details( num_of_failures, exception_caught );
-    }
-
-    tf::unit_test_log::instance().set_log_stream( std::cout );
-    BOOST_CHECK_EQUAL( num_of_failures, (std::size_t)0 );
-    BOOST_CHECK( !exception_caught );
-
-    tf::unit_test_log::instance().set_log_stream( null_output );
-
-    {
-    tf::unit_test_result_saver saver;
     typedef boost::mpl::range_c<int,0,10> one_to_ten;
-    test.reset( BOOST_FUNC_TEMPLATE_TEST_CASE( test0, one_to_ten ) );
+    ut::unit_test_log.set_stream( null_output );
+    
+    test->add( BOOST_TEST_CASE_TEMPLATE( test0, one_to_ten ) );
 
-    test->run();
+    ut::framework::run( test );
+    ut::test_results const& tr = ut::results_collector.results( test->p_id );
 
-    tf::unit_test_result::instance().failures_details( num_of_failures, exception_caught );
-    }
+    ut::unit_test_log.set_stream( std::cout );
+    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)9 );
+    BOOST_CHECK( !tr.p_aborted );
 
-    tf::unit_test_log::instance().set_log_stream( std::cout );
-    BOOST_CHECK_EQUAL( num_of_failures, (std::size_t)9 );
-    BOOST_CHECK( !exception_caught );
+}
 
-    tf::unit_test_log::instance().set_log_stream( null_output );
+//____________________________________________________________________________//
 
-    {
-        tf::unit_test_result_saver saver;
-        typedef boost::mpl::range_c<int,1,5> one_to_five;
-        test.reset( BOOST_FUNC_TEMPLATE_TEST_CASE( test1, one_to_five ) );
+BOOST_AUTO_TEST_CASE( test1_one_to_five )
+{
+    onullstream_type    null_output;
+    ut::test_suite* test = BOOST_TEST_SUITE( "" );
 
-        test->run();
+    typedef boost::mpl::range_c<int,1,5> one_to_five;
+    ut::unit_test_log.set_stream( null_output );
+    test->add( BOOST_TEST_CASE_TEMPLATE( test1, one_to_five ) );
 
-        tf::unit_test_result::instance().failures_details( num_of_failures, exception_caught );
-    }
+    ut::framework::run( test );
+    ut::test_results const& tr = ut::results_collector.results( test->p_id );
 
-    tf::unit_test_log::instance().set_log_stream( std::cout );
-    BOOST_CHECK_EQUAL( num_of_failures, (std::size_t)7 );
-    BOOST_CHECK( !exception_caught );
+    ut::unit_test_log.set_stream( std::cout );
+    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)7 );
+    BOOST_CHECK( !tr.p_aborted );
+}
 
-    tf::unit_test_log::instance().set_log_stream( null_output );
-    bool passed = false;
-    {
-        tf::unit_test_result_saver saver;
-        typedef boost::mpl::range_c<int,1,3> one_to_three;
-        test.reset( BOOST_FUNC_TEMPLATE_TEST_CASE( test2, one_to_three ) );
+//____________________________________________________________________________//
 
-        test->run();
+BOOST_AUTO_TEST_CASE( test2_one_to_three )
+{
+    onullstream_type    null_output;
+    ut::test_suite* test = BOOST_TEST_SUITE( "" );
 
-        tf::unit_test_result::instance().failures_details( num_of_failures, exception_caught );
-        passed = tf::unit_test_result::instance().has_passed();
-    }
+    typedef boost::mpl::range_c<int,1,3> one_to_three;
+    ut::unit_test_log.set_stream( null_output );
+    test->add( BOOST_TEST_CASE_TEMPLATE( test2, one_to_three ) );
 
-    tf::unit_test_log::instance().set_log_stream( std::cout );
-    BOOST_CHECK_EQUAL( num_of_failures, (std::size_t)0 );
-    BOOST_CHECK( !exception_caught );
-    BOOST_CHECK( !passed );
+    ut::framework::run( test );
+    ut::test_results const& tr = ut::results_collector.results( test->p_id );
 
-    return 0;
+    ut::unit_test_log.set_stream( std::cout );
+    BOOST_CHECK_EQUAL( tr.p_assertions_failed, (std::size_t)0 );
+    BOOST_CHECK( !tr.p_aborted );
+    BOOST_CHECK( !tr.passed() );
 }
 
 //____________________________________________________________________________//
@@ -154,21 +148,12 @@ int test_main( int, char* [] )
 //  Revision History :
 //  
 //  $Log: test_case_template_test.cpp,v $
-//  Revision 1.8  2004/10/05 04:23:54  rogeeff
-//  borland fix
-//
-//  Revision 1.7  2004/05/21 06:26:10  rogeeff
+//  Revision 1.14  2005/05/11 05:07:57  rogeeff
 //  licence update
 //
-//  Revision 1.6  2004/05/11 11:05:06  rogeeff
-//  basic_cstring introduced and used everywhere
-//  class properties reworked
-//  namespace names shortened
+//  Revision 1.13  2005/02/20 08:28:34  rogeeff
+//  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
 //
-//  Revision 1.5  2003/12/01 00:42:38  rogeeff
-//  prerelease cleaning
-//
-
 // ***************************************************************************
 
 // EOF

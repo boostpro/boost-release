@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: binomial_distribution.hpp,v 1.9 2004/07/27 03:43:32 dgregor Exp $
+ * $Id: binomial_distribution.hpp,v 1.10 2005/06/24 22:13:43 jmaurer Exp $
  *
  */
 
@@ -30,7 +30,7 @@ public:
 
   explicit binomial_distribution(IntType t = 1,
                                  const RealType& p = RealType(0.5))
-    : _t(t)
+    : _bernoulli(p), _t(t)
   {
     assert(t >= 0);
     assert(RealType(0) <= 0 && p <= RealType(1));

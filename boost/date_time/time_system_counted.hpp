@@ -6,7 +6,7 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland, Bart Garst
- * $Date: 2004/10/01 02:29:49 $
+ * $Date: 2004/12/07 11:00:12 $
  */
 
 
@@ -60,9 +60,22 @@ namespace date_time {
         return date_type(ymd);
       }
     }
-    int_type day_count() const
+    //int_type day_count() const
+    unsigned long day_count() const
     {
-      return resolution_traits::as_number(time_count_) / frac_sec_per_day();
+      /* resolution_traits::as_number returns a boost::int64_t & 
+       * frac_sec_per_day is also a boost::int64_t so, naturally, 
+       * the division operation returns a boost::int64_t. 
+       * The static_cast to an unsigned long is ok (results in no data loss) 
+       * because frac_sec_per_day is either the number of 
+       * microseconds per day, or the number of nanoseconds per day. 
+       * Worst case scenario: resolution_traits::as_number returns the 
+       * maximum value an int64_t can hold and frac_sec_per_day 
+       * is microseconds per day (lowest possible value). 
+       * The division operation will then return a value of 106751991 - 
+       * easily fitting in an unsigned long. 
+       */
+      return static_cast<unsigned long>(resolution_traits::as_number(time_count_) / frac_sec_per_day());
     }
     int_type time_count() const
     {

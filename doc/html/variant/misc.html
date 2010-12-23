@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Miscellaneous Notes</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../variant.html" title="Chapter 12. Boost.Variant">
+<link rel="up" href="../variant.html" title="Chapter 15. Boost.Variant">
 <link rel="prev" href="design.html" title="Design Overview">
 <link rel="next" href="refs.html" title="References">
 </head>
@@ -27,7 +27,7 @@
 <a name="variant.misc"></a>Miscellaneous Notes</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="misc.html#variant.versus-any">Boost.Variant vs. Boost.Any</a></span></dt>
-<dt><span class="section"><a href="misc.html#id655863">Portability</a></span></dt>
+<dt><span class="section"><a href="misc.html#id1671669">Portability</a></span></dt>
 <dt><span class="section"><a href="misc.html#variant.troubleshooting">Troubleshooting</a></span></dt>
 <dt><span class="section"><a href="misc.html#variant.ack">Acknowledgments</a></span></dt>
 </dl></div>
@@ -72,11 +72,11 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id655863"></a>Portability</h4></div></div></div>
+<a name="id1671669"></a>Portability</h4></div></div></div>
 <p>The library aims for 100% ANSI/ISO C++ conformance. However, this is
     strictly impossible due to the inherently non-portable nature of the
-    <a href="../../../libs/type_traits/index.html" target="_top">Type Traits</a> library's
-    <tt class="computeroutput">type_with_alignment</tt> facility. In
+    Type Traits library's
+    <code class="computeroutput">type_with_alignment</code> facility. In
     practice though, no compilers or platforms have been discovered where this
     reliance on undefined behavior has been an issue.</p>
 <p>Additionally, significant effort has been expended to ensure proper
@@ -97,9 +97,9 @@
 <thead><tr>
 <th> </th>
 <th>Basic</th>
-<th><tt class="computeroutput">variant&lt;T&amp;&gt;</tt></th>
-<th><a href="tutorial.html#variant.tutorial.over-sequence" title="Using a type sequence to specify bounded types"><tt class="computeroutput">make_variant_over</tt></a></th>
-<th><a href="tutorial.html#variant.tutorial.recursive.recursive-variant" title="Recursive types with make_recursive_variant"><tt class="computeroutput">make_recursive_variant</tt></a></th>
+<th><code class="computeroutput">variant&lt;T&amp;&gt;</code></th>
+<th><a href="tutorial.html#variant.tutorial.over-sequence" title="Using a type sequence to specify bounded types"><code class="computeroutput">make_variant_over</code></a></th>
+<th><a href="tutorial.html#variant.tutorial.recursive.recursive-variant" title="Recursive types with make_recursive_variant"><code class="computeroutput">make_recursive_variant</code></a></th>
 </tr></thead>
 <tbody>
 <tr>
@@ -174,7 +174,7 @@
 <dt><span class="section"><a href="misc.html#variant.troubleshooting.compiler-memory">"Internal heap limit reached"</a></span></dt>
 </dl></div>
 <p>Due to the heavy use of templates in the implementation of
-  <tt class="computeroutput">variant</tt>, it is not uncommon when compiling to encounter
+  <code class="computeroutput">variant</code>, it is not uncommon when compiling to encounter
   problems related to template instantiaton depth, compiler memory, etc. This
   section attempts to provide advice to common problems experienced on several
   popular compilers.</p>
@@ -189,9 +189,9 @@
 <div class="titlepage"><div><div><h6 class="title">
 <a name="variant.troubleshooting.template-depth.gcc"></a>GNU GCC</h6></div></div></div>
 <p>The compiler option
-        <tt class="computeroutput">-ftemplate-depth-<span class="emphasis"><em>NN</em></span></tt> can increase the
+        <code class="computeroutput">-ftemplate-depth-<span class="emphasis"><em>NN</em></span></code> can increase the
         maximum allowed instantiation depth. (Try
-        <tt class="computeroutput">-ftemplate-depth-50</tt>.)</p>
+        <code class="computeroutput">-ftemplate-depth-50</code>.)</p>
 </div>
 </div>
 <div class="section" lang="en">
@@ -201,10 +201,10 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="variant.troubleshooting.compiler-memory.msvc"></a>Microsoft Visual C++</h6></div></div></div>
-<p>The compiler option <tt class="computeroutput">/Zm<span class="emphasis"><em>NNN</em></span></tt> can
-        increase the memory allocation limit. The <tt class="computeroutput">NNN</tt> is a
-        scaling percentage (i.e., <tt class="computeroutput">100</tt> denotes the default limit).
-        (Try <tt class="computeroutput">/Zm200</tt>.)</p>
+<p>The compiler option <code class="computeroutput">/Zm<span class="emphasis"><em>NNN</em></span></code> can
+        increase the memory allocation limit. The <code class="computeroutput">NNN</code> is a
+        scaling percentage (i.e., <code class="computeroutput">100</code> denotes the default limit).
+        (Try <code class="computeroutput">/Zm200</code>.)</p>
 </div>
 </div>
 </div>
@@ -215,8 +215,8 @@
   the primary implementer.</p>
 <p>Eric is also the library maintainer and has expanded upon the initial
   submission -- adding
-  <tt class="computeroutput"><a href="../make_recursive_variant.html" title="Class template make_recursive_variant">make_recursive_variant</a></tt>,
-  <tt class="computeroutput"><a href="../make_variant_over.html" title="Class template make_variant_over">make_variant_over</a></tt>, support for
+  <code class="computeroutput"><a href="../make_recursive_variant.html" title="Class template make_recursive_variant">make_recursive_variant</a></code>,
+  <code class="computeroutput"><a href="../make_variant_over.html" title="Class template make_variant_over">make_variant_over</a></code>, support for
   reference content, etc.</p>
 <p>Andrei Alexandrescu's work in
     [<a href="refs.html#variant.refs.ale01a">Ale01a</a>]

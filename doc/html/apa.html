@@ -3,11 +3,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Appendix A. Rationale for some of the design decisions</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="The Boost C++ Libraries">
-<link rel="up" href="lambda.html" title="Chapter 5. Boost.Lambda">
+<link rel="up" href="lambda.html" title="Chapter 6. Boost.Lambda">
 <link rel="prev" href="lambda/s09.html" title="Contributors">
-<link rel="next" href="program_options.html" title="Chapter 6. Boost.Program_options">
+<link rel="next" href="program_options.html" title="Chapter 7. Boost.Program_options">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%">
@@ -24,7 +24,7 @@
 </div>
 <div class="appendix" lang="en">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="id547408"></a>Appendix A. Rationale for some of the design decisions</h2></div></div></div>
+<a name="id1246210"></a>Appendix A. Rationale for some of the design decisions</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl><dt><span class="section"><a href="apa.html#lambda.why_weak_arity">
@@ -48,15 +48,15 @@ bind(g, _1, _1, _1)(x, y, z);
 </pre>
 <p>
 
-This first line discards arguments <tt class="literal">x</tt> and
-<tt class="literal">y</tt>, and makes the call:
+This first line discards arguments <code class="literal">x</code> and
+<code class="literal">y</code>, and makes the call:
 </p>
 <pre class="programlisting">
 g(z, z, z) 
 </pre>
 <p>
-whereas the second line discards arguments <tt class="literal">y</tt> and
-<tt class="literal">z</tt>, and calls:
+whereas the second line discards arguments <code class="literal">y</code> and
+<code class="literal">z</code>, and calls:
 </p>
 <pre class="programlisting">
 g(x, x, x)
@@ -80,7 +80,7 @@ This lambda expression takes three arguments.
 The left-hand argument of the comma operator does nothing, and as comma 
 returns the result of evaluating the right-hand argument we end up with 
 the call
-<tt class="literal">g(x, x, x)</tt>
+<code class="literal">g(x, x, x)</code>
 even with the strict arity.
 </p>
 <p>
@@ -89,9 +89,9 @@ discard arguments is commonplace, and should therefore be straightforward,
 and that strict arity checking does not really buy that much more safety, 
 particularly as it is not symmetric.
 For example, if the programmer wanted to write the expression 
-<tt class="literal">_1 + _2</tt> but mistakenly wrote <tt class="literal">_1 + 2</tt>, 
+<code class="literal">_1 + _2</code> but mistakenly wrote <code class="literal">_1 + 2</code>, 
 with strict arity checking, the complier would spot the error.
-However, if the erroneous expression was <tt class="literal">1 + _2</tt> instead,
+However, if the erroneous expression was <code class="literal">1 + _2</code> instead,
 the error would go unnoticed.
 Furthermore, weak arity checking simplifies the implementation a bit.
 Following the recommendation of the Boost review, strict arity checking 

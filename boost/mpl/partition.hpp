@@ -12,8 +12,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/partition.hpp,v $
-// $Date: 2004/11/10 23:38:08 $
-// $Revision: 1.3.2.1 $
+// $Date: 2004/11/28 01:56:21 $
+// $Revision: 1.4 $
 
 #include <boost/mpl/stable_partition.hpp>
 #include <boost/mpl/aux_/inserter_algorithm.hpp>

@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: additive_combine.hpp,v 1.9 2004/07/27 03:43:31 dgregor Exp $
+ * $Id: additive_combine.hpp,v 1.11 2005/05/21 15:57:00 dgregor Exp $
  *
  * Revision history
  *  2001-02-18  moved to individual header files

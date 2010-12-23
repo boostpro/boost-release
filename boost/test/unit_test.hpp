@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2001-2004.
+//  (C) Copyright Gennadiy Rozental 2001-2005.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,13 +7,13 @@
 //
 //  File        : $RCSfile: unit_test.hpp,v $
 //
-//  Version     : $Revision: 1.13 $
+//  Version     : $Revision: 1.15 $
 //
 //  Description : wrapper include . To be used by end-user
 // ***************************************************************************
 
-#ifndef BOOST_UNIT_TEST_HPP_071894GER
-#define BOOST_UNIT_TEST_HPP_071894GER
+#ifndef BOOST_TEST_UNIT_TEST_HPP_071894GER
+#define BOOST_TEST_UNIT_TEST_HPP_071894GER
 
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
@@ -32,18 +32,15 @@
 //  Revision History :
 //  
 //  $Log: unit_test.hpp,v $
-//  Revision 1.13  2004/07/19 12:15:06  rogeeff
-//  guard rename
+//  Revision 1.15  2005/02/20 08:27:06  rogeeff
+//  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
 //
-//  Revision 1.12  2004/05/21 06:19:35  rogeeff
-//  licence update
-//
-//  Revision 1.11  2003/12/01 17:13:22  rogeeff
-//  *** empty log message ***
-//
-//  Revision 1.10  2003/12/01 00:41:56  rogeeff
-//  prerelease cleaning
+//  Revision 1.14  2005/02/01 06:40:06  rogeeff
+//  copyright update
+//  old log entries removed
+//  minor stilistic changes
+//  depricated tools removed
 //
 // ***************************************************************************
 
-#endif // BOOST_UNIT_TEST_HPP_071894GER
+#endif // BOOST_TEST_UNIT_TEST_HPP_071894GER

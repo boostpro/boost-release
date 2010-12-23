@@ -16,20 +16,25 @@ test-suite graph :
     # unit-test adj_list_test : adj_list_test.cpp : <sysinclude>$(BOOST_ROOT)  ;
     [ compile adj_matrix_cc.cpp : <sysinclude>$(BOOST_ROOT)  ]
 
-    [ run bfs.cpp <lib>../../test/build/boost_test_exec_monitor 
-        : : : <sysinclude>$(BOOST_ROOT) ]
+    [ run bfs.cpp : : : <sysinclude>$(BOOST_ROOT) ]
 
     [ compile bfs_cc.cpp : <sysinclude>$(BOOST_ROOT)  ]
 
+    [ run bellman-test.cpp : <sysinclude>$(BOOST_ROOT ]
+
     [ run betweenness_centrality_test.cpp ] 
 
-    [ run dfs.cpp <lib>../../test/build/boost_test_exec_monitor 
-        : : : <sysinclude>$(BOOST_ROOT) ]
+    [ run dag_longest_paths.cpp : : : <sysinclude>$(BOOST_ROOT) ]
+
+    [ run dfs.cpp : : : <sysinclude>$(BOOST_ROOT) ]
 
     [ compile dfs_cc.cpp : <sysinclude>$(BOOST_ROOT)  ]
 
     [ compile dijkstra_cc.cpp : <sysinclude>$(BOOST_ROOT) ]
 
+    [ run dijkstra_heap_performance.cpp : 10000 : : <sysinclude>$(BOOST_ROOT) ]
+
+    [ run relaxed_heap_test.cpp : 5000 15000 : : <sysinclude>$(BOOST_ROOT) ]
     [ compile edge_list_cc.cpp : <sysinclude>$(BOOST_ROOT) ]
 
     [ compile filtered_graph_cc.cpp : <sysinclude>$(BOOST_ROOT) ]
@@ -38,15 +43,22 @@ test-suite graph :
 
     [ compile graph_concepts.cpp : <sysinclude>$(BOOST_ROOT) ]
 
+    [ run graphviz_test.cpp 
+            <lib>../../test/build/boost_test_exec_monitor 
+            <lib>../build/bgl-viz
+      : : : <sysinclude>$(BOOST_ROOT) ] 
+
+    [ run gursoy_atun_layout_test.cpp : : : <sysinclude>$(BOOST_ROOT) ]
+
     [ run layout_test.cpp : : : <test-info>always_show_run_output ]
 
     [ compile reverse_graph_cc.cpp : <sysinclude>$(BOOST_ROOT) ] 
 
-    [ run subgraph.cpp <lib>../../test/build/boost_test_exec_monitor 
-        : : : <sysinclude>$(BOOST_ROOT) ]
+    [ run sequential_vertex_coloring.cpp : : : <sysinclude>$(BOOST_ROOT) ]
 
-    [ run isomorphism.cpp <lib>../../test/build/boost_test_exec_monitor 
-        : : : <sysinclude>$(BOOST_ROOT) ]
+    [ run subgraph.cpp : : : <sysinclude>$(BOOST_ROOT) ]
+
+    [ run isomorphism.cpp  : : : <sysinclude>$(BOOST_ROOT) ]
 
     [ run adjacency_matrix_test.cpp : : : <sysinclude>$(BOOST_ROOT) ]    
 
@@ -58,6 +70,15 @@ test-suite graph :
 
     [ run bundled_properties.cpp ]
 
+    [ run floyd_warshall_test.cpp ]
+
+    [ run astar_search_test.cpp ]
+
+    [ run biconnected_components_test.cpp ]
+
+    [ run cuthill_mckee_ordering.cpp ]
+
+    [ run king_ordering.cpp ]
     ;
 
 # Run SDB tests only when -sSDB= is set.

@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 #include <iostream>
-#include <boost/test/minimal.hpp>
+#include <boost/detail/lightweight_test.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/spirit/fusion/sequence/tuple.hpp>
 #include <boost/spirit/fusion/iterator/tuple_iterator.hpp>
@@ -29,7 +29,7 @@
 //#include <boost/spirit/fusion/category_of.hpp>
 
 int
-test_main(int, char*[])
+main()
 {
     using namespace boost::fusion;
     using namespace boost;
@@ -45,7 +45,8 @@ test_main(int, char*[])
 
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1200)
         // ?%$# VC6 I don't know why this is needed! $$$LOOK$$$
-        next(i);
+        //This is no longer needed...
+        //next(i);
 #endif
 
         BOOST_TEST(*i == 1);
@@ -207,6 +208,6 @@ test_main(int, char*[])
 //        BOOST_STATIC_ASSERT((is_same<pointer_of<i1>::type, char*>::value));
     }
 
-    return 0;
+    return boost::report_errors();
 }
 

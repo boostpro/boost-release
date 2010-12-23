@@ -188,17 +188,37 @@ rule pwd ( )
 }
 
 #
-#    Returns the list of files matching the given pattern in the specified directory.
+#    Returns the list of files matching the given pattern in the
+#    specified directory.  Both directories and patterns are 
+#    supplied as portable paths. Each pattern should be non-absolute
+#    path, and can't contain "." or ".." elements. Each slash separated
+#    element of pattern can contain the following special characters:
+#    -  '?', which match any character
+#    -  '*', which matches arbitrary number of characters.
+#    A file $(d)/e1/e2/e3 (where 'd' is in $(dirs)) matches pattern p1/p2/p3
+#    if and only if e1 matches p1, e2 matches p2 and so on.
 #
+#    For example: 
+#        [ glob . : *.cpp ] 
+#        [ glob . : */build/Jamfile ] 
 rule glob ( dirs * : patterns + )
 {
     local result ;
-    for dir in $(dirs)
+    local real-patterns ;
+    for local d in $(dirs)
     {
-        result += [ sequence.transform make : [ GLOB [ native $(dir) ] : $(patterns) ] ] ;
-    }
-    return $(result) ;
-}
+        for local p in $(patterns)
+        {
+            local pattern = [ path.root $(p) $(d) ] ;
+            real-patterns += [ path.native $(pattern) ] ;
+        }        
+    }        
+    
+    return [ sequence.transform path.make : 
+        [ GLOB-RECURSIVELY $(real-patterns) ] ] ;
+
+}    
+
 
 #
 #    Returns true is the specified file exists.

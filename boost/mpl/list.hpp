@@ -11,8 +11,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/list.hpp,v $
-// $Date: 2004/11/10 23:38:08 $
-// $Revision: 1.8.2.1 $
+// $Date: 2004/11/28 01:54:51 $
+// $Revision: 1.9 $
 
 #if !defined(BOOST_MPL_PREPROCESSING_MODE)
 #   include <boost/mpl/limits/list.hpp>

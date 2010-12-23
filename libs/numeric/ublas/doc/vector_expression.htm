@@ -10,16 +10,14 @@
 <title>Vector Expressions</title>
 </head>
 <body>
-<h1><img src="../../../../boost.png" alt="boost.png" align="middle" />
+<h1><img src="../../../../boost.png" align="middle" />
 Vector Expressions</h1>
-<h2><a name="vector_expression" id="vector_expression"></a> Vector
-Expression</h2>
+<h2><a name="vector_expression" id="vector_expression"></a>Vector Expression</h2>
 <h4>Description</h4>
 <p>The templated class <code>vector_expression&lt;E&gt;</code>
-forms the base for all static derived vector expression classes
-including class <code>vector</code> itself.</p>
+is required to be a public base of all classes which model the Vector Expression concept.</p>
 <h4>Definition</h4>
-<p>Defined in the header vector_expression.hpp.</p>
+<p>Defined in the header expression_types.hpp.</p>
 <h4>Template parameters</h4>
 <table border="1" summary="parameters">
 <tbody>
@@ -36,7 +34,8 @@ including class <code>vector</code> itself.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p>None.</p>
+<p>None. <u>Not a Vector Expression</u>!
+</p>
 <h4>Type requirements</h4>
 <p>None.</p>
 <h4>Public base classes</h4>
@@ -59,14 +58,16 @@ const</code></td>
 </tr>
 </tbody>
 </table>
-<h2><a name="vector_references" id="vector_references"></a> Vector
-References</h2>
-<h3>Constant Reference</h3>
+<h4>Notes</h4>
+<p>The <code>range</code>, <code>slice</code> and <code>project</code> functions have been removed. Use the free functions defined in <a href="vector_proxy.htm">vector proxy</a> instead.</p>
+
+<h2><a name="vector_container" id="vector_container"></a>Vector Container</h2>
 <h4>Description</h4>
-<p>The templated class <code>vector_const_reference&lt;E&gt;</code>
-contains a constant reference to a vector expression.</p>
+<p>The templated class <code>vector_container&lt;C&gt;</code>
+is required to be a public base of all classes which model the Vector concept.
+This includes the class <code>vector</code> itself.</p>
 <h4>Definition</h4>
-<p>Defined in the header vector_expression.hpp.</p>
+<p>Defined in the header expression_types.hpp.</p>
 <h4>Template parameters</h4>
 <table border="1" summary="parameters">
 <tbody>
@@ -76,21 +77,19 @@ contains a constant reference to a vector expression.</p>
 <th>Default</th>
 </tr>
 <tr>
-<td><code>E</code></td>
-<td>The type of the vector expression.</td>
+<td><code>C</code></td>
+<td>The type of the vector container.</td>
 <td>&nbsp;</td>
 </tr>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#vector_expression">Vector Expression</a>
-.</p>
+<p>None. <u>Not a Vector Expression OR Vector</u>!
+</p>
 <h4>Type requirements</h4>
-<p>None, except for those imposed by the requirements of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</p>
+<p>None.</p>
 <h4>Public base classes</h4>
-<p><code>vector_expression&lt;vector_const_reference&lt;E&gt;
-&gt;</code></p>
+<p><code>vector_expression&lt;C&gt;</code></p>
 <h4>Members</h4>
 <table border="1" summary="members">
 <tbody>
@@ -99,41 +98,18 @@ contains a constant reference to a vector expression.</p>
 <th>Description</th>
 </tr>
 <tr>
-<td><code>vector_const_reference (const expression_type
-&amp;e)</code></td>
-<td>Constructs a constant reference of the expression.</td>
-</tr>
-<tr>
-<td><code>size_type size () const</code></td>
-<td>Returns the size of the expression.</td>
-</tr>
-<tr>
-<td><code>const_reference operator () (size_type i)
+<td><code>const container_type &amp;operator () ()
 const</code></td>
-<td>Returns the value of the <code>i</code>-th element.</td>
+<td>Returns a <code>const</code> reference of the container.</td>
 </tr>
 <tr>
-<td><code>const_iterator begin () const</code></td>
-<td>Returns a <code>const_iterator</code> pointing to the beginning
-of the expression.</td>
-</tr>
-<tr>
-<td><code>const_iterator end () const</code></td>
-<td>Returns a <code>const_iterator</code> pointing to the end of
-the expression.</td>
-</tr>
-<tr>
-<td><code>const_reverse_iterator rbegin () const</code></td>
-<td>Returns a <code>const_reverse_iterator</code> pointing to the
-beginning of the reversed expression.</td>
-</tr>
-<tr>
-<td><code>const_reverse_iterator rend () const</code></td>
-<td>Returns a <code>const_reverse_iterator</code> pointing to the
-end of the reversed expression.</td>
+<td><code>container_type &amp;operator () ()</code></td>
+<td>Returns a reference of the container.</td>
 </tr>
 </tbody>
 </table>
+
+<h2><a name="vector_references" id="vector_references"></a>Vector References</h2>
 <h3>Reference</h3>
 <h4>Description</h4>
 <p>The templated class <code>vector_reference&lt;E&gt;</code>
@@ -156,11 +132,11 @@ contains a reference to a vector expression.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#vector_expression">Vector Expression</a>
+<p><a href="expression_concept.htm#vector_expression">Vector Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</p>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>vector_expression&lt;vector_reference&lt;E&gt;
 &gt;</code></p>
@@ -235,8 +211,7 @@ the reversed expression.</td>
 </tr>
 </tbody>
 </table>
-<h2><a name="vector_operations" id="vector_operations"></a> Vector
-Operations</h2>
+<h2><a name="vector_operations" id="vector_operations"></a>Vector Operations</h2>
 <h3>Unary Operation Description</h3>
 <h4>Description</h4>
 <p>The templated class <code>vector_unary&lt;E, F&gt;</code>
@@ -264,11 +239,11 @@ describes a unary vector operation.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#vector_expression">Vector Expression</a>
+<p><a href="expression_concept.htm#vector_expression">Vector Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</p>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>vector_expression&lt;vector_unary&lt;E, F&gt;
 &gt;</code></p>
@@ -366,7 +341,7 @@ conjugate of the transpose of a vector expression.</p>
 <h4>Type requirements</h4>
 <ul>
 <li><code>E</code> is a model of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</li>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</li>
 </ul>
 <h4>Preconditions</h4>
 <p>None.</p>
@@ -423,11 +398,11 @@ describes a binary vector operation.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#vector_expression">Vector Expression</a>
+<p><a href="expression_concept.htm#vector_expression">Vector Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</p>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>vector_expression&lt;vector_binary&lt;E1, E2, F&gt;
 &gt;</code></p>
@@ -507,9 +482,9 @@ vector expressions.</p>
 <h4>Type requirements</h4>
 <ul>
 <li><code>E1</code> is a model of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</li>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</li>
 <li><code>E2</code> is a model of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</li>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</li>
 </ul>
 <h4>Preconditions</h4>
 <ul>
@@ -564,11 +539,11 @@ F&gt;</code> describes a binary outer vector operation.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#matrix_expression">Matrix Expression</a>
+<p><a href="expression_concept.htm#matrix_expression">Matrix Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</p>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>matrix_expression&lt;vector_matrix_binary&lt;E1, E2, F&gt;
 &gt;</code></p>
@@ -664,9 +639,9 @@ expressions.</p>
 <h4>Type requirements</h4>
 <ul>
 <li><code>E1</code> is a model of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</li>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</li>
 <li><code>E2</code> is a model of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</li>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</li>
 </ul>
 <h4>Preconditions</h4>
 <p>None.</p>
@@ -720,11 +695,11 @@ vector.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#vector_expression">Vector Expression</a>
+<p><a href="expression_concept.htm#vector_expression">Vector Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</p>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>vector_expression&lt;vector_binary_scalar1&lt;E1, E2,
 F&gt; &gt;</code> and
@@ -822,9 +797,9 @@ with the reciprocal of the scalar.</p>
 <h4>Type requirements</h4>
 <ul>
 <li><code>T1/T2</code> is a model of <a href=
-"expression.htm#scalar_expression">Scalar Expression</a> .</li>
+"expression_concept.htm#scalar_expression">Scalar Expression</a> .</li>
 <li><code>E2/E1</code> is a model of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</li>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</li>
 </ul>
 <h4>Preconditions</h4>
 <p>None.</p>
@@ -845,8 +820,7 @@ int main () {
     std::cout &lt;&lt; v * 2.0 &lt;&lt; std::endl;
 }
 </pre>
-<h2><a name="vector_reductions" id="vector_reductions"></a> Vector
-Reductions</h2>
+<h2><a name="vector_reductions" id="vector_reductions"></a>Vector Reductions</h2>
 <h3>Unary Reductions</h3>
 <h4>Prototypes</h4>
 <pre>
@@ -981,6 +955,5 @@ is granted provided this copyright notice appears in all copies.
 This document is provided ``as is'' without express or implied
 warranty, and with no claim as to its suitability for any
 purpose.</p>
-<p>Last revised: 1/15/2003</p>
 </body>
 </html>

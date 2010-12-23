@@ -36,6 +36,7 @@ rule init ( version ? : command * : options * )
     
     flags borland.compile STDHDRS $(condition) : $(root)/include/ ;
     flags borland.link STDLIBPATH $(condition) : $(root)/lib ;
+    flags borland.link RUN_PATH $(condition) : $(root)/bin ;
     flags borland .root $(condition) : $(root)/bin/ ;    
 }
 
@@ -45,10 +46,10 @@ type.register BORLAND.TDS : tds ;
 
 # Declare generators
 
-generators.register-linker borland.link : OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : EXE RSP : <toolset>borland ;
-generators.register-linker borland.link.dll : OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB RSP : <toolset>borland ;
+generators.register-linker borland.link : OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : EXE : <toolset>borland ;
+generators.register-linker borland.link.dll : OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB : <toolset>borland ;
 
-generators.register-composing borland.archive : OBJ : STATIC_LIB : <toolset>borland ;
+generators.register-archiver borland.archive : OBJ : STATIC_LIB : <toolset>borland ;
 generators.register-c-compiler borland.compile.c++ : CPP : OBJ : <toolset>borland ;
 generators.register-c-compiler borland.compile.c : C : OBJ : <toolset>borland ;
 
@@ -74,7 +75,7 @@ flags borland OPTIONS <user-interface>console : -tWC ;
 
 # -tWR sets -tW as well, so we turn it off here and then turn it 
 # on again later if we need it:
-flags borland OPTIONS <link-runtime>shared : -tWR -tWC ;
+flags borland OPTIONS <runtime-link>shared : -tWR -tWC ;
 flags borland OPTIONS <user-interface>gui : -tW ;
 
 flags borland OPTIONS <main-target-type>LIB/<link>shared : -tWD ;
@@ -112,13 +113,13 @@ flags borland NEED_IMPLIB <main-target-type>LIB/<link>shared : "" ;
 
 actions compile.c++
 {
-    $(CONFIG_COMMAND) -j5 -g255 -q -c -P -w -Ve -Vx -a8 -b- $(OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
+    "$(CONFIG_COMMAND)" -j5 -g255 -q -c -P -w -Ve -Vx -a8 -b- $(OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
 }
 
 # For C, we don't pass -P flag
 actions compile.c
 {
-    $(CONFIG_COMMAND) -j5 -g255 -q -c -w -Ve -Vx -a8 -b- $(OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
+    "$(CONFIG_COMMAND)" -j5 -g255 -q -c -w -Ve -Vx -a8 -b- $(OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -I"$(STDHDRS)" -o"$(<)" "$(>)"
 }
 
 
@@ -149,7 +150,8 @@ flags borland.archive AROPTIONS <archiveflags> ;
 # CONSIDER: don't know what 'together' is for...
 actions updated together piecemeal archive
 { 
-    "$(.root)tlib" $(AROPTIONS) /u /a /C "$(<:W)" +-"$(>:W)"
+    $(.set-path)$(.root:W)$(.old-path)
+    tlib $(AROPTIONS) /u /a /C "$(<:W)" +-"$(>:W)"
 }
 
 
@@ -157,6 +159,7 @@ if [ os.name ] = CYGWIN
 {
     .set-path = "cmd /S /C set \"PATH=" ;
     .old-path = ";%PATH%\" \"&&\"" ;
+    
 
     # Couldn't get TLIB to stop being confused about pathnames
     # containing dashes (it seemed to treat them as option separators
@@ -164,11 +167,13 @@ if [ os.name ] = CYGWIN
     # command into a .bat file and execute that.  TLIB is also finicky
     # about pathname style! Forward slashes, too, are treated as
     # options.
+    # TLIB
     actions updated together piecemeal archive
     { 
-        echo "\"$(.root)tlib\" $(OPTIONS) /u /a /C \"$(<:W)\" +-\"$(>:W)\"" > $(<:D)/tlib.bat
-        chmod +x $(<:D)/tlib.bat && $(<:D)/tlib.bat && rm $(<:D)/tlib.bat ;
-    }
+       chdir $(<:D)
+       echo +-$(>:BS) > $(<:BS).rsp
+       $(.set-path)$(.root)$(.old-path) "tlib.exe" $(AROPTIONS) /P256 /C $(<:BS) @$(<:BS).rsp && $(RM) $(<:BS).rsp
+    }    
 }
 else if [ os.name ] = NT
 {
@@ -184,16 +189,18 @@ else
       " ;
 }
 
+RM = [ common.rm-command ] ;
+
 
 rule link ( targets + : sources * : properties * )
 {
-    common.response-file $(targets) : $(sources) : $(targets[2]) 
+   common.response-file $(targets) : $(sources) :  
       : $(properties) ;
 }   
 
-actions link bind LIBRARIES
+actions link bind LIBRARIES RSP
 {
-    $(.set-path)$(.root:W)$(.old-path) $(CONFIG_COMMAND) -v -q $(OPTIONS) -L"$(LIBRARY_PATH:W)" -L"$(STDLIBPATH:W)" -e"$(<[1]:W)" @"$(<[2]:W)"
+    $(.set-path)$(.root:W)$(.old-path) "$(CONFIG_COMMAND)" -v -q $(OPTIONS) -L"$(LIBRARY_PATH:W)" -L"$(STDLIBPATH:W)" -e"$(<[1]:W)" @"$(RSP:W)" && $(RM) "$(RSP)"
 }
 
 rule link.dll ( targets + : sources * : properties * )
@@ -201,8 +208,8 @@ rule link.dll ( targets + : sources * : properties * )
     common.response-file $(targets) : $(sources) : $(targets[3]) : $(properties) ;    
 }
 
-actions link.dll bind LIBRARIES
+actions link.dll bind LIBRARIES RSP
 {
-    $(.set-path)$(.root:W)$(.old-path) $(CONFIG_COMMAND) -v -q $(OPTIONS) -L"$(LIBRARY_PATH:W)" -L"$(STDLIBPATH:W)" -e"$(<[1]:W)" @"$(<[3]:W)"
+    $(.set-path)$(.root:W)$(.old-path) "$(CONFIG_COMMAND)" -v -q $(OPTIONS) -L"$(LIBRARY_PATH:W)" -L"$(STDLIBPATH:W)" -e"$(<[1]:W)" @"$(RSP:W)" && $(RM) "$(RSP)"
     "$(.root)implib" "$(<[2]:W)" "$(<[1]:W)"
 }

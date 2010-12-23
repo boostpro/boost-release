@@ -32,14 +32,14 @@ Ordered indices
   <li><a href="#indexed_by_synopsis">Header
     <code>"boost/multi_index/indexed_by.hpp"</code> synopsis</a>
     <ul>
-      <li><a href="#indexed_by">Template class <code>indexed_by</code></a></li>
+      <li><a href="#indexed_by">Class template <code>indexed_by</code></a></li>
     </ul>
   </li>
   <li><a href="#tags">Tags</a></li>
   <li><a href="#tag_synopsis">Header
     <code>"boost/multi_index/tag.hpp"</code> synopsis</a>
     <ul>
-      <li><a href="#tag">Template class <code>tag</code></a></li>
+      <li><a href="#tag">Class template <code>tag</code></a></li>
     </ul>
   </li>
   <li><a href="#index_catalog">Indices provided by Boost.MultiIndex</a>
@@ -151,8 +151,8 @@ an instantiation of <code>multi_index_container</code>
 with <code>N</code> indices labelled <code>0</code>,...,<code>N-1</code>
 whose complexity signatures are
 (<code>c<sub>i</sub></code>,<code>i<sub>i</sub></code>,<code>h<sub>i</sub></code>,<code>d<sub>i</sub></code>,<code>r<sub>i</sub></code>,<code>m<sub>i</sub></code>);
-the insertion of an element in such a set is then of complexity
-<code>O(I<sub>0</sub>(n)+···+I<sub>N-1</sub>(n))</code> where <code>n</code>
+the insertion of an element in such a container is then of complexity
+<code>O(i<sub>0</sub>(n)+···+i<sub>N-1</sub>(n))</code> where <code>n</code>
 is the number of elements. To abbreviate notation, we adopt the
 following definitions:
 <ul>
@@ -181,11 +181,16 @@ the corresponding indices. Future releases of Boost.MultiIndex may allow for
 specification of user-defined indices. Meanwhile, the requirements for an index
 specifier remain implementation defined. Currently, Boost.MultiIndex provides the
 index specifiers
-<a href="ord_indices.html#unique_non_unique"><code>ordered_unique</code> and
-<code>ordered_non_unique</code></a> for
-<a href="ord_indices.html">ordered indices</a> and
-<a href="seq_indices.html#sequenced"><code>sequenced</code></a> for
-<a href="seq_indices.html">sequenced indices</a>.
+<ul>
+  <li><a href="ord_indices.html#unique_non_unique"><code>ordered_unique</code> and
+    <code>ordered_non_unique</code></a> for
+    <a href="ord_indices.html">ordered indices</a>,</li>
+  <li><a href="hash_indices.html#unique_non_unique"><code>hashed_unique</code> and
+    <code>hashed_non_unique</code></a> for
+    <a href="hash_indices.html">hashed indices</a>,</li>
+  <li>and <a href="seq_indices.html#sequenced"><code>sequenced</code></a> for
+    <a href="seq_indices.html">sequenced indices</a>.</li>
+</ul>
 </p>
 
 <h2>
@@ -206,12 +211,14 @@ index specifiers
 <span class=special>}</span> <span class=comment>// namespace boost</span>
 </pre></blockquote>
 
-<h3><a name="indexed_by">Template class <code>indexed_by</code></a></h3>
+<h3><a name="indexed_by">Class template <code>indexed_by</code></a></h3>
 
 <p>
-<code>indexed_by</code> is a
-<a href="../../../../libs/mpl/doc/refmanual/forward-sequence.html">
-<code>MPL Forward Sequence</code></a> meant to be used to specify a
+<code>indexed_by</code> is a model of
+<a href="../../../../libs/mpl/doc/refmanual/random-access-sequence.html">
+<code>MPL Random Access Sequence</code></a> and
+<a href="../../../../libs/mpl/doc/refmanual/extensible-sequence.html">
+<code>MPL Extensible Sequence</code></a> meant to be used to specify a
 compile-time list of indices as the <code>IndexSpecifierList</code> of
 <code>multi_index_container</code>.
 </p>
@@ -256,7 +263,7 @@ class template <a href="#tag"><code>tag</code></a>.
 <span class=special>}</span> <span class=comment>// namespace boost</span>
 </pre></blockquote>
 
-<h3><a name="tag">Template class <code>tag</code></a></h3>
+<h3><a name="tag">Class template <code>tag</code></a></h3>
 
 <p>
 <code>tag</code> is a typelist construct used to specify a compile-time
@@ -287,7 +294,7 @@ reference</a>.
 <ul>
   <li><a href="ord_indices.html">Ordered indices</a> sort the elements
     on the key and provide fast lookup capabilites.</li>
-  <li>Hashed indices (<b>not currently implemented</b>) offer high
+  <li><a href="hash_indices.html">Hashed indices</a> offer high
     efficiency access through hashing techniques.</li>
 </ul>
 </p>
@@ -315,9 +322,9 @@ Ordered indices
 
 <br>
 
-<p>Revised July 15th 2004</p>
+<p>Revised May 30th 2005</p>
 
-<p>&copy; Copyright 2003-2004 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
+<p>&copy; Copyright 2003-2005 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
 License, Version 1.0. (See accompanying file <a href="../../../../LICENSE_1_0.txt">
 LICENSE_1_0.txt</a> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">

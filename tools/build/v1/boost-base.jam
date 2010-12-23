@@ -76,6 +76,21 @@ if $(NT)
 {
     TOOLS ?= vc-7_1 ;
 }
+else if $(UNIX)
+{
+  switch $(JAMUNAME)
+    {
+    case Darwin* :
+        {
+        TOOLS ?= darwin ;
+        }
+
+    case * :
+        {
+        TOOLS ?= gcc ;
+        }
+    }
+}
 else
 {
     TOOLS ?= gcc ;
@@ -488,7 +503,7 @@ rule replace-properties ( property-set * : new-properties * )
 # normalize-properties properties
 #
 # Normalizes a set of (possibly qualified) properties by prepending <*> as many
-# times as neccessary to ensure that each property has at least 3 gristed elements.
+# times as necessary to ensure that each property has at least 3 gristed elements.
 rule normalize-properties
 {
     local property ;
@@ -710,7 +725,7 @@ rule flags
 # include-tools toolset
 #
 # Unconditionally process the specification file for the given toolset. It is
-# neccessary to do this for each target built with that toolset, since the
+# necessary to do this for each target built with that toolset, since the
 # toolset will invoke the flags rule to set global variables based on the build
 # properties of the target.
 rule include-tools 
@@ -757,7 +772,7 @@ rule extends-toolset
 # relevant-features toolset
 #
 # Returns the set of unique features relevant to the given toolset; includes the
-# toolset description file as a side-effect if neccessary.
+# toolset description file as a side-effect if necessary.
 rule relevant-features # name
 {
     if ! $(gRELEVANT_FEATURES($(<)))
@@ -797,7 +812,7 @@ rule variant ( name : parents-or-properties * : tool-properties * )
         # Because properties in a variant declaration are only qualified with
         # toolset and not variant, we specify the toolset where
         # select-properties expects a variant name. The first toolset parameter
-        # is neccessary to get the relevant-features correctly set. We supply
+        # is necessary to get the relevant-features correctly set. We supply
         # the variant name as the target name, so that error messages will look
         # coherent.
         local name-properties
@@ -919,7 +934,7 @@ rule set-target-variables ( targets * )
 }
 
 # For path properties, add a relative path prefix to the value as
-# neccessary to locate the path relative to the given subproject
+# necessary to locate the path relative to the given subproject
 # directory.
 rule fixup-path-properties ( properties * : subproject-directory ? )
 {
@@ -1720,9 +1735,15 @@ else
     }
     
     # Dynamic libraries are actually found on PATH
-    if $(NT) || ( $(UNIX) = $(CYGWIN) )
+    if $(NT) || ( $(UNIX) = CYGWIN )
     {
         .shell-var(LD_LIBRARY_PATH) = PATH ;
+    }
+
+    # Dynamic libraries search path var is loader, and hence system, dependant.
+    else
+    {
+        .shell-var(LD_LIBRARY_PATH) = $(gSHELL_LIBPATH) ;
     }
 
     # The names of path variables in the shell
@@ -1753,6 +1774,8 @@ rule depend-on-libs ( targets + : libs * )
 {
     LIBPATH on $(<) += [ unique $(gLOCATE($(>))) ] ;
     DEPENDS $(<) : $(>) ;
+    library-dependencies on $(<) += $(>) ;
+    
     # To run these targets, we need everything needed to run the libraries
     for local v in $(.run-path-vars)
     {
@@ -1923,7 +1946,7 @@ rule subvariant-target ( main-target : subvariant-id build-properties * : toolse
     # headers should be identified specific to the target, since search paths
     # may differ for different subvariants. The same header name or relative
     # path may refer to different files.
-    local HDRGRIST = [ join $(SOURCE_GRIST) $(HDRS) $(STDHDRS) : "#" ] ;
+    local HDRGRIST = [ join $(SOURCE_GRIST) $(STDHDRS) $(SYSHDRS) $(HDRS) "" : "#" ] ;
     
     # transfer target variables to the target file.
     set-target-variables $(target-files) ;
@@ -2606,12 +2629,14 @@ rule common-variant-tag ( toolset variant : properties * )
     local toolset-tag = ;
     if ! $(gUNVERSIONED_VARIANT_TAG)
     {
+        local include-minor-version = YES ;
         switch $(toolset)
         {
             case borland* : toolset-tag += bcb ;
             case como* : toolset-tag += como ;
             case cwpro8* : toolset-tag += cw 8 ;
             case cwpro9* : toolset-tag += cw 9 ;
+            case cw-* : toolset-tag += cw ; include-minor-version = ;
             case darwin* : toolset-tag += ;
             case edg* : toolset-tag += edg ;
             case gcc* : toolset-tag += gcc ;
@@ -2639,7 +2664,23 @@ rule common-variant-tag ( toolset variant : properties * )
             case * :
             toolset-tag += [ MATCH "^([^-]*)" : $(toolset) ] ;
         }
-        toolset-tag += [ MATCH "[-]([0123456789]+)[_]([0123456789]*)" : $(toolset) ] ;
+        if $(include-minor-version)
+        {
+            toolset-tag += [ MATCH "[-]([0123456789]+)[_.]([0123456789]*)" : $(toolset) ] ;
+        }
+        else
+        {
+            toolset-tag += [ MATCH "[-]([0123456789]+)[_.][0123456789]*" : $(toolset) ] ;
+        }
+        
+        # boost/config/auto_link.hpp expects toolset tags that do not always
+        # match the above algorithm for MSVC 6.x and 7.0.
+        #
+        switch $(toolset-tag:J=)
+        {
+            case vc6* : toolset-tag = vc 6 ;
+            case vc70 : toolset-tag = vc 7 ;
+        }
     }
     
     local version-tag = ;
@@ -2698,10 +2739,8 @@ rule force-NT-static-link ( pattern : toolset : subvariant-path properties * )
 {
     if  $(NT) && [ MATCH $(pattern) : $(toolset) ]
     {
-        properties =
-          [ difference $(properties) : <runtime-link>dynamic ]
-          <runtime-link>static
-          ;
+        properties = [ impose-requirements $(properties) :
+            <runtime-link>static ] ;
     }
 
     return $(subvariant-path) $(properties) ;
@@ -2714,7 +2753,7 @@ rule force-NT-static-link ( pattern : toolset : subvariant-path properties * )
 rule std::locale-support ( toolset variant : subvariant-path properties * )
 {
     return [ 
-      force-NT-static-link .*(metrowerks|cwpro|cw).* 
+      force-NT-static-link .*(cw-8).* 
         : $(toolset) : $(subvariant-path) $(properties)
           ] ;
 }
@@ -2890,6 +2929,11 @@ rule toolset::requirements ( toolset variant : subvariant-path properties * )
                     case vc-8* : requirements += <stlport-iostream>on ;
                 }
             }
+            # vc8 doesn't have any single threaded runtime
+            switch $(toolset)
+            {
+                case vc-8* : requirements += <threading>multi ;
+            }
         }
         case intel-win32* :
         {
@@ -2902,7 +2946,13 @@ rule toolset::requirements ( toolset variant : subvariant-path properties * )
             if <runtime-link>dynamic in $(properties) { requirements += <threading>multi ; }
         }
     }
-    requirements = [ unique $(requirements) ] ;
+    return $(subvariant-path) [ impose-requirements $(properties) : $(requirements) ] ;
+}
+
+# Utility, to impose a subset of requirements onto a property set.
+rule impose-requirements ( properties * : requirements * )
+{
+    local requirements = [ unique $(requirements) ] ;
     local free-feature-requirements = [ segregate-free-properties properties ] ;
     properties =
         [ sort
@@ -2911,5 +2961,5 @@ rule toolset::requirements ( toolset variant : subvariant-path properties * )
             ]
         $(free-feature-requirements)
         ;
-    return $(subvariant-path) $(properties) ;
+    return $(properties) ;
 }

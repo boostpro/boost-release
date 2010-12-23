@@ -1,3 +1,6 @@
+#
+# Generates test test results for testing of boost_wide_report.py
+#
 import common
 import xml.sax.saxutils
 
@@ -9,7 +12,7 @@ num_of_runners = 5
 num_of_toolsets = 3
 num_of_tests = 10
 
-tag = "1_30_0"
+results_directory = "results/incoming/CVS-HEAD/processed"
 
 
 # Generated results follow the rules:
@@ -37,13 +40,14 @@ def test_run_type( runner_idx ):
     if runner_idx % 2: return "incremental"
     else:              return "full"
 
+
 def make_test_results():
-    if not os.path.exists( tag ):
-        os.makedirs( tag )
+    if not os.path.exists( results_directory ):
+        os.makedirs( results_directory )
 
     for i_runner in range( 0, num_of_runners ):
         runner_id = "runner_%02d" % i_runner
-        g = xml.sax.saxutils.XMLGenerator( open( os.path.join( tag, runner_id + ".xml" ), "w" ) )
+        g = xml.sax.saxutils.XMLGenerator( open( os.path.join( results_directory, runner_id + ".xml" ), "w" ) )
         if i_runner % 2:
             platform = "Win32"
         else:
@@ -51,8 +55,9 @@ def make_test_results():
             
         g.startElement( "test-run", { "platform": platform
                                       , "runner": runner_id
-                                      , "timestamp": time.strftime( "%a, %d %b %Y %H:%M:%S +0000"
-                                                                   , time.gmtime())
+                                      , "timestamp": common.format_timestamp( 
+                                                          time.gmtime( time.time() - i_runner * 24*60*60 )
+                                                        )
                                       , "source": test_run_source( i_runner )
                                       , "run-type": test_run_type( i_runner )
                                       } )

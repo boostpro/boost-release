@@ -32,6 +32,8 @@ class property-set
     import property-set ;
     import property ;
     import set ;
+    import path ;
+    import errors ;
             
     rule __init__ ( raw-properties * )
     {        
@@ -39,6 +41,11 @@ class property-set
         
         for local p in $(raw-properties)
         {
+            if ! $(p:G)
+            {
+                errors.error "Invalid property: '$(p)'" ;                                    
+            }
+                        
             local att = [ feature.attributes $(p:G) ] ;        
             # A feature can be both incidental and free,
             # in which case we add it to incidental.
@@ -230,6 +237,48 @@ class property-set
         return $(self.as-path) ;
     }        
     
+    # Computes the target path that should be used for 
+    # target with these properties.
+    # Returns a list of
+    #   - the computed path
+    #   - if the path is relative to build directory, a value of
+    #     'true'. 
+    rule target-path ( )
+    {
+        if ! $(self.target-path)
+        {    
+            # The <location> feature can be used to explicitly
+            # change the location of generated targetsv
+            local l = [ get <location> ] ;
+            if $(l)
+            {
+                self.target-path = $(l) ;
+            }
+            else
+            {
+                local p = [ as-path ] ;                           
+                # Really, an ugly hack. Boost regression test system requires
+                # specific target paths, and it seems that changing it to handle
+                # other directory layout is really hard. For that reason,
+                # we teach V2 to do the things regression system requires.
+                # The value o '<location-prefix>' is predended to the path.
+                local prefix = [ get <location-prefix> ] ;            
+                if $(prefix)
+                {
+                    self.target-path = [ path.join $(prefix) $(p) ] ;
+                }   
+                else
+                {
+                    self.target-path = $(p) ;
+                }                
+                # The path is relative to build dir.
+                self.target-path += true ;
+            }            
+        } 
+        return $(self.target-path) ;
+    }
+    
+    
     rule add ( ps )
     {
         if ! $(self.added.$(ps))        
@@ -274,7 +323,19 @@ class property-set
     # Returns all values of 'feature'.
     rule get ( feature )
     {
-        return [ feature.get-values $(feature) : $(self.raw) ] ;
+        if ! $(self.map-built)
+        {
+            # For each feature, create member var and assign all
+            # values to it. Since all regular member vars start with
+            # 'self', there will be no conflicts between names.
+            self.map-built = true ;
+            for local v in $(self.raw)
+            {
+                $(v:G) += $(v:G=) ;
+            }            
+        }
+        
+        return $($(feature)) ;
     }
     
 }
@@ -305,6 +366,22 @@ rule create-with-validation ( raw-properties * )
     
     return [ create [ property.make $(raw-properties) ] ] ;
 }
+
+# Creates a property-set from the input given by the user, in the
+# context of 'jamfile-module' at 'location'
+rule create-from-user-input ( raw-properties * : jamfile-module location )
+{
+    local specification = [ property.translate-paths $(raw-properties)
+      : $(location) ] ;            
+    specification = [ property.translate-indirect $(specification)
+              : $(jamfile-module) ] ;
+    specification = 
+      [ property.expand-subfeatures-in-conditions $(specification) ] ;                
+    specification = [ property.make $(specification) ] ;            
+    result = [ property-set.create $(specification) ] ;            
+    return $(result) ;
+}
+
 
 
 # Returns property-set with empty set of properties.

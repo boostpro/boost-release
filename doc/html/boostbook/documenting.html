@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 15. Documenting libraries</title>
+<title>Chapter 18. Documenting libraries</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
 <link rel="up" href="../boostbook.html" title="Part II. The BoostBook Documentation Format">
-<link rel="prev" href="troubleshooting.html" title="Troubleshooting">
+<link rel="prev" href="setup/troubleshooting.html" title="Troubleshooting">
 <link rel="next" href="documenting/s02.html" title="From HTML to BoostBook">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,11 +20,11 @@
 </table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="troubleshooting.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../boostbook.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="documenting/s02.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="setup/troubleshooting.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../boostbook.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="documenting/s02.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="chapter" lang="en">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="boostbook.documenting"></a>Chapter 15. Documenting libraries</h2></div></div></div>
+<a name="boostbook.documenting"></a>Chapter 18. Documenting libraries</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -44,19 +44,19 @@
 <a name="boostbook.defining"></a>Defining a BoostBook library</h2></div></div></div>
 <p>BoostBook library documentation is contained entirely within
     a &lt;library&gt; XML element. To create a skeletal library, we
-    need to create a new XML document (call it <tt class="computeroutput">any.xml</tt>)
+    need to create a new XML document (call it <code class="computeroutput">any.xml</code>)
     that contains basic information about the library. The following
-    <a href="documenting.html#boostbook.documenting.skeletal" title="Example 15.1. A Skeletal BoostBook Library">BoostBook XML
+    <a href="documenting.html#boostbook.documenting.skeletal" title="Example 18.1. A Skeletal BoostBook Library">BoostBook XML
     example</a> describes basic information about the <a href="http://www.boost.org/libs/any/index.html" target="_top">Boost.Any</a>
     library:</p>
 <div class="example">
-<a name="boostbook.documenting.skeletal"></a><p class="title"><b>Example 15.1. A Skeletal BoostBook Library</b></p>
+<a name="boostbook.documenting.skeletal"></a><p class="title"><b>Example 18.1. A Skeletal BoostBook Library</b></p>
 <pre class="programlisting">
 &lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;!DOCTYPE library PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
   "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd"&gt;
 &lt;library name="Any" dirname="any" xmlns:xi="http://www.w3.org/2001/XInclude"
-  id="any" last-revision="$Date: 2004/07/05 16:26:11 $"&gt;
+  id="any" last-revision="$Date: 2005/07/31 16:48:07 $"&gt;
   &lt;libraryinfo&gt;
     &lt;author&gt;
       &lt;firstname&gt;Kevlin&lt;/firstname&gt;
@@ -81,25 +81,25 @@
 <div class="variablelist">
 <p class="title"><b>Attributes for the &lt;library&gt; element</b></p>
 <dl>
-<dt><span class="term"><tt class="computeroutput">name</tt></span></dt>
+<dt><span class="term"><code class="computeroutput">name</code></span></dt>
 <dd>The full name of the library, e.g., "Any"</dd>
-<dt><span class="term"><tt class="computeroutput">dirname</tt></span></dt>
+<dt><span class="term"><code class="computeroutput">dirname</code></span></dt>
 <dd>The name of the directory, relative to
-            <tt class="computeroutput">boost/libs</tt>, in which the library
+            <code class="computeroutput">boost/libs</code>, in which the library
             resides. This name may be a relative path, such as
-            <tt class="computeroutput">math/octonion</tt>, using "/" for the directory
+            <code class="computeroutput">math/octonion</code>, using "/" for the directory
             separator.</dd>
-<dt><span class="term"><tt class="computeroutput">id</tt></span></dt>
+<dt><span class="term"><code class="computeroutput">id</code></span></dt>
 <dd>A short, unique name for the library. For libraries
           with simple directory names (e.g., ones that do not contain
           a "/"), this should be the same as the
-          <tt class="computeroutput">dirname</tt>. This <tt class="computeroutput">id</tt> will be used to
+          <code class="computeroutput">dirname</code>. This <code class="computeroutput">id</code> will be used to
           identify libraries and, for HTML output, will be used as the
           base name for the HTML file in which the library's
           documentation resides, so it should use only lowercase
           alphanumeric characters and underscores.</dd>
-<dt><span class="term"><tt class="computeroutput">last-revision</tt></span></dt>
-<dd>Always set to <tt class="computeroutput">$Date: 2004/07/05 16:26:11 $</tt>, which is
+<dt><span class="term"><code class="computeroutput">last-revision</code></span></dt>
+<dd>Always set to <code class="computeroutput">$Date: 2005/07/31 16:48:07 $</code>, which is
           expanded by CVS to include the date and time that the file
           was last modified.</dd>
 </dl>
@@ -114,22 +114,22 @@
     <span class="emphasis"><em>not</em></span> terminate with a period.</p>
 <p>The list of categories is specified by a set of
     &lt;librarycategory&gt; elements. Each &lt;librarycategory&gt;
-    element has a <tt class="computeroutput">name</tt> element that identifies one of the
+    element has a <code class="computeroutput">name</code> element that identifies one of the
     categories. The actual list of categories is in the file
-    <tt class="filename">doc/src/boost.xml</tt>.
+    <code class="filename">doc/src/boost.xml</code>.
     </p>
 <p>At this point, we can apply the BoostBook XSL stylesheets to
-    <tt class="computeroutput">any.xml</tt> (to DocBook) followed by a DocBook XSL
-    stylesheet to generate HTML output, as described in <a href="getting/started.html" title="Chapter 14. Getting Started">Chapter 14, <i>Getting Started</i></a>.</p>
+    <code class="computeroutput">any.xml</code> (to DocBook) followed by a DocBook XSL
+    stylesheet to generate HTML output, as described in <a href="getting/started.html" title="Chapter 17. Getting Started">Chapter 17, <i>Getting Started</i></a>.</p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><small>Copyright © 2003 Douglas Gregor</small></td>
+<td align="right"><small>Copyright © 2003-2005 Douglas Gregor</small></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="troubleshooting.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../boostbook.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="documenting/s02.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="setup/troubleshooting.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../boostbook.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="documenting/s02.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

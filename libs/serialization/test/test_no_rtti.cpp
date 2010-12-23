@@ -29,11 +29,12 @@ namespace std{
 
 #include <boost/archive/archive_exception.hpp>
 #include "test_tools.hpp"
+#include <boost/preprocessor/stringize.hpp>
+#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/export.hpp>
-
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info_no_rtti.hpp>
 
@@ -53,66 +54,32 @@ BOOST_CLASS_TYPE_INFO(
     polymorphic_base,
     extended_type_info_no_rtti<polymorphic_base>
 )
-
-namespace boost { namespace serialization {
-
-// note: this type information method required assignment of a static
-// key available at precompile time
-template<>
-const char * extended_type_info_no_rtti<const polymorphic_base>::type_key 
-    = "polymorphic_base";
-
-}} // namespace boost::serialization
-
-class polymorphic_derived1;
-BOOST_CLASS_TYPE_INFO(
-    polymorphic_derived1,
-    extended_type_info_no_rtti<polymorphic_derived1>
-)
+// note: types which use ...no_rtti MUST be exported
+BOOST_CLASS_EXPORT(polymorphic_base)
 
 class polymorphic_derived1 : public polymorphic_base
 {
     friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive &ar, const unsigned int  /* file_version */){
-        const boost::serialization::extended_type_info *eti
-            = boost::serialization::type_info_implementation<polymorphic_derived1>
-                ::type::get_instance();
-        BOOST_CHECK(eti->type_info_key
-        == boost::serialization::extended_type_info_no_rtti<polymorphic_derived1>
-            ::type_info_key);
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(polymorphic_base);
     }
-
 public:
     virtual const char * get_key() const ;
 };
 
-// note: this type information method required assignment of a static
-// key available at precompile time
-
-// function specializations must be defined in the appropriate
-// namespace - boost::serialization
-namespace boost { namespace serialization {
-
-template<>
-const char * extended_type_info_no_rtti<const polymorphic_derived1>::type_key
-    = "polymorphic_derived1";
-
-}} // namespace boost::serialization
+BOOST_CLASS_TYPE_INFO(
+    polymorphic_derived1,
+    extended_type_info_no_rtti<polymorphic_derived1>
+)
+BOOST_CLASS_EXPORT(polymorphic_derived1)
 
 const char * polymorphic_derived1::get_key() const {
     const boost::serialization::extended_type_info *eti
         = boost::serialization::type_info_implementation<polymorphic_derived1>
             ::type::get_instance();
-    BOOST_CHECK(eti->type_info_key
-    == boost::serialization::type_info_implementation<polymorphic_derived1>
-        ::type::type_info_key
-    );
-    return eti->key;
+    return eti->get_key();
 }
-
-BOOST_CLASS_EXPORT(polymorphic_derived1)
 
 class polymorphic_derived2 : public polymorphic_base
 {
@@ -138,7 +105,7 @@ const char * polymorphic_derived2::get_key() const {
     const boost::serialization::extended_type_info *eti
         = boost::serialization::type_info_implementation<polymorphic_derived2>
         ::type::get_instance();
-    return eti->key;
+    return eti->get_key();
 }
 
 // save derived polymorphic class
@@ -245,7 +212,7 @@ test_main( int /* argc */, char* /* argv */[] )
     load_derived(testfile);
 
     std::remove(testfile);
-    return boost::exit_success;
+    return EXIT_SUCCESS;
 }
 
 // EOF

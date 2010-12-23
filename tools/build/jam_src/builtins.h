@@ -17,10 +17,12 @@ void load_builtins();
 
 LIST *builtin_calc( PARSE *parse, FRAME *args );
 LIST *builtin_depends( PARSE *parse, FRAME *args );
+LIST *builtin_rebuilds( PARSE *parse, FRAME *args );
 LIST *builtin_echo( PARSE *parse, FRAME *args );
 LIST *builtin_exit( PARSE *parse, FRAME *args );
 LIST *builtin_flags( PARSE *parse, FRAME *args );
 LIST *builtin_glob( PARSE *parse, FRAME *args );
+LIST *builtin_glob_recursive( PARSE   *parse, FRAME *frame );
 LIST *builtin_subst( PARSE  *parse, FRAME *args );
 LIST *builtin_match( PARSE *parse, FRAME *args );
 LIST *builtin_hdrmacro( PARSE *parse, FRAME *args );
@@ -40,6 +42,11 @@ LIST *builtin_instance( PARSE *parse, FRAME *frame );
 LIST *builtin_sort( PARSE *parse, FRAME *frame );
 LIST *builtin_normalize_path( PARSE *parse, FRAME *frame );
 LIST *builtin_native_rule( PARSE *parse, FRAME *frame );
+LIST *builtin_user_module( PARSE *parse, FRAME *frame );
+LIST *builtin_nearest_user_location( PARSE *parse, FRAME *frame );
+LIST *builtin_check_if_file( PARSE *parse, FRAME *frame );
+LIST *builtin_python_import_rule( PARSE *parse, FRAME *frame );
+LIST *builtin_shell( PARSE *parse, FRAME *frame );
 
 void backtrace( FRAME *frame );
 

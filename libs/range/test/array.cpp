@@ -19,14 +19,9 @@
 #include <boost/range.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
-#include <boost/test/unit_test.hpp>
 #include <boost/test/test_tools.hpp>
+#include <boost/test/unit_test.hpp>
 #include <iostream>
-
-// This should be included before "using namespace boost",
-// otherwise gcc headers will be confused with boost::iterator
-// namespace.
-#include <boost/test/included/unit_test_framework.hpp> 
 
 using namespace boost;
 using namespace std;
@@ -40,7 +35,7 @@ void check_array()
 
  
 // BOOST_RANGE_NO_STATIC_ASSERT 
-#if !defined( __BORLANDC__ ) || ( _MSC_VER <= 1200 )
+#if !defined( __BORLANDC__ )
 #else
     BOOST_STATIC_ASSERT(( is_same< range_value<array_t>::type, int >::value ));
     BOOST_STATIC_ASSERT(( is_same< range_iterator<array_t>::type, int* >::value ));
@@ -69,9 +64,7 @@ void check_array()
 
 }
 
-
-
-using boost::unit_test_framework::test_suite;
+using boost::unit_test::test_suite;
 
 test_suite* init_unit_test_suite( int argc, char* argv[] )
 {

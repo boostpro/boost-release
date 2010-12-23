@@ -12,8 +12,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/set/aux_/numbered.hpp,v $
-// $Date: 2004/09/05 09:42:59 $
-// $Revision: 1.3 $
+// $Date: 2005/06/18 22:03:09 $
+// $Revision: 1.4 $
 
 #include <boost/preprocessor/enum_params.hpp>
 #include <boost/preprocessor/dec.hpp>
@@ -22,9 +22,9 @@
 #define i_ BOOST_PP_FRAME_ITERATION(1)
 
 #   define AUX778076_SET_TAIL(set, i_, T) \
-    BOOST_PP_CAT(set,i_)< \
+    typename BOOST_PP_CAT(set,i_)< \
           BOOST_PP_ENUM_PARAMS(i_, T) \
-        > \
+        >::item_                           \
     /**/
 
 #if i_ > 0

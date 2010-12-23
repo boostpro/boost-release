@@ -20,11 +20,12 @@ namespace std{
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
+#include "test_tools.hpp"
+#include <boost/preprocessor/stringize.hpp>
+#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/nvp.hpp>
-
-#include "test_tools.hpp"
 
 // This is a simple class.  It contains a counter of the number
 // of objects of this class which have been instantiated.
@@ -118,5 +119,5 @@ int test_main(int /* argc */, char * /* argv */[])
     // Try to save and load pointers to Bs, to an xml archive
     test_save_and_load<xml_oarchive, xml_iarchive>(b, b1);
 
-    return boost::exit_success;
+    return EXIT_SUCCESS;
 }

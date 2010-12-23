@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Tutorial</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../variant.html" title="Chapter 12. Boost.Variant">
-<link rel="prev" href="../variant.html" title="Chapter 12. Boost.Variant">
+<link rel="up" href="../variant.html" title="Chapter 15. Boost.Variant">
+<link rel="prev" href="../variant.html" title="Chapter 15. Boost.Variant">
 <link rel="next" href="reference.html" title="Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -33,81 +33,81 @@
 <div class="titlepage"><div><div><h4 class="title">
 <a name="variant.tutorial.basic"></a>Basic Usage</h4></div></div></div>
 <p>A discriminated union container on some set of types is defined by
-  instantiating the <tt class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></tt> class
+  instantiating the <code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code> class
   template with the desired types. These types are called
-  <span class="bold"><b>bounded types</b></span> and are subject to the
+  <span class="bold"><strong>bounded types</strong></span> and are subject to the
   requirements of the
   <a href="reference.html#variant.concepts.bounded-type" title="BoundedType"><span class="emphasis"><em>BoundedType</em></span></a>
   concept. Any number of bounded types may be specified, up to some
   implementation-defined limit (see 
-  <tt class="computeroutput"><a href="../BOOST_VARIANT_LIMIT_TYPES.html" title="Macro BOOST_VARIANT_LIMIT_TYPES">BOOST_VARIANT_LIMIT_TYPES</a></tt>).</p>
+  <code class="computeroutput"><a href="../BOOST_VARIANT_LIMIT_TYPES.html" title="Macro BOOST_VARIANT_LIMIT_TYPES">BOOST_VARIANT_LIMIT_TYPES</a></code>).</p>
 <p>For example, the following declares a discriminated union container on
-  <tt class="computeroutput">int</tt> and <tt class="computeroutput">std::string</tt>:
+  <code class="computeroutput">int</code> and <code class="computeroutput">std::string</code>:
 
 </p>
-<pre class="programlisting"><a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt; int, std::string &gt; v;</pre>
-<p>By default, a <tt class="computeroutput">variant</tt> default-constructs its first
-  bounded type, so <tt class="computeroutput">v</tt> initially contains <tt class="computeroutput">int(0)</tt>. If
+<pre class="programlisting"><code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt; int, std::string &gt; v;</pre>
+<p>By default, a <code class="computeroutput">variant</code> default-constructs its first
+  bounded type, so <code class="computeroutput">v</code> initially contains <code class="computeroutput">int(0)</code>. If
   this is not desired, or if the first bounded type is not
-  default-constructible, a <tt class="computeroutput">variant</tt> can be constructed
+  default-constructible, a <code class="computeroutput">variant</code> can be constructed
   directly from any value convertible to one of its bounded types. Similarly,
-  a <tt class="computeroutput">variant</tt> can be assigned any value convertible to one of its
+  a <code class="computeroutput">variant</code> can be assigned any value convertible to one of its
   bounded types, as demonstrated in the following:
 
 </p>
 <pre class="programlisting">v = "hello";</pre>
-<p>Now <tt class="computeroutput">v</tt> contains a <tt class="computeroutput">std::string</tt> equal to
-  <tt class="computeroutput">"hello"</tt>. We can demonstrate this by
-  <span class="bold"><b>streaming</b></span> <tt class="computeroutput">v</tt> to standard
+<p>Now <code class="computeroutput">v</code> contains a <code class="computeroutput">std::string</code> equal to
+  <code class="computeroutput">"hello"</code>. We can demonstrate this by
+  <span class="bold"><strong>streaming</strong></span><code class="computeroutput">v</code> to standard
   output:
 
 </p>
 <pre class="programlisting">std::cout &lt;&lt; v &lt;&lt; std::endl;</pre>
 <p>Usually though, we would like to do more with the content of a
-  <tt class="computeroutput">variant</tt> than streaming. Thus, we need some way to access the
+  <code class="computeroutput">variant</code> than streaming. Thus, we need some way to access the
   contained value. There are two ways to accomplish this:
-  <tt class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">apply_visitor</a></tt>, which is safest
+  <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">apply_visitor</a></code>, which is safest
   and very powerful, and
-  <tt class="computeroutput"><a href="../get.html" title="Function get">get</a>&lt;T&gt;</tt>, which is
+  <code class="computeroutput"><a href="../get.html" title="Function get">get</a>&lt;T&gt;</code>, which is
   sometimes more convenient to use.</p>
 <p>For instance, suppose we wanted to concatenate to the string contained
-  in <tt class="computeroutput">v</tt>. With <span class="bold"><b>value retrieval</b></span>
-  by <tt class="computeroutput"><a href="../get.html" title="Function get">get</a></tt>, this may be accomplished
+  in <code class="computeroutput">v</code>. With <span class="bold"><strong>value retrieval</strong></span>
+  by <code class="computeroutput"><a href="../get.html" title="Function get">get</a></code>, this may be accomplished
   quite simply, as seen in the following:
 
 </p>
-<pre class="programlisting">std::string&amp; str = <a href="../get.html" title="Function get">boost::get</a>&lt;std::string&gt;(v);
+<pre class="programlisting">std::string&amp; str = <code class="computeroutput"><a href="../get.html" title="Function get">boost::get</a></code>&lt;std::string&gt;(v);
 str += " world! ";</pre>
-<p>As desired, the <tt class="computeroutput">std::string</tt> contained by <tt class="computeroutput">v</tt> now
-  is equal to <tt class="computeroutput">"hello world! "</tt>. Again, we can demonstrate this by
-  streaming <tt class="computeroutput">v</tt> to standard output:
+<p>As desired, the <code class="computeroutput">std::string</code> contained by <code class="computeroutput">v</code> now
+  is equal to <code class="computeroutput">"hello world! "</code>. Again, we can demonstrate this by
+  streaming <code class="computeroutput">v</code> to standard output:
 
 </p>
 <pre class="programlisting">std::cout &lt;&lt; v &lt;&lt; std::endl;</pre>
-<p>While use of <tt class="computeroutput">get</tt> is perfectly acceptable in this trivial
-  example, <tt class="computeroutput">get</tt> generally suffers from several significant
+<p>While use of <code class="computeroutput">get</code> is perfectly acceptable in this trivial
+  example, <code class="computeroutput">get</code> generally suffers from several significant
   shortcomings. For instance, if we were to write a function accepting a
-  <tt class="computeroutput">variant&lt;int, std::string&gt;</tt>, we would not know whether
-  the passed <tt class="computeroutput">variant</tt> contained an <tt class="computeroutput">int</tt> or a
-  <tt class="computeroutput">std::string</tt>. If we insisted upon continued use of
-  <tt class="computeroutput">get</tt>, we would need to query the <tt class="computeroutput">variant</tt> for its
+  <code class="computeroutput">variant&lt;int, std::string&gt;</code>, we would not know whether
+  the passed <code class="computeroutput">variant</code> contained an <code class="computeroutput">int</code> or a
+  <code class="computeroutput">std::string</code>. If we insisted upon continued use of
+  <code class="computeroutput">get</code>, we would need to query the <code class="computeroutput">variant</code> for its
   contained type. The following function, which "doubles" the
-  content of the given <tt class="computeroutput">variant</tt>, demonstrates this approach:
+  content of the given <code class="computeroutput">variant</code>, demonstrates this approach:
 
 </p>
 <pre class="programlisting">void times_two( boost::variant&lt; int, std::string &gt; &amp; operand )
 {
-    if ( int* pi = <a href="../get.html" title="Function get">boost::get</a>&lt;int&gt;( &amp;v ) )
+    if ( int* pi = <code class="computeroutput"><a href="../get.html" title="Function get">boost::get</a></code>&lt;int&gt;( &amp;v ) )
         *pi *= 2;
-    else if ( std::string* pstr = <a href="../get.html" title="Function get">boost::get</a>&lt;std::string&gt;( &amp;v ) )
+    else if ( std::string* pstr = <code class="computeroutput"><a href="../get.html" title="Function get">boost::get</a></code>&lt;std::string&gt;( &amp;v ) )
         *pstr += *pstr;
 }</pre>
 <p>However, such code is quite brittle, and without careful attention will
   likely lead to the introduction of subtle logical errors detectable only at
   runtime. For instance, consider if we wished to extend
-  <tt class="computeroutput">times_two</tt> to operate on a <tt class="computeroutput">variant</tt> with additional
+  <code class="computeroutput">times_two</code> to operate on a <code class="computeroutput">variant</code> with additional
   bounded types. Specifically, let's add
-  <tt class="computeroutput">std::complex&lt;double&gt;</tt> to the set. Clearly, we would need
+  <code class="computeroutput">std::complex&lt;double&gt;</code> to the set. Clearly, we would need
   to at least change the function declaration:
 
 </p>
@@ -116,25 +116,25 @@ str += " world! ";</pre>
     // as above...?
 }</pre>
 <p>Of course, additional changes are required, for currently if the passed
-  <tt class="computeroutput">variant</tt> in fact contained a <tt class="computeroutput">std::complex</tt> value,
-  <tt class="computeroutput">times_two</tt> would silently return -- without any of the desired
+  <code class="computeroutput">variant</code> in fact contained a <code class="computeroutput">std::complex</code> value,
+  <code class="computeroutput">times_two</code> would silently return -- without any of the desired
   side-effects and without any error. In this case, the fix is obvious. But in
   more complicated programs, it could take considerable time to identify and
   locate the error in the first place.</p>
-<p>Thus, real-world use of <tt class="computeroutput">variant</tt> typically demands an access
-  mechanism more robust than <tt class="computeroutput">get</tt>. For this reason,
-  <tt class="computeroutput">variant</tt> supports compile-time checked
-  <span class="bold"><b>visitation</b></span> via
-  <tt class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">apply_visitor</a></tt>. Visitation requires
+<p>Thus, real-world use of <code class="computeroutput">variant</code> typically demands an access
+  mechanism more robust than <code class="computeroutput">get</code>. For this reason,
+  <code class="computeroutput">variant</code> supports compile-time checked
+  <span class="bold"><strong>visitation</strong></span> via
+  <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">apply_visitor</a></code>. Visitation requires
   that the programmer explicitly handle (or ignore) each bounded type. Failure
   to do so results in a compile-time error.</p>
-<p>Visitation of a <tt class="computeroutput">variant</tt> requires a visitor object. The
+<p>Visitation of a <code class="computeroutput">variant</code> requires a visitor object. The
   following demonstrates one such implementation of a visitor implementating
-  behavior identical to <tt class="computeroutput">times_two</tt>:
+  behavior identical to <code class="computeroutput">times_two</code>:
 
 </p>
 <pre class="programlisting">class times_two_visitor
-    : public <a href="../static_visitor.html" title="Class template static_visitor">boost::static_visitor</a>&lt;&gt;
+    : public <code class="computeroutput"><a href="../static_visitor.html" title="Class template static_visitor">boost::static_visitor</a></code>&lt;&gt;
 {
 public:
 
@@ -150,22 +150,22 @@ public:
 
 };</pre>
 <p>With the implementation of the above visitor, we can then apply it to
-  <tt class="computeroutput">v</tt>, as seen in the following:
+  <code class="computeroutput">v</code>, as seen in the following:
 
 </p>
-<pre class="programlisting"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>( times_two_visitor(), v );</pre>
-<p>As expected, the content of <tt class="computeroutput">v</tt> is now a
-  <tt class="computeroutput">std::string</tt> equal to <tt class="computeroutput">"hello world! hello world! "</tt>.
+<pre class="programlisting"><code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>( times_two_visitor(), v );</pre>
+<p>As expected, the content of <code class="computeroutput">v</code> is now a
+  <code class="computeroutput">std::string</code> equal to <code class="computeroutput">"hello world! hello world! "</code>.
   (We'll skip the verification this time.)</p>
 <p>In addition to enhanced robustness, visitation provides another
-  important advantage over <tt class="computeroutput">get</tt>: the ability to write generic
+  important advantage over <code class="computeroutput">get</code>: the ability to write generic
   visitors. For instance, the following visitor will "double" the
-  content of <span class="emphasis"><em>any</em></span> <tt class="computeroutput">variant</tt> (provided its
+  content of <span class="emphasis"><em>any</em></span><code class="computeroutput">variant</code> (provided its
   bounded types each support operator+=):
 
 </p>
 <pre class="programlisting">class times_two_generic
-    : public <a href="../static_visitor.html" title="Class template static_visitor">boost::static_visitor</a>&lt;&gt;
+    : public <code class="computeroutput"><a href="../static_visitor.html" title="Class template static_visitor">boost::static_visitor</a></code>&lt;&gt;
 {
 public:
 
@@ -176,30 +176,30 @@ public:
     }
 
 };</pre>
-<p>Again, <tt class="computeroutput">apply_visitor</tt> sets the wheels in motion:
+<p>Again, <code class="computeroutput">apply_visitor</code> sets the wheels in motion:
 
 </p>
-<pre class="programlisting"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>( times_two_generic(), v );</pre>
+<pre class="programlisting"><code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>( times_two_generic(), v );</pre>
 <p>While the initial setup costs of visitation may exceed that required for
-  <tt class="computeroutput">get</tt>, the benefits quickly become significant. Before concluding
+  <code class="computeroutput">get</code>, the benefits quickly become significant. Before concluding
   this section, we should explore one last benefit of visitation with
-  <tt class="computeroutput">apply_visitor</tt>:
-  <span class="bold"><b>delayed visitation</b></span>. Namely, a special form
-  of <tt class="computeroutput">apply_visitor</tt> is available that does not immediately apply
-  the given visitor to any <tt class="computeroutput">variant</tt> but rather returns a function
-  object that operates on any <tt class="computeroutput">variant</tt> given to it. This behavior
-  is particularly useful when operating on sequences of <tt class="computeroutput">variant</tt>
+  <code class="computeroutput">apply_visitor</code>:
+  <span class="bold"><strong>delayed visitation</strong></span>. Namely, a special form
+  of <code class="computeroutput">apply_visitor</code> is available that does not immediately apply
+  the given visitor to any <code class="computeroutput">variant</code> but rather returns a function
+  object that operates on any <code class="computeroutput">variant</code> given to it. This behavior
+  is particularly useful when operating on sequences of <code class="computeroutput">variant</code>
   type, as the following demonstrates:
 
 </p>
-<pre class="programlisting">std::vector&lt; <a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt;int, std::string&gt; &gt; vec;
+<pre class="programlisting">std::vector&lt; <code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt;int, std::string&gt; &gt; vec;
 vec.push_back( 21 );
 vec.push_back( "hello " );
 
 times_two_generic visitor;
 std::for_each(
       vec.begin(), vec.end()
-   , <a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>(visitor)
+   , <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>(visitor)
    );</pre>
 </div>
 <div class="section" lang="en">
@@ -208,34 +208,34 @@ std::for_each(
 <div class="toc"><dl>
 <dt><span class="section"><a href="tutorial.html#variant.tutorial.preprocessor">Preprocessor macros</a></span></dt>
 <dt><span class="section"><a href="tutorial.html#variant.tutorial.over-sequence">Using a type sequence to specify bounded types</a></span></dt>
-<dt><span class="section"><a href="tutorial.html#variant.tutorial.recursive">Recursive <tt class="computeroutput">variant</tt> types</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#variant.tutorial.recursive">Recursive <code class="computeroutput">variant</code> types</a></span></dt>
 <dt><span class="section"><a href="tutorial.html#variant.tutorial.binary-visitation">Binary visitation</a></span></dt>
 </dl></div>
 <p>This section discusses several features of the library often required
-  for advanced uses of <tt class="computeroutput">variant</tt>. Unlike in the above section, each
+  for advanced uses of <code class="computeroutput">variant</code>. Unlike in the above section, each
   feature presented below is largely independent of the others. Accordingly,
   this section is not necessarily intended to be read linearly or in its
   entirety.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="variant.tutorial.preprocessor"></a>Preprocessor macros</h5></div></div></div>
-<p>While the <tt class="computeroutput">variant</tt> class template's variadic parameter
+<p>While the <code class="computeroutput">variant</code> class template's variadic parameter
     list greatly simplifies use for specific instantiations of the template,
     it significantly complicates use for generic instantiations. For instance,
     while it is immediately clear how one might write a function accepting a
-    specific <tt class="computeroutput">variant</tt> instantiation, say
-    <tt class="computeroutput">variant&lt;int, std::string&gt;</tt>, it is less clear how one
-    might write a function accepting any given <tt class="computeroutput">variant</tt>.</p>
+    specific <code class="computeroutput">variant</code> instantiation, say
+    <code class="computeroutput">variant&lt;int, std::string&gt;</code>, it is less clear how one
+    might write a function accepting any given <code class="computeroutput">variant</code>.</p>
 <p>Due to the lack of support for true variadic template parameter lists
     in the C++98 standard, the preprocessor is needed. While the
     <a href="../../../libs/preprocessor/index.html" target="_top">Preprocessor</a> library provides a general and
     powerful solution, the need to repeat
-    <tt class="computeroutput"><a href="../BOOST_VARIANT_LIMIT_TYPES.html" title="Macro BOOST_VARIANT_LIMIT_TYPES">BOOST_VARIANT_LIMIT_TYPES</a></tt>
+    <code class="computeroutput"><a href="../BOOST_VARIANT_LIMIT_TYPES.html" title="Macro BOOST_VARIANT_LIMIT_TYPES">BOOST_VARIANT_LIMIT_TYPES</a></code>
     unnecessarily clutters otherwise simple code. Therefore, for common
     use-cases, this library provides its own macro
-    <tt class="computeroutput"><span class="bold"><b><a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a></b></span></tt>.</p>
+    <code class="computeroutput"><span class="bold"><strong><a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a></strong></span></code>.</p>
 <p>This macro simplifies for the user the process of declaring 
-    <tt class="computeroutput">variant</tt> types in function templates or explicit partial
+    <code class="computeroutput">variant</code> types in function templates or explicit partial
     specializations of class templates, as shown in the following:
 
 </p>
@@ -244,55 +244,55 @@ template &lt;typename T&gt; void some_func(const T &amp;);
 template &lt;typename T&gt; class some_class;
 
 // function template overload
-template &lt;<a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a>(typename T)&gt;
-void some_func(const <a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt;<a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a>(T)&gt; &amp;);
+template &lt;<code class="computeroutput"><a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a></code>(typename T)&gt;
+void some_func(const <code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt;<code class="computeroutput"><a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a></code>(T)&gt; &amp;);
 
 // explicit partial specialization
-template &lt;<a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a>(typename T)&gt;
-class some_class&lt; <a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt;<a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a>(T)&gt; &gt;;</pre>
+template &lt;<code class="computeroutput"><a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a></code>(typename T)&gt;
+class some_class&lt; <code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt;<code class="computeroutput"><a href="../BOOST_VARIANT_ENUM_PARAMS.html" title="Macro BOOST_VARIANT_ENUM_PARAMS">BOOST_VARIANT_ENUM_PARAMS</a></code>(T)&gt; &gt;;</pre>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="variant.tutorial.over-sequence"></a>Using a type sequence to specify bounded types</h5></div></div></div>
-<p>While convenient for typical uses, the <tt class="computeroutput">variant</tt> class
+<p>While convenient for typical uses, the <code class="computeroutput">variant</code> class
     template's variadic template parameter list is limiting in two significant
     dimensions. First, due to the lack of support for true variadic template 
     parameter lists in C++, the number of parameters must be limited to some
     implementation-defined maximum (namely,
-    <tt class="computeroutput"><a href="../BOOST_VARIANT_LIMIT_TYPES.html" title="Macro BOOST_VARIANT_LIMIT_TYPES">BOOST_VARIANT_LIMIT_TYPES</a></tt>).
+    <code class="computeroutput"><a href="../BOOST_VARIANT_LIMIT_TYPES.html" title="Macro BOOST_VARIANT_LIMIT_TYPES">BOOST_VARIANT_LIMIT_TYPES</a></code>).
     Second, the nature of parameter lists in general makes compile-time
     manipulation of the lists excessively difficult.</p>
 <p>To solve these problems,
-    <tt class="computeroutput">make_variant_over&lt; <span class="emphasis"><em>Sequence</em></span> &gt;</tt>
-    exposes a <tt class="computeroutput">variant</tt> whose bounded types are the elements of
-    <tt class="computeroutput">Sequence</tt> (where <tt class="computeroutput">Sequence</tt> is any type fulfilling
+    <code class="computeroutput">make_variant_over&lt; <span class="emphasis"><em>Sequence</em></span> &gt;</code>
+    exposes a <code class="computeroutput">variant</code> whose bounded types are the elements of
+    <code class="computeroutput">Sequence</code> (where <code class="computeroutput">Sequence</code> is any type fulfilling
     the requirements of <a href="../../../libs/mpl/index.html" target="_top">MPL</a>'s
     <span class="emphasis"><em>Sequence</em></span> concept). For instance,
 
 </p>
-<pre class="programlisting">typedef mpl::vector&lt; std::string &gt; types_initial;
-typedef mpl::push_front&lt; types_initial, int &gt;::type types;
+<pre class="programlisting">typedef <code class="computeroutput">mpl::vector</code>&lt; std::string &gt; types_initial;
+typedef <code class="computeroutput">mpl::push_front</code>&lt; types_initial, int &gt;::type types;
 
-<a href="../make_variant_over.html" title="Class template make_variant_over">boost::make_variant_over</a>&lt; types &gt;::type v1;</pre>
+<code class="computeroutput"><a href="../make_variant_over.html" title="Class template make_variant_over">boost::make_variant_over</a></code>&lt; types &gt;::type v1;</pre>
 <p>
 
     behaves equivalently to
 
 </p>
-<pre class="programlisting"><a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt; int, std::string &gt; v2;</pre>
-<p><span class="bold"><b>Portability</b></span>: Unfortunately, due to
+<pre class="programlisting"><code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt; int, std::string &gt; v2;</pre>
+<p><span class="bold"><strong>Portability</strong></span>: Unfortunately, due to
     standard conformance issues in several compilers,
-    <tt class="computeroutput">make_variant_over</tt> is not universally available. On these
+    <code class="computeroutput">make_variant_over</code> is not universally available. On these
     compilers the library indicates its lack of support for the syntax via the
     definition of the preprocessor symbol
-    <tt class="computeroutput"><a href="../id544182.html" title="Macro BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT">BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT</a></tt>.</p>
+    <code class="computeroutput"><a href="../id1351704.html" title="Macro BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT">BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT</a></code>.</p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
-<a name="variant.tutorial.recursive"></a>Recursive <tt class="computeroutput">variant</tt> types</h5></div></div></div>
+<a name="variant.tutorial.recursive"></a>Recursive <code class="computeroutput">variant</code> types</h5></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="tutorial.html#variant.tutorial.recursive.recursive-wrapper">Recursive types with <tt class="computeroutput">recursive_wrapper</tt></a></span></dt>
-<dt><span class="section"><a href="tutorial.html#variant.tutorial.recursive.recursive-variant">Recursive types with <tt class="computeroutput">make_recursive_variant</tt></a></span></dt>
+<dt><span class="section"><a href="tutorial.html#variant.tutorial.recursive.recursive-wrapper">Recursive types with <code class="computeroutput">recursive_wrapper</code></a></span></dt>
+<dt><span class="section"><a href="tutorial.html#variant.tutorial.recursive.recursive-variant">Recursive types with <code class="computeroutput">make_recursive_variant</code></a></span></dt>
 </dl></div>
 <p>Recursive types facilitate the construction of complex semantics from
     simple syntax. For instance, nearly every programmer is familiar with the
@@ -306,9 +306,9 @@ struct list_node
     T data;
     list_node * next;
 };</pre>
-<p>The nature of <tt class="computeroutput">variant</tt> as a generic class template
+<p>The nature of <code class="computeroutput">variant</code> as a generic class template
     unfortunately precludes the straightforward construction of recursive
-    <tt class="computeroutput">variant</tt> types. Consider the following attempt to construct
+    <code class="computeroutput">variant</code> types. Consider the following attempt to construct
     a structure for simple mathematical expressions:
 
     </p>
@@ -316,7 +316,7 @@ struct list_node
 struct sub;
 template &lt;typename OpTag&gt; struct binary_op;
 
-typedef <a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt;
+typedef <code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt;
       int
     , binary_op&lt;add&gt;
     , binary_op&lt;sub&gt;
@@ -335,44 +335,44 @@ struct binary_op
 
 }; // <span class="emphasis"><em>...but binary_op not complete until here!</em></span></pre>
 <p>While well-intentioned, the above approach will not compile because
-    <tt class="computeroutput">binary_op</tt> is still incomplete when the <tt class="computeroutput">variant</tt>
-    type <tt class="computeroutput">expression</tt> is instantiated. Further, the approach suffers
+    <code class="computeroutput">binary_op</code> is still incomplete when the <code class="computeroutput">variant</code>
+    type <code class="computeroutput">expression</code> is instantiated. Further, the approach suffers
     from a more significant logical flaw: even if C++ syntax were different
     such that the above example could be made to "work,"
-    <tt class="computeroutput">expression</tt> would need to be of infinite size, which is
+    <code class="computeroutput">expression</code> would need to be of infinite size, which is
     clearly impossible.</p>
-<p>To overcome these difficulties, <tt class="computeroutput">variant</tt> includes special
+<p>To overcome these difficulties, <code class="computeroutput">variant</code> includes special
     support for the
-    <tt class="computeroutput"><a href="../recursive_wrapper.html" title="Class template recursive_wrapper">boost::recursive_wrapper</a></tt> class
+    <code class="computeroutput"><a href="../recursive_wrapper.html" title="Class template recursive_wrapper">boost::recursive_wrapper</a></code> class
     template, which breaks the circular dependency at the heart of these
     problems. Further,
-    <tt class="computeroutput"><a href="../make_recursive_variant.html" title="Class template make_recursive_variant">boost::make_recursive_variant</a></tt> provides
-    a more convenient syntax for declaring recursive <tt class="computeroutput">variant</tt>
+    <code class="computeroutput"><a href="../make_recursive_variant.html" title="Class template make_recursive_variant">boost::make_recursive_variant</a></code> provides
+    a more convenient syntax for declaring recursive <code class="computeroutput">variant</code>
     types. Tutorials for use of these facilities is described in
-    <a href="tutorial.html#variant.tutorial.recursive.recursive-wrapper" title="Recursive types with recursive_wrapper">the section called &#8220;Recursive types with <tt class="computeroutput">recursive_wrapper</tt>&#8221;</a> and
-    <a href="tutorial.html#variant.tutorial.recursive.recursive-variant" title="Recursive types with make_recursive_variant">the section called &#8220;Recursive types with <tt class="computeroutput">make_recursive_variant</tt>&#8221;</a>.</p>
+    <a href="tutorial.html#variant.tutorial.recursive.recursive-wrapper" title="Recursive types with recursive_wrapper">the section called &#8220;Recursive types with <code class="computeroutput">recursive_wrapper</code>&#8221;</a> and
+    <a href="tutorial.html#variant.tutorial.recursive.recursive-variant" title="Recursive types with make_recursive_variant">the section called &#8220;Recursive types with <code class="computeroutput">make_recursive_variant</code>&#8221;</a>.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h6 class="title">
-<a name="variant.tutorial.recursive.recursive-wrapper"></a>Recursive types with <tt class="computeroutput">recursive_wrapper</tt></h6></div></div></div>
-<p>The following example demonstrates how <tt class="computeroutput">recursive_wrapper</tt>
+<a name="variant.tutorial.recursive.recursive-wrapper"></a>Recursive types with <code class="computeroutput">recursive_wrapper</code></h6></div></div></div>
+<p>The following example demonstrates how <code class="computeroutput">recursive_wrapper</code>
     could be used to solve the problem presented in
-    <a href="tutorial.html#variant.tutorial.recursive" title="Recursive variant types">the section called &#8220;Recursive <tt class="computeroutput">variant</tt> types&#8221;</a>:
+    <a href="tutorial.html#variant.tutorial.recursive" title="Recursive variant types">the section called &#8220;Recursive <code class="computeroutput">variant</code> types&#8221;</a>:
 
     </p>
-<pre class="programlisting">typedef <a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt;
+<pre class="programlisting">typedef <code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt;
       int
-    , <a href="../recursive_wrapper.html" title="Class template recursive_wrapper">boost::recursive_wrapper</a>&lt; binary_op&lt;add&gt; &gt;
-    , <a href="../recursive_wrapper.html" title="Class template recursive_wrapper">boost::recursive_wrapper</a>&lt; binary_op&lt;sub&gt; &gt;
+    , <code class="computeroutput"><a href="../recursive_wrapper.html" title="Class template recursive_wrapper">boost::recursive_wrapper</a></code>&lt; binary_op&lt;add&gt; &gt;
+    , <code class="computeroutput"><a href="../recursive_wrapper.html" title="Class template recursive_wrapper">boost::recursive_wrapper</a></code>&lt; binary_op&lt;sub&gt; &gt;
     &gt; expression;</pre>
-<p>Because <tt class="computeroutput">variant</tt> provides special support for
-    <tt class="computeroutput">recursive_wrapper</tt>, clients may treat the resultant
-    <tt class="computeroutput">variant</tt> as though the wrapper were not present. This is seen
+<p>Because <code class="computeroutput">variant</code> provides special support for
+    <code class="computeroutput">recursive_wrapper</code>, clients may treat the resultant
+    <code class="computeroutput">variant</code> as though the wrapper were not present. This is seen
     in the implementation of the following visitor, which calculates the value
-    of an <tt class="computeroutput">expression</tt> without any reference to
-    <tt class="computeroutput">recursive_wrapper</tt>:
+    of an <code class="computeroutput">expression</code> without any reference to
+    <code class="computeroutput">recursive_wrapper</code>:
 
     </p>
-<pre class="programlisting">class calculator : public <a href="../static_visitor.html" title="Class template static_visitor">boost::static_visitor&lt;int&gt;</a>
+<pre class="programlisting">class calculator : public <code class="computeroutput"><a href="../static_visitor.html" title="Class template static_visitor">boost::static_visitor&lt;int&gt;</a></code>
 {
 public:
 
@@ -383,18 +383,18 @@ public:
 
     int operator()(const binary_op&lt;add&gt; &amp; binary) const
     {
-        return <a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>( calculator(), binary.left )
-             + <a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>( calculator(), binary.right );
+        return <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>( calculator(), binary.left )
+             + <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>( calculator(), binary.right );
     }
 
     int operator()(const binary_op&lt;sub&gt; &amp; binary) const
     {
-        return <a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>( calculator(), binary.left )
-             - <a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>( calculator(), binary.right );
+        return <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>( calculator(), binary.left )
+             - <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>( calculator(), binary.right );
     }
 
 };</pre>
-<p>Finally, we can demonstrate <tt class="computeroutput">expression</tt> in action:
+<p>Finally, we can demonstrate <code class="computeroutput">expression</code> in action:
   
     </p>
 <pre class="programlisting">void f()
@@ -407,23 +407,23 @@ public:
           )
       );
 
-    assert( <a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>(calculator(),result) == 12 );
+    assert( <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>(calculator(),result) == 12 );
 }</pre>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h6 class="title">
-<a name="variant.tutorial.recursive.recursive-variant"></a>Recursive types with <tt class="computeroutput">make_recursive_variant</tt></h6></div></div></div>
-<p>For some applications of recursive <tt class="computeroutput">variant</tt> types, a user
+<a name="variant.tutorial.recursive.recursive-variant"></a>Recursive types with <code class="computeroutput">make_recursive_variant</code></h6></div></div></div>
+<p>For some applications of recursive <code class="computeroutput">variant</code> types, a user
     may be able to sacrifice the full flexibility of using
-    <tt class="computeroutput">recursive_wrapper</tt> with <tt class="computeroutput">variant</tt> for the following
+    <code class="computeroutput">recursive_wrapper</code> with <code class="computeroutput">variant</code> for the following
     convenient syntax:
 
 </p>
-<pre class="programlisting">typedef <a href="../make_recursive_variant.html" title="Class template make_recursive_variant">boost::make_recursive_variant</a>&lt;
+<pre class="programlisting">typedef <code class="computeroutput"><a href="../make_recursive_variant.html" title="Class template make_recursive_variant">boost::make_recursive_variant</a></code>&lt;
       int
     , std::vector&lt; boost::recursive_variant_ &gt;
     &gt;::type int_tree_t;</pre>
-<p>Use of the resultant <tt class="computeroutput">variant</tt> type is as expected:
+<p>Use of the resultant <code class="computeroutput">variant</code> type is as expected:
 
 </p>
 <pre class="programlisting">std::vector&lt; int_tree_t &gt; subresult;
@@ -437,31 +437,31 @@ result.push_back(7);
 
 int_tree_t var(result);</pre>
 <p>To be clear, one might represent the resultant content of
-    <tt class="computeroutput">var</tt> as <tt class="computeroutput">( 1 ( 3 5 ) 7 )</tt>.</p>
+    <code class="computeroutput">var</code> as <code class="computeroutput">( 1 ( 3 5 ) 7 )</code>.</p>
 <p>Finally, note that a type sequence can be used to specify the bounded
-    types of a recursive <tt class="computeroutput">variant</tt> via the use of
-    <tt class="computeroutput"><a href="../id276892.html" title="Class template make_recursive_variant_over">boost::make_recursive_variant_over</a></tt>,
-    whose semantics are the same as <tt class="computeroutput">make_variant_over</tt> (which is
+    types of a recursive <code class="computeroutput">variant</code> via the use of
+    <code class="computeroutput"><a href="../id1151195.html" title="Class template make_recursive_variant_over">boost::make_recursive_variant_over</a></code>,
+    whose semantics are the same as <code class="computeroutput">make_variant_over</code> (which is
     described in <a href="tutorial.html#variant.tutorial.over-sequence" title="Using a type sequence to specify bounded types">the section called &#8220;Using a type sequence to specify bounded types&#8221;</a>).</p>
-<p><span class="bold"><b>Portability</b></span>: Unfortunately, due to
+<p><span class="bold"><strong>Portability</strong></span>: Unfortunately, due to
     standard conformance issues in several compilers,
-    <tt class="computeroutput">make_recursive_variant</tt> is not universally supported. On these
+    <code class="computeroutput">make_recursive_variant</code> is not universally supported. On these
     compilers the library indicates its lack of support via the definition
     of the preprocessor symbol
-    <tt class="computeroutput"><a href="../id413934.html" title="Macro BOOST_VARIANT_NO_FULL_RECURSIVE_VARIANT_SUPPORT">BOOST_VARIANT_NO_FULL_RECURSIVE_VARIANT_SUPPORT</a></tt>.
+    <code class="computeroutput"><a href="../id696758.html" title="Macro BOOST_VARIANT_NO_FULL_RECURSIVE_VARIANT_SUPPORT">BOOST_VARIANT_NO_FULL_RECURSIVE_VARIANT_SUPPORT</a></code>.
     Thus, unless working with highly-conformant compilers, maximum portability
-    will be achieved by instead using <tt class="computeroutput">recursive_wrapper</tt>, as
+    will be achieved by instead using <code class="computeroutput">recursive_wrapper</code>, as
     described in
-    <a href="tutorial.html#variant.tutorial.recursive.recursive-wrapper" title="Recursive types with recursive_wrapper">the section called &#8220;Recursive types with <tt class="computeroutput">recursive_wrapper</tt>&#8221;</a>.</p>
+    <a href="tutorial.html#variant.tutorial.recursive.recursive-wrapper" title="Recursive types with recursive_wrapper">the section called &#8220;Recursive types with <code class="computeroutput">recursive_wrapper</code>&#8221;</a>.</p>
 </div>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="variant.tutorial.binary-visitation"></a>Binary visitation</h5></div></div></div>
 <p>As the tutorial above demonstrates, visitation is a powerful mechanism
-    for manipulating <tt class="computeroutput">variant</tt> content. Binary visitation further
+    for manipulating <code class="computeroutput">variant</code> content. Binary visitation further
     extends the power and flexibility of visitation by allowing simultaneous
-    visitation of the content of two different <tt class="computeroutput">variant</tt>
+    visitation of the content of two different <code class="computeroutput">variant</code>
     objects.</p>
 <p>Notably this feature requires that binary visitors are incompatible
     with the visitor objects discussed in the tutorial above, as they must
@@ -470,41 +470,41 @@ int_tree_t var(result);</pre>
 
 </p>
 <pre class="programlisting">class are_strict_equals
-    : public <a href="../static_visitor.html" title="Class template static_visitor">boost::static_visitor</a>&lt;bool&gt;
+    : public <code class="computeroutput"><a href="../static_visitor.html" title="Class template static_visitor">boost::static_visitor</a></code>&lt;bool&gt;
 {
 public:
 
     template &lt;typename T, typename U&gt;
-    bool operator()( const T &amp;, const U &amp; )
+    bool operator()( const T &amp;, const U &amp; ) const
     {
         return false; // cannot compare different types
     }
 
     template &lt;typename T&gt;
-    bool operator()( const T &amp; lhs, const T &amp; rhs )
+    bool operator()( const T &amp; lhs, const T &amp; rhs ) const
     {
         return lhs == rhs;
     }
 
 };</pre>
-<p>As expected, the visitor is applied to two <tt class="computeroutput">variant</tt>
-    arguments by means of <tt class="computeroutput">apply_visitor</tt>:
+<p>As expected, the visitor is applied to two <code class="computeroutput">variant</code>
+    arguments by means of <code class="computeroutput">apply_visitor</code>:
 
 </p>
-<pre class="programlisting"><a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt; int, std::string &gt; v1( "hello" );
+<pre class="programlisting"><code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt; int, std::string &gt; v1( "hello" );
 
-<a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt; double, std::string &gt; v2( "hello" );
-assert( <a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>(are_strict_equals(), v1, v2) );
+<code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt; double, std::string &gt; v2( "hello" );
+assert( <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>(are_strict_equals(), v1, v2) );
 
-<a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt; int, const char * &gt; v3( "hello" );
-assert( !<a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>(are_strict_equals(), v1, v3) );</pre>
+<code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt; int, const char * &gt; v3( "hello" );
+assert( !<code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>(are_strict_equals(), v1, v3) );</pre>
 <p>Finally, we must note that the function object returned from the
     "delayed" form of
-    <tt class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">apply_visitor</a></tt> also supports
+    <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">apply_visitor</a></code> also supports
     binary visitation, as the following demonstrates:
 
 </p>
-<pre class="programlisting">typedef <a href="../boost/variant.html" title="Class template variant">boost::variant</a>&lt;double, std::string&gt; my_variant;
+<pre class="programlisting">typedef <code class="computeroutput"><a href="../boost/variant.html" title="Class template variant">boost::variant</a></code>&lt;double, std::string&gt; my_variant;
 
 std::vector&lt; my_variant &gt; seq1;
 seq1.push_back("pi is close to ");
@@ -517,7 +517,7 @@ seq2.push_back(3.14);
 are_strict_equals visitor;
 assert( std::equal(
       v1.begin(), v1.end(), v2.begin()
-    , <a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a>( visitor )
+    , <code class="computeroutput"><a href="../apply_visitor.html" title="Function apply_visitor">boost::apply_visitor</a></code>( visitor )
     ) );</pre>
 </div>
 </div>

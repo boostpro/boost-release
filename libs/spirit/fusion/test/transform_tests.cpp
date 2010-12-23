@@ -5,7 +5,7 @@
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#include <boost/test/minimal.hpp>
+#include <boost/detail/lightweight_test.hpp>
 #include <boost/spirit/fusion/sequence/tuple.hpp>
 #include <boost/spirit/fusion/sequence/io.hpp>
 #include <boost/spirit/fusion/sequence/make_tuple.hpp>
@@ -18,11 +18,15 @@
 
 #include <boost/spirit/fusion/sequence/generate.hpp>
 
+#include <boost/type_traits/is_reference.hpp>
+
 struct square
 {
+    
     template <typename T>
     struct apply
     {
+        BOOST_STATIC_ASSERT(!boost::is_reference<T>::value);
         typedef int type;
     };
 
@@ -34,7 +38,7 @@ struct square
 };
 
 int
-test_main(int, char*[])
+main()
 {
     using namespace boost::fusion;
     using boost::mpl::range_c;
@@ -59,7 +63,13 @@ test_main(int, char*[])
         std::cout << transform(mpl_list1(), square()) << std::endl;
         BOOST_TEST((transform(mpl_list1(), square()) == make_tuple(25, 36, 49, 64)));
     }
+    
+    {
+        tuple<int, int, int> tup(1, 2, 3);
+        std::cout << transform(tup, square()) << std::endl;
+        BOOST_TEST((transform(tup, square()) == make_tuple(1, 4, 9)));
+    }
 
-    return 0;
+    return boost::report_errors();
 }
 

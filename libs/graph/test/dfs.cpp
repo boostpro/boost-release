@@ -2,29 +2,13 @@
 // Copyright 2001 University of Notre Dame.
 // Author: Jeremy G. Siek
 //
-// This file is part of the Boost Graph Library
-//
-// You should have received a copy of the License Agreement for the
-// Boost Graph Library along with the software; see the file LICENSE.
-// If not, contact Office of Research, University of Notre Dame, Notre
-// Dame, IN 46556.
-//
-// Permission to modify the code and to distribute modified code is
-// granted, provided the text of this NOTICE is retained, a notice that
-// the code was modified is included with the above COPYRIGHT NOTICE and
-// with the COPYRIGHT NOTICE in the LICENSE file, and that the LICENSE
-// file is distributed with the modified code.
-//
-// LICENSOR MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.
-// By way of example, but not limitation, Licensor MAKES NO
-// REPRESENTATIONS OR WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY
-// PARTICULAR PURPOSE OR THAT THE USE OF THE LICENSED SOFTWARE COMPONENTS
-// OR DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS
-// OR OTHER RIGHTS.
+// Distributed under the Boost Software License, Version 1.0. (See
+// accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 
 #include <boost/config.hpp>
-#include <boost/test/test_tools.hpp>
+#include <boost/test/minimal.hpp>
 #include <stdlib.h>
 
 #include <boost/graph/depth_first_search.hpp>
@@ -43,52 +27,52 @@ class dfs_test_visitor {
 public:
   dfs_test_visitor(ColorMap color, ParentMap p, DiscoverTimeMap d,
                    FinishTimeMap f)
-    : m_color(color), m_parent(p), 
+    : m_color(color), m_parent(p),
     m_discover_time(d), m_finish_time(f), m_time(0) { }
-  
+
   template <class Vertex, class Graph>
   void initialize_vertex(Vertex u, Graph& g) {
-    BOOST_TEST( boost::get(m_color, u) == Color::white() );
+    BOOST_CHECK( boost::get(m_color, u) == Color::white() );
   }
   template <class Vertex, class Graph>
   void start_vertex(Vertex u, Graph& g) {
-    BOOST_TEST( boost::get(m_color, u) == Color::white() );
+    BOOST_CHECK( boost::get(m_color, u) == Color::white() );
   }
   template <class Vertex, class Graph>
   void discover_vertex(Vertex u, Graph& g) {
     using namespace boost;
-    BOOST_TEST( get(m_color, u) == Color::gray() );
-    BOOST_TEST( get(m_color, get(m_parent, u)) == Color::gray() );
+    BOOST_CHECK( get(m_color, u) == Color::gray() );
+    BOOST_CHECK( get(m_color, get(m_parent, u)) == Color::gray() );
 
     put(m_discover_time, u, m_time++);
   }
   template <class Edge, class Graph>
   void examine_edge(Edge e, Graph& g) {
     using namespace boost;
-    BOOST_TEST( get(m_color, source(e, g)) == Color::gray() );
+    BOOST_CHECK( get(m_color, source(e, g)) == Color::gray() );
   }
   template <class Edge, class Graph>
   void tree_edge(Edge e, Graph& g) {
     using namespace boost;
-    BOOST_TEST( get(m_color, target(e, g)) == Color::white() );
-    
+    BOOST_CHECK( get(m_color, target(e, g)) == Color::white() );
+
     put(m_parent, target(e, g), source(e, g));
   }
   template <class Edge, class Graph>
   void back_edge(Edge e, Graph& g) {
     using namespace boost;
-    BOOST_TEST( get(m_color, target(e, g)) == Color::gray() );
+    BOOST_CHECK( get(m_color, target(e, g)) == Color::gray() );
   }
   template <class Edge, class Graph>
   void forward_or_cross_edge(Edge e, Graph& g) {
     using namespace boost;
-    BOOST_TEST( get(m_color, target(e, g)) == Color::black() );
+    BOOST_CHECK( get(m_color, target(e, g)) == Color::black() );
   }
   template <class Vertex, class Graph>
   void finish_vertex(Vertex u, Graph& g) {
     using namespace boost;
-    BOOST_TEST( get(m_color, u) == Color::black() );
-    
+    BOOST_CHECK( get(m_color, u) == Color::black() );
+
     put(m_finish_time, u, m_time++);
   }
 private:
@@ -109,7 +93,7 @@ struct dfs_test
   static void go(vertices_size_type max_V) {
     using namespace boost;
     typedef typename Traits::vertex_descriptor vertex_descriptor;
-    typedef typename boost::property_map<Graph, 
+    typedef typename boost::property_map<Graph,
       boost::vertex_color_t>::type ColorMap;
     typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef typename boost::color_traits<ColorValue> Color;
@@ -133,14 +117,14 @@ struct dfs_test
           finish_time(num_vertices(g));
 
         dfs_test_visitor<ColorMap, vertex_descriptor*,
-          int*, int*> vis(color, &parent[0], 
+          int*, int*> vis(color, &parent[0],
                           &discover_time[0], &finish_time[0]);
 
         boost::depth_first_search(g, visitor(vis).color_map(color));
 
         // all vertices should be black
         for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
-          BOOST_TEST(get(color, *vi) == Color::black());
+          BOOST_CHECK(get(color, *vi) == Color::black());
 
         // check parenthesis structure of discover/finish times
         // See CLR p.480
@@ -148,7 +132,7 @@ struct dfs_test
           for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
             vertex_descriptor u = *ui, v = *vi;
             if (u != v) {
-              BOOST_TEST( finish_time[u] < discover_time[v]
+              BOOST_CHECK( finish_time[u] < discover_time[v]
                           || finish_time[v] < discover_time[u]
                           || (discover_time[v] < discover_time[u]
                                && finish_time[u] < finish_time[v]
@@ -175,7 +159,7 @@ int test_main(int argc, char* argv[])
 
   // Test directed graphs.
   dfs_test< boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS,
-           boost::property<boost::vertex_color_t, boost::default_color_type> > 
+           boost::property<boost::vertex_color_t, boost::default_color_type> >
     >::go(max_V);
   // Test undirected graphs.
   dfs_test< boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,

@@ -18,13 +18,15 @@ namespace std{
 }
 #endif
 
+#include <boost/archive/archive_exception.hpp>
+#include "test_tools.hpp"
+#include <boost/preprocessor/stringize.hpp>
+#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
+
 #include <boost/serialization/list.hpp>
 #ifdef BOOST_HAS_SLIST
 #include <boost/serialization/slist.hpp>
 #endif
-
-#include <boost/archive/archive_exception.hpp>
-#include "test_tools.hpp"
 
 #include "A.hpp"
 
@@ -68,7 +70,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     
     #endif
     std::remove(testfile);
-    return boost::exit_success;
+    return EXIT_SUCCESS;
 }
 
 // EOF

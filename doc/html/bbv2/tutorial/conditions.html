@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Conditions and alternatives</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <style type="text/css">
 body { background-image: url('http://docbook.sourceforge.net/release/images/draft.png');
        background-repeat: no-repeat;
@@ -14,7 +14,7 @@ body { background-image: url('http://docbook.sourceforge.net/release/images/draf
        /* background-position: center center; */
      }</style>
 <link rel="start" href="../../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../tutorial.html" title="Chapter 20. Tutorial">
+<link rel="up" href="../tutorial.html" title="Chapter 23. Tutorial">
 <link rel="prev" href="linkage.html" title="Static and shared libaries">
 <link rel="next" href="prebuilt.html" title="Prebuilt targets">
 </head>
@@ -34,42 +34,46 @@ body { background-image: url('http://docbook.sourceforge.net/release/images/draf
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bbv2.tutorial.conditions"></a>Conditions and alternatives</h2></div></div></div>
-<p>As we've just figured out, properties can significally affect the
-      way targets are built. The processing of the &lt;link&gt; feature is
-      built in the build system, and is quite complex. But there is a couple
-      of mechanisms which allow ordinary users to do different things 
-      depending on properties.
+<p>Sometimes, particular relationships need to be maintained
+    among a target's build properties. This can be achieved with 
+    <em class="firstterm">conditional
+    requirement</em>. For example, you might want to set
+    specific <code class="computeroutput">#defines</code> when a library is built as shared,
+    or when a target's <code class="computeroutput">release</code> variant is built in
+    release mode.
     </p>
-<p>The first mechanism is called <i class="firstterm">conditinal
-        requirement</i>. For example, you might want to set specific
-      defines when the library is build as shared, or you have your own define
-      to be used in release mode. Here's a piece of Jamfile.
-</p>
 <pre class="programlisting">
 lib network : network.cpp 
-    : &lt;link&gt;shared:&lt;define&gt;NEWORK_LIB_SHARED 
-      &lt;variant&gt;release:&lt;define&gt;EXTRA_FAST
+    : <span class="bold"><strong>&lt;link&gt;shared:&lt;define&gt;NEWORK_LIB_SHARED</strong></span>
+     &lt;variant&gt;release:&lt;define&gt;EXTRA_FAST
     ;
 </pre>
 <p>
-      This will have exactly the effect we wanted: whenever &lt;link&gt;shared
-      is in properties, &lt;define&gt;NEWORK_LIB_SHARED will be in properties
-      as well.
+
+      In the example above, whenever <code class="filename">network</code> is
+      built with <code class="computeroutput">&lt;link&gt;shared</code>,
+      <code class="computeroutput">&lt;define&gt;NEWORK_LIB_SHARED</code> will be in its
+      properties, too.
     </p>
 <p>
-      Sometimes different variant of a target are so different, that
-      describing them using conditional requirements would be hard. Imagine
-      that a library has different sources on two supported toolsets, and
-      dummy implementation for all the other toolset. We can express this
-      situation using <i class="firstterm">target alternatives</i>:
+      Sometimes the ways a target is built are so different that
+      describing them using conditional requirements would be
+      hard. For example, imagine that a library actually uses
+      different source files depending on the toolset used to build
+      it. We can express this situation using <em class="firstterm">target
+      alternatives</em>:
 </p>
 <pre class="programlisting">
-lib demangler : dummy_demangler.cpp ;
-lib demangler : demangler_gcc.cpp : &lt;toolset&gt;gcc ;
-lib demangler : demangler_msvc.cpp : &lt;toolset&gt;msvc ;
+lib demangler : dummy_demangler.cpp ;                      # alternative 1
+lib demangler : demangler_gcc.cpp : &lt;toolset&gt;gcc ;   # alternative 2
+lib demangler : demangler_msvc.cpp : &lt;toolset&gt;msvc ; # alternative 3
 </pre>
 <p>
-      The proper alternative will be automatically selected. 
+        In the example above, when built with <code class="literal">gcc</code>
+        or <code class="literal">msvc</code>, <code class="filename">demangler</code>
+        will use a source file specific to the toolset.  Otherwise, it
+        will use a generic source file,
+        <code class="filename">dummy_demangler.cpp</code>.
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

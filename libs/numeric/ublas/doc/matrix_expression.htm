@@ -10,16 +10,14 @@
 <title>Matrix Expressions</title>
 </head>
 <body>
-<h1><img src="../../../../boost.png" alt="boost.png" align="middle" />
+<h1><img src="../../../../boost.png" align="middle" />
 Matrix Expressions</h1>
-<h2><a name="matrix_expression" id="matrix_expression"></a> Matrix
-Expression</h2>
+<h2><a name="matrix_expression" id="matrix_expression"></a>Matrix Expression</h2>
 <h4>Description</h4>
 <p>The templated class <code>matrix_expression&lt;E&gt;</code>
-forms the base for all static derived matrix expression classes
-including class <code>matrix</code> itself.</p>
+is required to be a public base of all classes which model the Matrix Expression concept.</p>
 <h4>Definition</h4>
-<p>Defined in the header matrix_expression.hpp.</p>
+<p>Defined in the header expression_types.hpp.</p>
 <h4>Template parameters</h4>
 <table border="1" summary="parameters">
 <tbody>
@@ -36,7 +34,8 @@ including class <code>matrix</code> itself.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p>None.</p>
+<p>None. <u>Not a Matrix Expression</u>!
+</p>
 <h4>Type requirements</h4>
 <p>None.</p>
 <h4>Public base classes</h4>
@@ -59,14 +58,15 @@ const</code></td>
 </tr>
 </tbody>
 </table>
-<h2><a name="matrix_references" id="matrix_references"></a> Matrix
-References</h2>
-<h3>Constant Reference</h3>
+<h4>Notes</h4>
+<p>The <code>operator[]</code>, <code>row</code>, <code>column</code>, <code>range</code>, <code>slice</code> and <code>project</code> functions have been removed. Use the free functions defined in <a href="matrix_proxy.htm">matrix proxy</a> instead.</p>
+<h2><a name="matrix_container" id="matrix_container"></a>Matrix Container</h2>
 <h4>Description</h4>
-<p>The templated class <code>matrix_const_reference&lt;E&gt;</code>
-contains a constant reference to a matrix expression.</p>
+<p>The templated class <code>matrix_container&lt;C&gt;</code>
+is required to be a public base of all classes which model the Matrix concept.
+This includes the class <code>matrix</code> itself.</p>
 <h4>Definition</h4>
-<p>Defined in the header matrix_expression.hpp.</p>
+<p>Defined in the header expression_types.hpp.</p>
 <h4>Template parameters</h4>
 <table border="1" summary="parameters">
 <tbody>
@@ -83,14 +83,12 @@ contains a constant reference to a matrix expression.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#matrix_expression">Matrix Expression</a>
-.</p>
+<p>None. <u>Not a Matrix Expression OR Matrix</u>!
+</p>
 <h4>Type requirements</h4>
-<p>None, except for those imposed by the requirements of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</p>
+<p>None.</p>
 <h4>Public base classes</h4>
-<p><code>matrix_expression&lt;matrix_const_reference&lt;E&gt;
-&gt;</code></p>
+<p><code>matrix_expression&lt;C&gt;</code></p>
 <h4>Members</h4>
 <table border="1" summary="members">
 <tbody>
@@ -99,66 +97,17 @@ contains a constant reference to a matrix expression.</p>
 <th>Description</th>
 </tr>
 <tr>
-<td><code>matrix_const_reference (const expression_type
-&amp;e)</code></td>
-<td>Constructs a constant reference of the expression.</td>
-</tr>
-<tr>
-<td><code>size_type size1 () const</code></td>
-<td>Returns the number of rows.</td>
-</tr>
-<tr>
-<td><code>size_type size2 () const</code></td>
-<td>Returns the number of columns.</td>
-</tr>
-<tr>
-<td><code>const_reference operator () (size_type i, size_type j)
+<td><code>const container_type &amp;operator () ()
 const</code></td>
-<td>Returns the value of the <code>j</code>-th element in the
-<code>i</code>-th row.</td>
+<td>Returns a <code>const</code> reference of the container.</td>
 </tr>
 <tr>
-<td><code>const_iterator1 begin1 () const</code></td>
-<td>Returns a <code>const_iterator1</code> pointing to the
-beginning of the expression.</td>
-</tr>
-<tr>
-<td><code>const_iterator1 end1 () const</code></td>
-<td>Returns a <code>const_iterator1</code> pointing to the end of
-the expression.</td>
-</tr>
-<tr>
-<td><code>const_iterator2 begin2 () const</code></td>
-<td>Returns a <code>const_iterator2</code> pointing to the
-beginning of the expression.</td>
-</tr>
-<tr>
-<td><code>const_iterator2 end2 () const</code></td>
-<td>Returns a <code>const_iterator2</code> pointing to the end of
-the expression.</td>
-</tr>
-<tr>
-<td><code>const_reverse_iterator1 rbegin1 () const</code></td>
-<td>Returns a <code>const_reverse_iterator1</code> pointing to the
-beginning of the reversed expression.</td>
-</tr>
-<tr>
-<td><code>const_reverse_iterator1 rend1 () const</code></td>
-<td>Returns a <code>const_reverse_iterator1</code> pointing to the
-end of the reversed expression.</td>
-</tr>
-<tr>
-<td><code>const_reverse_iterator2 rbegin2 () const</code></td>
-<td>Returns a <code>const_reverse_iterator2</code> pointing to the
-beginning of the reversed expression.</td>
-</tr>
-<tr>
-<td><code>const_reverse_iterator2 rend2 () const</code></td>
-<td>Returns a <code>const_reverse_iterator2</code> pointing to the
-end of the reversed expression.</td>
+<td><code>container_type &amp;operator () ()</code></td>
+<td>Returns a reference of the container.</td>
 </tr>
 </tbody>
 </table>
+<h2><a name="matrix_references" id="matrix_references"></a>Matrix References</h2>
 <h3>Reference</h3>
 <h4>Description</h4>
 <p>The templated class <code>matrix_reference&lt;E&gt;</code>
@@ -181,11 +130,11 @@ contains a reference to a matrix expression.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#matrix_expression">Matrix Expression</a>
+<p><a href="expression_concept.htm#matrix_expression">Matrix Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</p>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>matrix_expression&lt;matrix_reference&lt;E&gt;
 &gt;</code></p>
@@ -307,8 +256,7 @@ the reversed expression.</td>
 </tr>
 </tbody>
 </table>
-<h2><a name="matrix_operations" id="matrix_operations"></a> Matrix
-Operations</h2>
+<h2><a name="matrix_operations" id="matrix_operations"></a>Matrix Operations</h2>
 <h3>Unary Operation Description</h3>
 <h4>Description</h4>
 <p>The templated classes <code>matrix_unary1&lt;E, F&gt;</code> and
@@ -337,11 +285,11 @@ operations.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#matrix_expression">Matrix Expression</a>
+<p><a href="expression_concept.htm#matrix_expression">Matrix Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</p>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>matrix_expression&lt;matrix_unary1&lt;E, F&gt; &gt;</code>
 and <code>matrix_expression&lt;matrix_unary2&lt;E, F&gt;
@@ -475,7 +423,7 @@ conjugate of the transpose of a matrix expression.</p>
 <h4>Type requirements</h4>
 <ul>
 <li><code>E</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</li>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</li>
 </ul>
 <h4>Preconditions</h4>
 <p>None.</p>
@@ -533,11 +481,11 @@ describes a binary matrix operation.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#matrix_expression">Matrix Expression</a>
+<p><a href="expression_concept.htm#matrix_expression">Matrix Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</p>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>matrix_expression&lt;matrix_binary&lt;E1, E2, F&gt;
 &gt;</code>.</p>
@@ -642,9 +590,9 @@ matrix expressions.</p>
 <h4>Type requirements</h4>
 <ul>
 <li><code>E1</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</li>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</li>
 <li><code>E2</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</li>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</li>
 </ul>
 <h4>Preconditions</h4>
 <ul>
@@ -703,11 +651,11 @@ matrix.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#matrix_expression">Matrix Expression</a>
+<p><a href="expression_concept.htm#matrix_expression">Matrix Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</p>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>matrix_expression&lt;matrix_binary_scalar1&lt;E1, E2,
 F&gt; &gt;</code> and
@@ -830,9 +778,9 @@ with the reciprocal of the scalar.</p>
 <h4>Type requirements</h4>
 <ul>
 <li><code>T1/T2</code> is a model of <a href=
-"expression.htm#scalar_expression">Scalar Expression</a> .</li>
+"expression_concept.htm#scalar_expression">Scalar Expression</a> .</li>
 <li><code>E2/E1</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</li>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</li>
 </ul>
 <h4>Preconditions</h4>
 <p>None.</p>
@@ -854,8 +802,7 @@ int main () {
     std::cout &lt;&lt; m * 2.0 &lt;&lt; std::endl;
 }
 </pre>
-<h2><a name="matrix_vector_operations" id=
-"matrix_vector_operations"></a> Matrix Vector Operations</h2>
+<h2><a name="matrix_vector_operations" id="matrix_vector_operations"></a>Matrix Vector Operations</h2>
 <h3>Binary Operation Description</h3>
 <h4>Description</h4>
 <p>The templated classes <code>matrix_vector_binary1&lt;E1, E2,
@@ -889,11 +836,11 @@ F&gt;</code> describe binary matrix vector operations.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#vector_expression">Vector Expression</a>
+<p><a href="expression_concept.htm#vector_expression">Vector Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#vector_expression">Vector Expression</a> .</p>
+"expression_concept.htm#vector_expression">Vector Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>vector_expression&lt;matrix_vector_binary1&lt;E1, E2,
 F&gt; &gt;</code> and
@@ -1055,12 +1002,12 @@ precision product of the matrix and the vector expression.</p>
 <h4>Type requirements</h4>
 <ul>
 <li><code>E1</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> or
-<a href="expression.htm#vector_expression">Vector Expression</a>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> or
+<a href="expression_concept.htm#vector_expression">Vector Expression</a>
 .</li>
 <li><code>E2</code> is a model of <a href=
-"expression.htm#vector_expression">Vector Expression</a> or
-<a href="expression.htm#matrix_expression">Matrix Expression</a>
+"expression_concept.htm#vector_expression">Vector Expression</a> or
+<a href="expression_concept.htm#matrix_expression">Matrix Expression</a>
 .</li>
 </ul>
 <h4>Preconditions</h4>
@@ -1160,12 +1107,12 @@ int main () {
 <h4>Type requirements</h4>
 <ul>
 <li><code>E1</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> or
-<a href="expression.htm#vector_expression">Vector Expression</a>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> or
+<a href="expression_concept.htm#vector_expression">Vector Expression</a>
 .</li>
 <li><code>E2</code> is a model of <a href=
-"expression.htm#vector_expression">Vector Expression</a> or
-<a href="expression.htm#matrix_expression">Matrix Expression</a>
+"expression_concept.htm#vector_expression">Vector Expression</a> or
+<a href="expression_concept.htm#matrix_expression">Matrix Expression</a>
 .</li>
 </ul>
 <h4>Preconditions</h4>
@@ -1196,8 +1143,7 @@ int main () {
     std::cout &lt;&lt; solve (v, m, lower_tag ()) &lt;&lt; std::endl;
 }
 </pre>
-<h2><a name="matrix_matrix_operations" id=
-"matrix_matrix_operations"></a> Matrix Matrix Operations</h2>
+<h2><a name="matrix_matrix_operations" id="matrix_matrix_operations"></a>Matrix Matrix Operations</h2>
 <h3>Binary Operation Description</h3>
 <h4>Description</h4>
 <p>The templated class <code>matrix_matrix_binary&lt;E1, E2,
@@ -1230,11 +1176,11 @@ F&gt;</code> describes a binary matrix operation.</p>
 </tbody>
 </table>
 <h4>Model of</h4>
-<p><a href="expression.htm#matrix_expression">Matrix Expression</a>
+<p><a href="expression_concept.htm#matrix_expression">Matrix Expression</a>
 .</p>
 <h4>Type requirements</h4>
 <p>None, except for those imposed by the requirements of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</p>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</p>
 <h4>Public base classes</h4>
 <p><code>matrix_expression&lt;matrix_matrix_binary&lt;E1, E2, F&gt;
 &gt;</code> .</p>
@@ -1366,9 +1312,9 @@ product of the matrix expressions.</p>
 <h4>Type requirements</h4>
 <ul>
 <li><code>E1</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</li>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</li>
 <li><code>E2</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</li>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</li>
 </ul>
 <h4>Preconditions</h4>
 <ul>
@@ -1435,9 +1381,9 @@ int main () {
 <h4>Type requirements</h4>
 <ul>
 <li><code>E1</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</li>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</li>
 <li><code>E2</code> is a model of <a href=
-"expression.htm#matrix_expression">Matrix Expression</a> .</li>
+"expression_concept.htm#matrix_expression">Matrix Expression</a> .</li>
 </ul>
 <h4>Preconditions</h4>
 <ul>
@@ -1468,6 +1414,5 @@ is granted provided this copyright notice appears in all copies.
 This document is provided ``as is'' without express or implied
 warranty, and with no claim as to its suitability for any
 purpose.</p>
-<p>Last revised: 1/15/2003</p>
 </body>
 </html>

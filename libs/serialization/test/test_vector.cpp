@@ -19,6 +19,8 @@ namespace std{
 #endif
 
 #include "test_tools.hpp"
+#include <boost/preprocessor/stringize.hpp>
+#include BOOST_PP_STRINGIZE(BOOST_ARCHIVE_TEST)
 
 #include <boost/serialization/vector.hpp>
 
@@ -46,7 +48,7 @@ int test_main( int /* argc */, char* /* argv */[] )
     }
     BOOST_CHECK(avector == avector1);
     std::remove(testfile);
-    return boost::exit_success;
+    return EXIT_SUCCESS;
 }
 
 // EOF

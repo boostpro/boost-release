@@ -12,8 +12,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/set/aux_/item.hpp,v $
-// $Date: 2004/10/13 18:23:37 $
-// $Revision: 1.6 $
+// $Date: 2005/06/18 22:03:09 $
+// $Revision: 1.7 $
 
 #include <boost/mpl/long.hpp>
 #include <boost/mpl/void.hpp>
@@ -29,6 +29,7 @@ template< typename T, typename Base >
 struct s_item
     : Base
 {
+    typedef s_item<T,Base> item_;
     typedef void_       last_masked_;
     typedef Base        next_;
     typedef T           item_type_;
@@ -53,6 +54,7 @@ template< typename T, typename Base >
 struct s_mask
     : Base
 {
+    typedef s_mask<T,Base> item_;
     typedef T       last_masked_;
     typedef void_   item_type_;
     typedef Base    base;
@@ -66,6 +68,7 @@ template< typename T, typename Base >
 struct s_unmask
     : Base
 {
+    typedef s_unmask<T,Base> item_;
     typedef void_   last_masked_;
     typedef T       item_type_;
     typedef Base    base;

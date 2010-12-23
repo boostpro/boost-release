@@ -10,9 +10,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/boost/mpl/Attic/deque.hpp,v $
-// $Date: 2004/11/10 21:06:20 $
-// $Revision: 1.1.2.1 $
+// $Source: /cvsroot/boost/boost/boost/mpl/deque.hpp,v $
+// $Date: 2004/11/28 01:53:40 $
+// $Revision: 1.2 $
 
 #if !defined(BOOST_MPL_PREPROCESSING_MODE)
 #   include <boost/mpl/limits/vector.hpp>

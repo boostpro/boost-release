@@ -125,17 +125,17 @@ class abstract-target
         return $(location)/$(self.name) ;
     }
         
-    # Takes properties in split form ("<feature1>foo <feature2>bar").
-    # Generates virtual targets for this abstract target, using the specified properties,
-    # unless a different value of some feature is required by the target. The properties
-    # on returned virtual targets should be link-compatible with the requested ones.
-    #
-    # On success, returns: 
-    # - a property-set with the usage requirements to be applied to dependents
-    # - a list of produced virtual targets, which may be empty.
-    #
-    # If 'properties' are empty, performs default build of this target, in a way specific
-    # to derived class.
+    # Takes a property set.  Generates virtual targets for this abstract
+    # target, using the specified properties, unless a different value of some
+    # feature is required by the target. 
+    # On
+    # success, returns: 
+    # - a property-set with the usage requirements to be
+    #   applied to dependents 
+    # - a list of produced virtual targets, which may be
+    #    empty.  
+    # If 'property-set' are empty, performs default build of this
+    # target, in a way specific to derived class.
     rule generate ( property-set )
     {
         errors.error "method should be defined in derived classes" ;
@@ -145,6 +145,27 @@ class abstract-target
     {
         self.name = $(new-name) ;
     }        
+}
+
+if --debug-building in [ modules.peek : ARGV ]            
+{
+    modules.poke : .debug-building : true ;
+}
+
+
+rule indent ( )
+{
+    return $(.indent:J="") ;
+}
+
+rule increase-indent ( )
+{
+    .indent += "    " ;
+}
+
+rule decrease-indent ( )
+{
+    .indent = $(.indent[2-]) ;
 }
 
 #  Project target class (derived from 'abstract-target')
@@ -170,13 +191,20 @@ class project-target : abstract-target
     import "class" : new ;
     import errors ;
         
-    rule __init__ ( name : project-module : requirements * : default-build * )
+    rule __init__ ( name : project-module parent-project ?
+        : requirements * : default-build * )
     {    
         abstract-target.__init__ $(name) : $(__name__) ;
         
         self.project-module = $(project-module) ;
+        self.location = [ project.attribute $(project-module) location ] ;
         self.requirements = $(requirements) ;
         self.default-build = $(default-build) ;
+                        
+        if $(parent-project)
+        {            
+            inherit $(parent-project) ;
+        }        
     }
 
     # This is needed only by the 'make' rule. Need to find the
@@ -190,20 +218,42 @@ class project-target : abstract-target
     {
         return [ project.attribute $(self.project-module) $(attribute) ] ;
     }
-    
+
+    rule build-dir ( )
+    {
+        if ! $(self.build-dir)
+        {            
+            self.build-dir = [ get build-dir ] ;
+            if ! $(self.build-dir)
+            {
+                self.build-dir = [ path.join 
+                    [ $(self.project).get location ]
+                      bin
+                ] ;
+            }
+        }
+        return $(self.build-dir) ;
+    }        
     
     # Generates all possible targets contained in this project.
     rule generate ( property-set * )
     {
+        if [ modules.peek : .debug-building ] 
+        {
+            ECHO [ targets.indent ] "building project" [ name ] " ('$(__name__)') with" [ $(property-set).raw ] ;
+            targets.increase-indent ;
+        }
+                
         local usage-requirements = [ property-set.empty ] ;
         local targets ;
-        
+                
         for local t in [ targets-to-build ] 
         {
             local g = [ $(t).generate $(property-set) ] ;
             usage-requirements = [ $(usage-requirements).add $(g[1]) ] ;
             targets += $(g[2-]) ;
         }
+        targets.decrease-indent ;
         return $(usage-requirements) [ sequence.unique $(targets) ] ;        
     }
         
@@ -283,6 +333,100 @@ class project-target : abstract-target
             return true ;
         } 
     }
+
+    # Find and return the target with the specified id, treated
+    # relative to self.
+    rule find-really ( id )
+    {
+        local result ;    
+        local project = $(self.project) ;
+        local current-location = [ get location ] ;
+        
+        local split = [ MATCH (.*)//(.*) : $(id) ] ;        
+        local project-part = $(split[1]) ;
+        local target-part = $(split[2]) ;
+
+        local extra-error-message ;
+        if $(project-part)
+        {
+            # There's explicit project part in id. Looks up the
+            # project and pass the request to it.
+            local pm = [ project.find $(project-part) : $(current-location) ] ;
+            if $(pm)
+            {
+                project-target = [ project.target $(pm) ] ;                
+                result = [ $(project-target).find $(target-part) : no-error ] ;
+            }                      
+            else
+            {
+                extra-error-message = "error: could not find project '$(project-part)'" ;
+            }            
+        }
+        else
+        {   
+            # Interpret as filename            
+            result = [ new file-reference [ path.make $(id) ] : $(project) ] ;
+ 
+            if ! [ $(result).exists ]
+            {
+                # File actually does not exist.
+                # Reset 'target' so that an error is issued.
+                result = ;
+            }            
+            
+            # Interpret target-name as name of main target
+            if ! $(result)
+            {
+                result = [ main-target $(id) ] ;
+            }
+            
+            # Interpret id as project-id
+            if ! $(result)
+            {                
+                local project-module = [ project.find $(id) : $(current-location) ] ;
+                if $(project-module)
+                {
+                    result = [ project.target $(project-module) ] ;
+                }                                
+            }            
+        }
+                
+        return $(result) ;
+    }
+    
+    rule find ( id : no-error ? )
+    {
+        local v = $(.id.$(id)) ;
+        if ! $(v)
+        {
+            v = [ find-really $(id) ] ;
+            if ! $(v)
+            {
+                v = none ;
+            }
+            .id.$(id) = $(v) ;
+        }
+        
+        if $(v) != none
+        {
+            return $(v) ;
+        }        
+        else
+        {
+            if ! $(no-error)
+            {
+                local current-location = [ get location ] ;
+                ECHO "error: Unable to find file or target named" ;
+                ECHO "error:     '$(id)'" ;
+                ECHO "error: referred from project at" ;
+                ECHO "error:     '$(current-location)'" ;
+                ECHO $(extra-error-message) ;
+                EXIT ;
+            }            
+        }        
+    }
+    
+
     
     rule build-main-targets ( )
     {
@@ -302,6 +446,73 @@ class project-target : abstract-target
             $(target).add-alternative $(a) ;            
         }    
     }                            
+    
+    # Accessor, add a constant.
+    rule add-constant (
+        name # Variable name of the constant.
+        : value + # Value of the constant.
+        : type ? # Optional type of value.
+        )
+    {
+        switch $(type)
+        {
+            case path :
+              local r ;
+              for local v in $(value)
+              {                  
+                v = [ path.root [ path.make $(v) ] $(self.location) ] ;
+                # Now make the value absolute path
+                v = [ path.root $(v) [ path.pwd ] ] ;
+                # Constants should be in platform-native form
+                v = [ path.native $(v) ] ;
+                r += $(v) ;
+              }                  
+              value = $(r) ;
+        }
+        if ! $(name) in $(self.constants)
+        {
+            self.constants += $(name) ;
+        }
+        self.constant.$(name) = $(value) ;
+        # Inject the constant in the scope of project-root module
+        modules.poke $(self.project-module) : $(name) : $(value) ;
+    }
+    
+    rule inherit ( parent )
+    {
+        for local c in [ modules.peek $(parent) : self.constants ] 
+        {
+            # No need to pass the type. Path constants were converted to
+            # absolute paths already by parent.
+            add-constant $(c) 
+              : [ modules.peek $(parent) : self.constant.$(c) ] ;
+        }       
+
+        # Import rules from parent 
+        local this-module = [ project-module ] ;
+        local parent-module = [ $(parent).project-module ] ;
+        # Don't import rules which comes from 'project-rules', they
+        # must be imported localized.
+        local user-rules = [ set.difference 
+            [ RULENAMES $(parent-module) ] :
+            [ RULENAMES project-rules ] ] ;
+        IMPORT $(parent-module) : $(user-rules) : $(this-module) : $(user-rules) ;
+        EXPORT $(this-module) : $(user-rules) ;
+    }
+    
+    
+    # Intern the constants from this project into the specified module.
+    #
+    rule intern-constants (
+        target-module # The module to intern into.
+        )
+    {
+        for local c in $(self.constants)
+        {
+            modules.poke $(target-module) : $(c) : $(self.constant.$(c)) ;
+        }
+    }
+
 }
 
 
@@ -579,23 +790,40 @@ class file-reference : abstract-target
     rule generate ( properties )
     {
          return [ property-set.empty ] 
-                [ virtual-target.from-file $(self.name) : $(self.project) ] ;        
+                [ virtual-target.from-file $(self.name)
+                                         : [ location ]
+                                         : $(self.project) ] ;        
     }    
 
     # Returns true if the referred file really exists;
     rule exists ( )
     {
-        local location = [ path.root $(self.name)
-          [ $(self.project).get source-location ] ] ;        
-        return [ path.exists [ path.native $(location) ] ] ;
-    }    
-    
+        location ;
+        return $(self.file-path) ;
+    }
+
     # Returns the location of target. Needed by 'testing.jam'
     rule location ( )
     {
-        return [ path.root $(self.name)
-          [ $(self.project).get source-location ] ] ;    
-    }    
+        if ! $(self.file-location)
+        {
+            local source-location = [ $(self.project).get source-location ] ;
+
+            for local src-dir in $(source-location)
+            {
+                if ! $(self.file-location)
+                {
+                    local location = [ path.root $(self.name) $(src-dir) ] ;
+                    if [ CHECK_IF_FILE [ path.native $(location) ] ]
+                    {
+                         self.file-location = $(src-dir) ;
+                         self.file-path = $(location) ;
+                    }
+                }
+            }
+        }
+        return $(self.file-location) ;
+    }
 }
 
 
@@ -604,90 +832,6 @@ if "--quiet" in [ modules.peek : ARGV ]
     .quiet = true ;
 }
 
-
-rule find ( id : project )
-{
-    local current-location = [ $(project).get location ] ;
-    local target ;    
-    
-    local split = [ MATCH (.*)//(.*) : $(id) ] ;
-    
-    local project-part = $(split[1]) ;
-    local target-part = $(split[2]) ;
-    if ! $(split)
-    {
-        target-part = $(id) ;
-    }
-        
-    # Make a more convenient name
-    local have-project-reference = $(split) ;
-    
-    # The project used for finding main targets and for providing base directory
-    # for file paths.
-    local base-project ;
-    if $(project-part) 
-    {
-        local pm = [ project.find $(project-part) : $(current-location) ] ;
-        # If we can't find a project, it means project part is invalid.
-        # Don't assign any value to base-project, the below code will eventually
-        # return empty result.
-        if $(pm)
-        {                  
-            base-project = [ project.target $(pm) ] ;
-        }        
-    }
-    else
-    {
-        # No project part in id. Resolve references relatively to the referring
-        # project.
-        base-project = $(project) ;
-    }
-    
-    
-    # Interpret target-part as project-id
-    if ! $(have-project-reference)
-    {   
-        local project-module = [ project.find $(target-part) : $(current-location) ] ;
-        if $(project-module)
-        {
-            target = [ project.target $(project-module) ] ;
-        }        
-    }
-    
-    # Interpret target-name as name of main target
-    if ! $(target) && $(base-project)
-    {
-        if [ $(base-project).has-main-target $(target-part) ] 
-        {
-            target = [ $(base-project).main-target $(target-part) ] ;
-        }
-    }
-    
-    if ! $(target) && ! $(have-project-reference)
-    {
-        target = [ new file-reference [ path.make $(target-part) ] : $(project) ] ;        
-        if ! [ $(target).exists ]
-        {
-            # File actually does not exist.
-            # Reset 'target' so that an error is issued.
-            target = ;
-        }                
-    }
-        
-    if ! $(target)
-    {
-        ECHO "error: Unable to find file or target named" ;
-        ECHO "error:     '$(id)'" ;
-        ECHO "error: referred from project at" ;
-        ECHO "error:     '$(current-location)'" ;
-        EXIT ;
-        
-        
-        errors.error "Unable to resolve target-id $(id)" : 
-          "Reference was made from project at '$(current-location)'" ;
-    }        
-    return $(target) ;
-}
 
 # Given a target-reference, made in context of 'project',
 # returns the abstract-target instance that is referred to, as well
@@ -705,16 +849,8 @@ rule resolve-reference ( target-reference : project )
     }
 
     # Find the target
-    local target = 
-      [ find $(id) :  $(project) ] ;
+    local target = [ $(project).find $(id) ] ;
     
-    # Do a sanity check
-    if $(sproperties) && [ class.is-a $(target) : file-reference ] 
-    {
-        errors.error 
-          "error: target reference '$(target-reference)' contains properties," :
-          "error: but refers to a file" ;
-    }
     return $(target) [ property-set.create $(sproperties) ] ;
 }
 
@@ -876,20 +1012,6 @@ class basic-target : abstract-target
         }
     }
     
-    # Returns the list of abstract-targets which are used as sources.
-    # The extra properties specified for sources are not represented.
-    rule sources ( )
-    {
-        if ! $(self.source-targets) {
-            for local s in $(self.sources)
-            {
-                self.source-targets += 
-                  [ targets.resolve-reference $(s) : $(self.project) ] ;
-            }            
-        }    
-        return $(self.source-targets) ;
-    }
-    
     rule requirements ( )
     {
         return $(self.requirements) ;
@@ -924,27 +1046,6 @@ class basic-target : abstract-target
             return no-match ;
         }        
     }
-
-    #
-    # Allows the user to tag the name of the target, according to properties.
-    #
-    rule tag-name ( name : property-set )
-    {
-        local properties = [ $(property-set).raw ] ;
-
-        local tagged-name = $(name) ;
-
-        if <tag> in $(properties:G)
-        {
-            local tags = [ $(property-set).get <tag> ] ;
-            for local tag in $(tags)
-            {
-                tagged-name = $(tagged-name)$(tag) ;
-            }
-        }
-
-        return $(tagged-name) ;
-    }
     
     # Takes a target reference, which might be either target id
     # or a dependency property, and generates that target using
@@ -963,7 +1064,6 @@ class basic-target : abstract-target
             local result = 
               [ targets.generate-from-reference $(id) : $(self.project) 
                 : $(property-set) ] ;
-            check-for-link-compatibility $(result[2-]) : $(property-set) ;
         
             $(result-var) += $(result[2-]:G=$(grist)) ;
             $(usage-requirements-var) += [ $(result[1]).raw ] ;
@@ -976,15 +1076,22 @@ class basic-target : abstract-target
     # overridden.
     rule generate ( property-set )
     {
-        if --debug-targets in [ modules.peek : ARGV ]
+        if [ modules.peek : .debug-building ] 
         {
-            ECHO "Building $(self.name) with" [ $(property-set).raw ] ;
+            ECHO [ targets.indent ] "Building target '$(self.name)'" ;
+            ECHO [ targets.indent ] "Build request: " [ $(property-set).raw ] ;
+            targets.increase-indent ;
         }
                 
         if ! $(self.generated.$(property-set)) 
         {           
             local rproperties = [ targets.common-properties $(property-set) 
-              $(self.requirements) ] ;            
+              $(self.requirements) ] ;           
+            
+            if [ modules.peek : .debug-building ] 
+            {
+                ECHO [ targets.indent ] "Common properties are" [ $(rproperties).raw ] ;
+            }
                         
             if $(rproperties[1]) != "@error"                    
             {
@@ -999,9 +1106,10 @@ class basic-target : abstract-target
                 generate-dependencies $(self.sources) : $(rproperties)
                   : source-targets usage-requirements ;
                 
-                if --debug-targets in [ modules.peek : ARGV ]
+                if [ modules.peek : .debug-building ] 
                 {
-                    ECHO "Usage requirements for $(self.name) are $(usage-requirements)" ;
+                    ECHO [ targets.indent ] 
+                      "Usage requirements for $(self.name) are $(usage-requirements)" ;
                 }
 
                 rproperties = [ property-set.create $(properties) 
@@ -1014,29 +1122,37 @@ class basic-target : abstract-target
                 # we link to two library which have the same <library> in
                 # usage requirements.
                 source-targets = [ sequence.unique $(source-targets) ] ;
-                                                
-                local tagged-name = [ tag-name $(self.name) : $(rproperties) ] ;
-
-                local original-name = $(self.name) ;
-                self.name = $(tagged-name) ;
-                
+                                                               
                 local result = 
-                  [ construct $(source-targets) : $(rproperties) ] ;
+                  [ construct $(self.name) : 
+                    $(source-targets) : $(rproperties) ] ;
+                
+                local gur = $(result[1]) ;
+                result = $(result[2-]) ;
 
                 local s = [ create-subvariant $(result) : $(property-set) : $(source-targets)
                   : $(rproperties) : $(usage-requirements) ] ;
 
                 local ur = [ compute-usage-requirements $(s) ] ;
+                ur = [ $(ur).add $(gur) ] ;
                 $(s).set-usage-requirements $(ur) ;
                 self.generated.$(property-set) = $(ur) $(result) ;
-
-                self.name = $(original-name) ;
             } 
             else
             {
                 self.generated.$(property-set) = $(rproperties) ;
             }       
         }                
+        else
+        {
+            if [ modules.peek : .debug-building ] 
+            {
+                ECHO [ targets.indent ] "Already built" ;
+            }            
+        }
+        
+        
+        targets.decrease-indent ;
         return $(self.generated.$(property-set)) ;
     }
 
@@ -1057,6 +1173,9 @@ class basic-target : abstract-target
                 
         local result = [ property-set.create
             [ $(xusage-requirements).non-dependency ] $(extra) ] ;
+        
+        result = [ $(result).add 
+          [ $(subvariant).sources-usage-requirements ] ] ;        
         
         return $(result) ;
     }
@@ -1086,41 +1205,11 @@ class basic-target : abstract-target
         }                        
         return $(s) ;
     }
-               
-    # Checks if 'targets' are link-compatible with 'build-request' and
-    # issues a warning if that's not the case.
-    local rule check-for-link-compatibility ( targets * : build-request )
-    {
-        local checked ;
-        for local t in $(targets)
-        {
-            local a = [ $(t).action ] ;
-            if $(a)
-            {
-                local p = [ $(a).properties ] ;
-                if ! $(p) in $(cheched)
-                {
-                    if [ $(p).link-incompatible-with $(build-request) ]
-                    {
-                        local s = [ $(t).creating-subvariant ] ;
-                        local other-mt = [ $(s).main-target ] ;
-                        ECHO "warning: targets produced from" [ $(other-mt).name ] 
-                            "are link incompatible" ;
-                        ECHO "warning: with main target" [ name ] ;
-                    }                    
-                }                
-                checked += $(p) ;
-            }            
-        }
-        
-    }
-    
-    
         
     # Constructs the virtual targets for this abstract targets and
     # the dependecy graph. Returns the list of virtual targets.
     # Should be overrided in derived classes.
-    rule construct ( source-targets * : properties * )
+    rule construct ( name : source-targets * : properties * )
     {
         errors.error "method should be defined in derived classes" ;
     }
@@ -1144,9 +1233,9 @@ class typed-target : basic-target
         return $(self.type) ;
     }
             
-    rule construct ( source-targets * : property-set )
+    rule construct ( name : source-targets * : property-set )
     {
-        local r = [ generators.construct $(self.project) $(self.name) : $(self.type) 
+        local r = [ generators.construct $(self.project) $(name) : $(self.type) 
           : [ property-set.create [ $(property-set).raw ] # [ feature.expand
               <main-target-type>$(self.type) ]
           # ]
@@ -1199,10 +1288,10 @@ rule main-target-requirements (
       )
 {
     local loc = [ $(project).get location ] ;
-    local requirements = [ property.translate-paths $(specification) : $(loc) ] ; 
-    local requirements = 
-      [ property.expand-subfeatures-in-conditions $(requirements) ] ;
-    local requirements = [ property-set.create $(requirements) ] ;
+    local jamfile-module = [ $(project).project-module ] ;
+    local requirements = [ property-set.create-from-user-input $(specification)
+      : $(jamfile-module) $(loc) ] ;
+    
     local project-requirements = [ $(project).get requirements ] ;
     requirements = [ $(project-requirements).refine $(requirements) ] ;    
     if $(requirements[1]) = "@error" 

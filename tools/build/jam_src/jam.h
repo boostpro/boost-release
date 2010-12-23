@@ -37,6 +37,14 @@
 
 #ifndef JAM_H_VP_2003_08_01
 #define JAM_H_VP_2003_08_01
+
+#ifdef HAVE_PYTHON
+#include <Python.h>
+#endif
+
+/* Assume popen support is available unless known otherwise. */
+#define HAVE_POPEN 1
+
 /*
  * VMS, OPENVMS
  */
@@ -110,6 +118,12 @@
 # define OSMINOR "OS=AS400"
 # define OS_AS400
 # endif
+
+/* Metrowerks Standard Library on Windows. */
+
+# ifdef __MSL__
+#undef HAVE_POPEN
+#endif
 
 # endif
 
@@ -325,6 +339,9 @@
 # define OS_MACOSX
 # endif
 # ifdef __osf__
+# ifndef unix
+# define unix
+# endif
 # define OSMINOR "OS=OSF"
 # define OS_OSF
 # endif

@@ -70,10 +70,10 @@ template <class T>
 void print_byte_order(const char* what, T /* t */ )
 {
    T val = 0;
-   T i;
+   unsigned i;
    for(i = 1; i < sizeof(T); ++i)
    {
-      val |= (CHAR_BIT * i) << (CHAR_BIT * i);
+      val |= (CHAR_BIT * static_cast<T>(i)) << (CHAR_BIT * static_cast<T>(i));
    }
    const char* p = reinterpret_cast<const char*>(&val);
 
@@ -143,6 +143,7 @@ void print_compiler_macros()
   PRINT_MACRO(_MFC_VER);
   PRINT_MACRO(_MSC_EXTENSIONS);
   PRINT_MACRO(_MSC_VER);
+  PRINT_MACRO(_MSC_FULL_VER);
   PRINT_MACRO(_MT);
   PRINT_MACRO(_NATIVE_WCHAR_T_DEFINED);
   // GNUC options:
@@ -279,6 +280,8 @@ void print_compiler_macros()
   PRINT_MACRO(__COMO__);
   PRINT_MACRO(__COMO_VERSION__);
   PRINT_MACRO(__DM__);
+  PRINT_MACRO(__osf__);
+  PRINT_MACRO(__OSF__);
 }
 
 void print_stdlib_macros()
@@ -924,6 +927,7 @@ void print_boost_macros()
    PRINT_MACRO(BOOST_NO_INT64_T);
    PRINT_MACRO(BOOST_NO_INTEGRAL_INT64_T);
    PRINT_MACRO(BOOST_NO_INTRINSIC_WCHAR_T);
+   PRINT_MACRO(BOOST_NO_IS_ABSTRACT);
    PRINT_MACRO(BOOST_NO_LIMITS);
    PRINT_MACRO(BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS);
    PRINT_MACRO(BOOST_NO_LONG_LONG_NUMERIC_LIMITS);

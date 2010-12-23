@@ -10,8 +10,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/vector/aux_/include_preprocessed.hpp,v $
-// $Date: 2004/11/10 23:38:15 $
-// $Revision: 1.3.2.1 $
+// $Date: 2004/11/28 01:52:12 $
+// $Revision: 1.4 $
 
 #include <boost/mpl/aux_/config/typeof.hpp>
 #include <boost/mpl/aux_/config/ctps.hpp>

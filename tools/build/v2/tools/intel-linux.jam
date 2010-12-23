@@ -12,11 +12,15 @@ import intel ;
 import gcc ;
 import common ;
 import errors ;
+import generators ;
 
 feature.extend-subfeature toolset intel : platform : linux ;
 
 toolset.inherit-generators intel-linux 
      <toolset>intel <toolset-intel:platform>linux : gcc ;
+generators.override builtin.lib-generator : intel-linux.prebuilt ;
+generators.override intel-linux.searched-lib-generator : searched-lib-generator ;
+
 toolset.inherit-rules intel-linux : gcc ;
 toolset.inherit-flags intel-linux : gcc 
         : <inlining>off <inlining>on <inlining>full <optimization>space ;
@@ -30,7 +34,7 @@ rule init ( version ? :  command * : options * )
     local condition = [ common.check-init-parameters intel-linux
         : version $(version) ] ;
     
-    command = [ common.get-invocation-command intel-linux : icc 
+    command = [ common.get-invocation-command intel-linux : icpc 
         : $(command) : /opt/intel_cc_80/bin ] ;
                 
     common.handle-options intel-linux : $(condition) : $(command) : $(options) ;
@@ -38,6 +42,8 @@ rule init ( version ? :  command * : options * )
     gcc.init-link-flags intel-linux gnu $(condition) ;
 
 }
+
+SPACE = " " ;
 
 flags intel-linux.compile OPTIONS <inlining>off : "-Ob0" ;
 flags intel-linux.compile OPTIONS <inlining>on : "-Ob1" ;

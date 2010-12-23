@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Concepts</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="../index.html" title="The Boost C++ Libraries">
-<link rel="up" href="../threads.html" title="Chapter 10. Boost.Threads">
+<link rel="up" href="../threads.html" title="Chapter 12. Boost.Threads">
 <link rel="prev" href="design.html" title="Design">
 <link rel="next" href="rationale.html" title="Rationale">
 </head>
@@ -29,7 +29,7 @@
 <dt><span class="section"><a href="concepts.html#threads.concepts.mutexes">Mutexes</a></span></dt>
 <dt><span class="section"><a href="concepts.html#threads.concepts.read-write-mutexes">Read/Write Mutexes</a></span></dt>
 </dl></div>
-<p><span class="bold"><b>Boost.Threads</b></span> currently supports two types of mutex concepts:
+<p> currently supports two types of mutex concepts:
 	ordinary <a href="concepts.html#threads.concepts.mutexes" title="Mutexes">Mutexes</a>,
 	which allow only one thread at a time to access a resource, and
 	<a href="concepts.html#threads.concepts.read-write-mutexes" title="Read/Write Mutexes">Read/Write Mutexes</a>,
@@ -60,9 +60,9 @@
 		<a href="concepts.html#threads.concepts.TryMutex" title="TryMutex Concept">TryMutex</a> and
 		<a href="concepts.html#threads.concepts.TimedMutex" title="TimedMutex Concept">TimedMutex</a> refinements,
 		formalize the requirements. A model that implements Mutex and its
-		refinements has two states: <span class="bold"><b>locked</b></span> and
-		<span class="bold"><b>unlocked</b></span>. Before using a shared resource, a
-		thread locks a <span class="bold"><b>Boost.Threads</b></span> mutex object
+		refinements has two states: <span class="bold"><strong>locked</strong></span> and
+		<span class="bold"><strong>unlocked</strong></span>. Before using a shared resource, a
+		thread locks a  mutex object
 		(an object whose type is a model of
 		<a href="concepts.html#threads.concepts.Mutex" title="Mutex Concept">Mutex</a> or one of it's
 		refinements), ensuring
@@ -79,15 +79,15 @@
 		properly when using these traditional API's. The result is
 		<a href="../threads.html#threads.glossary.deadlock">deadlock</a>.</p>
 <p>Many C++ threading libraries use a pattern known as <span class="emphasis"><em>Scoped
-		Locking</em></span>[<span class="citation"><a href="../threads.html#threads.bib.SchmidtStalRohnertBuschmann">SchmidtStalRohnertBuschmann</a></span>] to free the programmer from
+		Locking</em></span> to free the programmer from
 		the need to explicitly lock and unlock mutex objects. With this pattern, a
 		<a href="concepts.html#threads.concepts.lock-concepts" title="Lock Concepts">Lock</a> concept is employed where
 		the lock object's constructor locks the associated mutex object and the
 		destructor automatically does the unlocking. The
-		<span class="bold"><b>Boost.Threads</b></span> library takes this pattern to
+		 library takes this pattern to
 		the extreme in that Lock concepts are the only way to lock and unlock a
 		mutex object: lock and unlock functions are not exposed by any
-		<span class="bold"><b>Boost.Threads</b></span> mutex objects. This helps to
+		 mutex objects. This helps to
 		ensure safe usage patterns, especially when code throws exceptions.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
@@ -113,14 +113,14 @@
 <p>Internally a lock count is maintained and the owning thread must
 				unlock the mutex object the same number of times that it locked it before
 				the mutex object's state returns to unlocked. Since mutex objects in
-				<span class="bold"><b>Boost.Threads</b></span> expose locking
+				 expose locking
 				functionality only through lock concepts, a thread will always unlock a
 				mutex object the same number of times that it locked it. This helps to
 				eliminate a whole set of errors typically found in traditional C style
 				thread APIs.</p>
-<p>Classes <a href="../recursive_mutex.html" title="Class recursive_mutex">boost::recursive_mutex</a>,
-				<a href="../recursive_try_mutex.html" title="Class recursive_try_mutex">boost::recursive_try_mutex</a> and
-				<a href="../recursive_timed_mutex.html" title="Class recursive_timed_mutex">boost::recursive_timed_mutex</a> use this locking
+<p>Classes <code class="computeroutput"><a href="../recursive_mutex.html" title="Class recursive_mutex">boost::recursive_mutex</a></code>,
+				<code class="computeroutput"><a href="../recursive_try_mutex.html" title="Class recursive_try_mutex">boost::recursive_try_mutex</a></code> and
+				<code class="computeroutput"><a href="../recursive_timed_mutex.html" title="Class recursive_timed_mutex">boost::recursive_timed_mutex</a></code> use this locking
 				strategy.</p>
 </div>
 <div class="section" lang="en">
@@ -131,10 +131,10 @@
 				operation will fail with some sort of error indication. Further, attempts
 				by a thread to unlock a mutex object that was not locked by the thread
 				will also return some sort of error indication. In
-				<span class="bold"><b>Boost.Threads</b></span>, an exception of type
-				<a href="../lock_error.html" title="Class lock_error">boost::lock_error</a> 
+				, an exception of type
+				<code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code> 
 				would be thrown in these cases.</p>
-<p><span class="bold"><b>Boost.Threads</b></span> does not currently
+<p> does not currently
 				provide any mutex objects that use this strategy.</p>
 </div>
 <div class="section" lang="en">
@@ -146,7 +146,7 @@
 				<a href="../threads.html#threads.glossary.deadlock">deadlock</a>. In general
 				this locking strategy is less safe than a checked or recursive strategy,
 				but it's also a faster strategy and so is employed by many libraries.</p>
-<p><span class="bold"><b>Boost.Threads</b></span> does not currently
+<p> does not currently
 				provide any mutex objects that use this strategy.</p>
 </div>
 <div class="section" lang="en">
@@ -163,9 +163,9 @@
 				possible with no restrictions on its implementation. This is especially
 				true for portable implementations that wrap the native threading support
 				of a platform. For this reason, the classes
-				<a href="../mutex.html" title="Class mutex">boost::mutex</a>,
-				<a href="../try_mutex.html" title="Class try_mutex">boost::try_mutex</a> and
-				<a href="../timed_mutex.html" title="Class timed_mutex">boost::timed_mutex</a> use this locking strategy
+				<code class="computeroutput"><a href="../mutex.html" title="Class mutex">boost::mutex</a></code>,
+				<code class="computeroutput"><a href="../try_mutex.html" title="Class try_mutex">boost::try_mutex</a></code> and
+				<code class="computeroutput"><a href="../timed_mutex.html" title="Class timed_mutex">boost::timed_mutex</a></code> use this locking strategy
 				despite the lack of safety.</p>
 </div>
 </div>
@@ -204,7 +204,7 @@
 <div class="titlepage"><div><div><h6 class="title">
 <a name="threads.concepts.unspecified-scheduling-policy"></a>Unspecified Policy</h6></div></div></div>
 <p>The mutex object does not specify a scheduling policy. In order to
-				ensure portability, all <span class="bold"><b>Boost.Threads</b></span>
+				ensure portability, all 
 				mutex objects use an unspecified scheduling policy.</p>
 </div>
 </div>
@@ -226,12 +226,12 @@
 <p>A Mutex is
 				<a href="../../../libs/utility/utility.htm#Class%20noncopyable" target="_top">
 				NonCopyable</a>.</p>
-<p>For a Mutex type <tt class="computeroutput">M</tt>
-				and an object <tt class="computeroutput">m</tt> of that type, 
+<p>For a Mutex type <code class="computeroutput">M</code>
+				and an object <code class="computeroutput">m</code> of that type, 
 				the following expressions must be well-formed
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id617853"></a><p class="title"><b>Table 10.1. Mutex Expressions</b></p>
+<a name="id1358355"></a><p class="title"><b>Table 12.1. Mutex Expressions</b></p>
 <table class="table" summary="Mutex Expressions">
 <colgroup>
 <col>
@@ -269,12 +269,12 @@
 <a name="threads.concepts.TryMutex"></a>TryMutex Concept</h6></div></div></div>
 <p>A TryMutex is a refinement of
 				<a href="concepts.html#threads.concepts.Mutex" title="Mutex Concept">Mutex</a>. 
-				For a TryMutex type <tt class="computeroutput">M</tt>
-				and an object <tt class="computeroutput">m</tt> of that type, 
+				For a TryMutex type <code class="computeroutput">M</code>
+				and an object <code class="computeroutput">m</code> of that type, 
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id617938"></a><p class="title"><b>Table 10.2. TryMutex Expressions</b></p>
+<a name="id1358432"></a><p class="title"><b>Table 12.2. TryMutex Expressions</b></p>
 <table class="table" summary="TryMutex Expressions">
 <colgroup>
 <col>
@@ -298,12 +298,12 @@
 <a name="threads.concepts.TimedMutex"></a>TimedMutex Concept</h6></div></div></div>
 <p>A TimedMutex is a refinement of
 				<a href="concepts.html#threads.concepts.TryMutex" title="TryMutex Concept">TryMutex</a>. 
-				For a TimedMutex type <tt class="computeroutput">M</tt>
-				and an object <tt class="computeroutput">m</tt> of that type, 
+				For a TimedMutex type <code class="computeroutput">M</code>
+				and an object <code class="computeroutput">m</code> of that type, 
 				the following expressions must be well-formed
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id618007"></a><p class="title"><b>Table 10.3. TimedMutex Expressions</b></p>
+<a name="id1358492"></a><p class="title"><b>Table 12.3. TimedMutex Expressions</b></p>
 <table class="table" summary="TimedMutex Expressions">
 <colgroup>
 <col>
@@ -326,11 +326,11 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="threads.concepts.mutex-models"></a>Mutex Models</h5></div></div></div>
-<p><span class="bold"><b>Boost.Threads</b></span> currently supplies six models of
+<p> currently supplies six models of
 			<a href="concepts.html#threads.concepts.Mutex" title="Mutex Concept">Mutex</a>
 			and its refinements.</p>
 <div class="table">
-<a name="id618066"></a><p class="title"><b>Table 10.4. Mutex Models</b></p>
+<a name="id1358540"></a><p class="title"><b>Table 12.4. Mutex Models</b></p>
 <table class="table" summary="Mutex Models">
 <colgroup>
 <col>
@@ -347,24 +347,24 @@
 <td><a href="concepts.html#threads.concepts.Mutex" title="Mutex Concept">Mutex</a></td>
 <td> </td>
 <td>
-<p><a href="../mutex.html" title="Class mutex">boost::mutex</a></p>
-<p><a href="../recursive_mutex.html" title="Class recursive_mutex">boost::recursive_mutex</a></p>
+<p><code class="computeroutput"><a href="../mutex.html" title="Class mutex">boost::mutex</a></code></p>
+<p><code class="computeroutput"><a href="../recursive_mutex.html" title="Class recursive_mutex">boost::recursive_mutex</a></code></p>
 </td>
 </tr>
 <tr>
 <td><a href="concepts.html#threads.concepts.TryMutex" title="TryMutex Concept">TryMutex</a></td>
 <td><a href="concepts.html#threads.concepts.Mutex" title="Mutex Concept">Mutex</a></td>
 <td>
-<p><a href="../try_mutex.html" title="Class try_mutex">boost::try_mutex</a></p>
-<p><a href="../recursive_try_mutex.html" title="Class recursive_try_mutex">boost::recursive_try_mutex</a></p>
+<p><code class="computeroutput"><a href="../try_mutex.html" title="Class try_mutex">boost::try_mutex</a></code></p>
+<p><code class="computeroutput"><a href="../recursive_try_mutex.html" title="Class recursive_try_mutex">boost::recursive_try_mutex</a></code></p>
 </td>
 </tr>
 <tr>
 <td><a href="concepts.html#threads.concepts.TimedMutex" title="TimedMutex Concept">TimedMutex</a></td>
 <td><a href="concepts.html#threads.concepts.TryMutex" title="TryMutex Concept">TryMutex</a></td>
 <td>
-<p><a href="../timed_mutex.html" title="Class timed_mutex">boost::timed_mutex</a></p>
-<p><a href="../recursive_timed_mutex.html" title="Class recursive_timed_mutex">boost::recursive_timed_mutex</a></p>
+<p><code class="computeroutput"><a href="../timed_mutex.html" title="Class timed_mutex">boost::timed_mutex</a></code></p>
+<p><code class="computeroutput"><a href="../recursive_timed_mutex.html" title="Class recursive_timed_mutex">boost::recursive_timed_mutex</a></code></p>
 </td>
 </tr>
 </tbody>
@@ -385,7 +385,7 @@
 <p>A lock object provides a safe means for locking and unlocking a mutex
 			object (an object whose type is a model of <a href="concepts.html#threads.concepts.Mutex" title="Mutex Concept">Mutex</a> or one of its refinements). In
 			other words they are an implementation of the <span class="emphasis"><em>Scoped
-			Locking</em></span>[<span class="citation"><a href="../threads.html#threads.bib.SchmidtStalRohnertBuschmann">SchmidtStalRohnertBuschmann</a></span>] pattern. The <a href="concepts.html#threads.concepts.ScopedLock" title="ScopedLock Concept">ScopedLock</a>,
+			Locking</em></span> pattern. The <a href="concepts.html#threads.concepts.ScopedLock" title="ScopedLock Concept">ScopedLock</a>,
 			<a href="concepts.html#threads.concepts.ScopedTryLock" title="ScopedTryLock Concept">ScopedTryLock</a>, and 
 			<a href="concepts.html#threads.concepts.ScopedTimedLock" title="ScopedTimedLock Concept">ScopedTimedLock</a>
 			concepts formalize the requirements.</p>
@@ -402,13 +402,13 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="threads.concepts.Lock"></a>Lock Concept</h6></div></div></div>
-<p>For a Lock type <tt class="computeroutput">L</tt> 
-				and an object <tt class="computeroutput">lk</tt> 
-				and const object <tt class="computeroutput">clk</tt> of that type, 
+<p>For a Lock type <code class="computeroutput">L</code> 
+				and an object <code class="computeroutput">lk</code> 
+				and const object <code class="computeroutput">clk</code> of that type, 
 				the following expressions must be well-formed
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id618309"></a><p class="title"><b>Table 10.5. Lock Expressions</b></p>
+<a name="id1358762"></a><p class="title"><b>Table 12.5. Lock Expressions</b></p>
 <table class="table" summary="Lock Expressions">
 <colgroup>
 <col>
@@ -420,25 +420,25 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">(&amp;lk)-&gt;~L();</tt></td>
-<td><tt class="computeroutput">if (locked()) unlock();</tt></td>
+<td><code class="computeroutput">(&amp;lk)-&gt;~L();</code></td>
+<td><code class="computeroutput">if (locked()) unlock();</code></td>
 </tr>
 <tr>
-<td><tt class="computeroutput">(&amp;clk)-&gt;operator const void*()</tt></td>
+<td><code class="computeroutput">(&amp;clk)-&gt;operator const void*()</code></td>
 <td>Returns type void*, non-zero if the associated mutex
-								object has been locked by <tt class="computeroutput">clk</tt>, otherwise 0.</td>
+								object has been locked by <code class="computeroutput">clk</code>, otherwise 0.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">clk.locked()</tt></td>
-<td>Returns a <tt class="computeroutput">bool</tt>, <tt class="computeroutput">(&amp;clk)-&gt;operator
-								const void*() != 0</tt>
+<td><code class="computeroutput">clk.locked()</code></td>
+<td>Returns a <code class="computeroutput">bool</code>, <code class="computeroutput">(&amp;clk)-&gt;operator
+								const void*() != 0</code>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.lock()</tt></td>
+<td><code class="computeroutput">lk.lock()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
-									if <tt class="computeroutput">locked()</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
+									if <code class="computeroutput">locked()</code>.</p>
 <p>If the associated mutex object is
 									already locked by some other thread, places the current thread in the 
 									<a href="../threads.html#threads.glossary.thread-state">Blocked</a> state until
@@ -448,16 +448,16 @@
 									the associated mutex object is already locked by the same thread
 									the behavior is dependent on the <a href="concepts.html#threads.concepts.locking-strategies" title="Locking Strategies">locking
 									strategy</a> of the associated mutex object.</p>
-<p>Postcondition: <tt class="computeroutput">locked() == true</tt></p>
+<p>Postcondition: <code class="computeroutput">locked() == true</code></p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.unlock()</tt></td>
+<td><code class="computeroutput">lk.unlock()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
-									if <tt class="computeroutput">!locked()</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
+									if <code class="computeroutput">!locked()</code>.</p>
 <p>Unlocks the associated mutex.</p>
-<p>Postcondition: <tt class="computeroutput">!locked()</tt></p>
+<p>Postcondition: <code class="computeroutput">!locked()</code></p>
 </td>
 </tr>
 </tbody>
@@ -468,15 +468,15 @@
 <div class="titlepage"><div><div><h6 class="title">
 <a name="threads.concepts.ScopedLock"></a>ScopedLock Concept</h6></div></div></div>
 <p>A ScopedLock is a refinement of <a href="concepts.html#threads.concepts.Lock" title="Lock Concept">Lock</a>. 
-				For a ScopedLock type <tt class="computeroutput">L</tt> 
-				and an object <tt class="computeroutput">lk</tt> of that type, 
-				and an object <tt class="computeroutput">m</tt> of a type meeting the 
+				For a ScopedLock type <code class="computeroutput">L</code> 
+				and an object <code class="computeroutput">lk</code> of that type, 
+				and an object <code class="computeroutput">m</code> of a type meeting the 
 				<a href="concepts.html#threads.concepts.Mutex" title="Mutex Concept">Mutex</a> requirements, 
-				and an object <tt class="computeroutput">b</tt> of type <tt class="computeroutput">bool</tt>, 
+				and an object <code class="computeroutput">b</code> of type <code class="computeroutput">bool</code>, 
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id618565"></a><p class="title"><b>Table 10.6. ScopedLock Expressions</b></p>
+<a name="id1358999"></a><p class="title"><b>Table 12.6. ScopedLock Expressions</b></p>
 <table class="table" summary="ScopedLock Expressions">
 <colgroup>
 <col>
@@ -488,17 +488,17 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">L lk(m);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt>, and associates mutex
-								object <tt class="computeroutput">m</tt> with it, then calls
-								<tt class="computeroutput">lock()</tt>
+<td><code class="computeroutput">L lk(m);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code>, and associates mutex
+								object <code class="computeroutput">m</code> with it, then calls
+								<code class="computeroutput">lock()</code>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">L lk(m,b);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt>, and associates mutex
-								object <tt class="computeroutput">m</tt> with it, then if <tt class="computeroutput">b</tt>, calls
-								<tt class="computeroutput">lock()</tt>
+<td><code class="computeroutput">L lk(m,b);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code>, and associates mutex
+								object <code class="computeroutput">m</code> with it, then if <code class="computeroutput">b</code>, calls
+								<code class="computeroutput">lock()</code>
 </td>
 </tr>
 </tbody>
@@ -509,12 +509,12 @@
 <div class="titlepage"><div><div><h6 class="title">
 <a name="threads.concepts.TryLock"></a>TryLock Concept</h6></div></div></div>
 <p>A TryLock is a refinement of <a href="concepts.html#threads.concepts.Lock" title="Lock Concept">Lock</a>. 
-				For a TryLock type <tt class="computeroutput">L</tt> 
-				and an object <tt class="computeroutput">lk</tt> of that type, 
+				For a TryLock type <code class="computeroutput">L</code> 
+				and an object <code class="computeroutput">lk</code> of that type, 
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id618681"></a><p class="title"><b>Table 10.7. TryLock Expressions</b></p>
+<a name="id1359102"></a><p class="title"><b>Table 12.7. TryLock Expressions</b></p>
 <table class="table" summary="TryLock Expressions">
 <colgroup>
 <col>
@@ -525,14 +525,14 @@
 <th>Effects</th>
 </tr></thead>
 <tbody><tr>
-<td><tt class="computeroutput">lk.try_lock()</tt></td>
+<td><code class="computeroutput">lk.try_lock()</code></td>
 <td>
-<p>Throws  <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
+<p>Throws  <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
 									if locked().</p>
 <p>Makes a
 									non-blocking attempt to lock the associated mutex object,
-									returning <tt class="computeroutput">true</tt> if the lock attempt is successful,
-									otherwise <tt class="computeroutput">false</tt>. If the associated mutex object is
+									returning <code class="computeroutput">true</code> if the lock attempt is successful,
+									otherwise <code class="computeroutput">false</code>. If the associated mutex object is
 									already locked by the same thread the behavior is dependent on the
 									<a href="concepts.html#threads.concepts.locking-strategies" title="Locking Strategies">locking
 									strategy</a> of the associated mutex object.</p>
@@ -545,15 +545,15 @@
 <div class="titlepage"><div><div><h6 class="title">
 <a name="threads.concepts.ScopedTryLock"></a>ScopedTryLock Concept</h6></div></div></div>
 <p>A ScopedTryLock is a refinement of <a href="concepts.html#threads.concepts.TryLock" title="TryLock Concept">TryLock</a>. 
-				For a ScopedTryLock type <tt class="computeroutput">L</tt> 
-				and an object <tt class="computeroutput">lk</tt> of that type, 
-				and an object <tt class="computeroutput">m</tt> of a type meeting the 
+				For a ScopedTryLock type <code class="computeroutput">L</code> 
+				and an object <code class="computeroutput">lk</code> of that type, 
+				and an object <code class="computeroutput">m</code> of a type meeting the 
 				<a href="concepts.html#threads.concepts.TryMutex" title="TryMutex Concept">TryMutex</a> requirements, 
-				and an object <tt class="computeroutput">b</tt> of type <tt class="computeroutput">bool</tt>, 
+				and an object <code class="computeroutput">b</code> of type <code class="computeroutput">bool</code>, 
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id618815"></a><p class="title"><b>Table 10.8. ScopedTryLock Expressions</b></p>
+<a name="id1359223"></a><p class="title"><b>Table 12.8. ScopedTryLock Expressions</b></p>
 <table class="table" summary="ScopedTryLock Expressions">
 <colgroup>
 <col>
@@ -565,17 +565,17 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">L lk(m);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt>, and associates mutex
-								object <tt class="computeroutput">m</tt> with it, then calls
-								<tt class="computeroutput">try_lock()</tt>
+<td><code class="computeroutput">L lk(m);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code>, and associates mutex
+								object <code class="computeroutput">m</code> with it, then calls
+								<code class="computeroutput">try_lock()</code>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">L lk(m,b);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt>, and associates mutex
-								object <tt class="computeroutput">m</tt> with it, then if <tt class="computeroutput">b</tt>, calls
-								<tt class="computeroutput">lock()</tt>
+<td><code class="computeroutput">L lk(m,b);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code>, and associates mutex
+								object <code class="computeroutput">m</code> with it, then if <code class="computeroutput">b</code>, calls
+								<code class="computeroutput">lock()</code>
 </td>
 </tr>
 </tbody>
@@ -586,13 +586,13 @@
 <div class="titlepage"><div><div><h6 class="title">
 <a name="threads.concepts.TimedLock"></a>TimedLock Concept</h6></div></div></div>
 <p>A TimedLock is a refinement of <a href="concepts.html#threads.concepts.TryLock" title="TryLock Concept">TryLock</a>. 
-				For a TimedLock type <tt class="computeroutput">L</tt> 
-				and an object <tt class="computeroutput">lk</tt> of that type, 
-				and an object <tt class="computeroutput">t</tt> of type <a href="../xtime.html" title="Struct xtime">boost::xtime</a>, 
+				For a TimedLock type <code class="computeroutput">L</code> 
+				and an object <code class="computeroutput">lk</code> of that type, 
+				and an object <code class="computeroutput">t</code> of type <code class="computeroutput"><a href="../xtime.html" title="Struct xtime">boost::xtime</a></code>, 
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id618947"></a><p class="title"><b>Table 10.9. TimedLock Expressions</b></p>
+<a name="id1359344"></a><p class="title"><b>Table 12.9. TimedLock Expressions</b></p>
 <table class="table" summary="TimedLock Expressions">
 <colgroup>
 <col>
@@ -603,14 +603,14 @@
 <th>Effects</th>
 </tr></thead>
 <tbody><tr>
-<td><tt class="computeroutput">lk.timed_lock(t)</tt></td>
+<td><code class="computeroutput">lk.timed_lock(t)</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
 									if locked().</p>
 <p>Makes a blocking attempt
-									to lock the associated mutex object, and returns <tt class="computeroutput">true</tt>
-									if successful within the specified time <tt class="computeroutput">t</tt>, otherwise
-									<tt class="computeroutput">false</tt>. If the associated mutex object is already
+									to lock the associated mutex object, and returns <code class="computeroutput">true</code>
+									if successful within the specified time <code class="computeroutput">t</code>, otherwise
+									<code class="computeroutput">false</code>. If the associated mutex object is already
 									locked by the same thread the behavior is dependent on the <a href="concepts.html#threads.concepts.locking-strategies" title="Locking Strategies">locking
 									strategy</a> of the associated mutex object.</p>
 </td>
@@ -622,16 +622,16 @@
 <div class="titlepage"><div><div><h6 class="title">
 <a name="threads.concepts.ScopedTimedLock"></a>ScopedTimedLock Concept</h6></div></div></div>
 <p>A ScopedTimedLock is a refinement of <a href="concepts.html#threads.concepts.TimedLock" title="TimedLock Concept">TimedLock</a>. 
-				For a ScopedTimedLock type <tt class="computeroutput">L</tt> 
-				and an object <tt class="computeroutput">lk</tt> of that type, 
-				and an object <tt class="computeroutput">m</tt> of a type meeting the 
+				For a ScopedTimedLock type <code class="computeroutput">L</code> 
+				and an object <code class="computeroutput">lk</code> of that type, 
+				and an object <code class="computeroutput">m</code> of a type meeting the 
 				<a href="concepts.html#threads.concepts.TimedMutex" title="TimedMutex Concept">TimedMutex</a> requirements, 
-				and an object <tt class="computeroutput">b</tt> of type <tt class="computeroutput">bool</tt>, 
-				and an object <tt class="computeroutput">t</tt> of type <a href="../xtime.html" title="Struct xtime">boost::xtime</a>, 
+				and an object <code class="computeroutput">b</code> of type <code class="computeroutput">bool</code>, 
+				and an object <code class="computeroutput">t</code> of type <code class="computeroutput"><a href="../xtime.html" title="Struct xtime">boost::xtime</a></code>, 
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id619102"></a><p class="title"><b>Table 10.10. ScopedTimedLock Expressions</b></p>
+<a name="id1359488"></a><p class="title"><b>Table 12.10. ScopedTimedLock Expressions</b></p>
 <table class="table" summary="ScopedTimedLock Expressions">
 <colgroup>
 <col>
@@ -643,17 +643,17 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">L lk(m,t);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt>, and associates mutex
-								object <tt class="computeroutput">m</tt> with it, then calls
-								<tt class="computeroutput">timed_lock(t)</tt>
+<td><code class="computeroutput">L lk(m,t);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code>, and associates mutex
+								object <code class="computeroutput">m</code> with it, then calls
+								<code class="computeroutput">timed_lock(t)</code>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">L lk(m,b);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt>, and associates mutex
-								object <tt class="computeroutput">m</tt> with it, then if <tt class="computeroutput">b</tt>, calls
-								<tt class="computeroutput">lock()</tt>
+<td><code class="computeroutput">L lk(m,b);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code>, and associates mutex
+								object <code class="computeroutput">m</code> with it, then if <code class="computeroutput">b</code>, calls
+								<code class="computeroutput">lock()</code>
 </td>
 </tr>
 </tbody>
@@ -664,11 +664,11 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="threads.concepts.lock-models"></a>Lock Models</h5></div></div></div>
-<p><span class="bold"><b>Boost.Threads</b></span> currently supplies twelve models of
+<p> currently supplies twelve models of
 			<a href="concepts.html#threads.concepts.Lock" title="Lock Concept">Lock</a>
 			and its refinements.</p>
 <div class="table">
-<a name="id619209"></a><p class="title"><b>Table 10.11. Lock Models</b></p>
+<a name="id1359578"></a><p class="title"><b>Table 12.11. Lock Models</b></p>
 <table class="table" summary="Lock Models">
 <colgroup>
 <col>
@@ -690,12 +690,12 @@
 <td><a href="concepts.html#threads.concepts.ScopedLock" title="ScopedLock Concept">ScopedLock</a></td>
 <td><a href="concepts.html#threads.concepts.Lock" title="Lock Concept">Lock</a></td>
 <td>
-<p>boost::mutex::scoped_lock</p>
-<p>boost::recursive_mutex::scoped_lock</p>
-<p>boost::try_mutex::scoped_lock</p>
-<p>boost::recursive_try_mutex::scoped_lock</p>
-<p>boost::timed_mutex::scoped_lock</p>
-<p>boost::recursive_timed_mutex::scoped_lock</p>
+<p><code class="computeroutput">boost::mutex::scoped_lock</code></p>
+<p><code class="computeroutput">boost::recursive_mutex::scoped_lock</code></p>
+<p><code class="computeroutput">boost::try_mutex::scoped_lock</code></p>
+<p><code class="computeroutput">boost::recursive_try_mutex::scoped_lock</code></p>
+<p><code class="computeroutput">boost::timed_mutex::scoped_lock</code></p>
+<p><code class="computeroutput">boost::recursive_timed_mutex::scoped_lock</code></p>
 </td>
 </tr>
 <tr>
@@ -707,10 +707,10 @@
 <td><a href="concepts.html#threads.concepts.ScopedTryLock" title="ScopedTryLock Concept">ScopedTryLock</a></td>
 <td><a href="concepts.html#threads.concepts.TryLock" title="TryLock Concept">TryLock</a></td>
 <td>
-<p>boost::try_mutex::scoped_try_lock</p>
-<p>boost::recursive_try_mutex::scoped_try_lock</p>
-<p>boost::timed_mutex::scoped_try_lock</p>
-<p>boost::recursive_timed_mutex::scoped_try_lock</p>
+<p><code class="computeroutput">boost::try_mutex::scoped_try_lock</code></p>
+<p><code class="computeroutput">boost::recursive_try_mutex::scoped_try_lock</code></p>
+<p><code class="computeroutput">boost::timed_mutex::scoped_try_lock</code></p>
+<p><code class="computeroutput">boost::recursive_timed_mutex::scoped_try_lock</code></p>
 </td>
 </tr>
 <tr>
@@ -722,8 +722,8 @@
 <td><a href="concepts.html#threads.concepts.ScopedTimedLock" title="ScopedTimedLock Concept">ScopedTimedLock</a></td>
 <td><a href="concepts.html#threads.concepts.TimedLock" title="TimedLock Concept">TimedLock</a></td>
 <td>
-<p>boost::timed_mutex::scoped_timed_lock</p>
-<p>boost::recursive_timed_mutex::scoped_timed_lock</p>
+<p><code class="computeroutput">boost::timed_mutex::scoped_timed_lock</code></p>
+<p><code class="computeroutput">boost::recursive_timed_mutex::scoped_timed_lock</code></p>
 </td>
 </tr>
 </tbody>
@@ -745,7 +745,7 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>Since the read/write mutex and related classes are new,
 		both interface and implementation are liable to change
-		in future releases of <span class="bold"><b>Boost.Threads</b></span>.
+		in future releases of .
 		The lock concepts and lock promotion and demotion in particular 
 		are still under discussion and very likely to change.</div>
 <p>A read/write mutex (short for reader/writer mutual-exclusion) object
@@ -757,19 +757,19 @@
 		<a href="concepts.html#threads.concepts.TimedReadWriteMutex" title="TimedReadWriteMutex Concept"> TimedReadWriteMutex</a>
 		refinements formalize the requirements. A model that implements 
 		ReadWriteMutex and its refinements has three states: 
-		<span class="bold"><b>read-locked</b></span>,
-		<span class="bold"><b>write-locked</b></span>, and 
-		<span class="bold"><b>unlocked</b></span>.
+		<span class="bold"><strong>read-locked</strong></span>,
+		<span class="bold"><strong>write-locked</strong></span>, and 
+		<span class="bold"><strong>unlocked</strong></span>.
 		Before reading from a shared resource, a thread 
-		<span class="bold"><b>read-locks</b></span> 
-		a <span class="bold"><b>Boost.Threads</b></span> read/write mutex object
+		<span class="bold"><strong>read-locks</strong></span> 
+		a  read/write mutex object
 		(an object whose type is a model of
 		<a href="concepts.html#threads.concepts.ReadWriteMutex" title="ReadWriteMutex Concept">ReadWriteMutex</a>
 		or one of it's refinements), ensuring 
 		<a href="../threads.html#threads.glossary.thread-safe">thread-safe</a>
 		access for reading from the shared resource. Before writing 
 		to a shared resource, a thread 
-		<span class="bold"><b>write-locks</b></span> a <span class="bold"><b>Boost.Threads</b></span> 
+		<span class="bold"><strong>write-locks</strong></span> a  
 		read/write mutex object
 		(an object whose type is a model of
 		<a href="concepts.html#threads.concepts.ReadWriteMutex" title="ReadWriteMutex Concept">ReadWriteMutex</a>
@@ -789,19 +789,19 @@
 		properly when using these traditional API's. The result is
 		<a href="../threads.html#threads.glossary.deadlock">deadlock</a>.</p>
 <p>Many C++ threading libraries use a pattern known as <span class="emphasis"><em>Scoped
-		Locking</em></span>[<span class="citation"><a href="../threads.html#threads.bib.SchmidtStalRohnertBuschmann">SchmidtStalRohnertBuschmann</a></span>] to free the
+		Locking</em></span> to free the
 		programmer from the need to explicitly lock and unlock
 		read/write mutex objects. With this  pattern, a 
 		<a href="concepts.html#threads.concepts.read-write-lock-concepts" title="Lock Concepts">Read/Write Lock</a>
 		concept is employed where the lock object's constructor locks
 		the associated read/write mutex object
 		and the destructor automatically does the unlocking. The
-		<span class="bold"><b>Boost.Threads</b></span> library takes this pattern to
+		 library takes this pattern to
 		the extreme in that 
 		<a href="concepts.html#threads.concepts.read-write-lock-concepts" title="Lock Concepts">Read/Write Lock</a>
 		concepts are the only way to lock and unlock a read/write mutex
 		object: lock and unlock functions are not exposed by any
-		<span class="bold"><b>Boost.Threads</b></span> read/write mutex objects. This helps to
+		 read/write mutex objects. This helps to
 		ensure safe usage patterns, especially when code throws exceptions.</p>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
@@ -827,7 +827,7 @@
 				for which it already owns a lock, the operation is successful,
 				except in the case where a thread holding a read-lock 
 				attempts to obtain a write lock, in which case a
-				<a href="../lock_error.html" title="Class lock_error">boost::lock_error</a> exception will
+				<code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code> exception will
 				be thrown. Note the distinction between a thread, which may have
 				multiple locks outstanding on a recursive read/write mutex object,
 				and a lock object, which even for a recursive read/write mutex
@@ -855,7 +855,7 @@
 <td>write-lock</td>
 <td>If this thread is the only holder of the read-lock,
 								grants the write lock immediately. Otherwise throws a
-								<a href="../lock_error.html" title="Class lock_error">boost::lock_error</a> exception.</td>
+								<code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code> exception.</td>
 </tr>
 <tr>
 <td>write-locked</td>
@@ -872,13 +872,13 @@
 <p>Internally a lock count is maintained and the owning
 				thread must unlock the mutex object the same number of times
 				that it locked it before the mutex object's state returns
-				to unlocked. Since mutex objects in <span class="bold"><b>Boost.Threads</b></span> expose
+				to unlocked. Since mutex objects in  expose
 				locking functionality only through lock concepts, a thread
 				will always unlock a mutex object the same number of times
 				that it locked it. This helps to eliminate a whole set of
 				errors typically found in traditional C style thread APIs.
 				</p>
-<p><span class="bold"><b>Boost.Threads</b></span> does not currently provide any read/write mutex objects 
+<p> does not currently provide any read/write mutex objects 
 				that use this strategy.  A successful implementation of this locking strategy
 				may require
 				<a href="concepts.html#threads.concepts.read-write-locking-strategies.thread-identification" title="Thread Identification">thread identification</a>.
@@ -894,8 +894,8 @@
 				acquisition which is a normal operation for ANY ReadWriteMutex.
 				Further, attempts by a thread to unlock a mutex that was not
 				locked by the thread will also return some sort of error
-				indication. In <span class="bold"><b>Boost.Threads</b></span>, an exception of type 
-				<a href="../lock_error.html" title="Class lock_error">boost::lock_error</a> would be thrown in
+				indication. In , an exception of type 
+				<code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code> would be thrown in
 				these cases.</p>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -917,24 +917,24 @@
 <tr>
 <td>read-lock</td>
 <td>write-lock</td>
-<td>Throw <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
+<td>Throw <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
 </td>
 </tr>
 <tr>
 <td>write-locked</td>
 <td>read-lock</td>
-<td>Throw <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
+<td>Throw <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
 </td>
 </tr>
 <tr>
 <td>write-locked</td>
 <td>write-lock</td>
-<td> Throw <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
+<td> Throw <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
 </td>
 </tr>
 </tbody>
 </table></div>
-<p><span class="bold"><b>Boost.Threads</b></span> does not currently provide any read/write mutex objects 
+<p> does not currently provide any read/write mutex objects 
 				that use this strategy.  A successful implementation of this locking strategy
 				may require
 				<a href="concepts.html#threads.concepts.read-write-locking-strategies.thread-identification" title="Thread Identification">thread identification</a>.
@@ -984,7 +984,7 @@
 </tr>
 </tbody>
 </table></div>
-<p><span class="bold"><b>Boost.Threads</b></span> does not currently provide any mutex
+<p> does not currently provide any mutex
 				objects that use this strategy.  For ReadWriteMutexes on
 				platforms that contain natively recursive synchronization
 				primitives, implementing a guaranteed-deadlock can actually
@@ -1051,9 +1051,9 @@
 				on its implementation. This is especially true for portable implementations
 				that wrap the native threading support of a platform. For this reason, the
 				classes 
-				read_write_mutex,
-				try_read_write_mutex, and
-				timed_read_write_mutex
+				<code class="computeroutput">read_write_mutex</code>,
+				<code class="computeroutput">try_read_write_mutex</code>, and
+				<code class="computeroutput">timed_read_write_mutex</code>
 				use this locking strategy despite the lack of safety.</p>
 </div>
 <div class="section" lang="en">
@@ -1077,7 +1077,7 @@
 				or checked versions of synchronization primitives to produce
 				a recursive or checked ReadWriteMutex while still providing
 				flexibility in terms of Scheduling Policies. </p>
-<p>Please refer to the <span class="bold"><b>Boost.Threads</b></span><a href="concepts.html#threads.concepts.read-write-mutex-concepts" title="Mutex Concepts">read/write mutex concept</a> 
+<p>Please refer to the <a href="concepts.html#threads.concepts.read-write-mutex-concepts" title="Mutex Concepts">read/write mutex concept</a> 
 				documentation for a discussion of locking strategies.
 				The read/write mutex supports only the
 				<a href="concepts.html#threads.concepts.read-write-locking-strategies.unspecified" title="Unspecified Locking Strategy">unspecified</a>
@@ -1098,9 +1098,9 @@
 				state while waiting to be promoted, deadlock will result since
 				both threads will be waiting for the other to release their read-lock.
 				</p>
-<p>Currently, <span class="bold"><b>Boost.Threads</b></span> supports lock promotion
-				through <tt class="computeroutput">promote()</tt>, <tt class="computeroutput">try_promote()</tt>,
-				and <tt class="computeroutput">timed_promote()</tt> operations.</p>
+<p>Currently,  supports lock promotion
+				through <code class="computeroutput">promote()</code>, <code class="computeroutput">try_promote()</code>,
+				and <code class="computeroutput">timed_promote()</code> operations.</p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h6 class="title">
@@ -1112,9 +1112,9 @@
 				a write-lock, the problem with deadlock that can occur
 				during lock promotion is not a problem for lock
 				demotion.</p>
-<p>Currently, <span class="bold"><b>Boost.Threads</b></span> supports lock demotion
-				through <tt class="computeroutput">demote()</tt>, <tt class="computeroutput">try_demote()</tt>,
-				and <tt class="computeroutput">timed_demote()</tt> operations.</p>
+<p>Currently,  supports lock demotion
+				through <code class="computeroutput">demote()</code>, <code class="computeroutput">try_demote()</code>,
+				and <code class="computeroutput">timed_demote()</code> operations.</p>
 </div>
 </div>
 <div class="section" lang="en">
@@ -1143,7 +1143,8 @@
 <div class="titlepage"><div><div><h6 class="title">
 <a name="threads.concepts.read-write-scheduling-policies.inter-class"></a>Inter-Class Scheduling Policies</h6></div></div></div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h7 class="title"><a name="threads.concepts.read-write-scheduling-policies.reader-priority"></a>ReaderPriority</h7></div></div></div>
+<div class="titlepage"><div><div><h6 class="title">
+<a name="threads.concepts.read-write-scheduling-policies.reader-priority"></a>ReaderPriority</h6></div></div></div>
 <p>With ReaderPriority scheduling, any pending request for
 					a read-lock will have priority over a pending request for a
 					write-lock, irrespective of the current lock state of the 
@@ -1195,7 +1196,7 @@
 <td>write-lock</td>
 <td> Wait to acquire the lock until all
 									threads holding read-locks release their locks 
-									<span class="bold"><b>AND</b></span> no requests
+									<span class="bold"><strong>AND</strong></span> no requests
 									for read-locks exist. If other write-lock
 									requests exist, the lock is granted in accordance
 									with the intra-class scheduling policy.
@@ -1207,7 +1208,7 @@
 <td>write-lock</td>
 <td>Wait to acquire the lock until the thread
 									holding the write-lock releases its lock
-									<span class="bold"><b>AND</b></span> no requests
+									<span class="bold"><strong>AND</strong></span> no requests
 									for read-locks exist. If other write-lock
 									requests exist, the lock is granted in accordance
 									with the intra-class scheduling policy.
@@ -1228,7 +1229,8 @@
 </table></div>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h7 class="title"><a name="threads.concepts.read-write-scheduling-policies.writer-priority"></a>WriterPriority</h7></div></div></div>
+<div class="titlepage"><div><div><h6 class="title">
+<a name="threads.concepts.read-write-scheduling-policies.writer-priority"></a>WriterPriority</h6></div></div></div>
 <p>With WriterPriority scheduling, any pending request
 					for a write-lock will have priority over a pending request
 					for a read-lock, irrespective of the current lock state 
@@ -1255,7 +1257,7 @@
 <td>read-locked</td>
 <td>read-lock</td>
 <td>Grant the additional read-lock immediately, 
-									<span class="bold"><b>IF</b></span> no outstanding
+									<span class="bold"><strong>IF</strong></span> no outstanding
 									requests for a write-lock exist; otherwise TODO.
 									<p>TODO: try-lock, timed-lock.</p>
 </td>
@@ -1314,7 +1316,8 @@
 </table></div>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h7 class="title"><a name="threads.concepts.read-write-scheduling-policies.alternating-many-reads"></a>AlternatingPriority/ManyReads</h7></div></div></div>
+<div class="titlepage"><div><div><h6 class="title">
+<a name="threads.concepts.read-write-scheduling-policies.alternating-many-reads"></a>AlternatingPriority/ManyReads</h6></div></div></div>
 <p>With AlternatingPriority/ManyReads scheduling, reader
 					or writer starvation is avoided by alternatively granting read
 					or write access when pending requests exist for both types of
@@ -1341,7 +1344,7 @@
 <td>read-locked</td>
 <td>read-lock</td>
 <td>Grant the additional read-lock immediately,
-									<span class="bold"><b>IF</b></span> no outstanding 
+									<span class="bold"><strong>IF</strong></span> no outstanding 
 									requests for a write-lock exist. If outstanding
 									write-lock requests exist, this lock will not
 									be granted until at least one of the 
@@ -1407,7 +1410,8 @@
 </table></div>
 </div>
 <div class="section" lang="en">
-<div class="titlepage"><div><div><h7 class="title"><a name="threads.concepts.read-write-scheduling-policies.alternating-single-read"></a>AlternatingPriority/SingleRead</h7></div></div></div>
+<div class="titlepage"><div><div><h6 class="title">
+<a name="threads.concepts.read-write-scheduling-policies.alternating-single-read"></a>AlternatingPriority/SingleRead</h6></div></div></div>
 <p>With AlternatingPriority/SingleRead scheduling, reader
 					or writer starvation is avoided by alternatively granting read
 					or write access when pending requests exist for both types of
@@ -1434,7 +1438,7 @@
 <td>read-locked</td>
 <td>read-lock</td>
 <td>Grant the additional read-lock immediately,
-									<span class="bold"><b>IF</b></span> no outstanding 
+									<span class="bold"><strong>IF</strong></span> no outstanding 
 									requests for a write-lock exist. If outstanding
 									write-lock requests exist, this lock will not
 									be granted until at least one of the write-locks
@@ -1540,12 +1544,12 @@
 <p>A ReadWriteMutex is 
 				<a href="../../../libs/utility/utility.htm#Class%20noncopyable" target="_top">NonCopyable</a>.
 				</p>
-<p>For a ReadWriteMutex type <tt class="computeroutput">M</tt>, 
-				and an object <tt class="computeroutput">m</tt> of that type, 
+<p>For a ReadWriteMutex type <code class="computeroutput">M</code>, 
+				and an object <code class="computeroutput">m</code> of that type, 
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id621098"></a><p class="title"><b>Table 10.12. ReadWriteMutex Expressions</b></p>
+<a name="id1361243"></a><p class="title"><b>Table 12.12. ReadWriteMutex Expressions</b></p>
 <table class="table" summary="ReadWriteMutex Expressions">
 <colgroup>
 <col>
@@ -1557,30 +1561,30 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">M m;</tt></td>
-<td>Constructs a read/write mutex object <tt class="computeroutput">m</tt>.
-								Post-condition: <tt class="computeroutput">m</tt> is unlocked.</td>
+<td><code class="computeroutput">M m;</code></td>
+<td>Constructs a read/write mutex object <code class="computeroutput">m</code>.
+								Post-condition: <code class="computeroutput">m</code> is unlocked.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">(&amp;m)-&gt;~M();</tt></td>
-<td>Precondition: <tt class="computeroutput">m</tt> is unlocked. 
-								Destroys a read/write mutex object <tt class="computeroutput">m</tt>.
+<td><code class="computeroutput">(&amp;m)-&gt;~M();</code></td>
+<td>Precondition: <code class="computeroutput">m</code> is unlocked. 
+								Destroys a read/write mutex object <code class="computeroutput">m</code>.
 								</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">M::scoped_read_write_lock</tt></td>
+<td><code class="computeroutput">M::scoped_read_write_lock</code></td>
 <td>A type meeting the 
 								<a href="concepts.html#threads.concepts.ScopedReadWriteLock" title="ScopedReadWriteLock Concept">ScopedReadWriteLock</a>
 								requirements. </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">M::scoped_read_lock</tt></td>
+<td><code class="computeroutput">M::scoped_read_lock</code></td>
 <td>A type meeting the 
 								<a href="concepts.html#threads.concepts.ScopedLock" title="ScopedLock Concept">ScopedLock</a>
 								requirements. </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">M::scoped_write_lock</tt></td>
+<td><code class="computeroutput">M::scoped_write_lock</code></td>
 <td>A type meeting the 
 								<a href="concepts.html#threads.concepts.ScopedLock" title="ScopedLock Concept">ScopedLock</a>
 								requirements. </td>
@@ -1594,12 +1598,12 @@
 <a name="threads.concepts.TryReadWriteMutex"></a>TryReadWriteMutex Concept</h6></div></div></div>
 <p>A TryReadWriteMutex is a refinement of
 				<a href="concepts.html#threads.concepts.ReadWriteMutex" title="ReadWriteMutex Concept">ReadWriteMutex</a>.
-				For a TryReadWriteMutex type <tt class="computeroutput">M</tt> 
-				and an object <tt class="computeroutput">m</tt> of that type,
+				For a TryReadWriteMutex type <code class="computeroutput">M</code> 
+				and an object <code class="computeroutput">m</code> of that type,
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id621261"></a><p class="title"><b>Table 10.13. TryReadWriteMutex Expressions</b></p>
+<a name="id1361388"></a><p class="title"><b>Table 12.13. TryReadWriteMutex Expressions</b></p>
 <table class="table" summary="TryReadWriteMutex Expressions">
 <colgroup>
 <col>
@@ -1611,19 +1615,19 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">M::scoped_try_read_write_lock</tt></td>
+<td><code class="computeroutput">M::scoped_try_read_write_lock</code></td>
 <td>A type meeting the 
 								<a href="concepts.html#threads.concepts.ScopedTryReadWriteLock" title="ScopedTryReadWriteLock Expressions">ScopedTryReadWriteLock</a>
 								requirements.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">M::scoped_try_read_lock</tt></td>
+<td><code class="computeroutput">M::scoped_try_read_lock</code></td>
 <td>A type meeting the 
 								<a href="concepts.html#threads.concepts.ScopedTryLock" title="ScopedTryLock Concept">ScopedTryLock</a>
 								requirements.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">M::scoped_try_write_lock</tt></td>
+<td><code class="computeroutput">M::scoped_try_write_lock</code></td>
 <td>A type meeting the 
 								<a href="concepts.html#threads.concepts.ScopedTryLock" title="ScopedTryLock Concept">ScopedTryLock</a>
 								requirements.</td>
@@ -1637,12 +1641,12 @@
 <a name="threads.concepts.TimedReadWriteMutex"></a>TimedReadWriteMutex Concept</h6></div></div></div>
 <p>A TimedReadWriteMutex is a refinement of
 				<a href="concepts.html#threads.concepts.TryReadWriteMutex" title="TryReadWriteMutex Concept">TryReadWriteMutex</a>.
-				For a TimedReadWriteMutex type <tt class="computeroutput">M</tt> 
-				and an object <tt class="computeroutput">m</tt> of that type
+				For a TimedReadWriteMutex type <code class="computeroutput">M</code> 
+				and an object <code class="computeroutput">m</code> of that type
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id621376"></a><p class="title"><b>Table 10.14. TimedReadWriteMutex Expressions</b></p>
+<a name="id1361491"></a><p class="title"><b>Table 12.14. TimedReadWriteMutex Expressions</b></p>
 <table class="table" summary="TimedReadWriteMutex Expressions">
 <colgroup>
 <col>
@@ -1654,19 +1658,19 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">M::scoped_timed_read_write_lock</tt></td>
+<td><code class="computeroutput">M::scoped_timed_read_write_lock</code></td>
 <td>A type meeting the 
 								<a href="concepts.html#threads.concepts.ScopedTimedReadWriteLock" title="ScopedTimedReadWriteLock Concept">ScopedTimedReadWriteLock</a> 
 								requirements.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">M::scoped_timed_read_lock</tt></td>
+<td><code class="computeroutput">M::scoped_timed_read_lock</code></td>
 <td>A type meeting the 
 								<a href="concepts.html#threads.concepts.ScopedTimedLock" title="ScopedTimedLock Concept">ScopedTimedLock</a> 
 								requirements.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">M::scoped_timed_write_lock</tt></td>
+<td><code class="computeroutput">M::scoped_timed_write_lock</code></td>
 <td>A type meeting the 
 								<a href="concepts.html#threads.concepts.ScopedTimedLock" title="ScopedTimedLock Concept">ScopedTimedLock</a> 
 								requirements.</td>
@@ -1679,11 +1683,11 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="threads.concepts.read-write-mutex-models"></a>Mutex Models</h5></div></div></div>
-<p><span class="bold"><b>Boost.Threads</b></span> currently supplies three models of
+<p> currently supplies three models of
 			<a href="concepts.html#threads.concepts.ReadWriteMutex" title="ReadWriteMutex Concept">ReadWriteMutex</a>
 			and its refinements.</p>
 <div class="table">
-<a name="id621482"></a><p class="title"><b>Table 10.15. Mutex Models</b></p>
+<a name="id1361580"></a><p class="title"><b>Table 12.15. Mutex Models</b></p>
 <table class="table" summary="Mutex Models">
 <colgroup>
 <col>
@@ -1699,17 +1703,17 @@
 <tr>
 <td><a href="concepts.html#threads.concepts.ReadWriteMutex" title="ReadWriteMutex Concept">ReadWriteMutex</a></td>
 <td> </td>
-<td><a href="../read_write_mutex.html" title="Class read_write_mutex">boost::read_write_mutex</a></td>
+<td><code class="computeroutput"><a href="../read_write_mutex.html" title="Class read_write_mutex">boost::read_write_mutex</a></code></td>
 </tr>
 <tr>
 <td><a href="concepts.html#threads.concepts.TryReadWriteMutex" title="TryReadWriteMutex Concept">TryReadWriteMutex</a></td>
 <td><a href="concepts.html#threads.concepts.ReadWriteMutex" title="ReadWriteMutex Concept">ReadWriteMutex</a></td>
-<td><a href="../try_read_write_mutex.html" title="Class try_read_write_mutex">boost::try_read_write_mutex</a></td>
+<td><code class="computeroutput"><a href="../try_read_write_mutex.html" title="Class try_read_write_mutex">boost::try_read_write_mutex</a></code></td>
 </tr>
 <tr>
 <td><a href="concepts.html#threads.concepts.TimedReadWriteMutex" title="TimedReadWriteMutex Concept">TimedReadWriteMutex</a></td>
 <td><a href="concepts.html#threads.concepts.TryReadWriteMutex" title="TryReadWriteMutex Concept">TryReadWriteMutex</a></td>
-<td><a href="../timed_read_write_mutex.html" title="Class timed_read_write_mutex">boost::timed_read_write_mutex</a></td>
+<td><code class="computeroutput"><a href="../timed_read_write_mutex.html" title="Class timed_read_write_mutex">boost::timed_read_write_mutex</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -1731,7 +1735,7 @@
 			a model of 
 			<a href="concepts.html#threads.concepts.ReadWriteMutex" title="ReadWriteMutex Concept">ReadWriteMutex</a> 
 			or one of its refinements). In other words they are an
-			implementation of the <span class="emphasis"><em>Scoped Locking</em></span>[<span class="citation"><a href="../threads.html#threads.bib.SchmidtStalRohnertBuschmann">SchmidtStalRohnertBuschmann</a></span>] pattern. The 
+			implementation of the <span class="emphasis"><em>Scoped Locking</em></span> pattern. The 
 			<a href="concepts.html#threads.concepts.ScopedReadWriteLock" title="ScopedReadWriteLock Concept">ScopedReadWriteLock</a>, 
 			<a href="concepts.html#threads.concepts.ScopedTryReadWriteLock" title="ScopedTryReadWriteLock Expressions">ScopedTryReadWriteLock</a>, and 
 			<a href="concepts.html#threads.concepts.ScopedTimedReadWriteLock" title="ScopedTimedReadWriteLock Concept">ScopedTimedReadWriteLock</a>
@@ -1752,13 +1756,13 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="threads.concepts.ReadWriteLock"></a>ReadWriteLock Concept</h6></div></div></div>
-<p>For a read/write lock type <tt class="computeroutput">L</tt>
-				and an object <tt class="computeroutput">lk</tt> 
-				and const object <tt class="computeroutput">clk</tt> of that type,
+<p>For a read/write lock type <code class="computeroutput">L</code>
+				and an object <code class="computeroutput">lk</code> 
+				and const object <code class="computeroutput">clk</code> of that type,
 				the following expressions must be well-formed
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id621709"></a><p class="title"><b>Table 10.16. ReadWriteLock Expressions</b></p>
+<a name="id1361782"></a><p class="title"><b>Table 12.16. ReadWriteLock Expressions</b></p>
 <table class="table" summary="ReadWriteLock Expressions">
 <colgroup>
 <col>
@@ -1770,42 +1774,42 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">(&amp;lk)-&gt;~L();</tt></td>
-<td><tt class="computeroutput">if (locked()) unlock();</tt></td>
+<td><code class="computeroutput">(&amp;lk)-&gt;~L();</code></td>
+<td><code class="computeroutput">if (locked()) unlock();</code></td>
 </tr>
 <tr>
-<td><tt class="computeroutput">(&amp;clk)-&gt;operator const void*()</tt></td>
+<td><code class="computeroutput">(&amp;clk)-&gt;operator const void*()</code></td>
 <td>Returns type void*, non-zero if the associated read/write
 								mutex object has been either read-locked or write-locked by 
-								<tt class="computeroutput">clk</tt>, otherwise 0.</td>
+								<code class="computeroutput">clk</code>, otherwise 0.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">clk.locked()</tt></td>
-<td>Returns a <tt class="computeroutput">bool</tt>, <tt class="computeroutput">(&amp;clk)-&gt;operator
-								const void*() != 0</tt>
+<td><code class="computeroutput">clk.locked()</code></td>
+<td>Returns a <code class="computeroutput">bool</code>, <code class="computeroutput">(&amp;clk)-&gt;operator
+								const void*() != 0</code>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">clk.state()</tt></td>
-<td>Returns an enumeration constant of type <tt class="computeroutput">read_write_lock_state</tt>:
-								<tt class="computeroutput">read_write_lock_state::read_locked</tt> if the associated read/write mutex object has been
-								read-locked by <tt class="computeroutput">clk</tt>, <tt class="computeroutput">read_write_lock_state::write_locked</tt> if it
-								has been write-locked by <tt class="computeroutput">clk</tt>, and <tt class="computeroutput">read_write_lock_state::unlocked</tt>
-								if has not been locked by <tt class="computeroutput">clk</tt>.</td>
+<td><code class="computeroutput">clk.state()</code></td>
+<td>Returns an enumeration constant of type <code class="computeroutput">read_write_lock_state</code>:
+								<code class="computeroutput">read_write_lock_state::read_locked</code> if the associated read/write mutex object has been
+								read-locked by <code class="computeroutput">clk</code>, <code class="computeroutput">read_write_lock_state::write_locked</code> if it
+								has been write-locked by <code class="computeroutput">clk</code>, and <code class="computeroutput">read_write_lock_state::unlocked</code>
+								if has not been locked by <code class="computeroutput">clk</code>.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">clk.read_locked()</tt></td>
-<td>Returns a <tt class="computeroutput">bool</tt>, <tt class="computeroutput">(&amp;clk)-&gt;state() == read_write_lock_state::read_locked</tt>.</td>
+<td><code class="computeroutput">clk.read_locked()</code></td>
+<td>Returns a <code class="computeroutput">bool</code>, <code class="computeroutput">(&amp;clk)-&gt;state() == read_write_lock_state::read_locked</code>.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">clk.write_locked()</tt></td>
-<td>Returns a <tt class="computeroutput">bool</tt>, <tt class="computeroutput">(&amp;clk)-&gt;state() == read_write_lock_state::write_locked</tt>.</td>
+<td><code class="computeroutput">clk.write_locked()</code></td>
+<td>Returns a <code class="computeroutput">bool</code>, <code class="computeroutput">(&amp;clk)-&gt;state() == read_write_lock_state::write_locked</code>.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.read_lock()</tt></td>
+<td><code class="computeroutput">lk.read_lock()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a> 
-									if <tt class="computeroutput">locked()</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code> 
+									if <code class="computeroutput">locked()</code>.</p>
 <p>If the associated read/write mutex
 									object is already read-locked by some other
 									thread, the effect depends on the
@@ -1839,14 +1843,14 @@
 									<a href="concepts.html#threads.concepts.read-write-locking-strategies" title="Locking Strategies">locking strategy</a>
 									of the associated read/write mutex object.
 									</p>
-<p>Postcondition: <tt class="computeroutput">state() == read_write_lock_state::read_locked</tt></p>
+<p>Postcondition: <code class="computeroutput">state() == read_write_lock_state::read_locked</code></p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.write_lock()</tt></td>
+<td><code class="computeroutput">lk.write_lock()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a> 
-									if <tt class="computeroutput">locked()</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code> 
+									if <code class="computeroutput">locked()</code>.</p>
 <p>If the associated read/write mutex
 									object is already locked by some other
 									thread, places the current thread in the
@@ -1864,25 +1868,25 @@
 									<a href="concepts.html#threads.concepts.read-write-locking-strategies" title="Locking Strategies">locking strategy</a>
 									of the associated read/write mutex object.
 									</p>
-<p>Postcondition: <tt class="computeroutput">state() == read_write_lock_state::write_locked</tt></p>
+<p>Postcondition: <code class="computeroutput">state() == read_write_lock_state::write_locked</code></p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.demote()</tt></td>
+<td><code class="computeroutput">lk.demote()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
-									if <tt class="computeroutput">state() != read_write_lock_state::write_locked</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
+									if <code class="computeroutput">state() != read_write_lock_state::write_locked</code>.</p>
 <p>Converts the lock held on the associated read/write mutex
 									object from a write-lock to a read-lock without releasing
 									the lock.</p>
-<p>Postcondition: <tt class="computeroutput">state() == read_write_lock_state::read_locked</tt></p>
+<p>Postcondition: <code class="computeroutput">state() == read_write_lock_state::read_locked</code></p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.promote()</tt></td>
+<td><code class="computeroutput">lk.promote()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
-									if <tt class="computeroutput">state() != read_write_lock_state::read_locked</tt>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
+									if <code class="computeroutput">state() != read_write_lock_state::read_locked</code>
 									or if the lock cannot be promoted because another lock
 									on the same mutex is already waiting to be promoted.</p>
 <p>Makes a blocking attempt to convert the lock held on the associated
@@ -1891,12 +1895,12 @@
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.unlock()</tt></td>
+<td><code class="computeroutput">lk.unlock()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
-									if <tt class="computeroutput">!locked()</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
+									if <code class="computeroutput">!locked()</code>.</p>
 <p>Unlocks the associated read/write mutex.</p>
-<p>Postcondition: <tt class="computeroutput">!locked()</tt></p>
+<p>Postcondition: <code class="computeroutput">!locked()</code></p>
 </td>
 </tr>
 </tbody>
@@ -1908,15 +1912,15 @@
 <a name="threads.concepts.ScopedReadWriteLock"></a>ScopedReadWriteLock Concept</h6></div></div></div>
 <p>A ScopedReadWriteLock is a refinement of 
 				<a href="concepts.html#threads.concepts.ReadWriteLock" title="ReadWriteLock Concept">ReadWriteLock</a>. 
-				For a ScopedReadWriteLock type <tt class="computeroutput">L</tt> 
-				and an object <tt class="computeroutput">lk</tt> of that type,
-				and an object <tt class="computeroutput">m</tt> of a type meeting the 
+				For a ScopedReadWriteLock type <code class="computeroutput">L</code> 
+				and an object <code class="computeroutput">lk</code> of that type,
+				and an object <code class="computeroutput">m</code> of a type meeting the 
 				<a href="concepts.html#threads.concepts.ReadWriteMutex" title="ReadWriteMutex Concept">ReadWriteMutex</a> requirements,
-				and an object <tt class="computeroutput">s</tt> of type <tt class="computeroutput">read_write_lock_state</tt>,
+				and an object <code class="computeroutput">s</code> of type <code class="computeroutput">read_write_lock_state</code>,
 				the following expressions must be well-formed 
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id622294"></a><p class="title"><b>Table 10.17. ScopedReadWriteLock Expressions</b></p>
+<a name="id1362317"></a><p class="title"><b>Table 12.17. ScopedReadWriteLock Expressions</b></p>
 <table class="table" summary="ScopedReadWriteLock Expressions">
 <colgroup>
 <col>
@@ -1927,11 +1931,11 @@
 <th>Effects</th>
 </tr></thead>
 <tbody><tr>
-<td><tt class="computeroutput">L lk(m,s);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt> and associates read/write mutex
-								object <tt class="computeroutput">m</tt> with it, then: if <tt class="computeroutput">s == read_write_lock_state::read_locked</tt>, calls
-								<tt class="computeroutput">read_lock()</tt>; if <tt class="computeroutput">s==read_write_lock_state::write_locked</tt>,
-								calls <tt class="computeroutput">write_lock()</tt>.</td>
+<td><code class="computeroutput">L lk(m,s);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code> and associates read/write mutex
+								object <code class="computeroutput">m</code> with it, then: if <code class="computeroutput">s == read_write_lock_state::read_locked</code>, calls
+								<code class="computeroutput">read_lock()</code>; if <code class="computeroutput">s==read_write_lock_state::write_locked</code>,
+								calls <code class="computeroutput">write_lock()</code>.</td>
 </tr></tbody>
 </table>
 </div>
@@ -1941,12 +1945,12 @@
 <a name="threads.concepts.TryReadWriteLock"></a>TryReadWriteLock Expressions</h6></div></div></div>
 <p>A TryReadWriteLock is a refinement of 
 				<a href="concepts.html#threads.concepts.ReadWriteLock" title="ReadWriteLock Concept">ReadWriteLock</a>.
-				For a TryReadWriteLock type <tt class="computeroutput">L</tt>
-				and an object <tt class="computeroutput">lk</tt> of that type,
+				For a TryReadWriteLock type <code class="computeroutput">L</code>
+				and an object <code class="computeroutput">lk</code> of that type,
 				the following expressions must be well-formed
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id622399"></a><p class="title"><b>Table 10.18. TryReadWriteLock Expressions</b></p>
+<a name="id1362411"></a><p class="title"><b>Table 12.18. TryReadWriteLock Expressions</b></p>
 <table class="table" summary="TryReadWriteLock Expressions">
 <colgroup>
 <col>
@@ -1958,51 +1962,51 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">lk.try_read_lock()</tt></td>
+<td><code class="computeroutput">lk.try_read_lock()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
 									if locked().</p>
 <p>Makes a non-blocking attempt to read-lock the associated read/write
-									mutex object, returning <tt class="computeroutput">true</tt> if the attempt is successful,
-									otherwise <tt class="computeroutput">false</tt>. If the associated read/write mutex object is
+									mutex object, returning <code class="computeroutput">true</code> if the attempt is successful,
+									otherwise <code class="computeroutput">false</code>. If the associated read/write mutex object is
 									already locked by the same thread the behavior is dependent on the
 									<a href="concepts.html#threads.concepts.locking-strategies" title="Locking Strategies">locking
 									strategy</a> of the associated read/write mutex object.</p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.try_write_lock()</tt></td>
+<td><code class="computeroutput">lk.try_write_lock()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
 									if locked().</p>
 <p>Makes a non-blocking attempt to write-lock the associated read/write
-									mutex object, returning <tt class="computeroutput">true</tt> if the attempt is successful,
-									otherwise <tt class="computeroutput">false</tt>. If the associated read/write mutex object is
+									mutex object, returning <code class="computeroutput">true</code> if the attempt is successful,
+									otherwise <code class="computeroutput">false</code>. If the associated read/write mutex object is
 									already locked by the same thread the behavior is dependent on the
 									<a href="concepts.html#threads.concepts.locking-strategies" title="Locking Strategies">locking
 									strategy</a> of the associated read/write mutex object.</p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.try_demote()</tt></td>
+<td><code class="computeroutput">lk.try_demote()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
-									if <tt class="computeroutput">state() != read_write_lock_state::write_locked</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
+									if <code class="computeroutput">state() != read_write_lock_state::write_locked</code>.</p>
 <p>Makes a non-blocking attempt to convert the lock held on the associated
 									read/write mutex object from a write-lock to a read-lock without releasing
-									the lock, returning <tt class="computeroutput">true</tt> if the attempt is successful,
-									otherwise <tt class="computeroutput">false</tt>.</p>
+									the lock, returning <code class="computeroutput">true</code> if the attempt is successful,
+									otherwise <code class="computeroutput">false</code>.</p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.try_promote()</tt></td>
+<td><code class="computeroutput">lk.try_promote()</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
-									if <tt class="computeroutput">state() != read_write_lock_state::read_locked</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
+									if <code class="computeroutput">state() != read_write_lock_state::read_locked</code>.</p>
 <p>Makes a non-blocking attempt to convert the lock held on the associated
 									read/write mutex object from a read-lock to a write-lock without releasing
-									the lock, returning <tt class="computeroutput">true</tt> if the attempt is successful,
-									otherwise <tt class="computeroutput">false</tt>.</p>
+									the lock, returning <code class="computeroutput">true</code> if the attempt is successful,
+									otherwise <code class="computeroutput">false</code>.</p>
 </td>
 </tr>
 </tbody>
@@ -2014,16 +2018,16 @@
 <a name="threads.concepts.ScopedTryReadWriteLock"></a>ScopedTryReadWriteLock Expressions</h6></div></div></div>
 <p>A ScopedTryReadWriteLock is a refinement of 
 				<a href="concepts.html#threads.concepts.TryReadWriteLock" title="TryReadWriteLock Expressions">TryReadWriteLock</a>.
-				For a ScopedTryReadWriteLock type <tt class="computeroutput">L</tt>
-				and an object <tt class="computeroutput">lk</tt> of that type,
-				and an object <tt class="computeroutput">m</tt> of a type meeting the
+				For a ScopedTryReadWriteLock type <code class="computeroutput">L</code>
+				and an object <code class="computeroutput">lk</code> of that type,
+				and an object <code class="computeroutput">m</code> of a type meeting the
 				<a href="concepts.html#threads.concepts.TryMutex" title="TryMutex Concept">TryReadWriteMutex</a> requirements,
-				and an object <tt class="computeroutput">s</tt> of type <tt class="computeroutput">read_write_lock_state</tt>,
-				and an object <tt class="computeroutput">b</tt> of type <tt class="computeroutput">blocking_mode</tt>, 
+				and an object <code class="computeroutput">s</code> of type <code class="computeroutput">read_write_lock_state</code>,
+				and an object <code class="computeroutput">b</code> of type <code class="computeroutput">blocking_mode</code>, 
 				the following expressions must be well-formed
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id622691"></a><p class="title"><b>Table 10.19. ScopedTryReadWriteLock Expressions</b></p>
+<a name="id1362685"></a><p class="title"><b>Table 12.19. ScopedTryReadWriteLock Expressions</b></p>
 <table class="table" summary="ScopedTryReadWriteLock Expressions">
 <colgroup>
 <col>
@@ -2034,12 +2038,12 @@
 <th>Effects</th>
 </tr></thead>
 <tbody><tr>
-<td><tt class="computeroutput">L lk(m,s,b);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt> and associates read/write mutex
-								object <tt class="computeroutput">m</tt> with it, then: if <tt class="computeroutput">s == read_write_lock_state::read_locked</tt>, calls
-								<tt class="computeroutput">read_lock()</tt> if <tt class="computeroutput">b</tt>, otherwise <tt class="computeroutput">try_read_lock()</tt>;
-								if <tt class="computeroutput">s==read_write_lock_state::write_locked</tt>, calls <tt class="computeroutput">write_lock()</tt> if <tt class="computeroutput">b</tt>,
-								otherwise <tt class="computeroutput">try_write_lock</tt>.</td>
+<td><code class="computeroutput">L lk(m,s,b);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code> and associates read/write mutex
+								object <code class="computeroutput">m</code> with it, then: if <code class="computeroutput">s == read_write_lock_state::read_locked</code>, calls
+								<code class="computeroutput">read_lock()</code> if <code class="computeroutput">b</code>, otherwise <code class="computeroutput">try_read_lock()</code>;
+								if <code class="computeroutput">s==read_write_lock_state::write_locked</code>, calls <code class="computeroutput">write_lock()</code> if <code class="computeroutput">b</code>,
+								otherwise <code class="computeroutput">try_write_lock</code>.</td>
 </tr></tbody>
 </table>
 </div>
@@ -2049,13 +2053,13 @@
 <a name="threads.concepts.TimedReadWriteLock"></a>TimedReadWriteLock Concept</h6></div></div></div>
 <p>A TimedReadWriteLock is a refinement of 
 				<a href="concepts.html#threads.concepts.TryReadWriteLock" title="TryReadWriteLock Expressions">TryReadWriteLock</a>. 
-				For a TimedReadWriteLock type <tt class="computeroutput">L</tt>
-				and an object <tt class="computeroutput">lk</tt> of that type,
-				and an object <tt class="computeroutput">t</tt> of type <a href="../xtime.html" title="Struct xtime">boost::xtime</a>, 
+				For a TimedReadWriteLock type <code class="computeroutput">L</code>
+				and an object <code class="computeroutput">lk</code> of that type,
+				and an object <code class="computeroutput">t</code> of type <code class="computeroutput"><a href="../xtime.html" title="Struct xtime">boost::xtime</a></code>, 
 				the following expressions must be well-formed
 				and have the indicated effects.</p>
 <div class="table">
-<a name="id622837"></a><p class="title"><b>Table 10.20. TimedReadWriteLock Expressions</b></p>
+<a name="id1362819"></a><p class="title"><b>Table 12.20. TimedReadWriteLock Expressions</b></p>
 <table class="table" summary="TimedReadWriteLock Expressions">
 <colgroup>
 <col>
@@ -2067,49 +2071,49 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">lk.timed_read_lock(t)</tt></td>
+<td><code class="computeroutput">lk.timed_read_lock(t)</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
 									if locked().</p>
 <p>Makes a blocking attempt to read-lock the associated read/write mutex object,
-									and returns <tt class="computeroutput">true</tt> if successful within the specified time <tt class="computeroutput">t</tt>,
-									otherwise <tt class="computeroutput">false</tt>. If the associated read/write mutex object is already
+									and returns <code class="computeroutput">true</code> if successful within the specified time <code class="computeroutput">t</code>,
+									otherwise <code class="computeroutput">false</code>. If the associated read/write mutex object is already
 									locked by the same thread the behavior is dependent on the <a href="concepts.html#threads.concepts.locking-strategies" title="Locking Strategies">locking
 									strategy</a> of the associated read/write mutex object.</p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.timed_write_lock(t)</tt></td>
+<td><code class="computeroutput">lk.timed_write_lock(t)</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
 									if locked().</p>
 <p>Makes a blocking attempt to write-lock the associated read/write mutex object, 
-									and returns <tt class="computeroutput">true</tt> if successful within the specified time <tt class="computeroutput">t</tt>,
-									otherwise <tt class="computeroutput">false</tt>. If the associated read/write mutex object is already
+									and returns <code class="computeroutput">true</code> if successful within the specified time <code class="computeroutput">t</code>,
+									otherwise <code class="computeroutput">false</code>. If the associated read/write mutex object is already
 									locked by the same thread the behavior is dependent on the <a href="concepts.html#threads.concepts.locking-strategies" title="Locking Strategies">locking
 									strategy</a> of the associated read/write mutex object.</p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.timed_demote(t)</tt></td>
+<td><code class="computeroutput">lk.timed_demote(t)</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
-									if <tt class="computeroutput">state() != read_write_lock_state::write_locked</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
+									if <code class="computeroutput">state() != read_write_lock_state::write_locked</code>.</p>
 <p>Makes a blocking attempt to convert the lock held on the associated
 									read/write mutex object from a write-lock to a read-lock without releasing
-									the lock, returning <tt class="computeroutput">true</tt> if the attempt is successful
-									in the specified time <tt class="computeroutput">t</tt>, otherwise <tt class="computeroutput">false</tt>.</p>
+									the lock, returning <code class="computeroutput">true</code> if the attempt is successful
+									in the specified time <code class="computeroutput">t</code>, otherwise <code class="computeroutput">false</code>.</p>
 </td>
 </tr>
 <tr>
-<td><tt class="computeroutput">lk.timed_promote(t)</tt></td>
+<td><code class="computeroutput">lk.timed_promote(t)</code></td>
 <td>
-<p>Throws <a href="../lock_error.html" title="Class lock_error">boost::lock_error</a>
-									if <tt class="computeroutput">state() != read_write_lock_state::read_locked</tt>.</p>
+<p>Throws <code class="computeroutput"><a href="../lock_error.html" title="Class lock_error">boost::lock_error</a></code>
+									if <code class="computeroutput">state() != read_write_lock_state::read_locked</code>.</p>
 <p>Makes a blocking attempt to convert the lock held on the associated
 									read/write mutex object from a read-lock to a write-lock without releasing
-									the lock, returning <tt class="computeroutput">true</tt> if the attempt is successful
-									in the specified time <tt class="computeroutput">t</tt>, otherwise <tt class="computeroutput">false</tt>.</p>
+									the lock, returning <code class="computeroutput">true</code> if the attempt is successful
+									in the specified time <code class="computeroutput">t</code>, otherwise <code class="computeroutput">false</code>.</p>
 </td>
 </tr>
 </tbody>
@@ -2121,17 +2125,17 @@
 <a name="threads.concepts.ScopedTimedReadWriteLock"></a>ScopedTimedReadWriteLock Concept</h6></div></div></div>
 <p>A ScopedTimedReadWriteLock is a refinement of 
 				<a href="concepts.html#threads.concepts.TimedReadWriteLock" title="TimedReadWriteLock Concept">TimedReadWriteLock</a>. 
-				For a ScopedTimedReadWriteLock type <tt class="computeroutput">L</tt>
-				and an object <tt class="computeroutput">lk</tt> of that type,
-				and an object <tt class="computeroutput">m</tt> of a type meeting the 
+				For a ScopedTimedReadWriteLock type <code class="computeroutput">L</code>
+				and an object <code class="computeroutput">lk</code> of that type,
+				and an object <code class="computeroutput">m</code> of a type meeting the 
 				<a href="concepts.html#threads.concepts.TimedReadWriteMutex" title="TimedReadWriteMutex Concept">TimedReadWriteMutex</a> requirements,
-				and an object <tt class="computeroutput">s</tt> of type <tt class="computeroutput">read_write_lock_state</tt>,
-				and an object <tt class="computeroutput">t</tt> of type <a href="../xtime.html" title="Struct xtime">boost::xtime</a>, 
-				and an object <tt class="computeroutput">b</tt> of type <tt class="computeroutput">blocking_mode</tt>, 
+				and an object <code class="computeroutput">s</code> of type <code class="computeroutput">read_write_lock_state</code>,
+				and an object <code class="computeroutput">t</code> of type <code class="computeroutput"><a href="../xtime.html" title="Struct xtime">boost::xtime</a></code>, 
+				and an object <code class="computeroutput">b</code> of type <code class="computeroutput">blocking_mode</code>, 
 				the following expressions must be well-formed and have the
 				indicated effects.</p>
 <div class="table">
-<a name="id623170"></a><p class="title"><b>Table 10.21. ScopedTimedReadWriteLock Expressions</b></p>
+<a name="id1363131"></a><p class="title"><b>Table 12.21. ScopedTimedReadWriteLock Expressions</b></p>
 <table class="table" summary="ScopedTimedReadWriteLock Expressions">
 <colgroup>
 <col>
@@ -2143,19 +2147,19 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="computeroutput">L lk(m,s,b);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt> and associates read/write mutex
-								object <tt class="computeroutput">m</tt> with it, then: if <tt class="computeroutput">s == read_write_lock_state::read_locked</tt>, calls
-								<tt class="computeroutput">read_lock()</tt> if <tt class="computeroutput">b</tt>, otherwise <tt class="computeroutput">try_read_lock()</tt>;
-								if <tt class="computeroutput">s==read_write_lock_state::write_locked</tt>, calls <tt class="computeroutput">write_lock()</tt> if <tt class="computeroutput">b</tt>,
-								otherwise <tt class="computeroutput">try_write_lock</tt>.</td>
+<td><code class="computeroutput">L lk(m,s,b);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code> and associates read/write mutex
+								object <code class="computeroutput">m</code> with it, then: if <code class="computeroutput">s == read_write_lock_state::read_locked</code>, calls
+								<code class="computeroutput">read_lock()</code> if <code class="computeroutput">b</code>, otherwise <code class="computeroutput">try_read_lock()</code>;
+								if <code class="computeroutput">s==read_write_lock_state::write_locked</code>, calls <code class="computeroutput">write_lock()</code> if <code class="computeroutput">b</code>,
+								otherwise <code class="computeroutput">try_write_lock</code>.</td>
 </tr>
 <tr>
-<td><tt class="computeroutput">L lk(m,s,t);</tt></td>
-<td>Constructs an object <tt class="computeroutput">lk</tt> and associates read/write mutex
-								object <tt class="computeroutput">m</tt> with it, then: if <tt class="computeroutput">s == read_write_lock_state::read_locked</tt>, calls
-								<tt class="computeroutput">timed_read_lock(t)</tt>; if <tt class="computeroutput">s==read_write_lock_state::write_locked</tt>,
-								calls <tt class="computeroutput">timed_write_lock(t)</tt>.</td>
+<td><code class="computeroutput">L lk(m,s,t);</code></td>
+<td>Constructs an object <code class="computeroutput">lk</code> and associates read/write mutex
+								object <code class="computeroutput">m</code> with it, then: if <code class="computeroutput">s == read_write_lock_state::read_locked</code>, calls
+								<code class="computeroutput">timed_read_lock(t)</code>; if <code class="computeroutput">s==read_write_lock_state::write_locked</code>,
+								calls <code class="computeroutput">timed_write_lock(t)</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -2165,11 +2169,11 @@
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="threads.concepts.read-write-lock-models"></a>Lock Models</h5></div></div></div>
-<p><span class="bold"><b>Boost.Threads</b></span> currently supplies six models of
+<p> currently supplies six models of
 			<a href="concepts.html#threads.concepts.ReadWriteLock" title="ReadWriteLock Concept">ReadWriteLock</a>
 			and its refinements.</p>
 <div class="table">
-<a name="id623344"></a><p class="title"><b>Table 10.22. Lock Models</b></p>
+<a name="id1555521"></a><p class="title"><b>Table 12.22. Lock Models</b></p>
 <table class="table" summary="Lock Models">
 <colgroup>
 <col>
@@ -2191,9 +2195,9 @@
 <td><a href="concepts.html#threads.concepts.ScopedReadWriteLock" title="ScopedReadWriteLock Concept">ScopedReadWriteLock</a></td>
 <td><a href="concepts.html#threads.concepts.ReadWriteLock" title="ReadWriteLock Concept">ReadWriteLock</a></td>
 <td>
-<p>boost::read_write_mutex::scoped_read_write_lock</p>
-<p>boost::try_read_write_mutex::scoped_read_write_lock</p>
-<p>boost::timed_read_write_mutex::scoped_read_write_lock</p>
+<p><code class="computeroutput">boost::read_write_mutex::scoped_read_write_lock</code></p>
+<p><code class="computeroutput">boost::try_read_write_mutex::scoped_read_write_lock</code></p>
+<p><code class="computeroutput">boost::timed_read_write_mutex::scoped_read_write_lock</code></p>
 </td>
 </tr>
 <tr>
@@ -2205,8 +2209,8 @@
 <td><a href="concepts.html#threads.concepts.ScopedTryReadWriteLock" title="ScopedTryReadWriteLock Expressions">ScopedTryReadWriteLock</a></td>
 <td><a href="concepts.html#threads.concepts.TryReadWriteLock" title="TryReadWriteLock Expressions">TryReadWriteLock</a></td>
 <td>
-<p>boost::try_read_write_mutex::scoped_try_read_write_lock</p>
-<p>boost::timed_read_write_mutex::scoped_try_read_write_lock</p>
+<p><code class="computeroutput">boost::try_read_write_mutex::scoped_try_read_write_lock</code></p>
+<p><code class="computeroutput">boost::timed_read_write_mutex::scoped_try_read_write_lock</code></p>
 </td>
 </tr>
 <tr>
@@ -2217,7 +2221,7 @@
 <tr>
 <td><a href="concepts.html#threads.concepts.ScopedTimedReadWriteLock" title="ScopedTimedReadWriteLock Concept">ScopedTimedReadWriteLock</a></td>
 <td><a href="concepts.html#threads.concepts.TimedReadWriteLock" title="TimedReadWriteLock Concept">TimedReadWriteLock</a></td>
-<td><p>boost::timed_read_write_mutex::scoped_timed_read_write_lock</p></td>
+<td><p><code class="computeroutput">boost::timed_read_write_mutex::scoped_timed_read_write_lock</code></p></td>
 </tr>
 </tbody>
 </table>
@@ -2226,7 +2230,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><small><p>Last revised: November 18, 2004 at 23:55:33 GMT</p></small></td>
+<td align="left"><small><p>Last revised: November 28, 2004 at 04:29:36 GMT</p></small></td>
 <td align="right"><small>Copyright © 2001-2003 William E. Kempf</small></td>
 </tr></table>
 <hr>

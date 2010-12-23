@@ -31,6 +31,7 @@ http://www.boost.org/LICENSE_1_0.txt)
     <xsl:param name="mode"/>
     <xsl:param name="source"/>
     <xsl:param name="run_date"/>
+    <xsl:param name="warnings"/>
     <xsl:param name="comment_file"/>
     <xsl:param name="expected_results_file"/>
     <xsl:param name="explicit_markup_file"/>
@@ -54,7 +55,27 @@ http://www.boost.org/LICENSE_1_0.txt)
 
     <xsl:variable name="test_case_logs" select="//test-log[ meta:is_test_log_a_test_case(.) ]"/>
     <xsl:variable name="libraries" select="set:distinct( $test_case_logs/@library )"/>
+    <xsl:variable name="unusables_f">
+        <unusables>
+            <xsl:for-each select="set:distinct( $run_toolsets//toolset/@name )">
+                <xsl:variable name="toolset" select="."/>
+                <xsl:for-each select="$libraries">
+                    <xsl:variable name="library" select="."/>
+                    <xsl:if test="meta:is_unusable_( $explicit_markup, $library, $toolset )">
+                        <unusable library-name="{$library}" toolset-name="{$toolset}"/>                            
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:for-each>
+        </unusables>
+    </xsl:variable>
 
+    <xsl:variable name="unusables" select="exsl:node-set( $unusables_f )"/>
+
+        
+    <xsl:key 
+        name="library-name_toolset-name_key" 
+        match="unusables/unusable" 
+        use="concat( @library-name, '&gt;@&lt;', @toolset-name )"/>
 
     <!-- modes -->
 
@@ -68,6 +89,7 @@ http://www.boost.org/LICENSE_1_0.txt)
     <xsl:variable name="release_postfix">
         <xsl:if test="$release='yes'">_release</xsl:if>
     </xsl:variable>
+
 
 
     <xsl:template name="test_type_col">
@@ -91,6 +113,8 @@ http://www.boost.org/LICENSE_1_0.txt)
 
     <xsl:template match="/">
 
+        <xsl:message><xsl:value-of select="count($unusables)"/><xsl:copy-of select="$unusables"/></xsl:message>
+        
         <exsl:document href="debug.xml" 
           method="xml" 
           encoding="utf-8"
@@ -102,11 +126,13 @@ http://www.boost.org/LICENSE_1_0.txt)
                         <xsl:copy-of select="."/>
                     </xsl:for-each>
                 </runs>
+                <xsl:copy-of select="$unusables_f"/>
+                <xsl:copy-of select="$unusables"/>
             </debug>
 
         </exsl:document>
-
-        <xsl:variable name="index_path" select="concat( 'index_', $release_postfix, '.html' )"/>
+        <xsl:message>Wrote debug</xsl:message>
+        <xsl:variable name="index_path" select="concat( 'index', $release_postfix, '_.html' )"/>
         
         <!-- Index page -->
         <head>
@@ -141,27 +167,26 @@ http://www.boost.org/LICENSE_1_0.txt)
                     <a class="hover-link" href="summary.html" target="_top"><xsl:value-of select="$source"/></a>
                 </h1>                            
 
-                <div class="report-info">
-                    <div>
-                        <b>Report Time: </b> <xsl:value-of select="$run_date"/>
-                    </div>
-                      
-                    <div>
-                        <b>Purpose: </b>
-                        <xsl:choose>
-                            <xsl:when test="$mode='user'">
-                                The purpose of this report is to help a user to find out whether a particular library 
-                                works on the particular compiler(s). For CVS "health report", see 
-                                <a href="../{$alternate_mode}/index.html" target="_top">developer summary</a>.
-                            </xsl:when>
-                            <xsl:when test="$mode='developer'">
-                                Provides Boost developers with visual indication of the CVS "health". For user-level 
-                                report, see <a href="../{$alternate_mode}/index.html" target="_top">user summary</a>.
-                            </xsl:when>
-                        </xsl:choose>
-                    </div>
-                </div>
-                              
+                <xsl:variable name="purpose">
+                    <xsl:choose>
+                        <xsl:when test="$mode='user'">
+                            The purpose of this report is to help a user to find out whether a particular library 
+                            works on the particular compiler(s). For CVS "health report", see 
+                            <a href="../{$alternate_mode}/index.html" target="_top">developer summary</a>.
+                        </xsl:when>
+                        <xsl:when test="$mode='developer'">
+                            Provides Boost developers with visual indication of the CVS "health". For user-level 
+                            report, see <a href="../{$alternate_mode}/index.html" target="_top">user summary</a>.
+                        </xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
+
+                <xsl:call-template name="insert_report_header">
+                    <xsl:with-param name="run_date" select="$run_date"/>
+                    <xsl:with-param name="warnings" select="$warnings"/>
+                    <xsl:with-param name="purpose" select="$purpose"/>
+                </xsl:call-template>
+
                 <div class="comment">
                     <xsl:if test="$comment_file != ''">
                         <xsl:copy-of select="document( $comment_file )"/>
@@ -278,6 +303,7 @@ http://www.boost.org/LICENSE_1_0.txt)
                 <xsl:call-template name="insert_page_links">
                     <xsl:with-param name="page" select="meta:encode_path( $library )"/>
                     <xsl:with-param name="release" select="$release"/>
+                    <xsl:with-param name="mode" select="$alternate_mode"/>
                 </xsl:call-template>
 
                 <h1 class="page-title">
@@ -288,15 +314,13 @@ http://www.boost.org/LICENSE_1_0.txt)
                     <a class="hover-link" href="summary.html" target="_top"><xsl:value-of select="$source"/></a>
                 </h1>
 
-                <div class="report-info">
-                    <b>Report Time: </b> <xsl:value-of select="$run_date"/>
-                </div>
+                <xsl:call-template name="insert_report_header">
+                    <xsl:with-param name="run_date" select="$run_date"/>
+                    <xsl:with-param name="warnings" select="$warnings"/>
+                </xsl:call-template>
 
                 <!-- library marks = library-unusable markup for toolsets in the report  -->
                 <xsl:variable name="library_marks" select="$explicit_markup//library[ @name = $library ]/mark-unusable/toolset[  meta:re_match( @name, $run_toolsets//toolset/@name ) ]/.."/>
-                <lmarks>
-                    <xsl:copy-of select="$library_marks"/>
-                </lmarks>
 
                 <table border="0" cellspacing="0" cellpadding="0" class="library-table" width="1%" summary="Library results">
 
@@ -305,12 +329,14 @@ http://www.boost.org/LICENSE_1_0.txt)
                         <xsl:with-param name="mode" select="'details'"/>
                         <xsl:with-param name="top_or_bottom" select="'top'"/>
                         <xsl:with-param name="run_toolsets" select="$run_toolsets"/>
+                        <xsl:with-param name="run_date" select="$run_date"/>
                       </xsl:call-template>
                       
                       <xsl:call-template name="insert_toolsets_row">
                         <xsl:with-param name="mode" select="'details'"/>
                         <xsl:with-param name="library_marks" select="$library_marks"/>
                         <xsl:with-param name="library" select="$library"/>
+                        <xsl:with-param name="run_date" select="$run_date"/>
                       </xsl:call-template>
                     </thead>
                     <tfoot>
@@ -318,55 +344,31 @@ http://www.boost.org/LICENSE_1_0.txt)
                         <xsl:with-param name="mode" select="'details'"/>
                         <xsl:with-param name="library_marks" select="$library_marks"/>
                         <xsl:with-param name="library" select="$library"/>
+                        <xsl:with-param name="run_date" select="$run_date"/>
                       </xsl:call-template>
 
                       <xsl:call-template name="insert_runners_rows">
                           <xsl:with-param name="mode" select="'details'"/>
                           <xsl:with-param name="top_or_bottom" select="'bottom'"/>
+                          <xsl:with-param name="run_toolsets" select="$run_toolsets"/>
+                          <xsl:with-param name="run_date" select="$run_date"/>
                       </xsl:call-template>
                     </tfoot>
 
                     <tbody>
-                        <!-- lib_tests = test_log* -->
                         <xsl:variable name="lib_tests" select="$test_case_logs[@library = $library]" /> 
-
-                        <!-- lib_unique_test_names = test_log* -->
-                        <xsl:variable name="lib_unique_test_names" 
+                        <xsl:variable name="lib_unique_tests_list" 
                             select="$lib_tests[ generate-id(.) = generate-id( key('test_name_key', concat( @library, '&gt;@&lt;', @test-name ) ) ) ]" />
 
-                        <xsl:variable name="lib_corner_case_tests_markup" select="$explicit_markup//library[ @name = $library ]/test[ @corner-case='yes' ]"/>
-                        
-                        <xsl:variable name="lib_general_tests" 
-                            select="meta:order_tests_by_name( $lib_unique_test_names[ not( @test-name = $lib_corner_case_tests_markup/@name ) ]  )"/>
-
-
-                        <xsl:variable name="lib_corner_case_tests" select="meta:order_tests_by_name( $lib_unique_test_names[ @test-name = $lib_corner_case_tests_markup/@name ] ) " />
-
-
-                        <!-- general tests section -->
+                        <xsl:variable name="lib_tests_by_category"
+                            select="meta:order_tests_by_category( $lib_unique_tests_list )"/>
 
                         <xsl:call-template name="insert_test_section">
                             <xsl:with-param name="library" select="$library"/>
-                            <xsl:with-param name="section_test_names" select="$lib_general_tests"/>
+                            <xsl:with-param name="section_test_names" select="$lib_tests_by_category"/>
                             <xsl:with-param name="lib_tests" select="$lib_tests"/>
+                            <xsl:with-param name="toolsets" select="$run_toolsets"/>
                         </xsl:call-template>
-
-                        <!-- corner-case tests section -->
-
-                        <xsl:if test="count( $lib_corner_case_tests ) > 0">
-                            <tr>
-                                <!--<td colspan="2">&#160;</td>                  -->
-                                <td class="library-corner-case-header" colspan="{count($run_toolsets/platforms/platform/runs/run/toolset) + 3 }" align="center">Corner-case tests</td>
-                                <!--<td>&#160;</td>-->
-                            </tr>
-
-                        <xsl:call-template name="insert_test_section">
-                            <xsl:with-param name="library" select="$library"/>
-                            <xsl:with-param name="section_test_names" select="$lib_corner_case_tests"/>
-                            <xsl:with-param name="lib_tests" select="$lib_tests"/>
-                        </xsl:call-template>
-                        
-                    </xsl:if>
 
                     </tbody>
                 </table>
@@ -390,12 +392,15 @@ http://www.boost.org/LICENSE_1_0.txt)
                     </xsl:for-each>
                     </table>
                 </xsl:if>
-                    
-                <xsl:copy-of select="document( concat( 'html/library_', $mode, '_legend.html' ) )"/>
+
+                <div id="legend">                    
+                     <xsl:copy-of select="document( concat( 'html/library_', $mode, '_legend.html' ) )"/>
+                </div>
 
                 <xsl:call-template name="insert_page_links">
                     <xsl:with-param name="page" select="meta:encode_path( $library )"/>
                     <xsl:with-param name="release" select="$release"/>
+                    <xsl:with-param name="mode" select="$alternate_mode"/>
                 </xsl:call-template>
 
                 </body>
@@ -441,66 +446,11 @@ http://www.boost.org/LICENSE_1_0.txt)
         <xsl:variable name="cell_link">
             <xsl:choose>
                 <xsl:when test="count( $test_log ) &gt; 1">
-                    <xsl:variable name="variants_file_path" select="concat( meta:encode_path( concat( $test_log/../@runner, '-', $test_log/@library, '-', $test_log/@toolset, '-', $test_log/@test-name, '-variants' ) ), '.html' )"/>
-                    <xsl:variable name="variants__file_path" select="concat( meta:encode_path( concat( $test_log/../@runner, '-', $test_log/@library, '-', $test_log/@toolset, '-', $test_log/@test-name, '-variants_' ) ), '.html' )"/>
-                    <xsl:message>Writing variants file <xsl:value-of select="$variants_file_path"/></xsl:message>
-                    
-                    <exsl:document href="{$variants_file_path}"
-                        method="html" 
-                        doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" 
-                        encoding="utf-8"
-                        indent="yes">
-                        <html>
-                            <head>
-                                <link rel="stylesheet" type="text/css" href="../master.css" title="master" />
-                                <title>Boost regression: <xsl:value-of select="$library"/>/<xsl:value-of select="$source"/></title>
-                            </head>
-                            <frameset cols="190px,*" frameborder="0" framespacing="0" border="0">
-                                <frame name="tocframe" src="toc{$release_postfix}.html" scrolling="auto"/>
-                                <frame name="docframe" src="{$variants__file_path}" scrolling="auto"/>
-                            </frameset>
-                        </html>
-                    </exsl:document>  
-
-                    <exsl:document href="{$variants__file_path}"
-                        method="html" 
-                        doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" 
-                        encoding="utf-8"
-                        indent="yes">
-
-                        <html>
-                            <body>
-                                <table>
-                                    <xsl:for-each select="$test_log">
-                                        <tr>
-                                            <td>
-                                                <!--<debug>
-                                                    <xsl:copy-of select="."/>
-
-                                                    <xsl:value-of select="meta:show_output( $explicit_markup, . )"/>
-                                                    <xsl:value-of select="meta:log_file_path(.)"/>
-                                                </debug>-->
-                                                <xsl:choose>
-                                                    <xsl:when test="meta:log_file_path(.) != ''">
-                                                        <a href="{meta:log_file_path(.)}" target="_top" >
-                                                            <xsl:value-of select="@target-directory"/>
-                                                        </a>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <xsl:value-of select="@target-directory"/>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                            </td>
-                                        </tr>
-                                    </xsl:for-each>
-                                </table>
-                            </body>
-                        </html>
-                    </exsl:document>           
-                    <xsl:value-of select="$variants_file_path"/>
+                    <xsl:variable name="variants__file_path" select="concat( meta:encode_path( concat( $test_log/../@runner, '-', $test_log/@library, '-', $test_log/@toolset, '-', $test_log/@test-name, '-variants_', $release_postfix ) ), '.html' )"/>
+                    <xsl:value-of select="$variants__file_path"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="meta:log_file_path($test_log)"/>
+                    <xsl:value-of select="meta:log_file_path( $test_log, $test_log/../@runner, $release_postfix )"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -563,57 +513,71 @@ http://www.boost.org/LICENSE_1_0.txt)
         <xsl:param name="library"/>
         <xsl:param name="toolset"/>
         <xsl:param name="test_log"/>
-        <xsl:param name="log_link"/>
-        
-        <xsl:variable name="class">
-        <xsl:choose>
-            <xsl:when test="meta:is_unusable( $explicit_markup, $library, $toolset )">
-            <xsl:text>library-unusable</xsl:text>
-            </xsl:when>
-            <xsl:when test="not( $test_log )">
-            <xsl:text>library-missing</xsl:text>
-            </xsl:when>
-            <xsl:when test="$test_log[@result='fail' and @status='unexpected']">
-            <xsl:text>library-user-fail-unexpected</xsl:text>
-            </xsl:when>
-            <xsl:when test="$test_log[ @result='fail' and @status='expected' ]">
-            <xsl:text>library-user-fail-expected</xsl:text>
-        </xsl:when>
-        <xsl:when test="$test_log[ @result='success']">
-            <xsl:text>library-user-success</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:message terminate="yes">
-            Unknown status
-            </xsl:message>
-        </xsl:otherwise>
-        </xsl:choose>
 
-    </xsl:variable>
+        <xsl:variable name="class" select="concat( 'library-', meta:result_cell_class( $library, $toolset, $test_log ) )"/>
 
-        <td class="{$class}" title="{$test_log/@test-name}/{$toolset}">
+        <xsl:variable name="cell_link">
+            <xsl:choose>
+                <xsl:when test="count( $test_log ) &gt; 1">
+                    <xsl:variable name="variants__file_path" select="concat( meta:encode_path( concat( $test_log/../@runner, '-', $test_log/@library, '-', $test_log/@toolset, '-', $test_log/@test-name, '-variants_', $release_postfix ) ), '.html' )"/>
+                    <xsl:value-of select="$variants__file_path"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="meta:log_file_path( $test_log, $test_log/../@runner, $release_postfix )"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <td class="{$class} user-{$class}" title="{$test_log/@test-name}/{$toolset}">
         <xsl:choose>
-            <xsl:when test="not( $test_log )">
-            missing
-            </xsl:when>
+             <xsl:when test="meta:is_unusable( $explicit_markup, $library, $toolset )">
+                <xsl:call-template name="insert_test_result">
+                    <xsl:with-param name="result" select="'unusable'"/>
+                    <xsl:with-param name="log_link" select="$cell_link"/>
+                </xsl:call-template>
+            </xsl:when> 
+
+            <xsl:when test="count( $test_log ) &lt; 1">
+                <xsl:text>&#160;&#160;&#160;&#160;</xsl:text>
+            </xsl:when> 
+ 
             <xsl:when test="$test_log/@result != 'success' and $test_log/@status = 'expected'">
-            <a href="{$log_link}" class="log-link" target="_top">
-                fail
-            </a>
+                <xsl:call-template name="insert_test_result">
+                    <xsl:with-param name="result">
+                        <xsl:choose>
+                            <xsl:when test="$test_log/@expected-reason != ''">
+                                <xsl:text>fail?</xsl:text>
+                            </xsl:when> 
+                            <xsl:otherwise>
+                                <xsl:text>fail*</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:with-param>
+                    <xsl:with-param name="log_link" select="$cell_link"/>
+                </xsl:call-template>
             </xsl:when>
-            <xsl:when test="$test_log/@result != 'success'">
-            <a href="{$log_link}" class="log-link" target="_top">
-                unexp.
-            </a>
+
+            <xsl:when test="$test_log/@result != 'success' and $test_log/@status = 'unexpected'">
+                <xsl:call-template name="insert_test_result">
+                    <xsl:with-param name="result" select="'fail'"/>
+                    <xsl:with-param name="log_link" select="$cell_link"/>
+                </xsl:call-template>
             </xsl:when>
+
+            <xsl:when test="$test_log/@result = 'success' and $test_log/@status = 'unexpected'">
+                <xsl:call-template name="insert_test_result">
+                    <xsl:with-param name="result" select="'pass'"/>
+                    <xsl:with-param name="log_link" select="$cell_link"/>
+                </xsl:call-template>
+            </xsl:when>
+
             <xsl:otherwise>
-            <xsl:text>pass</xsl:text>
+                <xsl:call-template name="insert_test_result">
+                    <xsl:with-param name="result" select="'pass'"/>
+                    <xsl:with-param name="log_link" select="$cell_link"/>
+                </xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>  
-
-        <!--<xsl:if test="count( $test_log ) > 1" > 
-            <div class="conf-problem">conf.&#160;problem</div>
-        </xsl:if>-->
         </td>
     </xsl:template>
 
@@ -621,7 +585,6 @@ http://www.boost.org/LICENSE_1_0.txt)
         <xsl:param name="library"/>    
         <xsl:param name="test_name"/>
         <xsl:param name="test_results"/>
-        <xsl:param name="toolsets"/>
         <xsl:param name="line_mod"/>
 
         <xsl:variable name="test_program">
@@ -644,36 +607,7 @@ http://www.boost.org/LICENSE_1_0.txt)
             <xsl:variable name="toolset" select="@name" />
             <xsl:variable name="runner" select="../@runner" />
 
-            <!-- Write log file -->
             <xsl:variable name="test_result_for_toolset" select="$test_results[ @toolset = $toolset and ../@runner=$runner ]"/>
-
-
-            <xsl:for-each select="$test_result_for_toolset">
-                <xsl:variable name="log_file" select="meta:log_file_path(.)"/>
-
-                <xsl:if test="$release != 'yes' and count( $test_result_for_toolset ) > 0 and $log_file != '' ">
-                    <xsl:message>Writing log file document  <xsl:value-of select="$log_file"/></xsl:message>
-                        <exsl:document href="{$log_file}"
-                            method="html" 
-                            doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" 
-                            encoding="utf-8"
-                            indent="yes">
-                            
-                            <html>
-                                <head>
-                                    <link rel="stylesheet" type="text/css" href="../master.css" title="master" />
-                                    <!--<title>Boost regression unresolved issues: <xsl:value-of select="$source"/></title>-->
-                                </head>
-                                <frameset cols="190px,*" frameborder="0" framespacing="0" border="0">
-                                    <frame name="tocframe" src="../toc.html" scrolling="auto"/>
-                                    <frame name="docframe" src="../../{$log_file}" scrolling="auto"/>
-                                </frameset>
-                            </html>
-                        </exsl:document>
-                    </xsl:if>
-                
-            </xsl:for-each>
-
 
             <!-- Insert cell -->
             <xsl:choose>
@@ -682,7 +616,6 @@ http://www.boost.org/LICENSE_1_0.txt)
                 <xsl:with-param name="library" select="$library"/>
                 <xsl:with-param name="toolset" select="$toolset"/>
                 <xsl:with-param name="test_log" select="$test_result_for_toolset"/>
-                <xsl:with-param name="log_link" select="$log_file"/>
                 </xsl:call-template>
             </xsl:when>
             <xsl:when test="$mode='developer'">
@@ -701,33 +634,38 @@ http://www.boost.org/LICENSE_1_0.txt)
 
     <xsl:template name="insert_test_section">
         <xsl:param name="library"/>      
-        <xsl:param name="section_test_nanes"/>
+        <xsl:param name="section_test_names"/>
         <xsl:param name="lib_tests"/>
         <xsl:param name="toolsets"/>
 
+        <xsl:variable name="category_span" select="count($toolsets/platforms/platform/runs/run/toolset) + 3"/>
+
         <xsl:for-each select="$section_test_names">
+
             <xsl:variable name="test_name" select="@test-name"/>
+            <xsl:variable name="category_start" select="position() = 1 or @category != preceding-sibling::*[1]/@category"/>
+            <xsl:variable name="category_end" select="position() = last() or @category != following-sibling::*[1]/@category"/>
+
             <xsl:variable name="line_mod">
                 <xsl:choose>
-                    <xsl:when test="1 = last()">
-                        <xsl:text>-single</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="generate-id( . ) = generate-id( $section_test_names[1] )">
-                        <xsl:text>-first</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="generate-id( . ) = generate-id( $section_test_names[last()] )">
-                        <xsl:text>-last</xsl:text>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text></xsl:text>
-                    </xsl:otherwise>
+                    <xsl:when test="$category_start and $category_end"><xsl:text>-single</xsl:text></xsl:when>
+                    <xsl:when test="$category_start"><xsl:text>-first</xsl:text></xsl:when>
+                    <xsl:when test="$category_end"><xsl:text>-last</xsl:text></xsl:when>
+                    <xsl:otherwise><xsl:text></xsl:text></xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
-              
+
+            <xsl:if test="$category_start and @category != '0'">
+                <tr>
+                    <td class="library-test-category-header" colspan="{$category_span}" align="center">
+                        <xsl:value-of select="@category"/>
+                    </td>
+                </tr>
+            </xsl:if>
+
             <xsl:call-template name="insert_test_line">
                 <xsl:with-param name="library" select="$library"/>
                 <xsl:with-param name="test_results" select="$lib_tests[ @test-name = $test_name ]"/>
-                <xsl:with-param name="toolsets" select="$toolsets"/>
                 <xsl:with-param name="test_name" select="$test_name"/>
                 <xsl:with-param name="line_mod" select="$line_mod"/>
             </xsl:call-template>
@@ -735,12 +673,12 @@ http://www.boost.org/LICENSE_1_0.txt)
           
     </xsl:template>
 
-    <func:function name="meta:order_tests_by_name">
+    <func:function name="meta:order_tests_by_category">
         <xsl:param name="tests"/>
 
         <xsl:variable name="a">                  
             <xsl:for-each select="$tests">
-                <xsl:sort select="@test-name" order="ascending"/>
+                <xsl:sort select="concat( @category, '|', @test-name )" order="ascending"/>
                 <xsl:copy-of select="."/>
             </xsl:for-each>
         </xsl:variable>

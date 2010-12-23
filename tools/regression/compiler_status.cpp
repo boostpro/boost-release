@@ -55,6 +55,7 @@ namespace
   bool ignore_pass;
   bool no_warn;
   bool no_links;
+  bool boost_build_v2;
 
   fs::path jamfile_path;
 
@@ -314,10 +315,11 @@ namespace
 
 //  find_element  ------------------------------------------------------------//
 
+  const xml::element empty_element;
+
   const xml::element & find_element(
     const xml::element & root, const string & name )
   {
-    static xml::element empty_element;
     xml::element_list::const_iterator itr;
     for ( itr = root.elements.begin();
           itr != root.elements.end() && (*itr)->name != name;
@@ -338,11 +340,60 @@ const string & attribute_value( const xml::element & element,
   return atr == element.attributes.end() ? empty_string : atr->value;
 }
 
+//  find_bin_path  -----------------------------------------------------------//
+
+// Takes a relative path from boost root to a Jamfile.
+// Returns the directory where the build targets from
+// that Jamfile are located. If not found, emits a warning 
+// and returns empty path.
+const fs::path find_bin_path(const string& relative)
+{
+  fs::path bin_path;
+  if (boost_build_v2)
+  {
+    bin_path = locate_root / "bin.v2" / relative;
+    if (!fs::exists(bin_path))
+    {
+      std::cerr << "warning: could not find build results for '" 
+                << relative << "'.\n";
+      std::cerr << "warning: tried directory " 
+                << bin_path.native_directory_string() << "\n";
+      bin_path = "";
+    }
+  }
+  else
+  {
+    bin_path = locate_root / "bin/boost" / relative;
+    if (!fs::exists(bin_path))
+    {
+      bin_path = locate_root / "bin" / relative / "bin";
+      if (!fs::exists(bin_path))
+      {
+        bin_path = fs::path( locate_root / relative / "bin" );
+        if (!fs::exists(bin_path))
+        {
+          bin_path = fs::path( locate_root / "bin/boost/libs" /
+            relative.substr( relative.find( '/' )+1 ) );
+        }
+      }
+    }
+    if (!fs::exists(bin_path))
+    {
+      std::cerr << "warning: could not find build results for '" 
+                << relative << "'.\n";
+      bin_path = "";
+    }
+  }
+  return bin_path;
+}
+
+
 //  generate_report  ---------------------------------------------------------//
 
   // return 0 if nothing generated, 1 otherwise, except 2 if compiler msgs
   int generate_report( const xml::element & db,
                        const string & source_library_name,
+                       const string & test_type,
                        const string & test_name, // possibly object library name
                        const string & toolset,
                        bool pass,
@@ -363,8 +414,9 @@ const string & attribute_value( const xml::element & element,
     if ( pos != string::npos && compile.size()-pos <= 2
         && compile.find( ' ' ) == string::npos ) compile.clear();
 
-    if ( lib.empty() && compile.empty() && link.empty() && run.empty() )
-      return 0;
+    if ( lib.empty()
+      && (compile.empty() || test_type == "compile_fail")
+      && link.empty() && run.empty() ) return 0;
 
     int result = 1; // some kind of msg for sure
 
@@ -420,7 +472,7 @@ const string & attribute_value( const xml::element & element,
         if ( file )
         {
           xml::element_ptr db = xml::parse( file, pth.string() );
-          generate_report( *db, source_library_name, object_library_name, toolset, false );
+          generate_report( *db, source_library_name, test_type, object_library_name, toolset, false );
         }
         else
         {
@@ -480,6 +532,7 @@ const string & attribute_value( const xml::element & element,
 
   bool do_cell( const string & lib_name,
     const fs::path & test_dir,
+    const string & test_type,
     const string & test_name,
     const string & toolset,
     string & target,
@@ -489,10 +542,10 @@ const string & attribute_value( const xml::element & element,
     fs::path target_dir( target_directory( test_dir / toolset ) );
     bool pass = false;
 
-    // missing jam residue
-    if ( fs::exists( target_dir / (test_name + ".test") ) ) pass = true;
-    else if ( !fs::exists( target_dir / "test_log.xml" ) )
+    if ( !fs::exists( target_dir / "test_log.xml" ) )
     {
+      std::cerr << "Missing jam_log.xml in target:\n "
+        << target_dir.string() << "\n";
       target += "<td>" + missing_residue_msg + "</td>";
       return true;
     }
@@ -500,27 +553,40 @@ const string & attribute_value( const xml::element & element,
     int anything_generated = 0;
     bool note = false;
 
-    // create links file entry
+    fs::path pth( target_dir / "test_log.xml" );
+    fs::ifstream file( pth );
+    if ( !file ) // could not open jam_log.xml
+    {
+      std::cerr << "Can't open jam_log.xml in target:\n "
+        << target_dir.string() << "\n";
+      target += "<td>" + missing_residue_msg + "</td>";
+      return false;
+    }
+
+    xml::element_ptr dbp = xml::parse( file, pth.string() );
+    const xml::element & db( *dbp );
+
+    std::string test_type_base( test_type );
+    if ( test_type_base.size() > 5 )
+    {
+      const string::size_type trailer = test_type_base.size() - 5;
+      if ( test_type_base.substr( trailer ) == "_fail" )
+      {
+        test_type_base.erase( trailer );
+      }
+    }
+    const xml::element & test_type_element( find_element( db, test_type_base ) );
+
+    pass = !test_type_element.name.empty()
+      && attribute_value( test_type_element, "result" ) != "fail";
+
     if ( !no_links )
     {
-      fs::path pth( target_dir / "test_log.xml" );
-      fs::ifstream file( pth );
-      if ( !file ) // missing jam_log.xml
-      {
-        std::cerr << "Missing jam_log.xml in target:\n "
-          << target_dir.string() << "\n";
-        target += "<td>";
-        target += pass ? pass_msg : fail_msg;
-        target += "</td>";
-        return pass;
-      }
-      xml::element_ptr dbp = xml::parse( file, pth.string() );
-      const xml::element & db( *dbp );
-      note = attribute_value( find_element( db, "run" ), "result" ) == "note";
+      note = attribute_value( test_type_element, "result" ) == "note";
 
       // generate bookmarked report of results, and link to it
       anything_generated
-        = generate_report( db, lib_name, test_name, toolset, pass,
+        = generate_report( db, lib_name, test_type, test_name, toolset, pass,
           always_show_run_output || note );
     }
 
@@ -537,7 +603,9 @@ const string & attribute_value( const xml::element & element,
       target += "-";
       target += toolset;
       target += "\">";
-      target += pass ? (anything_generated < 2 ? pass_msg : warn_msg) : fail_msg;
+      target += pass
+        ? (anything_generated < 2 ? pass_msg : warn_msg)
+        : fail_msg;
       target += "</a>";
       if ( pass && note ) target += note_msg;
     }
@@ -588,14 +656,14 @@ const string & attribute_value( const xml::element & element,
     target += "<td>" + test_type + "</td>";
 
     bool no_warn_save = no_warn;
-    if ( test_type.find( "fail" ) != string::npos ) no_warn = true;
+    //if ( test_type.find( "fail" ) != string::npos ) no_warn = true;
 
     // for each compiler, generate <td>...</td> html
     bool anything_to_report = false;
     for ( std::vector<string>::const_iterator itr=toolsets.begin();
       itr != toolsets.end(); ++itr )
     {
-      anything_to_report |= do_cell( lib_name, test_dir, test_name, *itr, target,
+      anything_to_report |= do_cell( lib_name, test_dir, test_type, test_name, *itr, target,
         always_show_run_output );
     }
 
@@ -655,17 +723,10 @@ const string & attribute_value( const xml::element & element,
         if ( pos == string::npos ) continue;
         string subinclude_bin_dir(
           line.substr( pos, line.find_first_of( " \t", pos )-pos ) );
-//      std::cout << "subinclude: " << subinclude_bin_dir << '\n';
-        fs::path subinclude_path( locate_root / "bin/boost" / subinclude_bin_dir );
-        if ( fs::exists( subinclude_path ) )
-          { do_rows_for_sub_tree( subinclude_path, results ); continue; }
-        subinclude_path = fs::path( locate_root / "bin" 
-                                    / subinclude_bin_dir / "bin" );
-        if ( fs::exists( subinclude_path ) )
-          { do_rows_for_sub_tree( subinclude_path, results ); continue; }
-        subinclude_path = fs::path( locate_root / subinclude_bin_dir / "/bin" );
-        if ( fs::exists( subinclude_path ) )
-          { do_rows_for_sub_tree( subinclude_path, results ); }
+
+        fs::path bin_path = find_bin_path(subinclude_bin_dir);
+        if (!bin_path.empty())
+          do_rows_for_sub_tree( bin_path, results );
       }
     }
 
@@ -686,16 +747,8 @@ const string & attribute_value( const xml::element & element,
     // - Boost.Build V2 location with top-lelve "build-dir" 
     // - Boost.Build V1 location without ALL_LOCATE_TARGET
     string relative( fs::initial_path().string() );
-    relative.erase( 0, boost_root.string().size()+1 );
-    fs::path bin_path( locate_root / "bin/boost" / relative );
-    if (!fs::exists(bin_path))
-    {
-      bin_path = locate_root / "bin/status/bin";
-      if (!fs::exists(bin_path))
-      {
-        bin_path = fs::path( locate_root / relative / "bin" );
-      }
-    }
+    relative.erase( 0, boost_root.string().size()+1 );    
+    fs::path bin_path = find_bin_path(relative);
 
     report << "<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n";
 
@@ -765,6 +818,7 @@ int cpp_main( int argc, char * argv[] ) // note name!
       { notes_map_path = fs::path( argv[2], fs::native ); --argc; ++argv; }
     else if ( std::strcmp( argv[1], "--ignore-pass" ) == 0 ) ignore_pass = true;
     else if ( std::strcmp( argv[1], "--no-warn" ) == 0 ) no_warn = true;
+    else if ( std::strcmp( argv[1], "--v2" ) == 0 ) boost_build_v2 = true;
     else if ( argc > 2 && std::strcmp( argv[1], "--jamfile" ) == 0)
       { jamfile_path = fs::path( argv[2], fs::native ); --argc; ++argv; }
     else { std::cerr << "Unknown option: " << argv[1] << "\n"; argc = 1; }
@@ -803,7 +857,10 @@ int cpp_main( int argc, char * argv[] ) // note name!
   if ( locate_root.empty() ) locate_root = boost_root;
   
   if (jamfile_path.empty())
-    jamfile_path = "Jamfile";
+    if (boost_build_v2)
+      jamfile_path = "Jamfile.v2";
+    else
+      jamfile_path = "Jamfile";
   jamfile_path = fs::complete( jamfile_path, fs::initial_path() );
   jamfile.open( jamfile_path );
   if ( !jamfile )

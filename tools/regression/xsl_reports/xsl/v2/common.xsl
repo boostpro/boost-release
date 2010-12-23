@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 
-Copyright MetaCommunications, Inc. 2003-2004.
+Copyright MetaCommunications, Inc. 2003-2005.
 
 Distributed under the Boost Software License, Version 1.0. (See
 accompanying file LICENSE_1_0.txt or copy at
@@ -13,11 +13,12 @@ http://www.boost.org/LICENSE_1_0.txt)
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:exsl="http://exslt.org/common"
     xmlns:func="http://exslt.org/functions"
+    xmlns:date="http://exslt.org/dates-and-times"
     xmlns:str="http://exslt.org/strings"
     xmlns:set="http://exslt.org/sets"
     xmlns:meta="http://www.meta-comm.com"
     extension-element-prefixes="func"
-    exclude-result-prefixes="exsl func str set meta"
+    exclude-result-prefixes="exsl func date str set meta"
     version="1.0">
 
     <xsl:variable name="output_directory" select="'output'"/>
@@ -36,11 +37,12 @@ http://www.boost.org/LICENSE_1_0.txt)
         <xsl:variable name="run_toolsets_f">
             <platforms>
                 <xsl:for-each select="$platforms">
+                    <xsl:sort select="."/>
                     <xsl:variable name="platform" select="."/>
                     <platform name="{$platform}">
                         <runs>
                             <xsl:for-each select="$runs[ @platform = $platform ]">
-                                <xsl:sort select="."/>
+                                <xsl:sort select="@platform"/>
                                 <run 
                                     runner="{@runner}" 
                                     timestamp="{@timestamp}" 
@@ -132,6 +134,15 @@ http://www.boost.org/LICENSE_1_0.txt)
         <func:result select="$test_log/@test-type='compile' or $test_log/@test-type='compile_fail' or $test_log/@test-type='run' or $test_log/@test-type='run_pyd'"/>
     </func:function>
 
+
+    <func:function name="meta:is_unusable_">
+        <xsl:param name="explicit_markup"/>
+        <xsl:param name="library"/>
+        <xsl:param name="toolset"/>
+          
+        <func:result select="count( $explicit_markup//library[ @name = $library ]/mark-unusable/toolset[ meta:re_match( @name, $toolset ) ] ) > 0"/>
+    </func:function>
+
     <func:function name="meta:is_unusable">
         <xsl:param name="explicit_markup"/>
         <xsl:param name="library"/>
@@ -159,12 +170,54 @@ http://www.boost.org/LICENSE_1_0.txt)
                 <func:result select="substring( $text, string-length($text) - string-length($pattern_tail) + 1, string-length($pattern_tail) ) = $pattern_tail"/>
             </xsl:when>
             <xsl:when test="substring( $pattern, string-length($pattern), 1 ) = '*' ">
-                <xsl:variable name="pattern_head" select="substring( $pattern, 1, string-length($pattern) - 2 )"/>
-                <func:result select="substring( $text, 1, string-length($pattern_head) ) = $pattern_head "/>
+                <xsl:variable name="pattern_head" select="substring( $pattern, 1, string-length($pattern) - 1 )"/>
+                <func:result select="starts-with( $text, $pattern_head )"/>
+            </xsl:when>
+            <xsl:when test="contains( $pattern, '*' ) ">
+                <xsl:variable name="pattern_head" select="substring-before( $pattern, '*' )"/>
+                <xsl:variable name="pattern_tail" select="substring-after( $pattern, '*' )"/>
+                <func:result select="starts-with( $text, $pattern_head ) and substring( $text, string-length($text) - string-length($pattern_tail) + 1, string-length($pattern_tail) ) = $pattern_tail"/>
             </xsl:when>
         </xsl:choose>
     </func:function>
 
+    <!-- date-time -->
+
+    <func:function name="meta:timestamp_difference">
+        <xsl:param name="x"/>
+        <xsl:param name="y"/>
+
+        <xsl:variable name="duration" select="date:difference( $x, $y )"/>
+        <xsl:choose>
+            <xsl:when test="contains( $duration, 'D' )">
+                <xsl:variable name="days" select="substring-before( $duration, 'D' )"/>
+                <func:result select="substring-after( $days, 'P' )"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <func:result select="0"/>
+            </xsl:otherwise>
+        </xsl:choose>
+
+    </func:function>
+    
+    <func:function name="meta:format_timestamp">
+        <xsl:param name="timestamp"/>
+        <xsl:choose>
+            <xsl:when test="date:date( $timestamp ) = ''">
+                <func:result select="$timestamp"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="time" select="substring-before( date:time( $timestamp ), 'Z' )"/>
+                <xsl:variable name="day" select="date:day-in-month( $timestamp )"/>
+                <xsl:variable name="day_abbrev" select="date:day-abbreviation( $timestamp )"/>
+                <xsl:variable name="month_abbrev" select="date:month-abbreviation( $timestamp )"/>
+                <xsl:variable name="year" select="date:year( $timestamp )"/>
+                <func:result select="concat( $day_abbrev, ', ', $day, ' ', $month_abbrev, ' ', $year, ' ', $time, ' +0000' )"/>
+            </xsl:otherwise>
+        </xsl:choose>
+
+    </func:function>
+    
     <!-- path -->
 
     <func:function name="meta:encode_path">
@@ -179,10 +232,12 @@ http://www.boost.org/LICENSE_1_0.txt)
 
     <func:function name="meta:log_file_path">
         <xsl:param name="test_log"/>
+        <xsl:param name="runner"/>
+        <xsl:param name="release_postfix" select="''"/>
         <func:result>
             <xsl:choose>
                 <xsl:when test="meta:show_output( $explicit_markup, $test_log )">
-                    <xsl:value-of select="meta:output_file_path( concat( $test_log/../@runner, '-', $test_log/@target-directory ) )"/>
+                    <xsl:value-of select="meta:output_file_path( concat( $runner, '-', $test_log/@target-directory, $release_postfix ) )"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:text></xsl:text>
@@ -262,6 +317,37 @@ http://www.boost.org/LICENSE_1_0.txt)
         </func:result>
     </func:function>
 
+    <xsl:template name="insert_report_header">
+        <xsl:param name="run_date"/>
+        <xsl:param name="warnings"/>
+        <xsl:param name="purpose"/>
+
+        <div class="report-info">
+            <div>
+                <b>Report Time: </b> <xsl:value-of select="meta:format_timestamp( $run_date )"/>
+            </div>
+
+            <xsl:if test="$purpose">
+                <div>
+                    <b>Purpose: </b> <xsl:value-of select="$purpose"/>
+                </div>
+            </xsl:if>
+
+            <xsl:if test="$warnings">
+                <xsl:for-each select="str:split( $warnings, '+' )">
+                    <div class="report-warning">
+                        <b>Warning: </b> 
+                        <a href="mailto:boost-testing@lists.boost.org?subject=[Report Pages] {.} ({meta:format_timestamp( $run_date )})" class="warning-link">
+                            <xsl:value-of select="."/>
+                        </a>
+                    </div>
+                </xsl:for-each>
+            </xsl:if>
+
+        </div>
+
+    </xsl:template>
+
 
     <xsl:template name="insert_view_link">
         <xsl:param name="page"/>
@@ -287,6 +373,7 @@ http://www.boost.org/LICENSE_1_0.txt)
     <xsl:template name="insert_page_links">
         <xsl:param name="page"/>
         <xsl:param name="release"/>
+        <xsl:param name="mode"/>
 
         <div class="links">
             <xsl:copy-of select="document( 'html/make_tinyurl.html' )"/>
@@ -296,6 +383,21 @@ http://www.boost.org/LICENSE_1_0.txt)
                 <xsl:with-param name="class" select="''"/>
                 <xsl:with-param name="release" select="$release"/>
             </xsl:call-template>
+
+            <xsl:variable name="release_postfix">
+                <xsl:if test="$release='yes'">_release</xsl:if>
+            </xsl:variable>
+
+            <xsl:text>&#160;|&#160;</xsl:text>
+            <a href="../{$mode}/{$page}{$release_postfix}.html" class="view-link" target="_top">
+                <xsl:value-of select="$mode"/><xsl:text> View</xsl:text>
+            </a>
+
+            <xsl:text>&#160;|&#160;</xsl:text>
+            <a href="{$page}{$release_postfix}_.html#legend">
+                <xsl:text>Legend</xsl:text>
+            </a>
+
         </div>
 
     </xsl:template>
@@ -304,6 +406,8 @@ http://www.boost.org/LICENSE_1_0.txt)
     <xsl:template name="insert_runners_rows">
         <xsl:param name="mode"/>
         <xsl:param name="top_or_bottom"/>
+        <xsl:param name="run_toolsets"/>
+        <xsl:param name="run_date"/>
 
         <xsl:variable name="colspan">
             <xsl:choose>
@@ -342,7 +446,13 @@ http://www.boost.org/LICENSE_1_0.txt)
         <tr>
             <td colspan="{$colspan}">&#160;</td>
             <xsl:for-each select="$run_toolsets//runs/run[ count(toolset) > 0 ]">
-                <td colspan="{count(toolset)}" class="timestamp"><xsl:value-of select="@timestamp"/></td>
+                <xsl:variable name="age" select="meta:timestamp_difference( @timestamp, $run_date )"/>
+                <td colspan="{count(toolset)}" class="timestamp">
+                    <span class="timestamp-{$age}"><xsl:value-of select="meta:format_timestamp( @timestamp )"/></span>
+                    <xsl:if test="@run-type != 'full'">
+                        <span class="run-type-{@run-type}"><xsl:value-of select="substring( @run-type, 1, 1 )"/></span>
+                    </xsl:if>
+                </td>
             </xsl:for-each>
             <td colspan="{$colspan}">&#160;</td>
         </tr>
@@ -367,6 +477,7 @@ http://www.boost.org/LICENSE_1_0.txt)
         <xsl:param name="mode"/>
         <xsl:param name="library"/>
         <xsl:param name="library_marks"/>
+        <xsl:param name="run_date"/>
 
         <tr valign="middle">
             <xsl:variable name="colspan">
@@ -401,6 +512,8 @@ http://www.boost.org/LICENSE_1_0.txt)
                 </xsl:variable>
 
                 <td class="{$class}">
+                    <xsl:variable name="age" select="meta:timestamp_difference( ../@timestamp, $run_date )"/>
+                    <span class="timestamp-{$age}">
 
                     <!-- break toolset names into words -->
                     <xsl:for-each select="str:tokenize($toolset, '-')">
@@ -433,6 +546,8 @@ http://www.boost.org/LICENSE_1_0.txt)
                             </span>
                         </xsl:if>
                     </xsl:if>
+
+                    </span>
                 </td>
             </xsl:for-each>
               

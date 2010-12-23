@@ -193,8 +193,8 @@ base object serialization with:
 // register the relationship between each derived class
 // its polymorphic base
 void_cast_register&lt;
-    boost::detail::sp_counted_base, 
     boost::detail::sp_counted_base_impl&lt;P, D&gt;
+    boost::detail::sp_counted_base, 
 &gt;();
 </code></pre>
 and we don't have to include a trival serializer for <code style="white-space: normal">sp_counted_base</code>
@@ -212,6 +212,15 @@ this implementation are:
     <li>Exception handling hasn't been exhaustively considered.
     <li>Other issues yet to be discovered.
 </ul>
+One thing that has been considered is export of shared_ptr. The header which
+declares shared pointer serialization includes some special macros for exporting
+shared pointers:
+<code><pre>
+BOOST_SHARED_POINTER_EXPORT(T)
+BOOST_SHARED_POINTER_EXPORT_GUID(T, K)
+</pre></code>
+These are specialize versions of the macros used for exporting classes serialized through raw pointers.
+<p>
 Clearly, complete, correct and exception safe serialization of smart pointers is going to
 be a challenge.  I hope that this implementation provides a useful
 starting point for such an effort.

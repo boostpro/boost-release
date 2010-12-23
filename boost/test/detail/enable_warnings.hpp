@@ -1,4 +1,4 @@
-//  (C) Copyright Gennadiy Rozental 2004.
+//  (C) Copyright Gennadiy Rozental 2004-2005.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -7,15 +7,18 @@
 //
 //  File        : $RCSfile: enable_warnings.hpp,v $
 //
-//  Version     : $Revision: 1.1 $
+//  Version     : $Revision: 1.4 $
 //
-//  Description : 
+//  Description : enable previosly suppressed warnings
 // ***************************************************************************
 
 #ifdef BOOST_MSVC
 # pragma warning(default: 4511) // copy constructor could not be generated
 # pragma warning(default: 4512) // assignment operator could not be generated
 # pragma warning(default: 4100) // unreferenced formal parameter 
+# pragma warning(default: 4996) // <symbol> was declared deprecated 
+# pragma warning(default: 4355) // 'this' : used in base member initializer list
+# pragma warning(default: 4706) // assignment within conditional expression
 # pragma warning(pop)
 #endif
 
@@ -23,7 +26,16 @@
 //  Revision History :
 //  
 //  $Log: enable_warnings.hpp,v $
-//  Revision 1.1  2004/07/19 12:21:44  rogeeff
-//  suppress warnings shared
+//  Revision 1.4  2005/02/20 08:27:06  rogeeff
+//  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
+//
+//  Revision 1.3  2005/02/01 06:40:07  rogeeff
+//  copyright update
+//  old log entries removed
+//  minor stilistic changes
+//  depricated tools removed
+//
+//  Revision 1.2  2005/01/31 06:00:37  rogeeff
+//  deprecated std symbols warning suppressed
 //
 // ***************************************************************************

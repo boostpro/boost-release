@@ -23,6 +23,9 @@ namespace std{
 } // namespace std
 #endif
 
+#define BOOST_ARCHIVE_SOURCE
+#include <boost/archive/detail/auto_link_archive.hpp>
+
 #include <boost/limits.hpp>
 #include <boost/state_saver.hpp>
 #include <boost/throw_exception.hpp>
@@ -30,11 +33,11 @@ namespace std{
 #include <boost/archive/detail/basic_iserializer.hpp>
 #include <boost/archive/detail/basic_pointer_iserializer.hpp>
 #include <boost/archive/detail/basic_iarchive.hpp>
+#include <boost/archive/detail/basic_archive_impl.hpp>
+#include <boost/archive/archive_exception.hpp>
 
 #include <boost/serialization/tracking.hpp>
 #include <boost/serialization/extended_type_info.hpp>
-
-#include <boost/archive/archive_exception.hpp>
 
 using namespace boost::serialization;
 
@@ -45,9 +48,14 @@ namespace detail {
 class basic_iserializer;
 class basic_pointer_iserializer;
 
-class basic_iarchive_impl 
+class basic_iarchive_impl :
+    public basic_archive_impl
 {
     friend class basic_iarchive;
+
+    version_type m_archive_library_version;
+    unsigned int m_flags;
+
     //////////////////////////////////////////////////////////////////////
     // information about each serialized object loaded
     // indexed on object_id
@@ -66,6 +74,19 @@ class basic_iarchive_impl
     };
     typedef std::vector<aobject> object_id_vector_type;
     object_id_vector_type object_id_vector;
+
+    //////////////////////////////////////////////////////////////////////
+    // used to implement the reset_object_address operation.
+    // list of objects which might be moved. We use a vector for implemenation
+    // in the hope the the truncation operation will be faster than either
+    // with a list or stack adaptor
+    std::vector<std::size_t> moveable_object_stack;
+    std::size_t moveable_object_position;
+
+    void reset_object_address(
+        const void * new_address, 
+        const void *old_address
+    );
 
     //////////////////////////////////////////////////////////////////////
     // used by load object to look up class id given basic_serializer
@@ -133,6 +154,7 @@ class basic_iarchive_impl
     typedef std::vector<cobject_id> cobject_id_vector_type;
     cobject_id_vector_type cobject_id_vector;
 
+    //////////////////////////////////////////////////////////////////////
     // list of objects created by de-serialization.  Used to implement
     // clean up after exceptions.
     class created_pointer_type
@@ -164,17 +186,25 @@ class basic_iarchive_impl
 
     std::list<created_pointer_type> created_pointers;
 
+    //////////////////////////////////////////////////////////////////////
     // address of the most recent object serialized as a poiner
     // whose data itself is now pending serialization
     void * pending_object;
     const basic_iserializer * pending_bis;
     version_type pending_version;
 
-    basic_iarchive_impl() : 
+    basic_iarchive_impl(unsigned int flags) :
+        m_archive_library_version(ARCHIVE_VERSION()),
+        m_flags(flags),
+        moveable_object_position(0),
         pending_object(NULL),
         pending_bis(NULL),
         pending_version(0)
     {}
+    ~basic_iarchive_impl(){}
+    void set_library_version(unsigned int archive_library_version){
+        m_archive_library_version = archive_library_version;
+    }
     bool
     track(
         basic_iarchive & ar,
@@ -217,7 +247,34 @@ class basic_iarchive_impl
             const boost::serialization::extended_type_info & type
         )
     );
-}; 
+};
+
+inline void 
+basic_iarchive_impl::reset_object_address(
+    const void * new_address, 
+    const void *old_address
+){
+    // if the this object wasn't tracked
+    std::size_t i = moveable_object_position;
+    if(i >= moveable_object_stack.size())
+        return;
+    if(old_address != object_id_vector[i].address)
+        // skip to any lower level ones
+        ++i;
+    while(i < moveable_object_stack.size()){
+        // calculate displacement from this level
+        assert(object_id_vector[i].address >= old_address);
+        // warning - pointer arithmetic on void * is in herently non-portable
+        // but expected to work on all platforms in current usage
+        std::size_t member_displacement
+            = reinterpret_cast<std::size_t>(object_id_vector[i].address) 
+            - reinterpret_cast<std::size_t>(old_address);
+        object_id_vector[i].address = reinterpret_cast<void *>(
+            reinterpret_cast<std::size_t>(new_address) + member_displacement
+        );
+        ++i;
+    }
+}
 
 inline void 
 basic_iarchive_impl::delete_created_pointers()
@@ -268,7 +325,7 @@ basic_iarchive_impl::load_preamble(
         }
         else{
             // override tracking with indicator from class information
-            co.tracking_level = co.bis_ptr->tracking();
+            co.tracking_level = co.bis_ptr->tracking(m_flags);
             co.file_version = version_type(
                 co.bis_ptr->version()
             );
@@ -307,7 +364,6 @@ basic_iarchive_impl::load_object(
         return;
     }
 
-    bool result = true;
     const class_id_type cid = register_type(bis);
     // note: extra line used to evade borland issue
     const int id = cid;
@@ -315,16 +371,33 @@ basic_iarchive_impl::load_object(
 
     load_preamble(ar, co);
     // note: extra line used to evade borland issue
-    const bool b = co.tracking_level;
-    if(b){ 
-        result = track(ar, t);
-        if(! result)
-            return;
-        object_id_vector.push_back(aobject(t, cid));
+    const bool tracking = co.tracking_level;
+    // if we didn't track this object when the archive was saved
+    if(! tracking){ 
+        // all we need to do is read the data
+        (bis.load_object_data)(ar, t, co.file_version);
+        return;
     }
+
+    // we're tracking the object
+    // if it was already read
+    if(! track(ar, t))
+        // we're done
+        return;
+
+    std::size_t tracking_list_position = object_id_vector.size();
+    // add a new enty into the tracking list
+    object_id_vector.push_back(aobject(t, cid));
+    // save the current move stack position in case we want to truncate it
+    std::size_t next_moveable_object_position = moveable_object_stack.size();
+    // and add an entry for this object
+    moveable_object_stack.push_back(tracking_list_position);
 
     // read data
     (bis.load_object_data)(ar, t, co.file_version);
+
+    // last object created
+    moveable_object_position = next_moveable_object_position;
 }
 
 inline const basic_pointer_iserializer *
@@ -339,7 +412,7 @@ basic_iarchive_impl::load_pointer(
     class_id_type cid;
     load(ar, cid);
 
-    if(null_pointer_tag == cid){
+    if(NULL_POINTER_TAG == cid){
         t = NULL;
         return bpis_ptr;
     }
@@ -372,76 +445,92 @@ basic_iarchive_impl::load_pointer(
     }
     int i = cid;
     cobject_id & co = cobject_id_vector[i];
-    const basic_iserializer * bis_ptr = co.bis_ptr;
     bpis_ptr = co.bpis_ptr;
 
     load_preamble(ar, co);
 
-    // if we're not tracking
-    bool new_object = true;
     // extra line to evade borland issue
-    const bool b = co.tracking_level;
-    if(b)
-        new_object = track(ar, t);
-
-    if(! new_object){
-        // nothing to do
+    const bool tracking = co.tracking_level;
+    // if we're tracking and the pointer has already been read
+    if(tracking && ! track(ar, t))
+        // we're done
         return bpis_ptr;
-    }
-
-    if(! bis_ptr->tracking()){
-        bpis_ptr->load_object_ptr(ar, t, co.file_version);
-        return bpis_ptr;
-    }
 
     // save state
-    state_saver<void *> x(pending_object);
-    state_saver<const basic_iserializer *> y(pending_bis);
-    state_saver<version_type> z(pending_version);
+    std::size_t original_moveable_stack_size(moveable_object_stack.size());
+    state_saver<std::size_t> w(moveable_object_position);
 
-    pending_bis = & bpis_ptr->get_basic_serializer();
-    pending_version = co.file_version;
+    if(! tracking){
+        bpis_ptr->load_object_ptr(ar, t, co.file_version);
+    }
+    else{
+        state_saver<void *> x(pending_object);
+        state_saver<const basic_iserializer *> y(pending_bis);
+        state_saver<version_type> z(pending_version);
 
-    // predict next object id to be created
-    const unsigned int ui = object_id_vector.size();
+        pending_bis = & bpis_ptr->get_basic_serializer();
+        pending_version = co.file_version;
 
-    // because the following operation could move the items
-    // don't use co after this
-    // add to list of serialized objects so that we can properly handle
-    // cyclic strucures
-    object_id_vector.push_back(aobject(t, cid));
-    bpis_ptr->load_object_ptr(
-        ar, 
-        object_id_vector[ui].address, 
-        co.file_version
-    );
-    t = object_id_vector[ui].address;
-    assert(NULL != t);
+        // predict next object id to be created
+        const unsigned int ui = object_id_vector.size();
 
-    // and add to list of created pointers
-    created_pointers.push_back(created_pointer_type(cid, t));
+        // because the following operation could move the items
+        // don't use co after this
+        // add to list of serialized objects so that we can properly handle
+        // cyclic strucures
+        object_id_vector.push_back(aobject(t, cid));
+        bpis_ptr->load_object_ptr(
+            ar, 
+            object_id_vector[ui].address, 
+            co.file_version
+        );
+        t = object_id_vector[ui].address;
+        assert(NULL != t);
+
+        // and add to list of created pointers
+        created_pointers.push_back(created_pointer_type(cid, t));
+    }
+    // anything pointed to is never moved 
+    // so truncate the stack of moveable objects
+    moveable_object_stack.resize(original_moveable_stack_size);
+
     return bpis_ptr;
 }
 
 //////////////////////////////////////////////////////////////////////
 // implementation of basic_iarchive functions
 
-void
+BOOST_ARCHIVE_DECL(void)
 basic_iarchive::next_object_pointer(void *t){
     pimpl->next_object_pointer(t);
 }
 
-basic_iarchive::basic_iarchive() : 
-    pimpl(new basic_iarchive_impl),
-    archive_library_version(ARCHIVE_VERSION)
+BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
+basic_iarchive::basic_iarchive(unsigned int flags) : 
+    pimpl(new basic_iarchive_impl(flags))
 {}
 
+BOOST_ARCHIVE_DECL(BOOST_PP_EMPTY())
 basic_iarchive::~basic_iarchive()
 {
     delete pimpl;
 }
 
-void basic_iarchive::load_object(
+BOOST_ARCHIVE_DECL(void)
+basic_iarchive::set_library_version(unsigned int archive_library_version){
+    pimpl->set_library_version(archive_library_version);
+}
+
+BOOST_ARCHIVE_DECL(void)
+basic_iarchive::reset_object_address(
+    const void * new_address, 
+    const void * old_address
+){
+    pimpl->reset_object_address(new_address, old_address);
+}
+
+BOOST_ARCHIVE_DECL(void)
+basic_iarchive::load_object(
     void *t, 
     const basic_iserializer & bis
 ){
@@ -449,7 +538,7 @@ void basic_iarchive::load_object(
 }
 
 // load a pointer object
-const basic_pointer_iserializer * 
+BOOST_ARCHIVE_DECL(const basic_pointer_iserializer *)
 basic_iarchive::load_pointer(
     void * &t, 
     const basic_pointer_iserializer * bpis_ptr,
@@ -460,13 +549,41 @@ basic_iarchive::load_pointer(
     return pimpl->load_pointer(*this, t, bpis_ptr, finder);
 }
 
-void basic_iarchive::register_basic_serializer(const basic_iserializer & bis){
+BOOST_ARCHIVE_DECL(void)
+basic_iarchive::register_basic_serializer(const basic_iserializer & bis){
     pimpl->register_type(bis);
 }
 
-void basic_iarchive::delete_created_pointers()
+BOOST_ARCHIVE_DECL(void)
+basic_iarchive::lookup_basic_helper(
+    const boost::serialization::extended_type_info * const eti,
+    shared_ptr<void> & sph
+){
+    pimpl->lookup_helper(eti, sph);
+}
+
+BOOST_ARCHIVE_DECL(void)
+basic_iarchive::insert_basic_helper(
+    const boost::serialization::extended_type_info * const eti,
+    shared_ptr<void> & sph
+){
+    pimpl->insert_helper(eti, sph);
+}
+
+BOOST_ARCHIVE_DECL(void)
+basic_iarchive::delete_created_pointers()
 {
     pimpl->delete_created_pointers();
+}
+
+BOOST_ARCHIVE_DECL(unsigned int) 
+basic_iarchive::get_library_version() const{
+    return pimpl->m_archive_library_version;
+}
+
+BOOST_ARCHIVE_DECL(unsigned int) 
+basic_iarchive::get_flags() const{
+    return pimpl->m_flags;
 }
 
 } // namespace detail

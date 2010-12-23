@@ -11,9 +11,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Source: /cvsroot/boost/boost/boost/mpl/set/Attic/set30_c.hpp,v $
-// $Date: 2004/11/10 16:06:51 $
-// $Revision: 1.1.2.1 $
+// $Source: /cvsroot/boost/boost/boost/mpl/set/set30_c.hpp,v $
+// $Date: 2004/11/28 01:51:10 $
+// $Revision: 1.2 $
 
 #if !defined(BOOST_MPL_PREPROCESSING_MODE)
 #   include <boost/mpl/set/set20_c.hpp>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE header PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
   "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd">
-<header name="boost/signals/connection.hpp" last-revision="$Date: 2003/04/02 04:34:42 $">
+<header name="boost/signals/connection.hpp" last-revision="$Date: 2005/02/19 23:44:26 $">
   <namespace name="boost">
     <namespace name="signals">
       <class name="connection">
@@ -66,6 +66,30 @@
             (connected), and <computeroutput>false</computeroutput>
             otherwise.</para></returns>
             <throws><para>Will not throw.</para></throws>
+          </method>
+        </method-group>
+
+        <method-group name="blocking">
+          <method name="block">
+            <type>void</type>
+            <parameter name="should_block">
+              <paramtype>bool</paramtype>
+              <default>true</default>
+            </parameter>
+            <requires><simpara><code>connected()</code></simpara></requires>
+            <postconditions><simpara><code>blocked() == should_block</code></simpara></postconditions>
+            <throws><simpara>Will not throw.</simpara></throws>
+          </method>
+          <method name="unblock">
+            <type>void</type>
+            <requires><simpara><code>connected()</code></simpara></requires>
+            <postconditions><simpara><code>!blocked()</code></simpara></postconditions>
+            <throws><simpara>Will not throw.</simpara></throws>
+          </method>
+          <method name="blocked" cv="const">
+            <type>bool</type>
+            <returns><simpara><code>true</code> if the associated slot is either disconnected or blocked, <code>false</code> otherwise.</simpara></returns>
+            <throws><simpara>Will not throw.</simpara></throws>
           </method>
         </method-group>
 

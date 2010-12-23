@@ -8,8 +8,8 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/libs/mpl/test/lambda.cpp,v $
-// $Date: 2004/09/02 15:41:35 $
-// $Revision: 1.7 $
+// $Date: 2005/01/10 14:01:31 $
+// $Revision: 1.8 $
 
 #include <boost/mpl/logical.hpp>
 #include <boost/mpl/comparison.hpp>
@@ -32,7 +32,7 @@ struct my
 
 MPL_TEST_CASE()
 {
-    // !(x == char) && !(x == double) && x convertible to int || sizeof(x) > 8
+    // !(x == char) && !(x == double) || sizeof(x) > 8
     typedef lambda<
         or_<
               and_<

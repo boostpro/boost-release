@@ -11,12 +11,13 @@
 // See http://www.boost.org/libs/mpl for documentation.
 
 // $Source: /cvsroot/boost/boost/boost/mpl/vector/aux_/at.hpp,v $
-// $Date: 2004/09/02 15:41:19 $
-// $Revision: 1.5 $
+// $Date: 2004/12/20 19:35:33 $
+// $Revision: 1.6 $
 
 #include <boost/mpl/at_fwd.hpp>
 #include <boost/mpl/vector/aux_/tag.hpp>
 #include <boost/mpl/long.hpp>
+#include <boost/mpl/void.hpp>
 #include <boost/mpl/aux_/nttp_decl.hpp>
 #include <boost/mpl/aux_/type_wrapper.hpp>
 #include <boost/mpl/aux_/value_wknd.hpp>
@@ -87,6 +88,15 @@ namespace aux {
 template< BOOST_MPL_AUX_NTTP_DECL(long, n_) > struct v_at_impl
 {
     template< typename V > struct result_;
+};
+
+// to work around ETI, etc.
+template<> struct v_at_impl<-1>
+{
+    template< typename V > struct result_
+    {
+        typedef void_ type;
+    };
 };
 
 } // namespace aux

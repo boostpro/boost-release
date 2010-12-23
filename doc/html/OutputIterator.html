@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Concept OutputIterator</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="The Boost C++ Libraries">
 <link rel="up" href="concepts/reference.html" title="Concept reference">
 <link rel="prev" href="InputIterator.html" title="Concept InputIterator">
@@ -29,7 +29,7 @@
 <p>OutputIterator</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id454314"></a><h2>Description</h2>
+<a name="id975829"></a><h2>Description</h2>
 <p>An output iterator is an iterator that can write a sequence of
   values.  It is single-pass (old values of the iterator cannot be
   re-used), and write-only.</p>
@@ -39,44 +39,44 @@
   (and not dereferenceable or incrementable).</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id454331"></a><h2>Associated types</h2>
+<a name="id975844"></a><h2>Associated types</h2>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p><span class="bold"><b>value_type</b></span></p>
+<p><span class="bold"><strong>value_type</strong></span></p>
 <pre class="literallayout">std::iterator_traits&lt;Iter&gt;::value_type</pre>
 <p>The stated value type of the iterator (should be
-    <tt class="computeroutput">void</tt> for an output iterator that does not model some other
+    <code class="computeroutput">void</code> for an output iterator that does not model some other
     iterator concept).</p>
 </li>
 <li>
-<p><span class="bold"><b>difference_type</b></span></p>
+<p><span class="bold"><strong>difference_type</strong></span></p>
 <pre class="literallayout">std::iterator_traits&lt;Iter&gt;::difference_type</pre>
 <p>The difference type of the iterator</p>
 </li>
 <li>
-<p><span class="bold"><b>category</b></span></p>
+<p><span class="bold"><strong>category</strong></span></p>
 <pre class="literallayout">std::iterator_traits&lt;Iter&gt;::iterator_category</pre>
 <p>The category of the iterator</p>
 </li>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id454402"></a><h2>Notation</h2>
+<a name="id975908"></a><h2>Notation</h2>
 <div class="variablelist"><dl>
 <dt><span class="term">Iter</span></dt>
 <dd>A type playing the role of iterator-type in the <a href="OutputIterator.html" title="Concept OutputIterator">OutputIterator</a> concept.</dd>
 <dt><span class="term">ValueType</span></dt>
 <dd>A type playing the role of value-type in the <a href="OutputIterator.html" title="Concept OutputIterator">OutputIterator</a> concept.</dd>
 <dt>
-<span class="term"><tt class="varname">i</tt>, </span><span class="term"><tt class="varname">j</tt>, </span>
+<span class="term"><code class="varname">i</code>, </span><span class="term"><code class="varname">j</code></span>
 </dt>
 <dd>Objects of type Iter</dd>
-<dt><span class="term"><tt class="varname">x</tt></span></dt>
+<dt><span class="term"><code class="varname">x</code></span></dt>
 <dd>Object of type ValueType</dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id454462"></a><h2>Type expressions</h2>
+<a name="id975960"></a><h2>Type expressions</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"></span></dt>
 <dd><p>The type <span class="type">Iter</span> must be a model of <a href="Assignable.html" title="Concept Assignable">Assignable</a>.</p></dd>
@@ -98,7 +98,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id454595"></a><h2>Valid expressions</h2>
+<a name="id976078"></a><h2>Valid expressions</h2>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -121,7 +121,7 @@
 <td><p>Dereference</p></td>
 <td><p>*i</p></td>
 <td><p></p></td>
-<td><p><tt class="computeroutput">i</tt> is incrementable (not
+<td><p><code class="computeroutput">i</code> is incrementable (not
     off-the-end)</p></td>
 <td> </td>
 <td> </td>
@@ -130,17 +130,17 @@
 <td><p>Dereference and assign</p></td>
 <td><p>*i = x</p></td>
 <td><p></p></td>
-<td><p><tt class="computeroutput">i</tt> is incrementable (not
+<td><p><code class="computeroutput">i</code> is incrementable (not
     off-the-end)</p></td>
 <td> </td>
-<td><p><tt class="computeroutput">*i</tt> may not be written to again until it has
+<td><p><code class="computeroutput">*i</code> may not be written to again until it has
     been incremented.</p></td>
 </tr>
 <tr>
 <td><p>Preincrement</p></td>
 <td><p>++i</p></td>
 <td><p><span class="type">Iter &amp;</span></p></td>
-<td><p><tt class="computeroutput">i</tt> is incrementable (not
+<td><p><code class="computeroutput">i</code> is incrementable (not
     off-the-end)</p></td>
 <td> </td>
 <td> </td>
@@ -149,42 +149,42 @@
 <td><p>Postincrement</p></td>
 <td><p>i++</p></td>
 <td><p></p></td>
-<td><p><tt class="computeroutput">i</tt> is incrementable (not
+<td><p><code class="computeroutput">i</code> is incrementable (not
     off-the-end)</p></td>
-<td><p>Equivalent to <tt class="computeroutput">(void)(++i)</tt></p></td>
-<td><p><tt class="computeroutput">i</tt> is dereferenceable or
+<td><p>Equivalent to <code class="computeroutput">(void)(++i)</code></p></td>
+<td><p><code class="computeroutput">i</code> is dereferenceable or
     off-the-end</p></td>
 </tr>
 <tr>
 <td><p>Postincrement, dereference, and assign</p></td>
 <td><p>*i++ = x</p></td>
 <td><p></p></td>
-<td><p><tt class="computeroutput">i</tt> is incrementable (not
+<td><p><code class="computeroutput">i</code> is incrementable (not
     off-the-end)</p></td>
-<td><p>Equivalent to <tt class="computeroutput">{*i = t; ++i;}</tt></p></td>
-<td><p><tt class="computeroutput">i</tt> is dereferenceable or
+<td><p>Equivalent to <code class="computeroutput">{*i = t; ++i;}</code></p></td>
+<td><p><code class="computeroutput">i</code> is dereferenceable or
     off-the-end</p></td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id454782"></a><h2>Complexity</h2>
+<a name="id976245"></a><h2>Complexity</h2>
 <p>
   All iterator operations must take amortized constant time.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id454790"></a><h2>Models</h2>
+<a name="id976252"></a><h2>Models</h2>
 <div class="itemizedlist"><ul type="disc">
-<li><span class="simplelist"><span class="type">std::ostream_iterator</span>, <span class="type">...</span>, </span></li>
-<li><span class="simplelist"><span class="type">std::insert_iterator</span>, <span class="type">...</span>, </span></li>
-<li><span class="simplelist"><span class="type">std::front_insert_iterator</span>, <span class="type">...</span>, </span></li>
-<li><span class="simplelist"><span class="type">std::back_insert_iterator</span>, <span class="type">...</span>, </span></li>
+<li><span class="simplelist"><span class="type">std::ostream_iterator</span>, <span class="type">...</span></span></li>
+<li><span class="simplelist"><span class="type">std::insert_iterator</span>, <span class="type">...</span></span></li>
+<li><span class="simplelist"><span class="type">std::front_insert_iterator</span>, <span class="type">...</span></span></li>
+<li><span class="simplelist"><span class="type">std::back_insert_iterator</span>, <span class="type">...</span></span></li>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id454844"></a><h2>See also</h2>
+<a name="id976301"></a><h2>See also</h2>
 <div class="itemizedlist"><ul type="disc"></ul></div>
 </div>
 </div>

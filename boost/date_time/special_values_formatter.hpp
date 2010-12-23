@@ -7,11 +7,12 @@
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE-1.0 or http://www.boost.org/LICENSE-1.0)
  * Author: Jeff Garland
- * $Date: 2004/10/03 23:28:49 $
+ * $Date: 2005/05/03 14:27:51 $
  */
 
 #include <vector>
 #include <string>
+#include "boost/date_time/special_defs.hpp"
 
 namespace boost { namespace date_time {
 
@@ -58,9 +59,13 @@ namespace boost { namespace date_time {
     {
       std::copy(begin, end, std::back_inserter(m_special_value_names));
     }
+    special_values_formatter(typename collection_type::iterator beg, typename collection_type::iterator end)
+    {
+      std::copy(beg, end, std::back_inserter(m_special_value_names));
+    }
 
     OutItrT put_special(OutItrT next, 
-                        const boost::date_time::special_values value) const 
+                        const boost::date_time::special_values& value) const 
     {
       
       unsigned int index = value;
@@ -75,15 +80,16 @@ namespace boost { namespace date_time {
     collection_type m_special_value_names;
   };
 
-  //! Storage for the 
+  //! Storage for the strings used to indicate special values 
+  /* using c_strings to initialize these worked fine in testing, however,
+   * a project that compiled its objects separately, then linked in a separate
+   * step wound up with redefinition errors for the values in this array.
+   * Initializing individual characters eliminated this problem */
   template <class CharT, class OutItrT>  
-  const typename special_values_formatter<CharT, OutItrT>::char_type special_values_formatter<CharT, OutItrT>::default_special_value_names[3][17] = { L"not-a-date-time",L"-infinity",L"+infinity" };
-
-  //! Specialization for regular chars
-  template <> 
-  const char 
-  special_values_formatter<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::default_special_value_names[3][17] = { "not-a-date-time","-infinity","+infinity" };
-
+  const typename special_values_formatter<CharT, OutItrT>::char_type special_values_formatter<CharT, OutItrT>::default_special_value_names[3][17] = { 
+    {'n','o','t','-','a','-','d','a','t','e','-','t','i','m','e'},
+    {'-','i','n','f','i','n','i','t','y'},
+    {'+','i','n','f','i','n','i','t','y'} };
 
  } } //namespace boost::date_time
 

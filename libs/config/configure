@@ -1257,7 +1257,7 @@ Be patient - this could take some time...
 
 Note that this test script only gives an approximate
 configuration - you will need to test the results carefully
-using the boost regresion test suite before using the results.
+using the boost regression test suite before using the results.
 EOF
 
 if test $enable_test = 'yes'; then
@@ -1265,8 +1265,8 @@ if test $enable_test = 'yes'; then
 cat << EOF
 
 This script reports only the difference between the detected
-configuration, and the existing boost configuration.  It's
-primary aim is to quicky report how well boost is configured
+configuration, and the existing boost configuration.  Its
+primary aim is to quickly report how well boost is configured
 for one compiler.
 
 ***
@@ -2174,7 +2174,7 @@ for file in $boost_base/libs/config/test/boost_no*.ipp; do
    basename=`echo $file | sed 's/.*boost_\(.*\)\.ipp/\1/'`
    macroname=`cat $file | grep '^//[]    []*MACRO:' | sed 's/.*MACRO:[]    []*\([]_A-Z0-9[]*\).*/\1/'`
    title=`cat $file | grep '^//[]  []*TITLE:' | sed 's/.*TITLE:[]    []*\([]^  [].*\)/\1/'`
-   namespace=`echo $macroname | tr [:upper:] [:lower:]`
+   namespace=`echo $macroname | tr [A-Z] [a-z]`
 
 #echo file      = $file
 #echo basename  = $basename
@@ -2207,7 +2207,7 @@ cat >>conftest.$ac_ext <<_ACEOF
 #include <boost/config.hpp>
 #include "test.hpp"
 
-#ifndef $macroname
+#if !defined($macroname) || defined(BOOST_NO_CONFIG)
 #include "boost_$basename.ipp"
 #else
 namespace ${namespace} = empty_boost;
@@ -2315,7 +2315,7 @@ for file in $boost_base/libs/config/test/boost_has*.ipp; do
    basename=`echo $file | sed 's/.*boost_\(.*\)\.ipp/\1/'`
    macroname=`cat $file | grep '^//[]    []*MACRO:' | sed 's/.*MACRO:[]    []*\([]_A-Z0-9[]*\).*/\1/'`
    title=`cat $file | grep '^//[]  []*TITLE:' | sed 's/.*TITLE:[]    []*\([]^  [].*\)/\1/'`
-   namespace=`echo $macroname | tr [:upper:] [:lower:]`
+   namespace=`echo $macroname | tr [A-Z] [a-z]`
 
 #  echo $file
 #  echo $basename
@@ -2552,8 +2552,8 @@ cat > user.hpp << EOF
 
 // define this to disable all config options,
 // excluding the user config.  Use if your
-// setup is fully ISO compliant, and has no
-// useful extensions, or for autoconf generated
+// setup is fully ISO complient, and has no
+// useful extentions, or for autoconf generated
 // setups:
 #ifndef BOOST_NO_CONFIG
 #  define BOOST_NO_CONFIG
@@ -3271,7 +3271,7 @@ EEEOF
 cat << EEEOF
 
 Adjustments to boost configuration have been written to
-user.hpp, copy this to boost/config/user.hpp to use "as is",
+user.hpp.  Copy this to boost/config/user.hpp to use "as is",
 or define BOOST_SITE_CONFIG to point to its location.
 
 TREAT THIS FILE WITH CARE.
@@ -3314,6 +3314,8 @@ fi
 
 
 fi
+
+
 
 
 

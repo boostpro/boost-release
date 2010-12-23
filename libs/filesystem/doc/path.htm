@@ -29,7 +29,7 @@ relative paths</a><br>
 &nbsp;&nbsp;&nbsp; <a href="#Path_equality">Path equality vs path equivalence</a><br>
 <a href="#Member">Member functions</a><br>
 <a href="#Non-member_functions">Non-member functions</a><br>
-<a href="#name_check_mechanism">Default name_check mechansim</a><br>
+<a href="#name_check­_mechanism">Default name_check mechansim</a><br>
 <a href="#Rationale">Rationale</a><br>
 <a href="#decomposition">Path decomposition examples</a></p>
 <h2><a name="Introduction">Introduction</a></h2>
@@ -94,18 +94,23 @@ the contained path.</p>
 <blockquote>
   <pre>path ::= [root] [relative-path]  // an empty path is valid</pre>
   <pre>root ::= [root-name] [root-directory]</pre>
-  <pre>root-directory ::= &quot;/&quot;</pre>
-  <pre>relative-path ::= path-element { &quot;/&quot; path-element } [&quot;/&quot;]</pre>
+  <pre>root-directory ::= separator</pre>
+  <pre>relative-path ::= path-element { separator path-element } [separator]</pre>
   <pre>path-element ::= name | parent-directory | directory-placeholder</pre>
   <pre>name ::= char { char }</pre>
   <pre>directory-placeholder ::= &quot;.&quot;</pre>
-  <pre>parent-directory ::= &quot;..&quot; </pre>
+  <pre>parent-directory ::= &quot;..&quot;
+
+separator ::= &quot;/&quot;  // an implementation may define additional separators </pre>
 </blockquote>
 <p><i>root-name</i> grammar is implementation-defined. <i>
 root-name</i> must not be present in generic input. It may be part of the strings returned by <i>path</i> 
 member functions, and may be present in the <i>src</i> argument to <i>path</i> constructors 
-when the <i><a href="#native">native</a></i> name check is in effect.</p>
-<p><i>char</i> may not be slash ('/') or '\0'.</p>
+when the <i><a href="portability_guide.htm#native">native</a></i> name check is in effect.</p>
+<p><i>char</i> may not be slash ('/') or '\0'. In additional, many operating and 
+file systems may place additional restrictions on the characters which may 
+appear in names. See <a href="portability_guide.htm#recommendations">File and 
+Directory Name Recommendations</a>.</p>
 <p>Although implementation-defined, it is desirable that <i>
 root-name</i> have a grammar which is distinguishable from other grammar elements, 
 and follow the conventions of the operating system.</p>
@@ -194,7 +199,7 @@ boost/filesystem/path.hpp</a> <a name="synopsis">synopsis</a></h2>
 
       // <a href="#name_check­_mechanism">default name_check</a> mechanism:
       static bool <a href="#default_name_check_writable">default_name_check_writable</a>(); 
-      static name_check <a href="#default_name_check">default_name_check</a>( name_check new_check );
+      static void <a href="#default_name_check">default_name_check</a>( name_check new_check );
       static name_check <a href="#default_name_check">default_name_check</a>();</pre>
 <pre>      // relational operators:
       bool <a href="#operator_eq">operator==</a>( const path &amp; that ) const;
@@ -452,7 +457,7 @@ above.</p>
 <blockquote>
   <pre>std::string native_file_string() const;</pre>
 <p><b>Returns:</b> The contents of <code>m_name</code>, formatted in the
-<a href="#System-specific_Representation">system-specific representation</a> of 
+<a href="#Native_path_representation">native representation</a> of 
 a file path.</p>
 <p><b>See:</b> <a href="#Representation_example">Representation example</a> 
 above.</p>
@@ -463,7 +468,7 @@ this function yields non-portable results.</p>
 <blockquote>
   <pre>const std::string native_directory_string() const;</pre>
 <p><b>Returns:</b> The contents of <code>m_name</code>, formatted in the
-<a href="#System-specific_Representation">system-specific representation</a> of 
+<a href="#Native_path_representation">native representation</a> of 
 a directory path.</p>
 <p><b>See:</b> <a href="#Representation_example">Representation example</a> 
 above.</p>
@@ -684,7 +689,7 @@ check. </p>
 <p>The default name check function is set and retrieved by <i>path</i> static 
 member functions, and as such is similar to a global variable. Since global variables are 
 considered harmful [<a href="design.htm#Wulf-Shaw-73">Wulf-Shaw-73</a>], class
-<i>path</i> allows the default name check function can be set only once, and 
+<i>path</i> allows the default name check function to be set only once, and 
 only before the first use. This turns a dangerous global variable into a 
 safer global constant. Even with this protection, the ability to set the default name check function is 
 still a powerful feature, and is still dangerous in that it can change 
@@ -708,7 +713,7 @@ manipulations. Convenience is also a factor.</p>
   See Scott Myers, <i>Effective C++</i>, Item 21. The const qualifiers were 
   eliminated (1) to conform with C++ Standard Library practice, (2) because 
   non-const returns allow occasionally useful expressions, and (3) because the 
-  number of coding errors eliminated were deemed rare. A requirement that path::iterator not be a non-class type was added to eliminate errors non-const 
+  number of coding errors eliminated were deemed rare. A requirement that path::iterator be a  class type was added to eliminate non-const 
   iterator errors.</p>
 <h2>Path <a name="decomposition">decomposition</a> examples</h2>
 <p>It is often useful to extract specific elements from a path object.&nbsp; 
@@ -976,7 +981,7 @@ various expressions.</p>
 </table>
 <hr>
 <p>Revised
-<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->14 March, 2004<!--webbot bot="Timestamp" endspan i-checksum="28869" --></p>
+<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->02 August, 2005<!--webbot bot="Timestamp" endspan i-checksum="34600" --></p>
 
 <p>© Copyright Beman Dawes, 2002</p>
 <p> Use, modification, and distribution are subject to the Boost Software 
