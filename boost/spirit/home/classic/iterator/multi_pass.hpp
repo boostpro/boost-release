@@ -12,7 +12,6 @@
 #include <boost/throw_exception.hpp>
 #include <deque>
 #include <iterator>
-#include <iostream>
 #include <algorithm>    // for std::swap
 #include <exception>    // for std::exception
 #include <boost/limits.hpp>
