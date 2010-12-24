@@ -391,7 +391,7 @@ rule tag ( name : type ? : property-set )
         else if $(layout) = system
         {
             result = [ common.format-name
-                <base> 
+                <base> <threading>
                 -$(BUILD_ID)
                 : $(name) : $(type) : $(property-set) ] ;
         }
@@ -409,7 +409,7 @@ rule tag ( name : type ? : property-set )
         # suffixes either. Pgi compilers can not accept library with version
         # suffix.
         if $(type) = SHARED_LIB &&
-          ( ! ( [ $(property-set).get <target-os> ] in windows cygwin darwin aix ) &&
+          ( ! ( [ $(property-set).get <target-os> ] in windows cygwin darwin aix linux ) &&
             ! ( [ $(property-set).get <toolset> ] in pgi ) )
         {
             result = $(result).$(BOOST_VERSION)  ;
