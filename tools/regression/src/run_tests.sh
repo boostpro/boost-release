@@ -15,7 +15,7 @@
 # This can be either a non-exitent directory or an already complete Boost
 # source tree.
 #
-boost_root="$HOME/CVSROOTs/Boost/boost_regression"
+boost_root="/usr/src/redhat/BUILD/boost_1_34_1"
 
 #
 # Wether to fetch the most current Boost code from CVS (yes/no):
@@ -42,16 +42,17 @@ test_tools=gcc
 toolset=gcc
 
 #
-# "comment_path" is the path to an html-file describing the test environment.
-# The content of this file will be embedded in the status pages being produced.
-#
-comment_path="$boost_root/../regression_comment.html"
-#
 # "test_dir" is the relative path to the directory to run the tests in,
 # defaults to "status" and runs all the tests, but could be a sub-directory
 # for example "libs/regex/test" to run the regex tests alone.
 #
 test_dir="status"
+
+#
+# "comment_path" is the path to an html-file describing the test environment.
+# The content of this file will be embedded in the status pages being produced.
+#
+comment_path="$boost_root/$test_dir/regression_comment.html"
 
 
 ### DEFAULTS ARE OK FOR THESE.
@@ -70,6 +71,9 @@ exe_suffix=
 # under most circumstances.
 #
 bjam="$boost_root/tools/jam/src/bin/bjam$exe_suffix"
+
+# bjam options
+bjam_flags="--layout=system variant=release -sICU_PATH=/usr --user-config=$boost_root/user-config.jam"
 
 #
 # "process_jam_log", and "compiler_status" paths to built helper programs:
@@ -97,6 +101,14 @@ else
     BOOST_BUILD_PATH="$boost_build_path"
 fi
 export BOOST_BUILD_PATH
+
+# For shared objects.
+old_ld_library_path=$LD_LIBRARY_PATH
+old_ld_run_path=$LD_RUN_PATH
+LD_LIBRARY_PATH="$boost_root/stage/lib:$old_ld_library_path"
+LD_RUN_PATH="$boost_root/stage/lib:$old_ld_run_path"
+export LD_LIBRARY_PATH
+export LD_RUN_PATH
 
 #
 # STEP 0:
@@ -126,12 +138,15 @@ fi
 # STEP 1:
 # rebuild bjam if required:
 #
-echo building bjam:
-cd "$boost_root/tools/jam/src" && \
-LOCATE_TARGET=bin sh ./build.sh
-if test $? != 0 ; then
-    echo "bjam build failed."
-    exit 256
+echo "finding or building bjam":
+if test ! -f "$bjam" ; then
+  echo "building bjam":
+    cd "$boost_root/tools/jam/src" && \
+    LOCATE_TARGET=bin sh ./build.sh
+    if test $? != 0 ; then
+      echo "bjam build failed."
+      exit 256
+    fi
 fi
 
 #
@@ -139,8 +154,7 @@ fi
 # rebuild the regression test helper programs if required:
 #
 echo building regression test helper programs:
-cd "$boost_root/tools/regression/build" && \
-"$bjam" $toolset release
+cd "$boost_root/tools/regression/build" && "$bjam" $bjam_flags $toolset
 if test $? != 0 ; then
     echo "helper program build failed."
     exit 256
@@ -158,7 +172,9 @@ for tool in $test_tools ; do
 #
 echo running the $tool regression tests:
 cd "$boost_root/$test_dir"
-"$bjam" $tool --dump-tests 2>&1 | tee regress.log
+echo "<p> begin time: " `date` "</p>" >> "$comment_path"
+"$bjam" $bjam_flags $tool --dump-tests 2>&1 | tee regress.log
+echo "<p> end time: " `date` "</p>" >> "$comment_path"
 
 #
 # STEP 4:
@@ -184,6 +200,12 @@ if test $? != 0 ; then
     echo "Failed HTML result table generation."
     exit 256
 fi
+
+# cleanup
+LD_LIBRARY_PATH="$old_ld_library_path"
+LD_RUN_PATH="$old_ld_run_path"
+export LD_LIBRARY_PATH
+export LD_RUN_PATH
 
 echo "done!"
 
