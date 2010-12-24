@@ -67,7 +67,11 @@ public:
   // Create a new context implementation.
   void create(impl_type& impl, context_base::method m)
   {
+#if OPENSSL_VERSION_NUMBER >= 0x10000000L
+    const ::SSL_METHOD* ssl_method = 0;
+#else
     ::SSL_METHOD* ssl_method = 0;
+#endif
     switch (m)
     {
     case context_base::sslv2:
