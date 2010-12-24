@@ -1011,11 +1011,8 @@ dynamic_bitset<Block, Allocator>::count() const
                           ? access_by_bytes
                           : access_by_blocks;
 
-    if (mode)
-       return do_count(m_bits.begin(), num_blocks(), Block(0),
-                                          static_cast<value_to_type<true> *>(0));
     return do_count(m_bits.begin(), num_blocks(), Block(0),
-                                       static_cast<value_to_type<false> *>(0));
+                                       static_cast<value_to_type<mode> *>(0));
 }
 
 
