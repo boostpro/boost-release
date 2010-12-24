@@ -950,10 +950,10 @@ namespace boost {
           f.vtable->manager(f.functor, this->functor,
                             boost::detail::function::move_functor_tag);
 		  f.vtable = 0;
-#if !defined(BOOST_NO_EXCEPTIONS)      
         } else {
           clear();
         }
+#if !defined(BOOST_NO_EXCEPTIONS)      
       } catch (...) {
         vtable = 0;
         throw;
