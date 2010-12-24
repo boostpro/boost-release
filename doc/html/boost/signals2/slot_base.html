@@ -35,23 +35,21 @@
 <span class="keyword">class</span> <a class="link" href="slot_base.html" title="Class slot_base">slot_base</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// types</span>
-  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">weak_ptr</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span> <span class="special">&gt;</span>   <a name="boost.signals2.slot_base.tracked_container_type"></a><span class="identifier">tracked_container_type</span><span class="special">;</span>
-  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span> <span class="special">&gt;</span> <a name="boost.signals2.slot_base.locked_container_type"></a><span class="identifier">locked_container_type</span><span class="special">;</span> 
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="emphasis"><em><span class="identifier">implementation</span><span class="special">-</span><span class="identifier">detail</span></em></span><span class="special">&gt;</span> <a name="boost.signals2.slot_base.locked_container_type"></a><span class="identifier">locked_container_type</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="slot_base.html#id635602-bb">tracking</a></span>
-  <span class="keyword">bool</span> <a class="link" href="slot_base.html#id635606-bb"><span class="identifier">expired</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">locked_container_type</span> <a class="link" href="slot_base.html#id635623-bb"><span class="identifier">lock</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="identifier">tracked_container_type</span> <span class="special">&amp;</span> <a class="link" href="slot_base.html#id635649-bb"><span class="identifier">tracked_objects</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="slot_base.html#id328734-bb">tracking</a></span>
+  <span class="keyword">bool</span> <a class="link" href="slot_base.html#id328738-bb"><span class="identifier">expired</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">locked_container_type</span> <a class="link" href="slot_base.html#id1173100-bb"><span class="identifier">lock</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id2573386"></a><h2>Description</h2>
+<a name="id2563682"></a><h2>Description</h2>
 <p></p>
 <div class="refsect2">
-<a name="id2573393"></a><h3>
-<a name="id635602-bb"></a><code class="computeroutput">slot_base</code> tracking</h3>
+<a name="id2563689"></a><h3>
+<a name="id328734-bb"></a><code class="computeroutput">slot_base</code> tracking</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="id635606-bb"></a><span class="identifier">expired</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id328738-bb"></a><span class="identifier">expired</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -61,7 +59,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">locked_container_type</span> <a name="id635623-bb"></a><span class="identifier">lock</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">locked_container_type</span> <a name="id1173100-bb"></a><span class="identifier">lock</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -76,16 +74,6 @@
 <a class="link" href="expired_slot.html" title="Class expired_slot">expired_slot</a> if any of the slot's tracked objects have expired.</td>
 </tr>
 </tbody>
-</table></div>
-</li>
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">tracked_container_type</span> <span class="special">&amp;</span> <a name="id635649-bb"></a><span class="identifier">tracked_objects</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term">Returns:</span></p></td>
-<td>A const reference to the slot's list of tracked objects, in <code class="computeroutput">weak_ptr</code> form.</td>
-</tr></tbody>
 </table></div>
 </li>
 </ol></div>

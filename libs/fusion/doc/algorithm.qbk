@@ -1,5 +1,6 @@
 [/==============================================================================
     Copyright (C) 2001-2007 Joel de Guzman, Dan Marsden, Tobias Schwinger
+    Copyright (C) 2010 Christopher Schmidt
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -91,7 +92,7 @@ the first call) and [arg_desc] of `seq`.
     [[Parameter][Requirement][Description]]
     [[`seq`][A model of seq_concept_macro][Operation's argument]]
     [[`initial_state`][Any type][Initial state]]
-    [[`f`][`f(s,arg_id_macro)` with return type `__boost_result_of_call__<F(S,arg_type_id_macro)>::type` must be a valid expression for current state `s` of type `S`, and for each invoke_desc_macro][Operation's argument]]
+    [[`f`][`f(s,arg_id_macro)` with return type `__boost_result_of_call__<F(S,arg_type_id_macro)>::type` for current state `s` of type `S`, and for each invoke_desc_macro][Operation's argument]]
 ]
 
 [heading Expression Semantics]
@@ -1472,7 +1473,6 @@ position described by a given iterator.
 [*Return type]:
 
 * A model of __forward_sequence__.
-* A model of __associative_sequence__ if `seq` implements the __associative_sequence__ model.
 
 [*Semantics]: Returns a new sequence, containing all the elements of `seq`, in their original order, and a new element with the
 type and value of `t` inserted at iterator `pos`.
@@ -1513,7 +1513,7 @@ Returns a new sequence with another sequence inserted at a specified iterator.
 ]
 
 [heading Expression Semantics]
-    __insert__(seq, pos, range);
+    __insert_range__(seq, pos, range);
 
 [*Return type]:
 
@@ -1725,7 +1725,6 @@ Returns a new sequence with an element added at the end.
 [*Return type]:
 
 * A model of __forward_sequence__.
-* A model of __associative_sequence__ if `seq` implements the __associative_sequence__ model.
 
 [*Semantics]: Returns a new sequence, containing all the elements of `seq`, and new element `t` appended to the end. The elements are in the same order as they were in `seq`.
 
@@ -1767,7 +1766,6 @@ Returns a new sequence with an element added at the beginning.
 [*Return type]:
 
 * A model of __forward_sequence__.
-* A model of __associative_sequence__ if `seq` implements the __associative_sequence__ model.
 
 [*Semantics]: Returns a new sequence, containing all the elements of `seq`, and new element `t` appended to the beginning. The elements are in the same order as they were in `seq`.
 
@@ -2293,7 +2291,6 @@ Returns the result type of __insert__, given the sequence, position iterator and
 [*Return type]:
 
 * A model of __forward_sequence__.
-* A model of __associative_sequence__ if `Sequence` implements the __associative_sequence__ model.
 
 [*Semantics]: Returns a sequence with an element of type `T` inserted at position `Position` in `Sequence`.
 
@@ -2524,7 +2521,6 @@ Returns the result type of __push_back__, given the types of the input sequence 
 [*Return type]:
 
 * A model of __forward_sequence__.
-* A model of __associative_sequence__ if `Sequence` implements the __associative_sequence__ model.
 
 [*Semantics]: Returns a sequence with the elements of `Sequence` and an element of type `T` added to the end.
 
@@ -2565,7 +2561,6 @@ Returns the result type of __push_front__, given the types of the input sequence
 [*Return type]:
 
 * A model of __forward_sequence__.
-* A model of __associative_sequence__ if `Sequence` implements the __associative_sequence__ model.
 
 [*Semantics]: Returns a sequence with the elements of `Sequence` and an element of type `T` added to the beginning.
 

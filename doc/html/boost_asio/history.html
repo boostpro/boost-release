@@ -24,10 +24,88 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="boost_asio.history"></a><a class="link" href="history.html" title="Revision History"> Revision History</a>
+<a name="boost_asio.history"></a><a class="link" href="history.html" title="Revision History">Revision History</a>
 </h2></div></div></div>
+<a name="boost_asio.history.asio_1_4_7___boost_1_45"></a><h4>
+<a name="id1406562"></a>
+      <a class="link" href="history.html#boost_asio.history.asio_1_4_7___boost_1_45">Asio 1.4.7 / Boost
+      1.45</a>
+    </h4>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          Fixed a problem on kqueue-based platforms where a <code class="computeroutput"><span class="identifier">deadline_timer</span></code>
+          may never fire if the <code class="computeroutput"><span class="identifier">io_service</span></code>
+          is running in a background thread (<a href="https://svn.boost.org/trac/boost/ticket/4568" target="_top">#4568</a>).
+        </li>
+<li class="listitem">
+          Fixed a const-correctness issue that prevented valid uses of <code class="computeroutput"><span class="identifier">has_service</span><span class="special">&lt;&gt;</span></code>
+          from compiling (<a href="https://svn.boost.org/trac/boost/ticket/4638" target="_top">#4638</a>).
+        </li>
+<li class="listitem">
+          Fixed MinGW cross-compilation (<a href="https://svn.boost.org/trac/boost/ticket/4491" target="_top">#4491</a>).
+        </li>
+<li class="listitem">
+          Removed dependency on deprecated Boost.System functions (<a href="https://svn.boost.org/trac/boost/ticket/4672" target="_top">#4672</a>).
+        </li>
+<li class="listitem">
+          Ensured <code class="computeroutput"><span class="identifier">close</span><span class="special">()</span></code>/<code class="computeroutput"><span class="identifier">closesocket</span><span class="special">()</span></code>
+          failures are correctly propagated (<a href="https://svn.boost.org/trac/boost/ticket/4573" target="_top">#4573</a>).
+        </li>
+<li class="listitem">
+          Added a check for errors returned by <code class="computeroutput"><span class="identifier">InitializeCriticalSectionAndSpinCount</span></code>
+          (<a href="https://svn.boost.org/trac/boost/ticket/4574" target="_top">#4574</a>).
+        </li>
+<li class="listitem">
+          Added support for hardware flow control on QNX (<a href="https://svn.boost.org/trac/boost/ticket/4625" target="_top">#4625</a>).
+        </li>
+<li class="listitem">
+          Always use <code class="computeroutput"><span class="identifier">pselect</span><span class="special">()</span></code>
+          on HP-UX, if it is available (<a href="https://svn.boost.org/trac/boost/ticket/4578" target="_top">#4578</a>).
+        </li>
+<li class="listitem">
+          Ensured handler arguments are passed as lvalues (<a href="https://svn.boost.org/trac/boost/ticket/4744" target="_top">#4744</a>).
+        </li>
+<li class="listitem">
+          Fixed Windows build when thread support is disabled (<a href="https://svn.boost.org/trac/boost/ticket/4680" target="_top">#4680</a>).
+        </li>
+<li class="listitem">
+          Fixed a Windows-specific problem where <code class="computeroutput"><span class="identifier">deadline_timer</span></code>
+          objects with expiry times set more than 5 minutes in the future may never
+          expire (<a href="https://svn.boost.org/trac/boost/ticket/4745" target="_top">#4745</a>).
+        </li>
+<li class="listitem">
+          Fixed the <code class="computeroutput"><span class="identifier">resolver</span></code> backend
+          on BSD platforms so that an empty service name resolves to port number
+          <code class="computeroutput"><span class="number">0</span></code>, as per the documentation
+          (<a href="https://svn.boost.org/trac/boost/ticket/4690" target="_top">#4690</a>).
+        </li>
+<li class="listitem">
+          Fixed read operations so that they do not accept buffer sequences of type
+          <code class="computeroutput"><span class="identifier">const_buffers_1</span></code> (<a href="https://svn.boost.org/trac/boost/ticket/4746" target="_top">#4746</a>).
+        </li>
+<li class="listitem">
+          Redefined <code class="computeroutput"><span class="identifier">Protocol</span></code> and
+          <code class="computeroutput"><span class="identifier">id</span></code> to avoid clashing with
+          Objective-C++ keywords (<a href="https://svn.boost.org/trac/boost/ticket/4191" target="_top">#4191</a>).
+        </li>
+<li class="listitem">
+          Fixed a <code class="computeroutput"><span class="identifier">vector</span></code> reallocation
+          performance issue that can occur when there are many active <code class="computeroutput"><span class="identifier">deadline_timer</span></code> objects (<a href="https://svn.boost.org/trac/boost/ticket/4780" target="_top">#4780</a>).
+        </li>
+<li class="listitem">
+          Fixed the kqueue backend so that it compiles on NetBSD (<a href="https://svn.boost.org/trac/boost/ticket/4662" target="_top">#4662</a>).
+        </li>
+<li class="listitem">
+          Fixed the socket <code class="computeroutput"><span class="identifier">io_control</span><span class="special">()</span></code> implementation on 64-bit Mac OS X and
+          BSD platforms (<a href="https://svn.boost.org/trac/boost/ticket/4782" target="_top">#4782</a>).
+        </li>
+<li class="listitem">
+          Deprecated the separate compilation header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">asio</span><span class="special">/</span><span class="identifier">impl</span><span class="special">/</span><span class="identifier">src</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">&gt;</span></code>
+          in favour of <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">asio</span><span class="special">/</span><span class="identifier">impl</span><span class="special">/</span><span class="identifier">src</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code> (<a href="https://svn.boost.org/trac/boost/ticket/4560" target="_top">#4560</a>).
+        </li>
+</ul></div>
 <a name="boost_asio.history.asio_1_4_6___boost_1_44"></a><h4>
-<a name="id1406949"></a>
+<a name="id1407141"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_6___boost_1_44">Asio 1.4.6 / Boost
       1.44</a>
     </h4>
@@ -103,7 +181,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_5___boost_1_43"></a><h4>
-<a name="id1407457"></a>
+<a name="id1407648"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_5___boost_1_43">Asio 1.4.5 / Boost
       1.43</a>
     </h4>
@@ -170,7 +248,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_4___boost_1_42"></a><h4>
-<a name="id1407892"></a>
+<a name="id1408083"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_4___boost_1_42">Asio 1.4.4 / Boost
       1.42</a>
     </h4>
@@ -235,7 +313,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_3___boost_1_40"></a><h4>
-<a name="id1408176"></a>
+<a name="id1408367"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_3___boost_1_40">Asio 1.4.3 / Boost
       1.40</a>
     </h4>
@@ -292,7 +370,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_2___boost_1_39"></a><h4>
-<a name="id1408479"></a>
+<a name="id1408670"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_2___boost_1_39">Asio 1.4.2 / Boost
       1.39</a>
     </h4>
@@ -344,7 +422,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_1___boost_1_38"></a><h4>
-<a name="id1408733"></a>
+<a name="id1408924"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_1___boost_1_38">Asio 1.4.1 / Boost
       1.38</a>
     </h4>
@@ -376,7 +454,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_0___boost_1_37"></a><h4>
-<a name="id1408895"></a>
+<a name="id1409086"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_0___boost_1_37">Asio 1.4.0 / Boost
       1.37</a>
     </h4>
@@ -411,7 +489,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_2_0___boost_1_36"></a><h4>
-<a name="id1409027"></a>
+<a name="id1409218"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_2_0___boost_1_36">Asio 1.2.0 / Boost
       1.36</a>
     </h4>
@@ -464,7 +542,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_0_0___boost_1_35"></a><h4>
-<a name="id1409247"></a>
+<a name="id1409438"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_0_0___boost_1_35">Asio 1.0.0 / Boost
       1.35</a>
     </h4>

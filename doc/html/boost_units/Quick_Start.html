@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_units.html" title="Chapter&#160;26.&#160;Boost.Units 1.0.0">
-<link rel="prev" href="../boost_units.html" title="Chapter&#160;26.&#160;Boost.Units 1.0.0">
+<link rel="up" href="../boost_units.html" title="Chapter&#160;26.&#160;Boost.Units 1.1.0">
+<link rel="prev" href="../boost_units.html" title="Chapter&#160;26.&#160;Boost.Units 1.1.0">
 <link rel="next" href="Dimensional_Analysis.html" title="Dimensional Analysis">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -24,7 +24,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="boost_units.Quick_Start"></a><a class="link" href="Quick_Start.html" title="Quick Start"> Quick Start</a>
+<a name="boost_units.Quick_Start"></a><a class="link" href="Quick_Start.html" title="Quick Start">Quick Start</a>
 </h2></div></div></div>
 <p>
       Before discussing the basics of the library, we first define a few terms that
@@ -42,8 +42,8 @@
 <li class="listitem">
           <span class="bold"><strong>Dimension</strong></span> : A collection of zero or more
           base dimensions, each potentially raised to a different rational power.
-          For example, area = [L]^2, velocity = [L]^1/[T]^1, and energy = [M]^1 [L]^2/[T]^2
-          are all dimensions.
+          For example, length = [L]^1, area = [L]^2, velocity = [L]^1/[T]^1, and
+          energy = [M]^1 [L]^2/[T]^2 are all dimensions.
         </li>
 <li class="listitem">
           <span class="bold"><strong>Base unit</strong></span> : A base unit represents a specific
@@ -55,7 +55,7 @@
         </li>
 <li class="listitem">
           <span class="bold"><strong>Unit</strong></span> : A set of base units raised to rational
-          exponents, e.g. kg^1 m^1/s^2.
+          exponents, e.g. m^1, kg^1, m^1/s^2.
         </li>
 <li class="listitem">
           <span class="bold"><strong>System</strong></span> : A unit system is a collection
@@ -89,9 +89,7 @@
       as the value type :
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -110,42 +108,42 @@
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">si</span><span class="special">;</span>
 
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">energy</span><span class="special">&gt;</span> 
-<span class="identifier">work</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">force</span><span class="special">&gt;&amp;</span> <span class="identifier">F</span><span class="special">,</span><span class="keyword">const</span> <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;&amp;</span> <span class="identifier">dx</span><span class="special">)</span>
+<span class="identifier">work</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">force</span><span class="special">&gt;&amp;</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;&amp;</span> <span class="identifier">dx</span><span class="special">)</span>
 <span class="special">{</span>
-    <span class="keyword">return</span> <span class="identifier">F</span><span class="special">*</span><span class="identifier">dx</span><span class="special">;</span>
-<span class="special">}</span>
+    <span class="keyword">return</span> <span class="identifier">F</span> <span class="special">*</span> <span class="identifier">dx</span><span class="special">;</span> <span class="comment">// Defines the relation: work = force * distance.
+</span><span class="special">}</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>   
-    <span class="comment">/// test calcuation of work
-</span>    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">force</span><span class="special">&gt;</span>     <span class="identifier">F</span><span class="special">(</span><span class="number">2.0</span><span class="special">*</span><span class="identifier">newton</span><span class="special">);</span>
-    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span>    <span class="identifier">dx</span><span class="special">(</span><span class="number">2.0</span><span class="special">*</span><span class="identifier">meter</span><span class="special">);</span>
-    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">energy</span><span class="special">&gt;</span>    <span class="identifier">E</span><span class="special">(</span><span class="identifier">work</span><span class="special">(</span><span class="identifier">F</span><span class="special">,</span><span class="identifier">dx</span><span class="special">));</span>
-    
+    <span class="comment">/// Test calculation of work.
+</span>    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">force</span><span class="special">&gt;</span>     <span class="identifier">F</span><span class="special">(</span><span class="number">2.0</span> <span class="special">*</span> <span class="identifier">newton</span><span class="special">);</span> <span class="comment">// Define a quantity of force.
+</span>    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span>    <span class="identifier">dx</span><span class="special">(</span><span class="number">2.0</span> <span class="special">*</span> <span class="identifier">meter</span><span class="special">);</span> <span class="comment">// and a distance,
+</span>    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">energy</span><span class="special">&gt;</span>    <span class="identifier">E</span><span class="special">(</span><span class="identifier">work</span><span class="special">(</span><span class="identifier">F</span><span class="special">,</span><span class="identifier">dx</span><span class="special">));</span>  <span class="comment">// and calculate the work done.
+</span>    
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"F  = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">F</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
               <span class="special">&lt;&lt;</span> <span class="string">"dx = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">dx</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
               <span class="special">&lt;&lt;</span> <span class="string">"E  = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">E</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
               <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 
-    <span class="comment">/// check complex quantities
-</span>    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span>    <span class="identifier">complex_type</span><span class="special">;</span>
-    
-    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">electric_potential</span><span class="special">,</span><span class="identifier">complex_type</span><span class="special">&gt;</span> <span class="identifier">v</span> <span class="special">=</span> <span class="identifier">complex_type</span><span class="special">(</span><span class="number">12.5</span><span class="special">,</span><span class="number">0.0</span><span class="special">)*</span><span class="identifier">volts</span><span class="special">;</span>
-    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">current</span><span class="special">,</span><span class="identifier">complex_type</span><span class="special">&gt;</span>            <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">complex_type</span><span class="special">(</span><span class="number">3.0</span><span class="special">,</span><span class="number">4.0</span><span class="special">)*</span><span class="identifier">amperes</span><span class="special">;</span>
-    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">resistance</span><span class="special">,</span><span class="identifier">complex_type</span><span class="special">&gt;</span>         <span class="identifier">z</span> <span class="special">=</span> <span class="identifier">complex_type</span><span class="special">(</span><span class="number">1.5</span><span class="special">,-</span><span class="number">2.0</span><span class="special">)*</span><span class="identifier">ohms</span><span class="special">;</span>
+    <span class="comment">/// Test and check complex quantities.
+</span>    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">complex_type</span><span class="special">;</span> <span class="comment">// double real and imaginary parts.
+</span>    
+    <span class="comment">// Define some complex electrical quantities.
+</span>    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">electric_potential</span><span class="special">,</span> <span class="identifier">complex_type</span><span class="special">&gt;</span> <span class="identifier">v</span> <span class="special">=</span> <span class="identifier">complex_type</span><span class="special">(</span><span class="number">12.5</span><span class="special">,</span> <span class="number">0.0</span><span class="special">)</span> <span class="special">*</span> <span class="identifier">volts</span><span class="special">;</span>
+    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">current</span><span class="special">,</span> <span class="identifier">complex_type</span><span class="special">&gt;</span>            <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">complex_type</span><span class="special">(</span><span class="number">3.0</span><span class="special">,</span> <span class="number">4.0</span><span class="special">)</span> <span class="special">*</span> <span class="identifier">amperes</span><span class="special">;</span>
+    <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">resistance</span><span class="special">,</span> <span class="identifier">complex_type</span><span class="special">&gt;</span>         <span class="identifier">z</span> <span class="special">=</span> <span class="identifier">complex_type</span><span class="special">(</span><span class="number">1.5</span><span class="special">,</span> <span class="special">-</span><span class="number">2.0</span><span class="special">)</span> <span class="special">*</span> <span class="identifier">ohms</span><span class="special">;</span>
     
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"V   = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">v</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
               <span class="special">&lt;&lt;</span> <span class="string">"I   = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
-              <span class="special">&lt;&lt;</span> <span class="string">"Z   = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">z</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
-              <span class="special">&lt;&lt;</span> <span class="string">"I*Z = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span><span class="special">*</span><span class="identifier">z</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
-              <span class="special">&lt;&lt;</span> <span class="string">"I*Z == V? "</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">boolalpha</span> <span class="special">&lt;&lt;</span> <span class="special">(</span><span class="identifier">i</span><span class="special">*</span><span class="identifier">z</span> <span class="special">==</span> <span class="identifier">v</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
+              <span class="special">&lt;&lt;</span> <span class="string">"Z   = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">z</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span> 
+              <span class="comment">// Calculate from Ohm's law voltage = current * resistance.
+</span>              <span class="special">&lt;&lt;</span> <span class="string">"I * Z = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span> <span class="special">*</span> <span class="identifier">z</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
+              <span class="comment">// Check defined V is equal to calculated.
+</span>              <span class="special">&lt;&lt;</span> <span class="string">"I * Z == V? "</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">boolalpha</span> <span class="special">&lt;&lt;</span> <span class="special">(</span><span class="identifier">i</span> <span class="special">*</span> <span class="identifier">z</span> <span class="special">==</span> <span class="identifier">v</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
               <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
-
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
-<p>
-      </p>
 <p>
     </p>
 <p>
@@ -153,9 +151,7 @@
       is :
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="identifier">F</span>  <span class="special">=</span> <span class="number">2</span> <span class="identifier">N</span>
 <span class="identifier">dx</span> <span class="special">=</span> <span class="number">2</span> <span class="identifier">m</span>
@@ -167,8 +163,6 @@
 <span class="identifier">I</span><span class="special">*</span><span class="identifier">Z</span> <span class="special">=</span> <span class="special">(</span><span class="number">12.5</span><span class="special">,</span><span class="number">0</span><span class="special">)</span> <span class="identifier">V</span>
 <span class="identifier">I</span><span class="special">*</span><span class="identifier">Z</span> <span class="special">==</span> <span class="identifier">V</span><span class="special">?</span> <span class="keyword">true</span>
 </pre>
-<p>
-      </p>
 <p>
     </p>
 <p>
@@ -184,7 +178,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 -2008 Matthias Christian Schabel, 2007-2008 Steven
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003 -2008 Matthias Christian Schabel, 2007-2010 Steven
       Watanabe<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

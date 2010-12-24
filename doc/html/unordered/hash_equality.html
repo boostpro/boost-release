@@ -24,8 +24,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="unordered.hash_equality"></a><a class="link" href="hash_equality.html" title="Equality Predicates and Hash Functions"> Equality Predicates and Hash
-    Functions</a>
+<a name="unordered.hash_equality"></a><a class="link" href="hash_equality.html" title="Equality Predicates and Hash Functions">Equality Predicates and Hash Functions</a>
 </h2></div></div></div>
 <p>
       While the associative containers use an ordering relation to specify how the
@@ -46,15 +45,11 @@
       write:
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unordered_map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="identifier">hash</span><span class="special">::</span><span class="identifier">fnv_1</span><span class="special">&gt;</span>
     <span class="identifier">dictionary</span><span class="special">;</span>
 </pre>
-<p>
-      </p>
 <p>
     </p>
 <p>
@@ -67,9 +62,7 @@
       you need to define a case insensitive equality predicate and hash function:
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">iequal_to</span>
     <span class="special">:</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">binary_function</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">bool</span><span class="special">&gt;</span>
@@ -100,22 +93,16 @@
 <span class="special">};</span>
 </pre>
 <p>
-      </p>
-<p>
     </p>
 <p>
       Which you can then use in a case insensitive dictionary:
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unordered_map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="identifier">ihash</span><span class="special">,</span> <span class="identifier">iequal_to</span><span class="special">&gt;</span>
     <span class="identifier">idictionary</span><span class="special">;</span>
 </pre>
-<p>
-      </p>
 <p>
     </p>
 <p>
@@ -139,16 +126,14 @@
       </p></td></tr>
 </table></div>
 <a name="unordered.hash_equality.custom_types"></a><h3>
-<a name="id3027790"></a>
+<a name="id3021632"></a>
       <a class="link" href="hash_equality.html#unordered.hash_equality.custom_types">Custom Types</a>
     </h3>
 <p>
       Similarly, a custom hash function can be used for custom types:
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">point</span> <span class="special">{</span>
     <span class="keyword">int</span> <span class="identifier">x</span><span class="special">;</span>
@@ -175,8 +160,6 @@
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unordered_multiset</span><span class="special">&lt;</span><span class="identifier">point</span><span class="special">,</span> <span class="identifier">point_hash</span><span class="special">&gt;</span> <span class="identifier">points</span><span class="special">;</span>
 </pre>
 <p>
-      </p>
-<p>
     </p>
 <p>
       Since the default hash function is <a class="link" href="../hash.html" title="Chapter&#160;8.&#160;Boost.Functional/Hash">Boost.Hash</a>,
@@ -184,9 +167,7 @@
       that the hash function doesn't need to be explicitly given:
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">point</span> <span class="special">{</span>
     <span class="keyword">int</span> <span class="identifier">x</span><span class="special">;</span>
@@ -209,8 +190,6 @@
 </span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unordered_multiset</span><span class="special">&lt;</span><span class="identifier">point</span><span class="special">&gt;</span> <span class="identifier">points</span><span class="special">;</span>
 </pre>
 <p>
-      </p>
-<p>
     </p>
 <p>
       See the <a class="link" href="../hash/custom.html" title="Extending boost::hash for a custom data type">Boost.Hash documentation</a> for more
@@ -219,7 +198,7 @@
       containers.
     </p>
 <div class="table">
-<a name="id3028852"></a><p class="title"><b>Table&#160;27.3.&#160;Methods for accessing the hash and equality functions.</b></p>
+<a name="id3022688"></a><p class="title"><b>Table&#160;27.3.&#160;Methods for accessing the hash and equality functions.</b></p>
 <div class="table-contents"><table class="table" summary="Methods for accessing the hash and equality functions.">
 <colgroup>
 <col>

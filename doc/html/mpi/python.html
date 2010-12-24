@@ -24,17 +24,15 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="mpi.python"></a> Python Bindings</h2></div></div></div>
+<a name="mpi.python"></a>Python Bindings</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="python.html#mpi.python_quickstart"> Quickstart</a></span></dt>
-<dt><span class="section"><a href="python.html#mpi.python_user_data"> Transmitting User-Defined Data</a></span></dt>
-<dt><span class="section"><a href="python.html#mpi.python_collectives"> Collectives</a></span></dt>
-<dt><span class="section"><a href="python.html#mpi.python_skeleton_content"> Skeleton/Content Mechanism</a></span></dt>
-<dt><span class="section"><a href="python.html#mpi.python_compatbility"> C++/Python MPI Compatibility</a></span></dt>
-<dt><span class="section"><a href="python.html#mpi.pythonref"> Reference</a></span></dt>
+<dt><span class="section"><a href="python.html#mpi.python_quickstart">Quickstart</a></span></dt>
+<dt><span class="section"><a href="python.html#mpi.python_user_data">Transmitting User-Defined Data</a></span></dt>
+<dt><span class="section"><a href="python.html#mpi.python_collectives">Collectives</a></span></dt>
+<dt><span class="section"><a href="python.html#mpi.python_skeleton_content">Skeleton/Content Mechanism</a></span></dt>
+<dt><span class="section"><a href="python.html#mpi.python_compatbility">C++/Python MPI Compatibility</a></span></dt>
+<dt><span class="section"><a href="python.html#mpi.pythonref">Reference</a></span></dt>
 </dl></div>
-<p>
-    </p>
 <p>
       Boost.MPI provides an alternative MPI interface from the <a href="http://www.python.org" target="_top">Python</a>
       programming language via the <code class="computeroutput"><span class="identifier">boost</span><span class="special">.</span><span class="identifier">mpi</span></code> module.
@@ -51,9 +49,7 @@
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="mpi.python_quickstart"></a> Quickstart</h3></div></div></div>
-<p>
-      </p>
+<a name="mpi.python_quickstart"></a>Quickstart</h3></div></div></div>
 <p>
         Getting started with the Boost.MPI Python module is as easy as importing
         <code class="computeroutput"><span class="identifier">boost</span><span class="special">.</span><span class="identifier">mpi</span></code>. Our first "Hello, World!"
@@ -116,7 +112,7 @@ I am process 0 of 5.
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="mpi.python_user_data"></a> Transmitting User-Defined Data</h3></div></div></div>
+<a name="mpi.python_user_data"></a>Transmitting User-Defined Data</h3></div></div></div>
 <p>
         Boost.MPI can transmit user-defined data in several different ways. Most
         importantly, it can transmit arbitrary <a href="http://www.python.org" target="_top">Python</a>
@@ -148,7 +144,7 @@ I am process 0 of 5.
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="mpi.python_collectives"></a> Collectives</h3></div></div></div>
+<a name="mpi.python_collectives"></a>Collectives</h3></div></div></div>
 <p>
         Boost.MPI supports all of the MPI collectives (<code class="computeroutput"><span class="identifier">scatter</span></code>,
         <code class="computeroutput"><span class="identifier">reduce</span></code>, <code class="computeroutput"><span class="identifier">scan</span></code>,
@@ -172,7 +168,7 @@ I am process 0 of 5.
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="mpi.python_skeleton_content"></a> Skeleton/Content Mechanism</h3></div></div></div>
+<a name="mpi.python_skeleton_content"></a>Skeleton/Content Mechanism</h3></div></div></div>
 <p>
         Boost.MPI provides a skeleton/content mechanism that allows the transfer
         of large data structures to be split into two separate stages, with the skeleton
@@ -186,7 +182,7 @@ I am process 0 of 5.
       </p>
 <p>
         To use the skeleton/content mechanism from Python, you must first register
-        the type of your data structure with the skeleton/content mechanism <span class="bold"><strong>from C++</strong></span>. The registration function is <code class="computeroutput"><a class="link" href="../boost/mpi/python/register_skeleton_and_c_id923833.html" title="Function template register_skeleton_and_content">register_skeleton_and_content</a></code>
+        the type of your data structure with the skeleton/content mechanism <span class="bold"><strong>from C++</strong></span>. The registration function is <code class="computeroutput"><a class="link" href="../boost/mpi/python/register_skeleton_and_c_id920182.html" title="Function template register_skeleton_and_content">register_skeleton_and_content</a></code>
         and resides in the <code class="computeroutput"><a class="link" href="reference.html#header.boost.mpi.python_hpp" title="Header &lt;boost/mpi/python.hpp&gt;">&lt;boost/mpi/python.hpp&gt;</a></code>
         header.
       </p>
@@ -229,7 +225,7 @@ I am process 0 of 5.
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="mpi.python_compatbility"></a> C++/Python MPI Compatibility</h3></div></div></div>
+<a name="mpi.python_compatbility"></a>C++/Python MPI Compatibility</h3></div></div></div>
 <p>
         Boost.MPI is a C++ library whose facilities have been exposed to Python via
         the Boost.Python library. Since the Boost.MPI Python bindings are build directly
@@ -255,8 +251,6 @@ I am process 0 of 5.
 <p>
         In C++, we would receive that value into a Python object and then <code class="computeroutput"><span class="identifier">extract</span></code> an integer value:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">object</span> <span class="identifier">value</span><span class="special">;</span>
 <span class="identifier">comm</span><span class="special">.</span><span class="identifier">recv</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">value</span><span class="special">);</span>
 <span class="keyword">int</span> <span class="identifier">int_value</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">extract</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">value</span><span class="special">);</span>
@@ -268,7 +262,7 @@ I am process 0 of 5.
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="mpi.pythonref"></a> Reference</h3></div></div></div>
+<a name="mpi.pythonref"></a>Reference</h3></div></div></div>
 <p>
         The Boost.MPI Python module, <code class="computeroutput"><span class="identifier">boost</span><span class="special">.</span><span class="identifier">mpi</span></code>, has
         its own <a href="../boost.mpi.html" target="_top">reference documentation</a>, which

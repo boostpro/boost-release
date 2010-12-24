@@ -24,27 +24,25 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="intrusive.intrusive_vs_nontrusive"></a><a class="link" href="intrusive_vs_nontrusive.html" title="Intrusive and non-intrusive containers"> Intrusive and non-intrusive
+<a name="intrusive.intrusive_vs_nontrusive"></a><a class="link" href="intrusive_vs_nontrusive.html" title="Intrusive and non-intrusive containers">Intrusive and non-intrusive
     containers</a>
 </h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="intrusive_vs_nontrusive.html#intrusive.intrusive_vs_nontrusive.differences_intrusive_vs_nontrusive">
-      Differences between intrusive and non-intrusive containers</a></span></dt>
-<dt><span class="section"><a href="intrusive_vs_nontrusive.html#intrusive.intrusive_vs_nontrusive.properties_of_intrusive">
-      Properties of Boost.Intrusive containers</a></span></dt>
+<dt><span class="section"><a href="intrusive_vs_nontrusive.html#intrusive.intrusive_vs_nontrusive.differences_intrusive_vs_nontrusive">Differences
+      between intrusive and non-intrusive containers</a></span></dt>
+<dt><span class="section"><a href="intrusive_vs_nontrusive.html#intrusive.intrusive_vs_nontrusive.properties_of_intrusive">Properties
+      of Boost.Intrusive containers</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.intrusive_vs_nontrusive.differences_intrusive_vs_nontrusive"></a><a class="link" href="intrusive_vs_nontrusive.html#intrusive.intrusive_vs_nontrusive.differences_intrusive_vs_nontrusive" title="Differences between intrusive and non-intrusive containers">
-      Differences between intrusive and non-intrusive containers</a>
+<a name="intrusive.intrusive_vs_nontrusive.differences_intrusive_vs_nontrusive"></a><a class="link" href="intrusive_vs_nontrusive.html#intrusive.intrusive_vs_nontrusive.differences_intrusive_vs_nontrusive" title="Differences between intrusive and non-intrusive containers">Differences
+      between intrusive and non-intrusive containers</a>
 </h3></div></div></div>
 <p>
         The main difference between intrusive containers and non-intrusive containers
         is that in C++ non-intrusive containers store <span class="bold"><strong>copies</strong></span>
         of values passed by the user. Containers use the <code class="computeroutput"><span class="identifier">Allocator</span></code>
         template parameter to allocate the stored values:
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">list</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">assert</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span>
@@ -67,8 +65,6 @@
         usually allocates nodes that contain pointers to the next and previous node
         and the value itself. Something similar to:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="comment">//A possible implementation of a std::list&lt;MyClass&gt; node
 </span><span class="keyword">class</span> <span class="identifier">list_node</span>
 <span class="special">{</span>
@@ -85,8 +81,6 @@
         in an intrusive container that implements a linked list, <code class="computeroutput"><span class="identifier">MyClass</span></code>
         must contain the needed <span class="emphasis"><em>next</em></span> and <span class="emphasis"><em>previous</em></span>
         pointers:
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="keyword">class</span> <span class="identifier">MyClass</span>
 <span class="special">{</span>
@@ -116,8 +110,8 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.intrusive_vs_nontrusive.properties_of_intrusive"></a><a class="link" href="intrusive_vs_nontrusive.html#intrusive.intrusive_vs_nontrusive.properties_of_intrusive" title="Properties of Boost.Intrusive containers">
-      Properties of Boost.Intrusive containers</a>
+<a name="intrusive.intrusive_vs_nontrusive.properties_of_intrusive"></a><a class="link" href="intrusive_vs_nontrusive.html#intrusive.intrusive_vs_nontrusive.properties_of_intrusive" title="Properties of Boost.Intrusive containers">Properties
+      of Boost.Intrusive containers</a>
 </h3></div></div></div>
 <p>
         Semantically, a <span class="bold"><strong>Boost.Intrusive</strong></span> container
@@ -223,8 +217,8 @@
             To ease the implementation of copy constructors and assignment operators
             of classes storing <span class="bold"><strong>Boost.Intrusive</strong></span> containers,
             <span class="bold"><strong>Boost.Intrusive</strong></span> offers special cloning
-            functions. See <a class="link" href="clone_from.html" title="Cloning Boost.Intrusive containers">Cloning <span class="bold"><strong>Boost.Intrusive</strong></span> containers</a> section for
-            more information.
+            functions. See <a class="link" href="clone_from.html" title="Cloning Boost.Intrusive containers">Cloning Boost.Intrusive
+            containers</a> section for more information.
           </li>
 <li class="listitem">
             Analyzing the thread safety of a program that uses containers is harder
@@ -233,7 +227,7 @@
           </li>
 </ul></div>
 <div class="table">
-<a name="id1562434"></a><p class="title"><b>Table&#160;10.1.&#160;Summary of intrusive containers advantages and disadvantages</b></p>
+<a name="id1564362"></a><p class="title"><b>Table&#160;10.1.&#160;Summary of intrusive containers advantages and disadvantages</b></p>
 <div class="table-contents"><table class="table" summary="Summary of intrusive containers advantages and disadvantages">
 <colgroup>
 <col>
@@ -507,7 +501,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2009 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

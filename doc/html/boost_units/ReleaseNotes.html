@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_units.html" title="Chapter&#160;26.&#160;Boost.Units 1.0.0">
-<link rel="prev" href="HelpWanted.html" title="Help Wanted">
+<link rel="up" href="../boost_units.html" title="Chapter&#160;26.&#160;Boost.Units 1.1.0">
+<link rel="prev" href="version_id.html" title="Version Info">
 <link rel="next" href="TODO.html" title="TODO">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,12 +20,18 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="HelpWanted.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_units.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="TODO.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="version_id.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_units.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="TODO.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="boost_units.ReleaseNotes"></a><a class="link" href="ReleaseNotes.html" title="Release Notes"> Release Notes</a>
+<a name="boost_units.ReleaseNotes"></a><a class="link" href="ReleaseNotes.html" title="Release Notes">Release Notes</a>
 </h2></div></div></div>
+<p>
+      1.2 (March 2010)
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          Added autoprefix ready for Boost 1.43
+        </li></ul></div>
 <p>
       1.0.0 (August 1, 2008) :
     </p>
@@ -37,17 +43,17 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          Boost.Typeof emulation support
+          Boost.Typeof emulation support.
         </li>
 <li class="listitem">
           attempting to rebind a heterogeneous_system to a different set of dimensions
           now fails.
         </li>
 <li class="listitem">
-          cmath.hpp now works with como-win32
+          cmath.hpp now works with como-win32.
         </li>
 <li class="listitem">
-          minor changes to the tests and examples to make msvc 7.1 happy
+          minor changes to the tests and examples to make msvc 7.1 happy.
         </li>
 </ul></div>
 <p>
@@ -55,32 +61,33 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          heterogeneous and mixed system functionality added
+          heterogeneous and mixed system functionality added.
         </li>
 <li class="listitem">
           added fine-grained implicit unit conversion on a per fundamental dimension
-          basis
+          basis.
         </li>
 <li class="listitem">
-          added a number of utility metafunction classes and predicates
+          added a number of utility metafunction classes and predicates.
         </li>
 <li class="listitem">
           <code class="computeroutput"><a class="link" href="Reference.html#header.boost.units.operators_hpp" title="Header &lt;boost/units/operators.hpp&gt;">boost/units/operators.hpp</a></code>
           now uses <code class="computeroutput"><span class="identifier">BOOST_TYPEOF</span></code> when
-          possible
+          possible.
         </li>
 <li class="listitem">
-          angular units added in <code class="computeroutput">boost/units/systems/trig.hpp</code>
-          - implicit conversion of radians between trigonometric, SI, and CGS systems
-          allowed
+          angular units added in <code class="computeroutput"><a class="link" href="Reference.html#header.boost.units.systems.angle.gradians_hpp" title="Header &lt;boost/units/systems/angle/gradians.hpp&gt;">boost/units/systems/angle/gradians.hpp</a></code>
+          and <code class="computeroutput"><a class="link" href="Reference.html#header.boost.units.systems.angle.gradians_hpp" title="Header &lt;boost/units/systems/angle/gradians.hpp&gt;">boost/units/systems/angle/gradians.hpp</a></code>.
+          Implicit conversion of radians between trigonometric, SI, and CGS systems
+          is allowed.
         </li>
 <li class="listitem">
           a variety of <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/unit.html" title="Class template unit">unit</a></code></span>
           and <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/quantity.html" title="Class template quantity">quantity</a></code></span>
-          tests added
+          tests added.
         </li>
 <li class="listitem">
-          examples now provide self-tests
+          examples now provide self-tests.
         </li>
 </ul></div>
 <p>
@@ -115,20 +122,22 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
+<p class="simpara">
           added metafunctions to test if a type is
-          <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-                a valid dimension list (<code class="computeroutput"><span class="identifier">is_dimension_list</span><span class="special">&lt;</span><span class="identifier">D</span><span class="special">&gt;</span></code>)
-              </li>
+              a valid dimension list (<code class="computeroutput"><span class="identifier">is_dimension_list</span><span class="special">&lt;</span><span class="identifier">D</span><span class="special">&gt;</span></code>)
+            </li>
 <li class="listitem">
-                a unit (<code class="computeroutput"><span class="identifier">is_unit</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code>
-                and <code class="computeroutput"><span class="identifier">is_unit_of_system</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">,</span><span class="identifier">System</span><span class="special">&gt;</span></code>)
-              </li>
+              a unit (<code class="computeroutput"><span class="identifier">is_unit</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code>
+              and <code class="computeroutput"><span class="identifier">is_unit_of_system</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">,</span><span class="identifier">System</span><span class="special">&gt;</span></code>)
+            </li>
 <li class="listitem">
-                a quantity (<code class="computeroutput"><span class="identifier">is_quantity</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="identifier">is_quantity_of_system</span><span class="special">&lt;</span><span class="identifier">Q</span><span class="special">,</span><span class="identifier">System</span><span class="special">&gt;</span></code>)
-              </li>
+              a quantity (<code class="computeroutput"><span class="identifier">is_quantity</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="identifier">is_quantity_of_system</span><span class="special">&lt;</span><span class="identifier">Q</span><span class="special">,</span><span class="identifier">System</span><span class="special">&gt;</span></code>)
+            </li>
 </ul></div>
-        </li>
+</li>
 <li class="listitem">
           quantity conversion factor is now computed at compile time
         </li>
@@ -223,23 +232,25 @@
           conversion where allowed (thanks to Andrey Semashev)
         </li>
 <li class="listitem">
+<p class="simpara">
           added <code class="computeroutput"><span class="identifier">quantity_cast</span></code> for
           three cases (thanks to Andrey Semashev):
-          <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-                constructing <code class="computeroutput"><span class="identifier">quantity</span></code>
-                from raw <code class="computeroutput"><span class="identifier">value_type</span></code>
-              </li>
+              constructing <code class="computeroutput"><span class="identifier">quantity</span></code>
+              from raw <code class="computeroutput"><span class="identifier">value_type</span></code>
+            </li>
 <li class="listitem">
-                casting from one <code class="computeroutput"><span class="identifier">value_type</span></code>
-                to another
-              </li>
+              casting from one <code class="computeroutput"><span class="identifier">value_type</span></code>
+              to another
+            </li>
 <li class="listitem">
-                casting from one <code class="computeroutput"><span class="identifier">unit</span></code>
-                to another (where conversion is allowed)
-              </li>
+              casting from one <code class="computeroutput"><span class="identifier">unit</span></code>
+              to another (where conversion is allowed)
+            </li>
 </ul></div>
-        </li>
+</li>
 <li class="listitem">
           added<code class="computeroutput"> <span class="identifier">metre</span></code> and <code class="computeroutput"><span class="identifier">metres</span></code> and related constants to the SI
           system for the convenience of our Commonwealth friends...
@@ -358,7 +369,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 -2008 Matthias Christian Schabel, 2007-2008 Steven
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003 -2008 Matthias Christian Schabel, 2007-2010 Steven
       Watanabe<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
@@ -367,7 +378,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="HelpWanted.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_units.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="TODO.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="version_id.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_units.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="TODO.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

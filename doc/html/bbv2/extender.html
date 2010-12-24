@@ -94,7 +94,7 @@
         and can be called with specific properties to generate concrete
         targets. At the code level it is represented by an instance of
         class derived from <code class="computeroutput">abstract-target</code>. 
-        <sup>[<a name="id3283449" href="#ftn.id3283449" class="footnote">14</a>]</sup>
+        <sup>[<a name="id3277625" href="#ftn.id3277625" class="footnote">14</a>]</sup>
         </p>
 <p>The <code class="computeroutput">generate</code> method takes the build properties
         (as an instance of the <code class="computeroutput">property-set</code> class) and returns
@@ -177,7 +177,7 @@ local t = [ new file-target $(name) : CPP : $(project) : $(a) ] ;
         that correspond to the same file clearly will result in problems. Therefore, whenever
         returning targets you should pass them via the <code class="computeroutput">virtual-target.register</code>
         function, that will replace targets with previously created identical ones, as
-        necessary.<sup>[<a name="id3283791" href="#ftn.id3283791" class="footnote">15</a>]</sup>
+        necessary.<sup>[<a name="id3277966" href="#ftn.id3277966" class="footnote">15</a>]</sup>
         Here are a couple of examples:
 </p>
 <pre class="programlisting">
@@ -199,7 +199,7 @@ return [ sequence.transform virtual-target.register : $(targets) ] ;
 <p>In practice, most files have specific types, and most tools
         consume and produce files of specific type. To take advantage of this
         fact, Boost.Build defines concept of target type and
-        <a class="indexterm" name="id3283850"></a>
+        <a class="indexterm" name="id3278026"></a>
         <em class="firstterm">generators</em>, and has special metatarget class
         <code class="computeroutput">typed-target</code>.  Target type is merely an
         identifier. It is associated with a set of file extensions that
@@ -483,7 +483,7 @@ generators.register-composing mex.mex : CPP LIB : MEX ;
       </p>
 <p>(Need a note about UNIX)</p>
 <h4>
-<a name="id3284522"></a>Custom generator classes</h4>
+<a name="id3278703"></a>Custom generator classes</h4>
 <p>The standard generators allows you to specify source and target
         types, an action, and a set of flags. If you need anything more complex,
         
@@ -691,7 +691,7 @@ actions inline-file
 <p>
     </p>
 <h4>
-<a name="id3284803"></a>Steps for adding a feauture</h4>
+<a name="id3278985"></a>Steps for adding a feauture</h4>
 <p>Adding a feature requires three steps:
 
         </p>
@@ -732,7 +732,7 @@ actions inline-file
 <p>
       </p>
 <h4>
-<a name="id3284902"></a>Another example</h4>
+<a name="id3279084"></a>Another example</h4>
 <p>Here's another example.
         Let's see how we can make a feature that refers to a target. For example,
         when linking dynamic libraries on Windows, one sometimes needs to
@@ -814,7 +814,7 @@ rule link
 </li>
 </ol></div>
 <h4>
-<a name="id3285013"></a>Variants and composite features.</h4>
+<a name="id3279196"></a>Variants and composite features.</h4>
 <p>Sometimes you want to create a shortcut for some set of
         features. For example, <code class="computeroutput">release</code> is a value of
         <code class="computeroutput">&lt;variant&gt;</code> and is a shortcut for a set of features.
@@ -1012,9 +1012,9 @@ using yfc ;
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id3283449" href="#id3283449" class="para">14</a>] </sup>This name is historic, and will be eventuall changed to 
+<div class="footnote"><p><sup>[<a name="ftn.id3277625" href="#id3277625" class="para">14</a>] </sup>This name is historic, and will be eventuall changed to 
         <code class="computeroutput">metatarget</code></p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id3283791" href="#id3283791" class="para">15</a>] </sup>This create-then-register pattern is caused by limitations 
+<div class="footnote"><p><sup>[<a name="ftn.id3277966" href="#id3277966" class="para">15</a>] </sup>This create-then-register pattern is caused by limitations 
         of the Boost.Jam language. Python port is likely to never create duplicate targets.</p></div>
 </div>
 </div>

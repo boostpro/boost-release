@@ -24,13 +24,13 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="intrusive.usage"></a><a class="link" href="usage.html" title="How to use Boost.Intrusive"> How to use Boost.Intrusive</a>
+<a name="intrusive.usage"></a><a class="link" href="usage.html" title="How to use Boost.Intrusive">How to use Boost.Intrusive</a>
 </h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="usage.html#intrusive.usage.usage_base_hook"> Using base hooks</a></span></dt>
-<dt><span class="section"><a href="usage.html#intrusive.usage.usage_member_hook"> Using member hooks</a></span></dt>
-<dt><span class="section"><a href="usage.html#intrusive.usage.usage_both_hooks"> Using both hooks</a></span></dt>
-<dt><span class="section"><a href="usage.html#intrusive.usage.usage_lifetime"> Object lifetime</a></span></dt>
+<dt><span class="section"><a href="usage.html#intrusive.usage.usage_base_hook">Using base hooks</a></span></dt>
+<dt><span class="section"><a href="usage.html#intrusive.usage.usage_member_hook">Using member hooks</a></span></dt>
+<dt><span class="section"><a href="usage.html#intrusive.usage.usage_both_hooks">Using both hooks</a></span></dt>
+<dt><span class="section"><a href="usage.html#intrusive.usage.usage_lifetime">Object lifetime</a></span></dt>
 </dl></div>
 <p>
       If you plan to insert a class in an intrusive container, you have to make some
@@ -42,8 +42,6 @@
       containers are very similar. To compile the example using <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">boost::intrusive::list</a></code>,
       just include:
     </p>
-<p>
-    </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
@@ -51,16 +49,18 @@
       that will offer the necessary data and resources to be insertable in the container.
       With <span class="bold"><strong>Boost.Intrusive</strong></span> you just choose the hook
       to be a public base class or a public member of the class to be inserted.
+      <span class="bold"><strong>Boost.Intrusive</strong></span> also offers more flexible
+      hooks for advanced users, as explained in the chapter <a class="link" href="function_hooks.html" title="Using function hooks">Using
+      function hooks</a>, but usually base or member hooks are good enough for
+      most users.
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.usage.usage_base_hook"></a><a class="link" href="usage.html#intrusive.usage.usage_base_hook" title="Using base hooks"> Using base hooks</a>
+<a name="intrusive.usage.usage_base_hook"></a><a class="link" href="usage.html#intrusive.usage.usage_base_hook" title="Using base hooks">Using base hooks</a>
 </h3></div></div></div>
 <p>
         For <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code>, you can publicly
         derive from <code class="computeroutput"><a class="link" href="../boost/intrusive/list_base_hook.html" title="Class template list_base_hook">list_base_hook</a></code>.
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">list_base_hook</span><span class="special">;</span>
@@ -106,8 +106,6 @@
         For the following examples, let's forget the options and use the default
         values:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
@@ -119,8 +117,6 @@
 </pre>
 <p>
         After that, we can define the intrusive list:
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">list</span><span class="special">;</span>
@@ -170,23 +166,17 @@
         Example of a constant-time size intrusive list that will store Foo objects,
         using the base hook with the default tag:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Foo</span><span class="special">&gt;</span> <span class="identifier">FooList</span><span class="special">;</span>
 </pre>
 <p>
         Example of a intrusive list with non constant-time size that will store Foo
         objects:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Foo</span><span class="special">,</span> <span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">FooList</span><span class="special">;</span>
 </pre>
 <p>
         Remember that the user must specify the base hook if the base hook has no
         default tag (e.g: if more than one base hook is used):
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -203,8 +193,6 @@
 <p>
         Once the list is defined, we can use it:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="comment">//An object to be inserted in the list
 </span><span class="identifier">Foo</span> <span class="identifier">foo_object</span><span class="special">;</span>
 <span class="identifier">FooList</span> <span class="identifier">list</span><span class="special">;</span>
@@ -216,7 +204,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.usage.usage_member_hook"></a><a class="link" href="usage.html#intrusive.usage.usage_member_hook" title="Using member hooks"> Using member hooks</a>
+<a name="intrusive.usage.usage_member_hook"></a><a class="link" href="usage.html#intrusive.usage.usage_member_hook" title="Using member hooks">Using member hooks</a>
 </h3></div></div></div>
 <p>
         Sometimes an 'is-a' relationship between list hooks and the list value types
@@ -226,15 +214,11 @@
         be configured with the same options as <code class="computeroutput"><span class="identifier">list_base_hook</span></code>
         except the option <code class="computeroutput"><span class="identifier">tag</span></code>:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">list_member_hook</span><span class="special">;</span>
 </pre>
 <p>
         Example:
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -249,8 +233,6 @@
         When member hooks are used, the <code class="computeroutput"><span class="identifier">member_hook</span></code>
         option is used to configure the list:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="comment">//This option will configure "list" to use the member hook
 </span><span class="keyword">typedef</span> <span class="identifier">member_hook</span><span class="special">&lt;</span><span class="identifier">Foo</span><span class="special">,</span> <span class="identifier">list_member_hook</span><span class="special">&lt;&gt;,</span> <span class="special">&amp;</span><span class="identifier">Foo</span><span class="special">::</span><span class="identifier">hook_</span><span class="special">&gt;</span> <span class="identifier">MemberHookOption</span><span class="special">;</span>
 
@@ -259,8 +241,6 @@
 </pre>
 <p>
         Now we can use the container:
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="comment">//An object to be inserted in the list
 </span><span class="identifier">Foo</span> <span class="identifier">foo_object</span><span class="special">;</span>
@@ -273,7 +253,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.usage.usage_both_hooks"></a><a class="link" href="usage.html#intrusive.usage.usage_both_hooks" title="Using both hooks"> Using both hooks</a>
+<a name="intrusive.usage.usage_both_hooks"></a><a class="link" href="usage.html#intrusive.usage.usage_both_hooks" title="Using both hooks">Using both hooks</a>
 </h3></div></div></div>
 <p>
         You can insert the same object in several intrusive containers at the same
@@ -281,9 +261,7 @@
         member hooks:
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
@@ -349,13 +327,11 @@
 <span class="special">}</span>
 </pre>
 <p>
-        </p>
-<p>
       </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.usage.usage_lifetime"></a><a class="link" href="usage.html#intrusive.usage.usage_lifetime" title="Object lifetime"> Object lifetime</a>
+<a name="intrusive.usage.usage_lifetime"></a><a class="link" href="usage.html#intrusive.usage.usage_lifetime" title="Object lifetime">Object lifetime</a>
 </h3></div></div></div>
 <p>
         Even if the interface of <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code>
@@ -379,7 +355,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2009 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

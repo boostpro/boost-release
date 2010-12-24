@@ -7,7 +7,7 @@
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
 <link rel="prev" href="erasing_and_disposing.html" title="Erasing and disposing values from Boost.Intrusive containers">
-<link rel="next" href="using_smart_pointers.html" title="Using smart pointers with Boost.Intrusive containers">
+<link rel="next" href="function_hooks.html" title="Using function hooks">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,12 +20,11 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="erasing_and_disposing.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="using_smart_pointers.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="erasing_and_disposing.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="function_hooks.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="intrusive.clone_from"></a><a class="link" href="clone_from.html" title="Cloning Boost.Intrusive containers"> Cloning <span class="bold"><strong>Boost.Intrusive</strong></span>
-    containers</a>
+<a name="intrusive.clone_from"></a><a class="link" href="clone_from.html" title="Cloning Boost.Intrusive containers">Cloning Boost.Intrusive containers</a>
 </h2></div></div></div>
 <p>
       As previously mentioned, <span class="bold"><strong>Boost.Intrusive</strong></span> containers
@@ -46,8 +45,6 @@
 <p>
       Apart from the container to be cloned, <code class="computeroutput"><span class="identifier">clone_from</span></code>
       takes two function objects as arguments. For example, consider the <code class="computeroutput"><span class="identifier">clone_from</span></code> member function of <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code>:
-    </p>
-<p>
     </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Cloner</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Disposer</span><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">clone_from</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">list</span> <span class="special">&amp;</span><span class="identifier">src</span><span class="special">,</span> <span class="identifier">Cloner</span> <span class="identifier">cloner</span><span class="special">,</span> <span class="identifier">Disposer</span> <span class="identifier">disposer</span><span class="special">);</span>
@@ -95,9 +92,7 @@
       Here is an example of <code class="computeroutput"><span class="identifier">clone_from</span></code>:
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -162,13 +157,11 @@
 <span class="special">}</span>
 </pre>
 <p>
-      </p>
-<p>
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2009 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -176,7 +169,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="erasing_and_disposing.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="using_smart_pointers.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="erasing_and_disposing.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="function_hooks.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

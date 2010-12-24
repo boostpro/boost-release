@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
-<link rel="prev" href="clone_from.html" title="Cloning Boost.Intrusive containers">
+<link rel="prev" href="recursive.html" title="Recursive Boost.Intrusive containers">
 <link rel="next" href="obtaining_iterators_from_values.html" title="Obtaining iterators from values">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,15 +20,15 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="clone_from.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="obtaining_iterators_from_values.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="recursive.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="obtaining_iterators_from_values.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="intrusive.using_smart_pointers"></a><a class="link" href="using_smart_pointers.html" title="Using smart pointers with Boost.Intrusive containers"> Using smart pointers with
+<a name="intrusive.using_smart_pointers"></a><a class="link" href="using_smart_pointers.html" title="Using smart pointers with Boost.Intrusive containers">Using smart pointers with
     Boost.Intrusive containers</a>
 </h2></div></div></div>
-<div class="toc"><dl><dt><span class="section"><a href="using_smart_pointers.html#intrusive.using_smart_pointers.smart_pointers_requirements">
-      Requirements for smart pointers compatible with Boost.Intrusive</a></span></dt></dl></div>
+<div class="toc"><dl><dt><span class="section"><a href="using_smart_pointers.html#intrusive.using_smart_pointers.smart_pointers_requirements">Requirements
+      for smart pointers compatible with Boost.Intrusive</a></span></dt></dl></div>
 <p>
       <span class="bold"><strong>Boost.Intrusive</strong></span> hooks can be configured to
       use other pointers than raw pointers. When a <span class="bold"><strong>Boost.Intrusive</strong></span>
@@ -37,9 +37,7 @@
       with a smart pointer (for example, an offset pointer from <span class="bold"><strong>Boost.Interprocess</strong></span>):
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">offset_ptr</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -60,8 +58,6 @@
 <span class="special">};</span>
 </pre>
 <p>
-      </p>
-<p>
     </p>
 <p>
       Any intrusive list constructed using this hook will be ready for shared memory,
@@ -70,9 +66,7 @@
       and <span class="bold"><strong>Boost.Intrusive</strong></span>:
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">managed_shared_memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">vector</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -128,13 +122,11 @@
 <span class="special">}</span>
 </pre>
 <p>
-      </p>
-<p>
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.using_smart_pointers.smart_pointers_requirements"></a><a class="link" href="using_smart_pointers.html#intrusive.using_smart_pointers.smart_pointers_requirements" title="Requirements for smart pointers compatible with Boost.Intrusive">
-      Requirements for smart pointers compatible with Boost.Intrusive</a>
+<a name="intrusive.using_smart_pointers.smart_pointers_requirements"></a><a class="link" href="using_smart_pointers.html#intrusive.using_smart_pointers.smart_pointers_requirements" title="Requirements for smart pointers compatible with Boost.Intrusive">Requirements
+      for smart pointers compatible with Boost.Intrusive</a>
 </h3></div></div></div>
 <p>
         Not every smart pointer is compatible with <span class="bold"><strong>Boost.Intrusive</strong></span>;
@@ -160,8 +152,6 @@
         ADL. For example, for <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">offset_ptr</span></code>,
         <code class="computeroutput"><span class="identifier">detail</span><span class="special">::</span><span class="identifier">get_pointer</span></code> is defined as follows:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="identifier">T</span> <span class="special">*</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">get_pointer</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">offset_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">p</span><span class="special">)</span>
 <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">get</span><span class="special">();</span>   <span class="special">}</span>
@@ -170,7 +160,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2009 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -178,7 +168,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="clone_from.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="obtaining_iterators_from_values.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="recursive.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../intrusive.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="obtaining_iterators_from_values.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

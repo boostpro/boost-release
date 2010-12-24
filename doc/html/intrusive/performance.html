@@ -24,18 +24,16 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="intrusive.performance"></a><a class="link" href="performance.html" title="Performance"> Performance</a>
+<a name="intrusive.performance"></a><a class="link" href="performance.html" title="Performance">Performance</a>
 </h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_push_back">
-      Back insertion and destruction</a></span></dt>
-<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_reversing">
-      Reversing</a></span></dt>
-<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_sorting"> Sorting</a></span></dt>
-<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_write_access">
-      Write access</a></span></dt>
-<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_conclusions">
-      Conclusions</a></span></dt>
+<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_push_back">Back
+      insertion and destruction</a></span></dt>
+<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_reversing">Reversing</a></span></dt>
+<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_sorting">Sorting</a></span></dt>
+<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_write_access">Write
+      access</a></span></dt>
+<dt><span class="section"><a href="performance.html#intrusive.performance.performance_results_conclusions">Conclusions</a></span></dt>
 </dl></div>
 <p>
       <span class="bold"><strong>Boost.Intrusive</strong></span> containers offer speed improvements
@@ -114,9 +112,7 @@
       some other utilities:
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="comment">//Iteration and element count defines
 </span><span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">NumIter</span> <span class="special">=</span> <span class="number">100</span><span class="special">;</span>
@@ -156,8 +152,6 @@
 <span class="special">};</span>
 </pre>
 <p>
-      </p>
-<p>
     </p>
 <p>
       As we can see, <code class="computeroutput"><span class="identifier">test_class</span></code> is
@@ -177,8 +171,8 @@
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.performance.performance_results_push_back"></a><a class="link" href="performance.html#intrusive.performance.performance_results_push_back" title="Back insertion and destruction">
-      Back insertion and destruction</a>
+<a name="intrusive.performance.performance_results_push_back"></a><a class="link" href="performance.html#intrusive.performance.performance_results_push_back" title="Back insertion and destruction">Back
+      insertion and destruction</a>
 </h3></div></div></div>
 <p>
         The first test will measure the benefits we can obtain with intrusive containers
@@ -192,9 +186,7 @@
         insertion tests:
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ilist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
 <span class="identifier">ilist</span> <span class="identifier">l</span><span class="special">;</span>
@@ -204,17 +196,13 @@
 </span><span class="comment">//Elements are destroyed in vector's destructor
 </span></pre>
 <p>
-        </p>
-<p>
       </p>
 <p>
         For intrusive containers, all the values are created in a vector and after
         that inserted in the intrusive list.
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="identifier">stdlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
@@ -222,16 +210,12 @@
 <span class="comment">//Elements unlinked and destroyed in stdlist's destructor
 </span></pre>
 <p>
-        </p>
-<p>
       </p>
 <p>
         For a standard list, elements are pushed back using push_back().
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
 <span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
@@ -241,17 +225,13 @@
 </span><span class="comment">//Elements destroyed in vector's destructor
 </span></pre>
 <p>
-        </p>
-<p>
       </p>
 <p>
         For a standard compact pointer list, elements are created in a vector and
         pushed back in the pointer list using push_back().
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="identifier">stdlist</span> <span class="identifier">objects</span><span class="special">;</span>  <span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
@@ -262,8 +242,6 @@
 </span><span class="comment">//Elements unlinked and destroyed in stdlist's destructor
 </span></pre>
 <p>
-        </p>
-<p>
       </p>
 <p>
         For a <span class="emphasis"><em>disperse pointer list</em></span>, elements are created in
@@ -273,7 +251,7 @@
         These are the times in microseconds for each case, and the normalized time:
       </p>
 <div class="table">
-<a name="id1645026"></a><p class="title"><b>Table&#160;10.2.&#160;Back insertion + destruction times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="id1651153"></a><p class="title"><b>Table&#160;10.2.&#160;Back insertion + destruction times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -407,7 +385,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1645253"></a><p class="title"><b>Table&#160;10.3.&#160;Back insertion + destruction times for GCC 4.1.1 / MinGW over Windows
+<a name="id1651380"></a><p class="title"><b>Table&#160;10.3.&#160;Back insertion + destruction times for GCC 4.1.1 / MinGW over Windows
         XP</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for GCC 4.1.1 / MinGW over Windows
         XP">
@@ -543,7 +521,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1645480"></a><p class="title"><b>Table&#160;10.4.&#160;Back insertion + destruction times for GCC 4.1.2 / Linux Kernel 2.6.18
+<a name="id1651607"></a><p class="title"><b>Table&#160;10.4.&#160;Back insertion + destruction times for GCC 4.1.2 / Linux Kernel 2.6.18
         (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for GCC 4.1.2 / Linux Kernel 2.6.18
         (OpenSuse 10.2)">
@@ -701,8 +679,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.performance.performance_results_reversing"></a><a class="link" href="performance.html#intrusive.performance.performance_results_reversing" title="Reversing">
-      Reversing</a>
+<a name="intrusive.performance.performance_results_reversing"></a><a class="link" href="performance.html#intrusive.performance.performance_results_reversing" title="Reversing">Reversing</a>
 </h3></div></div></div>
 <p>
         The next test measures the time needed to complete calls to the member function
@@ -721,7 +698,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1645939"></a><p class="title"><b>Table&#160;10.5.&#160;Reverse times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="id1652066"></a><p class="title"><b>Table&#160;10.5.&#160;Reverse times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -855,7 +832,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1646164"></a><p class="title"><b>Table&#160;10.6.&#160;Reverse times for GCC 4.1.1 / MinGW over Windows XP</b></p>
+<a name="id1652291"></a><p class="title"><b>Table&#160;10.6.&#160;Reverse times for GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for GCC 4.1.1 / MinGW over Windows XP">
 <colgroup>
 <col>
@@ -989,7 +966,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1646390"></a><p class="title"><b>Table&#160;10.7.&#160;Reverse times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
+<a name="id1652517"></a><p class="title"><b>Table&#160;10.7.&#160;Reverse times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
 <colgroup>
 <col>
@@ -1131,8 +1108,6 @@
         of the pointer list might be more dispersed, since allocations from both
         lists are interleaved in the code:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="comment">//Object list (holding `test_class`)
 </span><span class="identifier">stdlist</span> <span class="identifier">objects</span><span class="special">;</span>
 
@@ -1157,7 +1132,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.performance.performance_results_sorting"></a><a class="link" href="performance.html#intrusive.performance.performance_results_sorting" title="Sorting"> Sorting</a>
+<a name="intrusive.performance.performance_results_sorting"></a><a class="link" href="performance.html#intrusive.performance.performance_results_sorting" title="Sorting">Sorting</a>
 </h3></div></div></div>
 <p>
         The next test measures the time needed to complete calls to the member function
@@ -1166,8 +1141,6 @@
         are created as explained in the first section. The values will be sorted
         in ascending and descending order each iteration. For example, if <span class="emphasis"><em>l</em></span>
         is a list:
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumIter</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
    <span class="keyword">if</span><span class="special">(!(</span><span class="identifier">i</span> <span class="special">%</span> <span class="number">2</span><span class="special">))</span>
@@ -1178,8 +1151,6 @@
 </pre>
 <p>
         For a pointer list, the function object will be adapted using <code class="computeroutput"><span class="identifier">func_ptr_adaptor</span></code>:
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumIter</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
    <span class="keyword">if</span><span class="special">(!(</span><span class="identifier">i</span> <span class="special">%</span> <span class="number">2</span><span class="special">))</span>
@@ -1199,7 +1170,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1647459"></a><p class="title"><b>Table&#160;10.8.&#160;Sort times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="id1653576"></a><p class="title"><b>Table&#160;10.8.&#160;Sort times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -1333,7 +1304,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1647684"></a><p class="title"><b>Table&#160;10.9.&#160;Sort times for GCC 4.1.1 / MinGW over Windows XP</b></p>
+<a name="id1653802"></a><p class="title"><b>Table&#160;10.9.&#160;Sort times for GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for GCC 4.1.1 / MinGW over Windows XP">
 <colgroup>
 <col>
@@ -1467,7 +1438,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1647910"></a><p class="title"><b>Table&#160;10.10.&#160;Sort times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
+<a name="id1654028"></a><p class="title"><b>Table&#160;10.10.&#160;Sort times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
 <colgroup>
 <col>
@@ -1612,15 +1583,13 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.performance.performance_results_write_access"></a><a class="link" href="performance.html#intrusive.performance.performance_results_write_access" title="Write access">
-      Write access</a>
+<a name="intrusive.performance.performance_results_write_access"></a><a class="link" href="performance.html#intrusive.performance.performance_results_write_access" title="Write access">Write
+      access</a>
 </h3></div></div></div>
 <p>
         The next test measures the time needed to iterate through all the elements
         of a list, and increment the value of the internal <code class="computeroutput"><span class="identifier">i_</span></code>
         member:
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
 <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">end</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
@@ -1632,8 +1601,6 @@
         an extra indirection: they will need to access the <code class="computeroutput"><span class="identifier">test_class</span></code>
         values stored in another container:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="identifier">stdptrlist</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
 <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">end</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
    <span class="special">++((*</span><span class="identifier">it</span><span class="special">)-&gt;</span><span class="identifier">i_</span><span class="special">);</span>
@@ -1642,7 +1609,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1648498"></a><p class="title"><b>Table&#160;10.11.&#160;Write access times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="id1654609"></a><p class="title"><b>Table&#160;10.11.&#160;Write access times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -1776,7 +1743,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1648722"></a><p class="title"><b>Table&#160;10.12.&#160;Write access times for GCC 4.1.1 / MinGW over Windows XP</b></p>
+<a name="id1654833"></a><p class="title"><b>Table&#160;10.12.&#160;Write access times for GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for GCC 4.1.1 / MinGW over Windows XP">
 <colgroup>
 <col>
@@ -1910,7 +1877,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1648947"></a><p class="title"><b>Table&#160;10.13.&#160;Write access times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
+<a name="id1655058"></a><p class="title"><b>Table&#160;10.13.&#160;Write access times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
 <colgroup>
 <col>
@@ -2051,8 +2018,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.performance.performance_results_conclusions"></a><a class="link" href="performance.html#intrusive.performance.performance_results_conclusions" title="Conclusions">
-      Conclusions</a>
+<a name="intrusive.performance.performance_results_conclusions"></a><a class="link" href="performance.html#intrusive.performance.performance_results_conclusions" title="Conclusions">Conclusions</a>
 </h3></div></div></div>
 <p>
         Intrusive containers can offer performance benefits that cannot be achieved
@@ -2066,7 +2032,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2009 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -24,15 +24,15 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="intrusive.sg_set_multiset"></a><a class="link" href="sg_set_multiset.html" title="Intrusive scapegoat tree based associative containers: sg_set, sg_multiset and sgtree"> Intrusive scapegoat tree based
+<a name="intrusive.sg_set_multiset"></a><a class="link" href="sg_set_multiset.html" title="Intrusive scapegoat tree based associative containers: sg_set, sg_multiset and sgtree">Intrusive scapegoat tree based
     associative containers: sg_set, sg_multiset and sgtree</a>
 </h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_hooks"> Using
+<dt><span class="section"><a href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_hooks">Using
       binary search tree hooks: bs_set_base_hook and bs_set_member_hook</a></span></dt>
-<dt><span class="section"><a href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_containers">
-      sg_set, sg_multiset and sgtree containers</a></span></dt>
-<dt><span class="section"><a href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_example"> Example</a></span></dt>
+<dt><span class="section"><a href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_containers">sg_set,
+      sg_multiset and sgtree containers</a></span></dt>
+<dt><span class="section"><a href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_example">Example</a></span></dt>
 </dl></div>
 <p>
       A scapegoat tree is a self-balancing binary search tree, that provides worst-case
@@ -109,15 +109,13 @@
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.sg_set_multiset.sg_set_multiset_hooks"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_hooks" title="Using binary search tree hooks: bs_set_base_hook and bs_set_member_hook"> Using
+<a name="intrusive.sg_set_multiset.sg_set_multiset_hooks"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_hooks" title="Using binary search tree hooks: bs_set_base_hook and bs_set_member_hook">Using
       binary search tree hooks: bs_set_base_hook and bs_set_member_hook</a>
 </h3></div></div></div>
 <p>
         <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_set.html" title="Class template sg_set">sg_set</a></code>, <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_multiset.html" title="Class template sg_multiset">sg_multiset</a></code> and <code class="computeroutput"><a class="link" href="../boost/intrusive/sgtree.html" title="Class template sgtree">sgtree</a></code> don't use their own hooks
         but plain binary search tree hooks. This has many advantages since binary
         search tree hooks can also be used to insert values in splay and treap containers.
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">bs_set_base_hook</span><span class="special">;</span>
@@ -127,8 +125,6 @@
             the user class derives publicly from this class to make it compatible
             with scapegoat tree based containers.
           </li></ul></div>
-<p>
-      </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">bs_set_member_hook</span><span class="special">;</span>
 </pre>
@@ -163,11 +159,9 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.sg_set_multiset.sg_set_multiset_containers"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_containers" title="sg_set, sg_multiset and sgtree containers">
-      sg_set, sg_multiset and sgtree containers</a>
+<a name="intrusive.sg_set_multiset.sg_set_multiset_containers"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_containers" title="sg_set, sg_multiset and sgtree containers">sg_set,
+      sg_multiset and sgtree containers</a>
 </h3></div></div></div>
-<p>
-      </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">sg_set</span><span class="special">;</span>
 
@@ -218,16 +212,14 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.sg_set_multiset.sg_set_multiset_example"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_example" title="Example"> Example</a>
+<a name="intrusive.sg_set_multiset.sg_set_multiset_example"></a><a class="link" href="sg_set_multiset.html#intrusive.sg_set_multiset.sg_set_multiset_example" title="Example">Example</a>
 </h3></div></div></div>
 <p>
         Now let's see a small example using both hooks and <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_set.html" title="Class template sg_set">sg_set</a></code>/
         <code class="computeroutput"><a class="link" href="../boost/intrusive/sg_multiset.html" title="Class template sg_multiset">sg_multiset</a></code> containers:
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">sg_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
@@ -303,14 +295,12 @@
 <span class="special">}</span>
 </pre>
 <p>
-        </p>
-<p>
       </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2009 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

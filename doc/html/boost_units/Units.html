@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_units.html" title="Chapter&#160;26.&#160;Boost.Units 1.0.0">
+<link rel="up" href="../boost_units.html" title="Chapter&#160;26.&#160;Boost.Units 1.1.0">
 <link rel="prev" href="Dimensional_Analysis.html" title="Dimensional Analysis">
 <link rel="next" href="Quantities.html" title="Quantities">
 </head>
@@ -24,7 +24,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="boost_units.Units"></a><a class="link" href="Units.html" title="Units"> Units</a>
+<a name="boost_units.Units"></a><a class="link" href="Units.html" title="Units">Units</a>
 </h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="Units.html#boost_units.Units.base_units">Base Units</a></span></dt>
@@ -84,7 +84,7 @@
       dimension associated with powers and roots must be computed at compile-time,
       it is not possible to provide overloads for <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pow</span></code> that
       function correctly for <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/unit.html" title="Class template unit">unit</a></code></span>s.
-      These operations are supported through free functions <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/pow_id1437677.html" title="Function template pow">pow</a></code></span> and <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/root.html" title="Function template root">root</a></code></span> that are templated
+      These operations are supported through free functions <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/pow_id1445415.html" title="Function template pow">pow</a></code></span> and <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/root.html" title="Function template root">root</a></code></span> that are templated
       on integer and <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/static_rational.html" title="Class template static_rational">static_rational</a></code></span>
       values and can take as an argument any type for which the utility classes
       <span class="underline"><code class="computeroutput"><a class="link" href="../boost/units/power_typeof_helper.html" title="Struct template power_typeof_helper">power_typeof_helper</a></code></span>
@@ -110,9 +110,7 @@
         a unit system that includes type definitions for commonly used units:
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">meter_base_unit</span> <span class="special">:</span> <span class="identifier">base_unit</span><span class="special">&lt;</span><span class="identifier">meter_base_unit</span><span class="special">,</span> <span class="identifier">length_dimension</span><span class="special">,</span> <span class="number">1</span><span class="special">&gt;</span> <span class="special">{</span> <span class="special">};</span>
 <span class="keyword">struct</span> <span class="identifier">kilogram_base_unit</span> <span class="special">:</span> <span class="identifier">base_unit</span><span class="special">&lt;</span><span class="identifier">kilogram_base_unit</span><span class="special">,</span> <span class="identifier">mass_dimension</span><span class="special">,</span> <span class="number">2</span><span class="special">&gt;</span> <span class="special">{</span> <span class="special">};</span>
@@ -134,8 +132,6 @@
 <span class="keyword">typedef</span> <span class="identifier">unit</span><span class="special">&lt;</span><span class="identifier">energy_dimension</span><span class="special">,</span><span class="identifier">mks_system</span><span class="special">&gt;</span>        <span class="identifier">energy</span><span class="special">;</span>
 </pre>
 <p>
-        </p>
-<p>
       </p>
 <p>
         The macro <span class="underline"><code class="computeroutput"><a class="link" href="../BOOST_UNITS_STATIC_CONSTANT.html" title="Macro BOOST_UNITS_STATIC_CONSTANT">BOOST_UNITS_STATIC_CONSTANT</a></code></span>
@@ -144,9 +140,7 @@
         then define some constants for the supported units to simplify variable definitions:
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="comment">/// unit constants 
 </span><span class="identifier">BOOST_UNITS_STATIC_CONSTANT</span><span class="special">(</span><span class="identifier">meter</span><span class="special">,</span><span class="identifier">length</span><span class="special">);</span>
@@ -162,8 +156,6 @@
 <span class="identifier">BOOST_UNITS_STATIC_CONSTANT</span><span class="special">(</span><span class="identifier">joules</span><span class="special">,</span><span class="identifier">energy</span><span class="special">);</span>
 </pre>
 <p>
-        </p>
-<p>
       </p>
 <p>
         If support for textual output of units is desired, we can also specialize
@@ -171,9 +163,7 @@
         class for each fundamental dimension tag:
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;&gt;</span> <span class="keyword">struct</span> <span class="identifier">base_unit_info</span><span class="special">&lt;</span><span class="identifier">test</span><span class="special">::</span><span class="identifier">meter_base_unit</span><span class="special">&gt;</span>
 <span class="special">{</span>
@@ -181,8 +171,6 @@
     <span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">symbol</span><span class="special">()</span>             <span class="special">{</span> <span class="keyword">return</span> <span class="string">"m"</span><span class="special">;</span> <span class="special">}</span>
 <span class="special">};</span>
 </pre>
-<p>
-        </p>
 <p>
       </p>
 <p>
@@ -255,7 +243,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 -2008 Matthias Christian Schabel, 2007-2008 Steven
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003 -2008 Matthias Christian Schabel, 2007-2010 Steven
       Watanabe<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

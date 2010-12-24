@@ -24,18 +24,17 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="intrusive.treap_set_multiset"></a><a class="link" href="treap_set_multiset.html" title="Intrusive treap based associative containers: treap_set, treap_multiset and treap"> Intrusive treap based associative
+<a name="intrusive.treap_set_multiset"></a><a class="link" href="treap_set_multiset.html" title="Intrusive treap based associative containers: treap_set, treap_multiset and treap">Intrusive treap based associative
     containers: treap_set, treap_multiset and treap</a>
 </h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_hooks">
-      Using binary search tree hooks: bs_set_base_hook and bs_set_member_hook</a></span></dt>
-<dt><span class="section"><a href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_containers">
-      treap_set, treap_multiset and treap containers</a></span></dt>
-<dt><span class="section"><a href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_exceptions"> Exception
+<dt><span class="section"><a href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_hooks">Using
+      binary search tree hooks: bs_set_base_hook and bs_set_member_hook</a></span></dt>
+<dt><span class="section"><a href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_containers">treap_set,
+      treap_multiset and treap containers</a></span></dt>
+<dt><span class="section"><a href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_exceptions">Exception
       safety of treap-based intrusive containers</a></span></dt>
-<dt><span class="section"><a href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_example">
-      Example</a></span></dt>
+<dt><span class="section"><a href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_example">Example</a></span></dt>
 </dl></div>
 <p>
       The name <span class="emphasis"><em>treap</em></span> is a mixture of <span class="emphasis"><em>tree</em></span>
@@ -90,16 +89,14 @@
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.treap_set_multiset.treap_set_multiset_hooks"></a><a class="link" href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_hooks" title="Using binary search tree hooks: bs_set_base_hook and bs_set_member_hook">
-      Using binary search tree hooks: bs_set_base_hook and bs_set_member_hook</a>
+<a name="intrusive.treap_set_multiset.treap_set_multiset_hooks"></a><a class="link" href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_hooks" title="Using binary search tree hooks: bs_set_base_hook and bs_set_member_hook">Using
+      binary search tree hooks: bs_set_base_hook and bs_set_member_hook</a>
 </h3></div></div></div>
 <p>
         <code class="computeroutput"><a class="link" href="../boost/intrusive/treap_set.html" title="Class template treap_set">treap_set</a></code>, <code class="computeroutput"><a class="link" href="../boost/intrusive/treap_multiset.html" title="Class template treap_multiset">treap_multiset</a></code> and <code class="computeroutput"><a class="link" href="../boost/intrusive/treap.html" title="Class template treap">treap</a></code> don't use their own hooks
         but plain binary search tree hooks. This has many advantages since binary
         search tree hooks can also be used to insert values in splay containers and
         scapegoat trees.
-      </p>
-<p>
       </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">bs_set_base_hook</span><span class="special">;</span>
@@ -109,8 +106,6 @@
             the user class derives publicly from this class to make it compatible
             with scapegoat tree based containers.
           </li></ul></div>
-<p>
-      </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">bs_set_member_hook</span><span class="special">;</span>
 </pre>
@@ -145,11 +140,9 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.treap_set_multiset.treap_set_multiset_containers"></a><a class="link" href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_containers" title="treap_set, treap_multiset and treap containers">
-      treap_set, treap_multiset and treap containers</a>
+<a name="intrusive.treap_set_multiset.treap_set_multiset_containers"></a><a class="link" href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_containers" title="treap_set, treap_multiset and treap containers">treap_set,
+      treap_multiset and treap containers</a>
 </h3></div></div></div>
-<p>
-      </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span><span class="identifier">Options</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">treap_set</span><span class="special">;</span>
 
@@ -208,8 +201,6 @@
         will be found using ADL lookup so that the user just needs to define a <code class="computeroutput"><span class="identifier">priority_order</span></code> function in the same namespace
         as his class:
       </p>
-<p>
-      </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">MyType</span>
 <span class="special">{</span>
    <span class="keyword">friend</span> <span class="keyword">bool</span> <span class="identifier">priority_order</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">MyType</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">MyType</span> <span class="special">&amp;</span><span class="identifier">b</span><span class="special">)</span>
@@ -231,7 +222,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.treap_set_multiset.treap_set_exceptions"></a><a class="link" href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_exceptions" title="Exception safety of treap-based intrusive containers"> Exception
+<a name="intrusive.treap_set_multiset.treap_set_exceptions"></a><a class="link" href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_exceptions" title="Exception safety of treap-based intrusive containers">Exception
       safety of treap-based intrusive containers</a>
 </h3></div></div></div>
 <p>
@@ -256,8 +247,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="intrusive.treap_set_multiset.treap_set_multiset_example"></a><a class="link" href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_example" title="Example">
-      Example</a>
+<a name="intrusive.treap_set_multiset.treap_set_multiset_example"></a><a class="link" href="treap_set_multiset.html#intrusive.treap_set_multiset.treap_set_multiset_example" title="Example">Example</a>
 </h3></div></div></div>
 <p>
         Now let's see a small example using both hooks and <code class="computeroutput"><a class="link" href="../boost/intrusive/treap_set.html" title="Class template treap_set">treap_set</a></code>/
@@ -265,9 +255,7 @@
         containers:
       </p>
 <p>
-        </p>
-<p>
-          
+        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">treap_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
@@ -364,14 +352,12 @@
 <span class="special">}</span>
 </pre>
 <p>
-        </p>
-<p>
       </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2009 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

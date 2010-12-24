@@ -7,9 +7,9 @@
 //
 // See http://www.boost.org/libs/mpl for documentation.
 
-// $Id: for_each.cpp 49268 2008-10-11 06:26:17Z agurtovoy $
-// $Date: 2008-10-11 02:26:17 -0400 (Sat, 11 Oct 2008) $
-// $Revision: 49268 $
+// $Id: for_each.cpp 66257 2010-10-29 21:36:38Z eric_niebler $
+// $Date: 2010-10-29 17:36:38 -0400 (Fri, 29 Oct 2010) $
+// $Revision: 66257 $
 
 #include <boost/mpl/for_each.hpp>
 
@@ -55,6 +55,11 @@ struct value_printer
 # pragma warning(disable:985)
 #endif
 
+void push_back(std::vector<int>* c, int i)
+{
+    c->push_back(i);
+}
+
 int main()
 {
     typedef mpl::list<char,short,int,long,float,double> types;
@@ -63,16 +68,9 @@ int main()
     typedef mpl::range_c<int,0,10> numbers;
     std::vector<int> v;
 
-#if defined(__SGI_STL_PORT)
-    void (std::vector<int>::* push_back)(int const&) = &std::vector<int>::push_back;
     mpl::for_each<numbers>(
-          boost::bind(push_back, &v, _1)
+          boost::bind(&push_back, &v, _1)
         );
-#else
-    mpl::for_each<numbers>(
-          boost::bind(&std::vector<int>::push_back, &v, _1)
-        );    
-#endif
 
     mpl::for_each< numbers >(value_printer(std::cout));
     

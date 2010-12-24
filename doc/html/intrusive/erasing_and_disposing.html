@@ -24,7 +24,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="intrusive.erasing_and_disposing"></a><a class="link" href="erasing_and_disposing.html" title="Erasing and disposing values from Boost.Intrusive containers"> Erasing and disposing
+<a name="intrusive.erasing_and_disposing"></a><a class="link" href="erasing_and_disposing.html" title="Erasing and disposing values from Boost.Intrusive containers">Erasing and disposing
     values from Boost.Intrusive containers</a>
 </h2></div></div></div>
 <p>
@@ -35,8 +35,6 @@
       This makes STL-like functions erasing multiple objects unhelpful: the user
       can't destroy every erased element. For example, let's take the function <code class="computeroutput"><span class="identifier">remove_if</span></code> from <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code>:
     </p>
-<p>
-    </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Pred</span><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">remove_if</span><span class="special">(</span><span class="identifier">Pred</span> <span class="identifier">pred</span><span class="special">);</span>
 </pre>
@@ -46,8 +44,6 @@
       to the predicate? <span class="bold"><strong>Boost.Intrusive</strong></span> containers
       offer additional functions that take a function object that will be called
       after the element has been erased from the container. For example, <code class="computeroutput"><a class="link" href="../boost/intrusive/list.html" title="Class template list">list</a></code> offers:
-    </p>
-<p>
     </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Disposer</span><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">remove_and_dispose_if</span><span class="special">(</span><span class="identifier">Pred</span> <span class="identifier">pred</span><span class="special">,</span> <span class="identifier">Disposer</span> <span class="identifier">disposer</span><span class="special">)</span>
@@ -66,9 +62,7 @@
       container. Let's see a small example:
     </p>
 <p>
-      </p>
-<p>
-        
+      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -129,8 +123,6 @@
 <span class="special">}</span>
 </pre>
 <p>
-      </p>
-<p>
     </p>
 <p>
       All <span class="bold"><strong>Boost.Intrusive</strong></span> containers offer these
@@ -140,7 +132,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2009 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
