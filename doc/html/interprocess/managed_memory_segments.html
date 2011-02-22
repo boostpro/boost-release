@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Managed Memory Segments</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../interprocess.html" title="Chapter&#160;9.&#160;Boost.Interprocess">
 <link rel="prev" href="synchronization_mechanisms.html" title="Synchronization mechanisms">
@@ -198,6 +198,7 @@ algorithms, and use the index type that is best suited to our needs.
 <dt><span class="section"><a href="managed_memory_segments.html#interprocess.managed_memory_segments.managed_shared_memory.managed_memory_common_shm">Common Managed Shared Memory Classes</a></span></dt>
 <dt><span class="section"><a href="managed_memory_segments.html#interprocess.managed_memory_segments.managed_shared_memory.constructing_managed_shared_memories">Constructing Managed Shared Memory</a></span></dt>
 <dt><span class="section"><a href="managed_memory_segments.html#interprocess.managed_memory_segments.managed_shared_memory.windows_managed_memory_common_shm">Using native windows shared memory</a></span></dt>
+<dt><span class="section"><a href="managed_memory_segments.html#interprocess.managed_memory_segments.managed_shared_memory.xsi_managed_memory_common_shm">Using XSI (system V) shared memory</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -303,7 +304,7 @@ when we <span class="bold"><strong>create</strong></span> a new managed shared m
 
             </li>
 <li class="listitem">
-              The whole shared memory object is mapped in the process' address space.
+              The whole shared memory object is mapped in the process' address space. 
 
             </li>
 </ul></div>
@@ -366,15 +367,15 @@ add the mapping address as an extra parameter:
 <p>
           Windows users might also want to use native windows shared memory instead of
 the portable <code class="computeroutput"><a class="link" href="../boost/interprocess/shared_memory_object.html" title="Class shared_memory_object">shared_memory_object</a></code>
-based managed memory. This is achieved through the
-<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_windows_s_id819665.html" title="Class template basic_managed_windows_shared_memory">basic_managed_windows_shared_memory</a></code>
+managed memory. This is achieved through the
+<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_windows_s_id831838.html" title="Class template basic_managed_windows_shared_memory">basic_managed_windows_shared_memory</a></code>
 class. To use it just include:
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">managed_windows_shared_memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
           This class has the same interface as
-<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_shared_me_id819329.html" title="Class template basic_managed_shared_memory">basic_managed_shared_memory</a></code>
+<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_shared_me_id831461.html" title="Class template basic_managed_shared_memory">basic_managed_shared_memory</a></code>
 but uses native windows shared memory. Note that this managed class has the same
 lifetime issues as the windows shared memory: when the last process attached to the
 windows shared memory is detached from the memory (or ends/crashes) the memory is
@@ -386,9 +387,28 @@ please read the explanations given in chapter
 [interprocess.sharedmemorybetweenprocesses.sharedmemory.windows_shared_memory Native windows shared memory]
         </p>
 </div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="interprocess.managed_memory_segments.managed_shared_memory.xsi_managed_memory_common_shm"></a><a class="link" href="managed_memory_segments.html#interprocess.managed_memory_segments.managed_shared_memory.xsi_managed_memory_common_shm" title="Using XSI (system V) shared memory">Using XSI (system V) shared memory</a>
+</h4></div></div></div>
+<p>
+          Unix users might also want to use XSI (system V) instead of
+the portable <code class="computeroutput"><a class="link" href="../boost/interprocess/shared_memory_object.html" title="Class shared_memory_object">shared_memory_object</a></code>
+managed memory. This is achieved through the
+<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_xsi_share_id832162.html" title="Class template basic_managed_xsi_shared_memory">basic_managed_xsi_shared_memory</a></code>
+class. To use it just include:
+        </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">managed_xsi_shared_memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<p>
+          This class has nearly the same interface as
+<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_shared_me_id831461.html" title="Class template basic_managed_shared_memory">basic_managed_shared_memory</a></code>
+but uses XSI shared memory as backend.
+        </p>
+</div>
 <p>
         For more information about managed shared memory capabilities, see
-<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_shared_me_id819329.html" title="Class template basic_managed_shared_memory">basic_managed_shared_memory</a></code> class reference.
+<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_shared_me_id831461.html" title="Class template basic_managed_shared_memory">basic_managed_shared_memory</a></code> class reference.
       </p>
 </div>
 <div class="section">
@@ -472,7 +492,7 @@ when we <span class="bold"><strong>create</strong></span> a new managed mapped f
 
             </li>
 <li class="listitem">
-              The whole file is mapped in the process' address space.
+              The whole file is mapped in the process' address space. 
 
             </li>
 </ul></div>
@@ -756,7 +776,7 @@ parameter (<code class="computeroutput"><span class="identifier">MemoryAlgorithm
 named/unique allocations is defined by the 
 <code class="computeroutput"><span class="identifier">MemoryAlgorithm</span><span class="special">::</span><span class="identifier">mutex_family</span><span class="special">::</span><span class="identifier">recursive_mutex_type</span></code> type. For shared memory,
 and memory mapped file based managed segments this recursive mutex is defined
-as <code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_recursive__id829088.html" title="Class interprocess_recursive_mutex">interprocess_recursive_mutex</a></code>.
+as <code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_recursive__id844963.html" title="Class interprocess_recursive_mutex">interprocess_recursive_mutex</a></code>.
         </p>
 <p>
           If two processes can call:
@@ -1660,7 +1680,7 @@ contain any of these values: <code class="computeroutput"><span class="identifie
 <li class="listitem">
               The second member of the pair will be false if the memory has been allocated,
    true if the memory has been expanded. If the first member is 0, the second member
-   has an undefined value.
+   has an undefined value. 
 
             </li>
 </ul></div>
@@ -1827,23 +1847,28 @@ a managed memory segment without modifying it. Read-only mode operations are lim
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">fstream</span><span class="special">&gt;</span> <span class="comment">//std::fstream
 </span><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;//</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span>
 
+
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 
+   <span class="comment">//Define file names
+</span>   <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">ManagedFile</span>  <span class="special">=</span> <span class="string">"MyManagedFile"</span><span class="special">;</span>
+   <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">ManagedFile2</span> <span class="special">=</span> <span class="string">"MyManagedFile2"</span><span class="special">;</span>
+
    <span class="comment">//Try to erase any previous managed segment with the same name
-</span>   <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MyManagedFile"</span><span class="special">);</span>
-   <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MyManagedFile2"</span><span class="special">);</span>
-   <span class="identifier">remove_file_on_destroy</span> <span class="identifier">destroyer1</span><span class="special">(</span><span class="string">"MyManagedFile"</span><span class="special">);</span>
-   <span class="identifier">remove_file_on_destroy</span> <span class="identifier">destroyer2</span><span class="special">(</span><span class="string">"MyManagedFile2"</span><span class="special">);</span>
+</span>   <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">ManagedFile</span><span class="special">);</span>
+   <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">ManagedFile2</span><span class="special">);</span>
+   <span class="identifier">remove_file_on_destroy</span> <span class="identifier">destroyer1</span><span class="special">(</span><span class="identifier">ManagedFile</span><span class="special">);</span>
+   <span class="identifier">remove_file_on_destroy</span> <span class="identifier">destroyer2</span><span class="special">(</span><span class="identifier">ManagedFile2</span><span class="special">);</span>
 
    <span class="special">{</span>
       <span class="comment">//Create an named integer in a managed mapped file
-</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">managed_file</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="string">"MyManagedFile"</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
+</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">managed_file</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="identifier">ManagedFile</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
       <span class="identifier">managed_file</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"MyInt"</span><span class="special">)(</span><span class="number">0u</span><span class="special">);</span>
 
       <span class="comment">//Now create a copy on write version
-</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">managed_file_cow</span><span class="special">(</span><span class="identifier">open_copy_on_write</span><span class="special">,</span> <span class="string">"MyManagedFile"</span><span class="special">);</span>
+</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">managed_file_cow</span><span class="special">(</span><span class="identifier">open_copy_on_write</span><span class="special">,</span> <span class="identifier">ManagedFile</span><span class="special">);</span>
 
       <span class="comment">//Erase the int and create a new one
 </span>      <span class="keyword">if</span><span class="special">(!</span><span class="identifier">managed_file_cow</span><span class="special">.</span><span class="identifier">destroy</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"MyInt"</span><span class="special">))</span>
@@ -1859,20 +1884,20 @@ a managed memory segment without modifying it. Read-only mode operations are lim
          <span class="keyword">throw</span> <span class="keyword">int</span><span class="special">(</span><span class="number">0</span><span class="special">);</span>
 
       <span class="special">{</span>  <span class="comment">//Dump the modified copy on write segment to a file
-</span>         <span class="identifier">std</span><span class="special">::</span><span class="identifier">fstream</span> <span class="identifier">file</span><span class="special">(</span><span class="string">"MyManagedFile2"</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">out</span> <span class="special">|</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">binary</span><span class="special">);</span>
+</span>         <span class="identifier">std</span><span class="special">::</span><span class="identifier">fstream</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">ManagedFile2</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">out</span> <span class="special">|</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">binary</span><span class="special">);</span>
          <span class="keyword">if</span><span class="special">(!</span><span class="identifier">file</span><span class="special">)</span>
             <span class="keyword">throw</span> <span class="keyword">int</span><span class="special">(</span><span class="number">0</span><span class="special">);</span>
          <span class="identifier">file</span><span class="special">.</span><span class="identifier">write</span><span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*&gt;(</span><span class="identifier">managed_file_cow</span><span class="special">.</span><span class="identifier">get_address</span><span class="special">()),</span> <span class="identifier">managed_file_cow</span><span class="special">.</span><span class="identifier">get_size</span><span class="special">());</span>
       <span class="special">}</span>
 
       <span class="comment">//Now open the modified file and test changes
-</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">managed_file_cow2</span><span class="special">(</span><span class="identifier">open_only</span><span class="special">,</span> <span class="string">"MyManagedFile2"</span><span class="special">);</span>
+</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">managed_file_cow2</span><span class="special">(</span><span class="identifier">open_only</span><span class="special">,</span> <span class="identifier">ManagedFile2</span><span class="special">);</span>
       <span class="keyword">if</span><span class="special">(</span><span class="identifier">managed_file_cow2</span><span class="special">.</span><span class="identifier">find</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"MyInt"</span><span class="special">).</span><span class="identifier">first</span> <span class="special">&amp;&amp;</span> <span class="special">!</span><span class="identifier">managed_file_cow2</span><span class="special">.</span><span class="identifier">find</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"MyInt2"</span><span class="special">).</span><span class="identifier">first</span><span class="special">)</span>
          <span class="keyword">throw</span> <span class="keyword">int</span><span class="special">(</span><span class="number">0</span><span class="special">);</span>
    <span class="special">}</span>
    <span class="special">{</span>
       <span class="comment">//Now create a read-only version
-</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">managed_file_ro</span><span class="special">(</span><span class="identifier">open_read_only</span><span class="special">,</span> <span class="string">"MyManagedFile"</span><span class="special">);</span>
+</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">managed_file_ro</span><span class="special">(</span><span class="identifier">open_read_only</span><span class="special">,</span> <span class="identifier">ManagedFile</span><span class="special">);</span>
       
       <span class="comment">//Check the original is intact
 </span>      <span class="keyword">if</span><span class="special">(!</span><span class="identifier">managed_file_ro</span><span class="special">.</span><span class="identifier">find</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"MyInt"</span><span class="special">).</span><span class="identifier">first</span> <span class="special">&amp;&amp;</span> <span class="identifier">managed_file_ro</span><span class="special">.</span><span class="identifier">find</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"MyInt2"</span><span class="special">).</span><span class="identifier">first</span><span class="special">)</span>
@@ -2079,7 +2104,7 @@ provided buffers that allow the same functionality as shared memory classes:
 compatible containers in the user segment.
         </p>
 <p>
-          <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_external__id818699.html" title="Class template basic_managed_external_buffer">basic_managed_external_buffer</a></code> can 
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_external__id830773.html" title="Class template basic_managed_external_buffer">basic_managed_external_buffer</a></code> can 
 be also useful to build small databases for embedded systems limiting the size of
 the used memory to a predefined memory chunk, instead of letting the database
 fragment the heap memory.
@@ -2137,7 +2162,7 @@ classes that work exclusively with heap memory.
 </pre>
 <p>
           The use is exactly the same as 
-<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_external__id818699.html" title="Class template basic_managed_external_buffer">basic_managed_external_buffer</a></code>,
+<code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed_external__id830773.html" title="Class template basic_managed_external_buffer">basic_managed_external_buffer</a></code>,
 except that memory is created by
 the managed memory segment itself using dynamic (new/delete) memory.
         </p>

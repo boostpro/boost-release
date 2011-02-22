@@ -1697,6 +1697,26 @@
 <tr>
 <td>
                 <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_HAS_FENV_H</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Platform, Standard library
+                </p>
+              </td>
+<td>
+                <p>
+                  The platform has a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">fenv</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span></code>.
+                  <a href="../../../../../boost/detail/fenv.hpp" target="_top"><code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">fenv</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code></a>
+                  should be included instead of <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">fenv</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span></code>
+                  for maximum portability.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <code class="computeroutput"><span class="identifier">BOOST_HAS_STDINT_H</span></code>
                 </p>
               </td>
@@ -3197,6 +3217,77 @@
                   when one of the arguments is itself a macro (see 16.3.1 in C++
                   standard). This is normally used to create a mangled name in combination
                   with a predefined macro such a __LINE__.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_CONSTEXPR</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Some compilers don't support the use of <code class="computeroutput"><span class="identifier">constexpr</span></code>.
+                  This macro expands to nothing on those compilers, and <code class="computeroutput"><span class="identifier">constexpr</span></code> elsewhere. For example,
+                  when defining a constexpr function or constructor replace: 
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">constexpr</span> <span class="identifier">tuple</span><span class="special">();</span>
+</pre>
+<p>
+                  with: 
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">BOOST_CONSTEXPR</span> <span class="identifier">tuple</span><span class="special">();</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_CONSTEXPR_OR_CONST</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Some compilers don't support the use of <code class="computeroutput"><span class="identifier">constexpr</span></code>.
+                  This macro expands to <code class="computeroutput"><span class="keyword">const</span></code>
+                  on those compilers, and <code class="computeroutput"><span class="identifier">constexpr</span></code>
+                  elsewhere. For example, when defining const expr variables replace:
+                  
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">static</span> <span class="identifier">constexpr</span> <span class="identifier">UIntType</span> <span class="identifier">xor_mask</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">;</span>
+</pre>
+<p>
+                  with: 
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">static</span> <span class="identifier">BOOST_CONSTEXPR_OR_CONST</span> <span class="identifier">UIntType</span> <span class="identifier">xor_mask</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">;</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_STATIC_CONSTEXPR</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  This is a shortcut for <code class="computeroutput"><span class="keyword">static</span>
+                  <span class="identifier">BOOST_CONSTEXPR_OR_CONST</span></code>For
+                  example, when defining const expr variables replace: 
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">static</span> <span class="identifier">constexpr</span> <span class="identifier">UIntType</span> <span class="identifier">xor_mask</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">;</span>
+</pre>
+<p>
+                  with: 
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">BOOST_STATIC_CONSTEXPR</span> <span class="identifier">UIntType</span> <span class="identifier">xor_mask</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">;</span>
+</pre>
+<p>
                 </p>
               </td>
 </tr>

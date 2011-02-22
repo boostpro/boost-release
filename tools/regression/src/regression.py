@@ -26,7 +26,7 @@ repo_path = {
     'trunk'         : 'trunk',
     'release'       : 'branches/release',
     'build'         : 'trunk/tools/build/v2',
-    'jam'           : 'trunk/tools/build/v2/engine/src',
+    'jam'           : 'trunk/tools/build/v2/engine',
     'regression'    : 'trunk/tools/regression',
     'boost-build.jam'
                     : 'trunk/boost-build.jam'
@@ -534,8 +534,8 @@ class runner:
             raise
 
     def command_show_revision(self):
-        modified = '$Date: 2010-09-04 07:40:26 -0400 (Sat, 04 Sep 2010) $'
-        revision = '$Revision: 65234 $'
+        modified = '$Date: 2011-02-01 03:47:31 -0500 (Tue, 01 Feb 2011) $'
+        revision = '$Revision: 68594 $'
 
         import re
         re_keyword_value = re.compile( r'^\$\w+:\s+(.*)\s+\$$' )

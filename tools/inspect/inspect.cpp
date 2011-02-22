@@ -40,6 +40,7 @@
 #include "tab_check.hpp"
 #include "ascii_check.hpp"
 #include "apple_macro_check.hpp"
+#include "assert_macro_check.hpp"
 #include "minmax_check.hpp"
 #include "unnamed_namespace_check.hpp"
 
@@ -144,7 +145,7 @@ namespace
   bool visit_predicate( const path & pth )
   {
     string local( boost::inspect::relative_to( pth, fs::initial_path() ) );
-    string leaf( pth.leaf() );
+    string leaf( pth.leaf().string() );
     return
       // so we can inspect a checkout
       leaf != "CVS"
@@ -202,7 +203,7 @@ namespace
   bool find_signature( const path & file_path,
     const boost::inspect::string_set & signatures )
   {
-    string name( file_path.leaf() );
+    string name( file_path.leaf().string() );
     if ( signatures.find( name ) == signatures.end() )
     {
       string::size_type pos( name.rfind( '.' ) );
@@ -548,6 +549,7 @@ namespace
          "  -tab\n"
          "  -ascii\n"
          "  -apple_macro\n"
+         "  -assert_macro\n"
          "  -minmax\n"
          "  -unnamed\n"
          " default is all checks on; otherwise options specify desired checks"
@@ -674,13 +676,12 @@ namespace boost
     // may return an empty string [gps]
     string impute_library( const path & full_dir_path )
     {
-      path relative( relative_to( full_dir_path, fs::initial_path() ),
-        fs::no_check );
+      path relative( relative_to( full_dir_path, fs::initial_path() ) );
       if ( relative.empty() ) return "boost-root";
-      string first( *relative.begin() );
+      string first( (*relative.begin()).string() );
       string second =  // borland 5.61 requires op=
         ++relative.begin() == relative.end()
-          ? string() : *++relative.begin();
+          ? string() : (*++relative.begin()).string();
 
       if ( first == "boost" )
         return second;
@@ -720,6 +721,7 @@ int cpp_main( int argc_param, char * argv_param[] )
   bool tab_ck = true;
   bool ascii_ck = true;
   bool apple_ok = true;
+  bool assert_ok = true;
   bool minmax_ck = true;
   bool unnamed_ck = true;
   bool cvs = false;
@@ -753,6 +755,7 @@ int cpp_main( int argc_param, char * argv_param[] )
     tab_ck = false;
     ascii_ck = false;
     apple_ok = false;
+    assert_ok = false;
     minmax_ck = false;
     unnamed_ck = false;
   }
@@ -778,6 +781,8 @@ int cpp_main( int argc_param, char * argv_param[] )
       ascii_ck = true;
     else if ( std::strcmp( argv[1], "-apple_macro" ) == 0 )
       apple_ok = true;
+    else if ( std::strcmp( argv[1], "-assert_macro" ) == 0 )
+      assert_ok = true;
     else if ( std::strcmp( argv[1], "-minmax" ) == 0 )
         minmax_ck = true;
     else if ( std::strcmp( argv[1], "-unnamed" ) == 0 )
@@ -823,6 +828,8 @@ int cpp_main( int argc_param, char * argv_param[] )
       inspectors.push_back( inspector_element( new boost::inspect::ascii_check ) );
   if ( apple_ok )
       inspectors.push_back( inspector_element( new boost::inspect::apple_macro_check ) );
+  if ( assert_ok )
+      inspectors.push_back( inspector_element( new boost::inspect::assert_macro_check ) );
   if ( minmax_ck )
       inspectors.push_back( inspector_element( new boost::inspect::minmax_check ) );
   if ( unnamed_ck )

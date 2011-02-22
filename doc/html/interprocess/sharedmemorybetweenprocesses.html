@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Sharing memory between processes</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../interprocess.html" title="Chapter&#160;9.&#160;Boost.Interprocess">
 <link rel="prev" href="some_basic_explanations.html" title="Some basic explanations">
@@ -59,6 +59,7 @@
         shared memory for UNIX systems</a></span></dt>
 <dt><span class="section"><a href="sharedmemorybetweenprocesses.html#interprocess.sharedmemorybetweenprocesses.sharedmemory.windows_shared_memory">Native
         windows shared memory</a></span></dt>
+<dt><span class="section"><a href="sharedmemorybetweenprocesses.html#interprocess.sharedmemorybetweenprocesses.sharedmemory.xsi_shared_memory">XSI shared memory</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -585,6 +586,116 @@ the shared memory segment is destroyed when no proces is attached to the memory.
 that the shared memory won't be destroyed before the client is launched.
         </p>
 </div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="interprocess.sharedmemorybetweenprocesses.sharedmemory.xsi_shared_memory"></a><a class="link" href="sharedmemorybetweenprocesses.html#interprocess.sharedmemorybetweenprocesses.sharedmemory.xsi_shared_memory" title="XSI shared memory">XSI shared memory</a>
+</h4></div></div></div>
+<p>
+          In many UNIX systems, the OS offers another shared memory memory mechanism, XSI
+(X/Open System Interfaces) shared memory segments, also known as "System V" shared memory.
+This shared memory mechanism is quite popular and portable, and it's not based in file-mapping
+semantics, but it uses special functions (<code class="computeroutput"><span class="identifier">shmget</span></code>, <code class="computeroutput"><span class="identifier">shmat</span></code>, <code class="computeroutput"><span class="identifier">shmdt</span></code>, <code class="computeroutput"><span class="identifier">shmctl</span></code>...).
+        </p>
+<p>
+          Unlike POSIX shared memory segments, XSI shared memory segments are not identified by names but
+by 'keys' usually created with <code class="computeroutput"><span class="identifier">ftok</span></code>. XSI shared memory segments have kernel lifetime and
+must be explicitly removed. XSI shared memory does not support copy-on-write and partial shared memory mapping
+but it supports anonymous shared memory.
+        </p>
+<p>
+          <span class="bold"><strong>Boost.Interprocess</strong></span> offers simple (<code class="computeroutput"><a class="link" href="../boost/interprocess/xsi_shared_memory.html" title="Class xsi_shared_memory">xsi_shared_memory</a></code>)
+and managed (<code class="computeroutput"><a class="link" href="../boost_interprocess_reference.html#boost.interprocess.managed_xsi_shared_memory">managed_xsi_shared_memory</a></code>)
+shared memory classes to ease the use of XSI shared memory. It also wraps key creation with the
+simple <code class="computeroutput"><a class="link" href="../boost/interprocess/xsi_key.html" title="Class xsi_key">xsi_key</a></code> class.
+        </p>
+<p>
+          Let's repeat the same example presented for the portable shared memory object:
+A server process creates a shared memory object, maps it and initializes all the bytes to a value. After that, 
+a client process opens the shared memory, maps it, and checks
+that the data is correctly initialized.
+        </p>
+<p>
+          This is the server process:
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">xsi_shared_memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">mapped_region</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstring</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstdlib</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;</span>
+
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+
+<span class="keyword">void</span> <span class="identifier">remove_old_shared_memory</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">xsi_key</span> <span class="special">&amp;</span><span class="identifier">key</span><span class="special">)</span>
+<span class="special">{</span>
+   <span class="keyword">try</span><span class="special">{</span>
+      <span class="identifier">xsi_shared_memory</span> <span class="identifier">xsi</span><span class="special">(</span><span class="identifier">open_only</span><span class="special">,</span> <span class="identifier">key</span><span class="special">);</span>
+      <span class="identifier">xsi_shared_memory</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">xsi</span><span class="special">.</span><span class="identifier">get_shmid</span><span class="special">());</span>
+   <span class="special">}</span>
+   <span class="keyword">catch</span><span class="special">(</span><span class="identifier">interprocess_exception</span> <span class="special">&amp;</span><span class="identifier">e</span><span class="special">){</span>
+      <span class="keyword">if</span><span class="special">(</span><span class="identifier">e</span><span class="special">.</span><span class="identifier">get_error_code</span><span class="special">()</span> <span class="special">!=</span> <span class="identifier">not_found_error</span><span class="special">)</span>
+         <span class="keyword">throw</span><span class="special">;</span>
+   <span class="special">}</span>
+<span class="special">}</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">argv</span><span class="special">[])</span>
+<span class="special">{</span>
+   <span class="keyword">if</span><span class="special">(</span><span class="identifier">argc</span> <span class="special">==</span> <span class="number">1</span><span class="special">){</span>  <span class="comment">//Parent process
+</span>      <span class="comment">//Build XSI key (ftok based)
+</span>      <span class="identifier">xsi_key</span> <span class="identifier">key</span><span class="special">(</span><span class="identifier">argv</span><span class="special">[</span><span class="number">0</span><span class="special">],</span> <span class="number">1</span><span class="special">);</span>
+
+      <span class="identifier">remove_old_shared_memory</span><span class="special">(</span><span class="identifier">key</span><span class="special">);</span>
+
+      <span class="comment">//Create a shared memory object.
+</span>      <span class="identifier">xsi_shared_memory</span> <span class="identifier">shm</span> <span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="identifier">key</span><span class="special">,</span> <span class="number">1000</span><span class="special">);</span>
+
+      <span class="comment">//Remove shared memory on destruction
+</span>      <span class="keyword">struct</span> <span class="identifier">shm_remove</span> 
+      <span class="special">{</span>
+         <span class="keyword">int</span> <span class="identifier">shmid_</span><span class="special">;</span>
+         <span class="identifier">shm_remove</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">shmid</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">shmid_</span><span class="special">(</span><span class="identifier">shmid</span><span class="special">){}</span>
+         <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">xsi_shared_memory</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">shmid_</span><span class="special">);</span> <span class="special">}</span>
+      <span class="special">}</span> <span class="identifier">remover</span><span class="special">(</span><span class="identifier">shm</span><span class="special">.</span><span class="identifier">get_shmid</span><span class="special">());</span>
+
+      <span class="comment">//Map the whole shared memory in this process
+</span>      <span class="identifier">mapped_region</span> <span class="identifier">region</span><span class="special">(</span><span class="identifier">shm</span><span class="special">,</span> <span class="identifier">read_write</span><span class="special">);</span>
+
+      <span class="comment">//Write all the memory to 1
+</span>      <span class="identifier">std</span><span class="special">::</span><span class="identifier">memset</span><span class="special">(</span><span class="identifier">region</span><span class="special">.</span><span class="identifier">get_address</span><span class="special">(),</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">region</span><span class="special">.</span><span class="identifier">get_size</span><span class="special">());</span>
+
+      <span class="comment">//Launch child process
+</span>      <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">s</span><span class="special">(</span><span class="identifier">argv</span><span class="special">[</span><span class="number">0</span><span class="special">]);</span> <span class="identifier">s</span> <span class="special">+=</span> <span class="string">" child "</span><span class="special">;</span>
+      <span class="keyword">if</span><span class="special">(</span><span class="number">0</span> <span class="special">!=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">system</span><span class="special">(</span><span class="identifier">s</span><span class="special">.</span><span class="identifier">c_str</span><span class="special">()))</span>
+         <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
+   <span class="special">}</span>
+   <span class="keyword">else</span><span class="special">{</span>
+      <span class="comment">//Build XSI key (ftok based)
+</span>      <span class="identifier">xsi_key</span> <span class="identifier">key</span><span class="special">(</span><span class="identifier">argv</span><span class="special">[</span><span class="number">0</span><span class="special">],</span> <span class="number">1</span><span class="special">);</span>
+
+      <span class="comment">//Create a shared memory object.
+</span>      <span class="identifier">xsi_shared_memory</span> <span class="identifier">shm</span> <span class="special">(</span><span class="identifier">open_only</span><span class="special">,</span> <span class="identifier">key</span><span class="special">);</span>
+
+      <span class="comment">//Map the whole shared memory in this process
+</span>      <span class="identifier">mapped_region</span> <span class="identifier">region</span><span class="special">(</span><span class="identifier">shm</span><span class="special">,</span> <span class="identifier">read_only</span><span class="special">);</span>
+
+      <span class="comment">//Check that memory was initialized to 1
+</span>      <span class="keyword">char</span> <span class="special">*</span><span class="identifier">mem</span> <span class="special">=</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">*&gt;(</span><span class="identifier">region</span><span class="special">.</span><span class="identifier">get_address</span><span class="special">());</span>
+      <span class="keyword">for</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">region</span><span class="special">.</span><span class="identifier">get_size</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
+         <span class="keyword">if</span><span class="special">(*</span><span class="identifier">mem</span><span class="special">++</span> <span class="special">!=</span> <span class="number">1</span><span class="special">)</span>
+            <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>   <span class="comment">//Error checking memory
+</span>   <span class="special">}</span>
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          As we can see, native windows shared memory needs synchronization to make sure
+that the shared memory won't be destroyed before the client is launched.
+        </p>
+</div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -808,24 +919,33 @@ that the data is correctly initialized::
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">argv</span><span class="special">[])</span>
 <span class="special">{</span>
    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
+
+   <span class="comment">//Define file names
+</span>   <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">FileName</span>  <span class="special">=</span> <span class="string">"file.bin"</span><span class="special">;</span>
    <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">FileSize</span> <span class="special">=</span> <span class="number">10000</span><span class="special">;</span>
+
    <span class="keyword">if</span><span class="special">(</span><span class="identifier">argc</span> <span class="special">==</span> <span class="number">1</span><span class="special">){</span> <span class="comment">//Parent process executes this
 </span>      <span class="special">{</span>  <span class="comment">//Create a file
-</span>         <span class="identifier">std</span><span class="special">::</span><span class="identifier">filebuf</span> <span class="identifier">fbuf</span><span class="special">;</span>
-         <span class="identifier">fbuf</span><span class="special">.</span><span class="identifier">open</span><span class="special">(</span><span class="string">"file.bin"</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">in</span> <span class="special">|</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">out</span> 
+</span>         <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">FileName</span><span class="special">);</span>
+         <span class="identifier">std</span><span class="special">::</span><span class="identifier">filebuf</span> <span class="identifier">fbuf</span><span class="special">;</span>
+         <span class="identifier">fbuf</span><span class="special">.</span><span class="identifier">open</span><span class="special">(</span><span class="identifier">FileName</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">in</span> <span class="special">|</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">out</span> 
                               <span class="special">|</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">trunc</span> <span class="special">|</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">binary</span><span class="special">);</span> 
          <span class="comment">//Set the size
 </span>         <span class="identifier">fbuf</span><span class="special">.</span><span class="identifier">pubseekoff</span><span class="special">(</span><span class="identifier">FileSize</span><span class="special">-</span><span class="number">1</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">beg</span><span class="special">);</span>
          <span class="identifier">fbuf</span><span class="special">.</span><span class="identifier">sputc</span><span class="special">(</span><span class="number">0</span><span class="special">);</span>
       <span class="special">}</span>
-      <span class="comment">//Remove file on exit
+
+      <span class="comment">//Remove on exit
 </span>      <span class="keyword">struct</span> <span class="identifier">file_remove</span> 
       <span class="special">{</span>
-         <span class="special">~</span><span class="identifier">file_remove</span> <span class="special">(){</span>  <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"file.bin"</span><span class="special">);</span> <span class="special">}</span>
-      <span class="special">}</span> <span class="identifier">destroy_on_exit</span><span class="special">;</span>
+         <span class="identifier">file_remove</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">FileName</span><span class="special">)</span>
+            <span class="special">:</span> <span class="identifier">FileName_</span><span class="special">(</span><span class="identifier">FileName</span><span class="special">)</span> <span class="special">{}</span>
+         <span class="special">~</span><span class="identifier">file_remove</span><span class="special">(){</span> <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">FileName_</span><span class="special">);</span> <span class="special">}</span>
+         <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">FileName_</span><span class="special">;</span>
+      <span class="special">}</span> <span class="identifier">remover</span><span class="special">(</span><span class="identifier">FileName</span><span class="special">);</span>
 
       <span class="comment">//Create a file mapping
-</span>      <span class="identifier">file_mapping</span> <span class="identifier">m_file</span><span class="special">(</span><span class="string">"file.bin"</span><span class="special">,</span> <span class="identifier">read_write</span><span class="special">);</span>
+</span>      <span class="identifier">file_mapping</span> <span class="identifier">m_file</span><span class="special">(</span><span class="identifier">FileName</span><span class="special">,</span> <span class="identifier">read_write</span><span class="special">);</span>
 
       <span class="comment">//Map the whole file with read-write permissions in this process
 </span>      <span class="identifier">mapped_region</span> <span class="identifier">region</span><span class="special">(</span><span class="identifier">m_file</span><span class="special">,</span> <span class="identifier">read_write</span><span class="special">);</span>
@@ -844,7 +964,7 @@ that the data is correctly initialized::
    <span class="special">}</span>
    <span class="keyword">else</span><span class="special">{</span>  <span class="comment">//Child process executes this
 </span>      <span class="special">{</span>  <span class="comment">//Open the file mapping and map it as read-only
-</span>         <span class="identifier">file_mapping</span> <span class="identifier">m_file</span><span class="special">(</span><span class="string">"file.bin"</span><span class="special">,</span> <span class="identifier">read_only</span><span class="special">);</span>
+</span>         <span class="identifier">file_mapping</span> <span class="identifier">m_file</span><span class="special">(</span><span class="identifier">FileName</span><span class="special">,</span> <span class="identifier">read_only</span><span class="special">);</span>
 
          <span class="identifier">mapped_region</span> <span class="identifier">region</span><span class="special">(</span><span class="identifier">m_file</span><span class="special">,</span> <span class="identifier">read_only</span><span class="special">);</span>
 
@@ -860,7 +980,7 @@ that the data is correctly initialized::
 </span>      <span class="special">}</span>
       <span class="special">{</span>  <span class="comment">//Now test it reading the file
 </span>         <span class="identifier">std</span><span class="special">::</span><span class="identifier">filebuf</span> <span class="identifier">fbuf</span><span class="special">;</span>
-         <span class="identifier">fbuf</span><span class="special">.</span><span class="identifier">open</span><span class="special">(</span><span class="string">"file.bin"</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">in</span> <span class="special">|</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">binary</span><span class="special">);</span> 
+         <span class="identifier">fbuf</span><span class="special">.</span><span class="identifier">open</span><span class="special">(</span><span class="identifier">FileName</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">in</span> <span class="special">|</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">binary</span><span class="special">);</span> 
 
          <span class="comment">//Read it to memory
 </span>         <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;</span> <span class="identifier">vect</span><span class="special">(</span><span class="identifier">FileSize</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Syntax Summary</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../quickbook.html" title="Chapter&#160;31.&#160;Quickbook 1.5">
 <link rel="prev" href="change_log.html" title="Change Log">
@@ -84,6 +84,9 @@
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.unicode_escape">Unicode escape</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.images">Images</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.footnotes">Footnotes</a></span></dt>
+<dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.macro_expansion">Macro Expansion</a></span></dt>
+<dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.template_expansion">Template
+        Expansion</a></span></dt>
 <dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.cond">Conditional Generation</a></span></dt>
 </dl></div>
 <div class="section">
@@ -177,7 +180,7 @@ the true business precept.]
         </p>
 <p>
           Unlike QuickBook's standard formatting scheme, the rules for simpler alternatives
-          are much stricter<sup>[<a name="id3238824" href="#ftn.id3238824" class="footnote">6</a>]</sup>.
+          are much stricter<sup>[<a name="id3396715" href="#ftn.id3396715" class="footnote">6</a>]</sup>.
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -446,8 +449,8 @@ And one for the little boy who lives down the lane.
           will generate:
         </p>
 <p>
-          This text has inlined code <code class="computeroutput"><span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span> <span class="special">}</span></code>
-          in it. The code will be syntax highlighted.
+          This text has inlined code <code class="computeroutput">int main() { return 0; }</code> in it.
+          The code will be syntax highlighted.
         </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -456,8 +459,8 @@ And one for the little boy who lives down the lane.
 </tr>
 <tr><td align="left" valign="top"><p>
             We simply enclose the code with the tick: <code class="literal">"`"</code>, not the
-            single quote: <code class="computeroutput"><span class="string">"'"</span></code>.
-            Note too that <code class="literal">`some code`</code> is preferred over <code class="literal">[^some code]</code>.
+            single quote: <code class="computeroutput">"'"</code>. Note too that <code class="literal">`some code`</code>
+            is preferred over <code class="literal">[^some code]</code>.
           </p></td></tr>
 </table></div>
 </div>
@@ -495,13 +498,13 @@ And one for the little boy who lives down the lane.
 <p>
           
 </p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<pre class="programlisting">#include &lt;iostream&gt;
 
-<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
-<span class="special">{</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Hello, World!"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
-    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
-<span class="special">}</span>
+int main()
+{
+    std::cout &lt;&lt; "Hello, World!" &lt;&lt; std::endl;
+    return 0;
+}
 </pre>
 <p>
         </p>
@@ -616,7 +619,7 @@ C++ comment `// looks like this` whereas a Python comment [python]
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            <code class="computeroutput"><span class="special">[</span><span class="identifier">br</span><span class="special">]</span></code> is now deprecated. <a class="link" href="syntax.html#quickbook.syntax.block.blurbs" title="Blurbs">Blurbs</a>,
+            <code class="computeroutput">[br]</code> is now deprecated. <a class="link" href="syntax.html#quickbook.syntax.block.blurbs" title="Blurbs">Blurbs</a>,
             <a class="link" href="syntax.html#quickbook.syntax.block.admonitions" title="Admonitions">Admonitions</a>
             and table cells (see <a class="link" href="syntax.html#quickbook.syntax.block.tables" title="Tables">Tables</a>)
             may now contain paragraphs.
@@ -791,12 +794,12 @@ escape (no processing/formatting)
 <p>
           The backslash may be used to escape a single punctuation character. The
           punctuation immediately after the backslash is passed without any processing.
-          This is useful when we need to escape QuickBook punctuations such as <code class="computeroutput"><span class="special">[</span></code> and <code class="computeroutput"><span class="special">]</span></code>.
-          For example, how do you escape the triple quote? Simple: <code class="literal">\'\'\'</code>
+          This is useful when we need to escape QuickBook punctuations such as <code class="computeroutput">[</code>
+          and <code class="computeroutput">]</code>. For example, how do you escape the triple quote? Simple:
+          <code class="literal">\'\'\'</code>
         </p>
 <p>
-          <code class="computeroutput"><span class="special">\</span><span class="identifier">n</span></code>
-          has a special meaning. It is used to generate line breaks.
+          <code class="computeroutput">\n</code> has a special meaning. It is used to generate line breaks.
         </p>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
@@ -804,16 +807,15 @@ escape (no processing/formatting)
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            <code class="computeroutput"><span class="special">\</span><span class="identifier">n</span></code>
-            and <code class="computeroutput"><span class="special">[</span><span class="identifier">br</span><span class="special">]</span></code> are now deprecated. <a class="link" href="syntax.html#quickbook.syntax.block.blurbs" title="Blurbs">Blurbs</a>,
+            <code class="computeroutput">\n</code> and <code class="computeroutput">[br]</code> are now deprecated. <a class="link" href="syntax.html#quickbook.syntax.block.blurbs" title="Blurbs">Blurbs</a>,
             <a class="link" href="syntax.html#quickbook.syntax.block.admonitions" title="Admonitions">Admonitions</a>
             and table cells (see <a class="link" href="syntax.html#quickbook.syntax.block.tables" title="Tables">Tables</a>)
             may now contain paragraphs.
           </p></td></tr>
 </table></div>
 <p>
-          The escaped space: <code class="computeroutput"><span class="special">\</span> </code> also
-          has a special meaning. The escaped space is removed from the output.
+          The escaped space: <code class="computeroutput">\ </code> also has a special meaning. The escaped
+          space is removed from the output.
         </p>
 </div>
 <div class="section">
@@ -821,9 +823,9 @@ escape (no processing/formatting)
 <a name="quickbook.syntax.phrase.unicode_escape"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.unicode_escape" title="Unicode escape">Unicode escape</a>
 </h4></div></div></div>
 <p>
-          You can enter any 16-bit unicode character by using <code class="computeroutput"><span class="special">\</span><span class="identifier">u</span></code> followed by its 4 digit hexadecimal
-          code, or a 32-bit character by using <code class="computeroutput"><span class="special">\</span><span class="identifier">U</span></code> followed by an 8 digit hexadecimal
-          code. eg.
+          You can enter any 16-bit unicode character by using <code class="computeroutput">\u</code> followed
+          by its 4 digit hexadecimal code, or a 32-bit character by using <code class="computeroutput">\U</code>
+          followed by an 8 digit hexadecimal code. eg.
         </p>
 <pre class="programlisting">\u03B1 + \u03B2
 </pre>
@@ -851,53 +853,46 @@ escape (no processing/formatting)
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.footnotes"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.footnotes" title="Footnotes">Footnotes</a>
 </h4></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.footnotes.macro_expansion">Macro
-          Expansion</a></span></dt>
-<dt><span class="section"><a href="syntax.html#quickbook.syntax.phrase.footnotes.template_expansion">Template
-          Expansion</a></span></dt>
-</dl></div>
 <p>
           As of version 1.3, QuickBook supports footnotes. Just put the text of the
-          footnote in a <code class="computeroutput"><span class="special">[</span><span class="identifier">footnote</span><span class="special">]</span></code> block, and the text will be put at the
-          bottom of the current page. For example, this:
+          footnote in a <code class="computeroutput">[footnote]</code> block, and the text will be put at
+          the bottom of the current page. For example, this:
         </p>
 <pre class="programlisting">[footnote A sample footnote]
 </pre>
 <p>
-          will generate this<sup>[<a name="id3240728" href="#ftn.id3240728" class="footnote">7</a>]</sup>.
+          will generate this<sup>[<a name="id3398394" href="#ftn.id3398394" class="footnote">7</a>]</sup>.
         </p>
+</div>
 <div class="section">
-<div class="titlepage"><div><div><h5 class="title">
-<a name="quickbook.syntax.phrase.footnotes.macro_expansion"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.footnotes.macro_expansion" title="Macro Expansion">Macro
-          Expansion</a>
-</h5></div></div></div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="quickbook.syntax.phrase.macro_expansion"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.macro_expansion" title="Macro Expansion">Macro Expansion</a>
+</h4></div></div></div>
 <pre class="programlisting">__a_macro_identifier__
 </pre>
 <p>
-            See <a class="link" href="syntax.html#quickbook.syntax.block.macros" title="Macros">Macros</a> for details.
-          </p>
+          See <a class="link" href="syntax.html#quickbook.syntax.block.macros" title="Macros">Macros</a> for details.
+        </p>
 </div>
 <div class="section">
-<div class="titlepage"><div><div><h5 class="title">
-<a name="quickbook.syntax.phrase.footnotes.template_expansion"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.footnotes.template_expansion" title="Template Expansion">Template
-          Expansion</a>
-</h5></div></div></div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="quickbook.syntax.phrase.template_expansion"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.template_expansion" title="Template Expansion">Template
+        Expansion</a>
+</h4></div></div></div>
 <pre class="programlisting">[a_template_identifier]
 </pre>
 <p>
-            See <a class="link" href="syntax.html#quickbook.syntax.block.templates" title="Templates">Templates</a>
-            for details.
-          </p>
-</div>
+          See <a class="link" href="syntax.html#quickbook.syntax.block.templates" title="Templates">Templates</a> for
+          details.
+        </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.phrase.cond"></a><a class="link" href="syntax.html#quickbook.syntax.phrase.cond" title="Conditional Generation">Conditional Generation</a>
 </h4></div></div></div>
 <p>
-          Like C++ <code class="computeroutput"><span class="comment">#ifdef</span></code>, you can generate
-          phrases depending on the presence of a macro. Example:
+          Like C++ <code class="computeroutput">#ifdef</code>, you can generate phrases depending on the
+          presence of a macro. Example:
         </p>
 <pre class="programlisting">[? __to_be__ To be or not to be]
 </pre>
@@ -915,7 +910,7 @@ escape (no processing/formatting)
           To be or not to be
         </p>
 <p>
-          Yes!<sup>[<a name="id3240872" href="#ftn.id3240872" class="footnote">8</a>]</sup>
+          Yes!<sup>[<a name="id3398533" href="#ftn.id3398533" class="footnote">8</a>]</sup>
         </p>
 </div>
 </div>
@@ -1407,7 +1402,7 @@ escape (no processing/formatting)
 <p>
           Generates:
         </p>
-<pre class="programlisting"><span class="keyword">using</span> <a href="http://www.boost.org/libs/libraries.htm" target="_top">boost</a><span class="special">::</span><a href="http://www.boost.org/doc/html/array/reference.html" target="_top">array</a><span class="special">;</span>
+<pre class="programlisting">using <a href="http://www.boost.org/libs/libraries.htm" target="_top">boost</a>::<a href="http://www.boost.org/doc/html/array/reference.html" target="_top">array</a>;
 </pre>
 </div>
 <div class="section">
@@ -1430,9 +1425,9 @@ escape (no processing/formatting)
 <p>
           Will generate:
         </p>
-<pre class="programlisting"><span class="keyword">void</span> <a href="http://en.wikipedia.org/wiki/Foo#Foo.2C_Bar_and_Baz" target="_top">foo</a><span class="special">()</span>
-<span class="special">{</span>
-<span class="special">}</span>
+<pre class="programlisting">void <a href="http://en.wikipedia.org/wiki/Foo#Foo.2C_Bar_and_Baz" target="_top">foo</a>()
+{
+}
 </pre>
 <p>
           When escaping from code to QuickBook, only phrase level markups are allowed.
@@ -1560,27 +1555,27 @@ escape (no processing/formatting)
 [h6 Heading 6]
 </pre>
 <a name="quickbook.syntax.block.headings.heading_1"></a><h2>
-<a name="id3242428"></a>
+<a name="id3400060"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_1">Heading 1</a>
         </h2>
 <a name="quickbook.syntax.block.headings.heading_2"></a><h3>
-<a name="id3242449"></a>
+<a name="id3400081"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_2">Heading 2</a>
         </h3>
 <a name="quickbook.syntax.block.headings.heading_3"></a><h4>
-<a name="id3242471"></a>
+<a name="id3400103"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_3">Heading 3</a>
         </h4>
 <a name="quickbook.syntax.block.headings.heading_4"></a><h5>
-<a name="id3242492"></a>
+<a name="id3400124"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_4">Heading 4</a>
         </h5>
 <a name="quickbook.syntax.block.headings.heading_5"></a><h6>
-<a name="id3242513"></a>
+<a name="id3400145"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_5">Heading 5</a>
         </h6>
 <a name="quickbook.syntax.block.headings.heading_6"></a><h5>
-<a name="id3242534"></a>
+<a name="id3400166"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.headings.heading_6">Heading 6</a>
         </h5>
 <p>
@@ -1758,7 +1753,7 @@ sf_logo
                 </td>
 <td>
                   <p>
-                    2010-Nov-10
+                    2011-Feb-20
                   </p>
                 </td>
 </tr>
@@ -1775,7 +1770,7 @@ sf_logo
                 </td>
 <td>
                   <p>
-                    12:46:05 AM
+                    01:39:09 AM
                   </p>
                 </td>
 </tr>
@@ -1823,7 +1818,7 @@ Hi, my name is [name]. I am [age] years old. I am a [what].
 ]
 </pre>
 <a name="quickbook.syntax.block.templates.template_identifier"></a><h6>
-<a name="id3243093"></a>
+<a name="id3400725"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_identifier">Template
           Identifier</a>
         </h6>
@@ -1841,7 +1836,7 @@ Hi, my name is [name]. I am [age] years old. I am a [what].
             </li>
 </ul></div>
 <a name="quickbook.syntax.block.templates.formal_template_arguments"></a><h6>
-<a name="id3243141"></a>
+<a name="id3400773"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.formal_template_arguments">Formal
           Template Arguments</a>
         </h6>
@@ -1861,7 +1856,7 @@ Hi, my name is [name]. I am [age] years old. I am a [what].
           of the template call.
         </p>
 <a name="quickbook.syntax.block.templates.template_body"></a><h6>
-<a name="id3243246"></a>
+<a name="id3400878"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_body">Template
           Body</a>
         </h6>
@@ -1886,7 +1881,7 @@ replacement text...
           block level elements are not allowed in phrase templates.
         </p>
 <a name="quickbook.syntax.block.templates.template_expansion"></a><h6>
-<a name="id3243299"></a>
+<a name="id3400931"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.template_expansion">Template
           Expansion</a>
         </h6>
@@ -1931,7 +1926,7 @@ replacement text...
           by the close parenthesis.
         </p>
 <a name="quickbook.syntax.block.templates.nullary_templates"></a><h6>
-<a name="id3243390"></a>
+<a name="id3401016"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.nullary_templates">Nullary
           Templates</a>
         </h6>
@@ -1990,10 +1985,9 @@ for the journey to old age.]]]
         </p>
 <p>
           The disadvantage is that you can't avoid the space between the template
-          identifier, <code class="computeroutput"><span class="identifier">aristotle_quote</span></code>,
-          and the template body "Aristotle...". This space will be part
-          of the template body. If that space is unwanted, use empty brackets or
-          use the space escape: "<code class="computeroutput"><span class="special">\</span> </code>".
+          identifier, <code class="computeroutput">aristotle_quote</code>, and the template body "Aristotle...".
+          This space will be part of the template body. If that space is unwanted,
+          use empty brackets or use the space escape: "<code class="computeroutput">\ </code>".
           Example:
         </p>
 <pre class="programlisting">[template tag\ _tag]
@@ -2007,14 +2001,14 @@ for the journey to old age.]]]
           We have:
         </p>
 <p>
-          <code class="computeroutput"><span class="keyword">struct</span></code> x_tag;
+          <code class="computeroutput">struct</code> x_tag;
         </p>
 <p>
           You have a couple of ways to do it. I personally prefer the explicit empty
           brackets, though.
         </p>
 <a name="quickbook.syntax.block.templates.simple_arguments"></a><h6>
-<a name="id3243597"></a>
+<a name="id3401212"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.simple_arguments">Simple
           Arguments</a>
         </h6>
@@ -2082,7 +2076,7 @@ for the journey to old age.]]]
           </p></td></tr>
 </table></div>
 <a name="quickbook.syntax.block.templates.punctuation_templates"></a><h6>
-<a name="id3243740"></a>
+<a name="id3401354"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.templates.punctuation_templates">Punctuation
           Templates</a>
         </h6>
@@ -2123,7 +2117,7 @@ for the journey to old age.]]]
           will generate this:
         </p>
 <div class="sidebar">
-<p class="title"><b></b></p>
+<div class="titlepage"></div>
 <p>
           <span class="inlinemediaobject"><img src="../../src/images/smiley.png" alt="smiley"></span> <span class="bold"><strong>An eye catching advertisement
           or note...</strong></span>
@@ -2389,13 +2383,13 @@ for the journey to old age.]]]
                   <p>
                     
 </p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<pre class="programlisting">#include &lt;iostream&gt;
 
-<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
-<span class="special">{</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Hello, World!"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
-    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
-<span class="special">}</span>
+int main()
+{
+    std::cout &lt;&lt; "Hello, World!" &lt;&lt; std::endl;
+    return 0;
+}
 </pre>
 <p>
                   </p>
@@ -2504,7 +2498,7 @@ for the journey to old age.]]]
           QuickBook's import facility provides a nice solution.
         </p>
 <a name="quickbook.syntax.block.import.example"></a><h6>
-<a name="id3244586"></a>
+<a name="id3402091"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.example">Example</a>
         </h6>
 <p>
@@ -2523,10 +2517,10 @@ for the journey to old age.]]]
 <p>
           collects specially marked-up code snippets from <a href="../../../tools/quickbook/test/stub.cpp" target="_top">stub.cpp</a>
           and places them in your QuickBook file as virtual templates. Each of the
-          specially marked-up code snippets has a name (e.g. <code class="computeroutput"><span class="identifier">foo</span></code>
-          and <code class="computeroutput"><span class="identifier">bar</span></code> in the example
-          above). This shall be the template identifier for that particular code
-          snippet. The second and third line above does the actual template expansion:
+          specially marked-up code snippets has a name (e.g. <code class="computeroutput">foo</code> and
+          <code class="computeroutput">bar</code> in the example above). This shall be the template identifier
+          for that particular code snippet. The second and third line above does
+          the actual template expansion:
         </p>
 <pre class="programlisting">[foo]
 [bar]
@@ -2579,7 +2573,7 @@ for the journey to old age.]]]
           Some trailing text here
         </p>
 <a name="quickbook.syntax.block.import.code_snippet_markup"></a><h6>
-<a name="id3244849"></a>
+<a name="id3402348"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.code_snippet_markup">Code
           Snippet Markup</a>
         </h6>
@@ -2587,31 +2581,31 @@ for the journey to old age.]]]
           Note how the code snippets in <a href="../../../tools/quickbook/test/stub.cpp" target="_top">stub.cpp</a>
           get marked up. We use distinguishable comments following the form:
         </p>
-<pre class="programlisting"><span class="comment">//[id
-</span><span class="identifier">some</span> <span class="identifier">code</span> <span class="identifier">here</span>
-<span class="comment">//]
-</span></pre>
+<pre class="programlisting">//[id
+some code here
+//]
+</pre>
 <p>
           The first comment line above initiates a named code-snippet. This prefix
-          will not be visible in quickbook. The entire code-snippet in between <code class="computeroutput"><span class="comment">//[id</span></code> and <code class="computeroutput"><span class="comment">//]</span></code>
-          will be inserted as a template in quickbook with name <span class="emphasis"><em><span class="emphasis"><em>id</em></span></em></span>.
-          The comment <code class="computeroutput"><span class="comment">//]</span></code> ends a code-snippet
-          This too will not be visible in quickbook.
+          will not be visible in quickbook. The entire code-snippet in between <code class="computeroutput">//[id</code>
+          and <code class="computeroutput">//]</code> will be inserted as a template in quickbook with name
+          <span class="emphasis"><em><span class="emphasis"><em>id</em></span></em></span>. The comment <code class="computeroutput">//]</code>
+          ends a code-snippet This too will not be visible in quickbook.
         </p>
 <a name="quickbook.syntax.block.import.special_comments"></a><h6>
-<a name="id3244954"></a>
+<a name="id3402419"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.special_comments">Special
           Comments</a>
         </h6>
 <p>
           Special comments of the form:
         </p>
-<pre class="programlisting"><span class="comment">//` some [*quickbook] markup here
-</span></pre>
+<pre class="programlisting">//` some [*quickbook] markup here
+</pre>
 <p>
           and:
         </p>
-<pre class="programlisting"><span class="comment">/*` some [*quickbook] markup here */</span>
+<pre class="programlisting">/*` some [*quickbook] markup here */
 </pre>
 <p>
           will be parsed by QuickBook. This can contain quickbook <span class="emphasis"><em>blocks</em></span>
@@ -2622,33 +2616,33 @@ for the journey to old age.]]]
 <p>
           Special comments of the form:
         </p>
-<pre class="programlisting"><span class="comment">/*&lt;- this C++ comment will be ignored -&gt;*/</span>
+<pre class="programlisting">/*&lt;- this C++ comment will be ignored -&gt;*/
 </pre>
 <p>
           or
         </p>
-<pre class="programlisting"><span class="comment">/*&lt;-*/</span> <span class="string">"this c++ code  will be ignored"</span> <span class="comment">/*-&gt;*/</span>
+<pre class="programlisting">/*&lt;-*/ "this c++ code  will be ignored" /*-&gt;*/
 </pre>
 <p>
           or
         </p>
-<pre class="programlisting"><span class="comment">//&lt;-
-</span><span class="keyword">private</span><span class="special">:</span>
-    <span class="keyword">int</span> <span class="identifier">some_member</span><span class="special">;</span>
-<span class="comment">//-&gt;
-</span></pre>
+<pre class="programlisting">//&lt;-
+private:
+    int some_member;
+//-&gt;
+</pre>
 <p>
           can be used to inhibit code from passing through to quickbook. All text
           between the delimeters will simply be ignored.
         </p>
 <a name="quickbook.syntax.block.import.callouts"></a><h6>
-<a name="id3245104"></a>
+<a name="id3402511"></a>
           <a class="link" href="syntax.html#quickbook.syntax.block.import.callouts">Callouts</a>
         </h6>
 <p>
           Special comments of the form:
         </p>
-<pre class="programlisting"><span class="comment">/*&lt; some [*quickbook] markup here &gt;*/</span>
+<pre class="programlisting">/*&lt; some [*quickbook] markup here &gt;*/
 </pre>
 <p>
           will be regarded as callouts. These will be collected, numbered and rendered
@@ -2684,21 +2678,21 @@ for the journey to old age.]]]
 <p>
           This is the actual code:
         </p>
-<pre class="programlisting"><span class="comment">//[ foo_bar
-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">foo_bar</span><span class="special">()</span> <span class="comment">/*&lt; The /Mythical/ FooBar.
-                      See [@http://en.wikipedia.org/wiki/Foobar Foobar for details] &gt;*/</span>
-<span class="special">{</span>
-    <span class="keyword">return</span> <span class="string">"foo-bar"</span><span class="special">;</span> <span class="comment">/*&lt; return 'em, foo-bar man! &gt;*/</span>
-<span class="special">}</span>
-<span class="comment">//]
-</span></pre>
+<pre class="programlisting">//[ foo_bar
+std::string foo_bar() /*&lt; The /Mythical/ FooBar.
+                      See [@http://en.wikipedia.org/wiki/Foobar Foobar for details] &gt;*/
+{
+    return "foo-bar"; /*&lt; return 'em, foo-bar man! &gt;*/
+}
+//]
+</pre>
 <p>
           The callouts bugs are placed exactly where the special callout comment
           is situated. It can be anywhere in the code. The bugs can be rather obtrusive,
           however. They get in the way of the clarity of the code. Another special
           callout comment style is available:
         </p>
-<pre class="programlisting"><span class="comment">/*&lt;&lt; some [*quickbook] markup here &gt;&gt;*/</span>
+<pre class="programlisting">/*&lt;&lt; some [*quickbook] markup here &gt;&gt;*/
 </pre>
 <p>
           This is the line-oriented version of the callout. With this, the "bug"
@@ -2749,13 +2743,13 @@ for the journey to old age.]]]
 <tr>
 <td width="5%" valign="top" align="left"><p><a name="quickbook4"></a><a href="#quickbook4co"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              Get the <code class="computeroutput"><span class="identifier">n</span></code> member variable
+              Get the <code class="computeroutput">n</code> member variable
             </p></td>
 </tr>
 <tr>
 <td width="5%" valign="top" align="left"><p><a name="quickbook5"></a><a href="#quickbook5co"><img src="../../../doc/src/images/callouts/4.png" alt="4" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              Set the <code class="computeroutput"><span class="identifier">n</span></code> member variable
+              Set the <code class="computeroutput">n</code> member variable
             </p></td>
 </tr>
 </table></div>
@@ -2766,17 +2760,17 @@ for the journey to old age.]]]
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id3238824" href="#id3238824" class="para">6</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id3396715" href="#id3396715" class="para">6</a>] </sup>
             Thanks to David Barrett, author of <a href="http://quinthar.com/qwikiwiki/index.php?page=Home" target="_top">Qwiki</a>,
             for sharing these samples and teaching me these obscure formatting rules.
             I wasn't sure at all if <a href="http://spirit.sourceforge.net" target="_top">Spirit</a>,
             being more or less a formal EBNF parser, can handle the context sensitivity
             and ambiguity.
           </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id3240728" href="#id3240728" class="para">7</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id3398394" href="#id3398394" class="para">7</a>] </sup>
             A sample footnote
           </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id3240872" href="#id3240872" class="para">8</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id3398533" href="#id3398533" class="para">8</a>] </sup>
             Conditional Generation makes quickbook turing complete.
           </p></div>
 </div>
