@@ -399,6 +399,11 @@ The platform has the POSIX API `sched_yield`.
 [[`BOOST_HAS_SGI_TYPE_TRAITS`][Compiler, Standard library][
 The compiler has native support for SGI style type traits.
 ]]
+[[`BOOST_HAS_FENV_H`][Platform, Standard library][
+The platform has a `<fenv.h>`. [@../../../../boost/detail/fenv.hpp
+`<boost/detail/fenv.hpp>`] should be included instead of `<fenv.h>` for maximum
+portability. 
+]]
 [[`BOOST_HAS_STDINT_H`][Platform][
 The platform has a `<stdint.h>`
 ]]
@@ -797,6 +802,38 @@ This piece of macro magic joins the two arguments together, even when one of
 the arguments is itself a macro (see 16.3.1 in C++ standard). This is normally
 used to create a mangled name in combination with a predefined macro such a
 \_\_LINE__.
+]]
+[[`BOOST_CONSTEXPR`][
+Some compilers don't support the use of `constexpr`. This macro expands to nothing on those compilers, and `constexpr`
+elsewhere. For example, when defining a constexpr function or constructor replace:
+``
+  constexpr tuple();
+``
+with:
+``
+  BOOST_CONSTEXPR tuple();
+``
+]]
+[[`BOOST_CONSTEXPR_OR_CONST`][
+Some compilers don't support the use of `constexpr`. This macro expands to `const` on those compilers, and `constexpr`
+elsewhere. For example, when defining const expr variables replace:
+``
+  static constexpr UIntType xor_mask = a;
+``
+with:
+``
+  static BOOST_CONSTEXPR_OR_CONST UIntType xor_mask = a;
+``
+]]
+[[`BOOST_STATIC_CONSTEXPR`][
+This is a shortcut for `static BOOST_CONSTEXPR_OR_CONST`For example, when defining const expr variables replace:
+``
+  static constexpr UIntType xor_mask = a;
+``
+with:
+``
+  BOOST_STATIC_CONSTEXPR UIntType xor_mask = a;
+``
 ]]
 ]
 

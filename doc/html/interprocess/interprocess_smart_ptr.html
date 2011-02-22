@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Ownership smart pointers</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../interprocess.html" title="Chapter&#160;9.&#160;Boost.Interprocess">
 <link rel="prev" href="streams.html" title="Direct iostream formatting: vectorstream and bufferstream">
@@ -505,14 +505,19 @@ and
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
+   <span class="comment">//Define file names
+</span>   <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">MappedFile</span>  <span class="special">=</span> <span class="string">"MyMappedFile"</span><span class="special">;</span>
+
    <span class="comment">//Destroy any previous file with the name to be used.
 </span>   <span class="keyword">struct</span> <span class="identifier">file_remove</span> 
    <span class="special">{</span>
-      <span class="identifier">file_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MyMappedFile"</span><span class="special">);</span> <span class="special">}</span>
-      <span class="special">~</span><span class="identifier">file_remove</span><span class="special">(){</span> <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MyMappedFile"</span><span class="special">);</span> <span class="special">}</span>
-   <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
+      <span class="identifier">file_remove</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">MappedFile</span><span class="special">)</span>
+         <span class="special">:</span> <span class="identifier">MappedFile_</span><span class="special">(</span><span class="identifier">MappedFile</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">MappedFile_</span><span class="special">);</span> <span class="special">}</span>
+      <span class="special">~</span><span class="identifier">file_remove</span><span class="special">(){</span> <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">MappedFile_</span><span class="special">);</span> <span class="special">}</span>
+      <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">MappedFile_</span><span class="special">;</span>
+   <span class="special">}</span> <span class="identifier">remover</span><span class="special">(</span><span class="identifier">MappedFile</span><span class="special">);</span>
    <span class="special">{</span>
-      <span class="identifier">managed_mapped_file</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="string">"MyMappedFile"</span><span class="special">,</span> <span class="number">4096</span><span class="special">);</span>
+      <span class="identifier">managed_mapped_file</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="identifier">MappedFile</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
 
       <span class="comment">//Construct the shared type in the file and
 </span>      <span class="comment">//pass ownership to this local shared pointer
@@ -541,7 +546,7 @@ and
 </span>   <span class="special">}</span>
    <span class="special">{</span>
       <span class="comment">//Reopen the mapped file and find again all owners
-</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">open_only</span><span class="special">,</span> <span class="string">"MyMappedFile"</span><span class="special">);</span>
+</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">open_only</span><span class="special">,</span> <span class="identifier">MappedFile</span><span class="special">);</span>
 
       <span class="identifier">shared_ptr_owner</span> <span class="special">*</span><span class="identifier">owner1</span> <span class="special">=</span> <span class="identifier">file</span><span class="special">.</span><span class="identifier">find</span><span class="special">&lt;</span><span class="identifier">shared_ptr_owner</span><span class="special">&gt;(</span><span class="string">"owner1"</span><span class="special">).</span><span class="identifier">first</span><span class="special">;</span>
       <span class="identifier">shared_ptr_owner</span> <span class="special">*</span><span class="identifier">owner2</span> <span class="special">=</span> <span class="identifier">file</span><span class="special">.</span><span class="identifier">find</span><span class="special">&lt;</span><span class="identifier">shared_ptr_owner</span><span class="special">&gt;(</span><span class="string">"owner2"</span><span class="special">).</span><span class="identifier">first</span><span class="special">;</span>
@@ -694,14 +699,19 @@ including creating containers of such objects:
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
+   <span class="comment">//Define file names
+</span>   <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">MappedFile</span>  <span class="special">=</span> <span class="string">"MyMappedFile"</span><span class="special">;</span>
+
    <span class="comment">//Destroy any previous file with the name to be used.
 </span>   <span class="keyword">struct</span> <span class="identifier">file_remove</span> 
    <span class="special">{</span>
-      <span class="identifier">file_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MyMappedFile"</span><span class="special">);</span> <span class="special">}</span>
-      <span class="special">~</span><span class="identifier">file_remove</span><span class="special">(){</span> <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MyMappedFile"</span><span class="special">);</span> <span class="special">}</span>
-   <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
+      <span class="identifier">file_remove</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">MappedFile</span><span class="special">)</span>
+         <span class="special">:</span> <span class="identifier">MappedFile_</span><span class="special">(</span><span class="identifier">MappedFile</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">MappedFile_</span><span class="special">);</span> <span class="special">}</span>
+      <span class="special">~</span><span class="identifier">file_remove</span><span class="special">(){</span> <span class="identifier">file_mapping</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="identifier">MappedFile_</span><span class="special">);</span> <span class="special">}</span>
+      <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">MappedFile_</span><span class="special">;</span>
+   <span class="special">}</span> <span class="identifier">remover</span><span class="special">(</span><span class="identifier">MappedFile</span><span class="special">);</span>
    <span class="special">{</span>
-      <span class="identifier">managed_mapped_file</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="string">"MyMappedFile"</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
+      <span class="identifier">managed_mapped_file</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="identifier">MappedFile</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
 
       <span class="comment">//Construct an object in the file and
 </span>      <span class="comment">//pass ownership to this local unique pointer
@@ -749,7 +759,7 @@ including creating containers of such objects:
 </span>   <span class="special">}</span>
    <span class="special">{</span>
       <span class="comment">//Reopen the mapped file and find again the list
-</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">open_only</span><span class="special">,</span> <span class="string">"MyMappedFile"</span><span class="special">);</span>
+</span>      <span class="identifier">managed_mapped_file</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">open_only</span><span class="special">,</span> <span class="identifier">MappedFile</span><span class="special">);</span>
 
       <span class="identifier">unique_ptr_list_t</span>   <span class="special">*</span><span class="identifier">unique_list</span> <span class="special">=</span>
          <span class="identifier">file</span><span class="special">.</span><span class="identifier">find</span><span class="special">&lt;</span><span class="identifier">unique_ptr_list_t</span><span class="special">&gt;(</span><span class="string">"unique list"</span><span class="special">).</span><span class="identifier">first</span><span class="special">;</span>

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Lambda expressions in details</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../lambda.html" title="Chapter&#160;11.&#160;Boost.Lambda">
 <link rel="prev" href="using_library.html" title="Using the library">
@@ -34,8 +34,8 @@
 <dt><span class="section"><a href="le_in_details.html#lambda.lambda_expressions_for_control_structures">Lambda expressions for control structures</a></span></dt>
 <dt><span class="section"><a href="le_in_details.html#lambda.exceptions">Exceptions</a></span></dt>
 <dt><span class="section"><a href="le_in_details.html#lambda.construction_and_destruction">Construction and destruction</a></span></dt>
-<dt><span class="section"><a href="le_in_details.html#id1996676">Special lambda expressions</a></span></dt>
-<dt><span class="section"><a href="le_in_details.html#id1997156">Casts, sizeof and typeid</a></span></dt>
+<dt><span class="section"><a href="le_in_details.html#id2141145">Special lambda expressions</a></span></dt>
+<dt><span class="section"><a href="le_in_details.html#id2141625">Casts, sizeof and typeid</a></span></dt>
 <dt><span class="section"><a href="le_in_details.html#lambda.nested_stl_algorithms">Nesting STL algorithm invocations</a></span></dt>
 </dl></div>
 <p>
@@ -123,7 +123,7 @@ int i = 1;
 <div class="titlepage"><div><div><h3 class="title">
 <a name="lambda.operator_expressions"></a>Operator expressions</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="le_in_details.html#id1994131">Operators that cannot be overloaded</a></span></dt>
+<dt><span class="section"><a href="le_in_details.html#id2138597">Operators that cannot be overloaded</a></span></dt>
 <dt><span class="section"><a href="le_in_details.html#lambda.assignment_and_subscript">Assignment and subscript operators</a></span></dt>
 <dt><span class="section"><a href="le_in_details.html#lambda.logical_operators">Logical operators</a></span></dt>
 <dt><span class="section"><a href="le_in_details.html#lambda.comma_operator">Comma operator</a></span></dt>
@@ -144,7 +144,7 @@ However, there are some restrictions that originate from the C++ operator overlo
 </p>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1994131"></a>Operators that cannot be overloaded</h4></div></div></div>
+<a name="id2138597"></a>Operators that cannot be overloaded</h4></div></div></div>
 <p>
 Some operators cannot be overloaded at all (<code class="literal">::</code>, <code class="literal">.</code>, <code class="literal">.*</code>).
 For some operators, the requirements on return types prevent them to be overloaded to create lambda functors.
@@ -494,7 +494,7 @@ function object class.
 </p>
 <div class="simplesect">
 <div class="titlepage"><div><div><h5 class="title">
-<a name="id1994858"></a>The result_type typedef</h5></div></div></div>
+<a name="id2139326"></a>The result_type typedef</h5></div></div></div>
 <p>
 
 The BLL supports the standard library convention of declaring the return type
@@ -521,7 +521,7 @@ and <code class="literal">sig</code>, <code class="literal">result_type</code> t
 </div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h5 class="title">
-<a name="id1994915"></a>The sig template</h5></div></div></div>
+<a name="id2139382"></a>The sig template</h5></div></div></div>
 <p>
 Another mechanism that make BLL aware of the return type(s) of a function object is defining
 member template struct 
@@ -778,7 +778,7 @@ When the lambda functor is invoked, a reference to <code class="literal">x</code
 </p>
 <div class="simplesect">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1995545"></a>Naming delayed constants and variables</h4></div></div></div>
+<a name="id2140013"></a>Naming delayed constants and variables</h4></div></div></div>
 <p>
 It is possible to predefine and name a delayed variable or constant outside a lambda expression. 
 The templates <code class="literal">var_type</code>, <code class="literal">constant_type</code> 
@@ -821,7 +821,7 @@ for_each(a.begin(),a.end(), cout &lt;&lt; space &lt;&lt; _1);
 </div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1995644"></a>About assignment and subscript operators</h4></div></div></div>
+<a name="id2140112"></a>About assignment and subscript operators</h4></div></div></div>
 <p>
 As described in <a class="xref" href="le_in_details.html#lambda.assignment_and_subscript" title="Assignment and subscript operators">the section called &#8220;Assignment and subscript operators&#8221;</a>, assignment and subscripting operators are always defined as member functions.
 This means, that for expressions of the form
@@ -1225,17 +1225,17 @@ and the effect of evaluating that expression.
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1996676"></a>Special lambda expressions</h3></div></div></div>
+<a name="id2141145"></a>Special lambda expressions</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="le_in_details.html#id1996682">Preventing argument substitution</a></span></dt>
+<dt><span class="section"><a href="le_in_details.html#id2141150">Preventing argument substitution</a></span></dt>
 <dt><span class="section"><a href="le_in_details.html#lambda.rvalues_as_actual_arguments">Rvalues as actual arguments to lambda functors</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1996682"></a>Preventing argument substitution</h4></div></div></div>
+<a name="id2141150"></a>Preventing argument substitution</h4></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="le_in_details.html#lambda.unlambda">Unlambda</a></span></dt>
-<dt><span class="section"><a href="le_in_details.html#id1996902">Protect</a></span></dt>
+<dt><span class="section"><a href="le_in_details.html#id2141371">Protect</a></span></dt>
 </dl></div>
 <p>
 When a lambda functor is called, the default behavior is to substitute 
@@ -1389,7 +1389,7 @@ int nested(const F&amp; f) {
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
-<a name="id1996902"></a>Protect</h5></div></div></div>
+<a name="id2141371"></a>Protect</h5></div></div></div>
 <p>
 The <code class="literal">protect</code> function is related to unlambda. 
 
@@ -1532,12 +1532,12 @@ and are not affected by the non-const rvalue problem.
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1997156"></a>Casts, sizeof and typeid</h3></div></div></div>
+<a name="id2141625"></a>Casts, sizeof and typeid</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="le_in_details.html#lambda.cast_expressions">
 Cast expressions
 </a></span></dt>
-<dt><span class="section"><a href="le_in_details.html#id1997244">Sizeof and typeid</a></span></dt>
+<dt><span class="section"><a href="le_in_details.html#id2141712">Sizeof and typeid</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -1577,7 +1577,7 @@ for_each(a.begin(), a.end(),
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id1997244"></a>Sizeof and typeid</h4></div></div></div>
+<a name="id2141712"></a>Sizeof and typeid</h4></div></div></div>
 <p>
 The BLL counterparts for these expressions are named 
 <code class="literal">ll_sizeof</code> and <code class="literal">ll_typeid</code>.

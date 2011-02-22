@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Struct template lazy_variance_impl</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.variance_hpp" title="Header &lt;boost/accumulators/statistics/variance.hpp&gt;">
 <link rel="prev" href="../extract/variance.html" title="Global variance">
@@ -37,35 +37,35 @@
   <span class="keyword">typedef</span> <span class="identifier">numeric</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">average</span><span class="special">&lt;</span> <span class="identifier">Sample</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">result_type</span> <a name="boost.accumulators.impl.lazy_variance_impl.result_type"></a><span class="identifier">result_type</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="lazy_variance_impl.html#boost.accumulators.impl.lazy_variance_implconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="lazy_variance_impl.html#id566883-bb"><span class="identifier">lazy_variance_impl</span></a><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="lazy_variance_impl.html#id567159-bb"><span class="identifier">lazy_variance_impl</span></a><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="lazy_variance_impl.html#id566859-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="identifier">result_type</span> <a class="link" href="lazy_variance_impl.html#id566863-bb"><span class="identifier">result</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="lazy_variance_impl.html#id567135-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="identifier">result_type</span> <a class="link" href="lazy_variance_impl.html#id567139-bb"><span class="identifier">result</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id934414"></a><h2>Description</h2>
+<a name="id944983"></a><h2>Description</h2>
 <p>Default sample variance implementation based on the second moment <span class="inlinemediaobject"><img src="../../../images/accumulators/form_72.png"></span> moment&lt;2&gt;, mean and count. </p>
 <div class="equation">
-<a name="id934442"></a><p class="title"><b>Equation&#160;1.21.&#160;</b></p>
+<a name="id945012"></a><p class="title"><b>Equation&#160;1.21.&#160;</b></p>
 <div class="equation-contents"><div class="mediaobject" align="center"><img src="../../../images/accumulators/form_73.png" align="middle"></div></div>
 </div>
 <p><br class="equation-break"> where </p>
 <div class="equation">
-<a name="id934466"></a><p class="title"><b>Equation&#160;1.22.&#160;</b></p>
+<a name="id945035"></a><p class="title"><b>Equation&#160;1.22.&#160;</b></p>
 <div class="equation-contents"><div class="mediaobject" align="center"><img src="../../../images/accumulators/form_74.png" align="middle"></div></div>
 </div>
 <p><br class="equation-break"> is the estimate of the sample mean and <span class="inlinemediaobject"><img src="../../../images/accumulators/form_60.png"></span> is the number of samples. </p>
 <div class="refsect2">
-<a name="id934510"></a><h3>
+<a name="id945079"></a><h3>
 <a name="boost.accumulators.impl.lazy_variance_implconstruct-copy-destruct"></a><code class="computeroutput">lazy_variance_impl</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="id566883-bb"></a><span class="identifier">lazy_variance_impl</span><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="id567159-bb"></a><span class="identifier">lazy_variance_impl</span><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id934565"></a><h3>
-<a name="id566859-bb"></a><code class="computeroutput">lazy_variance_impl</code> public member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="identifier">result_type</span> <a name="id566863-bb"></a><span class="identifier">result</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li></ol></div>
+<a name="id945134"></a><h3>
+<a name="id567135-bb"></a><code class="computeroutput">lazy_variance_impl</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="identifier">result_type</span> <a name="id567139-bb"></a><span class="identifier">result</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>

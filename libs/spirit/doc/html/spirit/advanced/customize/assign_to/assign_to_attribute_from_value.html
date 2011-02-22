@@ -4,10 +4,10 @@
 <title>Store an Attribute Value after a Parser Produced a Value (Qi)</title>
 <link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../../index.html" title="Spirit 2.4.1">
+<link rel="home" href="../../../../index.html" title="Spirit 2.4.2">
 <link rel="up" href="../assign_to.html" title="Store a Parsed Attribute Value (Qi)">
 <link rel="prev" href="assign_to_attribute_from_iterators.html" title="Store an Attribute after a Parser Produced a Pair of Iterators (Qi)">
-<link rel="next" href="../store_value.html" title="Store Parsed Attribute Values into a Container (Qi)">
+<link rel="next" href="assign_to_container_from_value.html" title="Store an Attribute Value into a Container after a Parser Produced a Value (Qi)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="assign_to_attribute_from_iterators.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../assign_to.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../store_value.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="assign_to_attribute_from_iterators.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../assign_to.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="assign_to_container_from_value.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
@@ -28,17 +28,20 @@
           an Attribute Value after a Parser Produced a Value (Qi)</a>
 </h5></div></div></div>
 <a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.assign_to_attribute_from_value"></a><h6>
-<a name="id1167876"></a>
+<a name="id1278488"></a>
             <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.assign_to_attribute_from_value">assign_to_attribute_from_value</a>
           </h6>
 <p>
             The template <code class="computeroutput"><span class="identifier">assign_to_attribute_from_value</span></code>
             is a type used as an attribute customization point. It is invoked by
-            the all primitive <span class="emphasis"><em>Qi</em></span> parsers in order to store a
-            parsed attribute value into the attribute instance provided by the user.
+            all primitive <span class="emphasis"><em>Qi</em></span> parsers in order to store a parsed
+            attribute value into the attribute instance provided by the user, if
+            this attribute is not a container type (<code class="computeroutput"><span class="identifier">is_container</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span></code>
+            evaluates to <code class="computeroutput"><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span></code>, where <code class="computeroutput"><span class="identifier">T</span></code>
+            is the attribute type).
           </p>
 <a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.module_headers"></a><h6>
-<a name="id1167904"></a>
+<a name="id1278559"></a>
             <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.module_headers">Module
             Headers</a>
           </h6>
@@ -59,7 +62,7 @@
             </p></td></tr>
 </table></div>
 <a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.namespace"></a><h6>
-<a name="id1167996"></a>
+<a name="id1278651"></a>
             <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.namespace">Namespace</a>
           </h6>
 <div class="informaltable"><table class="table">
@@ -76,7 +79,7 @@
                   </td></tr></tbody>
 </table></div>
 <a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.synopsis"></a><h6>
-<a name="id1168070"></a>
+<a name="id1278725"></a>
             <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.synopsis">Synopsis</a>
           </h6>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Attrib</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Enable</span><span class="special">&gt;</span>
@@ -86,7 +89,7 @@
 <span class="special">};</span>
 </pre>
 <a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.template_parameters"></a><h6>
-<a name="id1168209"></a>
+<a name="id1278864"></a>
             <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.template_parameters">Template
             parameters</a>
           </h6>
@@ -123,7 +126,9 @@
 <td>
                     <p>
                       The type, <code class="computeroutput"><span class="identifier">Attrib</span></code>
-                      is the type of the attribute as passed in by the user.
+                      is the type of the attribute as passed in by the user. This
+                      type is not a container type (<code class="computeroutput"><span class="identifier">is_container</span><span class="special">&lt;</span><span class="identifier">Attrib</span><span class="special">&gt;::</span><span class="identifier">type</span></code>
+                      evaluates to <code class="computeroutput"><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span></code>).
                     </p>
                   </td>
 <td>
@@ -172,20 +177,17 @@
 </tr>
 </tbody>
 </table></div>
-<a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.notation"></a><h6>
-<a name="id1168419"></a>
-            <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.notation">Notation</a>
-          </h6>
 <div class="variablelist">
 <p class="title"><b>Notation</b></p>
 <dl>
 <dt><span class="term"><code class="computeroutput"><span class="identifier">Attrib</span></code></span></dt>
 <dd><p>
                   A type to be used as the target to store the attribute value in.
+                  This type is guaranteed not to be a container type (<code class="computeroutput"><span class="identifier">is_container</span><span class="special">&lt;</span><span class="identifier">Attrib</span><span class="special">&gt;::</span><span class="identifier">type</span></code> evaluates to <code class="computeroutput"><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span></code>).
                 </p></dd>
 <dt><span class="term"><code class="computeroutput"><span class="identifier">attr</span></code></span></dt>
 <dd><p>
-                  A attribute instance of type <code class="computeroutput"><span class="identifier">Attrib</span></code>.
+                  An attribute instance of type <code class="computeroutput"><span class="identifier">Attrib</span></code>.
                 </p></dd>
 <dt><span class="term"><code class="computeroutput"><span class="identifier">T</span></code></span></dt>
 <dd><p>
@@ -194,12 +196,12 @@
                 </p></dd>
 <dt><span class="term"><code class="computeroutput"><span class="identifier">t</span></code></span></dt>
 <dd><p>
-                  A attribute instance of type <code class="computeroutput"><span class="identifier">T</span></code>.
+                  An attribute instance of type <code class="computeroutput"><span class="identifier">T</span></code>.
                 </p></dd>
 </dl>
 </div>
 <a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.expression_semantics"></a><h6>
-<a name="id1168530"></a>
+<a name="id1281663"></a>
             <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.expression_semantics">Expression
             Semantics</a>
           </h6>
@@ -231,14 +233,14 @@
                   </td>
 <td>
                     <p>
-                      Copy (assign) the value, <code class="computeroutput"><span class="identifier">t</span></code>
+                      Copy (assign) the value <code class="computeroutput"><span class="identifier">t</span></code>
                       to the attribute <code class="computeroutput"><span class="identifier">attr</span></code>.
                     </p>
                   </td>
 </tr></tbody>
 </table></div>
 <a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.predefined_specializations"></a><h6>
-<a name="id1168660"></a>
+<a name="id1281793"></a>
             <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.predefined_specializations">Predefined
             Specializations</a>
           </h6>
@@ -289,7 +291,7 @@
 </tbody>
 </table></div>
 <a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.when_to_implement"></a><h6>
-<a name="id1168788"></a>
+<a name="id1281920"></a>
             <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.when_to_implement">When
             to implement</a>
           </h6>
@@ -300,17 +302,10 @@
             type <code class="computeroutput"><span class="identifier">Attrib</span></code> is not copy
             constructible.
           </p>
-<a name="spirit.advanced.customize.assign_to.assign_to_attribute_from_value.example"></a><h6>
-<a name="id1168820"></a>
-            <a class="link" href="assign_to_attribute_from_value.html#spirit.advanced.customize.assign_to.assign_to_attribute_from_value.example">Example</a>
-          </h6>
-<p>
-            TBD
-          </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2010 Joel de Guzman, Hartmut Kaiser<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2011 Joel de Guzman, Hartmut Kaiser<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -318,7 +313,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="assign_to_attribute_from_iterators.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../assign_to.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../store_value.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="assign_to_attribute_from_iterators.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../assign_to.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="assign_to_container_from_value.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

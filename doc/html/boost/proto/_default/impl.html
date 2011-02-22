@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Struct template impl</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../_default.html#id2426848" title="Description">
+<link rel="up" href="../_default.html#id2582308" title="Description">
 <link rel="prev" href="../_default.html" title="Struct template _default">
 <link rel="next" href="../fold.html" title="Struct template fold">
 </head>
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../_default.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../_default.html#id2426848"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../fold.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../_default.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../_default.html#id2582308"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../fold.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="boost.proto._default.impl"></a><div class="titlepage"></div>
@@ -38,8 +38,8 @@
   <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">Expr</span><span class="special">::</span><span class="identifier">tag_type</span> <a name="boost.proto._default.impl.Tag"></a><span class="identifier">Tag</span><span class="special">;</span>          <span class="comment">// For exposition only</span>
   <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">see</span><span class="special">-</span><span class="identifier">below</span></em></span> <a class="link" href="impl.html#boost.proto._default.impl.result_type"><span class="identifier">result_type</span></a><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="impl.html#id1292822-bb">public member functions</a></span>
-  <span class="identifier">result_type</span> <a class="link" href="impl.html#id1292827-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">expr_param</span><span class="special">,</span> 
+  <span class="comment">// <a class="link" href="impl.html#id1314244-bb">public member functions</a></span>
+  <span class="identifier">result_type</span> <a class="link" href="impl.html#id1314249-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">expr_param</span><span class="special">,</span> 
                          <span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">state_param</span><span class="special">,</span> 
                          <span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">data_param</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">static</span> <span class="identifier">Expr</span> s_expr<span class="special">;</span>  <span class="comment">// For exposition only</span>
@@ -47,7 +47,7 @@
   <span class="keyword">static</span> <span class="identifier">Data</span> s_data<span class="special">;</span>  <span class="comment">// For exposition only</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id2427309"></a><h2>Description</h2>
+<a name="id2582770"></a><h2>Description</h2>
 <p>
               Let <code class="computeroutput"><code class="computeroutput">OP</code></code> be the C++ operator
               corresponding to <code class="computeroutput">Expr::proto_tag</code>. (For example, if
@@ -61,7 +61,7 @@
               approximate the behavior.
             </p>
 <div class="refsect2">
-<a name="id2427380"></a><h3>
+<a name="id2582841"></a><h3>
 <a name="boost.proto._default.impltypes"></a><code class="computeroutput">impl</code> 
         public
        types</h3>
@@ -75,7 +75,7 @@
                     then the result type is
                     </p>
 <pre class="programlisting"><span class="identifier">decltype</span><span class="special">(</span>
-  <span class="identifier">OP</span> <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_id1289346.html" title="Function child">proto::child</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span>
+  <span class="identifier">OP</span> <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_id1310720.html" title="Function child">proto::child</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span>
 <span class="special">)</span></pre>
 <p>
                   </p>
@@ -86,7 +86,7 @@
                     then the result type is
                     </p>
 <pre class="programlisting"><span class="identifier">decltype</span><span class="special">(</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_id1289346.html" title="Function child">proto::child</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="identifier">OP</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_id1310720.html" title="Function child">proto::child</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="identifier">OP</span>
 <span class="special">)</span></pre>
 <p>
                   </p>
@@ -97,8 +97,8 @@
                     then the result type is
                     </p>
 <pre class="programlisting"><span class="identifier">decltype</span><span class="special">(</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../left_id1289856.html" title="Function left">proto::left</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="identifier">OP</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../right_id1289979.html" title="Function right">proto::right</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../left_id1311229.html" title="Function left">proto::left</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="identifier">OP</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../right_id1311353.html" title="Function right">proto::right</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span>
 <span class="special">)</span></pre>
 <p>
                   </p>
@@ -111,8 +111,8 @@
                   then the result type is
                   </p>
 <pre class="programlisting"><span class="identifier">decltype</span><span class="special">(</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../left_id1289856.html" title="Function left">proto::left</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">[</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../right_id1289979.html" title="Function right">proto::right</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">]</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../left_id1311229.html" title="Function left">proto::left</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">[</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../right_id1311353.html" title="Function right">proto::right</a><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">]</span>
 <span class="special">)</span></pre>
 <p>
                 </p>
@@ -125,9 +125,9 @@
                     then the result type is
                     </p>
 <pre class="programlisting"><span class="identifier">decltype</span><span class="special">(</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">?</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">:</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">?</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">:</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span>
 <span class="special">)</span></pre>
 <p>
                   </p>
@@ -140,10 +140,10 @@
                     then the result type is
                     </p>
 <pre class="programlisting"><span class="identifier">decltype</span><span class="special">(</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">(</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span><span class="special">,</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">(</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span><span class="special">,</span>
   <span class="special">...</span>
-  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">)</span>
+  <span class="identifier">Grammar</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">s_expr</span><span class="special">)</span><span class="special">,</span> <span class="identifier">s_state</span><span class="special">,</span> <span class="identifier">s_data</span><span class="special">)</span> <span class="special">)</span>
 <span class="special">)</span></pre>
 <p>
                   </p>
@@ -152,10 +152,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id2428550"></a><h3>
-<a name="id1292822-bb"></a><code class="computeroutput">impl</code> public member functions</h3>
+<a name="id2584012"></a><h3>
+<a name="id1314244-bb"></a><code class="computeroutput">impl</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="identifier">result_type</span> <a name="id1292827-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">expr_param</span> expr<span class="special">,</span> 
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="id1314249-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">expr_param</span> expr<span class="special">,</span> 
                        <span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">state_param</span> state<span class="special">,</span> 
                        <span class="keyword">typename</span> <span class="identifier">impl</span><span class="special">::</span><span class="identifier">data_param</span> data<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <code class="computeroutput">
@@ -166,7 +166,7 @@
                     If <code class="computeroutput">Tag</code> corresponds to a unary prefix operator,
                     then return
                     </p>
-<pre class="programlisting">OP Grammar()(<code class="computeroutput"><a class="link" href="../child_id1289346.html" title="Function child">proto::child</a></code>(expr), state, data)</pre>
+<pre class="programlisting">OP Grammar()(<code class="computeroutput"><a class="link" href="../child_id1310720.html" title="Function child">proto::child</a></code>(expr), state, data)</pre>
 <p>
                   </p>
 </li>
@@ -175,7 +175,7 @@
                     If <code class="computeroutput">Tag</code> corresponds to a unary postfix operator,
                     then return
                     </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_id1289346.html" title="Function child">proto::child</a></code>(expr), state, data) OP</pre>
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_id1310720.html" title="Function child">proto::child</a></code>(expr), state, data) OP</pre>
 <p>
                   </p>
 </li>
@@ -184,8 +184,8 @@
                     If <code class="computeroutput">Tag</code> corresponds to a binary infix operator,
                     then return
                     </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../left_id1289856.html" title="Function left">proto::left</a></code>(expr), state, data) OP
-Grammar()(<code class="computeroutput"><a class="link" href="../right_id1289979.html" title="Function right">proto::right</a></code>(expr), state, data)</pre>
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../left_id1311229.html" title="Function left">proto::left</a></code>(expr), state, data) OP
+Grammar()(<code class="computeroutput"><a class="link" href="../right_id1311353.html" title="Function right">proto::right</a></code>(expr), state, data)</pre>
 <p>
                   </p>
 </li>
@@ -196,8 +196,8 @@ Grammar()(<code class="computeroutput"><a class="link" href="../right_id1289979.
                   </code>,
                   then return
                   </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../left_id1289856.html" title="Function left">proto::left</a></code>(expr), state, data) [
-Grammar()(<code class="computeroutput"><a class="link" href="../right_id1289979.html" title="Function right">proto::right</a></code>(expr), state, data) ]</pre>
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../left_id1311229.html" title="Function left">proto::left</a></code>(expr), state, data) [
+Grammar()(<code class="computeroutput"><a class="link" href="../right_id1311353.html" title="Function right">proto::right</a></code>(expr), state, data) ]</pre>
 <p>
                 </p>
 </li>
@@ -208,9 +208,9 @@ Grammar()(<code class="computeroutput"><a class="link" href="../right_id1289979.
                     </code>,
                     then return
                     </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a></code>&lt;0&gt;(expr), state, data) ?
-Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a></code>&lt;1&gt;(expr), state, data) :
-Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a></code>&lt;2&gt;(expr), state, data)</pre>
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a></code>&lt;0&gt;(expr), state, data) ?
+Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a></code>&lt;1&gt;(expr), state, data) :
+Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a></code>&lt;2&gt;(expr), state, data)</pre>
 <p>
                   </p>
 </li>
@@ -221,10 +221,10 @@ Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id128958
                     </code>,
                     then return
                     </p>
-<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a></code>&lt;0&gt;(expr), state, data) (
-Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a></code>&lt;1&gt;(expr), state, data),
+<pre class="programlisting">Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a></code>&lt;0&gt;(expr), state, data) (
+Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a></code>&lt;1&gt;(expr), state, data),
 ...
-Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1289588.html" title="Function child_c">proto::child_c</a></code>&lt;N&gt;(expr), state, data) )</pre>
+Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id1310961.html" title="Function child_c">proto::child_c</a></code>&lt;N&gt;(expr), state, data) )</pre>
 <p>
                   </p>
 </li>
@@ -243,7 +243,7 @@ Grammar()(<code class="computeroutput"><a class="link" href="../child_c_id128958
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../_default.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../_default.html#id2426848"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../fold.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../_default.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../_default.html#id2582308"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../fold.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
