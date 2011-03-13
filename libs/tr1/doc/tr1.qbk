@@ -8,7 +8,7 @@
         [@http://www.boost.org/LICENSE_1_0.txt])]
     [authors [Maddock, John]]
     [category misc]
-    [last-revision $Date: 2009-02-04 10:53:20 -0500 (Wed, 04 Feb 2009) $]
+    [last-revision $Date: 2011-03-07 11:43:45 -0500 (Mon, 07 Mar 2011) $]
 ]
 
 [section:intro Introduction]
@@ -1009,6 +1009,11 @@ Boost.Hash adds specialisations of std::hash for a wider range of types
 than those required by TR1: Boost.Hash acts as a testbed for issue 6.18
 in the [@http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1756.pdf 
 Library Extension Technical Report Issues List].
+
+[note There are portability issues with this template - in particular the `hash` template
+might not actually be defined inside namespace std::tr1, making user-defined specializations
+of the template non-portable.  For example Visual C++ 2010 defines `hash` in namespace `std`
+and then imports this into `std::tr1` with a using declaration.]
 
 [endsect]
 

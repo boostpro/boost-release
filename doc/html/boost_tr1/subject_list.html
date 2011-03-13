@@ -935,6 +935,19 @@
         acts as a testbed for issue 6.18 in the <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1756.pdf" target="_top">Library
         Extension Technical Report Issues List</a>.
       </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          There are portability issues with this template - in particular the <code class="computeroutput"><span class="identifier">hash</span></code> template might not actually be defined
+          inside namespace std::tr1, making user-defined specializations of the template
+          non-portable. For example Visual C++ 2010 defines <code class="computeroutput"><span class="identifier">hash</span></code>
+          in namespace <code class="computeroutput"><span class="identifier">std</span></code> and then
+          imports this into <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span></code> with a using declaration.
+        </p></td></tr>
+</table></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
