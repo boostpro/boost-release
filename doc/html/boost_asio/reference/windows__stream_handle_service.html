@@ -33,7 +33,7 @@
   <span class="keyword">public</span> <span class="identifier">io_service</span><span class="special">::</span><span class="identifier">service</span>
 </pre>
 <a name="boost_asio.reference.windows__stream_handle_service.types"></a><h5>
-<a name="id1402062"></a>
+<a name="boost_asio.reference.windows__stream_handle_service.types-heading"></a>
         <a class="link" href="windows__stream_handle_service.html#boost_asio.reference.windows__stream_handle_service.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -69,7 +69,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__stream_handle_service/native_type.html" title="windows::stream_handle_service::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  <a class="link" href="windows__stream_handle_service/native_handle_type.html" title="windows::stream_handle_service::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                 </p>
               </td>
 <td>
@@ -78,10 +78,22 @@
                 </p>
               </td>
 </tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__stream_handle_service/native_type.html" title="windows::stream_handle_service::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use native_handle_type.) The native handle type.
+                </p>
+              </td>
+</tr>
 </tbody>
 </table></div>
 <a name="boost_asio.reference.windows__stream_handle_service.member_functions"></a><h5>
-<a name="id1402181"></a>
+<a name="boost_asio.reference.windows__stream_handle_service.member_functions-heading"></a>
         <a class="link" href="windows__stream_handle_service.html#boost_asio.reference.windows__stream_handle_service.member_functions">Member
         Functions</a>
       </h5>
@@ -202,19 +214,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__stream_handle_service/io_service.html" title="windows::stream_handle_service::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: use get_io_service().) Get the io_service object that
-                  owns the service.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="windows__stream_handle_service/is_open.html" title="windows::stream_handle_service::is_open"><span class="bold"><strong>is_open</strong></span></a>
                 </p>
               </td>
@@ -227,7 +226,43 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="windows__stream_handle_service/move_assign.html" title="windows::stream_handle_service::move_assign"><span class="bold"><strong>move_assign</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-assign from another stream handle implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__stream_handle_service/move_construct.html" title="windows::stream_handle_service::move_construct"><span class="bold"><strong>move_construct</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-construct a new stream handle implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="windows__stream_handle_service/native.html" title="windows::stream_handle_service::native"><span class="bold"><strong>native</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use native_handle().) Get the native handle implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__stream_handle_service/native_handle.html" title="windows::stream_handle_service::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
                 </p>
               </td>
 <td>
@@ -245,18 +280,6 @@
 <td>
                 <p>
                   Read some data from the stream.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="windows__stream_handle_service/shutdown_service.html" title="windows::stream_handle_service::shutdown_service"><span class="bold"><strong>shutdown_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Destroy all user-defined handler objects owned by the service.
                 </p>
               </td>
 </tr>
@@ -287,7 +310,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.windows__stream_handle_service.data_members"></a><h5>
-<a name="id1402698"></a>
+<a name="boost_asio.reference.windows__stream_handle_service.data_members-heading"></a>
         <a class="link" href="windows__stream_handle_service.html#boost_asio.reference.windows__stream_handle_service.data_members">Data
         Members</a>
       </h5>
@@ -322,7 +345,7 @@
 </tr></tbody>
 </table></div>
 <a name="boost_asio.reference.windows__stream_handle_service.requirements"></a><h5>
-<a name="id1402786"></a>
+<a name="boost_asio.reference.windows__stream_handle_service.requirements-heading"></a>
         <a class="link" href="windows__stream_handle_service.html#boost_asio.reference.windows__stream_handle_service.requirements">Requirements</a>
       </h5>
 <p>
@@ -334,7 +357,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

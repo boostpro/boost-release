@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
 <link rel="prev" href="any_hooks.html" title="Any Hooks: A single hook for any Intrusive container">
 <link rel="next" href="node_algorithms.html" title="Node algorithms with custom NodeTraits">
 </head>
@@ -48,8 +48,8 @@
    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">NodeTraits</span><span class="special">::</span><span class="identifier">node_ptr</span>       <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">NodeTraits</span><span class="special">::</span><span class="identifier">const_node_ptr</span> <span class="identifier">const_node_ptr</span><span class="special">;</span>
 
-   <span class="comment">//Get the previous node of "this_node"
-</span>   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_prev_node</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">this_node</span><span class="special">)</span>
+   <span class="comment">//Get the previous node of "this_node"</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_prev_node</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">this_node</span><span class="special">)</span>
    <span class="special">{</span>
       <span class="identifier">node_ptr</span> <span class="identifier">p</span> <span class="special">=</span> <span class="identifier">this_node</span><span class="special">;</span>
       <span class="keyword">while</span> <span class="special">(</span><span class="identifier">this_node</span> <span class="special">!=</span> <span class="identifier">NodeTraits</span><span class="special">::</span><span class="identifier">get_next</span><span class="special">(</span><span class="identifier">p</span><span class="special">))</span>
@@ -57,8 +57,8 @@
       <span class="keyword">return</span> <span class="identifier">p</span><span class="special">;</span>
    <span class="special">}</span>
 
-   <span class="comment">// number of elements in the group of nodes containing "this_node"
-</span>   <span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">count</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">this_node</span><span class="special">)</span> 
+   <span class="comment">// number of elements in the group of nodes containing "this_node"</span>
+   <span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">count</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">this_node</span><span class="special">)</span> 
    <span class="special">{</span>
       <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">result</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
       <span class="identifier">const_node_ptr</span> <span class="identifier">p</span> <span class="special">=</span> <span class="identifier">this_node</span><span class="special">;</span>
@@ -69,9 +69,9 @@
       <span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
    <span class="special">}</span>
 
-   <span class="comment">// More operations
-</span>   <span class="comment">// ...
-</span><span class="special">};</span>
+   <span class="comment">// More operations</span>
+   <span class="comment">// ...</span>
+<span class="special">};</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           <span class="bold"><strong>Node Traits</strong></span>: A class that encapsulates
@@ -87,8 +87,8 @@
         </li></ul></div>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">my_slist_node_traits</span>
 <span class="special">{</span>
-   <span class="comment">//The type of the node
-</span>   <span class="keyword">struct</span> <span class="identifier">node</span>
+   <span class="comment">//The type of the node</span>
+   <span class="keyword">struct</span> <span class="identifier">node</span>
    <span class="special">{</span>
       <span class="identifier">node</span> <span class="special">*</span><span class="identifier">next_</span><span class="special">;</span>
    <span class="special">};</span>      
@@ -96,12 +96,12 @@
    <span class="keyword">typedef</span> <span class="identifier">node</span> <span class="special">*</span>       <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span> <span class="identifier">const_node_ptr</span><span class="special">;</span>
 
-   <span class="comment">//A function to obtain a pointer to the next node
-</span>   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_next</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>
+   <span class="comment">//A function to obtain a pointer to the next node</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_next</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>
    <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span><span class="special">;</span>  <span class="special">}</span>  
 
-   <span class="comment">//A function to set the pointer to the next node
-</span>   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">next</span><span class="special">)</span>
+   <span class="comment">//A function to set the pointer to the next node</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">next</span><span class="special">)</span>
    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span> <span class="special">=</span> <span class="identifier">next</span><span class="special">;</span>  <span class="special">}</span>  
 <span class="special">};</span>
 </pre>
@@ -114,28 +114,28 @@
           class, to make the user class compatible with a singly linked list container:
         </li></ul></div>
 <pre class="programlisting"><span class="keyword">class</span> <span class="identifier">my_slist_base_hook</span>
-      <span class="comment">//This hook contains a node, that will be used
-</span>      <span class="comment">//to link the user object in the group of nodes
-</span>   <span class="special">:</span> <span class="keyword">private</span> <span class="identifier">my_slist_node_traits</span><span class="special">::</span><span class="identifier">node</span>
+      <span class="comment">//This hook contains a node, that will be used</span>
+      <span class="comment">//to link the user object in the group of nodes</span>
+   <span class="special">:</span> <span class="keyword">private</span> <span class="identifier">my_slist_node_traits</span><span class="special">::</span><span class="identifier">node</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="identifier">my_slist_node_traits</span><span class="special">::</span><span class="identifier">node_ptr</span>       <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">my_slist_node_traits</span><span class="special">::</span><span class="identifier">const_node_ptr</span> <span class="identifier">const_node_ptr</span><span class="special">;</span>
 
-   <span class="comment">//Converts the generic node to the hook
-</span>   <span class="keyword">static</span> <span class="identifier">my_slist_base_hook</span> <span class="special">*</span><span class="identifier">to_hook_ptr</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">p</span><span class="special">)</span>
+   <span class="comment">//Converts the generic node to the hook</span>
+   <span class="keyword">static</span> <span class="identifier">my_slist_base_hook</span> <span class="special">*</span><span class="identifier">to_hook_ptr</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">p</span><span class="special">)</span>
    <span class="special">{</span>  <span class="keyword">return</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">my_slist_base_hook</span><span class="special">*&gt;(</span><span class="identifier">p</span><span class="special">);</span> <span class="special">}</span>
 
-   <span class="comment">//Returns the generic node stored by this hook
-</span>   <span class="identifier">node_ptr</span> <span class="identifier">to_node_ptr</span><span class="special">()</span>
+   <span class="comment">//Returns the generic node stored by this hook</span>
+   <span class="identifier">node_ptr</span> <span class="identifier">to_node_ptr</span><span class="special">()</span>
    <span class="special">{</span> <span class="keyword">return</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">node</span> <span class="special">*</span><span class="keyword">const</span><span class="special">&gt;(</span><span class="keyword">this</span><span class="special">);</span> <span class="special">}</span>
 
-   <span class="comment">// More operations
-</span>   <span class="comment">// ...
-</span><span class="special">};</span>
+   <span class="comment">// More operations</span>
+   <span class="comment">// ...</span>
+<span class="special">};</span>
 
-<span class="comment">//To make MyClass compatible with an intrusive singly linked list
-</span><span class="comment">//derive our class from the hook.
-</span><span class="keyword">class</span> <span class="identifier">MyClass</span>
+<span class="comment">//To make MyClass compatible with an intrusive singly linked list</span>
+<span class="comment">//derive our class from the hook.</span>
+<span class="keyword">class</span> <span class="identifier">MyClass</span>
    <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">my_slist_base_hook</span>
 <span class="special">{</span>
    <span class="keyword">void</span> <span class="identifier">set</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">value</span><span class="special">);</span>
@@ -167,19 +167,19 @@
    <span class="keyword">public</span><span class="special">:</span>
    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">ValueTraits</span><span class="special">::</span><span class="identifier">value_type</span> <span class="identifier">value_type</span><span class="special">;</span>
 
-   <span class="comment">//More typedefs and functions
-</span>   <span class="comment">// ...
-</span>
-   <span class="comment">//Insert the value as the first element of the list
-</span>   <span class="keyword">void</span> <span class="identifier">push_front</span> <span class="special">(</span><span class="identifier">reference</span> <span class="identifier">value</span><span class="special">)</span> 
+   <span class="comment">//More typedefs and functions</span>
+   <span class="comment">// ...</span>
+
+   <span class="comment">//Insert the value as the first element of the list</span>
+   <span class="keyword">void</span> <span class="identifier">push_front</span> <span class="special">(</span><span class="identifier">reference</span> <span class="identifier">value</span><span class="special">)</span> 
    <span class="special">{</span>
       <span class="identifier">node_ptr</span> <span class="identifier">to_insert</span><span class="special">(</span><span class="identifier">ValueTraits</span><span class="special">::</span><span class="identifier">to_node_ptr</span><span class="special">(</span><span class="identifier">value</span><span class="special">));</span>
       <span class="identifier">circular_list_algorithms</span><span class="special">::</span><span class="identifier">link_after</span><span class="special">(</span><span class="identifier">to_insert</span><span class="special">,</span> <span class="identifier">get_root_node</span><span class="special">());</span> 
    <span class="special">}</span>
 
-   <span class="comment">// More operations
-</span>   <span class="comment">// ...
-</span><span class="special">};</span>
+   <span class="comment">// More operations</span>
+   <span class="comment">// ...</span>
+<span class="special">};</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -208,24 +208,24 @@
    <span class="keyword">typedef</span> <span class="identifier">MyClass</span>                     <span class="identifier">value_type</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">node_ptr</span>       <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">value_type</span><span class="special">*</span>                 <span class="identifier">pointer</span><span class="special">;</span>
-   <span class="comment">//...
-</span>
-   <span class="comment">//Converts user's value to a generic node
-</span>   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">to_node_ptr</span><span class="special">(</span><span class="identifier">reference</span> <span class="identifier">value</span><span class="special">)</span>
+   <span class="comment">//...</span>
+
+   <span class="comment">//Converts user's value to a generic node</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">to_node_ptr</span><span class="special">(</span><span class="identifier">reference</span> <span class="identifier">value</span><span class="special">)</span>
    <span class="special">{</span> <span class="keyword">return</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">slist_base_hook</span> <span class="special">&amp;&gt;(</span><span class="identifier">value</span><span class="special">).</span><span class="identifier">to_node_ptr</span><span class="special">();</span> <span class="special">}</span>
 
-   <span class="comment">//Converts a generic node into user's value
-</span>   <span class="keyword">static</span> <span class="identifier">value_type</span> <span class="special">*</span><span class="identifier">to_value_ptr</span><span class="special">(</span><span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span> 
+   <span class="comment">//Converts a generic node into user's value</span>
+   <span class="keyword">static</span> <span class="identifier">value_type</span> <span class="special">*</span><span class="identifier">to_value_ptr</span><span class="special">(</span><span class="identifier">node_traits</span><span class="special">::</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span> 
    <span class="special">{</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">*&gt;(</span><span class="identifier">slist_base_hook</span><span class="special">::</span><span class="identifier">to_hook_ptr</span><span class="special">(</span><span class="identifier">n</span><span class="special">));</span> <span class="special">}</span>
 
-   <span class="comment">// More operations
-</span>   <span class="comment">// ...
-</span><span class="special">};</span>
+   <span class="comment">// More operations</span>
+   <span class="comment">// ...</span>
+<span class="special">};</span>
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -31,11 +31,74 @@
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">typename</span> <a class="link" href="Protocol.html" title="Protocol requirements">Protocol</a><span class="special">,</span>
-    <span class="keyword">typename</span> <a class="link" href="StreamSocketService.html" title="Stream socket service requirements">StreamSocketService</a> <span class="special">=</span> <span class="identifier">stream_socket_service</span><span class="special">&lt;</span><span class="identifier">Protocol</span><span class="special">&gt;&gt;</span>
+    <span class="keyword">typename</span> <a class="link" href="StreamSocketService.html" title="Stream socket service requirements">StreamSocketService</a> <span class="special">=</span> <span class="identifier">stream_socket_service</span><span class="special">&lt;</span><span class="identifier">Protocol</span><span class="special">&gt;,</span>
+    <span class="keyword">typename</span> <span class="identifier">Time</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">ptime</span><span class="special">,</span>
+    <span class="keyword">typename</span> <a class="link" href="TimeTraits.html" title="Time traits requirements">TimeTraits</a> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">time_traits</span><span class="special">&lt;</span><span class="identifier">Time</span><span class="special">&gt;,</span>
+    <span class="keyword">typename</span> <a class="link" href="TimerService.html" title="Timer service requirements">TimerService</a> <span class="special">=</span> <span class="identifier">deadline_timer_service</span><span class="special">&lt;</span><span class="identifier">Time</span><span class="special">,</span> <span class="identifier">TimeTraits</span><span class="special">&gt;&gt;</span>
 <span class="keyword">class</span> <span class="identifier">basic_socket_iostream</span>
 </pre>
+<a name="boost_asio.reference.basic_socket_iostream.types"></a><h5>
+<a name="boost_asio.reference.basic_socket_iostream.types-heading"></a>
+        <a class="link" href="basic_socket_iostream.html#boost_asio.reference.basic_socket_iostream.types">Types</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_iostream/duration_type.html" title="basic_socket_iostream::duration_type"><span class="bold"><strong>duration_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  The duration type.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_iostream/endpoint_type.html" title="basic_socket_iostream::endpoint_type"><span class="bold"><strong>endpoint_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  The endpoint type.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_iostream/time_type.html" title="basic_socket_iostream::time_type"><span class="bold"><strong>time_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  The time type.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
 <a name="boost_asio.reference.basic_socket_iostream.member_functions"></a><h5>
-<a name="id1047326"></a>
+<a name="boost_asio.reference.basic_socket_iostream.member_functions-heading"></a>
         <a class="link" href="basic_socket_iostream.html#boost_asio.reference.basic_socket_iostream.member_functions">Member
         Functions</a>
       </h5>
@@ -101,6 +164,48 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="basic_socket_iostream/error.html" title="basic_socket_iostream::error"><span class="bold"><strong>error</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the last error associated with the stream.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_iostream/expires_at.html" title="basic_socket_iostream::expires_at"><span class="bold"><strong>expires_at</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the stream's expiry time as an absolute time.
+                </p>
+                <p>
+                  Set the stream's expiry time as an absolute time.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_iostream/expires_from_now.html" title="basic_socket_iostream::expires_from_now"><span class="bold"><strong>expires_from_now</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the timer's expiry time relative to now.
+                </p>
+                <p>
+                  Set the stream's expiry time relative to now.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="basic_socket_iostream/rdbuf.html" title="basic_socket_iostream::rdbuf"><span class="bold"><strong>rdbuf</strong></span></a>
                 </p>
               </td>
@@ -113,7 +218,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.basic_socket_iostream.requirements"></a><h5>
-<a name="id1047510"></a>
+<a name="boost_asio.reference.basic_socket_iostream.requirements-heading"></a>
         <a class="link" href="basic_socket_iostream.html#boost_asio.reference.basic_socket_iostream.requirements">Requirements</a>
       </h5>
 <p>
@@ -125,7 +230,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -37,7 +37,7 @@
   <span class="keyword">public</span> <span class="identifier">socket_base</span>
 </pre>
 <a name="boost_asio.reference.basic_socket_acceptor.types"></a><h5>
-<a name="id1024085"></a>
+<a name="boost_asio.reference.basic_socket_acceptor.types-heading"></a>
         <a class="link" href="basic_socket_acceptor.html#boost_asio.reference.basic_socket_acceptor.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -183,7 +183,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="basic_socket_acceptor/native_type.html" title="basic_socket_acceptor::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  <a class="link" href="basic_socket_acceptor/native_handle_type.html" title="basic_socket_acceptor::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                 </p>
               </td>
 <td>
@@ -195,12 +195,26 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="basic_socket_acceptor/native_type.html" title="basic_socket_acceptor::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use native_handle_type.) The native representation
+                  of an acceptor.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="basic_socket_acceptor/non_blocking_io.html" title="basic_socket_acceptor::non_blocking_io"><span class="bold"><strong>non_blocking_io</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  IO control command to set the blocking mode of the socket.
+                  (Deprecated: Use non_blocking().) IO control command to set the
+                  blocking mode of the socket.
                 </p>
               </td>
 </tr>
@@ -304,7 +318,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.basic_socket_acceptor.member_functions"></a><h5>
-<a name="id1024750"></a>
+<a name="boost_asio.reference.basic_socket_acceptor.member_functions-heading"></a>
         <a class="link" href="basic_socket_acceptor.html#boost_asio.reference.basic_socket_acceptor.member_functions">Member
         Functions</a>
       </h5>
@@ -384,6 +398,9 @@
                 <p>
                   Construct a basic_socket_acceptor on an existing native acceptor.
                 </p>
+                <p>
+                  Move-construct a basic_socket_acceptor from another.
+                </p>
               </td>
 </tr>
 <tr>
@@ -449,13 +466,12 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="basic_socket_acceptor/io_service.html" title="basic_socket_acceptor::io_service"><span class="bold"><strong>io_service</strong></span></a>
+                  <a class="link" href="basic_socket_acceptor/io_control.html" title="basic_socket_acceptor::io_control"><span class="bold"><strong>io_control</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  (Deprecated: use get_io_service().) Get the io_service associated
-                  with the object.
+                  Perform an IO control command on the acceptor.
                 </p>
               </td>
 </tr>
@@ -504,7 +520,49 @@
               </td>
 <td>
                 <p>
+                  (Deprecated: Use native_handle().) Get the native acceptor representation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_acceptor/native_handle.html" title="basic_socket_acceptor::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
                   Get the native acceptor representation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_acceptor/native_non_blocking.html" title="basic_socket_acceptor::native_non_blocking"><span class="bold"><strong>native_non_blocking</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Gets the non-blocking mode of the native acceptor implementation.
+                </p>
+                <p>
+                  Sets the non-blocking mode of the native acceptor implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_acceptor/non_blocking.html" title="basic_socket_acceptor::non_blocking"><span class="bold"><strong>non_blocking</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Gets the non-blocking mode of the acceptor.
+                </p>
+                <p>
+                  Sets the non-blocking mode of the acceptor.
                 </p>
               </td>
 </tr>
@@ -523,6 +581,18 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="basic_socket_acceptor/operator_eq_.html" title="basic_socket_acceptor::operator="><span class="bold"><strong>operator=</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-assign a basic_socket_acceptor from another.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="basic_socket_acceptor/set_option.html" title="basic_socket_acceptor::set_option"><span class="bold"><strong>set_option</strong></span></a>
                 </p>
               </td>
@@ -534,8 +604,57 @@
 </tr>
 </tbody>
 </table></div>
+<a name="boost_asio.reference.basic_socket_acceptor.protected_member_functions"></a><h5>
+<a name="boost_asio.reference.basic_socket_acceptor.protected_member_functions-heading"></a>
+        <a class="link" href="basic_socket_acceptor.html#boost_asio.reference.basic_socket_acceptor.protected_member_functions">Protected
+        Member Functions</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_acceptor/get_implementation.html" title="basic_socket_acceptor::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the underlying implementation of the I/O object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket_acceptor/get_service.html" title="basic_socket_acceptor::get_service"><span class="bold"><strong>get_service</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the service associated with the I/O object.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
 <a name="boost_asio.reference.basic_socket_acceptor.data_members"></a><h5>
-<a name="id1025307"></a>
+<a name="boost_asio.reference.basic_socket_acceptor.data_members-heading"></a>
         <a class="link" href="basic_socket_acceptor.html#boost_asio.reference.basic_socket_acceptor.data_members">Data
         Members</a>
       </h5>
@@ -584,6 +703,18 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="basic_socket_acceptor/message_end_of_record.html" title="basic_socket_acceptor::message_end_of_record"><span class="bold"><strong>message_end_of_record</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Specifies that the data marks the end of a record.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="basic_socket_acceptor/message_out_of_band.html" title="basic_socket_acceptor::message_out_of_band"><span class="bold"><strong>message_out_of_band</strong></span></a>
                 </p>
               </td>
@@ -608,7 +739,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.basic_socket_acceptor.protected_data_members"></a><h5>
-<a name="id1025488"></a>
+<a name="boost_asio.reference.basic_socket_acceptor.protected_data_members-heading"></a>
         <a class="link" href="basic_socket_acceptor.html#boost_asio.reference.basic_socket_acceptor.protected_data_members">Protected
         Data Members</a>
       </h5>
@@ -638,7 +769,8 @@
               </td>
 <td>
                 <p>
-                  The underlying implementation of the I/O object.
+                  (Deprecated: Use get_implementation().) The underlying implementation
+                  of the I/O object.
                 </p>
               </td>
 </tr>
@@ -650,7 +782,8 @@
               </td>
 <td>
                 <p>
-                  The service associated with the I/O object.
+                  (Deprecated: Use get_service().) The service associated with the
+                  I/O object.
                 </p>
               </td>
 </tr>
@@ -661,7 +794,7 @@
         is used for accepting new socket connections.
       </p>
 <a name="boost_asio.reference.basic_socket_acceptor.thread_safety"></a><h5>
-<a name="id1025623"></a>
+<a name="boost_asio.reference.basic_socket_acceptor.thread_safety-heading"></a>
         <a class="link" href="basic_socket_acceptor.html#boost_asio.reference.basic_socket_acceptor.thread_safety">Thread
         Safety</a>
       </h5>
@@ -674,7 +807,7 @@
         Unsafe.
       </p>
 <a name="boost_asio.reference.basic_socket_acceptor.example"></a><h5>
-<a name="id1025674"></a>
+<a name="boost_asio.reference.basic_socket_acceptor.example-heading"></a>
         <a class="link" href="basic_socket_acceptor.html#boost_asio.reference.basic_socket_acceptor.example">Example</a>
       </h5>
 <p>
@@ -688,7 +821,7 @@
 <span class="identifier">acceptor</span><span class="special">.</span><span class="identifier">listen</span><span class="special">();</span>
 </pre>
 <a name="boost_asio.reference.basic_socket_acceptor.requirements"></a><h5>
-<a name="id1026030"></a>
+<a name="boost_asio.reference.basic_socket_acceptor.requirements-heading"></a>
         <a class="link" href="basic_socket_acceptor.html#boost_asio.reference.basic_socket_acceptor.requirements">Requirements</a>
       </h5>
 <p>
@@ -700,7 +833,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

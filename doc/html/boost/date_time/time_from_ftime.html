@@ -35,17 +35,17 @@
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> TimeT<span class="special">,</span> <span class="keyword">typename</span> FileTimeT<span class="special">&gt;</span> 
   <span class="identifier">TimeT</span> <span class="identifier">time_from_ftime</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">FileTimeT</span> <span class="special">&amp;</span> ft<span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id1136379"></a><h2>Description</h2>
+<a name="id1221328"></a><h2>Description</h2>
 <p>Create a time object from an initialized FILETIME struct. A FILETIME struct holds 100-nanosecond units (0.0000001). When built with microsecond resolution the file_time's sub second value will be truncated. Nanosecond resolution has no truncation.</p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>The function is templated on the FILETIME type, so that it can be used with both native FILETIME and the ad-hoc boost::date_time::winapi::file_time type. </p></td></tr>
+</table></div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term">Notes:</span></p></td>
-<td><p>The function is templated on the FILETIME type, so that it can be used with both native FILETIME and the ad-hoc boost::date_time::winapi::file_time type. </p></td>
-</tr></tbody>
-</table></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

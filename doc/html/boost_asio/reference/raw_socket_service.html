@@ -35,7 +35,7 @@
   <span class="keyword">public</span> <span class="identifier">io_service</span><span class="special">::</span><span class="identifier">service</span>
 </pre>
 <a name="boost_asio.reference.raw_socket_service.types"></a><h5>
-<a name="id1287433"></a>
+<a name="boost_asio.reference.raw_socket_service.types-heading"></a>
         <a class="link" href="raw_socket_service.html#boost_asio.reference.raw_socket_service.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -83,12 +83,24 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="raw_socket_service/native_type.html" title="raw_socket_service::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  <a class="link" href="raw_socket_service/native_handle_type.html" title="raw_socket_service::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
                   The native socket type.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="raw_socket_service/native_type.html" title="raw_socket_service::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use native_handle_type.) The native socket type.
                 </p>
               </td>
 </tr>
@@ -107,7 +119,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.raw_socket_service.member_functions"></a><h5>
-<a name="id1287609"></a>
+<a name="boost_asio.reference.raw_socket_service.member_functions-heading"></a>
         <a class="link" href="raw_socket_service.html#boost_asio.reference.raw_socket_service.member_functions">Member
         Functions</a>
       </h5>
@@ -334,19 +346,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="raw_socket_service/io_service.html" title="raw_socket_service::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: use get_io_service().) Get the io_service object that
-                  owns the service.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="raw_socket_service/is_open.html" title="raw_socket_service::is_open"><span class="bold"><strong>is_open</strong></span></a>
                 </p>
               </td>
@@ -371,12 +370,78 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="raw_socket_service/move_assign.html" title="raw_socket_service::move_assign"><span class="bold"><strong>move_assign</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-assign from another raw socket implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="raw_socket_service/move_construct.html" title="raw_socket_service::move_construct"><span class="bold"><strong>move_construct</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-construct a new raw socket implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="raw_socket_service/native.html" title="raw_socket_service::native"><span class="bold"><strong>native</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
+                  (Deprecated: Use native_handle().) Get the native socket implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="raw_socket_service/native_handle.html" title="raw_socket_service::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
                   Get the native socket implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="raw_socket_service/native_non_blocking.html" title="raw_socket_service::native_non_blocking"><span class="bold"><strong>native_non_blocking</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Gets the non-blocking mode of the native socket implementation.
+                </p>
+                <p>
+                  Sets the non-blocking mode of the native socket implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="raw_socket_service/non_blocking.html" title="raw_socket_service::non_blocking"><span class="bold"><strong>non_blocking</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Gets the non-blocking mode of the socket.
+                </p>
+                <p>
+                  Sets the non-blocking mode of the socket.
                 </p>
               </td>
 </tr>
@@ -485,22 +550,10 @@
                 </p>
               </td>
 </tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="raw_socket_service/shutdown_service.html" title="raw_socket_service::shutdown_service"><span class="bold"><strong>shutdown_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Destroy all user-defined handler objects owned by the service.
-                </p>
-              </td>
-</tr>
 </tbody>
 </table></div>
 <a name="boost_asio.reference.raw_socket_service.data_members"></a><h5>
-<a name="id1288590"></a>
+<a name="boost_asio.reference.raw_socket_service.data_members-heading"></a>
         <a class="link" href="raw_socket_service.html#boost_asio.reference.raw_socket_service.data_members">Data
         Members</a>
       </h5>
@@ -535,7 +588,7 @@
 </tr></tbody>
 </table></div>
 <a name="boost_asio.reference.raw_socket_service.requirements"></a><h5>
-<a name="id1288676"></a>
+<a name="boost_asio.reference.raw_socket_service.requirements-heading"></a>
         <a class="link" href="raw_socket_service.html#boost_asio.reference.raw_socket_service.requirements">Requirements</a>
       </h5>
 <p>
@@ -547,7 +600,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

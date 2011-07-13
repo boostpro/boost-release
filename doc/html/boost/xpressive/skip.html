@@ -34,7 +34,7 @@
 </span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Skip<span class="special">&gt;</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <span class="identifier">skip</span><span class="special">(</span><span class="identifier">Skip</span> <span class="keyword">const</span> <span class="special">&amp;</span> skip<span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3349189"></a><h2>Description</h2>
+<a name="id3523585"></a><h2>Description</h2>
 <p><code class="computeroutput">skip()</code> instructs the regex engine to skip certain characters when matching a regex. It is most useful for writing regexes that ignore whitespace. For instance, the following specifies a regex that skips whitespace and punctuation:</p>
 <pre class="programlisting"> // A sentence is one or more words separated by whitespace
  // and punctuation.
@@ -45,13 +45,19 @@
 <pre class="programlisting"> sregex sentence = +( keep(*set[_s | punct]) &gt;&gt; word )
                         &gt;&gt; *set[_s | punct];
 </pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Skipping does not affect how nested regexes are handled because they are treated atomically. String literals are also treated atomically; that is, no skipping is done within a string literal. So <code class="computeroutput">skip(_s)("this that")</code> is not the same as <code class="computeroutput">skip(_s)("this" &gt;&gt; as_xpr("that"))</code>. The first will only match when there is only one space between "this" and "that". The second will skip any and all whitespace between "this" and "that".</p></td></tr>
+</table></div>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
+<tbody><tr>
 <td><p><span class="term">Parameters:</span></p></td>
 <td><div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -60,12 +66,7 @@
 <td><p>A regex that specifies which characters to skip. </p></td>
 </tr></tbody>
 </table></div></td>
-</tr>
-<tr>
-<td><p><span class="term">Notes:</span></p></td>
-<td><p>Skipping does not affect how nested regexes are handled because they are treated atomically. String literals are also treated atomically; that is, no skipping is done within a string literal. So <code class="computeroutput">skip(_s)("this that")</code> is not the same as <code class="computeroutput">skip(_s)("this" &gt;&gt; as_xpr("that"))</code>. The first will only match when there is only one space between "this" and "that". The second will skip any and all whitespace between "this" and "that".</p></td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 </div>

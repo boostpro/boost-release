@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../interprocess.html" title="Chapter&#160;9.&#160;Boost.Interprocess">
+<link rel="up" href="../interprocess.html" title="Chapter&#160;10.&#160;Boost.Interprocess">
 <link rel="prev" href="managed_memory_segments.html" title="Managed Memory Segments">
 <link rel="next" href="memory_algorithms.html" title="Memory allocation algorithms">
 </head>
@@ -82,21 +82,21 @@ segment where the user wants to allocate the values.
           <span class="bold"><strong>Boost.Interprocess</strong></span> allocators have <span class="bold"><strong>no default-constructors</strong></span> and containers
 must be explicitly initialized with a configured allocator:
         </p>
-<pre class="programlisting"><span class="comment">//The allocators must be templatized with the segment manager type
-</span><span class="keyword">typedef</span> <span class="identifier">any_interprocess_allocator</span>
+<pre class="programlisting"><span class="comment">//The allocators must be templatized with the segment manager type</span>
+<span class="keyword">typedef</span> <span class="identifier">any_interprocess_allocator</span>
    <span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">,</span> <span class="special">...&gt;</span> <span class="identifier">Allocator</span><span class="special">;</span>
 
-<span class="comment">//The allocator must be constructed with a pointer to the segment manager
-</span><span class="identifier">Allocator</span> <span class="identifier">alloc_instance</span> <span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">(),</span> <span class="special">...);</span>
+<span class="comment">//The allocator must be constructed with a pointer to the segment manager</span>
+<span class="identifier">Allocator</span> <span class="identifier">alloc_instance</span> <span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">(),</span> <span class="special">...);</span>
 
-<span class="comment">//Containers must be initialized with a configured allocator
-</span><span class="keyword">typedef</span> <span class="identifier">my_list</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;</span> <span class="identifier">MyIntList</span><span class="special">;</span>
+<span class="comment">//Containers must be initialized with a configured allocator</span>
+<span class="keyword">typedef</span> <span class="identifier">my_list</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;</span> <span class="identifier">MyIntList</span><span class="special">;</span>
 <span class="identifier">MyIntList</span> <span class="identifier">mylist</span><span class="special">(</span><span class="identifier">alloc_inst</span><span class="special">);</span>
 
-<span class="comment">//This would lead to a compilation error, because
-</span><span class="comment">//the allocator has no default constructor
-</span><span class="comment">//MyIntList mylist;
-</span></pre>
+<span class="comment">//This would lead to a compilation error, because</span>
+<span class="comment">//the allocator has no default constructor</span>
+<span class="comment">//MyIntList mylist;</span>
+</pre>
 <p>
           <span class="bold"><strong>Boost.Interprocess</strong></span> allocators also have a <code class="computeroutput"><span class="identifier">get_segment_manager</span><span class="special">()</span></code> function
 that returns the underlying segment manager that they have received in the
@@ -172,9 +172,9 @@ the following header:
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">SegmentManager</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">allocator</span><span class="special">;</span>
 
-<span class="special">}</span>  <span class="comment">//namespace interprocess {
-</span><span class="special">}</span>  <span class="comment">//namespace boost {
-</span></pre>
+<span class="special">}</span>  <span class="comment">//namespace interprocess {</span>
+<span class="special">}</span>  <span class="comment">//namespace boost {</span>
+</pre>
 <p>
           The allocator just provides the needed typedefs and forwards all allocation
 and deallocation requests to the segment manager passed in the constructor, just
@@ -194,29 +194,29 @@ like <code class="computeroutput"><span class="identifier">std</span><span class
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
-                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name
-</span>                                 <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
+                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name</span>
+                                 <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Create an allocator that allocates ints from the managed segment
-</span>   <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
+   <span class="comment">//Create an allocator that allocates ints from the managed segment</span>
+   <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
       <span class="identifier">allocator_instance</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Copy constructed allocator is equal
-</span>   <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
+   <span class="comment">//Copy constructed allocator is equal</span>
+   <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
       <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance2</span> <span class="special">==</span> <span class="identifier">allocator_instance</span><span class="special">);</span>
 
-   <span class="comment">//Allocate and deallocate memory for 100 ints
-</span>   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">100</span><span class="special">),</span> <span class="number">100</span><span class="special">);</span>
+   <span class="comment">//Allocate and deallocate memory for 100 ints</span>
+   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">100</span><span class="special">),</span> <span class="number">100</span><span class="special">);</span>
 
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
@@ -255,9 +255,9 @@ using a pointer constructed in the memory of the node.
 <p>
         <span class="bold"><strong>Boost.Interprocess</strong></span>
 offers 3 allocators based on this segregated storage algorithm:
-<code class="computeroutput">node_allocator</code>,
-<code class="computeroutput">private_node_allocator</code> and
-<code class="computeroutput">cached_node_allocator</code>.
+<code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code>,
+<code class="computeroutput"><a class="link" href="../boost/interprocess/private_node_allocator.html" title="Class template private_node_allocator">private_node_allocator</a></code> and
+<code class="computeroutput"><a class="link" href="../boost/interprocess/cached_node_allocator.html" title="Class template cached_node_allocator">cached_node_allocator</a></code>.
       </p>
 <p>
         To know the details of the implementation of
@@ -270,9 +270,9 @@ section.
 <a name="interprocess.allocators_containers.stl_allocators_segregated_storage.segregated_allocators_common"></a><a class="link" href="allocators_containers.html#interprocess.allocators_containers.stl_allocators_segregated_storage.segregated_allocators_common" title="Additional parameters and functions of segregated storage node allocators">Additional parameters and functions of segregated storage node allocators</a>
 </h4></div></div></div>
 <p>
-          <code class="computeroutput">node_allocator</code>,
-<code class="computeroutput">private_node_allocator</code> and
-<code class="computeroutput">cached_node_allocator</code> implement
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code>,
+<code class="computeroutput"><a class="link" href="../boost/interprocess/private_node_allocator.html" title="Class template private_node_allocator">private_node_allocator</a></code> and
+<code class="computeroutput"><a class="link" href="../boost/interprocess/cached_node_allocator.html" title="Class template cached_node_allocator">cached_node_allocator</a></code> implement
 the standard allocator interface and the functions explained in the
 <a class="link" href="allocators_containers.html#interprocess.allocators_containers.allocator_introduction.allocator_properties" title="Properties of Boost.Interprocess allocators">Properties of Boost.Interprocess allocators</a>.
         </p>
@@ -282,17 +282,14 @@ the standard allocator interface and the functions explained in the
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
               <code class="computeroutput"><span class="keyword">class</span> <span class="identifier">T</span></code>: The type to be allocated.
-
             </li>
 <li class="listitem">
               <code class="computeroutput"><span class="keyword">class</span> <span class="identifier">SegmentManager</span></code>: The type of the segment manager that will be passed in the constructor.
-
             </li>
 <li class="listitem">
               <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">NodesPerChunk</span></code>: The number of nodes that a memory chunk will contain.
    This value will define the size of the memory the pool will request to the 
    segment manager when the pool runs out of nodes. This parameter has a default value.
-
             </li>
 </ul></div>
 <p>
@@ -313,16 +310,16 @@ This function is quite time-consuming because it has quadratic complexity (O(N^2
 usually a global, thread-shared singleton
 pool is used for each node size. This is not possible if you try to share 
 a node allocator between processes. To achieve this sharing
-<code class="computeroutput">node_allocator</code>
+<code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code>
 uses the segment manager's unique type allocation service
 (see <a class="link" href="managed_memory_segments.html#interprocess.managed_memory_segments.managed_memory_segment_features.unique" title="Unique instance construction">Unique instance construction</a> section).
         </p>
 <p>
           In the initialization, a
-<code class="computeroutput">node_allocator</code>
+<code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code>
 object searches this unique object in
 the segment. If it is not preset, it builds one.  This way, all
-<code class="computeroutput">node_allocator</code>
+<code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code>
 objects built inside a memory segment share a unique memory pool.
         </p>
 <p>
@@ -335,14 +332,14 @@ node allocation.
 <p>
           The dynamically created common segregated storage
 integrates a reference count so that a 
-<code class="computeroutput">node_allocator</code>
+<code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code>
 can know if any other 
-<code class="computeroutput">node_allocator</code> 
+<code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code> 
 is attached to the same common segregated storage. When the last
 allocator attached to the pool is destroyed, the pool is destroyed.
         </p>
 <p>
-          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput">node_allocator</code> instances
+          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code> instances
 constructed with the same segment manager compare equal. If an instance is
 created using copy constructor, that instance compares equal with the original one.
         </p>
@@ -352,13 +349,13 @@ to the shared pool. The shared pool offers the same synchronization guarantees
 as the segment manager.
         </p>
 <p>
-          To use <code class="computeroutput">node_allocator</code>,
+          To use <code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code>,
 you must include the following header:
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">allocators</span><span class="special">/</span><span class="identifier">node_allocator</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
-          <code class="computeroutput">node_allocator</code> has the following declaration:
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code> has the following declaration:
         </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">interprocess</span> <span class="special">{</span>
@@ -366,11 +363,11 @@ you must include the following header:
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">SegmentManager</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">NodesPerChunk</span> <span class="special">=</span> <span class="special">...&gt;</span>
 <span class="keyword">class</span> <span class="identifier">node_allocator</span><span class="special">;</span>
 
-<span class="special">}</span>  <span class="comment">//namespace interprocess {
-</span><span class="special">}</span>  <span class="comment">//namespace boost {
-</span></pre>
+<span class="special">}</span>  <span class="comment">//namespace interprocess {</span>
+<span class="special">}</span>  <span class="comment">//namespace boost {</span>
+</pre>
 <p>
-          An example using <code class="computeroutput">node_allocator</code>:
+          An example using <code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code>:
         </p>
 <p>
           
@@ -383,45 +380,45 @@ you must include the following header:
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
-                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name
-</span>                                 <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
+                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name</span>
+                                 <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Create a node_allocator that allocates ints from the managed segment
-</span>   <span class="comment">//The number of chunks per segment is the default value
-</span>   <span class="keyword">typedef</span> <span class="identifier">node_allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
+   <span class="comment">//Create a node_allocator that allocates ints from the managed segment</span>
+   <span class="comment">//The number of chunks per segment is the default value</span>
+   <span class="keyword">typedef</span> <span class="identifier">node_allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
       <span class="identifier">node_allocator_t</span><span class="special">;</span>
    <span class="identifier">node_allocator_t</span> <span class="identifier">allocator_instance</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Create another node_allocator. Since the segment manager address
-</span>   <span class="comment">//is the same, this node_allocator will be
-</span>   <span class="comment">//attached to the same pool so "allocator_instance2" can deallocate
-</span>   <span class="comment">//nodes allocated by "allocator_instance"
-</span>   <span class="identifier">node_allocator_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//Create another node_allocator. Since the segment manager address</span>
+   <span class="comment">//is the same, this node_allocator will be</span>
+   <span class="comment">//attached to the same pool so "allocator_instance2" can deallocate</span>
+   <span class="comment">//nodes allocated by "allocator_instance"</span>
+   <span class="identifier">node_allocator_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Create another node_allocator using copy-constructor. This
-</span>   <span class="comment">//node_allocator will also be attached to the same pool
-</span>   <span class="identifier">node_allocator_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//Create another node_allocator using copy-constructor. This</span>
+   <span class="comment">//node_allocator will also be attached to the same pool</span>
+   <span class="identifier">node_allocator_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
 
-   <span class="comment">//All allocators are equal
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">==</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//All allocators are equal</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">==</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance2</span> <span class="special">==</span> <span class="identifier">allocator_instance3</span><span class="special">);</span>
 
-   <span class="comment">//So memory allocated with one can be deallocated with another
-</span>   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
+   <span class="comment">//So memory allocated with one can be deallocated with another</span>
+   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
    <span class="identifier">allocator_instance3</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//The common pool will be destroyed here, since no allocator is
-</span>   <span class="comment">//attached to the pool
-</span>   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+   <span class="comment">//The common pool will be destroyed here, since no allocator is</span>
+   <span class="comment">//attached to the pool</span>
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -451,7 +448,7 @@ that usually involves just a few pointer operations when allocating and
 deallocating a node.
         </p>
 <p>
-          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput">private_node_allocator</code>
+          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput"><a class="link" href="../boost/interprocess/private_node_allocator.html" title="Class template private_node_allocator">private_node_allocator</a></code>
 instances <span class="bold"><strong>never</strong></span> compare equal. Memory allocated with one allocator <span class="bold"><strong>can't</strong></span> be
 deallocated with another one.
         </p>
@@ -459,13 +456,13 @@ deallocated with another one.
           <span class="bold"><strong>Allocation thread-safety:</strong></span> Allocation and deallocation are <span class="bold"><strong>not</strong></span> thread-safe.
         </p>
 <p>
-          To use <code class="computeroutput">private_node_allocator</code>,
+          To use <code class="computeroutput"><a class="link" href="../boost/interprocess/private_node_allocator.html" title="Class template private_node_allocator">private_node_allocator</a></code>,
 you must include the following header:
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">allocators</span><span class="special">/</span><span class="identifier">private_node_allocator</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
-          <code class="computeroutput">private_node_allocator</code>
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/private_node_allocator.html" title="Class template private_node_allocator">private_node_allocator</a></code>
 has the following declaration:
         </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
@@ -474,11 +471,11 @@ has the following declaration:
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">SegmentManager</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">NodesPerChunk</span> <span class="special">=</span> <span class="special">...&gt;</span>
 <span class="keyword">class</span> <span class="identifier">private_node_allocator</span><span class="special">;</span>
 
-<span class="special">}</span>  <span class="comment">//namespace interprocess {
-</span><span class="special">}</span>  <span class="comment">//namespace boost {
-</span></pre>
+<span class="special">}</span>  <span class="comment">//namespace interprocess {</span>
+<span class="special">}</span>  <span class="comment">//namespace boost {</span>
+</pre>
 <p>
-          An example using <code class="computeroutput">private_node_allocator</code>:
+          An example using <code class="computeroutput"><a class="link" href="../boost/interprocess/private_node_allocator.html" title="Class template private_node_allocator">private_node_allocator</a></code>:
         </p>
 <p>
           
@@ -491,41 +488,41 @@ has the following declaration:
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span>  <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
-                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name
-</span>                                 <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
+                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name</span>
+                                 <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Create a private_node_allocator that allocates ints from the managed segment
-</span>   <span class="comment">//The number of chunks per segment is the default value
-</span>   <span class="keyword">typedef</span> <span class="identifier">private_node_allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
+   <span class="comment">//Create a private_node_allocator that allocates ints from the managed segment</span>
+   <span class="comment">//The number of chunks per segment is the default value</span>
+   <span class="keyword">typedef</span> <span class="identifier">private_node_allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
       <span class="identifier">private_node_allocator_t</span><span class="special">;</span>
    <span class="identifier">private_node_allocator_t</span> <span class="identifier">allocator_instance</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Create another private_node_allocator.
-</span>   <span class="identifier">private_node_allocator_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//Create another private_node_allocator.</span>
+   <span class="identifier">private_node_allocator_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Although the segment manager address
-</span>   <span class="comment">//is the same, this private_node_allocator will have its own pool so
-</span>   <span class="comment">//"allocator_instance2" CAN'T deallocate nodes allocated by "allocator_instance".
-</span>   <span class="comment">//"allocator_instance2" is NOT equal to "allocator_instance"
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">!=</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>   
+   <span class="comment">//Although the segment manager address</span>
+   <span class="comment">//is the same, this private_node_allocator will have its own pool so</span>
+   <span class="comment">//"allocator_instance2" CAN'T deallocate nodes allocated by "allocator_instance".</span>
+   <span class="comment">//"allocator_instance2" is NOT equal to "allocator_instance"</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">!=</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>   
 
-   <span class="comment">//Create another node_allocator using copy-constructor.
-</span>   <span class="identifier">private_node_allocator_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//Create another node_allocator using copy-constructor.</span>
+   <span class="identifier">private_node_allocator_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
 
-   <span class="comment">//This allocator is also unequal to allocator_instance2
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance2</span> <span class="special">!=</span> <span class="identifier">allocator_instance3</span><span class="special">);</span>
+   <span class="comment">//This allocator is also unequal to allocator_instance2</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance2</span> <span class="special">!=</span> <span class="identifier">allocator_instance3</span><span class="special">);</span>
 
-   <span class="comment">//Pools are destroyed with the allocators
-</span>   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+   <span class="comment">//Pools are destroyed with the allocators</span>
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -536,20 +533,20 @@ has the following declaration:
 <a name="interprocess.allocators_containers.stl_allocators_segregated_storage.cached_node_allocator"></a><a class="link" href="allocators_containers.html#interprocess.allocators_containers.stl_allocators_segregated_storage.cached_node_allocator" title="cached_node_allocator: caching nodes to avoid overhead">cached_node_allocator: caching nodes to avoid overhead</a>
 </h4></div></div></div>
 <p>
-          The total node sharing of <code class="computeroutput">node_allocator</code> can impose a high overhead for some
-applications and the minimal synchronization overhead of <code class="computeroutput">private_node_allocator</code>
+          The total node sharing of <code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code> can impose a high overhead for some
+applications and the minimal synchronization overhead of <code class="computeroutput"><a class="link" href="../boost/interprocess/private_node_allocator.html" title="Class template private_node_allocator">private_node_allocator</a></code>
 can impose a unacceptable memory waste for other applications.
         </p>
 <p>
           To solve this, <span class="bold"><strong>Boost.Interprocess</strong></span> offers an allocator,
-<code class="computeroutput">cached_node_allocator</code>, that 
+<code class="computeroutput"><a class="link" href="../boost/interprocess/cached_node_allocator.html" title="Class template cached_node_allocator">cached_node_allocator</a></code>, that 
 allocates nodes from the common pool but caches some of them privately so that following 
 allocations have no synchronization overhead. When the cache is full, the allocator 
 returns some cached nodes to the common pool, and those will be available to other 
 allocators.
         </p>
 <p>
-          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput">cached_node_allocator</code>
+          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_node_allocator.html" title="Class template cached_node_allocator">cached_node_allocator</a></code>
 instances constructed with the same segment manager compare equal. If an instance is
 created using copy constructor, that instance compares equal with the original one.
         </p>
@@ -557,13 +554,13 @@ created using copy constructor, that instance compares equal with the original o
           <span class="bold"><strong>Allocation thread-safety:</strong></span> Allocation and deallocation are <span class="bold"><strong>not</strong></span> thread-safe.
         </p>
 <p>
-          To use <code class="computeroutput">cached_node_allocator</code>,
+          To use <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_node_allocator.html" title="Class template cached_node_allocator">cached_node_allocator</a></code>,
 you must include the following header:
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">allocators</span><span class="special">/</span><span class="identifier">cached_node_allocator</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
-          <code class="computeroutput">cached_node_allocator</code>
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_node_allocator.html" title="Class template cached_node_allocator">cached_node_allocator</a></code>
 has the following declaration:
         </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
@@ -572,38 +569,35 @@ has the following declaration:
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">SegmentManager</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">NodesPerChunk</span> <span class="special">=</span> <span class="special">...&gt;</span>
 <span class="keyword">class</span> <span class="identifier">cached_node_allocator</span><span class="special">;</span>
 
-<span class="special">}</span>  <span class="comment">//namespace interprocess {
-</span><span class="special">}</span>  <span class="comment">//namespace boost {
-</span></pre>
+<span class="special">}</span>  <span class="comment">//namespace interprocess {</span>
+<span class="special">}</span>  <span class="comment">//namespace boost {</span>
+</pre>
 <p>
-          A <code class="computeroutput">cached_node_allocator</code> instance
-and a <code class="computeroutput">node_allocator</code> instance
+          A <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_node_allocator.html" title="Class template cached_node_allocator">cached_node_allocator</a></code> instance
+and a <code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code> instance
 share the same pool if both instances receive the same template parameters. This means
 that nodes returned to the shared pool by one of them can be reused by the other.
 Please note that this does not mean that both allocators compare equal, this is just
 information for programmers that want to maximize the use of the pool.
         </p>
 <p>
-          <code class="computeroutput">cached_node_allocator</code>, offers
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_node_allocator.html" title="Class template cached_node_allocator">cached_node_allocator</a></code>, offers
 additional functions to control the cache (the cache can be controlled per instance):
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
               <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">n</span><span class="special">)</span></code>: Sets the maximum cached nodes limit.
    If cached nodes reach the limit, some are returned to the shared pool.
-
             </li>
 <li class="listitem">
               <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">get_max_cached_nodes</span><span class="special">()</span> <span class="keyword">const</span></code>: Returns the maximum cached nodes limit.
-
             </li>
 <li class="listitem">
               <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">deallocate_cache</span><span class="special">()</span></code>: Returns the cached nodes to the shared pool.
-
             </li>
 </ul></div>
 <p>
-          An example using <code class="computeroutput">cached_node_allocator</code>:
+          An example using <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_node_allocator.html" title="Class template cached_node_allocator">cached_node_allocator</a></code>:
         </p>
 <p>
           
@@ -616,54 +610,54 @@ additional functions to control the cache (the cache can be controlled per insta
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
-                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name
-</span>                                 <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
+                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name</span>
+                                 <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Create a cached_node_allocator that allocates ints from the managed segment
-</span>   <span class="comment">//The number of chunks per segment is the default value
-</span>   <span class="keyword">typedef</span> <span class="identifier">cached_node_allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
+   <span class="comment">//Create a cached_node_allocator that allocates ints from the managed segment</span>
+   <span class="comment">//The number of chunks per segment is the default value</span>
+   <span class="keyword">typedef</span> <span class="identifier">cached_node_allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
       <span class="identifier">cached_node_allocator_t</span><span class="special">;</span>
    <span class="identifier">cached_node_allocator_t</span> <span class="identifier">allocator_instance</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//The max cached nodes are configurable per instance
-</span>   <span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
+   <span class="comment">//The max cached nodes are configurable per instance</span>
+   <span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
 
-   <span class="comment">//Create another cached_node_allocator. Since the segment manager address
-</span>   <span class="comment">//is the same, this cached_node_allocator will be
-</span>   <span class="comment">//attached to the same pool so "allocator_instance2" can deallocate
-</span>   <span class="comment">//nodes allocated by "allocator_instance"
-</span>   <span class="identifier">cached_node_allocator_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//Create another cached_node_allocator. Since the segment manager address</span>
+   <span class="comment">//is the same, this cached_node_allocator will be</span>
+   <span class="comment">//attached to the same pool so "allocator_instance2" can deallocate</span>
+   <span class="comment">//nodes allocated by "allocator_instance"</span>
+   <span class="identifier">cached_node_allocator_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//The max cached nodes are configurable per instance
-</span>   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="number">5</span><span class="special">);</span>
+   <span class="comment">//The max cached nodes are configurable per instance</span>
+   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="number">5</span><span class="special">);</span>
 
-   <span class="comment">//Create another cached_node_allocator using copy-constructor. This
-</span>   <span class="comment">//cached_node_allocator will also be attached to the same pool
-</span>   <span class="identifier">cached_node_allocator_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//Create another cached_node_allocator using copy-constructor. This</span>
+   <span class="comment">//cached_node_allocator will also be attached to the same pool</span>
+   <span class="identifier">cached_node_allocator_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
 
-   <span class="comment">//We can clear the cache
-</span>   <span class="identifier">allocator_instance3</span><span class="special">.</span><span class="identifier">deallocate_cache</span><span class="special">();</span>
+   <span class="comment">//We can clear the cache</span>
+   <span class="identifier">allocator_instance3</span><span class="special">.</span><span class="identifier">deallocate_cache</span><span class="special">();</span>
 
-   <span class="comment">//All allocators are equal
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">==</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//All allocators are equal</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">==</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance2</span> <span class="special">==</span> <span class="identifier">allocator_instance3</span><span class="special">);</span>
 
-   <span class="comment">//So memory allocated with one can be deallocated with another
-</span>   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
+   <span class="comment">//So memory allocated with one can be deallocated with another</span>
+   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
    <span class="identifier">allocator_instance3</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//The common pool will be destroyed here, since no allocator is
-</span>   <span class="comment">//attached to the pool
-</span>   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+   <span class="comment">//The common pool will be destroyed here, since no allocator is</span>
+   <span class="comment">//attached to the pool</span>
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -690,7 +684,7 @@ node can be only reused by other containers using the same node pool.
       </p>
 <p>
         This behaviour can be problematic if several containers use
-<code class="computeroutput">boost::interprocess::node_allocator</code> to temporarily allocate a lot
+<code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">boost::interprocess::node_allocator</a></code> to temporarily allocate a lot
 of objects but they end storing a few of them: the node pool will be full of nodes
 that won't be reused wasting memory from the segment.
       </p>
@@ -705,18 +699,18 @@ section.
       </p>
 <p>
         Like with segregated storage based node allocators, Boost.Interprocess offers
-3 new allocators: <code class="computeroutput">adaptive_pool</code>,
-<code class="computeroutput">private_adaptive_pool</code>,
-<code class="computeroutput">cached_adaptive_pool</code>.
+3 new allocators: <code class="computeroutput"><a class="link" href="../boost/interprocess/adaptive_pool.html" title="Class template adaptive_pool">adaptive_pool</a></code>,
+<code class="computeroutput"><a class="link" href="../boost/interprocess/private_adaptive_pool.html" title="Class template private_adaptive_pool">private_adaptive_pool</a></code>,
+<code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pool</a></code>.
       </p>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="interprocess.allocators_containers.stl_allocators_adaptive.adaptive_allocators_common"></a><a class="link" href="allocators_containers.html#interprocess.allocators_containers.stl_allocators_adaptive.adaptive_allocators_common" title="Additional parameters and functions of adaptive pool node allocators">Additional parameters and functions of adaptive pool node allocators</a>
 </h4></div></div></div>
 <p>
-          <code class="computeroutput">adaptive_pool</code>,
-<code class="computeroutput">private_adaptive_pool</code> and
-<code class="computeroutput">cached_adaptive_pool</code> implement
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/adaptive_pool.html" title="Class template adaptive_pool">adaptive_pool</a></code>,
+<code class="computeroutput"><a class="link" href="../boost/interprocess/private_adaptive_pool.html" title="Class template private_adaptive_pool">private_adaptive_pool</a></code> and
+<code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pool</a></code> implement
 the standard allocator interface and the functions explained in the
 <a class="link" href="allocators_containers.html#interprocess.allocators_containers.allocator_introduction.allocator_properties" title="Properties of Boost.Interprocess allocators">Properties of Boost.Interprocess allocators</a>.
         </p>
@@ -726,23 +720,19 @@ the standard allocator interface and the functions explained in the
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
               <code class="computeroutput"><span class="keyword">class</span> <span class="identifier">T</span></code>: The type to be allocated.
-
             </li>
 <li class="listitem">
               <code class="computeroutput"><span class="keyword">class</span> <span class="identifier">SegmentManager</span></code>: The type of the segment manager that will be passed in the constructor.
-
             </li>
 <li class="listitem">
               <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">NodesPerChunk</span></code>: The number of nodes that a memory chunk will contain.
    This value will define the size of the memory the pool will request to the 
    segment manager when the pool runs out of nodes. This parameter has a default value.
-
             </li>
 <li class="listitem">
               <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">MaxFreeChunks</span></code>: The maximum number of free chunks that the pool
    will hold. If this limit is reached the pool returns the chunks to the segment manager.
    This parameter has a default value.
-
             </li>
 </ul></div>
 <p>
@@ -758,9 +748,9 @@ chunks.
 <a name="interprocess.allocators_containers.stl_allocators_adaptive.adaptive_pool"></a><a class="link" href="allocators_containers.html#interprocess.allocators_containers.stl_allocators_adaptive.adaptive_pool" title="adaptive_pool: a process-shared adaptive pool">adaptive_pool: a process-shared adaptive pool</a>
 </h4></div></div></div>
 <p>
-          Just like <code class="computeroutput">node_allocator</code>
+          Just like <code class="computeroutput"><a class="link" href="../boost/interprocess/node_allocator.html" title="Class template node_allocator">node_allocator</a></code>
 a global, process-thread pool is used for each node size. In the
-initialization, <code class="computeroutput">adaptive_pool</code>
+initialization, <code class="computeroutput"><a class="link" href="../boost/interprocess/adaptive_pool.html" title="Class template adaptive_pool">adaptive_pool</a></code>
 searches the pool in the segment. If it is not preset, it builds one. 
 The adaptive pool, is created using a unique name.
 The adaptive pool it is also shared between
@@ -772,7 +762,7 @@ all node_allocators that allocate objects  of the same size, for example,
 to the pool are destroyed.
         </p>
 <p>
-          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput">adaptive_pool</code> instances
+          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput"><a class="link" href="../boost/interprocess/adaptive_pool.html" title="Class template adaptive_pool">adaptive_pool</a></code> instances
 constructed with the same segment manager compare equal. If an instance is
 created using copy constructor, that instance compares equal with the original one.
         </p>
@@ -782,13 +772,13 @@ to the shared pool. The shared pool offers the same synchronization guarantees
 as the segment manager.
         </p>
 <p>
-          To use <code class="computeroutput">adaptive_pool</code>,
+          To use <code class="computeroutput"><a class="link" href="../boost/interprocess/adaptive_pool.html" title="Class template adaptive_pool">adaptive_pool</a></code>,
 you must include the following header:
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">allocators</span><span class="special">/</span><span class="identifier">adaptive_pool</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
-          <code class="computeroutput">adaptive_pool</code> has the following declaration:
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/adaptive_pool.html" title="Class template adaptive_pool">adaptive_pool</a></code> has the following declaration:
         </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">interprocess</span> <span class="special">{</span>
@@ -796,11 +786,11 @@ you must include the following header:
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">SegmentManager</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">NodesPerChunk</span> <span class="special">=</span> <span class="special">...,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">MaxFreeChunks</span> <span class="special">=</span> <span class="special">...&gt;</span>
 <span class="keyword">class</span> <span class="identifier">adaptive_pool</span><span class="special">;</span>
 
-<span class="special">}</span>  <span class="comment">//namespace interprocess {
-</span><span class="special">}</span>  <span class="comment">//namespace boost {
-</span></pre>
+<span class="special">}</span>  <span class="comment">//namespace interprocess {</span>
+<span class="special">}</span>  <span class="comment">//namespace boost {</span>
+</pre>
 <p>
-          An example using <code class="computeroutput">adaptive_pool</code>:
+          An example using <code class="computeroutput"><a class="link" href="../boost/interprocess/adaptive_pool.html" title="Class template adaptive_pool">adaptive_pool</a></code>:
         </p>
 <p>
           
@@ -813,45 +803,45 @@ you must include the following header:
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
-                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name
-</span>                                 <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
+                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name</span>
+                                 <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Create a adaptive_pool that allocates ints from the managed segment
-</span>   <span class="comment">//The number of chunks per segment is the default value
-</span>   <span class="keyword">typedef</span> <span class="identifier">adaptive_pool</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
+   <span class="comment">//Create a adaptive_pool that allocates ints from the managed segment</span>
+   <span class="comment">//The number of chunks per segment is the default value</span>
+   <span class="keyword">typedef</span> <span class="identifier">adaptive_pool</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
       <span class="identifier">adaptive_pool_t</span><span class="special">;</span>
    <span class="identifier">adaptive_pool_t</span> <span class="identifier">allocator_instance</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Create another adaptive_pool. Since the segment manager address
-</span>   <span class="comment">//is the same, this adaptive_pool will be
-</span>   <span class="comment">//attached to the same pool so "allocator_instance2" can deallocate
-</span>   <span class="comment">//nodes allocated by "allocator_instance"
-</span>   <span class="identifier">adaptive_pool_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//Create another adaptive_pool. Since the segment manager address</span>
+   <span class="comment">//is the same, this adaptive_pool will be</span>
+   <span class="comment">//attached to the same pool so "allocator_instance2" can deallocate</span>
+   <span class="comment">//nodes allocated by "allocator_instance"</span>
+   <span class="identifier">adaptive_pool_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Create another adaptive_pool using copy-constructor. This
-</span>   <span class="comment">//adaptive_pool will also be attached to the same pool
-</span>   <span class="identifier">adaptive_pool_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//Create another adaptive_pool using copy-constructor. This</span>
+   <span class="comment">//adaptive_pool will also be attached to the same pool</span>
+   <span class="identifier">adaptive_pool_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
 
-   <span class="comment">//All allocators are equal
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">==</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//All allocators are equal</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">==</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance2</span> <span class="special">==</span> <span class="identifier">allocator_instance3</span><span class="special">);</span>
 
-   <span class="comment">//So memory allocated with one can be deallocated with another
-</span>   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
+   <span class="comment">//So memory allocated with one can be deallocated with another</span>
+   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
    <span class="identifier">allocator_instance3</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//The common pool will be destroyed here, since no allocator is
-</span>   <span class="comment">//attached to the pool
-</span>   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+   <span class="comment">//The common pool will be destroyed here, since no allocator is</span>
+   <span class="comment">//attached to the pool</span>
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -862,16 +852,16 @@ you must include the following header:
 <a name="interprocess.allocators_containers.stl_allocators_adaptive.private_adaptive_pool"></a><a class="link" href="allocators_containers.html#interprocess.allocators_containers.stl_allocators_adaptive.private_adaptive_pool" title="private_adaptive_pool: a private adaptive pool">private_adaptive_pool: a private adaptive pool</a>
 </h4></div></div></div>
 <p>
-          Just like <code class="computeroutput">private_node_allocator</code>
+          Just like <code class="computeroutput"><a class="link" href="../boost/interprocess/private_node_allocator.html" title="Class template private_node_allocator">private_node_allocator</a></code>
 owns a private segregated storage pool,
-<code class="computeroutput">private_adaptive_pool</code> owns
+<code class="computeroutput"><a class="link" href="../boost/interprocess/private_adaptive_pool.html" title="Class template private_adaptive_pool">private_adaptive_pool</a></code> owns
 its own adaptive pool. If the user wants to avoid the excessive node allocation
 synchronization overhead in a container
-<code class="computeroutput">private_adaptive_pool</code>
+<code class="computeroutput"><a class="link" href="../boost/interprocess/private_adaptive_pool.html" title="Class template private_adaptive_pool">private_adaptive_pool</a></code>
 is a good choice.
         </p>
 <p>
-          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput">private_adaptive_pool</code>
+          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput"><a class="link" href="../boost/interprocess/private_adaptive_pool.html" title="Class template private_adaptive_pool">private_adaptive_pool</a></code>
 instances <span class="bold"><strong>never</strong></span> compare equal. Memory allocated with one allocator <span class="bold"><strong>can't</strong></span> be
 deallocated with another one.
         </p>
@@ -879,13 +869,13 @@ deallocated with another one.
           <span class="bold"><strong>Allocation thread-safety:</strong></span> Allocation and deallocation are <span class="bold"><strong>not</strong></span> thread-safe.
         </p>
 <p>
-          To use <code class="computeroutput">private_adaptive_pool</code>,
+          To use <code class="computeroutput"><a class="link" href="../boost/interprocess/private_adaptive_pool.html" title="Class template private_adaptive_pool">private_adaptive_pool</a></code>,
 you must include the following header:
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">allocators</span><span class="special">/</span><span class="identifier">private_adaptive_pool</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
-          <code class="computeroutput">private_adaptive_pool</code>
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/private_adaptive_pool.html" title="Class template private_adaptive_pool">private_adaptive_pool</a></code>
 has the following declaration:
         </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
@@ -894,11 +884,11 @@ has the following declaration:
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">SegmentManager</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">NodesPerChunk</span> <span class="special">=</span> <span class="special">...,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">MaxFreeChunks</span> <span class="special">=</span> <span class="special">...&gt;</span>
 <span class="keyword">class</span> <span class="identifier">private_adaptive_pool</span><span class="special">;</span>
 
-<span class="special">}</span>  <span class="comment">//namespace interprocess {
-</span><span class="special">}</span>  <span class="comment">//namespace boost {
-</span></pre>
+<span class="special">}</span>  <span class="comment">//namespace interprocess {</span>
+<span class="special">}</span>  <span class="comment">//namespace boost {</span>
+</pre>
 <p>
-          An example using <code class="computeroutput">private_adaptive_pool</code>:
+          An example using <code class="computeroutput"><a class="link" href="../boost/interprocess/private_adaptive_pool.html" title="Class template private_adaptive_pool">private_adaptive_pool</a></code>:
         </p>
 <p>
           
@@ -911,41 +901,41 @@ has the following declaration:
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
-                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name
-</span>                                 <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
+                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name</span>
+                                 <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Create a private_adaptive_pool that allocates ints from the managed segment
-</span>   <span class="comment">//The number of chunks per segment is the default value
-</span>   <span class="keyword">typedef</span> <span class="identifier">private_adaptive_pool</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
+   <span class="comment">//Create a private_adaptive_pool that allocates ints from the managed segment</span>
+   <span class="comment">//The number of chunks per segment is the default value</span>
+   <span class="keyword">typedef</span> <span class="identifier">private_adaptive_pool</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
          <span class="identifier">private_adaptive_pool_t</span><span class="special">;</span>
    <span class="identifier">private_adaptive_pool_t</span> <span class="identifier">allocator_instance</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Create another private_adaptive_pool.
-</span>   <span class="identifier">private_adaptive_pool_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//Create another private_adaptive_pool.</span>
+   <span class="identifier">private_adaptive_pool_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Although the segment manager address
-</span>   <span class="comment">//is the same, this private_adaptive_pool will have its own pool so
-</span>   <span class="comment">//"allocator_instance2" CAN'T deallocate nodes allocated by "allocator_instance".
-</span>   <span class="comment">//"allocator_instance2" is NOT equal to "allocator_instance"
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">!=</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>   
+   <span class="comment">//Although the segment manager address</span>
+   <span class="comment">//is the same, this private_adaptive_pool will have its own pool so</span>
+   <span class="comment">//"allocator_instance2" CAN'T deallocate nodes allocated by "allocator_instance".</span>
+   <span class="comment">//"allocator_instance2" is NOT equal to "allocator_instance"</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">!=</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>   
 
-   <span class="comment">//Create another adaptive_pool using copy-constructor.
-</span>   <span class="identifier">private_adaptive_pool_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//Create another adaptive_pool using copy-constructor.</span>
+   <span class="identifier">private_adaptive_pool_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
 
-   <span class="comment">//This allocator is also unequal to allocator_instance2
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance2</span> <span class="special">!=</span> <span class="identifier">allocator_instance3</span><span class="special">);</span>
+   <span class="comment">//This allocator is also unequal to allocator_instance2</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance2</span> <span class="special">!=</span> <span class="identifier">allocator_instance3</span><span class="special">);</span>
 
-   <span class="comment">//Pools are destroyed with the allocators
-</span>   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+   <span class="comment">//Pools are destroyed with the allocators</span>
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -959,15 +949,15 @@ has the following declaration:
           Adaptive pools have also a cached version. In this allocator the allocator caches
 some nodes to avoid the synchronization and bookkeeping overhead of the shared
 adaptive pool.
-<code class="computeroutput">cached_adaptive_pool</code>
+<code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pool</a></code>
 allocates nodes from the common adaptive pool but caches some of them privately so that following 
 allocations have no synchronization overhead. When the cache is full, the allocator 
 returns some cached nodes to the common pool, and those will be available to other 
-<code class="computeroutput">cached_adaptive_pools</code> or
-<code class="computeroutput">adaptive_pools</code> of the same managed segment.
+<code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pools</a></code> or
+<code class="computeroutput"><a class="link" href="../boost/interprocess/adaptive_pool.html" title="Class template adaptive_pool">adaptive_pools</a></code> of the same managed segment.
         </p>
 <p>
-          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput">cached_adaptive_pool</code>
+          <span class="bold"><strong>Equality:</strong></span> Two <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pool</a></code>
 instances constructed with the same segment manager compare equal. If an instance is
 created using copy constructor, that instance compares equal with the original one.
         </p>
@@ -975,13 +965,13 @@ created using copy constructor, that instance compares equal with the original o
           <span class="bold"><strong>Allocation thread-safety:</strong></span> Allocation and deallocation are <span class="bold"><strong>not</strong></span> thread-safe.
         </p>
 <p>
-          To use <code class="computeroutput">cached_adaptive_pool</code>,
+          To use <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pool</a></code>,
 you must include the following header:
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">allocators</span><span class="special">/</span><span class="identifier">cached_adaptive_pool</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
-          <code class="computeroutput">cached_adaptive_pool</code>
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pool</a></code>
 has the following declaration:
         </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
@@ -990,38 +980,35 @@ has the following declaration:
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">SegmentManager</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">NodesPerChunk</span> <span class="special">=</span> <span class="special">...,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">MaxFreeNodes</span> <span class="special">=</span> <span class="special">...&gt;</span>
 <span class="keyword">class</span> <span class="identifier">cached_adaptive_pool</span><span class="special">;</span>
 
-<span class="special">}</span>  <span class="comment">//namespace interprocess {
-</span><span class="special">}</span>  <span class="comment">//namespace boost {
-</span></pre>
+<span class="special">}</span>  <span class="comment">//namespace interprocess {</span>
+<span class="special">}</span>  <span class="comment">//namespace boost {</span>
+</pre>
 <p>
-          A <code class="computeroutput">cached_adaptive_pool</code> instance
-and an <code class="computeroutput">adaptive_pool</code> instance
+          A <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pool</a></code> instance
+and an <code class="computeroutput"><a class="link" href="../boost/interprocess/adaptive_pool.html" title="Class template adaptive_pool">adaptive_pool</a></code> instance
 share the same pool if both instances receive the same template parameters. This means
 that nodes returned to the shared pool by one of them can be reused by the other.
 Please note that this does not mean that both allocators compare equal, this is just
 information for programmers that want to maximize the use of the pool.
         </p>
 <p>
-          <code class="computeroutput">cached_adaptive_pool</code>, offers
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pool</a></code>, offers
 additional functions to control the cache (the cache can be controlled per instance):
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
               <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">n</span><span class="special">)</span></code>: Sets the maximum cached nodes limit.
    If cached nodes reach the limit, some are returned to the shared pool.
-
             </li>
 <li class="listitem">
               <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">get_max_cached_nodes</span><span class="special">()</span> <span class="keyword">const</span></code>: Returns the maximum cached nodes limit.
-
             </li>
 <li class="listitem">
               <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">deallocate_cache</span><span class="special">()</span></code>: Returns the cached nodes to the shared pool.
-
             </li>
 </ul></div>
 <p>
-          An example using <code class="computeroutput">cached_adaptive_pool</code>:
+          An example using <code class="computeroutput"><a class="link" href="../boost/interprocess/cached_adaptive_pool.html" title="Class template cached_adaptive_pool">cached_adaptive_pool</a></code>:
         </p>
 <p>
           
@@ -1034,54 +1021,54 @@ additional functions to control the cache (the cache can be controlled per insta
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
-                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name
-</span>                                 <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> 
+                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name</span>
+                                 <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Create a cached_adaptive_pool that allocates ints from the managed segment
-</span>   <span class="comment">//The number of chunks per segment is the default value
-</span>   <span class="keyword">typedef</span> <span class="identifier">cached_adaptive_pool</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
+   <span class="comment">//Create a cached_adaptive_pool that allocates ints from the managed segment</span>
+   <span class="comment">//The number of chunks per segment is the default value</span>
+   <span class="keyword">typedef</span> <span class="identifier">cached_adaptive_pool</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span>
       <span class="identifier">cached_adaptive_pool_t</span><span class="special">;</span>
    <span class="identifier">cached_adaptive_pool_t</span> <span class="identifier">allocator_instance</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//The max cached nodes are configurable per instance
-</span>   <span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
+   <span class="comment">//The max cached nodes are configurable per instance</span>
+   <span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
 
-   <span class="comment">//Create another cached_adaptive_pool. Since the segment manager address
-</span>   <span class="comment">//is the same, this cached_adaptive_pool will be
-</span>   <span class="comment">//attached to the same pool so "allocator_instance2" can deallocate
-</span>   <span class="comment">//nodes allocated by "allocator_instance"
-</span>   <span class="identifier">cached_adaptive_pool_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//Create another cached_adaptive_pool. Since the segment manager address</span>
+   <span class="comment">//is the same, this cached_adaptive_pool will be</span>
+   <span class="comment">//attached to the same pool so "allocator_instance2" can deallocate</span>
+   <span class="comment">//nodes allocated by "allocator_instance"</span>
+   <span class="identifier">cached_adaptive_pool_t</span> <span class="identifier">allocator_instance2</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//The max cached nodes are configurable per instance
-</span>   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="number">5</span><span class="special">);</span>
+   <span class="comment">//The max cached nodes are configurable per instance</span>
+   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">set_max_cached_nodes</span><span class="special">(</span><span class="number">5</span><span class="special">);</span>
 
-   <span class="comment">//Create another cached_adaptive_pool using copy-constructor. This
-</span>   <span class="comment">//cached_adaptive_pool will also be attached to the same pool
-</span>   <span class="identifier">cached_adaptive_pool_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//Create another cached_adaptive_pool using copy-constructor. This</span>
+   <span class="comment">//cached_adaptive_pool will also be attached to the same pool</span>
+   <span class="identifier">cached_adaptive_pool_t</span> <span class="identifier">allocator_instance3</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">);</span>
 
-   <span class="comment">//We can clear the cache
-</span>   <span class="identifier">allocator_instance3</span><span class="special">.</span><span class="identifier">deallocate_cache</span><span class="special">();</span>
+   <span class="comment">//We can clear the cache</span>
+   <span class="identifier">allocator_instance3</span><span class="special">.</span><span class="identifier">deallocate_cache</span><span class="special">();</span>
 
-   <span class="comment">//All allocators are equal
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">==</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>
+   <span class="comment">//All allocators are equal</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance</span> <span class="special">==</span> <span class="identifier">allocator_instance2</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">allocator_instance2</span> <span class="special">==</span> <span class="identifier">allocator_instance3</span><span class="special">);</span>
 
-   <span class="comment">//So memory allocated with one can be deallocated with another
-</span>   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
+   <span class="comment">//So memory allocated with one can be deallocated with another</span>
+   <span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
    <span class="identifier">allocator_instance3</span><span class="special">.</span><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">allocator_instance2</span><span class="special">.</span><span class="identifier">allocate</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//The common pool will be destroyed here, since no allocator is
-</span>   <span class="comment">//attached to the pool
-</span>   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+   <span class="comment">//The common pool will be destroyed here, since no allocator is</span>
+   <span class="comment">//attached to the pool</span>
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -1119,13 +1106,11 @@ restrictions"</em></span>:
               <span class="emphasis"><em>"the Standard explicitly allows library implementers 
 to assume that every allocator's pointer typedef is 
 a synonym for T*"</em></span>
-
             </li>
 <li class="listitem">
               <span class="emphasis"><em>"the Standard says that an implementation of the STL is 
 permitted to assume that all allocator objects of the 
 same type are equivalent and always compare equal"</em></span>
-
             </li>
 </ul></div>
 <p>
@@ -1148,17 +1133,14 @@ mapped files with <span class="bold"><strong>Boost.Interprocess</strong></span> 
   only if memory allocated with one object can be deallocated 
   with the other one, and this can only tested with 
   operator==() at run-time.
-
             </li>
 <li class="listitem">
               Containers' internal pointers should be of the type allocator::pointer 
   and containers may not assume allocator::pointer is a raw pointer.
-
             </li>
 <li class="listitem">
               All objects must be constructed-destroyed via 
   allocator::construct and allocator::destroy functions.
-
             </li>
 </ul></div>
 </div>
@@ -1170,9 +1152,9 @@ mapped files with <span class="bold"><strong>Boost.Interprocess</strong></span> 
           Unfortunately, many STL implementations use raw pointers
 for internal data and ignore allocator pointer typedefs 
 and others suppose at some point that the allocator::typedef 
-is T<span class="bold"><strong>. This is because in practice,
+is T*. This is because in practice,
 there wasn't need of allocators with a pointer typedef 
-different from T</strong></span> for pooled/node memory
+different from T* for pooled/node memory
 allocators.
         </p>
 <p>
@@ -1182,28 +1164,24 @@ in a generic way, <span class="bold"><strong>Boost.Interprocess</strong></span> 
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
               <span class="bold"><strong>boost:interprocess::vector</strong></span> is the implementation of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span></code> ready
    to be used in managed memory segments like shared memory. To use it include:
-
             </li></ul></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">vector</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
               <span class="bold"><strong>boost:interprocess::deque</strong></span> is the implementation of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">deque</span></code> ready 
    to be used in managed memory segments like shared memory. To use it include:
-
             </li></ul></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">deque</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
               <code class="computeroutput">list</code> is the implementation of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span></code> ready
    to be used in managed memory segments like shared memory. To use it include:
-
             </li></ul></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
               <code class="computeroutput">slist</code> is the implementation of SGI's <code class="computeroutput"><span class="identifier">slist</span></code> container (singly linked list) ready
    to be used in managed memory segments like shared memory. To use it include:
-
             </li></ul></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">slist</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
@@ -1214,7 +1192,6 @@ in a generic way, <span class="bold"><strong>Boost.Interprocess</strong></span> 
    <code class="computeroutput">multimap</code> family is the implementation of 
    std::set/multiset/map/multimap family ready
    to be used in managed memory segments like shared memory. To use them include:
-
             </li></ul></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">map</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -1229,7 +1206,6 @@ in a generic way, <span class="bold"><strong>Boost.Interprocess</strong></span> 
    functionality as <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">set</span><span class="special">/</span><span class="identifier">multiset</span><span class="special">/</span><span class="identifier">map</span><span class="special">/</span><span class="identifier">multimap</span></code> implemented with an ordered vector, 
    which has faster lookups than the standard ordered associative containers 
    based on red-black trees, but slower insertions. To use it include:
-
             </li></ul></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">flat_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">flat_map</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -1242,7 +1218,6 @@ in a generic way, <span class="bold"><strong>Boost.Interprocess</strong></span> 
    it has fast c string conversion and can be used with the 
    <a class="link" href="streams.html#interprocess.streams.vectorstream" title="Formatting directly in your character vector: vectorstream">vectorstream</a> iostream formatting classes.
    To use it include:
-
             </li></ul></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">string</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
@@ -1268,47 +1243,47 @@ in the managed memory segment just like any other object with <span class="bold"
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//A managed shared memory where we can construct objects
-</span>   <span class="comment">//associated with a c-string
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span>
-                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name
-</span>                                 <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//A managed shared memory where we can construct objects</span>
+   <span class="comment">//associated with a c-string</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span>
+                                 <span class="string">"MySharedMemory"</span><span class="special">,</span>  <span class="comment">//segment name</span>
+                                 <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Alias an STL-like allocator of ints that allocates ints from the segment
-</span>   <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span> 
+   <span class="comment">//Alias an STL-like allocator of ints that allocates ints from the segment</span>
+   <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span> 
       <span class="identifier">ShmemAllocator</span><span class="special">;</span>
 
-   <span class="comment">//Alias a vector that uses the previous STL-like allocator
-</span>   <span class="keyword">typedef</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">ShmemAllocator</span><span class="special">&gt;</span> <span class="identifier">MyVector</span><span class="special">;</span>
+   <span class="comment">//Alias a vector that uses the previous STL-like allocator</span>
+   <span class="keyword">typedef</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">ShmemAllocator</span><span class="special">&gt;</span> <span class="identifier">MyVector</span><span class="special">;</span>
 
    <span class="keyword">int</span> <span class="identifier">initVal</span><span class="special">[]</span>        <span class="special">=</span> <span class="special">{</span><span class="number">0</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">4</span><span class="special">,</span> <span class="number">5</span><span class="special">,</span> <span class="number">6</span> <span class="special">};</span>
    <span class="keyword">const</span> <span class="keyword">int</span> <span class="special">*</span><span class="identifier">begVal</span>    <span class="special">=</span> <span class="identifier">initVal</span><span class="special">;</span>
    <span class="keyword">const</span> <span class="keyword">int</span> <span class="special">*</span><span class="identifier">endVal</span>    <span class="special">=</span> <span class="identifier">initVal</span> <span class="special">+</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">initVal</span><span class="special">)/</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">initVal</span><span class="special">[</span><span class="number">0</span><span class="special">]);</span>
 
-   <span class="comment">//Initialize the STL-like allocator
-</span>   <span class="keyword">const</span> <span class="identifier">ShmemAllocator</span> <span class="identifier">alloc_inst</span> <span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//Initialize the STL-like allocator</span>
+   <span class="keyword">const</span> <span class="identifier">ShmemAllocator</span> <span class="identifier">alloc_inst</span> <span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Construct the vector in the shared memory segment with the STL-like allocator 
-</span>   <span class="comment">//from a range of iterators
-</span>   <span class="identifier">MyVector</span> <span class="special">*</span><span class="identifier">myvector</span> <span class="special">=</span> 
+   <span class="comment">//Construct the vector in the shared memory segment with the STL-like allocator </span>
+   <span class="comment">//from a range of iterators</span>
+   <span class="identifier">MyVector</span> <span class="special">*</span><span class="identifier">myvector</span> <span class="special">=</span> 
       <span class="identifier">segment</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">MyVector</span><span class="special">&gt;</span>
          <span class="special">(</span><span class="string">"MyVector"</span><span class="special">)/*</span><span class="identifier">object</span> <span class="identifier">name</span><span class="special">*/</span>
          <span class="special">(</span><span class="identifier">begVal</span>     <span class="comment">/*first ctor parameter*/</span><span class="special">,</span>
          <span class="identifier">endVal</span>     <span class="comment">/*second ctor parameter*/</span><span class="special">,</span> 
          <span class="identifier">alloc_inst</span> <span class="comment">/*third ctor parameter*/</span><span class="special">);</span> 
 
-   <span class="comment">//Use vector as your want
-</span>   <span class="identifier">std</span><span class="special">::</span><span class="identifier">sort</span><span class="special">(</span><span class="identifier">myvector</span><span class="special">-&gt;</span><span class="identifier">rbegin</span><span class="special">(),</span> <span class="identifier">myvector</span><span class="special">-&gt;</span><span class="identifier">rend</span><span class="special">());</span>
-   <span class="comment">// . . .
-</span>   <span class="comment">//When done, destroy and delete vector from the segment
-</span>   <span class="identifier">segment</span><span class="special">.</span><span class="identifier">destroy</span><span class="special">&lt;</span><span class="identifier">MyVector</span><span class="special">&gt;(</span><span class="string">"MyVector"</span><span class="special">);</span>
+   <span class="comment">//Use vector as your want</span>
+   <span class="identifier">std</span><span class="special">::</span><span class="identifier">sort</span><span class="special">(</span><span class="identifier">myvector</span><span class="special">-&gt;</span><span class="identifier">rbegin</span><span class="special">(),</span> <span class="identifier">myvector</span><span class="special">-&gt;</span><span class="identifier">rend</span><span class="special">());</span>
+   <span class="comment">// . . .</span>
+   <span class="comment">//When done, destroy and delete vector from the segment</span>
+   <span class="identifier">segment</span><span class="special">.</span><span class="identifier">destroy</span><span class="special">&lt;</span><span class="identifier">MyVector</span><span class="special">&gt;(</span><span class="string">"MyVector"</span><span class="special">);</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -1332,13 +1307,11 @@ etc... using two mechanisms <span class="bold"><strong>at the same time</strong>
               <span class="bold"><strong>Boost.Interprocess </strong></span><code class="computeroutput"><span class="identifier">construct</span><span class="special">&lt;&gt;</span></code>, <code class="computeroutput"><span class="identifier">find_or_construct</span><span class="special">&lt;&gt;</span></code>... functions. These
    functions place a C++ object in the shared memory/memory mapped file. But this
    places only the object, but <span class="bold"><strong>not</strong></span> the memory that this object may allocate dynamically.
-
             </li>
 <li class="listitem">
               Shared memory allocators. These allow allocating shared memory/memory mapped file
    portions so that containers can allocate dynamically fragments of memory to store
    newly inserted elements.
-
             </li>
 </ul></div>
 <p>
@@ -1349,16 +1322,13 @@ containers <span class="bold"><strong>must</strong></span>:
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
               Define their template allocator parameter to a <span class="bold"><strong>Boost.Interprocess</strong></span> allocator.
-
             </li>
 <li class="listitem">
               Every container constructor must take the <span class="bold"><strong>Boost.Interprocess</strong></span> allocator as parameter.
-
             </li>
 <li class="listitem">
               You must use construct&lt;&gt;/find_or_construct&lt;&gt;... functions to place the container
   in the managed memory.
-
             </li>
 </ul></div>
 <p>
@@ -1380,8 +1350,8 @@ for contained types from shared memory/memory mapped file.
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
-   <span class="comment">//Typedefs
-</span>   <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span> 
+   <span class="comment">//Typedefs</span>
+   <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span> 
       <span class="identifier">CharAllocator</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">basic_string</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">char_traits</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;,</span> <span class="identifier">CharAllocator</span><span class="special">&gt;</span>
       <span class="identifier">MyShmString</span><span class="special">;</span>
@@ -1390,9 +1360,9 @@ for contained types from shared memory/memory mapped file.
    <span class="keyword">typedef</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyShmString</span><span class="special">,</span> <span class="identifier">StringAllocator</span><span class="special">&gt;</span>
       <span class="identifier">MyShmStringVector</span><span class="special">;</span>
 
-   <span class="comment">//Open shared memory
-</span>   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Open shared memory</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
@@ -1400,35 +1370,35 @@ for contained types from shared memory/memory mapped file.
 
    <span class="identifier">managed_shared_memory</span> <span class="identifier">shm</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="string">"MySharedMemory"</span><span class="special">,</span> <span class="number">10000</span><span class="special">);</span>
 
-   <span class="comment">//Create allocators
-</span>   <span class="identifier">CharAllocator</span>     <span class="identifier">charallocator</span>  <span class="special">(</span><span class="identifier">shm</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//Create allocators</span>
+   <span class="identifier">CharAllocator</span>     <span class="identifier">charallocator</span>  <span class="special">(</span><span class="identifier">shm</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
    <span class="identifier">StringAllocator</span>   <span class="identifier">stringallocator</span><span class="special">(</span><span class="identifier">shm</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//This string is in only in this process (the pointer pointing to the
-</span>   <span class="comment">//buffer that will hold the text is not in shared memory). 
-</span>   <span class="comment">//But the buffer that will hold "this is my text" is allocated from 
-</span>   <span class="comment">//shared memory
-</span>   <span class="identifier">MyShmString</span> <span class="identifier">mystring</span><span class="special">(</span><span class="identifier">charallocator</span><span class="special">);</span>
+   <span class="comment">//This string is in only in this process (the pointer pointing to the</span>
+   <span class="comment">//buffer that will hold the text is not in shared memory). </span>
+   <span class="comment">//But the buffer that will hold "this is my text" is allocated from </span>
+   <span class="comment">//shared memory</span>
+   <span class="identifier">MyShmString</span> <span class="identifier">mystring</span><span class="special">(</span><span class="identifier">charallocator</span><span class="special">);</span>
    <span class="identifier">mystring</span> <span class="special">=</span> <span class="string">"this is my text"</span><span class="special">;</span>
 
-   <span class="comment">//This vector is only in this process (the pointer pointing to the
-</span>   <span class="comment">//buffer that will hold the MyShmString-s is not in shared memory). 
-</span>   <span class="comment">//But the buffer that will hold 10 MyShmString-s is allocated from 
-</span>   <span class="comment">//shared memory using StringAllocator. Since strings use a shared 
-</span>   <span class="comment">//memory allocator (CharAllocator) the 10 buffers that hold 
-</span>   <span class="comment">//"this is my text" text are also in shared memory.
-</span>   <span class="identifier">MyShmStringVector</span> <span class="identifier">myvector</span><span class="special">(</span><span class="identifier">stringallocator</span><span class="special">);</span>
+   <span class="comment">//This vector is only in this process (the pointer pointing to the</span>
+   <span class="comment">//buffer that will hold the MyShmString-s is not in shared memory). </span>
+   <span class="comment">//But the buffer that will hold 10 MyShmString-s is allocated from </span>
+   <span class="comment">//shared memory using StringAllocator. Since strings use a shared </span>
+   <span class="comment">//memory allocator (CharAllocator) the 10 buffers that hold </span>
+   <span class="comment">//"this is my text" text are also in shared memory.</span>
+   <span class="identifier">MyShmStringVector</span> <span class="identifier">myvector</span><span class="special">(</span><span class="identifier">stringallocator</span><span class="special">);</span>
    <span class="identifier">myvector</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">myvector</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="number">10</span><span class="special">,</span> <span class="identifier">mystring</span><span class="special">);</span>
 
-   <span class="comment">//This vector is fully constructed in shared memory. All pointers
-</span>   <span class="comment">//buffers are constructed in the same shared memory segment
-</span>   <span class="comment">//This vector can be safely accessed from other processes.
-</span>   <span class="identifier">MyShmStringVector</span> <span class="special">*</span><span class="identifier">myshmvector</span> <span class="special">=</span> 
+   <span class="comment">//This vector is fully constructed in shared memory. All pointers</span>
+   <span class="comment">//buffers are constructed in the same shared memory segment</span>
+   <span class="comment">//This vector can be safely accessed from other processes.</span>
+   <span class="identifier">MyShmStringVector</span> <span class="special">*</span><span class="identifier">myshmvector</span> <span class="special">=</span> 
       <span class="identifier">shm</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">MyShmStringVector</span><span class="special">&gt;(</span><span class="string">"myshmvector"</span><span class="special">)(</span><span class="identifier">stringallocator</span><span class="special">);</span>
    <span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">(),</span> <span class="number">10</span><span class="special">,</span> <span class="identifier">mystring</span><span class="special">);</span>
 
-   <span class="comment">//Destroy vector. This will free all strings that the vector contains
-</span>   <span class="identifier">shm</span><span class="special">.</span><span class="identifier">destroy_ptr</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">);</span>
+   <span class="comment">//Destroy vector. This will free all strings that the vector contains</span>
+   <span class="identifier">shm</span><span class="special">.</span><span class="identifier">destroy_ptr</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">);</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -1468,16 +1438,16 @@ Boost.Interprocess containers:
 <span class="special">{</span>
    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 
-   <span class="comment">//Typedefs
-</span>   <span class="keyword">typedef</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span>     <span class="identifier">SegmentManager</span><span class="special">;</span>
+   <span class="comment">//Typedefs</span>
+   <span class="keyword">typedef</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span>     <span class="identifier">SegmentManager</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="identifier">SegmentManager</span><span class="special">&gt;</span>            <span class="identifier">CharAllocator</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">basic_string</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">char_traits</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;</span>
                         <span class="special">,</span><span class="identifier">CharAllocator</span><span class="special">&gt;</span>                <span class="identifier">MyShmString</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">MyShmString</span><span class="special">,</span> <span class="identifier">SegmentManager</span><span class="special">&gt;</span>     <span class="identifier">StringAllocator</span><span class="special">;</span>      
    <span class="keyword">typedef</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyShmString</span><span class="special">,</span> <span class="identifier">StringAllocator</span><span class="special">&gt;</span>       <span class="identifier">MyShmStringVector</span><span class="special">;</span>
 
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
@@ -1485,46 +1455,46 @@ Boost.Interprocess containers:
 
    <span class="identifier">managed_shared_memory</span> <span class="identifier">shm</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="string">"MySharedMemory"</span><span class="special">,</span> <span class="number">10000</span><span class="special">);</span>
 
-   <span class="comment">//Create allocators
-</span>   <span class="identifier">CharAllocator</span>     <span class="identifier">charallocator</span>  <span class="special">(</span><span class="identifier">shm</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//Create allocators</span>
+   <span class="identifier">CharAllocator</span>     <span class="identifier">charallocator</span>  <span class="special">(</span><span class="identifier">shm</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
    <span class="identifier">StringAllocator</span>   <span class="identifier">stringallocator</span><span class="special">(</span><span class="identifier">shm</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Create a vector of strings in shared memory.
-</span>   <span class="identifier">MyShmStringVector</span> <span class="special">*</span><span class="identifier">myshmvector</span> <span class="special">=</span> 
+   <span class="comment">//Create a vector of strings in shared memory.</span>
+   <span class="identifier">MyShmStringVector</span> <span class="special">*</span><span class="identifier">myshmvector</span> <span class="special">=</span> 
       <span class="identifier">shm</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">MyShmStringVector</span><span class="special">&gt;(</span><span class="string">"myshmvector"</span><span class="special">)(</span><span class="identifier">stringallocator</span><span class="special">);</span>
 
-   <span class="comment">//Insert 50 strings in shared memory. The strings will be allocated
-</span>   <span class="comment">//only once and no string copy-constructor will be called when inserting
-</span>   <span class="comment">//strings, leading to a great performance.
-</span>   <span class="identifier">MyShmString</span> <span class="identifier">string_to_compare</span><span class="special">(</span><span class="identifier">charallocator</span><span class="special">);</span>
+   <span class="comment">//Insert 50 strings in shared memory. The strings will be allocated</span>
+   <span class="comment">//only once and no string copy-constructor will be called when inserting</span>
+   <span class="comment">//strings, leading to a great performance.</span>
+   <span class="identifier">MyShmString</span> <span class="identifier">string_to_compare</span><span class="special">(</span><span class="identifier">charallocator</span><span class="special">);</span>
    <span class="identifier">string_to_compare</span> <span class="special">=</span> <span class="string">"this is a long, long, long, long, long, long, string..."</span><span class="special">;</span>
    
    <span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">reserve</span><span class="special">(</span><span class="number">50</span><span class="special">);</span>
    <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">50</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
       <span class="identifier">MyShmString</span> <span class="identifier">move_me</span><span class="special">(</span><span class="identifier">string_to_compare</span><span class="special">);</span>
-      <span class="comment">//In the following line, no string copy-constructor will be called.
-</span>      <span class="comment">//"move_me"'s contents will be transferred to the string created in
-</span>      <span class="comment">//the vector
-</span>      <span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">move_me</span><span class="special">));</span>
+      <span class="comment">//In the following line, no string copy-constructor will be called.</span>
+      <span class="comment">//"move_me"'s contents will be transferred to the string created in</span>
+      <span class="comment">//the vector</span>
+      <span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">move_me</span><span class="special">));</span>
 
-      <span class="comment">//The source string is in default constructed state
-</span>      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">move_me</span><span class="special">.</span><span class="identifier">empty</span><span class="special">());</span>
+      <span class="comment">//The source string is in default constructed state</span>
+      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">move_me</span><span class="special">.</span><span class="identifier">empty</span><span class="special">());</span>
 
-      <span class="comment">//The newly created string will be equal to the "move_me"'s old contents
-</span>      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">back</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">string_to_compare</span><span class="special">);</span>
+      <span class="comment">//The newly created string will be equal to the "move_me"'s old contents</span>
+      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">back</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">string_to_compare</span><span class="special">);</span>
    <span class="special">}</span>
 
-   <span class="comment">//Now erase a string...
-</span>   <span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">pop_back</span><span class="special">();</span>
+   <span class="comment">//Now erase a string...</span>
+   <span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">pop_back</span><span class="special">();</span>
 
-   <span class="comment">//...And insert one in the first position.
-</span>   <span class="comment">//No string copy-constructor or assignments will be called, but
-</span>   <span class="comment">//move constructors and move-assignments. No memory allocation 
-</span>   <span class="comment">//function will be called in this operations!!
-</span>   <span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">string_to_compare</span><span class="special">));</span>
+   <span class="comment">//...And insert one in the first position.</span>
+   <span class="comment">//No string copy-constructor or assignments will be called, but</span>
+   <span class="comment">//move constructors and move-assignments. No memory allocation </span>
+   <span class="comment">//function will be called in this operations!!</span>
+   <span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">string_to_compare</span><span class="special">));</span>
 
-   <span class="comment">//Destroy vector. This will free all strings that the vector contains
-</span>   <span class="identifier">shm</span><span class="special">.</span><span class="identifier">destroy_ptr</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">);</span>
+   <span class="comment">//Destroy vector. This will free all strings that the vector contains</span>
+   <span class="identifier">shm</span><span class="special">.</span><span class="identifier">destroy_ptr</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">);</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -1556,8 +1526,8 @@ and the mapped type is a class that stores several containers:
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 
-<span class="comment">//Typedefs of allocators and containers
-</span><span class="keyword">typedef</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span>                       <span class="identifier">segment_manager_t</span><span class="special">;</span>
+<span class="comment">//Typedefs of allocators and containers</span>
+<span class="keyword">typedef</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span>                       <span class="identifier">segment_manager_t</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">,</span> <span class="identifier">segment_manager_t</span><span class="special">&gt;</span>                           <span class="identifier">void_allocator</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">segment_manager_t</span><span class="special">&gt;</span>                            <span class="identifier">int_allocator</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">int_allocator</span><span class="special">&gt;</span>                                   <span class="identifier">int_vector</span><span class="special">;</span>
@@ -1573,16 +1543,16 @@ and the mapped type is a class that stores several containers:
    <span class="identifier">int_vector_vector</span> <span class="identifier">int_vector_vector_</span><span class="special">;</span>
 
    <span class="keyword">public</span><span class="special">:</span>
-   <span class="comment">//Since void_allocator is convertible to any other allocator&lt;T&gt;, we can simplify
-</span>   <span class="comment">//the initialization taking just one allocator for all inner containers.
-</span>   <span class="identifier">complex_data</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">id</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">name</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">void_allocator</span> <span class="special">&amp;</span><span class="identifier">void_alloc</span><span class="special">)</span>
+   <span class="comment">//Since void_allocator is convertible to any other allocator&lt;T&gt;, we can simplify</span>
+   <span class="comment">//the initialization taking just one allocator for all inner containers.</span>
+   <span class="identifier">complex_data</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">id</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">name</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">void_allocator</span> <span class="special">&amp;</span><span class="identifier">void_alloc</span><span class="special">)</span>
       <span class="special">:</span> <span class="identifier">id_</span><span class="special">(</span><span class="identifier">id</span><span class="special">),</span> <span class="identifier">char_string_</span><span class="special">(</span><span class="identifier">name</span><span class="special">,</span> <span class="identifier">void_alloc</span><span class="special">),</span> <span class="identifier">int_vector_vector_</span><span class="special">(</span><span class="identifier">void_alloc</span><span class="special">)</span>
    <span class="special">{}</span>
-   <span class="comment">//Other members...
-</span><span class="special">};</span>
+   <span class="comment">//Other members...</span>
+<span class="special">};</span>
 
-<span class="comment">//Definition of the map holding a string as key and complex_data as mapped type
-</span><span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">char_string</span><span class="special">,</span> <span class="identifier">complex_data</span><span class="special">&gt;</span>                      <span class="identifier">map_value_type</span><span class="special">;</span>
+<span class="comment">//Definition of the map holding a string as key and complex_data as mapped type</span>
+<span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">char_string</span><span class="special">,</span> <span class="identifier">complex_data</span><span class="special">&gt;</span>                      <span class="identifier">map_value_type</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">char_string</span><span class="special">,</span> <span class="identifier">complex_data</span><span class="special">&gt;</span>                            <span class="identifier">movable_to_map_value_type</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">map_value_type</span><span class="special">,</span> <span class="identifier">segment_manager_t</span><span class="special">&gt;</span>                    <span class="identifier">map_value_type_allocator</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">map</span><span class="special">&lt;</span> <span class="identifier">char_string</span><span class="special">,</span> <span class="identifier">complex_data</span>
@@ -1590,31 +1560,31 @@ and the mapped type is a class that stores several containers:
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span><span class="string">"MySharedMemory"</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span><span class="string">"MySharedMemory"</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//An allocator convertible to any allocator&lt;T, segment_manager_t&gt; type
-</span>   <span class="identifier">void_allocator</span> <span class="identifier">alloc_inst</span> <span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
+   <span class="comment">//An allocator convertible to any allocator&lt;T, segment_manager_t&gt; type</span>
+   <span class="identifier">void_allocator</span> <span class="identifier">alloc_inst</span> <span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Construct the shared memory map and fill it
-</span>   <span class="identifier">complex_map_type</span> <span class="special">*</span><span class="identifier">mymap</span> <span class="special">=</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">complex_map_type</span><span class="special">&gt;</span>
-      <span class="comment">//(object name), (first ctor parameter, second ctor parameter)
-</span>         <span class="special">(</span><span class="string">"MyMap"</span><span class="special">)(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">less</span><span class="special">&lt;</span><span class="identifier">char_string</span><span class="special">&gt;(),</span> <span class="identifier">alloc_inst</span><span class="special">);</span>
+   <span class="comment">//Construct the shared memory map and fill it</span>
+   <span class="identifier">complex_map_type</span> <span class="special">*</span><span class="identifier">mymap</span> <span class="special">=</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">complex_map_type</span><span class="special">&gt;</span>
+      <span class="comment">//(object name), (first ctor parameter, second ctor parameter)</span>
+         <span class="special">(</span><span class="string">"MyMap"</span><span class="special">)(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">less</span><span class="special">&lt;</span><span class="identifier">char_string</span><span class="special">&gt;(),</span> <span class="identifier">alloc_inst</span><span class="special">);</span>
 
    <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
-      <span class="comment">//Both key(string) and value(complex_data) need an allocator in their constructors
-</span>      <span class="identifier">char_string</span>  <span class="identifier">key_object</span><span class="special">(</span><span class="identifier">alloc_inst</span><span class="special">);</span>
+      <span class="comment">//Both key(string) and value(complex_data) need an allocator in their constructors</span>
+      <span class="identifier">char_string</span>  <span class="identifier">key_object</span><span class="special">(</span><span class="identifier">alloc_inst</span><span class="special">);</span>
       <span class="identifier">complex_data</span> <span class="identifier">mapped_object</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="string">"default_name"</span><span class="special">,</span> <span class="identifier">alloc_inst</span><span class="special">);</span>
       <span class="identifier">map_value_type</span> <span class="identifier">value</span><span class="special">(</span><span class="identifier">key_object</span><span class="special">,</span> <span class="identifier">mapped_object</span><span class="special">);</span>
-      <span class="comment">//Modify values and insert them in the map
-</span>      <span class="identifier">mymap</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">value</span><span class="special">);</span>
+      <span class="comment">//Modify values and insert them in the map</span>
+      <span class="identifier">mymap</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">value</span><span class="special">);</span>
    <span class="special">}</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
@@ -1651,48 +1621,48 @@ hash containers in shared memory and memory mapped files. Here is a small exampl
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">managed_shared_memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">allocators</span><span class="special">/</span><span class="identifier">allocator</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">unordered_map</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>     <span class="comment">//boost::unordered_map
-</span><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">functional</span><span class="special">&gt;</span>                  <span class="comment">//std::equal_to
-</span><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">functional</span><span class="special">/</span><span class="identifier">hash</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>   <span class="comment">//boost::hash
-</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">unordered_map</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>     <span class="comment">//boost::unordered_map</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">functional</span><span class="special">&gt;</span>                  <span class="comment">//std::equal_to</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">functional</span><span class="special">/</span><span class="identifier">hash</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>   <span class="comment">//boost::hash</span>
+
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="string">"MySharedMemory"</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span> <span class="string">"MySharedMemory"</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Note that unordered_map&lt;Key, MappedType&gt;'s value_type is std::pair&lt;const Key, MappedType&gt;,
-</span>   <span class="comment">//so the allocator must allocate that pair.
-</span>   <span class="keyword">typedef</span> <span class="keyword">int</span>    <span class="identifier">KeyType</span><span class="special">;</span>
+   <span class="comment">//Note that unordered_map&lt;Key, MappedType&gt;'s value_type is std::pair&lt;const Key, MappedType&gt;,</span>
+   <span class="comment">//so the allocator must allocate that pair.</span>
+   <span class="keyword">typedef</span> <span class="keyword">int</span>    <span class="identifier">KeyType</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">float</span>  <span class="identifier">MappedType</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">int</span><span class="special">,</span> <span class="keyword">float</span><span class="special">&gt;</span> <span class="identifier">ValueType</span><span class="special">;</span>
 
-   <span class="comment">//Typedef the allocator
-</span>   <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">ValueType</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span> <span class="identifier">ShmemAllocator</span><span class="special">;</span>
+   <span class="comment">//Typedef the allocator</span>
+   <span class="keyword">typedef</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">ValueType</span><span class="special">,</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">segment_manager</span><span class="special">&gt;</span> <span class="identifier">ShmemAllocator</span><span class="special">;</span>
 
-   <span class="comment">//Alias an unordered_map of ints that uses the previous STL-like allocator.
-</span>   <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unordered_map</span>
+   <span class="comment">//Alias an unordered_map of ints that uses the previous STL-like allocator.</span>
+   <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unordered_map</span>
       <span class="special">&lt;</span> <span class="identifier">KeyType</span>               <span class="special">,</span> <span class="identifier">MappedType</span>
       <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">KeyType</span><span class="special">&gt;</span>  <span class="special">,</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="identifier">KeyType</span><span class="special">&gt;</span>
       <span class="special">,</span> <span class="identifier">ShmemAllocator</span><span class="special">&gt;</span>
    <span class="identifier">MyHashMap</span><span class="special">;</span>
 
-   <span class="comment">//Construct a shared memory hash map.
-</span>   <span class="comment">//Note that the first parameter is the initial bucket count and
-</span>   <span class="comment">//after that, the hash function, the equality function and the allocator
-</span>   <span class="identifier">MyHashMap</span> <span class="special">*</span><span class="identifier">myhashmap</span> <span class="special">=</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">MyHashMap</span><span class="special">&gt;(</span><span class="string">"MyHashMap"</span><span class="special">)</span>  <span class="comment">//object name
-</span>      <span class="special">(</span> <span class="number">3</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;()</span>                  <span class="comment">//
-</span>      <span class="special">,</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_allocator</span><span class="special">&lt;</span><span class="identifier">ValueType</span><span class="special">&gt;());</span>                         <span class="comment">//allocator instance
-</span>
-   <span class="comment">//Insert data in the hash map
-</span>   <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
+   <span class="comment">//Construct a shared memory hash map.</span>
+   <span class="comment">//Note that the first parameter is the initial bucket count and</span>
+   <span class="comment">//after that, the hash function, the equality function and the allocator</span>
+   <span class="identifier">MyHashMap</span> <span class="special">*</span><span class="identifier">myhashmap</span> <span class="special">=</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">MyHashMap</span><span class="special">&gt;(</span><span class="string">"MyHashMap"</span><span class="special">)</span>  <span class="comment">//object name</span>
+      <span class="special">(</span> <span class="number">3</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;()</span>                  <span class="comment">//</span>
+      <span class="special">,</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_allocator</span><span class="special">&lt;</span><span class="identifier">ValueType</span><span class="special">&gt;());</span>                         <span class="comment">//allocator instance</span>
+
+   <span class="comment">//Insert data in the hash map</span>
+   <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
       <span class="identifier">myhashmap</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">ValueType</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="special">(</span><span class="keyword">float</span><span class="special">)</span><span class="identifier">i</span><span class="special">));</span>
    <span class="special">}</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -1733,8 +1703,8 @@ complicated.
 <span class="keyword">typedef</span> <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;::</span><span class="identifier">type</span>              <span class="identifier">char_allocator</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">basic_string</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">char_traits</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;,</span> <span class="identifier">char_allocator</span><span class="special">&gt;</span><span class="identifier">shm_string</span><span class="special">;</span>
 
-<span class="comment">//Data to insert in shared memory
-</span><span class="keyword">struct</span> <span class="identifier">employee</span>
+<span class="comment">//Data to insert in shared memory</span>
+<span class="keyword">struct</span> <span class="identifier">employee</span>
 <span class="special">{</span>
    <span class="keyword">int</span>         <span class="identifier">id</span><span class="special">;</span>
    <span class="keyword">int</span>         <span class="identifier">age</span><span class="special">;</span>
@@ -1747,16 +1717,16 @@ complicated.
    <span class="special">{}</span>
 <span class="special">};</span>
 
-<span class="comment">//Tags
-</span><span class="keyword">struct</span> <span class="identifier">id</span><span class="special">{};</span>
+<span class="comment">//Tags</span>
+<span class="keyword">struct</span> <span class="identifier">id</span><span class="special">{};</span>
 <span class="keyword">struct</span> <span class="identifier">age</span><span class="special">{};</span>
 <span class="keyword">struct</span> <span class="identifier">name</span><span class="special">{};</span>
 
-<span class="comment">// Define a multi_index_container of employees with following indices:
-</span><span class="comment">//   - a unique index sorted by employee::int,
-</span><span class="comment">//   - a non-unique index sorted by employee::name,
-</span><span class="comment">//   - a non-unique index sorted by employee::age.
-</span><span class="keyword">typedef</span> <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">multi_index_container</span><span class="special">&lt;</span>
+<span class="comment">// Define a multi_index_container of employees with following indices:</span>
+<span class="comment">//   - a unique index sorted by employee::int,</span>
+<span class="comment">//   - a non-unique index sorted by employee::name,</span>
+<span class="comment">//   - a non-unique index sorted by employee::age.</span>
+<span class="keyword">typedef</span> <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">multi_index_container</span><span class="special">&lt;</span>
   <span class="identifier">employee</span><span class="special">,</span>
   <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">indexed_by</span><span class="special">&lt;</span>
     <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">ordered_unique</span>
@@ -1770,24 +1740,24 @@ complicated.
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Remove shared memory on construction and destruction
-</span>   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
+   <span class="comment">//Remove shared memory on construction and destruction</span>
+   <span class="keyword">struct</span> <span class="identifier">shm_remove</span>
    <span class="special">{</span>
       <span class="identifier">shm_remove</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
       <span class="special">~</span><span class="identifier">shm_remove</span><span class="special">(){</span> <span class="identifier">shared_memory_object</span><span class="special">::</span><span class="identifier">remove</span><span class="special">(</span><span class="string">"MySharedMemory"</span><span class="special">);</span> <span class="special">}</span>
    <span class="special">}</span> <span class="identifier">remover</span><span class="special">;</span>
 
-   <span class="comment">//Create shared memory
-</span>   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span><span class="string">"MySharedMemory"</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
+   <span class="comment">//Create shared memory</span>
+   <span class="identifier">managed_shared_memory</span> <span class="identifier">segment</span><span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span><span class="string">"MySharedMemory"</span><span class="special">,</span> <span class="number">65536</span><span class="special">);</span>
 
-   <span class="comment">//Construct the multi_index in shared memory
-</span>   <span class="identifier">employee_set</span> <span class="special">*</span><span class="identifier">es</span> <span class="special">=</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">employee_set</span><span class="special">&gt;</span>
-      <span class="special">(</span><span class="string">"My MultiIndex Container"</span><span class="special">)</span>            <span class="comment">//Container's name in shared memory
-</span>      <span class="special">(</span> <span class="identifier">employee_set</span><span class="special">::</span><span class="identifier">ctor_args_list</span><span class="special">()</span>
-      <span class="special">,</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_allocator</span><span class="special">&lt;</span><span class="identifier">employee</span><span class="special">&gt;());</span>  <span class="comment">//Ctor parameters
-</span>
-   <span class="comment">//Now insert elements
-</span>   <span class="identifier">char_allocator</span> <span class="identifier">ca</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;());</span>
+   <span class="comment">//Construct the multi_index in shared memory</span>
+   <span class="identifier">employee_set</span> <span class="special">*</span><span class="identifier">es</span> <span class="special">=</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">employee_set</span><span class="special">&gt;</span>
+      <span class="special">(</span><span class="string">"My MultiIndex Container"</span><span class="special">)</span>            <span class="comment">//Container's name in shared memory</span>
+      <span class="special">(</span> <span class="identifier">employee_set</span><span class="special">::</span><span class="identifier">ctor_args_list</span><span class="special">()</span>
+      <span class="special">,</span> <span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_allocator</span><span class="special">&lt;</span><span class="identifier">employee</span><span class="special">&gt;());</span>  <span class="comment">//Ctor parameters</span>
+
+   <span class="comment">//Now insert elements</span>
+   <span class="identifier">char_allocator</span> <span class="identifier">ca</span><span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;());</span>
    <span class="identifier">es</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">employee</span><span class="special">(</span><span class="number">0</span><span class="special">,</span><span class="number">31</span><span class="special">,</span> <span class="string">"Joe"</span><span class="special">,</span> <span class="identifier">ca</span><span class="special">));</span>
    <span class="identifier">es</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">employee</span><span class="special">(</span><span class="number">1</span><span class="special">,</span><span class="number">27</span><span class="special">,</span> <span class="string">"Robert"</span><span class="special">,</span> <span class="identifier">ca</span><span class="special">));</span>
    <span class="identifier">es</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">employee</span><span class="special">(</span><span class="number">2</span><span class="special">,</span><span class="number">40</span><span class="special">,</span> <span class="string">"John"</span><span class="special">,</span> <span class="identifier">ca</span><span class="special">));</span>
@@ -1807,7 +1777,7 @@ with raw pointers.
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 - 2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

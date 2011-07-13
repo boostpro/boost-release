@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../jam.html" title="Chapter&#160;32.&#160;Boost.Jam : 3.1.19">
-<link rel="prev" href="../jam.html" title="Chapter&#160;32.&#160;Boost.Jam : 3.1.19">
+<link rel="up" href="../jam.html" title="Chapter&#160;34.&#160;Boost.Jam : 3.1.19">
+<link rel="prev" href="../jam.html" title="Chapter&#160;34.&#160;Boost.Jam : 3.1.19">
 <link rel="next" href="miscellaneous.html" title="Miscellaneous">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -653,12 +653,11 @@ INCLUDES foo.c : foo.h ;
 <p>
               Using the same wildcards as for the patterns in the switch statement.
               It is invoked by being used as an argument to a rule invocation inside
-              of "<code class="literal">[ ]</code>". For example: "<code class="literal">FILES
-              = [ GLOB dir1 dir2 : *.c *.h ]</code>" sets <code class="literal">FILES</code>
-              to the list of C source and header files in <code class="literal">dir1</code>
-              and <code class="literal">dir2</code>. The resulting filenames are the full pathnames,
-              including the directory, but the pattern is applied only to the file
-              name without the directory.
+              of "=[ ]=". For example: "<code class="literal">FILES = [ GLOB dir1
+              dir2 : *.c *.h ]</code>" sets <code class="literal">FILES</code> to the
+              list of C source and header files in <code class="literal">dir1</code> and <code class="literal">dir2</code>.
+              The resulting filenames are the full pathnames, including the directory,
+              but the pattern is applied only to the file name without the directory.
             </p>
 <p>
               If <span class="emphasis"><em>downcase-opt</em></span> is supplied, filenames are converted
@@ -684,8 +683,7 @@ INCLUDES foo.c : foo.h ;
               The result is the concatenation of matching <code class="literal">()</code> subexpressions
               for each string in <span class="emphasis"><em>list</em></span>, and for each regular
               expression in <span class="emphasis"><em>regexps</em></span>. Only useful within the
-              "<code class="literal">[ ]</code>" construct, to change the result
-              into a list.
+              "=[ ]=" construct, to change the result into a list.
             </p>
 </div>
 <div class="section">
@@ -1371,7 +1369,7 @@ ECHO $(y) ;     # prints "4 5 6"
 </h4></div></div></div>
 <p>
           During expansion of expressions <code class="literal">bjam</code> also looks for
-          subexpressions of the form =@(filename:E<code class="literal">filecontents)</code>
+          subexpressions of the form <code class="literal">@(filename:E=filecontents)</code>
           and replaces the expression with <code class="literal">filename</code> after creating
           the given file with the contents set to <code class="literal">filecontents</code>.
           This is useful for creating compiler response files, and other "internal"

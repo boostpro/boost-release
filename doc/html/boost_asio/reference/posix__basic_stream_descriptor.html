@@ -35,7 +35,7 @@
   <span class="keyword">public</span> <span class="identifier">posix</span><span class="special">::</span><span class="identifier">basic_descriptor</span><span class="special">&lt;</span> <span class="identifier">StreamDescriptorService</span> <span class="special">&gt;</span>
 </pre>
 <a name="boost_asio.reference.posix__basic_stream_descriptor.types"></a><h5>
-<a name="id1271579"></a>
+<a name="boost_asio.reference.posix__basic_stream_descriptor.types-heading"></a>
         <a class="link" href="posix__basic_stream_descriptor.html#boost_asio.reference.posix__basic_stream_descriptor.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -96,7 +96,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="posix__basic_stream_descriptor/native_type.html" title="posix::basic_stream_descriptor::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  <a class="link" href="posix__basic_stream_descriptor/native_handle_type.html" title="posix::basic_stream_descriptor::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                 </p>
               </td>
 <td>
@@ -108,12 +108,26 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="posix__basic_stream_descriptor/native_type.html" title="posix::basic_stream_descriptor::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use native_handle_type.) The native representation
+                  of a descriptor.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="posix__basic_stream_descriptor/non_blocking_io.html" title="posix::basic_stream_descriptor::non_blocking_io"><span class="bold"><strong>non_blocking_io</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  IO control command to set the blocking mode of the descriptor.
+                  (Deprecated: Use non_blocking().) IO control command to set the
+                  blocking mode of the descriptor.
                 </p>
               </td>
 </tr>
@@ -132,7 +146,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.posix__basic_stream_descriptor.member_functions"></a><h5>
-<a name="id1271824"></a>
+<a name="boost_asio.reference.posix__basic_stream_descriptor.member_functions-heading"></a>
         <a class="link" href="posix__basic_stream_descriptor.html#boost_asio.reference.posix__basic_stream_descriptor.member_functions">Member
         Functions</a>
       </h5>
@@ -203,6 +217,9 @@
                 <p>
                   Construct a basic_stream_descriptor on an existing native descriptor.
                 </p>
+                <p>
+                  Move-construct a basic_stream_descriptor from another.
+                </p>
               </td>
 </tr>
 <tr>
@@ -256,19 +273,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="posix__basic_stream_descriptor/io_service.html" title="posix::basic_stream_descriptor::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: use get_io_service().) Get the io_service associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="posix__basic_stream_descriptor/is_open.html" title="posix::basic_stream_descriptor::is_open"><span class="bold"><strong>is_open</strong></span></a>
                 </p>
               </td>
@@ -301,7 +305,61 @@
               </td>
 <td>
                 <p>
+                  (Deprecated: Use native_handle().) Get the native descriptor representation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="posix__basic_stream_descriptor/native_handle.html" title="posix::basic_stream_descriptor::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
                   Get the native descriptor representation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="posix__basic_stream_descriptor/native_non_blocking.html" title="posix::basic_stream_descriptor::native_non_blocking"><span class="bold"><strong>native_non_blocking</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Gets the non-blocking mode of the native descriptor implementation.
+                </p>
+                <p>
+                  Sets the non-blocking mode of the native descriptor implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="posix__basic_stream_descriptor/non_blocking.html" title="posix::basic_stream_descriptor::non_blocking"><span class="bold"><strong>non_blocking</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Gets the non-blocking mode of the descriptor.
+                </p>
+                <p>
+                  Sets the non-blocking mode of the descriptor.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="posix__basic_stream_descriptor/operator_eq_.html" title="posix::basic_stream_descriptor::operator="><span class="bold"><strong>operator=</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-assign a basic_stream_descriptor from another.
                 </p>
               </td>
 </tr>
@@ -320,6 +378,18 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="posix__basic_stream_descriptor/release.html" title="posix::basic_stream_descriptor::release"><span class="bold"><strong>release</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Release ownership of the native descriptor implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="posix__basic_stream_descriptor/write_some.html" title="posix::basic_stream_descriptor::write_some"><span class="bold"><strong>write_some</strong></span></a>
                 </p>
               </td>
@@ -331,8 +401,57 @@
 </tr>
 </tbody>
 </table></div>
+<a name="boost_asio.reference.posix__basic_stream_descriptor.protected_member_functions"></a><h5>
+<a name="boost_asio.reference.posix__basic_stream_descriptor.protected_member_functions-heading"></a>
+        <a class="link" href="posix__basic_stream_descriptor.html#boost_asio.reference.posix__basic_stream_descriptor.protected_member_functions">Protected
+        Member Functions</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="posix__basic_stream_descriptor/get_implementation.html" title="posix::basic_stream_descriptor::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the underlying implementation of the I/O object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="posix__basic_stream_descriptor/get_service.html" title="posix::basic_stream_descriptor::get_service"><span class="bold"><strong>get_service</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the service associated with the I/O object.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
 <a name="boost_asio.reference.posix__basic_stream_descriptor.protected_data_members"></a><h5>
-<a name="id1272319"></a>
+<a name="boost_asio.reference.posix__basic_stream_descriptor.protected_data_members-heading"></a>
         <a class="link" href="posix__basic_stream_descriptor.html#boost_asio.reference.posix__basic_stream_descriptor.protected_data_members">Protected
         Data Members</a>
       </h5>
@@ -362,7 +481,8 @@
               </td>
 <td>
                 <p>
-                  The underlying implementation of the I/O object.
+                  (Deprecated: Use get_implementation().) The underlying implementation
+                  of the I/O object.
                 </p>
               </td>
 </tr>
@@ -374,7 +494,8 @@
               </td>
 <td>
                 <p>
-                  The service associated with the I/O object.
+                  (Deprecated: Use get_service().) The service associated with the
+                  I/O object.
                 </p>
               </td>
 </tr>
@@ -385,7 +506,7 @@
         provides asynchronous and blocking stream-oriented descriptor functionality.
       </p>
 <a name="boost_asio.reference.posix__basic_stream_descriptor.thread_safety"></a><h5>
-<a name="id1272467"></a>
+<a name="boost_asio.reference.posix__basic_stream_descriptor.thread_safety-heading"></a>
         <a class="link" href="posix__basic_stream_descriptor.html#boost_asio.reference.posix__basic_stream_descriptor.thread_safety">Thread
         Safety</a>
       </h5>
@@ -398,7 +519,7 @@
         Unsafe.
       </p>
 <a name="boost_asio.reference.posix__basic_stream_descriptor.requirements"></a><h5>
-<a name="id1272520"></a>
+<a name="boost_asio.reference.posix__basic_stream_descriptor.requirements-heading"></a>
         <a class="link" href="posix__basic_stream_descriptor.html#boost_asio.reference.posix__basic_stream_descriptor.requirements">Requirements</a>
       </h5>
 <p>
@@ -410,7 +531,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

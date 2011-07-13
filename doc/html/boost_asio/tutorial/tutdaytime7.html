@@ -32,7 +32,7 @@
         we have just written, into a single server application.
       </p>
 <a name="boost_asio.tutorial.tutdaytime7.the_main___function"></a><h5>
-<a name="id817173"></a>
+<a name="boost_asio.tutorial.tutdaytime7.the_main___function-heading"></a>
         <a class="link" href="tutdaytime7.html#boost_asio.tutorial.tutdaytime7.the_main___function">The main()
         function</a>
       </h5>
@@ -67,7 +67,7 @@
 <span class="special">}</span>
 </pre>
 <a name="boost_asio.tutorial.tutdaytime7.the_tcp_connection_and_tcp_server_classes"></a><h5>
-<a name="id817512"></a>
+<a name="boost_asio.tutorial.tutdaytime7.the_tcp_connection_and_tcp_server_classes-heading"></a>
         <a class="link" href="tutdaytime7.html#boost_asio.tutorial.tutdaytime7.the_tcp_connection_and_tcp_server_classes">The
         tcp_connection and tcp_server classes</a>
       </h5>
@@ -126,7 +126,7 @@
   <span class="keyword">void</span> <span class="identifier">start_accept</span><span class="special">()</span>
   <span class="special">{</span>
     <span class="identifier">tcp_connection</span><span class="special">::</span><span class="identifier">pointer</span> <span class="identifier">new_connection</span> <span class="special">=</span>
-      <span class="identifier">tcp_connection</span><span class="special">::</span><span class="identifier">create</span><span class="special">(</span><span class="identifier">acceptor_</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">());</span>
+      <span class="identifier">tcp_connection</span><span class="special">::</span><span class="identifier">create</span><span class="special">(</span><span class="identifier">acceptor_</span><span class="special">.</span><span class="identifier">get_io_service</span><span class="special">());</span>
 
     <span class="identifier">acceptor_</span><span class="special">.</span><span class="identifier">async_accept</span><span class="special">(</span><span class="identifier">new_connection</span><span class="special">-&gt;</span><span class="identifier">socket</span><span class="special">(),</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">tcp_server</span><span class="special">::</span><span class="identifier">handle_accept</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">new_connection</span><span class="special">,</span>
@@ -139,15 +139,16 @@
     <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">error</span><span class="special">)</span>
     <span class="special">{</span>
       <span class="identifier">new_connection</span><span class="special">-&gt;</span><span class="identifier">start</span><span class="special">();</span>
-      <span class="identifier">start_accept</span><span class="special">();</span>
     <span class="special">}</span>
+
+    <span class="identifier">start_accept</span><span class="special">();</span>
   <span class="special">}</span>
 
   <span class="identifier">tcp</span><span class="special">::</span><span class="identifier">acceptor</span> <span class="identifier">acceptor_</span><span class="special">;</span>
 <span class="special">};</span>
 </pre>
 <a name="boost_asio.tutorial.tutdaytime7.the_udp_server_class"></a><h5>
-<a name="id818729"></a>
+<a name="boost_asio.tutorial.tutdaytime7.the_udp_server_class-heading"></a>
         <a class="link" href="tutdaytime7.html#boost_asio.tutorial.tutdaytime7.the_udp_server_class">The
         udp_server class</a>
       </h5>
@@ -209,7 +210,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_random.html" title="Chapter&#160;16.&#160;Boost.Random">
-<link rel="prev" href="../boost_random.html" title="Chapter&#160;16.&#160;Boost.Random">
+<link rel="up" href="../boost_random.html" title="Chapter&#160;17.&#160;Boost.Random">
+<link rel="prev" href="../boost_random.html" title="Chapter&#160;17.&#160;Boost.Random">
 <link rel="next" href="reference.html" title="Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -31,6 +31,8 @@
       integers in a range</a></span></dt>
 <dt><span class="section"><a href="tutorial.html#boost_random.tutorial.generating_integers_with_different_probabilities">Generating
       integers with different probabilities</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_random.tutorial.generating_a_random_password">Generating
+      a random password</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -39,27 +41,27 @@
 </h3></div></div></div>
 <p>
         For the source of this example see <a href="../../..//libs/random/example/die.cpp" target="_top">die.cpp</a>.
-        First we include the headers we need for <code class="computeroutput"><a class="link" href="../boost/mt19937.html" title="Type definition mt19937">mt19937</a></code>
-        and <code class="computeroutput"><a class="link" href="../boost/uniform_int.html" title="Class template uniform_int">uniform_int</a></code>.
+        First we include the headers we need for <code class="computeroutput"><a class="link" href="../boost/random/mt19937.html" title="Type definition mt19937">mt19937</a></code>
+        and <code class="computeroutput"><a class="link" href="../boost/random/uniform_int_distribution.html" title="Class template uniform_int_distribution">uniform_int_distribution</a></code>.
       </p>
 <p>
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">mersenne_twister</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">uniform_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">variate_generator</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></pre>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">uniform_int_distribution</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></pre>
 <p>
       </p>
 <p>
-        We use <code class="computeroutput"><a class="link" href="../boost/mt19937.html" title="Type definition mt19937">mt19937</a></code> with the default
-        seed as a source of randomness. The numbers produced will be the same every
-        time the program is run. One common method to change this is to seed with
-        the current time (<code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">time</span><span class="special">(</span><span class="number">0</span><span class="special">)</span></code> defined in ctime).
+        We use <code class="computeroutput"><a class="link" href="../boost/random/mt19937.html" title="Type definition mt19937">mt19937</a></code> with the
+        default seed as a source of randomness. The numbers produced will be the
+        same every time the program is run. One common method to change this is to
+        seed with the current time (<code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">time</span><span class="special">(</span><span class="number">0</span><span class="special">)</span></code>
+        defined in ctime).
       </p>
 <p>
         
 </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mt19937</span> <span class="identifier">gen</span><span class="special">;</span></pre>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mt19937</span> <span class="identifier">gen</span><span class="special">;</span></pre>
 <p>
       </p>
 <div class="note"><table border="0" summary="Note">
@@ -80,9 +82,8 @@
         
 </p>
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">roll_die</span><span class="special">()</span> <span class="special">{</span>
-    <a class="co" name="boost_random0co" href="tutorial.html#boost_random0"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uniform_int</span><span class="special">&lt;&gt;</span> <span class="identifier">dist</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="number">6</span><span class="special">);</span>
-    <a class="co" name="boost_random1co" href="tutorial.html#boost_random1"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">variate_generator</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mt19937</span><span class="special">&amp;,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">uniform_int</span><span class="special">&lt;&gt;</span> <span class="special">&gt;</span> <span class="identifier">die</span><span class="special">(</span><span class="identifier">gen</span><span class="special">,</span> <span class="identifier">dist</span><span class="special">);</span>
-    <a class="co" name="boost_random2co" href="tutorial.html#boost_random2"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a><span class="keyword">return</span> <span class="identifier">die</span><span class="special">();</span>
+    <a class="co" name="boost_random0co" href="tutorial.html#boost_random0"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">uniform_int_distribution</span><span class="special">&lt;&gt;</span> <span class="identifier">dist</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="number">6</span><span class="special">);</span>
+    <a class="co" name="boost_random1co" href="tutorial.html#boost_random1"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a><span class="keyword">return</span> <span class="identifier">dist</span><span class="special">(</span><span class="identifier">gen</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -92,9 +93,9 @@
 <td width="5%" valign="top" align="left"><p><a name="boost_random0"></a><a href="#boost_random0co"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
 <td valign="top" align="left">
 <p>
-            <code class="computeroutput"><a class="link" href="../boost/mt19937.html" title="Type definition mt19937">mt19937</a></code> produces integers
-            in the range [0, 2<sup>32</sup>-1]. However, we want numbers in the range [1, 6].
-            The distribution <code class="computeroutput"><a class="link" href="../boost/uniform_int.html" title="Class template uniform_int">uniform_int</a></code>
+            <code class="computeroutput"><a class="link" href="../boost/random/mt19937.html" title="Type definition mt19937">mt19937</a></code> produces
+            integers in the range [0, 2<sup>32</sup>-1]. However, we want numbers in the range
+            [1, 6]. The distribution <code class="computeroutput"><a class="link" href="../boost/random/uniform_int_distribution.html" title="Class template uniform_int_distribution">uniform_int_distribution</a></code>
             performs this transformation.
           </p>
 <div class="warning"><table border="0" summary="Warning">
@@ -103,42 +104,20 @@
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-              Contrary to common C++ usage <code class="computeroutput"><a class="link" href="../boost/uniform_int.html" title="Class template uniform_int">uniform_int</a></code>
+              Contrary to common C++ usage <code class="computeroutput"><a class="link" href="../boost/random/uniform_int_distribution.html" title="Class template uniform_int_distribution">uniform_int_distribution</a></code>
               does not take a <span class="emphasis"><em>half-open range</em></span>. Instead it takes
               a <span class="emphasis"><em>closed range</em></span>. Given the parameters 1 and 6,
-              <code class="computeroutput"><a class="link" href="../boost/uniform_int.html" title="Class template uniform_int">uniform_int</a></code> can can
-              produce any of the values 1, 2, 3, 4, 5, or 6.
+              <code class="computeroutput"><a class="link" href="../boost/random/uniform_int_distribution.html" title="Class template uniform_int_distribution">uniform_int_distribution</a></code>
+              can can produce any of the values 1, 2, 3, 4, 5, or 6.
             </p></td></tr>
 </table></div>
 </td>
 </tr>
 <tr>
 <td width="5%" valign="top" align="left"><p><a name="boost_random1"></a><a href="#boost_random1co"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
-<td valign="top" align="left">
-<p>
-            <code class="computeroutput"><a class="link" href="../boost/variate_generator.html" title="Class template variate_generator">variate_generator</a></code>
-            combines a generator with a distribution.
-          </p>
-<div class="important"><table border="0" summary="Important">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../doc/src/images/important.png"></td>
-<th align="left">Important</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-              We pass <code class="computeroutput"><a class="link" href="../boost/mt19937.html" title="Type definition mt19937">boost::mt19937&amp;</a></code>
-              to <code class="computeroutput"><a class="link" href="../boost/variate_generator.html" title="Class template variate_generator">variate_generator</a></code>
-              instead of just <code class="computeroutput"><a class="link" href="../boost/mt19937.html" title="Type definition mt19937">boost::mt19937</a></code>
-              (note the reference). Without the reference, <code class="computeroutput"><a class="link" href="../boost/variate_generator.html" title="Class template variate_generator">variate_generator</a></code>
-              would make a copy of the generator and would leave the global <code class="computeroutput"><span class="identifier">gen</span></code> unchanged. Consequently, <code class="computeroutput"><span class="identifier">roll_die</span></code> would produce <span class="bold"><strong>the same value</strong></span> every time it was called.
-            </p></td></tr>
-</table></div>
-</td>
-</tr>
-<tr>
-<td width="5%" valign="top" align="left"><p><a name="boost_random2"></a><a href="#boost_random2co"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-            A <code class="computeroutput"><a class="link" href="../boost/variate_generator.html" title="Class template variate_generator">variate_generator</a></code>
-            is a function object.
+            A distribution is a function object. We generate a random number by calling
+            <code class="computeroutput"><span class="identifier">dist</span></code> with the generator.
           </p></td>
 </tr>
 </table></div>
@@ -155,11 +134,7 @@
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">mersenne_twister</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">uniform_real</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">variate_generator</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">numeric</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">discrete_distribution</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mt19937</span> <span class="identifier">gen</span><span class="special">;</span></pre>
 <p>
@@ -169,45 +144,113 @@
         The other five faces are all equally likely.
       </p>
 <p>
+        <code class="computeroutput"><a class="link" href="../boost/random/discrete_distribution.html" title="Class template discrete_distribution">discrete_distribution</a></code>
+        works nicely here by allowing us to assign weights to each of the possible
+        outcomes.
+      </p>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../doc/src/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          If your compiler supports <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">initializer_list</span></code>,
+          you can initialize <code class="computeroutput"><a class="link" href="../boost/random/discrete_distribution.html" title="Class template discrete_distribution">discrete_distribution</a></code>
+          directly with the weights.
+        </p></td></tr>
+</table></div>
+<p>
         
 </p>
-<pre class="programlisting"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> <span class="identifier">probabilities</span><span class="special">[]</span> <span class="special">=</span> <span class="special">{</span>
+<pre class="programlisting"><span class="keyword">double</span> <span class="identifier">probabilities</span><span class="special">[]</span> <span class="special">=</span> <span class="special">{</span>
     <span class="number">0.5</span><span class="special">,</span> <span class="number">0.1</span><span class="special">,</span> <span class="number">0.1</span><span class="special">,</span> <span class="number">0.1</span><span class="special">,</span> <span class="number">0.1</span><span class="special">,</span> <span class="number">0.1</span>
-<span class="special">};</span></pre>
+<span class="special">};</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">discrete_distribution</span><span class="special">&lt;&gt;</span> <span class="identifier">dist</span><span class="special">(</span><span class="identifier">probabilities</span><span class="special">);</span></pre>
 <p>
       </p>
 <p>
-        Now define a function that simulates rolling this die. Note that the C++0x
-        library contains a <code class="computeroutput"><span class="identifier">discrete_distribution</span></code>
-        class which would be a better way to do this.
+        Now define a function that simulates rolling this die.
       </p>
 <p>
         
 </p>
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">roll_weighted_die</span><span class="special">()</span> <span class="special">{</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">cumulative</span><span class="special">;</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">partial_sum</span><span class="special">(&amp;</span><span class="identifier">probabilities</span><span class="special">[</span><span class="number">0</span><span class="special">],</span> <span class="special">&amp;</span><span class="identifier">probabilities</span><span class="special">[</span><span class="number">0</span><span class="special">]</span> <span class="special">+</span> <span class="number">6</span><span class="special">,</span>
-                     <span class="identifier">std</span><span class="special">::</span><span class="identifier">back_inserter</span><span class="special">(</span><span class="identifier">cumulative</span><span class="special">));</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">uniform_real</span><span class="special">&lt;&gt;</span> <span class="identifier">dist</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">cumulative</span><span class="special">.</span><span class="identifier">back</span><span class="special">());</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variate_generator</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mt19937</span><span class="special">&amp;,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">uniform_real</span><span class="special">&lt;&gt;</span> <span class="special">&gt;</span> <span class="identifier">die</span><span class="special">(</span><span class="identifier">gen</span><span class="special">,</span> <span class="identifier">dist</span><span class="special">);</span>
-    <a class="co" name="boost_random3co" href="tutorial.html#boost_random3"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="keyword">return</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">lower_bound</span><span class="special">(</span><span class="identifier">cumulative</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">cumulative</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">die</span><span class="special">())</span> <span class="special">-</span> <span class="identifier">cumulative</span><span class="special">.</span><span class="identifier">begin</span><span class="special">())</span> <span class="special">+</span> <span class="number">1</span><span class="special">;</span>
+    <a class="co" name="boost_random2co" href="tutorial.html#boost_random2"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="keyword">return</span> <span class="identifier">dist</span><span class="special">(</span><span class="identifier">gen</span><span class="special">)</span> <span class="special">+</span> <span class="number">1</span><span class="special">;</span>
 <span class="special">}</span>
 
 </pre>
 <p>
       </p>
 <div class="calloutlist"><table border="0" summary="Callout list"><tr>
-<td width="5%" valign="top" align="left"><p><a name="boost_random3"></a><a href="#boost_random3co"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="boost_random2"></a><a href="#boost_random2co"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-            Find the position within the sequence and add 1 (to make sure that the
-            result is in the range [1,6] instead of [0,5])
+            Add 1 to make sure that the result is in the range [1,6] instead of [0,5].
           </p></td>
 </tr></table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_random.tutorial.generating_a_random_password"></a><a class="link" href="tutorial.html#boost_random.tutorial.generating_a_random_password" title="Generating a random password">Generating
+      a random password</a>
+</h3></div></div></div>
+<p>
+        For the source of this example see <a href="../../..//libs/random/example/password.cpp" target="_top">password.cpp</a>.
+      </p>
+<p>
+        This example demonstrates generating a random 8 character password.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">random_device</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">uniform_int_distribution</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span> <span class="special">{</span>
+    <a class="co" name="boost_random3co" href="tutorial.html#boost_random3"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">chars</span><span class="special">(</span>
+        <span class="string">"abcdefghijklmnopqrstuvwxyz"</span>
+        <span class="string">"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>
+        <span class="string">"1234567890"</span>
+        <span class="string">"!@#$%^&amp;*()"</span>
+        <span class="string">"`~-_=+[{]{\\|;:'\",&lt;.&gt;/? "</span><span class="special">);</span>
+    <a class="co" name="boost_random4co" href="tutorial.html#boost_random4"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">random_device</span> <span class="identifier">rng</span><span class="special">;</span>
+    <a class="co" name="boost_random5co" href="tutorial.html#boost_random5"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">uniform_int_distribution</span><span class="special">&lt;&gt;</span> <span class="identifier">index_dist</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">chars</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">-</span> <span class="number">1</span><span class="special">);</span>
+    <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">8</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">chars</span><span class="special">[</span><span class="identifier">index_dist</span><span class="special">(</span><span class="identifier">rng</span><span class="special">)];</span>
+    <span class="special">}</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+<span class="special">}</span>
+
+</pre>
+<p>
+      </p>
+<div class="calloutlist"><table border="0" summary="Callout list">
+<tr>
+<td width="5%" valign="top" align="left"><p><a name="boost_random3"></a><a href="#boost_random3co"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td valign="top" align="left"><p>
+            We first define the characters that we're going to allow. This is pretty
+            much just the characters on a standard keyboard.
+          </p></td>
+</tr>
+<tr>
+<td width="5%" valign="top" align="left"><p><a name="boost_random4"></a><a href="#boost_random4co"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
+<td valign="top" align="left"><p>
+            We use <code class="computeroutput"><a class="link" href="../boost/random/random_device.html" title="Class random_device">random_device</a></code>
+            as a source of entropy, since we want passwords that are not predictable.
+          </p></td>
+</tr>
+<tr>
+<td width="5%" valign="top" align="left"><p><a name="boost_random5"></a><a href="#boost_random5co"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
+<td valign="top" align="left"><p>
+            Finally we select 8 random characters from the string and print them
+            to cout.
+          </p></td>
+</tr>
+</table></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2000 -2005 Jens Maurer, 2009 Steven Watanabe<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2000-2005 Jens Maurer<br>Copyright &#169; 2009, 2010 Steven Watanabe<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

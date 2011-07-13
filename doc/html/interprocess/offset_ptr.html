@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../interprocess.html" title="Chapter&#160;9.&#160;Boost.Interprocess">
+<link rel="up" href="../interprocess.html" title="Chapter&#160;10.&#160;Boost.Interprocess">
 <link rel="prev" href="sharedmemorybetweenprocesses.html" title="Sharing memory between processes">
 <link rel="next" href="synchronization_mechanisms.html" title="Synchronization mechanisms">
 </head>
@@ -32,25 +32,25 @@ processes the memory segment can be mapped in a different address in each proces
     </p>
 <pre class="programlisting"><span class="preprocessor">#include</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">shared_memory_object</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
-<span class="comment">// ...
-</span>
+<span class="comment">// ...</span>
+
 <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">;</span>
 
-<span class="comment">//Open a shared memory segment
-</span><span class="identifier">shared_memory_object</span> <span class="identifier">shm_obj</span>
-   <span class="special">(</span><span class="identifier">open_only</span>                    <span class="comment">//open or create
-</span>   <span class="special">,</span><span class="string">"shared_memory"</span>              <span class="comment">//name
-</span>   <span class="special">,</span><span class="identifier">read_only</span>   <span class="comment">//read-only mode
-</span>   <span class="special">);</span>
+<span class="comment">//Open a shared memory segment</span>
+<span class="identifier">shared_memory_object</span> <span class="identifier">shm_obj</span>
+   <span class="special">(</span><span class="identifier">open_only</span>                    <span class="comment">//open or create</span>
+   <span class="special">,</span><span class="string">"shared_memory"</span>              <span class="comment">//name</span>
+   <span class="special">,</span><span class="identifier">read_only</span>   <span class="comment">//read-only mode</span>
+   <span class="special">);</span>
 
-<span class="comment">//Map the whole shared memory
-</span><span class="identifier">mapped_region</span> <span class="identifier">region</span>
-   <span class="special">(</span> <span class="identifier">shm</span>                         <span class="comment">//Memory-mappable object
-</span>   <span class="special">,</span> <span class="identifier">read_write</span>                  <span class="comment">//Access mode
-</span>   <span class="special">);</span>   
+<span class="comment">//Map the whole shared memory</span>
+<span class="identifier">mapped_region</span> <span class="identifier">region</span>
+   <span class="special">(</span> <span class="identifier">shm</span>                         <span class="comment">//Memory-mappable object</span>
+   <span class="special">,</span> <span class="identifier">read_write</span>                  <span class="comment">//Access mode</span>
+   <span class="special">);</span>   
 
-<span class="comment">//This address can be different in each process
-</span><span class="keyword">void</span> <span class="special">*</span><span class="identifier">addr</span> <span class="special">=</span> <span class="identifier">region</span><span class="special">.</span><span class="identifier">get_address</span><span class="special">();</span>
+<span class="comment">//This address can be different in each process</span>
+<span class="keyword">void</span> <span class="special">*</span><span class="identifier">addr</span> <span class="special">=</span> <span class="identifier">region</span><span class="special">.</span><span class="identifier">get_address</span><span class="special">();</span>
 </pre>
 <p>
       This makes the creation of complex objects in mapped regions difficult: a C++
@@ -80,24 +80,24 @@ Imagine a structure in a common
     </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">structure</span>
 <span class="special">{</span>
-   <span class="keyword">int</span>               <span class="identifier">integer1</span><span class="special">;</span>   <span class="comment">//The compiler places this at offset 0 in the structure
-</span>   <span class="identifier">offset_ptr</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span>   <span class="identifier">ptr</span><span class="special">;</span>        <span class="comment">//The compiler places this at offset 4 in the structure
-</span>   <span class="keyword">int</span>               <span class="identifier">integer2</span><span class="special">;</span>   <span class="comment">//The compiler places this at offset 8 in the structure
-</span><span class="special">};</span>
+   <span class="keyword">int</span>               <span class="identifier">integer1</span><span class="special">;</span>   <span class="comment">//The compiler places this at offset 0 in the structure</span>
+   <span class="identifier">offset_ptr</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span>   <span class="identifier">ptr</span><span class="special">;</span>        <span class="comment">//The compiler places this at offset 4 in the structure</span>
+   <span class="keyword">int</span>               <span class="identifier">integer2</span><span class="special">;</span>   <span class="comment">//The compiler places this at offset 8 in the structure</span>
+<span class="special">};</span>
 
-<span class="comment">//...
-</span>
+<span class="comment">//...</span>
+
 <span class="identifier">structure</span> <span class="identifier">s</span><span class="special">;</span>
 
-<span class="comment">//Assign the address of "integer1" to "ptr".
-</span><span class="comment">//"ptr" will store internally "-4": 
-</span><span class="comment">//    (char*)&amp;s.integer1 - (char*)&amp;s.ptr;
-</span><span class="identifier">s</span><span class="special">.</span><span class="identifier">ptr</span> <span class="special">=</span> <span class="special">&amp;</span><span class="identifier">s</span><span class="special">.</span><span class="identifier">integer1</span><span class="special">;</span>
+<span class="comment">//Assign the address of "integer1" to "ptr".</span>
+<span class="comment">//"ptr" will store internally "-4": </span>
+<span class="comment">//    (char*)&amp;s.integer1 - (char*)&amp;s.ptr;</span>
+<span class="identifier">s</span><span class="special">.</span><span class="identifier">ptr</span> <span class="special">=</span> <span class="special">&amp;</span><span class="identifier">s</span><span class="special">.</span><span class="identifier">integer1</span><span class="special">;</span>
 
-<span class="comment">//Assign the address of "integer2" to "ptr".
-</span><span class="comment">//"ptr" will store internally "4": 
-</span><span class="comment">//    (char*)&amp;s.integer2 - (char*)&amp;s.ptr;
-</span><span class="identifier">s</span><span class="special">.</span><span class="identifier">ptr</span> <span class="special">=</span> <span class="special">&amp;</span><span class="identifier">s</span><span class="special">.</span><span class="identifier">integer2</span><span class="special">;</span>
+<span class="comment">//Assign the address of "integer2" to "ptr".</span>
+<span class="comment">//"ptr" will store internally "4": </span>
+<span class="comment">//    (char*)&amp;s.integer2 - (char*)&amp;s.ptr;</span>
+<span class="identifier">s</span><span class="special">.</span><span class="identifier">ptr</span> <span class="special">=</span> <span class="special">&amp;</span><span class="identifier">s</span><span class="special">.</span><span class="identifier">integer2</span><span class="special">;</span>
 </pre>
 <p>
       One of the big problems of 
@@ -128,18 +128,18 @@ after its own <span class="emphasis"><em>this</em></span> pointer:
 
 <span class="identifier">offset_ptr</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;</span> <span class="identifier">ptr</span><span class="special">;</span>
 
-<span class="comment">//Pointing to the next byte of it's own address
-</span><span class="comment">//marks the smart pointer as null.
-</span><span class="identifier">ptr</span> <span class="special">=</span> <span class="special">(</span><span class="keyword">char</span><span class="special">*)&amp;</span><span class="identifier">ptr</span> <span class="special">+</span> <span class="number">1</span><span class="special">;</span>
+<span class="comment">//Pointing to the next byte of it's own address</span>
+<span class="comment">//marks the smart pointer as null.</span>
+<span class="identifier">ptr</span> <span class="special">=</span> <span class="special">(</span><span class="keyword">char</span><span class="special">*)&amp;</span><span class="identifier">ptr</span> <span class="special">+</span> <span class="number">1</span><span class="special">;</span>
 
-<span class="comment">//ptr is equal to null
-</span><span class="identifier">assert</span><span class="special">(!</span><span class="identifier">ptr</span><span class="special">);</span>
+<span class="comment">//ptr is equal to null</span>
+<span class="identifier">assert</span><span class="special">(!</span><span class="identifier">ptr</span><span class="special">);</span>
 
-<span class="comment">//This is the same as assigning the null value...
-</span><span class="identifier">ptr</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+<span class="comment">//This is the same as assigning the null value...</span>
+<span class="identifier">ptr</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
 
-<span class="comment">//ptr is also equal to null
-</span><span class="identifier">assert</span><span class="special">(!</span><span class="identifier">ptr</span><span class="special">);</span>
+<span class="comment">//ptr is also equal to null</span>
+<span class="identifier">assert</span><span class="special">(!</span><span class="identifier">ptr</span><span class="special">);</span>
 </pre>
 <p>
       In practice, this limitation is not important, since a user almost never
@@ -156,7 +156,7 @@ For more information about the members and operations of the class, see
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 - 2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

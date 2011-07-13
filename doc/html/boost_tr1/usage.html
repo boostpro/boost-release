@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_tr1.html" title="Chapter&#160;23.&#160;Boost.TR1">
-<link rel="prev" href="../boost_tr1.html" title="Chapter&#160;23.&#160;Boost.TR1">
+<link rel="up" href="../boost_tr1.html" title="Chapter&#160;25.&#160;Boost.TR1">
+<link rel="prev" href="../boost_tr1.html" title="Chapter&#160;25.&#160;Boost.TR1">
 <link rel="next" href="config.html" title="Configuration">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -169,14 +169,15 @@
         Boost.TR1 is exactly the same as code written to use a native tr1 implementation.
         That is, references to classes and functions need to explicitly use the
         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span></code> namespace or a <code class="computeroutput"><span class="keyword">using</span>
-        <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span></code> statement. For example,
+        <span class="keyword">namespace</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span></code> statement.
+        For example,
       </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">t</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">make_tuple</span><span class="special">(</span><span class="number">10</span><span class="special">,</span> <span class="string">"hello"</span><span class="special">);</span>
 </pre>
 <p>
         or
       </p>
-<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">;</span>
 <span class="identifier">tuple</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">t</span> <span class="special">=</span> <span class="identifier">make_tuple</span><span class="special">(</span><span class="number">10</span><span class="special">,</span> <span class="string">"hello"</span><span class="special">);</span>
 </pre>
 </div>

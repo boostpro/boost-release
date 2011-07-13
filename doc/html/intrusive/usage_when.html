@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
 <link rel="prev" href="usage.html" title="How to use Boost.Intrusive">
 <link rel="next" href="concepts_summary.html" title="Concept summary">
 </head>
@@ -91,29 +91,29 @@
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
-<span class="comment">//An abstract class that can be inserted in an intrusive list
-</span><span class="keyword">class</span> <span class="identifier">Window</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">list_base_hook</span><span class="special">&lt;&gt;</span>
+<span class="comment">//An abstract class that can be inserted in an intrusive list</span>
+<span class="keyword">class</span> <span class="identifier">Window</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">list_base_hook</span><span class="special">&lt;&gt;</span>
 <span class="special">{</span>
    <span class="keyword">public</span><span class="special">:</span>
-   <span class="comment">//This is a container those value is an abstract class: you can't do this with std::list.
-</span>   <span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Window</span><span class="special">&gt;</span> <span class="identifier">win_list</span><span class="special">;</span>
+   <span class="comment">//This is a container those value is an abstract class: you can't do this with std::list.</span>
+   <span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">Window</span><span class="special">&gt;</span> <span class="identifier">win_list</span><span class="special">;</span>
 
-   <span class="comment">//A static intrusive list declaration
-</span>   <span class="keyword">static</span> <span class="identifier">win_list</span> <span class="identifier">all_windows</span><span class="special">;</span>
+   <span class="comment">//A static intrusive list declaration</span>
+   <span class="keyword">static</span> <span class="identifier">win_list</span> <span class="identifier">all_windows</span><span class="special">;</span>
 
-   <span class="comment">//Constructor. Includes this window in the list
-</span>   <span class="identifier">Window</span><span class="special">()</span>             <span class="special">{</span>  <span class="identifier">all_windows</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(*</span><span class="keyword">this</span><span class="special">);</span>  <span class="special">}</span>
-   <span class="comment">//Destructor. Removes this node from the list
-</span>   <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">Window</span><span class="special">()</span>    <span class="special">{</span>  <span class="identifier">all_windows</span><span class="special">.</span><span class="identifier">erase</span><span class="special">(</span><span class="identifier">win_list</span><span class="special">::</span><span class="identifier">s_iterator_to</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>  <span class="special">}</span> 
-   <span class="comment">//Pure virtual function to be implemented by derived classes
-</span>   <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">Paint</span><span class="special">()</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+   <span class="comment">//Constructor. Includes this window in the list</span>
+   <span class="identifier">Window</span><span class="special">()</span>             <span class="special">{</span>  <span class="identifier">all_windows</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(*</span><span class="keyword">this</span><span class="special">);</span>  <span class="special">}</span>
+   <span class="comment">//Destructor. Removes this node from the list</span>
+   <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">Window</span><span class="special">()</span>    <span class="special">{</span>  <span class="identifier">all_windows</span><span class="special">.</span><span class="identifier">erase</span><span class="special">(</span><span class="identifier">win_list</span><span class="special">::</span><span class="identifier">s_iterator_to</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>  <span class="special">}</span> 
+   <span class="comment">//Pure virtual function to be implemented by derived classes</span>
+   <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">Paint</span><span class="special">()</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="comment">//The static intrusive list declaration
-</span><span class="identifier">Window</span><span class="special">::</span><span class="identifier">win_list</span> <span class="identifier">Window</span><span class="special">::</span><span class="identifier">all_windows</span><span class="special">;</span>
+<span class="comment">//The static intrusive list declaration</span>
+<span class="identifier">Window</span><span class="special">::</span><span class="identifier">win_list</span> <span class="identifier">Window</span><span class="special">::</span><span class="identifier">all_windows</span><span class="special">;</span>
 
-<span class="comment">//Some Window derived classes
-</span><span class="keyword">class</span> <span class="identifier">FrameWindow</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">Window</span>
+<span class="comment">//Some Window derived classes</span>
+<span class="keyword">class</span> <span class="identifier">FrameWindow</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">Window</span>
 <span class="special">{</span>  <span class="keyword">void</span> <span class="identifier">Paint</span><span class="special">(){/**/}</span> <span class="special">};</span>
 
 <span class="keyword">class</span> <span class="identifier">EditWindow</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">Window</span>
@@ -122,8 +122,8 @@
 <span class="keyword">class</span> <span class="identifier">CanvasWindow</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">Window</span>
 <span class="special">{</span>  <span class="keyword">void</span> <span class="identifier">Paint</span><span class="special">(){/**/}</span> <span class="special">};</span>
 
-<span class="comment">//A function that prints all windows stored in the intrusive list
-</span><span class="keyword">void</span> <span class="identifier">paint_all_windows</span><span class="special">()</span>
+<span class="comment">//A function that prints all windows stored in the intrusive list</span>
+<span class="keyword">void</span> <span class="identifier">paint_all_windows</span><span class="special">()</span>
 <span class="special">{</span>
    <span class="keyword">for</span><span class="special">(</span><span class="identifier">Window</span><span class="special">::</span><span class="identifier">win_list</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">i</span><span class="special">(</span><span class="identifier">Window</span><span class="special">::</span><span class="identifier">all_windows</span><span class="special">.</span><span class="identifier">begin</span><span class="special">())</span>
                                 <span class="special">,</span> <span class="identifier">e</span><span class="special">(</span><span class="identifier">Window</span><span class="special">::</span><span class="identifier">all_windows</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span>
@@ -131,31 +131,31 @@
       <span class="identifier">i</span><span class="special">-&gt;</span><span class="identifier">Paint</span><span class="special">();</span>
 <span class="special">}</span>
 
-<span class="comment">//...
-</span>
-<span class="comment">//A class derived from Window
-</span><span class="keyword">class</span> <span class="identifier">MainWindow</span>  <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">Window</span>
+<span class="comment">//...</span>
+
+<span class="comment">//A class derived from Window</span>
+<span class="keyword">class</span> <span class="identifier">MainWindow</span>  <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">Window</span>
 <span class="special">{</span>
-   <span class="identifier">FrameWindow</span>   <span class="identifier">frame_</span><span class="special">;</span>  <span class="comment">//these are derived from Window too
-</span>   <span class="identifier">EditWindow</span>    <span class="identifier">edit_</span><span class="special">;</span>
+   <span class="identifier">FrameWindow</span>   <span class="identifier">frame_</span><span class="special">;</span>  <span class="comment">//these are derived from Window too</span>
+   <span class="identifier">EditWindow</span>    <span class="identifier">edit_</span><span class="special">;</span>
    <span class="identifier">CanvasWindow</span>  <span class="identifier">canvas_</span><span class="special">;</span>
 
    <span class="keyword">public</span><span class="special">:</span>
    <span class="keyword">void</span> <span class="identifier">Paint</span><span class="special">(){/**/}</span>
-   <span class="comment">//...
-</span><span class="special">};</span>
+   <span class="comment">//...</span>
+<span class="special">};</span>
 
-<span class="comment">//Main function
-</span><span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="comment">//Main function</span>
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//When a Window class is created, is automatically registered in the global list
-</span>   <span class="identifier">MainWindow</span> <span class="identifier">window</span><span class="special">;</span>
+   <span class="comment">//When a Window class is created, is automatically registered in the global list</span>
+   <span class="identifier">MainWindow</span> <span class="identifier">window</span><span class="special">;</span>
 
-   <span class="comment">//Paint all the windows, sub-windows and so on
-</span>   <span class="identifier">paint_all_windows</span><span class="special">();</span> 
+   <span class="comment">//Paint all the windows, sub-windows and so on</span>
+   <span class="identifier">paint_all_windows</span><span class="special">();</span> 
 
-   <span class="comment">//All the windows are automatically unregistered in their destructors.
-</span>   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+   <span class="comment">//All the windows are automatically unregistered in their destructors.</span>
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -170,7 +170,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

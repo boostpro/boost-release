@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="SettableSocketOption.html" title="Settable socket option requirements">
+<link rel="prev" href="SignalSetService.html" title="Signal set service requirements">
 <link rel="next" href="SocketService.html" title="Socket service requirements">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="SettableSocketOption.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="SocketService.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="SignalSetService.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="SocketService.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -34,12 +34,13 @@
 <p>
         In the table below, <code class="computeroutput"><span class="identifier">X</span></code> denotes
         a socket acceptor service class for protocol <a class="link" href="Protocol.html" title="Protocol requirements"><code class="computeroutput"><span class="identifier">Protocol</span></code></a>, <code class="computeroutput"><span class="identifier">a</span></code>
-        denotes a value of type <code class="computeroutput"><span class="identifier">X</span></code>,
-        <code class="computeroutput"><span class="identifier">b</span></code> denotes a value of type
+        and <code class="computeroutput"><span class="identifier">ao</span></code> denote values of type
+        <code class="computeroutput"><span class="identifier">X</span></code>, <code class="computeroutput"><span class="identifier">b</span></code>
+        and <code class="computeroutput"><span class="identifier">c</span></code> denote values of type
         <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">implementation_type</span></code>, <code class="computeroutput"><span class="identifier">p</span></code>
         denotes a value of type <code class="computeroutput"><span class="identifier">Protocol</span></code>,
         <code class="computeroutput"><span class="identifier">n</span></code> denotes a value of type
-        <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_type</span></code>, <code class="computeroutput"><span class="identifier">e</span></code>
+        <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_handle_type</span></code>, <code class="computeroutput"><span class="identifier">e</span></code>
         denotes a value of type <code class="computeroutput"><span class="identifier">Protocol</span><span class="special">::</span><span class="identifier">endpoint</span></code>,
         <code class="computeroutput"><span class="identifier">ec</span></code> denotes a value of type
         <code class="computeroutput"><span class="identifier">error_code</span></code>, <code class="computeroutput"><span class="identifier">s</span></code> denotes a value meeting <a class="link" href="SettableSocketOption.html" title="Settable socket option requirements"><code class="computeroutput"><span class="identifier">SettableSocketOption</span></code></a> requirements,
@@ -57,7 +58,7 @@
         denote identifiers.
       </p>
 <div class="table">
-<a name="id860552"></a><p class="title"><b>Table&#160;26.&#160;SocketAcceptorService requirements</b></p>
+<a name="id871468"></a><p class="title"><b>Table&#160;28.&#160;SocketAcceptorService requirements</b></p>
 <div class="table-contents"><table class="table" summary="SocketAcceptorService requirements">
 <colgroup>
 <col>
@@ -85,7 +86,7 @@
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_type</span></code>
+                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_handle_type</span></code>
                 </p>
               </td>
 <td>
@@ -127,6 +128,49 @@
                   requirements. Implicitly cancels asynchronous operations, as if
                   by calling <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">close</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span>
                   <span class="identifier">ec</span><span class="special">)</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  
+</p>
+<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">move_construct</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">c</span><span class="special">);</span>
+</pre>
+<p>
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  From <a class="link" href="IoObjectService.html" title="I/O object service requirements">IoObjectService</a>
+                  requirements. The underlying native representation is moved from
+                  <code class="computeroutput"><span class="identifier">c</span></code> to <code class="computeroutput"><span class="identifier">b</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  
+</p>
+<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">move_assign</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">ao</span><span class="special">,</span> <span class="identifier">c</span><span class="special">);</span>
+</pre>
+<p>
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  From <a class="link" href="IoObjectService.html" title="I/O object service requirements">IoObjectService</a>
+                  requirements. Implicitly cancels asynchronous operations associated
+                  with <code class="computeroutput"><span class="identifier">b</span></code>, as if by
+                  calling <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">close</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span>
+                  <span class="identifier">ec</span><span class="special">)</span></code>.
+                  Then the underlying native representation is moved from <code class="computeroutput"><span class="identifier">c</span></code> to <code class="computeroutput"><span class="identifier">b</span></code>.
                 </p>
               </td>
 </tr>
@@ -242,14 +286,14 @@
                 <p>
                   
 </p>
-<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">native</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">native_handle</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span>
 </pre>
 <p>
                 </p>
               </td>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_type</span></code>
+                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_handle_type</span></code>
                 </p>
               </td>
 <td>
@@ -495,7 +539,7 @@
                   <span class="special">&amp;&amp;</span> <span class="special">!</span><span class="identifier">k</span><span class="special">.</span><span class="identifier">is_open</span><span class="special">()</span></code>.<br>
                   Initiates an asynchronous accept operation that is performed via
                   the <code class="computeroutput"><span class="identifier">io_service</span></code>
-                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">()</span></code>
+                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">get_io_service</span><span class="special">()</span></code>
                   and behaves according to <a class="link" href="asynchronous_operations.html" title="Requirements on asynchronous operations">asynchronous
                   operation</a> requirements.<br> <br> The program must ensure
                   the objects <code class="computeroutput"><span class="identifier">k</span></code> and
@@ -522,7 +566,7 @@
                   <span class="special">&amp;&amp;</span> <span class="special">!</span><span class="identifier">k</span><span class="special">.</span><span class="identifier">is_open</span><span class="special">()</span></code>.<br>
                   Initiates an asynchronous accept operation that is performed via
                   the <code class="computeroutput"><span class="identifier">io_service</span></code>
-                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">()</span></code>
+                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">get_io_service</span><span class="special">()</span></code>
                   and behaves according to <a class="link" href="asynchronous_operations.html" title="Requirements on asynchronous operations">asynchronous
                   operation</a> requirements.<br> <br> The program must ensure
                   the object <code class="computeroutput"><span class="identifier">k</span></code> is
@@ -537,7 +581,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -545,7 +590,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="SettableSocketOption.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="SocketService.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="SignalSetService.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="SocketService.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

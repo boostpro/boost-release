@@ -5,17 +5,17 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: nondet_random_speed.cpp 60755 2010-03-22 00:45:06Z steven_watanabe $
+ * $Id: nondet_random_speed.cpp 71018 2011-04-05 21:27:52Z steven_watanabe $
  *
  */
 
 #include <iostream>
 #include <string>
 #include <boost/timer.hpp>
-#include <boost/nondet_random.hpp>
+#include <boost/random/random_device.hpp>
 
-// set to your CPU frequency in MHz
-static const double cpu_frequency = 200 * 1e6;
+// set to your CPU frequency
+static const double cpu_frequency = 1.87 * 1e9;
 
 static void show_elapsed(double end, int iter, const std::string & name)
 {
@@ -53,12 +53,8 @@ int main(int argc, char*argv[])
 
   int iter = std::atoi(argv[1]);
 
-#ifdef __linux__
-  boost::random_device dev;
+  boost::random::random_device dev;
   timing<unsigned int>(dev, iter, "random_device");
-#else
-#error The non-deterministic random device is currently available on Linux only.
-#endif
 
   return 0;
 }

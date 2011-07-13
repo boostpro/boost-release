@@ -35,27 +35,61 @@
 <span class="keyword">class</span> <a class="link" href="basic_option.html" title="Class template basic_option">basic_option</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="basic_option.html#boost.program_options.basic_optionconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="basic_option.html#id972495-bb"><span class="identifier">basic_option</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="basic_option.html#id972496-bb"><span class="identifier">basic_option</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> string_key<span class="special">;</span>
-  <span class="keyword">int</span> position_key<span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="identifier">charT</span> <span class="special">&gt;</span> <span class="special">&gt;</span> value<span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="identifier">charT</span> <span class="special">&gt;</span> <span class="special">&gt;</span> original_tokens<span class="special">;</span>
-  <span class="keyword">bool</span> unregistered<span class="special">;</span>
-  <span class="keyword">bool</span> case_insensitive<span class="special">;</span>
+  <a class="link" href="basic_option.html#id1039544-bb"><span class="identifier">basic_option</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_option.html#id1039545-bb"><span class="identifier">basic_option</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="basic_option.html#boost.program_options.basic_optionpublic-data-members">public data members</a></span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="basic_option.html#boost.program_options.basic_option.string_key"><span class="identifier">string_key</span></a><span class="special">;</span>
+  <span class="keyword">int</span> <a class="link" href="basic_option.html#boost.program_options.basic_option.position_key"><span class="identifier">position_key</span></a><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="identifier">charT</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <a class="link" href="basic_option.html#boost.program_options.basic_option.value"><span class="identifier">value</span></a><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="identifier">charT</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <a class="link" href="basic_option.html#boost.program_options.basic_option.original_tokens"><span class="identifier">original_tokens</span></a><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="basic_option.html#boost.program_options.basic_option.unregistered"><span class="identifier">unregistered</span></a><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="basic_option.html#boost.program_options.basic_option.case_insensitive"><span class="identifier">case_insensitive</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id2229802"></a><h2>Description</h2>
+<a name="id2203436"></a><h2>Description</h2>
 <p>Option found in input source. Contains a key and a value. The key, in turn, can be a string (name of an option), or an integer (position in input source) -- in case no name is specified. The latter is only possible for command line. The template parameter specifies the type of char used for storing the option's value. </p>
 <div class="refsect2">
-<a name="id2229813"></a><h3>
+<a name="id2203447"></a><h3>
 <a name="boost.program_options.basic_optionconstruct-copy-destruct"></a><code class="computeroutput">basic_option</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="id972495-bb"></a><span class="identifier">basic_option</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a name="id972496-bb"></a><span class="identifier">basic_option</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> xstring_key<span class="special">,</span> 
+<li class="listitem"><pre class="literallayout"><a name="id1039544-bb"></a><span class="identifier">basic_option</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="id1039545-bb"></a><span class="identifier">basic_option</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> xstring_key<span class="special">,</span> 
              <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&gt;</span> <span class="special">&amp;</span> xvalue<span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="id2203605"></a><h3>
+<a name="boost.program_options.basic_optionpublic-data-members"></a><code class="computeroutput">basic_option</code> 
+        public
+       public data members</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="boost.program_options.basic_option.string_key"></a><span class="identifier">string_key</span><span class="special">;</span></pre>
+<p>String key of this option. Intentionally independent of the template parameter. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">int</span> <a name="boost.program_options.basic_option.position_key"></a><span class="identifier">position_key</span><span class="special">;</span></pre>
+<p>Position key of this option. All options without an explicit name are sequentially numbered starting from 0. If an option has explicit name, 'position_key' is equal to -1. It is possible that both position_key and string_key is specified, in case name is implicitly added. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="identifier">charT</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <a name="boost.program_options.basic_option.value"></a><span class="identifier">value</span><span class="special">;</span></pre>
+<p>Option's value </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="identifier">charT</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <a name="boost.program_options.basic_option.original_tokens"></a><span class="identifier">original_tokens</span><span class="special">;</span></pre>
+<p>The original unchanged tokens this option was created from. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="boost.program_options.basic_option.unregistered"></a><span class="identifier">unregistered</span><span class="special">;</span></pre>
+<p>True if option was not recognized. In that case, 'string_key' and 'value' are results of purely syntactic parsing of source. The original tokens can be recovered from the "original_tokens" member. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="boost.program_options.basic_option.case_insensitive"></a><span class="identifier">case_insensitive</span><span class="special">;</span></pre>
+<p>True if string_key has to be handled case insensitive. </p>
+</li>
 </ol></div>
 </div>
 </div>

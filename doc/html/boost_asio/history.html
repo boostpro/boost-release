@@ -26,8 +26,240 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_asio.history"></a><a class="link" href="history.html" title="Revision History">Revision History</a>
 </h2></div></div></div>
+<a name="boost_asio.history.asio_1_6_0___boost_1_47"></a><h4>
+<a name="boost_asio.history.asio_1_6_0___boost_1_47-heading"></a>
+      <a class="link" href="history.html#boost_asio.history.asio_1_6_0___boost_1_47">Asio 1.6.0 / Boost
+      1.47</a>
+    </h4>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          Added support for signal handling, using a new class called <code class="computeroutput"><span class="identifier">signal_set</span></code>. Programs may add one or more
+          signals to the set, and then perform an <code class="computeroutput"><span class="identifier">async_wait</span><span class="special">()</span></code> operation. The specified handler will
+          be called when one of the signals occurs. The same signal number may be
+          registered with multiple <code class="computeroutput"><span class="identifier">signal_set</span></code>
+          objects, however the signal number must be used only with Asio. Addresses
+          <a href="https://svn.boost.org/trac/boost/ticket/2879" target="_top">#2879</a>.
+        </li>
+<li class="listitem">
+          Added handler tracking, a new debugging aid. When enabled by defining
+          <code class="computeroutput"><span class="identifier">BOOST_ASIO_ENABLE_HANDLER_TRACKING</span></code>,
+          Asio writes debugging output to the standard error stream. The output records
+          asynchronous operations and the relationships between their handlers. It
+          may be post-processed using the included <code class="literal">handlerviz.pl</code>
+          tool to create a visual representation of the handlers (requires GraphViz).
+        </li>
+<li class="listitem">
+          Added support for timeouts on socket iostreams, such as <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">iostream</span></code>.
+          A timeout is set by calling <code class="computeroutput"><span class="identifier">expires_at</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">expires_from_now</span><span class="special">()</span></code> to establish a deadline. Any socket operations
+          which occur past the deadline will put the iostream into a bad state.
+        </li>
+<li class="listitem">
+          Added a new <code class="computeroutput"><span class="identifier">error</span><span class="special">()</span></code>
+          member function to socket iostreams, for retrieving the error code from
+          the most recent system call.
+        </li>
+<li class="listitem">
+          Added a new <code class="computeroutput"><span class="identifier">basic_deadline_timer</span><span class="special">::</span><span class="identifier">cancel_one</span><span class="special">()</span></code> function. This function lets you cancel
+          a single waiting handler on a timer. Handlers are cancelled in FIFO order.
+        </li>
+<li class="listitem">
+          Added a new <code class="computeroutput"><span class="identifier">transfer_exactly</span><span class="special">()</span></code> completion condition. This can be used
+          to send or receive a specified number of bytes even if the total size of
+          the buffer (or buffer sequence) is larger.
+        </li>
+<li class="listitem">
+          Added new free functions <code class="computeroutput"><span class="identifier">connect</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">async_connect</span><span class="special">()</span></code>. These operations try each endpoint in
+          a list until the socket is successfully connected, and are useful for creating
+          TCP clients that work with both IPv4 and IPv6.
+        </li>
+<li class="listitem">
+          Extended the <code class="computeroutput"><span class="identifier">buffer_size</span><span class="special">()</span></code> function so that it works for buffer
+          sequences in addition to individual buffers.
+        </li>
+<li class="listitem">
+          Added a new <code class="computeroutput"><span class="identifier">buffer_copy</span><span class="special">()</span></code> function that can be used to copy the
+          raw bytes between individual buffers and buffer sequences.
+        </li>
+<li class="listitem">
+          Added new non-throwing overloads of <code class="computeroutput"><span class="identifier">read</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">read_at</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">write</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">write_at</span><span class="special">()</span></code> that do not require a completion condition.
+        </li>
+<li class="listitem">
+          Added friendlier compiler errors for when a completion handler does not
+          meet the necessary type requirements. When C++0x is available (currently
+          supported for <code class="literal">g++</code> 4.5 or later, and MSVC 10), <code class="computeroutput"><span class="identifier">static_assert</span></code> is also used to generate
+          an informative error message. This checking may be disabled by defining
+          <code class="computeroutput"><span class="identifier">BOOST_ASIO_DISABLE_HANDLER_TYPE_REQUIREMENTS</span></code>.
+        </li>
+<li class="listitem">
+          Added a new, completely rewritten SSL implementation. The new implementation
+          compiles faster, shows substantially improved performance, and supports
+          custom memory allocation and handler invocation. It includes new API features
+          such as certificate verification callbacks and has improved error reporting.
+          The new implementation is source-compatible with the old for most uses.
+          However, if necessary, the old implementation may still be used by defining
+          <code class="computeroutput"><span class="identifier">BOOST_ASIO_ENABLE_OLD_SSL</span></code>.
+          Addresses <a href="https://svn.boost.org/trac/boost/ticket/3702" target="_top">#3702</a>,
+          <a href="https://svn.boost.org/trac/boost/ticket/3958" target="_top">#3958</a>.
+        </li>
+<li class="listitem">
+          Changed the separate compilation support such that, to use Asio's SSL capabilities,
+          you should also include <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">asio</span><span class="special">/</span><span class="identifier">ssl</span><span class="special">/</span><span class="identifier">impl</span><span class="special">/</span><span class="identifier">src</span><span class="special">.</span><span class="identifier">hpp</span></code>
+          in one source file in your program.
+        </li>
+<li class="listitem">
+          Changed the SSL implementation to support build environments where SSL
+          v2 is explicitly disabled (<a href="https://svn.boost.org/trac/boost/ticket/5453" target="_top">#5453</a>).
+        </li>
+<li class="listitem">
+          Made the <code class="computeroutput"><span class="identifier">is_loopback</span><span class="special">()</span></code>,
+          <code class="computeroutput"><span class="identifier">is_unspecified</span><span class="special">()</span></code>
+          and <code class="computeroutput"><span class="identifier">is_multicast</span><span class="special">()</span></code>
+          functions consistently available across the <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address</span></code>,
+          <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v4</span></code> and <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v6</span></code>
+          classes (<a href="https://svn.boost.org/trac/boost/ticket/3939" target="_top">#3939</a>).
+        </li>
+<li class="listitem">
+          Added new <code class="computeroutput"><span class="identifier">non_blocking</span><span class="special">()</span></code> functions for managing the non-blocking
+          behaviour of a socket or descriptor. The <code class="computeroutput"><span class="identifier">io_control</span><span class="special">()</span></code> commands named <code class="computeroutput"><span class="identifier">non_blocking_io</span></code>
+          are now deprecated in favour of these new functions.
+        </li>
+<li class="listitem">
+          Added new <code class="computeroutput"><span class="identifier">native_non_blocking</span><span class="special">()</span></code> functions for managing the non-blocking
+          mode of the underlying socket or descriptor. These functions are intended
+          to allow the encapsulation of arbitrary non-blocking system calls as asynchronous
+          operations, in a way that is transparent to the user of the socket object.
+          The functions have no effect on the behaviour of the synchronous operations
+          of the socket or descriptor.
+        </li>
+<li class="listitem">
+          Added the <code class="computeroutput"><span class="identifier">io_control</span><span class="special">()</span></code>
+          member function for socket acceptors (<a href="https://svn.boost.org/trac/boost/ticket/3297" target="_top">#3297</a>).
+        </li>
+<li class="listitem">
+          Added a <code class="computeroutput"><span class="identifier">release</span><span class="special">()</span></code>
+          member function to posix descriptors. This function releases ownership
+          of the underlying native descriptor to the caller. Addresses <a href="https://svn.boost.org/trac/boost/ticket/3900" target="_top">#3900</a>.
+        </li>
+<li class="listitem">
+          Added support for sequenced packet sockets (<code class="computeroutput"><span class="identifier">SOCK_SEQPACKET</span></code>).
+        </li>
+<li class="listitem">
+          Added a new <code class="computeroutput"><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">stopped</span><span class="special">()</span></code> function that can be used to determine
+          whether the <code class="computeroutput"><span class="identifier">io_service</span></code>
+          has stopped (i.e. a <code class="computeroutput"><span class="identifier">reset</span><span class="special">()</span></code> call is needed prior to any further calls
+          to <code class="computeroutput"><span class="identifier">run</span><span class="special">()</span></code>,
+          <code class="computeroutput"><span class="identifier">run_one</span><span class="special">()</span></code>,
+          <code class="computeroutput"><span class="identifier">poll</span><span class="special">()</span></code>
+          or <code class="computeroutput"><span class="identifier">poll_one</span><span class="special">()</span></code>).
+        </li>
+<li class="listitem">
+          For consistency with the C++0x standard library, deprecated the <code class="computeroutput"><span class="identifier">native_type</span></code> typedefs in favour of <code class="computeroutput"><span class="identifier">native_handle_type</span></code>, and the <code class="computeroutput"><span class="identifier">native</span><span class="special">()</span></code>
+          member functions in favour of <code class="computeroutput"><span class="identifier">native_handle</span><span class="special">()</span></code>.
+        </li>
+<li class="listitem">
+          Added support for C++0x move construction and assignment to sockets, serial
+          ports, POSIX descriptors and Windows handles.
+        </li>
+<li class="listitem">
+          Reduced the copying of handler function objects.
+        </li>
+<li class="listitem">
+          Added support for C++0x move construction to further reduce (and in some
+          cases eliminate) copying of handler objects.
+        </li>
+<li class="listitem">
+          Added support for the <code class="computeroutput"><span class="identifier">fork</span><span class="special">()</span></code> system call. Programs that use <code class="computeroutput"><span class="identifier">fork</span><span class="special">()</span></code>
+          must call <code class="computeroutput"><span class="identifier">io_service</span><span class="special">.</span><span class="identifier">notify_fork</span><span class="special">()</span></code>
+          at the appropriate times. Two new examples have been added showing how
+          to use this feature. Addresses <a href="https://svn.boost.org/trac/boost/ticket/3238" target="_top">#3238</a>,
+          <a href="https://svn.boost.org/trac/boost/ticket/4162" target="_top">#4162</a>.
+        </li>
+<li class="listitem">
+          Cleaned up the handling of errors reported by the <code class="computeroutput"><span class="identifier">close</span><span class="special">()</span></code> system call. In particular, assume that
+          most operating systems won't have <code class="computeroutput"><span class="identifier">close</span><span class="special">()</span></code> fail with <code class="computeroutput"><span class="identifier">EWOULDBLOCK</span></code>,
+          but if it does then set the blocking mode and restart the call. If any
+          other error occurs, assume the descriptor is closed. Addresses <a href="https://svn.boost.org/trac/boost/ticket/3307" target="_top">#3307</a>.
+        </li>
+<li class="listitem">
+          Added new <code class="computeroutput"><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">()</span></code>
+          overloads for <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">array</span></code>, when available.
+        </li>
+<li class="listitem">
+          Changed the implementation to use the C++0x standard library templates
+          <code class="computeroutput"><span class="identifier">array</span></code>, <code class="computeroutput"><span class="identifier">shared_ptr</span></code>,
+          <code class="computeroutput"><span class="identifier">weak_ptr</span></code> and <code class="computeroutput"><span class="identifier">atomic</span></code> when they are available, rather
+          than the Boost equivalents.
+        </li>
+<li class="listitem">
+          Use C++0x variadic templates when available, rather than generating function
+          overloads using Boost.Preprocessor.
+        </li>
+<li class="listitem">
+          Changed exception reporting to include the function name in exception
+          <code class="computeroutput"><span class="identifier">what</span><span class="special">()</span></code>
+          messages.
+        </li>
+<li class="listitem">
+          Fixed insufficient initialisers warning with MinGW.
+        </li>
+<li class="listitem">
+          Changed the <code class="computeroutput"><span class="identifier">shutdown_service</span><span class="special">()</span></code> member functions to be private.
+        </li>
+<li class="listitem">
+          Added archetypes for testing socket option functions.
+        </li>
+<li class="listitem">
+          Changed the Boost.Asio examples so that they don't use Boost.Thread's convenience
+          header. Use the header file that is specifically for the boost::thread
+          class instead.
+        </li>
+<li class="listitem">
+          Removed the dependency on OS-provided macros for the well-known IPv4 and
+          IPv6 addresses. This should eliminate annoying "missing braces around
+          initializer" warnings (<a href="https://svn.boost.org/trac/boost/ticket/3741" target="_top">#3741</a>).
+        </li>
+<li class="listitem">
+          Reduced the size of <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_endpoint</span><span class="special">&lt;&gt;</span></code> objects (such as <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">endpoint</span></code> and <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">udp</span><span class="special">::</span><span class="identifier">endpoint</span></code>).
+        </li>
+<li class="listitem">
+          Changed the reactor backends to assume that any descriptors or sockets
+          added using <code class="computeroutput"><span class="identifier">assign</span><span class="special">()</span></code>
+          may have been <code class="computeroutput"><span class="identifier">dup</span><span class="special">()</span></code>-ed,
+          and so require explicit deregistration from the reactor (<a href="https://svn.boost.org/trac/boost/ticket/4971" target="_top">#4971</a>).
+        </li>
+<li class="listitem">
+          Removed the deprecated member functions named <code class="computeroutput"><span class="identifier">io_service</span><span class="special">()</span></code>. The <code class="computeroutput"><span class="identifier">get_io_service</span><span class="special">()</span></code> member functions should be used instead.
+        </li>
+<li class="listitem">
+          Removed the deprecated typedefs <code class="computeroutput"><span class="identifier">resolver_query</span></code>
+          and <code class="computeroutput"><span class="identifier">resolver_iterator</span></code> from
+          the <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span></code>, <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">udp</span></code>
+          and <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span></code> classes.
+        </li>
+<li class="listitem">
+          Modified the <code class="computeroutput"><span class="identifier">buffers_iterator</span><span class="special">&lt;&gt;</span></code> and <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver_iterator</span></code>
+          classes so that the value_type typedefs are non-const byte types.
+        </li>
+<li class="listitem">
+          Fixed warnings reported by g++'s <code class="literal">-Wshadow</code> compiler option
+          (<a href="https://svn.boost.org/trac/boost/ticket/3905" target="_top">#3905</a>).
+        </li>
+<li class="listitem">
+          Added an explicit cast to convert the <code class="computeroutput"><span class="identifier">FIONBIO</span></code>
+          constant to int, to suppress a compiler warning on some platforms (<a href="https://svn.boost.org/trac/boost/ticket/5128" target="_top">#5128</a>).
+        </li>
+<li class="listitem">
+          Changed most examples to treat a failure by an accept operation as non-fatal
+          (<a href="https://svn.boost.org/trac/boost/ticket/5124" target="_top">#5124</a>).
+        </li>
+<li class="listitem">
+          Fixed an error in the <code class="literal">tick_count_timer</code> example by making
+          the duration type signed. Previously, a wait on an already-passed deadline
+          would not return for a very long time (<a href="https://svn.boost.org/trac/boost/ticket/5418" target="_top">#5418</a>).
+        </li>
+</ul></div>
 <a name="boost_asio.history.asio_1_4_9___boost_1_46_1"></a><h4>
-<a name="id1415770"></a>
+<a name="boost_asio.history.asio_1_4_9___boost_1_46_1-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_9___boost_1_46_1">Asio 1.4.9 / Boost
       1.46.1</a>
     </h4>
@@ -59,7 +291,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_8___boost_1_46"></a><h4>
-<a name="id1415952"></a>
+<a name="boost_asio.history.asio_1_4_8___boost_1_46-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_8___boost_1_46">Asio 1.4.8 / Boost
       1.46</a>
     </h4>
@@ -74,7 +306,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_7___boost_1_45"></a><h4>
-<a name="id1416033"></a>
+<a name="boost_asio.history.asio_1_4_7___boost_1_45-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_7___boost_1_45">Asio 1.4.7 / Boost
       1.45</a>
     </h4>
@@ -156,7 +388,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_6___boost_1_44"></a><h4>
-<a name="id1416641"></a>
+<a name="boost_asio.history.asio_1_4_6___boost_1_44-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_6___boost_1_44">Asio 1.4.6 / Boost
       1.44</a>
     </h4>
@@ -232,7 +464,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_5___boost_1_43"></a><h4>
-<a name="id1417148"></a>
+<a name="boost_asio.history.asio_1_4_5___boost_1_43-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_5___boost_1_43">Asio 1.4.5 / Boost
       1.43</a>
     </h4>
@@ -299,7 +531,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_4___boost_1_42"></a><h4>
-<a name="id1417584"></a>
+<a name="boost_asio.history.asio_1_4_4___boost_1_42-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_4___boost_1_42">Asio 1.4.4 / Boost
       1.42</a>
     </h4>
@@ -364,7 +596,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_3___boost_1_40"></a><h4>
-<a name="id1417868"></a>
+<a name="boost_asio.history.asio_1_4_3___boost_1_40-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_3___boost_1_40">Asio 1.4.3 / Boost
       1.40</a>
     </h4>
@@ -421,7 +653,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_2___boost_1_39"></a><h4>
-<a name="id1418171"></a>
+<a name="boost_asio.history.asio_1_4_2___boost_1_39-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_2___boost_1_39">Asio 1.4.2 / Boost
       1.39</a>
     </h4>
@@ -473,7 +705,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_1___boost_1_38"></a><h4>
-<a name="id1418425"></a>
+<a name="boost_asio.history.asio_1_4_1___boost_1_38-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_1___boost_1_38">Asio 1.4.1 / Boost
       1.38</a>
     </h4>
@@ -505,7 +737,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_4_0___boost_1_37"></a><h4>
-<a name="id1418586"></a>
+<a name="boost_asio.history.asio_1_4_0___boost_1_37-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_4_0___boost_1_37">Asio 1.4.0 / Boost
       1.37</a>
     </h4>
@@ -540,7 +772,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_2_0___boost_1_36"></a><h4>
-<a name="id1418719"></a>
+<a name="boost_asio.history.asio_1_2_0___boost_1_36-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_2_0___boost_1_36">Asio 1.2.0 / Boost
       1.36</a>
     </h4>
@@ -593,7 +825,7 @@
         </li>
 </ul></div>
 <a name="boost_asio.history.asio_1_0_0___boost_1_35"></a><h4>
-<a name="id1418938"></a>
+<a name="boost_asio.history.asio_1_0_0___boost_1_35-heading"></a>
       <a class="link" href="history.html#boost_asio.history.asio_1_0_0___boost_1_35">Asio 1.0.0 / Boost
       1.35</a>
     </h4>
@@ -603,7 +835,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

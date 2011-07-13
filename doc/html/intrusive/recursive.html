@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
 <link rel="prev" href="function_hooks.html" title="Using function hooks">
 <link rel="next" href="using_smart_pointers.html" title="Using smart pointers with Boost.Intrusive containers">
 </head>
@@ -41,8 +41,8 @@
 
 <span class="keyword">typedef</span> <span class="identifier">list_base_hook</span><span class="special">&lt;&gt;</span> <span class="identifier">BaseHook</span><span class="special">;</span>
 
-<span class="comment">//A recursive class
-</span><span class="keyword">class</span> <span class="identifier">Recursive</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">BaseHook</span>
+<span class="comment">//A recursive class</span>
+<span class="keyword">class</span> <span class="identifier">Recursive</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">BaseHook</span>
 <span class="special">{</span>
    <span class="keyword">private</span><span class="special">:</span>
    <span class="identifier">Recursive</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Recursive</span><span class="special">&amp;);</span>
@@ -56,21 +56,21 @@
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
    <span class="identifier">Recursive</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">f2</span><span class="special">;</span>
-   <span class="comment">//A recursive list of Recursive
-</span>   <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">Recursive</span><span class="special">,</span> <span class="identifier">base_hook</span><span class="special">&lt;</span><span class="identifier">BaseHook</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">l</span><span class="special">;</span>
+   <span class="comment">//A recursive list of Recursive</span>
+   <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">Recursive</span><span class="special">,</span> <span class="identifier">base_hook</span><span class="special">&lt;</span><span class="identifier">BaseHook</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">l</span><span class="special">;</span>
 
-   <span class="comment">//Insert a node in parent list
-</span>   <span class="identifier">l</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">f</span><span class="special">);</span>
+   <span class="comment">//Insert a node in parent list</span>
+   <span class="identifier">l</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">f</span><span class="special">);</span>
 
-   <span class="comment">//Insert a node in child list
-</span>   <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">f2</span><span class="special">);</span>
+   <span class="comment">//Insert a node in child list</span>
+   <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">f2</span><span class="special">);</span>
 
-   <span class="comment">//Objects properly inserted
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">size</span><span class="special">());</span>
+   <span class="comment">//Objects properly inserted</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">size</span><span class="special">());</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//Clear both lists
-</span>   <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">clear</span><span class="special">();</span>
+   <span class="comment">//Clear both lists</span>
+   <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">clear</span><span class="special">();</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">clear</span><span class="special">();</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
@@ -81,21 +81,21 @@
       Recursive data structures using <span class="bold"><strong>Boost.Intrusive</strong></span>
       containers must avoid using hook deduction to avoid early type instantiation:
     </p>
-<pre class="programlisting"><span class="comment">//This leads to compilation error (Recursive is instantiated by 
-</span><span class="comment">//'list' to deduce hook properties (pointer type, tag, safe-mode...)
-</span><span class="keyword">class</span> <span class="identifier">Recursive</span>
-<span class="special">{</span>  <span class="comment">//...
-</span>
-   <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">Recursive</span> <span class="special">&gt;</span> <span class="identifier">l</span><span class="special">;</span>
-   <span class="comment">//...
-</span><span class="special">};</span>
+<pre class="programlisting"><span class="comment">//This leads to compilation error (Recursive is instantiated by </span>
+<span class="comment">//'list' to deduce hook properties (pointer type, tag, safe-mode...)</span>
+<span class="keyword">class</span> <span class="identifier">Recursive</span>
+<span class="special">{</span>  <span class="comment">//...</span>
 
-<span class="comment">//Ok, programmer must specify the hook type to avoid early Recursive instantiation
-</span><span class="keyword">class</span> <span class="identifier">Recursive</span>
-<span class="special">{</span>  <span class="comment">//...
-</span>   <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">Recursive</span><span class="special">,</span> <span class="identifier">base_hook</span><span class="special">&lt;</span><span class="identifier">BaseHook</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">l</span><span class="special">;</span>
-   <span class="comment">//...
-</span><span class="special">};</span>
+   <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">Recursive</span> <span class="special">&gt;</span> <span class="identifier">l</span><span class="special">;</span>
+   <span class="comment">//...</span>
+<span class="special">};</span>
+
+<span class="comment">//Ok, programmer must specify the hook type to avoid early Recursive instantiation</span>
+<span class="keyword">class</span> <span class="identifier">Recursive</span>
+<span class="special">{</span>  <span class="comment">//...</span>
+   <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">Recursive</span><span class="special">,</span> <span class="identifier">base_hook</span><span class="special">&lt;</span><span class="identifier">BaseHook</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">l</span><span class="special">;</span>
+   <span class="comment">//...</span>
+<span class="special">};</span>
 </pre>
 <p>
       Member hooks are not suitable for recursive structures:
@@ -127,27 +127,27 @@
 
 <span class="keyword">class</span> <span class="identifier">Recursive</span><span class="special">;</span>
 
-<span class="comment">//Declaration of the functor that converts betwen the Recursive
-</span><span class="comment">//class and the hook
-</span><span class="keyword">struct</span> <span class="identifier">Functor</span>
+<span class="comment">//Declaration of the functor that converts betwen the Recursive</span>
+<span class="comment">//class and the hook</span>
+<span class="keyword">struct</span> <span class="identifier">Functor</span>
 <span class="special">{</span>
-   <span class="comment">//Required types
-</span>   <span class="keyword">typedef</span> <span class="identifier">list_member_hook</span><span class="special">&lt;&gt;</span>    <span class="identifier">hook_type</span><span class="special">;</span>
+   <span class="comment">//Required types</span>
+   <span class="keyword">typedef</span> <span class="identifier">list_member_hook</span><span class="special">&lt;&gt;</span>    <span class="identifier">hook_type</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">hook_type</span><span class="special">*</span>            <span class="identifier">hook_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">hook_type</span><span class="special">*</span>      <span class="identifier">const_hook_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">Recursive</span>             <span class="identifier">value_type</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">value_type</span><span class="special">*</span>           <span class="identifier">pointer</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">value_type</span><span class="special">*</span>     <span class="identifier">const_pointer</span><span class="special">;</span>
 
-   <span class="comment">//Required static functions
-</span>   <span class="keyword">static</span> <span class="identifier">hook_ptr</span> <span class="identifier">to_hook_ptr</span> <span class="special">(</span><span class="identifier">value_type</span> <span class="special">&amp;</span><span class="identifier">value</span><span class="special">);</span>
+   <span class="comment">//Required static functions</span>
+   <span class="keyword">static</span> <span class="identifier">hook_ptr</span> <span class="identifier">to_hook_ptr</span> <span class="special">(</span><span class="identifier">value_type</span> <span class="special">&amp;</span><span class="identifier">value</span><span class="special">);</span>
    <span class="keyword">static</span> <span class="identifier">const_hook_ptr</span> <span class="identifier">to_hook_ptr</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">value_type</span> <span class="special">&amp;</span><span class="identifier">value</span><span class="special">);</span>
    <span class="keyword">static</span> <span class="identifier">pointer</span> <span class="identifier">to_value_ptr</span><span class="special">(</span><span class="identifier">hook_ptr</span> <span class="identifier">n</span><span class="special">);</span>
    <span class="keyword">static</span> <span class="identifier">const_pointer</span> <span class="identifier">to_value_ptr</span><span class="special">(</span><span class="identifier">const_hook_ptr</span> <span class="identifier">n</span><span class="special">);</span>
 <span class="special">};</span>
 
-<span class="comment">//Define the recursive class
-</span><span class="keyword">class</span> <span class="identifier">Recursive</span>
+<span class="comment">//Define the recursive class</span>
+<span class="keyword">class</span> <span class="identifier">Recursive</span>
 <span class="special">{</span>
    <span class="keyword">private</span><span class="special">:</span>
    <span class="identifier">Recursive</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Recursive</span><span class="special">&amp;);</span>
@@ -159,8 +159,8 @@
    <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">Recursive</span><span class="special">,</span> <span class="identifier">function_hook</span><span class="special">&lt;</span> <span class="identifier">Functor</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">children</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="comment">//Definition of Functor functions
-</span><span class="keyword">inline</span> <span class="identifier">Functor</span><span class="special">::</span><span class="identifier">hook_ptr</span> <span class="identifier">Functor</span><span class="special">::</span><span class="identifier">to_hook_ptr</span> <span class="special">(</span><span class="identifier">Functor</span><span class="special">::</span><span class="identifier">value_type</span> <span class="special">&amp;</span><span class="identifier">value</span><span class="special">)</span>
+<span class="comment">//Definition of Functor functions</span>
+<span class="keyword">inline</span> <span class="identifier">Functor</span><span class="special">::</span><span class="identifier">hook_ptr</span> <span class="identifier">Functor</span><span class="special">::</span><span class="identifier">to_hook_ptr</span> <span class="special">(</span><span class="identifier">Functor</span><span class="special">::</span><span class="identifier">value_type</span> <span class="special">&amp;</span><span class="identifier">value</span><span class="special">)</span>
    <span class="special">{</span>  <span class="keyword">return</span> <span class="special">&amp;</span><span class="identifier">value</span><span class="special">.</span><span class="identifier">hook</span><span class="special">;</span> <span class="special">}</span>
 <span class="keyword">inline</span> <span class="identifier">Functor</span><span class="special">::</span><span class="identifier">const_hook_ptr</span> <span class="identifier">Functor</span><span class="special">::</span><span class="identifier">to_hook_ptr</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Functor</span><span class="special">::</span><span class="identifier">value_type</span> <span class="special">&amp;</span><span class="identifier">value</span><span class="special">)</span>
    <span class="special">{</span>  <span class="keyword">return</span> <span class="special">&amp;</span><span class="identifier">value</span><span class="special">.</span><span class="identifier">hook</span><span class="special">;</span> <span class="special">}</span>
@@ -172,21 +172,21 @@
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
    <span class="identifier">Recursive</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">f2</span><span class="special">;</span>
-   <span class="comment">//A recursive list of Recursive
-</span>   <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">Recursive</span><span class="special">,</span> <span class="identifier">function_hook</span><span class="special">&lt;</span> <span class="identifier">Functor</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">l</span><span class="special">;</span>
+   <span class="comment">//A recursive list of Recursive</span>
+   <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">Recursive</span><span class="special">,</span> <span class="identifier">function_hook</span><span class="special">&lt;</span> <span class="identifier">Functor</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">l</span><span class="special">;</span>
 
-   <span class="comment">//Insert a node in parent list
-</span>   <span class="identifier">l</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">f</span><span class="special">);</span>
+   <span class="comment">//Insert a node in parent list</span>
+   <span class="identifier">l</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">f</span><span class="special">);</span>
 
-   <span class="comment">//Insert a node in child list
-</span>   <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">f2</span><span class="special">);</span>
+   <span class="comment">//Insert a node in child list</span>
+   <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">f2</span><span class="special">);</span>
 
-   <span class="comment">//Objects properly inserted
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">size</span><span class="special">());</span>
+   <span class="comment">//Objects properly inserted</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">size</span><span class="special">());</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//Clear both lists
-</span>   <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">clear</span><span class="special">();</span>
+   <span class="comment">//Clear both lists</span>
+   <span class="identifier">l</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()-&gt;</span><span class="identifier">children</span><span class="special">.</span><span class="identifier">clear</span><span class="special">();</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">clear</span><span class="special">();</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
@@ -196,7 +196,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

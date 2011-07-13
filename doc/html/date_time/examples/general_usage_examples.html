@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../../date_time.html" title="Chapter&#160;5.&#160;Boost.Date_Time">
-<link rel="prev" href="../../date_time.html" title="Chapter&#160;5.&#160;Boost.Date_Time">
+<link rel="up" href="../../date_time.html" title="Chapter&#160;6.&#160;Boost.Date_Time">
+<link rel="prev" href="../../date_time.html" title="Chapter&#160;6.&#160;Boost.Date_Time">
 <link rel="next" href="../gregorian.html" title="Gregorian">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -33,7 +33,7 @@
     </p>
 <pre class="programlisting"><span class="keyword">using namespace</span> boost::gregorian;
     date weekstart(<span class="number">2002</span>,Feb,<span class="number">1</span>);
-    date weekend  = weekstart + week(<span class="number">1</span>);
+    date weekend  = weekstart + weeks(<span class="number">1</span>);
     date d2 = d1 + days(<span class="number">5</span>);
     date today = day_clock::local_day();
     if (d2 &gt;= today) {} <span class="comment">//date comparison operators</span> 
@@ -55,7 +55,8 @@
     date d5 = next_weekday(d4, Sunday); <span class="comment">//calculate Sunday following d4
 
     //US labor day is first Monday in Sept</span> 
-    nth_day_of_the_week_in_month labor_day(nth_dow::first,Monday, Sep); 
+	<span class="keyword">typedef</span> nth_day_of_the_week_in_month nth_dow;
+    nth_dow labor_day(nth_dow::first,Monday, Sep); 
     <span class="comment">//calculate a specific date for 2004 from functor</span> 
     date d6 = labor_day.get_date(<span class="number">2004</span>); 
     </pre>

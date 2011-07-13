@@ -5,22 +5,25 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENCE_1_0.txt)
  *
- * $Id: test_random_device.cpp 62347 2010-05-31 16:44:36Z steven_watanabe $
+ * $Id: test_random_device.cpp 71018 2011-04-05 21:27:52Z steven_watanabe $
  */
 
-#include <boost/nondet_random.hpp>
+#include <boost/random/random_device.hpp>
 
 #include <boost/test/test_tools.hpp>
 #include <boost/test/included/test_exec_monitor.hpp>
 
-int test_main(int argc, char** argv) {
-	boost::random_device rng;
-	double entropy = rng.entropy();
-	BOOST_CHECK_GE(entropy, 0);
-	for(int i = 0; i < 100; ++i) {
-		boost::random_device::result_type val = rng();
-		BOOST_CHECK_GE(val, (rng.min)());
-		BOOST_CHECK_LE(val, (rng.max)());
-	}
-	return 0;
+int test_main(int, char**) {
+    boost::random_device rng;
+    double entropy = rng.entropy();
+    BOOST_CHECK_GE(entropy, 0);
+    for(int i = 0; i < 100; ++i) {
+        boost::random_device::result_type val = rng();
+        BOOST_CHECK_GE(val, (rng.min)());
+        BOOST_CHECK_LE(val, (rng.max)());
+    }
+
+    boost::uint32_t a[10];
+    rng.generate(a, a + 10);
+    return 0;
 }

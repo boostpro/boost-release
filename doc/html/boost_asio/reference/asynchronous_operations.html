@@ -68,10 +68,10 @@
         All asynchronous operations have an associated <code class="computeroutput"><span class="identifier">io_service</span></code>
         object. Where the initiating function is a member function, the associated
         <code class="computeroutput"><span class="identifier">io_service</span></code> is that returned
-        by the <code class="computeroutput"><span class="identifier">io_service</span><span class="special">()</span></code>
+        by the <code class="computeroutput"><span class="identifier">get_io_service</span><span class="special">()</span></code>
         member function on the same object. Where the initiating function is not
         a member function, the associated <code class="computeroutput"><span class="identifier">io_service</span></code>
-        is that returned by the <code class="computeroutput"><span class="identifier">io_service</span><span class="special">()</span></code> member function of the first argument to
+        is that returned by the <code class="computeroutput"><span class="identifier">get_io_service</span><span class="special">()</span></code> member function of the first argument to
         the initiating function.
       </p>
 <p>
@@ -110,13 +110,13 @@
       </p>
 <p>
         &#8212; The thread is executing any member function, constructor or destructor of
-        an object of a class defined in this clause, where the object's <code class="computeroutput"><span class="identifier">io_service</span><span class="special">()</span></code>
+        an object of a class defined in this clause, where the object's <code class="computeroutput"><span class="identifier">get_io_service</span><span class="special">()</span></code>
         member function returns the associated <code class="computeroutput"><span class="identifier">io_service</span></code>
         object.
       </p>
 <p>
         &#8212; The thread is executing any function defined in this clause, where any argument
-        to the function has an <code class="computeroutput"><span class="identifier">io_service</span><span class="special">()</span></code> member function that returns the associated
+        to the function has an <code class="computeroutput"><span class="identifier">get_io_service</span><span class="special">()</span></code> member function that returns the associated
         <code class="computeroutput"><span class="identifier">io_service</span></code> object.
       </p>
 <div class="sidebar">
@@ -191,7 +191,7 @@
 <span class="keyword">void</span><span class="special">*</span> <span class="identifier">asio_handler_allocate</span><span class="special">(</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">,</span>
                             <span class="identifier">bound_read_handler</span><span class="special">&lt;</span><span class="identifier">ReadHandler</span><span class="special">&gt;*</span> <span class="identifier">this_handler</span><span class="special">)</span>
 <span class="special">{</span>
-  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">;</span>
+  <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">asio_handler_allocate</span><span class="special">;</span>
   <span class="keyword">return</span> <span class="identifier">asio_handler_allocate</span><span class="special">(</span><span class="identifier">size</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">this_handler</span><span class="special">-&gt;</span><span class="identifier">handler_</span><span class="special">);</span>
 <span class="special">}</span>
 
@@ -199,7 +199,7 @@
 <span class="keyword">void</span> <span class="identifier">asio_handler_deallocate</span><span class="special">(</span><span class="keyword">void</span><span class="special">*</span> <span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">,</span>
                              <span class="identifier">bound_read_handler</span><span class="special">&lt;</span><span class="identifier">ReadHandler</span><span class="special">&gt;*</span> <span class="identifier">this_handler</span><span class="special">)</span>
 <span class="special">{</span>
-  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">;</span>
+  <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">asio_handler_deallocate</span><span class="special">;</span>
   <span class="identifier">asio_handler_deallocate</span><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">size</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">this_handler</span><span class="special">-&gt;</span><span class="identifier">handler_</span><span class="special">);</span>
 <span class="special">}</span>
 
@@ -207,7 +207,7 @@
 <span class="keyword">void</span> <span class="identifier">asio_handler_invoke</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">F</span><span class="special">&amp;</span> <span class="identifier">f</span><span class="special">,</span>
                          <span class="identifier">bound_read_handler</span><span class="special">&lt;</span><span class="identifier">ReadHandler</span><span class="special">&gt;*</span> <span class="identifier">this_handler</span><span class="special">)</span>
 <span class="special">{</span>
-  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">;</span>
+  <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">asio_handler_invoke</span><span class="special">;</span>
   <span class="identifier">asio_handler_invoke</span><span class="special">(</span><span class="identifier">f</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">this_handler</span><span class="special">-&gt;</span><span class="identifier">handler_</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
@@ -233,7 +233,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

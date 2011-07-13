@@ -35,7 +35,7 @@
   <span class="keyword">public</span> <span class="identifier">windows</span><span class="special">::</span><span class="identifier">basic_handle</span><span class="special">&lt;</span> <span class="identifier">RandomAccessHandleService</span> <span class="special">&gt;</span>
 </pre>
 <a name="boost_asio.reference.windows__basic_random_access_handle.types"></a><h5>
-<a name="id1377480"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.types-heading"></a>
         <a class="link" href="windows__basic_random_access_handle.html#boost_asio.reference.windows__basic_random_access_handle.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -83,12 +83,25 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__basic_random_access_handle/native_type.html" title="windows::basic_random_access_handle::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  <a class="link" href="windows__basic_random_access_handle/native_handle_type.html" title="windows::basic_random_access_handle::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
                   The native representation of a handle.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_random_access_handle/native_type.html" title="windows::basic_random_access_handle::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use native_handle_type.) The native representation
+                  of a handle.
                 </p>
               </td>
 </tr>
@@ -107,7 +120,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.windows__basic_random_access_handle.member_functions"></a><h5>
-<a name="id1377664"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.member_functions-heading"></a>
         <a class="link" href="windows__basic_random_access_handle.html#boost_asio.reference.windows__basic_random_access_handle.member_functions">Member
         Functions</a>
       </h5>
@@ -178,6 +191,9 @@
                 <p>
                   Construct a basic_random_access_handle on an existing native handle.
                 </p>
+                <p>
+                  Move-construct a basic_random_access_handle from another.
+                </p>
               </td>
 </tr>
 <tr>
@@ -219,19 +235,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__basic_random_access_handle/io_service.html" title="windows::basic_random_access_handle::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: use get_io_service().) Get the io_service associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="windows__basic_random_access_handle/is_open.html" title="windows::basic_random_access_handle::is_open"><span class="bold"><strong>is_open</strong></span></a>
                 </p>
               </td>
@@ -264,7 +267,31 @@
               </td>
 <td>
                 <p>
+                  (Deprecated: Use native_handle().) Get the native handle representation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_random_access_handle/native_handle.html" title="windows::basic_random_access_handle::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
                   Get the native handle representation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_random_access_handle/operator_eq_.html" title="windows::basic_random_access_handle::operator="><span class="bold"><strong>operator=</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-assign a basic_random_access_handle from another.
                 </p>
               </td>
 </tr>
@@ -294,8 +321,57 @@
 </tr>
 </tbody>
 </table></div>
+<a name="boost_asio.reference.windows__basic_random_access_handle.protected_member_functions"></a><h5>
+<a name="boost_asio.reference.windows__basic_random_access_handle.protected_member_functions-heading"></a>
+        <a class="link" href="windows__basic_random_access_handle.html#boost_asio.reference.windows__basic_random_access_handle.protected_member_functions">Protected
+        Member Functions</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_random_access_handle/get_implementation.html" title="windows::basic_random_access_handle::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the underlying implementation of the I/O object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_random_access_handle/get_service.html" title="windows::basic_random_access_handle::get_service"><span class="bold"><strong>get_service</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the service associated with the I/O object.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
 <a name="boost_asio.reference.windows__basic_random_access_handle.protected_data_members"></a><h5>
-<a name="id1378134"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.protected_data_members-heading"></a>
         <a class="link" href="windows__basic_random_access_handle.html#boost_asio.reference.windows__basic_random_access_handle.protected_data_members">Protected
         Data Members</a>
       </h5>
@@ -325,7 +401,8 @@
               </td>
 <td>
                 <p>
-                  The underlying implementation of the I/O object.
+                  (Deprecated: Use get_implementation().) The underlying implementation
+                  of the I/O object.
                 </p>
               </td>
 </tr>
@@ -337,7 +414,8 @@
               </td>
 <td>
                 <p>
-                  The service associated with the I/O object.
+                  (Deprecated: Use get_service().) The service associated with the
+                  I/O object.
                 </p>
               </td>
 </tr>
@@ -348,7 +426,7 @@
         template provides asynchronous and blocking random-access handle functionality.
       </p>
 <a name="boost_asio.reference.windows__basic_random_access_handle.thread_safety"></a><h5>
-<a name="id1378283"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.thread_safety-heading"></a>
         <a class="link" href="windows__basic_random_access_handle.html#boost_asio.reference.windows__basic_random_access_handle.thread_safety">Thread
         Safety</a>
       </h5>
@@ -361,7 +439,7 @@
         Unsafe.
       </p>
 <a name="boost_asio.reference.windows__basic_random_access_handle.requirements"></a><h5>
-<a name="id1378336"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.requirements-heading"></a>
         <a class="link" href="windows__basic_random_access_handle.html#boost_asio.reference.windows__basic_random_access_handle.requirements">Requirements</a>
       </h5>
 <p>
@@ -373,7 +451,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
