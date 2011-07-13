@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="service_already_exists/service_already_exists.html" title="service_already_exists::service_already_exists">
+<link rel="prev" href="signal_set_service/signal_set_service.html" title="signal_set_service::signal_set_service">
 <link rel="next" href="socket_acceptor_service/accept.html" title="socket_acceptor_service::accept">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="service_already_exists/service_already_exists.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="socket_acceptor_service/accept.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="signal_set_service/signal_set_service.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="socket_acceptor_service/accept.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -35,7 +35,7 @@
   <span class="keyword">public</span> <span class="identifier">io_service</span><span class="special">::</span><span class="identifier">service</span>
 </pre>
 <a name="boost_asio.reference.socket_acceptor_service.types"></a><h5>
-<a name="id1320990"></a>
+<a name="boost_asio.reference.socket_acceptor_service.types-heading"></a>
         <a class="link" href="socket_acceptor_service.html#boost_asio.reference.socket_acceptor_service.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -83,12 +83,24 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="socket_acceptor_service/native_type.html" title="socket_acceptor_service::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  <a class="link" href="socket_acceptor_service/native_handle_type.html" title="socket_acceptor_service::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
                   The native acceptor type.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="socket_acceptor_service/native_type.html" title="socket_acceptor_service::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use native_handle_type.) The native acceptor type.
                 </p>
               </td>
 </tr>
@@ -107,7 +119,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.socket_acceptor_service.member_functions"></a><h5>
-<a name="id1321167"></a>
+<a name="boost_asio.reference.socket_acceptor_service.member_functions-heading"></a>
         <a class="link" href="socket_acceptor_service.html#boost_asio.reference.socket_acceptor_service.member_functions">Member
         Functions</a>
       </h5>
@@ -264,19 +276,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="socket_acceptor_service/io_service.html" title="socket_acceptor_service::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: use get_io_service().) Get the io_service object that
-                  owns the service.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="socket_acceptor_service/is_open.html" title="socket_acceptor_service::is_open"><span class="bold"><strong>is_open</strong></span></a>
                 </p>
               </td>
@@ -314,12 +313,78 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="socket_acceptor_service/move_assign.html" title="socket_acceptor_service::move_assign"><span class="bold"><strong>move_assign</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-assign from another socket acceptor implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="socket_acceptor_service/move_construct.html" title="socket_acceptor_service::move_construct"><span class="bold"><strong>move_construct</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-construct a new socket acceptor implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="socket_acceptor_service/native.html" title="socket_acceptor_service::native"><span class="bold"><strong>native</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
+                  (Deprecated: Use native_handle().) Get the native acceptor implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="socket_acceptor_service/native_handle.html" title="socket_acceptor_service::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
                   Get the native acceptor implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="socket_acceptor_service/native_non_blocking.html" title="socket_acceptor_service::native_non_blocking"><span class="bold"><strong>native_non_blocking</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Gets the non-blocking mode of the native acceptor implementation.
+                </p>
+                <p>
+                  Sets the non-blocking mode of the native acceptor implementation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="socket_acceptor_service/non_blocking.html" title="socket_acceptor_service::non_blocking"><span class="bold"><strong>non_blocking</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Gets the non-blocking mode of the acceptor.
+                </p>
+                <p>
+                  Sets the non-blocking mode of the acceptor.
                 </p>
               </td>
 </tr>
@@ -350,18 +415,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="socket_acceptor_service/shutdown_service.html" title="socket_acceptor_service::shutdown_service"><span class="bold"><strong>shutdown_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Destroy all user-defined handler objects owned by the service.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="socket_acceptor_service/socket_acceptor_service.html" title="socket_acceptor_service::socket_acceptor_service"><span class="bold"><strong>socket_acceptor_service</strong></span></a>
                 </p>
               </td>
@@ -374,7 +427,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.socket_acceptor_service.data_members"></a><h5>
-<a name="id1321800"></a>
+<a name="boost_asio.reference.socket_acceptor_service.data_members-heading"></a>
         <a class="link" href="socket_acceptor_service.html#boost_asio.reference.socket_acceptor_service.data_members">Data
         Members</a>
       </h5>
@@ -409,7 +462,7 @@
 </tr></tbody>
 </table></div>
 <a name="boost_asio.reference.socket_acceptor_service.requirements"></a><h5>
-<a name="id1321918"></a>
+<a name="boost_asio.reference.socket_acceptor_service.requirements-heading"></a>
         <a class="link" href="socket_acceptor_service.html#boost_asio.reference.socket_acceptor_service.requirements">Requirements</a>
       </h5>
 <p>
@@ -421,7 +474,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -429,7 +483,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="service_already_exists/service_already_exists.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="socket_acceptor_service/accept.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="signal_set_service/signal_set_service.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="socket_acceptor_service/accept.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -28,17 +28,19 @@
 </h3></div></div></div>
 <p>
         A socket service must meet the requirements for an <a class="link" href="IoObjectService.html" title="I/O object service requirements">I/O
-        object service</a>, as well as the additional requirements listed below.
+        object service</a> with support for movability, as well as the additional
+        requirements listed below.
       </p>
 <p>
         In the table below, <code class="computeroutput"><span class="identifier">X</span></code> denotes
         a socket service class for protocol <a class="link" href="Protocol.html" title="Protocol requirements"><code class="computeroutput"><span class="identifier">Protocol</span></code></a>, <code class="computeroutput"><span class="identifier">a</span></code>
-        denotes a value of type <code class="computeroutput"><span class="identifier">X</span></code>,
-        <code class="computeroutput"><span class="identifier">b</span></code> denotes a value of type
+        and <code class="computeroutput"><span class="identifier">ao</span></code> denote values of type
+        <code class="computeroutput"><span class="identifier">X</span></code>, <code class="computeroutput"><span class="identifier">b</span></code>
+        and <code class="computeroutput"><span class="identifier">c</span></code> denote values of type
         <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">implementation_type</span></code>, <code class="computeroutput"><span class="identifier">p</span></code>
         denotes a value of type <code class="computeroutput"><span class="identifier">Protocol</span></code>,
         <code class="computeroutput"><span class="identifier">n</span></code> denotes a value of type
-        <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_type</span></code>, <code class="computeroutput"><span class="identifier">e</span></code>
+        <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_handle_type</span></code>, <code class="computeroutput"><span class="identifier">e</span></code>
         denotes a value of type <code class="computeroutput"><span class="identifier">Protocol</span><span class="special">::</span><span class="identifier">endpoint</span></code>,
         <code class="computeroutput"><span class="identifier">ec</span></code> denotes a value of type
         <code class="computeroutput"><span class="identifier">error_code</span></code>, <code class="computeroutput"><span class="identifier">s</span></code> denotes a value meeting <a class="link" href="SettableSocketOption.html" title="Settable socket option requirements"><code class="computeroutput"><span class="identifier">SettableSocketOption</span></code></a> requirements,
@@ -53,7 +55,7 @@
         denote identifiers.
       </p>
 <div class="table">
-<a name="id863965"></a><p class="title"><b>Table&#160;27.&#160;SocketService requirements</b></p>
+<a name="id875420"></a><p class="title"><b>Table&#160;29.&#160;SocketService requirements</b></p>
 <div class="table-contents"><table class="table" summary="SocketService requirements">
 <colgroup>
 <col>
@@ -81,7 +83,7 @@
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_type</span></code>
+                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_handle_type</span></code>
                 </p>
               </td>
 <td>
@@ -123,6 +125,49 @@
                   requirements. Implicitly cancels asynchronous operations, as if
                   by calling <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">close</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span>
                   <span class="identifier">ec</span><span class="special">)</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  
+</p>
+<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">move_construct</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">c</span><span class="special">);</span>
+</pre>
+<p>
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  From <a class="link" href="IoObjectService.html" title="I/O object service requirements">IoObjectService</a>
+                  requirements. The underlying native representation is moved from
+                  <code class="computeroutput"><span class="identifier">c</span></code> to <code class="computeroutput"><span class="identifier">b</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  
+</p>
+<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">move_assign</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">ao</span><span class="special">,</span> <span class="identifier">c</span><span class="special">);</span>
+</pre>
+<p>
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  From <a class="link" href="IoObjectService.html" title="I/O object service requirements">IoObjectService</a>
+                  requirements. Implicitly cancels asynchronous operations associated
+                  with <code class="computeroutput"><span class="identifier">b</span></code>, as if by
+                  calling <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">close</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span>
+                  <span class="identifier">ec</span><span class="special">)</span></code>.
+                  Then the underlying native representation is moved from <code class="computeroutput"><span class="identifier">c</span></code> to <code class="computeroutput"><span class="identifier">b</span></code>.
                 </p>
               </td>
 </tr>
@@ -238,14 +283,14 @@
                 <p>
                   
 </p>
-<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">native</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">native_handle</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span>
 </pre>
 <p>
                 </p>
               </td>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_type</span></code>
+                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_handle_type</span></code>
                 </p>
               </td>
 <td>
@@ -620,7 +665,7 @@
                   pre: <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">is_open</span><span class="special">(</span><span class="identifier">b</span><span class="special">)</span></code>.<br>
                   Initiates an asynchronous connect operation that is performed via
                   the <code class="computeroutput"><span class="identifier">io_service</span></code>
-                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">()</span></code>
+                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">get_io_service</span><span class="special">()</span></code>
                   and behaves according to <a class="link" href="asynchronous_operations.html" title="Requirements on asynchronous operations">asynchronous
                   operation</a> requirements.
                 </p>
@@ -633,7 +678,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

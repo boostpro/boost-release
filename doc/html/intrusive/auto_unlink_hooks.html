@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
 <link rel="prev" href="safe_hook.html" title="Safe hooks">
 <link rel="next" href="slist.html" title="Intrusive singly linked list: slist">
 </head>
@@ -122,8 +122,8 @@
 <span class="keyword">typedef</span> <span class="identifier">list_base_hook</span><span class="special">&lt;</span><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">auto_unlink</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">auto_unlink_hook</span><span class="special">;</span>
 
 <span class="keyword">class</span> <span class="identifier">MyClass</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">auto_unlink_hook</span>
-               <span class="comment">//This hook removes the node in the destructor
-</span><span class="special">{</span>
+               <span class="comment">//This hook removes the node in the destructor</span>
+<span class="special">{</span>
    <span class="keyword">int</span> <span class="identifier">int_</span><span class="special">;</span>
 
    <span class="keyword">public</span><span class="special">:</span>
@@ -132,54 +132,54 @@
    <span class="keyword">bool</span> <span class="identifier">is_linked</span><span class="special">()</span>  <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">auto_unlink_hook</span><span class="special">::</span><span class="identifier">is_linked</span><span class="special">();</span>  <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">//Define a list that will store values using the base hook
-</span><span class="comment">//The list can't have constant-time size!
-</span><span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">List</span><span class="special">;</span>
+<span class="comment">//Define a list that will store values using the base hook</span>
+<span class="comment">//The list can't have constant-time size!</span>
+<span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span> <span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">List</span><span class="special">;</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Create the list
-</span>   <span class="identifier">List</span> <span class="identifier">l</span><span class="special">;</span>
+   <span class="comment">//Create the list</span>
+   <span class="identifier">List</span> <span class="identifier">l</span><span class="special">;</span>
    <span class="special">{</span>
-      <span class="comment">//Create myclass and check it's linked
-</span>      <span class="identifier">MyClass</span> <span class="identifier">myclass</span><span class="special">;</span>
+      <span class="comment">//Create myclass and check it's linked</span>
+      <span class="identifier">MyClass</span> <span class="identifier">myclass</span><span class="special">;</span>
       <span class="identifier">assert</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">.</span><span class="identifier">is_linked</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span><span class="special">);</span>
 
-      <span class="comment">//Insert the object
-</span>      <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">);</span>
+      <span class="comment">//Insert the object</span>
+      <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">);</span>
 
-      <span class="comment">//Check that we have inserted the object
-</span>      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span><span class="special">);</span>
+      <span class="comment">//Check that we have inserted the object</span>
+      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span><span class="special">);</span>
       <span class="identifier">assert</span><span class="special">(&amp;</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">front</span><span class="special">()</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">myclass</span><span class="special">);</span>
       <span class="identifier">assert</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">.</span><span class="identifier">is_linked</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">);</span>
 
-      <span class="comment">//Now myclass' destructor will unlink it
-</span>      <span class="comment">//automatically
-</span>   <span class="special">}</span>
+      <span class="comment">//Now myclass' destructor will unlink it</span>
+      <span class="comment">//automatically</span>
+   <span class="special">}</span>
 
-   <span class="comment">//Check auto-unlink has been executed
-</span>   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">);</span>
+   <span class="comment">//Check auto-unlink has been executed</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">);</span>
 
    <span class="special">{</span>
-      <span class="comment">//Now test the unlink() function
-</span>
-      <span class="comment">//Create myclass and check it's linked
-</span>      <span class="identifier">MyClass</span> <span class="identifier">myclass</span><span class="special">;</span>
+      <span class="comment">//Now test the unlink() function</span>
+
+      <span class="comment">//Create myclass and check it's linked</span>
+      <span class="identifier">MyClass</span> <span class="identifier">myclass</span><span class="special">;</span>
       <span class="identifier">assert</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">.</span><span class="identifier">is_linked</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span><span class="special">);</span>
 
-      <span class="comment">//Insert the object
-</span>      <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">);</span>
+      <span class="comment">//Insert the object</span>
+      <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">);</span>
 
-      <span class="comment">//Check that we have inserted the object
-</span>      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span><span class="special">);</span>
+      <span class="comment">//Check that we have inserted the object</span>
+      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span><span class="special">);</span>
       <span class="identifier">assert</span><span class="special">(&amp;</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">front</span><span class="special">()</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">myclass</span><span class="special">);</span>
       <span class="identifier">assert</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">.</span><span class="identifier">is_linked</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">);</span>
 
-      <span class="comment">//Now unlink the node
-</span>      <span class="identifier">myclass</span><span class="special">.</span><span class="identifier">unlink</span><span class="special">();</span>
+      <span class="comment">//Now unlink the node</span>
+      <span class="identifier">myclass</span><span class="special">.</span><span class="identifier">unlink</span><span class="special">();</span>
 
-      <span class="comment">//Check auto-unlink has been executed
-</span>      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">);</span>
+      <span class="comment">//Check auto-unlink has been executed</span>
+      <span class="identifier">assert</span><span class="special">(</span><span class="identifier">l</span><span class="special">.</span><span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">);</span>
    <span class="special">}</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
@@ -223,8 +223,8 @@
 <p>
         Pointing to code like this:
       </p>
-<pre class="programlisting"><span class="comment">//Constant-time size is incompatible with auto-unlink hooks!
-</span><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(!(</span><span class="identifier">constant_time_size</span> <span class="special">&amp;&amp;</span> <span class="special">((</span><span class="keyword">int</span><span class="special">)</span><span class="identifier">value_traits</span><span class="special">::</span><span class="identifier">link_mode</span> <span class="special">==</span> <span class="special">(</span><span class="keyword">int</span><span class="special">)</span><span class="identifier">auto_unlink</span><span class="special">)));</span>
+<pre class="programlisting"><span class="comment">//Constant-time size is incompatible with auto-unlink hooks!</span>
+<span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(!(</span><span class="identifier">constant_time_size</span> <span class="special">&amp;&amp;</span> <span class="special">((</span><span class="keyword">int</span><span class="special">)</span><span class="identifier">value_traits</span><span class="special">::</span><span class="identifier">link_mode</span> <span class="special">==</span> <span class="special">(</span><span class="keyword">int</span><span class="special">)</span><span class="identifier">auto_unlink</span><span class="special">)));</span>
 </pre>
 <p>
         This way, there is no way to compile a program if you try to use auto-unlink
@@ -234,7 +234,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

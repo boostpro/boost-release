@@ -37,19 +37,19 @@
 <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="eof_iterator.html#boost.eof_iteratorconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="eof_iterator.html#id1015027-bb"><span class="identifier">eof_iterator</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="eof_iterator.html#id1070016-bb"><span class="identifier">eof_iterator</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="eof_iterator.html#id1015028-bb">protected member functions</a></span>
-  <span class="identifier">ValueType</span> <span class="special">&amp;</span> <a class="link" href="eof_iterator.html#id1015031-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="eof_iterator.html#id1015043-bb"><span class="identifier">found_eof</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="eof_iterator.html#id1070017-bb">protected member functions</a></span>
+  <span class="identifier">ValueType</span> <span class="special">&amp;</span> <a class="link" href="eof_iterator.html#id1070020-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="eof_iterator.html#id1070031-bb"><span class="identifier">found_eof</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="eof_iterator.html#id967040-bb">private member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="eof_iterator.html#id967043-bb"><span class="identifier">increment</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="eof_iterator.html#id967050-bb"><span class="identifier">equal</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="eof_iterator.html" title="Class template eof_iterator">eof_iterator</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="identifier">ValueType</span> <span class="special">&amp;</span> <a class="link" href="eof_iterator.html#id967065-bb"><span class="identifier">dereference</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="eof_iterator.html#id1070043-bb">private member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="eof_iterator.html#id1070046-bb"><span class="identifier">increment</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="eof_iterator.html#id1070053-bb"><span class="identifier">equal</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="eof_iterator.html" title="Class template eof_iterator">eof_iterator</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">ValueType</span> <span class="special">&amp;</span> <a class="link" href="eof_iterator.html#id1006192-bb"><span class="identifier">dereference</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id2222632"></a><h2>Description</h2>
+<a name="id2195901"></a><h2>Description</h2>
 <p>The 'eof_iterator' class is useful for constructing forward iterators in cases where iterator extract data from some source and it's easy to detect 'eof' -- i.e. the situation where there's no data. One apparent example is reading lines from a file.</p>
 <p>Implementing such iterators using 'iterator_facade' directly would require to create class with three core operation, a couple of constructors. When using 'eof_iterator', the derived class should define only one method to get new value, plus a couple of constructors.</p>
 <p>The basic idea is that iterator has 'eof' bit. Two iterators are equal only if both have their 'eof' bits set. The 'get' method either obtains the new value or sets the 'eof' bit.</p>
@@ -64,33 +64,33 @@
 </p>
 <p>Essentially, the 'get' method has the functionality of both 'increment' and 'dereference'. It's very good for the cases where data extraction implicitly moves data pointer, like for stream operation. </p>
 <div class="refsect2">
-<a name="id2222686"></a><h3>
+<a name="id2195955"></a><h3>
 <a name="boost.eof_iteratorconstruct-copy-destruct"></a><code class="computeroutput">eof_iterator</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="id1015027-bb"></a><span class="identifier">eof_iterator</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="id1070016-bb"></a><span class="identifier">eof_iterator</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id2222734"></a><h3>
-<a name="id1015028-bb"></a><code class="computeroutput">eof_iterator</code> protected member functions</h3>
+<a name="id2196003"></a><h3>
+<a name="id1070017-bb"></a><code class="computeroutput">eof_iterator</code> protected member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">ValueType</span> <span class="special">&amp;</span> <a name="id1015031-bb"></a><span class="identifier">value</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">ValueType</span> <span class="special">&amp;</span> <a name="id1070020-bb"></a><span class="identifier">value</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Returns the reference which should be used by derived class to store the next value. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id1015043-bb"></a><span class="identifier">found_eof</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1070031-bb"></a><span class="identifier">found_eof</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Should be called by derived class to indicate that it can't produce next element. </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id2222834"></a><h3>
-<a name="id967040-bb"></a><code class="computeroutput">eof_iterator</code> private member functions</h3>
+<a name="id2196103"></a><h3>
+<a name="id1070043-bb"></a><code class="computeroutput">eof_iterator</code> private member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="id967043-bb"></a><span class="identifier">increment</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="id967050-bb"></a><span class="identifier">equal</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="eof_iterator.html" title="Class template eof_iterator">eof_iterator</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">const</span> <span class="identifier">ValueType</span> <span class="special">&amp;</span> <a name="id967065-bb"></a><span class="identifier">dereference</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="id1070046-bb"></a><span class="identifier">increment</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="id1070053-bb"></a><span class="identifier">equal</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="eof_iterator.html" title="Class template eof_iterator">eof_iterator</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">const</span> <span class="identifier">ValueType</span> <span class="special">&amp;</span> <a name="id1006192-bb"></a><span class="identifier">dereference</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>

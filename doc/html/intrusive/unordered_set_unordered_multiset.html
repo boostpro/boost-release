@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
 <link rel="prev" href="set_multiset.html" title="Intrusive associative containers: set, multiset, rbtree">
 <link rel="next" href="splay_set_multiset.html" title="Intrusive splay tree based associative containers: splay_set, splay_multiset and , splay_tree">
 </head>
@@ -319,12 +319,12 @@
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
 <span class="keyword">class</span> <span class="identifier">MyClass</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">unordered_set_base_hook</span><span class="special">&lt;&gt;</span>
-<span class="special">{</span>               <span class="comment">//This is a derivation hook
-</span>   <span class="keyword">int</span> <span class="identifier">int_</span><span class="special">;</span>
+<span class="special">{</span>               <span class="comment">//This is a derivation hook</span>
+   <span class="keyword">int</span> <span class="identifier">int_</span><span class="special">;</span>
 
    <span class="keyword">public</span><span class="special">:</span>
-   <span class="identifier">unordered_set_member_hook</span><span class="special">&lt;&gt;</span> <span class="identifier">member_hook_</span><span class="special">;</span> <span class="comment">//This is a member hook
-</span>
+   <span class="identifier">unordered_set_member_hook</span><span class="special">&lt;&gt;</span> <span class="identifier">member_hook_</span><span class="special">;</span> <span class="comment">//This is a member hook</span>
+
    <span class="identifier">MyClass</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span><span class="special">)</span>
       <span class="special">:</span>  <span class="identifier">int_</span><span class="special">(</span><span class="identifier">i</span><span class="special">)</span>
    <span class="special">{}</span>
@@ -336,11 +336,11 @@
    <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">(</span><span class="identifier">value</span><span class="special">.</span><span class="identifier">int_</span><span class="special">);</span> <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">//Define an unordered_set that will store MyClass objects using the base hook
-</span><span class="keyword">typedef</span> <span class="identifier">unordered_set</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span>    <span class="identifier">BaseSet</span><span class="special">;</span>
+<span class="comment">//Define an unordered_set that will store MyClass objects using the base hook</span>
+<span class="keyword">typedef</span> <span class="identifier">unordered_set</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span>    <span class="identifier">BaseSet</span><span class="special">;</span>
 
-<span class="comment">//Define an unordered_multiset that will store MyClass using the member hook
-</span><span class="keyword">typedef</span> <span class="identifier">member_hook</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">unordered_set_member_hook</span><span class="special">&lt;&gt;,</span> <span class="special">&amp;</span><span class="identifier">MyClass</span><span class="special">::</span><span class="identifier">member_hook_</span><span class="special">&gt;</span>
+<span class="comment">//Define an unordered_multiset that will store MyClass using the member hook</span>
+<span class="keyword">typedef</span> <span class="identifier">member_hook</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">unordered_set_member_hook</span><span class="special">&lt;&gt;,</span> <span class="special">&amp;</span><span class="identifier">MyClass</span><span class="special">::</span><span class="identifier">member_hook_</span><span class="special">&gt;</span>
    <span class="identifier">MemberOption</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">unordered_multiset</span><span class="special">&lt;</span> <span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">MemberOption</span><span class="special">&gt;</span>  <span class="identifier">MemberMultiSet</span><span class="special">;</span>
 
@@ -349,45 +349,45 @@
    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">iterator</span> <span class="identifier">VectIt</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">reverse_iterator</span> <span class="identifier">VectRit</span><span class="special">;</span>
 
-   <span class="comment">//Create a vector with 100 different MyClass objects
-</span>   <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">values</span><span class="special">;</span>
+   <span class="comment">//Create a vector with 100 different MyClass objects</span>
+   <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">values</span><span class="special">;</span>
    <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>  <span class="identifier">values</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">MyClass</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
 
-   <span class="comment">//Create a copy of the vector
-</span>   <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">values2</span><span class="special">(</span><span class="identifier">values</span><span class="special">);</span>
+   <span class="comment">//Create a copy of the vector</span>
+   <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">values2</span><span class="special">(</span><span class="identifier">values</span><span class="special">);</span>
 
-   <span class="comment">//Create a bucket array for base_set
-</span>   <span class="identifier">BaseSet</span><span class="special">::</span><span class="identifier">bucket_type</span> <span class="identifier">base_buckets</span><span class="special">[</span><span class="number">100</span><span class="special">];</span>
+   <span class="comment">//Create a bucket array for base_set</span>
+   <span class="identifier">BaseSet</span><span class="special">::</span><span class="identifier">bucket_type</span> <span class="identifier">base_buckets</span><span class="special">[</span><span class="number">100</span><span class="special">];</span>
 
-   <span class="comment">//Create a bucket array for member_multi_set
-</span>   <span class="identifier">MemberMultiSet</span><span class="special">::</span><span class="identifier">bucket_type</span> <span class="identifier">member_buckets</span><span class="special">[</span><span class="number">200</span><span class="special">];</span>
+   <span class="comment">//Create a bucket array for member_multi_set</span>
+   <span class="identifier">MemberMultiSet</span><span class="special">::</span><span class="identifier">bucket_type</span> <span class="identifier">member_buckets</span><span class="special">[</span><span class="number">200</span><span class="special">];</span>
 
-   <span class="comment">//Create unordered containers taking buckets as arguments
-</span>   <span class="identifier">BaseSet</span> <span class="identifier">base_set</span><span class="special">(</span><span class="identifier">BaseSet</span><span class="special">::</span><span class="identifier">bucket_traits</span><span class="special">(</span><span class="identifier">base_buckets</span><span class="special">,</span> <span class="number">100</span><span class="special">));</span>
+   <span class="comment">//Create unordered containers taking buckets as arguments</span>
+   <span class="identifier">BaseSet</span> <span class="identifier">base_set</span><span class="special">(</span><span class="identifier">BaseSet</span><span class="special">::</span><span class="identifier">bucket_traits</span><span class="special">(</span><span class="identifier">base_buckets</span><span class="special">,</span> <span class="number">100</span><span class="special">));</span>
    <span class="identifier">MemberMultiSet</span> <span class="identifier">member_multi_set</span>
       <span class="special">(</span><span class="identifier">MemberMultiSet</span><span class="special">::</span><span class="identifier">bucket_traits</span><span class="special">(</span><span class="identifier">member_buckets</span><span class="special">,</span> <span class="number">200</span><span class="special">));</span>
 
-   <span class="comment">//Now insert values's elements in the unordered_set
-</span>   <span class="keyword">for</span><span class="special">(</span><span class="identifier">VectIt</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
+   <span class="comment">//Now insert values's elements in the unordered_set</span>
+   <span class="keyword">for</span><span class="special">(</span><span class="identifier">VectIt</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
       <span class="identifier">base_set</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(*</span><span class="identifier">it</span><span class="special">);</span>
 
-   <span class="comment">//Now insert values's and values2's elements in the unordered_multiset
-</span>   <span class="keyword">for</span><span class="special">(</span><span class="identifier">VectIt</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">()),</span>
+   <span class="comment">//Now insert values's and values2's elements in the unordered_multiset</span>
+   <span class="keyword">for</span><span class="special">(</span><span class="identifier">VectIt</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">()),</span>
              <span class="identifier">it2</span><span class="special">(</span><span class="identifier">values2</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span><span class="identifier">itend2</span><span class="special">(</span><span class="identifier">values2</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span>
       <span class="special">;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">,</span> <span class="special">++</span><span class="identifier">it2</span><span class="special">){</span>
       <span class="identifier">member_multi_set</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(*</span><span class="identifier">it</span><span class="special">);</span>
       <span class="identifier">member_multi_set</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(*</span><span class="identifier">it2</span><span class="special">);</span>
    <span class="special">}</span>
 
-   <span class="comment">//Now find every element
-</span>   <span class="special">{</span>
+   <span class="comment">//Now find every element</span>
+   <span class="special">{</span>
       <span class="identifier">VectIt</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
 
       <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">){</span>
-         <span class="comment">//base_set should contain one element for each key
-</span>         <span class="keyword">if</span><span class="special">(</span><span class="identifier">base_set</span><span class="special">.</span><span class="identifier">count</span><span class="special">(*</span><span class="identifier">it</span><span class="special">)</span> <span class="special">!=</span> <span class="number">1</span><span class="special">)</span>           <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
-         <span class="comment">//member_multi_set should contain two elements for each key
-</span>         <span class="keyword">if</span><span class="special">(</span><span class="identifier">member_multi_set</span><span class="special">.</span><span class="identifier">count</span><span class="special">(*</span><span class="identifier">it</span><span class="special">)</span> <span class="special">!=</span> <span class="number">2</span><span class="special">)</span>   <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
+         <span class="comment">//base_set should contain one element for each key</span>
+         <span class="keyword">if</span><span class="special">(</span><span class="identifier">base_set</span><span class="special">.</span><span class="identifier">count</span><span class="special">(*</span><span class="identifier">it</span><span class="special">)</span> <span class="special">!=</span> <span class="number">1</span><span class="special">)</span>           <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
+         <span class="comment">//member_multi_set should contain two elements for each key</span>
+         <span class="keyword">if</span><span class="special">(</span><span class="identifier">member_multi_set</span><span class="special">.</span><span class="identifier">count</span><span class="special">(*</span><span class="identifier">it</span><span class="special">)</span> <span class="special">!=</span> <span class="number">2</span><span class="special">)</span>   <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
       <span class="special">}</span>
    <span class="special">}</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -416,8 +416,8 @@
 </pre>
 <p>
         The following bucket traits just stores a pointer to the bucket array but
-        the size is a compile-time constant. Note the use of the auxiliary <code class="computeroutput"><a class="link" href="../boost/intrusive/unordered_bucket.html" title="Struct template unordered_bucket">unordered_bucket</a></code> and
-        <code class="computeroutput"><a class="link" href="../boost/intrusive/unordered_bucket_ptr.html" title="Struct template unordered_bucket_ptr">unordered_bucket_ptr</a></code>
+        the size is a compile-time constant. Note the use of the auxiliary <code class="computeroutput">unordered_bucket</code> and
+        <code class="computeroutput">unordered_bucket_ptr</code>
         utilities to obtain the type of the bucket and its pointer before defining
         the unordered container:
       </p>
@@ -430,8 +430,8 @@
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
-<span class="comment">//A class to be inserted in an unordered_set
-</span><span class="keyword">class</span> <span class="identifier">MyClass</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">unordered_set_base_hook</span><span class="special">&lt;&gt;</span>
+<span class="comment">//A class to be inserted in an unordered_set</span>
+<span class="keyword">class</span> <span class="identifier">MyClass</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">unordered_set_base_hook</span><span class="special">&lt;&gt;</span>
 <span class="special">{</span>
    <span class="keyword">int</span> <span class="identifier">int_</span><span class="special">;</span>
 
@@ -445,15 +445,15 @@
       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash_value</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">int_</span><span class="special">);</span> <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">//Define the base hook option
-</span><span class="keyword">typedef</span> <span class="identifier">base_hook</span><span class="special">&lt;</span> <span class="identifier">unordered_set_base_hook</span><span class="special">&lt;&gt;</span> <span class="special">&gt;</span>     <span class="identifier">BaseHookOption</span><span class="special">;</span>
+<span class="comment">//Define the base hook option</span>
+<span class="keyword">typedef</span> <span class="identifier">base_hook</span><span class="special">&lt;</span> <span class="identifier">unordered_set_base_hook</span><span class="special">&lt;&gt;</span> <span class="special">&gt;</span>     <span class="identifier">BaseHookOption</span><span class="special">;</span>
 
-<span class="comment">//Obtain the types of the bucket and the bucket pointer
-</span><span class="keyword">typedef</span> <span class="identifier">unordered_bucket</span><span class="special">&lt;</span><span class="identifier">BaseHookOption</span><span class="special">&gt;::</span><span class="identifier">type</span>     <span class="identifier">BucketType</span><span class="special">;</span>
+<span class="comment">//Obtain the types of the bucket and the bucket pointer</span>
+<span class="keyword">typedef</span> <span class="identifier">unordered_bucket</span><span class="special">&lt;</span><span class="identifier">BaseHookOption</span><span class="special">&gt;::</span><span class="identifier">type</span>     <span class="identifier">BucketType</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">unordered_bucket_ptr</span><span class="special">&lt;</span><span class="identifier">BaseHookOption</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">BucketPtr</span><span class="special">;</span>
 
-<span class="comment">//The custom bucket traits.
-</span><span class="keyword">class</span> <span class="identifier">custom_bucket_traits</span>
+<span class="comment">//The custom bucket traits.</span>
+<span class="keyword">class</span> <span class="identifier">custom_bucket_traits</span>
 <span class="special">{</span>
    <span class="keyword">public</span><span class="special">:</span>
    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">NumBuckets</span> <span class="special">=</span> <span class="number">100</span><span class="special">;</span>
@@ -462,34 +462,34 @@
       <span class="special">:</span>  <span class="identifier">buckets_</span><span class="special">(</span><span class="identifier">buckets</span><span class="special">)</span>
    <span class="special">{}</span>
 
-   <span class="comment">//Functions to be implemented by custom bucket traits
-</span>   <span class="identifier">BucketPtr</span>   <span class="identifier">bucket_begin</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">buckets_</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="comment">//Functions to be implemented by custom bucket traits</span>
+   <span class="identifier">BucketPtr</span>   <span class="identifier">bucket_begin</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">buckets_</span><span class="special">;</span>  <span class="special">}</span>
    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">bucket_count</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">NumBuckets</span><span class="special">;}</span>
 
    <span class="keyword">private</span><span class="special">:</span>
    <span class="identifier">BucketPtr</span> <span class="identifier">buckets_</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="comment">//Define the container using the custom bucket traits
-</span><span class="keyword">typedef</span> <span class="identifier">unordered_set</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">bucket_traits</span><span class="special">&lt;</span><span class="identifier">custom_bucket_traits</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">BucketTraitsUset</span><span class="special">;</span>
+<span class="comment">//Define the container using the custom bucket traits</span>
+<span class="keyword">typedef</span> <span class="identifier">unordered_set</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">bucket_traits</span><span class="special">&lt;</span><span class="identifier">custom_bucket_traits</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">BucketTraitsUset</span><span class="special">;</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">iterator</span> <span class="identifier">VectIt</span><span class="special">;</span>
    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">values</span><span class="special">;</span>
 
-   <span class="comment">//Fill values
-</span>   <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>  <span class="identifier">values</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">MyClass</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
+   <span class="comment">//Fill values</span>
+   <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>  <span class="identifier">values</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">MyClass</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
 
-   <span class="comment">//Now create the bucket array and the custom bucket traits object
-</span>   <span class="identifier">BucketType</span> <span class="identifier">buckets</span><span class="special">[</span><span class="identifier">custom_bucket_traits</span><span class="special">::</span><span class="identifier">NumBuckets</span><span class="special">];</span>
+   <span class="comment">//Now create the bucket array and the custom bucket traits object</span>
+   <span class="identifier">BucketType</span> <span class="identifier">buckets</span><span class="special">[</span><span class="identifier">custom_bucket_traits</span><span class="special">::</span><span class="identifier">NumBuckets</span><span class="special">];</span>
    <span class="identifier">custom_bucket_traits</span> <span class="identifier">btraits</span><span class="special">(</span><span class="identifier">buckets</span><span class="special">);</span>
 
-   <span class="comment">//Now create the unordered set
-</span>   <span class="identifier">BucketTraitsUset</span> <span class="identifier">uset</span><span class="special">(</span><span class="identifier">btraits</span><span class="special">);</span>
+   <span class="comment">//Now create the unordered set</span>
+   <span class="identifier">BucketTraitsUset</span> <span class="identifier">uset</span><span class="special">(</span><span class="identifier">btraits</span><span class="special">);</span>
 
-   <span class="comment">//Insert the values in the unordered set
-</span>   <span class="keyword">for</span><span class="special">(</span><span class="identifier">VectIt</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
+   <span class="comment">//Insert the values in the unordered set</span>
+   <span class="keyword">for</span><span class="special">(</span><span class="identifier">VectIt</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
       <span class="identifier">uset</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(*</span><span class="identifier">it</span><span class="special">);</span>
 
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -501,7 +501,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

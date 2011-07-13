@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Chapter&#160;15.&#160;Boost.Proto</title>
+<title>Chapter&#160;16.&#160;Boost.Proto</title>
 <link rel="stylesheet" href="../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="libraries.html" title="Part&#160;I.&#160;The Boost C++ Libraries (BoostBook Subset)">
-<link rel="prev" href="boost/property_tree/xml_parser/write_xml_id939726.html" title="Function template write_xml">
+<link rel="prev" href="boost/property_tree/xml_parser/write_xml_id987719.html" title="Function template write_xml">
 <link rel="next" href="proto/users_guide.html" title="Users' Guide">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,18 +20,18 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="boost/property_tree/xml_parser/write_xml_id939726.html"><img src="../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="proto/users_guide.html"><img src="../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost/property_tree/xml_parser/write_xml_id987719.html"><img src="../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="proto/users_guide.html"><img src="../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="proto"></a>Chapter&#160;15.&#160;Boost.Proto</h2></div>
+<a name="proto"></a>Chapter&#160;16.&#160;Boost.Proto</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Eric</span> <span class="surname">Niebler</span>
 </h3></div></div>
 <div><p class="copyright">Copyright &#169; 2008 Eric Niebler</p></div>
 <div><div class="legalnotice">
-<a name="id2310411"></a><p>
+<a name="id2284954"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -95,6 +95,7 @@
 <dt><span class="section"><a href="proto/reference.html#header.boost.proto.transform.fold_hpp">Header &lt;boost/proto/transform/fold.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="proto/reference.html#header.boost.proto.transform.fold_tree_hpp">Header &lt;boost/proto/transform/fold_tree.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="proto/reference.html#header.boost.proto.transform.impl_hpp">Header &lt;boost/proto/transform/impl.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="proto/reference.html#header.boost.proto.transform.integral_c_hpp">Header &lt;boost/proto/transform/integral_c.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="proto/reference.html#header.boost.proto.transform.lazy_hpp">Header &lt;boost/proto/transform/lazy.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="proto/reference.html#header.boost.proto.transform.make_hpp">Header &lt;boost/proto/transform/make.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="proto/reference.html#header.boost.proto.transform.pass_through_hpp">Header &lt;boost/proto/transform/pass_through.hpp&gt;</a></span></dt>
@@ -128,13 +129,13 @@
         <span class="bold"><strong><span class="emphasis"><em>-- William Shakespeare</em></span></strong></span>
       </p></blockquote></div>
 <a name="boost_proto.preface.description"></a><h4>
-<a name="id2310477"></a>
+<a name="boost_proto.preface.description-heading"></a>
       <a class="link" href="proto.html#boost_proto.preface.description">Description</a>
     </h4>
 <p>
       Proto is a framework for building Domain Specific Embedded Languages in C++.
       It provides tools for constructing, type-checking, transforming and executing
-      <span class="emphasis"><em>expression templates</em></span><sup>[<a name="id2310497" href="#ftn.id2310497" class="footnote">2</a>]</sup>. More specifically, Proto provides:
+      <span class="emphasis"><em>expression templates</em></span><sup>[<a name="id2285045" href="#ftn.id2285045" class="footnote">2</a>]</sup>. More specifically, Proto provides:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -157,7 +158,7 @@
         </li>
 </ul></div>
 <a name="boost_proto.preface.motivation"></a><h4>
-<a name="id2310570"></a>
+<a name="boost_proto.preface.motivation-heading"></a>
       <a class="link" href="proto.html#boost_proto.preface.motivation">Motivation</a>
     </h4>
 <p>
@@ -181,7 +182,7 @@
       In short, Proto is a DSEL for defining DSELs.
     </p>
 <a name="boost_proto.preface.how_to_use_this_documentation"></a><h4>
-<a name="id2310608"></a>
+<a name="boost_proto.preface.how_to_use_this_documentation-heading"></a>
       <a class="link" href="proto.html#boost_proto.preface.how_to_use_this_documentation">How to Use
       This Documentation</a>
     </h4>
@@ -230,33 +231,33 @@
 <p>
       Finally, you can mentally add the following to any code fragments in this document:
     </p>
-<pre class="programlisting"><span class="comment">// Include all of Proto
-</span><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">proto</span><span class="special">/</span><span class="identifier">proto</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="comment">// Include all of Proto</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">proto</span><span class="special">/</span><span class="identifier">proto</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
-<span class="comment">// Create some namespace aliases
-</span><span class="keyword">namespace</span> <span class="identifier">mpl</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">;</span>
+<span class="comment">// Create some namespace aliases</span>
+<span class="keyword">namespace</span> <span class="identifier">mpl</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">;</span>
 <span class="keyword">namespace</span> <span class="identifier">fusion</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">;</span>
 <span class="keyword">namespace</span> <span class="identifier">proto</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">;</span>
 
-<span class="comment">// Allow unqualified use of Proto's wildcard pattern
-</span><span class="keyword">using</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">_</span><span class="special">;</span>
+<span class="comment">// Allow unqualified use of Proto's wildcard pattern</span>
+<span class="keyword">using</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">_</span><span class="special">;</span>
 </pre>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.id2310497" href="#id2310497" class="para">2</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id2285045" href="#id2285045" class="para">2</a>] </sup>
         See <a href="http://www.osl.iu.edu/~tveldhui/papers/Expression-Templates/exprtmpl.html" target="_top">Expression
         Templates</a>
       </p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: March 08, 2011 at 23:39:15 GMT</small></p></td>
+<td align="left"><p><small>Last revised: July 05, 2011 at 15:26:38 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="boost/property_tree/xml_parser/write_xml_id939726.html"><img src="../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="proto/users_guide.html"><img src="../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost/property_tree/xml_parser/write_xml_id987719.html"><img src="../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="proto/users_guide.html"><img src="../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

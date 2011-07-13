@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../typeof.html" title="Chapter&#160;25.&#160;Boost.Typeof">
+<link rel="up" href="../typeof.html" title="Chapter&#160;27.&#160;Boost.Typeof">
 <link rel="prev" href="refe.html" title="Reference">
 <link rel="next" href="cont.html" title="Contributed By:">
 </head>
@@ -45,26 +45,26 @@
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">ID</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">typeof_access</span>
 <span class="special">{</span>
-    <span class="keyword">struct</span> <span class="identifier">id2type</span><span class="special">;</span> <span class="comment">//not defined
-</span><span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">id2type</span><span class="special">;</span> <span class="comment">//not defined</span>
+<span class="special">};</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">ID</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">typeof_register</span> <span class="special">:</span> <span class="identifier">typeof_access</span>
 <span class="special">{</span>
-    <span class="comment">// define base's nested class here
-</span>    <span class="keyword">struct</span> <span class="identifier">typeof_access</span><span class="special">::</span><span class="identifier">id2type</span>
+    <span class="comment">// define base's nested class here</span>
+    <span class="keyword">struct</span> <span class="identifier">typeof_access</span><span class="special">::</span><span class="identifier">id2type</span>
     <span class="special">{</span>
         <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="identifier">type</span><span class="special">;</span>
     <span class="special">};</span>
 <span class="special">};</span>
 
-<span class="comment">//Type registration function 
-</span><span class="identifier">typeof_register</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">compile</span><span class="special">-</span><span class="identifier">time</span><span class="special">-</span><span class="identifier">constant</span><span class="special">&gt;</span> <span class="identifier">register_type</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;);</span>
+<span class="comment">//Type registration function </span>
+<span class="identifier">typeof_register</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">compile</span><span class="special">-</span><span class="identifier">time</span><span class="special">-</span><span class="identifier">constant</span><span class="special">&gt;</span> <span class="identifier">register_type</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;);</span>
 
-<span class="comment">//Actually register type by instantiating typeof_register for the correct type
-</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">register_type</span><span class="special">(</span><span class="identifier">some</span><span class="special">-</span><span class="identifier">type</span><span class="special">));</span> 
+<span class="comment">//Actually register type by instantiating typeof_register for the correct type</span>
+<span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">register_type</span><span class="special">(</span><span class="identifier">some</span><span class="special">-</span><span class="identifier">type</span><span class="special">));</span> 
 
-<span class="comment">//Use the base class to access the type.
-</span><span class="keyword">typedef</span> <span class="identifier">typeof_access</span><span class="special">::</span><span class="identifier">id2type</span><span class="special">::</span><span class="identifier">type</span> <span class="identifier">type</span><span class="special">;</span> 
+<span class="comment">//Use the base class to access the type.</span>
+<span class="keyword">typedef</span> <span class="identifier">typeof_access</span><span class="special">::</span><span class="identifier">id2type</span><span class="special">::</span><span class="identifier">type</span> <span class="identifier">type</span><span class="special">;</span> 
 </pre>
 <p>
         Peder Holt adapted this method to VC7.0, where the nested class is a template
@@ -216,8 +216,8 @@
         be explicitly included by the user, as needed:
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">typeof</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">functional</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="identifier">BOOST_AUTO</span><span class="special">(</span><span class="identifier">fun</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">bind2nd</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">less</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(),</span> <span class="number">21</span><span class="special">));</span> <span class="comment">//create named function object for future use.
-</span></pre>
+<span class="identifier">BOOST_AUTO</span><span class="special">(</span><span class="identifier">fun</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">bind2nd</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">less</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(),</span> <span class="number">21</span><span class="special">));</span> <span class="comment">//create named function object for future use.</span>
+</pre>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -256,8 +256,8 @@
         Inspecting this error message, we see that the compiler complains about
         <code class="computeroutput"><span class="identifier">X</span></code>
       </p>
-<pre class="programlisting"><span class="identifier">BOOST_TYPEOF_REGISTER_TYPE</span><span class="special">(</span><span class="identifier">X</span><span class="special">);</span> <span class="comment">//register X with the typeof system
-</span></pre>
+<pre class="programlisting"><span class="identifier">BOOST_TYPEOF_REGISTER_TYPE</span><span class="special">(</span><span class="identifier">X</span><span class="special">);</span> <span class="comment">//register X with the typeof system</span>
+</pre>
 <p>
         Recompiling, we get a new error message from VC7.1
       </p>
@@ -275,8 +275,8 @@
         is a template, and contains integral constants, we need to take more care
         when registering:
       </p>
-<pre class="programlisting"><span class="identifier">BOOST_TYPEOF_REGISTER_TEMPLATE</span><span class="special">(</span><span class="identifier">Y</span><span class="special">,(</span><span class="keyword">typename</span><span class="special">)(</span><span class="keyword">bool</span><span class="special">));</span> <span class="comment">//register template class Y
-</span></pre>
+<pre class="programlisting"><span class="identifier">BOOST_TYPEOF_REGISTER_TEMPLATE</span><span class="special">(</span><span class="identifier">Y</span><span class="special">,(</span><span class="keyword">typename</span><span class="special">)(</span><span class="keyword">bool</span><span class="special">));</span> <span class="comment">//register template class Y</span>
+</pre>
 <p>
         It is a good idea to look up the exact definition of <code class="computeroutput"><span class="identifier">Y</span></code>
         when it contains integral constants. For simple template classes containing
@@ -297,8 +297,8 @@
         Nested template template parameters are not supported, like:
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">&gt;</span> <span class="keyword">class</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">Tpl</span><span class="special">&gt;</span> 
-<span class="keyword">class</span> <span class="identifier">A</span><span class="special">;</span> <span class="comment">// can't register!
-</span></pre>
+<span class="keyword">class</span> <span class="identifier">A</span><span class="special">;</span> <span class="comment">// can't register!</span>
+</pre>
 <p>
         Classes and templates nested inside other templates also can't be registered
         because of the issue of nondeduced context. This limitation is most noticeable

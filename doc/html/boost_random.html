@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Chapter&#160;16.&#160;Boost.Random</title>
+<title>Chapter&#160;17.&#160;Boost.Random</title>
 <link rel="stylesheet" href="../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
@@ -25,13 +25,14 @@
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="boost_random"></a>Chapter&#160;16.&#160;Boost.Random</h2></div>
+<a name="boost_random"></a>Chapter&#160;17.&#160;Boost.Random</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Jens</span> <span class="surname">Maurer</span>
 </h3></div></div>
-<div><p class="copyright">Copyright &#169; 2000 -2005 Jens Maurer, 2009 Steven Watanabe</p></div>
+<div><p class="copyright">Copyright &#169; 2000-2005 Jens Maurer</p></div>
+<div><p class="copyright">Copyright &#169; 2009, 2010 Steven Watanabe</p></div>
 <div><div class="legalnotice">
-<a name="id2620010"></a><p>
+<a name="id2613185"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -47,6 +48,8 @@
       integers in a range</a></span></dt>
 <dt><span class="section"><a href="boost_random/tutorial.html#boost_random.tutorial.generating_integers_with_different_probabilities">Generating
       integers with different probabilities</a></span></dt>
+<dt><span class="section"><a href="boost_random/tutorial.html#boost_random.tutorial.generating_a_random_password">Generating
+      a random password</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="boost_random/reference.html">Reference</a></span></dt>
 <dd><dl>
@@ -56,7 +59,6 @@
 <dt><span class="section"><a href="boost_random/reference.html#headers">Headers</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="boost_random/performance.html">Performance</a></span></dt>
-<dt><span class="section"><a href="boost_random/rationale.html">Rationale</a></span></dt>
 <dt><span class="section"><a href="boost_random/history_and_acknowledgements.html">History and
     Acknowledgements</a></span></dt>
 </dl>
@@ -79,18 +81,17 @@
 <p>
       For a very quick start, here's an example:
     </p>
-<pre class="programlisting"><code class="computeroutput"><a class="link" href="boost/mt19937.html" title="Type definition mt19937">boost::mt19937</a></code> <span class="identifier">rng</span><span class="special">;</span>                 <span class="comment">// produces randomness out of thin air
-</span>                                    <span class="comment">// see pseudo-random number generators
-</span><code class="computeroutput"><a class="link" href="boost/uniform_int.html" title="Class template uniform_int">boost::uniform_int</a></code>&lt;&gt; <span class="identifier">six</span><span class="special">(</span><span class="number">1</span><span class="special">,</span><span class="number">6</span><span class="special">);</span>      <span class="comment">// distribution that maps to 1..6
-</span>                                    <span class="comment">// see random number distributions
-</span><code class="computeroutput"><a class="link" href="boost/variate_generator.html" title="Class template variate_generator">boost::variate_generator</a></code><span class="special">&lt;</span><code class="computeroutput"><a class="link" href="boost/mt19937.html" title="Type definition mt19937">boost::mt19937</a></code><span class="special">&amp;,</span> <code class="computeroutput"><a class="link" href="boost/uniform_int.html" title="Class template uniform_int">boost::uniform_int</a></code><span class="special">&lt;&gt;</span> <span class="special">&gt;</span>
-         <span class="identifier">die</span><span class="special">(</span><span class="identifier">rng</span><span class="special">,</span> <span class="identifier">six</span><span class="special">);</span>             <span class="comment">// glues randomness with mapping
-</span><span class="keyword">int</span> <span class="identifier">x</span> <span class="special">=</span> <span class="identifier">die</span><span class="special">();</span>                      <span class="comment">// simulate rolling a die
-</span></pre>
+<pre class="programlisting"><code class="computeroutput"><a class="link" href="boost/random/mt19937.html" title="Type definition mt19937">boost::random::mt19937</a></code> <span class="identifier">rng</span><span class="special">;</span>         <span class="comment">// produces randomness out of thin air</span>
+                                    <span class="comment">// see pseudo-random number generators</span>
+<code class="computeroutput"><a class="link" href="boost/random/uniform_int_distribution.html" title="Class template uniform_int_distribution">boost::random::uniform_int_distribution</a></code>&lt;&gt; <span class="identifier">six</span><span class="special">(</span><span class="number">1</span><span class="special">,</span><span class="number">6</span><span class="special">);</span>
+                                    <span class="comment">// distribution that maps to 1..6</span>
+                                    <span class="comment">// see random number distributions</span>
+<span class="keyword">int</span> <span class="identifier">x</span> <span class="special">=</span> <span class="identifier">six</span><span class="special">(</span><span class="identifier">rng</span><span class="special">);</span>                   <span class="comment">// simulate rolling a die</span>
+</pre>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: March 08, 2011 at 23:39:24 GMT</small></p></td>
+<td align="left"><p><small>Last revised: July 05, 2011 at 15:27:41 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

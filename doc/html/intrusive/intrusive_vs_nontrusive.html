@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
-<link rel="prev" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
+<link rel="prev" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
 <link rel="next" href="usage.html" title="How to use Boost.Intrusive">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -54,8 +54,8 @@
    <span class="identifier">MyClass</span> <span class="identifier">myclass</span><span class="special">(...);</span>
    <span class="identifier">myclass_list</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">);</span>
 
-   <span class="comment">//The stored object is different from the original object
-</span>   <span class="identifier">assert</span><span class="special">(&amp;</span><span class="identifier">myclass</span> <span class="special">!=</span> <span class="special">&amp;</span><span class="identifier">myclass_list</span><span class="special">.</span><span class="identifier">front</span><span class="special">());</span>
+   <span class="comment">//The stored object is different from the original object</span>
+   <span class="identifier">assert</span><span class="special">(&amp;</span><span class="identifier">myclass</span> <span class="special">!=</span> <span class="special">&amp;</span><span class="identifier">myclass_list</span><span class="special">.</span><span class="identifier">front</span><span class="special">());</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -65,8 +65,8 @@
         usually allocates nodes that contain pointers to the next and previous node
         and the value itself. Something similar to:
       </p>
-<pre class="programlisting"><span class="comment">//A possible implementation of a std::list&lt;MyClass&gt; node
-</span><span class="keyword">class</span> <span class="identifier">list_node</span>
+<pre class="programlisting"><span class="comment">//A possible implementation of a std::list&lt;MyClass&gt; node</span>
+<span class="keyword">class</span> <span class="identifier">list_node</span>
 <span class="special">{</span>
    <span class="identifier">list_node</span> <span class="special">*</span><span class="identifier">next</span><span class="special">;</span>
    <span class="identifier">list_node</span> <span class="special">*</span><span class="identifier">previous</span><span class="special">;</span>
@@ -86,8 +86,8 @@
 <span class="special">{</span>
    <span class="identifier">MyClass</span> <span class="special">*</span><span class="identifier">next</span><span class="special">;</span>
    <span class="identifier">MyClass</span> <span class="special">*</span><span class="identifier">previous</span><span class="special">;</span>
-   <span class="comment">//Other members...
-</span><span class="special">};</span>
+   <span class="comment">//Other members...</span>
+<span class="special">};</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
@@ -96,8 +96,8 @@
    <span class="identifier">MyClass</span> <span class="identifier">myclass</span><span class="special">;</span>
    <span class="identifier">list</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">myclass</span><span class="special">);</span>
 
-   <span class="comment">//"myclass" object is stored in the list
-</span>   <span class="identifier">assert</span><span class="special">(&amp;</span><span class="identifier">myclass</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">front</span><span class="special">());</span>
+   <span class="comment">//"myclass" object is stored in the list</span>
+   <span class="identifier">assert</span><span class="special">(&amp;</span><span class="identifier">myclass</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">front</span><span class="special">());</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -227,7 +227,7 @@
           </li>
 </ul></div>
 <div class="table">
-<a name="id1621835"></a><p class="title"><b>Table&#160;10.1.&#160;Summary of intrusive containers advantages and disadvantages</b></p>
+<a name="id1673786"></a><p class="title"><b>Table&#160;11.1.&#160;Summary of intrusive containers advantages and disadvantages</b></p>
 <div class="table-contents"><table class="table" summary="Summary of intrusive containers advantages and disadvantages">
 <colgroup>
 <col>
@@ -501,7 +501,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

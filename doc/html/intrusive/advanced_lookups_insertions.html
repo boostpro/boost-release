@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
 <link rel="prev" href="treap_set_multiset.html" title="Intrusive treap based associative containers: treap_set, treap_multiset and treap">
 <link rel="next" href="erasing_and_disposing.html" title="Erasing and disposing values from Boost.Intrusive containers">
 </head>
@@ -64,8 +64,8 @@
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
-<span class="comment">// Hash function for strings
-</span><span class="keyword">struct</span> <span class="identifier">StrHasher</span>
+<span class="comment">// Hash function for strings</span>
+<span class="keyword">struct</span> <span class="identifier">StrHasher</span>
 <span class="special">{</span>
    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">str</span><span class="special">)</span> <span class="keyword">const</span>
    <span class="special">{</span>  
@@ -78,13 +78,13 @@
 <span class="keyword">class</span> <span class="identifier">Expensive</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">set_base_hook</span><span class="special">&lt;&gt;,</span> <span class="keyword">public</span> <span class="identifier">unordered_set_base_hook</span><span class="special">&lt;&gt;</span>
 <span class="special">{</span>
    <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">key_</span><span class="special">;</span>
-   <span class="comment">// Other members...
-</span>  
+   <span class="comment">// Other members...</span>
+  
    <span class="keyword">public</span><span class="special">:</span>
    <span class="identifier">Expensive</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">key</span><span class="special">)</span>
       <span class="special">:</span>  <span class="identifier">key_</span><span class="special">(</span><span class="identifier">key</span><span class="special">)</span>
-      <span class="special">{}</span>  <span class="comment">//other expensive initializations...
-</span>
+      <span class="special">{}</span>  <span class="comment">//other expensive initializations...</span>
+
    <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> <span class="identifier">get_key</span><span class="special">()</span> <span class="keyword">const</span>
       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">key_</span><span class="special">;</span>   <span class="special">}</span>
 
@@ -98,12 +98,12 @@
       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">StrHasher</span><span class="special">()(</span><span class="identifier">object</span><span class="special">.</span><span class="identifier">get_key</span><span class="special">().</span><span class="identifier">c_str</span><span class="special">());</span>  <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">// A set and unordered_set that store Expensive objects
-</span><span class="keyword">typedef</span> <span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">Expensive</span><span class="special">&gt;</span>           <span class="identifier">Set</span><span class="special">;</span>
+<span class="comment">// A set and unordered_set that store Expensive objects</span>
+<span class="keyword">typedef</span> <span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">Expensive</span><span class="special">&gt;</span>           <span class="identifier">Set</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">unordered_set</span><span class="special">&lt;</span><span class="identifier">Expensive</span><span class="special">&gt;</span> <span class="identifier">UnorderedSet</span><span class="special">;</span>
 
-<span class="comment">// Search functions
-</span><span class="identifier">Expensive</span> <span class="special">*</span><span class="identifier">get_from_set</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
+<span class="comment">// Search functions</span>
+<span class="identifier">Expensive</span> <span class="special">*</span><span class="identifier">get_from_set</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
 <span class="special">{</span>
    <span class="identifier">Set</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span> <span class="special">=</span> <span class="identifier">set_object</span><span class="special">.</span><span class="identifier">find</span><span class="special">(</span><span class="identifier">Expensive</span><span class="special">(</span><span class="identifier">key</span><span class="special">));</span>
    <span class="keyword">if</span><span class="special">(</span> <span class="identifier">it</span> <span class="special">==</span> <span class="identifier">set_object</span><span class="special">.</span><span class="identifier">end</span><span class="special">()</span> <span class="special">)</span>     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -151,8 +151,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">// These compare Expensive and a c-string
-</span><span class="keyword">struct</span> <span class="identifier">StrExpComp</span>
+<pre class="programlisting"><span class="comment">// These compare Expensive and a c-string</span>
+<span class="keyword">struct</span> <span class="identifier">StrExpComp</span>
 <span class="special">{</span>
    <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">str</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Expensive</span> <span class="special">&amp;</span><span class="identifier">c</span><span class="special">)</span> <span class="keyword">const</span>
    <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">strcmp</span><span class="special">(</span><span class="identifier">str</span><span class="special">,</span> <span class="identifier">c</span><span class="special">.</span><span class="identifier">get_key</span><span class="special">().</span><span class="identifier">c_str</span><span class="special">())</span> <span class="special">&lt;</span> <span class="number">0</span><span class="special">;</span>  <span class="special">}</span>
@@ -170,8 +170,8 @@
    <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">strcmp</span><span class="special">(</span><span class="identifier">c</span><span class="special">.</span><span class="identifier">get_key</span><span class="special">().</span><span class="identifier">c_str</span><span class="special">(),</span> <span class="identifier">str</span><span class="special">)</span> <span class="special">==</span> <span class="number">0</span><span class="special">;</span>  <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">// Optimized search functions
-</span><span class="identifier">Expensive</span> <span class="special">*</span><span class="identifier">get_from_set_optimized</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
+<span class="comment">// Optimized search functions</span>
+<span class="identifier">Expensive</span> <span class="special">*</span><span class="identifier">get_from_set_optimized</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
 <span class="special">{</span>
    <span class="identifier">Set</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span> <span class="special">=</span> <span class="identifier">set_object</span><span class="special">.</span><span class="identifier">find</span><span class="special">(</span><span class="identifier">key</span><span class="special">,</span> <span class="identifier">StrExpComp</span><span class="special">());</span>
    <span class="keyword">if</span><span class="special">(</span> <span class="identifier">it</span> <span class="special">==</span> <span class="identifier">set_object</span><span class="special">.</span><span class="identifier">end</span><span class="special">()</span> <span class="special">)</span>   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -239,8 +239,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">// Insertion functions
-</span><span class="keyword">bool</span> <span class="identifier">insert_to_set</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
+<pre class="programlisting"><span class="comment">// Insertion functions</span>
+<span class="keyword">bool</span> <span class="identifier">insert_to_set</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
 <span class="special">{</span>
    <span class="identifier">Expensive</span> <span class="special">*</span><span class="identifier">pobject</span> <span class="special">=</span> <span class="keyword">new</span> <span class="identifier">Expensive</span><span class="special">(</span><span class="identifier">key</span><span class="special">);</span>
    <span class="keyword">bool</span> <span class="identifier">success</span> <span class="special">=</span> <span class="identifier">set_object</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(*</span><span class="identifier">pobject</span><span class="special">).</span><span class="identifier">second</span><span class="special">;</span>
@@ -267,8 +267,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">// Optimized insertion functions
-</span><span class="keyword">bool</span> <span class="identifier">insert_to_set_optimized</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
+<pre class="programlisting"><span class="comment">// Optimized insertion functions</span>
+<span class="keyword">bool</span> <span class="identifier">insert_to_set_optimized</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
 <span class="special">{</span>
    <span class="identifier">Set</span><span class="special">::</span><span class="identifier">insert_commit_data</span> <span class="identifier">insert_data</span><span class="special">;</span>
    <span class="keyword">bool</span> <span class="identifier">success</span> <span class="special">=</span> <span class="identifier">set_object</span><span class="special">.</span><span class="identifier">insert_check</span><span class="special">(</span><span class="identifier">key</span><span class="special">,</span> <span class="identifier">StrExpComp</span><span class="special">(),</span> <span class="identifier">insert_data</span><span class="special">).</span><span class="identifier">second</span><span class="special">;</span>
@@ -297,23 +297,21 @@
             with arbitrary keys
           </li>
 <li class="listitem">
-<p class="simpara">
             if the insertion is possible (there is no equivalent value) <code class="computeroutput"><span class="identifier">insert_check</span></code> collects all the needed
             information in an <code class="computeroutput"><span class="identifier">insert_commit_data</span></code>
             structure, so that <code class="computeroutput"><span class="identifier">insert_commit</span></code>:
-          </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+            <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-                <span class="bold"><strong>does not execute</strong></span> further comparisons
-              </li>
+                  <span class="bold"><strong>does not execute</strong></span> further comparisons
+                </li>
 <li class="listitem">
-                can be executed with <span class="bold"><strong>constant-time complexity</strong></span>
-              </li>
+                  can be executed with <span class="bold"><strong>constant-time complexity</strong></span>
+                </li>
 <li class="listitem">
-                has <span class="bold"><strong>no-throw guarantee</strong></span>.
-              </li>
+                  has <span class="bold"><strong>no-throw guarantee</strong></span>.
+                </li>
 </ul></div>
-</li>
+          </li>
 </ul></div>
 <p>
         These functions must be used with care, since no other insertion or erasure
@@ -369,8 +367,8 @@
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
-<span class="comment">//A simple class with a set hook
-</span><span class="keyword">class</span> <span class="identifier">MyClass</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">set_base_hook</span><span class="special">&lt;&gt;</span>
+<span class="comment">//A simple class with a set hook</span>
+<span class="keyword">class</span> <span class="identifier">MyClass</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">set_base_hook</span><span class="special">&lt;&gt;</span>
 <span class="special">{</span>
    <span class="keyword">public</span><span class="special">:</span>
    <span class="keyword">int</span> <span class="identifier">int_</span><span class="special">;</span>
@@ -384,40 +382,40 @@
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
-   <span class="comment">//Create some ORDERED elements
-</span>   <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">values</span><span class="special">;</span>
+   <span class="comment">//Create some ORDERED elements</span>
+   <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">values</span><span class="special">;</span>
    <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>  <span class="identifier">values</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">MyClass</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
 
-   <span class="special">{</span>  <span class="comment">//Data is naturally ordered in the vector with the same criteria
-</span>      <span class="comment">//as multiset's comparison predicate, so we can just push back
-</span>      <span class="comment">//all elements, which is more efficient than normal insertion
-</span>      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">mset</span><span class="special">;</span>
+   <span class="special">{</span>  <span class="comment">//Data is naturally ordered in the vector with the same criteria</span>
+      <span class="comment">//as multiset's comparison predicate, so we can just push back</span>
+      <span class="comment">//all elements, which is more efficient than normal insertion</span>
+      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">mset</span><span class="special">;</span>
       <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>  <span class="identifier">mset</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">values</span><span class="special">[</span><span class="identifier">i</span><span class="special">]);</span>
 
-      <span class="comment">//Now check orderd invariant
-</span>      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span> <span class="identifier">next</span><span class="special">(</span><span class="identifier">mset</span><span class="special">.</span><span class="identifier">cbegin</span><span class="special">()),</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">next</span><span class="special">++);</span>
+      <span class="comment">//Now check orderd invariant</span>
+      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span> <span class="identifier">next</span><span class="special">(</span><span class="identifier">mset</span><span class="special">.</span><span class="identifier">cbegin</span><span class="special">()),</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">next</span><span class="special">++);</span>
       <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">99</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">,</span> <span class="special">++</span><span class="identifier">it</span><span class="special">,</span> <span class="special">++</span><span class="identifier">next</span><span class="special">)</span> <span class="identifier">assert</span><span class="special">(*</span><span class="identifier">it</span> <span class="special">&lt;</span> <span class="special">*</span><span class="identifier">next</span><span class="special">);</span>
    <span class="special">}</span>
-   <span class="special">{</span>  <span class="comment">//Now the correct order for the set is the reverse order
-</span>      <span class="comment">//so let's push front all elements
-</span>      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">compare</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">greater</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">mset</span><span class="special">;</span>
+   <span class="special">{</span>  <span class="comment">//Now the correct order for the set is the reverse order</span>
+      <span class="comment">//so let's push front all elements</span>
+      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">compare</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">greater</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">mset</span><span class="special">;</span>
       <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>  <span class="identifier">mset</span><span class="special">.</span><span class="identifier">push_front</span><span class="special">(</span><span class="identifier">values</span><span class="special">[</span><span class="identifier">i</span><span class="special">]);</span>
 
-      <span class="comment">//Now check orderd invariant
-</span>      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">compare</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">greater</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;::</span>
+      <span class="comment">//Now check orderd invariant</span>
+      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">compare</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">greater</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;::</span>
          <span class="identifier">const_iterator</span> <span class="identifier">next</span><span class="special">(</span><span class="identifier">mset</span><span class="special">.</span><span class="identifier">cbegin</span><span class="special">()),</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">next</span><span class="special">++);</span>
       <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">99</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">,</span> <span class="special">++</span><span class="identifier">it</span><span class="special">,</span> <span class="special">++</span><span class="identifier">next</span><span class="special">)</span> <span class="identifier">assert</span><span class="special">(*</span><span class="identifier">it</span> <span class="special">&gt;</span> <span class="special">*</span><span class="identifier">next</span><span class="special">);</span>
    <span class="special">}</span>
-   <span class="special">{</span>  <span class="comment">//Now push the first and the last and insert the rest
-</span>      <span class="comment">//before the last position using "insert_before"
-</span>      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">mset</span><span class="special">;</span>
+   <span class="special">{</span>  <span class="comment">//Now push the first and the last and insert the rest</span>
+      <span class="comment">//before the last position using "insert_before"</span>
+      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">mset</span><span class="special">;</span>
       <span class="identifier">mset</span><span class="special">.</span><span class="identifier">insert_before</span><span class="special">(</span><span class="identifier">mset</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">values</span><span class="special">[</span><span class="number">0</span><span class="special">]);</span>
       <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span> <span class="identifier">pos</span> <span class="special">=</span>
          <span class="identifier">mset</span><span class="special">.</span><span class="identifier">insert_before</span><span class="special">(</span><span class="identifier">mset</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">values</span><span class="special">[</span><span class="number">99</span><span class="special">]);</span>
       <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">1</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">99</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>  <span class="identifier">mset</span><span class="special">.</span><span class="identifier">insert_before</span><span class="special">(</span><span class="identifier">pos</span><span class="special">,</span> <span class="identifier">values</span><span class="special">[</span><span class="identifier">i</span><span class="special">]);</span>
 
-      <span class="comment">//Now check orderd invariant
-</span>      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span> <span class="identifier">next</span><span class="special">(</span><span class="identifier">mset</span><span class="special">.</span><span class="identifier">cbegin</span><span class="special">()),</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">next</span><span class="special">++);</span>
+      <span class="comment">//Now check orderd invariant</span>
+      <span class="identifier">multiset</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span> <span class="identifier">next</span><span class="special">(</span><span class="identifier">mset</span><span class="special">.</span><span class="identifier">cbegin</span><span class="special">()),</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">next</span><span class="special">++);</span>
       <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">99</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">,</span> <span class="special">++</span><span class="identifier">it</span><span class="special">,</span> <span class="special">++</span><span class="identifier">next</span><span class="special">)</span> <span class="identifier">assert</span><span class="special">(*</span><span class="identifier">it</span> <span class="special">&lt;</span> <span class="special">*</span><span class="identifier">next</span><span class="special">);</span>
    <span class="special">}</span>
 
@@ -435,7 +433,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

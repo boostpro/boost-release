@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
 <link rel="prev" href="auto_unlink_hooks.html" title="Auto-unlink hooks">
 <link rel="next" href="list.html" title="Intrusive doubly linked list: list">
 </head>
@@ -173,25 +173,25 @@
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
-                  <span class="comment">//This is a base hook
-</span><span class="keyword">class</span> <span class="identifier">MyClass</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">slist_base_hook</span><span class="special">&lt;&gt;</span>
+                  <span class="comment">//This is a base hook</span>
+<span class="keyword">class</span> <span class="identifier">MyClass</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">slist_base_hook</span><span class="special">&lt;&gt;</span>
 <span class="special">{</span>
    <span class="keyword">int</span> <span class="identifier">int_</span><span class="special">;</span>
 
    <span class="keyword">public</span><span class="special">:</span>
-   <span class="comment">//This is a member hook
-</span>   <span class="identifier">slist_member_hook</span><span class="special">&lt;&gt;</span> <span class="identifier">member_hook_</span><span class="special">;</span>
+   <span class="comment">//This is a member hook</span>
+   <span class="identifier">slist_member_hook</span><span class="special">&lt;&gt;</span> <span class="identifier">member_hook_</span><span class="special">;</span>
 
    <span class="identifier">MyClass</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span><span class="special">)</span>
       <span class="special">:</span>  <span class="identifier">int_</span><span class="special">(</span><span class="identifier">i</span><span class="special">)</span>
    <span class="special">{}</span>
 <span class="special">};</span>
 
-<span class="comment">//Define an slist that will store MyClass using the public base hook
-</span><span class="keyword">typedef</span> <span class="identifier">slist</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">BaseList</span><span class="special">;</span>
+<span class="comment">//Define an slist that will store MyClass using the public base hook</span>
+<span class="keyword">typedef</span> <span class="identifier">slist</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">BaseList</span><span class="special">;</span>
 
-<span class="comment">//Define an slist that will store MyClass using the public member hook
-</span><span class="keyword">typedef</span> <span class="identifier">member_hook</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">slist_member_hook</span><span class="special">&lt;&gt;,</span> <span class="special">&amp;</span><span class="identifier">MyClass</span><span class="special">::</span><span class="identifier">member_hook_</span><span class="special">&gt;</span> <span class="identifier">MemberOption</span><span class="special">;</span>
+<span class="comment">//Define an slist that will store MyClass using the public member hook</span>
+<span class="keyword">typedef</span> <span class="identifier">member_hook</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">slist_member_hook</span><span class="special">&lt;&gt;,</span> <span class="special">&amp;</span><span class="identifier">MyClass</span><span class="special">::</span><span class="identifier">member_hook_</span><span class="special">&gt;</span> <span class="identifier">MemberOption</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">slist</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">MemberOption</span><span class="special">&gt;</span> <span class="identifier">MemberList</span><span class="special">;</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
@@ -199,36 +199,36 @@
    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">iterator</span> <span class="identifier">VectIt</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;::</span><span class="identifier">reverse_iterator</span> <span class="identifier">VectRit</span><span class="special">;</span>
 
-   <span class="comment">//Create several MyClass objects, each one with a different value
-</span>   <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">values</span><span class="special">;</span>
+   <span class="comment">//Create several MyClass objects, each one with a different value</span>
+   <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">MyClass</span><span class="special">&gt;</span> <span class="identifier">values</span><span class="special">;</span>
    <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">100</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>  <span class="identifier">values</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">MyClass</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
 
    <span class="identifier">BaseList</span> <span class="identifier">baselist</span><span class="special">;</span>
    <span class="identifier">MemberList</span> <span class="identifier">memberlist</span><span class="special">;</span>
 
-   <span class="comment">//Now insert them in the reverse order in the base hook list
-</span>   <span class="keyword">for</span><span class="special">(</span><span class="identifier">VectIt</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
+   <span class="comment">//Now insert them in the reverse order in the base hook list</span>
+   <span class="keyword">for</span><span class="special">(</span><span class="identifier">VectIt</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
       <span class="identifier">baselist</span><span class="special">.</span><span class="identifier">push_front</span><span class="special">(*</span><span class="identifier">it</span><span class="special">);</span>
 
-   <span class="comment">//Now insert them in the same order as in vector in the member hook list
-</span>   <span class="keyword">for</span><span class="special">(</span><span class="identifier">BaseList</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">baselist</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">baselist</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span>
+   <span class="comment">//Now insert them in the same order as in vector in the member hook list</span>
+   <span class="keyword">for</span><span class="special">(</span><span class="identifier">BaseList</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">it</span><span class="special">(</span><span class="identifier">baselist</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">baselist</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span>
       <span class="special">;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">){</span>
       <span class="identifier">memberlist</span><span class="special">.</span><span class="identifier">push_front</span><span class="special">(*</span><span class="identifier">it</span><span class="special">);</span>
    <span class="special">}</span>
 
-   <span class="comment">//Now test lists
-</span>   <span class="special">{</span>
+   <span class="comment">//Now test lists</span>
+   <span class="special">{</span>
       <span class="identifier">BaseList</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">bit</span><span class="special">(</span><span class="identifier">baselist</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">bitend</span><span class="special">(</span><span class="identifier">baselist</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
       <span class="identifier">MemberList</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">mit</span><span class="special">(</span><span class="identifier">memberlist</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">mitend</span><span class="special">(</span><span class="identifier">memberlist</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
       <span class="identifier">VectRit</span> <span class="identifier">rit</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">rbegin</span><span class="special">()),</span> <span class="identifier">ritend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">rend</span><span class="special">());</span>
       <span class="identifier">VectIt</span>  <span class="identifier">it</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">values</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
 
-      <span class="comment">//Test the objects inserted in the base hook list
-</span>      <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">rit</span> <span class="special">!=</span> <span class="identifier">ritend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">rit</span><span class="special">,</span> <span class="special">++</span><span class="identifier">bit</span><span class="special">)</span>
+      <span class="comment">//Test the objects inserted in the base hook list</span>
+      <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">rit</span> <span class="special">!=</span> <span class="identifier">ritend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">rit</span><span class="special">,</span> <span class="special">++</span><span class="identifier">bit</span><span class="special">)</span>
          <span class="keyword">if</span><span class="special">(&amp;*</span><span class="identifier">bit</span> <span class="special">!=</span> <span class="special">&amp;*</span><span class="identifier">rit</span><span class="special">)</span>   <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
 
-      <span class="comment">//Test the objects inserted in the member hook list
-</span>      <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">,</span> <span class="special">++</span><span class="identifier">mit</span><span class="special">)</span>
+      <span class="comment">//Test the objects inserted in the member hook list</span>
+      <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">,</span> <span class="special">++</span><span class="identifier">mit</span><span class="special">)</span>
          <span class="keyword">if</span><span class="special">(&amp;*</span><span class="identifier">mit</span> <span class="special">!=</span> <span class="special">&amp;*</span><span class="identifier">it</span><span class="special">)</span>    <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
    <span class="special">}</span>
 
@@ -241,7 +241,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

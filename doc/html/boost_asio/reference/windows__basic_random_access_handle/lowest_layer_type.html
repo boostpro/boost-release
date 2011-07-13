@@ -30,14 +30,14 @@
           <span class="emphasis"><em>Inherited from windows::basic_handle.</em></span>
         </p>
 <p>
-          <a class="indexterm" name="id1382985"></a> 
+          <a class="indexterm" name="id1591644"></a> 
 A <a class="link" href="../windows__basic_handle.html" title="windows::basic_handle"><code class="computeroutput"><span class="identifier">windows</span><span class="special">::</span><span class="identifier">basic_handle</span></code></a> is always the lowest
           layer.
         </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">basic_handle</span><span class="special">&lt;</span> <span class="identifier">RandomAccessHandleService</span> <span class="special">&gt;</span> <span class="identifier">lowest_layer_type</span><span class="special">;</span>
 </pre>
 <a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.types"></a><h6>
-<a name="id1383073"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.types-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.types">Types</a>
         </h6>
 <div class="informaltable"><table class="table">
@@ -85,12 +85,25 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
 <tr>
 <td>
                   <p>
-                    <a class="link" href="../windows__basic_handle/native_type.html" title="windows::basic_handle::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                    <a class="link" href="../windows__basic_handle/native_handle_type.html" title="windows::basic_handle::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                   </p>
                 </td>
 <td>
                   <p>
                     The native representation of a handle.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../windows__basic_handle/native_type.html" title="windows::basic_handle::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    (Deprecated: Use native_handle_type.) The native representation
+                    of a handle.
                   </p>
                 </td>
 </tr>
@@ -109,7 +122,7 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
 </tbody>
 </table></div>
 <a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.member_functions"></a><h6>
-<a name="id1383249"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.member_functions-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.member_functions">Member
           Functions</a>
         </h6>
@@ -156,6 +169,9 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
                   <p>
                     Construct a basic_handle on an existing native handle.
                   </p>
+                  <p>
+                    Move-construct a basic_handle from another.
+                  </p>
                 </td>
 </tr>
 <tr>
@@ -197,19 +213,6 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
 <tr>
 <td>
                   <p>
-                    <a class="link" href="../windows__basic_handle/io_service.html" title="windows::basic_handle::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    (Deprecated: use get_io_service().) Get the io_service associated
-                    with the object.
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
                     <a class="link" href="../windows__basic_handle/is_open.html" title="windows::basic_handle::is_open"><span class="bold"><strong>is_open</strong></span></a>
                   </p>
                 </td>
@@ -242,14 +245,38 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
                 </td>
 <td>
                   <p>
+                    (Deprecated: Use native_handle().) Get the native handle representation.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../windows__basic_handle/native_handle.html" title="windows::basic_handle::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
                     Get the native handle representation.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../windows__basic_handle/operator_eq_.html" title="windows::basic_handle::operator="><span class="bold"><strong>operator=</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Move-assign a basic_handle from another.
                   </p>
                 </td>
 </tr>
 </tbody>
 </table></div>
 <a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.protected_member_functions"></a><h6>
-<a name="id1383580"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.protected_member_functions-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.protected_member_functions">Protected
           Member Functions</a>
         </h6>
@@ -270,7 +297,32 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
                   </p>
                 </th>
 </tr></thead>
-<tbody><tr>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../windows__basic_handle/get_implementation.html" title="windows::basic_handle::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Get the underlying implementation of the I/O object.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../windows__basic_handle/get_service.html" title="windows::basic_handle::get_service"><span class="bold"><strong>get_service</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Get the service associated with the I/O object.
+                  </p>
+                </td>
+</tr>
+<tr>
 <td>
                   <p>
                     <a class="link" href="../windows__basic_handle/_basic_handle.html" title="windows::basic_handle::~basic_handle"><span class="bold"><strong>~basic_handle</strong></span></a>
@@ -281,10 +333,11 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
                     Protected destructor to prevent deletion through this type.
                   </p>
                 </td>
-</tr></tbody>
+</tr>
+</tbody>
 </table></div>
 <a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.protected_data_members"></a><h6>
-<a name="id1383670"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.protected_data_members-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.protected_data_members">Protected
           Data Members</a>
         </h6>
@@ -314,7 +367,8 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
                 </td>
 <td>
                   <p>
-                    The underlying implementation of the I/O object.
+                    (Deprecated: Use get_implementation().) The underlying implementation
+                    of the I/O object.
                   </p>
                 </td>
 </tr>
@@ -326,7 +380,8 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
                 </td>
 <td>
                   <p>
-                    The service associated with the I/O object.
+                    (Deprecated: Use get_service().) The service associated with
+                    the I/O object.
                   </p>
                 </td>
 </tr>
@@ -337,7 +392,7 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
           the ability to wrap a Windows handle.
         </p>
 <a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.thread_safety"></a><h6>
-<a name="id1383817"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.thread_safety-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.thread_safety">Thread
           Safety</a>
         </h6>
@@ -350,7 +405,7 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
           Unsafe.
         </p>
 <a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.requirements"></a><h6>
-<a name="id1383871"></a>
+<a name="boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.requirements-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.windows__basic_random_access_handle.lowest_layer_type.requirements">Requirements</a>
         </h6>
 <p>
@@ -362,7 +417,8 @@ A <a class="link" href="../windows__basic_handle.html" title="windows::basic_han
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

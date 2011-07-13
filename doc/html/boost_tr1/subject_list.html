@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_tr1.html" title="Chapter&#160;23.&#160;Boost.TR1">
+<link rel="up" href="../boost_tr1.html" title="Chapter&#160;25.&#160;Boost.TR1">
 <link rel="prev" href="config.html" title="Configuration">
 <link rel="next" href="header_list.html" title="TR1 By Header">
 </head>
@@ -85,9 +85,9 @@
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">ref</span><span class="special">(</span><span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">cref</span><span class="special">(</span><span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_REFERENCE_WRAPPER if
@@ -127,44 +127,44 @@
 
 <span class="keyword">class</span> <span class="identifier">bad_weak_ptr</span><span class="special">;</span>
 
-<span class="comment">// [2.2.3] Class template shared_ptr
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">shared_ptr</span><span class="special">;</span>
+<span class="comment">// [2.2.3] Class template shared_ptr</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">shared_ptr</span><span class="special">;</span>
 
-<span class="comment">// [2.2.3.6] shared_ptr comparisons
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">);</span>
+<span class="comment">// [2.2.3.6] shared_ptr comparisons</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">!=(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&lt;(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">);</span>
 
-<span class="comment">// [2.2.3.8] shared_ptr specialized algorithms
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">b</span><span class="special">);</span>
+<span class="comment">// [2.2.3.8] shared_ptr specialized algorithms</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">b</span><span class="special">);</span>
 
-<span class="comment">// [2.2.3.9] shared_ptr casts
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">static_pointer_cast</span><span class="special">(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">r</span><span class="special">);</span>
+<span class="comment">// [2.2.3.9] shared_ptr casts</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">static_pointer_cast</span><span class="special">(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">r</span><span class="special">);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">dynamic_pointer_cast</span><span class="special">(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">r</span><span class="special">);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">const_pointer_cast</span><span class="special">(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">r</span><span class="special">);</span>
 
-<span class="comment">// [2.2.3.7] shared_ptr I/O
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">E</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span>
+<span class="comment">// [2.2.3.7] shared_ptr I/O</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">E</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span>
 <span class="identifier">basic_ostream</span><span class="special">&lt;</span><span class="identifier">E</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="keyword">operator</span><span class="special">&lt;&lt;</span> <span class="special">(</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span><span class="identifier">E</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">os</span><span class="special">,</span> <span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">Y</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">);</span>
 
-<span class="comment">// [2.2.3.10] shared_ptr get_deleter
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">D</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">D</span> <span class="special">*</span> <span class="identifier">get_deleter</span><span class="special">(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">);</span>
+<span class="comment">// [2.2.3.10] shared_ptr get_deleter</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">D</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">D</span> <span class="special">*</span> <span class="identifier">get_deleter</span><span class="special">(</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">);</span>
 
-<span class="comment">// [2.2.4] Class template weak_ptr
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">weak_ptr</span><span class="special">;</span>
+<span class="comment">// [2.2.4] Class template weak_ptr</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">weak_ptr</span><span class="special">;</span>
 
-<span class="comment">// [2.2.4.6] weak_ptr comparison
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&lt;(</span><span class="identifier">weak_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">weak_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">);</span>
+<span class="comment">// [2.2.4.6] weak_ptr comparison</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&lt;(</span><span class="identifier">weak_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">weak_ptr</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">);</span>
 
-<span class="comment">// [2.2.4.7] weak_ptr specialized algorithms
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">weak_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">weak_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">b</span><span class="special">);</span>
+<span class="comment">// [2.2.4.7] weak_ptr specialized algorithms</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">weak_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">weak_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">b</span><span class="special">);</span>
 
-<span class="comment">// [2.2.5] Class enable_shared_from_this
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">enable_shared_from_this</span><span class="special">;</span>
+<span class="comment">// [2.2.5] Class enable_shared_from_this</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">enable_shared_from_this</span><span class="special">;</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_SHARED_PTR if your
@@ -207,9 +207,9 @@
    <span class="keyword">typedef</span> <span class="identifier">unspecified</span> <span class="identifier">type</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_RESULT_OF if your standard
@@ -246,9 +246,9 @@
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">R</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">unspecified</span> <span class="identifier">mem_fn</span><span class="special">(</span><span class="identifier">R</span> <span class="identifier">T</span><span class="special">::*</span> <span class="identifier">pm</span><span class="special">);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_MEM_FN if your standard
@@ -290,15 +290,15 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-<span class="comment">// [3.6] Function object binders
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_bind_expression</span><span class="special">;</span>
+<span class="comment">// [3.6] Function object binders</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_bind_expression</span><span class="special">;</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_placeholder</span><span class="special">;</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">Tn</span> <span class="special">&gt;</span> <span class="identifier">unspecified</span> <span class="identifier">bind</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">T1</span> <span class="identifier">t1</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">Tn</span> <span class="identifier">tn</span> <span class="special">);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">R</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">Tn</span> <span class="special">&gt;</span> <span class="identifier">unspecified</span> <span class="identifier">bind</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">T1</span> <span class="identifier">t1</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">Tn</span> <span class="identifier">tn</span> <span class="special">);</span>
 
 <span class="keyword">namespace</span> <span class="identifier">placeholders</span> <span class="special">{</span>
-   <span class="comment">// M is the implementation-defined number of placeholders
-</span>   <span class="keyword">extern</span> <span class="identifier">unspecified</span> <span class="identifier">_1</span><span class="special">;</span>
+   <span class="comment">// M is the implementation-defined number of placeholders</span>
+   <span class="keyword">extern</span> <span class="identifier">unspecified</span> <span class="identifier">_1</span><span class="special">;</span>
    <span class="keyword">extern</span> <span class="identifier">unspecified</span> <span class="identifier">_2</span><span class="special">;</span>
    <span class="special">.</span>
    <span class="special">.</span>
@@ -306,9 +306,9 @@
    <span class="keyword">extern</span> <span class="identifier">unspecified</span> <span class="identifier">_M</span><span class="special">;</span>
 <span class="special">}</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_BIND if your standard
@@ -323,10 +323,10 @@
         The named return value syntax isn't supported if the object being bound is
         a function pointer, for example:
       </p>
-<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">my_proc</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span> <span class="comment">/* etc */</span><span class="special">);</span> <span class="comment">// works OK.
-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">bind</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;(&amp;</span><span class="identifier">my_proc</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span> <span class="comment">/* etc */</span><span class="special">);</span> <span class="comment">// causes compiler error.
-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">bind</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;(</span><span class="identifier">my_function_object</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span> <span class="comment">/* etc */</span><span class="special">);</span> <span class="comment">// works OK.
-</span></pre>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">my_proc</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span> <span class="comment">/* etc */</span><span class="special">);</span> <span class="comment">// works OK.</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">bind</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;(&amp;</span><span class="identifier">my_proc</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span> <span class="comment">/* etc */</span><span class="special">);</span> <span class="comment">// causes compiler error.</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">bind</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;(</span><span class="identifier">my_function_object</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span> <span class="comment">/* etc */</span><span class="special">);</span> <span class="comment">// works OK.</span>
+</pre>
 <p>
         On the other hand, the Boost implementation does work with pointers to overloaded
         functions, and optionally with function pointers with non-standard calling
@@ -359,8 +359,8 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-<span class="comment">// [3.7] polymorphic function wrappers
-</span><span class="keyword">class</span> <span class="identifier">bad_function_call</span><span class="special">;</span>
+<span class="comment">// [3.7] polymorphic function wrappers</span>
+<span class="keyword">class</span> <span class="identifier">bad_function_call</span><span class="special">;</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Function</span><span class="special">&gt;</span> 
 <span class="keyword">class</span> <span class="identifier">function</span><span class="special">;</span>
@@ -381,9 +381,9 @@
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Function</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">!=(</span><span class="identifier">unspecified</span><span class="special">-</span><span class="identifier">null</span><span class="special">-</span><span class="identifier">pointer</span><span class="special">-</span><span class="identifier">type</span> <span class="special">,</span> <span class="keyword">const</span> <span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">Function</span><span class="special">&gt;&amp;);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_FUNCTION if your standard
@@ -422,8 +422,8 @@
 <span class="keyword">typedef</span> <span class="identifier">integral_constant</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">,</span> <span class="keyword">true</span><span class="special">&gt;</span> <span class="identifier">true_type</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">integral_constant</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">,</span> <span class="keyword">false</span><span class="special">&gt;</span> <span class="identifier">false_type</span><span class="special">;</span>
 
-<span class="comment">// [4.5.1] primary type categories:
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_void</span><span class="special">;</span>
+<span class="comment">// [4.5.1] primary type categories:</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_void</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_integral</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_floating_point</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_array</span><span class="special">;</span>
@@ -436,16 +436,16 @@
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_class</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_function</span><span class="special">;</span>
 
-<span class="comment">// [4.5.2] composite type categories:
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_arithmetic</span><span class="special">;</span>
+<span class="comment">// [4.5.2] composite type categories:</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_arithmetic</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_fundamental</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_object</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_scalar</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_compound</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_member_pointer</span><span class="special">;</span>
 
-<span class="comment">// [4.5.3] type properties:
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_const</span><span class="special">;</span>
+<span class="comment">// [4.5.3] type properties:</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_const</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_volatile</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_pod</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_empty</span><span class="special">;</span>
@@ -465,37 +465,37 @@
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">rank</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">I</span> <span class="special">=</span> <span class="number">0</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">extent</span><span class="special">;</span>
 
-<span class="comment">// [4.6] type relations:
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_same</span><span class="special">;</span>
+<span class="comment">// [4.6] type relations:</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_same</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Base</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Derived</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_base_of</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">From</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">To</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_convertible</span><span class="special">;</span>
 
-<span class="comment">// [4.7.1] const-volatile modifications:
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_const</span><span class="special">;</span>
+<span class="comment">// [4.7.1] const-volatile modifications:</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_const</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_volatile</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_cv</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">add_const</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">add_volatile</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">add_cv</span><span class="special">;</span>
 
-<span class="comment">// [4.7.2] reference modifications:
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_reference</span><span class="special">;</span>
+<span class="comment">// [4.7.2] reference modifications:</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_reference</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">add_reference</span><span class="special">;</span>
 
-<span class="comment">// [4.7.3] array modifications:
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_extent</span><span class="special">;</span>
+<span class="comment">// [4.7.3] array modifications:</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_extent</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_all_extents</span><span class="special">;</span>
 
-<span class="comment">// [4.7.4] pointer modifications:
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_pointer</span><span class="special">;</span>
+<span class="comment">// [4.7.4] pointer modifications:</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">remove_pointer</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">add_pointer</span><span class="special">;</span>
 
-<span class="comment">// [4.8] other transformations:
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">Len</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">Align</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">aligned_storage</span><span class="special">;</span>
+<span class="comment">// [4.8] other transformations:</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">Len</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">Align</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">aligned_storage</span><span class="special">;</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_TYPE_TRAITS if your
@@ -530,38 +530,38 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-<span class="comment">// [5.1.3] Class template variate_generator
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UniformRandomNumberGenerator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Distribution</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.3] Class template variate_generator</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UniformRandomNumberGenerator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Distribution</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">variate_generator</span><span class="special">;</span>
 
-<span class="comment">// [5.1.4.1] Class template linear_congruential
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span><span class="special">,</span> <span class="identifier">IntType</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">IntType</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">IntType</span> <span class="identifier">m</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.4.1] Class template linear_congruential</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span><span class="special">,</span> <span class="identifier">IntType</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">IntType</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">IntType</span> <span class="identifier">m</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">linear_congruential</span><span class="special">;</span>
 
-<span class="comment">// [5.1.4.2] Class template mersenne_twister
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UIntType</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">w</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">r</span><span class="special">,</span>
+<span class="comment">// [5.1.4.2] Class template mersenne_twister</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UIntType</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">w</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">r</span><span class="special">,</span>
 <span class="identifier">UIntType</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">u</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">s</span><span class="special">,</span> <span class="identifier">UIntType</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">t</span><span class="special">,</span> <span class="identifier">UIntType</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">l</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">mersenne_twister</span><span class="special">;</span>
 
-<span class="comment">// [5.1.4.3] Class template substract_with_carry
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span><span class="special">,</span> <span class="identifier">IntType</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">s</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">r</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.4.3] Class template substract_with_carry</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span><span class="special">,</span> <span class="identifier">IntType</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">s</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">r</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">subtract_with_carry</span><span class="special">;</span>
 
-<span class="comment">// [5.1.4.4] Class template substract_with_carry_01
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">w</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">s</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">r</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.4.4] Class template substract_with_carry_01</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">w</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">s</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">r</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">subtract_with_carry_01</span><span class="special">;</span>
 
-<span class="comment">// [5.1.4.5] Class template discard_block
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UniformRandomNumberGenerator</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">p</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">r</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.4.5] Class template discard_block</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UniformRandomNumberGenerator</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">p</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">r</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">discard_block</span><span class="special">;</span>
 
-<span class="comment">// [5.1.4.6] Class template xor_combine
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UniformRandomNumberGenerator1</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">s1</span><span class="special">,</span>
+<span class="comment">// [5.1.4.6] Class template xor_combine</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UniformRandomNumberGenerator1</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">s1</span><span class="special">,</span>
 <span class="keyword">class</span> <span class="identifier">UniformRandomNumberGenerator2</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">s2</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">xor_combine</span><span class="special">;</span>
 
-<span class="comment">// [5.1.5] Predefined generators
-</span><span class="keyword">typedef</span> <span class="identifier">linear_congruential</span><span class="special">&lt;</span>
+<span class="comment">// [5.1.5] Predefined generators</span>
+<span class="keyword">typedef</span> <span class="identifier">linear_congruential</span><span class="special">&lt;</span>
             <span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span> <span class="special">,</span> 
             <span class="number">16807</span><span class="special">,</span> 
             <span class="number">0</span><span class="special">,</span> 
@@ -628,47 +628,47 @@
             <span class="number">389</span><span class="special">,</span> 
             <span class="number">24</span><span class="special">&gt;</span> <span class="identifier">ranlux4_01</span><span class="special">;</span>
 
-<span class="comment">// [5.1.6] Class random_device
-</span><span class="keyword">class</span> <span class="identifier">random_device</span><span class="special">;</span>
+<span class="comment">// [5.1.6] Class random_device</span>
+<span class="keyword">class</span> <span class="identifier">random_device</span><span class="special">;</span>
 
-<span class="comment">// [5.1.7.1] Class template uniform_int
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span> <span class="special">=</span> <span class="keyword">int</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.7.1] Class template uniform_int</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span> <span class="special">=</span> <span class="keyword">int</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">uniform_int</span><span class="special">;</span>
 
-<span class="comment">// [5.1.7.2] Class bernoulli_distribution
-</span><span class="keyword">class</span> <span class="identifier">bernoulli_distribution</span><span class="special">;</span>
+<span class="comment">// [5.1.7.2] Class bernoulli_distribution</span>
+<span class="keyword">class</span> <span class="identifier">bernoulli_distribution</span><span class="special">;</span>
 
-<span class="comment">// [5.1.7.3] Class template geometric_distribution
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span> <span class="special">=</span> <span class="keyword">int</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.7.3] Class template geometric_distribution</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span> <span class="special">=</span> <span class="keyword">int</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">geometric_distribution</span><span class="special">;</span>
 
-<span class="comment">// [5.1.7.4] Class template poisson_distribution
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span> <span class="special">=</span> <span class="keyword">int</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.7.4] Class template poisson_distribution</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span> <span class="special">=</span> <span class="keyword">int</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">poisson_distribution</span><span class="special">;</span>
 
-<span class="comment">// [5.1.7.5] Class template binomial_distribution
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span> <span class="special">=</span> <span class="keyword">int</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.7.5] Class template binomial_distribution</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">IntType</span> <span class="special">=</span> <span class="keyword">int</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">binomial_distribution</span><span class="special">;</span>
 
-<span class="comment">// [5.1.7.6] Class template uniform_real
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.7.6] Class template uniform_real</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">uniform_real</span><span class="special">;</span>
 
-<span class="comment">// [5.1.7.7] Class template exponential_distribution
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.7.7] Class template exponential_distribution</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">exponential_distribution</span><span class="special">;</span>
 
-<span class="comment">// [5.1.7.8] Class template normal_distribution
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.7.8] Class template normal_distribution</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">normal_distribution</span><span class="special">;</span>
 
-<span class="comment">// [5.1.7.9] Class template gamma_distribution
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
+<span class="comment">// [5.1.7.9] Class template gamma_distribution</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">gamma_distribution</span><span class="special">;</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_RANDOM if your standard
@@ -728,34 +728,34 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-<span class="comment">// [6.1.3] Class template tuple
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span> <span class="special">=</span> <span class="identifier">unspecified</span> <span class="special">,</span>
+<span class="comment">// [6.1.3] Class template tuple</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span> <span class="special">=</span> <span class="identifier">unspecified</span> <span class="special">,</span>
 <span class="keyword">class</span> <span class="identifier">T2</span> <span class="special">=</span> <span class="identifier">unspecified</span> <span class="special">,</span>
 <span class="special">...,</span>
 <span class="keyword">class</span> <span class="identifier">TM</span> <span class="special">=</span> <span class="identifier">unspecified</span> <span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple</span><span class="special">;</span>
 
-<span class="comment">// [6.1.3.2] Tuple creation functions
-</span><span class="keyword">const</span> <span class="identifier">unspecified</span> <span class="identifier">ignore</span><span class="special">;</span>
+<span class="comment">// [6.1.3.2] Tuple creation functions</span>
+<span class="keyword">const</span> <span class="identifier">unspecified</span> <span class="identifier">ignore</span><span class="special">;</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TN</span><span class="special">&gt;</span>
 <span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">V1</span><span class="special">,</span> <span class="identifier">V2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">VN</span><span class="special">&gt;</span> <span class="identifier">make_tuple</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T1</span><span class="special">&amp;,</span> <span class="keyword">const</span> <span class="identifier">T2</span><span class="special">&amp;</span> <span class="special">,</span> <span class="special">...,</span> <span class="keyword">const</span> <span class="identifier">TN</span><span class="special">&amp;);</span>
 
-<span class="comment">// [6.1] Tuple types Containers
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TN</span><span class="special">&gt;</span>
+<span class="comment">// [6.1] Tuple types Containers</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TN</span><span class="special">&gt;</span>
 <span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">&amp;,</span> <span class="identifier">T2</span><span class="special">&amp;,</span> <span class="special">...,</span> <span class="identifier">TN</span><span class="special">&amp;&gt;</span> <span class="identifier">tie</span><span class="special">(</span><span class="identifier">T1</span><span class="special">&amp;,</span> <span class="identifier">T2</span><span class="special">&amp;</span> <span class="special">,</span> <span class="special">...,</span> <span class="identifier">TN</span><span class="special">&amp;);</span>
 
-<span class="comment">// [6.1.3.3] Tuple helper classes
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_size</span><span class="special">;</span>
+<span class="comment">// [6.1.3.3] Tuple helper classes</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_size</span><span class="special">;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_element</span><span class="special">;</span>
 
-<span class="comment">// [6.1.3.4] Element access
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TN</span><span class="special">&gt;</span>
+<span class="comment">// [6.1.3.4] Element access</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TN</span><span class="special">&gt;</span>
 <span class="identifier">RI</span> <span class="identifier">get</span><span class="special">(</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">TN</span><span class="special">&gt;&amp;);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TN</span><span class="special">&gt;</span>
 <span class="identifier">PI</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">TN</span><span class="special">&gt;&amp;);</span>
 
-<span class="comment">// [6.1.3.5] relational operators
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TM</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">UM</span><span class="special">&gt;</span>
+<span class="comment">// [6.1.3.5] relational operators</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TM</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">UM</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==(</span><span class="keyword">const</span> <span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">TM</span><span class="special">&gt;&amp;,</span> <span class="keyword">const</span> <span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">U1</span><span class="special">,</span> <span class="identifier">U2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">UM</span><span class="special">&gt;&amp;);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TM</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">UM</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&lt;(</span><span class="keyword">const</span> <span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">TM</span><span class="special">&gt;&amp;,</span> <span class="keyword">const</span> <span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">U1</span><span class="special">,</span> <span class="identifier">U2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">UM</span><span class="special">&gt;&amp;);</span>
@@ -768,9 +768,9 @@
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">TM</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">class</span> <span class="identifier">UM</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&gt;=(</span><span class="keyword">const</span> <span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">TM</span><span class="special">&gt;&amp;,</span> <span class="keyword">const</span> <span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">U1</span><span class="special">,</span> <span class="identifier">U2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">UM</span><span class="special">&gt;&amp;);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_TUPLE if your standard
@@ -798,18 +798,18 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_size</span><span class="special">;</span> <span class="comment">// forward declaration
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_element</span><span class="special">;</span> <span class="comment">// forward declaration
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">tuple_size</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="special">&gt;;</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_size</span><span class="special">;</span> <span class="comment">// forward declaration</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_element</span><span class="special">;</span> <span class="comment">// forward declaration</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">tuple_size</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="special">&gt;;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">tuple_element</span><span class="special">&lt;</span><span class="number">0</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="special">&gt;;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">tuple_element</span><span class="special">&lt;</span><span class="number">1</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="special">&gt;;</span>
-<span class="comment">// see below for definition of "P".
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="identifier">P</span><span class="special">&amp;</span> <span class="identifier">get</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">&gt;&amp;);</span>
+<span class="comment">// see below for definition of "P".</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="identifier">P</span><span class="special">&amp;</span> <span class="identifier">get</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">&gt;&amp;);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T2</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="identifier">P</span><span class="special">&amp;</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">&gt;&amp;);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_UTILITY if your standard
@@ -840,31 +840,31 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-<span class="comment">// [6.2.2] Class template array
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span> <span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">array</span><span class="special">;</span>
+<span class="comment">// [6.2.2] Class template array</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span> <span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">array</span><span class="special">;</span>
 
-<span class="comment">// Array comparisons
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
+<span class="comment">// Array comparisons</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&lt;</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">!=</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&gt;</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&gt;=</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">&lt;=</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
 
-<span class="comment">// [6.2.2.2] Specialized algorithms
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span> <span class="special">&gt;</span> <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
+<span class="comment">// [6.2.2.2] Specialized algorithms</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span> <span class="special">&gt;</span> <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
 
-<span class="comment">// [6.2.2.5] Tuple interface to class template array
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_size</span><span class="special">;</span> <span class="comment">// forward declaration
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_element</span><span class="special">;</span> <span class="comment">// forward declaration
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">tuple_size</span><span class="special">&lt;</span><span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="special">&gt;;</span>
+<span class="comment">// [6.2.2.5] Tuple interface to class template array</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_size</span><span class="special">;</span> <span class="comment">// forward declaration</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">class</span> <span class="identifier">tuple_element</span><span class="special">;</span> <span class="comment">// forward declaration</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">tuple_size</span><span class="special">&lt;</span><span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="special">&gt;;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">tuple_element</span><span class="special">&lt;</span><span class="identifier">I</span><span class="special">,</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="special">&gt;;</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">get</span><span class="special">(</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;&amp;);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;&amp;);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_ARRAY if your standard
@@ -902,8 +902,8 @@
    <span class="identifier">size_t</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="identifier">val</span><span class="special">)</span><span class="keyword">const</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="comment">// Hash function specializations
-</span><span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="keyword">struct</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;;</span>
+<span class="comment">// Hash function specializations</span>
+<span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="keyword">struct</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;;</span>
 <span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="keyword">struct</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;;</span>
 <span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="keyword">struct</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="keyword">signed</span> <span class="keyword">char</span><span class="special">&gt;;</span>
 <span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="keyword">struct</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">char</span><span class="special">&gt;;</span>
@@ -921,9 +921,9 @@
 <span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="keyword">struct</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;;</span>
 <span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="keyword">struct</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">wstring</span><span class="special">&gt;;</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_HASH if your standard
@@ -970,35 +970,35 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-<span class="comment">// [7.5] Regex constants
-</span><span class="keyword">namespace</span> <span class="identifier">regex_constants</span> <span class="special">{</span>
+<span class="comment">// [7.5] Regex constants</span>
+<span class="keyword">namespace</span> <span class="identifier">regex_constants</span> <span class="special">{</span>
 
 <span class="keyword">typedef</span> <span class="identifier">bitmask_type</span> <span class="identifier">syntax_option_type</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">bitmask_type</span> <span class="identifier">match_flag_type</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">implementation</span><span class="special">-</span><span class="identifier">defined</span> <span class="identifier">error_type</span><span class="special">;</span>
 
-<span class="special">}</span> <span class="comment">// namespace regex_constants
-</span>
-<span class="comment">// [7.6] Class regex_error
-</span><span class="keyword">class</span> <span class="identifier">regex_error</span><span class="special">;</span>
+<span class="special">}</span> <span class="comment">// namespace regex_constants</span>
 
-<span class="comment">// [7.7] Class template regex_traits
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">charT</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">regex_traits</span><span class="special">;</span>
+<span class="comment">// [7.6] Class regex_error</span>
+<span class="keyword">class</span> <span class="identifier">regex_error</span><span class="special">;</span>
 
-<span class="comment">// [7.8] Class template basic_regex
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">charT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span> <span class="special">=</span> <span class="identifier">regex_traits</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">&gt;</span> <span class="special">&gt;</span> 
+<span class="comment">// [7.7] Class template regex_traits</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">charT</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">regex_traits</span><span class="special">;</span>
+
+<span class="comment">// [7.8] Class template basic_regex</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">charT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span> <span class="special">=</span> <span class="identifier">regex_traits</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">&gt;</span> <span class="special">&gt;</span> 
 <span class="keyword">class</span> <span class="identifier">basic_regex</span><span class="special">;</span>
 
 <span class="keyword">typedef</span> <span class="identifier">basic_regex</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;</span> <span class="identifier">regex</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">basic_regex</span><span class="special">&lt;</span><span class="keyword">wchar_t</span><span class="special">&gt;</span> <span class="identifier">wregex</span><span class="special">;</span>
 
-<span class="comment">// [7.8.6] basic_regex swap
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">charT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span><span class="special">&gt;</span>
+<span class="comment">// [7.8.6] basic_regex swap</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">charT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">basic_regex</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">,</span> <span class="identifier">traits</span><span class="special">&gt;&amp;</span> <span class="identifier">e1</span><span class="special">,</span>
          <span class="identifier">basic_regex</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">,</span> <span class="identifier">traits</span><span class="special">&gt;&amp;</span> <span class="identifier">e2</span><span class="special">);</span>
           
-<span class="comment">// [7.9] Class template sub_match
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">&gt;</span>
+<span class="comment">// [7.9] Class template sub_match</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">sub_match</span><span class="special">;</span>
 
 <span class="keyword">typedef</span> <span class="identifier">sub_match</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*&gt;</span> <span class="identifier">csub_match</span><span class="special">;</span>
@@ -1006,8 +1006,8 @@
 <span class="keyword">typedef</span> <span class="identifier">sub_match</span><span class="special">&lt;</span><span class="identifier">string</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="special">&gt;</span> <span class="identifier">ssub_match</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">sub_match</span><span class="special">&lt;</span><span class="identifier">wstring</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="special">&gt;</span> <span class="identifier">wssub_match</span><span class="special">;</span>
 
-<span class="comment">// [7.9.2] sub_match non-member operators
-</span>
+<span class="comment">// [7.9.2] sub_match non-member operators</span>
+
 <span class="comment">/* Comparison operators omitted for clarity.... */</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">charT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">ST</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">BiIter</span><span class="special">&gt;</span>
@@ -1015,8 +1015,8 @@
    <span class="keyword">operator</span><span class="special">&lt;&lt;(</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">,</span> <span class="identifier">ST</span><span class="special">&gt;&amp;</span> <span class="identifier">os</span><span class="special">,</span> 
             <span class="keyword">const</span> <span class="identifier">sub_match</span><span class="special">&lt;</span><span class="identifier">BiIter</span><span class="special">&gt;&amp;</span> <span class="identifier">m</span><span class="special">);</span>
 
-<span class="comment">// [7.10] Class template match_results
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span>
+<span class="comment">// [7.10] Class template match_results</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span>
          <span class="keyword">class</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">sub_match</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">match_results</span><span class="special">;</span>
 
@@ -1025,21 +1025,21 @@
 <span class="keyword">typedef</span> <span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">string</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="special">&gt;</span> <span class="identifier">smatch</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">wstring</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="special">&gt;</span> <span class="identifier">wsmatch</span><span class="special">;</span>
 
-<span class="comment">// match_results comparisons
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
+<span class="comment">// match_results comparisons</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;&amp;</span> <span class="identifier">m1</span><span class="special">,</span>
                <span class="keyword">const</span> <span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;&amp;</span> <span class="identifier">m2</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">!=</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;&amp;</span> <span class="identifier">m1</span><span class="special">,</span>
                <span class="keyword">const</span> <span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;&amp;</span> <span class="identifier">m2</span><span class="special">);</span>
 
-<span class="comment">// [7.10.6] match_results swap
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
+<span class="comment">// [7.10.6] match_results swap</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;&amp;</span> <span class="identifier">m1</span><span class="special">,</span>
          <span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;&amp;</span> <span class="identifier">m2</span><span class="special">);</span>
           
-<span class="comment">// [7.11.2] Function template regex_match
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">charT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span><span class="special">&gt;</span>
+<span class="comment">// [7.11.2] Function template regex_match</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">charT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">regex_match</span><span class="special">(</span><span class="identifier">BidirectionalIterator</span> <span class="identifier">first</span><span class="special">,</span> 
                <span class="identifier">BidirectionalIterator</span> <span class="identifier">last</span><span class="special">,</span>
                <span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;&amp;</span> <span class="identifier">m</span><span class="special">,</span>
@@ -1074,8 +1074,8 @@
                <span class="keyword">const</span> <span class="identifier">basic_regex</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">,</span> <span class="identifier">traits</span><span class="special">&gt;&amp;</span> <span class="identifier">e</span><span class="special">,</span>
                <span class="identifier">regex_constants</span><span class="special">::</span><span class="identifier">match_flag_type</span> <span class="identifier">flags</span> <span class="special">=</span> <span class="identifier">regex_constants</span><span class="special">::</span><span class="identifier">match_default</span><span class="special">);</span>
                  
-<span class="comment">// [7.11.3] Function template regex_search
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">charT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span><span class="special">&gt;</span>
+<span class="comment">// [7.11.3] Function template regex_search</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">charT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">regex_search</span><span class="special">(</span><span class="identifier">BidirectionalIterator</span> <span class="identifier">first</span><span class="special">,</span> 
                   <span class="identifier">BidirectionalIterator</span> <span class="identifier">last</span><span class="special">,</span>
                   <span class="identifier">match_results</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;&amp;</span> <span class="identifier">m</span><span class="special">,</span>
@@ -1110,8 +1110,8 @@
                   <span class="keyword">const</span> <span class="identifier">basic_regex</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">,</span> <span class="identifier">traits</span><span class="special">&gt;&amp;</span> <span class="identifier">e</span><span class="special">,</span>
                   <span class="identifier">regex_constants</span><span class="special">::</span><span class="identifier">match_flag_type</span> <span class="identifier">flags</span> <span class="special">=</span> <span class="identifier">regex_constants</span><span class="special">::</span><span class="identifier">match_default</span><span class="special">);</span>
                   
-<span class="comment">// [7.11.4] Function template regex_replace
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">OutputIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">charT</span><span class="special">&gt;</span>
+<span class="comment">// [7.11.4] Function template regex_replace</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">OutputIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">traits</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">charT</span><span class="special">&gt;</span>
 <span class="identifier">OutputIterator</span> <span class="identifier">regex_replace</span><span class="special">(</span><span class="identifier">OutputIterator</span> <span class="identifier">out</span><span class="special">,</span>
                            <span class="identifier">BidirectionalIterator</span> <span class="identifier">first</span><span class="special">,</span> 
                            <span class="identifier">BidirectionalIterator</span> <span class="identifier">last</span><span class="special">,</span>
@@ -1125,8 +1125,8 @@
                                        <span class="keyword">const</span> <span class="identifier">basic_string</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">&gt;&amp;</span> <span class="identifier">fmt</span><span class="special">,</span>
                                        <span class="identifier">regex_constants</span><span class="special">::</span><span class="identifier">match_flag_type</span> <span class="identifier">flags</span> <span class="special">=</span> <span class="identifier">regex_constants</span><span class="special">::</span><span class="identifier">match_default</span><span class="special">);</span>
                                         
-<span class="comment">// [7.12.1] Class template regex_iterator
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> 
+<span class="comment">// [7.12.1] Class template regex_iterator</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span> 
          <span class="keyword">class</span> <span class="identifier">charT</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">,</span>
          <span class="keyword">class</span> <span class="identifier">traits</span> <span class="special">=</span> <span class="identifier">regex_traits</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">regex_iterator</span><span class="special">;</span>
@@ -1136,8 +1136,8 @@
 <span class="keyword">typedef</span> <span class="identifier">regex_iterator</span><span class="special">&lt;</span><span class="identifier">string</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="special">&gt;</span> <span class="identifier">sregex_iterator</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">regex_iterator</span><span class="special">&lt;</span><span class="identifier">wstring</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="special">&gt;</span> <span class="identifier">wsregex_iterator</span><span class="special">;</span>
 
-<span class="comment">// [7.12.2] Class template regex_token_iterator
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span>
+<span class="comment">// [7.12.2] Class template regex_token_iterator</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">BidirectionalIterator</span><span class="special">,</span>
          <span class="keyword">class</span> <span class="identifier">charT</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">BidirectionalIterator</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">,</span>
          <span class="keyword">class</span> <span class="identifier">traits</span> <span class="special">=</span> <span class="identifier">regex_traits</span><span class="special">&lt;</span><span class="identifier">charT</span><span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">regex_token_iterator</span><span class="special">;</span>
@@ -1147,9 +1147,9 @@
 <span class="keyword">typedef</span> <span class="identifier">regex_token_iterator</span><span class="special">&lt;</span><span class="identifier">string</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="special">&gt;</span> <span class="identifier">sregex_token_iterator</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">regex_token_iterator</span><span class="special">&lt;</span><span class="identifier">wstring</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="special">&gt;</span> <span class="identifier">wsregex_token_iterator</span><span class="special">;</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_REGEX if your standard
@@ -1296,9 +1296,9 @@
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">atanh</span><span class="special">(</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">fabs</span><span class="special">(</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_COMPLEX_INVERSE_TRIG
@@ -1346,8 +1346,8 @@
          <span class="keyword">class</span> <span class="identifier">Alloc</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">unordered_set</span><span class="special">;</span>
 
-<span class="comment">// [6.3.4.5] Class template unordered_multiset
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Value</span><span class="special">,</span>
+<span class="comment">// [6.3.4.5] Class template unordered_multiset</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Value</span><span class="special">,</span>
          <span class="keyword">class</span> <span class="identifier">Hash</span> <span class="special">=</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;,</span>
          <span class="keyword">class</span> <span class="identifier">Pred</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;,</span>
          <span class="keyword">class</span> <span class="identifier">Alloc</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;</span> <span class="special">&gt;</span>
@@ -1361,9 +1361,9 @@
 <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">unordered_multiset</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span>
          <span class="identifier">unordered_multiset</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_UNORDERED_SET if your
@@ -1406,16 +1406,16 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-<span class="comment">// [6.3.4.4] Class template unordered_map
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Key</span><span class="special">,</span>
+<span class="comment">// [6.3.4.4] Class template unordered_map</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Key</span><span class="special">,</span>
          <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span>
          <span class="keyword">class</span> <span class="identifier">Hash</span> <span class="special">=</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span>
          <span class="keyword">class</span> <span class="identifier">Pred</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span>
          <span class="keyword">class</span> <span class="identifier">Alloc</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">Key</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">unordered_map</span><span class="special">;</span>
 
-<span class="comment">// [6.3.4.6] Class template unordered_multimap
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Key</span><span class="special">,</span>
+<span class="comment">// [6.3.4.6] Class template unordered_multimap</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Key</span><span class="special">,</span>
          <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span>
          <span class="keyword">class</span> <span class="identifier">Hash</span> <span class="special">=</span> <span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span>
          <span class="keyword">class</span> <span class="identifier">Pred</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span>
@@ -1430,9 +1430,9 @@
 <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span>
          <span class="identifier">unordered_multimap</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">Hash</span><span class="special">,</span> <span class="identifier">Pred</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Configuration:</strong></span> <a href="../../../libs/config/index.html" target="_top">Boost.Config</a>
         should (automatically) define the macro BOOST_HAS_TR1_UNORDERED_MAP if your
@@ -1459,137 +1459,137 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-<span class="comment">// [5.2.1.1] associated Laguerre polynomials:
-</span><span class="keyword">double</span> <span class="identifier">assoc_laguerre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.1] associated Laguerre polynomials:</span>
+<span class="keyword">double</span> <span class="identifier">assoc_laguerre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">assoc_laguerref</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">assoc_laguerrel</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.2] associated Legendre functions:
-</span><span class="keyword">double</span> <span class="identifier">assoc_legendre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.2] associated Legendre functions:</span>
+<span class="keyword">double</span> <span class="identifier">assoc_legendre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">assoc_legendref</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">assoc_legendrel</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.3] beta function:
-</span><span class="keyword">double</span> <span class="identifier">beta</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y</span><span class="special">);</span>
+<span class="comment">// [5.2.1.3] beta function:</span>
+<span class="keyword">double</span> <span class="identifier">beta</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">betaf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">betal</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">y</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.4] (complete) elliptic integral of the first kind:
-</span><span class="keyword">double</span> <span class="identifier">comp_ellint_1</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">);</span>
+<span class="comment">// [5.2.1.4] (complete) elliptic integral of the first kind:</span>
+<span class="keyword">double</span> <span class="identifier">comp_ellint_1</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">comp_ellint_1f</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">k</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">comp_ellint_1l</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">k</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.5] (complete) elliptic integral of the second kind:
-</span><span class="keyword">double</span> <span class="identifier">comp_ellint_2</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">);</span>
+<span class="comment">// [5.2.1.5] (complete) elliptic integral of the second kind:</span>
+<span class="keyword">double</span> <span class="identifier">comp_ellint_2</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">comp_ellint_2f</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">k</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">comp_ellint_2l</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">k</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.6] (complete) elliptic integral of the third kind:
-</span><span class="keyword">double</span> <span class="identifier">comp_ellint_3</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">);</span>
+<span class="comment">// [5.2.1.6] (complete) elliptic integral of the third kind:</span>
+<span class="keyword">double</span> <span class="identifier">comp_ellint_3</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">comp_ellint_3f</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">nu</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">comp_ellint_3l</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.7] confluent hypergeometric functions:
-</span><span class="keyword">double</span> <span class="identifier">conf_hyperg</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.7] confluent hypergeometric functions:</span>
+<span class="keyword">double</span> <span class="identifier">conf_hyperg</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">conf_hypergf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">conf_hypergl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.8] regular modified cylindrical Bessel functions:
-</span><span class="keyword">double</span> <span class="identifier">cyl_bessel_i</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.8] regular modified cylindrical Bessel functions:</span>
+<span class="keyword">double</span> <span class="identifier">cyl_bessel_i</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">cyl_bessel_if</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">cyl_bessel_il</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.9] cylindrical Bessel functions (of the first kind):
-</span><span class="keyword">double</span> <span class="identifier">cyl_bessel_j</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.9] cylindrical Bessel functions (of the first kind):</span>
+<span class="keyword">double</span> <span class="identifier">cyl_bessel_j</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">cyl_bessel_jf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">cyl_bessel_jl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.10] irregular modified cylindrical Bessel functions:
-</span><span class="keyword">double</span> <span class="identifier">cyl_bessel_k</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.10] irregular modified cylindrical Bessel functions:</span>
+<span class="keyword">double</span> <span class="identifier">cyl_bessel_k</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">cyl_bessel_kf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">cyl_bessel_kl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.11] cylindrical Neumann functions;
-</span><span class="comment">// cylindrical Bessel functions (of the second kind):
-</span><span class="keyword">double</span> <span class="identifier">cyl_neumann</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.11] cylindrical Neumann functions;</span>
+<span class="comment">// cylindrical Bessel functions (of the second kind):</span>
+<span class="keyword">double</span> <span class="identifier">cyl_neumann</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">cyl_neumannf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">cyl_neumannl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.12] (incomplete) elliptic integral of the first kind:
-</span><span class="keyword">double</span> <span class="identifier">ellint_1</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">phi</span><span class="special">);</span>
+<span class="comment">// [5.2.1.12] (incomplete) elliptic integral of the first kind:</span>
+<span class="keyword">double</span> <span class="identifier">ellint_1</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">phi</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">ellint_1f</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">phi</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">ellint_1l</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">phi</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.13] (incomplete) elliptic integral of the second kind:
-</span><span class="keyword">double</span> <span class="identifier">ellint_2</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">phi</span><span class="special">);</span>
+<span class="comment">// [5.2.1.13] (incomplete) elliptic integral of the second kind:</span>
+<span class="keyword">double</span> <span class="identifier">ellint_2</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">phi</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">ellint_2f</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">phi</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">ellint_2l</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">phi</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.14] (incomplete) elliptic integral of the third kind:
-</span><span class="keyword">double</span> <span class="identifier">ellint_3</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">phi</span><span class="special">);</span>
+<span class="comment">// [5.2.1.14] (incomplete) elliptic integral of the third kind:</span>
+<span class="keyword">double</span> <span class="identifier">ellint_3</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">phi</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">ellint_3f</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">phi</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">ellint_3l</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">k</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">nu</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">phi</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.15] exponential integral:
-</span><span class="keyword">double</span> <span class="identifier">expint</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.15] exponential integral:</span>
+<span class="keyword">double</span> <span class="identifier">expint</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">expintf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">expintl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.16] Hermite polynomials:
-</span><span class="keyword">double</span> <span class="identifier">hermite</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.16] Hermite polynomials:</span>
+<span class="keyword">double</span> <span class="identifier">hermite</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">hermitef</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">hermitel</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.17] hypergeometric functions:
-</span><span class="keyword">double</span> <span class="identifier">hyperg</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.17] hypergeometric functions:</span>
+<span class="keyword">double</span> <span class="identifier">hyperg</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">hypergf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">hypergl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.18] Laguerre polynomials:
-</span><span class="keyword">double</span> <span class="identifier">laguerre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.18] Laguerre polynomials:</span>
+<span class="keyword">double</span> <span class="identifier">laguerre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">laguerref</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">laguerrel</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.19] Legendre polynomials:
-</span><span class="keyword">double</span> <span class="identifier">legendre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.19] Legendre polynomials:</span>
+<span class="keyword">double</span> <span class="identifier">legendre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">legendref</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">legendrel</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.20] Riemann zeta function:
-</span><span class="keyword">double</span> <span class="identifier">riemann_zeta</span><span class="special">(</span><span class="keyword">double</span><span class="special">);</span>
+<span class="comment">// [5.2.1.20] Riemann zeta function:</span>
+<span class="keyword">double</span> <span class="identifier">riemann_zeta</span><span class="special">(</span><span class="keyword">double</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">riemann_zetaf</span><span class="special">(</span><span class="keyword">float</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">riemann_zetal</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.21] spherical Bessel functions (of the first kind):
-</span><span class="keyword">double</span> <span class="identifier">sph_bessel</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.21] spherical Bessel functions (of the first kind):</span>
+<span class="keyword">double</span> <span class="identifier">sph_bessel</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">sph_besself</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">sph_bessell</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.22] spherical associated Legendre functions:
-</span><span class="keyword">double</span> <span class="identifier">sph_legendre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">theta</span><span class="special">);</span>
+<span class="comment">// [5.2.1.22] spherical associated Legendre functions:</span>
+<span class="keyword">double</span> <span class="identifier">sph_legendre</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">theta</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">sph_legendref</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">theta</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">sph_legendrel</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">l</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">theta</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.23] spherical Neumann functions;
-</span><span class="comment">// spherical Bessel functions (of the second kind):
-</span><span class="keyword">double</span> <span class="identifier">sph_neumann</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.23] spherical Neumann functions;</span>
+<span class="comment">// spherical Bessel functions (of the second kind):</span>
+<span class="keyword">double</span> <span class="identifier">sph_neumann</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">sph_neumannf</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">sph_neumannl</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="special">}</span> <span class="comment">// namespace tr1
-</span><span class="special">}</span> <span class="comment">// namespace std
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace tr1</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
 <p>
         <span class="bold"><strong>Standard Conformity:</strong></span> The following functions
         are not supported in the Boost version of this component:
       </p>
-<pre class="programlisting"><span class="comment">// [5.2.1.7] confluent hypergeometric functions:
-</span><span class="keyword">double</span> <span class="identifier">conf_hyperg</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<pre class="programlisting"><span class="comment">// [5.2.1.7] confluent hypergeometric functions:</span>
+<span class="keyword">double</span> <span class="identifier">conf_hyperg</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">conf_hypergf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">conf_hypergl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-<span class="comment">// [5.2.1.17] hypergeometric functions:
-</span><span class="keyword">double</span> <span class="identifier">hyperg</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+<span class="comment">// [5.2.1.17] hypergeometric functions:</span>
+<span class="keyword">double</span> <span class="identifier">hyperg</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">float</span> <span class="identifier">hypergf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">hypergl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">c</span><span class="special">,</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 </pre>
@@ -1610,12 +1610,12 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
 <span class="keyword">namespace</span> <span class="identifier">tr1</span> <span class="special">{</span>
 
-   <span class="comment">// types
-</span>   <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">type</span> <span class="identifier">double_t</span><span class="special">;</span>
+   <span class="comment">// types</span>
+   <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">type</span> <span class="identifier">double_t</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">type</span> <span class="identifier">float_t</span><span class="special">;</span>
 
-   <span class="comment">// functions
-</span>   <span class="keyword">double</span> <span class="identifier">acosh</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
+   <span class="comment">// functions</span>
+   <span class="keyword">double</span> <span class="identifier">acosh</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
    <span class="keyword">float</span> <span class="identifier">acoshf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
    <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">acoshl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
@@ -1754,8 +1754,8 @@
    <span class="keyword">float</span> <span class="identifier">truncf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">x</span><span class="special">);</span>
    <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">truncl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">);</span>
 
-   <span class="comment">// C99 macros defined as C++ templates
-</span>   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">signbit</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">);</span>
+   <span class="comment">// C99 macros defined as C++ templates</span>
+   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">signbit</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">);</span>
    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">int</span> <span class="identifier">fpclassify</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">);</span>
    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">isfinite</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">);</span>
    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">isinf</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">);</span>
@@ -1768,8 +1768,8 @@
    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">islessgreater</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">y</span><span class="special">);</span>
    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">isunordered</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">y</span><span class="special">);</span>
 
-<span class="special">}}</span> <span class="comment">// namespaces
-</span></pre>
+<span class="special">}}</span> <span class="comment">// namespaces</span>
+</pre>
 <p>
         <span class="bold"><strong>Standard Conformity:</strong></span> The following functions
         are not supported in the Boost version of this component:
@@ -1833,8 +1833,8 @@
 <span class="keyword">float</span> <span class="identifier">scalbnf</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">ex</span><span class="special">);</span>
 <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">scalbnl</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">ex</span><span class="special">);</span>
 
-<span class="comment">// C99 macros defined as C++ templates
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">isgreater</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">y</span><span class="special">);</span>
+<span class="comment">// C99 macros defined as C++ templates</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">isgreater</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">isgreaterequal</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">isless</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">y</span><span class="special">);</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">bool</span> <span class="identifier">islessequal</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">y</span><span class="special">);</span>

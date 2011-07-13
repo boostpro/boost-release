@@ -34,8 +34,15 @@
 </span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <a class="link" href="../../Expr.html" title="Concept Expr">Expr</a><span class="special">&gt;</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <span class="identifier">after</span><span class="special">(</span><span class="identifier">Expr</span> <span class="keyword">const</span> <span class="special">&amp;</span> expr<span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3348898"></a><h2>Description</h2>
+<a name="id3523297"></a><h2>Description</h2>
 <p>after(expr) succeeds if the expr sub-expression would match at the current position minus N in the sequence, where N is the width of expr. expr is not included in the match. For instance, after("foo") succeeds if we are after a "foo". Look-behind assertions can be negated with the bit-complement operator.</p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>after(expr) is equivalent to the perl (?&lt;=...) extension. ~after(expr) is a negative look-behind assertion, equivalent to the perl (?&lt;!...) extension.</p></td></tr>
+</table></div>
 <p>
 
 
@@ -56,10 +63,6 @@
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
 <td><p>expr cannot match a variable number of characters. </p></td>
-</tr>
-<tr>
-<td><p><span class="term">Notes:</span></p></td>
-<td><p>after(expr) is equivalent to the perl (?&lt;=...) extension. ~after(expr) is a negative look-behind assertion, equivalent to the perl (?&lt;!...) extension.</p></td>
 </tr>
 </tbody>
 </table></div>

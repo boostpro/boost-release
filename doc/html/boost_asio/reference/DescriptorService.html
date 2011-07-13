@@ -29,22 +29,24 @@
 </h3></div></div></div>
 <p>
         A descriptor service must meet the requirements for an <a class="link" href="IoObjectService.html" title="I/O object service requirements">I/O
-        object service</a>, as well as the additional requirements listed below.
+        object service</a> with support for movability, as well as the additional
+        requirements listed below.
       </p>
 <p>
         In the table below, <code class="computeroutput"><span class="identifier">X</span></code> denotes
         a descriptor service class, <code class="computeroutput"><span class="identifier">a</span></code>
-        denotes a value of type <code class="computeroutput"><span class="identifier">X</span></code>,
-        <code class="computeroutput"><span class="identifier">b</span></code> denotes a value of type
+        and <code class="computeroutput"><span class="identifier">ao</span></code> denote values of type
+        <code class="computeroutput"><span class="identifier">X</span></code>, <code class="computeroutput"><span class="identifier">b</span></code>
+        and <code class="computeroutput"><span class="identifier">c</span></code> denote values of type
         <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">implementation_type</span></code>, <code class="computeroutput"><span class="identifier">n</span></code>
-        denotes a value of type <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_type</span></code>,
+        denotes a value of type <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_handle_type</span></code>,
         <code class="computeroutput"><span class="identifier">ec</span></code> denotes a value of type
         <code class="computeroutput"><span class="identifier">error_code</span></code>, <code class="computeroutput"><span class="identifier">i</span></code> denotes a value meeting <a class="link" href="IoControlCommand.html" title="I/O control command requirements"><code class="computeroutput"><span class="identifier">IoControlCommand</span></code></a> requirements, and
         <code class="computeroutput"><span class="identifier">u</span></code> and <code class="computeroutput"><span class="identifier">v</span></code>
         denote identifiers.
       </p>
 <div class="table">
-<a name="id840572"></a><p class="title"><b>Table&#160;9.&#160;DescriptorService requirements</b></p>
+<a name="id846501"></a><p class="title"><b>Table&#160;9.&#160;DescriptorService requirements</b></p>
 <div class="table-contents"><table class="table" summary="DescriptorService requirements">
 <colgroup>
 <col>
@@ -72,7 +74,7 @@
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_type</span></code>
+                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_handle_type</span></code>
                 </p>
               </td>
 <td>
@@ -114,6 +116,49 @@
                   requirements. Implicitly cancels asynchronous operations, as if
                   by calling <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">close</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span>
                   <span class="identifier">ec</span><span class="special">)</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  
+</p>
+<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">move_construct</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">c</span><span class="special">);</span>
+</pre>
+<p>
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  From <a class="link" href="IoObjectService.html" title="I/O object service requirements">IoObjectService</a>
+                  requirements. The underlying native representation is moved from
+                  <code class="computeroutput"><span class="identifier">c</span></code> to <code class="computeroutput"><span class="identifier">b</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  
+</p>
+<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">move_assign</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">ao</span><span class="special">,</span> <span class="identifier">c</span><span class="special">);</span>
+</pre>
+<p>
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  From <a class="link" href="IoObjectService.html" title="I/O object service requirements">IoObjectService</a>
+                  requirements. Implicitly cancels asynchronous operations associated
+                  with <code class="computeroutput"><span class="identifier">b</span></code>, as if by
+                  calling <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">close</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span>
+                  <span class="identifier">ec</span><span class="special">)</span></code>.
+                  Then the underlying native representation is moved from <code class="computeroutput"><span class="identifier">c</span></code> to <code class="computeroutput"><span class="identifier">b</span></code>.
                 </p>
               </td>
 </tr>
@@ -207,14 +252,14 @@
                 <p>
                   
 </p>
-<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">native</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">native_handle</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span>
 </pre>
 <p>
                 </p>
               </td>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_type</span></code>
+                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">native_handle_type</span></code>
                 </p>
               </td>
 <td>
@@ -272,7 +317,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -27,13 +27,13 @@
 <a name="boost_asio.reference.streambuf"></a><a class="link" href="streambuf.html" title="streambuf">streambuf</a>
 </h3></div></div></div>
 <p>
-        <a class="indexterm" name="id1368412"></a> 
+        <a class="indexterm" name="id1573960"></a> 
 Typedef for the typical usage of <a class="link" href="basic_streambuf.html" title="basic_streambuf"><code class="computeroutput"><span class="identifier">basic_streambuf</span></code></a>.
       </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">basic_streambuf</span> <span class="identifier">streambuf</span><span class="special">;</span>
 </pre>
 <a name="boost_asio.reference.streambuf.types"></a><h5>
-<a name="id1368470"></a>
+<a name="boost_asio.reference.streambuf.types-heading"></a>
         <a class="link" href="streambuf.html#boost_asio.reference.streambuf.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -81,7 +81,7 @@ Typedef for the typical usage of <a class="link" href="basic_streambuf.html" tit
 </tbody>
 </table></div>
 <a name="boost_asio.reference.streambuf.member_functions"></a><h5>
-<a name="id1368584"></a>
+<a name="boost_asio.reference.streambuf.member_functions-heading"></a>
         <a class="link" href="streambuf.html#boost_asio.reference.streambuf.member_functions">Member Functions</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -190,7 +190,7 @@ Typedef for the typical usage of <a class="link" href="basic_streambuf.html" tit
 </tbody>
 </table></div>
 <a name="boost_asio.reference.streambuf.protected_member_functions"></a><h5>
-<a name="id1368840"></a>
+<a name="boost_asio.reference.streambuf.protected_member_functions-heading"></a>
         <a class="link" href="streambuf.html#boost_asio.reference.streambuf.protected_member_functions">Protected
         Member Functions</a>
       </h5>
@@ -298,7 +298,7 @@ Typedef for the typical usage of <a class="link" href="basic_streambuf.html" tit
         object.
       </p>
 <a name="boost_asio.reference.streambuf.examples"></a><h5>
-<a name="id1369214"></a>
+<a name="boost_asio.reference.streambuf.examples-heading"></a>
         <a class="link" href="streambuf.html#boost_asio.reference.streambuf.examples">Examples</a>
       </h5>
 <p>
@@ -308,30 +308,30 @@ Typedef for the typical usage of <a class="link" href="basic_streambuf.html" tit
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="identifier">os</span><span class="special">(&amp;</span><span class="identifier">b</span><span class="special">);</span>
 <span class="identifier">os</span> <span class="special">&lt;&lt;</span> <span class="string">"Hello, World!\n"</span><span class="special">;</span>
 
-<span class="comment">// try sending some data in input sequence
-</span><span class="identifier">size_t</span> <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">send</span><span class="special">(</span><span class="identifier">b</span><span class="special">.</span><span class="identifier">data</span><span class="special">());</span>
+<span class="comment">// try sending some data in input sequence</span>
+<span class="identifier">size_t</span> <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">send</span><span class="special">(</span><span class="identifier">b</span><span class="special">.</span><span class="identifier">data</span><span class="special">());</span>
 
-<span class="identifier">b</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span> <span class="comment">// sent data is removed from input sequence
-</span></pre>
+<span class="identifier">b</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span> <span class="comment">// sent data is removed from input sequence</span>
+</pre>
 <p>
         Reading from a socket directly into a streambuf:
       </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">streambuf</span> <span class="identifier">b</span><span class="special">;</span>
 
-<span class="comment">// reserve 512 bytes in output sequence
-</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">streambuf</span><span class="special">::</span><span class="identifier">mutable_buffers_type</span> <span class="identifier">bufs</span> <span class="special">=</span> <span class="identifier">b</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span><span class="number">512</span><span class="special">);</span>
+<span class="comment">// reserve 512 bytes in output sequence</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">streambuf</span><span class="special">::</span><span class="identifier">mutable_buffers_type</span> <span class="identifier">bufs</span> <span class="special">=</span> <span class="identifier">b</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span><span class="number">512</span><span class="special">);</span>
 
 <span class="identifier">size_t</span> <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">receive</span><span class="special">(</span><span class="identifier">bufs</span><span class="special">);</span>
 
-<span class="comment">// received data is "committed" from output sequence to input sequence
-</span><span class="identifier">b</span><span class="special">.</span><span class="identifier">commit</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
+<span class="comment">// received data is "committed" from output sequence to input sequence</span>
+<span class="identifier">b</span><span class="special">.</span><span class="identifier">commit</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
 
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">istream</span> <span class="identifier">is</span><span class="special">(&amp;</span><span class="identifier">b</span><span class="special">);</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">s</span><span class="special">;</span>
 <span class="identifier">is</span> <span class="special">&gt;&gt;</span> <span class="identifier">s</span><span class="special">;</span>
 </pre>
 <a name="boost_asio.reference.streambuf.requirements"></a><h5>
-<a name="id1369693"></a>
+<a name="boost_asio.reference.streambuf.requirements-heading"></a>
         <a class="link" href="streambuf.html#boost_asio.reference.streambuf.requirements">Requirements</a>
       </h5>
 <p>
@@ -343,7 +343,8 @@ Typedef for the typical usage of <a class="link" href="basic_streambuf.html" tit
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

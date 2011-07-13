@@ -39,8 +39,7 @@
         </p>
 <pre class="programlisting"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">my_io_service</span><span class="special">);</span>
 <span class="special">...</span>
-<span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">::</span><span class="identifier">non_blocking</span> <span class="identifier">nb</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">io_control</span><span class="special">(</span><span class="identifier">nb</span><span class="special">);</span>
+<span class="identifier">socket</span><span class="special">.</span><span class="identifier">non_blocking</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
 <span class="special">...</span>
 <span class="identifier">socket</span><span class="special">.</span><span class="identifier">async_read_some</span><span class="special">(</span><span class="identifier">null_buffers</span><span class="special">(),</span> <span class="identifier">read_handler</span><span class="special">);</span>
 <span class="special">...</span>
@@ -58,17 +57,20 @@
           POSIX stream-oriented descriptor classes.
         </p>
 <a name="boost_asio.overview.core.reactor.see_also"></a><h6>
-<a name="id774113"></a>
+<a name="boost_asio.overview.core.reactor.see_also-heading"></a>
           <a class="link" href="reactor.html#boost_asio.overview.core.reactor.see_also">See Also</a>
         </h6>
 <p>
           <a class="link" href="../../reference/null_buffers.html" title="null_buffers">null_buffers</a>,
+          <a class="link" href="../../reference/basic_socket/non_blocking.html" title="basic_socket::non_blocking">basic_socket::non_blocking()</a>,
+          <a class="link" href="../../reference/basic_socket/native_non_blocking.html" title="basic_socket::native_non_blocking">basic_socket::native_non_blocking()</a>,
           <a class="link" href="../../examples.html#boost_asio.examples.nonblocking">nonblocking example</a>.
         </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

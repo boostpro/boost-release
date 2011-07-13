@@ -27,7 +27,7 @@
 <a name="boost_asio.reference.io_service.reset"></a><a class="link" href="reset.html" title="io_service::reset">io_service::reset</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id1169940"></a> 
+          <a class="indexterm" name="id1345985"></a> 
 Reset the <a class="link" href="../io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> in preparation for
           a subsequent <code class="computeroutput"><span class="identifier">run</span><span class="special">()</span></code>
           invocation.
@@ -42,8 +42,8 @@ Reset the <a class="link" href="../io_service.html" title="io_service"><code cla
           or <code class="computeroutput"><span class="identifier">poll_one</span><span class="special">()</span></code>
           functions when a previous invocation of these functions returned due to
           the <a class="link" href="../io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a>
-          being stopped or running out of work. This function allows the <a class="link" href="../io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> to reset any internal
-          state, such as a "stopped" flag.
+          being stopped or running out of work. After a call to <code class="computeroutput"><span class="identifier">reset</span><span class="special">()</span></code>, the <a class="link" href="../io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> object's <code class="computeroutput"><span class="identifier">stopped</span><span class="special">()</span></code>
+          function will return <code class="computeroutput"><span class="keyword">false</span></code>.
         </p>
 <p>
           This function must not be called while there are any unfinished calls to
@@ -56,7 +56,8 @@ Reset the <a class="link" href="../io_service.html" title="io_service"><code cla
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

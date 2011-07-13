@@ -30,14 +30,14 @@
           <span class="emphasis"><em>Inherited from basic_socket.</em></span>
         </p>
 <p>
-          <a class="indexterm" name="id923196"></a> 
+          <a class="indexterm" name="id943170"></a> 
 A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="computeroutput"><span class="identifier">basic_socket</span></code></a> is always the lowest
           layer.
         </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">basic_socket</span><span class="special">&lt;</span> <span class="identifier">Protocol</span><span class="special">,</span> <span class="identifier">DatagramSocketService</span> <span class="special">&gt;</span> <span class="identifier">lowest_layer_type</span><span class="special">;</span>
 </pre>
 <a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.types"></a><h6>
-<a name="id923286"></a>
+<a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.types-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.basic_datagram_socket.lowest_layer_type.types">Types</a>
         </h6>
 <div class="informaltable"><table class="table">
@@ -196,7 +196,7 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
 <tr>
 <td>
                   <p>
-                    <a class="link" href="../basic_socket/native_type.html" title="basic_socket::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                    <a class="link" href="../basic_socket/native_handle_type.html" title="basic_socket::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                   </p>
                 </td>
 <td>
@@ -208,12 +208,26 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
 <tr>
 <td>
                   <p>
+                    <a class="link" href="../basic_socket/native_type.html" title="basic_socket::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    (Deprecated: Use native_handle_type.) The native representation
+                    of a socket.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     <a class="link" href="../basic_socket/non_blocking_io.html" title="basic_socket::non_blocking_io"><span class="bold"><strong>non_blocking_io</strong></span></a>
                   </p>
                 </td>
 <td>
                   <p>
-                    IO control command to set the blocking mode of the socket.
+                    (Deprecated: Use non_blocking().) IO control command to set the
+                    blocking mode of the socket.
                   </p>
                 </td>
 </tr>
@@ -317,7 +331,7 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
 </tbody>
 </table></div>
 <a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.member_functions"></a><h6>
-<a name="id923982"></a>
+<a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.member_functions-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.basic_datagram_socket.lowest_layer_type.member_functions">Member
           Functions</a>
         </h6>
@@ -406,6 +420,9 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
                   </p>
                   <p>
                     Construct a basic_socket on an existing native socket.
+                  </p>
+                  <p>
+                    Move-construct a basic_socket from another.
                   </p>
                 </td>
 </tr>
@@ -496,19 +513,6 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
 <tr>
 <td>
                   <p>
-                    <a class="link" href="../basic_socket/io_service.html" title="basic_socket::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    (Deprecated: use get_io_service().) Get the io_service associated
-                    with the object.
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
                     <a class="link" href="../basic_socket/is_open.html" title="basic_socket::is_open"><span class="bold"><strong>is_open</strong></span></a>
                   </p>
                 </td>
@@ -553,7 +557,49 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
                 </td>
 <td>
                   <p>
+                    (Deprecated: Use native_handle().) Get the native socket representation.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket/native_handle.html" title="basic_socket::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
                     Get the native socket representation.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket/native_non_blocking.html" title="basic_socket::native_non_blocking"><span class="bold"><strong>native_non_blocking</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Gets the non-blocking mode of the native socket implementation.
+                  </p>
+                  <p>
+                    Sets the non-blocking mode of the native socket implementation.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket/non_blocking.html" title="basic_socket::non_blocking"><span class="bold"><strong>non_blocking</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Gets the non-blocking mode of the socket.
+                  </p>
+                  <p>
+                    Sets the non-blocking mode of the socket.
                   </p>
                 </td>
 </tr>
@@ -566,6 +612,18 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
 <td>
                   <p>
                     Open the socket using the specified protocol.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket/operator_eq_.html" title="basic_socket::operator="><span class="bold"><strong>operator=</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Move-assign a basic_socket from another.
                   </p>
                 </td>
 </tr>
@@ -608,7 +666,7 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
 </tbody>
 </table></div>
 <a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.protected_member_functions"></a><h6>
-<a name="id924673"></a>
+<a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.protected_member_functions-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.basic_datagram_socket.lowest_layer_type.protected_member_functions">Protected
           Member Functions</a>
         </h6>
@@ -629,7 +687,32 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
                   </p>
                 </th>
 </tr></thead>
-<tbody><tr>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket/get_implementation.html" title="basic_socket::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Get the underlying implementation of the I/O object.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket/get_service.html" title="basic_socket::get_service"><span class="bold"><strong>get_service</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Get the service associated with the I/O object.
+                  </p>
+                </td>
+</tr>
+<tr>
 <td>
                   <p>
                     <a class="link" href="../basic_socket/_basic_socket.html" title="basic_socket::~basic_socket"><span class="bold"><strong>~basic_socket</strong></span></a>
@@ -640,10 +723,11 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
                     Protected destructor to prevent deletion through this type.
                   </p>
                 </td>
-</tr></tbody>
+</tr>
+</tbody>
 </table></div>
 <a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.data_members"></a><h6>
-<a name="id924761"></a>
+<a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.data_members-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.basic_datagram_socket.lowest_layer_type.data_members">Data
           Members</a>
         </h6>
@@ -692,6 +776,18 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
 <tr>
 <td>
                   <p>
+                    <a class="link" href="../basic_socket/message_end_of_record.html" title="basic_socket::message_end_of_record"><span class="bold"><strong>message_end_of_record</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Specifies that the data marks the end of a record.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     <a class="link" href="../basic_socket/message_out_of_band.html" title="basic_socket::message_out_of_band"><span class="bold"><strong>message_out_of_band</strong></span></a>
                   </p>
                 </td>
@@ -716,7 +812,7 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
 </tbody>
 </table></div>
 <a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.protected_data_members"></a><h6>
-<a name="id924941"></a>
+<a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.protected_data_members-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.basic_datagram_socket.lowest_layer_type.protected_data_members">Protected
           Data Members</a>
         </h6>
@@ -746,7 +842,8 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
                 </td>
 <td>
                   <p>
-                    The underlying implementation of the I/O object.
+                    (Deprecated: Use get_implementation().) The underlying implementation
+                    of the I/O object.
                   </p>
                 </td>
 </tr>
@@ -758,7 +855,8 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
                 </td>
 <td>
                   <p>
-                    The service associated with the I/O object.
+                    (Deprecated: Use get_service().) The service associated with
+                    the I/O object.
                   </p>
                 </td>
 </tr>
@@ -770,7 +868,7 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
           and datagram-oriented sockets.
         </p>
 <a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.thread_safety"></a><h6>
-<a name="id925081"></a>
+<a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.thread_safety-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.basic_datagram_socket.lowest_layer_type.thread_safety">Thread
           Safety</a>
         </h6>
@@ -783,7 +881,7 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
           Unsafe.
         </p>
 <a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.requirements"></a><h6>
-<a name="id925134"></a>
+<a name="boost_asio.reference.basic_datagram_socket.lowest_layer_type.requirements-heading"></a>
           <a class="link" href="lowest_layer_type.html#boost_asio.reference.basic_datagram_socket.lowest_layer_type.requirements">Requirements</a>
         </h6>
 <p>
@@ -795,7 +893,8 @@ A <a class="link" href="../basic_socket.html" title="basic_socket"><code class="
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

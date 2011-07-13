@@ -40,15 +40,20 @@
             has been stopped.
           </p>
 <a name="boost_asio.reference.io_service.run_one.overload1.return_value"></a><h6>
-<a name="id1171697"></a>
+<a name="boost_asio.reference.io_service.run_one.overload1.return_value-heading"></a>
             <a class="link" href="overload1.html#boost_asio.reference.io_service.run_one.overload1.return_value">Return
             Value</a>
           </h6>
 <p>
-            The number of handlers that were executed.
+            The number of handlers that were executed. A zero return value implies
+            that the <a class="link" href="../../io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> object is stopped
+            (the <code class="computeroutput"><span class="identifier">stopped</span><span class="special">()</span></code>
+            function returns <code class="computeroutput"><span class="keyword">true</span></code>).
+            Subsequent calls to <code class="computeroutput"><span class="identifier">run</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">run_one</span><span class="special">()</span></code>, <code class="computeroutput"><span class="identifier">poll</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">poll_one</span><span class="special">()</span></code> will return immediately unless there
+            is a prior call to <code class="computeroutput"><span class="identifier">reset</span><span class="special">()</span></code>.
           </p>
 <a name="boost_asio.reference.io_service.run_one.overload1.exceptions"></a><h6>
-<a name="id1171723"></a>
+<a name="boost_asio.reference.io_service.run_one.overload1.exceptions-heading"></a>
             <a class="link" href="overload1.html#boost_asio.reference.io_service.run_one.overload1.exceptions">Exceptions</a>
           </h6>
 <div class="variablelist">
@@ -63,7 +68,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

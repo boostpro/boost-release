@@ -34,8 +34,8 @@
 <pre class="programlisting"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">iostream</span> <span class="identifier">stream</span><span class="special">(</span><span class="string">"www.boost.org"</span><span class="special">,</span> <span class="string">"http"</span><span class="special">);</span>
 <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">stream</span><span class="special">)</span>
 <span class="special">{</span>
-  <span class="comment">// Can't connect.
-</span><span class="special">}</span>
+  <span class="comment">// Can't connect.</span>
+<span class="special">}</span>
 </pre>
 <p>
           The iostream class can also be used in conjunction with an acceptor to
@@ -53,8 +53,38 @@
   <span class="special">...</span>
 <span class="special">}</span>
 </pre>
+<p>
+          Timeouts may be set by calling <code class="computeroutput"><span class="identifier">expires_at</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">expires_from_now</span><span class="special">()</span></code> to establish a deadline. Any socket operations
+          that occur past the deadline will put the iostream into a "bad"
+          state.
+        </p>
+<p>
+          For example, a simple client program like this:
+        </p>
+<pre class="programlisting"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">iostream</span> <span class="identifier">stream</span><span class="special">;</span>
+<span class="identifier">stream</span><span class="special">.</span><span class="identifier">expires_from_now</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">seconds</span><span class="special">(</span><span class="number">60</span><span class="special">));</span>
+<span class="identifier">stream</span><span class="special">.</span><span class="identifier">connect</span><span class="special">(</span><span class="string">"www.boost.org"</span><span class="special">,</span> <span class="string">"http"</span><span class="special">);</span>
+<span class="identifier">stream</span> <span class="special">&lt;&lt;</span> <span class="string">"GET /LICENSE_1_0.txt HTTP/1.0\r\n"</span><span class="special">;</span>
+<span class="identifier">stream</span> <span class="special">&lt;&lt;</span> <span class="string">"Host: www.boost.org\r\n"</span><span class="special">;</span>
+<span class="identifier">stream</span> <span class="special">&lt;&lt;</span> <span class="string">"Accept: */*\r\n"</span><span class="special">;</span>
+<span class="identifier">stream</span> <span class="special">&lt;&lt;</span> <span class="string">"Connection: close\r\n\r\n"</span><span class="special">;</span>
+<span class="identifier">stream</span><span class="special">.</span><span class="identifier">flush</span><span class="special">();</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">stream</span><span class="special">.</span><span class="identifier">rdbuf</span><span class="special">();</span>
+</pre>
+<p>
+          will fail if all the socket operations combined take longer than 60 seconds.
+        </p>
+<p>
+          If an error does occur, the iostream's <code class="computeroutput"><span class="identifier">error</span><span class="special">()</span></code> member function may be used to retrieve
+          the error code from the most recent system call:
+        </p>
+<pre class="programlisting"><span class="keyword">if</span> <span class="special">(!</span><span class="identifier">stream</span><span class="special">)</span>
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Error: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">stream</span><span class="special">.</span><span class="identifier">error</span><span class="special">().</span><span class="identifier">message</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="string">"\n"</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
 <a name="boost_asio.overview.networking.iostreams.see_also"></a><h6>
-<a name="id778234"></a>
+<a name="boost_asio.overview.networking.iostreams.see_also-heading"></a>
           <a class="link" href="iostreams.html#boost_asio.overview.networking.iostreams.see_also">See Also</a>
         </h6>
 <p>
@@ -63,7 +93,7 @@
           <a class="link" href="../../examples.html#boost_asio.examples.iostreams">iostreams examples</a>.
         </p>
 <a name="boost_asio.overview.networking.iostreams.notes"></a><h6>
-<a name="id778288"></a>
+<a name="boost_asio.overview.networking.iostreams.notes-heading"></a>
           <a class="link" href="iostreams.html#boost_asio.overview.networking.iostreams.notes">Notes</a>
         </h6>
 <p>
@@ -74,7 +104,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

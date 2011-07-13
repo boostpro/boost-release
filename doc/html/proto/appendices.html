@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../proto.html" title="Chapter&#160;15.&#160;Boost.Proto">
+<link rel="up" href="../proto.html" title="Chapter&#160;16.&#160;Boost.Proto">
 <link rel="prev" href="../Transform.html" title="Concept Transform">
-<link rel="next" href="../boost_random.html" title="Chapter&#160;16.&#160;Boost.Random">
+<link rel="next" href="../boost_random.html" title="Chapter&#160;17.&#160;Boost.Random">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -42,7 +42,7 @@
       Notes</a>
 </h3></div></div></div>
 <a name="boost_proto.appendices.release_notes.boost_1_44"></a><h5>
-<a name="id2615292"></a>
+<a name="boost_proto.appendices.release_notes.boost_1_44-heading"></a>
         <a class="link" href="appendices.html#boost_proto.appendices.release_notes.boost_1_44">Boost 1.44</a>
       </h5>
 <p>
@@ -67,7 +67,7 @@
         <span class="bold"><strong>Behavior Change: proto::as_expr() and proto::as_child()</strong></span>
       </p>
 <p>
-        The functions <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1310068.html" title="Function as_expr">proto::as_expr()</a></code> and <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1310258.html" title="Function as_child">proto::as_child()</a></code>
+        The functions <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1386178.html" title="Function as_expr">proto::as_expr()</a></code> and <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1386369.html" title="Function as_child">proto::as_child()</a></code>
         are used to guarantee that an object is a Proto expression by turning it
         into one if it is not already, using an optionally specified domain. In previous
         releases, when these functions were passed a Proto expression in a domain
@@ -94,12 +94,12 @@
 <p>
         For instance:
       </p>
-<pre class="programlisting"><span class="comment">// An expression wrapper
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="comment">// An expression wrapper</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">my_expr_wrapper</span><span class="special">;</span>
 
-<span class="comment">// A domain
-</span><span class="keyword">struct</span> <span class="identifier">my_domain</span>
+<span class="comment">// A domain</span>
+<span class="keyword">struct</span> <span class="identifier">my_domain</span>
   <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">domain</span><span class="special">&lt;</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">generator</span><span class="special">&lt;</span> <span class="identifier">my_expr_wrapper</span> <span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="special">{};</span>
 
@@ -107,9 +107,9 @@
 <span class="keyword">struct</span> <span class="identifier">my_expr_wrapper</span>
   <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr_wrapper</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">&gt;,</span> <span class="identifier">my_domain</span><span class="special">&gt;</span>
 <span class="special">{</span>
-  <span class="comment">// Before 1.44, Expr was an instance of proto::expr&lt;&gt;
-</span>  <span class="comment">// In 1.44, Expr is an instance of proto::basic_expr&lt;&gt;
-</span><span class="special">};</span>
+  <span class="comment">// Before 1.44, Expr was an instance of proto::expr&lt;&gt;</span>
+  <span class="comment">// In 1.44, Expr is an instance of proto::basic_expr&lt;&gt;</span>
+<span class="special">};</span>
 </pre>
 <p>
         The motivation for this change was to improve compile times. <code class="computeroutput"><a class="link" href="../boost/proto/expr.html" title="Struct template expr">proto::expr&lt;&gt;</a></code>
@@ -138,16 +138,16 @@
 <p>
         For instance:
       </p>
-<pre class="programlisting"><span class="comment">// Not shown: define some expression
-</span><span class="comment">// generators genA and genB
-</span>
+<pre class="programlisting"><span class="comment">// Not shown: define some expression</span>
+<span class="comment">// generators genA and genB</span>
+
 <span class="keyword">struct</span> <span class="identifier">A</span>
   <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">domain</span><span class="special">&lt;</span> <span class="identifier">genA</span><span class="special">,</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">_</span> <span class="special">&gt;</span>
 <span class="special">{};</span>
 
-<span class="comment">// Define a domain B that is the sub-domain
-</span><span class="comment">// of domain A.
-</span><span class="keyword">struct</span> <span class="identifier">B</span>
+<span class="comment">// Define a domain B that is the sub-domain</span>
+<span class="comment">// of domain A.</span>
+<span class="keyword">struct</span> <span class="identifier">B</span>
   <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">domain</span><span class="special">&lt;</span> <span class="identifier">genB</span><span class="special">,</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">_</span><span class="special">,</span> <span class="identifier">A</span> <span class="special">&gt;</span>
 <span class="special">{};</span>
 </pre>
@@ -172,8 +172,8 @@
         1.44, users now have this power.
       </p>
 <p>
-        Users defining their own domain can now specify how <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1310068.html" title="Function as_expr">proto::as_expr()</a></code>
-        and <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1310258.html" title="Function as_child">proto::as_child()</a></code> work in their domain. They
+        Users defining their own domain can now specify how <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1386178.html" title="Function as_expr">proto::as_expr()</a></code>
+        and <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1386369.html" title="Function as_child">proto::as_child()</a></code> work in their domain. They
         can do this easily by defining nested class templates named <code class="computeroutput"><span class="identifier">as_expr</span></code> and/or <code class="computeroutput"><span class="identifier">as_child</span></code>
         within their domain class.
       </p>
@@ -187,9 +187,9 @@
       <span class="identifier">proto</span><span class="special">::</span><span class="identifier">domain</span><span class="special">&lt;</span> <span class="identifier">my_generator</span> <span class="special">&gt;</span>
   <span class="identifier">base_domain</span><span class="special">;</span>
 
-  <span class="comment">// For my_domain, as_child does the same as
-</span>  <span class="comment">// what as_expr does by default.
-</span>  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+  <span class="comment">// For my_domain, as_child does the same as</span>
+  <span class="comment">// what as_expr does by default.</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
   <span class="keyword">struct</span> <span class="identifier">as_child</span>
     <span class="special">:</span> <span class="identifier">base_domain</span><span class="special">::</span><span class="identifier">as_expr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
   <span class="special">{};</span>
@@ -204,15 +204,15 @@
         that the compiler may or may not be able to optimize away.)
       </p>
 <a name="boost_proto.appendices.release_notes.boost_1_43"></a><h5>
-<a name="id2616529"></a>
+<a name="boost_proto.appendices.release_notes.boost_1_43-heading"></a>
         <a class="link" href="appendices.html#boost_proto.appendices.release_notes.boost_1_43">Boost 1.43</a>
       </h5>
 <p>
         In Boost 1.43, the recommended usage of <code class="computeroutput"><a class="link" href="../boost/proto/extends.html" title="Struct template extends">proto::extends&lt;&gt;</a></code>
         changed slightly. The new usage looks like this:
       </p>
-<pre class="programlisting"><span class="comment">// my_expr is an expression extension of the Expr parameter
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="comment">// my_expr is an expression extension of the Expr parameter</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">my_expr</span>
   <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">&gt;,</span> <span class="identifier">my_domain</span><span class="special">&gt;</span>
 <span class="special">{</span>
@@ -220,9 +220,9 @@
       <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">,</span> <span class="identifier">my_domain</span><span class="special">&gt;(</span><span class="identifier">expr</span><span class="special">)</span>
     <span class="special">{}</span>
 
-    <span class="comment">// NEW: use the following macro to bring
-</span>    <span class="comment">// proto::extends::operator= into scope.
-</span>    <span class="identifier">BOOST_PROTO_EXTENDS_USING_ASSIGN</span><span class="special">(</span><span class="identifier">my_expr</span><span class="special">)</span>
+    <span class="comment">// NEW: use the following macro to bring</span>
+    <span class="comment">// proto::extends::operator= into scope.</span>
+    <span class="identifier">BOOST_PROTO_EXTENDS_USING_ASSIGN</span><span class="special">(</span><span class="identifier">my_expr</span><span class="special">)</span>
 <span class="special">};</span>
 </pre>
 <p>
@@ -236,8 +236,8 @@
 <p>
         Previously, the recommended usage was to do this:
       </p>
-<pre class="programlisting"><span class="comment">// my_expr is an expression extension of the Expr parameter
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="comment">// my_expr is an expression extension of the Expr parameter</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">my_expr</span>
   <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">&gt;,</span> <span class="identifier">my_domain</span><span class="special">&gt;</span>
 <span class="special">{</span>
@@ -245,8 +245,8 @@
       <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">,</span> <span class="identifier">my_domain</span><span class="special">&gt;(</span><span class="identifier">expr</span><span class="special">)</span>
     <span class="special">{}</span>
 
-    <span class="comment">// OLD: don't do it like this anymore.
-</span>    <span class="keyword">using</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">,</span> <span class="identifier">my_domain</span><span class="special">&gt;::</span><span class="keyword">operator</span><span class="special">=;</span>
+    <span class="comment">// OLD: don't do it like this anymore.</span>
+    <span class="keyword">using</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;</span><span class="identifier">Expr</span><span class="special">,</span> <span class="identifier">my_expr</span><span class="special">,</span> <span class="identifier">my_domain</span><span class="special">&gt;::</span><span class="keyword">operator</span><span class="special">=;</span>
 <span class="special">};</span>
 </pre>
 <p>
@@ -269,16 +269,16 @@
         <code class="literal"><code class="computeroutput"><a class="link" href="../BOOST_PROTO_EXTENDS_USING_ASSIGN.html" title="Macro BOOST_PROTO_EXTENDS_USING_ASSIGN">BOOST_PROTO_EXTENDS_USING_ASSIGN</a></code>()</code>.
         The implications are highlighted in the sample code below:
       </p>
-<pre class="programlisting"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">literal</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">a</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="identifier">b</span><span class="special">(</span><span class="number">2</span><span class="special">);</span> <span class="comment">// two non-const proto literals
-</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">literal</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="identifier">c</span><span class="special">(</span><span class="number">3</span><span class="special">);</span> <span class="comment">// a const proto literal
-</span>
-<span class="identifier">a</span> <span class="special">=</span> <span class="identifier">b</span><span class="special">;</span> <span class="comment">// No-op. Builds an expression tree and discards it.
-</span>       <span class="comment">// Same behavior in 1.42 and 1.43.
-</span>
-<span class="identifier">a</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">;</span> <span class="comment">// CHANGE! In 1.42, this performed copy assignment, causing
-</span>       <span class="comment">// a's value to change to 3. In 1.43, the behavior is now
-</span>       <span class="comment">// the same as above: build and discard an expression tree.
-</span></pre>
+<pre class="programlisting"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">literal</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">a</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="identifier">b</span><span class="special">(</span><span class="number">2</span><span class="special">);</span> <span class="comment">// two non-const proto literals</span>
+<span class="identifier">proto</span><span class="special">::</span><span class="identifier">literal</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="identifier">c</span><span class="special">(</span><span class="number">3</span><span class="special">);</span> <span class="comment">// a const proto literal</span>
+
+<span class="identifier">a</span> <span class="special">=</span> <span class="identifier">b</span><span class="special">;</span> <span class="comment">// No-op. Builds an expression tree and discards it.</span>
+       <span class="comment">// Same behavior in 1.42 and 1.43.</span>
+
+<span class="identifier">a</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">;</span> <span class="comment">// CHANGE! In 1.42, this performed copy assignment, causing</span>
+       <span class="comment">// a's value to change to 3. In 1.43, the behavior is now</span>
+       <span class="comment">// the same as above: build and discard an expression tree.</span>
+</pre>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -289,7 +289,7 @@
 <dl>
 <dt><span class="term">August ??, 2010</span></dt>
 <dd><p>
-              Boost 1.44: Proto gets sub-domains and per-domain control of <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1310068.html" title="Function as_expr">proto::as_expr()</a></code> and <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1310258.html" title="Function as_child">proto::as_child()</a></code> to meet the needs
+              Boost 1.44: Proto gets sub-domains and per-domain control of <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1386178.html" title="Function as_expr">proto::as_expr()</a></code> and <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1386369.html" title="Function as_child">proto::as_child()</a></code> to meet the needs
               of Phoenix3.
             </p></dd>
 <dt><span class="term">August 11, 2008</span></dt>
@@ -505,9 +505,9 @@
     <span class="identifier">private_type</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="keyword">operator</span><span class="special">,(</span><span class="keyword">int</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="keyword">typedef</span> <span class="keyword">char</span> <span class="identifier">yes_type</span><span class="special">;</span>      <span class="comment">// sizeof(yes_type) == 1
-</span><span class="keyword">typedef</span> <span class="keyword">char</span> <span class="special">(&amp;</span><span class="identifier">no_type</span><span class="special">)[</span><span class="number">2</span><span class="special">];</span> <span class="comment">// sizeof(no_type)  == 2
-</span>
+<span class="keyword">typedef</span> <span class="keyword">char</span> <span class="identifier">yes_type</span><span class="special">;</span>      <span class="comment">// sizeof(yes_type) == 1</span>
+<span class="keyword">typedef</span> <span class="keyword">char</span> <span class="special">(&amp;</span><span class="identifier">no_type</span><span class="special">)[</span><span class="number">2</span><span class="special">];</span> <span class="comment">// sizeof(no_type)  == 2</span>
+
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="identifier">no_type</span> <span class="identifier">is_private_type</span><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;);</span>
 

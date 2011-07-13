@@ -34,15 +34,21 @@
 </span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <a class="link" href="../../Expr.html" title="Concept Expr">Expr</a><span class="special">&gt;</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <span class="identifier">before</span><span class="special">(</span><span class="identifier">Expr</span> <span class="keyword">const</span> <span class="special">&amp;</span> expr<span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3348747"></a><h2>Description</h2>
+<a name="id3523150"></a><h2>Description</h2>
 <p>before(expr) succeeds if the expr sub-expression would match at the current position in the sequence, but expr is not included in the match. For instance, before("foo") succeeds if we are before a "foo". Look-ahead assertions can be negated with the bit-compliment operator.</p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>before(expr) is equivalent to the perl (?=...) extension. ~before(expr) is a negative look-ahead assertion, equivalent to the perl (?!...) extension.</p></td></tr>
+</table></div>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
+<tbody><tr>
 <td><p><span class="term">Parameters:</span></p></td>
 <td><div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -51,12 +57,7 @@
 <td><p>The sub-expression to put in the look-ahead assertion. </p></td>
 </tr></tbody>
 </table></div></td>
-</tr>
-<tr>
-<td><p><span class="term">Notes:</span></p></td>
-<td><p>before(expr) is equivalent to the perl (?=...) extension. ~before(expr) is a negative look-ahead assertion, equivalent to the perl (?!...) extension.</p></td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 </div>

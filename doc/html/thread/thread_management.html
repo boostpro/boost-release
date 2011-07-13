@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;22.&#160;Thread">
+<link rel="up" href="../thread.html" title="Chapter&#160;24.&#160;Thread">
 <link rel="prev" href="changes.html" title="Changes since boost 1.40">
 <link rel="next" href="synchronization.html" title="Synchronization">
 </head>
@@ -32,7 +32,7 @@
 <dt><span class="section"><a href="thread_management.html#thread.thread_management.threadgroup">Class <code class="computeroutput"><span class="identifier">thread_group</span></code></a></span></dt>
 </dl></div>
 <a name="thread.thread_management.synopsis"></a><h4>
-<a name="id2803524"></a>
+<a name="thread.thread_management.synopsis-heading"></a>
       <a class="link" href="thread_management.html#thread.thread_management.synopsis">Synopsis</a>
     </h4>
 <p>
@@ -70,7 +70,7 @@
       for details.]
     </p>
 <a name="thread.thread_management.launching_threads"></a><h4>
-<a name="id2803838"></a>
+<a name="thread.thread_management.launching_threads-heading"></a>
       <a class="link" href="thread_management.html#thread.thread_management.launching_threads">Launching threads</a>
     </h4>
 <p>
@@ -91,15 +91,15 @@
 <span class="special">{</span>
     <span class="identifier">callable</span> <span class="identifier">x</span><span class="special">;</span>
     <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">(</span><span class="identifier">x</span><span class="special">);</span>
-<span class="special">}</span> <span class="comment">// x is destroyed, but the newly-created thread has a copy, so this is OK
-</span>
+<span class="special">}</span> <span class="comment">// x is destroyed, but the newly-created thread has a copy, so this is OK</span>
+
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span> <span class="identifier">oops</span><span class="special">()</span>
 <span class="special">{</span>
     <span class="identifier">callable</span> <span class="identifier">x</span><span class="special">;</span>
     <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">x</span><span class="special">));</span>
-<span class="special">}</span> <span class="comment">// x is destroyed, but the newly-created thread still has a reference
-</span>  <span class="comment">// this leads to undefined behaviour
-</span></pre>
+<span class="special">}</span> <span class="comment">// x is destroyed, but the newly-created thread still has a reference</span>
+  <span class="comment">// this leads to undefined behaviour</span>
+</pre>
 <p>
       If you wish to construct an instance of <a class="link" href="thread_management.html#thread.thread_management.thread" title="Class thread"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span></code></a>
       with a function or callable object that requires arguments to be supplied,
@@ -120,7 +120,7 @@
       be passed.
     </p>
 <a name="thread.thread_management.exceptions_in_thread_functions"></a><h4>
-<a name="id2804310"></a>
+<a name="thread.thread_management.exceptions_in_thread_functions-heading"></a>
       <a class="link" href="thread_management.html#thread.thread_management.exceptions_in_thread_functions">Exceptions
       in thread functions</a>
     </h4>
@@ -131,7 +131,7 @@
       is called.
     </p>
 <a name="thread.thread_management.joining_and_detaching"></a><h4>
-<a name="id2804401"></a>
+<a name="thread.thread_management.joining_and_detaching-heading"></a>
       <a class="link" href="thread_management.html#thread.thread_management.joining_and_detaching">Joining and
       detaching</a>
     </h4>
@@ -162,7 +162,7 @@
       specified time has elapsed.
     </p>
 <a name="thread.thread_management.interruption"></a><h4>
-<a name="id2804749"></a>
+<a name="thread.thread_management.interruption-heading"></a>
       <a class="link" href="thread_management.html#thread.thread_management.interruption">Interruption</a>
     </h4>
 <p>
@@ -185,18 +185,18 @@
     </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">f</span><span class="special">()</span>
 <span class="special">{</span>
-    <span class="comment">// interruption enabled here
-</span>    <span class="special">{</span>
+    <span class="comment">// interruption enabled here</span>
+    <span class="special">{</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">disable_interruption</span> <span class="identifier">di</span><span class="special">;</span>
-        <span class="comment">// interruption disabled
-</span>        <span class="special">{</span>
+        <span class="comment">// interruption disabled</span>
+        <span class="special">{</span>
             <span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">disable_interruption</span> <span class="identifier">di2</span><span class="special">;</span>
-            <span class="comment">// interruption still disabled
-</span>        <span class="special">}</span> <span class="comment">// di2 destroyed, interruption state restored
-</span>        <span class="comment">// interruption still disabled
-</span>    <span class="special">}</span> <span class="comment">// di destroyed, interruption state restored
-</span>    <span class="comment">// interruption now enabled
-</span><span class="special">}</span>
+            <span class="comment">// interruption still disabled</span>
+        <span class="special">}</span> <span class="comment">// di2 destroyed, interruption state restored</span>
+        <span class="comment">// interruption still disabled</span>
+    <span class="special">}</span> <span class="comment">// di destroyed, interruption state restored</span>
+    <span class="comment">// interruption now enabled</span>
+<span class="special">}</span>
 </pre>
 <p>
       The effects of an instance of <a class="link" href="thread_management.html#thread.thread_management.this_thread.disable_interruption" title="Class disable_interruption"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">disable_interruption</span></code></a>
@@ -209,24 +209,24 @@
     </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">g</span><span class="special">()</span>
 <span class="special">{</span>
-    <span class="comment">// interruption enabled here
-</span>    <span class="special">{</span>
+    <span class="comment">// interruption enabled here</span>
+    <span class="special">{</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">disable_interruption</span> <span class="identifier">di</span><span class="special">;</span>
-        <span class="comment">// interruption disabled
-</span>        <span class="special">{</span>
+        <span class="comment">// interruption disabled</span>
+        <span class="special">{</span>
             <span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">restore_interruption</span> <span class="identifier">ri</span><span class="special">(</span><span class="identifier">di</span><span class="special">);</span>
-            <span class="comment">// interruption now enabled
-</span>        <span class="special">}</span> <span class="comment">// ri destroyed, interruption disable again
-</span>    <span class="special">}</span> <span class="comment">// di destroyed, interruption state restored
-</span>    <span class="comment">// interruption now enabled
-</span><span class="special">}</span>
+            <span class="comment">// interruption now enabled</span>
+        <span class="special">}</span> <span class="comment">// ri destroyed, interruption disable again</span>
+    <span class="special">}</span> <span class="comment">// di destroyed, interruption state restored</span>
+    <span class="comment">// interruption now enabled</span>
+<span class="special">}</span>
 </pre>
 <p>
       At any point, the interruption state for the current thread can be queried
       by calling <a class="link" href="thread_management.html#thread.thread_management.this_thread.interruption_enabled" title="Non-member function interruption_enabled()"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_thread</span><span class="special">::</span><span class="identifier">interruption_enabled</span><span class="special">()</span></code></a>.
     </p>
 <a name="interruption_points"></a><a name="thread.thread_management.predefined_interruption_points"></a><h4>
-<a name="id2805444"></a>
+<a name="thread.thread_management.predefined_interruption_points-heading"></a>
       <a class="link" href="thread_management.html#thread.thread_management.predefined_interruption_points">Predefined
       Interruption Points</a>
     </h4>
@@ -265,7 +265,7 @@
         </li>
 </ul></div>
 <a name="thread.thread_management.thread_ids"></a><h4>
-<a name="id2805891"></a>
+<a name="thread.thread_management.thread_ids-heading"></a>
       <a class="link" href="thread_management.html#thread.thread_management.thread_ids">Thread IDs</a>
     </h4>
 <p>
@@ -351,8 +351,8 @@
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">&gt;</span>
     <span class="identifier">thread</span><span class="special">(</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">thread_move_t</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;</span> <span class="identifier">f</span><span class="special">);</span>
 
-    <span class="comment">// move support
-</span>    <span class="identifier">thread</span><span class="special">(</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">thread_move_t</span><span class="special">&lt;</span><span class="identifier">thread</span><span class="special">&gt;</span> <span class="identifier">x</span><span class="special">);</span>
+    <span class="comment">// move support</span>
+    <span class="identifier">thread</span><span class="special">(</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">thread_move_t</span><span class="special">&lt;</span><span class="identifier">thread</span><span class="special">&gt;</span> <span class="identifier">x</span><span class="special">);</span>
     <span class="identifier">thread</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">thread_move_t</span><span class="special">&lt;</span><span class="identifier">thread</span><span class="special">&gt;</span> <span class="identifier">x</span><span class="special">);</span>
     <span class="keyword">operator</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">thread_move_t</span><span class="special">&lt;</span><span class="identifier">thread</span><span class="special">&gt;();</span>
     <span class="identifier">detail</span><span class="special">::</span><span class="identifier">thread_move_t</span><span class="special">&lt;</span><span class="identifier">thread</span><span class="special">&gt;</span> <span class="identifier">move</span><span class="special">();</span>
@@ -379,8 +379,8 @@
     <span class="keyword">void</span> <span class="identifier">interrupt</span><span class="special">();</span>
     <span class="keyword">bool</span> <span class="identifier">interruption_requested</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
 
-    <span class="comment">// backwards compatibility
-</span>    <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==(</span><span class="keyword">const</span> <span class="identifier">thread</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <span class="comment">// backwards compatibility</span>
+    <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==(</span><span class="keyword">const</span> <span class="identifier">thread</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
     <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">!=(</span><span class="keyword">const</span> <span class="identifier">thread</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
     <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">yield</span><span class="special">();</span>
@@ -963,8 +963,8 @@
         </p>
 <pre class="programlisting"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="identifier">some_func</span><span class="special">();</span>
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span> <span class="identifier">t</span><span class="special">(</span><span class="identifier">some_func</span><span class="special">);</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span> <span class="identifier">t2</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">t</span><span class="special">));</span> <span class="comment">// transfer thread from t to t2
-</span></pre>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">thread</span> <span class="identifier">t2</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">t</span><span class="special">));</span> <span class="comment">// transfer thread from t to t2</span>
+</pre>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">

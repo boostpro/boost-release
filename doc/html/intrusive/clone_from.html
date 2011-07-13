@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
 <link rel="prev" href="erasing_and_disposing.html" title="Erasing and disposing values from Boost.Intrusive containers">
 <link rel="next" href="function_hooks.html" title="Using function hooks">
 </head>
@@ -100,8 +100,8 @@
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
 
-<span class="comment">//A class that can be inserted in an intrusive list
-</span><span class="keyword">class</span> <span class="identifier">my_class</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">list_base_hook</span><span class="special">&lt;&gt;</span>
+<span class="comment">//A class that can be inserted in an intrusive list</span>
+<span class="keyword">class</span> <span class="identifier">my_class</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">list_base_hook</span><span class="special">&lt;&gt;</span>
 <span class="special">{</span>
    <span class="keyword">public</span><span class="special">:</span>
    <span class="keyword">friend</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==(</span><span class="keyword">const</span> <span class="identifier">my_class</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">my_class</span> <span class="special">&amp;</span><span class="identifier">b</span><span class="special">)</span>
@@ -109,21 +109,21 @@
 
    <span class="keyword">int</span> <span class="identifier">int_</span><span class="special">;</span>
 
-   <span class="comment">//...
-</span><span class="special">};</span>
+   <span class="comment">//...</span>
+<span class="special">};</span>
 
-<span class="comment">//Definition of the intrusive list
-</span><span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">my_class</span><span class="special">&gt;</span> <span class="identifier">my_class_list</span><span class="special">;</span>
+<span class="comment">//Definition of the intrusive list</span>
+<span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">my_class</span><span class="special">&gt;</span> <span class="identifier">my_class_list</span><span class="special">;</span>
 
-<span class="comment">//Cloner object function
-</span><span class="keyword">struct</span> <span class="identifier">new_cloner</span>
+<span class="comment">//Cloner object function</span>
+<span class="keyword">struct</span> <span class="identifier">new_cloner</span>
 <span class="special">{</span>
    <span class="identifier">my_class</span> <span class="special">*</span><span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="identifier">my_class</span> <span class="special">&amp;</span><span class="identifier">clone_this</span><span class="special">)</span>
    <span class="special">{</span>  <span class="keyword">return</span> <span class="keyword">new</span> <span class="identifier">my_class</span><span class="special">(</span><span class="identifier">clone_this</span><span class="special">);</span>  <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">//The disposer object function
-</span><span class="keyword">struct</span> <span class="identifier">delete_disposer</span>
+<span class="comment">//The disposer object function</span>
+<span class="keyword">struct</span> <span class="identifier">delete_disposer</span>
 <span class="special">{</span>
    <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">my_class</span> <span class="special">*</span><span class="identifier">delete_this</span><span class="special">)</span>
    <span class="special">{</span>  <span class="keyword">delete</span> <span class="identifier">delete_this</span><span class="special">;</span>  <span class="special">}</span>
@@ -134,25 +134,25 @@
    <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">MaxElem</span> <span class="special">=</span> <span class="number">100</span><span class="special">;</span>
    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">my_class</span><span class="special">&gt;</span> <span class="identifier">nodes</span><span class="special">(</span><span class="identifier">MaxElem</span><span class="special">);</span>
 
-   <span class="comment">//Fill all the nodes and insert them in the list
-</span>   <span class="identifier">my_class_list</span> <span class="identifier">list</span><span class="special">;</span>
+   <span class="comment">//Fill all the nodes and insert them in the list</span>
+   <span class="identifier">my_class_list</span> <span class="identifier">list</span><span class="special">;</span>
 
    <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">MaxElem</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="identifier">nodes</span><span class="special">[</span><span class="identifier">i</span><span class="special">].</span><span class="identifier">int_</span> <span class="special">=</span> <span class="identifier">i</span><span class="special">;</span>
 
    <span class="identifier">list</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">nodes</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">nodes</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
 
-   <span class="comment">//Now clone "list" using "new" and "delete" object functions
-</span>   <span class="identifier">my_class_list</span> <span class="identifier">cloned_list</span><span class="special">;</span>
+   <span class="comment">//Now clone "list" using "new" and "delete" object functions</span>
+   <span class="identifier">my_class_list</span> <span class="identifier">cloned_list</span><span class="special">;</span>
    <span class="identifier">cloned_list</span><span class="special">.</span><span class="identifier">clone_from</span><span class="special">(</span><span class="identifier">list</span><span class="special">,</span> <span class="identifier">new_cloner</span><span class="special">(),</span> <span class="identifier">delete_disposer</span><span class="special">());</span>
 
-   <span class="comment">//Test that both are equal
-</span>   <span class="keyword">if</span><span class="special">(</span><span class="identifier">cloned_list</span> <span class="special">!=</span> <span class="identifier">list</span><span class="special">)</span>
+   <span class="comment">//Test that both are equal</span>
+   <span class="keyword">if</span><span class="special">(</span><span class="identifier">cloned_list</span> <span class="special">!=</span> <span class="identifier">list</span><span class="special">)</span>
       <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Both lists are different"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
    <span class="keyword">else</span>
       <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Both lists are equal"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 
-   <span class="comment">//Don't forget to free the memory from the second list
-</span>   <span class="identifier">cloned_list</span><span class="special">.</span><span class="identifier">clear_and_dispose</span><span class="special">(</span><span class="identifier">delete_disposer</span><span class="special">());</span>
+   <span class="comment">//Don't forget to free the memory from the second list</span>
+   <span class="identifier">cloned_list</span><span class="special">.</span><span class="identifier">clear_and_dispose</span><span class="special">(</span><span class="identifier">delete_disposer</span><span class="special">());</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -161,7 +161,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

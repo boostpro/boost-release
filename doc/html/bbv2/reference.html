@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../bbv2.html" title="Chapter&#160;33.&#160;Boost.Build V2 User Manual">
+<link rel="up" href="../bbv2.html" title="Chapter&#160;35.&#160;Boost.Build V2 User Manual">
 <link rel="prev" href="tasks.html" title="Common tasks">
 <link rel="next" href="extender.html" title="Extender Manual">
 </head>
@@ -104,6 +104,9 @@ boost-build build-system ;
 <dt><span class="term"><code class="literal">obj</code></span></dt>
 <dd><p>Creates an object file. Useful when a single source
         file must be compiled with special properties.</p></dd>
+<dt><span class="term"><code class="literal">preprocessed</code></span></dt>
+<dd><p>Creates an preprocessed source file. The arguments follow the
+        <a class="link" href="overview.html#bbv2.main-target-rule-syntax">common syntax</a>.</p></dd>
 <dt><span class="term"><code class="literal">glob</code></span></dt>
 <dd>
 <p>The <code class="computeroutput">glob</code> rule takes a list shell pattern
@@ -225,7 +228,7 @@ path-constant DATA : data/a.txt ;
 <p>This section documents the features that are built-in into
     Boost.Build. For features with a fixed set of values, that set is
     provided, with the default value listed first.</p>
-<a class="indexterm" name="id3427092"></a><div class="variablelist"><dl>
+<a class="indexterm" name="id3602236"></a><div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">variant</code></span></dt>
 <dd>
 <p>
@@ -346,7 +349,7 @@ path-constant DATA : data/a.txt ;
             
           </dd>
 <dt><span class="term"><a name="bbv2.reference.features.dll-path"></a>
-      <code class="literal">dll-path</code></span></dt>
+        <code class="literal">dll-path</code></span></dt>
 <dd>
             Specify an additional directory where the system should
             look for shared libraries when the executable or shared
@@ -389,6 +392,13 @@ path-constant DATA : data/a.txt ;
 <dd>
             Specifies an additional include path that is to be passed to C and
             C++ compilers.
+          </dd>
+<dt><span class="term"><code class="literal">define</code></span></dt>
+<dd>
+            Specifies an preprocessor symbol that should be defined on the command
+            line. You may either specify just the symbol, which will be defined
+            without any value, or both the symbol and the value, separated by
+            equal sign.
           </dd>
 <dt><span class="term"><code class="literal">warnings</code></span></dt>
 <dd>
@@ -524,7 +534,7 @@ path-constant DATA : data/a.txt ;
 </dd>
 <dt><span class="term"><code class="literal">embed-manifest</code></span></dt>
 <dd>
-<a class="indexterm" name="id3428190"></a><a class="indexterm" name="id3428199"></a><p>
+<a class="indexterm" name="id3603420"></a><a class="indexterm" name="id3603429"></a><p>
             <span class="bold"><strong>Allowed values:</strong></span> on, off.
           </p>
 <p>This feature is specific to the msvc toolset (see
@@ -542,7 +552,8 @@ path-constant DATA : data/a.txt ;
 <a name="bbv2.reference.tools"></a>Builtin tools</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="reference.html#bbv2.reference.tools.compilers">C++ Compilers</a></span></dt>
-<dt><span class="section"><a href="reference.html#id3430872">Third-party libraries</a></span></dt>
+<dt><span class="section"><a href="reference.html#id3606106">Third-party libraries</a></span></dt>
+<dt><span class="section"><a href="reference.html#id3606218">Documentation tools</a></span></dt>
 </dl></div>
 <p>Boost.Build comes with support for a large number of C++ compilers,
       and other tools. This section documents how to use those tools.</p>
@@ -631,7 +642,7 @@ using gcc : [<span class="optional"><em class="replaceable"><code>version</code>
                 be either <code class="computeroutput">windres</code> for msvc resource compiler,
                 or <code class="computeroutput">rc</code> for borland's resource compiler.</p></dd>
 </dl></div>
-<a class="indexterm" name="id3428613"></a>
+<a class="indexterm" name="id3603842"></a>
 
           In order to compile 64-bit applications, you have to specify
           <code class="computeroutput">address-model=64</code>, and the <code class="computeroutput">instruction-set</code>
@@ -648,7 +659,7 @@ using gcc : [<span class="optional"><em class="replaceable"><code>version</code>
           to that of the gcc module.
           </p>
 <p>
-          <a class="indexterm" name="id3428684"></a>
+          <a class="indexterm" name="id3603914"></a>
           The darwin toolset can generate so called "fat"
           binaries&#8212;binaries that can run support more than one
           architecture, or address mode. To build a binary that can run both
@@ -667,6 +678,7 @@ using gcc : [<span class="optional"><em class="replaceable"><code>version</code>
           C++</a> command-line tools on Microsoft Windows. The supported
           products and versions of command line tools are listed below:</p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>Visual Studio 2010&#8212;10.0</p></li>
 <li class="listitem"><p>Visual Studio 2008&#8212;9.0</p></li>
 <li class="listitem"><p>Visual Studio 2005&#8212;8.0</p></li>
 <li class="listitem"><p>Visual Studio .NET 2003&#8212;7.1</p></li>
@@ -757,7 +769,7 @@ using msvc : [<span class="optional"><em class="replaceable"><code>version</code
 <div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="v2.reference.tools.compiler.msvc.64"></a>64-bit support</h6></div></div></div>
-<a class="indexterm" name="id3429157"></a><p>Starting with version 8.0, Microsoft Visual Studio can
+<a class="indexterm" name="id3604392"></a><p>Starting with version 8.0, Microsoft Visual Studio can
             generate binaries for 64-bit processor, both 64-bit flavours of x86
             (codenamed AMD64/EM64T), and Itanium (codenamed IA64). In addition,
             compilers that are itself run in 64-bit mode, for better
@@ -1097,7 +1109,7 @@ using sun : [<span class="optional"><em class="replaceable"><code>version</code>
 <dd><p>Specifies additional command line options that will be
       passed to the linker.</p></dd>
 </dl></div>
-<a class="indexterm" name="id3430790"></a>
+<a class="indexterm" name="id3606024"></a>
           Starting with Sun Studio 12, you can create 64-bit applications
           by using the <code class="computeroutput">address-model=64</code> property.
 
@@ -1122,14 +1134,14 @@ using vacpp ;</pre>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3430872"></a>Third-party libraries</h4></div></div></div>
+<a name="id3606106"></a>Third-party libraries</h4></div></div></div>
 <div class="toc"><dl><dt><span class="section"><a href="reference.html#bbv2.reference.tools.libraries.stlport">STLport library</a></span></dt></dl></div>
 <p>Boost.Build provides special support for some
         third-party C++ libraries, documented below.</p>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="bbv2.reference.tools.libraries.stlport"></a>STLport library</h5></div></div></div>
-<a class="indexterm" name="id3430894"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
+<a class="indexterm" name="id3606128"></a><p>The <a href="http://stlport.org" target="_top">STLport</a> library
           is an alternative implementation of C++ runtime library. Boost.Build
           supports using that library on Windows platfrom.  Linux is
           hampered by different naming of libraries in each STLport
@@ -1153,6 +1165,217 @@ using stlport : [<span class="optional"><em class="replaceable"><code>version</c
           </p>
 <p>When STLport is configured, you can build with STLport by
           requesting <code class="literal">stdlib=stlport</code> on the command line.
+          </p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id3606218"></a>Documentation tools</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="reference.html#bbv2.reference.tools.doc.xsltproc">xsltproc</a></span></dt>
+<dt><span class="section"><a href="reference.html#bbv2.reference.tools.doc.boostbook">boostbook</a></span></dt>
+<dt><span class="section"><a href="reference.html#bbv2.reference.tools.doc.doxygen">doxygen</a></span></dt>
+<dt><span class="section"><a href="reference.html#bbv2.reference.tools.doc.quickbook">quickbook</a></span></dt>
+<dt><span class="section"><a href="reference.html#bbv2.reference.tools.doc.fop">fop</a></span></dt>
+</dl></div>
+<p>Boost.Build support for the Boost documentation tools is
+        documented below.
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="bbv2.reference.tools.doc.xsltproc"></a>xsltproc</h5></div></div></div>
+<a class="indexterm" name="id3606240"></a><p>To use xsltproc, you first need to configure it using the following syntax:</p>
+<pre class="programlisting">
+using xsltproc : [<span class="optional"><em class="replaceable"><code>xsltproc</code></em></span>] ;
+</pre>
+<p>
+          Where <em class="replaceable"><code>xsltproc</code></em> is the xsltproc executable.
+          If <em class="replaceable"><code>xsltproc</code></em> is not specified, and the
+          variable XSLTPROC is set, the value of XSLTPROC will be used.
+          Otherwise, xsltproc will be searched for in PATH.
+          </p>
+<p>The following options can be provided, using <code class="literal">&lt;<em class="replaceable"><code>option-name</code></em>&gt;<em class="replaceable"><code>option-value</code></em></code> syntax:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">xsl:param</code></span></dt>
+<dd><p>Values should have the form
+                <em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em></p></dd>
+<dt><span class="term"><code class="literal">xsl:path</code></span></dt>
+<dd><p>Sets an additional search path for xi:include elements.</p></dd>
+<dt><span class="term"><code class="literal">catalog</code></span></dt>
+<dd><p>A catalog file used to rewrite remote URL's to a local copy.</p></dd>
+</dl></div>
+<p>The xsltproc module provides the following rules.  Note that
+          these operate on jam targets and are intended to be used by another
+          toolset, such as boostbook, rather than directly by users.
+          </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">xslt</code></span></dt>
+<dd>
+<pre class="programlisting">
+rule xslt ( target : source stylesheet : properties * )
+</pre>
+<p>Runs xsltproc to create a single output file.</p>
+</dd>
+<dt><span class="term"><code class="literal">xslt-dir</code></span></dt>
+<dd>
+<pre class="programlisting">
+rule xslt-dir ( target : source stylesheet : properties * : dirname )
+</pre>
+<p>Runs xsltproc to create multiple outputs in a directory.
+                <code class="literal">dirname</code> is unused, but exists for
+                historical reasons.  The output directory is determined from the
+                target.
+                </p>
+</dd>
+</dl></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="bbv2.reference.tools.doc.boostbook"></a>boostbook</h5></div></div></div>
+<a class="indexterm" name="id3606464"></a><p>To use boostbook, you first need to configure it using the following syntax:</p>
+<pre class="programlisting">
+using boostbook : [<span class="optional"><em class="replaceable"><code>docbook-xsl-dir</code></em></span>] : [<span class="optional"><em class="replaceable"><code>docbook-dtd-dir</code></em></span>] : [<span class="optional"><em class="replaceable"><code>boostbook-dir</code></em></span>] ;
+</pre>
+<p>
+          <em class="replaceable"><code>docbook-xsl-dir</code></em> is the DocBook XSL stylesheet
+          directory. If not provided, we use DOCBOOK_XSL_DIR from the environment
+          (if available) or look in standard locations.  Otherwise, we let the
+          XML processor load the stylesheets remotely.
+          </p>
+<p>
+          <em class="replaceable"><code>docbook-dtd-dir</code></em> is the DocBook DTD directory.
+          If not provided, we use DOCBOOK_DTD_DIR From the environment (if
+          available) or look in standard locations.  Otherwise, we let the XML
+          processor load the DTD remotely.
+          </p>
+<p>
+          <em class="replaceable"><code>boostbook-dir</code></em> is the BoostBook directory
+          with the DTD and XSL subdirs.
+          </p>
+<p>The boostbook module depends on xsltproc.  For pdf or ps output,
+          it also depends on fop.
+          </p>
+<p>The following options can be provided, using <code class="literal">&lt;<em class="replaceable"><code>option-name</code></em>&gt;<em class="replaceable"><code>option-value</code></em></code> syntax:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">format</code></span></dt>
+<dd>
+<p>
+                  <span class="bold"><strong>Allowed values:</strong></span>
+                  <code class="literal">html</code>, <code class="literal">xhtml</code>,
+                  <code class="literal">htmlhelp</code>, <code class="literal">onehtml</code>,
+                  <code class="literal">man</code>, <code class="literal">pdf</code>,
+                  <code class="literal">ps</code>, <code class="literal">docbook</code>,
+                  <code class="literal">fo</code>, <code class="literal">tests</code>.
+                </p>
+<p>The <code class="literal">format</code> feature determines the type
+                of output produced by the boostbook rule.</p>
+</dd>
+</dl></div>
+<p>The boostbook module defines a rule for creating a target
+          following the common syntax.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">boostbook</code></span></dt>
+<dd>
+<pre class="programlisting">
+rule boostbook ( target-name : sources * : requirements * : default-build * )
+</pre>
+<p>Creates a boostbook target.</p>
+</dd>
+</dl></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="bbv2.reference.tools.doc.doxygen"></a>doxygen</h5></div></div></div>
+<a class="indexterm" name="id3606766"></a><p>To use doxygen, you first need to configure it using the following syntax:</p>
+<pre class="programlisting">
+using doxygen : [<span class="optional"><em class="replaceable"><code>name</code></em></span>] ;
+</pre>
+<p>
+          <em class="replaceable"><code>name</code></em> is the doxygen command.
+          If it is not specified, it will be found in the PATH.
+          </p>
+<p>The doxygen module depends on the boostbook module when
+          generating BoostBook XML.
+          </p>
+<p>The following options can be provided, using <code class="literal">&lt;<em class="replaceable"><code>option-name</code></em>&gt;<em class="replaceable"><code>option-value</code></em></code> syntax:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">doxygen:param</code></span></dt>
+<dd><p>All the values of <code class="literal">doxygen:param</code>
+                 are added to the doxyfile.</p></dd>
+<dt><span class="term"><code class="literal">prefix</code></span></dt>
+<dd><p>Specifies the common prefix of all headers
+                when generating BoostBook XML.  Everything before
+                this will be stripped off.
+                </p></dd>
+<dt><span class="term"><code class="literal">reftitle</code></span></dt>
+<dd><p>Specifies the title of the library-reference section,
+                when generating BoostBook XML.</p></dd>
+<dt><span class="term"><code class="literal">doxygen:xml-imagedir</code></span></dt>
+<dd>
+<p>When generating BoostBook XML, specifies the
+                directory in which to place the images generated
+                from LaTex formulae.</p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>The path is interpreted relative to the
+                current working directory, not relative to the Jamfile.
+                This is necessary to match the behavior of BoostBook.
+                </p></td></tr>
+</table></div>
+</dd>
+</dl></div>
+<p>The doxygen module defines a rule for creating a target
+          following the common syntax.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">doxygen</code></span></dt>
+<dd>
+<pre class="programlisting">
+rule doxygen ( target : sources * : requirements * : default-build * : usage-requirements * )
+</pre>
+<p>Creates a doxygen target.  If the target name
+                ends with .html, then this will generate an html
+                directory.  Otherwise it will generate BoostBook XML.
+                </p>
+</dd>
+</dl></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="bbv2.reference.tools.doc.quickbook"></a>quickbook</h5></div></div></div>
+<a class="indexterm" name="id3606990"></a><p>The quickbook module provides a generator to convert from
+          Quickbook to BoostBook XML.</p>
+<p>To use quickbook, you first need to configure it using the following syntax:</p>
+<pre class="programlisting">
+using quickbook : [<span class="optional"><em class="replaceable"><code>command</code></em></span>] ;
+</pre>
+<p>
+          <em class="replaceable"><code>command</code></em> is the quickbook executable.
+          If it is not specified, Boost.Build will compile it from source.
+          If it is unable to find the source it will search for a quickbook
+          executable in PATH.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="bbv2.reference.tools.doc.fop"></a>fop</h5></div></div></div>
+<a class="indexterm" name="id3607037"></a><p>The fop module provides generators to convert from
+          XSL formatting objects to Postscript and PDF.</p>
+<p>To use fop, you first need to configure it using the following syntax:</p>
+<pre class="programlisting">
+using fop : [<span class="optional"><em class="replaceable"><code>fop-command</code></em></span>] : [<span class="optional"><em class="replaceable"><code>java-home</code></em></span>] : [<span class="optional"><em class="replaceable"><code>java</code></em></span>] ;
+</pre>
+<p>
+          <em class="replaceable"><code>fop-command</code></em> is the command to run fop.
+          If it is not specified, Boost.Build will search for it in PATH and
+          FOP_HOME.
+          </p>
+<p>
+          Either <em class="replaceable"><code>java-home</code></em> or
+          <em class="replaceable"><code>java</code></em>
+          can be used to specify where to find java.
           </p>
 </div>
 </div>

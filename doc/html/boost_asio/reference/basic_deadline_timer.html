@@ -37,7 +37,7 @@
   <span class="keyword">public</span> <span class="identifier">basic_io_object</span><span class="special">&lt;</span> <span class="identifier">TimerService</span> <span class="special">&gt;</span>
 </pre>
 <a name="boost_asio.reference.basic_deadline_timer.types"></a><h5>
-<a name="id939254"></a>
+<a name="boost_asio.reference.basic_deadline_timer.types-heading"></a>
         <a class="link" href="basic_deadline_timer.html#boost_asio.reference.basic_deadline_timer.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -121,7 +121,7 @@
 </tbody>
 </table></div>
 <a name="boost_asio.reference.basic_deadline_timer.member_functions"></a><h5>
-<a name="id939460"></a>
+<a name="boost_asio.reference.basic_deadline_timer.member_functions-heading"></a>
         <a class="link" href="basic_deadline_timer.html#boost_asio.reference.basic_deadline_timer.member_functions">Member
         Functions</a>
       </h5>
@@ -188,6 +188,18 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="basic_deadline_timer/cancel_one.html" title="basic_deadline_timer::cancel_one"><span class="bold"><strong>cancel_one</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Cancels one asynchronous operation that is waiting on the timer.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="basic_deadline_timer/expires_at.html" title="basic_deadline_timer::expires_at"><span class="bold"><strong>expires_at</strong></span></a>
                 </p>
               </td>
@@ -230,19 +242,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="basic_deadline_timer/io_service.html" title="basic_deadline_timer::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: use get_io_service().) Get the io_service associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="basic_deadline_timer/wait.html" title="basic_deadline_timer::wait"><span class="bold"><strong>wait</strong></span></a>
                 </p>
               </td>
@@ -254,8 +253,57 @@
 </tr>
 </tbody>
 </table></div>
+<a name="boost_asio.reference.basic_deadline_timer.protected_member_functions"></a><h5>
+<a name="boost_asio.reference.basic_deadline_timer.protected_member_functions-heading"></a>
+        <a class="link" href="basic_deadline_timer.html#boost_asio.reference.basic_deadline_timer.protected_member_functions">Protected
+        Member Functions</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_deadline_timer/get_implementation.html" title="basic_deadline_timer::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the underlying implementation of the I/O object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_deadline_timer/get_service.html" title="basic_deadline_timer::get_service"><span class="bold"><strong>get_service</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the service associated with the I/O object.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
 <a name="boost_asio.reference.basic_deadline_timer.protected_data_members"></a><h5>
-<a name="id939781"></a>
+<a name="boost_asio.reference.basic_deadline_timer.protected_data_members-heading"></a>
         <a class="link" href="basic_deadline_timer.html#boost_asio.reference.basic_deadline_timer.protected_data_members">Protected
         Data Members</a>
       </h5>
@@ -285,7 +333,8 @@
               </td>
 <td>
                 <p>
-                  The underlying implementation of the I/O object.
+                  (Deprecated: Use get_implementation().) The underlying implementation
+                  of the I/O object.
                 </p>
               </td>
 </tr>
@@ -297,7 +346,8 @@
               </td>
 <td>
                 <p>
-                  The service associated with the I/O object.
+                  (Deprecated: Use get_service().) The service associated with the
+                  I/O object.
                 </p>
               </td>
 </tr>
@@ -314,11 +364,10 @@
         the wait operation will complete immediately.
       </p>
 <p>
-        Most applications will use the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">deadline_timer</span></code>
-        typedef.
+        Most applications will use the <a class="link" href="deadline_timer.html" title="deadline_timer"><code class="computeroutput"><span class="identifier">deadline_timer</span></code></a> typedef.
       </p>
 <a name="boost_asio.reference.basic_deadline_timer.thread_safety"></a><h5>
-<a name="id939987"></a>
+<a name="boost_asio.reference.basic_deadline_timer.thread_safety-heading"></a>
         <a class="link" href="basic_deadline_timer.html#boost_asio.reference.basic_deadline_timer.thread_safety">Thread
         Safety</a>
       </h5>
@@ -331,20 +380,20 @@
         Unsafe.
       </p>
 <a name="boost_asio.reference.basic_deadline_timer.examples"></a><h5>
-<a name="id940040"></a>
+<a name="boost_asio.reference.basic_deadline_timer.examples-heading"></a>
         <a class="link" href="basic_deadline_timer.html#boost_asio.reference.basic_deadline_timer.examples">Examples</a>
       </h5>
 <p>
         Performing a blocking wait:
       </p>
-<pre class="programlisting"><span class="comment">// Construct a timer without setting an expiry time.
-</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">deadline_timer</span> <span class="identifier">timer</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
+<pre class="programlisting"><span class="comment">// Construct a timer without setting an expiry time.</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">deadline_timer</span> <span class="identifier">timer</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
 
-<span class="comment">// Set an expiry time relative to now.
-</span><span class="identifier">timer</span><span class="special">.</span><span class="identifier">expires_from_now</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">seconds</span><span class="special">(</span><span class="number">5</span><span class="special">));</span>
+<span class="comment">// Set an expiry time relative to now.</span>
+<span class="identifier">timer</span><span class="special">.</span><span class="identifier">expires_from_now</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">seconds</span><span class="special">(</span><span class="number">5</span><span class="special">));</span>
 
-<span class="comment">// Wait for the timer to expire.
-</span><span class="identifier">timer</span><span class="special">.</span><span class="identifier">wait</span><span class="special">();</span>
+<span class="comment">// Wait for the timer to expire.</span>
+<span class="identifier">timer</span><span class="special">.</span><span class="identifier">wait</span><span class="special">();</span>
 </pre>
 <p>
         Performing an asynchronous wait:
@@ -353,21 +402,21 @@
 <span class="special">{</span>
   <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">error</span><span class="special">)</span>
   <span class="special">{</span>
-    <span class="comment">// Timer expired.
-</span>  <span class="special">}</span>
+    <span class="comment">// Timer expired.</span>
+  <span class="special">}</span>
 <span class="special">}</span>
 
 <span class="special">...</span>
 
-<span class="comment">// Construct a timer with an absolute expiry time.
-</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">deadline_timer</span> <span class="identifier">timer</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">,</span>
+<span class="comment">// Construct a timer with an absolute expiry time.</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">deadline_timer</span> <span class="identifier">timer</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">,</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">time_from_string</span><span class="special">(</span><span class="string">"2005-12-07 23:59:59.000"</span><span class="special">));</span>
 
-<span class="comment">// Start an asynchronous wait.
-</span><span class="identifier">timer</span><span class="special">.</span><span class="identifier">async_wait</span><span class="special">(</span><span class="identifier">handler</span><span class="special">);</span>
+<span class="comment">// Start an asynchronous wait.</span>
+<span class="identifier">timer</span><span class="special">.</span><span class="identifier">async_wait</span><span class="special">(</span><span class="identifier">handler</span><span class="special">);</span>
 </pre>
 <a name="boost_asio.reference.basic_deadline_timer.changing_an_active_deadline_timer_s_expiry_time"></a><h5>
-<a name="id940440"></a>
+<a name="boost_asio.reference.basic_deadline_timer.changing_an_active_deadline_timer_s_expiry_time-heading"></a>
         <a class="link" href="basic_deadline_timer.html#boost_asio.reference.basic_deadline_timer.changing_an_active_deadline_timer_s_expiry_time">Changing
         an active deadline_timer's expiry time</a>
       </h5>
@@ -381,21 +430,21 @@
 <span class="special">{</span>
   <span class="keyword">if</span> <span class="special">(</span><span class="identifier">my_timer</span><span class="special">.</span><span class="identifier">expires_from_now</span><span class="special">(</span><span class="identifier">seconds</span><span class="special">(</span><span class="number">5</span><span class="special">))</span> <span class="special">&gt;</span> <span class="number">0</span><span class="special">)</span>
   <span class="special">{</span>
-    <span class="comment">// We managed to cancel the timer. Start new asynchronous wait.
-</span>    <span class="identifier">my_timer</span><span class="special">.</span><span class="identifier">async_wait</span><span class="special">(</span><span class="identifier">on_timeout</span><span class="special">);</span>
+    <span class="comment">// We managed to cancel the timer. Start new asynchronous wait.</span>
+    <span class="identifier">my_timer</span><span class="special">.</span><span class="identifier">async_wait</span><span class="special">(</span><span class="identifier">on_timeout</span><span class="special">);</span>
   <span class="special">}</span>
   <span class="keyword">else</span>
   <span class="special">{</span>
-    <span class="comment">// Too late, timer has already expired!
-</span>  <span class="special">}</span>
+    <span class="comment">// Too late, timer has already expired!</span>
+  <span class="special">}</span>
 <span class="special">}</span>
 
 <span class="keyword">void</span> <span class="identifier">on_timeout</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">e</span><span class="special">)</span>
 <span class="special">{</span>
   <span class="keyword">if</span> <span class="special">(</span><span class="identifier">e</span> <span class="special">!=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">error</span><span class="special">::</span><span class="identifier">operation_aborted</span><span class="special">)</span>
   <span class="special">{</span>
-    <span class="comment">// Timer was not cancelled, take necessary action.
-</span>  <span class="special">}</span>
+    <span class="comment">// Timer was not cancelled, take necessary action.</span>
+  <span class="special">}</span>
 <span class="special">}</span>
 </pre>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -412,7 +461,7 @@
           </li>
 </ul></div>
 <a name="boost_asio.reference.basic_deadline_timer.requirements"></a><h5>
-<a name="id940874"></a>
+<a name="boost_asio.reference.basic_deadline_timer.requirements-heading"></a>
         <a class="link" href="basic_deadline_timer.html#boost_asio.reference.basic_deadline_timer.requirements">Requirements</a>
       </h5>
 <p>
@@ -424,7 +473,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

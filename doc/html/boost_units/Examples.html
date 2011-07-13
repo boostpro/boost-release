@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_units.html" title="Chapter&#160;26.&#160;Boost.Units 1.1.0">
+<link rel="up" href="../boost_units.html" title="Chapter&#160;28.&#160;Boost.Units 1.1.0">
 <link rel="prev" href="Quantities.html" title="Quantities">
 <link rel="next" href="Utilities.html" title="Utilities">
 </head>
@@ -114,8 +114,8 @@
 </p>
 <pre class="programlisting"><span class="keyword">const</span> <span class="identifier">length</span>                    <span class="identifier">L</span><span class="special">;</span>
 <span class="keyword">const</span> <span class="identifier">mass</span>                      <span class="identifier">M</span><span class="special">;</span>
-<span class="comment">// needs to be namespace-qualified because of global time definition
-</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">test</span><span class="special">::</span><span class="identifier">time</span>  <span class="identifier">T</span><span class="special">;</span>
+<span class="comment">// needs to be namespace-qualified because of global time definition</span>
+<span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">test</span><span class="special">::</span><span class="identifier">time</span>  <span class="identifier">T</span><span class="special">;</span>
 <span class="keyword">const</span> <span class="identifier">energy</span>                    <span class="identifier">E</span><span class="special">;</span>
 </pre>
 <p>
@@ -155,9 +155,9 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span> <span class="identifier">L</span> <span class="special">=</span> <span class="number">2.0</span><span class="special">*</span><span class="identifier">meters</span><span class="special">;</span>                     <span class="comment">// quantity of length
-</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">energy</span><span class="special">&gt;</span> <span class="identifier">E</span> <span class="special">=</span> <span class="identifier">kilograms</span><span class="special">*</span><span class="identifier">pow</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;(</span><span class="identifier">L</span><span class="special">/</span><span class="identifier">seconds</span><span class="special">);</span>    <span class="comment">// quantity of energy
-</span></pre>
+<pre class="programlisting"><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span> <span class="identifier">L</span> <span class="special">=</span> <span class="number">2.0</span><span class="special">*</span><span class="identifier">meters</span><span class="special">;</span>                     <span class="comment">// quantity of length</span>
+<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">energy</span><span class="special">&gt;</span> <span class="identifier">E</span> <span class="special">=</span> <span class="identifier">kilograms</span><span class="special">*</span><span class="identifier">pow</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;(</span><span class="identifier">L</span><span class="special">/</span><span class="identifier">seconds</span><span class="special">);</span>    <span class="comment">// quantity of energy</span>
+</pre>
 <p>
       </p>
 <p>
@@ -239,18 +239,18 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// scalar
-</span><span class="keyword">const</span> <span class="keyword">double</span>    <span class="identifier">s1</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
+<pre class="programlisting"><span class="comment">/// scalar</span>
+<span class="keyword">const</span> <span class="keyword">double</span>    <span class="identifier">s1</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
 
 <span class="keyword">const</span> <span class="keyword">long</span>                  <span class="identifier">x1</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
 <span class="keyword">const</span> <span class="identifier">static_rational</span><span class="special">&lt;</span><span class="number">4</span><span class="special">,</span><span class="number">3</span><span class="special">&gt;</span>  <span class="identifier">x2</span><span class="special">;</span>
 
-<span class="comment">/// define some units
-</span><span class="identifier">force</span>       <span class="identifier">u1</span> <span class="special">=</span> <span class="identifier">newton</span><span class="special">;</span>
+<span class="comment">/// define some units</span>
+<span class="identifier">force</span>       <span class="identifier">u1</span> <span class="special">=</span> <span class="identifier">newton</span><span class="special">;</span>
 <span class="identifier">energy</span>      <span class="identifier">u2</span> <span class="special">=</span> <span class="identifier">joule</span><span class="special">;</span>
 
-<span class="comment">/// define some quantities
-</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">force</span><span class="special">&gt;</span>      <span class="identifier">q1</span><span class="special">(</span><span class="number">1.0</span><span class="special">*</span><span class="identifier">u1</span><span class="special">);</span>
+<span class="comment">/// define some quantities</span>
+<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">force</span><span class="special">&gt;</span>      <span class="identifier">q1</span><span class="special">(</span><span class="number">1.0</span><span class="special">*</span><span class="identifier">u1</span><span class="special">);</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">energy</span><span class="special">&gt;</span>     <span class="identifier">q2</span><span class="special">(</span><span class="number">2.0</span><span class="special">*</span><span class="identifier">u2</span><span class="special">);</span>
 </pre>
 <p>
@@ -356,8 +356,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// check comparison tests
-</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span>    <span class="identifier">l1</span><span class="special">(</span><span class="number">1.0</span><span class="special">*</span><span class="identifier">meter</span><span class="special">),</span>
+<pre class="programlisting"><span class="comment">/// check comparison tests</span>
+<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span>    <span class="identifier">l1</span><span class="special">(</span><span class="number">1.0</span><span class="special">*</span><span class="identifier">meter</span><span class="special">),</span>
                     <span class="identifier">l2</span><span class="special">(</span><span class="number">2.0</span><span class="special">*</span><span class="identifier">meters</span><span class="special">);</span>
 </pre>
 <p>
@@ -384,8 +384,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// check implicit unit conversion from dimensionless to value_type  
-</span><span class="keyword">const</span> <span class="keyword">double</span>    <span class="identifier">dimless</span> <span class="special">=</span> <span class="special">(</span><span class="identifier">q1</span><span class="special">/</span><span class="identifier">q1</span><span class="special">);</span>
+<pre class="programlisting"><span class="comment">/// check implicit unit conversion from dimensionless to value_type  </span>
+<span class="keyword">const</span> <span class="keyword">double</span>    <span class="identifier">dimless</span> <span class="special">=</span> <span class="special">(</span><span class="identifier">q1</span><span class="special">/</span><span class="identifier">q1</span><span class="special">);</span>
 </pre>
 <p>
       </p>
@@ -397,8 +397,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// the physical definition of work - computed for an arbitrary unit system 
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">System</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="comment">/// the physical definition of work - computed for an arbitrary unit system </span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">System</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">unit</span><span class="special">&lt;</span><span class="identifier">energy_dimension</span><span class="special">,</span><span class="identifier">System</span><span class="special">&gt;,</span><span class="identifier">Y</span><span class="special">&gt;</span> 
 <span class="identifier">work</span><span class="special">(</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">unit</span><span class="special">&lt;</span><span class="identifier">force_dimension</span><span class="special">,</span><span class="identifier">System</span><span class="special">&gt;,</span><span class="identifier">Y</span><span class="special">&gt;</span> <span class="identifier">F</span><span class="special">,</span>
      <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">unit</span><span class="special">&lt;</span><span class="identifier">length_dimension</span><span class="special">,</span><span class="identifier">System</span><span class="special">&gt;,</span><span class="identifier">Y</span><span class="special">&gt;</span> <span class="identifier">dx</span><span class="special">)</span>
@@ -411,8 +411,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// test calcuation of work
-</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">force</span><span class="special">&gt;</span>       <span class="identifier">F</span><span class="special">(</span><span class="number">1.0</span><span class="special">*</span><span class="identifier">newton</span><span class="special">);</span>
+<pre class="programlisting"><span class="comment">/// test calcuation of work</span>
+<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">force</span><span class="special">&gt;</span>       <span class="identifier">F</span><span class="special">(</span><span class="number">1.0</span><span class="special">*</span><span class="identifier">newton</span><span class="special">);</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span>      <span class="identifier">dx</span><span class="special">(</span><span class="number">1.0</span><span class="special">*</span><span class="identifier">meter</span><span class="special">);</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">energy</span><span class="special">&gt;</span>      <span class="identifier">E</span><span class="special">(</span><span class="identifier">work</span><span class="special">(</span><span class="identifier">F</span><span class="special">,</span><span class="identifier">dx</span><span class="special">));</span>
 </pre>
@@ -436,8 +436,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// the ideal gas law in si units
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="comment">/// the ideal gas law in si units</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">amount</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;</span> 
 <span class="identifier">idealGasLaw</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">pressure</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;&amp;</span> <span class="identifier">P</span><span class="special">,</span>
             <span class="keyword">const</span> <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">volume</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;&amp;</span> <span class="identifier">V</span><span class="special">,</span>
@@ -454,8 +454,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// test ideal gas law
-</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">temperature</span><span class="special">&gt;</span>   <span class="identifier">T</span> <span class="special">=</span> <span class="special">(</span><span class="number">273.</span><span class="special">+</span><span class="number">37.</span><span class="special">)*</span><span class="identifier">kelvin</span><span class="special">;</span>
+<pre class="programlisting"><span class="comment">/// test ideal gas law</span>
+<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">temperature</span><span class="special">&gt;</span>   <span class="identifier">T</span> <span class="special">=</span> <span class="special">(</span><span class="number">273.</span><span class="special">+</span><span class="number">37.</span><span class="special">)*</span><span class="identifier">kelvin</span><span class="special">;</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">pressure</span><span class="special">&gt;</span>      <span class="identifier">P</span> <span class="special">=</span> <span class="number">1.01325e5</span><span class="special">*</span><span class="identifier">pascals</span><span class="special">;</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span>        <span class="identifier">r</span> <span class="special">=</span> <span class="number">0.5e-6</span><span class="special">*</span><span class="identifier">meters</span><span class="special">;</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">volume</span><span class="special">&gt;</span>        <span class="identifier">V</span> <span class="special">=</span> <span class="special">(</span><span class="number">4.0</span><span class="special">/</span><span class="number">3.0</span><span class="special">)*</span><span class="number">3.141592</span><span class="special">*</span><span class="identifier">pow</span><span class="special">&lt;</span><span class="number">3</span><span class="special">&gt;(</span><span class="identifier">r</span><span class="special">);</span>
@@ -492,8 +492,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// test trig stuff
-</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">plane_angle</span><span class="special">&gt;</span>           <span class="identifier">theta</span> <span class="special">=</span> <span class="number">0.375</span><span class="special">*</span><span class="identifier">radians</span><span class="special">;</span>
+<pre class="programlisting"><span class="comment">/// test trig stuff</span>
+<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">plane_angle</span><span class="special">&gt;</span>           <span class="identifier">theta</span> <span class="special">=</span> <span class="number">0.375</span><span class="special">*</span><span class="identifier">radians</span><span class="special">;</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">dimensionless</span><span class="special">&gt;</span>         <span class="identifier">sin_theta</span> <span class="special">=</span> <span class="identifier">sin</span><span class="special">(</span><span class="identifier">theta</span><span class="special">);</span>
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">plane_angle</span><span class="special">&gt;</span>           <span class="identifier">thetap</span> <span class="special">=</span> <span class="identifier">asin</span><span class="special">(</span><span class="identifier">sin_theta</span><span class="special">);</span>
 </pre>
@@ -719,12 +719,12 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// specialize power typeof helper
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
+<pre class="programlisting"><span class="comment">/// specialize power typeof helper</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
 <span class="keyword">struct</span> <span class="identifier">power_typeof_helper</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">quaternion</span><span class="special">&lt;</span><span class="identifier">Y</span><span class="special">&gt;,</span><span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="special">{</span> 
-    <span class="comment">// boost::math::quaternion only supports integer powers
-</span>    <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="identifier">D</span><span class="special">==</span><span class="number">1</span><span class="special">);</span>
+    <span class="comment">// boost::math::quaternion only supports integer powers</span>
+    <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="identifier">D</span><span class="special">==</span><span class="number">1</span><span class="special">);</span>
     
     <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">quaternion</span><span class="special">&lt;</span>
         <span class="keyword">typename</span> <span class="identifier">power_typeof_helper</span><span class="special">&lt;</span><span class="identifier">Y</span><span class="special">,</span><span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span>
@@ -741,12 +741,12 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// specialize root typeof helper
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
+<pre class="programlisting"><span class="comment">/// specialize root typeof helper</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
 <span class="keyword">struct</span> <span class="identifier">root_typeof_helper</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">quaternion</span><span class="special">&lt;</span><span class="identifier">Y</span><span class="special">&gt;,</span><span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="special">{</span> 
-    <span class="comment">// boost::math::quaternion only supports integer powers
-</span>    <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="identifier">N</span><span class="special">==</span><span class="number">1</span><span class="special">);</span>
+    <span class="comment">// boost::math::quaternion only supports integer powers</span>
+    <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="identifier">N</span><span class="special">==</span><span class="number">1</span><span class="special">);</span>
     
     <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">quaternion</span><span class="special">&lt;</span>
         <span class="keyword">typename</span> <span class="identifier">root_typeof_helper</span><span class="special">&lt;</span><span class="identifier">Y</span><span class="special">,</span><span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span>
@@ -822,8 +822,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// specialize power typeof helper for quaternion&lt;quantity&lt;Unit,Y&gt; &gt;
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Unit</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span> 
+<pre class="programlisting"><span class="comment">/// specialize power typeof helper for quaternion&lt;quantity&lt;Unit,Y&gt; &gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Unit</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span> 
 <span class="keyword">struct</span> <span class="identifier">power_typeof_helper</span><span class="special">&lt;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">quaternion</span><span class="special">&lt;</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">Unit</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;</span> <span class="special">&gt;,</span>
     <span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;</span>                
@@ -862,8 +862,8 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">/// specialize root typeof helper for quaternion&lt;quantity&lt;Unit,Y&gt; &gt;
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Unit</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span> 
+<pre class="programlisting"><span class="comment">/// specialize root typeof helper for quaternion&lt;quantity&lt;Unit,Y&gt; &gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Unit</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span> 
 <span class="keyword">struct</span> <span class="identifier">root_typeof_helper</span><span class="special">&lt;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">quaternion</span><span class="special">&lt;</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">Unit</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;</span> <span class="special">&gt;,</span>
     <span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;</span>                
@@ -944,8 +944,8 @@
 
 <span class="keyword">namespace</span> <span class="identifier">units</span> <span class="special">{</span>
 
-<span class="comment">/// replacement complex class 
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="comment">/// replacement complex class </span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">complex</span>
 <span class="special">{</span>
     <span class="keyword">public</span><span class="special">:</span>
@@ -1087,59 +1087,59 @@
     <span class="keyword">return</span> <span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;(</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">real</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">real</span><span class="special">()</span> <span class="special">-</span> <span class="identifier">x</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">imag</span><span class="special">(),</span>
                          <span class="identifier">x</span><span class="special">.</span><span class="identifier">real</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">x</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">real</span><span class="special">());</span>
 
-<span class="comment">//  fully correct implementation has more complex return type
-</span><span class="comment">//
-</span><span class="comment">//    typedef typename boost::units::multiply_typeof_helper&lt;X,Y&gt;::type xy_type;
-</span><span class="comment">//    
-</span><span class="comment">//    typedef typename boost::units::add_typeof_helper&lt;
-</span><span class="comment">//      xy_type,xy_type&gt;::type         xy_plus_xy_type;
-</span><span class="comment">//    typedef typename
-</span><span class="comment">//        boost::units::subtract_typeof_helper&lt;xy_type,xy_type&gt;::type
-</span><span class="comment">//        xy_minus_xy_type;
-</span><span class="comment">//    
-</span><span class="comment">//    BOOST_STATIC_ASSERT((boost::is_same&lt;xy_plus_xy_type,
-</span><span class="comment">//                                       xy_minus_xy_type&gt;::value == true));
-</span><span class="comment">//    
-</span><span class="comment">//    return complex&lt;xy_plus_xy_type&gt;(x.real()*y.real()-x.imag()*y.imag(),
-</span><span class="comment">//                                    x.real()*y.imag()+x.imag()*y.real());
-</span><span class="special">}</span>
+<span class="comment">//  fully correct implementation has more complex return type</span>
+<span class="comment">//</span>
+<span class="comment">//    typedef typename boost::units::multiply_typeof_helper&lt;X,Y&gt;::type xy_type;</span>
+<span class="comment">//    </span>
+<span class="comment">//    typedef typename boost::units::add_typeof_helper&lt;</span>
+<span class="comment">//      xy_type,xy_type&gt;::type         xy_plus_xy_type;</span>
+<span class="comment">//    typedef typename</span>
+<span class="comment">//        boost::units::subtract_typeof_helper&lt;xy_type,xy_type&gt;::type</span>
+<span class="comment">//        xy_minus_xy_type;</span>
+<span class="comment">//    </span>
+<span class="comment">//    BOOST_STATIC_ASSERT((boost::is_same&lt;xy_plus_xy_type,</span>
+<span class="comment">//                                       xy_minus_xy_type&gt;::value == true));</span>
+<span class="comment">//    </span>
+<span class="comment">//    return complex&lt;xy_plus_xy_type&gt;(x.real()*y.real()-x.imag()*y.imag(),</span>
+<span class="comment">//                                    x.real()*y.imag()+x.imag()*y.real());</span>
+<span class="special">}</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">X</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span>
 <span class="identifier">complex</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">divide_typeof_helper</span><span class="special">&lt;</span><span class="identifier">X</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
 <span class="keyword">operator</span><span class="special">/(</span><span class="keyword">const</span> <span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">X</span><span class="special">&gt;&amp;</span> <span class="identifier">x</span><span class="special">,</span><span class="keyword">const</span> <span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">Y</span><span class="special">&gt;&amp;</span> <span class="identifier">y</span><span class="special">)</span>
 <span class="special">{</span>
-    <span class="comment">// naive implementation of complex division
-</span>    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">divide_typeof_helper</span><span class="special">&lt;</span><span class="identifier">X</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">type</span><span class="special">;</span>
+    <span class="comment">// naive implementation of complex division</span>
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">divide_typeof_helper</span><span class="special">&lt;</span><span class="identifier">X</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">type</span><span class="special">;</span>
 
     <span class="keyword">return</span> <span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;((</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">real</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">real</span><span class="special">()+</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">imag</span><span class="special">())/</span>
                             <span class="special">(</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">real</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">real</span><span class="special">()+</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()),</span>
                          <span class="special">(</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">real</span><span class="special">()-</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">real</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">imag</span><span class="special">())/</span>
                             <span class="special">(</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">real</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">real</span><span class="special">()+</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()*</span><span class="identifier">y</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()));</span>
                          
-<span class="comment">//  fully correct implementation has more complex return type
-</span><span class="comment">//
-</span><span class="comment">//  typedef typename boost::units::multiply_typeof_helper&lt;X,Y&gt;::type xy_type;
-</span><span class="comment">//  typedef typename boost::units::multiply_typeof_helper&lt;Y,Y&gt;::type yy_type;
-</span><span class="comment">//
-</span><span class="comment">//  typedef typename boost::units::add_typeof_helper&lt;xy_type, xy_type&gt;::type
-</span><span class="comment">//      xy_plus_xy_type;
-</span><span class="comment">//  typedef typename boost::units::subtract_typeof_helper&lt;
-</span><span class="comment">//      xy_type,xy_type&gt;::type xy_minus_xy_type;
-</span><span class="comment">//
-</span><span class="comment">//  typedef typename boost::units::divide_typeof_helper&lt;
-</span><span class="comment">//      xy_plus_xy_type,yy_type&gt;::type      xy_plus_xy_over_yy_type;
-</span><span class="comment">//  typedef typename boost::units::divide_typeof_helper&lt;
-</span><span class="comment">//      xy_minus_xy_type,yy_type&gt;::type     xy_minus_xy_over_yy_type;
-</span><span class="comment">//
-</span><span class="comment">//  BOOST_STATIC_ASSERT((boost::is_same&lt;xy_plus_xy_over_yy_type,
-</span><span class="comment">//                                  xy_minus_xy_over_yy_type&gt;::value == true));
-</span><span class="comment">//
-</span><span class="comment">//  return complex&lt;xy_plus_xy_over_yy_type&gt;(
-</span><span class="comment">//      (x.real()*y.real()+x.imag()*y.imag())/
-</span><span class="comment">//          (y.real()*y.real()+y.imag()*y.imag()),
-</span><span class="comment">//      (x.imag()*y.real()-x.real()*y.imag())/
-</span><span class="comment">//          (y.real()*y.real()+y.imag()*y.imag()));
-</span><span class="special">}</span>
+<span class="comment">//  fully correct implementation has more complex return type</span>
+<span class="comment">//</span>
+<span class="comment">//  typedef typename boost::units::multiply_typeof_helper&lt;X,Y&gt;::type xy_type;</span>
+<span class="comment">//  typedef typename boost::units::multiply_typeof_helper&lt;Y,Y&gt;::type yy_type;</span>
+<span class="comment">//</span>
+<span class="comment">//  typedef typename boost::units::add_typeof_helper&lt;xy_type, xy_type&gt;::type</span>
+<span class="comment">//      xy_plus_xy_type;</span>
+<span class="comment">//  typedef typename boost::units::subtract_typeof_helper&lt;</span>
+<span class="comment">//      xy_type,xy_type&gt;::type xy_minus_xy_type;</span>
+<span class="comment">//</span>
+<span class="comment">//  typedef typename boost::units::divide_typeof_helper&lt;</span>
+<span class="comment">//      xy_plus_xy_type,yy_type&gt;::type      xy_plus_xy_over_yy_type;</span>
+<span class="comment">//  typedef typename boost::units::divide_typeof_helper&lt;</span>
+<span class="comment">//      xy_minus_xy_type,yy_type&gt;::type     xy_minus_xy_over_yy_type;</span>
+<span class="comment">//</span>
+<span class="comment">//  BOOST_STATIC_ASSERT((boost::is_same&lt;xy_plus_xy_over_yy_type,</span>
+<span class="comment">//                                  xy_minus_xy_over_yy_type&gt;::value == true));</span>
+<span class="comment">//</span>
+<span class="comment">//  return complex&lt;xy_plus_xy_over_yy_type&gt;(</span>
+<span class="comment">//      (x.real()*y.real()+x.imag()*y.imag())/</span>
+<span class="comment">//          (y.real()*y.real()+y.imag()*y.imag()),</span>
+<span class="comment">//      (x.imag()*y.real()-x.real()*y.imag())/</span>
+<span class="comment">//          (y.real()*y.real()+y.imag()*y.imag()));</span>
+<span class="special">}</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">&gt;</span>
 <span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">Y</span><span class="special">&gt;</span> 
@@ -1160,8 +1160,8 @@
     <span class="keyword">return</span> <span class="identifier">os</span><span class="special">;</span>
 <span class="special">}</span>
 
-<span class="comment">/// specialize power typeof helper for complex&lt;Y&gt;
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
+<span class="comment">/// specialize power typeof helper for complex&lt;Y&gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
 <span class="keyword">struct</span> <span class="identifier">power_typeof_helper</span><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">Y</span><span class="special">&gt;,</span><span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;</span>                
 <span class="special">{</span> 
     <span class="keyword">typedef</span> <span class="identifier">complex</span><span class="special">&lt;</span>
@@ -1178,8 +1178,8 @@
     <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">/// specialize root typeof helper for complex&lt;Y&gt;
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
+<span class="comment">/// specialize root typeof helper for complex&lt;Y&gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
 <span class="keyword">struct</span> <span class="identifier">root_typeof_helper</span><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">Y</span><span class="special">&gt;,</span><span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;</span>                
 <span class="special">{</span> 
     <span class="keyword">typedef</span> <span class="identifier">complex</span><span class="special">&lt;</span>
@@ -1196,8 +1196,8 @@
     <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">/// specialize power typeof helper for complex&lt;quantity&lt;Unit,Y&gt; &gt;
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Unit</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
+<span class="comment">/// specialize power typeof helper for complex&lt;quantity&lt;Unit,Y&gt; &gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Unit</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
 <span class="keyword">struct</span> <span class="identifier">power_typeof_helper</span><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">Unit</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;</span> <span class="special">&gt;,</span><span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="special">{</span> 
     <span class="keyword">typedef</span> <span class="keyword">typename</span>
@@ -1218,8 +1218,8 @@
     <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">/// specialize root typeof helper for complex&lt;quantity&lt;Unit,Y&gt; &gt;
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Unit</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
+<span class="comment">/// specialize root typeof helper for complex&lt;quantity&lt;Unit,Y&gt; &gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Y</span><span class="special">,</span><span class="keyword">class</span> <span class="identifier">Unit</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">N</span><span class="special">,</span><span class="keyword">long</span> <span class="identifier">D</span><span class="special">&gt;</span> 
 <span class="keyword">struct</span> <span class="identifier">root_typeof_helper</span><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">Unit</span><span class="special">,</span><span class="identifier">Y</span><span class="special">&gt;</span> <span class="special">&gt;,</span><span class="identifier">static_rational</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">,</span><span class="identifier">D</span><span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="special">{</span> 
     <span class="keyword">typedef</span> <span class="keyword">typename</span>
@@ -1240,10 +1240,10 @@
     <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="special">}</span> <span class="comment">// namespace units
-</span>
-<span class="special">}</span> <span class="comment">// namespace boost
-</span></pre>
+<span class="special">}</span> <span class="comment">// namespace units</span>
+
+<span class="special">}</span> <span class="comment">// namespace boost</span>
+</pre>
 <p>
       </p>
 <p>
@@ -1358,15 +1358,15 @@
 
 <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">make_system</span><span class="special">&lt;</span><span class="identifier">length_base_unit</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">system</span><span class="special">;</span>
 
-<span class="comment">/// unit typedefs
-</span><span class="keyword">typedef</span> <span class="identifier">unit</span><span class="special">&lt;</span><span class="identifier">length_dimension</span><span class="special">,</span><span class="identifier">system</span><span class="special">&gt;</span>    <span class="identifier">length</span><span class="special">;</span>
+<span class="comment">/// unit typedefs</span>
+<span class="keyword">typedef</span> <span class="identifier">unit</span><span class="special">&lt;</span><span class="identifier">length_dimension</span><span class="special">,</span><span class="identifier">system</span><span class="special">&gt;</span>    <span class="identifier">length</span><span class="special">;</span>
 
 <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">length</span> <span class="identifier">mile</span><span class="special">,</span><span class="identifier">miles</span><span class="special">;</span>
 
-<span class="special">}</span> <span class="comment">// namespace nautical
-</span>
-<span class="comment">// helper for conversions between nautical length and si length
-</span><span class="identifier">BOOST_UNITS_DEFINE_CONVERSION_FACTOR</span><span class="special">(</span><span class="identifier">nautical</span><span class="special">::</span><span class="identifier">length_base_unit</span><span class="special">,</span>
+<span class="special">}</span> <span class="comment">// namespace nautical</span>
+
+<span class="comment">// helper for conversions between nautical length and si length</span>
+<span class="identifier">BOOST_UNITS_DEFINE_CONVERSION_FACTOR</span><span class="special">(</span><span class="identifier">nautical</span><span class="special">::</span><span class="identifier">length_base_unit</span><span class="special">,</span>
                                      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">meter_base_unit</span><span class="special">,</span>
                                      <span class="keyword">double</span><span class="special">,</span> <span class="number">1.852e3</span><span class="special">);</span>
 </pre>
@@ -1389,15 +1389,15 @@
 
 <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">make_system</span><span class="special">&lt;</span><span class="identifier">length_base_unit</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">system</span><span class="special">;</span>
 
-<span class="comment">/// unit typedefs
-</span><span class="keyword">typedef</span> <span class="identifier">unit</span><span class="special">&lt;</span><span class="identifier">length_dimension</span><span class="special">,</span><span class="identifier">system</span><span class="special">&gt;</span>    <span class="identifier">length</span><span class="special">;</span>
+<span class="comment">/// unit typedefs</span>
+<span class="keyword">typedef</span> <span class="identifier">unit</span><span class="special">&lt;</span><span class="identifier">length_dimension</span><span class="special">,</span><span class="identifier">system</span><span class="special">&gt;</span>    <span class="identifier">length</span><span class="special">;</span>
 
 <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">length</span> <span class="identifier">foot</span><span class="special">,</span><span class="identifier">feet</span><span class="special">;</span>
 
-<span class="special">}</span> <span class="comment">// imperial
-</span>
-<span class="comment">// helper for conversions between imperial length and si length
-</span><span class="identifier">BOOST_UNITS_DEFINE_CONVERSION_FACTOR</span><span class="special">(</span><span class="identifier">imperial</span><span class="special">::</span><span class="identifier">length_base_unit</span><span class="special">,</span>
+<span class="special">}</span> <span class="comment">// imperial</span>
+
+<span class="comment">// helper for conversions between imperial length and si length</span>
+<span class="identifier">BOOST_UNITS_DEFINE_CONVERSION_FACTOR</span><span class="special">(</span><span class="identifier">imperial</span><span class="special">::</span><span class="identifier">length_base_unit</span><span class="special">,</span>
                                      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">meter_base_unit</span><span class="special">,</span>
                                      <span class="keyword">double</span><span class="special">,</span> <span class="number">1.0</span><span class="special">/</span><span class="number">3.28083989501312</span><span class="special">);</span>
 </pre>
@@ -1437,8 +1437,8 @@
                   <span class="keyword">const</span> <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">unit</span><span class="special">&lt;</span><span class="identifier">length_dimension</span><span class="special">,</span><span class="identifier">System2</span><span class="special">&gt;,</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">earth_radius</span><span class="special">,</span>
                   <span class="identifier">T</span> <span class="identifier">k</span> <span class="special">=</span> <span class="number">4.0</span><span class="special">/</span><span class="number">3.0</span><span class="special">)</span>
 <span class="special">{</span>
-    <span class="comment">// need to decide which system to use for calculation
-</span>    <span class="keyword">const</span> <span class="identifier">return_type</span>   <span class="identifier">rr</span><span class="special">(</span><span class="identifier">radar_range</span><span class="special">),</span>
+    <span class="comment">// need to decide which system to use for calculation</span>
+    <span class="keyword">const</span> <span class="identifier">return_type</span>   <span class="identifier">rr</span><span class="special">(</span><span class="identifier">radar_range</span><span class="special">),</span>
                         <span class="identifier">er</span><span class="special">(</span><span class="identifier">earth_radius</span><span class="special">);</span>
 
     <span class="keyword">return</span> <span class="identifier">return_type</span><span class="special">(</span><span class="identifier">pow</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;(</span><span class="identifier">rr</span><span class="special">)/(</span><span class="number">2.0</span><span class="special">*</span><span class="identifier">k</span><span class="special">*</span><span class="identifier">er</span><span class="special">));</span>
@@ -1679,8 +1679,8 @@
 <span class="keyword">typedef</span> <span class="identifier">us_dollar_base_unit</span><span class="special">::</span><span class="identifier">unit_type</span> <span class="identifier">us_dollar</span><span class="special">;</span>
 <span class="keyword">typedef</span> <span class="identifier">euro_base_unit</span><span class="special">::</span><span class="identifier">unit_type</span> <span class="identifier">euro</span><span class="special">;</span>
 
-<span class="comment">// an array of all possible conversions
-</span><span class="keyword">double</span> <span class="identifier">conversion_factors</span><span class="special">[</span><span class="number">2</span><span class="special">][</span><span class="number">2</span><span class="special">]</span> <span class="special">=</span> <span class="special">{</span>
+<span class="comment">// an array of all possible conversions</span>
+<span class="keyword">double</span> <span class="identifier">conversion_factors</span><span class="special">[</span><span class="number">2</span><span class="special">][</span><span class="number">2</span><span class="special">]</span> <span class="special">=</span> <span class="special">{</span>
     <span class="special">{</span><span class="number">1.0</span><span class="special">,</span> <span class="number">1.0</span><span class="special">},</span>
     <span class="special">{</span><span class="number">1.0</span><span class="special">,</span> <span class="number">1.0</span><span class="special">}</span>
 <span class="special">};</span>
@@ -1814,16 +1814,16 @@
 <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">engineering_prefix</span><span class="special">;</span>
 <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">no_prefix</span><span class="special">;</span>
 
-<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span> <span class="identifier">l</span> <span class="special">=</span> <span class="number">2.345</span> <span class="special">*</span> <span class="identifier">meters</span><span class="special">;</span>   <span class="comment">// A quantity of length, in units of meters.
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">l</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Outputs "2.345 m".
-</span><span class="identifier">l</span> <span class="special">=</span>  <span class="number">1000.0</span> <span class="special">*</span> <span class="identifier">l</span><span class="special">;</span> <span class="comment">// Increase it by 1000, so expect a k prefix.
-</span><span class="comment">// Note that a double 1000.0 is required - an integer will fail to compile.
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">l</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Output autoprefixed with k to "2.345 km".
-</span>
-<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">energy</span><span class="special">&gt;</span> <span class="identifier">e</span> <span class="special">=</span> <span class="identifier">kilograms</span> <span class="special">*</span> <span class="identifier">pow</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;(</span><span class="identifier">l</span> <span class="special">/</span> <span class="identifier">seconds</span><span class="special">);</span> <span class="comment">// A quantity of energy.
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">e</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 5.49902 MJ
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">name_format</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">e</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 5.49902 megaJoule
-</span></pre>
+<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">length</span><span class="special">&gt;</span> <span class="identifier">l</span> <span class="special">=</span> <span class="number">2.345</span> <span class="special">*</span> <span class="identifier">meters</span><span class="special">;</span>   <span class="comment">// A quantity of length, in units of meters.</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">l</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Outputs "2.345 m".</span>
+<span class="identifier">l</span> <span class="special">=</span>  <span class="number">1000.0</span> <span class="special">*</span> <span class="identifier">l</span><span class="special">;</span> <span class="comment">// Increase it by 1000, so expect a k prefix.</span>
+<span class="comment">// Note that a double 1000.0 is required - an integer will fail to compile.</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">l</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Output autoprefixed with k to "2.345 km".</span>
+
+<span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">energy</span><span class="special">&gt;</span> <span class="identifier">e</span> <span class="special">=</span> <span class="identifier">kilograms</span> <span class="special">*</span> <span class="identifier">pow</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;(</span><span class="identifier">l</span> <span class="special">/</span> <span class="identifier">seconds</span><span class="special">);</span> <span class="comment">// A quantity of energy.</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">e</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 5.49902 MJ</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">name_format</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">e</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 5.49902 megaJoule</span>
+</pre>
 <p>
       </p>
 <p>
@@ -1849,13 +1849,13 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="comment">// Don't forget that the units name or symbol format specification is persistent.
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">symbol_format</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Resets the format to the default symbol format.
-</span>
+<pre class="programlisting"><span class="comment">// Don't forget that the units name or symbol format specification is persistent.</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">symbol_format</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Resets the format to the default symbol format.</span>
+
 <span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">byte_base_unit</span><span class="special">::</span><span class="identifier">unit_type</span><span class="special">&gt;</span> <span class="identifier">b</span> <span class="special">=</span> <span class="number">2048.</span> <span class="special">*</span> <span class="identifier">byte_base_unit</span><span class="special">::</span><span class="identifier">unit_type</span><span class="special">();</span>
-<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">b</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span>  <span class="comment">// 2.048 kb
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">symbol_format</span> <span class="special">&lt;&lt;</span> <span class="identifier">binary_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">b</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">//  "2 Kib" 
-</span></pre>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">b</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span>  <span class="comment">// 2.048 kb</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">symbol_format</span> <span class="special">&lt;&lt;</span> <span class="identifier">binary_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">b</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">//  "2 Kib" </span>
+</pre>
 <p>
       </p>
 <p>
@@ -1868,12 +1868,12 @@
 </p>
 <pre class="programlisting"><span class="keyword">const</span> <span class="keyword">double</span> <span class="identifier">s1</span> <span class="special">=</span> <span class="number">2345.6</span><span class="special">;</span>
 <span class="keyword">const</span> <span class="keyword">long</span> <span class="identifier">x1</span> <span class="special">=</span> <span class="number">23456</span><span class="special">;</span>
-<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">s1</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 2345.6
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">x1</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 23456
-</span>
-<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">binary_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">s1</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 2345.6
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">binary_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">x1</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 23456
-</span></pre>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">s1</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 2345.6</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">engineering_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">x1</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 23456</span>
+
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">binary_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">s1</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 2345.6</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">binary_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">x1</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 23456</span>
+</pre>
 <p>
       </p>
 <p>
@@ -1883,11 +1883,11 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="keyword">const</span> <span class="identifier">length</span> <span class="identifier">L</span><span class="special">;</span> <span class="comment">// A unit of length (but not a quantity of length).
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">L</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Default length unit is meter,
-</span><span class="comment">// but default is symbol format so output is just "m".
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">name_format</span> <span class="special">&lt;&lt;</span> <span class="identifier">L</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// default length name is "meter".
-</span></pre>
+<pre class="programlisting"><span class="keyword">const</span> <span class="identifier">length</span> <span class="identifier">L</span><span class="special">;</span> <span class="comment">// A unit of length (but not a quantity of length).</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">L</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Default length unit is meter,</span>
+<span class="comment">// but default is symbol format so output is just "m".</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">name_format</span> <span class="special">&lt;&lt;</span> <span class="identifier">L</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// default length name is "meter".</span>
+</pre>
 <p>
       </p>
 <p>
@@ -1899,9 +1899,9 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="identifier">no_prefix</span><span class="special">(</span><span class="identifier">cout</span><span class="special">);</span> <span class="comment">// Clear any prefix flag.
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">no_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Clear any prefix flag using `no_prefix` manipulator.
-</span></pre>
+<pre class="programlisting"><span class="identifier">no_prefix</span><span class="special">(</span><span class="identifier">cout</span><span class="special">);</span> <span class="comment">// Clear any prefix flag.</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">no_prefix</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Clear any prefix flag using `no_prefix` manipulator.</span>
+</pre>
 <p>
       </p>
 <p>
@@ -1910,9 +1910,9 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">get_autoprefix</span><span class="special">(</span><span class="identifier">cout</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 8 is `autoprefix_binary` from `enum autoprefix_mode`.
-</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">get_format</span><span class="special">(</span><span class="identifier">cout</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 1 is `name_fmt` from `enum format_mode`.
-</span></pre>
+<pre class="programlisting"><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">get_autoprefix</span><span class="special">(</span><span class="identifier">cout</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 8 is `autoprefix_binary` from `enum autoprefix_mode`.</span>
+<span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">get_format</span><span class="special">(</span><span class="identifier">cout</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// 1 is `name_fmt` from `enum format_mode`.</span>
+</pre>
 <p>
       </p>
 </div>
@@ -2104,17 +2104,17 @@
    <span class="keyword">namespace</span> <span class="identifier">si</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">units</span><span class="special">::</span><span class="identifier">si</span><span class="special">;</span>
 
 
-   <span class="comment">////////////////////////////////////////////////////////////////////////
-</span>   <span class="comment">// Mechanical example: linear accelerated movement
-</span>   <span class="comment">////////////////////////////////////////////////////////////////////////
-</span>
-   <span class="comment">// Initial condition variables for acceleration, speed, and displacement
-</span>   <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">acceleration</span><span class="special">&gt;</span> <span class="identifier">a</span> <span class="special">=</span> <span class="number">2.0</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meters_per_second_squared</span><span class="special">;</span>
+   <span class="comment">////////////////////////////////////////////////////////////////////////</span>
+   <span class="comment">// Mechanical example: linear accelerated movement</span>
+   <span class="comment">////////////////////////////////////////////////////////////////////////</span>
+
+   <span class="comment">// Initial condition variables for acceleration, speed, and displacement</span>
+   <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">acceleration</span><span class="special">&gt;</span> <span class="identifier">a</span> <span class="special">=</span> <span class="number">2.0</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meters_per_second_squared</span><span class="special">;</span>
    <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">velocity</span><span class="special">&gt;</span> <span class="identifier">v</span> <span class="special">=</span> <span class="number">1.0</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meters_per_second</span><span class="special">;</span>
    <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">length</span><span class="special">&gt;</span> <span class="identifier">s0</span> <span class="special">=</span> <span class="number">0.5</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meter</span><span class="special">;</span>
 
-   <span class="comment">// Displacement over time
-</span>   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">length</span><span class="special">&gt;</span> <span class="special">(</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">time</span><span class="special">&gt;)</span> <span class="special">&gt;</span>
+   <span class="comment">// Displacement over time</span>
+   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">length</span><span class="special">&gt;</span> <span class="special">(</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">time</span><span class="special">&gt;)</span> <span class="special">&gt;</span>
        <span class="identifier">s</span> <span class="special">=</span> <span class="number">0.5</span> <span class="special">*</span> <span class="identifier">bl</span><span class="special">::</span><span class="identifier">var</span><span class="special">(</span><span class="identifier">a</span><span class="special">)</span> <span class="special">*</span> <span class="identifier">bl</span><span class="special">::</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">bl</span><span class="special">::</span><span class="identifier">_1</span>
            <span class="special">+</span> <span class="identifier">bl</span><span class="special">::</span><span class="identifier">var</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span> <span class="special">*</span> <span class="identifier">bl</span><span class="special">::</span><span class="identifier">_1</span>
            <span class="special">+</span> <span class="identifier">bl</span><span class="special">::</span><span class="identifier">var</span><span class="special">(</span><span class="identifier">s0</span><span class="special">);</span>
@@ -2124,8 +2124,8 @@
         <span class="special">&lt;&lt;</span> <span class="string">"s(1.0 * si::second) = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">s</span><span class="special">(</span><span class="number">1.0</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">second</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span>
         <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span>
 
-   <span class="comment">// Change initial conditions
-</span>   <span class="identifier">a</span> <span class="special">=</span> <span class="number">1.0</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meters_per_second_squared</span><span class="special">;</span>
+   <span class="comment">// Change initial conditions</span>
+   <span class="identifier">a</span> <span class="special">=</span> <span class="number">1.0</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meters_per_second_squared</span><span class="special">;</span>
    <span class="identifier">v</span> <span class="special">=</span> <span class="number">2.0</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meters_per_second</span><span class="special">;</span>
    <span class="identifier">s0</span> <span class="special">=</span> <span class="special">-</span><span class="number">1.5</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meter</span><span class="special">;</span>
 
@@ -2134,20 +2134,20 @@
         <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span>
 
 
-   <span class="comment">////////////////////////////////////////////////////////////////////////
-</span>   <span class="comment">// Electrical example: oscillating current
-</span>   <span class="comment">////////////////////////////////////////////////////////////////////////
-</span>
-   <span class="comment">// Constants for the current amplitude, frequency, and offset current
-</span>   <span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">current</span><span class="special">&gt;</span> <span class="identifier">iamp</span> <span class="special">=</span> <span class="number">1.5</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">ampere</span><span class="special">;</span>
+   <span class="comment">////////////////////////////////////////////////////////////////////////</span>
+   <span class="comment">// Electrical example: oscillating current</span>
+   <span class="comment">////////////////////////////////////////////////////////////////////////</span>
+
+   <span class="comment">// Constants for the current amplitude, frequency, and offset current</span>
+   <span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">current</span><span class="special">&gt;</span> <span class="identifier">iamp</span> <span class="special">=</span> <span class="number">1.5</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">ampere</span><span class="special">;</span>
    <span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">frequency</span><span class="special">&gt;</span> <span class="identifier">f</span> <span class="special">=</span> <span class="number">1.0e3</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">hertz</span><span class="special">;</span>
    <span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">current</span><span class="special">&gt;</span> <span class="identifier">i0</span> <span class="special">=</span> <span class="number">0.5</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">ampere</span><span class="special">;</span>
 
-   <span class="comment">// The invocation of the sin function needs to be postponed using
-</span>   <span class="comment">// bind to specify the oscillation function. A lengthy static_cast
-</span>   <span class="comment">// to the function pointer referencing boost::units::sin() is needed
-</span>   <span class="comment">// to avoid an "unresolved overloaded function type" error.
-</span>   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">current</span><span class="special">&gt;</span> <span class="special">(</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">time</span><span class="special">&gt;)</span> <span class="special">&gt;</span>
+   <span class="comment">// The invocation of the sin function needs to be postponed using</span>
+   <span class="comment">// bind to specify the oscillation function. A lengthy static_cast</span>
+   <span class="comment">// to the function pointer referencing boost::units::sin() is needed</span>
+   <span class="comment">// to avoid an "unresolved overloaded function type" error.</span>
+   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">current</span><span class="special">&gt;</span> <span class="special">(</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">time</span><span class="special">&gt;)</span> <span class="special">&gt;</span>
        <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">iamp</span>
            <span class="special">*</span> <span class="identifier">bl</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">dimensionless_quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">system</span><span class="special">,</span> <span class="keyword">double</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="special">(*)(</span><span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">plane_angle</span><span class="special">&gt;&amp;)&gt;(</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">sin</span><span class="special">),</span>
                       <span class="number">2.0</span> <span class="special">*</span> <span class="identifier">pi</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">radian</span> <span class="special">*</span> <span class="identifier">f</span> <span class="special">*</span> <span class="identifier">bl</span><span class="special">::</span><span class="identifier">_1</span><span class="special">)</span>
@@ -2159,16 +2159,16 @@
         <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span>
 
 
-   <span class="comment">////////////////////////////////////////////////////////////////////////
-</span>   <span class="comment">// Geometric example: area calculation for a square
-</span>   <span class="comment">////////////////////////////////////////////////////////////////////////
-</span>
-   <span class="comment">// Length constant
-</span>   <span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">length</span><span class="special">&gt;</span> <span class="identifier">l</span> <span class="special">=</span> <span class="number">1.5</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meter</span><span class="special">;</span>
+   <span class="comment">////////////////////////////////////////////////////////////////////////</span>
+   <span class="comment">// Geometric example: area calculation for a square</span>
+   <span class="comment">////////////////////////////////////////////////////////////////////////</span>
 
-   <span class="comment">// Again an ugly static_cast is needed to bind pow&lt;2&gt; to the first
-</span>   <span class="comment">// function argument.
-</span>   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">area</span><span class="special">&gt;</span> <span class="special">(</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">length</span><span class="special">&gt;)</span> <span class="special">&gt;</span>
+   <span class="comment">// Length constant</span>
+   <span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">length</span><span class="special">&gt;</span> <span class="identifier">l</span> <span class="special">=</span> <span class="number">1.5</span> <span class="special">*</span> <span class="identifier">si</span><span class="special">::</span><span class="identifier">meter</span><span class="special">;</span>
+
+   <span class="comment">// Again an ugly static_cast is needed to bind pow&lt;2&gt; to the first</span>
+   <span class="comment">// function argument.</span>
+   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">area</span><span class="special">&gt;</span> <span class="special">(</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">length</span><span class="special">&gt;)</span> <span class="special">&gt;</span>
        <span class="identifier">A</span> <span class="special">=</span> <span class="identifier">bl</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">area</span><span class="special">&gt;</span> <span class="special">(*)(</span><span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">length</span><span class="special">&gt;&amp;)&gt;(</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">pow</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;),</span>
                     <span class="identifier">bl</span><span class="special">::</span><span class="identifier">_1</span><span class="special">);</span>
 
@@ -2176,12 +2176,12 @@
         <span class="special">&lt;&lt;</span> <span class="string">"A("</span> <span class="special">&lt;&lt;</span> <span class="identifier">l</span> <span class="special">&lt;&lt;</span><span class="string">") = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">A</span><span class="special">(</span><span class="identifier">l</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span>
 
 
-   <span class="comment">////////////////////////////////////////////////////////////////////////
-</span>   <span class="comment">// Thermal example: temperature difference of two absolute temperatures
-</span>   <span class="comment">////////////////////////////////////////////////////////////////////////
-</span>
-   <span class="comment">// Absolute temperature constants
-</span>   <span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">absolute</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">temperature</span><span class="special">&gt;</span> <span class="special">&gt;</span>
+   <span class="comment">////////////////////////////////////////////////////////////////////////</span>
+   <span class="comment">// Thermal example: temperature difference of two absolute temperatures</span>
+   <span class="comment">////////////////////////////////////////////////////////////////////////</span>
+
+   <span class="comment">// Absolute temperature constants</span>
+   <span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">absolute</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">temperature</span><span class="special">&gt;</span> <span class="special">&gt;</span>
        <span class="identifier">Tref</span> <span class="special">=</span> <span class="number">273.15</span> <span class="special">*</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">absolute</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">temperature</span><span class="special">&gt;();</span>
    <span class="keyword">const</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">bu</span><span class="special">::</span><span class="identifier">absolute</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">temperature</span><span class="special">&gt;</span> <span class="special">&gt;</span>
        <span class="identifier">Tamb</span> <span class="special">=</span> <span class="number">300.00</span> <span class="special">*</span> <span class="identifier">bu</span><span class="special">::</span><span class="identifier">absolute</span><span class="special">&lt;</span><span class="identifier">si</span><span class="special">::</span><span class="identifier">temperature</span><span class="special">&gt;();</span>
@@ -2204,7 +2204,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 -2008 Matthias Christian Schabel, 2007-2010 Steven
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2008 Matthias Christian Schabel<br>Copyright &#169; 2007-2010 Steven
       Watanabe<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

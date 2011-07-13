@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../jam.html" title="Chapter&#160;32.&#160;Boost.Jam : 3.1.19">
+<link rel="up" href="../jam.html" title="Chapter&#160;34.&#160;Boost.Jam : 3.1.19">
 <link rel="prev" href="language.html" title="Language">
 <link rel="next" href="history.html" title="History">
 </head>
@@ -146,31 +146,29 @@
             and <code class="literal">LOCATE</code> variables.
           </li>
 <li class="listitem">
-<p class="simpara">
             In addition to local and global variables, jam allows you to set a variable
             <code class="literal">on</code> a target. Target-specific variable values can usually
             not be read, and take effect only in the following contexts:
-          </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+            <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-                In updating actions, variable values are first looked up <code class="literal">on</code>
-                the target named by the first argument (the target being updated).
-                Because Jam builds its entire dependency tree before executing actions,
-                Jam rules make target-specific variable settings as a way of supplying
-                parameters to the corresponding actions.
-              </li>
+                  In updating actions, variable values are first looked up <code class="literal">on</code>
+                  the target named by the first argument (the target being updated).
+                  Because Jam builds its entire dependency tree before executing
+                  actions, Jam rules make target-specific variable settings as a
+                  way of supplying parameters to the corresponding actions.
+                </li>
 <li class="listitem">
-                Binding is controlled <span class="emphasis"><em>entirely</em></span> by the target-specific
-                setting of the <code class="literal">SEARCH</code> and <code class="literal">LOCATE</code>
-                variables, as described here.
-              </li>
+                  Binding is controlled <span class="emphasis"><em>entirely</em></span> by the target-specific
+                  setting of the <code class="literal">SEARCH</code> and <code class="literal">LOCATE</code>
+                  variables, as described here.
+                </li>
 <li class="listitem">
-                In the special rule used for header file scanning, variable values
-                are first looked up <code class="literal">on</code> the target named by the
-                rule's first argument (the source file being scanned).
-              </li>
+                  In the special rule used for header file scanning, variable values
+                  are first looked up <code class="literal">on</code> the target named by the
+                  rule's first argument (the source file being scanned).
+                </li>
 </ul></div>
-</li>
+          </li>
 <li class="listitem">
             The "bound value" of a variable is the path associated with
             the target named by the variable. In build actions, the first two arguments
@@ -187,7 +185,6 @@
             be titled "Modifying Update Determination".
           </li>
 <li class="listitem">
-<p class="simpara">
             "Grist" is just a string prefix of the form &lt;<span class="emphasis"><em>characters</em></span>&gt;.
             It is used in Jam to create unique target names based on simpler names.
             For example, the file name "<code class="literal">test.exe</code>" may
@@ -198,21 +195,20 @@
             to divide strings on grist boundaries, sometimes concatenating multiple
             gristed elements at the beginning of a string. Grist is used instead
             of identifying targets with absolute paths for two reasons:
-          </p>
-<div class="orderedlist"><ol class="orderedlist" type="1">
+            <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-                The location of targets cannot always be derived solely from what
-                the user puts in a Jamfile, but sometimes depends also on the binding
-                process. Some mechanism to distinctly identify targets with the same
-                name is still needed.
-              </li>
+                  The location of targets cannot always be derived solely from what
+                  the user puts in a Jamfile, but sometimes depends also on the binding
+                  process. Some mechanism to distinctly identify targets with the
+                  same name is still needed.
+                </li>
 <li class="listitem">
-                Grist allows us to use a uniform abstract identifier for each built
-                target, regardless of target file location (as allowed by setting
-                ALL_LOCATE_TARGET).
-              </li>
+                  Grist allows us to use a uniform abstract identifier for each built
+                  target, regardless of target file location (as allowed by setting
+                  ALL_LOCATE_TARGET).
+                </li>
 </ol></div>
-</li>
+          </li>
 <li class="listitem">
             When grist is extracted from a name with $(var:G), the result includes
             the leading and trailing angle brackets. When grist is added to a name
@@ -242,20 +238,18 @@
             and nothing at all is printed.
           </li>
 <li class="listitem">
-<p class="simpara">
             The parsing of command line options in Jam can be rather unintuitive,
             with regards to how other Unix programs accept options. There are two
             variants accepted as valid for an option:
-          </p>
-<div class="orderedlist"><ol class="orderedlist" type="1">
+            <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-                <code class="literal">-xvalue</code>, and
-              </li>
+                  <code class="literal">-xvalue</code>, and
+                </li>
 <li class="listitem">
-                <code class="literal">-x value</code>.
-              </li>
+                  <code class="literal">-x value</code>.
+                </li>
 </ol></div>
-</li>
+          </li>
 </ul></div>
 </div>
 </div>

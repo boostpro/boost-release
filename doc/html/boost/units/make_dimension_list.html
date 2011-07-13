@@ -37,7 +37,7 @@
   <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="boost.units.make_dimension_list.type"></a><span class="identifier">type</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id2990437"></a><h2>Description</h2>
+<a name="id3159066"></a><h2>Description</h2>
 <p>Reduce dimension list to cardinal form. This algorithm collapses duplicate base dimension tags and sorts the resulting list by the tag ordinal value. Dimension lists that resolve to the same dimension are guaranteed to be represented by an identical type.</p>
 <p>The argument should be an MPL forward sequence containing instances of the <code class="computeroutput">dim</code> template.</p>
 <p>The result is also an MPL forward sequence. It also supports the following metafunctions to allow use as a dimension.</p>
@@ -47,8 +47,8 @@
 <li class="listitem"><p><code class="computeroutput">mpl::negate</code> will return its argument unchanged.</p></li>
 <li class="listitem"><p><code class="computeroutput">mpl::times</code> is defined for any dimensions and adds corresponding exponents.</p></li>
 <li class="listitem"><p><code class="computeroutput">mpl::divides</code> is defined for any dimensions and subtracts the exponents of the right had argument from the corresponding exponents of the left had argument. Missing base dimension tags are assumed to have an exponent of zero.</p></li>
-<li class="listitem"><p><code class="computeroutput">static_power</code> takes a dimension and a static_rational and multiplies all the exponents of the dimension by the static_rational.</p></li>
-<li class="listitem"><p><code class="computeroutput">static_root</code> takes a dimension and a static_rational and divides all the exponents of the dimension by the static_rational. </p></li>
+<li class="listitem"><p><code class="computeroutput"><a class="link" href="static_power.html" title="Struct template static_power">static_power</a></code> takes a dimension and a <a class="link" href="static_rational.html" title="Class template static_rational">static_rational</a> and multiplies all the exponents of the dimension by the <a class="link" href="static_rational.html" title="Class template static_rational">static_rational</a>.</p></li>
+<li class="listitem"><p><code class="computeroutput"><a class="link" href="static_root.html" title="Struct template static_root">static_root</a></code> takes a dimension and a <a class="link" href="static_rational.html" title="Class template static_rational">static_rational</a> and divides all the exponents of the dimension by the <a class="link" href="static_rational.html" title="Class template static_rational">static_rational</a>. </p></li>
 </ul></div>
 <p>
 </p>
@@ -56,7 +56,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 -2008 Matthias Christian Schabel, 2007-2010 Steven
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2008 Matthias Christian Schabel<br>Copyright &#169; 2007-2010 Steven
       Watanabe<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

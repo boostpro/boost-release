@@ -35,41 +35,36 @@
 <span class="keyword">class</span> <a class="link" href="barrier.html" title="Class barrier">barrier</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="barrier.html#boost.interprocess.barrierconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="barrier.html#id844526-bb"><span class="identifier">barrier</span></a><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="barrier.html#id844537-bb"><span class="special">~</span><span class="identifier">barrier</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="barrier.html#id919982-bb"><span class="identifier">barrier</span></a><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="barrier.html#id919993-bb"><span class="special">~</span><span class="identifier">barrier</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="barrier.html#id844512-bb">public member functions</a></span>
-  <span class="keyword">bool</span> <a class="link" href="barrier.html#id844515-bb"><span class="identifier">wait</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="interprocess_mutex.html" title="Class interprocess_mutex">interprocess_mutex</a> m_mutex<span class="special">;</span>  <span class="comment">// @ private: </span>
-  <a class="link" href="interprocess_condition.html" title="Class interprocess_condition">interprocess_condition</a> m_cond<span class="special">;</span>
-  <span class="keyword">unsigned</span> <span class="keyword">int</span> m_threshold<span class="special">;</span>
-  <span class="keyword">unsigned</span> <span class="keyword">int</span> m_count<span class="special">;</span>
-  <span class="keyword">unsigned</span> <span class="keyword">int</span> m_generation<span class="special">;</span>
+  <span class="comment">// <a class="link" href="barrier.html#id919968-bb">public member functions</a></span>
+  <span class="keyword">bool</span> <a class="link" href="barrier.html#id919971-bb"><span class="identifier">wait</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id1584056"></a><h2>Description</h2>
+<a name="id1640752"></a><h2>Description</h2>
 <p>An object of class barrier is a synchronization primitive that can be placed in shared memory used to cause a set of threads from different processes to wait until they each perform a certain function or each reach a particular point in their execution. </p>
 <div class="refsect2">
-<a name="id1584065"></a><h3>
+<a name="id1640762"></a><h3>
 <a name="boost.interprocess.barrierconstruct-copy-destruct"></a><code class="computeroutput">barrier</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id844526-bb"></a><span class="identifier">barrier</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">int</span> count<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id919982-bb"></a><span class="identifier">barrier</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">int</span> count<span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs a barrier object that will cause count threads to block on a call to wait(). </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id844537-bb"></a><span class="special">~</span><span class="identifier">barrier</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id919993-bb"></a><span class="special">~</span><span class="identifier">barrier</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Destroys *this. If threads are still executing their wait() operations, the behavior for these threads is undefined. </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id1584157"></a><h3>
-<a name="id844512-bb"></a><code class="computeroutput">barrier</code> public member functions</h3>
+<a name="id1640864"></a><h3>
+<a name="id919968-bb"></a><code class="computeroutput">barrier</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="id844515-bb"></a><span class="identifier">wait</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id919971-bb"></a><span class="identifier">wait</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Effects: Wait until N threads call wait(), where N equals the count provided to the constructor for the barrier object. Note that if the barrier is destroyed before wait() can return, the behavior is undefined. Returns: Exactly one of the N threads will receive a return value of true, the others will receive a value of false. Precisely which thread receives the return value of true will be implementation-defined. Applications can use this value to designate one thread as a leader that will take a certain action, and the other threads emerging from the barrier can wait for that action to take place. </p>
 </li></ol></div>
 </div>
@@ -77,7 +72,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 - 2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -28,7 +28,7 @@
       TCP daytime server</a>
 </h3></div></div></div>
 <a name="boost_asio.tutorial.tutdaytime3.the_main___function"></a><h5>
-<a name="id805104"></a>
+<a name="boost_asio.tutorial.tutdaytime3.the_main___function-heading"></a>
         <a class="link" href="tutdaytime3.html#boost_asio.tutorial.tutdaytime3.the_main___function">The main()
         function</a>
       </h5>
@@ -60,7 +60,7 @@
 <span class="special">}</span>
 </pre>
 <a name="boost_asio.tutorial.tutdaytime3.the_tcp_server_class"></a><h5>
-<a name="id805414"></a>
+<a name="boost_asio.tutorial.tutdaytime3.the_tcp_server_class-heading"></a>
         <a class="link" href="tutdaytime3.html#boost_asio.tutorial.tutdaytime3.the_tcp_server_class">The
         tcp_server class</a>
       </h5>
@@ -86,7 +86,7 @@
 <pre class="programlisting">  <span class="keyword">void</span> <span class="identifier">start_accept</span><span class="special">()</span>
   <span class="special">{</span>
     <span class="identifier">tcp_connection</span><span class="special">::</span><span class="identifier">pointer</span> <span class="identifier">new_connection</span> <span class="special">=</span>
-      <span class="identifier">tcp_connection</span><span class="special">::</span><span class="identifier">create</span><span class="special">(</span><span class="identifier">acceptor_</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">());</span>
+      <span class="identifier">tcp_connection</span><span class="special">::</span><span class="identifier">create</span><span class="special">(</span><span class="identifier">acceptor_</span><span class="special">.</span><span class="identifier">get_io_service</span><span class="special">());</span>
 
     <span class="identifier">acceptor_</span><span class="special">.</span><span class="identifier">async_accept</span><span class="special">(</span><span class="identifier">new_connection</span><span class="special">-&gt;</span><span class="identifier">socket</span><span class="special">(),</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">tcp_server</span><span class="special">::</span><span class="identifier">handle_accept</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">new_connection</span><span class="special">,</span>
@@ -104,12 +104,13 @@
     <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">error</span><span class="special">)</span>
     <span class="special">{</span>
       <span class="identifier">new_connection</span><span class="special">-&gt;</span><span class="identifier">start</span><span class="special">();</span>
-      <span class="identifier">start_accept</span><span class="special">();</span>
     <span class="special">}</span>
+
+    <span class="identifier">start_accept</span><span class="special">();</span>
   <span class="special">}</span>
 </pre>
 <a name="boost_asio.tutorial.tutdaytime3.the_tcp_connection_class"></a><h5>
-<a name="id806079"></a>
+<a name="boost_asio.tutorial.tutdaytime3.the_tcp_connection_class-heading"></a>
         <a class="link" href="tutdaytime3.html#boost_asio.tutorial.tutdaytime3.the_tcp_connection_class">The
         tcp_connection class</a>
       </h5>
@@ -184,7 +185,7 @@
 <span class="special">};</span>
 </pre>
 <a name="boost_asio.tutorial.tutdaytime3.removing_unused_handler_parameters"></a><h5>
-<a name="id807001"></a>
+<a name="boost_asio.tutorial.tutdaytime3.removing_unused_handler_parameters-heading"></a>
         <a class="link" href="tutdaytime3.html#boost_asio.tutorial.tutdaytime3.removing_unused_handler_parameters">Removing
         unused handler parameters</a>
       </h5>
@@ -222,7 +223,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

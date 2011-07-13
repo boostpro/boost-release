@@ -27,16 +27,16 @@
 <a name="boost_asio.tutorial.tutdaytime7.src"></a><a class="link" href="src.html" title="Source listing for Daytime.7">Source listing
         for Daytime.7</a>
 </h4></div></div></div>
-<pre class="programlisting"><span class="comment">//
-</span><span class="comment">// server.cpp
-</span><span class="comment">// ~~~~~~~~~~
-</span><span class="comment">//
-</span><span class="comment">// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
-</span><span class="comment">//
-</span><span class="comment">// Distributed under the Boost Software License, Version 1.0. (See accompanying
-</span><span class="comment">// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-</span><span class="comment">//
-</span>
+<pre class="programlisting"><span class="comment">//</span>
+<span class="comment">// server.cpp</span>
+<span class="comment">// ~~~~~~~~~~</span>
+<span class="comment">//</span>
+<span class="comment">// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)</span>
+<span class="comment">//</span>
+<span class="comment">// Distributed under the Boost Software License, Version 1.0. (See accompanying</span>
+<span class="comment">// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)</span>
+<span class="comment">//</span>
+
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">ctime</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;</span>
@@ -51,8 +51,8 @@
 
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">make_daytime_string</span><span class="special">()</span>
 <span class="special">{</span>
-  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">std</span><span class="special">;</span> <span class="comment">// For time_t, time and ctime;
-</span>  <span class="identifier">time_t</span> <span class="identifier">now</span> <span class="special">=</span> <span class="identifier">time</span><span class="special">(</span><span class="number">0</span><span class="special">);</span>
+  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">std</span><span class="special">;</span> <span class="comment">// For time_t, time and ctime;</span>
+  <span class="identifier">time_t</span> <span class="identifier">now</span> <span class="special">=</span> <span class="identifier">time</span><span class="special">(</span><span class="number">0</span><span class="special">);</span>
   <span class="keyword">return</span> <span class="identifier">ctime</span><span class="special">(&amp;</span><span class="identifier">now</span><span class="special">);</span>
 <span class="special">}</span>
 
@@ -107,7 +107,7 @@
   <span class="keyword">void</span> <span class="identifier">start_accept</span><span class="special">()</span>
   <span class="special">{</span>
     <span class="identifier">tcp_connection</span><span class="special">::</span><span class="identifier">pointer</span> <span class="identifier">new_connection</span> <span class="special">=</span>
-      <span class="identifier">tcp_connection</span><span class="special">::</span><span class="identifier">create</span><span class="special">(</span><span class="identifier">acceptor_</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">());</span>
+      <span class="identifier">tcp_connection</span><span class="special">::</span><span class="identifier">create</span><span class="special">(</span><span class="identifier">acceptor_</span><span class="special">.</span><span class="identifier">get_io_service</span><span class="special">());</span>
 
     <span class="identifier">acceptor_</span><span class="special">.</span><span class="identifier">async_accept</span><span class="special">(</span><span class="identifier">new_connection</span><span class="special">-&gt;</span><span class="identifier">socket</span><span class="special">(),</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">tcp_server</span><span class="special">::</span><span class="identifier">handle_accept</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">new_connection</span><span class="special">,</span>
@@ -120,8 +120,9 @@
     <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">error</span><span class="special">)</span>
     <span class="special">{</span>
       <span class="identifier">new_connection</span><span class="special">-&gt;</span><span class="identifier">start</span><span class="special">();</span>
-      <span class="identifier">start_accept</span><span class="special">();</span>
     <span class="special">}</span>
+
+    <span class="identifier">start_accept</span><span class="special">();</span>
   <span class="special">}</span>
 
   <span class="identifier">tcp</span><span class="special">::</span><span class="identifier">acceptor</span> <span class="identifier">acceptor_</span><span class="special">;</span>
@@ -192,7 +193,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
