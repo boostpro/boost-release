@@ -43,18 +43,18 @@
           <code class="computeroutput"><span class="identifier">xyz</span></code>'s <code class="computeroutput"><span class="identifier">foo</span></code>
           member function can be bound as:
         </p>
-<pre class="programlisting"><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">xyz</span><span class="special">::</span><span class="identifier">foo</span><span class="special">,</span> <span class="identifier">obj</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">)</span> <span class="comment">// obj is an xyz object
-</span></pre>
+<pre class="programlisting"><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">xyz</span><span class="special">::</span><span class="identifier">foo</span><span class="special">,</span> <span class="identifier">obj</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">)</span> <span class="comment">// obj is an xyz object</span>
+</pre>
 <p>
           Take note that a lazy-member functions expects the first argument to be
           a pointer or reference to an object. Both the object (reference or pointer)
           and the arguments can be lazily bound. Examples:
         </p>
 <pre class="programlisting"><span class="identifier">xyz</span> <span class="identifier">obj</span><span class="special">;</span>
-<span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">xyz</span><span class="special">::</span><span class="identifier">foo</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span><span class="special">)</span>     <span class="comment">// arg1.foo(arg2)
-</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">xyz</span><span class="special">::</span><span class="identifier">foo</span><span class="special">,</span> <span class="identifier">obj</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">)</span>      <span class="comment">// obj.foo(arg1)
-</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">xyz</span><span class="special">::</span><span class="identifier">foo</span><span class="special">,</span> <span class="identifier">obj</span><span class="special">,</span> <span class="number">100</span><span class="special">)</span>       <span class="comment">// obj.foo(100)
-</span></pre>
+<span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">xyz</span><span class="special">::</span><span class="identifier">foo</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span><span class="special">)</span>     <span class="comment">// arg1.foo(arg2)</span>
+<span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">xyz</span><span class="special">::</span><span class="identifier">foo</span><span class="special">,</span> <span class="identifier">obj</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">)</span>      <span class="comment">// obj.foo(arg1)</span>
+<span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">xyz</span><span class="special">::</span><span class="identifier">foo</span><span class="special">,</span> <span class="identifier">obj</span><span class="special">,</span> <span class="number">100</span><span class="special">)</span>       <span class="comment">// obj.foo(100)</span>
+</pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

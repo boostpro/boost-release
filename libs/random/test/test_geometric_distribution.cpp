@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: test_geometric_distribution.cpp 71018 2011-04-05 21:27:52Z steven_watanabe $
+ * $Id: test_geometric_distribution.cpp 74867 2011-10-09 23:13:31Z steven_watanabe $
  *
  */
 
@@ -16,9 +16,9 @@
 #define BOOST_RANDOM_ARG1_DEFAULT 0.5
 #define BOOST_RANDOM_ARG1_VALUE 0.25
 
-#define BOOST_RANDOM_DIST0_MIN 1
+#define BOOST_RANDOM_DIST0_MIN 0
 #define BOOST_RANDOM_DIST0_MAX (std::numeric_limits<int>::max)()
-#define BOOST_RANDOM_DIST1_MIN 1
+#define BOOST_RANDOM_DIST1_MIN 0
 #define BOOST_RANDOM_DIST1_MAX (std::numeric_limits<int>::max)()
 
 #define BOOST_RANDOM_TEST1_PARAMS (0.9999)

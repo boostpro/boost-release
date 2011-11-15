@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Generator Semantic Actions</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="warming_up.html" title="Warming up">
 <link rel="next" href="karma_complex.html" title="Complex - A first more complex generator">
@@ -105,9 +105,9 @@
 <span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">Attrib</span><span class="special">&amp;,</span> <span class="identifier">Context</span><span class="special">&amp;);</span>
 <span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">Attrib</span><span class="special">&amp;,</span> <span class="identifier">Context</span><span class="special">&amp;,</span> <span class="keyword">bool</span><span class="special">&amp;);</span>
 </pre>
-<a name="spirit.karma.tutorials.semantic_actions.examples_of_semantic_actions"></a><h6>
-<a name="spirit.karma.tutorials.semantic_actions.examples_of_semantic_actions-heading"></a>
-          <a class="link" href="semantic_actions.html#spirit.karma.tutorials.semantic_actions.examples_of_semantic_actions">Examples
+<h6>
+<a name="spirit.karma.tutorials.semantic_actions.h0"></a>
+          <span><a name="spirit.karma.tutorials.semantic_actions.examples_of_semantic_actions"></a></span><a class="link" href="semantic_actions.html#spirit.karma.tutorials.semantic_actions.examples_of_semantic_actions">Examples
           of Semantic Actions</a>
         </h6>
 <p>
@@ -136,20 +136,19 @@
           Let's assume we have:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">client</span>
 <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">karma</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">karma</span><span class="special">;</span>
 
-    <span class="comment">// A plain function
-</span>    <span class="keyword">void</span> <span class="identifier">read_function</span><span class="special">(</span><span class="keyword">int</span><span class="special">&amp;</span> <span class="identifier">i</span><span class="special">)</span>
+    <span class="comment">// A plain function</span>
+    <span class="keyword">void</span> <span class="identifier">read_function</span><span class="special">(</span><span class="keyword">int</span><span class="special">&amp;</span> <span class="identifier">i</span><span class="special">)</span>
     <span class="special">{</span>
         <span class="identifier">i</span> <span class="special">=</span> <span class="number">42</span><span class="special">;</span>
     <span class="special">}</span>
 
-    <span class="comment">// A member function
-</span>    <span class="keyword">struct</span> <span class="identifier">reader</span>
+    <span class="comment">// A member function</span>
+    <span class="keyword">struct</span> <span class="identifier">reader</span>
     <span class="special">{</span>
         <span class="keyword">void</span> <span class="identifier">print</span><span class="special">(</span><span class="keyword">int</span><span class="special">&amp;</span> <span class="identifier">i</span><span class="special">)</span> <span class="keyword">const</span>
         <span class="special">{</span>
@@ -157,8 +156,8 @@
         <span class="special">}</span>
     <span class="special">};</span>
 
-    <span class="comment">// A function object
-</span>    <span class="keyword">struct</span> <span class="identifier">read_action</span>
+    <span class="comment">// A function object</span>
+    <span class="keyword">struct</span> <span class="identifier">read_action</span>
     <span class="special">{</span>
         <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">int</span><span class="special">&amp;</span> <span class="identifier">i</span><span class="special">,</span> <span class="identifier">unused_type</span><span class="special">,</span> <span class="identifier">unused_type</span><span class="special">)</span> <span class="keyword">const</span>
         <span class="special">{</span>
@@ -190,7 +189,6 @@
           The first example shows how to attach a plain function:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">generate</span><span class="special">(</span><span class="identifier">outiter</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&lt;&lt;</span> <span class="identifier">int_</span><span class="special">[&amp;</span><span class="identifier">read_function</span><span class="special">]</span> <span class="special">&lt;&lt;</span> <span class="char">'}'</span><span class="special">);</span>
 </pre>
@@ -206,7 +204,6 @@
           The next example shows how to attach a simple function object:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">generate</span><span class="special">(</span><span class="identifier">outiter</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&lt;&lt;</span> <span class="identifier">int_</span><span class="special">[</span><span class="identifier">read_action</span><span class="special">()]</span> <span class="special">&lt;&lt;</span> <span class="char">'}'</span><span class="special">);</span>
 </pre>
@@ -217,7 +214,6 @@
           to 'bind' member functions:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">reader</span> <span class="identifier">r</span><span class="special">;</span>
 <span class="identifier">generate</span><span class="special">(</span><span class="identifier">outiter</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&lt;&lt;</span> <span class="identifier">int_</span><span class="special">[</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">reader</span><span class="special">::</span><span class="identifier">print</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">r</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">)]</span> <span class="special">&lt;&lt;</span> <span class="char">'}'</span><span class="special">);</span>
@@ -229,7 +225,6 @@
           to 'bind' plain functions:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">generate</span><span class="special">(</span><span class="identifier">outiter</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&lt;&lt;</span> <span class="identifier">int_</span><span class="special">[</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">read_function</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">)]</span> <span class="special">&lt;&lt;</span> <span class="char">'}'</span><span class="special">);</span>
 </pre>
@@ -239,7 +234,6 @@
           And last but not least, we can also use <a href="../../../../../../../libs/lambda/index.html" target="_top">Boost.Lambda</a>:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">stringstream</span> <span class="identifier">strm</span><span class="special">(</span><span class="string">"42"</span><span class="special">);</span>
 <span class="identifier">generate</span><span class="special">(</span><span class="identifier">outiter</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&lt;&lt;</span> <span class="identifier">int_</span><span class="special">[</span><span class="identifier">strm</span> <span class="special">&gt;&gt;</span> <span class="identifier">lambda</span><span class="special">::</span><span class="identifier">_1</span><span class="special">]</span> <span class="special">&lt;&lt;</span> <span class="char">'}'</span><span class="special">);</span>
@@ -257,9 +251,9 @@
 <p>
           The examples above can be found here: <a href="../../../../../example/karma/actions.cpp" target="_top">actions.cpp</a>
         </p>
-<a name="spirit.karma.tutorials.semantic_actions.phoenix"></a><h6>
-<a name="spirit.karma.tutorials.semantic_actions.phoenix-heading"></a>
-          <a class="link" href="semantic_actions.html#spirit.karma.tutorials.semantic_actions.phoenix">Phoenix</a>
+<h6>
+<a name="spirit.karma.tutorials.semantic_actions.h1"></a>
+          <span><a name="spirit.karma.tutorials.semantic_actions.phoenix"></a></span><a class="link" href="semantic_actions.html#spirit.karma.tutorials.semantic_actions.phoenix">Phoenix</a>
         </h6>
 <p>
           <a href="../../../../../phoenix/doc/html/index.html" target="_top">Phoenix</a>, a companion

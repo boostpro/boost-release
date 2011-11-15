@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Chapter&#160;29.&#160;Boost.Unordered</title>
+<title>Chapter&#160;32.&#160;Boost.Unordered</title>
 <link rel="stylesheet" href="../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
@@ -25,7 +25,7 @@
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="unordered"></a>Chapter&#160;29.&#160;Boost.Unordered</h2></div>
+<a name="unordered"></a>Chapter&#160;32.&#160;Boost.Unordered</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Daniel</span> <span class="surname">James</span>
 </h3></div></div>
@@ -33,7 +33,7 @@
 <div><p class="copyright">Copyright &#169; 2005-2008 Daniel
       James</p></div>
 <div><div class="legalnotice">
-<a name="id3344258"></a><p>
+<a name="unordered.legal"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -46,6 +46,13 @@
 <dt><span class="section"><a href="unordered/buckets.html">The Data Structure</a></span></dt>
 <dt><span class="section"><a href="unordered/hash_equality.html">Equality Predicates and Hash Functions</a></span></dt>
 <dt><span class="section"><a href="unordered/comparison.html">Comparison with Associative Containers</a></span></dt>
+<dt><span class="section"><a href="unordered/compliance.html">C++11 Compliance</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.move">Move emulation</a></span></dt>
+<dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.allocator_compliance">Use of allocators</a></span></dt>
+<dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.pairs">Pairs</a></span></dt>
+<dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.misc">Miscellaneous</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="unordered/rationale.html">Implementation Rationale</a></span></dt>
 <dt><span class="section"><a href="unordered/changes.html">Change Log</a></span></dt>
 <dt><span class="section"><a href="unordered/reference.html">Reference</a></span></dt>
@@ -77,16 +84,10 @@
       hash function for the key.
     </p>
 <p>
-      With this in mind, the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1836.pdf" target="_top">C++
-      Standard Library Technical Report</a> introduced the unordered associative
-      containers, which are implemented using hash tables, and they have now been
-      added to the <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2009/n2960.pdf" target="_top">Working
-      Draft of the C++ Standard</a>.
-    </p>
-<p>
-      This library supplies an almost complete implementation of the specification
-      in the <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2009/n2960.pdf" target="_top">Working
-      Draft of the C++ Standard</a>.
+      With this in mind, unordered associative containers were added to the C++ standard.
+      This is an implementation of the containers described in C++11, with some
+      <a class="link" href="unordered/compliance.html" title="C++11 Compliance">deviations from the standard</a> in
+      order to work with non-C++11 compilers and libraries.
     </p>
 <p>
       <code class="computeroutput"><span class="identifier">unordered_set</span></code> and <code class="computeroutput"><span class="identifier">unordered_multiset</span></code> are defined in the header
@@ -95,16 +96,16 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
     <span class="keyword">template</span> <span class="special">&lt;</span>
         <span class="keyword">class</span> <span class="identifier">Key</span><span class="special">,</span>
-        <span class="keyword">class</span> <span class="identifier">Hash</span> <span class="special">=</span> <code class="computeroutput"><a class="link" href="boost/hash.html" title="Struct template hash">boost::hash</a></code><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span> 
-        <span class="keyword">class</span> <span class="identifier">Pred</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span> 
-        <span class="keyword">class</span> <span class="identifier">Alloc</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;</span> <span class="special">&gt;</span> 
+        <span class="keyword">class</span> <span class="identifier">Hash</span> <span class="special">=</span> <code class="computeroutput"><a class="link" href="boost/hash.html" title="Struct template hash">boost::hash</a></code><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span>
+        <span class="keyword">class</span> <span class="identifier">Pred</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span>
+        <span class="keyword">class</span> <span class="identifier">Alloc</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;</span> <span class="special">&gt;</span>
     <span class="keyword">class</span> <code class="computeroutput"><a class="link" href="boost/unordered_set.html" title="Class template unordered_set">unordered_set</a></code><span class="special">;</span>
 
     <span class="keyword">template</span><span class="special">&lt;</span>
         <span class="keyword">class</span> <span class="identifier">Key</span><span class="special">,</span>
-        <span class="keyword">class</span> <span class="identifier">Hash</span> <span class="special">=</span> <code class="computeroutput"><a class="link" href="boost/hash.html" title="Struct template hash">boost::hash</a></code><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span> 
-        <span class="keyword">class</span> <span class="identifier">Pred</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span> 
-        <span class="keyword">class</span> <span class="identifier">Alloc</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;</span> <span class="special">&gt;</span> 
+        <span class="keyword">class</span> <span class="identifier">Hash</span> <span class="special">=</span> <code class="computeroutput"><a class="link" href="boost/hash.html" title="Struct template hash">boost::hash</a></code><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span>
+        <span class="keyword">class</span> <span class="identifier">Pred</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_to</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;,</span>
+        <span class="keyword">class</span> <span class="identifier">Alloc</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">&gt;</span> <span class="special">&gt;</span>
     <span class="keyword">class</span> <code class="computeroutput"><a class="link" href="boost/unordered_multiset.html" title="Class template unordered_multiset">unordered_multiset</a></code><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -137,7 +138,6 @@
       The containers are used in a similar manner to the normal associative containers:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unordered_map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">map</span><span class="special">;</span>
 <span class="identifier">map</span> <span class="identifier">x</span><span class="special">;</span>
@@ -154,7 +154,6 @@
       But since the elements aren't ordered, the output of:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="identifier">map</span><span class="special">::</span><span class="identifier">value_type</span> <span class="identifier">i</span><span class="special">,</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span><span class="special">&lt;&lt;</span><span class="identifier">i</span><span class="special">.</span><span class="identifier">first</span><span class="special">&lt;&lt;</span><span class="string">","</span><span class="special">&lt;&lt;</span><span class="identifier">i</span><span class="special">.</span><span class="identifier">second</span><span class="special">&lt;&lt;</span><span class="string">"\n"</span><span class="special">;</span>
@@ -188,7 +187,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: July 05, 2011 at 15:28:11 GMT</small></p></td>
+<td align="left"><p><small>Last revised: November 12, 2011 at 13:43:43 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

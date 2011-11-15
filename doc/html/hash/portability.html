@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../hash.html" title="Chapter&#160;9.&#160;Boost.Functional/Hash">
+<link rel="up" href="../hash.html" title="Chapter&#160;10.&#160;Boost.Functional/Hash">
 <link rel="prev" href="combine.html" title="Combining hash values">
 <link rel="next" href="disable.html" title="Disabling The Extensions">
 </head>
@@ -117,26 +117,6 @@
 </pre>
 <p>
       Full code for this example is at <a href="../../../libs/functional/hash/examples/portable.cpp" target="_top">/libs/functional/hash/examples/portable.cpp</a>.
-    </p>
-<a name="hash.portability.other_issues"></a><h3>
-<a name="hash.portability.other_issues-heading"></a>
-      <a class="link" href="portability.html#hash.portability.other_issues">Other Issues</a>
-    </h3>
-<p>
-      On Visual C++ versions 6.5 and 7.0, <code class="computeroutput"><span class="identifier">hash_value</span></code>
-      isn't overloaded for built in arrays. <code class="computeroutput"><a class="link" href="../boost/hash.html" title="Struct template hash">boost::hash</a></code>,
-      <code class="computeroutput"><a class="link" href="reference.html#boost.hash_combine">boost::hash_combine</a></code>
-      and <code class="computeroutput"><a class="link" href="reference.html#boost.hash_range">boost::hash_range</a></code>
-      all use a workaround to support built in arrays so this shouldn't be a problem
-      in most cases.
-    </p>
-<p>
-      On Visual C++ versions 6.5 and 7.0, function pointers aren't currently supported.
-    </p>
-<p>
-      When using GCC on Solaris, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash_value</span><span class="special">(</span><span class="keyword">long</span> <span class="keyword">double</span><span class="special">)</span></code> treats <code class="computeroutput"><span class="keyword">long</span>
-      <span class="keyword">double</span></code>s as <code class="computeroutput"><span class="keyword">double</span></code>s
-      - so the hash function doesn't take into account the full range of values.
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

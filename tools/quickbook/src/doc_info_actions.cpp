@@ -17,6 +17,7 @@
 #include "input_path.hpp"
 #include "actions_class.hpp"
 #include "doc_info_tags.hpp"
+#include "id_generator.hpp"
 
 namespace quickbook
 {
@@ -119,12 +120,17 @@ namespace quickbook
                 ;
         }
 
+        bool generated_id = false;
+
         if (!id.empty())
             actions.doc_id = id.get_quickbook();
 
         if (actions.doc_id.empty())
+        {
             actions.doc_id = detail::make_identifier(actions.doc_title_qbk);
-        
+            generated_id = true;
+        }
+
         if (dirname.empty() && actions.doc_type == "library") {
             if (!id.empty()) {
                 dirname = id;
@@ -165,7 +171,7 @@ namespace quickbook
             qbk_major_version = 1;
             qbk_minor_version = 1;
             detail::outwarn(actions.filename,1)
-                << "Warning: Quickbook version undefined. "
+                << "Quickbook version undefined. "
                 "Version 1.1 is assumed" << std::endl;
         }
         else
@@ -232,7 +238,8 @@ namespace quickbook
             << "     \"http://www.boost.org/tools/boostbook/dtd/boostbook.dtd\">\n"
             << '<' << actions.doc_type << "\n"
             << "    id=\""
-            << actions.doc_id
+            << actions.ids.add(actions.doc_id, generated_id ?
+                id_generator::generated_doc : id_generator::explicit_id)
             << "\"\n";
         
         if(!lang.empty())
@@ -325,7 +332,10 @@ namespace quickbook
 
         if (!license.empty())
         {
-            tmp << "    <legalnotice>\n"
+            tmp << "    <legalnotice id=\""
+                << actions.ids.add(actions.doc_id + ".legal",
+                    id_generator::generated)
+                << "\">\n"
                 << "      <para>\n"
                 << "        " << doc_info_output(license, 103) << "\n"
                 << "      </para>\n"
@@ -396,6 +406,20 @@ namespace quickbook
         {
             return;
         } 
+
+        // Close any open sections.
+        if (actions.section_level != 0) {
+            detail::outwarn(actions.filename)
+                << "Missing [endsect] detected at end of file."
+                << std::endl;
+
+            while(actions.section_level > 0) {
+                out << "</section>";
+                --actions.section_level;
+            }
+
+            actions.qualified_section_id.clear();
+        }
 
         // We've finished generating our output. Here's what we'll do
         // *after* everything else.

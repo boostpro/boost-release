@@ -27,7 +27,7 @@
 <a name="boost_asio.reference.buffer"></a><a class="link" href="buffer.html" title="buffer">buffer</a>
 </h3></div></div></div>
 <p>
-        <a class="indexterm" name="id1238937"></a> 
+        <a class="indexterm" name="id1236057"></a> 
 The <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span></code> function is used to create a buffer
         object to represent raw memory, an array of POD elements, a vector of POD
         elements, or a std::string.
@@ -240,7 +240,7 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
         The simplest use case involves reading or writing a single buffer of a specified
         size:
       </p>
-<pre class="programlisting"><span class="identifier">sock</span><span class="special">.</span><span class="identifier">send</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">data</span><span class="special">,</span> <span class="identifier">size</span><span class="special">));</span> 
+<pre class="programlisting"><span class="identifier">sock</span><span class="special">.</span><span class="identifier">send</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">data</span><span class="special">,</span> <span class="identifier">size</span><span class="special">));</span>
 </pre>
 <p>
         In the above example, the return value of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span></code>
@@ -263,7 +263,7 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
 <span class="identifier">bytes_transferred</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">receive</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">d3</span><span class="special">));</span>
 
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="number">128</span><span class="special">&gt;</span> <span class="identifier">d4</span><span class="special">;</span>
-<span class="identifier">bytes_transferred</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">receive</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">d4</span><span class="special">));</span> 
+<span class="identifier">bytes_transferred</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">receive</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">d4</span><span class="special">));</span>
 </pre>
 <p>
         In all three cases above, the buffers created are exactly 128 bytes long.
@@ -272,9 +272,9 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
         the vector's <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code>
         member function, and not its capacity.
       </p>
-<a name="boost_asio.reference.buffer.accessing_buffer_contents"></a><h5>
-<a name="boost_asio.reference.buffer.accessing_buffer_contents-heading"></a>
-        <a class="link" href="buffer.html#boost_asio.reference.buffer.accessing_buffer_contents">Accessing
+<h5>
+<a name="boost_asio.reference.buffer.h0"></a>
+        <span><a name="boost_asio.reference.buffer.accessing_buffer_contents"></a></span><a class="link" href="buffer.html#boost_asio.reference.buffer.accessing_buffer_contents">Accessing
         Buffer Contents</a>
       </h5>
 <p>
@@ -286,7 +286,7 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
 
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">const_buffer</span> <span class="identifier">b2</span> <span class="special">=</span> <span class="special">...;</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">s2</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">b2</span><span class="special">);</span>
-<span class="keyword">const</span> <span class="keyword">void</span><span class="special">*</span> <span class="identifier">p2</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">b2</span><span class="special">);</span> 
+<span class="keyword">const</span> <span class="keyword">void</span><span class="special">*</span> <span class="identifier">p2</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">b2</span><span class="special">);</span>
 </pre>
 <p>
         The <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_cast</span></code> function permits violations
@@ -298,9 +298,10 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
         type requirements). In this case, the function returns the total size of
         all buffers in the sequence.
       </p>
-<a name="boost_asio.reference.buffer.buffer_copying"></a><h5>
-<a name="boost_asio.reference.buffer.buffer_copying-heading"></a>
-        <a class="link" href="buffer.html#boost_asio.reference.buffer.buffer_copying">Buffer Copying</a>
+<h5>
+<a name="boost_asio.reference.buffer.h1"></a>
+        <span><a name="boost_asio.reference.buffer.buffer_copying"></a></span><a class="link" href="buffer.html#boost_asio.reference.buffer.buffer_copying">Buffer
+        Copying</a>
       </h5>
 <p>
         The <a class="link" href="buffer_copy.html" title="buffer_copy"><code class="computeroutput"><span class="identifier">buffer_copy</span></code></a>
@@ -314,11 +315,12 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
 <pre class="programlisting"><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">const_buffer</span><span class="special">&gt;</span> <span class="identifier">buffers</span> <span class="special">=</span> <span class="special">...;</span>
 
 <span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">char</span><span class="special">&gt;</span> <span class="identifier">data</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">buffers</span><span class="special">));</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_copy</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">data</span><span class="special">),</span> <span class="identifier">buffers</span><span class="special">);</span> 
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_copy</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">data</span><span class="special">),</span> <span class="identifier">buffers</span><span class="special">);</span>
 </pre>
-<a name="boost_asio.reference.buffer.buffer_invalidation"></a><h5>
-<a name="boost_asio.reference.buffer.buffer_invalidation-heading"></a>
-        <a class="link" href="buffer.html#boost_asio.reference.buffer.buffer_invalidation">Buffer Invalidation</a>
+<h5>
+<a name="boost_asio.reference.buffer.h2"></a>
+        <span><a name="boost_asio.reference.buffer.buffer_invalidation"></a></span><a class="link" href="buffer.html#boost_asio.reference.buffer.buffer_invalidation">Buffer
+        Invalidation</a>
       </h5>
 <p>
         A buffer object does not have any ownership of the memory it refers to. It
@@ -338,21 +340,22 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
         to the rules defined for invalidation of references, pointers and iterators
         referring to elements of the sequence (C++ Std, 21.3).
       </p>
-<a name="boost_asio.reference.buffer.buffer_arithmetic"></a><h5>
-<a name="boost_asio.reference.buffer.buffer_arithmetic-heading"></a>
-        <a class="link" href="buffer.html#boost_asio.reference.buffer.buffer_arithmetic">Buffer Arithmetic</a>
+<h5>
+<a name="boost_asio.reference.buffer.h3"></a>
+        <span><a name="boost_asio.reference.buffer.buffer_arithmetic"></a></span><a class="link" href="buffer.html#boost_asio.reference.buffer.buffer_arithmetic">Buffer
+        Arithmetic</a>
       </h5>
 <p>
         Buffer objects may be manipulated using simple arithmetic in a safe way which
         helps prevent buffer overruns. Consider an array initialised as follows:
       </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="number">6</span><span class="special">&gt;</span> <span class="identifier">a</span> <span class="special">=</span> <span class="special">{</span> <span class="char">'a'</span><span class="special">,</span> <span class="char">'b'</span><span class="special">,</span> <span class="char">'c'</span><span class="special">,</span> <span class="char">'d'</span><span class="special">,</span> <span class="char">'e'</span> <span class="special">};</span> 
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="number">6</span><span class="special">&gt;</span> <span class="identifier">a</span> <span class="special">=</span> <span class="special">{</span> <span class="char">'a'</span><span class="special">,</span> <span class="char">'b'</span><span class="special">,</span> <span class="char">'c'</span><span class="special">,</span> <span class="char">'d'</span><span class="special">,</span> <span class="char">'e'</span> <span class="special">};</span>
 </pre>
 <p>
         A buffer object <code class="computeroutput"><span class="identifier">b1</span></code> created
         using:
       </p>
-<pre class="programlisting"><span class="identifier">b1</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span> 
+<pre class="programlisting"><span class="identifier">b1</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
 </pre>
 <p>
         represents the entire array, <code class="computeroutput"><span class="special">{</span> <span class="char">'a'</span><span class="special">,</span> <span class="char">'b'</span><span class="special">,</span> <span class="char">'c'</span><span class="special">,</span>
@@ -360,7 +363,7 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
         second argument to the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span></code>
         function may be used to limit the size, in bytes, of the buffer:
       </p>
-<pre class="programlisting"><span class="identifier">b2</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="number">3</span><span class="special">);</span> 
+<pre class="programlisting"><span class="identifier">b2</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="number">3</span><span class="special">);</span>
 </pre>
 <p>
         such that <code class="computeroutput"><span class="identifier">b2</span></code> represents the
@@ -372,7 +375,7 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
 <p>
         An offset may be applied to an existing buffer to create a new one:
       </p>
-<pre class="programlisting"><span class="identifier">b3</span> <span class="special">=</span> <span class="identifier">b1</span> <span class="special">+</span> <span class="number">2</span><span class="special">;</span> 
+<pre class="programlisting"><span class="identifier">b3</span> <span class="special">=</span> <span class="identifier">b1</span> <span class="special">+</span> <span class="number">2</span><span class="special">;</span>
 </pre>
 <p>
         where <code class="computeroutput"><span class="identifier">b3</span></code> will set to represent
@@ -385,16 +388,16 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
         Both an offset and size may be specified to create a buffer that corresponds
         to a specific range of bytes within an existing buffer:
       </p>
-<pre class="programlisting"><span class="identifier">b4</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">b1</span> <span class="special">+</span> <span class="number">1</span><span class="special">,</span> <span class="number">3</span><span class="special">);</span> 
+<pre class="programlisting"><span class="identifier">b4</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">b1</span> <span class="special">+</span> <span class="number">1</span><span class="special">,</span> <span class="number">3</span><span class="special">);</span>
 </pre>
 <p>
         so that <code class="computeroutput"><span class="identifier">b4</span></code> will refer to
         the bytes <code class="computeroutput"><span class="special">{</span> <span class="char">'b'</span><span class="special">,</span> <span class="char">'c'</span><span class="special">,</span>
         <span class="char">'d'</span> <span class="special">}</span></code>.
       </p>
-<a name="boost_asio.reference.buffer.buffers_and_scatter_gather_i_o"></a><h5>
-<a name="boost_asio.reference.buffer.buffers_and_scatter_gather_i_o-heading"></a>
-        <a class="link" href="buffer.html#boost_asio.reference.buffer.buffers_and_scatter_gather_i_o">Buffers
+<h5>
+<a name="boost_asio.reference.buffer.h4"></a>
+        <span><a name="boost_asio.reference.buffer.buffers_and_scatter_gather_i_o"></a></span><a class="link" href="buffer.html#boost_asio.reference.buffer.buffers_and_scatter_gather_i_o">Buffers
         and Scatter-Gather I/O</a>
       </h5>
 <p>
@@ -416,11 +419,11 @@ The <code class="computeroutput"><span class="identifier">boost</span><span clas
 <span class="identifier">bufs2</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">d1</span><span class="special">));</span>
 <span class="identifier">bufs2</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">d2</span><span class="special">));</span>
 <span class="identifier">bufs2</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">d3</span><span class="special">));</span>
-<span class="identifier">bytes_transferred</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">send</span><span class="special">(</span><span class="identifier">bufs2</span><span class="special">);</span> 
+<span class="identifier">bytes_transferred</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">send</span><span class="special">(</span><span class="identifier">bufs2</span><span class="special">);</span>
 </pre>
-<a name="boost_asio.reference.buffer.requirements"></a><h5>
-<a name="boost_asio.reference.buffer.requirements-heading"></a>
-        <a class="link" href="buffer.html#boost_asio.reference.buffer.requirements">Requirements</a>
+<h5>
+<a name="boost_asio.reference.buffer.h5"></a>
+        <span><a name="boost_asio.reference.buffer.requirements"></a></span><a class="link" href="buffer.html#boost_asio.reference.buffer.requirements">Requirements</a>
       </h5>
 <p>
         <span class="bold"><strong>Header: </strong></span><code class="literal">boost/asio/buffer.hpp</code>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;12.&#160;Boost.Intrusive">
 <link rel="prev" href="design_notes.html" title="Design Notes">
 <link rel="next" href="release_notes.html" title="Release Notes">
 </head>
@@ -112,7 +112,6 @@
       some other utilities:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="comment">//Iteration and element count defines</span>
 <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">NumIter</span> <span class="special">=</span> <span class="number">100</span><span class="special">;</span>
@@ -186,7 +185,6 @@
         insertion tests:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ilist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
 <span class="identifier">ilist</span> <span class="identifier">l</span><span class="special">;</span>
@@ -202,7 +200,6 @@
         that inserted in the intrusive list.
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">stdlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
@@ -215,7 +212,6 @@
         For a standard list, elements are pushed back using push_back().
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
 <span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
@@ -231,7 +227,6 @@
         pushed back in the pointer list using push_back().
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">stdlist</span> <span class="identifier">objects</span><span class="special">;</span>  <span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
@@ -251,7 +246,7 @@
         These are the times in microseconds for each case, and the normalized time:
       </p>
 <div class="table">
-<a name="id1760717"></a><p class="title"><b>Table&#160;11.2.&#160;Back insertion + destruction times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="intrusive.performance.performance_results_push_back.t0"></a><p class="title"><b>Table&#160;12.2.&#160;Back insertion + destruction times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -385,7 +380,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1760943"></a><p class="title"><b>Table&#160;11.3.&#160;Back insertion + destruction times for GCC 4.1.1 / MinGW over Windows
+<a name="intrusive.performance.performance_results_push_back.t1"></a><p class="title"><b>Table&#160;12.3.&#160;Back insertion + destruction times for GCC 4.1.1 / MinGW over Windows
         XP</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for GCC 4.1.1 / MinGW over Windows
         XP">
@@ -521,7 +516,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1761170"></a><p class="title"><b>Table&#160;11.4.&#160;Back insertion + destruction times for GCC 4.1.2 / Linux Kernel 2.6.18
+<a name="intrusive.performance.performance_results_push_back.t2"></a><p class="title"><b>Table&#160;12.4.&#160;Back insertion + destruction times for GCC 4.1.2 / Linux Kernel 2.6.18
         (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for GCC 4.1.2 / Linux Kernel 2.6.18
         (OpenSuse 10.2)">
@@ -698,7 +693,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1761630"></a><p class="title"><b>Table&#160;11.5.&#160;Reverse times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="intrusive.performance.performance_results_reversing.t0"></a><p class="title"><b>Table&#160;12.5.&#160;Reverse times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -832,7 +827,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1761856"></a><p class="title"><b>Table&#160;11.6.&#160;Reverse times for GCC 4.1.1 / MinGW over Windows XP</b></p>
+<a name="intrusive.performance.performance_results_reversing.t1"></a><p class="title"><b>Table&#160;12.6.&#160;Reverse times for GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for GCC 4.1.1 / MinGW over Windows XP">
 <colgroup>
 <col>
@@ -966,7 +961,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1762081"></a><p class="title"><b>Table&#160;11.7.&#160;Reverse times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
+<a name="intrusive.performance.performance_results_reversing.t2"></a><p class="title"><b>Table&#160;12.7.&#160;Reverse times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
 <colgroup>
 <col>
@@ -1170,7 +1165,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1763142"></a><p class="title"><b>Table&#160;11.8.&#160;Sort times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="intrusive.performance.performance_results_sorting.t0"></a><p class="title"><b>Table&#160;12.8.&#160;Sort times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -1304,7 +1299,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1763368"></a><p class="title"><b>Table&#160;11.9.&#160;Sort times for GCC 4.1.1 / MinGW over Windows XP</b></p>
+<a name="intrusive.performance.performance_results_sorting.t1"></a><p class="title"><b>Table&#160;12.9.&#160;Sort times for GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for GCC 4.1.1 / MinGW over Windows XP">
 <colgroup>
 <col>
@@ -1438,7 +1433,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1763593"></a><p class="title"><b>Table&#160;11.10.&#160;Sort times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
+<a name="intrusive.performance.performance_results_sorting.t2"></a><p class="title"><b>Table&#160;12.10.&#160;Sort times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
 <colgroup>
 <col>
@@ -1609,7 +1604,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1764174"></a><p class="title"><b>Table&#160;11.11.&#160;Write access times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="intrusive.performance.performance_results_write_access.t0"></a><p class="title"><b>Table&#160;12.11.&#160;Write access times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -1743,7 +1738,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1764399"></a><p class="title"><b>Table&#160;11.12.&#160;Write access times for GCC 4.1.1 / MinGW over Windows XP</b></p>
+<a name="intrusive.performance.performance_results_write_access.t1"></a><p class="title"><b>Table&#160;12.12.&#160;Write access times for GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for GCC 4.1.1 / MinGW over Windows XP">
 <colgroup>
 <col>
@@ -1877,7 +1872,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1764624"></a><p class="title"><b>Table&#160;11.13.&#160;Write access times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
+<a name="intrusive.performance.performance_results_write_access.t2"></a><p class="title"><b>Table&#160;12.13.&#160;Write access times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
 <colgroup>
 <col>

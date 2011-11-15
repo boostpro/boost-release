@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Attributes of Compound Components</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../attributes.html" title="Attributes">
 <link rel="prev" href="primitive_attributes.html" title="Attributes of Primitive Components">
 <link rel="next" href="more_compound_attributes.html" title="More About Attributes of Compound Components">
@@ -129,9 +129,9 @@
           Compound Attribute Rules</a> and <a class="link" href="../../karma/quick_reference/compound_attribute_rules.html" title="Compound Attribute Rules">Generator
           Compound Attribute Rules</a>.
         </p>
-<a name="spirit.abstracts.attributes.compound_attributes.the_attribute_of_sequence_parsers_and_generators"></a><h6>
-<a name="spirit.abstracts.attributes.compound_attributes.the_attribute_of_sequence_parsers_and_generators-heading"></a>
-          <a class="link" href="compound_attributes.html#spirit.abstracts.attributes.compound_attributes.the_attribute_of_sequence_parsers_and_generators">The
+<h6>
+<a name="spirit.abstracts.attributes.compound_attributes.h0"></a>
+          <span><a name="spirit.abstracts.attributes.compound_attributes.the_attribute_of_sequence_parsers_and_generators"></a></span><a class="link" href="compound_attributes.html#spirit.abstracts.attributes.compound_attributes.the_attribute_of_sequence_parsers_and_generators">The
           Attribute of Sequence Parsers and Generators</a>
         </h6>
 <p>
@@ -195,26 +195,26 @@
           If we assume to have an instance of a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="keyword">double</span><span class="special">&gt;</span></code>, we can directly use the expressions
           above to do both, parse input to fill the attribute:
         </p>
-<pre class="programlisting"><span class="comment">// the following parses "1.0 2.0" into a pair of double
-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span><span class="special">(</span><span class="string">"1.0 2.0"</span><span class="special">);</span>
+<pre class="programlisting"><span class="comment">// the following parses "1.0 2.0" into a pair of double</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span><span class="special">(</span><span class="string">"1.0 2.0"</span><span class="special">);</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">strbegin</span> <span class="special">=</span> <span class="identifier">input</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">;</span>
-<span class="identifier">qi</span><span class="special">::</span><span class="identifier">phrase_parse</span><span class="special">(</span><span class="identifier">strbegin</span><span class="special">,</span> <span class="identifier">input</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> 
-    <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span><span class="special">,</span>       <span class="comment">// parser grammar 
-</span>    <span class="identifier">qi</span><span class="special">::</span><span class="identifier">space</span><span class="special">,</span>                        <span class="comment">// delimiter grammar
-</span>    <span class="identifier">p</span><span class="special">);</span>                               <span class="comment">// attribute to fill while parsing
-</span></pre>
+<span class="identifier">qi</span><span class="special">::</span><span class="identifier">phrase_parse</span><span class="special">(</span><span class="identifier">strbegin</span><span class="special">,</span> <span class="identifier">input</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span>
+    <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span><span class="special">,</span>       <span class="comment">// parser grammar </span>
+    <span class="identifier">qi</span><span class="special">::</span><span class="identifier">space</span><span class="special">,</span>                        <span class="comment">// delimiter grammar</span>
+    <span class="identifier">p</span><span class="special">);</span>                               <span class="comment">// attribute to fill while parsing</span>
+</pre>
 <p>
           and generate output for it:
         </p>
-<pre class="programlisting"><span class="comment">// the following generates: "1.0 2.0" from the pair filled above
-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span><span class="special">;</span>
+<pre class="programlisting"><span class="comment">// the following generates: "1.0 2.0" from the pair filled above</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span><span class="special">;</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">back_insert_iterator</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">out</span><span class="special">(</span><span class="identifier">str</span><span class="special">);</span>
-<span class="identifier">karma</span><span class="special">::</span><span class="identifier">generate_delimited</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> 
-    <span class="identifier">karma</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="identifier">karma</span><span class="special">::</span><span class="identifier">double_</span><span class="special">,</span> <span class="comment">// generator grammar (format description)
-</span>    <span class="identifier">karma</span><span class="special">::</span><span class="identifier">space</span><span class="special">,</span>                     <span class="comment">// delimiter grammar
-</span>    <span class="identifier">p</span><span class="special">);</span>                               <span class="comment">// data to use as the attribute 
-</span></pre>
+<span class="identifier">karma</span><span class="special">::</span><span class="identifier">generate_delimited</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span>
+    <span class="identifier">karma</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="identifier">karma</span><span class="special">::</span><span class="identifier">double_</span><span class="special">,</span> <span class="comment">// generator grammar (format description)</span>
+    <span class="identifier">karma</span><span class="special">::</span><span class="identifier">space</span><span class="special">,</span>                     <span class="comment">// delimiter grammar</span>
+    <span class="identifier">p</span><span class="special">);</span>                               <span class="comment">// data to use as the attribute </span>
+</pre>
 <p>
           (where the <code class="computeroutput"><span class="identifier">karma</span><span class="special">::</span><span class="identifier">space</span></code> generator is used as the delimiter,
           allowing to automatically skip/insert delimiting spaces in between all
@@ -233,7 +233,7 @@
             families these functions allow to pass the attributes for each of the
             elements of the sequence separately. Using the corresponding overload
             of <span class="emphasis"><em>Qi's</em></span> parse or <span class="emphasis"><em>Karma's</em></span> <code class="computeroutput"><span class="identifier">generate</span><span class="special">()</span></code>
-            the expression above could be rewritten as: 
+            the expression above could be rewritten as:
 </p>
 <pre class="programlisting"><span class="keyword">double</span> <span class="identifier">d1</span> <span class="special">=</span> <span class="number">0.0</span><span class="special">,</span> <span class="identifier">d2</span> <span class="special">=</span> <span class="number">0.0</span><span class="special">;</span>
 <span class="identifier">qi</span><span class="special">::</span><span class="identifier">phrase_parse</span><span class="special">(</span><span class="identifier">begin</span><span class="special">,</span> <span class="identifier">end</span><span class="special">,</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span><span class="special">,</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">space</span><span class="special">,</span> <span class="identifier">d1</span><span class="special">,</span> <span class="identifier">d2</span><span class="special">);</span>
@@ -245,9 +245,9 @@
           </p>
 </td></tr>
 </table></div>
-<a name="spirit.abstracts.attributes.compound_attributes.the_attribute_of_alternative_parsers_and_generators"></a><h6>
-<a name="spirit.abstracts.attributes.compound_attributes.the_attribute_of_alternative_parsers_and_generators-heading"></a>
-          <a class="link" href="compound_attributes.html#spirit.abstracts.attributes.compound_attributes.the_attribute_of_alternative_parsers_and_generators">The
+<h6>
+<a name="spirit.abstracts.attributes.compound_attributes.h1"></a>
+          <span><a name="spirit.abstracts.attributes.compound_attributes.the_attribute_of_alternative_parsers_and_generators"></a></span><a class="link" href="compound_attributes.html#spirit.abstracts.attributes.compound_attributes.the_attribute_of_alternative_parsers_and_generators">The
           Attribute of Alternative Parsers and Generators</a>
         </h6>
 <p>

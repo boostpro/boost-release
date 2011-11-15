@@ -49,9 +49,9 @@
           member function, once for each endpoint in the sequence, until a connection
           is successfully established.
         </p>
-<a name="boost_asio.reference.async_connect.overload3.parameters"></a><h6>
-<a name="boost_asio.reference.async_connect.overload3.parameters-heading"></a>
-          <a class="link" href="overload3.html#boost_asio.reference.async_connect.overload3.parameters">Parameters</a>
+<h6>
+<a name="boost_asio.reference.async_connect.overload3.h0"></a>
+          <span><a name="boost_asio.reference.async_connect.overload3.parameters"></a></span><a class="link" href="overload3.html#boost_asio.reference.async_connect.overload3.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -69,11 +69,11 @@
 <dd>
 <p>
                 A function object that is called prior to each connection attempt.
-                The signature of the function object must be: 
+                The signature of the function object must be:
 </p>
 <pre class="programlisting"><span class="identifier">Iterator</span> <span class="identifier">connect_condition</span><span class="special">(</span>
     <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">,</span>
-    <span class="identifier">Iterator</span> <span class="identifier">next</span><span class="special">);</span> 
+    <span class="identifier">Iterator</span> <span class="identifier">next</span><span class="special">);</span>
 </pre>
 <p>
                 The <code class="computeroutput"><span class="identifier">ec</span></code> parameter
@@ -92,7 +92,7 @@
 <p>
                 The handler to be called when the connect operation completes. Copies
                 will be made of the handler as required. The function signature of
-                the handler must be: 
+                the handler must be:
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span>
   <span class="comment">// Result of operation. if the sequence is empty, set to</span>
@@ -103,7 +103,7 @@
   <span class="comment">// On success, an iterator denoting the successfully</span>
   <span class="comment">// connected endpoint. Otherwise, the end iterator.</span>
   <span class="identifier">Iterator</span> <span class="identifier">iterator</span>
-<span class="special">);</span> 
+<span class="special">);</span>
 </pre>
 <p>
                 Regardless of whether the asynchronous operation completes immediately
@@ -114,17 +114,17 @@
 </dd>
 </dl>
 </div>
-<a name="boost_asio.reference.async_connect.overload3.remarks"></a><h6>
-<a name="boost_asio.reference.async_connect.overload3.remarks-heading"></a>
-          <a class="link" href="overload3.html#boost_asio.reference.async_connect.overload3.remarks">Remarks</a>
+<h6>
+<a name="boost_asio.reference.async_connect.overload3.h1"></a>
+          <span><a name="boost_asio.reference.async_connect.overload3.remarks"></a></span><a class="link" href="overload3.html#boost_asio.reference.async_connect.overload3.remarks">Remarks</a>
         </h6>
 <p>
           This overload assumes that a default constructed object of type <code class="computeroutput"><span class="identifier">Iterator</span></code> represents the end of the sequence.
           This is a valid assumption for iterator types such as <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">resolver</span><span class="special">::</span><span class="identifier">iterator</span></code>.
         </p>
-<a name="boost_asio.reference.async_connect.overload3.example"></a><h6>
-<a name="boost_asio.reference.async_connect.overload3.example-heading"></a>
-          <a class="link" href="overload3.html#boost_asio.reference.async_connect.overload3.example">Example</a>
+<h6>
+<a name="boost_asio.reference.async_connect.overload3.h2"></a>
+          <span><a name="boost_asio.reference.async_connect.overload3.example"></a></span><a class="link" href="overload3.html#boost_asio.reference.async_connect.overload3.example">Example</a>
         </h6>
 <p>
           The following connect condition function object can be used to output information
@@ -141,7 +141,7 @@
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Trying: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">next</span><span class="special">-&gt;</span><span class="identifier">endpoint</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="keyword">return</span> <span class="identifier">next</span><span class="special">;</span>
   <span class="special">}</span>
-<span class="special">};</span> 
+<span class="special">};</span>
 </pre>
 <p>
           It would be used with the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">connect</span></code>
@@ -183,7 +183,7 @@
   <span class="special">{</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Connected to: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span><span class="special">-&gt;</span><span class="identifier">endpoint</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
   <span class="special">}</span>
-<span class="special">}</span> 
+<span class="special">}</span>
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Sum - adding numbers</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="complex___our_first_complex_parser.html" title="Complex - Our first complex parser">
 <link rel="next" href="number_list___stuffing_numbers_into_a_std__vector.html" title="Number List - stuffing numbers into a std::vector">
@@ -35,7 +35,6 @@
           includes:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">spirit</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">qi</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">spirit</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">phoenix_core</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -49,7 +48,6 @@
           Then some using directives:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">qi</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">qi</span><span class="special">;</span>
 <span class="keyword">namespace</span> <span class="identifier">ascii</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">ascii</span><span class="special">;</span>
@@ -163,24 +161,23 @@
           Now the actual parser:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">adder</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="keyword">double</span><span class="special">&amp;</span> <span class="identifier">n</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">bool</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">phrase_parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span>
 
-        <span class="comment">//  Begin grammar
-</span>        <span class="special">(</span>
+        <span class="comment">//  Begin grammar</span>
+        <span class="special">(</span>
             <span class="identifier">double_</span><span class="special">[</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">n</span><span class="special">)</span> <span class="special">=</span> <span class="identifier">_1</span><span class="special">]</span> <span class="special">&gt;&gt;</span> <span class="special">*(</span><span class="char">','</span> <span class="special">&gt;&gt;</span> <span class="identifier">double_</span><span class="special">[</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">n</span><span class="special">)</span> <span class="special">+=</span> <span class="identifier">_1</span><span class="special">])</span>
         <span class="special">)</span>
         <span class="special">,</span>
-        <span class="comment">//  End grammar
-</span>
+        <span class="comment">//  End grammar</span>
+
         <span class="identifier">space</span><span class="special">);</span>
 
-    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match
-</span>        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match</span>
+        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
     <span class="keyword">return</span> <span class="identifier">r</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>

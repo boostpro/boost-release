@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Mini XML - Error Handling</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="mini_xml___asts_.html" title="Mini XML - ASTs!">
 <link rel="next" href="../quick_reference.html" title="Quick Reference">
@@ -40,7 +40,6 @@
           Here's the grammar:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">mini_xml_grammar</span>
@@ -93,10 +92,10 @@
             <span class="identifier">xml</span>
           <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span>
                 <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"Error! Expecting "</span><span class="special">)</span>
-                <span class="special">&lt;&lt;</span> <span class="identifier">_4</span>                               <span class="comment">// what failed?
-</span>                <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">" here: \""</span><span class="special">)</span>
-                <span class="special">&lt;&lt;</span> <span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;(</span><span class="identifier">_3</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">)</span>   <span class="comment">// iterators to error-pos, end
-</span>                <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"\""</span><span class="special">)</span>
+                <span class="special">&lt;&lt;</span> <span class="identifier">_4</span>                               <span class="comment">// what failed?</span>
+                <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">" here: \""</span><span class="special">)</span>
+                <span class="special">&lt;&lt;</span> <span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;(</span><span class="identifier">_3</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">)</span>   <span class="comment">// iterators to error-pos, end</span>
+                <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"\""</span><span class="special">)</span>
                 <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
         <span class="special">);</span>
     <span class="special">}</span>
@@ -113,9 +112,9 @@
 <p>
           What's new?
         </p>
-<a name="spirit.qi.tutorials.mini_xml___error_handling.readable_names"></a><h6>
-<a name="spirit.qi.tutorials.mini_xml___error_handling.readable_names-heading"></a>
-          <a class="link" href="mini_xml___error_handling.html#spirit.qi.tutorials.mini_xml___error_handling.readable_names">Readable
+<h6>
+<a name="spirit.qi.tutorials.mini_xml___error_handling.h0"></a>
+          <span><a name="spirit.qi.tutorials.mini_xml___error_handling.readable_names"></a></span><a class="link" href="mini_xml___error_handling.html#spirit.qi.tutorials.mini_xml___error_handling.readable_names">Readable
           Names</a>
         </h6>
 <p>
@@ -132,10 +131,9 @@
 <span class="identifier">start_tag</span><span class="special">.</span><span class="identifier">name</span><span class="special">(</span><span class="string">"start_tag"</span><span class="special">);</span>
 <span class="identifier">end_tag</span><span class="special">.</span><span class="identifier">name</span><span class="special">(</span><span class="string">"end_tag"</span><span class="special">);</span>
 </pre>
-<a name="spirit.qi.tutorials.mini_xml___error_handling.on_error"></a><h6>
-<a name="spirit.qi.tutorials.mini_xml___error_handling.on_error-heading"></a>
-          <a class="link" href="mini_xml___error_handling.html#spirit.qi.tutorials.mini_xml___error_handling.on_error">On
-          Error</a>
+<h6>
+<a name="spirit.qi.tutorials.mini_xml___error_handling.h1"></a>
+          <span><a name="spirit.qi.tutorials.mini_xml___error_handling.on_error"></a></span><a class="link" href="mini_xml___error_handling.html#spirit.qi.tutorials.mini_xml___error_handling.on_error">On Error</a>
         </h6>
 <p>
           <code class="computeroutput"><span class="identifier">on_error</span></code> declares our error
@@ -152,10 +150,10 @@
     <span class="identifier">xml</span>
   <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span>
         <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"Error! Expecting "</span><span class="special">)</span>
-        <span class="special">&lt;&lt;</span> <span class="identifier">_4</span>                               <span class="comment">// what failed?
-</span>        <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">" here: \""</span><span class="special">)</span>
-        <span class="special">&lt;&lt;</span> <span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;(</span><span class="identifier">_3</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">)</span>   <span class="comment">// iterators to error-pos, end
-</span>        <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"\""</span><span class="special">)</span>
+        <span class="special">&lt;&lt;</span> <span class="identifier">_4</span>                               <span class="comment">// what failed?</span>
+        <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">" here: \""</span><span class="special">)</span>
+        <span class="special">&lt;&lt;</span> <span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;(</span><span class="identifier">_3</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">)</span>   <span class="comment">// iterators to error-pos, end</span>
+        <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"\""</span><span class="special">)</span>
         <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
 <span class="special">);</span>
 </pre>
@@ -309,9 +307,9 @@
 </tr>
 </tbody>
 </table></div>
-<a name="spirit.qi.tutorials.mini_xml___error_handling.expectation_points"></a><h6>
-<a name="spirit.qi.tutorials.mini_xml___error_handling.expectation_points-heading"></a>
-          <a class="link" href="mini_xml___error_handling.html#spirit.qi.tutorials.mini_xml___error_handling.expectation_points">Expectation
+<h6>
+<a name="spirit.qi.tutorials.mini_xml___error_handling.h2"></a>
+          <span><a name="spirit.qi.tutorials.mini_xml___error_handling.expectation_points"></a></span><a class="link" href="mini_xml___error_handling.html#spirit.qi.tutorials.mini_xml___error_handling.expectation_points">Expectation
           Points</a>
         </h6>
 <p>

@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Roman Numerals</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="number_list_attribute___one_more__with_style.html" title="Number List Attribute - one more, with style">
 <link rel="next" href="employee___parsing_into_structs.html" title="Employee - Parsing into structs">
@@ -40,9 +40,9 @@
               grammar
             </li>
 </ul></div>
-<a name="spirit.qi.tutorials.roman_numerals.symbol_table"></a><h6>
-<a name="spirit.qi.tutorials.roman_numerals.symbol_table-heading"></a>
-          <a class="link" href="roman_numerals.html#spirit.qi.tutorials.roman_numerals.symbol_table">Symbol
+<h6>
+<a name="spirit.qi.tutorials.roman_numerals.h0"></a>
+          <span><a name="spirit.qi.tutorials.roman_numerals.symbol_table"></a></span><a class="link" href="roman_numerals.html#spirit.qi.tutorials.roman_numerals.symbol_table">Symbol
           Table</a>
         </h6>
 <p>
@@ -78,7 +78,6 @@
           (which is passed to attached semantic actions).
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">hundreds_</span> <span class="special">:</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">symbols</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="keyword">unsigned</span><span class="special">&gt;</span>
 <span class="special">{</span>
@@ -105,7 +104,6 @@
           Here's a parser for roman tens (10..90):
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">tens_</span> <span class="special">:</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">symbols</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="keyword">unsigned</span><span class="special">&gt;</span>
 <span class="special">{</span>
@@ -132,7 +130,6 @@
           and, finally, for ones (1..9):
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">ones_</span> <span class="special">:</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">symbols</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="keyword">unsigned</span><span class="special">&gt;</span>
 <span class="special">{</span>
@@ -160,9 +157,9 @@
           <code class="computeroutput"><span class="identifier">tens</span></code> and <code class="computeroutput"><span class="identifier">ones</span></code> anywhere in our parser expressions.
           They are all parsers.
         </p>
-<a name="spirit.qi.tutorials.roman_numerals.rules"></a><h6>
-<a name="spirit.qi.tutorials.roman_numerals.rules-heading"></a>
-          <a class="link" href="roman_numerals.html#spirit.qi.tutorials.roman_numerals.rules">Rules</a>
+<h6>
+<a name="spirit.qi.tutorials.roman_numerals.h1"></a>
+          <span><a name="spirit.qi.tutorials.roman_numerals.rules"></a></span><a class="link" href="roman_numerals.html#spirit.qi.tutorials.roman_numerals.rules">Rules</a>
         </h6>
 <p>
           Up until now, we've been inlining our parser expressions, passing them
@@ -240,9 +237,9 @@
         </p>
 <pre class="programlisting"><span class="identifier">r</span> <span class="special">=</span> <span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="special">*(</span><span class="char">','</span> <span class="special">&gt;&gt;</span> <span class="identifier">double_</span><span class="special">);</span>
 </pre>
-<a name="spirit.qi.tutorials.roman_numerals.grammars"></a><h6>
-<a name="spirit.qi.tutorials.roman_numerals.grammars-heading"></a>
-          <a class="link" href="roman_numerals.html#spirit.qi.tutorials.roman_numerals.grammars">Grammars</a>
+<h6>
+<a name="spirit.qi.tutorials.roman_numerals.h2"></a>
+          <span><a name="spirit.qi.tutorials.roman_numerals.grammars"></a></span><a class="link" href="roman_numerals.html#spirit.qi.tutorials.roman_numerals.grammars">Grammars</a>
         </h6>
 <p>
           A grammar encapsulates one or more rules. It has the same template parameters
@@ -268,7 +265,6 @@
           The roman numeral grammar is a very nice and simple example of a grammar:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">roman</span> <span class="special">:</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">grammar</span><span class="special">&lt;</span><span class="identifier">Iterator</span><span class="special">,</span> <span class="keyword">unsigned</span><span class="special">()&gt;</span>
@@ -341,12 +337,12 @@
               <span class="special">&gt;&gt;</span> <span class="special">-</span><span class="identifier">b</span> <span class="special">|</span> <span class="identifier">b</span></code>, but more efficient.
             </li>
 </ul></div>
-<a name="spirit.qi.tutorials.roman_numerals.let_s_parse_"></a><h6>
-<a name="spirit.qi.tutorials.roman_numerals.let_s_parse_-heading"></a>
-          <a class="link" href="roman_numerals.html#spirit.qi.tutorials.roman_numerals.let_s_parse_">Let's Parse!</a>
+<h6>
+<a name="spirit.qi.tutorials.roman_numerals.h3"></a>
+          <span><a name="spirit.qi.tutorials.roman_numerals.let_s_parse_"></a></span><a class="link" href="roman_numerals.html#spirit.qi.tutorials.roman_numerals.let_s_parse_">Let's
+          Parse!</a>
         </h6>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">bool</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">parse</span><span class="special">(</span><span class="identifier">iter</span><span class="special">,</span> <span class="identifier">end</span><span class="special">,</span> <span class="identifier">roman_parser</span><span class="special">,</span> <span class="identifier">result</span><span class="special">);</span>
 

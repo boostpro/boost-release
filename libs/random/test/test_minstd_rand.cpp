@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: test_minstd_rand.cpp 71018 2011-04-05 21:27:52Z steven_watanabe $
+ * $Id: test_minstd_rand.cpp 74867 2011-10-09 23:13:31Z steven_watanabe $
  *
  */
 
@@ -18,7 +18,7 @@
 
 // validation values from the publications
 #define BOOST_RANDOM_VALIDATION_VALUE 399268537U
-#define BOOST_RANDOM_SEED_SEQ_VALIDATION_VALUE 2096435890U
+#define BOOST_RANDOM_SEED_SEQ_VALIDATION_VALUE 1000962296U
 #define BOOST_RANDOM_ITERATOR_VALIDATION_VALUE 182651141U
 
 #define BOOST_RANDOM_GENERATE_VALUES { 0x8400BC8EU, 0xF45B895FU, 0x145F0F91U, 0xE5F8F088U }

@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Chapter&#160;7.&#160;Boost.Foreach</title>
+<title>Chapter&#160;8.&#160;Boost.Foreach</title>
 <link rel="stylesheet" href="../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
@@ -25,13 +25,13 @@
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="foreach"></a>Chapter&#160;7.&#160;Boost.Foreach</h2></div>
+<a name="foreach"></a>Chapter&#160;8.&#160;Boost.Foreach</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Eric</span> <span class="surname">Niebler</span>
 </h3></div></div>
 <div><p class="copyright">Copyright &#169; 2004 Eric Niebler</p></div>
 <div><div class="legalnotice">
-<a name="id1354723"></a><p>
+<a name="foreach.legal"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -55,9 +55,9 @@
         <span class="quote">&#8220;<span class="quote">Make simple things easy.</span>&#8221;</span><br> <span class="bold"><strong><span class="emphasis"><em>--
         Larry Wall</em></span></strong></span>
       </p></blockquote></div>
-<a name="foreach.introduction.what_is__literal_boost_foreach__literal__"></a><h3>
-<a name="foreach.introduction.what_is__literal_boost_foreach__literal__-heading"></a>
-      <a class="link" href="foreach.html#foreach.introduction.what_is__literal_boost_foreach__literal__">What
+<h3>
+<a name="foreach.introduction.h0"></a>
+      <span><a name="foreach.introduction.what_is__literal_boost_foreach__literal__"></a></span><a class="link" href="foreach.html#foreach.introduction.what_is__literal_boost_foreach__literal__">What
       is <code class="literal">BOOST_FOREACH</code>?</a>
     </h3>
 <p>
@@ -81,9 +81,10 @@
       it is a remarkably well-behaved one. It evaluates its arguments exactly once,
       leading to no nasty surprises.
     </p>
-<a name="foreach.introduction.hello__world_"></a><h3>
-<a name="foreach.introduction.hello__world_-heading"></a>
-      <a class="link" href="foreach.html#foreach.introduction.hello__world_">Hello, world!</a>
+<h3>
+<a name="foreach.introduction.h1"></a>
+      <span><a name="foreach.introduction.hello__world_"></a></span><a class="link" href="foreach.html#foreach.introduction.hello__world_">Hello,
+      world!</a>
     </h3>
 <p>
       Below is a sample program that uses <code class="literal">BOOST_FOREACH</code> to loop
@@ -96,7 +97,7 @@
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">hello</span><span class="special">(</span> <span class="string">"Hello, world!"</span> <span class="special">);</span>
-    
+
     <span class="identifier">BOOST_FOREACH</span><span class="special">(</span> <span class="keyword">char</span> <span class="identifier">ch</span><span class="special">,</span> <span class="identifier">hello</span> <span class="special">)</span>
     <span class="special">{</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">ch</span><span class="special">;</span>
@@ -110,10 +111,10 @@
     </p>
 <pre class="programlisting">Hello, world!
 </pre>
-<a name="foreach.introduction.supported_sequence_types"></a><h3>
-<a name="foreach.introduction.supported_sequence_types-heading"></a>
-      <a class="link" href="foreach.html#foreach.introduction.supported_sequence_types">Supported Sequence
-      Types</a>
+<h3>
+<a name="foreach.introduction.h2"></a>
+      <span><a name="foreach.introduction.supported_sequence_types"></a></span><a class="link" href="foreach.html#foreach.introduction.supported_sequence_types">Supported
+      Sequence Types</a>
     </h3>
 <p>
       <code class="literal">BOOST_FOREACH</code> iterates over sequences. But what qualifies
@@ -161,9 +162,9 @@
       See the section on <a class="link" href="foreach/extensibility.html" title="Extensibility">Extensibility</a>
       to find out how to make <code class="literal">BOOST_FOREACH</code> work with other types.
     </p>
-<a name="foreach.introduction.examples"></a><h3>
-<a name="foreach.introduction.examples-heading"></a>
-      <a class="link" href="foreach.html#foreach.introduction.examples">Examples</a>
+<h3>
+<a name="foreach.introduction.h3"></a>
+      <span><a name="foreach.introduction.examples"></a></span><a class="link" href="foreach.html#foreach.introduction.examples">Examples</a>
     </h3>
 <p>
       Below are some examples that demonstrate all the different ways we can use
@@ -228,7 +229,7 @@
 <span class="identifier">BOOST_FOREACH</span><span class="special">(</span> <span class="keyword">float</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">get_vector_float</span><span class="special">()</span> <span class="special">)</span>
 <span class="special">{</span>
     <span class="comment">// Note: get_vector_float() will be called exactly once</span>
-<span class="special">}</span>    
+<span class="special">}</span>
 </pre>
 <p>
       Iterate in reverse:
@@ -243,9 +244,9 @@
       Iterating over rvalues doesn't work on some older compilers. Check the <a class="link" href="foreach/portability.html" title="Portability">Portability</a> section to see whether your
       compiler supports this.
     </p>
-<a name="foreach.introduction.making__literal_boost_foreach__literal__prettier"></a><h3>
-<a name="foreach.introduction.making__literal_boost_foreach__literal__prettier-heading"></a>
-      <a class="link" href="foreach.html#foreach.introduction.making__literal_boost_foreach__literal__prettier">Making
+<h3>
+<a name="foreach.introduction.h4"></a>
+      <span><a name="foreach.introduction.making__literal_boost_foreach__literal__prettier"></a></span><a class="link" href="foreach.html#foreach.introduction.making__literal_boost_foreach__literal__prettier">Making
       <code class="literal">BOOST_FOREACH</code> Prettier</a>
     </h3>
 <p>
@@ -278,7 +279,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: July 05, 2011 at 15:25:52 GMT</small></p></td>
+<td align="left"><p><small>Last revised: November 12, 2011 at 13:42:31 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

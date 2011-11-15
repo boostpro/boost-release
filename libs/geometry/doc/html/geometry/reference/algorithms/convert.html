@@ -27,31 +27,33 @@
 <a name="geometry.reference.algorithms.convert"></a><a class="link" href="convert.html" title="convert">convert</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id845024"></a>
+          <a class="indexterm" name="id844879"></a>
 Converts one geometry to another geometry.
         </p>
-<a name="geometry.reference.algorithms.convert.description"></a><h6>
-<a name="geometry.reference.algorithms.convert.description-heading"></a>
-          <a class="link" href="convert.html#geometry.reference.algorithms.convert.description">Description</a>
+<h6>
+<a name="geometry.reference.algorithms.convert.h0"></a>
+          <span><a name="geometry.reference.algorithms.convert.description"></a></span><a class="link" href="convert.html#geometry.reference.algorithms.convert.description">Description</a>
         </h6>
 <p>
           The convert algorithm converts one geometry, e.g. a BOX, to another geometry,
-          e.g. a RING. This only if it is possible and applicable.
+          e.g. a RING. This only if it is possible and applicable. If the point-order
+          is different, or the closure is different between two geometry types, it
+          will be converted correctly by explicitly reversing the points or closing
+          or opening the polygon rings.
         </p>
-<a name="geometry.reference.algorithms.convert.synopsis"></a><h6>
-<a name="geometry.reference.algorithms.convert.synopsis-heading"></a>
-          <a class="link" href="convert.html#geometry.reference.algorithms.convert.synopsis">Synopsis</a>
+<h6>
+<a name="geometry.reference.algorithms.convert.h1"></a>
+          <span><a name="geometry.reference.algorithms.convert.synopsis"></a></span><a class="link" href="convert.html#geometry.reference.algorithms.convert.synopsis">Synopsis</a>
         </h6>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Geometry1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Geometry2</span><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">convert</span><span class="special">(</span><span class="identifier">Geometry1</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">geometry1</span><span class="special">,</span> <span class="identifier">Geometry2</span> <span class="special">&amp;</span> <span class="identifier">geometry2</span><span class="special">)</span></pre>
 <p>
         </p>
-<a name="geometry.reference.algorithms.convert.parameters"></a><h6>
-<a name="geometry.reference.algorithms.convert.parameters-heading"></a>
-          <a class="link" href="convert.html#geometry.reference.algorithms.convert.parameters">Parameters</a>
+<h6>
+<a name="geometry.reference.algorithms.convert.h2"></a>
+          <span><a name="geometry.reference.algorithms.convert.parameters"></a></span><a class="link" href="convert.html#geometry.reference.algorithms.convert.parameters">Parameters</a>
         </h6>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -129,9 +131,9 @@ Converts one geometry to another geometry.
 </tr>
 </tbody>
 </table></div>
-<a name="geometry.reference.algorithms.convert.header"></a><h6>
-<a name="geometry.reference.algorithms.convert.header-heading"></a>
-          <a class="link" href="convert.html#geometry.reference.algorithms.convert.header">Header</a>
+<h6>
+<a name="geometry.reference.algorithms.convert.h3"></a>
+          <span><a name="geometry.reference.algorithms.convert.header"></a></span><a class="link" href="convert.html#geometry.reference.algorithms.convert.header">Header</a>
         </h6>
 <p>
           <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">/</span><span class="identifier">algorithms</span><span class="special">/</span><span class="identifier">convert</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
@@ -155,22 +157,21 @@ Converts one geometry to another geometry.
             as target := source)
           </p></td></tr>
 </table></div>
-<a name="geometry.reference.algorithms.convert.complexity"></a><h6>
-<a name="geometry.reference.algorithms.convert.complexity-heading"></a>
-          <a class="link" href="convert.html#geometry.reference.algorithms.convert.complexity">Complexity</a>
+<h6>
+<a name="geometry.reference.algorithms.convert.h4"></a>
+          <span><a name="geometry.reference.algorithms.convert.complexity"></a></span><a class="link" href="convert.html#geometry.reference.algorithms.convert.complexity">Complexity</a>
         </h6>
 <p>
           Linear
         </p>
-<a name="geometry.reference.algorithms.convert.example"></a><h6>
-<a name="geometry.reference.algorithms.convert.example-heading"></a>
-          <a class="link" href="convert.html#geometry.reference.algorithms.convert.example">Example</a>
+<h6>
+<a name="geometry.reference.algorithms.convert.h5"></a>
+          <span><a name="geometry.reference.algorithms.convert.example"></a></span><a class="link" href="convert.html#geometry.reference.algorithms.convert.example">Example</a>
         </h6>
 <p>
           Shows how to convert a geometry into another geometry
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
@@ -190,7 +191,7 @@ Converts one geometry to another geometry.
 
     <span class="identifier">point</span> <span class="identifier">p1</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
     <span class="identifier">box</span> <span class="identifier">bx</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">make</span><span class="special">&lt;</span><span class="identifier">box</span><span class="special">&gt;(</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">2</span><span class="special">);</span>
-    
+
     <span class="comment">// Assign a box to a polygon (conversion box-&gt;poly)</span>
     <span class="identifier">polygon</span> <span class="identifier">poly</span><span class="special">;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">convert</span><span class="special">(</span><span class="identifier">bx</span><span class="special">,</span> <span class="identifier">poly</span><span class="special">);</span>
@@ -198,7 +199,7 @@ Converts one geometry to another geometry.
     <span class="comment">// Convert a point to another point type (conversion of point-type)</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">p2</span><span class="special">;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">convert</span><span class="special">(</span><span class="identifier">p1</span><span class="special">,</span> <span class="identifier">p2</span><span class="special">);</span> <span class="comment">// source -&gt; target</span>
-        
+
     <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">dsv</span><span class="special">;</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span>
         <span class="special">&lt;&lt;</span> <span class="string">"box: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">dsv</span><span class="special">(</span><span class="identifier">bx</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
@@ -221,9 +222,10 @@ polygon: (((1, 1), (1, 2), (2, 2), (2, 1), (1, 1)))
 point: (1, 1)
 point tuples: (1, 1)
 </pre>
-<a name="geometry.reference.algorithms.convert.see_also"></a><h6>
-<a name="geometry.reference.algorithms.convert.see_also-heading"></a>
-          <a class="link" href="convert.html#geometry.reference.algorithms.convert.see_also">See also</a>
+<h6>
+<a name="geometry.reference.algorithms.convert.h6"></a>
+          <span><a name="geometry.reference.algorithms.convert.see_also"></a></span><a class="link" href="convert.html#geometry.reference.algorithms.convert.see_also">See
+          also</a>
         </h6>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
               <a class="link" href="assign/assign.html" title="assign">assign</a>

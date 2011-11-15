@@ -59,9 +59,9 @@
           This operation is implemented in terms of zero or more calls to the device's
           read_some_at function.
         </p>
-<a name="boost_asio.reference.read_at.overload3.parameters"></a><h6>
-<a name="boost_asio.reference.read_at.overload3.parameters-heading"></a>
-          <a class="link" href="overload3.html#boost_asio.reference.read_at.overload3.parameters">Parameters</a>
+<h6>
+<a name="boost_asio.reference.read_at.overload3.h0"></a>
+          <span><a name="boost_asio.reference.read_at.overload3.parameters"></a></span><a class="link" href="overload3.html#boost_asio.reference.read_at.overload3.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -85,7 +85,7 @@
 <dd>
 <p>
                 The function object to be called to determine whether the read operation
-                is complete. The signature of the function object must be: 
+                is complete. The signature of the function object must be:
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">completion_condition</span><span class="special">(</span>
   <span class="comment">// Result of latest read_some_at operation.</span>
@@ -93,7 +93,7 @@
 
   <span class="comment">// Number of bytes transferred so far.</span>
   <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">bytes_transferred</span>
-<span class="special">);</span> 
+<span class="special">);</span>
 </pre>
 <p>
                 A return value of 0 indicates that the read operation is complete.
@@ -103,17 +103,16 @@
 </dd>
 </dl>
 </div>
-<a name="boost_asio.reference.read_at.overload3.return_value"></a><h6>
-<a name="boost_asio.reference.read_at.overload3.return_value-heading"></a>
-          <a class="link" href="overload3.html#boost_asio.reference.read_at.overload3.return_value">Return
-          Value</a>
+<h6>
+<a name="boost_asio.reference.read_at.overload3.h1"></a>
+          <span><a name="boost_asio.reference.read_at.overload3.return_value"></a></span><a class="link" href="overload3.html#boost_asio.reference.read_at.overload3.return_value">Return Value</a>
         </h6>
 <p>
           The number of bytes transferred.
         </p>
-<a name="boost_asio.reference.read_at.overload3.exceptions"></a><h6>
-<a name="boost_asio.reference.read_at.overload3.exceptions-heading"></a>
-          <a class="link" href="overload3.html#boost_asio.reference.read_at.overload3.exceptions">Exceptions</a>
+<h6>
+<a name="boost_asio.reference.read_at.overload3.h2"></a>
+          <span><a name="boost_asio.reference.read_at.overload3.exceptions"></a></span><a class="link" href="overload3.html#boost_asio.reference.read_at.overload3.exceptions">Exceptions</a>
         </h6>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -124,15 +123,15 @@
               </p></dd>
 </dl>
 </div>
-<a name="boost_asio.reference.read_at.overload3.example"></a><h6>
-<a name="boost_asio.reference.read_at.overload3.example-heading"></a>
-          <a class="link" href="overload3.html#boost_asio.reference.read_at.overload3.example">Example</a>
+<h6>
+<a name="boost_asio.reference.read_at.overload3.h3"></a>
+          <span><a name="boost_asio.reference.read_at.overload3.example"></a></span><a class="link" href="overload3.html#boost_asio.reference.read_at.overload3.example">Example</a>
         </h6>
 <p>
           To read into a single data buffer use the <a class="link" href="../buffer.html" title="buffer"><code class="computeroutput"><span class="identifier">buffer</span></code></a> function as follows:
         </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">read_at</span><span class="special">(</span><span class="identifier">d</span><span class="special">,</span> <span class="number">42</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">data</span><span class="special">,</span> <span class="identifier">size</span><span class="special">),</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">transfer_at_least</span><span class="special">(</span><span class="number">32</span><span class="special">));</span> 
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">transfer_at_least</span><span class="special">(</span><span class="number">32</span><span class="special">));</span>
 </pre>
 <p>
           See the <a class="link" href="../buffer.html" title="buffer"><code class="computeroutput"><span class="identifier">buffer</span></code></a>

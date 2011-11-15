@@ -27,7 +27,7 @@
 <a name="boost_asio.reference.io_service__strand.wrap"></a><a class="link" href="wrap.html" title="io_service::strand::wrap">io_service::strand::wrap</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id1352921"></a> 
+          <a class="indexterm" name="id1348897"></a> 
 Create a new handler that automatically dispatches
           the wrapped handler on the strand.
         </p>
@@ -41,9 +41,9 @@ Create a new handler that automatically dispatches
           invoked, will automatically pass the wrapped handler to the strand's dispatch
           function.
         </p>
-<a name="boost_asio.reference.io_service__strand.wrap.parameters"></a><h6>
-<a name="boost_asio.reference.io_service__strand.wrap.parameters-heading"></a>
-          <a class="link" href="wrap.html#boost_asio.reference.io_service__strand.wrap.parameters">Parameters</a>
+<h6>
+<a name="boost_asio.reference.io_service__strand.wrap.h0"></a>
+          <span><a name="boost_asio.reference.io_service__strand.wrap.parameters"></a></span><a class="link" href="wrap.html#boost_asio.reference.io_service__strand.wrap.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -53,40 +53,39 @@ Create a new handler that automatically dispatches
 <p>
                 The handler to be wrapped. The strand will make a copy of the handler
                 object as required. The function signature of the handler must be:
-                
 </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span><span class="identifier">A1</span> <span class="identifier">a1</span><span class="special">,</span> <span class="special">...</span> <span class="identifier">An</span> <span class="identifier">an</span><span class="special">);</span> 
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span><span class="identifier">A1</span> <span class="identifier">a1</span><span class="special">,</span> <span class="special">...</span> <span class="identifier">An</span> <span class="identifier">an</span><span class="special">);</span>
 </pre>
 <p>
               </p>
 </dd>
 </dl>
 </div>
-<a name="boost_asio.reference.io_service__strand.wrap.return_value"></a><h6>
-<a name="boost_asio.reference.io_service__strand.wrap.return_value-heading"></a>
-          <a class="link" href="wrap.html#boost_asio.reference.io_service__strand.wrap.return_value">Return
+<h6>
+<a name="boost_asio.reference.io_service__strand.wrap.h1"></a>
+          <span><a name="boost_asio.reference.io_service__strand.wrap.return_value"></a></span><a class="link" href="wrap.html#boost_asio.reference.io_service__strand.wrap.return_value">Return
           Value</a>
         </h6>
 <p>
           A function object that, when invoked, passes the wrapped handler to the
           strand's dispatch function. Given a function object with the signature:
         </p>
-<pre class="programlisting"><span class="identifier">R</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">A1</span> <span class="identifier">a1</span><span class="special">,</span> <span class="special">...</span> <span class="identifier">An</span> <span class="identifier">an</span><span class="special">);</span> 
+<pre class="programlisting"><span class="identifier">R</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">A1</span> <span class="identifier">a1</span><span class="special">,</span> <span class="special">...</span> <span class="identifier">An</span> <span class="identifier">an</span><span class="special">);</span>
 </pre>
 <p>
           If this function object is passed to the wrap function like so:
         </p>
-<pre class="programlisting"><span class="identifier">strand</span><span class="special">.</span><span class="identifier">wrap</span><span class="special">(</span><span class="identifier">f</span><span class="special">);</span> 
+<pre class="programlisting"><span class="identifier">strand</span><span class="special">.</span><span class="identifier">wrap</span><span class="special">(</span><span class="identifier">f</span><span class="special">);</span>
 </pre>
 <p>
           then the return value is a function object with the signature
         </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">g</span><span class="special">(</span><span class="identifier">A1</span> <span class="identifier">a1</span><span class="special">,</span> <span class="special">...</span> <span class="identifier">An</span> <span class="identifier">an</span><span class="special">);</span> 
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">g</span><span class="special">(</span><span class="identifier">A1</span> <span class="identifier">a1</span><span class="special">,</span> <span class="special">...</span> <span class="identifier">An</span> <span class="identifier">an</span><span class="special">);</span>
 </pre>
 <p>
           that, when invoked, executes code equivalent to:
         </p>
-<pre class="programlisting"><span class="identifier">strand</span><span class="special">.</span><span class="identifier">dispatch</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span><span class="identifier">f</span><span class="special">,</span> <span class="identifier">a1</span><span class="special">,</span> <span class="special">...</span> <span class="identifier">an</span><span class="special">));</span> 
+<pre class="programlisting"><span class="identifier">strand</span><span class="special">.</span><span class="identifier">dispatch</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span><span class="identifier">f</span><span class="special">,</span> <span class="identifier">a1</span><span class="special">,</span> <span class="special">...</span> <span class="identifier">an</span><span class="special">));</span>
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

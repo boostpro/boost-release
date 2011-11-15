@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Spirit V2.1</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../what_s_new.html" title="What's New">
 <link rel="prev" href="spirit_2_2.html" title="Spirit V2.2">
 <link rel="next" href="spirit_1_x.html" title="Spirit Classic">
@@ -26,9 +26,9 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="spirit.what_s_new.spirit_2_1"></a><a class="link" href="spirit_2_1.html" title="Spirit V2.1">Spirit V2.1</a>
 </h3></div></div></div>
-<a name="spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_qi__emphasis__and__emphasis_spirit_karma__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_"></a><h5>
-<a name="spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_qi__emphasis__and__emphasis_spirit_karma__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_-heading"></a>
-        <a class="link" href="spirit_2_1.html#spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_qi__emphasis__and__emphasis_spirit_karma__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_">What's
+<h5>
+<a name="spirit.what_s_new.spirit_2_1.h0"></a>
+        <span><a name="spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_qi__emphasis__and__emphasis_spirit_karma__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_"></a></span><a class="link" href="spirit_2_1.html#spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_qi__emphasis__and__emphasis_spirit_karma__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_">What's
         changed in <span class="emphasis"><em>Spirit.Qi</em></span> and <span class="emphasis"><em>Spirit.Karma</em></span>
         from V2.0 (Boost V1.37.0) to V2.1 (Boost V1.41.0)</a>
       </h5>
@@ -186,9 +186,9 @@
             qi::real_parser, karma::int_generator, and karma::real_generator.
           </li>
 </ul></div>
-<a name="spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_lex__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_"></a><h5>
-<a name="spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_lex__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_-heading"></a>
-        <a class="link" href="spirit_2_1.html#spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_lex__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_">What's
+<h5>
+<a name="spirit.what_s_new.spirit_2_1.h1"></a>
+        <span><a name="spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_lex__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_"></a></span><a class="link" href="spirit_2_1.html#spirit.what_s_new.spirit_2_1.what_s_changed_in__emphasis_spirit_lex__emphasis__from_v2_0__boost_v1_37_0__to_v2_1__boost_v1_41_0_">What's
         changed in <span class="emphasis"><em>Spirit.Lex</em></span> from V2.0 (Boost V1.37.0) to V2.1
         (Boost V1.41.0)</a>
       </h5>
@@ -209,14 +209,14 @@
 <li class="listitem">
             The lex::lexer class does not have the function <code class="computeroutput"><span class="identifier">def</span><span class="special">(</span><span class="identifier">Self</span><span class="special">&amp;</span> <span class="identifier">self</span><span class="special">)</span></code> anymore, token definitions can be added
             to the lexer at any time, usually in the constructor of the user defined
-            lexer class: 
+            lexer class:
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Lexer</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">example_tokens</span> <span class="special">:</span> <span class="identifier">lex</span><span class="special">::</span><span class="identifier">lexer</span><span class="special">&lt;</span><span class="identifier">Lexer</span><span class="special">&gt;</span>
 <span class="special">{</span>
       <span class="identifier">example_tokens</span><span class="special">()</span>
       <span class="special">{</span>
-          <span class="comment">// your token definitions here
-</span>          <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">self</span> <span class="special">=</span> <span class="special">...</span>
+          <span class="comment">// your token definitions here</span>
+          <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">self</span> <span class="special">=</span> <span class="special">...</span>
       <span class="special">}</span>
 <span class="special">};</span>
 </pre>
@@ -255,11 +255,10 @@
             template constructor now takes an optional parameter specifying the
             <code class="computeroutput"><span class="identifier">match_flags</span></code> to be used
             for table generation. Currently, there are the following flags available:
-            
-<pre class="programlisting"><span class="identifier">match_flags</span><span class="special">::</span><span class="identifier">match_default</span><span class="special">,</span>          <span class="comment">// no flags
-</span><span class="identifier">match_flags</span><span class="special">::</span><span class="identifier">match_not_dot_newline</span><span class="special">,</span>  <span class="comment">// the regex '.' doesn't match newlines
-</span><span class="identifier">match_flags</span><span class="special">::</span><span class="identifier">match_icase</span>             <span class="comment">// all matching operations are case insensitive
-</span></pre>
+<pre class="programlisting"><span class="identifier">match_flags</span><span class="special">::</span><span class="identifier">match_default</span><span class="special">,</span>          <span class="comment">// no flags</span>
+<span class="identifier">match_flags</span><span class="special">::</span><span class="identifier">match_not_dot_newline</span><span class="special">,</span>  <span class="comment">// the regex '.' doesn't match newlines</span>
+<span class="identifier">match_flags</span><span class="special">::</span><span class="identifier">match_icase</span>             <span class="comment">// all matching operations are case insensitive</span>
+</pre>
             If no parameter is passed to the constructor, <code class="computeroutput"><span class="identifier">match_flags</span><span class="special">::</span><span class="identifier">match_default</span></code>
             is used, i.e. the <code class="computeroutput"><span class="special">.</span></code> matches
             newlines and matching is case sensitive.

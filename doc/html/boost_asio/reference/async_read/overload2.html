@@ -57,9 +57,9 @@
               The completion_condition function object returns 0.
             </li>
 </ul></div>
-<a name="boost_asio.reference.async_read.overload2.parameters"></a><h6>
-<a name="boost_asio.reference.async_read.overload2.parameters-heading"></a>
-          <a class="link" href="overload2.html#boost_asio.reference.async_read.overload2.parameters">Parameters</a>
+<h6>
+<a name="boost_asio.reference.async_read.overload2.h0"></a>
+          <span><a name="boost_asio.reference.async_read.overload2.parameters"></a></span><a class="link" href="overload2.html#boost_asio.reference.async_read.overload2.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -82,7 +82,7 @@
 <dd>
 <p>
                 The function object to be called to determine whether the read operation
-                is complete. The signature of the function object must be: 
+                is complete. The signature of the function object must be:
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">completion_condition</span><span class="special">(</span>
   <span class="comment">// Result of latest async_read_some operation.</span>
@@ -90,7 +90,7 @@
 
   <span class="comment">// Number of bytes transferred so far.</span>
   <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">bytes_transferred</span>
-<span class="special">);</span> 
+<span class="special">);</span>
 </pre>
 <p>
                 A return value of 0 indicates that the read operation is complete.
@@ -103,7 +103,7 @@
 <p>
                 The handler to be called when the read operation completes. Copies
                 will be made of the handler as required. The function signature of
-                the handler must be: 
+                the handler must be:
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span>
   <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">error</span><span class="special">,</span> <span class="comment">// Result of operation.</span>
@@ -113,7 +113,7 @@
                                           <span class="comment">// this will be the  number of</span>
                                           <span class="comment">// bytes successfully transferred</span>
                                           <span class="comment">// prior to the error.</span>
-<span class="special">);</span> 
+<span class="special">);</span>
 </pre>
 <p>
                 Regardless of whether the asynchronous operation completes immediately
@@ -124,9 +124,9 @@
 </dd>
 </dl>
 </div>
-<a name="boost_asio.reference.async_read.overload2.example"></a><h6>
-<a name="boost_asio.reference.async_read.overload2.example-heading"></a>
-          <a class="link" href="overload2.html#boost_asio.reference.async_read.overload2.example">Example</a>
+<h6>
+<a name="boost_asio.reference.async_read.overload2.h1"></a>
+          <span><a name="boost_asio.reference.async_read.overload2.example"></a></span><a class="link" href="overload2.html#boost_asio.reference.async_read.overload2.example">Example</a>
         </h6>
 <p>
           To read into a single data buffer use the <a class="link" href="../buffer.html" title="buffer"><code class="computeroutput"><span class="identifier">buffer</span></code></a> function as follows:
@@ -134,7 +134,7 @@
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">async_read</span><span class="special">(</span><span class="identifier">s</span><span class="special">,</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">data</span><span class="special">,</span> <span class="identifier">size</span><span class="special">),</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">transfer_at_least</span><span class="special">(</span><span class="number">32</span><span class="special">),</span>
-    <span class="identifier">handler</span><span class="special">);</span> 
+    <span class="identifier">handler</span><span class="special">);</span>
 </pre>
 <p>
           See the <a class="link" href="../buffer.html" title="buffer"><code class="computeroutput"><span class="identifier">buffer</span></code></a>

@@ -145,9 +145,7 @@ namespace quickbook
             actions.scoped_context(element_info::in_block)
             [   local.blocks
             >>  *(  local.element
-                >>  cl::if_p(local.is_block)
-                    [   !(+eol >> local.blocks)
-                    ]
+                >>  !(cl::eps_p(local.is_block) >> +eol >> local.blocks)
                 |   local.paragraph_separator >> local.blocks
                 |   common
                 |   cl::space_p                 [actions.space_char]
@@ -281,11 +279,10 @@ namespace quickbook
             ;
 
         local.template_args =
-            cl::if_p(qbk_since(105u)) [
-                local.template_args_1_5
-            ].else_p [
-                local.template_args_1_4
-            ]
+                cl::eps_p(qbk_since(105u))
+            >>  local.template_args_1_5
+            |   cl::eps_p(qbk_before(105u))
+            >>  local.template_args_1_4
             ;
 
         local.template_args_1_4 = local.template_arg_1_4 >> *(".." >> local.template_arg_1_4);
@@ -457,7 +454,7 @@ namespace quickbook
         local.escape =
                 cl::str_p("\\n")                [actions.break_]
             |   cl::str_p("\\ ")                // ignore an escaped space
-            |   '\\' >> cl::punct_p             [actions.raw_char]
+            |   '\\' >> cl::punct_p             [actions.plain_char]
             |   "\\u" >> cl::repeat_p(4) [cl::chset<>("0-9a-fA-F")]
                                                 [actions.escape_unicode]
             |   "\\U" >> cl::repeat_p(8) [cl::chset<>("0-9a-fA-F")]

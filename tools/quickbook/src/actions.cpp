@@ -29,6 +29,7 @@
 #include "input_path.hpp"
 #include "block_tags.hpp"
 #include "phrase_tags.hpp"
+#include "id_generator.hpp"
 
 namespace quickbook
 {
@@ -63,7 +64,16 @@ namespace quickbook
             }
             
             actions.anchors.clear();
-        }    
+        }
+        
+        std::string add_anchor(quickbook::actions& actions,
+                std::string const& id,
+                id_generator::categories category = id_generator::explicit_id)
+        {
+            std::string placeholder = actions.ids.add(id, category);
+            actions.anchors.push_back(placeholder);
+            return placeholder;
+        }
     }
 
     void list_action(quickbook::actions&, value);
@@ -84,6 +94,7 @@ namespace quickbook
     void anchor_action(quickbook::actions&, value);
     void link_action(quickbook::actions&, value);
     void phrase_action(quickbook::actions&, value);
+    void footnote_action(quickbook::actions&, value);
     void raw_phrase_action(quickbook::actions&, value);
     void source_mode_action(quickbook::actions&, value);
     void do_template_action(quickbook::actions&, value, file_position);
@@ -161,8 +172,9 @@ namespace quickbook
         case phrase_tags::strikethrough:
         case phrase_tags::quote:
         case phrase_tags::replaceable:
-        case phrase_tags::footnote:
             return phrase_action(actions, v);
+        case phrase_tags::footnote:
+            return footnote_action(actions, v);
         case phrase_tags::escape:
             return raw_phrase_action(actions, v);
         case source_mode_tags::cpp:
@@ -258,6 +270,23 @@ namespace quickbook
         values.finish();
     }
 
+    void footnote_action(quickbook::actions& actions, value phrase)
+    {
+        if (actions.suppress) return;
+        write_anchors(actions, actions.phrase);
+
+        value_consumer values = phrase;
+        actions.phrase
+            << "<footnote id=\""
+            << actions.ids.add(fully_qualified_id(actions.doc_id,
+                    actions.qualified_section_id, "f"),
+                    id_generator::numbered)
+            << "\"><para>"
+            << values.consume().get_boostbook()
+            << "</para></footnote>";
+        values.finish();
+    }
+
     void raw_phrase_action(quickbook::actions& actions, value phrase)
     {
         if (actions.suppress) return;
@@ -289,16 +318,32 @@ namespace quickbook
     }
     
     namespace {
-        void write_bridgehead(collector& out, int level,
-            std::string const& str, std::string const& id, std::string const& linkend)
+        void write_bridgehead(quickbook::actions& actions, int level,
+            std::string const& str, std::string const& id, bool self_link)
         {
-            out << "<bridgehead renderas=\"sect" << level << "\"";
-            if(!id.empty()) out << " id=\"" << id << "\"";
-            out << ">";
-            if(!linkend.empty()) out << "<link linkend=\"" << linkend << "\">";
-            out << str;
-            if(!linkend.empty()) out << "</link>";
-            out << "</bridgehead>";
+            if (self_link && !id.empty())
+            {
+                actions.out << "<bridgehead renderas=\"sect" << level << "\"";
+                actions.out << " id=\"";
+                actions.out << actions.ids.add(
+                    fully_qualified_id(actions.doc_id,
+                        actions.qualified_section_id, "h"),
+                    id_generator::numbered),
+                actions.out << "\">";
+                actions.out << "<phrase id=\"" << id << "\"/>";
+                actions.out << "<link linkend=\"" << id << "\">";
+                actions.out << str;
+                actions.out << "</link>";
+                actions.out << "</bridgehead>";
+            }
+            else
+            {
+                actions.out << "<bridgehead renderas=\"sect" << level << "\"";
+                if(!id.empty()) actions.out << " id=\"" << id << "\"";
+                actions.out << ">";
+                actions.out << str;
+                actions.out << "</bridgehead>";
+            }
         }
     }
 
@@ -329,16 +374,25 @@ namespace quickbook
             level = heading_list.get_tag() - block_tags::heading1 + 1;
         }
 
-        std::string anchor;
-        std::string linkend;
+        write_anchors(actions, actions.out);
 
         if (!generic && qbk_version_n < 103) // version 1.2 and below
         {
-            anchor = actions.section_id + '.' +
-                detail::make_identifier(content.get_boostbook());
+            std::string anchor = actions.ids.add(
+                actions.section_id + '.' +
+                    detail::make_identifier(content.get_boostbook()),
+                id_generator::generated_heading);
+
+            write_bridgehead(actions, level,
+                content.get_boostbook(), anchor, false);
         }
         else
         {
+            id_generator::categories category =
+                !element_id.empty() ?
+                    id_generator::explicit_id :
+                    id_generator::generated_heading;
+
             std::string id =
                 !element_id.empty() ?
                     element_id.get_quickbook() :
@@ -348,15 +402,14 @@ namespace quickbook
                             content.get_boostbook()
                     );
 
-            linkend = anchor =
-                fully_qualified_id(actions.doc_id, actions.qualified_section_id, id);
-        }
+            std::string anchor = actions.ids.add(
+                fully_qualified_id(actions.doc_id,
+                    actions.qualified_section_id, id),
+                category);;
 
-        actions.anchors.push_back(anchor);
-        write_anchors(actions, actions.out);
-        
-        write_bridgehead(actions.out, level,
-            content.get_boostbook(), anchor + "-heading", linkend);
+            write_bridgehead(actions, level,
+                content.get_boostbook(), anchor, true);
+        }
     }
 
     void simple_phrase_action::operator()(char mark) const
@@ -558,7 +611,7 @@ namespace quickbook
         if(actions.suppress) return;
         
         value_consumer values = anchor;
-        actions.anchors.push_back(values.consume().get_quickbook());
+        add_anchor(actions, values.consume().get_quickbook());
         values.finish();
     }
 
@@ -662,22 +715,6 @@ namespace quickbook
         out << "<code>";
         out << str;
         out << "</code>";
-    }
-
-    void raw_char_action::operator()(char ch) const
-    {
-        if (actions.suppress) return;
-        write_anchors(actions, phrase);
-
-        phrase << ch;
-    }
-
-    void raw_char_action::operator()(iterator first, iterator /*last*/) const
-    {
-        if (actions.suppress) return;
-        write_anchors(actions, phrase);
-
-        phrase << *first;
     }
 
     void plain_char_action::operator()(char ch) const
@@ -1086,8 +1123,7 @@ namespace quickbook
             while (arg != args.end())
             {
                 if (!actions.templates.add(
-                        template_symbol(*tpl, empty_params, arg->content,
-                            arg->filename, &scope)))
+                        template_symbol(*tpl, empty_params, *arg, &scope)))
                 {
                     detail::outerr(actions.filename, pos.line)
                         << "Duplicate Symbol Found" << std::endl;
@@ -1112,7 +1148,8 @@ namespace quickbook
             //
             // Note: this is now done in the grammar.
 
-            if (escape)
+            // TODO: For escape, should this be surrounded in escape comments?
+            if (body.type == template_body::raw_output || escape)
             {
                 //  escape the body of the template
                 //  we just copy out the literal body
@@ -1147,11 +1184,6 @@ namespace quickbook
         }
     }
 
-    namespace detail
-    {
-        int callout_id = 0;
-    }
-
     void do_template_action(quickbook::actions& actions, value template_list,
             file_position pos)
     {
@@ -1165,6 +1197,7 @@ namespace quickbook
 
         std::string identifier = values.consume(template_tags::identifier).get_quickbook();
 
+        std::vector<std::string> callout_ids;
         std::vector<template_body> args;
 
         BOOST_FOREACH(value arg, values)
@@ -1238,21 +1271,27 @@ namespace quickbook
                 }
 
                 unsigned int size = symbol->params.size();
+                std::string callout_base_id =
+                    fully_qualified_id(actions.doc_id,
+                        actions.qualified_section_id, "c");
 
                 for(unsigned int i = 0; i < size; ++i)
                 {
-                    std::string callout_id = actions.doc_id +
-                        boost::lexical_cast<std::string>(detail::callout_id + i);
+                    std::string callout_id1 = actions.ids.add(
+                        callout_base_id, id_generator::numbered);
+                    std::string callout_id2 = actions.ids.add(
+                        callout_base_id, id_generator::numbered);
 
                     std::string code;
-                    code += "'''";
-                    code += "<co id=\"" + callout_id + "co\" ";
-                    code += "linkends=\"" + callout_id + "\" />";
-                    code += "'''";
+                    code += "<co id=\"" + callout_id1 + "\" ";
+                    code += "linkends=\"" + callout_id2 + "\" />";
 
+                    // TODO: This isn't a qbk_value...
                     args.push_back(template_body(
                         qbk_value(code, pos, template_tags::phrase),
-                        actions.filename));
+                        actions.filename, template_body::raw_output));
+                    callout_ids.push_back(callout_id1);
+                    callout_ids.push_back(callout_id2);
                 }
             }
 
@@ -1310,10 +1349,11 @@ namespace quickbook
         {
             BOOST_ASSERT(phrase.empty());
             block += "<calloutlist>";
+            int i = 0;
             BOOST_FOREACH(value c, symbol->callouts)
             {
-                std::string callout_id = actions.doc_id +
-                    boost::lexical_cast<std::string>(detail::callout_id++);
+                std::string callout_id1 = callout_ids[i++];
+                std::string callout_id2 = callout_ids[i++];
 
                 std::string callout_value;
                 actions.push();
@@ -1335,8 +1375,8 @@ namespace quickbook
                     return;
                 }
                 
-                block += "<callout arearefs=\"" + callout_id + "co\" ";
-                block += "id=\"" + callout_id + "\">";
+                block += "<callout arearefs=\"" + callout_id1 + "\" ";
+                block += "id=\"" + callout_id2 + "\">";
                 block += callout_value;
                 block += "</callout>";
             }
@@ -1433,14 +1473,25 @@ namespace quickbook
         std::string table_id;
         if(qbk_version_n >= 105) {
             if(!element_id.empty()) {
-                table_id = fully_qualified_id(actions.doc_id,
-                    actions.qualified_section_id, element_id);
+                table_id = actions.ids.add(
+                    fully_qualified_id(actions.doc_id,
+                        actions.qualified_section_id, element_id),
+                    id_generator::explicit_id);
             }
             else if(has_title) {
-                table_id = fully_qualified_id(actions.doc_id,
-                    actions.qualified_section_id,
-                    detail::make_identifier(title));
+                table_id = actions.ids.add(
+                    fully_qualified_id(actions.doc_id,
+                        actions.qualified_section_id,
+                        detail::make_identifier(title)),
+                    id_generator::generated);
             }
+        }
+        else if (has_title)
+        {
+            table_id = actions.ids.add(
+                    fully_qualified_id(actions.doc_id,
+                        actions.qualified_section_id, "t"),
+                id_generator::numbered);
         }
 
         // Emulating the old behaviour which used the width of the final
@@ -1531,23 +1582,18 @@ namespace quickbook
         actions.qualified_section_id += actions.section_id;
         ++actions.section_level;
 
-        actions::string_list saved_anchors;
-        saved_anchors.swap(actions.anchors);
+        // TODO: This could be awkward if there's a clash, possibly
+        // needs another category, between explicit and generated.
+        std::string full_id = actions.ids.add(
+            qbk_version_n < 103 ?
+                actions.doc_id + "." + actions.section_id :
+                actions.doc_id + "." + actions.qualified_section_id,
+            !element_id.empty() ?
+                id_generator::explicit_id :
+                id_generator::generated_section);
 
-        if (qbk_version_n < 103) // version 1.2 and below
-        {
-            actions.out << "\n<section id=\""
-                << actions.doc_id << "." << actions.section_id << "\">\n";
-        }
-        else // version 1.3 and above
-        {
-            actions.out << "\n<section id=\"" << actions.doc_id
-                << "." << actions.qualified_section_id << "\">\n";
-        }
-
+        actions.out << "\n<section id=\"" << full_id << "\">\n";
         actions.out << "<title>";
-
-        actions.anchors.swap(saved_anchors);
         write_anchors(actions, actions.out);
 
         if (qbk_version_n < 103) // version 1.2 and below
@@ -1556,8 +1602,7 @@ namespace quickbook
         }
         else // version 1.3 and above
         {
-            actions.out << "<link linkend=\"" << actions.doc_id
-                << "." << actions.qualified_section_id << "\">"
+            actions.out << "<link linkend=\"" << full_id << "\">"
                 << content.get_boostbook()
                 << "</link>"
                 ;
@@ -1742,7 +1787,7 @@ namespace quickbook
                 quickbook::actions const& actions)
         {
             fs::path current = actions.filename.parent_path();
-            fs::path path(name);
+            fs::path path = detail::generic_to_path(name);
 
             // If the path is relative, try and resolve it.
             if (!path.has_root_directory() && !path.has_root_name())

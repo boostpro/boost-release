@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;12.&#160;Boost.Intrusive">
 <link rel="prev" href="recursive.html" title="Recursive Boost.Intrusive containers">
 <link rel="next" href="obtaining_iterators_from_values.html" title="Obtaining iterators from values">
 </head>
@@ -37,7 +37,6 @@
       with a smart pointer (for example, an offset pointer from <span class="bold"><strong>Boost.Interprocess</strong></span>):
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">offset_ptr</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -66,7 +65,6 @@
       and <span class="bold"><strong>Boost.Intrusive</strong></span>:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">managed_shared_memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">containers</span><span class="special">/</span><span class="identifier">vector</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -74,7 +72,7 @@
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">allocators</span><span class="special">/</span><span class="identifier">allocator</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="comment">//Definition of the shared memory friendly intrusive list</span>
-<span class="keyword">typedef</span> <span class="identifier">ip</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">shared_memory_data</span><span class="special">&gt;</span> <span class="identifier">shm_list_t</span><span class="special">;</span>
+<span class="keyword">typedef</span> <span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">shared_memory_data</span><span class="special">&gt;</span> <span class="identifier">intrusive_list_t</span><span class="special">;</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
@@ -95,7 +93,7 @@
             <span class="identifier">shm_allocator_t</span><span class="special">;</span>
       <span class="keyword">typedef</span> <span class="identifier">ip</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">shared_memory_data</span><span class="special">,</span> <span class="identifier">shm_allocator_t</span><span class="special">&gt;</span> <span class="identifier">shm_vector_t</span><span class="special">;</span>
       <span class="identifier">shm_allocator_t</span> <span class="identifier">shm_alloc</span><span class="special">(</span><span class="identifier">shm</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
-      <span class="identifier">shm_vector_t</span> <span class="special">*</span><span class="identifier">pshm_vect</span> <span class="special">=</span> 
+      <span class="identifier">shm_vector_t</span> <span class="special">*</span><span class="identifier">pshm_vect</span> <span class="special">=</span>
          <span class="identifier">shm</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">shm_vector_t</span><span class="special">&gt;(</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">anonymous_instance</span><span class="special">)(</span><span class="identifier">shm_alloc</span><span class="special">);</span>
       <span class="identifier">pshm_vect</span><span class="special">-&gt;</span><span class="identifier">resize</span><span class="special">(</span><span class="identifier">MaxElem</span><span class="special">);</span>
 
@@ -103,12 +101,14 @@
       <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">MaxElem</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>    <span class="special">(*</span><span class="identifier">pshm_vect</span><span class="special">)[</span><span class="identifier">i</span><span class="special">].</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">i</span><span class="special">);</span>
 
       <span class="comment">//Now create the shared memory intrusive list</span>
-      <span class="identifier">shm_list_t</span> <span class="special">*</span><span class="identifier">plist</span> <span class="special">=</span> <span class="identifier">shm</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">shm_list_t</span><span class="special">&gt;(</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">anonymous_instance</span><span class="special">)();</span>
+      <span class="identifier">intrusive_list_t</span> <span class="special">*</span><span class="identifier">plist</span> <span class="special">=</span> <span class="identifier">shm</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">intrusive_list_t</span><span class="special">&gt;(</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">anonymous_instance</span><span class="special">)();</span>
+
+      <span class="comment">//Insert objects stored in shared memory vector in the intrusive list</span>
       <span class="identifier">plist</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">plist</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">pshm_vect</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">pshm_vect</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">());</span>
 
       <span class="comment">//Check all the inserted nodes</span>
       <span class="keyword">int</span> <span class="identifier">checker</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
-      <span class="keyword">for</span><span class="special">(</span> <span class="identifier">shm_list_t</span><span class="special">::</span><span class="identifier">const_iterator</span> <span class="identifier">it</span> <span class="special">=</span> <span class="identifier">plist</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">plist</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">())</span>
+      <span class="keyword">for</span><span class="special">(</span> <span class="identifier">intrusive_list_t</span><span class="special">::</span><span class="identifier">const_iterator</span> <span class="identifier">it</span> <span class="special">=</span> <span class="identifier">plist</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">itend</span><span class="special">(</span><span class="identifier">plist</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">())</span>
          <span class="special">;</span> <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">itend</span><span class="special">;</span> <span class="special">++</span><span class="identifier">it</span><span class="special">,</span> <span class="special">++</span><span class="identifier">checker</span><span class="special">){</span>
          <span class="keyword">if</span><span class="special">(</span><span class="identifier">it</span><span class="special">-&gt;</span><span class="identifier">get</span><span class="special">()</span> <span class="special">!=</span> <span class="identifier">checker</span><span class="special">)</span>   <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
       <span class="special">}</span>

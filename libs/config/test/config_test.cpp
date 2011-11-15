@@ -1,4 +1,4 @@
-//  This file was automatically generated on Mon May 09 12:11:18 2011
+//  This file was automatically generated on Wed Jul 13 18:50:14 2011
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -6,7 +6,7 @@
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/config for the most recent version.//
-//  Revision $Id: config_test.cpp 72217 2011-05-27 16:56:00Z johnmaddock $
+//  Revision $Id: config_test.cpp 74889 2011-10-10 11:50:55Z johnmaddock $
 //
 
 // Test file for config setup
@@ -196,6 +196,11 @@ namespace boost_no_cwctype = empty_boost;
 #include "boost_no_decltype.ipp"
 #else
 namespace boost_no_decltype = empty_boost;
+#endif
+#ifndef BOOST_NO_DECLTYPE_N3276
+#include "boost_no_decltype_n3276.ipp"
+#else
+namespace boost_no_decltype_n3276 = empty_boost;
 #endif
 #ifndef BOOST_DEDUCED_TYPENAME
 #include "boost_no_ded_typename.ipp"
@@ -628,6 +633,11 @@ namespace boost_has_expm1 = empty_boost;
 #else
 namespace boost_has_ftime = empty_boost;
 #endif
+#ifdef BOOST_HAS_GETSYSTEMTIMEASFILETIME
+#include "boost_has_getsystemtimeasfiletime.ipp"
+#else
+namespace boost_has_getsystemtimeasfiletime = empty_boost;
+#endif
 #ifdef BOOST_HAS_GETTIMEOFDAY
 #include "boost_has_gettimeofday.ipp"
 #else
@@ -879,6 +889,11 @@ int main( int, char *[] )
    if(0 != boost_has_ftime::test())
    {
       std::cerr << "Failed test for BOOST_HAS_FTIME at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_has_getsystemtimeasfiletime::test())
+   {
+      std::cerr << "Failed test for BOOST_HAS_GETSYSTEMTIMEASFILETIME at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_has_gettimeofday::test())
@@ -1274,6 +1289,11 @@ int main( int, char *[] )
    if(0 != boost_no_decltype::test())
    {
       std::cerr << "Failed test for BOOST_NO_DECLTYPE at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_decltype_n3276::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_DECLTYPE_N3276 at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_deduced_typename::test())

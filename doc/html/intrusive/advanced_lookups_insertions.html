@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;12.&#160;Boost.Intrusive">
 <link rel="prev" href="treap_set_multiset.html" title="Intrusive treap based associative containers: treap_set, treap_multiset and treap">
 <link rel="next" href="erasing_and_disposing.html" title="Erasing and disposing values from Boost.Intrusive containers">
 </head>
@@ -56,7 +56,6 @@
         However, sometimes the object to be searched is quite expensive to construct:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">unordered_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -68,7 +67,7 @@
 <span class="keyword">struct</span> <span class="identifier">StrHasher</span>
 <span class="special">{</span>
    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">str</span><span class="special">)</span> <span class="keyword">const</span>
-   <span class="special">{</span>  
+   <span class="special">{</span>
       <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">seed</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
       <span class="keyword">for</span><span class="special">(;</span> <span class="special">*</span><span class="identifier">str</span><span class="special">;</span> <span class="special">++</span><span class="identifier">str</span><span class="special">)</span>   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash_combine</span><span class="special">(</span><span class="identifier">seed</span><span class="special">,</span> <span class="special">*</span><span class="identifier">str</span><span class="special">);</span>
       <span class="keyword">return</span> <span class="identifier">seed</span><span class="special">;</span>
@@ -79,7 +78,7 @@
 <span class="special">{</span>
    <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">key_</span><span class="special">;</span>
    <span class="comment">// Other members...</span>
-  
+
    <span class="keyword">public</span><span class="special">:</span>
    <span class="identifier">Expensive</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">key</span><span class="special">)</span>
       <span class="special">:</span>  <span class="identifier">key_</span><span class="special">(</span><span class="identifier">key</span><span class="special">)</span>
@@ -149,7 +148,6 @@
         functions. Now, let's see the optimized search function:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="comment">// These compare Expensive and a c-string</span>
 <span class="keyword">struct</span> <span class="identifier">StrExpComp</span>
@@ -237,7 +235,6 @@
         it immediately without any further lookup. For example, using the same <code class="computeroutput"><span class="identifier">Expensive</span></code> class, this function can be inefficient:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="comment">// Insertion functions</span>
 <span class="keyword">bool</span> <span class="identifier">insert_to_set</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
@@ -265,7 +262,6 @@
         <code class="computeroutput"><span class="identifier">insert_commit</span></code> functions:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="comment">// Optimized insertion functions</span>
 <span class="keyword">bool</span> <span class="identifier">insert_to_set_optimized</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
@@ -358,7 +354,6 @@
         Let's see an example:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>

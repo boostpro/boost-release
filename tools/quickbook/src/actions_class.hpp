@@ -24,7 +24,8 @@ namespace quickbook
 
     struct actions
     {
-        actions(fs::path const& filein_, fs::path const& xinclude_base, string_stream& out_);
+        actions(fs::path const& filein_, fs::path const& xinclude_base, string_stream& out_,
+                id_generator&);
 
     private:
         boost::scoped_ptr<quickbook_grammar> grammar_;
@@ -101,6 +102,7 @@ namespace quickbook
         bool                    suppress;
         bool                    warned_about_breaks;
         int                     context;
+        id_generator&           ids;
 
     // push/pop the states and the streams
         void copy_macros_for_write();
@@ -121,7 +123,6 @@ namespace quickbook
         paragraph_action        paragraph;
         space                   space_char;
         plain_char_action       plain_char;
-        raw_char_action         raw_char;
         escape_unicode_action   escape_unicode;
 
         simple_phrase_action    simple_markup;

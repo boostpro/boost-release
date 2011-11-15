@@ -28,7 +28,7 @@
 </h2></div></div></div>
 <p>
       Almost everything is a function in the Phoenix library that can be evaluated
-      as <code class="computeroutput"><span class="identifier">f</span><span class="special">(</span><span class="identifier">a1</span><span class="special">,</span> <span class="identifier">a2</span><span class="special">,</span> <span class="special">...,</span> a<span class="emphasis"><em>n</em></span><span class="special">)</span></code>, where <span class="emphasis"><em>n</em></span> is the function's
+      as <code class="computeroutput"><span class="identifier">f</span><span class="special">(</span><span class="identifier">a1</span><span class="special">,</span> <span class="identifier">a2</span><span class="special">,</span> <span class="special">...,</span> a/n/<span class="special">)</span></code>, where <span class="emphasis"><em>n</em></span> is the function's
       arity, or number of arguments that the function expects. Operators are also
       functions. For example, <code class="computeroutput"><span class="identifier">a</span> <span class="special">+</span> <span class="identifier">b</span></code> is just
       a function with arity == 2 (or binary). <code class="computeroutput"><span class="identifier">a</span>
@@ -48,10 +48,10 @@
         in a short while.
       </p></td></tr>
 </table></div>
-<a name="phoenix.basics.partial_function_application"></a><h4>
-<a name="id804439"></a>
-      <a class="link" href="basics.html#phoenix.basics.partial_function_application">Partial Function
-      Application</a>
+<h4>
+<a name="phoenix.basics.h0"></a>
+      <span><a name="phoenix.basics.partial_function_application"></a></span><a class="link" href="basics.html#phoenix.basics.partial_function_application">Partial
+      Function Application</a>
     </h4>
 <p>
       Think of a function as a black box. You pass arguments and it returns something
@@ -100,10 +100,10 @@
       application. And even more, with Phoenix, these resulting functions won't be
       black boxes anymore.
     </p>
-<a name="phoenix.basics.stl_and_higher_order_functions"></a><h4>
-<a name="id804654"></a>
-      <a class="link" href="basics.html#phoenix.basics.stl_and_higher_order_functions">STL and higher
-      order functions</a>
+<h4>
+<a name="phoenix.basics.h1"></a>
+      <span><a name="phoenix.basics.stl_and_higher_order_functions"></a></span><a class="link" href="basics.html#phoenix.basics.stl_and_higher_order_functions">STL
+      and higher order functions</a>
     </h4>
 <p>
       So, what's all the fuss? What makes partial function application so useful?
@@ -132,9 +132,10 @@
         return values from functions.
       </p></td></tr>
 </table></div>
-<a name="phoenix.basics.lazy_evaluation"></a><h4>
-<a name="id804865"></a>
-      <a class="link" href="basics.html#phoenix.basics.lazy_evaluation">Lazy Evaluation</a>
+<h4>
+<a name="phoenix.basics.h2"></a>
+      <span><a name="phoenix.basics.lazy_evaluation"></a></span><a class="link" href="basics.html#phoenix.basics.lazy_evaluation">Lazy
+      Evaluation</a>
     </h4>
 <p>
       In Phoenix, to put it more accurately, function evaluation has two stages:
@@ -170,9 +171,9 @@
 <span class="identifier">InputIterator</span>
 <span class="identifier">find_if</span><span class="special">(</span><span class="identifier">InputIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InputIterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">Predicate</span> <span class="identifier">pred</span><span class="special">)</span>
 <span class="special">{</span>
-    <span class="keyword">while</span> <span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span> <span class="special">&amp;&amp;</span> <span class="special">!</span><span class="identifier">pred</span><span class="special">(*</span><span class="identifier">first</span><span class="special">))</span>  <span class="comment">// &lt;--- The lambda function is called here
-</span>        <span class="special">++</span><span class="identifier">first</span><span class="special">;</span>                            <span class="comment">//      passing in *first
-</span>    <span class="keyword">return</span> <span class="identifier">first</span><span class="special">;</span>
+    <span class="keyword">while</span> <span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span> <span class="special">&amp;&amp;</span> <span class="special">!</span><span class="identifier">pred</span><span class="special">(*</span><span class="identifier">first</span><span class="special">))</span>  <span class="comment">// &lt;--- The lambda function is called here</span>
+        <span class="special">++</span><span class="identifier">first</span><span class="special">;</span>                            <span class="comment">//      passing in *first</span>
+    <span class="keyword">return</span> <span class="identifier">first</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -184,13 +185,13 @@
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">x</span> <span class="special">=</span> <span class="number">1</span><span class="special">;</span>
 <span class="keyword">int</span> <span class="identifier">y</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
 
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="special">(</span><span class="identifier">arg1</span> <span class="special">%</span> <span class="number">2</span> <span class="special">==</span> <span class="number">1</span><span class="special">)(</span><span class="identifier">x</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span> <span class="comment">// prints 1 or true
-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="special">(</span><span class="identifier">arg1</span> <span class="special">%</span> <span class="number">2</span> <span class="special">==</span> <span class="number">1</span><span class="special">)(</span><span class="identifier">y</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span> <span class="comment">// prints 0 or false
-</span></pre>
-<a name="phoenix.basics.forwarding_function_problem"></a><h4>
-<a name="id805408"></a>
-      <a class="link" href="basics.html#phoenix.basics.forwarding_function_problem">Forwarding Function
-      Problem</a>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="special">(</span><span class="identifier">arg1</span> <span class="special">%</span> <span class="number">2</span> <span class="special">==</span> <span class="number">1</span><span class="special">)(</span><span class="identifier">x</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span> <span class="comment">// prints 1 or true</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="special">(</span><span class="identifier">arg1</span> <span class="special">%</span> <span class="number">2</span> <span class="special">==</span> <span class="number">1</span><span class="special">)(</span><span class="identifier">y</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span> <span class="comment">// prints 0 or false</span>
+</pre>
+<h4>
+<a name="phoenix.basics.h3"></a>
+      <span><a name="phoenix.basics.forwarding_function_problem"></a></span><a class="link" href="basics.html#phoenix.basics.forwarding_function_problem">Forwarding
+      Function Problem</a>
     </h4>
 <p>
       Usually, we, as clients, write the call-back functions while libraries (such
@@ -228,9 +229,10 @@
         is set to 3.
       </p></td></tr>
 </table></div>
-<a name="phoenix.basics.polymorphic_functions"></a><h4>
-<a name="id805546"></a>
-      <a class="link" href="basics.html#phoenix.basics.polymorphic_functions">Polymorphic Functions</a>
+<h4>
+<a name="phoenix.basics.h4"></a>
+      <span><a name="phoenix.basics.polymorphic_functions"></a></span><a class="link" href="basics.html#phoenix.basics.polymorphic_functions">Polymorphic
+      Functions</a>
     </h4>
 <p>
       Unless otherwise noted, Phoenix generated functions are fully polymorphic.

@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: test_ranlux64_4.cpp 71018 2011-04-05 21:27:52Z steven_watanabe $
+ * $Id: test_ranlux64_4.cpp 74867 2011-10-09 23:13:31Z steven_watanabe $
  *
  */
 
@@ -19,7 +19,7 @@
 
 // principal operation validated with CLHEP, values by experiment
 #define BOOST_RANDOM_VALIDATION_VALUE UINT64_C(199461971133682)
-#define BOOST_RANDOM_SEED_SEQ_VALIDATION_VALUE UINT64_C(63570328604787)
+#define BOOST_RANDOM_SEED_SEQ_VALIDATION_VALUE UINT64_C(160535400540538)
 #define BOOST_RANDOM_ITERATOR_VALIDATION_VALUE UINT64_C(40074210927900)
 
 #define BOOST_RANDOM_GENERATE_VALUES { 0xC35F616BU, 0xDC3C4DF1U, 0xF3F90D0AU, 0x206F9C9EU }

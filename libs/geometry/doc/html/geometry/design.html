@@ -78,9 +78,10 @@
 <p>
       In this and following sections we will make the design step by step more generic.
     </p>
-<a name="geometry.design.using_templates"></a><h4>
-<a name="geometry.design.using_templates-heading"></a>
-      <a class="link" href="design.html#geometry.design.using_templates">Using Templates</a>
+<h4>
+<a name="geometry.design.h0"></a>
+      <span><a name="geometry.design.using_templates"></a></span><a class="link" href="design.html#geometry.design.using_templates">Using
+      Templates</a>
     </h4>
 <p>
       The distance function can be changed into a template function. This is trivial
@@ -104,9 +105,10 @@
       <code class="computeroutput"><span class="identifier">y</span></code> members directly. So, this
       paragraph is short and we just move on.
     </p>
-<a name="geometry.design.using_traits"></a><h4>
-<a name="geometry.design.using_traits-heading"></a>
-      <a class="link" href="design.html#geometry.design.using_traits">Using Traits</a>
+<h4>
+<a name="geometry.design.h1"></a>
+      <span><a name="geometry.design.using_traits"></a></span><a class="link" href="design.html#geometry.design.using_traits">Using
+      Traits</a>
     </h4>
 <p>
       We need to take a generic approach and allow any point type as input to the
@@ -171,9 +173,10 @@
       and they are supported as long as there is a specialization of the access
       <code class="computeroutput"><span class="keyword">struct</span></code> with a static <code class="computeroutput"><span class="identifier">get</span></code> function returning <code class="computeroutput"><span class="identifier">x</span><span class="special">()</span></code> for dimension 0, and similar for 1 and <code class="computeroutput"><span class="identifier">y</span><span class="special">()</span></code>.
     </p>
-<a name="geometry.design.dimension_agnosticism"></a><h4>
-<a name="geometry.design.dimension_agnosticism-heading"></a>
-      <a class="link" href="design.html#geometry.design.dimension_agnosticism">Dimension Agnosticism</a>
+<h4>
+<a name="geometry.design.h2"></a>
+      <span><a name="geometry.design.dimension_agnosticism"></a></span><a class="link" href="design.html#geometry.design.dimension_agnosticism">Dimension
+      Agnosticism</a>
     </h4>
 <p>
       Now we can calculate the distance between points in 2D, points of any structure
@@ -219,7 +222,6 @@
       The dimension which is referred to is defined using another traits class:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">traits</span>
 <span class="special">{</span>
@@ -238,7 +240,6 @@
       Boost.MPL <code class="computeroutput"><span class="keyword">class</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span></code>:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">traits</span>
 <span class="special">{</span>
@@ -262,9 +263,10 @@
       points of three or more dimensions. The compile-time assertion will prevent
       point a having two dimension and point b having three dimensions.
     </p>
-<a name="geometry.design.coordinate_type"></a><h4>
-<a name="geometry.design.coordinate_type-heading"></a>
-      <a class="link" href="design.html#geometry.design.coordinate_type">Coordinate Type</a>
+<h4>
+<a name="geometry.design.h3"></a>
+      <span><a name="geometry.design.coordinate_type"></a></span><a class="link" href="design.html#geometry.design.coordinate_type">Coordinate
+      Type</a>
     </h4>
 <p>
       We assumed double above. What if our points are in integer?
@@ -329,9 +331,10 @@
     <span class="special">}</span>
 <span class="special">};</span>
 </pre>
-<a name="geometry.design.different_geometries"></a><h4>
-<a name="geometry.design.different_geometries-heading"></a>
-      <a class="link" href="design.html#geometry.design.different_geometries">Different Geometries</a>
+<h4>
+<a name="geometry.design.h4"></a>
+      <span><a name="geometry.design.different_geometries"></a></span><a class="link" href="design.html#geometry.design.different_geometries">Different
+      Geometries</a>
     </h4>
 <p>
       We have designed a dimension agnostic system supporting any point type of any
@@ -440,7 +443,7 @@
             <span class="special">...</span>
         <span class="special">}</span>
     <span class="special">};</span>
-    
+
     <span class="comment">// here we might have many more</span>
     <span class="comment">// specializations,</span>
     <span class="comment">// for point-polygon, box-circle, etc.</span>
@@ -463,9 +466,10 @@
 <span class="identifier">rbc</span> <span class="identifier">orange</span><span class="special">(</span><span class="number">255</span><span class="special">,</span> <span class="number">128</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"color distance: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">distance</span><span class="special">(</span><span class="identifier">red</span><span class="special">,</span> <span class="identifier">orange</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 </pre>
-<a name="geometry.design.kernel_revisited"></a><h4>
-<a name="geometry.design.kernel_revisited-heading"></a>
-      <a class="link" href="design.html#geometry.design.kernel_revisited">Kernel Revisited</a>
+<h4>
+<a name="geometry.design.h5"></a>
+      <span><a name="geometry.design.kernel_revisited"></a></span><a class="link" href="design.html#geometry.design.kernel_revisited">Kernel
+      Revisited</a>
     </h4>
 <p>
       We described above that we had a traits class <code class="computeroutput"><span class="identifier">coordinate_type</span></code>,
@@ -501,7 +505,7 @@
             <span class="special">&lt;</span>
                 <span class="identifier">GeometryTag</span><span class="special">,</span> <span class="identifier">G</span>
             <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">point_type</span><span class="special">;</span>
-    
+
         <span class="comment">// Call specialization on point-tag</span>
         <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">coordinate_type</span> <span class="special">&lt;</span> <span class="identifier">point_tag</span><span class="special">,</span> <span class="identifier">point_type</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">type</span><span class="special">;</span>
     <span class="special">};</span>
@@ -525,9 +529,10 @@
       The same applies for the meta-function dimension and for the upcoming meta-function
       coordinate system.
     </p>
-<a name="geometry.design.coordinate_system"></a><h4>
-<a name="geometry.design.coordinate_system-heading"></a>
-      <a class="link" href="design.html#geometry.design.coordinate_system">Coordinate System</a>
+<h4>
+<a name="geometry.design.h6"></a>
+      <span><a name="geometry.design.coordinate_system"></a></span><a class="link" href="design.html#geometry.design.coordinate_system">Coordinate
+      System</a>
     </h4>
 <p>
       Until here we assumed a Cartesian system. But we know that the Earth is not
@@ -676,9 +681,10 @@
 <p>
       where a strategy is specified explicitly and constructed with a radius.
     </p>
-<a name="geometry.design.point_concept"></a><h4>
-<a name="geometry.design.point_concept-heading"></a>
-      <a class="link" href="design.html#geometry.design.point_concept">Point Concept</a>
+<h4>
+<a name="geometry.design.h7"></a>
+      <span><a name="geometry.design.point_concept"></a></span><a class="link" href="design.html#geometry.design.point_concept">Point
+      Concept</a>
     </h4>
 <p>
       The five traits classes mentioned in the previous sections form together the
@@ -718,9 +724,10 @@
       type fulfills the requirements imposed by the concepts. This is handled in
       the upcoming section Concept Checking.
     </p>
-<a name="geometry.design.return_type"></a><h4>
-<a name="geometry.design.return_type-heading"></a>
-      <a class="link" href="design.html#geometry.design.return_type">Return Type</a>
+<h4>
+<a name="geometry.design.h8"></a>
+      <span><a name="geometry.design.return_type"></a></span><a class="link" href="design.html#geometry.design.return_type">Return
+      Type</a>
     </h4>
 <p>
       We promised that calling <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">sqrt</span></code> was
@@ -805,9 +812,9 @@
       a result like this. They have a strategy as a template parameter everywhere,
       making the less verbose version possible.
     </p>
-<a name="geometry.design.summary"></a><h4>
-<a name="geometry.design.summary-heading"></a>
-      <a class="link" href="design.html#geometry.design.summary">Summary</a>
+<h4>
+<a name="geometry.design.h9"></a>
+      <span><a name="geometry.design.summary"></a></span><a class="link" href="design.html#geometry.design.summary">Summary</a>
     </h4>
 <p>
       In this design rationale, Boost.Geometry is step by step designed using tag

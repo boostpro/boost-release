@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../typeof.html" title="Chapter&#160;27.&#160;Boost.Typeof">
-<link rel="prev" href="../typeof.html" title="Chapter&#160;27.&#160;Boost.Typeof">
+<link rel="up" href="../typeof.html" title="Chapter&#160;30.&#160;Boost.Typeof">
+<link rel="prev" href="../typeof.html" title="Chapter&#160;30.&#160;Boost.Typeof">
 <link rel="next" href="refe.html" title="Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -53,7 +53,7 @@
         <span class="keyword">return</span> <span class="identifier">t</span> <span class="special">+</span> <span class="identifier">u</span><span class="special">;</span>
     <span class="special">};</span>
 
-    <span class="keyword">typedef</span> <span class="identifier">BOOST_TYPEOF</span><span class="special">(</span><span class="identifier">add</span><span class="special">(</span><span class="char">'a'</span><span class="special">,</span> <span class="number">1.5</span><span class="special">))</span> <span class="identifier">type</span><span class="special">;</span> 
+    <span class="keyword">typedef</span> <span class="identifier">BOOST_TYPEOF</span><span class="special">(</span><span class="identifier">add</span><span class="special">(</span><span class="char">'a'</span><span class="special">,</span> <span class="number">1.5</span><span class="special">))</span> <span class="identifier">type</span><span class="special">;</span>
 
     <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">,</span> <span class="keyword">double</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">));</span>
 <span class="special">}</span>
@@ -174,8 +174,8 @@
 <span class="special">{</span>
     <span class="keyword">typedef</span> <span class="identifier">BOOST_TYPEOF</span><span class="special">(</span><span class="identifier">make_pair</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="identifier">MyTemplate</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">ex6</span><span class="special">::</span><span class="identifier">MyType</span><span class="special">&gt;()))</span> <span class="identifier">type</span><span class="special">;</span>
 
-    <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">,</span> 
-        <span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">MyTemplate</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">ex6</span><span class="special">::</span><span class="identifier">MyType</span><span class="special">&gt;</span> <span class="special">&gt;</span> 
+    <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">,</span>
+        <span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">MyTemplate</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">ex6</span><span class="special">::</span><span class="identifier">MyType</span><span class="special">&gt;</span> <span class="special">&gt;</span>
     <span class="special">&gt;::</span><span class="identifier">value</span><span class="special">));</span>
 <span class="special">}</span>
 </pre>
@@ -196,8 +196,8 @@
 <span class="special">{</span>
     <span class="keyword">typedef</span> <span class="identifier">BOOST_TYPEOF</span><span class="special">(</span><span class="identifier">make_pair</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="identifier">MyTemplate</span><span class="special">&lt;</span><span class="identifier">ex7</span><span class="special">::</span><span class="identifier">MyTemplate</span><span class="special">&lt;</span><span class="identifier">ex6</span><span class="special">::</span><span class="identifier">MyType</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;,</span> <span class="number">0</span><span class="special">&gt;()))</span> <span class="identifier">type</span><span class="special">;</span>
 
-    <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">,</span> 
-        <span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">MyTemplate</span><span class="special">&lt;</span><span class="identifier">ex7</span><span class="special">::</span><span class="identifier">MyTemplate</span><span class="special">&lt;</span><span class="identifier">ex6</span><span class="special">::</span><span class="identifier">MyType</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;,</span> <span class="number">0</span><span class="special">&gt;</span> <span class="special">&gt;</span> 
+    <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">,</span>
+        <span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">MyTemplate</span><span class="special">&lt;</span><span class="identifier">ex7</span><span class="special">::</span><span class="identifier">MyTemplate</span><span class="special">&lt;</span><span class="identifier">ex6</span><span class="special">::</span><span class="identifier">MyType</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;,</span> <span class="number">0</span><span class="special">&gt;</span> <span class="special">&gt;</span>
     <span class="special">&gt;::</span><span class="identifier">value</span><span class="special">));</span>
 <span class="special">}</span>
 </pre>

@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Quickstart 2 - A better word counter using Spirit.Lex</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Spirit.Lex Tutorials">
 <link rel="prev" href="lexer_quickstart1.html" title="Quickstart 1 - A word counter using Spirit.Lex">
 <link rel="next" href="lexer_quickstart3.html" title="Quickstart 3 - Counting Words Using a Parser">
@@ -39,9 +39,9 @@
           counts textual elements, the purpose is to introduce new concepts and configuration
           options along the lines (for the full example code see here: <a href="../../../../../example/lex/word_count_lexer.cpp" target="_top">word_count_lexer.cpp</a>).
         </p>
-<a name="spirit.lex.tutorials.lexer_quickstart2.prerequisites"></a><h6>
-<a name="spirit.lex.tutorials.lexer_quickstart2.prerequisites-heading"></a>
-          <a class="link" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.prerequisites">Prerequisites</a>
+<h6>
+<a name="spirit.lex.tutorials.lexer_quickstart2.h0"></a>
+          <span><a name="spirit.lex.tutorials.lexer_quickstart2.prerequisites"></a></span><a class="link" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.prerequisites">Prerequisites</a>
         </h6>
 <p>
           In addition to the only required <code class="computeroutput"><span class="preprocessor">#include</span></code>
@@ -56,7 +56,6 @@
           anyway).
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">spirit</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">lex_lexertl</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">spirit</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">phoenix_operator</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -70,7 +69,6 @@
           To make all the code below more readable we introduce the following namespaces.
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">lex</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">lex</span><span class="special">;</span>
 </pre>
@@ -82,7 +80,6 @@
           included inside the actions associated with each of the token definitions.
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="special">%{</span>
     <span class="keyword">int</span> <span class="identifier">c</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">w</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">l</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
@@ -100,9 +97,9 @@
 </pre>
 <p>
         </p>
-<a name="spirit.lex.tutorials.lexer_quickstart2.semantic_actions_in__emphasis_spirit_lex__emphasis_"></a><h6>
-<a name="spirit.lex.tutorials.lexer_quickstart2.semantic_actions_in__emphasis_spirit_lex__emphasis_-heading"></a>
-          <a class="link" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.semantic_actions_in__emphasis_spirit_lex__emphasis_">Semantic
+<h6>
+<a name="spirit.lex.tutorials.lexer_quickstart2.h1"></a>
+          <span><a name="spirit.lex.tutorials.lexer_quickstart2.semantic_actions_in__emphasis_spirit_lex__emphasis_"></a></span><a class="link" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.semantic_actions_in__emphasis_spirit_lex__emphasis_">Semantic
           Actions in <span class="emphasis"><em>Spirit.Lex</em></span></a>
         </h6>
 <p>
@@ -114,25 +111,24 @@
           an instance of a <code class="computeroutput"><span class="identifier">token_def</span><span class="special">&lt;&gt;</span></code>.
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Lexer</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">word_count_tokens</span> <span class="special">:</span> <span class="identifier">lex</span><span class="special">::</span><span class="identifier">lexer</span><span class="special">&lt;</span><span class="identifier">Lexer</span><span class="special">&gt;</span>
 <span class="special">{</span>
     <span class="identifier">word_count_tokens</span><span class="special">()</span>
       <span class="special">:</span> <span class="identifier">c</span><span class="special">(</span><span class="number">0</span><span class="special">),</span> <span class="identifier">w</span><span class="special">(</span><span class="number">0</span><span class="special">),</span> <span class="identifier">l</span><span class="special">(</span><span class="number">0</span><span class="special">)</span>
-      <span class="special">,</span> <span class="identifier">word</span><span class="special">(</span><span class="string">"[^ \t\n]+"</span><span class="special">)</span>     <span class="comment">// define tokens
-</span>      <span class="special">,</span> <span class="identifier">eol</span><span class="special">(</span><span class="string">"\n"</span><span class="special">)</span>
+      <span class="special">,</span> <span class="identifier">word</span><span class="special">(</span><span class="string">"[^ \t\n]+"</span><span class="special">)</span>     <span class="comment">// define tokens</span>
+      <span class="special">,</span> <span class="identifier">eol</span><span class="special">(</span><span class="string">"\n"</span><span class="special">)</span>
       <span class="special">,</span> <span class="identifier">any</span><span class="special">(</span><span class="string">"."</span><span class="special">)</span>
     <span class="special">{</span>
         <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">lex</span><span class="special">::</span><span class="identifier">_start</span><span class="special">;</span>
         <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">lex</span><span class="special">::</span><span class="identifier">_end</span><span class="special">;</span>
         <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">ref</span><span class="special">;</span>
 
-        <span class="comment">// associate tokens with the lexer
-</span>        <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">self</span> 
+        <span class="comment">// associate tokens with the lexer</span>
+        <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">self</span>
             <span class="special">=</span>   <span class="identifier">word</span>  <span class="special">[++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">w</span><span class="special">),</span> <span class="identifier">ref</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">+=</span> <span class="identifier">distance</span><span class="special">(</span><span class="identifier">_start</span><span class="special">,</span> <span class="identifier">_end</span><span class="special">)]</span>
-            <span class="special">|</span>   <span class="identifier">eol</span>   <span class="special">[++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">c</span><span class="special">),</span> <span class="special">++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">l</span><span class="special">)]</span> 
+            <span class="special">|</span>   <span class="identifier">eol</span>   <span class="special">[++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">c</span><span class="special">),</span> <span class="special">++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">l</span><span class="special">)]</span>
             <span class="special">|</span>   <span class="identifier">any</span>   <span class="special">[++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">c</span><span class="special">)]</span>
             <span class="special">;</span>
     <span class="special">}</span>
@@ -155,9 +151,9 @@
           the section <a class="link" href="../abstracts/lexer_semantic_actions.html" title="Lexer Semantic Actions">Lexer
           Semantic Actions</a>.
         </p>
-<a name="spirit.lex.tutorials.lexer_quickstart2.associating_token_definitions_with_the_lexer"></a><h6>
-<a name="spirit.lex.tutorials.lexer_quickstart2.associating_token_definitions_with_the_lexer-heading"></a>
-          <a class="link" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.associating_token_definitions_with_the_lexer">Associating
+<h6>
+<a name="spirit.lex.tutorials.lexer_quickstart2.h2"></a>
+          <span><a name="spirit.lex.tutorials.lexer_quickstart2.associating_token_definitions_with_the_lexer"></a></span><a class="link" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.associating_token_definitions_with_the_lexer">Associating
           Token Definitions with the Lexer</a>
         </h6>
 <p>
@@ -170,9 +166,9 @@
           combining the different token definitions using the <code class="computeroutput"><span class="special">|</span></code>
           operator. Here is the code snippet again:
         </p>
-<pre class="programlisting"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">self</span> 
+<pre class="programlisting"><span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">self</span>
     <span class="special">=</span>   <span class="identifier">word</span>  <span class="special">[++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">w</span><span class="special">),</span> <span class="identifier">ref</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">+=</span> <span class="identifier">distance</span><span class="special">(</span><span class="identifier">_1</span><span class="special">)]</span>
-    <span class="special">|</span>   <span class="identifier">eol</span>   <span class="special">[++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">c</span><span class="special">),</span> <span class="special">++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">l</span><span class="special">)]</span> 
+    <span class="special">|</span>   <span class="identifier">eol</span>   <span class="special">[++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">c</span><span class="special">),</span> <span class="special">++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">l</span><span class="special">)]</span>
     <span class="special">|</span>   <span class="identifier">any</span>   <span class="special">[++</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">c</span><span class="special">)]</span>
     <span class="special">;</span>
 </pre>
@@ -192,9 +188,9 @@
           library internally assigns unique numbers to the token definitions, starting
           with the constant defined by <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">lex</span><span class="special">::</span><span class="identifier">min_token_id</span></code>.
         </p>
-<a name="spirit.lex.tutorials.lexer_quickstart2.pulling_everything_together"></a><h6>
-<a name="spirit.lex.tutorials.lexer_quickstart2.pulling_everything_together-heading"></a>
-          <a class="link" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.pulling_everything_together">Pulling
+<h6>
+<a name="spirit.lex.tutorials.lexer_quickstart2.h3"></a>
+          <span><a name="spirit.lex.tutorials.lexer_quickstart2.pulling_everything_together"></a></span><a class="link" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.pulling_everything_together">Pulling
           everything together</a>
         </h6>
 <p>
@@ -204,38 +200,37 @@
           by the lexer. This code shows how to achieve these steps:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">argv</span><span class="special">[])</span>
 <span class="special">{</span>
 
-<a class="co" name="spirit4co" href="lexer_quickstart2.html#spirit4"><img src="../../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>  <span class="keyword">typedef</span> 
-        <span class="identifier">lex</span><span class="special">::</span><span class="identifier">lexertl</span><span class="special">::</span><span class="identifier">token</span><span class="special">&lt;</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*,</span> <span class="identifier">lex</span><span class="special">::</span><span class="identifier">omit</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">&gt;</span> 
+<a class="co" name="spirit.lex.tutorials.lexer_quickstart2.c0" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.c1"><img src="../../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>  <span class="keyword">typedef</span>
+        <span class="identifier">lex</span><span class="special">::</span><span class="identifier">lexertl</span><span class="special">::</span><span class="identifier">token</span><span class="special">&lt;</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*,</span> <span class="identifier">lex</span><span class="special">::</span><span class="identifier">omit</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">&gt;</span>
      <span class="identifier">token_type</span><span class="special">;</span>
 
-<a class="co" name="spirit5co" href="lexer_quickstart2.html#spirit5"><img src="../../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>  <span class="keyword">typedef</span> <span class="identifier">lex</span><span class="special">::</span><span class="identifier">lexertl</span><span class="special">::</span><span class="identifier">actor_lexer</span><span class="special">&lt;</span><span class="identifier">token_type</span><span class="special">&gt;</span> <span class="identifier">lexer_type</span><span class="special">;</span>
+<a class="co" name="spirit.lex.tutorials.lexer_quickstart2.c2" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.c3"><img src="../../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>  <span class="keyword">typedef</span> <span class="identifier">lex</span><span class="special">::</span><span class="identifier">lexertl</span><span class="special">::</span><span class="identifier">actor_lexer</span><span class="special">&lt;</span><span class="identifier">token_type</span><span class="special">&gt;</span> <span class="identifier">lexer_type</span><span class="special">;</span>
 
-<a class="co" name="spirit6co" href="lexer_quickstart2.html#spirit6"><img src="../../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a>  <span class="identifier">word_count_tokens</span><span class="special">&lt;</span><span class="identifier">lexer_type</span><span class="special">&gt;</span> <span class="identifier">word_count_lexer</span><span class="special">;</span>
+<a class="co" name="spirit.lex.tutorials.lexer_quickstart2.c4" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.c5"><img src="../../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a>  <span class="identifier">word_count_tokens</span><span class="special">&lt;</span><span class="identifier">lexer_type</span><span class="special">&gt;</span> <span class="identifier">word_count_lexer</span><span class="special">;</span>
 
-<a class="co" name="spirit7co" href="lexer_quickstart2.html#spirit7"><img src="../../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a>  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span> <span class="special">(</span><span class="identifier">read_from_file</span><span class="special">(</span><span class="number">1</span> <span class="special">==</span> <span class="identifier">argc</span> <span class="special">?</span> <span class="string">"word_count.input"</span> <span class="special">:</span> <span class="identifier">argv</span><span class="special">[</span><span class="number">1</span><span class="special">]));</span>
+<a class="co" name="spirit.lex.tutorials.lexer_quickstart2.c6" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.c7"><img src="../../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a>  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span> <span class="special">(</span><span class="identifier">read_from_file</span><span class="special">(</span><span class="number">1</span> <span class="special">==</span> <span class="identifier">argc</span> <span class="special">?</span> <span class="string">"word_count.input"</span> <span class="special">:</span> <span class="identifier">argv</span><span class="special">[</span><span class="number">1</span><span class="special">]));</span>
     <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">first</span> <span class="special">=</span> <span class="identifier">str</span><span class="special">.</span><span class="identifier">c_str</span><span class="special">();</span>
     <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">last</span> <span class="special">=</span> <span class="special">&amp;</span><span class="identifier">first</span><span class="special">[</span><span class="identifier">str</span><span class="special">.</span><span class="identifier">size</span><span class="special">()];</span>
 
-<a class="co" name="spirit8co" href="lexer_quickstart2.html#spirit8"><img src="../../../../../../../doc/src/images/callouts/5.png" alt="5" border="0"></a>  <span class="identifier">lexer_type</span><span class="special">::</span><span class="identifier">iterator_type</span> <span class="identifier">iter</span> <span class="special">=</span> <span class="identifier">word_count_lexer</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
+<a class="co" name="spirit.lex.tutorials.lexer_quickstart2.c8" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.c9"><img src="../../../../../../../doc/src/images/callouts/5.png" alt="5" border="0"></a>  <span class="identifier">lexer_type</span><span class="special">::</span><span class="identifier">iterator_type</span> <span class="identifier">iter</span> <span class="special">=</span> <span class="identifier">word_count_lexer</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
     <span class="identifier">lexer_type</span><span class="special">::</span><span class="identifier">iterator_type</span> <span class="identifier">end</span> <span class="special">=</span> <span class="identifier">word_count_lexer</span><span class="special">.</span><span class="identifier">end</span><span class="special">();</span>
 
-<a class="co" name="spirit9co" href="lexer_quickstart2.html#spirit9"><img src="../../../../../../../doc/src/images/callouts/6.png" alt="6" border="0"></a>  <span class="keyword">while</span> <span class="special">(</span><span class="identifier">iter</span> <span class="special">!=</span> <span class="identifier">end</span> <span class="special">&amp;&amp;</span> <span class="identifier">token_is_valid</span><span class="special">(*</span><span class="identifier">iter</span><span class="special">))</span>
+<a class="co" name="spirit.lex.tutorials.lexer_quickstart2.c10" href="lexer_quickstart2.html#spirit.lex.tutorials.lexer_quickstart2.c11"><img src="../../../../../../../doc/src/images/callouts/6.png" alt="6" border="0"></a>  <span class="keyword">while</span> <span class="special">(</span><span class="identifier">iter</span> <span class="special">!=</span> <span class="identifier">end</span> <span class="special">&amp;&amp;</span> <span class="identifier">token_is_valid</span><span class="special">(*</span><span class="identifier">iter</span><span class="special">))</span>
         <span class="special">++</span><span class="identifier">iter</span><span class="special">;</span>
 
     <span class="keyword">if</span> <span class="special">(</span><span class="identifier">iter</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"lines: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">word_count_lexer</span><span class="special">.</span><span class="identifier">l</span> 
-                  <span class="special">&lt;&lt;</span> <span class="string">", words: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">word_count_lexer</span><span class="special">.</span><span class="identifier">w</span> 
-                  <span class="special">&lt;&lt;</span> <span class="string">", characters: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">word_count_lexer</span><span class="special">.</span><span class="identifier">c</span> 
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"lines: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">word_count_lexer</span><span class="special">.</span><span class="identifier">l</span>
+                  <span class="special">&lt;&lt;</span> <span class="string">", words: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">word_count_lexer</span><span class="special">.</span><span class="identifier">w</span>
+                  <span class="special">&lt;&lt;</span> <span class="string">", characters: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">word_count_lexer</span><span class="special">.</span><span class="identifier">c</span>
                   <span class="special">&lt;&lt;</span> <span class="string">"\n"</span><span class="special">;</span>
     <span class="special">}</span>
     <span class="keyword">else</span> <span class="special">{</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">rest</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
-        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Lexical analysis failed\n"</span> <span class="special">&lt;&lt;</span> <span class="string">"stopped at: \""</span> 
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Lexical analysis failed\n"</span> <span class="special">&lt;&lt;</span> <span class="string">"stopped at: \""</span>
                   <span class="special">&lt;&lt;</span> <span class="identifier">rest</span> <span class="special">&lt;&lt;</span> <span class="string">"\"\n"</span><span class="special">;</span>
     <span class="special">}</span>
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -245,7 +240,7 @@
         </p>
 <div class="calloutlist"><table border="0" summary="Callout list">
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="spirit4"></a><a href="#spirit4co"><img src="../../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="spirit.lex.tutorials.lexer_quickstart2.c1"></a><a href="#spirit.lex.tutorials.lexer_quickstart2.c0"><img src="../../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
               Specifying <code class="computeroutput"><span class="identifier">omit</span></code> as
               the token attribute type generates a token class not holding any token
@@ -258,32 +253,32 @@
             </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="spirit5"></a><a href="#spirit5co"><img src="../../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="spirit.lex.tutorials.lexer_quickstart2.c3"></a><a href="#spirit.lex.tutorials.lexer_quickstart2.c2"><img src="../../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
               This defines the lexer type to use
             </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="spirit6"></a><a href="#spirit6co"><img src="../../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="spirit.lex.tutorials.lexer_quickstart2.c5"></a><a href="#spirit.lex.tutorials.lexer_quickstart2.c4"><img src="../../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
               Create the lexer object instance needed to invoke the lexical analysis
             </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="spirit7"></a><a href="#spirit7co"><img src="../../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="spirit.lex.tutorials.lexer_quickstart2.c7"></a><a href="#spirit.lex.tutorials.lexer_quickstart2.c6"><img src="../../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
               Read input from the given file, tokenize all the input, while discarding
               all generated tokens
             </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="spirit8"></a><a href="#spirit8co"><img src="../../../../../../../doc/src/images/callouts/5.png" alt="5" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="spirit.lex.tutorials.lexer_quickstart2.c9"></a><a href="#spirit.lex.tutorials.lexer_quickstart2.c8"><img src="../../../../../../../doc/src/images/callouts/5.png" alt="5" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
               Create a pair of iterators returning the sequence of generated tokens
             </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="spirit9"></a><a href="#spirit9co"><img src="../../../../../../../doc/src/images/callouts/6.png" alt="6" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="spirit.lex.tutorials.lexer_quickstart2.c11"></a><a href="#spirit.lex.tutorials.lexer_quickstart2.c10"><img src="../../../../../../../doc/src/images/callouts/6.png" alt="6" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
               Here we simply iterate over all tokens, making sure to break the loop
               if an invalid token gets returned from the lexer
