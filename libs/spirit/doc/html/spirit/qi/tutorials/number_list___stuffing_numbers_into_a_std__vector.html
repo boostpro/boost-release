@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Number List - stuffing numbers into a std::vector</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="sum___adding_numbers.html" title="Sum - adding numbers">
 <link rel="next" href="number_list_redux___list_syntax.html" title="Number List Redux - list syntax">
@@ -32,7 +32,6 @@
           The numbers are inserted in a vector using phoenix.
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">parse_numbers</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;&amp;</span> <span class="identifier">v</span><span class="special">)</span>
@@ -45,18 +44,18 @@
 
     <span class="keyword">bool</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">phrase_parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span>
 
-        <span class="comment">//  Begin grammar
-</span>        <span class="special">(</span>
+        <span class="comment">//  Begin grammar</span>
+        <span class="special">(</span>
             <span class="identifier">double_</span><span class="special">[</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">v</span><span class="special">),</span> <span class="identifier">_1</span><span class="special">)]</span>
                 <span class="special">&gt;&gt;</span> <span class="special">*(</span><span class="char">','</span> <span class="special">&gt;&gt;</span> <span class="identifier">double_</span><span class="special">[</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">v</span><span class="special">),</span> <span class="identifier">_1</span><span class="special">)])</span>
         <span class="special">)</span>
         <span class="special">,</span>
-        <span class="comment">//  End grammar
-</span>
+        <span class="comment">//  End grammar</span>
+
         <span class="identifier">space</span><span class="special">);</span>
 
-    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match
-</span>        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match</span>
+        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
     <span class="keyword">return</span> <span class="identifier">r</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>

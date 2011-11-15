@@ -27,16 +27,15 @@
 <a name="geometry.reference.core.point_order"></a><a class="link" href="point_order.html" title="point_order">point_order</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id921878"></a>
+          <a class="indexterm" name="id920936"></a>
 Metafunction defining <span class="bold"><strong>value</strong></span> as the point
           order (clockwise, counterclockwise) of the specified geometry type.
         </p>
-<a name="geometry.reference.core.point_order.synopsis"></a><h6>
-<a name="geometry.reference.core.point_order.synopsis-heading"></a>
-          <a class="link" href="point_order.html#geometry.reference.core.point_order.synopsis">Synopsis</a>
+<h6>
+<a name="geometry.reference.core.point_order.h0"></a>
+          <span><a name="geometry.reference.core.point_order.synopsis"></a></span><a class="link" href="point_order.html#geometry.reference.core.point_order.synopsis">Synopsis</a>
         </h6>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Geometry</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">point_order</span>
@@ -46,9 +45,9 @@ Metafunction defining <span class="bold"><strong>value</strong></span> as the po
 </pre>
 <p>
         </p>
-<a name="geometry.reference.core.point_order.template_parameter_s_"></a><h6>
-<a name="geometry.reference.core.point_order.template_parameter_s_-heading"></a>
-          <a class="link" href="point_order.html#geometry.reference.core.point_order.template_parameter_s_">Template
+<h6>
+<a name="geometry.reference.core.point_order.h1"></a>
+          <span><a name="geometry.reference.core.point_order.template_parameter_s_"></a></span><a class="link" href="point_order.html#geometry.reference.core.point_order.template_parameter_s_">Template
           parameter(s)</a>
         </h6>
 <div class="informaltable"><table class="table">
@@ -81,9 +80,9 @@ Metafunction defining <span class="bold"><strong>value</strong></span> as the po
                 </td>
 </tr></tbody>
 </table></div>
-<a name="geometry.reference.core.point_order.header"></a><h6>
-<a name="geometry.reference.core.point_order.header-heading"></a>
-          <a class="link" href="point_order.html#geometry.reference.core.point_order.header">Header</a>
+<h6>
+<a name="geometry.reference.core.point_order.h2"></a>
+          <span><a name="geometry.reference.core.point_order.header"></a></span><a class="link" href="point_order.html#geometry.reference.core.point_order.header">Header</a>
         </h6>
 <p>
           <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">/</span><span class="identifier">core</span><span class="special">/</span><span class="identifier">point_order</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
@@ -98,22 +97,21 @@ Metafunction defining <span class="bold"><strong>value</strong></span> as the po
             meaning for areal geometry types (ring, polygon, multi_polygon)
           </p></td></tr>
 </table></div>
-<a name="geometry.reference.core.point_order.complexity"></a><h6>
-<a name="geometry.reference.core.point_order.complexity-heading"></a>
-          <a class="link" href="point_order.html#geometry.reference.core.point_order.complexity">Complexity</a>
+<h6>
+<a name="geometry.reference.core.point_order.h3"></a>
+          <span><a name="geometry.reference.core.point_order.complexity"></a></span><a class="link" href="point_order.html#geometry.reference.core.point_order.complexity">Complexity</a>
         </h6>
 <p>
           Compile time
         </p>
-<a name="geometry.reference.core.point_order.example"></a><h6>
-<a name="geometry.reference.core.point_order.example-heading"></a>
-          <a class="link" href="point_order.html#geometry.reference.core.point_order.example">Example</a>
+<h6>
+<a name="geometry.reference.core.point_order.h4"></a>
+          <span><a name="geometry.reference.core.point_order.example"></a></span><a class="link" href="point_order.html#geometry.reference.core.point_order.example">Example</a>
         </h6>
 <p>
           Examine the expected point order of a polygon type
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
@@ -127,7 +125,7 @@ Metafunction defining <span class="bold"><strong>value</strong></span> as the po
     <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">polygon</span><span class="special">&lt;</span><span class="identifier">point_type</span><span class="special">,</span> <span class="keyword">false</span><span class="special">&gt;</span> <span class="identifier">polygon_type</span><span class="special">;</span>
 
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">order_selector</span> <span class="identifier">order</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">point_order</span><span class="special">&lt;</span><span class="identifier">polygon_type</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">;</span>
-    
+
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"order: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">order</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
         <span class="special">&lt;&lt;</span> <span class="string">"(clockwise = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">clockwise</span>
         <span class="special">&lt;&lt;</span> <span class="string">", counterclockwise = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">counterclockwise</span>
@@ -145,9 +143,10 @@ Metafunction defining <span class="bold"><strong>value</strong></span> as the po
 <pre class="programlisting">order: 2
 (clockwise = 1, counterclockwise = 2)
 </pre>
-<a name="geometry.reference.core.point_order.see_also"></a><h6>
-<a name="geometry.reference.core.point_order.see_also-heading"></a>
-          <a class="link" href="point_order.html#geometry.reference.core.point_order.see_also">See also</a>
+<h6>
+<a name="geometry.reference.core.point_order.h5"></a>
+          <span><a name="geometry.reference.core.point_order.see_also"></a></span><a class="link" href="point_order.html#geometry.reference.core.point_order.see_also">See
+          also</a>
         </h6>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
               <a class="link" href="../enumerations/order_selector.html" title="order_selector">The

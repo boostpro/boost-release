@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Number List - Printing Numbers From a std::vector</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="karma_adapted_complex.html" title="Complex - Fully Integrated">
 <link rel="next" href="num_matrix.html" title="Matrix of Numbers - Printing Numbers From a Matrix">
@@ -27,9 +27,9 @@
 <a name="spirit.karma.tutorials.num_list"></a><a class="link" href="num_list.html" title="Number List - Printing Numbers From a std::vector">Number List - Printing
         Numbers From a std::vector</a>
 </h4></div></div></div>
-<a name="spirit.karma.tutorials.num_list.using_the_list_operator"></a><h6>
-<a name="spirit.karma.tutorials.num_list.using_the_list_operator-heading"></a>
-          <a class="link" href="num_list.html#spirit.karma.tutorials.num_list.using_the_list_operator">Using
+<h6>
+<a name="spirit.karma.tutorials.num_list.h0"></a>
+          <span><a name="spirit.karma.tutorials.num_list.using_the_list_operator"></a></span><a class="link" href="num_list.html#spirit.karma.tutorials.num_list.using_the_list_operator">Using
           the List Operator</a>
         </h6>
 <p>
@@ -67,7 +67,6 @@
           container holding <code class="computeroutput"><span class="keyword">double</span></code> numbers.
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">OutputIterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Container</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">generate_numbers</span><span class="special">(</span><span class="identifier">OutputIterator</span><span class="special">&amp;</span> <span class="identifier">sink</span><span class="special">,</span> <span class="identifier">Container</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span><span class="special">)</span>
@@ -77,11 +76,11 @@
     <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">ascii</span><span class="special">::</span><span class="identifier">space</span><span class="special">;</span>
 
     <span class="keyword">bool</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">generate_delimited</span><span class="special">(</span>
-        <span class="identifier">sink</span><span class="special">,</span>                           <span class="comment">// destination: output iterator
-</span>        <span class="identifier">double_</span> <span class="special">%</span> <span class="char">','</span><span class="special">,</span>                  <span class="comment">// the generator
-</span>        <span class="identifier">space</span><span class="special">,</span>                          <span class="comment">// the delimiter-generator
-</span>        <span class="identifier">v</span>                               <span class="comment">// the data to output 
-</span>    <span class="special">);</span>
+        <span class="identifier">sink</span><span class="special">,</span>                           <span class="comment">// destination: output iterator</span>
+        <span class="identifier">double_</span> <span class="special">%</span> <span class="char">','</span><span class="special">,</span>                  <span class="comment">// the generator</span>
+        <span class="identifier">space</span><span class="special">,</span>                          <span class="comment">// the delimiter-generator</span>
+        <span class="identifier">v</span>                               <span class="comment">// the data to output </span>
+    <span class="special">);</span>
     <span class="keyword">return</span> <span class="identifier">r</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -101,9 +100,9 @@
             have to be convertible to <code class="computeroutput"><span class="keyword">double</span></code>.
           </p></td></tr>
 </table></div>
-<a name="spirit.karma.tutorials.num_list.generate_output_from_arbitrary_data"></a><h6>
-<a name="spirit.karma.tutorials.num_list.generate_output_from_arbitrary_data-heading"></a>
-          <a class="link" href="num_list.html#spirit.karma.tutorials.num_list.generate_output_from_arbitrary_data">Generate
+<h6>
+<a name="spirit.karma.tutorials.num_list.h1"></a>
+          <span><a name="spirit.karma.tutorials.num_list.generate_output_from_arbitrary_data"></a></span><a class="link" href="num_list.html#spirit.karma.tutorials.num_list.generate_output_from_arbitrary_data">Generate
           Output from Arbitrary Data</a>
         </h6>
 <p>
@@ -136,10 +135,9 @@
           operator:
         </p>
 <p>
-          
 </p>
-<pre class="programlisting"><span class="comment">// a simple complex number representation z = a + bi
-</span><span class="keyword">struct</span> <span class="identifier">complex</span>
+<pre class="programlisting"><span class="comment">// a simple complex number representation z = a + bi</span>
+<span class="keyword">struct</span> <span class="identifier">complex</span>
 <span class="special">{</span>
     <span class="identifier">complex</span> <span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">b</span> <span class="special">=</span> <span class="number">0.0</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">a</span><span class="special">(</span><span class="identifier">a</span><span class="special">),</span> <span class="identifier">b</span><span class="special">(</span><span class="identifier">b</span><span class="special">)</span> <span class="special">{}</span>
 
@@ -147,8 +145,8 @@
     <span class="keyword">double</span> <span class="identifier">b</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="comment">// the streaming operator for the type complex
-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> 
+<span class="comment">// the streaming operator for the type complex</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span>
 <span class="keyword">operator</span><span class="special">&lt;&lt;</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">os</span><span class="special">,</span> <span class="identifier">complex</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">z</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="identifier">os</span> <span class="special">&lt;&lt;</span> <span class="string">"{"</span> <span class="special">&lt;&lt;</span> <span class="identifier">z</span><span class="special">.</span><span class="identifier">a</span> <span class="special">&lt;&lt;</span> <span class="string">","</span> <span class="special">&lt;&lt;</span> <span class="identifier">z</span><span class="special">.</span><span class="identifier">b</span> <span class="special">&lt;&lt;</span> <span class="string">"}"</span><span class="special">;</span>
@@ -164,7 +162,6 @@
           putting each complex number onto a separate line:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">OutputIterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Container</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">generate_numbers</span><span class="special">(</span><span class="identifier">OutputIterator</span><span class="special">&amp;</span> <span class="identifier">sink</span><span class="special">,</span> <span class="identifier">Container</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span><span class="special">)</span>
@@ -174,10 +171,10 @@
     <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">karma</span><span class="special">::</span><span class="identifier">eol</span><span class="special">;</span>
 
     <span class="keyword">bool</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">generate</span><span class="special">(</span>
-        <span class="identifier">sink</span><span class="special">,</span>                           <span class="comment">// destination: output iterator
-</span>        <span class="identifier">stream</span> <span class="special">%</span> <span class="identifier">eol</span><span class="special">,</span>                   <span class="comment">// the generator
-</span>        <span class="identifier">v</span>                               <span class="comment">// the data to output 
-</span>    <span class="special">);</span>
+        <span class="identifier">sink</span><span class="special">,</span>                           <span class="comment">// destination: output iterator</span>
+        <span class="identifier">stream</span> <span class="special">%</span> <span class="identifier">eol</span><span class="special">,</span>                   <span class="comment">// the generator</span>
+        <span class="identifier">v</span>                               <span class="comment">// the data to output </span>
+    <span class="special">);</span>
     <span class="keyword">return</span> <span class="identifier">r</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>

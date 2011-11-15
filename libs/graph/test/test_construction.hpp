@@ -65,7 +65,7 @@ template <typename Graph>
 void build_property_graph(Graph const&, boost::mpl::true_, boost::mpl::false_) {
     using namespace boost;
     BOOST_CONCEPT_ASSERT((VertexMutablePropertyGraphConcept<Graph>));
-    typedef typename vertex_property<Graph>::type VertexProp;
+    typedef typename vertex_property_type<Graph>::type VertexProp;
 
     std::cout << "...build mutable\n";
 
@@ -93,7 +93,7 @@ void connect_graph(Graph& g, VertexSet const& verts, boost::mpl::false_) {
 
     std::cout << "...connect_normal\n";
     Pair *f, *l;
-    for(tie(f, l) = edge_pairs(); f != l; ++f) {
+    for(boost::tie(f, l) = edge_pairs(); f != l; ++f) {
         Pair const& e = *f;
         add_edge(verts[e.first], verts[e.second], g);
     }

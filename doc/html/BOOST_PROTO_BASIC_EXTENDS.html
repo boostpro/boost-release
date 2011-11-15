@@ -35,7 +35,7 @@
 
 </span>BOOST_PROTO_BASIC_EXTENDS(Expr, Derived, Domain)</pre></div>
 <div class="refsect1">
-<a name="id2441318"></a><h2>Description</h2>
+<a name="id2660501"></a><h2>Description</h2>
 <p>
         <code class="computeroutput">BOOST_PROTO_BASIC_EXTENDS()</code> adds the basic typedefs, member functions, and
         data members necessary to make a struct a valid Proto expression extension. It does <span class="emphasis"><em>not</em></span>
@@ -47,9 +47,14 @@
         <code class="computeroutput">Derived</code> is the type of the enclosing struct.
         <code class="computeroutput">Domain</code> is the Proto domain to which this expression extension belongs.
         (See <code class="computeroutput"><a class="link" href="boost/proto/domain.html" title="Struct template domain">proto::domain&lt;&gt;</a></code>.)
+        Can be preceeded with "<code class="computeroutput">typename</code>" if the specified domain is a dependent type.
       </p>
 <p><code class="computeroutput">BOOST_PROTO_BASIC_EXTENDS()</code> adds to its enclosing struct
         exactly one data member of type <code class="computeroutput">Expr</code>. 
+      </p>
+<p>If the <code class="computeroutput">Domain</code> parameter is dependent, you can specify it as
+        <code class="computeroutput">typename Domain</code>, as in
+        <code class="computeroutput">BOOST_PROTO_BASIC_EXTENDS(Expr, Derived, typename Domain)</code>
       </p>
 <p>
         <span class="bold"><strong>Example:</strong></span></p>

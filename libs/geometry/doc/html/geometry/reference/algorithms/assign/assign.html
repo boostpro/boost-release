@@ -27,31 +27,30 @@
 <a name="geometry.reference.algorithms.assign.assign"></a><a class="link" href="assign.html" title="assign">assign</a>
 </h5></div></div></div>
 <p>
-            <a class="indexterm" name="id824950"></a>
+            <a class="indexterm" name="id824709"></a>
 Assigns one geometry to another geometry.
           </p>
-<a name="geometry.reference.algorithms.assign.assign.description"></a><h6>
-<a name="geometry.reference.algorithms.assign.assign.description-heading"></a>
-            <a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.description">Description</a>
+<h6>
+<a name="geometry.reference.algorithms.assign.assign.h0"></a>
+            <span><a name="geometry.reference.algorithms.assign.assign.description"></a></span><a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.description">Description</a>
           </h6>
 <p>
             The assign algorithm assigns one geometry, e.g. a BOX, to another geometry,
             e.g. a RING. This only if it is possible and applicable.
           </p>
-<a name="geometry.reference.algorithms.assign.assign.synopsis"></a><h6>
-<a name="geometry.reference.algorithms.assign.assign.synopsis-heading"></a>
-            <a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.synopsis">Synopsis</a>
+<h6>
+<a name="geometry.reference.algorithms.assign.assign.h1"></a>
+            <span><a name="geometry.reference.algorithms.assign.assign.synopsis"></a></span><a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.synopsis">Synopsis</a>
           </h6>
 <p>
-            
 </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Geometry1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Geometry2</span><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">assign</span><span class="special">(</span><span class="identifier">Geometry1</span> <span class="special">&amp;</span> <span class="identifier">geometry1</span><span class="special">,</span> <span class="identifier">Geometry2</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">geometry2</span><span class="special">)</span></pre>
 <p>
           </p>
-<a name="geometry.reference.algorithms.assign.assign.parameters"></a><h6>
-<a name="geometry.reference.algorithms.assign.assign.parameters-heading"></a>
-            <a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.parameters">Parameters</a>
+<h6>
+<a name="geometry.reference.algorithms.assign.assign.h2"></a>
+            <span><a name="geometry.reference.algorithms.assign.assign.parameters"></a></span><a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.parameters">Parameters</a>
           </h6>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -129,9 +128,9 @@ Assigns one geometry to another geometry.
 </tr>
 </tbody>
 </table></div>
-<a name="geometry.reference.algorithms.assign.assign.header"></a><h6>
-<a name="geometry.reference.algorithms.assign.assign.header-heading"></a>
-            <a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.header">Header</a>
+<h6>
+<a name="geometry.reference.algorithms.assign.assign.h3"></a>
+            <span><a name="geometry.reference.algorithms.assign.assign.header"></a></span><a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.header">Header</a>
           </h6>
 <p>
             Either
@@ -145,15 +144,14 @@ Assigns one geometry to another geometry.
 <p>
             <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">/</span><span class="identifier">algorithms</span><span class="special">/</span><span class="identifier">assign</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
           </p>
-<a name="geometry.reference.algorithms.assign.assign.example"></a><h6>
-<a name="geometry.reference.algorithms.assign.assign.example-heading"></a>
-            <a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.example">Example</a>
+<h6>
+<a name="geometry.reference.algorithms.assign.assign.h4"></a>
+            <span><a name="geometry.reference.algorithms.assign.assign.example"></a></span><a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.example">Example</a>
           </h6>
 <p>
             Shows how to assign a geometry from another geometry
           </p>
 <p>
-            
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
@@ -175,7 +173,7 @@ Assigns one geometry to another geometry.
     <span class="identifier">box</span> <span class="identifier">b</span><span class="special">;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">assign_values</span><span class="special">(</span><span class="identifier">p1</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">assign_values</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">2</span><span class="special">);</span>
-    
+
     <span class="comment">// Assign a box to a polygon (target = source)</span>
     <span class="identifier">polygon</span> <span class="identifier">p</span><span class="special">;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">assign</span><span class="special">(</span><span class="identifier">p</span><span class="special">,</span> <span class="identifier">b</span><span class="special">);</span>
@@ -183,7 +181,7 @@ Assigns one geometry to another geometry.
     <span class="comment">// Assign a point to another point type (conversion of point-type)</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">p2</span><span class="special">;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">assign</span><span class="special">(</span><span class="identifier">p2</span><span class="special">,</span> <span class="identifier">p1</span><span class="special">);</span>
-        
+
     <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">dsv</span><span class="special">;</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span>
         <span class="special">&lt;&lt;</span> <span class="string">"box: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">dsv</span><span class="special">(</span><span class="identifier">b</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
@@ -206,10 +204,9 @@ polygon: (((1, 1), (1, 2), (2, 2), (2, 1), (1, 1)))
 point: (1, 1)
 point tuples: (1, 1)
 </pre>
-<a name="geometry.reference.algorithms.assign.assign.see_also"></a><h6>
-<a name="geometry.reference.algorithms.assign.assign.see_also-heading"></a>
-            <a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.see_also">See
-            also</a>
+<h6>
+<a name="geometry.reference.algorithms.assign.assign.h5"></a>
+            <span><a name="geometry.reference.algorithms.assign.assign.see_also"></a></span><a class="link" href="assign.html#geometry.reference.algorithms.assign.assign.see_also">See also</a>
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
                 <a class="link" href="../convert.html" title="convert">convert</a>

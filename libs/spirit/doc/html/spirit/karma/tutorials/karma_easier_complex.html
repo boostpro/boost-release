@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Complex - Made easier</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="karma_complex.html" title="Complex - A first more complex generator">
 <link rel="next" href="karma_adapted_complex.html" title="Complex - Fully Integrated">
@@ -35,7 +35,6 @@
           (the full source file for this example can be found here: <a href="../../../../../example/karma/complex_number_easier.cpp" target="_top">complex_number_easier.cpp</a>):
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">OutputIterator</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">generate_complex</span><span class="special">(</span><span class="identifier">OutputIterator</span> <span class="identifier">sink</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">)</span>
@@ -46,15 +45,15 @@
 
     <span class="keyword">return</span> <span class="identifier">generate</span><span class="special">(</span><span class="identifier">sink</span><span class="special">,</span>
 
-        <span class="comment">//  Begin grammar
-</span>        <span class="special">(</span>
+        <span class="comment">//  Begin grammar</span>
+        <span class="special">(</span>
            <span class="special">!</span><span class="identifier">double_</span><span class="special">(</span><span class="number">0.0</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="char">'('</span> <span class="special">&lt;&lt;</span> <span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="char">')'</span>
         <span class="special">|</span>   <span class="identifier">omit</span><span class="special">[</span><span class="identifier">double_</span><span class="special">]</span> <span class="special">&lt;&lt;</span> <span class="identifier">double_</span>
         <span class="special">),</span>
-        <span class="comment">//  End grammar
-</span>
-        <span class="identifier">c</span><span class="special">.</span><span class="identifier">imag</span><span class="special">(),</span> <span class="identifier">c</span><span class="special">.</span><span class="identifier">real</span><span class="special">(),</span> <span class="identifier">c</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()</span>     <span class="comment">//  Data to output
-</span>    <span class="special">);</span>
+        <span class="comment">//  End grammar</span>
+
+        <span class="identifier">c</span><span class="special">.</span><span class="identifier">imag</span><span class="special">(),</span> <span class="identifier">c</span><span class="special">.</span><span class="identifier">real</span><span class="special">(),</span> <span class="identifier">c</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()</span>     <span class="comment">//  Data to output</span>
+    <span class="special">);</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -62,9 +61,9 @@
 <p>
           Let's cover some basic library features first.
         </p>
-<a name="spirit.karma.tutorials.karma_easier_complex.making_numeric_generators_fail"></a><h6>
-<a name="spirit.karma.tutorials.karma_easier_complex.making_numeric_generators_fail-heading"></a>
-          <a class="link" href="karma_easier_complex.html#spirit.karma.tutorials.karma_easier_complex.making_numeric_generators_fail">Making
+<h6>
+<a name="spirit.karma.tutorials.karma_easier_complex.h0"></a>
+          <span><a name="spirit.karma.tutorials.karma_easier_complex.making_numeric_generators_fail"></a></span><a class="link" href="karma_easier_complex.html#spirit.karma.tutorials.karma_easier_complex.making_numeric_generators_fail">Making
           Numeric Generators Fail</a>
         </h6>
 <p>
@@ -73,15 +72,15 @@
           take the value to emit from an attached attribute.
         </p>
 <pre class="programlisting"><span class="keyword">double</span> <span class="identifier">d</span> <span class="special">=</span> <span class="number">1.5</span><span class="special">;</span>
-<span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="identifier">double_</span><span class="special">,</span> <span class="identifier">d</span><span class="special">);</span>       <span class="comment">// will emit '1.5' (without the quotes)
-</span></pre>
+<span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="identifier">double_</span><span class="special">,</span> <span class="identifier">d</span><span class="special">);</span>       <span class="comment">// will emit '1.5' (without the quotes)</span>
+</pre>
 <p>
           Alternatively, they may be initialized from a literal value. For instance,
           to emit a constant <code class="computeroutput"><span class="number">1.5</span></code> you
           may write:
         </p>
-<pre class="programlisting"><span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="identifier">double_</span><span class="special">(</span><span class="number">1.5</span><span class="special">));</span>     <span class="comment">// will emit '1.5' as well (without the quotes)
-</span></pre>
+<pre class="programlisting"><span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="identifier">double_</span><span class="special">(</span><span class="number">1.5</span><span class="special">));</span>     <span class="comment">// will emit '1.5' as well (without the quotes)</span>
+</pre>
 <p>
           The difference to a simple <code class="computeroutput"><span class="number">1.5</span></code>
           or <code class="computeroutput"><span class="identifier">lit</span><span class="special">(</span><span class="number">1.5</span><span class="special">)</span></code> is that
@@ -91,8 +90,8 @@
           equal.
         </p>
 <pre class="programlisting"><span class="keyword">double</span> <span class="identifier">d</span> <span class="special">=</span> <span class="number">1.5</span><span class="special">;</span>
-<span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="identifier">double_</span><span class="special">(</span><span class="number">1.5</span><span class="special">),</span> <span class="identifier">d</span><span class="special">);</span>  <span class="comment">// will emit '1.5' as long as d == 1.5
-</span></pre>
+<span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="identifier">double_</span><span class="special">(</span><span class="number">1.5</span><span class="special">),</span> <span class="identifier">d</span><span class="special">);</span>  <span class="comment">// will emit '1.5' as long as d == 1.5</span>
+</pre>
 <p>
           This feature, namely to succeed generating only if the attribute matches
           the immediate value, enables numeric generators to be used to dynamically
@@ -112,9 +111,9 @@
             belong into this category.
           </p></td></tr>
 </table></div>
-<a name="spirit.karma.tutorials.karma_easier_complex.predicates___the_conditionals_for_output_generators"></a><h6>
-<a name="spirit.karma.tutorials.karma_easier_complex.predicates___the_conditionals_for_output_generators-heading"></a>
-          <a class="link" href="karma_easier_complex.html#spirit.karma.tutorials.karma_easier_complex.predicates___the_conditionals_for_output_generators">Predicates
+<h6>
+<a name="spirit.karma.tutorials.karma_easier_complex.h1"></a>
+          <span><a name="spirit.karma.tutorials.karma_easier_complex.predicates___the_conditionals_for_output_generators"></a></span><a class="link" href="karma_easier_complex.html#spirit.karma.tutorials.karma_easier_complex.predicates___the_conditionals_for_output_generators">Predicates
           - The Conditionals for Output Generators</a>
         </h6>
 <p>
@@ -151,21 +150,21 @@
           As an example, the following generator succeeds generating
         </p>
 <pre class="programlisting"><span class="keyword">double</span> <span class="identifier">d</span> <span class="special">=</span> <span class="number">1.0</span><span class="special">;</span>
-<span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">double_</span><span class="special">(</span><span class="number">1.0</span><span class="special">),</span> <span class="identifier">d</span><span class="special">));</span>    <span class="comment">// succeeds as d == 1.0
-</span></pre>
+<span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">double_</span><span class="special">(</span><span class="number">1.0</span><span class="special">),</span> <span class="identifier">d</span><span class="special">));</span>    <span class="comment">// succeeds as d == 1.0</span>
+</pre>
 <p>
           while this one will fail:
         </p>
 <pre class="programlisting"><span class="keyword">double</span> <span class="identifier">d</span> <span class="special">=</span> <span class="number">1.0</span><span class="special">;</span>
-<span class="identifier">BOOST_ASSERT</span><span class="special">(!</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="special">!</span><span class="identifier">double_</span><span class="special">(</span><span class="number">1.0</span><span class="special">),</span> <span class="identifier">d</span><span class="special">));</span>   <span class="comment">// fails as d == 1.0
-</span></pre>
+<span class="identifier">BOOST_ASSERT</span><span class="special">(!</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> <span class="special">!</span><span class="identifier">double_</span><span class="special">(</span><span class="number">1.0</span><span class="special">),</span> <span class="identifier">d</span><span class="special">));</span>   <span class="comment">// fails as d == 1.0</span>
+</pre>
 <p>
           Neither of these will emit any output. The predicates discard everything
           emitted by the generators to which they are applied.
         </p>
-<a name="spirit.karma.tutorials.karma_easier_complex.ignoring_supplied_attributes"></a><h6>
-<a name="spirit.karma.tutorials.karma_easier_complex.ignoring_supplied_attributes-heading"></a>
-          <a class="link" href="karma_easier_complex.html#spirit.karma.tutorials.karma_easier_complex.ignoring_supplied_attributes">Ignoring
+<h6>
+<a name="spirit.karma.tutorials.karma_easier_complex.h2"></a>
+          <span><a name="spirit.karma.tutorials.karma_easier_complex.ignoring_supplied_attributes"></a></span><a class="link" href="karma_easier_complex.html#spirit.karma.tutorials.karma_easier_complex.ignoring_supplied_attributes">Ignoring
           Supplied Attributes</a>
         </h6>
 <p>
@@ -190,9 +189,9 @@
             counterpart consumes an attribute without emitting any output.
           </p></td></tr>
 </table></div>
-<a name="spirit.karma.tutorials.karma_easier_complex.putting_everything_together"></a><h6>
-<a name="spirit.karma.tutorials.karma_easier_complex.putting_everything_together-heading"></a>
-          <a class="link" href="karma_easier_complex.html#spirit.karma.tutorials.karma_easier_complex.putting_everything_together">Putting
+<h6>
+<a name="spirit.karma.tutorials.karma_easier_complex.h3"></a>
+          <span><a name="spirit.karma.tutorials.karma_easier_complex.putting_everything_together"></a></span><a class="link" href="karma_easier_complex.html#spirit.karma.tutorials.karma_easier_complex.putting_everything_together">Putting
           everything together</a>
         </h6>
 <p>

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Qi Confix Parser Directive</title>
 <link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../index.html" title="Spirit Repository 0.2">
 <link rel="up" href="../directives.html" title="Qi Parser Directives">
 <link rel="prev" href="../directives.html" title="Qi Parser Directives">
@@ -27,9 +27,9 @@
 <a name="spirit_repository.qi_components.directives.confix"></a><a class="link" href="confix.html" title="Qi Confix Parser Directive">Qi
         Confix Parser Directive</a>
 </h4></div></div></div>
-<a name="spirit_repository.qi_components.directives.confix.description"></a><h6>
-<a name="spirit_repository.qi_components.directives.confix.description-heading"></a>
-          <a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.description">Description</a>
+<h6>
+<a name="spirit_repository.qi_components.directives.confix.h0"></a>
+          <span><a name="spirit_repository.qi_components.directives.confix.description"></a></span><a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.description">Description</a>
         </h6>
 <p>
           The <span class="emphasis"><em>Spirit.Qi</em></span> <code class="computeroutput"><span class="identifier">confix</span></code>
@@ -47,9 +47,9 @@
           A simple example is a parser for non-nested comments which can now be written
           as:
         </p>
-<pre class="programlisting"><span class="identifier">confix</span><span class="special">(</span><span class="string">"/*"</span><span class="special">,</span> <span class="string">"*/"</span><span class="special">)[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="string">"*/"</span><span class="special">)]</span>  <span class="comment">// C style comment
-</span><span class="identifier">confix</span><span class="special">(</span><span class="string">"//"</span><span class="special">,</span> <span class="identifier">eol</span><span class="special">)[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="identifier">eol</span><span class="special">)]</span>    <span class="comment">// C++ style comment
-</span></pre>
+<pre class="programlisting"><span class="identifier">confix</span><span class="special">(</span><span class="string">"/*"</span><span class="special">,</span> <span class="string">"*/"</span><span class="special">)[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="string">"*/"</span><span class="special">)]</span>  <span class="comment">// C style comment</span>
+<span class="identifier">confix</span><span class="special">(</span><span class="string">"//"</span><span class="special">,</span> <span class="identifier">eol</span><span class="special">)[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="identifier">eol</span><span class="special">)]</span>    <span class="comment">// C++ style comment</span>
+</pre>
 <p>
           Using the <code class="computeroutput"><span class="identifier">confix</span></code> directive
           instead of the explicit sequence has the advantage of being able to encapsulate
@@ -59,9 +59,9 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">spirit</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">;</span>
 <span class="keyword">namespace</span> <span class="identifier">repo</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">repository</span><span class="special">;</span>
 
-<span class="comment">// Define a metafunction allowing to compute the type
-</span><span class="comment">// of the confix() construct
-</span><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Prefix</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Suffix</span> <span class="special">=</span> <span class="identifier">Prefix</span><span class="special">&gt;</span>
+<span class="comment">// Define a metafunction allowing to compute the type</span>
+<span class="comment">// of the confix() construct</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Prefix</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Suffix</span> <span class="special">=</span> <span class="identifier">Prefix</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">confix_spec</span>
 <span class="special">{</span>
     <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">spirit</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span>
@@ -75,9 +75,9 @@
 <p>
           Now, the comment parsers can be written as
         </p>
-<pre class="programlisting"><span class="identifier">c_comment</span><span class="special">[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="string">"*/"</span><span class="special">)]</span>    <span class="comment">// C style comment
-</span><span class="identifier">cpp_comment</span><span class="special">[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="identifier">eol</span><span class="special">)]</span>   <span class="comment">// C++ style comment
-</span></pre>
+<pre class="programlisting"><span class="identifier">c_comment</span><span class="special">[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="string">"*/"</span><span class="special">)]</span>    <span class="comment">// C style comment</span>
+<span class="identifier">cpp_comment</span><span class="special">[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="identifier">eol</span><span class="special">)]</span>   <span class="comment">// C++ style comment</span>
+</pre>
 <div class="note"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../images/note.png"></td>
@@ -94,22 +94,22 @@
             the code and makes things more explicit.
           </p></td></tr>
 </table></div>
-<a name="spirit_repository.qi_components.directives.confix.header"></a><h6>
-<a name="spirit_repository.qi_components.directives.confix.header-heading"></a>
-          <a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.header">Header</a>
+<h6>
+<a name="spirit_repository.qi_components.directives.confix.h1"></a>
+          <span><a name="spirit_repository.qi_components.directives.confix.header"></a></span><a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.header">Header</a>
         </h6>
-<pre class="programlisting"><span class="comment">// forwards to &lt;boost/spirit/repository/home/qi/directive/confix.hpp&gt;
-</span><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">spirit</span><span class="special">/</span><span class="identifier">repository</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">qi_confix</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="comment">// forwards to &lt;boost/spirit/repository/home/qi/directive/confix.hpp&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">spirit</span><span class="special">/</span><span class="identifier">repository</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">qi_confix</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
-<a name="spirit_repository.qi_components.directives.confix.synopsis"></a><h6>
-<a name="spirit_repository.qi_components.directives.confix.synopsis-heading"></a>
-          <a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.synopsis">Synopsis</a>
+<h6>
+<a name="spirit_repository.qi_components.directives.confix.h2"></a>
+          <span><a name="spirit_repository.qi_components.directives.confix.synopsis"></a></span><a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.synopsis">Synopsis</a>
         </h6>
 <pre class="programlisting"><span class="identifier">confix</span><span class="special">(</span><span class="identifier">prefix</span><span class="special">,</span> <span class="identifier">suffix</span><span class="special">)[</span><span class="identifier">subject</span><span class="special">]</span>
 </pre>
-<a name="spirit_repository.qi_components.directives.confix.parameters"></a><h6>
-<a name="spirit_repository.qi_components.directives.confix.parameters-heading"></a>
-          <a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.parameters">Parameters</a>
+<h6>
+<a name="spirit_repository.qi_components.directives.confix.h3"></a>
+          <span><a name="spirit_repository.qi_components.directives.confix.parameters"></a></span><a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.parameters">Parameters</a>
         </h6>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -171,9 +171,9 @@
 <p>
           All three parameters can be arbitrarily complex parsers themselves.
         </p>
-<a name="spirit_repository.qi_components.directives.confix.attribute"></a><h6>
-<a name="spirit_repository.qi_components.directives.confix.attribute-heading"></a>
-          <a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.attribute">Attribute</a>
+<h6>
+<a name="spirit_repository.qi_components.directives.confix.h4"></a>
+          <span><a name="spirit_repository.qi_components.directives.confix.attribute"></a></span><a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.attribute">Attribute</a>
         </h6>
 <p>
           The <code class="computeroutput"><span class="identifier">confix</span></code> directive exposes
@@ -197,9 +197,9 @@
             then the type of the attribute exposed by <code class="computeroutput"><span class="identifier">confix</span><span class="special">(</span><span class="identifier">p</span><span class="special">,</span> <span class="identifier">s</span><span class="special">)[</span><span class="identifier">a</span><span class="special">]</span></code> will be <code class="computeroutput"><span class="identifier">A</span></code>.
           </p></td></tr>
 </table></div>
-<a name="spirit_repository.qi_components.directives.confix.example"></a><h6>
-<a name="spirit_repository.qi_components.directives.confix.example-heading"></a>
-          <a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.example">Example</a>
+<h6>
+<a name="spirit_repository.qi_components.directives.confix.h5"></a>
+          <span><a name="spirit_repository.qi_components.directives.confix.example"></a></span><a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.example">Example</a>
         </h6>
 <p>
           The following example shows simple use cases of the <code class="computeroutput"><span class="identifier">confix</span></code>
@@ -207,9 +207,9 @@
           comment styles and for some simple tagged data (for the full example code
           see <a href="../../../../../example/qi/confix.cpp" target="_top">confix.cpp</a>)
         </p>
-<a name="spirit_repository.qi_components.directives.confix.prerequisites"></a><h6>
-<a name="spirit_repository.qi_components.directives.confix.prerequisites-heading"></a>
-          <a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.prerequisites">Prerequisites</a>
+<h6>
+<a name="spirit_repository.qi_components.directives.confix.h6"></a>
+          <span><a name="spirit_repository.qi_components.directives.confix.prerequisites"></a></span><a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.prerequisites">Prerequisites</a>
         </h6>
 <p>
           In addition to the main header file needed to include the core components
@@ -217,7 +217,6 @@
           for the new <code class="computeroutput"><span class="identifier">confix</span></code> directive.
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">spirit</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">qi</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">spirit</span><span class="special">/</span><span class="identifier">repository</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">qi_confix</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -229,7 +228,6 @@
           elements into the current namespace:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">eol</span><span class="special">;</span>
 <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">lexeme</span><span class="special">;</span>
@@ -242,9 +240,9 @@
 </pre>
 <p>
         </p>
-<a name="spirit_repository.qi_components.directives.confix.parsing_different_comment_styles"></a><h6>
-<a name="spirit_repository.qi_components.directives.confix.parsing_different_comment_styles-heading"></a>
-          <a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.parsing_different_comment_styles">Parsing
+<h6>
+<a name="spirit_repository.qi_components.directives.confix.h7"></a>
+          <span><a name="spirit_repository.qi_components.directives.confix.parsing_different_comment_styles"></a></span><a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.parsing_different_comment_styles">Parsing
           Different Comment Styles</a>
         </h6>
 <p>
@@ -252,17 +250,16 @@
           a C++ comment:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">parse_cpp_comment</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">bool</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span>
-        <span class="identifier">confix</span><span class="special">(</span><span class="string">"//"</span><span class="special">,</span> <span class="identifier">eol</span><span class="special">)[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="identifier">eol</span><span class="special">)],</span>  <span class="comment">// grammar
-</span>        <span class="identifier">attr</span><span class="special">);</span>                              <span class="comment">// attribute
-</span>    
-    <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">r</span> <span class="special">||</span> <span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match
-</span>        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
+        <span class="identifier">confix</span><span class="special">(</span><span class="string">"//"</span><span class="special">,</span> <span class="identifier">eol</span><span class="special">)[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="identifier">eol</span><span class="special">)],</span>  <span class="comment">// grammar</span>
+        <span class="identifier">attr</span><span class="special">);</span>                              <span class="comment">// attribute</span>
+
+    <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">r</span> <span class="special">||</span> <span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match</span>
+        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
     <span class="keyword">return</span> <span class="identifier">r</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -274,17 +271,16 @@
           comment proves to be straightforward:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">parse_c_comment</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">bool</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span>
-        <span class="identifier">confix</span><span class="special">(</span><span class="string">"/*"</span><span class="special">,</span> <span class="string">"*/"</span><span class="special">)[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="string">"*/"</span><span class="special">)],</span>    <span class="comment">// grammar
-</span>        <span class="identifier">attr</span><span class="special">);</span>                                  <span class="comment">// attribute
-</span>    
-    <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">r</span> <span class="special">||</span> <span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match
-</span>        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
+        <span class="identifier">confix</span><span class="special">(</span><span class="string">"/*"</span><span class="special">,</span> <span class="string">"*/"</span><span class="special">)[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="string">"*/"</span><span class="special">)],</span>    <span class="comment">// grammar</span>
+        <span class="identifier">attr</span><span class="special">);</span>                                  <span class="comment">// attribute</span>
+
+    <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">r</span> <span class="special">||</span> <span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match</span>
+        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
     <span class="keyword">return</span> <span class="identifier">r</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -294,9 +290,9 @@
           which again will be able to parse e.g. "<code class="computeroutput"><span class="comment">/*
           This is a comment */</span> </code>".
         </p>
-<a name="spirit_repository.qi_components.directives.confix.parsing_tagged_data"></a><h6>
-<a name="spirit_repository.qi_components.directives.confix.parsing_tagged_data-heading"></a>
-          <a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.parsing_tagged_data">Parsing
+<h6>
+<a name="spirit_repository.qi_components.directives.confix.h8"></a>
+          <span><a name="spirit_repository.qi_components.directives.confix.parsing_tagged_data"></a></span><a class="link" href="confix.html#spirit_repository.qi_components.directives.confix.parsing_tagged_data">Parsing
           Tagged Data</a>
         </h6>
 <p>
@@ -304,18 +300,17 @@
           is not very hard, either:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">parse_tagged</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">bool</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">phrase_parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span>
-        <span class="identifier">confix</span><span class="special">(</span><span class="string">"&lt;b&gt;"</span><span class="special">,</span> <span class="string">"&lt;/b&gt;"</span><span class="special">)[</span><span class="identifier">lexeme</span><span class="special">[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="char">'&lt;'</span><span class="special">)]],</span>  <span class="comment">// grammar
-</span>        <span class="identifier">space</span><span class="special">,</span>                                          <span class="comment">// skip
-</span>        <span class="identifier">attr</span><span class="special">);</span>                                          <span class="comment">// attribute
-</span>    
-    <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">r</span> <span class="special">||</span> <span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match
-</span>        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
+        <span class="identifier">confix</span><span class="special">(</span><span class="string">"&lt;b&gt;"</span><span class="special">,</span> <span class="string">"&lt;/b&gt;"</span><span class="special">)[</span><span class="identifier">lexeme</span><span class="special">[*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="char">'&lt;'</span><span class="special">)]],</span>  <span class="comment">// grammar</span>
+        <span class="identifier">space</span><span class="special">,</span>                                          <span class="comment">// skip</span>
+        <span class="identifier">attr</span><span class="special">);</span>                                          <span class="comment">// attribute</span>
+
+    <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">r</span> <span class="special">||</span> <span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="comment">// fail if we did not get a full match</span>
+        <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
     <span class="keyword">return</span> <span class="identifier">r</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>

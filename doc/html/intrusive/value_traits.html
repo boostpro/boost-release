@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;12.&#160;Boost.Intrusive">
 <link rel="prev" href="node_algorithms.html" title="Node algorithms with custom NodeTraits">
 <link rel="next" href="thread_safety.html" title="Thread safety guarantees">
 </head>
@@ -227,7 +227,6 @@
         This is the definition of the old node:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">link_mode</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -253,7 +252,6 @@
         <span class="bold"><strong>Boost.Intrusive</strong></span> containers:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="comment">//Define our own NodeTraits that will configure singly and doubly linked</span>
 <span class="comment">//list algorithms. Note that this node traits is compatible with</span>
@@ -267,10 +265,10 @@
    <span class="keyword">typedef</span> <span class="identifier">legacy_value</span> <span class="special">*</span>                          <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">legacy_value</span> <span class="special">*</span>                    <span class="identifier">const_node_ptr</span><span class="special">;</span>
 
-   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_next</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span>            <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">,</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">next</span><span class="special">)</span>       <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span> <span class="special">=</span> <span class="identifier">next</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_previous</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_previous</span><span class="special">(</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">,</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">prev</span><span class="special">)</span>   <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span> <span class="special">=</span> <span class="identifier">prev</span><span class="special">;</span>  <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_next</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span>            <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">,</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">next</span><span class="special">)</span>       <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span> <span class="special">=</span> <span class="identifier">next</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_previous</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_previous</span><span class="special">(</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">,</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">prev</span><span class="special">)</span>   <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span> <span class="special">=</span> <span class="identifier">prev</span><span class="special">;</span>  <span class="special">}</span>
 <span class="special">};</span>
 
 <span class="comment">//This ValueTraits will configure list and slist. In this case,</span>
@@ -313,7 +311,6 @@
         and write a little test:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="comment">//Now define an intrusive list and slist that will store legacy_value objects</span>
 <span class="keyword">typedef</span> <span class="identifier">bi</span><span class="special">::</span><span class="identifier">value_traits</span><span class="special">&lt;</span><span class="identifier">legacy_value_traits</span><span class="special">&gt;</span>      <span class="identifier">ValueTraitsOption</span><span class="special">;</span>
@@ -378,7 +375,6 @@
         we just need a node that stores two pointers:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">link_mode</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -399,12 +395,11 @@
         that will work for both types:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="keyword">class</span> <span class="identifier">base_1</span><span class="special">{};</span>
 <span class="keyword">class</span> <span class="identifier">base_2</span><span class="special">{};</span>
 
-<span class="keyword">struct</span> <span class="identifier">value_1</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">base_1</span><span class="special">,</span> <span class="keyword">public</span> <span class="identifier">simple_node</span>   
+<span class="keyword">struct</span> <span class="identifier">value_1</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">base_1</span><span class="special">,</span> <span class="keyword">public</span> <span class="identifier">simple_node</span>
 <span class="special">{</span>  <span class="keyword">int</span>   <span class="identifier">id_</span><span class="special">;</span>  <span class="special">};</span>
 
 <span class="keyword">struct</span> <span class="identifier">value_2</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">base_1</span><span class="special">,</span> <span class="keyword">public</span> <span class="identifier">base_2</span><span class="special">,</span> <span class="keyword">public</span> <span class="identifier">simple_node</span>
@@ -416,10 +411,10 @@
    <span class="keyword">typedef</span> <span class="identifier">simple_node</span>                             <span class="identifier">node</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">node</span> <span class="special">*</span>                                  <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span>                            <span class="identifier">const_node_ptr</span><span class="special">;</span>
-   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_next</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span>            <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">,</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">next</span><span class="special">)</span>       <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span> <span class="special">=</span> <span class="identifier">next</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_previous</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_previous</span><span class="special">(</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">,</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">prev</span><span class="special">)</span>   <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span> <span class="special">=</span> <span class="identifier">prev</span><span class="special">;</span>  <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_next</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span>            <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">,</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">next</span><span class="special">)</span>       <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span> <span class="special">=</span> <span class="identifier">next</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_previous</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_previous</span><span class="special">(</span><span class="identifier">node</span> <span class="special">*</span><span class="identifier">n</span><span class="special">,</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">prev</span><span class="special">)</span>   <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span> <span class="special">=</span> <span class="identifier">prev</span><span class="special">;</span>  <span class="special">}</span>
 <span class="special">};</span>
 
 <span class="comment">//A templatized value traits for value_1 and value_2</span>
@@ -448,7 +443,6 @@
         type:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="comment">//Now define two intrusive lists. Both lists will use the same algorithms:</span>
 <span class="comment">// circular_list_algorithms&lt;simple_node_traits&gt;</span>
@@ -498,12 +492,11 @@
         to define the needed value traits classes:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="keyword">class</span> <span class="identifier">base_1</span><span class="special">{};</span>
 <span class="keyword">class</span> <span class="identifier">base_2</span><span class="special">{};</span>
 
-<span class="keyword">struct</span> <span class="identifier">value_1</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">base_1</span><span class="special">,</span> <span class="keyword">public</span> <span class="identifier">simple_node</span>   
+<span class="keyword">struct</span> <span class="identifier">value_1</span> <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">base_1</span><span class="special">,</span> <span class="keyword">public</span> <span class="identifier">simple_node</span>
 <span class="special">{</span>
    <span class="keyword">int</span>   <span class="identifier">id_</span><span class="special">;</span>
    <span class="identifier">simple_node</span> <span class="identifier">node_</span><span class="special">;</span>
@@ -614,7 +607,6 @@
         apart from the initial resource reservation:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -633,8 +625,8 @@
    <span class="keyword">typedef</span> <span class="identifier">node</span> <span class="special">*</span>                            <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">node</span> <span class="special">*</span>                      <span class="identifier">const_node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">identifier_t</span>                      <span class="identifier">value_type</span><span class="special">;</span>
-   <span class="keyword">typedef</span> <span class="identifier">identifier_t</span> <span class="special">*</span>                    <span class="identifier">pointer</span><span class="special">;</span> 
-   <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">identifier_t</span> <span class="special">*</span>              <span class="identifier">const_pointer</span><span class="special">;</span> 
+   <span class="keyword">typedef</span> <span class="identifier">identifier_t</span> <span class="special">*</span>                    <span class="identifier">pointer</span><span class="special">;</span>
+   <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">identifier_t</span> <span class="special">*</span>              <span class="identifier">const_pointer</span><span class="special">;</span>
    <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">link_mode_type</span> <span class="identifier">link_mode</span> <span class="special">=</span>   <span class="identifier">normal_link</span><span class="special">;</span>
 
    <span class="identifier">stateful_value_traits</span><span class="special">(</span><span class="identifier">pointer</span> <span class="identifier">ids</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">node_array</span><span class="special">)</span>

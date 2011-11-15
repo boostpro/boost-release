@@ -37,7 +37,6 @@
       There is no linking with any library necessary.
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">/</span><span class="identifier">geometries</span><span class="special">/</span><span class="identifier">point_xy</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -47,9 +46,9 @@
 </pre>
 <p>
     </p>
-<a name="geometry.quickstart.cartesian"></a><h4>
-<a name="geometry.quickstart.cartesian-heading"></a>
-      <a class="link" href="quickstart.html#geometry.quickstart.cartesian">Cartesian</a>
+<h4>
+<a name="geometry.quickstart.h0"></a>
+      <span><a name="geometry.quickstart.cartesian"></a></span><a class="link" href="quickstart.html#geometry.quickstart.cartesian">Cartesian</a>
     </h4>
 <p>
       It is possible to use only a small part of the library. For example: the distance
@@ -57,7 +56,6 @@
       various types. Using one of its own types:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="identifier">model</span><span class="special">::</span><span class="identifier">d2</span><span class="special">::</span><span class="identifier">point_xy</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">p1</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">),</span> <span class="identifier">p2</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="number">2</span><span class="special">);</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Distance p1-p2 is: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">distance</span><span class="special">(</span><span class="identifier">p1</span><span class="special">,</span> <span class="identifier">p2</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
@@ -73,7 +71,6 @@
       Registering and using a C array:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">/</span><span class="identifier">geometries</span><span class="special">/</span><span class="identifier">adapted</span><span class="special">/</span><span class="identifier">c_array</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -82,7 +79,6 @@
 <p>
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">a</span><span class="special">[</span><span class="number">2</span><span class="special">]</span> <span class="special">=</span> <span class="special">{</span><span class="number">1</span><span class="special">,</span><span class="number">1</span><span class="special">};</span>
 <span class="keyword">int</span> <span class="identifier">b</span><span class="special">[</span><span class="number">2</span><span class="special">]</span> <span class="special">=</span> <span class="special">{</span><span class="number">2</span><span class="special">,</span><span class="number">3</span><span class="special">};</span>
@@ -101,7 +97,6 @@
       But it is first necessary to register a Boost.Tuple, like the C array:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">/</span><span class="identifier">geometries</span><span class="special">/</span><span class="identifier">adapted</span><span class="special">/</span><span class="identifier">boost_tuple</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -110,7 +105,6 @@
 <p>
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="keyword">double</span> <span class="identifier">points</span><span class="special">[][</span><span class="number">2</span><span class="special">]</span> <span class="special">=</span> <span class="special">{{</span><span class="number">2.0</span><span class="special">,</span> <span class="number">1.3</span><span class="special">},</span> <span class="special">{</span><span class="number">4.1</span><span class="special">,</span> <span class="number">3.0</span><span class="special">},</span> <span class="special">{</span><span class="number">5.3</span><span class="special">,</span> <span class="number">2.6</span><span class="special">},</span> <span class="special">{</span><span class="number">2.9</span><span class="special">,</span> <span class="number">0.7</span><span class="special">},</span> <span class="special">{</span><span class="number">2.0</span><span class="special">,</span> <span class="number">1.3</span><span class="special">}};</span>
 <span class="identifier">model</span><span class="special">::</span><span class="identifier">polygon</span><span class="special">&lt;</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">d2</span><span class="special">::</span><span class="identifier">point_xy</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">poly</span><span class="special">;</span>
@@ -124,7 +118,6 @@
       We can calculate the area of a polygon:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Area: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">area</span><span class="special">(</span><span class="identifier">poly</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 </pre>
@@ -135,7 +128,6 @@
       calculate distance again, now using a C array point and a Boost.Tuple point:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="keyword">double</span> <span class="identifier">d2</span> <span class="special">=</span> <span class="identifier">distance</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">p</span><span class="special">);</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Distance a-p is: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">d2</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
@@ -151,9 +143,9 @@ Point p is in polygon? true
 Area: 3.015
 Distance a-p is: 2.87924
 </pre>
-<a name="geometry.quickstart.non_cartesian"></a><h4>
-<a name="geometry.quickstart.non_cartesian-heading"></a>
-      <a class="link" href="quickstart.html#geometry.quickstart.non_cartesian">Non-Cartesian</a>
+<h4>
+<a name="geometry.quickstart.h1"></a>
+      <span><a name="geometry.quickstart.non_cartesian"></a></span><a class="link" href="quickstart.html#geometry.quickstart.non_cartesian">Non-Cartesian</a>
     </h4>
 <p>
       It is also possible to use non-Cartesian points. For example: points on a sphere.
@@ -176,7 +168,6 @@ Distance a-p is: 2.87924
       and Paris:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">point</span>
     <span class="special">&lt;</span>
@@ -195,9 +186,10 @@ Distance a-p is: 2.87924
       It writes:
     </p>
 <pre class="programlisting">Distance in miles: 267.02</pre>
-<a name="geometry.quickstart.adapted_structs"></a><h4>
-<a name="geometry.quickstart.adapted_structs-heading"></a>
-      <a class="link" href="quickstart.html#geometry.quickstart.adapted_structs">Adapted structs</a>
+<h4>
+<a name="geometry.quickstart.h2"></a>
+      <span><a name="geometry.quickstart.adapted_structs"></a></span><a class="link" href="quickstart.html#geometry.quickstart.adapted_structs">Adapted
+      structs</a>
     </h4>
 <p>
       Finally an example from a totally different domain: developing window-based
@@ -206,7 +198,6 @@ Distance a-p is: 2.87924
       overlap and if so, move the second one to another place:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="identifier">QRect</span> <span class="identifier">r1</span><span class="special">(</span><span class="number">100</span><span class="special">,</span> <span class="number">200</span><span class="special">,</span> <span class="number">15</span><span class="special">,</span> <span class="number">15</span><span class="special">);</span>
 <span class="identifier">QRect</span> <span class="identifier">r2</span><span class="special">(</span><span class="number">110</span><span class="special">,</span> <span class="number">210</span><span class="special">,</span> <span class="number">20</span><span class="special">,</span> <span class="number">20</span><span class="special">);</span>
@@ -217,9 +208,9 @@ Distance a-p is: 2.87924
 </pre>
 <p>
     </p>
-<a name="geometry.quickstart.more"></a><h4>
-<a name="geometry.quickstart.more-heading"></a>
-      <a class="link" href="quickstart.html#geometry.quickstart.more">More</a>
+<h4>
+<a name="geometry.quickstart.h3"></a>
+      <span><a name="geometry.quickstart.more"></a></span><a class="link" href="quickstart.html#geometry.quickstart.more">More</a>
     </h4>
 <p>
       In the reference many more examples can be found.

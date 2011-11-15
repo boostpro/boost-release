@@ -1335,6 +1335,45 @@
 
     </library>
 
+    <!-- detail -->
+    <library name="detail">
+        <mark-expected-failures>
+            <test name="correctly_disable"/>
+            <test name="correctly_disable_debug"/>
+            <toolset name="pathscale-4.*"/>
+            <toolset name="sun-5.10"/>
+            <toolset name="pgi-*"/>
+            <toolset name="msvc-9.0~stlport*"/>
+            <toolset name="msvc-9.0~wm5~stlport*"/>
+            <note author="Daniel James">
+            This indicates that forward declarations could probably be used
+            for these compilers but currently aren't. All these compilers use
+            STLport, which is compatible with forward declarations in some
+            circumstances, but not in others. I haven't looked into how to
+            determine this, so I've just set container_fwd to never forward
+            declare for STLport.
+            </note>
+        </mark-expected-failures>
+
+        <mark-expected-failures>
+            <test name="container_fwd"/>
+            <test name="container_fwd_debug"/>
+            <test name="container_no_fwd_test"/>
+            <toolset name="msvc-9.0~wm5~stlport5.2"/>
+            <note author="Daniel James">
+            Failing because these tests are run with warnings as errors,
+            and the standard library is causing warnings.
+            </note>
+        </mark-expected-failures>
+
+        <mark-expected-failures>
+            <test name="container_fwd_debug"/>
+            <toolset name="sun-5.10"/>
+            <note author="Daniel James">
+            STLport debug mode seems to be broken here.
+            </note>
+        </mark-expected-failures>
+    </library>
 
     <!-- dynamic_bitset -->
     <library name="dynamic_bitset">
@@ -1532,7 +1571,7 @@
             <toolset name="gcc-3.2*"/>
             <toolset name="gcc-3_3-darwin"/>
             <toolset name="intel-linux"/>
-            <toolset name="vacpp"/>
+            <toolset name="vacpp*"/>
             <toolset name="cw-8.3"/>
             <toolset name="cw-9.4"/>
             <toolset name="cw-9.5-darwin"/>
@@ -1543,7 +1582,7 @@
             <toolset name="sun-5.7"/>
             <toolset name="sun-5.8"/>
             <toolset name="sun-5.9"/>
-            <toolset name="pathscale*"/>
+            <toolset name="sun-5.10"/>
             <note author="Eric Niebler">
                 This compiler does not support detection of
                 const rvalues.
@@ -1562,7 +1601,7 @@
             <toolset name="gcc-3.2*"/>
             <toolset name="gcc-3_3-darwin"/>
             <toolset name="intel-linux"/>
-            <toolset name="vacpp"/>
+            <toolset name="vacpp*"/>
             <toolset name="cw-8.3"/>
             <toolset name="cw-9.4"/>
             <toolset name="cw-9.5-darwin"/>
@@ -1573,7 +1612,7 @@
             <toolset name="sun-5.7"/>
             <toolset name="sun-5.8"/>
             <toolset name="sun-5.9"/>
-            <toolset name="pathscale*"/>
+            <toolset name="sun-5.10"/>
             <note author="Eric Niebler">
                 This compiler does not support detection of
                 const rvalues.
@@ -1593,6 +1632,7 @@
             <toolset name="sun-5.7"/>
             <toolset name="sun-5.8"/>
             <toolset name="sun-5.9"/>
+            <toolset name="sun-5.10"/>
             <note author="Eric Niebler">
                 This compiler does not support detection of
                 rvalues.
@@ -1612,6 +1652,7 @@
             <toolset name="sun-5.7"/>
             <toolset name="sun-5.8"/>
             <toolset name="sun-5.9"/>
+            <toolset name="sun-5.10"/>
             <note author="Eric Niebler">
                 This compiler does not support detection of
                 rvalues.
@@ -1637,6 +1678,16 @@
                 ADL which these compilers do not support.
             </note>
         </mark-expected-failures>
+
+        <mark-expected-failures>
+            <test name="noncopyable_rvalue_const"/>
+            <test name="noncopyable_rvalue_const_r"/>
+            <test name="noncopyable_rvalue_nonconst"/>
+            <test name="noncopyable_rvalue_nonconst_r"/>
+            <toolset name="*"/>
+            <note refid="50" author="Eric Niebler"/>
+        </mark-expected-failures>
+
     </library>
 
     <!-- format -->
@@ -2232,6 +2283,18 @@
               ptrdiff_t, which is an alias for a 32-bit type
             </note>
         </mark-expected-failures>
+        <mark-expected-failures>
+            <test name="path_test_filesystem2"/>
+            <toolset name="msvc-7.1"/>
+            <note author="Daniel James" date="07 Jun 2011">
+              Visual C++ 7.1's SFINAE implementation can't deal with multiple
+              assignment functions with the same parameters (but disabled with
+              SFINAE). So path's assignment from boost::filesystem2::path is
+              disabled. Would be pretty easy to workaround, but probably not
+              worth it since this is pretty obscure, and filesystem2 will be
+              removed soon.
+            </note>
+        </mark-expected-failures>
     </library>
 
     <!-- lambda -->
@@ -2277,6 +2340,25 @@
       </test>
     </library>
 
+    <!-- move-->
+    <library name="move">
+        <mark-unusable>
+            <toolset name="borland-5.*"/>
+            <toolset name="msvc-6.5*"/>
+            <toolset name="cw-9.*"/>
+            <toolset name="gcc-2.95*"/>
+            <toolset name="gcc-3.0*"/>
+            <toolset name="gcc-3.1*"/>
+            <toolset name="gcc-3.2*"/>
+            <toolset name="gcc-3.3*"/>
+            <toolset name="mipspro"/>
+            <toolset name="pathscale*"/>
+            <toolset name="intel-linux-8.*"/>
+            <note author="Ion Gazta&#241;aga">
+                The compiler does not support features that are essential for the library.
+            </note>
+        </mark-unusable>
+    </library>
 
     <!-- MPL -->
     <library name="mpl">
@@ -2680,6 +2762,7 @@ for more information.
         <toolset name="sun-5.10"/>
         <toolset name="borland-*"/>
         <toolset name="vacpp"/>
+        <toolset name="vacpp-*"/>
       </mark-unusable>
     </library>
 
@@ -5910,16 +5993,6 @@ These tests will fail in most compilers that don't support rvalue references.
             a little inefficient.
         </note>
       </mark-expected-failures>
-
-      <mark-expected-failures>
-        <test name="compile_map"/>
-        <test name="compile_set"/>
-        <toolset name="gcc-open64"/>
-        <toolset name="pathscale-*"/>
-        <note author="Daniel James">
-            Concept checks don't seem to work on pathscale.
-        </note>
-      </mark-expected-failures>
     </library>
 
     <!-- utility/enable_if -->
@@ -6269,6 +6342,45 @@ These tests will fail in most compilers that don't support rvalue references.
 
     </library>
 
+    <library name="locale">
+        <mark-unusable>
+            <toolset name="sun*" />
+            <note author="Artyom Beilis">
+                This library is unusable due to bug #5373 in Boost.Thread
+                on this compiler.
+            </note>
+        </mark-unusable>
+
+        <mark-unusable>
+            <toolset name="msvc-9.0~wm5~stlport5.2" />
+            <note author="Artyom Beilis">
+                Windows Mobile lacks essential features of the standard C
+                library like gmtime, mktime, localtime making it impossible
+                to use Boost.Locale on this platform.
+            </note>
+        </mark-unusable>
+
+        <mark-expected-failures>
+            <test name="test_date_time" />
+            <toolset name="gcc-mingw-4.4.0"/>
+            <note author="Artyom Beilis">
+                Compiler does not support shared runtime linking
+                thus is makes it problematic to use Boost.Locale as dll
+            </note>
+        </mark-expected-failures>
+
+        <mark-expected-failures>
+            <test name="test_codepage"/>
+            <toolset name="pathscale-4*"/>
+            <note author="Artyom Beilis">
+                Problems with wide file stream I/O. 
+                Currently unresolved due to lack of access to the 
+                compiler.
+            </note>
+        </mark-expected-failures>
+    </library>
+
+
     <!-- /////////////// Standard note definitions /////////////// -->
 
     <note id="0">
@@ -6513,6 +6625,10 @@ These tests will fail in most compilers that don't support rvalue references.
 
     <note id="49">
         This test fails because MinGW apparently does not always catch exceptions properly.
+    </note>
+
+    <note id="50">
+        This test requires C++0x support.
     </note>
 
 </explicit-failures-markup>

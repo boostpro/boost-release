@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_random.html" title="Chapter&#160;17.&#160;Boost.Random">
-<link rel="prev" href="../boost_random.html" title="Chapter&#160;17.&#160;Boost.Random">
+<link rel="up" href="../boost_random.html" title="Chapter&#160;20.&#160;Boost.Random">
+<link rel="prev" href="../boost_random.html" title="Chapter&#160;20.&#160;Boost.Random">
 <link rel="next" href="reference.html" title="Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -45,7 +45,6 @@
         and <code class="computeroutput"><a class="link" href="../boost/random/uniform_int_distribution.html" title="Class template uniform_int_distribution">uniform_int_distribution</a></code>.
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">mersenne_twister</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">uniform_int_distribution</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></pre>
@@ -59,7 +58,6 @@
         defined in ctime).
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mt19937</span> <span class="identifier">gen</span><span class="special">;</span></pre>
 <p>
@@ -79,18 +77,17 @@
         Now we can define a function that simulates an ordinary six-sided die.
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">roll_die</span><span class="special">()</span> <span class="special">{</span>
-    <a class="co" name="boost_random0co" href="tutorial.html#boost_random0"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">uniform_int_distribution</span><span class="special">&lt;&gt;</span> <span class="identifier">dist</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="number">6</span><span class="special">);</span>
-    <a class="co" name="boost_random1co" href="tutorial.html#boost_random1"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a><span class="keyword">return</span> <span class="identifier">dist</span><span class="special">(</span><span class="identifier">gen</span><span class="special">);</span>
+    <a class="co" name="boost_random.tutorial.generating_integers_in_a_range.c0" href="tutorial.html#boost_random.tutorial.generating_integers_in_a_range.c1"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">uniform_int_distribution</span><span class="special">&lt;&gt;</span> <span class="identifier">dist</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="number">6</span><span class="special">);</span>
+    <a class="co" name="boost_random.tutorial.generating_integers_in_a_range.c2" href="tutorial.html#boost_random.tutorial.generating_integers_in_a_range.c3"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a><span class="keyword">return</span> <span class="identifier">dist</span><span class="special">(</span><span class="identifier">gen</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
 <p>
       </p>
 <div class="calloutlist"><table border="0" summary="Callout list">
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="boost_random0"></a><a href="#boost_random0co"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="boost_random.tutorial.generating_integers_in_a_range.c1"></a><a href="#boost_random.tutorial.generating_integers_in_a_range.c0"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
 <td valign="top" align="left">
 <p>
             <code class="computeroutput"><a class="link" href="../boost/random/mt19937.html" title="Type definition mt19937">mt19937</a></code> produces
@@ -114,7 +111,7 @@
 </td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="boost_random1"></a><a href="#boost_random1co"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="boost_random.tutorial.generating_integers_in_a_range.c3"></a><a href="#boost_random.tutorial.generating_integers_in_a_range.c2"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
             A distribution is a function object. We generate a random number by calling
             <code class="computeroutput"><span class="identifier">dist</span></code> with the generator.
@@ -131,7 +128,6 @@
         For the source of this example see <a href="../../..//libs/random/example/weighted_die.cpp" target="_top">weighted_die.cpp</a>.
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">mersenne_twister</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">discrete_distribution</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -160,7 +156,6 @@
         </p></td></tr>
 </table></div>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="keyword">double</span> <span class="identifier">probabilities</span><span class="special">[]</span> <span class="special">=</span> <span class="special">{</span>
     <span class="number">0.5</span><span class="special">,</span> <span class="number">0.1</span><span class="special">,</span> <span class="number">0.1</span><span class="special">,</span> <span class="number">0.1</span><span class="special">,</span> <span class="number">0.1</span><span class="special">,</span> <span class="number">0.1</span>
@@ -172,17 +167,16 @@
         Now define a function that simulates rolling this die.
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">roll_weighted_die</span><span class="special">()</span> <span class="special">{</span>
-    <a class="co" name="boost_random2co" href="tutorial.html#boost_random2"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="keyword">return</span> <span class="identifier">dist</span><span class="special">(</span><span class="identifier">gen</span><span class="special">)</span> <span class="special">+</span> <span class="number">1</span><span class="special">;</span>
+    <a class="co" name="boost_random.tutorial.generating_integers_with_different_probabilities.c0" href="tutorial.html#boost_random.tutorial.generating_integers_with_different_probabilities.c1"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="keyword">return</span> <span class="identifier">dist</span><span class="special">(</span><span class="identifier">gen</span><span class="special">)</span> <span class="special">+</span> <span class="number">1</span><span class="special">;</span>
 <span class="special">}</span>
 
 </pre>
 <p>
       </p>
 <div class="calloutlist"><table border="0" summary="Callout list"><tr>
-<td width="5%" valign="top" align="left"><p><a name="boost_random2"></a><a href="#boost_random2co"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="boost_random.tutorial.generating_integers_with_different_probabilities.c1"></a><a href="#boost_random.tutorial.generating_integers_with_different_probabilities.c0"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
             Add 1 to make sure that the result is in the range [1,6] instead of [0,5].
           </p></td>
@@ -200,20 +194,19 @@
         This example demonstrates generating a random 8 character password.
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">random_device</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">uniform_int_distribution</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span> <span class="special">{</span>
-    <a class="co" name="boost_random3co" href="tutorial.html#boost_random3"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">chars</span><span class="special">(</span>
+    <a class="co" name="boost_random.tutorial.generating_a_random_password.c0" href="tutorial.html#boost_random.tutorial.generating_a_random_password.c1"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">chars</span><span class="special">(</span>
         <span class="string">"abcdefghijklmnopqrstuvwxyz"</span>
         <span class="string">"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>
         <span class="string">"1234567890"</span>
         <span class="string">"!@#$%^&amp;*()"</span>
         <span class="string">"`~-_=+[{]{\\|;:'\",&lt;.&gt;/? "</span><span class="special">);</span>
-    <a class="co" name="boost_random4co" href="tutorial.html#boost_random4"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">random_device</span> <span class="identifier">rng</span><span class="special">;</span>
-    <a class="co" name="boost_random5co" href="tutorial.html#boost_random5"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">uniform_int_distribution</span><span class="special">&lt;&gt;</span> <span class="identifier">index_dist</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">chars</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">-</span> <span class="number">1</span><span class="special">);</span>
+    <a class="co" name="boost_random.tutorial.generating_a_random_password.c2" href="tutorial.html#boost_random.tutorial.generating_a_random_password.c3"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">random_device</span> <span class="identifier">rng</span><span class="special">;</span>
+    <a class="co" name="boost_random.tutorial.generating_a_random_password.c4" href="tutorial.html#boost_random.tutorial.generating_a_random_password.c5"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">uniform_int_distribution</span><span class="special">&lt;&gt;</span> <span class="identifier">index_dist</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">chars</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">-</span> <span class="number">1</span><span class="special">);</span>
     <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="number">8</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">chars</span><span class="special">[</span><span class="identifier">index_dist</span><span class="special">(</span><span class="identifier">rng</span><span class="special">)];</span>
     <span class="special">}</span>
@@ -225,21 +218,21 @@
       </p>
 <div class="calloutlist"><table border="0" summary="Callout list">
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="boost_random3"></a><a href="#boost_random3co"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="boost_random.tutorial.generating_a_random_password.c1"></a><a href="#boost_random.tutorial.generating_a_random_password.c0"><img src="../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
             We first define the characters that we're going to allow. This is pretty
             much just the characters on a standard keyboard.
           </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="boost_random4"></a><a href="#boost_random4co"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="boost_random.tutorial.generating_a_random_password.c3"></a><a href="#boost_random.tutorial.generating_a_random_password.c2"><img src="../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
             We use <code class="computeroutput"><a class="link" href="../boost/random/random_device.html" title="Class random_device">random_device</a></code>
             as a source of entropy, since we want passwords that are not predictable.
           </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="boost_random5"></a><a href="#boost_random5co"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="boost_random.tutorial.generating_a_random_password.c5"></a><a href="#boost_random.tutorial.generating_a_random_password.c4"><img src="../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
             Finally we select 8 random characters from the string and print them
             to cout.

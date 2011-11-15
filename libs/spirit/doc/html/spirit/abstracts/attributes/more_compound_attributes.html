@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>More About Attributes of Compound Components</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../attributes.html" title="Attributes">
 <link rel="prev" href="compound_attributes.html" title="Attributes of Compound Components">
 <link rel="next" href="nonterminal_attributes.html" title="Attributes of Rules and Grammars">
@@ -98,24 +98,24 @@
           any attribute and don't produce (consume) any data. The following example
           shows this:
         </p>
-<pre class="programlisting"><span class="comment">// the following parses "(1.0, 2.0)" into a pair of double
-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span><span class="special">(</span><span class="string">"(1.0, 2.0)"</span><span class="special">);</span>
+<pre class="programlisting"><span class="comment">// the following parses "(1.0, 2.0)" into a pair of double</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span><span class="special">(</span><span class="string">"(1.0, 2.0)"</span><span class="special">);</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">strbegin</span> <span class="special">=</span> <span class="identifier">input</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">;</span>
-<span class="identifier">qi</span><span class="special">::</span><span class="identifier">parse</span><span class="special">(</span><span class="identifier">strbegin</span><span class="special">,</span> <span class="identifier">input</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> 
-    <span class="char">'('</span> <span class="special">&gt;&gt;</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="string">", "</span> <span class="special">&gt;&gt;</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="char">')'</span><span class="special">,</span> <span class="comment">// parser grammar 
-</span>    <span class="identifier">p</span><span class="special">);</span>                                               <span class="comment">// attribute to fill while parsing
-</span></pre>
+<span class="identifier">qi</span><span class="special">::</span><span class="identifier">parse</span><span class="special">(</span><span class="identifier">strbegin</span><span class="special">,</span> <span class="identifier">input</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span>
+    <span class="char">'('</span> <span class="special">&gt;&gt;</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="string">", "</span> <span class="special">&gt;&gt;</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="char">')'</span><span class="special">,</span> <span class="comment">// parser grammar </span>
+    <span class="identifier">p</span><span class="special">);</span>                                               <span class="comment">// attribute to fill while parsing</span>
+</pre>
 <p>
           and here is the equivalent <span class="emphasis"><em>Spirit.Karma</em></span> code snippet:
         </p>
-<pre class="programlisting"><span class="comment">// the following generates: (1.0, 2.0)
-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span><span class="special">;</span>
+<pre class="programlisting"><span class="comment">// the following generates: (1.0, 2.0)</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span><span class="special">;</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">back_insert_iterator</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">out</span><span class="special">(</span><span class="identifier">str</span><span class="special">);</span>
-<span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span> 
-    <span class="char">'('</span> <span class="special">&lt;&lt;</span> <span class="identifier">karma</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">karma</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="char">')'</span><span class="special">,</span> <span class="comment">// generator grammar (format description)
-</span>    <span class="identifier">p</span><span class="special">);</span>                                                     <span class="comment">// data to use as the attribute 
-</span></pre>
+<span class="identifier">generate</span><span class="special">(</span><span class="identifier">out</span><span class="special">,</span>
+    <span class="char">'('</span> <span class="special">&lt;&lt;</span> <span class="identifier">karma</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">karma</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="char">')'</span><span class="special">,</span> <span class="comment">// generator grammar (format description)</span>
+    <span class="identifier">p</span><span class="special">);</span>                                                     <span class="comment">// data to use as the attribute </span>
+</pre>
 <p>
           where the first element of the pair passed in as the data to generate is
           still associated with the first <code class="computeroutput"><span class="identifier">double_</span></code>,
@@ -139,7 +139,7 @@
 <tr><td align="left" valign="top">
 <p>
             Similarly to the tip provided above, this example could be rewritten
-            using <span class="emphasis"><em>Spirit's</em></span> multi-attribute API function: 
+            using <span class="emphasis"><em>Spirit's</em></span> multi-attribute API function:
 </p>
 <pre class="programlisting"><span class="keyword">double</span> <span class="identifier">d1</span> <span class="special">=</span> <span class="number">0.0</span><span class="special">,</span> <span class="identifier">d2</span> <span class="special">=</span> <span class="number">0.0</span><span class="special">;</span>
 <span class="identifier">qi</span><span class="special">::</span><span class="identifier">parse</span><span class="special">(</span><span class="identifier">begin</span><span class="special">,</span> <span class="identifier">end</span><span class="special">,</span> <span class="char">'('</span> <span class="special">&gt;&gt;</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="string">", "</span> <span class="special">&gt;&gt;</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">double_</span> <span class="special">&gt;&gt;</span> <span class="char">')'</span><span class="special">,</span> <span class="identifier">d1</span><span class="special">,</span> <span class="identifier">d2</span><span class="special">);</span>

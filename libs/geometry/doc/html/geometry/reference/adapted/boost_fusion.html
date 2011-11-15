@@ -30,25 +30,25 @@
           Boost.Fusion adapted structs or classes are adapted to the Boost.Geometry
           point concept
         </p>
-<a name="geometry.reference.adapted.boost_fusion.description"></a><h6>
-<a name="geometry.reference.adapted.boost_fusion.description-heading"></a>
-          <a class="link" href="boost_fusion.html#geometry.reference.adapted.boost_fusion.description">Description</a>
+<h6>
+<a name="geometry.reference.adapted.boost_fusion.h0"></a>
+          <span><a name="geometry.reference.adapted.boost_fusion.description"></a></span><a class="link" href="boost_fusion.html#geometry.reference.adapted.boost_fusion.description">Description</a>
         </h6>
 <p>
           Boost.Fusion adapted structs are (optionally) adapted to the Boost.Geometry
           point concept. They can therefore be used in many Boost.Geometry algorithms.
         </p>
-<a name="geometry.reference.adapted.boost_fusion.model_of"></a><h6>
-<a name="geometry.reference.adapted.boost_fusion.model_of-heading"></a>
-          <a class="link" href="boost_fusion.html#geometry.reference.adapted.boost_fusion.model_of">Model
+<h6>
+<a name="geometry.reference.adapted.boost_fusion.h1"></a>
+          <span><a name="geometry.reference.adapted.boost_fusion.model_of"></a></span><a class="link" href="boost_fusion.html#geometry.reference.adapted.boost_fusion.model_of">Model
           of</a>
         </h6>
 <p>
           <a class="link" href="../concepts/concept_point.html" title="Point Concept">Point Concept</a>
         </p>
-<a name="geometry.reference.adapted.boost_fusion.header"></a><h6>
-<a name="geometry.reference.adapted.boost_fusion.header-heading"></a>
-          <a class="link" href="boost_fusion.html#geometry.reference.adapted.boost_fusion.header">Header</a>
+<h6>
+<a name="geometry.reference.adapted.boost_fusion.h2"></a>
+          <span><a name="geometry.reference.adapted.boost_fusion.header"></a></span><a class="link" href="boost_fusion.html#geometry.reference.adapted.boost_fusion.header">Header</a>
         </h6>
 <p>
           <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">/</span><span class="identifier">geometries</span><span class="special">/</span><span class="identifier">adapted</span><span class="special">/</span><span class="identifier">boost_fusion</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
@@ -57,15 +57,14 @@
           The standard header <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">.</span><span class="identifier">hpp</span></code>
           does not include this header.
         </p>
-<a name="geometry.reference.adapted.boost_fusion.example"></a><h6>
-<a name="geometry.reference.adapted.boost_fusion.example-heading"></a>
-          <a class="link" href="boost_fusion.html#geometry.reference.adapted.boost_fusion.example">Example</a>
+<h6>
+<a name="geometry.reference.adapted.boost_fusion.h3"></a>
+          <span><a name="geometry.reference.adapted.boost_fusion.example"></a></span><a class="link" href="boost_fusion.html#geometry.reference.adapted.boost_fusion.example">Example</a>
         </h6>
 <p>
           Shows how to combine Boost.Fusion with Boost.Geometry
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
@@ -81,25 +80,25 @@
 <span class="special">};</span>
 
 <span class="identifier">BOOST_FUSION_ADAPT_STRUCT</span><span class="special">(</span><span class="identifier">sample_point</span><span class="special">,</span> <span class="special">(</span><span class="keyword">double</span><span class="special">,</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">(</span><span class="keyword">double</span><span class="special">,</span> <span class="identifier">y</span><span class="special">)</span> <span class="special">(</span><span class="keyword">double</span><span class="special">,</span> <span class="identifier">z</span><span class="special">))</span>
-<span class="identifier">BOOST_GEOMETRY_REGISTER_BOOST_FUSION_CS</span><span class="special">(</span><span class="identifier">sample_point</span><span class="special">)</span>
+<span class="identifier">BOOST_GEOMETRY_REGISTER_BOOST_FUSION_CS</span><span class="special">(</span><span class="identifier">cs</span><span class="special">::</span><span class="identifier">cartesian</span><span class="special">)</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
     <span class="identifier">sample_point</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">b</span><span class="special">,</span> <span class="identifier">c</span><span class="special">;</span>
-    
+
     <span class="comment">// Set coordinates the Boost.Geometry way (one of the ways)</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">assign_values</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
-    
+
     <span class="comment">// Set coordinates the Boost.Fusion way</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">at_c</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;(</span><span class="identifier">b</span><span class="special">)</span> <span class="special">=</span> <span class="number">6</span><span class="special">;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">at_c</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;(</span><span class="identifier">b</span><span class="special">)</span> <span class="special">=</span> <span class="number">5</span><span class="special">;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">at_c</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;(</span><span class="identifier">b</span><span class="special">)</span> <span class="special">=</span> <span class="number">4</span><span class="special">;</span>
-    
+
     <span class="comment">// Set coordinates the native way</span>
     <span class="identifier">c</span><span class="special">.</span><span class="identifier">x</span> <span class="special">=</span> <span class="number">9</span><span class="special">;</span>
     <span class="identifier">c</span><span class="special">.</span><span class="identifier">y</span> <span class="special">=</span> <span class="number">8</span><span class="special">;</span>
     <span class="identifier">c</span><span class="special">.</span><span class="identifier">z</span> <span class="special">=</span> <span class="number">7</span><span class="special">;</span>
-    
+
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Distance a-b: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">b</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Distance a-c: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">geometry</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 

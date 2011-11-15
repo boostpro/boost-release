@@ -126,12 +126,12 @@
         </p>
 <pre class="programlisting"><span class="identifier">let</span><span class="special">(</span><span class="identifier">_x</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">_y</span> <span class="special">=</span> <span class="string">", World"</span><span class="special">)</span>
 <span class="special">[</span>
-    <span class="comment">// _x here is an int: 1
-</span>
-    <span class="identifier">let</span><span class="special">(</span><span class="identifier">_x</span> <span class="special">=</span> <span class="string">"Hello"</span><span class="special">)</span> <span class="comment">// hides the outer _x
-</span>    <span class="special">[</span>
-        <span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">_x</span> <span class="special">&lt;&lt;</span> <span class="identifier">_y</span> <span class="comment">// prints "Hello, World"
-</span>    <span class="special">]</span>
+    <span class="comment">// _x here is an int: 1</span>
+
+    <span class="identifier">let</span><span class="special">(</span><span class="identifier">_x</span> <span class="special">=</span> <span class="string">"Hello"</span><span class="special">)</span> <span class="comment">// hides the outer _x</span>
+    <span class="special">[</span>
+        <span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">_x</span> <span class="special">&lt;&lt;</span> <span class="identifier">_y</span> <span class="comment">// prints "Hello, World"</span>
+    <span class="special">]</span>
 <span class="special">]</span>
 </pre>
 <p>
@@ -141,11 +141,11 @@
         </p>
 <pre class="programlisting"><span class="identifier">let</span><span class="special">(</span>
     <span class="identifier">_a</span> <span class="special">=</span> <span class="number">1</span>
-  <span class="special">,</span> <span class="identifier">_b</span> <span class="special">=</span> <span class="identifier">_a</span> <span class="comment">// Error: _a is not in scope yet
-</span><span class="special">)</span>
+  <span class="special">,</span> <span class="identifier">_b</span> <span class="special">=</span> <span class="identifier">_a</span> <span class="comment">// Error: _a is not in scope yet</span>
+<span class="special">)</span>
 <span class="special">[</span>
-    <span class="comment">// _a and _b's scope starts here
-</span>    <span class="comment">/*. body .*/</span>
+    <span class="comment">// _a and _b's scope starts here</span>
+    <span class="comment">/*. body .*/</span>
 <span class="special">]</span>
 </pre>
 <p>
@@ -158,8 +158,8 @@
 <span class="special">[</span>
     <span class="identifier">let</span><span class="special">(</span>
         <span class="identifier">_a</span> <span class="special">=</span> <span class="number">1</span>
-      <span class="special">,</span> <span class="identifier">_b</span> <span class="special">=</span> <span class="identifier">_a</span> <span class="comment">// Ok. _a refers to the outer _a
-</span>    <span class="special">)</span>
+      <span class="special">,</span> <span class="identifier">_b</span> <span class="special">=</span> <span class="identifier">_a</span> <span class="comment">// Ok. _a refers to the outer _a</span>
+    <span class="special">)</span>
     <span class="special">[</span>
         <span class="comment">/*. body .*/</span>
     <span class="special">]</span>

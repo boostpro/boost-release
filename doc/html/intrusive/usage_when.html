@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;11.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;12.&#160;Boost.Intrusive">
 <link rel="prev" href="usage.html" title="How to use Boost.Intrusive">
 <link rel="next" href="concepts_summary.html" title="Concept summary">
 </head>
@@ -85,7 +85,6 @@
       in the same container, as shown in the following example:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -104,7 +103,7 @@
    <span class="comment">//Constructor. Includes this window in the list</span>
    <span class="identifier">Window</span><span class="special">()</span>             <span class="special">{</span>  <span class="identifier">all_windows</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(*</span><span class="keyword">this</span><span class="special">);</span>  <span class="special">}</span>
    <span class="comment">//Destructor. Removes this node from the list</span>
-   <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">Window</span><span class="special">()</span>    <span class="special">{</span>  <span class="identifier">all_windows</span><span class="special">.</span><span class="identifier">erase</span><span class="special">(</span><span class="identifier">win_list</span><span class="special">::</span><span class="identifier">s_iterator_to</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>  <span class="special">}</span> 
+   <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">Window</span><span class="special">()</span>    <span class="special">{</span>  <span class="identifier">all_windows</span><span class="special">.</span><span class="identifier">erase</span><span class="special">(</span><span class="identifier">win_list</span><span class="special">::</span><span class="identifier">s_iterator_to</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>  <span class="special">}</span>
    <span class="comment">//Pure virtual function to be implemented by derived classes</span>
    <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">Paint</span><span class="special">()</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">};</span>
@@ -152,7 +151,7 @@
    <span class="identifier">MainWindow</span> <span class="identifier">window</span><span class="special">;</span>
 
    <span class="comment">//Paint all the windows, sub-windows and so on</span>
-   <span class="identifier">paint_all_windows</span><span class="special">();</span> 
+   <span class="identifier">paint_all_windows</span><span class="special">();</span>
 
    <span class="comment">//All the windows are automatically unregistered in their destructors.</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>

@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>The Full Extension Mechanism</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Fusion 2.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Fusion 2.1">
 <link rel="up" href="../extension.html" title="Extension">
 <link rel="prev" href="../extension.html" title="Extension">
 <link rel="next" href="sequence_facade.html" title="Sequence Facade">
@@ -49,9 +49,10 @@
             Fusion sequence
           </li>
 </ol></div>
-<a name="fusion.extension.ext_full.our_example"></a><h5>
-<a name="id1021700"></a>
-        <a class="link" href="ext_full.html#fusion.extension.ext_full.our_example">Our example</a>
+<h5>
+<a name="fusion.extension.ext_full.h0"></a>
+        <span><a name="fusion.extension.ext_full.our_example"></a></span><a class="link" href="ext_full.html#fusion.extension.ext_full.our_example">Our
+        example</a>
       </h5>
 <p>
         In order to illustrate enabling a new sequence type for use with Fusion,
@@ -79,9 +80,9 @@
         Sequence</a> as described in the <a class="link" href="../quick_start.html" title="Quick Start">Quick
         Start</a> guide.
       </p>
-<a name="fusion.extension.ext_full.enabling_tag_dispatching"></a><h5>
-<a name="id1021904"></a>
-        <a class="link" href="ext_full.html#fusion.extension.ext_full.enabling_tag_dispatching">Enabling
+<h5>
+<a name="fusion.extension.ext_full.h1"></a>
+        <span><a name="fusion.extension.ext_full.enabling_tag_dispatching"></a></span><a class="link" href="ext_full.html#fusion.extension.ext_full.enabling_tag_dispatching">Enabling
         Tag Dispatching</a>
       </h5>
 <p>
@@ -91,8 +92,8 @@
         a new tag type for the mechanism to use. For example:
       </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">example</span> <span class="special">{</span>
-    <span class="keyword">struct</span> <span class="identifier">example_sequence_tag</span><span class="special">;</span> <span class="comment">// Only definition needed
-</span><span class="special">}</span>
+    <span class="keyword">struct</span> <span class="identifier">example_sequence_tag</span><span class="special">;</span> <span class="comment">// Only definition needed</span>
+<span class="special">}</span>
 </pre>
 <p>
         Next we need to enable the <code class="computeroutput"><span class="identifier">traits</span><span class="special">::</span><span class="identifier">tag_of</span></code>
@@ -120,9 +121,9 @@
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">fusion</span><span class="special">/</span><span class="identifier">adapted</span><span class="special">/</span><span class="identifier">array</span><span class="special">/</span><span class="identifier">tag_of</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">fusion</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">tag_of</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
-<a name="fusion.extension.ext_full.designing_a_suitable_iterator"></a><h5>
-<a name="id1022340"></a>
-        <a class="link" href="ext_full.html#fusion.extension.ext_full.designing_a_suitable_iterator">Designing
+<h5>
+<a name="fusion.extension.ext_full.h2"></a>
+        <span><a name="fusion.extension.ext_full.designing_a_suitable_iterator"></a></span><a class="link" href="ext_full.html#fusion.extension.ext_full.designing_a_suitable_iterator">Designing
         a suitable iterator</a>
       </h5>
 <p>
@@ -182,9 +183,9 @@
         In isolation, the iterator implementation is pretty dry. Things should become
         clearer as we add features to our implementation.
       </p>
-<a name="fusion.extension.ext_full.a_first_couple_of_instructive_features"></a><h5>
-<a name="id1022813"></a>
-        <a class="link" href="ext_full.html#fusion.extension.ext_full.a_first_couple_of_instructive_features">A
+<h5>
+<a name="fusion.extension.ext_full.h3"></a>
+        <span><a name="fusion.extension.ext_full.a_first_couple_of_instructive_features"></a></span><a class="link" href="ext_full.html#fusion.extension.ext_full.a_first_couple_of_instructive_features">A
         first couple of instructive features</a>
       </h5>
 <p>
@@ -322,9 +323,9 @@
           for each feature <code class="computeroutput"><span class="identifier">xxxx</span></code>.
         </p></td></tr>
 </table></div>
-<a name="fusion.extension.ext_full.implementing_the_remaining_iterator_functionality"></a><h5>
-<a name="id1024451"></a>
-        <a class="link" href="ext_full.html#fusion.extension.ext_full.implementing_the_remaining_iterator_functionality">Implementing
+<h5>
+<a name="fusion.extension.ext_full.h4"></a>
+        <span><a name="fusion.extension.ext_full.implementing_the_remaining_iterator_functionality"></a></span><a class="link" href="ext_full.html#fusion.extension.ext_full.implementing_the_remaining_iterator_functionality">Implementing
         the remaining iterator functionality</a>
       </h5>
 <p>
@@ -373,9 +374,9 @@
         <code class="computeroutput"><span class="identifier">advance_impl</span></code>, <code class="computeroutput"><span class="identifier">distance_impl</span></code> and <code class="computeroutput"><span class="identifier">equal_to_impl</span></code>
         are provided in the example code.
       </p>
-<a name="fusion.extension.ext_full.implementing_the_intrinsic_functions_of_the_sequence"></a><h5>
-<a name="id1027626"></a>
-        <a class="link" href="ext_full.html#fusion.extension.ext_full.implementing_the_intrinsic_functions_of_the_sequence">Implementing
+<h5>
+<a name="fusion.extension.ext_full.h5"></a>
+        <span><a name="fusion.extension.ext_full.implementing_the_intrinsic_functions_of_the_sequence"></a></span><a class="link" href="ext_full.html#fusion.extension.ext_full.implementing_the_intrinsic_functions_of_the_sequence">Implementing
         the intrinsic functions of the sequence</a>
       </h5>
 <p>
@@ -429,18 +430,17 @@
         Access Sequence</a> we will also need to implement <code class="computeroutput"><span class="identifier">size_impl</span></code>,
         <code class="computeroutput"><span class="identifier">value_at_impl</span></code> and <code class="computeroutput"><span class="identifier">at_impl</span></code>.
       </p>
-<a name="fusion.extension.ext_full.enabling_our_type_as_an_associative_sequence"></a><h5>
-<a name="id1028038"></a>
-        <a class="link" href="ext_full.html#fusion.extension.ext_full.enabling_our_type_as_an_associative_sequence">Enabling
+<h5>
+<a name="fusion.extension.ext_full.h6"></a>
+        <span><a name="fusion.extension.ext_full.enabling_our_type_as_an_associative_sequence"></a></span><a class="link" href="ext_full.html#fusion.extension.ext_full.enabling_our_type_as_an_associative_sequence">Enabling
         our type as an associative sequence</a>
       </h5>
 <p>
         In order for <code class="computeroutput"><span class="identifier">example_struct</span></code>
         to serve as an associative forward sequence, we need to adapt the traversal
         category of our sequence and our iterator accordingly and enable 3 intrinsic
-        sequence lookup features, <a class="link" href="../sequence/intrinsic/functions/at_key.html" title="at_key"><code class="computeroutput"><span class="identifier">at_key</span></code></a>, __value_at<span class="underline">key</span>_
-        and <a class="link" href="../sequence/intrinsic/functions/has_key.html" title="has_key"><code class="computeroutput"><span class="identifier">has_key</span></code></a>. We also need to enable
-        3 iterator lookup features, <a class="link" href="../iterator/metafunctions/key_of.html" title="key_of"><code class="computeroutput"><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">key_of</span></code></a>, <a class="link" href="../iterator/metafunctions/value_of_data.html" title="value_of_data"><code class="computeroutput"><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">value_of_data</span></code></a> and <a class="link" href="../iterator/functions/deref_data.html" title="deref_data"><code class="computeroutput"><span class="identifier">deref_data</span></code></a>.
+        sequence lookup features, <a class="link" href="../sequence/intrinsic/functions/at_key.html" title="at_key"><code class="computeroutput"><span class="identifier">at_key</span></code></a>, __value_at_key__ and <a class="link" href="../sequence/intrinsic/functions/has_key.html" title="has_key"><code class="computeroutput"><span class="identifier">has_key</span></code></a>.
+        We also need to enable 3 iterator lookup features, <a class="link" href="../iterator/metafunctions/key_of.html" title="key_of"><code class="computeroutput"><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">key_of</span></code></a>, <a class="link" href="../iterator/metafunctions/value_of_data.html" title="value_of_data"><code class="computeroutput"><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">value_of_data</span></code></a> and <a class="link" href="../iterator/functions/deref_data.html" title="deref_data"><code class="computeroutput"><span class="identifier">deref_data</span></code></a>.
       </p>
 <p>
         To implement <code class="computeroutput"><span class="identifier">at_key_impl</span></code>
@@ -494,9 +494,9 @@
         The implementations of the other functions are equally straightforward, and
         are provided in the example code.
       </p>
-<a name="fusion.extension.ext_full.summary"></a><h5>
-<a name="id1028747"></a>
-        <a class="link" href="ext_full.html#fusion.extension.ext_full.summary">Summary</a>
+<h5>
+<a name="fusion.extension.ext_full.h7"></a>
+        <span><a name="fusion.extension.ext_full.summary"></a></span><a class="link" href="ext_full.html#fusion.extension.ext_full.summary">Summary</a>
       </h5>
 <p>
         We've now worked through the entire process for adding a new random access
@@ -512,7 +512,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2007 Joel de Guzman, Dan Marsden, Tobias
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2006, 2011 Joel de Guzman, Dan Marsden, Tobias
       Schwinger<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

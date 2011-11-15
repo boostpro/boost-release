@@ -41,16 +41,21 @@
           This function is used to read a certain number of bytes of data from a
           stream. The call will block until one of the following conditions is true:
         </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              The supplied buffer is full (that is, it has reached maximum size).
+            </li>
+<li class="listitem">
               An error occurred.
-            </li></ul></div>
+            </li>
+</ul></div>
 <p>
           This operation is implemented in terms of zero or more calls to the stream's
           read_some function.
         </p>
-<a name="boost_asio.reference.read.overload6.parameters"></a><h6>
-<a name="boost_asio.reference.read.overload6.parameters-heading"></a>
-          <a class="link" href="overload6.html#boost_asio.reference.read.overload6.parameters">Parameters</a>
+<h6>
+<a name="boost_asio.reference.read.overload6.h0"></a>
+          <span><a name="boost_asio.reference.read.overload6.parameters"></a></span><a class="link" href="overload6.html#boost_asio.reference.read.overload6.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -71,24 +76,24 @@
               </p></dd>
 </dl>
 </div>
-<a name="boost_asio.reference.read.overload6.return_value"></a><h6>
-<a name="boost_asio.reference.read.overload6.return_value-heading"></a>
-          <a class="link" href="overload6.html#boost_asio.reference.read.overload6.return_value">Return
+<h6>
+<a name="boost_asio.reference.read.overload6.h1"></a>
+          <span><a name="boost_asio.reference.read.overload6.return_value"></a></span><a class="link" href="overload6.html#boost_asio.reference.read.overload6.return_value">Return
           Value</a>
         </h6>
 <p>
           The number of bytes transferred.
         </p>
-<a name="boost_asio.reference.read.overload6.remarks"></a><h6>
-<a name="boost_asio.reference.read.overload6.remarks-heading"></a>
-          <a class="link" href="overload6.html#boost_asio.reference.read.overload6.remarks">Remarks</a>
+<h6>
+<a name="boost_asio.reference.read.overload6.h2"></a>
+          <span><a name="boost_asio.reference.read.overload6.remarks"></a></span><a class="link" href="overload6.html#boost_asio.reference.read.overload6.remarks">Remarks</a>
         </h6>
 <p>
           This overload is equivalent to calling:
         </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">read</span><span class="special">(</span>
     <span class="identifier">s</span><span class="special">,</span> <span class="identifier">b</span><span class="special">,</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">transfer_all</span><span class="special">(),</span> <span class="identifier">ec</span><span class="special">);</span> 
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">transfer_all</span><span class="special">(),</span> <span class="identifier">ec</span><span class="special">);</span>
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

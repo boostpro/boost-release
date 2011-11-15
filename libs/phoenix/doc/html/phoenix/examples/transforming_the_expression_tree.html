@@ -52,8 +52,8 @@
 <span class="special">{</span>
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Rule</span><span class="special">&gt;</span>
     <span class="keyword">struct</span> <span class="identifier">when</span>
-        <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">_</span> <span class="comment">// the default is proto::_
-</span>    <span class="special">{};</span>
+        <span class="special">:</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">_</span> <span class="comment">// the default is proto::_</span>
+    <span class="special">{};</span>
 <span class="special">};</span>
 </pre>
 <p>
@@ -66,8 +66,8 @@
         So, after the basics are set up, we can start by writing the transformations
         we want to have on our tree:
       </p>
-<pre class="programlisting"><span class="comment">// Transform plus to minus
-</span><span class="keyword">template</span> <span class="special">&lt;&gt;</span>
+<pre class="programlisting"><span class="comment">// Transform plus to minus</span>
+<span class="keyword">template</span> <span class="special">&lt;&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">invert_actions</span><span class="special">::</span><span class="identifier">when</span><span class="special">&lt;</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">rule</span><span class="special">::</span><span class="identifier">plus</span><span class="special">&gt;</span>
     <span class="special">:</span> <a href="http://www.boost.org/doc/libs/release/doc/html/boost/proto/call.html" target="_top"><code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">call</span></code></a><span class="special">&lt;</span>
         <a href="http://www.boost.org/doc/libs/release/doc/html/boost/proto/functional/make_expr.html" target="_top"><code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">make_expr</span></code></a><span class="special">&lt;</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">minus</span><span class="special">&gt;(</span>
@@ -104,8 +104,8 @@
 <p>
         After you know what is going on, maybe the rest doesn't look so scary anymore:
       </p>
-<pre class="programlisting"><span class="comment">// Transform minus to plus
-</span><span class="keyword">template</span> <span class="special">&lt;&gt;</span>
+<pre class="programlisting"><span class="comment">// Transform minus to plus</span>
+<span class="keyword">template</span> <span class="special">&lt;&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">invert_actions</span><span class="special">::</span><span class="identifier">when</span><span class="special">&lt;</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">rule</span><span class="special">::</span><span class="identifier">minus</span><span class="special">&gt;</span>
     <span class="special">:</span> <a href="http://www.boost.org/doc/libs/release/doc/html/boost/proto/call.html" target="_top"><code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">call</span></code></a><span class="special">&lt;</span>
         <a href="http://www.boost.org/doc/libs/release/doc/html/boost/proto/functional/make_expr.html" target="_top"><code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">make_expr</span></code></a><span class="special">&lt;</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">plus</span><span class="special">&gt;(</span>
@@ -115,8 +115,8 @@
     <span class="special">&gt;</span>
 <span class="special">{};</span>
 
-<span class="comment">// Transform multiplies to divides
-</span><span class="keyword">template</span> <span class="special">&lt;&gt;</span>
+<span class="comment">// Transform multiplies to divides</span>
+<span class="keyword">template</span> <span class="special">&lt;&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">invert_actions</span><span class="special">::</span><span class="identifier">when</span><span class="special">&lt;</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">rule</span><span class="special">::</span><span class="identifier">multiplies</span><span class="special">&gt;</span>
     <span class="special">:</span> <a href="http://www.boost.org/doc/libs/release/doc/html/boost/proto/call.html" target="_top"><code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">call</span></code></a><span class="special">&lt;</span>
         <a href="http://www.boost.org/doc/libs/release/doc/html/boost/proto/functional/make_expr.html" target="_top"><code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">make_expr</span></code></a><span class="special">&lt;</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">divides</span><span class="special">&gt;(</span>
@@ -126,8 +126,8 @@
     <span class="special">&gt;</span>
 <span class="special">{};</span>
 
-<span class="comment">// Transform divides to multiplies
-</span><span class="keyword">template</span> <span class="special">&lt;&gt;</span>
+<span class="comment">// Transform divides to multiplies</span>
+<span class="keyword">template</span> <span class="special">&lt;&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">invert_actions</span><span class="special">::</span><span class="identifier">when</span><span class="special">&lt;</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">rule</span><span class="special">::</span><span class="identifier">divides</span><span class="special">&gt;</span>
     <span class="special">:</span> <a href="http://www.boost.org/doc/libs/release/doc/html/boost/proto/call.html" target="_top"><code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">call</span></code></a><span class="special">&lt;</span>
         <a href="http://www.boost.org/doc/libs/release/doc/html/boost/proto/functional/make_expr.html" target="_top"><code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">functional</span><span class="special">::</span><span class="identifier">make_expr</span></code></a><span class="special">&lt;</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">multiplies</span><span class="special">&gt;(</span>
@@ -142,8 +142,8 @@
         of our expressions with them:
       </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
-<span class="comment">// Calculate the result type: our transformed AST
-</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span>
+<span class="comment">// Calculate the result type: our transformed AST</span>
+<span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span>
     <span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">evaluator</span><span class="special">(</span>
         <span class="identifier">Expr</span> <span class="keyword">const</span><span class="special">&amp;</span>
       <span class="special">,</span> <span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">context</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">invert_actions</span><span class="special">&gt;::</span><span class="identifier">type</span>
@@ -151,9 +151,9 @@
 <span class="special">&gt;::</span><span class="identifier">type</span>
 <span class="identifier">invert</span><span class="special">(</span><span class="identifier">Expr</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">expr</span><span class="special">)</span>
 <span class="special">{</span>
-    <span class="keyword">return</span> 
-        <span class="comment">// Evaluate it with our actions
-</span>        <span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">eval</span><span class="special">(</span>
+    <span class="keyword">return</span>
+        <span class="comment">// Evaluate it with our actions</span>
+        <span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">eval</span><span class="special">(</span>
             <span class="identifier">expr</span>
           <span class="special">,</span> <span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">context</span><span class="special">(</span>
                 <span class="keyword">int</span><span class="special">()</span>
@@ -165,16 +165,16 @@
 <p>
         Run some tests to see if it is working:
       </p>
-<pre class="programlisting"><span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span><span class="special">);</span>                    <span class="comment">// --&gt; _1
-</span><span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">+</span> <span class="identifier">_2</span><span class="special">);</span>               <span class="comment">// --&gt; _1 - _2
-</span><span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">+</span> <span class="identifier">_2</span> <span class="special">-</span> <span class="identifier">_3</span><span class="special">);</span>          <span class="comment">// --&gt; _1 - _2 + _3
-</span><span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_2</span><span class="special">);</span>               <span class="comment">// --&gt; _1 / _2
-</span><span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_2</span> <span class="special">/</span> <span class="identifier">_3</span><span class="special">);</span>          <span class="comment">// --&gt; _1 / _2 * _3
-</span><span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_2</span> <span class="special">+</span> <span class="identifier">_3</span><span class="special">);</span>          <span class="comment">// --&gt; _1 / _2 - _3
-</span><span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_2</span> <span class="special">-</span> <span class="identifier">_3</span><span class="special">);</span>          <span class="comment">// --&gt; _1 / _2 + _2
-</span><span class="identifier">invert</span><span class="special">(</span><span class="identifier">if_</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_4</span><span class="special">)[</span><span class="identifier">_2</span> <span class="special">-</span> <span class="identifier">_3</span><span class="special">]);</span> <span class="comment">// --&gt; if_(_1 / _4)[_2 + _3]
-</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">invert</span><span class="special">(</span><span class="identifier">_2</span> <span class="special">-</span> <span class="identifier">_3</span><span class="special">));</span>         <span class="comment">// --&gt; _1 * _2 + _3
-</span></pre>
+<pre class="programlisting"><span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span><span class="special">);</span>                    <span class="comment">// --&gt; _1</span>
+<span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">+</span> <span class="identifier">_2</span><span class="special">);</span>               <span class="comment">// --&gt; _1 - _2</span>
+<span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">+</span> <span class="identifier">_2</span> <span class="special">-</span> <span class="identifier">_3</span><span class="special">);</span>          <span class="comment">// --&gt; _1 - _2 + _3</span>
+<span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_2</span><span class="special">);</span>               <span class="comment">// --&gt; _1 / _2</span>
+<span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_2</span> <span class="special">/</span> <span class="identifier">_3</span><span class="special">);</span>          <span class="comment">// --&gt; _1 / _2 * _3</span>
+<span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_2</span> <span class="special">+</span> <span class="identifier">_3</span><span class="special">);</span>          <span class="comment">// --&gt; _1 / _2 - _3</span>
+<span class="identifier">invert</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_2</span> <span class="special">-</span> <span class="identifier">_3</span><span class="special">);</span>          <span class="comment">// --&gt; _1 / _2 + _2</span>
+<span class="identifier">invert</span><span class="special">(</span><span class="identifier">if_</span><span class="special">(</span><span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">_4</span><span class="special">)[</span><span class="identifier">_2</span> <span class="special">-</span> <span class="identifier">_3</span><span class="special">]);</span> <span class="comment">// --&gt; if_(_1 / _4)[_2 + _3]</span>
+<span class="identifier">_1</span> <span class="special">*</span> <span class="identifier">invert</span><span class="special">(</span><span class="identifier">_2</span> <span class="special">-</span> <span class="identifier">_3</span><span class="special">));</span>         <span class="comment">// --&gt; _1 * _2 + _3</span>
+</pre>
 <p>
         <span class="inlinemediaobject"><img src="../../images/note.png" alt="note"></span> The complete example can be found here: <a href="../../../../example/invert.cpp" target="_top">example/invert.cpp</a>
       </p>

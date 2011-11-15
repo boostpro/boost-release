@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Comparing the performance of a single int_ generator</title>
 <link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../../index.html" title="Spirit 2.5">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../numeric_performance.html" title="Performance of Numeric Generators">
 <link rel="prev" href="../numeric_performance.html" title="Performance of Numeric Generators">
 <link rel="next" href="double_performance.html" title="Comparing the performance of a single double_ generator">
@@ -43,10 +43,9 @@
             Code used to measure the performance for <code class="computeroutput"><span class="identifier">ltoa</span></code>:
           </p>
 <p>
-            
 </p>
-<pre class="programlisting"><span class="keyword">char</span> <span class="identifier">buffer</span><span class="special">[</span><span class="number">65</span><span class="special">];</span> <span class="comment">// we don't expect more than 64 bytes to be generated here
-</span><span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">MAX_ITERATION</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
+<pre class="programlisting"><span class="keyword">char</span> <span class="identifier">buffer</span><span class="special">[</span><span class="number">65</span><span class="special">];</span> <span class="comment">// we don't expect more than 64 bytes to be generated here</span>
+<span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">MAX_ITERATION</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="identifier">ltoa</span><span class="special">(</span><span class="identifier">v</span><span class="special">[</span><span class="identifier">i</span><span class="special">],</span> <span class="identifier">buffer</span><span class="special">,</span> <span class="number">10</span><span class="special">);</span>
 <span class="special">}</span>
@@ -57,7 +56,6 @@
             Code used to measure the performance for standard C++ iostreams:
           </p>
 <p>
-            
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">stringstream</span> <span class="identifier">str</span><span class="special">;</span>
 <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">MAX_ITERATION</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
@@ -72,7 +70,6 @@
             Code used to measure the performance for <a href="../../../../../../../../libs/format/index.html" target="_top">Boost.Format</a>:
           </p>
 <p>
-            
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span><span class="special">;</span>
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">format</span> <span class="identifier">int_format</span><span class="special">(</span><span class="string">"%d"</span><span class="special">);</span>
@@ -88,10 +85,9 @@
             using a plain character buffer:
           </p>
 <p>
-            
 </p>
-<pre class="programlisting"><span class="keyword">char</span> <span class="identifier">buffer</span><span class="special">[</span><span class="number">65</span><span class="special">];</span> <span class="comment">// we don't expect more than 64 bytes to be generated here
-</span><span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">MAX_ITERATION</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
+<pre class="programlisting"><span class="keyword">char</span> <span class="identifier">buffer</span><span class="special">[</span><span class="number">65</span><span class="special">];</span> <span class="comment">// we don't expect more than 64 bytes to be generated here</span>
+<span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">MAX_ITERATION</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">char</span> <span class="special">*</span><span class="identifier">ptr</span> <span class="special">=</span> <span class="identifier">buffer</span><span class="special">;</span>
     <span class="identifier">karma</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">ptr</span><span class="special">,</span> <span class="identifier">int_</span><span class="special">,</span> <span class="identifier">v</span><span class="special">[</span><span class="identifier">i</span><span class="special">]);</span>
