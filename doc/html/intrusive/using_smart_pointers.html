@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;12.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;13.&#160;Boost.Intrusive">
 <link rel="prev" href="recursive.html" title="Recursive Boost.Intrusive containers">
 <link rel="next" href="obtaining_iterators_from_values.html" title="Obtaining iterators from values">
 </head>
@@ -129,38 +129,23 @@
       for smart pointers compatible with Boost.Intrusive</a>
 </h3></div></div></div>
 <p>
-        Not every smart pointer is compatible with <span class="bold"><strong>Boost.Intrusive</strong></span>;
-        the smart pointer must have the following features:
+        Not every smart pointer is compatible with <span class="bold"><strong>Boost.Intrusive</strong></span>:
       </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-            It must support the same operations as a raw pointer, except casting.
-          </li>
-<li class="listitem">
-            It must be convertible to a raw pointer and constructible from a raw
-            pointer.
-          </li>
-<li class="listitem">
-            It must have the same ownership semantics as a raw pointer. This means
-            that resource management smart pointers (like <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span></code>)
-            can't be used.
-          </li>
-</ul></div>
-<p>
-        The conversion from the smart pointer to a raw pointer must be implemented
-        following Boost smart pointer <code class="computeroutput"><span class="identifier">detail</span><span class="special">::</span><span class="identifier">get_pointer</span><span class="special">()</span></code> function. This function will be found using
-        ADL. For example, for <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">offset_ptr</span></code>,
-        <code class="computeroutput"><span class="identifier">detail</span><span class="special">::</span><span class="identifier">get_pointer</span></code> is defined as follows:
-      </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
-<span class="identifier">T</span> <span class="special">*</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">get_pointer</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">offset_ptr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">p</span><span class="special">)</span>
-<span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">get</span><span class="special">();</span>   <span class="special">}</span>
+<pre class="programlisting"><span class="special">*</span> <span class="identifier">It</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">compatible</span> <span class="identifier">with</span> <span class="identifier">C</span><span class="special">++</span><span class="number">11</span> <span class="special">[</span><span class="error">@</span><span class="identifier">http</span><span class="special">://</span><span class="identifier">en</span><span class="special">.</span><span class="identifier">cppreference</span><span class="special">.</span><span class="identifier">com</span><span class="special">/</span><span class="identifier">w</span><span class="special">/</span><span class="identifier">cpp</span><span class="special">/</span><span class="identifier">memory</span><span class="special">/</span><span class="identifier">pointer_traits</span> <span class="error">`</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pointer_traits</span><span class="error">`</span><span class="special">]</span>
+   <span class="identifier">requirements</span><span class="special">.</span> <span class="special">[*</span><span class="identifier">Boost</span><span class="special">.</span><span class="identifier">Intrusive</span><span class="special">]</span> <span class="identifier">uses</span> <span class="identifier">its</span> <span class="identifier">own</span> <span class="special">[</span><span class="identifier">classref</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">pointer_traits</span> <span class="identifier">pointer_traits</span><span class="special">]</span>
+   <span class="keyword">class</span> <span class="identifier">to</span> <span class="identifier">implement</span> <span class="identifier">those</span> <span class="identifier">features</span> <span class="identifier">in</span> <span class="identifier">both</span> <span class="identifier">C</span><span class="special">++</span><span class="number">11</span> <span class="keyword">and</span> <span class="identifier">C</span><span class="special">++</span><span class="number">03</span> <span class="identifier">compilers</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">It</span> <span class="identifier">must</span>  <span class="identifier">have</span> <span class="identifier">the</span> <span class="identifier">same</span> <span class="identifier">ownership</span> <span class="identifier">semantics</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">raw</span> <span class="identifier">pointer</span><span class="special">.</span> <span class="identifier">This</span> <span class="identifier">means</span> <span class="identifier">that</span>
+   <span class="identifier">resource</span> <span class="identifier">management</span> <span class="identifier">smart</span> <span class="identifier">pointers</span> <span class="special">(</span><span class="identifier">like</span> <span class="error">`</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="error">`</span><span class="special">)</span> <span class="identifier">can</span><span class="error">'</span><span class="identifier">t</span> <span class="identifier">be</span> <span class="identifier">used</span><span class="special">.</span>
 </pre>
+<p>
+        The conversion from the smart pointer to a raw pointer will be implemented
+        as a recursive call to <code class="computeroutput"><span class="keyword">operator</span><span class="special">-&gt;()</span></code> until the function returns a raw pointer.
+      </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2011 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

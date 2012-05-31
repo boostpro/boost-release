@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_lexical_cast.html" title="Chapter&#160;14.&#160;Boost.Lexical_Cast 1.0">
+<link rel="up" href="../boost_lexical_cast.html" title="Chapter&#160;15.&#160;Boost.Lexical_Cast 1.0">
 <link rel="prev" href="synopsis.html" title="Synopsis">
 <link rel="next" href="changes.html" title="Changes">
 </head>
@@ -97,6 +97,18 @@
                 for conversions. And in the C99 standard for unsigned input value
                 minus sign is optional, so if a negative number is read, no errors
                 will arise and the result will be the two's complement.
+              </li></ul></div>
+        </li></ul></div>
+<pre class="programlisting"></pre>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <span class="bold"><strong>Question:</strong></span> Why <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">L</span><span class="char">'A'</span><span class="special">);</span></code> outputs
+          65 and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="keyword">wchar_t</span><span class="special">&gt;(</span><span class="identifier">L</span><span class="string">"65"</span><span class="special">);</span></code> does not throw?
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                <span class="bold"><strong>Answer:</strong></span> If you are using an old
+                version of Visual Studio or compile code with /Zc:wchar_t- flag,
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code> sees single <code class="computeroutput"><span class="keyword">wchar_t</span></code> character as <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">short</span></code>.
+                It is not a <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code>
+                mistake, but a limitation of compiler options that you use.
               </li></ul></div>
         </li></ul></div>
 </div>

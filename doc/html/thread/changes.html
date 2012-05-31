@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Changes since boost 1.40</title>
+<title>Changes since</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;27.&#160;Thread">
-<link rel="prev" href="../thread.html" title="Chapter&#160;27.&#160;Thread">
-<link rel="next" href="thread_management.html" title="Thread Management">
+<link rel="up" href="../thread.html" title="Chapter&#160;28.&#160;Thread">
+<link rel="prev" href="../thread.html" title="Chapter&#160;28.&#160;Thread">
+<link rel="next" href="future.html" title="Future">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,18 +20,137 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../thread.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="thread_management.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../thread.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="future.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="thread.changes"></a><a class="link" href="changes.html" title="Changes since boost 1.40">Changes since boost 1.40</a>
+<a name="thread.changes"></a><a class="link" href="changes.html" title="Changes since">Changes since</a>
 </h2></div></div></div>
+<h4>
+<a name="thread.changes.h0"></a>
+      <span><a name="thread.changes.changes_since_boost_1_41"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_41">Changes
+      since boost 1.41</a>
+    </h4>
+<p>
+      Fixed Bugs:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/2309" target="_top">#2309</a>
+          Lack of g++ symbol visibility support in Boost.Thread.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/2639" target="_top">#2639</a>
+          documentation should be extended(defer_lock, try_to_lock, ...).
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/3639" target="_top">#3639</a>
+          Boost.Thread doesn't build with Sun-5.9 on Linux.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/3762" target="_top">#3762</a>
+          Thread can't be compiled with winscw (Codewarrior by Nokia).
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/3885" target="_top">#3885</a>
+          document about mix usage of boost.thread and native thread api.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/3975" target="_top">#3975</a>
+          Incorrect precondition for promise::set_wait_callback().
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/4048" target="_top">#4048</a>
+          thread::id formatting involves locale
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/4315" target="_top">#4315</a>
+          gcc 4.4 Warning: inline ... declared as dllimport: attribute ignored.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/4480" target="_top">#4480</a>
+          OpenVMS patches for compiler issues workarounds.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/4819" target="_top">#4819</a>
+          boost.thread's documentation misprints.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5040" target="_top">#5040</a>
+          future.hpp in boost::thread does not compile with /clr.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5423" target="_top">#5423</a>
+          thread issues with C++0x.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5502" target="_top">#5502</a>
+          race condition between shared_mutex timed_lock and lock_shared.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5594" target="_top">#5594</a>
+          boost::shared_mutex not fully compatible with Windows CE.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5617" target="_top">#5617</a>
+          boost::thread::id copy ctor.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5739" target="_top">#5739</a>
+          set-but-not-used warnings with gcc-4.6.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5826" target="_top">#5826</a>
+          threads.cpp: resource leak on threads creation failure.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5839" target="_top">#5839</a>
+          thread.cpp: ThreadProxy leaks on exceptions.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5859" target="_top">#5859</a>
+          win32 shared_mutex constructor leaks on exceptions.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6100" target="_top">#6100</a>
+          Compute hardware_concurrency() using get_nprocs() on GLIBC systems.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6141" target="_top">#6141</a>
+          Compilation error when boost.thread and boost.move are used together.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6168" target="_top">#6168</a>
+          recursive_mutex is using wrong config symbol (possible typo).
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6175" target="_top">#6175</a>
+          Compile error with SunStudio.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6200" target="_top">#6200</a>
+          patch to have condition_variable and mutex error better handle EINTR.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6207" target="_top">#6207</a>
+          shared_lock swap compiler error on clang 3.0 c++11.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6208" target="_top">#6208</a>
+          try_lock_wrapper swap compiler error on clang 3.0 c++11.
+        </li>
+</ul></div>
+<h4>
+<a name="thread.changes.h1"></a>
+      <span><a name="thread.changes.changes_since_boost_1_40"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_40">Changes
+      since boost 1.40</a>
+    </h4>
 <p>
       The 1.41.0 release of Boost adds futures to the thread library. There are also
       a few minor changes.
     </p>
 <h4>
-<a name="thread.changes.h0"></a>
+<a name="thread.changes.h2"></a>
       <span><a name="thread.changes.changes_since_boost_1_35"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_35">Changes
       since boost 1.35</a>
     </h4>
@@ -68,7 +187,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h1"></a>
+<a name="thread.changes.h3"></a>
       <span><a name="thread.changes.changes_since_boost_1_34"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_34">Changes
       since boost 1.34</a>
     </h4>
@@ -79,7 +198,7 @@
       with the old code. The new features and breaking changes are described below.
     </p>
 <h4>
-<a name="thread.changes.h2"></a>
+<a name="thread.changes.h4"></a>
       <span><a name="thread.changes.new_features"></a></span><a class="link" href="changes.html#thread.changes.new_features">New
       Features</a>
     </h4>
@@ -122,7 +241,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h3"></a>
+<a name="thread.changes.h5"></a>
       <span><a name="thread.changes.breaking_changes"></a></span><a class="link" href="changes.html#thread.changes.breaking_changes">Breaking
       Changes</a>
     </h4>
@@ -198,7 +317,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../thread.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="thread_management.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../thread.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="future.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

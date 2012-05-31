@@ -110,7 +110,7 @@ void test_char32_conversions();
 
 unit_test::test_suite *init_unit_test_suite(int, char *[])
 {
-    unit_test_framework::test_suite *suite =
+    unit_test::test_suite *suite =
         BOOST_TEST_SUITE("lexical_cast unit test");
     suite->add(BOOST_TEST_CASE(test_conversion_to_char));
     suite->add(BOOST_TEST_CASE(test_conversion_to_int));
@@ -795,6 +795,17 @@ void test_conversion_from_to_integral()
     BOOST_CHECK_THROW(lexical_cast<T>("--1"), bad_lexical_cast);
     BOOST_CHECK_THROW(lexical_cast<T>("+-9"), bad_lexical_cast);
     // test_conversion_from_to_integral_for_locale
+
+    // Overflow test case from David W. Birdsall
+    std::string must_owerflow_str = "160000000000000000000";
+    std::string must_owerflow_negative_str = "-160000000000000000000";
+    for (int i = 0; i < 15; ++i) {
+        BOOST_CHECK_THROW(lexical_cast<T>(must_owerflow_str), bad_lexical_cast);
+        BOOST_CHECK_THROW(lexical_cast<T>(must_owerflow_negative_str), bad_lexical_cast);
+
+        must_owerflow_str += '0';
+        must_owerflow_negative_str += '0';
+    }
 
     typedef std::numpunct<char> numpunct;
 

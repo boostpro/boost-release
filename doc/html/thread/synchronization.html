@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;27.&#160;Thread">
+<link rel="up" href="../thread.html" title="Chapter&#160;28.&#160;Thread">
 <link rel="prev" href="thread_management.html" title="Thread Management">
 <link rel="next" href="thread_local_storage.html" title="Thread Local Storage">
 </head>
@@ -628,6 +628,8 @@
 <a name="thread.synchronization.locks"></a><a class="link" href="synchronization.html#thread.synchronization.locks" title="Lock Types">Lock Types</a>
 </h3></div></div></div>
 <div class="toc"><dl>
+<dt><span class="section"><a href="synchronization.html#thread.synchronization.locks.lock_tags">Lock option
+        tags</a></span></dt>
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.locks.lock_guard">Class template
         <code class="computeroutput"><span class="identifier">lock_guard</span></code></a></span></dt>
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.locks.unique_lock">Class template
@@ -641,6 +643,39 @@
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.locks.scoped_try_lock">Mutex-specific
         class <code class="computeroutput"><span class="identifier">scoped_try_lock</span></code></a></span></dt>
 </dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="thread.synchronization.locks.lock_tags"></a><a class="link" href="synchronization.html#thread.synchronization.locks.lock_tags" title="Lock option tags">Lock option
+        tags</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">thread</span><span class="special">/</span><span class="identifier">locks</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">struct</span> <span class="identifier">defer_lock_t</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">try_to_lock_t</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">adopt_lock_t</span> <span class="special">{};</span>
+<span class="keyword">const</span> <span class="identifier">defer_lock_t</span> <span class="identifier">defer_lock</span><span class="special">;</span>
+<span class="keyword">const</span> <span class="identifier">try_to_lock_t</span> <span class="identifier">try_to_lock</span><span class="special">;</span>
+<span class="keyword">const</span> <span class="identifier">adopt_lock_t</span> <span class="identifier">adopt_lock</span><span class="special">;</span>
+</pre>
+<p>
+          These tags are used in scoped locks constructors to specify a specific
+          behavior.
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">defer_lock_t</span></code>: is used
+              to construct the scoped lock without locking it.
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">try_to_lock_t</span></code>: is used
+              to construct the scoped lock trying to lock it.
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">adopt_lock_t</span></code>: is used
+              to construct the scoped lock without locking it but adopting ownership.
+            </li>
+</ul></div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="thread.synchronization.locks.lock_guard"></a><a class="link" href="synchronization.html#thread.synchronization.locks.lock_guard" title="Class template lock_guard">Class template
@@ -4629,8 +4664,8 @@
 <dt><span class="term">Preconditions:</span></dt>
 <dd><p>
                     The expression <code class="computeroutput"><span class="identifier">f</span><span class="special">(</span><span class="identifier">t</span><span class="special">)</span></code> where <code class="computeroutput"><span class="identifier">t</span></code>
-                    is a lvalue of type <a class="link" href="synchronization.html#thread.synchronization.futures.reference.packaged_task" title="packaged_task class template"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">packaged_task</span></code></a> shall
-                    be well-formed. Invoking a copy of <code class="computeroutput"><span class="identifier">f</span></code>
+                    is a lvalue of type <a class="link" href="synchronization.html#thread.synchronization.futures.reference.promise" title="promise class template"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">promise</span></code></a> shall be well-formed.
+                    Invoking a copy of <code class="computeroutput"><span class="identifier">f</span></code>
                     shall have the same effect as invoking <code class="computeroutput"><span class="identifier">f</span></code>
                   </p></dd>
 <dt><span class="term">Effects:</span></dt>

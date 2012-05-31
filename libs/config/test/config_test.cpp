@@ -1,4 +1,4 @@
-//  This file was automatically generated on Wed Jul 13 18:50:14 2011
+//  This file was automatically generated on Sun Nov 27 09:43:19 2011
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -6,7 +6,7 @@
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/config for the most recent version.//
-//  Revision $Id: config_test.cpp 74889 2011-10-10 11:50:55Z johnmaddock $
+//  Revision $Id: config_test.cpp 76122 2011-12-23 17:17:31Z johnmaddock $
 //
 
 // Test file for config setup
