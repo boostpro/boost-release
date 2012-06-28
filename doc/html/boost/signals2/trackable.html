@@ -36,13 +36,13 @@
 <span class="keyword">class</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="trackable.html#boost.signals2.trackableconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="trackable.html#id792857-bb"><span class="identifier">trackable</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="trackable.html#id789608-bb"><span class="identifier">trackable</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  trackable&amp; <a class="link" href="trackable.html#id789652-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="trackable.html#id789639-bb"><span class="special">~</span><span class="identifier">trackable</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="trackable.html#id820739-bb"><span class="identifier">trackable</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="trackable.html#id820751-bb"><span class="identifier">trackable</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  trackable&amp; <a class="link" href="trackable.html#id1137056-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="trackable.html#id812942-bb"><span class="special">~</span><span class="identifier">trackable</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3177006"></a><h2>Description</h2>
+<a name="id3200431"></a><h2>Description</h2>
 <p>Use of the <code class="computeroutput">trackable</code> class is not recommended
           for new code.  The <code class="computeroutput">trackable</code> class is not thread-safe
           since <code class="computeroutput">trackable</code> objects disconnect their associated
@@ -56,7 +56,7 @@
           The preferred method of automatic connection management
           with Boost.Signals2 is to manage the lifetime of
           tracked objects with <code class="computeroutput">shared_ptr</code>s and
-          to use the <a class="link" href="slot.html#id1297978-bb">signals2::slot::track</a>
+          to use the <a class="link" href="slot.html#id1304621-bb">signals2::slot::track</a>
           method to track their lifetimes.</p>
 <p>The <code class="computeroutput">trackable</code> class provides automatic
           disconnection of signals and slots when objects bound in
@@ -73,13 +73,13 @@
           type that may contain pointers or references to trackable
           objects.</p>
 <div class="refsect2">
-<a name="id3177118"></a><h3>
+<a name="id3200543"></a><h3>
 <a name="boost.signals2.trackableconstruct-copy-destruct"></a><code class="computeroutput">trackable</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id792857-bb"></a><span class="identifier">trackable</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id820739-bb"></a><span class="identifier">trackable</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -95,7 +95,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id789608-bb"></a><span class="identifier">trackable</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id820751-bb"></a><span class="identifier">trackable</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -115,7 +115,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout">trackable&amp; <a name="id789652-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout">trackable&amp; <a name="id1137056-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="trackable.html" title="Class trackable">trackable</a><span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -139,7 +139,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id789639-bb"></a><span class="special">~</span><span class="identifier">trackable</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id812942-bb"></a><span class="special">~</span><span class="identifier">trackable</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>

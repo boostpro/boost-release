@@ -50,7 +50,7 @@
       it.
     </p>
 <p>
-      A library built with Proto is essentially a compiler for a embedded domain-specific
+      A library built with Proto is essentially a compiler for an embedded domain-specific
       language (EDSL). It also has a front end, an intermediate form, and a back
       end. The front end is comprised of the symbols (a.k.a., terminals), members,
       operators and functions that make up the user-visible aspects of the EDSL.
@@ -158,7 +158,7 @@
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-              Visual C++ 7.1 and higher
+              Visual C++ 8 and higher
             </li>
 <li class="listitem">
               GNU C++ 3.4 and higher
@@ -792,7 +792,7 @@
 </dl></div>
 <p>
         Here is the fun part: designing your own mini-programming language. In this
-        section we'll talk about the nuts and bolts of designing a EDSL interface
+        section we'll talk about the nuts and bolts of designing an EDSL interface
         using Proto. We'll cover the definition of terminals and lazy functions that
         the users of your EDSL will get to program with. We'll also talk about Proto's
         expression template-building operator overloads, and about ways to add additional
@@ -805,7 +805,7 @@
 </h4></div></div></div>
 <p>
           As we saw with the Calculator example from the Introduction, the simplest
-          way to get a EDSL up and running is simply to define some terminals, as
+          way to get an EDSL up and running is simply to define some terminals, as
           follows.
         </p>
 <pre class="programlisting"><span class="comment">// Define a literal integer Proto expression.</span>
@@ -984,6 +984,47 @@
         </p>
 <pre class="programlisting">1</pre>
 <p>
+          I'm no expert at trigonometry, but that looks right to me.
+        </p>
+<p>
+          We can write <code class="computeroutput"><span class="identifier">sin</span><span class="special">(</span><span class="identifier">pi</span><span class="special">/</span><span class="number">2</span><span class="special">)</span></code> because the <code class="computeroutput"><span class="identifier">sin</span></code>
+          object, which is a Proto terminal, has an overloaded <code class="computeroutput"><span class="keyword">operator</span><span class="special">()()</span></code> that builds a node representing a function
+          call invocation. The actual type of <code class="computeroutput"><span class="identifier">sin</span><span class="special">(</span><span class="identifier">pi</span><span class="special">/</span><span class="number">2</span><span class="special">)</span></code> is actually
+          something like this:
+        </p>
+<pre class="programlisting"><span class="comment">// The type of the expression sin(pi/2):</span>
+<span class="identifier">proto</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span>
+    <span class="identifier">proto</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span> <span class="keyword">double</span><span class="special">(*)(</span><span class="keyword">double</span><span class="special">)</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span> <span class="special">&amp;</span>
+    <span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">as_child</span><span class="special">&lt;</span> <span class="keyword">double</span> <span class="keyword">const</span> <span class="special">&gt;::</span><span class="identifier">type</span>
+<span class="special">&gt;::</span><span class="identifier">type</span>
+</pre>
+<p>
+          This type further expands to an unsightly node type with a <span class="emphasis"><em>tag</em></span>
+          type of <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">function</span></code> and two children: the first
+          representing the function to be invoked, and the second representing the
+          argument to the function. (Node tag types describe the operation that created
+          the node. The difference between <code class="computeroutput"><span class="identifier">a</span>
+          <span class="special">+</span> <span class="identifier">b</span></code>
+          and <code class="computeroutput"><span class="identifier">a</span> <span class="special">-</span>
+          <span class="identifier">b</span></code> is that the former has tag
+          type <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">plus</span></code> and the latter has tag type <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">minus</span></code>. Tag types are pure compile-time
+          information.)
+        </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            In the type computation above, <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">as_child</span><span class="special">&lt;&gt;</span></code> is a metafunction that ensures
+            its argument is a Proto expression type. If it isn't one already, it
+            becomes a Proto terminal. We'll learn more about this metafunction, along
+            with <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>, its runtime counterpart,
+            <a class="link" href="users_guide.html#boost_proto.users_guide.front_end.customizing_expressions_in_your_domain.per_domain_as_child" title="Controlling How Child Expressions Are Captured">later</a>.
+            For now, you can forget about it.
+          </p></td></tr>
+</table></div>
+<p>
           It is important to note that there is nothing special about terminals that
           contain function pointers. <span class="emphasis"><em>Any</em></span> Proto expression has
           an overloaded function call operator. Consider:
@@ -993,14 +1034,9 @@
 </pre>
 <p>
           That may look strange at first. It creates an integer terminal with <code class="computeroutput"><a class="link" href="../boost/proto/lit.html" title="Function lit">proto::lit()</a></code>, and then invokes it like
-          a function again and again. What does it mean? To be sure, the <code class="computeroutput"><span class="identifier">default_context</span></code> wouldn't know what to
-          do with it. The <code class="computeroutput"><span class="identifier">default_context</span></code>
-          only knows how to evaluate expressions that are sufficiently C++-like.
-          In the case of function call expressions, the left hand side must evaluate
-          to something that can be invoked: a pointer to a function, a reference
-          to a function, or a TR1-style function object. That doesn't stop you from
-          defining your own evaluation context that gives that expression a meaning.
-          But more on that later.
+          a function again and again. What does it mean? Who knows?! You get to decide
+          when you define an evaluation context or a transform. But more on that
+          later.
         </p>
 <h6>
 <a name="boost_proto.users_guide.front_end.making_lazy_functions.h0"></a>
@@ -1020,19 +1056,34 @@
           a terminal containing a function pointer doesn't work here. If <code class="computeroutput"><span class="identifier">pow</span></code> is an object, then the expression
           <code class="computeroutput"><span class="identifier">pow</span><span class="special">&lt;</span>
           <span class="number">2</span> <span class="special">&gt;(</span><span class="identifier">_1</span><span class="special">)</span></code> is
-          not valid C++. <code class="computeroutput"><span class="identifier">pow</span></code> needs
-          to be a real function template. But it must be an unusual function; it
-          must return an expression template.
+          not valid C++. (Well, technically it is; it means, <code class="computeroutput"><span class="identifier">pow</span></code>
+          less than 2, greater than <code class="computeroutput"><span class="special">(</span><span class="identifier">_1</span><span class="special">)</span></code>,
+          which is nothing at all like what we want.) <code class="computeroutput"><span class="identifier">pow</span></code>
+          should be a real function template. But it must be an unusual function:
+          one that returns an expression template.
         </p>
 <p>
-          Before we can write the <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code> function, we need a function object that
-          wraps an invocation of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pow</span><span class="special">()</span></code>.
+          With <code class="computeroutput"><span class="identifier">sin</span></code>, we relied on
+          Proto to provide an overloaded <code class="computeroutput"><span class="keyword">operator</span><span class="special">()()</span></code> to build an expression node with tag
+          type <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">function</span></code> for us. Now we'll need to do
+          so ourselves. As before, the node will have two children: the function
+          to invoke and the function's argument.
+        </p>
+<p>
+          With <code class="computeroutput"><span class="identifier">sin</span></code>, the function
+          to invoke was a raw function pointer wrapped in a Proto terminal. In the
+          case of <code class="computeroutput"><span class="identifier">pow</span></code>, we want it
+          to be a terminal containing TR1-style function object. This will allow
+          us to parameterize the function on the exponent. Below is the implementation
+          of a simple TR1-style wrapper for the <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pow</span></code>
+          function:
         </p>
 <pre class="programlisting"><span class="comment">// Define a pow_fun function object</span>
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">Exp</span><span class="special">&gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">int</span> <span class="identifier">Exp</span> <span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">pow_fun</span>
 <span class="special">{</span>
     <span class="keyword">typedef</span> <span class="keyword">double</span> <span class="identifier">result_type</span><span class="special">;</span>
+
     <span class="keyword">double</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">double</span> <span class="identifier">d</span><span class="special">)</span> <span class="keyword">const</span>
     <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pow</span><span class="special">(</span><span class="identifier">d</span><span class="special">,</span> <span class="identifier">Exp</span><span class="special">);</span>
@@ -1040,148 +1091,41 @@
 <span class="special">};</span>
 </pre>
 <p>
-          Now, let's try to define a function template that returns an expression
-          template. We'll use the <code class="computeroutput"><a class="link" href="../boost/proto/function.html" title="Struct template function">proto::function&lt;&gt;</a></code>
-          metafunction to calculate the type of a Proto expression that represents
-          a function call. It is analogous to <code class="computeroutput"><a class="link" href="../boost/proto/terminal.html" title="Struct template terminal">proto::terminal&lt;&gt;</a></code>.
-          (We'll see a couple of different ways to solve this problem, and each will
-          demonstrate another utility for defining Proto front-ends.)
+          Following the <code class="computeroutput"><span class="identifier">sin</span></code> example,
+          we want <code class="computeroutput"><span class="identifier">pow</span><span class="special">&lt;</span>
+          <span class="number">1</span> <span class="special">&gt;(</span>
+          <span class="identifier">pi</span><span class="special">/</span><span class="number">2</span> <span class="special">)</span></code> to have
+          a type like this:
         </p>
-<pre class="programlisting"><span class="comment">// Define a lazy pow() function for the calculator EDSL.</span>
-<span class="comment">// Can be used as: pow&lt; 2 &gt;(_1)</span>
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">Exp</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Arg</span><span class="special">&gt;</span>
-<span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span><span class="identifier">pow_fun</span><span class="special">&lt;</span><span class="identifier">Exp</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span>
-  <span class="special">,</span> <span class="identifier">Arg</span> <span class="keyword">const</span> <span class="special">&amp;</span>
-<span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span>
-<span class="identifier">pow</span><span class="special">(</span><span class="identifier">Arg</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">arg</span><span class="special">)</span>
-<span class="special">{</span>
-    <span class="keyword">typedef</span>
-        <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span>
-            <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span><span class="identifier">pow_fun</span><span class="special">&lt;</span><span class="identifier">Exp</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span>
-          <span class="special">,</span> <span class="identifier">Arg</span> <span class="keyword">const</span> <span class="special">&amp;</span>
-        <span class="special">&gt;::</span><span class="identifier">type</span>
-    <span class="identifier">result_type</span><span class="special">;</span>
-
-    <span class="identifier">result_type</span> <span class="identifier">result</span> <span class="special">=</span> <span class="special">{{{}},</span> <span class="identifier">arg</span><span class="special">};</span>
-    <span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
-<span class="special">}</span>
+<pre class="programlisting"><span class="comment">// The type of the expression pow&lt;1&gt;(pi/2):</span>
+<span class="identifier">proto</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span>
+    <span class="identifier">proto</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span> <span class="identifier">pow_fun</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span>
+    <span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">as_child</span><span class="special">&lt;</span> <span class="keyword">double</span> <span class="keyword">const</span> <span class="special">&gt;::</span><span class="identifier">type</span>
+<span class="special">&gt;::</span><span class="identifier">type</span>
 </pre>
 <p>
-          In the code above, notice how the <code class="computeroutput"><a class="link" href="../boost/proto/function.html" title="Struct template function">proto::function&lt;&gt;</a></code>
-          and <code class="computeroutput"><a class="link" href="../boost/proto/terminal.html" title="Struct template terminal">proto::terminal&lt;&gt;</a></code> metafunctions are used
-          to calculate the return type: <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code> returns an expression template representing
-          a function call where the first child is the function to call and the second
-          is the argument to the function. (Unfortunately, the same type calculation
-          is repeated in the body of the function so that we can initialize a local
-          variable of the correct type. We'll see in a moment how to avoid that.)
+          We could write a <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code>
+          function using code like this, but it's verbose and error prone; it's too
+          easy to introduce subtle bugs by forgetting to call <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>
+          where necessary, resulting in code that seems to work but sometimes doesn't.
+          Proto provides a better way to construct expression nodes: <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1511038.html" title="Function make_expr">proto::make_expr()</a></code>.
         </p>
-<div class="note"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-            As with <code class="computeroutput"><a class="link" href="../boost/proto/function.html" title="Struct template function">proto::function&lt;&gt;</a></code>, there are metafunctions
-            corresponding to all of the overloadable C++ operators for calculating
-            expression types.
-          </p></td></tr>
-</table></div>
-<p>
-          With the above definition of the <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code> function, we can create calculator expressions
-          like the one below and evaluate them using the <code class="computeroutput"><span class="identifier">calculator_context</span></code>
-          we implemented in the Introduction.
-        </p>
-<pre class="programlisting"><span class="comment">// Initialize a calculator context</span>
-<span class="identifier">calculator_context</span> <span class="identifier">ctx</span><span class="special">;</span>
-<span class="identifier">ctx</span><span class="special">.</span><span class="identifier">args</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="number">3</span><span class="special">);</span> <span class="comment">// let _1 be 3</span>
-
-<span class="comment">// Create a calculator expression that takes one argument,</span>
-<span class="comment">// adds one to it, and raises it to the 2nd power; and then</span>
-<span class="comment">// immediately evaluate it using the calculator_context.</span>
-<span class="identifier">assert</span><span class="special">(</span> <span class="number">16</span> <span class="special">==</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">eval</span><span class="special">(</span> <span class="identifier">pow</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;(</span> <span class="identifier">_1</span> <span class="special">+</span> <span class="number">1</span> <span class="special">),</span> <span class="identifier">ctx</span> <span class="special">)</span> <span class="special">);</span>
-</pre>
 <h6>
 <a name="boost_proto.users_guide.front_end.making_lazy_functions.h1"></a>
-          <span><a name="boost_proto.users_guide.front_end.making_lazy_functions.protofying_lazy_function_arguments"></a></span><a class="link" href="users_guide.html#boost_proto.users_guide.front_end.making_lazy_functions.protofying_lazy_function_arguments">Protofying
-          Lazy Function Arguments</a>
-        </h6>
-<p>
-          Above, we defined a <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code> function template that returns an expression
-          template representing a lazy function invocation. But if we tried to call
-          it as below, we'll run into a problem.
-        </p>
-<pre class="programlisting"><span class="comment">// ERROR: pow() as defined above doesn't work when</span>
-<span class="comment">// called with a non-Proto argument.</span>
-<span class="identifier">pow</span><span class="special">&lt;</span> <span class="number">2</span> <span class="special">&gt;(</span> <span class="number">4</span> <span class="special">);</span>
-</pre>
-<p>
-          Proto expressions can only have other Proto expressions as children. But
-          if we look at <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code>'s
-          function signature, we can see that if we pass it a non-Proto object, it
-          will try to make it a child.
-        </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">Exp</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Arg</span><span class="special">&gt;</span>
-<span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span><span class="identifier">pow_fun</span><span class="special">&lt;</span><span class="identifier">Exp</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span>
-  <span class="special">,</span> <span class="identifier">Arg</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="comment">// &lt;=== ERROR! This may not be a Proto type!</span>
-<span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span>
-<span class="identifier">pow</span><span class="special">(</span><span class="identifier">Arg</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">arg</span><span class="special">)</span>
-</pre>
-<p>
-          What we want is a way to make <code class="computeroutput"><span class="identifier">Arg</span></code>
-          into a Proto terminal if it is not a Proto expression already, and leave
-          it alone if it is. For that, we can use <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code>.
-          The following implementation of the <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code> function handles all argument types,
-          expression templates or otherwise.
-        </p>
-<pre class="programlisting"><span class="comment">// Define a lazy pow() function for the calculator EDSL. Use</span>
-<span class="comment">// proto::as_child() to Protofy the argument, but only if it</span>
-<span class="comment">// is not a Proto expression type to begin with!</span>
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">Exp</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Arg</span><span class="special">&gt;</span>
-<span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span><span class="identifier">pow_fun</span><span class="special">&lt;</span><span class="identifier">Exp</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span>
-  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">as_child</span><span class="special">&lt;</span><span class="identifier">Arg</span> <span class="keyword">const</span><span class="special">&gt;::</span><span class="identifier">type</span>
-<span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span>
-<span class="identifier">pow</span><span class="special">(</span><span class="identifier">Arg</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">arg</span><span class="special">)</span>
-<span class="special">{</span>
-    <span class="keyword">typedef</span>
-        <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span>
-            <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span><span class="identifier">pow_fun</span><span class="special">&lt;</span><span class="identifier">Exp</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span>
-          <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">as_child</span><span class="special">&lt;</span><span class="identifier">Arg</span> <span class="keyword">const</span><span class="special">&gt;::</span><span class="identifier">type</span>
-        <span class="special">&gt;::</span><span class="identifier">type</span>
-    <span class="identifier">result_type</span><span class="special">;</span>
-
-    <span class="identifier">result_type</span> <span class="identifier">result</span> <span class="special">=</span> <span class="special">{{{}},</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">as_child</span><span class="special">(</span><span class="identifier">arg</span><span class="special">)};</span>
-    <span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
-<span class="special">}</span>
-</pre>
-<p>
-          Notice how we use the <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">as_child</span><span class="special">&lt;&gt;</span></code> metafunction to calculate the return
-          type, and the <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">as_child</span><span class="special">()</span></code>
-          function to actually normalize the argument.
-        </p>
-<h6>
-<a name="boost_proto.users_guide.front_end.making_lazy_functions.h2"></a>
           <span><a name="boost_proto.users_guide.front_end.making_lazy_functions.lazy_functions_made_simple_with__literal_make_expr____literal_"></a></span><a class="link" href="users_guide.html#boost_proto.users_guide.front_end.making_lazy_functions.lazy_functions_made_simple_with__literal_make_expr____literal_">Lazy
           Functions Made Simple With <code class="literal">make_expr()</code></a>
         </h6>
 <p>
-          The versions of the <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code> function we've seen above are rather
-          verbose. In the return type calculation, you have to be very explicit about
-          wrapping non-Proto types. Worse, you have to restate the return type calculation
-          in the body of <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code>
-          itself. Proto provides a helper for building expression templates directly
-          that handles these mundane details for you. It's called <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1503817.html" title="Function make_expr">proto::make_expr()</a></code>.
-          We can redefine <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code>
-          with it as below.
+          Proto provides a helper for building expression templates called <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1511038.html" title="Function make_expr">proto::make_expr()</a></code>. We can concisely define
+          the <code class="computeroutput"><span class="identifier">pow</span><span class="special">()</span></code>
+          function with it as below.
         </p>
 <pre class="programlisting"><span class="comment">// Define a lazy pow() function for the calculator EDSL.</span>
 <span class="comment">// Can be used as: pow&lt; 2 &gt;(_1)</span>
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">Exp</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Arg</span><span class="special">&gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">int</span> <span class="identifier">Exp</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Arg</span> <span class="special">&gt;</span>
 <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">make_expr</span><span class="special">&lt;</span>
     <span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">function</span>  <span class="comment">// Tag type</span>
-  <span class="special">,</span> <span class="identifier">pow_fun</span><span class="special">&lt;</span><span class="identifier">Exp</span><span class="special">&gt;</span>          <span class="comment">// First child (by value)</span>
+  <span class="special">,</span> <span class="identifier">pow_fun</span><span class="special">&lt;</span> <span class="identifier">Exp</span> <span class="special">&gt;</span>        <span class="comment">// First child (by value)</span>
   <span class="special">,</span> <span class="identifier">Arg</span> <span class="keyword">const</span> <span class="special">&amp;</span>           <span class="comment">// Second child (by reference)</span>
 <span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span>
 <span class="identifier">pow</span><span class="special">(</span><span class="identifier">Arg</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">arg</span><span class="special">)</span>
@@ -1195,25 +1139,28 @@
 <p>
           There are some things to notice about the above code. We use <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">make_expr</span><span class="special">&lt;&gt;</span></code>
           to calculate the return type. The first template parameter is the tag type
-          for the expression node we're building -- in this case, <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">function</span></code>,
-          which is the tag type Proto uses for function call expressions.
+          for the expression node we're building -- in this case, <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">function</span></code>.
         </p>
 <p>
-          Subsequent template parameters to <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">make_expr</span><span class="special">&lt;&gt;</span></code> represent children nodes. If a
-          child type is not already a Proto expression, it is made into a terminal
-          with <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code>. A type such as <code class="computeroutput"><span class="identifier">pow_fun</span><span class="special">&lt;</span><span class="identifier">Exp</span><span class="special">&gt;</span></code>
-          results in terminal that is held by value, whereas a type like <code class="computeroutput"><span class="identifier">Arg</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> (note the reference) indicates that
-          the result should be held by reference.
+          Subsequent template parameters to <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">make_expr</span><span class="special">&lt;&gt;</span></code> represent child nodes. If a child
+          type is not already a Proto expression, it is automatically made into a
+          terminal with <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>.
+          A type such as <code class="computeroutput"><span class="identifier">pow_fun</span><span class="special">&lt;</span><span class="identifier">Exp</span><span class="special">&gt;</span></code> results in terminal that is held by
+          value, whereas a type like <code class="computeroutput"><span class="identifier">Arg</span>
+          <span class="keyword">const</span> <span class="special">&amp;</span></code>
+          (note the reference) indicates that the result should be held by reference.
         </p>
 <p>
-          In the function body is the runtime invocation of <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1503817.html" title="Function make_expr">proto::make_expr()</a></code>.
-          It closely mirrors the return type calculation. <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1503817.html" title="Function make_expr">proto::make_expr()</a></code>
+          In the function body is the runtime invocation of <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1511038.html" title="Function make_expr">proto::make_expr()</a></code>.
+          It closely mirrors the return type calculation. <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1511038.html" title="Function make_expr">proto::make_expr()</a></code>
           requires you to specify the node's tag type as a template parameter. The
           arguments to the function become the node's children. When a child should
           be stored by value, nothing special needs to be done. When a child should
-          be stored by reference, you must use the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">ref</span><span class="special">()</span></code> function to wrap the argument. Without
-          this extra information, the <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1503817.html" title="Function make_expr">proto::make_expr()</a></code>
-          function couldn't know whether to store a child by value or by reference.
+          be stored by reference, you must use the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">ref</span><span class="special">()</span></code> function to wrap the argument.
+        </p>
+<p>
+          And that's it! <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1511038.html" title="Function make_expr">proto::make_expr()</a></code>
+          is the lazy person's way to make a lazy funtion.
         </p>
 </div>
 <div class="section">
@@ -1776,7 +1723,7 @@
 </h5></div></div></div>
 <p>
             By default, Proto defines every possible operator overload for Protofied
-            expressions. This makes it simple to bang together a EDSL. In some cases,
+            expressions. This makes it simple to bang together an EDSL. In some cases,
             however, the presence of Proto's promiscuous overloads can lead to confusion
             or worse. When that happens, you'll have to disable some of Proto's overloaded
             operators. That is done by defining the grammar for your domain and specifying
@@ -1877,7 +1824,7 @@
             <code class="literal">as_child</code> vs. <code class="literal">as_expr</code></a>
           </h6>
 <p>
-            Proto lets you independently customize the behavior of <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code> and <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1527385.html" title="Function as_expr">proto::as_expr()</a></code>.
+            Proto lets you independently customize the behavior of <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code> and <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1534606.html" title="Function as_expr">proto::as_expr()</a></code>.
             Both accept an object <code class="literal">x</code> and return a Proto expression
             by turning <code class="literal">x</code> it into a Proto terminal if necessary.
             Although similar, the two functions are used in different situations
@@ -1886,7 +1833,7 @@
             you want.
           </p>
 <p>
-            To wit: <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1527385.html" title="Function as_expr">proto::as_expr()</a></code> is typically used by
+            To wit: <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1534606.html" title="Function as_expr">proto::as_expr()</a></code> is typically used by
             <span class="emphasis"><em>you</em></span> to turn an object into a Proto expression that
             is to be held in a local variable, as so:
           </p>
@@ -1898,11 +1845,11 @@
             is guaranteed to be a valid Proto expression. If <code class="computeroutput"><span class="identifier">x</span></code>
             is a non-Proto object, it is turned into a terminal expression that holds
             <code class="computeroutput"><span class="identifier">x</span></code> <span class="emphasis"><em>by value</em></span>.<sup>[<a name="boost_proto.users_guide.front_end.customizing_expressions_in_your_domain.per_domain_as_child.f0" href="#ftn.boost_proto.users_guide.front_end.customizing_expressions_in_your_domain.per_domain_as_child.f0" class="footnote">4</a>]</sup> If <code class="computeroutput"><span class="identifier">x</span></code> is a
-            Proto object already, <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1527385.html" title="Function as_expr">proto::as_expr()</a></code>
+            Proto object already, <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1534606.html" title="Function as_expr">proto::as_expr()</a></code>
             returns it <span class="emphasis"><em>by value</em></span> unmodified.
           </p>
 <p>
-            In contrast, <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code>
+            In contrast, <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>
             is used internally by Proto to pre-process objects before making them
             children of another expression. Since it's internal to Proto, you don't
             see it explicitly, but it's there behind the scenes in expressions like
@@ -1912,12 +1859,12 @@
 </pre>
 <p>
             In this case, Proto builds a plus node from the two children. Both are
-            pre-processed by passing them to <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code>
+            pre-processed by passing them to <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>
             before making them children of the new node. If <code class="computeroutput"><span class="identifier">x</span></code>
             is not a Proto expression, it becomes one by being wrapped in a Proto
-            terminal that holds it <span class="emphasis"><em>by reference</em></span>. If <code class="computeroutput"><span class="identifier">x</span></code> is already a Proto expression, <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code> returns it <span class="emphasis"><em>by
+            terminal that holds it <span class="emphasis"><em>by reference</em></span>. If <code class="computeroutput"><span class="identifier">x</span></code> is already a Proto expression, <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code> returns it <span class="emphasis"><em>by
             reference</em></span> unmodified. Contrast this with the above description
-            for <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1527385.html" title="Function as_expr">proto::as_expr()</a></code>.
+            for <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1534606.html" title="Function as_expr">proto::as_expr()</a></code>.
           </p>
 <p>
             The table below summarizes the above description.
@@ -1997,32 +1944,32 @@
 <tr><td align="left" valign="top"><p>
               There is one important place where Proto uses both <code class="computeroutput"><span class="identifier">as_expr</span></code>
               <span class="emphasis"><em>and</em></span> <code class="computeroutput"><span class="identifier">as_child</span></code>:
-              <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1503817.html" title="Function make_expr">proto::make_expr()</a></code>. The <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1503817.html" title="Function make_expr">proto::make_expr()</a></code> function requires
+              <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1511038.html" title="Function make_expr">proto::make_expr()</a></code>. The <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1511038.html" title="Function make_expr">proto::make_expr()</a></code> function requires
               you to specify for each child whether it should be held by value or
-              by reference. Proto uses <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1527385.html" title="Function as_expr">proto::as_expr()</a></code>
-              to pre-process the children to be held by value, and <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code> for the ones to be
+              by reference. Proto uses <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1534606.html" title="Function as_expr">proto::as_expr()</a></code>
+              to pre-process the children to be held by value, and <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code> for the ones to be
               held by reference.
             </p></td></tr>
 </table></div>
 <p>
-            Now that you know what <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code>
-            and <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1527385.html" title="Function as_expr">proto::as_expr()</a></code> are, where they are
+            Now that you know what <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>
+            and <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1534606.html" title="Function as_expr">proto::as_expr()</a></code> are, where they are
             used, and what they do by default, you may decide that one or both of
             these functions should have different behavior for your domain. For instance,
-            given the above description of <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code>,
+            given the above description of <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>,
             the following code is always wrong:
           </p>
 <pre class="programlisting"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">literal</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">i</span><span class="special">(</span><span class="number">0</span><span class="special">);</span>
 <span class="keyword">auto</span> <span class="identifier">l</span> <span class="special">=</span> <span class="identifier">i</span> <span class="special">+</span> <span class="number">42</span><span class="special">;</span> <span class="comment">// This is WRONG! Don't do this.</span>
 </pre>
 <p>
-            Why is this wrong? Because <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code>
+            Why is this wrong? Because <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>
             will turn the integer literal 42 into a Proto terminal that holds a reference
             to a temporary integer initialized with 42. The lifetime of that temporary
             ends at the semicolon, guaranteeing that the local <code class="computeroutput"><span class="identifier">l</span></code>
             is left holding a dangling reference to a deceased integer. What to do?
-            One answer is to use <code class="computeroutput"><a class="link" href="../boost/proto/deep_copy_id1493807.html" title="Function template deep_copy">proto::deep_copy()</a></code>.
-            Another is to customize the behavior of <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code>
+            One answer is to use <code class="computeroutput"><a class="link" href="../boost/proto/deep_copy_id1501028.html" title="Function template deep_copy">proto::deep_copy()</a></code>.
+            Another is to customize the behavior of <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>
             for your domain. Read on for the details.
           </p>
 <h6>
@@ -2071,7 +2018,7 @@
           </h6>
 <p>
             Although less common, Proto also lets you customize the behavior of
-            <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1527385.html" title="Function as_expr">proto::as_expr()</a></code> on a per-domain basis.
+            <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1534606.html" title="Function as_expr">proto::as_expr()</a></code> on a per-domain basis.
             The technique is identical to that for <code class="literal">as_child</code>. See
             below:
           </p>
@@ -2101,7 +2048,7 @@
 <p>
             Let's look again at the problem described above involving the C++11
             <code class="computeroutput"><span class="keyword">auto</span></code> keyword and the default
-            behavior of <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code>.
+            behavior of <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code>.
           </p>
 <pre class="programlisting"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">literal</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">i</span><span class="special">(</span><span class="number">0</span><span class="special">);</span>
 <span class="keyword">auto</span> <span class="identifier">l</span> <span class="special">=</span> <span class="identifier">i</span> <span class="special">+</span> <span class="number">42</span><span class="special">;</span> <span class="comment">// This is WRONG! Don't do this.</span>
@@ -2111,7 +2058,7 @@
             to hold the value 42. The local <code class="computeroutput"><span class="identifier">l</span></code>
             will be left holding a dangling reference to it after its lifetime is
             over. What if we want Proto to make expressions safe to store this way
-            in local variables? We can do so very easily by making <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1527575.html" title="Function as_child">proto::as_child()</a></code> behave just like <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1527385.html" title="Function as_expr">proto::as_expr()</a></code>. The following code
+            in local variables? We can do so very easily by making <code class="computeroutput"><a class="link" href="../boost/proto/as_child_id1534796.html" title="Function as_child">proto::as_child()</a></code> behave just like <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1534606.html" title="Function as_expr">proto::as_expr()</a></code>. The following code
             achieves this:
           </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">E</span> <span class="special">&gt;</span>
@@ -2464,7 +2411,7 @@
         Repetitive Code with the Preprocessor</a>
 </h4></div></div></div>
 <p>
-          Sometimes as a EDSL designer, to make the lives of your users easy, you
+          Sometimes as an EDSL designer, to make the lives of your users easy, you
           have to make your own life hard. Giving your users natural and flexible
           syntax often involves writing large numbers of repetitive function overloads.
           It can be enough to give you repetitive stress injury! Before you hurt
@@ -2834,7 +2781,7 @@
         </h6>
 <p>
           There is no simpler expression than a terminal, and no more basic operation
-          than extracting its value. As we've already seen, that is what <code class="computeroutput"><a class="link" href="../boost/proto/value_id1528169.html" title="Function value">proto::value()</a></code> is for.
+          than extracting its value. As we've already seen, that is what <code class="computeroutput"><a class="link" href="../boost/proto/value_id1535390.html" title="Function value">proto::value()</a></code> is for.
         </p>
 <pre class="programlisting"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">cout_</span> <span class="special">=</span> <span class="special">{</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span><span class="special">};</span>
 
@@ -2845,7 +2792,7 @@
 <span class="identifier">assert</span><span class="special">(</span> <span class="special">&amp;</span><span class="identifier">sout</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">);</span>
 </pre>
 <p>
-          To compute the return type of the <code class="computeroutput"><a class="link" href="../boost/proto/value_id1528169.html" title="Function value">proto::value()</a></code>
+          To compute the return type of the <code class="computeroutput"><a class="link" href="../boost/proto/value_id1535390.html" title="Function value">proto::value()</a></code>
           function, you can use <code class="computeroutput"><a class="link" href="../boost/proto/result_of/value.html" title="Struct template value">proto::result_of::value&lt;&gt;</a></code>.
           When the parameter to <code class="computeroutput"><a class="link" href="../boost/proto/result_of/value.html" title="Struct template value">proto::result_of::value&lt;&gt;</a></code>
           is a non-reference type, the result type of the metafunction is the type
@@ -2977,7 +2924,7 @@
 <p>
           Each non-terminal node in an expression tree corresponds to an operator
           in an expression, and the children correspond to the operands, or arguments
-          of the operator. To access them, you can use the <code class="computeroutput"><a class="link" href="../boost/proto/child_c_id1528008.html" title="Function child_c">proto::child_c()</a></code>
+          of the operator. To access them, you can use the <code class="computeroutput"><a class="link" href="../boost/proto/child_c_id1535229.html" title="Function child_c">proto::child_c()</a></code>
           function template, as demonstrated below:
         </p>
 <pre class="programlisting"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">i</span> <span class="special">=</span> <span class="special">{</span><span class="number">42</span><span class="special">};</span>
@@ -3143,11 +3090,11 @@
 <p>
           Most operators in C++ are unary or binary, so accessing the only operand,
           or the left and right operands, are very common operations. For this reason,
-          Proto provides the <code class="computeroutput"><a class="link" href="../boost/proto/child_id1527766.html" title="Function child">proto::child()</a></code>,
-          <code class="computeroutput"><a class="link" href="../boost/proto/left_id1528275.html" title="Function left">proto::left()</a></code>, and <code class="computeroutput"><a class="link" href="../boost/proto/right_id1528399.html" title="Function right">proto::right()</a></code>
-          functions. <code class="computeroutput"><a class="link" href="../boost/proto/child_id1527766.html" title="Function child">proto::child()</a></code> and <code class="computeroutput"><a class="link" href="../boost/proto/left_id1528275.html" title="Function left">proto::left()</a></code>
+          Proto provides the <code class="computeroutput"><a class="link" href="../boost/proto/child_id1534987.html" title="Function child">proto::child()</a></code>,
+          <code class="computeroutput"><a class="link" href="../boost/proto/left_id1535496.html" title="Function left">proto::left()</a></code>, and <code class="computeroutput"><a class="link" href="../boost/proto/right_id1535620.html" title="Function right">proto::right()</a></code>
+          functions. <code class="computeroutput"><a class="link" href="../boost/proto/child_id1534987.html" title="Function child">proto::child()</a></code> and <code class="computeroutput"><a class="link" href="../boost/proto/left_id1535496.html" title="Function left">proto::left()</a></code>
           are synonymous with <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">child_c</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;()</span></code>,
-          and <code class="computeroutput"><a class="link" href="../boost/proto/right_id1528399.html" title="Function right">proto::right()</a></code> is synonymous with <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">child_c</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;()</span></code>.
+          and <code class="computeroutput"><a class="link" href="../boost/proto/right_id1535620.html" title="Function right">proto::right()</a></code> is synonymous with <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">child_c</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;()</span></code>.
         </p>
 <p>
           There are also <code class="computeroutput"><a class="link" href="../boost/proto/result_of/child.html" title="Struct template child">proto::result_of::child&lt;&gt;</a></code>,
@@ -3182,7 +3129,7 @@
           all intermediate nodes and the terminals are held <span class="emphasis"><em>by value</em></span>.
           That way, you can safely assign the expression template to a local variable
           or return it from a function without worrying about dangling references.
-          You can do this with <code class="computeroutput"><a class="link" href="../boost/proto/deep_copy_id1493807.html" title="Function template deep_copy">proto::deep_copy()</a></code>
+          You can do this with <code class="computeroutput"><a class="link" href="../boost/proto/deep_copy_id1501028.html" title="Function template deep_copy">proto::deep_copy()</a></code>
           as fo llows:
         </p>
 <pre class="programlisting"><span class="comment">// OK, "ex" has no dangling references</span>
@@ -3217,7 +3164,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            <code class="computeroutput"><a class="link" href="../boost/proto/deep_copy_id1493807.html" title="Function template deep_copy">proto::deep_copy()</a></code> makes no exception for
+            <code class="computeroutput"><a class="link" href="../boost/proto/deep_copy_id1501028.html" title="Function template deep_copy">proto::deep_copy()</a></code> makes no exception for
             arrays, which it stores by value. That can potentially cause a large
             amount of data to be copied.
           </p></td></tr>
@@ -3230,7 +3177,7 @@
 </h4></div></div></div>
 <p>
           Proto provides a utility for pretty-printing expression trees that comes
-          in very handy when you're trying to debug your EDSL. It's called <code class="computeroutput"><a class="link" href="../boost/proto/display_expr_id1492920.html" title="Function display_expr">proto::display_expr()</a></code>, and you pass it the expression
+          in very handy when you're trying to debug your EDSL. It's called <code class="computeroutput"><a class="link" href="../boost/proto/display_expr_id1500141.html" title="Function display_expr">proto::display_expr()</a></code>, and you pass it the expression
           to print and optionally, an <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span></code>
           to which to send the output. Consider:
         </p>
@@ -3247,7 +3194,7 @@
   , terminal(42)
 )</pre>
 <p>
-          In order to call <code class="computeroutput"><a class="link" href="../boost/proto/display_expr_id1492920.html" title="Function display_expr">proto::display_expr()</a></code>,
+          In order to call <code class="computeroutput"><a class="link" href="../boost/proto/display_expr_id1500141.html" title="Function display_expr">proto::display_expr()</a></code>,
           all the terminals in the expression must be Streamable (that is, they can
           be written to a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span></code>). In addition, the tag types
           must all be Streamable as well. Here is an example that includes a custom
@@ -4161,8 +4108,8 @@
           <span class="special">+</span> <span class="number">2</span> <span class="special">+</span> <span class="number">3</span> <span class="special">+</span>
           <span class="number">4</span></code> does not describe a flat sequence
           of terminals --- it describes a binary tree. We can treat it as a flat
-          sequence of terminals, however, using Proto's <code class="computeroutput"><a class="link" href="../boost/proto/flatten_id1500995.html" title="Function flatten">proto::flatten()</a></code>
-          function. <code class="computeroutput"><a class="link" href="../boost/proto/flatten_id1500995.html" title="Function flatten">proto::flatten()</a></code> returns a view which makes
+          sequence of terminals, however, using Proto's <code class="computeroutput"><a class="link" href="../boost/proto/flatten_id1508487.html" title="Function flatten">proto::flatten()</a></code>
+          function. <code class="computeroutput"><a class="link" href="../boost/proto/flatten_id1508487.html" title="Function flatten">proto::flatten()</a></code> returns a view which makes
           a tree appear as a flat Fusion sequence. If the top-most node has a tag
           type <code class="computeroutput"><span class="identifier">T</span></code>, then the elements
           of the flattened sequence are the child nodes that do <span class="emphasis"><em>not</em></span>
@@ -5061,8 +5008,8 @@ Input!
               and hard to do with straight operator overloading.
             </p>
 <p>
-              Third, using a EDSL grammar to flag invalid expressions can often yield
-              better errors than manually selecting the overloaded operators.
+              Third, using an EDSL grammar to flag invalid expressions can often
+              yield better errors than manually selecting the overloaded operators.
             </p>
 <p>
               Fourth, the grammar can be used for more than just validation. You
@@ -5077,7 +5024,7 @@ Input!
 </td></tr>
 </table></div>
 <p>
-            In a previous section, we used Proto to define a EDSL for a lazily evaluated
+            In a previous section, we used Proto to define an EDSL for a lazily evaluated
             calculator that allowed any combination of placeholders, floating-point
             literals, addition, subtraction, multiplication, division and grouping.
             If we were to write the grammar for this EDSL in <a href="http://en.wikipedia.org/wiki/Extended_Backus_Naur_Form" target="_top">EBNF</a>,
@@ -5197,8 +5144,8 @@ expression  ::= term (('+' term) | ('-' term))*
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
             A <span class="emphasis"><em>context</em></span> is like a function object that you pass
-            along with an expression to the <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code>
-            function. It associates behaviors with node types. <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code>
+            along with an expression to the <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code>
+            function. It associates behaviors with node types. <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code>
             walks the expression and invokes your context at each node.
           </li>
 <li class="listitem">
@@ -5238,13 +5185,13 @@ expression  ::= term (('+' term) | ('-' term))*
 </dl></div>
 <p>
           Once you have constructed a Proto expression tree, either by using Proto's
-          operator overloads or with <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1503817.html" title="Function make_expr">proto::make_expr()</a></code>
+          operator overloads or with <code class="computeroutput"><a class="link" href="../boost/proto/make_expr_id1511038.html" title="Function make_expr">proto::make_expr()</a></code>
           and friends, you probably want to actually <span class="emphasis"><em>do</em></span> something
           with it. The simplest option is to use <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">eval</span><span class="special">()</span></code>, a generic expression evaluator. To use
-          <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code>, you'll need to define
-          a <span class="emphasis"><em>context</em></span> that tells <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code>
+          <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code>, you'll need to define
+          a <span class="emphasis"><em>context</em></span> that tells <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code>
           how each node should be evaluated. This section goes through the nuts and
-          bolts of using <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code>, defining evaluation contexts,
+          bolts of using <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code>, defining evaluation contexts,
           and using the contexts that Proto provides.
         </p>
 <div class="note"><table border="0" summary="Note">
@@ -5315,11 +5262,11 @@ expression  ::= term (('+' term) | ('-' term))*
 <span class="special">}</span>
 </pre>
 <p>
-            Given an expression and an evaluation context, using <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code>
-            is quite simple. Simply pass the expression and the context to <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code> and it does the rest
+            Given an expression and an evaluation context, using <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code>
+            is quite simple. Simply pass the expression and the context to <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code> and it does the rest
             and returns the result. You can use the <code class="computeroutput"><span class="identifier">eval</span><span class="special">&lt;&gt;</span></code> metafunction in the <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span></code> namespace to compute the
-            return type of <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code>. The following demonstrates
-            a use of <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code>:
+            return type of <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code>. The following demonstrates
+            a use of <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code>:
           </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Expr</span><span class="special">&gt;</span>
 <span class="keyword">typename</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">::</span><span class="identifier">eval</span><span class="special">&lt;</span><span class="identifier">Expr</span> <span class="keyword">const</span><span class="special">,</span> <span class="identifier">MyContext</span><span class="special">&gt;::</span><span class="identifier">type</span>
@@ -5333,9 +5280,9 @@ expression  ::= term (('+' term) | ('-' term))*
 <span class="special">}</span>
 </pre>
 <p>
-            What <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code> does is also very simple.
+            What <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code> does is also very simple.
             It defers most of the work to the context itself. Here essentially is
-            the implementation of <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code>:
+            the implementation of <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code>:
           </p>
 <pre class="programlisting"><span class="comment">// eval() dispatches to a nested "eval&lt;&gt;" function</span>
 <span class="comment">// object within the Context:</span>
@@ -5348,7 +5295,7 @@ expression  ::= term (('+' term) | ('-' term))*
 <span class="special">}</span>
 </pre>
 <p>
-            Really, <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code> is nothing more than
+            Really, <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code> is nothing more than
             a thin wrapper that dispatches to the appropriate handler within the
             context class. In the next section, we'll see how to implement a context
             class from scratch.
@@ -5360,7 +5307,7 @@ expression  ::= term (('+' term) | ('-' term))*
           an Evaluation Context</a>
 </h5></div></div></div>
 <p>
-            As we saw in the previous section, there is really not much to the <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code> function. Rather, all
+            As we saw in the previous section, there is really not much to the <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code> function. Rather, all
             the interesting expression evaluation goes on within a context class.
             This section shows how to implement one from scratch.
           </p>
@@ -5466,7 +5413,7 @@ expression  ::= term (('+' term) | ('-' term))*
 <span class="special">};</span>
 </pre>
 <p>
-            Now we can use <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1495281.html" title="Function eval">proto::eval()</a></code> with the context class
+            Now we can use <code class="computeroutput"><a class="link" href="../boost/proto/eval_id1502502.html" title="Function eval">proto::eval()</a></code> with the context class
             above to evaluate calculator expressions as follows:
           </p>
 <pre class="programlisting"><span class="comment">// Evaluate an expression with a calculator_context</span>
@@ -6107,7 +6054,7 @@ j = 11
               it's not, but then it actually is! Why this confusing subterfuge? Function
               types give us a natural and concise syntax for composing more complicated
               transforms from simpler ones. The fact that the syntax is suggestive
-              of a function invocation is on purpose. It is a embedded domain-specific
+              of a function invocation is on purpose. It is an embedded domain-specific
               language for defining expression transformations. If the subterfuge
               worked, it may have fooled you into thinking the transform is doing
               exactly what it actually does! And that's the point.
@@ -8786,7 +8733,7 @@ minus(
           This is a simple example of doing arbitrary type manipulations with Proto
           transforms. It takes some expression involving primary colors and combines
           the colors according to arbitrary rules. It is a port of the RGB example
-          from <a href="http://www.codesourcery.com/pooma/download.html" target="_top">PETE</a>.
+          from <a href="http://acts.nersc.gov/formertools/pete/index.html" target="_top">PETE</a>.
         </p>
 <p>
 </p>
@@ -8902,7 +8849,7 @@ minus(
 <p>
           This example constructs a mini-library for linear algebra, using expression
           templates to eliminate the need for temporaries when adding arrays of numbers.
-          It duplicates the TArray example from <a href="http://www.codesourcery.com/pooma/download.html" target="_top">PETE</a>.
+          It duplicates the TArray example from <a href="http://acts.nersc.gov/formertools/pete/index.html" target="_top">PETE</a>.
         </p>
 <p>
 </p>
@@ -9138,7 +9085,7 @@ minus(
 <p>
           This is a simple example using <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">extends</span><span class="special">&lt;&gt;</span></code> to extend a terminal type with
           additional behaviors, and using custom contexts and <code class="computeroutput"><span class="identifier">proto</span><span class="special">::</span><span class="identifier">eval</span><span class="special">()</span></code> for evaluating expressions. It is a port
-          of the Vec3 example from <a href="http://www.codesourcery.com/pooma/download.html" target="_top">PETE</a>.
+          of the Vec3 example from <a href="http://acts.nersc.gov/formertools/pete/index.html" target="_top">PETE</a>.
         </p>
 <p>
 </p>
@@ -9325,7 +9272,7 @@ minus(
 </h4></div></div></div>
 <p>
           This is an example of using <code class="computeroutput"><span class="identifier">BOOST_PROTO_DEFINE_OPERATORS</span><span class="special">()</span></code> to Protofy expressions using <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;&gt;</span></code>,
-          a non-Proto type. It is a port of the Vector example from <a href="http://www.codesourcery.com/pooma/download.html" target="_top">PETE</a>.
+          a non-Proto type. It is a port of the Vector example from <a href="http://acts.nersc.gov/formertools/pete/index.html" target="_top">PETE</a>.
         </p>
 <p>
 </p>
@@ -9580,7 +9527,7 @@ minus(
 <p>
           This is an example of using <code class="computeroutput"><span class="identifier">BOOST_PROTO_DEFINE_OPERATORS</span><span class="special">()</span></code> to Protofy expressions using <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;&gt;</span></code>
           and <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;&gt;</span></code>,
-          non-Proto types. It is a port of the Mixed example from <a href="http://www.codesourcery.com/pooma/download.html" target="_top">PETE</a>.
+          non-Proto types. It is a port of the Mixed example from <a href="http://acts.nersc.gov/formertools/pete/index.html" target="_top">PETE</a>.
         </p>
 <p>
 </p>
@@ -10855,7 +10802,7 @@ minus(
 <div class="footnotes">
 <br><hr width="100" align="left">
 <div class="footnote"><p><sup>[<a id="ftn.boost_proto.users_guide.front_end.customizing_expressions_in_your_domain.per_domain_as_child.f0" href="#boost_proto.users_guide.front_end.customizing_expressions_in_your_domain.per_domain_as_child.f0" class="para">4</a>] </sup>
-              It's not always possible to hold something by value. By default, <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1527385.html" title="Function as_expr">proto::as_expr()</a></code> makes an exception
+              It's not always possible to hold something by value. By default, <code class="computeroutput"><a class="link" href="../boost/proto/as_expr_id1534606.html" title="Function as_expr">proto::as_expr()</a></code> makes an exception
               for functions, abstract types, and iostreams (types derived from <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span></code>). These objects are held
               by reference. All others are held by value, even arrays.
             </p></div>

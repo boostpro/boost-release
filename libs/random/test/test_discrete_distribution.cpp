@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: test_discrete_distribution.cpp 71018 2011-04-05 21:27:52Z steven_watanabe $
+ * $Id: test_discrete_distribution.cpp 78340 2012-05-05 21:14:37Z steven_watanabe $
  *
  */
 
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(test_constructors) {
     boost::random::discrete_distribution<> dist;
     CHECK_PROBABILITIES(dist.probabilities(), list_of(1.0));
 
-#ifndef BOOST_NO_INITIALIZER_LISTS
+#ifndef BOOST_NO_0X_HDR_INITIALIZER_LIST
     boost::random::discrete_distribution<> dist_il = { 1, 2, 1, 4 };
     CHECK_PROBABILITIES(dist_il.probabilities(), list_of(.125)(.25)(.125)(.5));
 #endif
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(test_param) {
     BOOST_CHECK(param != param_default);
     BOOST_CHECK(!(param == param_default));
     
-#ifndef BOOST_NO_INITIALIZER_LISTS
+#ifndef BOOST_NO_0X_HDR_INITIALIZER_LIST
     boost::random::discrete_distribution<>::param_type
         parm_il = { 1, 2, 1, 4 };
     CHECK_PROBABILITIES(parm_il.probabilities(), list_of(.125)(.25)(.125)(.5));

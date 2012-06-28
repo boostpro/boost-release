@@ -1346,7 +1346,7 @@
    <span class="comment">//Initialize the STL-like allocator</span>
    <span class="keyword">const</span> <span class="identifier">ShmemAllocator</span> <span class="identifier">alloc_inst</span> <span class="special">(</span><span class="identifier">segment</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
-   <span class="comment">//Construct the vector in the shared memory segment with the STL-like allocator </span>
+   <span class="comment">//Construct the vector in the shared memory segment with the STL-like allocator</span>
    <span class="comment">//from a range of iterators</span>
    <span class="identifier">MyVector</span> <span class="special">*</span><span class="identifier">myvector</span> <span class="special">=</span>
       <span class="identifier">segment</span><span class="special">.</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="identifier">MyVector</span><span class="special">&gt;</span>
@@ -1454,17 +1454,17 @@
    <span class="identifier">StringAllocator</span>   <span class="identifier">stringallocator</span><span class="special">(</span><span class="identifier">shm</span><span class="special">.</span><span class="identifier">get_segment_manager</span><span class="special">());</span>
 
    <span class="comment">//This string is in only in this process (the pointer pointing to the</span>
-   <span class="comment">//buffer that will hold the text is not in shared memory). </span>
-   <span class="comment">//But the buffer that will hold "this is my text" is allocated from </span>
+   <span class="comment">//buffer that will hold the text is not in shared memory).</span>
+   <span class="comment">//But the buffer that will hold "this is my text" is allocated from</span>
    <span class="comment">//shared memory</span>
    <span class="identifier">MyShmString</span> <span class="identifier">mystring</span><span class="special">(</span><span class="identifier">charallocator</span><span class="special">);</span>
    <span class="identifier">mystring</span> <span class="special">=</span> <span class="string">"this is my text"</span><span class="special">;</span>
 
    <span class="comment">//This vector is only in this process (the pointer pointing to the</span>
-   <span class="comment">//buffer that will hold the MyShmString-s is not in shared memory). </span>
-   <span class="comment">//But the buffer that will hold 10 MyShmString-s is allocated from </span>
-   <span class="comment">//shared memory using StringAllocator. Since strings use a shared </span>
-   <span class="comment">//memory allocator (CharAllocator) the 10 buffers that hold </span>
+   <span class="comment">//buffer that will hold the MyShmString-s is not in shared memory).</span>
+   <span class="comment">//But the buffer that will hold 10 MyShmString-s is allocated from</span>
+   <span class="comment">//shared memory using StringAllocator. Since strings use a shared</span>
+   <span class="comment">//memory allocator (CharAllocator) the 10 buffers that hold</span>
    <span class="comment">//"this is my text" text are also in shared memory.</span>
    <span class="identifier">MyShmStringVector</span> <span class="identifier">myvector</span><span class="special">(</span><span class="identifier">stringallocator</span><span class="special">);</span>
    <span class="identifier">myvector</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">myvector</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="number">10</span><span class="special">,</span> <span class="identifier">mystring</span><span class="special">);</span>
@@ -1568,7 +1568,7 @@
 
    <span class="comment">//...And insert one in the first position.</span>
    <span class="comment">//No string copy-constructor or assignments will be called, but</span>
-   <span class="comment">//move constructors and move-assignments. No memory allocation </span>
+   <span class="comment">//move constructors and move-assignments. No memory allocation</span>
    <span class="comment">//function will be called in this operations!!</span>
    <span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">myshmvector</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">string_to_compare</span><span class="special">));</span>
 

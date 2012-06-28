@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Changes since</title>
+<title>History</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;28.&#160;Thread">
-<link rel="prev" href="../thread.html" title="Chapter&#160;28.&#160;Thread">
+<link rel="up" href="../thread.html" title="Chapter&#160;28.&#160;Thread 3.0.0">
+<link rel="prev" href="build.html" title="Using and building the library">
 <link rel="next" href="future.html" title="Future">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,16 +20,224 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../thread.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="future.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="build.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="future.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="thread.changes"></a><a class="link" href="changes.html" title="Changes since">Changes since</a>
+<a name="thread.changes"></a><a class="link" href="changes.html" title="History">History</a>
 </h2></div></div></div>
 <h4>
 <a name="thread.changes.h0"></a>
-      <span><a name="thread.changes.changes_since_boost_1_41"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_41">Changes
-      since boost 1.41</a>
+      <span><a name="thread.changes.version_3_0_0___boost_1_50"></a></span><a class="link" href="changes.html#thread.changes.version_3_0_0___boost_1_50">Version
+      3.0.0 - boost 1.50</a>
+    </h4>
+<p>
+      New Features:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/1850" target="_top">#1850</a>
+          Request for unlock_guard to compliment lock_guard.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/2637" target="_top">#2637</a>
+          Request for shared_mutex duration timed_lock and timed_lock_shared.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/2741" target="_top">#2741</a>
+          Proposal to manage portable and non portable thread attributes.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/3567" target="_top">#3567</a>
+          Request for shared_lock_guard.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6194" target="_top">#6194</a>
+          Adapt to Boost.Move.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6195" target="_top">#6195</a>
+          c++11 compliance: Provide the standard time related interface using Boost.Chrono.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6217" target="_top">#6217</a>
+          Enhance Boost.Thread shared mutex interface following Howard Hinnant proposal.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6224" target="_top">#6224</a>
+          c++11 compliance: Add the use of standard noexcept on compilers supporting
+          them.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6225" target="_top">#6225</a>
+          Add the use of standard =delete defaulted operations on compilers supporting
+          them.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6226" target="_top">#6226</a>
+          c++11 compliance: Add explicit bool conversion from locks.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6228" target="_top">#6228</a>
+          Add promise constructor with allocator following the standard c++11.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6229" target="_top">#6229</a>
+          Rename the unique_future to future following the c++11.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6230" target="_top">#6230</a>
+          c++11 compliance: Follows the exception reporting mechanism as defined
+          in the c++11.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6231" target="_top">#6231</a>
+          Add BasicLockable requirements in the documentation to follow c++11.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6266" target="_top">#6266</a>
+          Breaking change: thread destructor should call terminate if joinable.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6269" target="_top">#6269</a>
+          Breaking change: thread move assignment should call terminate if joinable.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6272" target="_top">#6272</a>
+          c++11 compliance: Add thread::id hash specialization.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6273" target="_top">#6273</a>
+          c++11 compliance: Add cv_status enum class and use it on the conditions
+          wait functions.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6342" target="_top">#6342</a>
+          c++11 compliance: Adapt the one_flag to the c++11 interface.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6671" target="_top">#6671</a>
+          upgrade_lock: missing mutex and release functions.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6672" target="_top">#6672</a>
+          upgrade_lock:: missing constructors from time related types.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6675" target="_top">#6675</a>
+          upgrade_lock:: missing non-member swap.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6676" target="_top">#6676</a>
+          lock conversion should be explicit.
+        </li>
+<li class="listitem">
+          Added missing packaged_task::result_type and packaged_task:: constructor
+          with allocator.
+        </li>
+<li class="listitem">
+          Added packaged_task::reset()
+        </li>
+</ul></div>
+<p>
+      Fixed Bugs:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/2380" target="_top">#2380</a>
+          boost::move from lvalue does not work with gcc.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/2430" target="_top">#2430</a>
+          shared_mutex for win32 doesn't have timed_lock_upgrade.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/2575" target="_top">#2575</a>
+          Bug- Boost 1.36.0 on Itanium platform.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/3160" target="_top">#3160</a>
+          Duplicate tutorial code in boost::thread.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/4345" target="_top">#4345</a>
+          thread::id and joining problem with cascade of threads.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/4521" target="_top">#4521</a>
+          Error using boost::move on packaged_task (MSVC 10).
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/4711" target="_top">#4711</a>
+          Must use implementation details to return move-only types.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/4921" target="_top">#4921</a>
+          BOOST_THREAD_USE_DLL and BOOST_THREAD_USE_LIB are crucial and need to be
+          documented.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5013" target="_top">#5013</a>
+          documentation: boost::thread: pthreas_exit causes terminate().
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5173" target="_top">#5173</a>
+          boost::this_thread::get_id is very slow.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5351" target="_top">#5351</a>
+          interrupt a future get boost::unknown_exception.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5516" target="_top">#5516</a>
+          Upgrade lock is not acquired when previous upgrade lock releases if another
+          read lock is present.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/5990" target="_top">#5990</a>
+          shared_future&lt;T&gt;::get() has wrong return type.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6174" target="_top">#6174</a>
+          packaged_task doesn't correctly handle moving results.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6222" target="_top">#6222</a>
+          Compile error with SunStudio: unique_future move.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6354" target="_top">#6354</a>
+          PGI: Compiler threading support is not turned on.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6673" target="_top">#6673</a>
+          shared_lock: move assign doesn't works with c++11.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6674" target="_top">#6674</a>
+          shared_mutex: try_lock_upgrade_until doesn't works.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6908" target="_top">#6908</a>
+          Compile error due to unprotected definitions of _WIN32_WINNT and WINVER.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6940" target="_top">#6940</a>
+          TIME_UTC is a macro in C11.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6959" target="_top">#6959</a>
+          call of abs is ambiguous.
+        </li>
+<li class="listitem">
+          Fix issue signaled on the ML with task_object(task_object const&amp;) in
+          presence of task_object(task_object &amp;&amp;)
+        </li>
+</ul></div>
+<h4>
+<a name="thread.changes.h1"></a>
+      <span><a name="thread.changes.version_2_1_1___boost_1_49"></a></span><a class="link" href="changes.html#thread.changes.version_2_1_1___boost_1_49">Version
+      2.1.1 - boost 1.49</a>
     </h4>
 <p>
       Fixed Bugs:
@@ -76,20 +284,8 @@
           boost.thread's documentation misprints.
         </li>
 <li class="listitem">
-          <a href="http://svn.boost.org/trac/boost/ticket/5040" target="_top">#5040</a>
-          future.hpp in boost::thread does not compile with /clr.
-        </li>
-<li class="listitem">
           <a href="http://svn.boost.org/trac/boost/ticket/5423" target="_top">#5423</a>
           thread issues with C++0x.
-        </li>
-<li class="listitem">
-          <a href="http://svn.boost.org/trac/boost/ticket/5502" target="_top">#5502</a>
-          race condition between shared_mutex timed_lock and lock_shared.
-        </li>
-<li class="listitem">
-          <a href="http://svn.boost.org/trac/boost/ticket/5594" target="_top">#5594</a>
-          boost::shared_mutex not fully compatible with Windows CE.
         </li>
 <li class="listitem">
           <a href="http://svn.boost.org/trac/boost/ticket/5617" target="_top">#5617</a>
@@ -116,10 +312,6 @@
           Compute hardware_concurrency() using get_nprocs() on GLIBC systems.
         </li>
 <li class="listitem">
-          <a href="http://svn.boost.org/trac/boost/ticket/6141" target="_top">#6141</a>
-          Compilation error when boost.thread and boost.move are used together.
-        </li>
-<li class="listitem">
           <a href="http://svn.boost.org/trac/boost/ticket/6168" target="_top">#6168</a>
           recursive_mutex is using wrong config symbol (possible typo).
         </li>
@@ -141,16 +333,16 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h1"></a>
-      <span><a name="thread.changes.changes_since_boost_1_40"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_40">Changes
-      since boost 1.40</a>
+<a name="thread.changes.h2"></a>
+      <span><a name="thread.changes.version_2_1_0___changes_since_boost_1_40"></a></span><a class="link" href="changes.html#thread.changes.version_2_1_0___changes_since_boost_1_40">Version 2.1.0
+      - Changes since boost 1.40</a>
     </h4>
 <p>
       The 1.41.0 release of Boost adds futures to the thread library. There are also
       a few minor changes.
     </p>
 <h4>
-<a name="thread.changes.h2"></a>
+<a name="thread.changes.h3"></a>
       <span><a name="thread.changes.changes_since_boost_1_35"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_35">Changes
       since boost 1.35</a>
     </h4>
@@ -187,9 +379,9 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h3"></a>
-      <span><a name="thread.changes.changes_since_boost_1_34"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_34">Changes
-      since boost 1.34</a>
+<a name="thread.changes.h4"></a>
+      <span><a name="thread.changes.version_2_0_0___changes_since_boost_1_34"></a></span><a class="link" href="changes.html#thread.changes.version_2_0_0___changes_since_boost_1_34">Version 2.0.0
+      - Changes since boost 1.34</a>
     </h4>
 <p>
       Almost every line of code in <span class="bold"><strong>Boost.Thread</strong></span>
@@ -198,7 +390,7 @@
       with the old code. The new features and breaking changes are described below.
     </p>
 <h4>
-<a name="thread.changes.h4"></a>
+<a name="thread.changes.h5"></a>
       <span><a name="thread.changes.new_features"></a></span><a class="link" href="changes.html#thread.changes.new_features">New
       Features</a>
     </h4>
@@ -235,13 +427,13 @@
           <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unique_lock</span></code>, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_lock</span></code>,
           and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">upgrade_lock</span></code>, which are templated on
           the type of the mutex. The <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable" title="Lockable Concept"><code class="computeroutput"><span class="identifier">Lockable</span></code> concept</a> has been extended
-          to include publicly available <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.lock" title="void lock()"><code class="computeroutput"><span class="identifier">lock</span><span class="special">()</span></code></a>
-          and <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.unlock" title="void unlock()"><code class="computeroutput"><span class="identifier">unlock</span><span class="special">()</span></code></a>
+          to include publicly available <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.basic_lockable.lock" title="m.lock();"><code class="computeroutput"><span class="identifier">lock</span><span class="special">()</span></code></a>
+          and <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.basic_lockable.unlock" title="m.unlock();"><code class="computeroutput"><span class="identifier">unlock</span><span class="special">()</span></code></a>
           member functions, which are used by the lock types.
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h5"></a>
+<a name="thread.changes.h6"></a>
       <span><a name="thread.changes.breaking_changes"></a></span><a class="link" href="changes.html#thread.changes.breaking_changes">Breaking
       Changes</a>
     </h4>
@@ -264,8 +456,8 @@
           <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">thread</span><span class="special">::</span><span class="identifier">lock_ops</span></code> has been removed. Code that
           relies on the <code class="computeroutput"><span class="identifier">lock_ops</span></code>
           implementation detail will no longer work, as this has been removed, as
-          it is no longer necessary now that mutex types now have public <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.lock" title="void lock()"><code class="computeroutput"><span class="identifier">lock</span><span class="special">()</span></code></a>
-          and <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.lockable.unlock" title="void unlock()"><code class="computeroutput"><span class="identifier">unlock</span><span class="special">()</span></code></a>
+          it is no longer necessary now that mutex types now have public <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.basic_lockable.lock" title="m.lock();"><code class="computeroutput"><span class="identifier">lock</span><span class="special">()</span></code></a>
+          and <a class="link" href="synchronization.html#thread.synchronization.mutex_concepts.basic_lockable.unlock" title="m.unlock();"><code class="computeroutput"><span class="identifier">unlock</span><span class="special">()</span></code></a>
           member functions.
         </li>
 <li class="listitem">
@@ -309,7 +501,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2007 -8 Anthony Williams<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2007 -11 Anthony Williams<br>Copyright &#169; 2011 -12 Vicente J. Botet Escriba<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -317,7 +509,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../thread.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="future.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="build.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../thread.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="future.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

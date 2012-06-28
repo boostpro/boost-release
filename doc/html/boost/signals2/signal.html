@@ -47,7 +47,7 @@
   <span class="keyword">typedef</span> <span class="identifier">GroupCompare</span>                                                                       <a name="boost.signals2.signal.group_compare_type"></a><span class="identifier">group_compare_type</span><span class="special">;</span>         
   <span class="keyword">typedef</span> <span class="identifier">SlotFunction</span>                                                                       <a name="boost.signals2.signal.slot_function_type"></a><span class="identifier">slot_function_type</span><span class="special">;</span>         
   <span class="keyword">typedef</span> <span class="keyword">typename</span> <a class="link" href="slot.html" title="Class template slot">signals2::slot</a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">,</span> <span class="identifier">SlotFunction</span><span class="special">&gt;</span>                                   <a name="boost.signals2.signal.slot_type"></a><span class="identifier">slot_type</span><span class="special">;</span>                  
-  <span class="keyword">typedef</span> <span class="identifier">ExtendedSlotFunction</span>                                                               <a name="boost.signals2.signal.extended_slot_function__id1382169"></a><span class="identifier">extended_slot_function_type</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">ExtendedSlotFunction</span>                                                               <a name="boost.signals2.signal.extended_slot_fu_id1378783"></a><span class="identifier">extended_slot_function_type</span><span class="special">;</span>
   <span class="keyword">typedef</span> <span class="keyword">typename</span> <a class="link" href="slot.html" title="Class template slot">signals2::slot</a><span class="special">&lt;</span><span class="identifier">R</span> <span class="special">(</span><span class="keyword">const</span> <a class="link" href="connection.html" title="Class connection">connection</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T1</span><span class="special">,</span> <span class="special">...</span><span class="special">,</span> <span class="identifier">TN</span><span class="special">)</span><span class="special">,</span> <span class="identifier">ExtendedSlotFunction</span><span class="special">&gt;</span> <a class="link" href="signal.html#boost.signals2.signal.extended_slot_type"><span class="identifier">extended_slot_type</span></a><span class="special">;</span>         
   <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">SlotFunction</span><span class="special">::</span><span class="identifier">result_type</span>                                                 <a class="link" href="signal.html#boost.signals2.signal.slot_result_type"><span class="identifier">slot_result_type</span></a><span class="special">;</span>           
   <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span>                                                                        <a class="link" href="signal.html#boost.signals2.signal.slot_call_iterator"><span class="identifier">slot_call_iterator</span></a><span class="special">;</span>         
@@ -67,40 +67,40 @@
   <span class="special">}</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="signal.html#boost.signals2.signalconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="signal.html#id1088235-bb"><span class="identifier">signal</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">combiner_type</span><span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">combiner_type</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+  <a class="link" href="signal.html#id1137277-bb"><span class="identifier">signal</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">combiner_type</span><span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">combiner_type</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
          <span class="keyword">const</span> <span class="identifier">group_compare_type</span><span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">group_compare_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="signal.html#id1144764-bb"><span class="special">~</span><span class="identifier">signal</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="signal.html#id1174929-bb"><span class="special">~</span><span class="identifier">signal</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="signal.html#id1144778-bb">connection management</a></span>
-  <a class="link" href="connection.html" title="Class connection">connection</a> <a class="link" href="signal.html#id1144786-bb"><span class="identifier">connect</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">slot_type</span><span class="special">&amp;</span><span class="special">,</span> <span class="identifier">connect_position</span> <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="connection.html" title="Class connection">connection</a> <a class="link" href="signal.html#id810355-bb"><span class="identifier">connect</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">slot_type</span><span class="special">&amp;</span><span class="special">,</span> 
+  <span class="comment">// <a class="link" href="signal.html#id832306-bb">connection management</a></span>
+  <a class="link" href="connection.html" title="Class connection">connection</a> <a class="link" href="signal.html#id832314-bb"><span class="identifier">connect</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">slot_type</span><span class="special">&amp;</span><span class="special">,</span> <span class="identifier">connect_position</span> <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="connection.html" title="Class connection">connection</a> <a class="link" href="signal.html#id1140358-bb"><span class="identifier">connect</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">slot_type</span><span class="special">&amp;</span><span class="special">,</span> 
                      <span class="identifier">connect_position</span> <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="connection.html" title="Class connection">connection</a> <a class="link" href="signal.html#id810461-bb"><span class="identifier">connect_extended</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">extended_slot_type</span><span class="special">&amp;</span><span class="special">,</span> 
+  <a class="link" href="connection.html" title="Class connection">connection</a> <a class="link" href="signal.html#id1070945-bb"><span class="identifier">connect_extended</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">extended_slot_type</span><span class="special">&amp;</span><span class="special">,</span> 
                               <span class="identifier">connect_position</span> <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="connection.html" title="Class connection">connection</a> <a class="link" href="signal.html#id1171229-bb"><span class="identifier">connect_extended</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">extended_slot_type</span><span class="special">&amp;</span><span class="special">,</span> 
+  <a class="link" href="connection.html" title="Class connection">connection</a> <a class="link" href="signal.html#id1406509-bb"><span class="identifier">connect_extended</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">extended_slot_type</span><span class="special">&amp;</span><span class="special">,</span> 
                               <span class="identifier">connect_position</span> <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="signal.html#id1070269-bb"><span class="identifier">disconnect</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> S<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="signal.html#id1070284-bb"><span class="identifier">disconnect</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">S</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="signal.html#id1070354-bb"><span class="identifier">disconnect_all_slots</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="signal.html#id1139040-bb"><span class="identifier">empty</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="signal.html#id794535-bb"><span class="identifier">num_slots</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="signal.html#id1402363-bb"><span class="identifier">disconnect</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> S<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="signal.html#id1084609-bb"><span class="identifier">disconnect</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">S</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="signal.html#id1400970-bb"><span class="identifier">disconnect_all_slots</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="signal.html#id1156157-bb"><span class="identifier">empty</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="signal.html#id1292237-bb"><span class="identifier">num_slots</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="signal.html#id794570-bb">invocation</a></span>
-  <span class="identifier">result_type</span> <a class="link" href="signal.html#id794578-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">arg</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="special">...</span><span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">-</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">result_type</span> <a class="link" href="signal.html#id1157981-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">arg</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="special">...</span><span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">-</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="signal.html#id1292272-bb">invocation</a></span>
+  <span class="identifier">result_type</span> <a class="link" href="signal.html#id1136721-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">arg</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="special">...</span><span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">-</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="signal.html#id1084485-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">arg</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="special">...</span><span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">-</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="signal.html#id1067736-bb">combiner access</a></span>
-  <span class="identifier">combiner_type</span> <a class="link" href="signal.html#id1067739-bb"><span class="identifier">combiner</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="signal.html#id1067758-bb"><span class="identifier">set_combiner</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">combiner_type</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="signal.html#id1140564-bb">combiner access</a></span>
+  <span class="identifier">combiner_type</span> <a class="link" href="signal.html#id1140568-bb"><span class="identifier">combiner</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="signal.html#id1140586-bb"><span class="identifier">set_combiner</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">combiner_type</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3166432"></a><h2>Description</h2>
+<a name="id3189589"></a><h2>Description</h2>
 <p>
             See the <a class="link" href="../../signals2/tutorial.html" title="Tutorial">tutorial</a>
             for more information on how to use the signal class.
           </p>
 <div class="refsect2">
-<a name="id3166450"></a><h3>Template Parameters</h3>
+<a name="id3189607"></a><h3>Template Parameters</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">typename</span> Signature</pre>
@@ -115,7 +115,7 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id3166734"></a><h3>
+<a name="id3189890"></a><h3>
 <a name="boost.signals2.signaltypes"></a><code class="computeroutput">signal</code> 
         public
        types</h3>
@@ -124,7 +124,7 @@
 <p>
 <span class="keyword">typedef</span> <span class="keyword">typename</span> <a class="link" href="slot.html" title="Class template slot">signals2::slot</a><span class="special">&lt;</span><span class="identifier">R</span> <span class="special">(</span><span class="keyword">const</span> <a class="link" href="connection.html" title="Class connection">connection</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T1</span><span class="special">,</span> <span class="special">...</span><span class="special">,</span> <span class="identifier">TN</span><span class="special">)</span><span class="special">,</span> <span class="identifier">ExtendedSlotFunction</span><span class="special">&gt;</span> <a name="boost.signals2.signal.extended_slot_type"></a><span class="identifier">extended_slot_type</span><span class="special">;</span></p>
 <p>Slots of the <code class="computeroutput">extended_slot_type</code> may be connected to the signal using the
-              <a class="link" href="signal.html#id810457-bb">connect_extended</a> methods.  The <code class="computeroutput">extended_slot_type</code>
+              <a class="link" href="signal.html#id1070941-bb">connect_extended</a> methods.  The <code class="computeroutput">extended_slot_type</code>
               has an additional <a class="link" href="connection.html" title="Class connection">signals2::connection</a> argument in its signature,
               which gives slot functions access to their connection to the signal
               invoking them.
@@ -148,13 +148,13 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id3166989"></a><h3>
+<a name="id3190146"></a><h3>
 <a name="boost.signals2.signalconstruct-copy-destruct"></a><code class="computeroutput">signal</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1088235-bb"></a><span class="identifier">signal</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">combiner_type</span><span class="special">&amp;</span> combiner <span class="special">=</span> <span class="identifier">combiner_type</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+<pre class="literallayout"><a name="id1137277-bb"></a><span class="identifier">signal</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">combiner_type</span><span class="special">&amp;</span> combiner <span class="special">=</span> <span class="identifier">combiner_type</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
        <span class="keyword">const</span> <span class="identifier">group_compare_type</span><span class="special">&amp;</span> compare <span class="special">=</span> <span class="identifier">group_compare_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -165,13 +165,13 @@
 </tr>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><p><code class="computeroutput">this-&gt;<a class="link" href="signal.html#id1139040-bb">empty</a>()</code></p></td>
+<td><p><code class="computeroutput">this-&gt;<a class="link" href="signal.html#id1156157-bb">empty</a>()</code></p></td>
 </tr>
 </tbody>
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1144764-bb"></a><span class="special">~</span><span class="identifier">signal</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id1174929-bb"></a><span class="special">~</span><span class="identifier">signal</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -183,12 +183,12 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id3167197"></a><h3>
-<a name="id1144778-bb"></a><code class="computeroutput">signal</code> connection management</h3>
+<a name="id3190353"></a><h3>
+<a name="id832306-bb"></a><code class="computeroutput">signal</code> connection management</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1144782-bb"></a><a class="link" href="connection.html" title="Class connection">connection</a> <a name="id1144786-bb"></a><span class="identifier">connect</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">slot_type</span><span class="special">&amp;</span> slot<span class="special">,</span> <span class="identifier">connect_position</span> at <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span>
-<a class="link" href="connection.html" title="Class connection">connection</a> <a name="id810355-bb"></a><span class="identifier">connect</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span> group<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">slot_type</span><span class="special">&amp;</span> slot<span class="special">,</span> 
+<pre class="literallayout"><a name="id832310-bb"></a><a class="link" href="connection.html" title="Class connection">connection</a> <a name="id832314-bb"></a><span class="identifier">connect</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">slot_type</span><span class="special">&amp;</span> slot<span class="special">,</span> <span class="identifier">connect_position</span> at <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span>
+<a class="link" href="connection.html" title="Class connection">connection</a> <a name="id1140358-bb"></a><span class="identifier">connect</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span> group<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">slot_type</span><span class="special">&amp;</span> slot<span class="special">,</span> 
                    <span class="identifier">connect_position</span> at <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -239,21 +239,21 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id810457-bb"></a><a class="link" href="connection.html" title="Class connection">connection</a> <a name="id810461-bb"></a><span class="identifier">connect_extended</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">extended_slot_type</span><span class="special">&amp;</span> slot<span class="special">,</span> 
+<pre class="literallayout"><a name="id1070941-bb"></a><a class="link" href="connection.html" title="Class connection">connection</a> <a name="id1070945-bb"></a><span class="identifier">connect_extended</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">extended_slot_type</span><span class="special">&amp;</span> slot<span class="special">,</span> 
                             <span class="identifier">connect_position</span> at <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span>
-<a class="link" href="connection.html" title="Class connection">connection</a> <a name="id1171229-bb"></a><span class="identifier">connect_extended</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span> group<span class="special">,</span> 
+<a class="link" href="connection.html" title="Class connection">connection</a> <a name="id1406509-bb"></a><span class="identifier">connect_extended</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span> group<span class="special">,</span> 
                             <span class="keyword">const</span> <span class="identifier">extended_slot_type</span><span class="special">&amp;</span> slot<span class="special">,</span> 
                             <span class="identifier">connect_position</span> at <span class="special">=</span> <span class="identifier">at_back</span><span class="special">)</span><span class="special">;</span></pre>
 <p>
-                The <code class="computeroutput">connect_extended</code> methods work the same as the <code class="computeroutput"><a class="link" href="signal.html#id1144782-bb">connect</a></code>
+                The <code class="computeroutput">connect_extended</code> methods work the same as the <code class="computeroutput"><a class="link" href="signal.html#id832310-bb">connect</a></code>
                 methods, except they take slots of type <code class="computeroutput"><a class="link" href="signal.html#boost.signals2.signal.extended_slot_type">extended_slot_type</a></code>.
                 This is useful if a slot needs to access the connection between it and the
                 signal invoking it, for example if it wishes to disconnect or block its own connection.
               </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id1070266-bb"></a><span class="keyword">void</span> <a name="id1070269-bb"></a><span class="identifier">disconnect</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span> group<span class="special">)</span><span class="special">;</span>
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> S<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id1070284-bb"></a><span class="identifier">disconnect</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">S</span><span class="special">&amp;</span> slot_func<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id1402359-bb"></a><span class="keyword">void</span> <a name="id1402363-bb"></a><span class="identifier">disconnect</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">group_type</span><span class="special">&amp;</span> group<span class="special">)</span><span class="special">;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> S<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id1084609-bb"></a><span class="identifier">disconnect</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">S</span><span class="special">&amp;</span> slot_func<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -292,7 +292,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id1070354-bb"></a><span class="identifier">disconnect_all_slots</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1400970-bb"></a><span class="identifier">disconnect_all_slots</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -302,7 +302,7 @@
 </tr>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td><p><code class="computeroutput">this-&gt;<a class="link" href="signal.html#id1139040-bb">empty</a>()</code>.</p></td>
+<td><p><code class="computeroutput">this-&gt;<a class="link" href="signal.html#id1156157-bb">empty</a>()</code>.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -323,7 +323,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="id1139040-bb"></a><span class="identifier">empty</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id1156157-bb"></a><span class="identifier">empty</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -354,7 +354,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="id794535-bb"></a><span class="identifier">num_slots</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="id1292237-bb"></a><span class="identifier">num_slots</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -385,12 +385,12 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id3168140"></a><h3>
-<a name="id794570-bb"></a><code class="computeroutput">signal</code> invocation</h3>
+<a name="id3191295"></a><h3>
+<a name="id1292272-bb"></a><code class="computeroutput">signal</code> invocation</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="id794574-bb"></a><span class="identifier">result_type</span> <a name="id794578-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">arg</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> a1<span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> a2<span class="special">,</span> <span class="special">...</span><span class="special">,</span> 
+<pre class="literallayout"><a name="id1136717-bb"></a><span class="identifier">result_type</span> <a name="id1136721-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">arg</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> a1<span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> a2<span class="special">,</span> <span class="special">...</span><span class="special">,</span> 
                        <span class="identifier">arg</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">-</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> aN<span class="special">)</span><span class="special">;</span>
-<span class="identifier">result_type</span> <a name="id1157981-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">arg</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> a1<span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> a2<span class="special">,</span> <span class="special">...</span><span class="special">,</span> 
+<span class="identifier">result_type</span> <a name="id1084485-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">arg</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> a1<span class="special">,</span> <span class="identifier">arg</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> a2<span class="special">,</span> <span class="special">...</span><span class="special">,</span> 
                        <span class="identifier">arg</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">-</span><span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> aN<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -439,11 +439,11 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id3168565"></a><h3>
-<a name="id1067736-bb"></a><code class="computeroutput">signal</code> combiner access</h3>
+<a name="id3191719"></a><h3>
+<a name="id1140564-bb"></a><code class="computeroutput">signal</code> combiner access</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">combiner_type</span> <a name="id1067739-bb"></a><span class="identifier">combiner</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">combiner_type</span> <a name="id1140568-bb"></a><span class="identifier">combiner</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -459,7 +459,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id1067758-bb"></a><span class="identifier">set_combiner</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">combiner_type</span><span class="special">&amp;</span> combiner<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1140586-bb"></a><span class="identifier">set_combiner</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">combiner_type</span><span class="special">&amp;</span> combiner<span class="special">)</span><span class="special">;</span></pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
