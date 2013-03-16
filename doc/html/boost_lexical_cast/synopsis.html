@@ -112,6 +112,11 @@
             where <code class="computeroutput"><span class="identifier">WideCharPtr</span></code> is
             a pointer to wide-character or pointer to const wide-character
           </li>
+<li class="listitem">
+            <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;</span></code>
+            and <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;</span></code>,
+            <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;</span></code>
+          </li>
 </ul></div>
 <div class="important"><table border="0" summary="Important">
 <tr>
@@ -121,13 +126,13 @@
 <tr><td align="left" valign="top">
 <p>
           Many compilers and runtime libraries fail to make conversions using new
-          Unicode characters. Make shure that the following code compiles and outputs
+          Unicode characters. Make sure that the following code compiles and outputs
           nonzero values, before using new types:
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span>
-    <span class="special">&lt;&lt;</span> <span class="identifier">booat</span><span class="special">::</span><span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">u32string</span><span class="special">&gt;(</span><span class="number">1.0</span><span class="special">).</span><span class="identifier">size</span><span class="special">()</span>
+    <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">u32string</span><span class="special">&gt;(</span><span class="number">1.0</span><span class="special">).</span><span class="identifier">size</span><span class="special">()</span>
     <span class="special">&lt;&lt;</span> <span class="string">"  "</span>
-    <span class="special">&lt;&lt;</span> <span class="identifier">booat</span><span class="special">::</span><span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">u16string</span><span class="special">&gt;(</span><span class="number">1.0</span><span class="special">).</span><span class="identifier">size</span><span class="special">();</span>
+    <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">u16string</span><span class="special">&gt;(</span><span class="number">1.0</span><span class="special">).</span><span class="identifier">size</span><span class="special">();</span>
 </pre>
 <p>
         </p>

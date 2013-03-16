@@ -131,12 +131,18 @@
 <p>
         Not every smart pointer is compatible with <span class="bold"><strong>Boost.Intrusive</strong></span>:
       </p>
-<pre class="programlisting"><span class="special">*</span> <span class="identifier">It</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">compatible</span> <span class="identifier">with</span> <span class="identifier">C</span><span class="special">++</span><span class="number">11</span> <span class="special">[</span><span class="error">@</span><span class="identifier">http</span><span class="special">://</span><span class="identifier">en</span><span class="special">.</span><span class="identifier">cppreference</span><span class="special">.</span><span class="identifier">com</span><span class="special">/</span><span class="identifier">w</span><span class="special">/</span><span class="identifier">cpp</span><span class="special">/</span><span class="identifier">memory</span><span class="special">/</span><span class="identifier">pointer_traits</span> <span class="error">`</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pointer_traits</span><span class="error">`</span><span class="special">]</span>
-   <span class="identifier">requirements</span><span class="special">.</span> <span class="special">[*</span><span class="identifier">Boost</span><span class="special">.</span><span class="identifier">Intrusive</span><span class="special">]</span> <span class="identifier">uses</span> <span class="identifier">its</span> <span class="identifier">own</span> <span class="special">[</span><span class="identifier">classref</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">pointer_traits</span> <span class="identifier">pointer_traits</span><span class="special">]</span>
-   <span class="keyword">class</span> <span class="identifier">to</span> <span class="identifier">implement</span> <span class="identifier">those</span> <span class="identifier">features</span> <span class="identifier">in</span> <span class="identifier">both</span> <span class="identifier">C</span><span class="special">++</span><span class="number">11</span> <span class="keyword">and</span> <span class="identifier">C</span><span class="special">++</span><span class="number">03</span> <span class="identifier">compilers</span><span class="special">.</span>
-<span class="special">*</span> <span class="identifier">It</span> <span class="identifier">must</span>  <span class="identifier">have</span> <span class="identifier">the</span> <span class="identifier">same</span> <span class="identifier">ownership</span> <span class="identifier">semantics</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">raw</span> <span class="identifier">pointer</span><span class="special">.</span> <span class="identifier">This</span> <span class="identifier">means</span> <span class="identifier">that</span>
-   <span class="identifier">resource</span> <span class="identifier">management</span> <span class="identifier">smart</span> <span class="identifier">pointers</span> <span class="special">(</span><span class="identifier">like</span> <span class="error">`</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="error">`</span><span class="special">)</span> <span class="identifier">can</span><span class="error">'</span><span class="identifier">t</span> <span class="identifier">be</span> <span class="identifier">used</span><span class="special">.</span>
-</pre>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            It must be compatible with C++11 <a href="http://en.cppreference.com/w/cpp/memory/pointer_traits" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pointer_traits</span></code></a> requirements.
+            <span class="bold"><strong>Boost.Intrusive</strong></span> uses its own <code class="computeroutput"><a class="link" href="../boost/intrusive/pointer_traits.html" title="Struct template pointer_traits">pointer_traits</a></code> class
+            to implement those features in both C++11 and C++03 compilers.
+          </li>
+<li class="listitem">
+            It must have the same ownership semantics as a raw pointer. This means
+            that resource management smart pointers (like <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span></code>)
+            can't be used.
+          </li>
+</ul></div>
 <p>
         The conversion from the smart pointer to a raw pointer will be implemented
         as a recursive call to <code class="computeroutput"><span class="keyword">operator</span><span class="special">-&gt;()</span></code> until the function returns a raw pointer.
@@ -145,7 +151,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2011 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2012 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -62,6 +62,16 @@
 <span class="special">}</span>
 </pre>
 <p>
+      Following example converts some number and puts it to file:
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">i</span><span class="special">;</span>
+<span class="identifier">FILE</span><span class="special">*</span> <span class="identifier">file</span><span class="special">;</span>
+<span class="special">...</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="number">50</span><span class="special">&gt;</span> <span class="identifier">buf_t</span><span class="special">;</span> <span class="comment">// You can use std::array if your compiler supports it</span>
+<span class="identifier">buf_t</span> <span class="identifier">buffer</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="identifier">buf_t</span><span class="special">&gt;(</span><span class="identifier">i</span><span class="special">);</span> <span class="comment">// No dynamic memory allocation</span>
+<span class="identifier">puts</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">file</span><span class="special">);</span>
+</pre>
+<p>
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

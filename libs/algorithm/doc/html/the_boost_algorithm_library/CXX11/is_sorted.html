@@ -69,12 +69,18 @@
         <span><a name="the_boost_algorithm_library.CXX11.is_sorted.is_sorted_until"></a></span><a class="link" href="is_sorted.html#the_boost_algorithm_library.CXX11.is_sorted.is_sorted_until">is_sorted_until</a>
       </h5>
 <p>
-        The function <code class="computeroutput"><span class="identifier">is_sorted_until</span><span class="special">(</span><span class="identifier">sequence</span><span class="special">,</span> <span class="identifier">predicate</span><span class="special">)</span></code> compares each sequential pair of elements
-        in the sequence, checking if they satisfy the predicate. it returns the first
-        element of the sequence that does not satisfy the predicate with its' predecessor.
+        If <code class="computeroutput"><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">&lt;</span> <span class="number">2</span></code>, then
+        <code class="computeroutput"><span class="identifier">is_sorted</span> <span class="special">(</span>
+        <span class="identifier">first</span><span class="special">,</span>
+        <span class="identifier">last</span> <span class="special">)</span></code>
+        returns <code class="computeroutput"><span class="identifier">last</span></code>. Otherwise,
+        it returns the last iterator i in [first,last] for which the range [first,i)
+        is sorted.
+      </p>
+<p>
         In short, it returns the element in the sequence that is "out of order".
-        If all adjacent pairs satisfy the predicate, then it will return one past
-        the last element of the sequence.
+        If the entire sequence is sorted (according to the predicate), then it will
+        return <code class="computeroutput"><span class="identifier">last</span></code>.
       </p>
 <p>
 </p>
