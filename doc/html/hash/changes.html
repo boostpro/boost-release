@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../hash.html" title="Chapter&#160;10.&#160;Boost.Functional/Hash">
+<link rel="up" href="../hash.html" title="Chapter&#160;11.&#160;Boost.Functional/Hash">
 <link rel="prev" href="disable.html" title="Disabling The Extensions">
 <link rel="next" href="rationale.html" title="Rationale">
 </head>
@@ -324,8 +324,22 @@
           was accidentally removed in the last version.
         </li>
 <li class="listitem">
+          Add support for <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">int128_type</span></code> and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uint128_type</span></code>
+          where available - currently only <code class="computeroutput"><span class="identifier">__int128</span></code>
+          and <code class="computeroutput"><span class="keyword">unsigned</span> <span class="identifier">__int128</span></code>
+          on some versions of gcc.
+        </li>
+<li class="listitem">
           New floating point hasher - will hash the binary representation on more
           platforms, which should be faster.
+        </li>
+<li class="listitem">
+          On platforms that are known to have standard floating point, don't use
+          the automatic detection of floating point functions - which can break if
+          there are ambiguous overloads.
+        </li>
+<li class="listitem">
+          Fix undefined behaviour when using the binary float hash (Thomas Heller).
         </li>
 </ul></div>
 </div>

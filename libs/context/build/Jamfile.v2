@@ -68,6 +68,11 @@ actions gas
     as -o "$(<)" "$(>)"
 }
 
+actions armasm
+{
+    armasm "$(<)" "$(>)"
+}
+
 actions masm
 {
     ml /c /Fo"$(<)" "$(>)"
@@ -98,8 +103,7 @@ rule configure ( properties * )
 alias asm_context_sources
    : asm/make_arm_aapcs_elf_gas.S
      asm/jump_arm_aapcs_elf_gas.S
-   : <abi>aapcs
-     <architecture>arm
+   : <architecture>arm
      <binary-format>elf
      <toolset>gcc
    ;
@@ -107,17 +111,30 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_arm_aapcs_elf_gas.S
      asm/jump_arm_aapcs_elf_gas.S
-   : <abi>aapcs
-     <architecture>arm
+   : <architecture>arm
      <binary-format>elf
      <toolset>qcc
    ;
 
 alias asm_context_sources
+   : asm/make_arm_aapcs_macho_gas.S
+     asm/jump_arm_aapcs_macho_gas.S
+   : <architecture>arm
+     <binary-format>mach-o
+     <toolset>darwin
+   ;
+
+alias asm_context_sources
+   : [ make asm/make_arm_aapcs_pe_armasm.o : asm/make_arm_aapcs_pe_armasm.asm : @armasm ]
+     [ make asm/jump_arm_aapcs_pe_armasm.o : asm/jump_arm_aapcs_pe_armasm.asm : @armasm ]
+   : <architecture>arm
+     <binary-format>pe
+   ;
+
+alias asm_context_sources
    : [ make asm/make_arm_aapcs_elf_gas.o : asm/make_arm_aapcs_elf_gas.S : @gas ]
      [ make asm/jump_arm_aapcs_elf_gas.o : asm/jump_arm_aapcs_elf_gas.S : @gas ]
-   : <abi>aapcs
-     <architecture>arm
+   : <architecture>arm
      <binary-format>elf
    ;
 
@@ -125,8 +142,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_mips32_o32_elf_gas.S
      asm/jump_mips32_o32_elf_gas.S
-   : <abi>o32
-     <architecture>mips1
+   : <architecture>mips1
      <binary-format>elf
      <toolset>gcc
    ;
@@ -134,8 +150,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_mips32_o32_elf_gas.S
      asm/jump_mips32_o32_elf_gas.S
-   : <abi>o32
-     <architecture>mips1
+   : <architecture>mips1
      <binary-format>elf
      <toolset>qcc
    ;
@@ -143,8 +158,7 @@ alias asm_context_sources
 alias asm_context_sources
    : [ make asm/make_mips32_o32_elf_gas.o : asm/make_mips32_o32_elf_gas.S : @gas ]
      [ make asm/jump_mips32_o32_elf_gas.o : asm/jump_mips32_o32_elf_gas.S : @gas ]
-   : <abi>o32
-     <architecture>mips1
+   : <architecture>mips1
      <binary-format>elf
    ;
 
@@ -152,8 +166,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_ppc32_sysv_elf_gas.S
      asm/jump_ppc32_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>power
      <binary-format>elf
      <toolset>gcc
@@ -162,8 +175,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_ppc32_sysv_elf_gas.S
      asm/jump_ppc32_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>power
      <binary-format>elf
      <toolset>qcc
@@ -172,8 +184,7 @@ alias asm_context_sources
 alias asm_context_sources
    : [ make asm/make_ppc32_sysv_elf_gas.o : asm/make_ppc32_sysv_elf_gas.S : @gas ]
      [ make asm/jump_ppc32_sysv_elf_gas.o : asm/jump_ppc32_sysv_elf_gas.S : @gas ]
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>power
      <binary-format>elf
    ;
@@ -182,8 +193,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_ppc64_sysv_elf_gas.S
      asm/jump_ppc64_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>power
      <binary-format>elf
      <toolset>gcc
@@ -192,8 +202,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_ppc64_sysv_elf_gas.S
      asm/jump_ppc64_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>power
      <binary-format>elf
      <toolset>qcc
@@ -202,8 +211,7 @@ alias asm_context_sources
 alias asm_context_sources
    : [ make asm/make_ppc64_sysv_elf_gas.o : asm/make_ppc64_sysv_elf_gas.S : @gas ]
      [ make asm/jump_ppc64_sysv_elf_gas.o : asm/jump_ppc64_sysv_elf_gas.S : @gas ]
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>power
      <binary-format>elf
    ;
@@ -212,8 +220,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_i386_sysv_elf_gas.S
      asm/jump_i386_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>x86
      <binary-format>elf
      <toolset>gcc
@@ -222,8 +229,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_i386_sysv_elf_gas.S
      asm/jump_i386_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>x86
      <binary-format>elf
      <toolset>qcc
@@ -232,8 +238,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_i386_sysv_elf_gas.S
      asm/jump_i386_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>x86
      <binary-format>elf
      <toolset>intel
@@ -242,8 +247,7 @@ alias asm_context_sources
 alias asm_context_sources
    : [ make asm/make_i386_sysv_elf_gas.o : asm/make_i386_sysv_elf_gas.S : @gas ]
      [ make asm/jump_i386_sysv_elf_gas.o : asm/jump_i386_sysv_elf_gas.S : @gas ]
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>x86
      <binary-format>elf
    ;
@@ -251,30 +255,17 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_i386_sysv_macho_gas.S
      asm/jump_i386_sysv_macho_gas.S
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>x86
      <binary-format>mach-o
      <target-os>darwin
-     <toolset>gcc
-   ;
-
-alias asm_context_sources
-   : asm/make_i386_sysv_macho_gas.S
-     asm/jump_i386_sysv_macho_gas.S
-   : <abi>sysv
-     <address-model>32
-     <architecture>x86
-     <binary-format>mach-o
-     <target-os>darwin
-     <toolset>qcc
+     <toolset>darwin
    ;
 
 alias asm_context_sources
    : asm/make_i386_sysv_macho_gas.S
      asm/jumjumpysv_macho_gas.S
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>x86
      <binary-format>mach-o
      <target-os>darwin
@@ -284,8 +275,7 @@ alias asm_context_sources
 alias asm_context_sources
    : [ make asm/make_i386_sysv_macho_gas.o : asm/make_i386_sysv_macho_gas.S : @gas ]
      [ make asm/jump_i386_sysv_macho_gas.o : asm/jump_i386_sysv_macho_gas.S : @gas ]
-   : <abi>sysv
-     <address-model>32
+   : <address-model>32
      <architecture>x86
      <binary-format>mach-o
      <target-os>darwin
@@ -294,8 +284,8 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_i386_ms_pe_masm.asm
      asm/jump_i386_ms_pe_masm.asm
-   : <abi>ms
-     <address-model>32
+     dummy.cpp
+   : <address-model>32
      <architecture>x86
      <binary-format>pe
      <target-os>windows
@@ -305,8 +295,8 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_i386_ms_pe_masm.asm
      asm/jump_i386_ms_pe_masm.asm
-   : <abi>ms
-     <address-model>32
+     dummy.cpp
+   : <address-model>32
      <architecture>x86
      <binary-format>pe
      <target-os>windows
@@ -316,8 +306,8 @@ alias asm_context_sources
 alias asm_context_sources
    : [ make asm/make_i386_ms_pe_masm.o : asm/make_i386_ms_pe_masm.asm : @masm ]
      [ make asm/jump_i386_ms_pe_masm.o : asm/jump_i386_ms_pe_masm.asm : @masm ]
-   : <abi>ms
-     <address-model>32
+     dummy.cpp
+   : <address-model>32
      <architecture>x86
      <binary-format>pe
      <target-os>windows
@@ -327,8 +317,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_x86_64_sysv_elf_gas.S
      asm/jump_x86_64_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>x86
      <binary-format>elf
      <toolset>gcc
@@ -337,8 +326,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_x86_64_sysv_elf_gas.S
      asm/jump_x86_64_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>x86
      <binary-format>elf
      <toolset>qcc
@@ -347,8 +335,7 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_x86_64_sysv_elf_gas.S
      asm/jump_x86_64_sysv_elf_gas.S
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>x86
      <binary-format>elf
      <toolset>intel
@@ -357,8 +344,7 @@ alias asm_context_sources
 alias asm_context_sources
    : [ make asm/make_x86_64_sysv_elf_gas.o : asm/make_x86_64_sysv_elf_gas.S : @gas ]
      [ make asm/jump_x86_64_sysv_elf_gas.o : asm/jump_x86_64_sysv_elf_gas.S : @gas ]
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>x86
      <binary-format>elf
    ;
@@ -366,19 +352,17 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_x86_64_sysv_macho_gas.S
      asm/jump_x86_64_sysv_macho_gas.S
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>x86
      <binary-format>mach-o
      <target-os>darwin
-     <toolset>gcc
+     <toolset>darwin
    ;
 
 alias asm_context_sources
    : asm/make_x86_64_sysv_macho_gas.S
      asm/jump_x86_64_sysv_macho_gas.S
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>x86
      <binary-format>mach-o
      <target-os>darwin
@@ -388,8 +372,7 @@ alias asm_context_sources
 alias asm_context_sources
    : [ make asm/make_x86_64_sysv_macho_gas.o : asm/make_x86_64_sysv_macho_gas.S : @gas ]
      [ make asm/jump_x86_64_sysv_macho_gas.o : asm/jump_x86_64_sysv_macho_gas.S : @gas ]
-   : <abi>sysv
-     <address-model>64
+   : <address-model>64
      <architecture>x86
      <binary-format>mach-o
      <target-os>darwin
@@ -398,8 +381,8 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_x86_64_ms_pe_masm.asm
      asm/jump_x86_64_ms_pe_masm.asm
-   : <abi>ms
-     <address-model>64
+     dummy.cpp
+   : <address-model>64
      <architecture>x86
      <binary-format>pe
      <target-os>windows
@@ -409,8 +392,8 @@ alias asm_context_sources
 alias asm_context_sources
    : asm/make_x86_64_ms_pe_masm.asm
      asm/jump_x86_64_ms_pe_masm.asm
-   : <abi>ms
-     <address-model>64
+     dummy.cpp
+   : <address-model>64
      <architecture>x86
      <binary-format>pe
      <target-os>windows
@@ -420,15 +403,18 @@ alias asm_context_sources
 alias asm_context_sources
    : [ make asm/make_x86_64_ms_pe_masm.o : asm/make_x86_64_ms_pe_masm.asm : @masm64 ]
      [ make asm/jump_x86_64_ms_pe_masm.o : asm/jump_x86_64_ms_pe_masm.asm : @masm64 ]
-   : <abi>ms
-     <address-model>64
+     dummy.cpp
+   : <address-model>64
      <architecture>x86
      <binary-format>pe
      <target-os>windows
    ;
 
-explicit asm_context_sources ;
+alias asm_context_sources
+   : unsupported.cpp
+   ;
 
+explicit asm_context_sources ;
 
 alias select_asm_context_sources
   : asm_context_sources
@@ -436,29 +422,9 @@ alias select_asm_context_sources
     [ architecture.address-model ]
   ;
 
-
-alias context_sources
-   : fcontext.cpp
-     seh.cpp
-     guarded_stack_allocator_windows.cpp
-     utils_windows.cpp
-   : <target-os>windows
-   ;
-
-alias context_sources
-   : fcontext.cpp
-     guarded_stack_allocator_posix.cpp
-     utils_posix.cpp
-   ;
-
-explicit context_sources ;
-
-
 lib boost_context
    : select_asm_context_sources
-     context_sources
    : <link>shared:<define>BOOST_CONTEXT_DYN_LINK=1
    ;
-
 
 boost-install boost_context ;

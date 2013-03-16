@@ -243,9 +243,19 @@
       in <span class="emphasis"><em>context-function</em></span></a>
     </h4>
 <p>
-      If the <span class="emphasis"><em>context-function</em></span> emits an exception, the application
-      will terminate.
+      If the <span class="emphasis"><em>context-function</em></span> emits an exception, the behaviour
+      is undefined.
     </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../../../doc/src/images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        <span class="emphasis"><em>context-function</em></span> should wrap the code in a try/catch
+        block.
+      </p></td></tr>
+</table></div>
 <h4>
 <a name="context.context.h3"></a>
       <span><a name="context.context.preserving_floating_point_registers"></a></span><a class="link" href="context.html#context.context.preserving_floating_point_registers">Preserving
@@ -253,7 +263,7 @@
     </h4>
 <p>
       Preserving the floating point registers increases the cycle count for a context
-      switch (see performance tests). The foruth argument of <span class="emphasis"><em>jump_fcontext()</em></span>
+      switch (see performance tests). The fourth argument of <span class="emphasis"><em>jump_fcontext()</em></span>
       controls if fpu registers should be preserved by the context jump.
     </p>
 <div class="important"><table border="0" summary="Important">

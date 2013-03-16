@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../interprocess.html" title="Chapter&#160;12.&#160;Boost.Interprocess">
+<link rel="up" href="../interprocess.html" title="Chapter&#160;13.&#160;Boost.Interprocess">
 <link rel="prev" href="customizing_interprocess.html" title="Customizing Boost.Interprocess">
 <link rel="next" href="index.html" title="Indexes">
 </head>
@@ -232,6 +232,8 @@
       Notes</a>
 </h3></div></div></div>
 <div class="toc"><dl>
+<dt><span class="section"><a href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_53_00">Boost
+        1.53 Release</a></span></dt>
 <dt><span class="section"><a href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_52_00">Boost
         1.52 Release</a></span></dt>
 <dt><span class="section"><a href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_51_00">Boost
@@ -263,6 +265,31 @@
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
+<a name="interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_53_00"></a><a class="link" href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_53_00" title="Boost 1.53 Release">Boost
+        1.53 Release</a>
+</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              Fixed GCC -Wshadow warnings.
+            </li>
+<li class="listitem">
+              Experimental multiple allocation interface improved and changed again.
+              Still unstable.
+            </li>
+<li class="listitem">
+              Replaced deprecated BOOST_NO_XXXX with newer BOOST_NO_CXX11_XXX macros.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>ABI breaking</strong></span>: changed node pool allocators
+              internals for improved efficiency.
+            </li>
+<li class="listitem">
+              Fixed bug <a href="https://svn.boost.org/trac/boost/ticket/7795" target="_top">#7795</a>.
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
 <a name="interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_52_00"></a><a class="link" href="acknowledgements_notes.html#interprocess.acknowledgements_notes.release_notes.release_notes_boost_1_52_00" title="Boost 1.52 Release">Boost
         1.52 Release</a>
 </h4></div></div></div>
@@ -273,7 +300,7 @@
               <code class="computeroutput"><span class="identifier">mapped_region</span></code>.
             </li>
 <li class="listitem">
-              <span class="bold"><strong>ABI breaking</strong></span>Reimplemented <code class="computeroutput"><span class="identifier">message_queue</span></code> with a circular buffer
+              <span class="bold"><strong>ABI breaking:</strong></span> Reimplemented <code class="computeroutput"><span class="identifier">message_queue</span></code> with a circular buffer
               index (the old behavior used an ordered array, leading to excessive
               copies). This should greatly increase performance but breaks ABI. Old
               behaviour/ABI can be used undefining macro <code class="computeroutput"><span class="identifier">BOOST_INTERPROCESS_MSG_QUEUE_CIRCULAR_INDEX</span></code>
@@ -285,7 +312,7 @@
               and circular buffer configurations).
             </li>
 <li class="listitem">
-              Implemented <code class="computeroutput"><span class="identifier">sharable_mutex</span></code>
+              Implemented <code class="computeroutput"><span class="identifier">interproces_sharable_mutex</span></code>
               and <code class="computeroutput"><span class="identifier">interproces_condition_any</span></code>.
             </li>
 <li class="listitem">
@@ -1074,7 +1101,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005-2011 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005-2012 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../chrono.html" title="Chapter&#160;4.&#160;Boost.Chrono 2.0.0">
+<link rel="up" href="../chrono.html" title="Chapter&#160;5.&#160;Boost.Chrono 2.0.0">
 <link rel="prev" href="users_guide.html" title="User's Guide">
 <link rel="next" href="appendices.html" title="Appendices">
 </head>
@@ -239,41 +239,10 @@
               that is you have 1 year and a half to move to the new features.
             </p>
 </div>
-<div class="section">
-<div class="titlepage"><div><div><h6 class="title">
+<div class="section"><div class="titlepage"><div><div><h6 class="title">
 <a name="chrono.reference.cpp0x.chrono_chrono_hpp.conf.system_clock_time_point"></a><a class="link" href="reference.html#chrono.reference.cpp0x.chrono_chrono_hpp.conf.system_clock_time_point" title="time_point&lt;system_clock,D&gt; specialization limitation">time_point&lt;system_clock,D&gt;
             specialization limitation</a>
-</h6></div></div></div>
-<div class="warning"><table border="0" summary="Warning">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
-<th align="left">Warning</th>
-</tr>
-<tr><td align="left" valign="top">
-<p>
-                The time_point&lt;system_clock,D&gt; formatter/parser specializations
-                don't work yet. It has been disable defining <code class="computeroutput"><span class="identifier">BOOST_CHRONO_DONT_PROVIDE_DATE_IO_FOR_SYSTEM_CLOCK_TIME_POINT</span></code>
-                until a fix for the following ticket is found:
-              </p>
-<p>
-                - <a href="http://svn.boost.org/trac/boost/ticket/7547" target="_top">#7547</a>
-                time_point&lt;system_clock&gt; input version 2 fails to compile
-              </p>
-<p>
-                - <a href="http://svn.boost.org/trac/boost/ticket/7546" target="_top">#7546</a>
-                time_point&lt;system_clock&gt; output version 2 fails to compile
-              </p>
-<p>
-                In this case the io operators behave like any time_point as if the
-                specialization was removed.
-              </p>
-<p>
-                In order to enable this features on compilers working with, you will
-                need to define <code class="computeroutput"><span class="identifier">BOOST_CHRONO_PROVIDES_DATE_IO_FOR_SYSTEM_CLOCK_TIME_POINT</span></code>.
-              </p>
-</td></tr>
-</table></div>
-</div>
+</h6></div></div></div></div>
 <div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="chrono.reference.cpp0x.chrono_chrono_hpp.conf.version"></a><a class="link" href="reference.html#chrono.reference.cpp0x.chrono_chrono_hpp.conf.version" title="Version">Version</a>
@@ -1351,7 +1320,7 @@
           between t1 and t2.).
         </p>
 <div class="table">
-<a name="chrono.reference.cpp0x.clock.clock_requirements"></a><p class="title"><b>Table&#160;4.1.&#160;Clock Requirements</b></p>
+<a name="chrono.reference.cpp0x.clock.clock_requirements"></a><p class="title"><b>Table&#160;5.1.&#160;Clock Requirements</b></p>
 <div class="table-contents"><table class="table" summary="Clock Requirements">
 <colgroup>
 <col>
@@ -1620,7 +1589,7 @@
           a <code class="computeroutput"><span class="identifier">EcClock</span></code> type and <code class="computeroutput"><span class="identifier">ec</span></code> is an instance of a <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span></code>.
         </p>
 <div class="table">
-<a name="chrono.reference.cpp0x.ecclock.clock_requirements"></a><p class="title"><b>Table&#160;4.2.&#160;Clock Requirements</b></p>
+<a name="chrono.reference.cpp0x.ecclock.clock_requirements"></a><p class="title"><b>Table&#160;5.2.&#160;Clock Requirements</b></p>
 <div class="table-contents"><table class="table" summary="Clock Requirements">
 <colgroup>
 <col>
@@ -6084,8 +6053,6 @@
 
     <span class="comment">// system_clock I/O</span>
 
-<span class="preprocessor">#if</span> <span class="identifier">defined</span> <span class="identifier">BOOST_CHRONO_PROVIDES_DATE_IO_FOR_SYSTEM_CLOCK_TIME_POINT</span>
-
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Traits</span><span class="special">,</span> <span class="keyword">class</span> <a class="link" href="reference.html#chrono.reference.cpp0x.duration_hpp.duration" title="Class Template duration&lt;&gt;"><code class="computeroutput"><span class="identifier">Duration</span></code></a><span class="special">&gt;</span>
       <span class="identifier">basic_ostream</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span><span class="special">&gt;&amp;</span>
       <span class="keyword">operator</span><span class="special">&lt;&lt;(</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span><span class="special">&gt;&amp;</span> <span class="identifier">os</span><span class="special">,</span>
@@ -6095,7 +6062,6 @@
       <span class="identifier">basic_istream</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span><span class="special">&gt;&amp;</span>
       <span class="keyword">operator</span><span class="special">&gt;&gt;(</span><span class="identifier">basic_istream</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span><span class="special">&gt;&amp;</span> <span class="identifier">is</span><span class="special">,</span>
                  <span class="identifier">time_point</span><span class="special">&lt;</span><span class="identifier">system_clock</span><span class="special">,</span> <a class="link" href="reference.html#chrono.reference.cpp0x.duration_hpp.duration" title="Class Template duration&lt;&gt;"><code class="computeroutput"><span class="identifier">Duration</span></code></a><span class="special">&gt;&amp;</span> <span class="identifier">tp</span><span class="special">);</span>
-<span class="preprocessor">#endif</span>
 
     <span class="comment">// Other Clocks I/O</span>
 
@@ -6164,35 +6130,6 @@
 <div class="titlepage"><div><div><h6 class="title">
 <a name="chrono.reference.io.time_point_io_hpp.streams.system_clock"></a><a class="link" href="reference.html#chrono.reference.io.time_point_io_hpp.streams.system_clock" title="system_clock"><code class="computeroutput"><span class="identifier">system_clock</span></code></a>
 </h6></div></div></div>
-<div class="warning"><table border="0" summary="Warning">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
-<th align="left">Warning</th>
-</tr>
-<tr><td align="left" valign="top">
-<p>
-                The time_point&lt;system_clock,D&gt; formatter/parser specializations
-                don't work yet. It has been disable defining <code class="computeroutput"><span class="identifier">BOOST_CHRONO_DONT_PROVIDE_DATE_IO_FOR_SYSTEM_CLOCK_TIME_POINT</span></code>
-                until a fix for the following ticket is found:
-              </p>
-<p>
-                - <a href="http://svn.boost.org/trac/boost/ticket/7547" target="_top">#7547</a>
-                time_point&lt;system_clock&gt; input version 2 fails to compile
-              </p>
-<p>
-                - <a href="http://svn.boost.org/trac/boost/ticket/7546" target="_top">#7546</a>
-                time_point&lt;system_clock&gt; output version 2 fails to compile
-              </p>
-<p>
-                In this case the io operators behave like any time_point as if the
-                specialization was removed.
-              </p>
-<p>
-                In order to enable this features on compilers working with, you will
-                need to define <code class="computeroutput"><span class="identifier">BOOST_CHRONO_PROVIDES_DATE_IO_FOR_SYSTEM_CLOCK_TIME_POINT</span></code>.
-              </p>
-</td></tr>
-</table></div>
 <div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="chrono.reference.io.time_point_io_hpp.streams.system_clock.op_out"></a><a class="link" href="reference.html#chrono.reference.io.time_point_io_hpp.streams.system_clock.op_out" title="Non Member Function operator&lt;&lt;()">Non

@@ -43,9 +43,6 @@
 .386
 .XMM
 .model flat, c
-_exit PROTO, value:SDWORD 
-align_stack PROTO, vp:DWORD
-seh_fcontext PROTO, except:DWORD, frame:DWORD, context:DWORD, dispatch:DWORD
 .code
 
 jump_fcontext PROC EXPORT
