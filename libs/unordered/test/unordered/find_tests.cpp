@@ -20,7 +20,7 @@ namespace find_tests
 test::seed_t initialize_seed(78937);
 
 template <class X>
-void find_tests1(X*, test::random_generator generator = test::default_generator)
+void find_tests1(X*, test::random_generator generator)
 {
     typedef BOOST_DEDUCED_TYPENAME X::iterator iterator;
 
@@ -115,8 +115,7 @@ struct compatible_predicate
 };
 
 template <class X>
-void find_compatible_keys_test(X*,
-    test::random_generator generator = test::default_generator)
+void find_compatible_keys_test(X*, test::random_generator generator)
 {
     typedef BOOST_DEDUCED_TYPENAME X::iterator iterator;
     typedef BOOST_DEDUCED_TYPENAME test::random_values<X>::iterator
@@ -142,16 +141,16 @@ void find_compatible_keys_test(X*,
 
 boost::unordered_set<test::object,
     test::hash, test::equal_to,
-    test::allocator<test::object> >* test_set;
+    test::allocator2<test::object> >* test_set;
 boost::unordered_multiset<test::object,
     test::hash, test::equal_to,
-    test::allocator<test::object> >* test_multiset;
+    test::allocator1<test::object> >* test_multiset;
 boost::unordered_map<test::object, test::object,
     test::hash, test::equal_to,
-    test::allocator<test::object> >* test_map;
+    test::allocator2<test::object> >* test_map;
 boost::unordered_multimap<test::object, test::object,
     test::hash, test::equal_to,
-    test::allocator<test::object> >* test_multimap;
+    test::allocator1<test::object> >* test_multimap;
 
 using test::default_generator;
 using test::generate_collisions;

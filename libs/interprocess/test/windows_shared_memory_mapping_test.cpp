@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright Ion Gaztanaga 2004-2011. Distributed under the Boost
+// (C) Copyright Ion Gaztanaga 2004-2012. Distributed under the Boost
 // Software License, Version 1.0. (See accompanying file
 // LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <boost/interprocess/detail/config_begin.hpp>
+#include <boost/interprocess/detail/workaround.hpp>
 
 #ifdef BOOST_INTERPROCESS_WINDOWS
 
@@ -25,12 +26,12 @@ int main ()
 {
    try{
       const char *names[2] = { test::get_process_id_name(), 0 };
-      for(unsigned int i = 0; i < sizeof(names)/sizeof(names[0]); ++i)
+      for(unsigned int i_name = 0; i_name < sizeof(names)/sizeof(names[0]); ++i_name)
       {
          const std::size_t FileSize = 99999*2;
          //Create a file mapping
          windows_shared_memory mapping
-            (create_only, names[i], read_write, FileSize);
+            (create_only, names[i_name], read_write, FileSize);
 
          {
 
@@ -47,7 +48,7 @@ int main ()
                                  ,FileSize - FileSize/2
                                  ,0);
 
-            //Fill two regions with a pattern  
+            //Fill two regions with a pattern
             unsigned char *filler = static_cast<unsigned char*>(region.get_address());
             for(std::size_t i = 0
                ;i < FileSize/2
@@ -60,6 +61,13 @@ int main ()
                ;i < FileSize
                ;++i){
                *filler++ = static_cast<unsigned char>(i);
+            }
+            if(!region.flush(0, 0, false)){
+               return 1;
+            }
+
+            if(!region2.flush(0, 0, true)){
+               return 1;
             }
          }
 

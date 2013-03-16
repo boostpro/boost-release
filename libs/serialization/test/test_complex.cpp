@@ -13,12 +13,20 @@
 #include <cstddef> // NULL
 #include <cstdlib> // rand
 #include <cstdio> // remove
+#include <boost/config.hpp>
+#include <boost/detail/workaround.hpp>
+#include <boost/limits.hpp>
+
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
+namespace std{
+    using ::rand; 
     using ::remove;
-#ifndef UNDER_CE    
-    using ::numeric_limits;
-#endif
+    #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400) && !defined(UNDER_CE)
+        using ::numeric_limits;
+    #endif
+    #if !defined(__PGIC__)
+        using ::fabs;
+    #endif
 }
 #endif
 

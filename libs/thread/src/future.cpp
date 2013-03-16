@@ -3,7 +3,11 @@
 // Boost Software License, Version 1.0. (See accompanying file
 // LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/thread/future.hpp>
+#include <boost/thread/detail/config.hpp>
+#ifndef BOOST_NO_EXCEPTIONS
+
+
+#include <boost/thread/future_error_code.hpp>
 
 namespace boost
 {
@@ -15,12 +19,12 @@ namespace boost
       public boost::system::error_category
     {
     public:
-        virtual const char* name() const; //BOOST_NOEXCEPT;
+        virtual const char* name() const BOOST_NOEXCEPT;
         virtual std::string message(int ev) const;
     };
 
     const char*
-    future_error_category::name() const //BOOST_NOEXCEPT
+    future_error_category::name() const BOOST_NOEXCEPT
     {
         return "future";
     }
@@ -47,10 +51,11 @@ namespace boost
   }
 
   const system::error_category&
-  future_category()
+  future_category() BOOST_NOEXCEPT
   {
       static thread_detail::future_error_category f;
       return f;
   }
 
 }
+#endif

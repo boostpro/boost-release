@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright Ion Gaztanaga  2007-2009
+// (C) Copyright Ion Gaztanaga  2007-2012
 //
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -53,8 +53,8 @@ struct stateful_value_traits
 
    static const link_mode_type link_mode = normal_link;
 
-   stateful_value_traits(pointer values, node_ptr node_array)
-      :  values_(values),  node_array_(node_array)
+   stateful_value_traits(pointer vals, node_ptr node_array)
+      :  values_(vals),  node_array_(node_array)
    {}
 
    node_ptr to_node_ptr (value_type &value)

@@ -23,7 +23,7 @@
 namespace move_tests
 {
     test::seed_t initialize_seed(98624);
-#if defined(BOOST_UNORDERED_USE_MOVE) || !defined(BOOST_NO_RVALUE_REFERENCES)
+#if defined(BOOST_UNORDERED_USE_MOVE) || !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 #define BOOST_UNORDERED_TEST_MOVING 1
 #else
 #define BOOST_UNORDERED_TEST_MOVING 0
@@ -57,8 +57,7 @@ namespace move_tests
     }
 
     template <class T>
-    void move_construct_tests1(T* ptr,
-        test::random_generator const& generator = test::default_generator)
+    void move_construct_tests1(T* ptr, test::random_generator const& generator)
     {
         BOOST_DEDUCED_TYPENAME T::hasher hf;
         BOOST_DEDUCED_TYPENAME T::key_equal eq;
@@ -91,8 +90,7 @@ namespace move_tests
     }
 
     template <class T>
-    void move_assign_tests1(T*,
-        test::random_generator const& generator = test::default_generator)
+    void move_assign_tests1(T*, test::random_generator const& generator)
     {
         {
             test::check_instances check_;
@@ -110,8 +108,7 @@ namespace move_tests
     }
 
     template <class T>
-    void move_construct_tests2(T*,
-            test::random_generator const& generator = test::default_generator)
+    void move_construct_tests2(T*, test::random_generator const& generator)
     {
         BOOST_DEDUCED_TYPENAME T::hasher hf(1);
         BOOST_DEDUCED_TYPENAME T::key_equal eq(1);
@@ -157,17 +154,21 @@ namespace move_tests
 
             test::random_values<T> v(25, generator);
             T y(create(v, count, hf, eq, al, 1.0), al);
-#if !defined(BOOST_NO_RVALUE_REFERENCES)
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
             BOOST_TEST(count == test::global_object_count);
 #elif defined(BOOST_HAS_NRVO)
             BOOST_TEST(
-                test::global_object_count.constructions - count.constructions <=
-                (test::is_map<T>::value ? 50 : 25));
+                static_cast<std::size_t>(test::global_object_count.constructions
+                    - count.constructions) <=
+                (test::is_set<T>::value ? 1 : 2) *
+                    (test::has_unique_keys<T>::value ? 25 : v.size()));
             BOOST_TEST(count.instances == test::global_object_count.instances);
 #else
             BOOST_TEST(
-                test::global_object_count.constructions - count.constructions <=
-                (test::is_map<T>::value ? 100 : 50));
+                static_cast<std::size_t>(test::global_object_count.constructions
+                    - count.constructions) <=
+                (test::is_set<T>::value ? 2 : 4) *
+                    (test::has_unique_keys<T>::value ? 25 : v.size()));
             BOOST_TEST(count.instances == test::global_object_count.instances);
 #endif
             test::check_container(y, v);
@@ -180,8 +181,7 @@ namespace move_tests
     }
 
     template <class T>
-    void move_assign_tests2(T*,
-        test::random_generator const& generator = test::default_generator)
+    void move_assign_tests2(T*, test::random_generator const& generator)
     {
         BOOST_DEDUCED_TYPENAME T::hasher hf(1);
         BOOST_DEDUCED_TYPENAME T::key_equal eq(1);
@@ -316,18 +316,22 @@ namespace move_tests
         }
     }
 
-    boost::unordered_set<test::object,
-        test::hash, test::equal_to,
-        test::allocator<test::object> >* test_set;
-    boost::unordered_multiset<test::object,
-        test::hash, test::equal_to,
-        test::allocator<test::object> >* test_multiset;
     boost::unordered_map<test::object, test::object,
         test::hash, test::equal_to,
-        test::allocator<test::object> >* test_map;
+        std::allocator<test::object> >* test_map_std_alloc;
+
+    boost::unordered_set<test::object,
+        test::hash, test::equal_to,
+        test::allocator2<test::object> >* test_set;
+    boost::unordered_multiset<test::object,
+        test::hash, test::equal_to,
+        test::allocator1<test::object> >* test_multiset;
+    boost::unordered_map<test::object, test::object,
+        test::hash, test::equal_to,
+        test::allocator1<test::object> >* test_map;
     boost::unordered_multimap<test::object, test::object,
         test::hash, test::equal_to,
-        test::allocator<test::object> >* test_multimap;
+        test::allocator2<test::object> >* test_multimap;
 
 boost::unordered_set<test::object,
         test::hash, test::equal_to,
@@ -367,16 +371,20 @@ boost::unordered_multimap<test::object, test::object,
     using test::generate_collisions;
 
     UNORDERED_TEST(move_construct_tests1, (
+            (test_map_std_alloc)
             (test_set)(test_multiset)(test_map)(test_multimap)
             (test_set_prop_move)(test_multiset_prop_move)(test_map_prop_move)(test_multimap_prop_move)
             (test_set_no_prop_move)(test_multiset_no_prop_move)(test_map_no_prop_move)(test_multimap_no_prop_move)
         )
+        ((default_generator)(generate_collisions))
     )
     UNORDERED_TEST(move_assign_tests1, (
+            (test_map_std_alloc)
             (test_set)(test_multiset)(test_map)(test_multimap)
             (test_set_prop_move)(test_multiset_prop_move)(test_map_prop_move)(test_multimap_prop_move)
             (test_set_no_prop_move)(test_multiset_no_prop_move)(test_map_no_prop_move)(test_multimap_no_prop_move)
         )
+        ((default_generator)(generate_collisions))
     )
     UNORDERED_TEST(move_construct_tests2, (
             (test_set)(test_multiset)(test_map)(test_multimap)
@@ -390,6 +398,7 @@ boost::unordered_multimap<test::object, test::object,
             (test_set_prop_move)(test_multiset_prop_move)(test_map_prop_move)(test_multimap_prop_move)
             (test_set_no_prop_move)(test_multiset_no_prop_move)(test_map_no_prop_move)(test_multimap_no_prop_move)
         )
+        ((default_generator)(generate_collisions))
     )
 }
 

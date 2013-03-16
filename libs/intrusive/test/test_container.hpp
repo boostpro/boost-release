@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright Ion Gaztanaga  2007-2011
+// (C) Copyright Ion Gaztanaga  2007-2012
 //
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -111,9 +111,9 @@ void test_sequence_container(Container & c, Data & d)
       BOOST_TEST( !c.empty() );
 
       {
-      typename Data::iterator i = d.begin();
-      ++++i;
-      c.insert( c.begin(), *(i) );
+      typename Data::iterator di = d.begin();
+      ++++di;
+      c.insert( c.begin(), *(di) );
       }
 
       i = c.erase( c.begin(), c.end() );
@@ -247,7 +247,7 @@ void test_common_unordered_and_associative_container(Container & c, Data & d)
       {
          BOOST_TEST( c.find(*di) != c.end() );
       }
-  
+
       typename Data::const_iterator db = d.begin();
       typename Data::const_iterator da = db++;
 
@@ -361,10 +361,14 @@ void test_unordered_associative_container_invariants(Container & c, Data & d, bo
       std::pair<const_iterator, const_iterator> er = c.equal_range(*di);
       size_type cnt = std::distance(er.first, er.second);
       BOOST_TEST( cnt == c.count(*di));
-      if(cnt > 1)
-      for(const_iterator n = er.first, i = n++, e = er.second; n != e; ++i, ++n){
-         BOOST_TEST( c.key_eq()(*i, *n) );
-         BOOST_TEST( c.hash_function()(*i) == c.hash_function()(*n) );
+      if(cnt > 1){
+         const_iterator n = er.first;
+         i = n++;
+         const_iterator e = er.second;
+         for(; n != e; ++i, ++n){
+            BOOST_TEST( c.key_eq()(*i, *n) );
+            BOOST_TEST( c.hash_function()(*i) == c.hash_function()(*n) );
+         }
       }
    }
 

@@ -26,7 +26,7 @@ using namespace boost::container;
 
 namespace boost {
 namespace container {
-/*
+
 //Explicit instantiation to detect compilation errors
 
 //flat_map
@@ -115,7 +115,7 @@ template class flat_multiset
    , std::less<test::movable_and_copyable_int>
    , std::allocator<test::movable_and_copyable_int>
    >;
-*/
+
 }} //boost::container
 
 
@@ -632,13 +632,13 @@ int main()
 #include <boost/container/map.hpp>
 #include <boost/container/flat_map.hpp>
 #include <boost/container/vector.hpp>
-#include <boost/move/move.hpp>
+#include <boost/move/utility.hpp>
 #include <iostream>
 
-struct Request
-{
+struct Request 
+{ 
     Request() {};
-  
+    
     //Move semantics...
     Request(BOOST_RV_REF(Request) r) : rvals()  //Move constructor
     {
@@ -667,14 +667,36 @@ typedef boost::container::flat_map<int, Request> Requests;
 int
 main() {
     Requests req;
-   
-    Requests::value_type v;
-    std::pair<Requests::iterator, bool> ret = req.insert( boost::move(v));
-    //std::cout << "Insert success for req: " << ret.second << std::endl;
-  
+    std::pair<Requests::iterator, bool> ret = req.insert( Requests::value_type( 7, Request() ) );
+    std::cout << "Insert success for req: " << ret.second << std::endl;
+    
     //Requests2 req2;
     //std::pair<Requests::iterator, bool> ret2 = req2.insert( Requests2::value_type( 7, Request() ) );
     //std::cout << "Insert success for req2: " << ret2.second << std::endl;
+
+    return 0;
+}
+*/
+/*
+#include <cstdlib>
+#include <iostream>
+#include <boost/container/flat_set.hpp>
+
+using namespace std;
+
+int main(int , char *[])
+{
+    double d[] = {0, 0.2, 0.8, 1, 2, 3, 4};
+    boost::container::flat_set<double> set;
+
+    set.insert(0);
+    set.insert(set.end(), 1);
+    set.insert(set.end(), 3);
+    set.insert(boost::container::ordered_unique_range_t(), d, d + sizeof(d)/sizeof(*d));
+    boost::container::flat_set<double>::iterator it(set.begin());
+    boost::container::flat_set<double>::iterator const itend(set.end());
+    while(it != itend)
+        cout << *it++ << endl;
 
     return 0;
 }

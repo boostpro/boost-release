@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright Ion Gaztanaga 2004-2011. Distributed under the Boost
+// (C) Copyright Ion Gaztanaga 2004-2012. Distributed under the Boost
 // Software License, Version 1.0. (See accompanying file
 // LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
@@ -23,8 +23,8 @@ int main ()
    using namespace boost::interprocess;
 
    test::test_all_lock<interprocess_upgradable_mutex>();
-   test::test_all_mutex<true, interprocess_upgradable_mutex>();
-   test::test_all_sharable_mutex<true, interprocess_upgradable_mutex>();
+   test::test_all_mutex<interprocess_upgradable_mutex>();
+   test::test_all_sharable_mutex<interprocess_upgradable_mutex>();
 
    //Test lock transition
    {
